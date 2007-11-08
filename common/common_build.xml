@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay_common" basedir="..">
+
+	<property name="common.dir" value="${basedir}/common" />
+
+	<!-- Define classpath libraries -->
+	<path id="commons.lib">
+		<fileset dir="${common.dir}/lib/commons">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="spring.lib">
+		<fileset dir="${common.dir}/lib/spring2">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="struts.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="struts2/*.jar" />
+			<include name="antlr/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="hibernate.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="hibernate3/*.jar" />
+			<include name="antlr/*.jar" />
+		</fileset>
+		<path refid="commons.lib" />
+	</path>
+
+	<path id="junit.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="junit/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="common.production.classpath">
+		<path refid="commons.lib" />
+		<path refid="spring.lib" />
+		<path refid="struts.lib" />
+		<path refid="hibernate.lib" />
+	</path>
+
+	<patternset id="empty_pattern" excludes="**/*.*" />
+
+	<!-- Build properties -->
+	<property file="common/common_build.properties" />
+
+	<path id="common.jar" location="${build.dir}/lib/${common.jar.name}" />
+	<path id="common.test.jar" location="${build.dir}/lib/${common.tests.jar.name}" />
+
+	<path id="common.test.classpath">
+		<path refid="common.production.classpath" />
+		<path refid="common.jar" />
+		<path refid="junit.lib" />
+	</path>
+
+	<target name="common.build.production.jar">
+		<echo message="Outer common src: ${common.dir}/${src.dir}" />
+		<antcall target="template.compile.production">
+			<param name="sources.dir" value="${common.dir}/${src.dir}" />
+			<reference refid="common.production.classpath" torefid="classpath" />
+		</antcall>
+
+		<fileset dir="${build.dir}/empty" id="empty_res" />
+
+		<antcall target="template.jar">
+			<param name="dest.jar" value="${common.jar.name}" />
+			<reference refid="empty_res" torefid="resources" />
+		</antcall>
+	</target>
+
+	<target name="common.build.test.jar" depends="common.build.production.jar">
+		<antcall target="template.compile.test">
+			<param name="sources.dir" value="${common.dir}/${tests.src.dir}" />
+			<reference refid="common.test.classpath" torefid="classpath" />
+		</antcall>
+
+		<fileset id="resources" dir="${common.dir}/${tests.resources.dir}">
+			<include name="**/*.*" />
+		</fileset>
+
+		<antcall target="template.jar">
+			<param name="dest.jar" value="${common.tests.jar.name}" />
+			<reference refid="resources" torefid="resources" />
+		</antcall>
+	</target>
+
+	<target name="common.docs" depends="common.build.production.jar">
+		<fileset id="common.docs.resources" dir="${common.dir}/docs" />
+		<antcall target="template.docs">
+			<param name="sources.dir" value="${common.dir}/src" />
+			<param name="module_name" value="Common" />
+			<param name="docs.file" value="${common.docs.name}" />
+			<reference refid="common.docs.resources" torefid="resources" />
+			<reference refid="common.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="common.prepare.war">
+		<fileset id="common.web.resources" dir="${common.dir}/web" />
+		<antcall target="template.prepare.war">
+			<reference refid="common.web.resources" torefid="resources" />
+		</antcall>
+	</target>
+
+	<!-- Build templates -->
+	<target name="template.compile.production" depends="init.build,clean.build">
+		<echo message="Inner src: ${sources.dir}" />
+		<javac srcdir="${sources.dir}" includes="**/*.java" destdir="${build.dir}/classes"
+			   debug="off" deprecation="on" optimize="on" source="1.5" target="1.5"
+			   classpathref="classpath" />
+	</target>
+
+	<target name="template.compile.test" depends="init.build,clean.build">
+		<javac srcdir="${sources.dir}" includes="**/*.java" destdir="${build.dir}/classes"
+			   debug="on" deprecation="on" optimize="on" source="1.5" target="1.5"
+			   classpathref="classpath" />
+	</target>
+
+	<target name="init.build">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dir}/classes" />
+		<mkdir dir="${build.dir}/lib" />
+		<mkdir dir="${build.dir}/web" />
+		<mkdir dir="${build.dir}/docs" />
+		<mkdir dir="${build.dir}/empty" />
+	</target>
+
+	<target name="clean.build">
+		<delete dir="${build.dir}/classes" includes="**/*" includeemptydirs="true" />
+		<delete dir="${build.dir}/web" includes="**/*" />
+		<delete dir="${build.dir}/docs" includes="**/*" />
+	</target>
+
+	<target name="init.distr">
+		<mkdir dir="${distr.dir}" />
+	</target>
+
+	<target name="template.jar">
+		<jar destfile="${build.dir}/lib/${dest.jar}">
+			<fileset dir="${build.dir}/classes" />
+			<fileset refid="resources" />
+		</jar>
+	</target>
+
+	<target name="template.docs" depends="init.build,init.distr,clean.build">
+		<javadoc sourcepath="${sources.dir}" destdir="${build.dir}/docs/api"
+				 windowtitle="FlexPay ${module_name} API"
+				 defaultexcludes="yes" author="true" version="true" use="true"
+				 classpathref="classpath">
+			<bottom><![CDATA[<i>Copyright &#169; 2007 FlexPay. All Rights Reserved.</i>]]></bottom>
+		</javadoc>
+		<copy todir="${build.dir}/docs">
+			<fileset refid="resources" />
+		</copy>
+		<zip basedir="${build.dir}/docs" destfile="${distr.dir}/${docs.file}" />
+	</target>
+
+	<target name="template.prepare.war" depends="init.build">
+		<copy todir="${build.dir}/web">
+			<fileset refid="resources" />
+		</copy>
+	</target>
+
+	<target name="common.war.include.libs">
+		<war destfile="${warfile}" update="true">
+			<lib dir="${common.dir}/lib/antlr" />
+			<lib dir="${common.dir}/lib/hibernate3" />
+			<lib dir="${common.dir}/lib/spring2" />
+			<lib dir="${common.dir}/lib/commons" />
+			<lib dir="${common.dir}/lib/struts2" />
+			<lib dir="${build.dir}/lib" />
+		</war>
+	</target>
+
+</project>
