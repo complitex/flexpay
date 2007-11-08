@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay_ab" basedir="..">
+
+	<import file="../common/common_build.xml" />
+
+	<property file="ab/ab_build.properties" />
+	<property file="common/common_build.properties" />
+
+	<property name="ab.dir" value="${basedir}/ab" />
+
+	<path id="ab.lib">
+		<fileset dir="${ab.dir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<fileset id="ab.libraries" dir="${ab.dir}/lib">
+		<include name="**/*" />
+	</fileset>
+
+	<path id="ab.jar" location="${build.dir}/lib/${ab.jar.name}" />
+	<path id="ab.test.jar" location="${build.dir}/lib/${ab.tests.jar.name}" />
+
+	<path id="ab.production.classpath">
+		<path refid="common.production.classpath" />
+		<path refid="ab.lib" />
+		<path refid="common.jar" />
+	</path>
+
+	<path id="ab.test.classpath">
+		<path refid="common.test.classpath" />
+		<path refid="ab.jar" />
+		<path refid="ab.production.classpath" />
+	</path>
+
+	<!-- Build targets -->
+	<target name="ab.build.production.jar" depends="common.build.production.jar">
+		<echo message="Outer ab src: ${ab.dir}/${src.dir}" />
+		<antcall target="template.compile.production">
+			<param name="sources.dir" value="${ab.dir}/${src.dir}" />
+			<reference refid="ab.production.classpath" torefid="classpath" />
+		</antcall>
+
+		<fileset dir="${build.dir}/empty" id="empty_res" />
+
+		<antcall target="template.jar">
+			<param name="dest.jar" value="${ab.jar.name}" />
+			<reference refid="empty_res" torefid="resources" />
+		</antcall>
+	</target>
+
+	<target name="ab.build.test.jar"
+			depends="common.build.test.jar,ab.build.production.jar">
+		<antcall target="template.compile.test">
+			<param name="sources.dir" value="${ab.dir}/${tests.src.dir}" />
+			<reference refid="ab.test.classpath" torefid="classpath" />
+		</antcall>
+
+		<fileset id="resources" dir="${ab.dir}/${tests.resources.dir}">
+			<include name="**/*.*" />
+		</fileset>
+
+		<antcall target="template.jar">
+			<param name="dest.jar" value="${ab.tests.jar.name}" />
+			<reference refid="resources" torefid="resources" />
+		</antcall>
+	</target>
+
+	<target name="ab.docs" depends="ab.build.production.jar">
+		<fileset id="ab.docs.resources" dir="${ab.dir}/docs" />
+		<antcall target="template.docs">
+			<param name="sources.dir" value="${ab.dir}/src" />
+			<param name="module_name" value="Address Bureau" />
+			<param name="docs.file" value="${ab.docs.name}" />
+			<reference refid="ab.docs.resources" torefid="resources" />
+			<reference refid="ab.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<!-- Build production web-archive -->
+	<target name="ab.war.production"
+			depends="ab.build.production.jar,common.prepare.war,init.distr">
+		<fileset id="ab.web.resources" dir="${ab.dir}/web" />
+		<antcall target="template.prepare.war">
+			<reference refid="ab.web.resources" torefid="resources" />
+		</antcall>
+
+		<war destfile="${distr.dir}/${ab.war.name}" needxmlfile="false">
+			<fileset dir="${build.dir}/web" />
+			<lib refid="ab.libraries" />
+		</war>
+
+		<antcall target="common.war.include.libs">
+			<param name="warfile" value="${distr.dir}/${ab.war.name}" />
+		</antcall>
+	</target>
+
+</project>
