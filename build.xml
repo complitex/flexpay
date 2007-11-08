@@ -3,6 +3,8 @@
 
 	<import file="ab/ab_build.xml" />
 
-	<target name="build.all" />
+	<target name="build.all">
+		<antcall target="ab.war.production" />
+	</target>
 
 </project>
