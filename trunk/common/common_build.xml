@@ -31,6 +31,12 @@
 		<path refid="commons.lib" />
 	</path>
 
+	<path id="log4j.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="log4j/*.jar" />
+		</fileset>
+	</path>
+
 	<path id="junit.lib">
 		<fileset dir="${common.dir}/lib">
 			<include name="junit/*.jar" />
@@ -42,6 +48,7 @@
 		<path refid="spring.lib" />
 		<path refid="struts.lib" />
 		<path refid="hibernate.lib" />
+		<path refid="log4j.lib" />
 	</path>
 
 	<patternset id="empty_pattern" excludes="**/*.*" />
@@ -161,7 +168,7 @@
 	</target>
 
 	<target name="template.prepare.war" depends="init.build">
-		<copy todir="${build.dir}/web">
+		<copy todir="${build.dir}/web" overwrite="true">
 			<fileset refid="resources" />
 		</copy>
 	</target>
@@ -173,6 +180,7 @@
 			<lib dir="${common.dir}/lib/spring2" />
 			<lib dir="${common.dir}/lib/commons" />
 			<lib dir="${common.dir}/lib/struts2" />
+			<lib dir="${common.dir}/lib/log4j" />
 			<lib dir="${build.dir}/lib" />
 		</war>
 	</target>
