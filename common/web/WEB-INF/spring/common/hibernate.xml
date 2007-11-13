@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:jee="http://www.springframework.org/schema/jee"
+	   xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+
+	<!-- Look up data source via JNDI -->
+	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/FlexPay" resource-ref="false" />
+
+	<!-- Hibernate Session Factory -->
+	<bean id="flexpaySessionFactory"
+		  class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocations" value="/WEB-INF/*hibernate.cfg.xml" />
+	</bean>
+
+	<!-- Create transaction manager  -->
+	<bean id="transactionManager"
+		  class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sessionFactory" ref="flexpaySessionFactory" />
+	</bean>
+
+	<!--
+		Indicates that transaction
+		configuration is defined by Java5 annotations on bean classes, and
+		that proxies are automatically to be created for the relevant
+		annotated beans.
+
+		Transaction semantics such as propagation settings, the isolation level,
+		the rollback rules, etc are all defined in the annotation metadata.
+	-->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+</beans>
