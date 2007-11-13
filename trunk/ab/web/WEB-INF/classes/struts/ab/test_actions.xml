@@ -6,9 +6,9 @@
 
 	<package name="test" namespace="/test" extends="struts-default">
 
-		<action name="hello" class="org.flexpay.ab.actions.TestAction">
+		<action name="hello" class="helloAction">
 			<result>/WEB-INF/jsp/ab/hello.jsp</result>
-			<!--<result>/hello.jsp</result>-->
+			<!--<result>/hello1.jsp</result>-->
 		</action>
 
 	</package>
