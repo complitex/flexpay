@@ -145,8 +145,8 @@ create table Apartment_Attribute
 (
    id                             INTEGER                        not null,
    Apartment_ID                   INTEGER,
-   begin                          timestamp                     not null,
-   end                            timestamp                     not null,
+   beginDate                      timestamp                     not null,
+   endDate                        timestamp                     not null,
    value                          varchar(2000)                 not null,
    Apartment_Attribute_type_ID    INTEGER,
    primary key (id)
@@ -184,8 +184,8 @@ type = InnoDB;
 create table Apartment_Number
 (
    ID                             INTEGER                        not null,
-   begin                          timestamp                     not null,
-   end                            timestamp                     not null,
+   beginDate                          timestamp                     not null,
+   endDate                            timestamp                     not null,
    Apartment_ID                   INTEGER                        not null,
    value                          varchar(255)                   not null,
    primary key (ID)
@@ -202,8 +202,8 @@ create table Apartment_Relation
    Person_ID                      INTEGER                        not null,
    owning_part                    INTEGER                        not null,
    Apartment_relation_type_ID     INTEGER                        not null,
-   begin                          timestamp                     not null,
-   end                            timestamp                     not null,
+   beginDate                          timestamp                     not null,
+   endDate                            timestamp                     not null,
    primary key (id)
 )
 type = InnoDB;
@@ -277,8 +277,8 @@ type = InnoDB;
 create table Building_Status
 (
    ID                             INTEGER                        not null,
-   begin                          timestamp                     not null,
-   end                            timestamp                     not null,
+   beginDate                          timestamp                     not null,
+   endDate                            timestamp                     not null,
    Building_ID                    INTEGER                        not null,
    value                          INTEGER                        not null,
    primary key (ID)
@@ -331,8 +331,8 @@ type = InnoDB;
 create table District_Name
 (
    ID                             INTEGER                        not null,
-   begin                          timestamp                     not null,
-   end                            timestamp                     not null,
+   beginDate                          timestamp                     not null,
+   endDate                            timestamp                     not null,
    District_ID                    INTEGER                        not null,
    primary key (ID)
 )
@@ -494,8 +494,8 @@ type = InnoDB;
 create table Region_Name
 (
    ID                             INTEGER                        not null,
-   begin                          timestamp                     not null,
-   end                            timestamp                     not null,
+   beginDate                          timestamp                     not null,
+   endDate                            timestamp                     not null,
    Region_ID                      INTEGER                        not null,
    primary key (ID)
 )
@@ -533,8 +533,8 @@ create table Room_Attribute
 (
    id                             INTEGER                        not null,
    Room_ID                        INTEGER,
-   begin                          timestamp                     not null,
-   end                            timestamp                     not null,
+   beginDate                          timestamp                     not null,
+   endDAte                            timestamp                     not null,
    value                          varchar(2000)                 not null,
    Room_Attribute_type_ID         INTEGER,
    primary key (id)
@@ -597,8 +597,8 @@ type = InnoDB;
 create table Street_Name
 (
    ID                             INTEGER                        not null,
-   begin                          timestamp                     not null,
-   end                            timestamp                     not null,
+   beginDate                          timestamp                     not null,
+   endDate                            timestamp                     not null,
    Street_ID                      INTEGER                        not null,
    primary key (ID)
 )
@@ -624,8 +624,8 @@ create table Street_Type
 (
    ID                             INTEGER                        not null,
    Street_Type_ID                 INTEGER,
-   begin                          timestamp                     not null,
-   end                            timestamp                     not null,
+   beginDate                          timestamp                     not null,
+   endDate                            timestamp                     not null,
    Street_ID                      INTEGER                        not null,
    primary key (ID)
 )
@@ -662,8 +662,8 @@ type = InnoDB;
 create table Town_Name
 (
    ID                             INTEGER                        not null,
-   begin                          timestamp                     not null,
-   end                            timestamp                     not null,
+   beginDate                          timestamp                     not null,
+   endDate                            timestamp                     not null,
    Town_ID                        INTEGER                   not null,
    primary key (ID)
 )
@@ -689,8 +689,8 @@ create table Town_Type
 (
    id                             INTEGER                        not null,
    TownType_ID                    INTEGER                        not null,
-   begin                          timestamp                     not null,
-   end                            timestamp                     not null,
+   beginDate                          timestamp                     not null,
+   endDate                            timestamp                     not null,
    primary key (id)
 )
 type = InnoDB;
