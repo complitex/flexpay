@@ -8,6 +8,52 @@
 	<session-factory name="flexpay">
 
 		<!--<mapping class="org.flexpay.ab.persistence.Book" />-->
+		<mapping class="org.flexpay.ab.persistence.BuildingAttributeType" />
+		<mapping class="org.flexpay.ab.persistence.District" />
+		<mapping class="org.flexpay.ab.persistence.IdentityName" />
+		<mapping class="org.flexpay.ab.persistence.RoomAttributeTypeName" />
+		<mapping class="org.flexpay.ab.persistence.ApartmentAttribute" />
+		<mapping class="org.flexpay.ab.persistence.StreetTypes" />
+		<mapping class="org.flexpay.ab.persistence.StreetType" />
+		<mapping class="org.flexpay.ab.persistence.IdentityType" />
+		<mapping class="org.flexpay.ab.persistence.ApartmentRelation" />
+		<mapping class="org.flexpay.ab.persistence.Identities" />
+		<mapping class="org.flexpay.ab.persistence.TownName" />
+		<mapping class="org.flexpay.ab.persistence.RegionNameLangValue" />
+		<mapping class="org.flexpay.ab.persistence.PersonIdentityAttribute" />
+		<mapping class="org.flexpay.ab.persistence.RoomAttributeType" />
+		<mapping class="org.flexpay.ab.persistence.DistrictName" />
+		<mapping class="org.flexpay.ab.persistence.BuildingAttributeTypeLang" />
+		<mapping class="org.flexpay.ab.persistence.BuildingStatus" />
+		<mapping class="org.flexpay.ab.persistence.PersonIdentity" />
+		<mapping class="org.flexpay.ab.persistence.Town" />
+		<mapping class="org.flexpay.ab.persistence.RoomAttribute" />
+		<mapping class="org.flexpay.ab.persistence.Region" />
+		<mapping class="org.flexpay.ab.persistence.ActFiles" />
+		<mapping class="org.flexpay.ab.persistence.Person" />
+		<mapping class="org.flexpay.ab.persistence.DistrictNameLangValue" />
+		<mapping class="org.flexpay.ab.persistence.TownTypes" />
+		<mapping class="org.flexpay.ab.persistence.Rooms" />
+		<mapping class="org.flexpay.ab.persistence.ApartmentRelationType" />
+		<mapping class="org.flexpay.ab.persistence.Country" />
+		<mapping class="org.flexpay.ab.persistence.Personact" />
+		<mapping class="org.flexpay.ab.persistence.Apartment" />
+		<mapping class="org.flexpay.ab.persistence.StreetName" />
+		<mapping class="org.flexpay.ab.persistence.ApartmentAttributeType" />
+		<mapping class="org.flexpay.ab.persistence.TownNameLangValue" />
+		<mapping class="org.flexpay.ab.persistence.Room" />
+		<mapping class="org.flexpay.ab.persistence.ApartmentAttributeTypeName" />
+		<mapping class="org.flexpay.ab.persistence.Street" />
+		<mapping class="org.flexpay.ab.persistence.RegionName" />
+		<mapping class="org.flexpay.ab.persistence.BuildingAttribute" />
+		<mapping class="org.flexpay.ab.persistence.Building" />
+		<mapping class="org.flexpay.ab.persistence.Act" />
+		<mapping class="org.flexpay.ab.persistence.History" />
+		<mapping class="org.flexpay.ab.persistence.TownType" />
+		<mapping class="org.flexpay.ab.persistence.PersonAttribute" />
+		<mapping class="org.flexpay.ab.persistence.StreetNameLangValue" />
+		<mapping class="org.flexpay.ab.persistence.ApartmentNumber" />
+		<mapping class="org.flexpay.ab.persistence.Buildings" />
 
 	</session-factory>
 

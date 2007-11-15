@@ -11,7 +11,8 @@ public class TestCommon {
 
 	SampleClass sc = new SampleClass();
 
-	@Test(expected = IndexOutOfBoundsException.class) public void empty() {
+	@Test (expected = IndexOutOfBoundsException.class)
+	public void empty() {
 		new ArrayList<Object>().get(0);
 	}
 

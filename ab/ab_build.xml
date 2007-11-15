@@ -2,6 +2,7 @@
 <project name="flexpay_ab" basedir="..">
 
 	<import file="../common/common_build.xml" />
+	<import file="../common/hibernate_build.xml" />
 
 	<property file="ab/ab_build.properties" />
 	<property file="common/common_build.properties" />
@@ -93,6 +94,25 @@
 		<antcall target="common.war.include.libs">
 			<param name="warfile" value="${distr.dir}/${ab.war.name}" />
 		</antcall>
+	</target>
+
+	<target name="ab.exportschema" depends="ab.build.production.jar">
+		<antcall target="template.schemaexport">
+			<param name="file_name" value="flexpay_ab.ddl.sql" />
+			<param name="hibernate.cfg" value="${ab.dir}/web/WEB-INF/ab_hibernate.cfg.xml" />
+		</antcall>
+	</target>
+
+	<target name="ab.runtests" depends="ab.build.test.jar">
+		<junit printsummary="yes" haltonfailure="yes" fork="yes">
+			<classpath>
+				<path refid="ab.test.classpath" />
+				<path location="${build.dir}/lib/${ab.tests.jar.name}" />
+			</classpath>
+			<test name="org.flexpay.ab.AllTests" haltonfailure="yes" >
+				<formatter type="brief" usefile="false" />
+			</test>
+		</junit>
 	</target>
 
 </project>

@@ -5,6 +5,8 @@
 
 	<target name="build.all">
 		<antcall target="ab.war.production" />
+
+		<antcall target="ab.runtests" />
 	</target>
 
 </project>

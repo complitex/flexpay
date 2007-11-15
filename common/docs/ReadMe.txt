@@ -1,1 +1,0 @@
-Sample doc file for FlexPay Common module.
