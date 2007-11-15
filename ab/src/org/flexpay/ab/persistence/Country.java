@@ -1,8 +1,12 @@
 package org.flexpay.ab.persistence;
 
+import org.flexpay.common.dao.LongShortValue;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -15,8 +19,9 @@ public class Country implements Serializable {
 	// Fields
 
 	private int id;
-	private String countryName;
-	private int countryStatus;
+//	private String countryName;
+    private Map<String, LongShortValue> countryNames = new HashMap<String, LongShortValue>();
+    private int countryStatus;
 	private String countryShortName;
 	private Set<Region> regions = new HashSet<Region>(0);
 
@@ -26,27 +31,6 @@ public class Country implements Serializable {
 	 * default constructor
 	 */
 	public Country() {
-	}
-
-	/**
-	 * minimal constructor
-	 */
-	public Country(int id, String countryName, int countryStatus, String countryShortName) {
-		this.id = id;
-		this.countryName = countryName;
-		this.countryStatus = countryStatus;
-		this.countryShortName = countryShortName;
-	}
-
-	/**
-	 * full constructor
-	 */
-	public Country(int id, String countryName, int countryStatus, String countryShortName, Set<Region> regions) {
-		this.id = id;
-		this.countryName = countryName;
-		this.countryStatus = countryStatus;
-		this.countryShortName = countryShortName;
-		this.regions = regions;
 	}
 
 	/**
@@ -69,24 +53,6 @@ public class Country implements Serializable {
 		this.id = id;
 	}
 
-	/**
-	 * Getter for property 'countryName'.
-	 *
-	 * @return Value for property 'countryName'.
-	 */
-	@Column (name = "Country_Name", unique = false, nullable = false, insertable = true, updatable = true, length = 200)
-	public String getCountryName() {
-		return this.countryName;
-	}
-
-	/**
-	 * Setter for property 'countryName'.
-	 *
-	 * @param countryName Value to set for property 'countryName'.
-	 */
-	public void setCountryName(String countryName) {
-		this.countryName = countryName;
-	}
 
 	/**
 	 * Getter for property 'countryStatus'.
@@ -145,6 +111,42 @@ public class Country implements Serializable {
 		this.regions = regions;
 	}
 
+    /**
+     * Getter for country names
+     * @return country names
+     */
+    public Map<String, LongShortValue> getCountryNames() {
+        return countryNames;
+    }
+
+    /**
+     * Setter for country names
+     * @param countryNames
+     */
+    public void setCountryNames(Map<String, LongShortValue> countryNames) {
+        this.countryNames = countryNames;
+    }
+
+    public LongShortValue getCountryName (String lang){
+        LongShortValue lsv = this.countryNames.get(lang);
+        if (lsv == null) lsv = new LongShortValue("","");
+        return lsv;
+    }
+
+    public void setCountryName(String longName, String shortName, String lang){
+        if (lang == null || lang.length() == 0) {
+            throw new NullPointerException("Country : setCountryName: invalid lang : name=" + longName + " lang=" + lang);
+        }
+        if (longName !=null && longName.length()>0){
+            setCountryName(new LongShortValue(longName,shortName),lang);
+        } else {
+            this.countryNames.remove(lang);
+        }
+    }
+
+    public void setCountryName(LongShortValue countryName, String lang){
+        this.countryNames.put(lang,countryName);
+    }
 }
 
 
