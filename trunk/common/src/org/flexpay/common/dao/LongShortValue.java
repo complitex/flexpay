@@ -22,7 +22,7 @@ public class LongShortValue {
         this.longValue = longValue;
     }
 
-    public LongShortValue(String shortValue, String longValue) {
+    public LongShortValue( String longValue, String shortValue) {
         this.shortValue = shortValue;
         this.longValue = longValue;
     }
