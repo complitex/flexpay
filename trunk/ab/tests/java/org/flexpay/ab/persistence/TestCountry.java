@@ -11,13 +11,11 @@ public class TestCountry extends TestCase {
         String shortName = "RUS";
 
         country.setCountryName(longName,shortName,lang);
-        assertEquals(country.getCountryName(lang).getLongValue(),longName);
-        assertEquals(country.getCountryName(lang).getShortValue(),shortName);
+        assertEquals("Invalid long name", country.getCountryName(lang).getLongValue(),longName);
+        assertEquals("Invalid short name", country.getCountryName(lang).getShortValue(),shortName);
 
         country.setCountryName("","",lang);
-        assertEquals(country.getCountryName(lang).getLongValue(),"");
-        assertEquals(country.getCountryName(lang).getShortValue(),"");
+        assertEquals("Invalid empty long name",country.getCountryName(lang).getLongValue(),"");
+        assertEquals("Invalid empty short name",country.getCountryName(lang).getShortValue(),"");
     }
-
-    
 }

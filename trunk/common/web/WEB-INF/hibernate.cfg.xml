@@ -14,15 +14,6 @@
 			org.hibernate.transaction.JBossTransactionManagerLookup
 		</property>
 
-		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
-		<property name="hibernate.show_sql">false</property>
-		<property name="hibernate.c3p0.acquire_increment">2</property>
-		<property name="hibernate.c3p0.idle_test_period">300</property>
-		<property name="hibernate.c3p0.max_size">100</property>
-		<property name="hibernate.c3p0.min_size">5</property>
-		<property name="hibernate.c3p0.preferredTestQuery">select 1</property>
-		<property name="hibernate.c3p0.testConnectionOnCheckout">true</property>
-
 		<property name="hibernate.hbm2ddl.auto">update</property>
 
 	</session-factory>

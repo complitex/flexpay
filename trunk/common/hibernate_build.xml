@@ -35,4 +35,22 @@
 		</hibernatetool>
 	</target>
 
+	<target name="template.schemaexport"
+			description="Exports a generated schema to file">
+		<mkdir dir="${build.dir}/src/sql" />
+		<hibernatetool destdir="${build.dir}/src/sql" classpath="${build.dir}/classes">
+			<annotationconfiguration
+					configurationfile="${hibernate.cfg}"
+					propertyfile="${common.dir}/web/WEB-INF/hibernate.properties" />
+
+			<hbm2ddl
+					drop="true"
+					create="true"
+					export="false"
+					outputfilename="${file_name}"
+					delimiter=";"
+					format="true" />
+		</hibernatetool>
+	</target>
+
 </project>

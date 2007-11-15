@@ -18,6 +18,7 @@
 		  class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocations" value="/WEB-INF/*hibernate.cfg.xml" />
+		<property name="hibernateProperties" value="/WEB-INF/hibernate.properties" />
 	</bean>
 
 	<!-- Create transaction manager  -->
