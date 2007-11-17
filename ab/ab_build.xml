@@ -104,15 +104,14 @@
 	</target>
 
 	<target name="ab.runtests" depends="ab.build.test.jar">
-		<junit printsummary="yes" haltonfailure="yes" fork="yes">
-			<classpath>
-				<path refid="ab.test.classpath" />
-				<path location="${build.dir}/lib/${ab.tests.jar.name}" />
-			</classpath>
-			<test name="org.flexpay.ab.AllTests" haltonfailure="yes" >
-				<formatter type="brief" usefile="false" />
-			</test>
-		</junit>
+		<path id="ab.runtests.classpath" >
+			<path refid="ab.test.classpath" />
+			<path location="${build.dir}/lib/${ab.tests.jar.name}" />
+		</path>
+		<antcall target="template.run.tests">
+			<param name="test_name" value="org.flexpay.ab.AllTests" />
+			<reference refid="ab.runtests.classpath" torefid="classpath" /> 
+		</antcall>
 	</target>
 
 </project>
