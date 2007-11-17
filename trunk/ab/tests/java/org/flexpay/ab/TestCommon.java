@@ -10,6 +10,6 @@ public class TestCommon {
 	SampleClass sc = new SampleClass();
 
 	@Test
-	protected void runTest() {
+	public void runTest() {
 	}
 }

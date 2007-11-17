@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flexpay>
+	<languages>
+		<language isDefault="true" locale="ru_RU">
+			<translation locale="en_US" name="Russian" />
+			<translation locale="ru_RU" name="Русский" />
+		</language>
+		<language isDefault="false" locale="en_US">
+			<translation locale="en_US" name="English" />
+			<translation locale="ru_RU" name="Английский" />
+		</language>
+	</languages>
+</flexpay>

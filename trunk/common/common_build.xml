@@ -107,6 +107,17 @@
 		</antcall>
 	</target>
 
+	<target name="common.runtests" depends="common.build.test.jar">
+		<path id="common.runtests.classpath" >
+			<path refid="common.test.classpath" />
+			<path location="${build.dir}/lib/${common.tests.jar.name}" />
+		</path>
+		<antcall target="template.run.tests">
+			<param name="test_name" value="org.flexpay.common.AllTests" />
+			<reference refid="common.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
 	<target name="common.prepare.war">
 		<fileset id="common.web.resources" dir="${common.dir}/web" />
 		<antcall target="template.prepare.war">
@@ -183,6 +194,17 @@
 			<lib dir="${common.dir}/lib/log4j" />
 			<lib dir="${build.dir}/lib" />
 		</war>
+	</target>
+
+	<target name="template.run.tests">
+		<junit printsummary="yes" haltonfailure="yes" fork="yes">
+			<classpath>
+				<path refid="classpath" />
+			</classpath>
+			<test name="${test_name}" haltonfailure="yes" >
+				<formatter type="brief" usefile="false" />
+			</test>
+		</junit>
 	</target>
 
 </project>

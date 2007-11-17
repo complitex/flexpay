@@ -6,6 +6,7 @@
 	<target name="build.all">
 		<antcall target="ab.war.production" />
 
+		<antcall target="common.runtests" />
 		<antcall target="ab.runtests" />
 	</target>
 
