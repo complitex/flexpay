@@ -1,6 +1,6 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.common.dao.LongShortValue;
+import org.flexpay.common.persistence.LongShortValue;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,7 +22,7 @@ public class Country implements Serializable {
 //	private String countryName;
     private Map<String, LongShortValue> countryNames = new HashMap<String, LongShortValue>();
     private int countryStatus;
-	private String countryShortName;
+//	private String countryShortName;
 	private Set<Region> regions = new HashSet<Region>(0);
 
 	// Constructors
@@ -74,25 +74,6 @@ public class Country implements Serializable {
 	}
 
 	/**
-	 * Getter for property 'countryShortName'.
-	 *
-	 * @return Value for property 'countryShortName'.
-	 */
-	@Column (name = "Country_Short_Name", unique = false, nullable = false, insertable = true, updatable = true, length = 200)
-	public String getCountryShortName() {
-		return this.countryShortName;
-	}
-
-	/**
-	 * Setter for property 'countryShortName'.
-	 *
-	 * @param countryShortName Value to set for property 'countryShortName'.
-	 */
-	public void setCountryShortName(String countryShortName) {
-		this.countryShortName = countryShortName;
-	}
-
-	/**
 	 * Getter for property 'regions'.
 	 *
 	 * @return Value for property 'regions'.
@@ -135,7 +116,7 @@ public class Country implements Serializable {
 
     public void setCountryName(String longName, String shortName, String lang){
         if (lang == null || lang.length() == 0) {
-            throw new NullPointerException("Country : setCountryName: invalid lang : name=" + longName + " lang=" + lang);
+            throw new NullPointerException("Country : setName: invalid lang : name=" + longName + " lang=" + lang);
         }
         if (longName !=null && longName.length()>0){
             setCountryName(new LongShortValue(longName,shortName),lang);
