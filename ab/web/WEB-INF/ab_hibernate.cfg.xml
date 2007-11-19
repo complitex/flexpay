@@ -8,7 +8,7 @@
 	<session-factory name="flexpay">
 
 		<!--<mapping class="org.flexpay.ab.persistence.Country" />-->
-        <mapping file="org/flexpay/ab/persistence/Country.hbm.xml"/>
+        <mapping resource="org/flexpay/ab/persistence/Country.hbm.xml" />
         <mapping class="org.flexpay.ab.persistence.Region" />
 		<!--<mapping class="org.flexpay.ab.persistence.RegionNameLangValue" />-->
 

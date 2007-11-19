@@ -19,7 +19,7 @@ public class TestAction {
 
 		log.warn("Start Saving book");
 
-		bookDao.create(book);
+//		bookDao.create(book);
 
 		log.warn("End Saving  book");
 

@@ -4,10 +4,10 @@
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-	<package name="test" namespace="/test" extends="struts-default">
+	<package name="test" namespace="/test" extends="tiles-default">
 
 		<action name="hello" class="helloAction">
-			<result>/WEB-INF/jsp/ab/hello.jsp</result>
+			<result type="tiles">hello</result>
 			<!--<result>/hello1.jsp</result>-->
 		</action>
 
