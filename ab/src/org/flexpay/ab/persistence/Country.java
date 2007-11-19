@@ -1,5 +1,6 @@
 package org.flexpay.ab.persistence;
 
+import org.flexpay.common.persistence.AttributeValueKey;
 import org.flexpay.common.persistence.LongShortValue;
 
 import javax.persistence.*;
@@ -17,12 +18,27 @@ import java.util.Set;
 public class Country implements Serializable {
 
 	// Fields
-
 	private int id;
-//	private String countryName;
-    private Map<String, LongShortValue> countryNames = new HashMap<String, LongShortValue>();
+    /**
+             <map name="attributes" cascade="all-delete-orphan" table="country_names">
+                <key column="countryID"/>
+                <composite-map-key class="AttributeValueKey">
+                    <key-property name="name"/>
+                    <key-property name="lang" column="lang"/>
+                </composite-map-key>
+                <element type="string" column="shortName" length="255"/>
+            </map>
+     *
+     */
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumns(
+            {@JoinColumn (name="name",referencedColumnName = "")
+                    }
+    )
+    
+    private Map<AttributeValueKey, String> countryNames = new HashMap<AttributeValueKey, String>();
+//    private Map<String, LongShortValue> countryNames = new HashMap<String, LongShortValue>();
     private int countryStatus;
-//	private String countryShortName;
 	private Set<Region> regions = new HashSet<Region>(0);
 
 	// Constructors
@@ -92,42 +108,78 @@ public class Country implements Serializable {
 		this.regions = regions;
 	}
 
-    /**
-     * Getter for country names
-     * @return country names
-     */
-    public Map<String, LongShortValue> getCountryNames() {
+    public void addCountryName(String name, String lang, String shortName){
+        if (name==null || name.length()==0 ||
+                lang==null || lang.length()==0){
+            throw new NullPointerException();
+        }
+        AttributeValueKey key = new AttributeValueKey(name,lang);
+        countryNames.put(key,shortName);
+    }
+
+    public void deleteCountryName (String name,String lang){
+        AttributeValueKey key = new AttributeValueKey(name,lang);
+        countryNames.remove(key);
+    }
+
+    public String getCountryShortName (String name,String lang){
+        AttributeValueKey key = new AttributeValueKey(name,lang);
+        return getCountryShortName(key);
+    }
+
+    public String getCountryShortName (AttributeValueKey key){
+        return countryNames.get(key);
+    }
+
+    public Set<AttributeValueKey> getCounntryNames(){
+        return countryNames.keySet();
+    }
+
+    public Map<AttributeValueKey,String> getCountryNames(){
         return countryNames;
     }
 
-    /**
-     * Setter for country names
-     * @param countryNames
-     */
-    public void setCountryNames(Map<String, LongShortValue> countryNames) {
-        this.countryNames = countryNames;
+    public void setCountryNames(Map<AttributeValueKey,String> values){
+        this.countryNames = values;
     }
-
-    public LongShortValue getCountryName (String lang){
-        LongShortValue lsv = this.countryNames.get(lang);
-        if (lsv == null) lsv = new LongShortValue("","");
-        return lsv;
-    }
-
-    public void setCountryName(String longName, String shortName, String lang){
-        if (lang == null || lang.length() == 0) {
-            throw new NullPointerException("Country : setName: invalid lang : name=" + longName + " lang=" + lang);
-        }
-        if (longName !=null && longName.length()>0){
-            setCountryName(new LongShortValue(longName,shortName),lang);
-        } else {
-            this.countryNames.remove(lang);
-        }
-    }
-
-    public void setCountryName(LongShortValue countryName, String lang){
-        this.countryNames.put(lang,countryName);
-    }
+//
+//    /**
+//     * Getter for country names
+//     * @return country names
+//     */
+//    public Map<String, LongShortValue> getCountryNames() {
+//        return countryNames;
+//    }
+//
+//    /**
+//     * Setter for country names
+//     * @param countryNames
+//     */
+//    public void setCountryNames(Map<String, LongShortValue> countryNames) {
+//        this.countryNames = countryNames;
+//    }
+//
+//    public LongShortValue getCountryName (String lang){
+//        LongShortValue lsv = this.countryNames.get(lang);
+//        if (lsv == null) lsv = new LongShortValue("","");
+//        return lsv;
+//    }
+//
+//    public void setCountryName(String longName, String shortName, String lang){
+//        if (lang == null || lang.length() == 0) {
+//            throw new NullPointerException("Country : setName: invalid lang : name=" + longName + " lang=" + lang);
+//        }
+//        if (longName !=null && longName.length()>0){
+//            setCountryName(new LongShortValue(longName,shortName),lang);
+//        } else {
+//            this.countryNames.remove(lang);
+//        }
+//    }
+//
+//    public void setCountryName(LongShortValue countryName, String lang){
+//        this.countryNames.put(lang,countryName);
+//    }
+//    */
 }
 
 
