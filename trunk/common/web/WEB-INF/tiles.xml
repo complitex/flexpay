@@ -1,0 +1,16 @@
+<!DOCTYPE tiles-definitions PUBLIC
+		"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+	<definition name="header" template="/WEB-INF/jsp/include/header.jsp">
+		<put-attribute name="title" value="FlexPay" />
+	</definition>
+
+	<!--<definition name="header-101" extends="header">-->
+		<!--<put-attribute name="className" value="Tiles 101" />-->
+	<!--</definition>-->
+
+	<definition name="footer" template="/WEB-INF/jsp/include/footer.jsp" />
+
+</tiles-definitions>

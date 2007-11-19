@@ -11,7 +11,7 @@
 			org.hibernate.transaction.JTATransactionFactory
 		</property>
 		<property name="hibernate.transaction.manager_lookup_class">
-			org.hibernate.transaction.JBossTransactionManagerLookup
+			org.hibernate.transaction.SunONETransactionManagerLookup
 		</property>
 
 		<property name="hibernate.hbm2ddl.auto">update</property>

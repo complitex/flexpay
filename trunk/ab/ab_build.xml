@@ -114,4 +114,9 @@
 		</antcall>
 	</target>
 
+	<target name="ab.deploy.sjsas" depends="ab.war.production">
+		<antcall target="template.deploy.sjsas">
+			<param name="application_archive" value="${distr.dir}/${ab.war.name}" />
+		</antcall>
+	</target>
 </project>

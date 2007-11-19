@@ -1,5 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-  <head><title>Simple jsp page</title></head>
-  <body><h1>UNDER WEB-INF!</h1></body>
-</html>
+<%@include file="/WEB-INF/jsp/include/taglibs.jsp"%>
+<tiles:insertDefinition name="header">
+	<tiles:putAttribute name="title" value="Simple jsp page" />
+</tiles:insertDefinition>
+
+<h1>Hello, world!</h1>
+
+<tiles:insertDefinition name="footer" />
