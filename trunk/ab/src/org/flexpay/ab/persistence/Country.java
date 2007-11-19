@@ -1,7 +1,6 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.AttributeValueKey;
-import org.flexpay.common.persistence.LongShortValue;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -142,44 +141,4 @@ public class Country implements Serializable {
     public void setCountryNames(Map<AttributeValueKey,String> values){
         this.countryNames = values;
     }
-//
-//    /**
-//     * Getter for country names
-//     * @return country names
-//     */
-//    public Map<String, LongShortValue> getCountryNames() {
-//        return countryNames;
-//    }
-//
-//    /**
-//     * Setter for country names
-//     * @param countryNames
-//     */
-//    public void setCountryNames(Map<String, LongShortValue> countryNames) {
-//        this.countryNames = countryNames;
-//    }
-//
-//    public LongShortValue getCountryName (String lang){
-//        LongShortValue lsv = this.countryNames.get(lang);
-//        if (lsv == null) lsv = new LongShortValue("","");
-//        return lsv;
-//    }
-//
-//    public void setCountryName(String longName, String shortName, String lang){
-//        if (lang == null || lang.length() == 0) {
-//            throw new NullPointerException("Country : setName: invalid lang : name=" + longName + " lang=" + lang);
-//        }
-//        if (longName !=null && longName.length()>0){
-//            setCountryName(new LongShortValue(longName,shortName),lang);
-//        } else {
-//            this.countryNames.remove(lang);
-//        }
-//    }
-//
-//    public void setCountryName(LongShortValue countryName, String lang){
-//        this.countryNames.put(lang,countryName);
-//    }
-//    */
 }
-
-

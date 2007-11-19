@@ -83,7 +83,16 @@
 			depends="ab.build.production.jar,common.prepare.war,init.distr">
 		<fileset id="ab.web.resources" dir="${ab.dir}/web" />
 		<antcall target="template.prepare.war">
+			<param name="to_dir" value="" />
 			<reference refid="ab.web.resources" torefid="resources" />
+		</antcall>
+
+		<fileset dir="${ab.dir}/${src.dir}" id="ab.classes.resources">
+			<patternset refid="resources_pattern" />
+		</fileset>
+		<antcall target="template.prepare.war">
+			<param name="to_dir" value="/WEB-INF/classes" />
+			<reference refid="ab.classes.resources" torefid="resources" />
 		</antcall>
 
 		<war destfile="${distr.dir}/${ab.war.name}" needxmlfile="false">

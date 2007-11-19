@@ -6,8 +6,9 @@
 
 
 <head>
-	<title><tiles:getAsString name="title"/></title>
-	<link rel="stylesheet" type="text/css" href="/style/fp.css"/>
+	<%--<title><tiles:getAsString name="title"/></title>--%>
+	<title>Sample title</title>
+	<link rel="stylesheet" type="text/css" href="<c:url value="/style/fp.css"/>"/>
 </head>
 
 
@@ -15,8 +16,10 @@
 
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
 	<tr class="verytop">
-		<td><a href="flexpay"><img src="img/logo.gif" width="123" height="37"
-								   alt="FlexPay" border="0" hspace="25" vspace="6"/></a>
+		<td><a href="<c:url value="/" />"><img src="<c:url value="/img/logo.gif" />"
+											   width="123" height="37"
+											   alt="FlexPay" border="0" hspace="25"
+											   vspace="6"/></a>
 		</td>
 		<form name="login-logout">
 			<td align="right">
@@ -27,9 +30,11 @@
 							<a href="?userinfo">Пользователь</a>: Мария Ивановна Сергаманова
 						</span>
 						</td>
-						<td><img src="img/p.gif" width="10" height="25" alt=""/></td>
+						<td><img src="<c:url value="/img/p.gif"/>" width="10" height="25"
+								 alt=""/></td>
 						<td><input type="button" value="Выйти" class="btn-exit"/></td>
-						<td><img src="img/p.gif" width="25" height="25" alt=""/></td>
+						<td><img src="<c:url value="/img/p.gif"/>" width="25" height="25"
+								 alt=""/></td>
 					</tr>
 				</table>
 			</td>
@@ -63,7 +68,6 @@
 					</form>
 				</tr>
 			</table>
-
 		</td>
 		<form name="search">
 			<td class="topmenu_form_search" nowrap="1">
@@ -114,8 +118,3 @@
 </div>
 
 <div class="columns">
-
-	<tiles:insertTemplate template="menu.jsp" />
-
-	<div class="main">
-			<div class="main-content">

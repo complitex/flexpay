@@ -52,6 +52,10 @@
 	</path>
 
 	<patternset id="empty_pattern" excludes="**/*.*" />
+	<patternset id="resources_pattern">
+		<include name="**/*.xml" />
+		<include name="**/*.properties" />
+	</patternset>
 
 	<!-- Build properties -->
 	<property file="common/common_build.properties" />
@@ -121,6 +125,7 @@
 	<target name="common.prepare.war">
 		<fileset id="common.web.resources" dir="${common.dir}/web" />
 		<antcall target="template.prepare.war">
+			<param name="to_dir" value="" />
 			<reference refid="common.web.resources" torefid="resources" />
 		</antcall>
 	</target>
@@ -180,7 +185,7 @@
 	</target>
 
 	<target name="template.prepare.war" depends="init.build">
-		<copy todir="${build.dir}/web" overwrite="true">
+		<copy todir="${build.dir}/web${to_dir}" overwrite="true">
 			<fileset refid="resources" />
 		</copy>
 	</target>

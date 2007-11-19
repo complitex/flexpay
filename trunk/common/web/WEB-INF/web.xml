@@ -23,9 +23,16 @@
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>/WEB-INF/log4j.xml</param-value>
 	</context-param>
+	<context-param>
+		<param-name>definitions-config</param-name>
+		<param-value>/WEB-INF/tiles.xml,/WEB-INF/tiles_ab.xml,/WEB-INF/tiles_bti.xml,</param-value>
+	</context-param>
 
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
 	</listener>
 	<listener>
 		<listener-class>
