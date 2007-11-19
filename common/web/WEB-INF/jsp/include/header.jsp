@@ -7,6 +7,7 @@
 
 <head>
 	<%--<title><tiles:getAsString name="title"/></title>--%>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<title>Sample title</title>
 	<link rel="stylesheet" type="text/css" href="<c:url value="/style/fp.css"/>"/>
 </head>
