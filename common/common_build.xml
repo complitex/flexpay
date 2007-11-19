@@ -108,7 +108,7 @@
 	</target>
 
 	<target name="common.runtests" depends="common.build.test.jar">
-		<path id="common.runtests.classpath" >
+		<path id="common.runtests.classpath">
 			<path refid="common.test.classpath" />
 			<path location="${build.dir}/lib/${common.tests.jar.name}" />
 		</path>
@@ -170,7 +170,8 @@
 				 windowtitle="FlexPay ${module_name} API"
 				 defaultexcludes="yes" author="true" version="true" use="true"
 				 classpathref="classpath">
-			<bottom><![CDATA[<i>Copyright &#169; 2007 FlexPay. All Rights Reserved.</i>]]></bottom>
+			<bottom>
+				<![CDATA[<i>Copyright &#169; 2007 FlexPay. All Rights Reserved.</i>]]></bottom>
 		</javadoc>
 		<copy todir="${build.dir}/docs">
 			<fileset refid="resources" />
@@ -201,10 +202,18 @@
 			<classpath>
 				<path refid="classpath" />
 			</classpath>
-			<test name="${test_name}" haltonfailure="yes" >
+			<test name="${test_name}" haltonfailure="yes">
 				<formatter type="brief" usefile="false" />
 			</test>
 		</junit>
 	</target>
 
+	<taskdef name="sun-appserv-deploy"
+			 classname="org.apache.tools.ant.taskdefs.optional.sun.appserv.DeployTask"
+			 classpath="${sjsas.root}/lib/sun-appserv-ant.jar" />
+
+	<target name="template.deploy.sjsas">
+		<sun-appserv-deploy user="${sjsas.username}" passwordfile="${sjsas.password.file}"
+							file="${application_archive}" asinstalldir="${sjsas.root}" />
+	</target>
 </project>

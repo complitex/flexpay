@@ -28,6 +28,17 @@
 		<property name="sessionFactory" ref="flexpaySessionFactory" />
 	</bean>
 
+	<bean id="cacheManager"
+		  class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="WEB-INF/ehcache.xml" />
+	</bean>
+
+	<bean id="ehcache"
+		  class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="cacheName" value="${ehcache.cacheName}" />
+	</bean>
+
 	<!--
 		Indicates that transaction
 		configuration is defined by Java5 annotations on bean classes, and
@@ -38,5 +49,45 @@
 		the rollback rules, etc are all defined in the annotation metadata.
 	-->
 	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="propertyConfigurer"
+		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/hibernate.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="hibernateTemplate"
+		  class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="flexpaySessionFactory" />
+	</bean>
+
+	<!--  Dao Layer generic config-->
+	<bean id="namingStrategy"
+		  class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+		<property name="staticField" value="${namingStrategy.staticField}" />
+	</bean>
+
+	<bean id="extendedFinderNamingStrategy"
+		  class="org.flexpay.common.dao.finder.impl.ExtendedFinderNamingStrategy" />
+	<bean id="finderIntroductionAdvisor"
+		  class="org.flexpay.common.dao.finder.impl.FinderIntroductionAdvisor" />
+
+	<bean id="abstractDaoTarget"
+		  class="org.flexpay.common.dao.impl.GenericDaoHibernateImpl" abstract="true">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+		<property name="namingStrategy" ref="extendedFinderNamingStrategy" />
+	</bean>
+
+	<!--<bean id="abstractDao" abstract="true"-->
+		  <!--class="org.springframework.aop.framework.ProxyFactoryBean">-->
+		<!--<property name="interceptorNames">-->
+			<!--<list>-->
+				<!--<value>finderIntroductionAdvisor</value>-->
+			<!--</list>-->
+		<!--</property>-->
+	<!--</bean>-->
 
 </beans>
