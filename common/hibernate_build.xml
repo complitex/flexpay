@@ -41,7 +41,7 @@
 		<hibernatetool destdir="${build.dir}/src/sql" classpath="${build.dir}/classes">
 			<annotationconfiguration
 					configurationfile="${hibernate.cfg}"
-					propertyfile="${common.dir}/web/WEB-INF/hibernate.properties" />
+					propertyfile="common/web/WEB-INF/classes/hibernate.properties" />
 
 			<hbm2ddl
 					drop="true"
