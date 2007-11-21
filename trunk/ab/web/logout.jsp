@@ -23,7 +23,7 @@
     </tr>
 </table>
 
-</br>
+<br/>
 
 <center>
 <form method="POST" action="j_security_check">
