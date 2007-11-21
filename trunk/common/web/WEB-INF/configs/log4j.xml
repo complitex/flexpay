@@ -7,7 +7,7 @@
 		<param name="MaxFileSize" value="5MB" />
 		<param name="MaxBackupIndex" value="3" />
 		<param name="Append" value="false" />
-		<param name="File" value="C:/flexpay" />
+		<param name="File" value="C:/logs/flexpay/under_tomcat/log.txt" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
 				   value="%-5p %c{2} - %m\n" />
