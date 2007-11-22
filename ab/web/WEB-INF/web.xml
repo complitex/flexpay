@@ -25,7 +25,7 @@
 	</context-param>
 	<context-param>
 		<param-name>definitions-config</param-name>
-		<param-value>/WEB-INF/configs/tiles.xml,/WEB-INF/configs/tiles_ab.xml</param-value>
+		<param-value>/WEB-INF/configs/tiles_common.xml,/WEB-INF/configs/tiles_ab.xml</param-value>
 	</context-param>
 
 	<listener>
@@ -62,7 +62,7 @@
 		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
         <init-param>
 			<param-name>config</param-name>
-			<param-value>struts-default.xml,struts-plugin.xml,/org/flexpay/common/config/struts_config.xml,/org/flexpay/ab/config/struts_config.xml</param-value>
+			<param-value>struts-default.xml,struts-plugin.xml,common_struts_config.xml,/org/flexpay/ab/config/struts_config.xml</param-value>
 		</init-param>
     </filter>
 	<filter-mapping>
@@ -84,27 +84,22 @@
 
     </security-constraint>
 
+
+    <security-role>
+        <role-name>commonAll</role-name>
+    </security-role>
+
     <login-config>
         <auth-method>FORM</auth-method>
         <form-login-config>
             <form-login-page>/login.jsp</form-login-page>
-            <form-error-page>/login_error.jsp</form-error-page>
+            <form-error-page>/login.jsp</form-error-page>
         </form-login-config>
     </login-config>
-
 
     <welcome-file-list>
 		<welcome-file>/index.jsp</welcome-file>
 	</welcome-file-list>
-
-
-
-    <security-role>
-        <role-name>developerRole</role-name>
-    </security-role>
-    <security-role>
-        <role-name>userRole</role-name>
-    </security-role>
 
 
 </web-app>

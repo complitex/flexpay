@@ -1,1 +1,1 @@
-<%@include file="/WEB-INF/jsp/include/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
