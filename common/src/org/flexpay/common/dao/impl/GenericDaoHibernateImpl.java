@@ -26,7 +26,7 @@ import java.util.List;
 @SuppressWarnings ({"unchecked"})
 public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		implements GenericDao<T, PK>, FinderExecutor {
-	private HibernateTemplate hibernateTemplate;
+	protected HibernateTemplate hibernateTemplate;
 
 	// Default. Can override in config
 	private FinderNamingStrategy namingStrategy = new SimpleFinderNamingStrategy();

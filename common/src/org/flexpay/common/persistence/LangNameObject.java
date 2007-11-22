@@ -9,7 +9,7 @@ public class LangNameObject {
 
     /**
      * Setter for country names
-     * @param names массив из коротких и длинных названий для имени.
+     * @param names
      */
     public void setNames(Map<String, LongShortValue> names) {
         this.names = names;

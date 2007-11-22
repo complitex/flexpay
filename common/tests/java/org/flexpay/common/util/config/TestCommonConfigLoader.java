@@ -1,9 +1,11 @@
 package org.flexpay.common.util.config;
 
-import org.junit.Test;
-
-import java.net.URL;
 import static junit.framework.Assert.assertNotNull;
+import org.junit.Test;
+import org.springframework.mock.web.MockServletContext;
+
+import javax.servlet.ServletContext;
+import java.net.URL;
 
 /**
  * Test is config loads OK
@@ -20,5 +22,11 @@ public class TestCommonConfigLoader {
 		configLoader.loadConfig();
 
 		assertNotNull("Configuration load failed", ApplicationConfig.getInstance());
+
+		ServletContext context = new MockServletContext();
+		configLoader.setServletContext(context);
+		configLoader.setApplicationProperties();
+
+		System.out.println("Languages: " + context.getAttribute("languages"));
 	}
 }

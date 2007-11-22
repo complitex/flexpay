@@ -60,10 +60,15 @@
 		<td class="topmenu_form" nowrap="1">
 			<table cellpadding="0" cellspacing="0" border="0">
 				<tr>
-					<td><span class="text-small">Язык:&nbsp;</span></td>
-					<form name="language">
-						<td><select class="form-select">
-							<option>Русский</option>
+					<td><span class="text-small"><spring:message code="header.language"/>:&nbsp;</span></td>
+					<form action="<c:url value="/use_language.action"/>" method="get">
+						<td><select class="form-select" name="request_locale" onchange="this.form.submit()">
+							<c:forEach items="${applicationScope['languages']}" var="lang">
+								<option value="<c:out value="${lang.locale}" />"
+										<c:if test="${sessionScope['current_locale'] == lang.locale}">selected</c:if>>
+									<c:out value="${lang.name}"/>
+								</option>
+							</c:forEach>
 						</select>
 						</td>
 					</form>
@@ -73,11 +78,19 @@
 		<form name="search">
 			<td class="topmenu_form_search" nowrap="1">
 				<input type="text" class="form-search">&nbsp;<input type="button"
-																	value="Найти"
+																	value="<spring:message code="header.search"/>"
 																	class="btn-search"/>
 			</td>
 		</form>
 
+		<%--<s:form action="use_language"--%>
+				<%--method="get"><td><select class="form-select" name="hl" onchange="this.form.submit()">--%>
+				<%--<c:forEach items="${applicationScope['languages']}" var="lang">--%>
+					<%--<option value="<c:out value="${lang.locale}" />"><c:out value="${lang.name}"/></option>--%>
+				<%--</c:forEach>--%>
+			<%--</select>--%>
+			<%--</td>--%>
+		<%--</s:form>--%>
 
 	</tr>
 </table>
@@ -85,11 +98,11 @@
 <table cellpadding="0" cellspacing="0" border="0" width="100%" height="30">
 	<tr class="secondtop">
 		<td class="second-padding"><a href="#" class="menu2">Справочники</a></td>
-		<td><img src="/img/separator1.gif" hspace="12" alt=""/></td>
+		<td><img src="<c:url value="/img/separator1.gif"/>" hspace="12" alt=""/></td>
 		<td><a href="#" class="menu2">Базы&nbsp;данных</a></td>
-		<td><img src="/img/separator1.gif" hspace="12" alt=""/></td>
+		<td><img src="<c:url value="/img/separator1.gif"/>" hspace="12" alt=""/></td>
 		<td><a href="#" class="menu2">Импорт</a></td>
-		<td><img src="/img/separator1.gif" hspace="12" alt=""/></td>
+		<td><img src="<c:url value="/img/separator1.gif"/>" hspace="12" alt=""/></td>
 		<td><a href="#" class="menu2">Экспорт</a></td>
 		<td width="100%">&nbsp;</td>
 	</tr>

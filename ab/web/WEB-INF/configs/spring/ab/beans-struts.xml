@@ -11,4 +11,9 @@
 		<property name="bookDao" ref="booksDao" />
 	</bean>
 
+	<!-- Define struts actions beans -->
+	<bean id="listCountriesAction" class="org.flexpay.ab.actions.CountriesList" scope="prototype">
+		<property name="bookDao" ref="booksDao" />
+	</bean>
+
 </beans>

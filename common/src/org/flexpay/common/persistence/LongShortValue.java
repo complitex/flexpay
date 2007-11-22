@@ -1,7 +1,5 @@
 package org.flexpay.common.persistence;
-/*
-  Клас предназначен для представления длинного и короткого значения свойств объекта.
- */
+
 public class LongShortValue {
     private String shortValue;
     private String longValue;

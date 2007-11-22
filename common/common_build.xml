@@ -37,6 +37,12 @@
 		</fileset>
 	</path>
 
+	<path id="j2ee.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="j2ee/*.jar" />
+		</fileset>
+	</path>
+
 	<path id="junit.lib">
 		<fileset dir="${common.dir}/lib">
 			<include name="junit/*.jar" />
@@ -49,6 +55,7 @@
 		<path refid="struts.lib" />
 		<path refid="hibernate.lib" />
 		<path refid="log4j.lib" />
+		<path refid="j2ee.lib" />
 	</path>
 
 	<patternset id="empty_pattern" excludes="**/*.*" />
