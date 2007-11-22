@@ -1,4 +1,4 @@
-package org.flexpay.common.struts.interceptors;
+package org.flexpay.common.actions.interceptor;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import org.apache.struts2.ServletActionContext;

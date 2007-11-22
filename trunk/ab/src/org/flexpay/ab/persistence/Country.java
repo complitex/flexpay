@@ -17,7 +17,7 @@ import java.util.Set;
 public class Country implements Serializable {
 
 	// Fields
-	private int id;
+	private Long id;
     /**
              <map name="attributes" cascade="all-delete-orphan" table="country_names">
                 <key column="countryID"/>
@@ -55,7 +55,7 @@ public class Country implements Serializable {
 	 */
 	@Id
 	@Column (name = "ID", unique = false, nullable = false, insertable = true, updatable = true)
-	public int getId() {
+	public Long getId() {
 		return this.id;
 	}
 
@@ -64,7 +64,7 @@ public class Country implements Serializable {
 	 *
 	 * @param id Value to set for property 'id'.
 	 */
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

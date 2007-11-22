@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <flexpay>
 	<languages>
-		<language isDefault="true" locale="ru_RU">
-			<translation locale="en_US" name="Russian" />
-			<translation locale="ru_RU" name="Русский" />
+		<language isDefault="true" locale="ru">
+			<translation locale="en" name="Russian" />
+			<translation locale="ru" name="Русский" />
 		</language>
-		<language isDefault="false" locale="en_US">
-			<translation locale="en_US" name="English" />
-			<translation locale="ru_RU" name="Английский" />
+		<language isDefault="false" locale="en">
+			<translation locale="en" name="English" />
+			<translation locale="ru" name="Английский" />
 		</language>
 	</languages>
 </flexpay>

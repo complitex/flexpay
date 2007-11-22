@@ -7,7 +7,7 @@
 	<package name="ab" namespace="/ab" extends="tiles-default">
 
         <interceptors>
-            <interceptor name="flexpayRoles" class="org.flexpay.common.struts.interceptors.FlexpayRolesInterceptor"/>
+            <interceptor name="flexpayRoles" class="org.flexpay.common.actions.interceptor.FlexpayRolesInterceptor"/>
         </interceptors>
 
         <action name="hello">
@@ -20,4 +20,6 @@
 
 	</package>
 
+	<include file="org/flexpay/ab/config/country_actions.xml" />
+	<include file="org/flexpay/ab/config/test_actions.xml" />
 </struts>

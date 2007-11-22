@@ -3,10 +3,25 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
+	<!-- Not working, use for development only, -->
+	<!--<import resource="/WEB-INF/spring/common/hibernate.xml" />-->
+
+	<!-- Use for deployment -->
 	<import resource="../common/hibernate.xml" />
 
 	<bean id="booksDao" class="org.flexpay.ab.dao.imp.BookDaoImpl">
 		<property name="sessionFactory" ref="flexpaySessionFactory" />
+	</bean>
+
+	<!--  Dao Layer instances -->
+	<bean id="countryDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.CountryDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.Country" />
+			</bean>
+		</property>
 	</bean>
 
 </beans>
