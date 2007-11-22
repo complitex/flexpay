@@ -1,4 +1,4 @@
-<%@ include file="taglibs.jsp" %>
+<%@ include file="../common/taglibs.jsp" %>
 
 <tiles:insertAttribute name="header"/>
 <tiles:insertAttribute name="menu"/>
