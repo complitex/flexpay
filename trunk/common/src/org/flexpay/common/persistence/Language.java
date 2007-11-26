@@ -149,4 +149,25 @@ public class Language implements Serializable {
 	public void setLocale(Locale locale) {
 		throw new IllegalArgumentException("Set locale method is not allowed");
 	}
+
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		Language language = (Language) o;
+
+		if (!id.equals(language.id)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public int hashCode() {
+		return id.hashCode();
+	}
 }

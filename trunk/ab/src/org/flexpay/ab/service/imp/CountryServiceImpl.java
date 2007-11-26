@@ -60,16 +60,33 @@ public class CountryServiceImpl implements CountryService {
 		List<CountryName> countryNameList = new ArrayList<CountryName>(countries.size());
 
 		for (Country country : countries) {
-			List<CountryName> names = country.getCountryNames();
-			for (CountryName name : names) {
-				if (language.equals(name.getLanguage())) {
-					name.setTranslation(LanguageUtil.getLanguageName(name.getLanguage(), locale));
-					countryNameList.add(name);
-				}
+			CountryName name = getCountryName(country, language, defaultLang);
+			if ( name == null ) {
+				log.error("No name for country: " + language.getLangIsoCode() + " : " +
+						  defaultLang.getLangIsoCode() + ", " + country);
+				continue;
 			}
+			name.setTranslation(LanguageUtil.getLanguageName(name.getLanguage(), locale));
+			countryNameList.add(name);
 		}
 
 		return countryNameList;
+	}
+
+	private CountryName getCountryName(Country country, Language lang, Language defaultLang) {
+		CountryName defaultName = null;
+
+		List<CountryName> names = country.getCountryNames();
+		for (CountryName name : names) {
+			if (lang.equals(name.getLanguage())) {
+				return name;
+			}
+			if (defaultLang.equals(name.getLanguage())) {
+				defaultName = name;
+			}
+		}
+
+		return defaultName;
 	}
 
 	public void setCountryDao(CountryDao countryDao) {
