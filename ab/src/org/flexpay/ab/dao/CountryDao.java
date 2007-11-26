@@ -7,5 +7,10 @@ import java.util.List;
 
 public interface CountryDao extends GenericDao<Country, Long> {
 
-	List<Country> getCountries();
+	/**
+	 * Load all countries
+	 *
+	 * @return Countries list
+	 */
+	List<Country> listCountries();
 }

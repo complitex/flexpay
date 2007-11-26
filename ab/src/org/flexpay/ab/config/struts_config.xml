@@ -22,4 +22,16 @@
 
 	<include file="org/flexpay/ab/config/country_actions.xml" />
 	<include file="org/flexpay/ab/config/test_actions.xml" />
+
+	<package name="lang" namespace="/" extends="tiles-default">
+
+		<interceptors>
+			<interceptor name="i18n_flexpay" class="org.flexpay.common.actions.interceptor.FlexpayI18nInterceptor" />
+		</interceptors>
+
+		<action name="set_language" class="org.flexpay.common.actions.LanguageSwitch">
+			<result type="tiles">root</result>
+			<interceptor-ref name="i18n_flexpay" />
+		</action>
+	</package>
 </struts>

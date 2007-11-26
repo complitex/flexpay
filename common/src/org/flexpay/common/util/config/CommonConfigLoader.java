@@ -1,10 +1,13 @@
 package org.flexpay.common.util.config;
 
 import org.apache.commons.digester.Digester;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.flexpay.common.util.IOUtils;
-import org.flexpay.common.util.locale.Language;
-import org.flexpay.common.util.locale.LanguageName;
+import org.flexpay.common.dao.LanguageDao;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.LangNameTranslation;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.common.util.LanguageUtil;
 import org.springframework.web.context.ServletContextAware;
 
 import javax.servlet.ServletContext;
@@ -13,7 +16,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 
 public class CommonConfigLoader implements ServletContextAware {
 
@@ -23,6 +25,8 @@ public class CommonConfigLoader implements ServletContextAware {
 
 	// Configuration file URL
 	private URL configFile;
+
+	private LanguageDao languageDao;
 
 	/**
 	 * Constructor for loader
@@ -48,15 +52,20 @@ public class CommonConfigLoader implements ServletContextAware {
 			digester.parse(is);
 
 			ApplicationConfig config = (ApplicationConfig) digester.getRoot();
+			if ( languageDao != null ) {
+				log.info("Loading languages");
+				config.setLanguages(languageDao.listLanguages());
+			}
 			if (log.isInfoEnabled()) {
 				log.info("Loaded config: " + config.toString());
 			}
+
 
 			ApplicationConfig.setInstance(config);
 
 			setApplicationProperties();
 		} finally {
-			IOUtils.close(is);
+			IOUtils.closeQuietly(is);
 		}
 	}
 
@@ -69,22 +78,32 @@ public class CommonConfigLoader implements ServletContextAware {
 		return ApplicationConfig.class;
 	}
 
-	protected void setApplicationProperties() {
+	/**
+	 * Set up application properties
+	 *
+	 * @throws FlexPayException if configuration is invalid
+	 */
+	protected void setApplicationProperties() throws FlexPayException {
 		ApplicationConfig config = ApplicationConfig.getInstance();
+		setupLanguageNames(config);
+	}
+
+	/**
+	 * Set up language names in their language
+	 *
+	 * @param config ApplicationConfig
+	 * @throws FlexPayException if languages configuration is invalid
+	 */
+	private void setupLanguageNames(ApplicationConfig config) throws FlexPayException {
 		if (context != null && config != null) {
 			Collection<Language> langs = config.getLanguages();
-			List<LanguageName> translations = new ArrayList<LanguageName>(langs.size());
+			List<LangNameTranslation> translations = new ArrayList<LangNameTranslation>(langs.size());
 			for (Language lang : langs) {
-				Locale locale = lang.getLocale();
-				Collection<LanguageName> names = lang.getTranslations();
-				for (LanguageName langName : names) {
-					if (langName.getLocale().equals(locale)) {
-						if (lang.isDefault()) {
-							translations.add(0, langName);
-						} else {
-							translations.add(langName);
-						}
-					}
+				LangNameTranslation translation = LanguageUtil.getLanguageName(lang, lang.getLocale());
+				if (lang.isDefault()) {
+					translations.add(0, translation);
+				} else {
+					translations.add(translation);
 				}
 			}
 			context.setAttribute("languages", translations);
@@ -102,18 +121,6 @@ public class CommonConfigLoader implements ServletContextAware {
 		// Set flexpay root to create Config instance
 		d.addObjectCreate("flexpay", getConfigClass());
 		d.addSetProperties("flexpay");
-
-		// Load languages
-		d.addObjectCreate("flexpay/languages/language", Language.class);
-		d.addSetProperties("flexpay/languages/language", "locale", "localeName");
-		d.addSetNext("flexpay/languages/language", "addLanguage");
-
-		// Load language translations
-		String[] langProps = {"name", "locale"};
-		String[] confProps = {"name", "localeName"};
-		d.addObjectCreate("flexpay/languages/language/translation", LanguageName.class);
-		d.addSetProperties("flexpay/languages/language/translation", langProps, confProps);
-		d.addSetNext("flexpay/languages/language/translation", "addTranslation");
 	}
 
 	/**
@@ -129,5 +136,14 @@ public class CommonConfigLoader implements ServletContextAware {
 	public void setServletContext(ServletContext servletContext) {
 		log.debug("Setting ServletConfig");
 		this.context = servletContext;
+	}
+
+	/**
+	 * Setter for property 'languageDao'.
+	 *
+	 * @param languageDao Value to set for property 'languageDao'.
+	 */
+	public void setLanguageDao(LanguageDao languageDao) {
+		this.languageDao = languageDao;
 	}
 }

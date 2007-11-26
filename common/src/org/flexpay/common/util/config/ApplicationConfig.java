@@ -2,17 +2,20 @@ package org.flexpay.common.util.config;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.util.locale.Language;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Language;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class ApplicationConfig {
 
 	private static ApplicationConfig instance;
 
-	private Collection<Language> languages = new ArrayList<Language>(3);
+	private List<Language> languages = new ArrayList<Language>(3);
+	public static final String USER_PREFERENCES_SESSION_ATTRIBUTE =
+			"FLEXPAY_USER_PREFERENCES_SESSION_ATTRIBUTE";
 
 	/**
 	 * Getter for property 'instance'.
@@ -34,12 +37,36 @@ public class ApplicationConfig {
 	 *
 	 * @return Value for property 'languages'.
 	 */
-	public Collection<Language> getLanguages() {
-		return Collections.unmodifiableCollection(languages);
+	public List<Language> getLanguages() {
+		return Collections.unmodifiableList(languages);
 	}
 
 	public void addLanguage(Language language) {
 		languages.add(language);
+	}
+
+	/**
+	 * Setter for property 'languages'.
+	 *
+	 * @param languages Value to set for property 'languages'.
+	 */
+	public void setLanguages(List<Language> languages) {
+		this.languages = languages;
+	}
+
+	/**
+	 * Get Default Language configuaration option
+	 *
+	 * @return Language
+	 * @throws FlexPayException if Default language is not configured
+	 */
+	public Language getDefaultLanguage() throws FlexPayException {
+		for (Language language : languages) {
+			if (language.isDefault()) {
+				return language;
+			}
+		}
+		throw new FlexPayException("No default language defined");
 	}
 
 	/**
@@ -51,6 +78,7 @@ public class ApplicationConfig {
 		instance = config;
 	}
 
+	/** {@inheritDoc} */
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
 				.append("languages", languages.toArray())

@@ -7,12 +7,11 @@
 	<!-- a SessionFactory instance listed as /jndi/name -->
 	<session-factory name="flexpay">
 
-		<!--<mapping class="org.flexpay.ab.persistence.Country" />-->
-        <mapping resource="org/flexpay/ab/persistence/Country.hbm.xml" />
+		<mapping class="org.flexpay.ab.persistence.Country" />
+		<mapping class="org.flexpay.ab.persistence.CountryName" />
         <mapping class="org.flexpay.ab.persistence.Region" />
 		<!--<mapping class="org.flexpay.ab.persistence.RegionNameLangValue" />-->
 
-		<!--<mapping class="org.flexpay.ab.persistence.Book" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.BuildingAttributeType" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.District" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.IdentityName" />-->
