@@ -6,5 +6,6 @@
 	<import resource="../app_config.xml" />
 	<import resource="hibernate.xml" />
 	<import resource="i18n.xml" />
+	<import resource="beans-dao.xml" />
 
 </beans>

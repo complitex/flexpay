@@ -5,4 +5,8 @@
 
 	<import resource="beans-dao.xml" />
 
+	<bean id="countryService" class="org.flexpay.ab.service.imp.CountryServiceImpl">
+		<property name="countryDao" ref="countryDAO" />
+		<property name="countryNameDao" ref="countryNameDAO" />
+	</bean>
 </beans>

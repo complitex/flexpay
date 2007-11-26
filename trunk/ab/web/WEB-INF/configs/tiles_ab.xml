@@ -4,18 +4,21 @@
 
 <tiles-definitions>
 
-    <definition name="hello" template="/hello1.jsp" />
+	<definition name="header_ab" />
 
-    <definition name="header_ab"/>
-
-   	<definition name="hello" extends="page">
+	<definition name="hello" extends="page">
 		<put-attribute name="title" value="Test Title" />
 		<put-attribute name="content" value="/WEB-INF/jsp/ab/hello.jsp" />
 	</definition>
 
 	<definition name="list_countries" extends="page">
-		<put-attribute name="title" value="Test Title" />
-		<put-attribute name="content" value="/WEB-INF/jsp/ab/list_countries.jsp" />
+		<put-attribute name="title" value="Countries" />
+		<put-attribute name="content" value="/WEB-INF/jsp/ab/countries_list.jsp" />
+	</definition>
+
+	<definition name="create_country" extends="page">
+		<put-attribute name="title" value="Create Country" />
+		<put-attribute name="content" value="/WEB-INF/jsp/ab/country_create.jsp" />
 	</definition>
 
 </tiles-definitions>

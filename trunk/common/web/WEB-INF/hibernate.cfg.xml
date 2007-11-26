@@ -16,6 +16,9 @@
 
 		<property name="hibernate.hbm2ddl.auto">update</property>
 
+		<mapping class="org.flexpay.common.persistence.Language" />
+		<mapping class="org.flexpay.common.persistence.LangNameTranslation" />
+
 	</session-factory>
 
 </hibernate-configuration>

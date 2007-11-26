@@ -61,13 +61,10 @@
 			<table cellpadding="0" cellspacing="0" border="0">
 				<tr>
 					<td><span class="text-small"><spring:message code="header.language"/>:&nbsp;</span></td>
-					<form action="<c:url value="/use_language.action"/>" method="get">
+					<form action="<c:url value="/set_language.action"/>" method="get">
 						<td><select class="form-select" name="request_locale" onchange="this.form.submit()">
 							<c:forEach items="${applicationScope['languages']}" var="lang">
-								<option value="<c:out value="${lang.locale}" />"
-										<c:if test="${sessionScope['current_locale'] == lang.locale}">selected</c:if>>
-									<c:out value="${lang.name}"/>
-								</option>
+								<option value="<c:out value="${lang.language.locale}" />" <c:if test="${sessionScope['current_locale'].id == lang.language.id}">selected</c:if>><c:out value="${lang.translation}"/></option>
 							</c:forEach>
 						</select>
 						</td>

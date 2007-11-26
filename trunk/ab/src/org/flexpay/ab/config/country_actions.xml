@@ -4,10 +4,15 @@
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-	<package name="country" namespace="dists" extends="tiles-default">
+	<package name="country" namespace="/dicts" extends="tiles-default">
 
-		<action name="list_countrie" class="helloAction">
+		<action name="list_countries" class="listCountriesAction">
 			<result type="tiles">list_countries</result>
+		</action>
+
+		<action name="create_country" class="createCountryAction">
+			<result type="redirect">list_countries.action</result>
+			<result type="tiles" name="input">create_country</result>
 		</action>
 
 	</package>

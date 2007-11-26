@@ -9,10 +9,6 @@
 	<!-- Use for deployment -->
 	<import resource="../common/hibernate.xml" />
 
-	<bean id="booksDao" class="org.flexpay.ab.dao.imp.BookDaoImpl">
-		<property name="sessionFactory" ref="flexpaySessionFactory" />
-	</bean>
-
 	<!--  Dao Layer instances -->
 	<bean id="countryDAO" parent="abstractDao">
 		<property name="proxyInterfaces"
@@ -20,6 +16,16 @@
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.ab.persistence.Country" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="countryNameDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.CountryNameDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.CountryName" />
 			</bean>
 		</property>
 	</bean>
