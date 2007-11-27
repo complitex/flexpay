@@ -85,7 +85,7 @@
 
 
     <security-role>
-        <role-name>commonAll</role-name>
+        <role-name>developerRole</role-name>
     </security-role>
 
     <login-config>
@@ -97,7 +97,7 @@
     </login-config>
 
     <welcome-file-list>
-		<welcome-file>/index.jsp</welcome-file>
+		<welcome-file>/common_index.jsp</welcome-file>
 	</welcome-file-list>
 
 </web-app>

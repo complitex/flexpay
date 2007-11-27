@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+    <package name="ab" namespace="/ab" extends="common">
+
+        <action name="main">
+            <interceptor-ref name="flexpayRoles">
+                <param name="allowedRoles">developerRole</param>
+            </interceptor-ref>
+            <result type="tiles">ab.layout.standart</result>
+        </action>
+
+    </package>
+
+    <package name="lang" namespace="/" extends="tiles-default">
+
+    <interceptors>
+        <interceptor name="i18n_flexpay" class="org.flexpay.common.actions.interceptor.FlexpayI18nInterceptor"/>
+    </interceptors>
+
+    <action name="set_language" class="org.flexpay.common.actions.LanguageSwitch">
+        <result type="tiles">root</result>
+        <interceptor-ref name="i18n_flexpay"/>
+    </action>
+
+    </package>
+
+    <package name="country" namespace="/dicts" extends="tiles-default">
+
+        <action name="list_countries" class="listCountriesAction">
+            <result type="tiles">ab.country.list</result>
+        </action>
+
+        <action name="create_country" class="createCountryAction">
+            <result type="redirect">list_countries.action</result>
+            <result type="tiles" name="input">ab.country.create</result>
+        </action>
+
+    </package>
+
+
+    <!--<include file="org/flexpay/ab/config/country_actions.xml" />
+     <include file="org/flexpay/ab/config/test_actions.xml" />-->
+
+</struts>

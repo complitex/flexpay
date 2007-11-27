@@ -5,7 +5,7 @@
 <sun-web-app>
 
     <security-role-mapping>
-        <role-name>commonAll</role-name>
+        <role-name>developerRole</role-name>
         <principal-name>vld</principal-name>
     </security-role-mapping>
 
