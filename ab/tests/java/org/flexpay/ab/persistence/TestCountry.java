@@ -18,7 +18,7 @@ public class TestCountry extends TestCase {
         assertEquals(country.getCountryName(lang).getLongValue(),"");
         assertEquals(country.getCountryName(lang).getShortValue(),"");
         */
-        country.addCountryName(longName,lang,longName);
+//        country.addCountryName(longName,lang,longName);
         //assertEquals(country.getCountryShortName(),);
     }
 }
