@@ -62,7 +62,7 @@
 		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
         <init-param>
 			<param-name>config</param-name>
-			<param-value>struts-default.xml,struts-plugin.xml,common_struts_config.xml,/org/flexpay/ab/config/struts_config.xml</param-value>
+			<param-value>struts-default.xml,struts-plugin.xml,common_struts_config.xml,ab_struts_config.xml</param-value>
 		</init-param>
     </filter>
 	<filter-mapping>
@@ -71,34 +71,34 @@
 	</filter-mapping>
 
 
-    <!--<security-constraint>-->
-        <!--<web-resource-collection>-->
-            <!--<web-resource-name>secure-resource</web-resource-name>-->
-            <!--<url-pattern>*.action</url-pattern>-->
-            <!--<http-method>POST</http-method>-->
-            <!--<http-method>GET</http-method>-->
-        <!--</web-resource-collection>-->
-        <!--<auth-constraint>-->
-            <!--<role-name>*</role-name>-->
-        <!--</auth-constraint>-->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>secure-resource</web-resource-name>
+            <url-pattern>*.action</url-pattern>
+            <http-method>POST</http-method>
+            <http-method>GET</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
 
-    <!--</security-constraint>-->
+    </security-constraint>
 
 
-    <!--<security-role>-->
-        <!--<role-name>commonAll</role-name>-->
-    <!--</security-role>-->
+    <security-role>
+        <role-name>developerRole</role-name>
+    </security-role>
 
-    <!--<login-config>-->
-        <!--<auth-method>FORM</auth-method>-->
-        <!--<form-login-config>-->
-            <!--<form-login-page>/login.jsp</form-login-page>-->
-            <!--<form-error-page>/login.jsp</form-error-page>-->
-        <!--</form-login-config>-->
-    <!--</login-config>-->
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/login.jsp</form-login-page>
+            <form-error-page>/login.jsp</form-error-page>
+        </form-login-config>
+    </login-config>
 
     <welcome-file-list>
-		<welcome-file>/index.jsp</welcome-file>
+		<welcome-file>/ab_index.jsp</welcome-file>
 	</welcome-file-list>
 
 

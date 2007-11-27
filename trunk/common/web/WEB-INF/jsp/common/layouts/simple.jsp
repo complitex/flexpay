@@ -21,14 +21,9 @@
             <tiles:insertAttribute name="body" />
         </td>
     </tr>
-    <tr>
-        <td>
-            <tiles:insertAttribute name="footer" />
-        </td>
-    </tr>
 </table>
 
-
+<tiles:insertAttribute name="footer" />
 
 
 </body>

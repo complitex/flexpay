@@ -4,21 +4,26 @@
 
 <tiles-definitions>
 
-	<definition name="header_ab" />
-
-	<definition name="hello" extends="page">
-		<put-attribute name="title" value="Test Title" />
-		<put-attribute name="content" value="/WEB-INF/jsp/ab/hello.jsp" />
+    <definition name="ab.layout.standart" template="/WEB-INF/jsp/ab/layouts/standart.jsp">
+        <put-attribute name="title" value="menu34.dictionaries.countries" />
+        <put-attribute name="header" value="/WEB-INF/jsp/common/header.jsp" />
+        <put-attribute name="menu1" value="/WEB-INF/jsp/ab/menu/menu1.jsp" />
+        <put-attribute name="menu2" value="/WEB-INF/jsp/ab/menu/menu2.jsp" />
+        <put-attribute name="menu34" value="/WEB-INF/jsp/ab/menu/menu34_dictionaries.jsp" />
+        <put-attribute name="gradusnik" value="/WEB-INF/jsp/ab/menu/gradusnik.jsp" />
+        <!--<put-attribute name="body" value="/WEB-INF/jsp/ab/main.jsp" />-->
+        <put-attribute name="tip" value="/WEB-INF/jsp/ab/menu/tip.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp" />
 	</definition>
 
-	<definition name="list_countries" extends="page">
-		<put-attribute name="title" value="Countries" />
-		<put-attribute name="content" value="/WEB-INF/jsp/ab/countries_list.jsp" />
+    <definition name="ab.country.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.country.list.title" />
+        <put-attribute name="body" value="/WEB-INF/jsp/ab/countries_list.jsp" />
 	</definition>
 
-	<definition name="create_country" extends="page">
-		<put-attribute name="title" value="Create Country" />
-		<put-attribute name="content" value="/WEB-INF/jsp/ab/country_create.jsp" />
+    <definition name="ab.country.create" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.country.create.title" />
+        <put-attribute name="body" value="/WEB-INF/jsp/ab/country_create.jsp" />
 	</definition>
 
 </tiles-definitions>
