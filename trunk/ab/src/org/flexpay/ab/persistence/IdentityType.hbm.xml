@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.ab.persistence">
+    <class name="IdentityType" table="IdentityType" optimistic-lock="version">
+        <id name="id" column="ID">
+            <generator class="native"/>
+        </id>
+        <list name="identityTypeNames" table="IdentityTypeName">
+            <key column="identityType_id" not-null="true"/>
+            <list-index column="name"/>
+            <composite-element class="IdentityTypeName"/>
+        </list>
+    </class>
+</hibernate-mapping>
