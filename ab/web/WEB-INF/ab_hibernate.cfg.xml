@@ -55,7 +55,8 @@
 		<!--<mapping class="org.flexpay.ab.persistence.StreetNameLangValue" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.ApartmentNumber" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.Buildings" />-->
-
+        <mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml"/>
+        <mapping resource="org/flexpay/ab/persistence/IdentityTypeName.hbm.xml"/>
 	</session-factory>
 
 </hibernate-configuration>
