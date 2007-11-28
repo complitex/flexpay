@@ -135,6 +135,15 @@
 			<param name="to_dir" value="" />
 			<reference refid="common.web.resources" torefid="resources" />
 		</antcall>
+
+		<!-- Put classpath resources to /WEB-INF/classes -->
+		<fileset dir="${common.dir}/${src.dir}" id="common.classes.resources">
+			<patternset refid="resources_pattern" />
+		</fileset>
+		<antcall target="template.prepare.war">
+			<param name="to_dir" value="/WEB-INF/classes" />
+			<reference refid="common.classes.resources" torefid="resources" />
+		</antcall>
 	</target>
 
 	<import file="hibernate_build.xml" />
