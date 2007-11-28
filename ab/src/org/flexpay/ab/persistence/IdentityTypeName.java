@@ -8,7 +8,7 @@ public class IdentityTypeName implements Serializable {
     private Long id;
     private String name;
     private Language lang;
-    private IdentityTypeName identityName;
+    private IdentityType identityType;
 
     public Long getId() {
         return id;
@@ -34,11 +34,11 @@ public class IdentityTypeName implements Serializable {
         this.lang = lang;
     }
 
-    public IdentityTypeName getIdentityName() {
-        return identityName;
+    public IdentityType getIdentityType() {
+        return identityType;
     }
 
-    public void setIdentityName(IdentityTypeName identityName) {
-        this.identityName = identityName;
+    public void setIdentityType(IdentityType identityType) {
+        this.identityType = identityType;
     }
 }

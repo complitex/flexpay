@@ -5,15 +5,15 @@ import java.util.List;
 
 public class IdentityType  implements java.io.Serializable {
 
-    private int id;
+    private Long id;
     private List<IdentityTypeName> identityTypeNames = Collections.emptyList();
     private List<PersonIdentity> personIdentities = Collections.emptyList();
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
