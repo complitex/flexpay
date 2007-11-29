@@ -30,4 +30,24 @@
 		</property>
 	</bean>
 
+	<bean id="townTypeDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.TownTypeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.TownType" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="townTypeTranslationDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.TownTypeTranslationDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.TownTypeTranslation" />
+			</bean>
+		</property>
+	</bean>
+
 </beans>

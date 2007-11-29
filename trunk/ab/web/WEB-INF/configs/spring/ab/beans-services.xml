@@ -9,4 +9,10 @@
 		<property name="countryDao" ref="countryDAO" />
 		<property name="countryNameDao" ref="countryNameDAO" />
 	</bean>
+
+	<bean id="townTypeService" class="org.flexpay.ab.service.imp.TownTypeServiceImpl">
+		<property name="townTypeDao" ref="townTypeDAO" />
+		<property name="townTypeTranslationDao" ref="townTypeTranslationDao" />
+	</bean>
+
 </beans>
