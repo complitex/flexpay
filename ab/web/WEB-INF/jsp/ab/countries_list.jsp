@@ -9,7 +9,7 @@
 	</tr>
 	<c:forEach items="${requestScope['country_names']}" varStatus="status" var="cName">
 		<tr>
-			<td><c:out value="${status.index}"/></td>
+			<td><c:out value="${status.index + 1}"/></td>
 			<td><input type="checkbox"></td>
 			<td><c:out value="${cName.name}"/></td>
 			<td><c:out value="${cName.shortName}"/></td>
@@ -19,7 +19,7 @@
 		<td colspan="0">
 			<input type="submit" class="btn-exit"
 				   onclick="window.location='<c:url value="/dicts/create_country.action"/>'"
-				   value="<spring:message code="common.create"/>"/>
+				   value="<spring:message code="common.new"/>"/>
 		</td>
 	</tr>
 </table>

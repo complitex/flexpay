@@ -7,10 +7,16 @@
 	<!-- a SessionFactory instance listed as /jndi/name -->
 	<session-factory name="flexpay">
 
+		<!-- Countries -->
 		<mapping class="org.flexpay.ab.persistence.Country" />
 		<mapping class="org.flexpay.ab.persistence.CountryName" />
         <mapping class="org.flexpay.ab.persistence.Region" />
 		<!--<mapping class="org.flexpay.ab.persistence.RegionNameLangValue" />-->
+
+		<!-- Town types -->
+		<mapping class="org.flexpay.ab.persistence.TownType" />
+		<mapping class="org.flexpay.ab.persistence.TownTypeTemporal" />
+		<mapping class="org.flexpay.ab.persistence.TownTypeTranslation" />
 
 		<!--<mapping class="org.flexpay.ab.persistence.BuildingAttributeType" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.District" />-->
@@ -34,7 +40,6 @@
 		<!--<mapping class="org.flexpay.ab.persistence.ActFiles" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.Person" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.DistrictNameLangValue" />-->
-		<!--<mapping class="org.flexpay.ab.persistence.TownTypes" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.Rooms" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.ApartmentRelationType" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.Personact" />-->
@@ -50,7 +55,6 @@
 		<!--<mapping class="org.flexpay.ab.persistence.Building" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.Act" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.History" />-->
-		<!--<mapping class="org.flexpay.ab.persistence.TownType" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.PersonAttribute" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.StreetNameLangValue" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.ApartmentNumber" />-->

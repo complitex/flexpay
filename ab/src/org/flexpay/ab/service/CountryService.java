@@ -25,5 +25,5 @@ public interface CountryService {
 	 * @return List of countries
 	 * @throws FlexPayException if failure occurs
 	 */
-	List<CountryName> getCountries(Locale locale)  throws FlexPayException;
+	List<CountryName> getCountries(Locale locale) throws FlexPayException;
 }

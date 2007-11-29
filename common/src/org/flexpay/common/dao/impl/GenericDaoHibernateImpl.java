@@ -123,6 +123,10 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		return SessionFactoryUtils.getSession(hibernateTemplate.getSessionFactory(), true);
 	}
 
+	public void releaseSession(Session session) {
+		SessionFactoryUtils.releaseSession(session, hibernateTemplate.getSessionFactory());
+	}
+
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
 	}

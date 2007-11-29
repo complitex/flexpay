@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table (name = "country_name",
+@Table (name = "country_names_tbl",
 		uniqueConstraints = {
 		@UniqueConstraint (columnNames = {"language_id", "country_id"})
 				})

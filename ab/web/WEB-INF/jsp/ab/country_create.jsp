@@ -11,10 +11,8 @@
 		<c:forEach items="${requestScope['country_names']}" varStatus="status"
 				   var="cName">
 			<tr>
-				<td><c:out value="${status.index}"/></td>
-				<td><c
-
-                            :out value="${cName.translation.translation}"/></td>
+				<td><c:out value="${status.index + 1}"/></td>
+				<td><c:out value="${cName.translation.translation}"/></td>
 				<td><input type="text" name="name_<c:out value="${cName.language.id}" />"
 						   value="<c:out value="${cName.name}" />"/></td>
 				<td><input type="text"
