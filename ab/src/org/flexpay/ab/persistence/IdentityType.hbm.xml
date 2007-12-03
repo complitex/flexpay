@@ -8,10 +8,11 @@
         <id name="id" column="ID">
             <generator class="native"/>
         </id>
-        <list name="identityTypeNames" table="IdentityTypeName">
-            <key column="identityType_id" not-null="true"/>
-            <list-index column="name"/>
-            <composite-element class="IdentityTypeName"/>
-        </list>
+
+        <set name="identityTypeNames" table="IdentityTypeName" inverse="true">
+            <key column="identity_type_id"/>
+            <one-to-many class="IdentityTypeName"/>
+        </set>
+
     </class>
 </hibernate-mapping>

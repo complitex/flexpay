@@ -11,11 +11,14 @@
         <property name="name"/>
         <many-to-one name="lang"
                 class="org.flexpay.common.persistence.Language"
-                foreign-key="land_id"
+                column="land_id"
+                not-null="true"
             />
-        <many-to-one name="identityType"
+          
+        <many-to-one name="identityType" 
                     class="IdentityType"
-                    foreign-key="identity_name_id"
+                    column="identity_type_id"
+                    not-null="true"
             />
     </class>
 </hibernate-mapping>

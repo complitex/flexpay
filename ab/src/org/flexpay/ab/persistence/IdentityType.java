@@ -2,11 +2,12 @@ package org.flexpay.ab.persistence;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class IdentityType  implements java.io.Serializable {
 
     private Long id;
-    private List<IdentityTypeName> identityTypeNames = Collections.emptyList();
+    private Set<IdentityTypeName> identityTypeNames = Collections.emptySet();
     private List<PersonIdentity> personIdentities = Collections.emptyList();
 
     public Long getId() {
@@ -17,11 +18,11 @@ public class IdentityType  implements java.io.Serializable {
         this.id = id;
     }
 
-    public List<IdentityTypeName> getIdentityTypeNames() {
+    public Set<IdentityTypeName> getIdentityTypeNames() {
         return identityTypeNames;
     }
 
-    public void setIdentityTypeNames(List<IdentityTypeName> identityTypeNames) {
+    public void setIdentityTypeNames(Set<IdentityTypeName> identityTypeNames) {
         this.identityTypeNames = identityTypeNames;
     }
 
