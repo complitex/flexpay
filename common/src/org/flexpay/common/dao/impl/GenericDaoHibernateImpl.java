@@ -6,16 +6,10 @@ import org.flexpay.common.dao.finder.FinderExecutor;
 import org.flexpay.common.dao.finder.FinderNamingStrategy;
 import org.flexpay.common.dao.finder.impl.SimpleFinderArgumentTypeFactory;
 import org.flexpay.common.dao.finder.impl.SimpleFinderNamingStrategy;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.type.Type;
 import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -58,73 +52,8 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	}
 
 	public List<T> executeFinder(Method method, final Object[] queryArgs) {
-		final Query namedQuery = prepareQuery(method, queryArgs);
-		return (List<T>) namedQuery.list();
-	}
-
-	public Iterator<T> iterateFinder(Method method, final Object[] queryArgs) {
-		final Query namedQuery = prepareQuery(method, queryArgs);
-		return (Iterator<T>) namedQuery.iterate();
-	}
-
-//    public ScrollableResults scrollFinder(Method method, final Object[] queryArgs)
-//    {
-//        final Query namedQuery = prepareQuery(method, queryArgs);
-//        return (ScrollableResults) namedQuery.scroll();
-//    }
-
-	private Query prepareQuery(Method method, Object[] queryArgs) {
 		final String queryName = getNamingStrategy().queryNameFromMethod(type, method);
-		final Query namedQuery = getSession().getNamedQuery(queryName);
-		String[] namedParameters = namedQuery.getNamedParameters();
-		if (namedParameters.length == 0) {
-			setPositionalParams(queryArgs, namedQuery);
-		} else {
-			setNamedParams(namedParameters, queryArgs, namedQuery);
-		}
-		return namedQuery;
-	}
-
-	private void setPositionalParams(Object[] queryArgs, Query namedQuery) {
-		// Set parameter. Use custom Hibernate Type if necessary
-		if (queryArgs != null) {
-			for (int i = 0; i < queryArgs.length; i++) {
-				Object arg = queryArgs[i];
-				Type argType = getArgumentTypeFactory().getArgumentType(arg);
-				if (argType != null) {
-					namedQuery.setParameter(i, arg, argType);
-				} else {
-					namedQuery.setParameter(i, arg);
-				}
-			}
-		}
-	}
-
-	private void setNamedParams(String[] namedParameters, Object[] queryArgs, Query namedQuery) {
-		// Set parameter. Use custom Hibernate Type if necessary
-		if (queryArgs != null) {
-			for (int i = 0; i < queryArgs.length; i++) {
-				Object arg = queryArgs[i];
-				Type argType = getArgumentTypeFactory().getArgumentType(arg);
-				if (argType != null) {
-					namedQuery.setParameter(namedParameters[i], arg, argType);
-				} else {
-					if (arg instanceof Collection) {
-						namedQuery.setParameterList(namedParameters[i], (Collection) arg);
-					} else {
-						namedQuery.setParameter(namedParameters[i], arg);
-					}
-				}
-			}
-		}
-	}
-
-	public Session getSession() {
-		return SessionFactoryUtils.getSession(hibernateTemplate.getSessionFactory(), true);
-	}
-
-	public void releaseSession(Session session) {
-		SessionFactoryUtils.releaseSession(session, hibernateTemplate.getSessionFactory());
+		return hibernateTemplate.findByNamedQuery(queryName, queryArgs);
 	}
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
