@@ -74,7 +74,7 @@ public class Language implements Serializable {
 	 *
 	 * @return Value for property 'translations'.
 	 */
-	@OneToMany (cascade = {}, mappedBy = "language")
+	@OneToMany (cascade = {}, mappedBy = "language", fetch = FetchType.EAGER)
 	public Collection<LangNameTranslation> getTranslations() {
 		return translations;
 	}
@@ -112,7 +112,7 @@ public class Language implements Serializable {
 	 *
 	 * @return Value for property 'name'.
 	 */
-	@Column (unique = true)
+	@Column (unique = true, nullable = false)
 	public String getLangIsoCode() {
 		return langIsoCode;
 	}
@@ -146,10 +146,6 @@ public class Language implements Serializable {
 		return (Locale) editor.getValue();
 	}
 
-	public void setLocale(Locale locale) {
-		throw new IllegalArgumentException("Set locale method is not allowed");
-	}
-
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
@@ -160,14 +156,10 @@ public class Language implements Serializable {
 
 		Language language = (Language) o;
 
-		if (!id.equals(language.id)) {
-			return false;
-		}
-
-		return true;
+		return langIsoCode.equals(language.getLangIsoCode());
 	}
 
 	public int hashCode() {
-		return id.hashCode();
+		return langIsoCode.hashCode();
 	}
 }

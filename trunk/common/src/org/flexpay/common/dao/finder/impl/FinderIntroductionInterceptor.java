@@ -19,10 +19,11 @@ public class FinderIntroductionInterceptor implements IntroductionInterceptor {
 		if (methodName.startsWith("find") || methodName.startsWith("list")) {
 			Object[] arguments = methodInvocation.getArguments();
 			return executor.executeFinder(methodInvocation.getMethod(), arguments);
-		} else if (methodName.startsWith("iterate")) {
-			Object[] arguments = methodInvocation.getArguments();
-			return executor.iterateFinder(methodInvocation.getMethod(), arguments);
 		}
+//		else if (methodName.startsWith("iterate")) {
+//			Object[] arguments = methodInvocation.getArguments();
+//			return executor.iterateFinder(methodInvocation.getMethod(), arguments);
+//		}
 //        else if(methodName.startsWith("scroll"))
 //        {
 //            Object[] arguments = methodInvocation.getArguments();
