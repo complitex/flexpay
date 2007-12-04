@@ -8,4 +8,4 @@
     }
 %>
 
-<c:redirect url="/common_index.jsp" />
+<c:redirect url="/" />
