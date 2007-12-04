@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+
+<s:i18n name="/i18n/common-messages">
+
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
     <tr class="verytop">
         <td>
@@ -17,7 +20,7 @@
             <span class="text-small">User: <%=request.getUserPrincipal()%>
                 <a href="<c:url value="/logout.jsp" />">
                     &nbsp
-                    Logout
+                    <s:text name="logout.link.title" />
                 </a>
             </span>
             <%
@@ -26,3 +29,5 @@
         </td>
     </tr>
 </table>
+
+</s:i18n>
