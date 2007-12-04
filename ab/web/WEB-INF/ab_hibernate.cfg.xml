@@ -63,8 +63,8 @@
         <mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml"/>
         <mapping resource="org/flexpay/ab/persistence/IdentityTypeName.hbm.xml"/>
 
-		<!--<mapping class="org.flexpay.common.persistence.Language" />-->
-		<!--<mapping class="org.flexpay.common.persistence.LangNameTranslation" />-->
+		<mapping class="org.flexpay.common.persistence.Language" />
+		<mapping class="org.flexpay.common.persistence.LangNameTranslation" />
 
 	</session-factory>
 
