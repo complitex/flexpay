@@ -23,7 +23,7 @@ public class Country implements Serializable {
 	private Long id;
 	private CountryStatus countryStatus;
 	private List<CountryName> countryNames = Collections.emptyList();
-	private List<Region> regions = new ArrayList<Region>();
+//	private List<Region> regions = new ArrayList<Region>();
 
 	// Constructors
 
@@ -76,19 +76,19 @@ public class Country implements Serializable {
 	 *
 	 * @return Value for property 'regions'.
 	 */
-	@OneToMany (cascade = {}, fetch = FetchType.LAZY, mappedBy = "country")
-	public List<Region> getRegions() {
-		return this.regions;
-	}
+//	@OneToMany (cascade = {}, fetch = FetchType.LAZY, mappedBy = "country")
+//	public List<Region> getRegions() {
+//		return this.regions;
+//	}
 
 	/**
 	 * Setter for property 'regions'.
 	 *
 	 * @param regions Value to set for property 'regions'.
 	 */
-	public void setRegions(List<Region> regions) {
-		this.regions = regions;
-	}
+//	public void setRegions(List<Region> regions) {
+//		this.regions = regions;
+//	}
 
 	public String getName(String lang) {
 		CountryName name = getCountryName(lang);
@@ -137,7 +137,7 @@ public class Country implements Serializable {
 				.append("id", id)
 				.append("Status", countryStatus)
 				.append("Names", countryNames.toArray())
-				.append("Regions", regions.toArray())
+//				.append("Regions", regions.toArray())
 				.toString();
 	}
 }

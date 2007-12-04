@@ -155,6 +155,9 @@ public class Language implements Serializable {
 		}
 
 		Language language = (Language) o;
+		if (langIsoCode == null) {
+			return language.getLangIsoCode() == null;
+		}
 
 		return langIsoCode.equals(language.getLangIsoCode());
 	}

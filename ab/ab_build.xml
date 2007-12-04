@@ -34,14 +34,16 @@
 		<path refid="ab.production.classpath" />
 	</path>
 
-	<!-- Build targets -->
-	<target name="ab.build.production.jar" depends="common.build.production.jar">
-		<echo message="Outer ab src: ${ab.dir}/${src.dir}" />
+	<target name="ab.compile.production">
 		<antcall target="template.compile.production">
 			<param name="sources.dir" value="${ab.dir}/${src.dir}" />
 			<reference refid="ab.production.classpath" torefid="classpath" />
 		</antcall>
+	</target>
 
+	<!-- Build targets -->
+	<target name="ab.build.production.jar"
+			depends="common.build.production.jar,ab.compile.production">
 		<fileset dir="${build.dir}/empty" id="empty_res" />
 
 		<antcall target="template.jar">
@@ -105,21 +107,23 @@
 		</antcall>
 	</target>
 
-	<target name="ab.exportschema" depends="ab.build.production.jar">
+	<target name="ab.exportschema" depends="common.compile.production,ab.compile.production">
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_ab.ddl.sql" />
-			<param name="hibernate.cfg" value="${ab.dir}/web/WEB-INF/ab_hibernate.cfg.xml" />
+			<param name="src.dir" value="${ab.dir}/src" />
+			<param name="hibernate.cfg"
+				   value="${ab.dir}/web/WEB-INF/ab_hibernate.cfg.xml" />
 		</antcall>
 	</target>
 
 	<target name="ab.runtests" depends="ab.build.test.jar">
-		<path id="ab.runtests.classpath" >
+		<path id="ab.runtests.classpath">
 			<path refid="ab.test.classpath" />
 			<path location="${build.dir}/lib/${ab.tests.jar.name}" />
 		</path>
 		<antcall target="template.run.tests">
 			<param name="test_name" value="org.flexpay.ab.AllTests" />
-			<reference refid="ab.runtests.classpath" torefid="classpath" /> 
+			<reference refid="ab.runtests.classpath" torefid="classpath" />
 		</antcall>
 	</target>
 

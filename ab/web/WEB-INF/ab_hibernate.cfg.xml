@@ -10,13 +10,14 @@
 		<!-- Countries -->
 		<mapping class="org.flexpay.ab.persistence.Country" />
 		<mapping class="org.flexpay.ab.persistence.CountryName" />
-        <mapping class="org.flexpay.ab.persistence.Region" />
+        <!--<mapping class="org.flexpay.ab.persistence.Region" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.RegionNameLangValue" />-->
 
 		<!-- Town types -->
-		<mapping class="org.flexpay.ab.persistence.TownType" />
-		<mapping class="org.flexpay.ab.persistence.TownTypeTemporal" />
-		<mapping class="org.flexpay.ab.persistence.TownTypeTranslation" />
+		<mapping resource="org/flexpay/ab/persistence/TownType.hbm.xml"/>
+		<!--<mapping class="org.flexpay.ab.persistence.TownType" />-->
+		<!--<mapping class="org.flexpay.ab.persistence.TownTypeTemporal" />-->
+		<!--<mapping class="org.flexpay.ab.persistence.TownTypeTranslation" />-->
 
 		<!--<mapping class="org.flexpay.ab.persistence.BuildingAttributeType" />-->
 		<!--<mapping class="org.flexpay.ab.persistence.District" />-->
@@ -61,6 +62,10 @@
 		<!--<mapping class="org.flexpay.ab.persistence.Buildings" />-->
         <mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml"/>
         <mapping resource="org/flexpay/ab/persistence/IdentityTypeName.hbm.xml"/>
+
+		<!--<mapping class="org.flexpay.common.persistence.Language" />-->
+		<!--<mapping class="org.flexpay.common.persistence.LangNameTranslation" />-->
+
 	</session-factory>
 
 </hibernate-configuration>

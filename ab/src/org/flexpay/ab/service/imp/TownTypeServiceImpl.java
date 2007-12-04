@@ -11,11 +11,11 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class TownTypeServiceImpl implements TownTypeService {
 
 	private static Logger log = Logger.getLogger(TownTypeServiceImpl.class);
@@ -29,17 +29,17 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * @param translations TownType names translations
 	 * @return created Country object
 	 */
-	public TownType create(List<TownTypeTranslation> translations) {
+	@Transactional (readOnly = false)
+	public TownType create(Collection<TownTypeTranslation> translations) {
 		TownType townType = new TownType();
 
-		List<TownTypeTranslation> translationList =
-				new ArrayList<TownTypeTranslation>(translations.size());
+		Set<TownTypeTranslation> translationList = new HashSet<TownTypeTranslation>();
 		boolean hasDefaultLangTranslation = false;
 		for (TownTypeTranslation translation : translations) {
 			if (StringUtils.isNotBlank(translation.getName())) {
 				translationList.add(translation);
 				hasDefaultLangTranslation =
-						hasDefaultLangTranslation || translation.getLanguage().isDefault();
+						hasDefaultLangTranslation || translation.getLang().isDefault();
 			}
 		}
 		if (translationList.isEmpty()) {
@@ -96,7 +96,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 				continue;
 			}
 			translation.setTranslation(
-					LanguageUtil.getLanguageName(translation.getLanguage(), locale));
+					LanguageUtil.getLanguageName(translation.getLang(), locale));
 			translations.add(translation);
 		}
 
@@ -107,14 +107,19 @@ public class TownTypeServiceImpl implements TownTypeService {
 			TownType townType, Language lang, Language defaultLang) {
 		TownTypeTranslation defaultTranslation = null;
 
-		List<TownTypeTranslation> names = townType.getTypeTranslations();
+		Collection<TownTypeTranslation> names = townType.getTypeTranslations();
+		log.debug("Gettting translation: " + lang.getLangIsoCode() + " : " + names);
 		for (TownTypeTranslation translation : names) {
-			if (lang.equals(translation.getLanguage())) {
+			if (lang.equals(translation.getLang())) {
+				log.debug("Found translation: " + translation);
 				return translation;
 			}
-			if (defaultLang.equals(translation.getLanguage())) {
+			if (defaultLang.equals(translation.getLang())) {
+				log.debug("Found default translation: " + translation);
 				defaultTranslation = translation;
 			}
+
+			log.debug("Translation is invalid: " + translation);
 		}
 
 		return defaultTranslation;
@@ -137,9 +142,10 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * @param translations Translations set
 	 * @return Updated TownType object
 	 */
-	public TownType update(TownType townType, List<TownTypeTranslation> translations) {
-		List<TownTypeTranslation> translationList =
-				new ArrayList<TownTypeTranslation>(translations.size());
+	@Transactional (readOnly = false)
+	public TownType update(TownType townType, Collection<TownTypeTranslation> translations) {
+		Set<TownTypeTranslation> translationList =
+				new HashSet<TownTypeTranslation>(translations.size());
 		List<TownTypeTranslation> translationsToDelete =
 				new ArrayList<TownTypeTranslation>(translations.size());
 		boolean hasDefaultLangTranslation = false;
@@ -147,7 +153,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 			if (StringUtils.isNotBlank(translation.getName())) {
 				translationList.add(translation);
 				hasDefaultLangTranslation =
-						hasDefaultLangTranslation || translation.getLanguage().isDefault();
+						hasDefaultLangTranslation || translation.getLang().isDefault();
 			} else if (translation.getId() != null) {
 				translationsToDelete.add(translation);
 			}

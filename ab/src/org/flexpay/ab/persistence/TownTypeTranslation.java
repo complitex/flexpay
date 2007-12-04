@@ -18,7 +18,7 @@ public class TownTypeTranslation implements java.io.Serializable {
 
 	private Long id;
 	private String name;
-	private Language language;
+	private Language lang;
 	private TownType townType;
 
 	private LangNameTranslation translation;
@@ -32,8 +32,6 @@ public class TownTypeTranslation implements java.io.Serializable {
 	 *
 	 * @return Value for property 'id'.
 	 */
-	@Id
-	@GeneratedValue
 	public Long getId() {
 		return this.id;
 	}
@@ -52,8 +50,6 @@ public class TownTypeTranslation implements java.io.Serializable {
 	 *
 	 * @return Value for property 'name'.
 	 */
-	@Basic
-	@Column (nullable = false, length = 120)
 	public String getName() {
 		return this.name;
 	}
@@ -72,19 +68,17 @@ public class TownTypeTranslation implements java.io.Serializable {
 	 *
 	 * @return Value for property 'language'.
 	 */
-	@ManyToOne
-	@JoinColumn (name = "language_id", nullable = false)
-	public Language getLanguage() {
-		return this.language;
+	public Language getLang() {
+		return this.lang;
 	}
 
 	/**
 	 * Setter for property 'language'.
 	 *
-	 * @param language Value to set for property 'language'.
+	 * @param lang Value to set for property 'language'.
 	 */
-	public void setLanguage(Language language) {
-		this.language = language;
+	public void setLang(Language lang) {
+		this.lang = lang;
 	}
 
 	/**
@@ -92,8 +86,6 @@ public class TownTypeTranslation implements java.io.Serializable {
 	 *
 	 * @return Value for property 'townType'.
 	 */
-	@ManyToOne
-	@JoinColumn (name = "town_type_id", nullable = false)
 	public TownType getTownType() {
 		return townType;
 	}
@@ -112,7 +104,6 @@ public class TownTypeTranslation implements java.io.Serializable {
 	 *
 	 * @return Value for property 'translation'.
 	 */
-	@Transient
 	public LangNameTranslation getTranslation() {
 		return translation;
 	}
@@ -135,7 +126,7 @@ public class TownTypeTranslation implements java.io.Serializable {
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
 				.append("Id", id)
-				.append("Language", language.getLangIsoCode())
+				.append("Language", lang.getLangIsoCode())
 				.append("Name", name)
 				.toString();
 	}

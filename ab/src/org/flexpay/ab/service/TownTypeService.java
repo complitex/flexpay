@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.common.exception.FlexPayException;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -18,7 +19,7 @@ public interface TownTypeService {
 	 * @param translations TownType names translations
 	 * @return created Country object
 	 */
-	public TownType create(List<TownTypeTranslation> translations);
+	public TownType create(Collection<TownTypeTranslation> translations);
 
 	/**
 	 * Read TownType object by its unique id
@@ -45,5 +46,5 @@ public interface TownTypeService {
 	 * @param townTypeTranslations Translations set
 	 * @return Updated TownType object
 	 */
-	TownType update(TownType townType, List<TownTypeTranslation> townTypeTranslations);
+	TownType update(TownType townType, Collection<TownTypeTranslation> townTypeTranslations);
 }

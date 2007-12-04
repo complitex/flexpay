@@ -51,7 +51,8 @@ public class TownTypeEdit implements ServletRequestAware {
 	 * @return List of town type name translations
 	 * @throws FlexPayException if failure occurs
 	 */
-	private List<TownTypeTranslation> initTypeTranslations(TownType townType) throws FlexPayException {
+	private List<TownTypeTranslation> initTypeTranslations(TownType townType)
+			throws FlexPayException {
 		List<Language> langs = ApplicationConfig.getInstance().getLanguages();
 		UserPreferences prefs = UserPreferences.getPreferences(request);
 		List<TownTypeTranslation> translations = new ArrayList<TownTypeTranslation>(langs.size());
@@ -83,7 +84,7 @@ public class TownTypeEdit implements ServletRequestAware {
 	private TownTypeTranslation getTranslation(TownType townType, Language lang) {
 		// Check if translation to requested lang already exists
 		for (TownTypeTranslation translation : townType.getTypeTranslations()) {
-			if (translation.getLanguage().equals(lang)) {
+			if (translation.getLang().equals(lang)) {
 				return translation;
 			}
 		}
@@ -91,7 +92,7 @@ public class TownTypeEdit implements ServletRequestAware {
 		// Translation not found, create new one
 		TownTypeTranslation translation = new TownTypeTranslation();
 		translation.setTownType(townType);
-		translation.setLanguage(lang);
+		translation.setLang(lang);
 
 		return translation;
 	}
