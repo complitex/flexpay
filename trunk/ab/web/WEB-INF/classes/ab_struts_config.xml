@@ -42,7 +42,6 @@
 
 	</package>
 
-
 	<package name="town_types" namespace="/dicts" extends="tiles-default">
 
 		<action name="list_town_types" class="listTownTypesAction">
@@ -59,6 +58,9 @@
 			<result type="tiles" name="input">ab.town_type.edit</result>
 		</action>
 
+		<action name="delete_town_types" class="deleteTownTypesAction">
+			<result type="redirect">list_town_types.action</result>
+		</action>
 	</package>
 
 </struts>

@@ -19,13 +19,20 @@ import java.util.List;
 
 public class TownTypeEdit implements ServletRequestAware {
 
-	private static Logger log = Logger.getLogger(TownTypeCreate.class);
+	private static Logger log = Logger.getLogger(TownTypeEdit.class);
 
 	private HttpServletRequest request;
 	private TownTypeService townTypeService;
 
 	public String execute() throws FlexPayException {
-		Long id = Long.parseLong(request.getParameter("town_type_id"));
+		Long id = null;
+		try {
+			id = Long.parseLong(request.getParameter("town_type_id"));
+		} catch (NumberFormatException e) {
+			// No id specified, redirect successfully
+			log.debug("No id specified, redirecting to success view");
+			return ActionSupport.SUCCESS;
+		}
 		TownType townType = townTypeService.read(id);
 		List<TownTypeTranslation> townTypeTranslations = initTypeTranslations(townType);
 
