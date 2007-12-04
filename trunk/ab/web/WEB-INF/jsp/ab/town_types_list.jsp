@@ -21,12 +21,12 @@
 		</c:forEach>
 		<tr>
 			<td colspan="0">
-				<button class="btn-exit"
-						onclick="window.location='<c:url value="/dicts/create_town_type.action"/>'"
-						value="<spring:message code="common.new"/>"/>
 				<input type="submit" class="btn-exit"
 						onclick="$('ftypes').action='<c:url value="/dicts/delete_town_types.action"/>';$('ftypes').submit()"
 						value="<spring:message code="common.delete_selected"/>"/>
+				<input type="button" class="btn-exit"
+						onclick="window.location='<c:url value="/dicts/create_town_type.action"/>'"
+						value="<spring:message code="common.new"/>"/>
 			</td>
 		</tr>
 	</form>

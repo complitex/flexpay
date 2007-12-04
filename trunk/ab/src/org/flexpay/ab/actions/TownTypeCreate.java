@@ -4,17 +4,17 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.flexpay.ab.persistence.TownTypeTranslation;
-import org.flexpay.ab.persistence.CountryName;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.LangNameTranslation;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
-import org.flexpay.common.util.LanguageUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class TownTypeCreate implements ServletRequestAware {
@@ -25,7 +25,7 @@ public class TownTypeCreate implements ServletRequestAware {
 	private TownTypeService townTypeService;
 
 	public String execute() throws FlexPayException {
-		List<TownTypeTranslation> townTypeTranslations = initTypeTranslations();
+		Collection<TownTypeTranslation> townTypeTranslations = initTypeTranslations();
 
 		// Need to create new TownType
 		if (isPost()) {
@@ -48,7 +48,7 @@ public class TownTypeCreate implements ServletRequestAware {
 
 		for (Language lang : langs) {
 			TownTypeTranslation translation = new TownTypeTranslation();
-			translation.setLanguage(lang);
+			translation.setLang(lang);
 			LangNameTranslation languageName = LanguageUtil.getLanguageName(lang, prefs.getLocale());
 			translation.setTranslation(languageName);
 

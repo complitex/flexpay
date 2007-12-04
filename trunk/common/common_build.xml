@@ -76,13 +76,14 @@
 		<path refid="junit.lib" />
 	</path>
 
-	<target name="common.build.production.jar">
-		<echo message="Outer common src: ${common.dir}/${src.dir}" />
+	<target name="common.compile.production">
 		<antcall target="template.compile.production">
 			<param name="sources.dir" value="${common.dir}/${src.dir}" />
 			<reference refid="common.production.classpath" torefid="classpath" />
 		</antcall>
+	</target>
 
+	<target name="common.build.production.jar" depends="common.compile.production">
 		<fileset dir="${build.dir}/empty" id="empty_res" />
 
 		<antcall target="template.jar">
@@ -148,24 +149,24 @@
 
 	<import file="hibernate_build.xml" />
 
-	<target name="common.exportschema" depends="common.build.production.jar">
+	<target name="common.exportschema" depends="common.compile.production">
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_common.ddl.sql" />
+			<param name="src.dir" value="${common.dir}/src"/>
 			<param name="hibernate.cfg" value="${common.dir}/web/WEB-INF/hibernate.cfg.xml" />
 		</antcall>
 	</target>
 
 	<!-- Build templates -->
-	<target name="template.compile.production" depends="init.build,clean.build">
-		<echo message="Inner src: ${sources.dir}" />
+	<target name="template.compile.production" depends="init.build">
 		<javac srcdir="${sources.dir}" includes="**/*.java" destdir="${build.dir}/classes"
-			   debug="off" deprecation="on" optimize="on" source="1.5" target="1.5"
+			   deprecation="on" source="1.5" target="1.5"
 			   classpathref="classpath" />
 	</target>
 
 	<target name="template.compile.test" depends="init.build,clean.build">
 		<javac srcdir="${sources.dir}" includes="**/*.java" destdir="${build.dir}/classes"
-			   debug="on" deprecation="on" optimize="on" source="1.5" target="1.5"
+			   debug="on" deprecation="on" source="1.5" target="1.5"
 			   classpathref="classpath" />
 	</target>
 

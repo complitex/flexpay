@@ -12,11 +12,13 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+@Transactional (readOnly = true)
 public class CountryServiceImpl implements CountryService {
 
 	private static Logger log = Logger.getLogger(CountryServiceImpl.class);
@@ -24,6 +26,7 @@ public class CountryServiceImpl implements CountryService {
 	private CountryDao countryDao;
 	private CountryNameDao countryNameDao;
 
+	@Transactional (readOnly = false)
 	public Country create(List<CountryName> countryNames) {
 		Country country = new Country();
 		country.setCountryStatus(CountryStatus.Active);

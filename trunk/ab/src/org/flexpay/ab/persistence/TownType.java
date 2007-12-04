@@ -3,7 +3,11 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,7 +23,7 @@ import java.util.List;
 public class TownType implements java.io.Serializable {
 
 	private Long id;
-	private List<TownTypeTranslation> typeTranslations = Collections.emptyList();
+	private Collection<TownTypeTranslation> typeTranslations = Collections.emptyList();
 
 	/**
 	 * Constructs a new TownType.
@@ -32,8 +36,6 @@ public class TownType implements java.io.Serializable {
 	 *
 	 * @return Value for property 'id'.
 	 */
-	@Id
-	@GeneratedValue
 	public Long getId() {
 		return this.id;
 	}
@@ -52,8 +54,7 @@ public class TownType implements java.io.Serializable {
 	 *
 	 * @return Value for property 'typeTranslations'.
 	 */
-	@OneToMany (mappedBy = "townType", fetch = FetchType.EAGER)
-	public List<TownTypeTranslation> getTypeTranslations() {
+	public Collection<TownTypeTranslation> getTypeTranslations() {
 		return typeTranslations;
 	}
 
@@ -62,7 +63,7 @@ public class TownType implements java.io.Serializable {
 	 *
 	 * @param typeTranslations Value to set for property 'typeTranslations'.
 	 */
-	public void setTypeTranslations(List<TownTypeTranslation> typeTranslations) {
+	public void setTypeTranslations(Collection<TownTypeTranslation> typeTranslations) {
 		this.typeTranslations = typeTranslations;
 	}
 
