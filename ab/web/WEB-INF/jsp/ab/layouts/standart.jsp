@@ -9,6 +9,8 @@
     <tiles:useAttribute id="title" name="title" classname="java.lang.String" />
     <title><spring:message code="<%= title%>" /></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/style/fp.css"/>"/>
+	<script type="text/javascript" src="<c:url value="/js/prototype.js" />">
+	</script>
 </head>
 <body>
 

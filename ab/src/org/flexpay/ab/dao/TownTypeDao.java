@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface TownTypeDao extends GenericDao<TownType, Long> {
 
-	List<TownType> listTownTypes();
+	List<TownType> listTownTypes(int status);
 }

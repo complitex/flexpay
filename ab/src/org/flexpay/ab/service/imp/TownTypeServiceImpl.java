@@ -49,6 +49,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 			throw new IllegalArgumentException("No default language town type translation");
 		}
 
+		townType.setStatus(TownType.STATUS_ACTIVE);
 		townType.setTypeTranslations(translationList);
 
 		townTypeDao.create(townType);
@@ -80,7 +81,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 		Language language = LanguageUtil.getLanguage(locale);
 		Language defaultLang = ApplicationConfig.getInstance().getDefaultLanguage();
-		List<TownType> townTypes = townTypeDao.listTownTypes();
+		List<TownType> townTypes = townTypeDao.listTownTypes(TownType.STATUS_ACTIVE);
 		List<TownTypeTranslation> translations =
 				new ArrayList<TownTypeTranslation>(townTypes.size());
 
@@ -180,6 +181,31 @@ public class TownTypeServiceImpl implements TownTypeService {
 		}
 
 		return townType;
+	}
+
+	/**
+	 * Disable TownTypes TODO: check if there are any towns with specified type and reject
+	 * operation
+	 *
+	 * @param townTypes TownTypes to disable
+	 */
+	@Transactional (readOnly = false)
+	public void disable(Collection<TownType> townTypes) {
+		log.info(townTypes.size() + " types to disable");
+		for (TownType townType : townTypes) {
+			townType.setStatus(TownType.STATUS_DISABLED);
+			townTypeDao.update(townType);
+			log.info("Diasabled: " + townType);
+		}
+	}
+
+	/**
+	 * Get a list of available town types
+	 *
+	 * @return List of TownType
+	 */
+	public List<TownType> getTownTypes() {
+		return townTypeDao.listTownTypes(TownType.STATUS_ACTIVE);
 	}
 
 	public void setTownTypeDao(TownTypeDao townTypeDao) {

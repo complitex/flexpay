@@ -12,7 +12,7 @@
 				   var="typeName">
 			<tr>
 				<td><c:out value="${status.index + 1}"/></td>
-				<td><input type="checkbox"></td>
+				<td><input type="checkbox" name="<c:out value="town_type_${typeName.townType.id}"/>"></td>
 				<td><c:out value="${typeName.name}"/></td>
 				<td>
 					<a href="<c:url value="/dicts/edit_town_type.action?town_type_id=${typeName.townType.id}"/>"><spring:message

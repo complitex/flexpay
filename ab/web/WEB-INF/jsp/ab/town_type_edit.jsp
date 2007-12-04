@@ -13,7 +13,7 @@
 			<tr>
 				<td><c:out value="${status.index + 1}"/></td>
 				<td><c:out value="${typeName.translation.translation}"/></td>
-				<td><input type="text" name="name_<c:out value="${typeName.language.id}" />"
+				<td><input type="text" name="name_<c:out value="${typeName.lang.id}" />"
 						   value="<c:out value="${typeName.name}" />"/></td>
 			</tr>
 		</c:forEach>

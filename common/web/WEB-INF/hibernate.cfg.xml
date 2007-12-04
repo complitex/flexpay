@@ -15,7 +15,7 @@
 		</property>
 
 		<property name="hibernate.hbm2ddl.auto">validate</property>
-		<property name="hibernate.show_sql">true</property>
+		<!--<property name="hibernate.show_sql">true</property>-->
 
 		<mapping class="org.flexpay.common.persistence.Language" />
 		<mapping class="org.flexpay.common.persistence.LangNameTranslation" />

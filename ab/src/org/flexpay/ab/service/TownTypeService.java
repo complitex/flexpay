@@ -40,6 +40,13 @@ public interface TownTypeService {
 	List<TownTypeTranslation> getTownTypeTranslations(Locale locale) throws FlexPayException;
 
 	/**
+	 * Get a list of available town types
+	 *
+	 * @return List of TownType
+	 */
+	List<TownType> getTownTypes();
+
+	/**
 	 * Update town type translations
 	 *
 	 * @param townType Town Type to update trnaslations for
@@ -47,4 +54,11 @@ public interface TownTypeService {
 	 * @return Updated TownType object
 	 */
 	TownType update(TownType townType, Collection<TownTypeTranslation> townTypeTranslations);
+
+	/**
+	 * Disable TownTypes
+	 *
+	 * @param townTypes TownTypes to disable
+	 */
+	void disable(Collection<TownType> townTypes);
 }
