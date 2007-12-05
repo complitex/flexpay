@@ -195,7 +195,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 		for (TownType townType : townTypes) {
 			townType.setStatus(TownType.STATUS_DISABLED);
 			townTypeDao.update(townType);
-			log.info("Diasabled: " + townType);
+			log.info("Disabled: " + townType);
 		}
 	}
 
