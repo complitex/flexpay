@@ -3,7 +3,8 @@
 	<form id="ftypes" method="post" action="">
 		<tr>
 			<td class="th">&nbsp;</td>
-			<td class="th"><input type="checkbox" onclick="select_checkboxes(this.value)">
+			<td class="th"><input type="checkbox"
+								  onchange="FP.setCheckboxes(this.checked, 'town_type_')">
 			</td>
 			<td class="th"><spring:message code="ab.town_type_name"/></td>
 			<td class="th">&nbsp;</td>
@@ -12,7 +13,8 @@
 				   var="typeName">
 			<tr>
 				<td><c:out value="${status.index + 1}"/></td>
-				<td><input type="checkbox" name="<c:out value="town_type_${typeName.townType.id}"/>"></td>
+				<td><input type="checkbox"
+						   name="<c:out value="town_type_${typeName.townType.id}"/>"></td>
 				<td><c:out value="${typeName.name}"/></td>
 				<td>
 					<a href="<c:url value="/dicts/edit_town_type.action?town_type_id=${typeName.townType.id}"/>"><spring:message
@@ -22,11 +24,11 @@
 		<tr>
 			<td colspan="0">
 				<input type="submit" class="btn-exit"
-						onclick="$('ftypes').action='<c:url value="/dicts/delete_town_types.action"/>';$('ftypes').submit()"
-						value="<spring:message code="common.delete_selected"/>"/>
+					   onclick="$('ftypes').action='<c:url value="/dicts/delete_town_types.action"/>';$('ftypes').submit()"
+					   value="<spring:message code="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-						onclick="window.location='<c:url value="/dicts/create_town_type.action"/>'"
-						value="<spring:message code="common.new"/>"/>
+					   onclick="window.location='<c:url value="/dicts/create_town_type.action"/>'"
+					   value="<spring:message code="common.new"/>"/>
 			</td>
 		</tr>
 	</form>
