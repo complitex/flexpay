@@ -1,10 +1,13 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+
+<s:actionerror />
+
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<form id="ftypes" method="post" action="">
 		<tr>
 			<td class="th">&nbsp;</td>
 			<td class="th"><input type="checkbox"
-								  onchange="FP.setCheckboxes(this.checked, 'town_type_')">
+								  onchange="FP.setCheckboxes(this.checked, 'townTypeIds')">
 			</td>
 			<td class="th"><spring:message code="ab.town_type_name"/></td>
 			<td class="th">&nbsp;</td>
@@ -13,8 +16,8 @@
 				   var="typeName">
 			<tr>
 				<td><c:out value="${status.index + 1}"/></td>
-				<td><input type="checkbox"
-						   name="<c:out value="town_type_${typeName.townType.id}"/>"></td>
+				<td><input type="checkbox" value="<c:out value="${typeName.townType.id}"/>"
+						   name="<c:out value="townTypeIds"/>"></td>
 				<td><c:out value="${typeName.name}"/></td>
 				<td>
 					<a href="<c:url value="/dicts/edit_town_type.action?town_type_id=${typeName.townType.id}"/>"><spring:message

@@ -3,6 +3,7 @@ package org.flexpay.ab.service;
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,7 +20,7 @@ public interface TownTypeService {
 	 * @param translations TownType names translations
 	 * @return created Country object
 	 */
-	public TownType create(Collection<TownTypeTranslation> translations);
+	public TownType create(Collection<TownTypeTranslation> translations) throws FlexPayException;
 
 	/**
 	 * Read TownType object by its unique id
@@ -52,13 +53,16 @@ public interface TownTypeService {
 	 * @param townType Town Type to update trnaslations for
 	 * @param townTypeTranslations Translations set
 	 * @return Updated TownType object
+	 * @throws FlexPayException if town type translations specified are invalid
 	 */
-	TownType update(TownType townType, Collection<TownTypeTranslation> townTypeTranslations);
+	TownType update(TownType townType, Collection<TownTypeTranslation> townTypeTranslations)
+			throws FlexPayException;
 
 	/**
 	 * Disable TownTypes
 	 *
 	 * @param townTypes TownTypes to disable
+	 * @throws FlexPayExceptionContainer if failure occurs
 	 */
-	void disable(Collection<TownType> townTypes);
+	void disable(Collection<TownType> townTypes) throws FlexPayExceptionContainer;
 }
