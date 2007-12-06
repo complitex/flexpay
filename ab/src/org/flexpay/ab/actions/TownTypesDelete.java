@@ -1,60 +1,77 @@
 package org.flexpay.ab.actions;
 
-import com.opensymphony.xwork2.ActionSupport;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.service.TownTypeService;
+import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
-public class TownTypesDelete implements ServletRequestAware {
+public class TownTypesDelete extends FPActionSupport implements SessionAware {
 
-	private static Logger log = Logger.getLogger(TownTypesDelete.class);
-
-	private HttpServletRequest request;
 	private TownTypeService townTypeService;
+	private Map<String, Object> session;
 
-	public String execute() throws Exception {
-
-		if (log.isDebugEnabled()) {
-			log.debug(request.getParameterMap().toString());
-		}
+	/**
+	 * {@inheritDoc}
+	 */
+	public String execute() {
 
 		Collection<TownType> townTypesToDisable = new ArrayList<TownType>();
 		for (TownType townType : townTypeService.getTownTypes()) {
 			Long id = townType.getId();
-			String param = request.getParameter("town_type_" + id);
-
-			if (log.isDebugEnabled()) {
-				log.debug("TownType: " + id + ", param: " + param);
+			if (townTypeIds.contains(id)) {
+				townTypesToDisable.add(townType);
 			}
-
-			if (StringUtils.isBlank(param)) {
-				continue;
-			}
-			townTypesToDisable.add(townType);
 		}
 
 		if (!townTypesToDisable.isEmpty()) {
-			townTypeService.disable(townTypesToDisable);
+			try {
+				townTypeService.disable(townTypesToDisable);
+			} catch (FlexPayExceptionContainer container) {
+				addActionErrors(container);
+			}
 		} else {
-			log.debug("No town types found to disable");
+			addActionError(getText("error.no_town_types_to_disable"));
 		}
 
-		return ActionSupport.SUCCESS;
+		// Save action errors for forwarded action
+		if (!getActionErrors().isEmpty()) {
+			TownTypesList.setActionErrors(session, getActionErrors());
+		}
+
+		return SUCCESS;
+	}
+
+	private Set<Long> townTypeIds = new HashSet<Long>();
+
+	/**
+	 * Getter for property 'townTypeIds'.
+	 *
+	 * @return Value for property 'townTypeIds'.
+	 */
+	public Set<Long> getTownTypeIds() {
+		return townTypeIds;
 	}
 
 	/**
-	 * Sets the HTTP request object in implementing classes.
+	 * Setter for property 'townTypeIds'.
 	 *
-	 * @param request the HTTP request.
+	 * @param townTypeIds Value to set for property 'townTypeIds'.
 	 */
-	public void setServletRequest(HttpServletRequest request) {
-		this.request = request;
+	public void setTownTypeIds(Set<Long> townTypeIds) {
+		this.townTypeIds = townTypeIds;
+	}
+
+	/**
+	 * Sets the Map of session attributes in the implementing class.
+	 *
+	 * @param session a Map of HTTP session attribute name/value pairs.
+	 */
+	@SuppressWarnings ("unchecked")
+	public void setSession(Map session) {
+		this.session = session;
 	}
 
 	/**

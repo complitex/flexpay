@@ -1,19 +1,13 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.common.persistence.Language;
-import org.flexpay.common.persistence.LangNameTranslation;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-
-import javax.persistence.*;
+import org.flexpay.common.persistence.LangNameTranslation;
+import org.flexpay.common.persistence.Language;
 
 /**
  * TownTypeTranslation is a trnaslation of TownType to particular language
  */
-@Entity
-@Table (name = "town_type_translations_tbl", uniqueConstraints = {
-@UniqueConstraint (columnNames = {"language_id", "town_type_id"})
-		})
 public class TownTypeTranslation implements java.io.Serializable {
 
 	private Long id;
@@ -23,7 +17,9 @@ public class TownTypeTranslation implements java.io.Serializable {
 
 	private LangNameTranslation translation;
 
-	/** Constructs a new TownTypeTranslation. */
+	/**
+	 * Constructs a new TownTypeTranslation.
+	 */
 	public TownTypeTranslation() {
 	}
 

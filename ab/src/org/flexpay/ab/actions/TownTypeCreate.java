@@ -11,20 +11,21 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
+import org.flexpay.common.actions.FPActionSupport;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class TownTypeCreate implements ServletRequestAware {
+public class TownTypeCreate extends FPActionSupport implements ServletRequestAware {
 
 	private static Logger log = Logger.getLogger(TownTypeCreate.class);
 
 	private HttpServletRequest request;
 	private TownTypeService townTypeService;
 
-	public String execute() throws FlexPayException {
+	public String execute() throws Exception {
 		Collection<TownTypeTranslation> townTypeTranslations = initTypeTranslations();
 
 		// Need to create new TownType
@@ -32,8 +33,8 @@ public class TownTypeCreate implements ServletRequestAware {
 			try {
 				townTypeService.create(townTypeTranslations);
 				return ActionSupport.SUCCESS;
-			} catch (Exception e) {
-				log.info("Failed creating town type: ", e);
+			} catch (FlexPayException e) {
+				addActionError(e);
 			}
 		}
 
@@ -41,7 +42,7 @@ public class TownTypeCreate implements ServletRequestAware {
 		return ActionSupport.INPUT;
 	}
 
-	private List<TownTypeTranslation> initTypeTranslations() throws FlexPayException {
+	private List<TownTypeTranslation> initTypeTranslations() throws Exception {
 		List<Language> langs = ApplicationConfig.getInstance().getLanguages();
 		UserPreferences prefs = UserPreferences.getPreferences(request);
 		List<TownTypeTranslation> translations = new ArrayList<TownTypeTranslation>(langs.size());

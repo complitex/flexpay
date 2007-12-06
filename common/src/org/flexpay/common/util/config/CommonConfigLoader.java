@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Application configuration loader
+ */
 public class CommonConfigLoader implements ServletContextAware {
 
 	private static Logger log = Logger.getLogger(CommonConfigLoader.class);
@@ -53,11 +56,11 @@ public class CommonConfigLoader implements ServletContextAware {
 
 			ApplicationConfig config = (ApplicationConfig) digester.getRoot();
 			if ( languageDao != null ) {
-				log.info("Loading languages");
+				log.debug("Loading languages");
 				config.setLanguages(languageDao.listLanguages());
 			}
-			if (log.isInfoEnabled()) {
-				log.info("Loaded config: " + config.toString());
+			if (log.isDebugEnabled()) {
+				log.debug("Loaded config: " + config.toString());
 			}
 
 
@@ -108,7 +111,7 @@ public class CommonConfigLoader implements ServletContextAware {
 			}
 			context.setAttribute("languages", translations);
 		} else {
-			log.info("ServletContext or ApplicationConfig was not set up");
+			log.debug("ServletContext or ApplicationConfig was not set up");
 		}
 	}
 

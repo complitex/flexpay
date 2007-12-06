@@ -1,5 +1,7 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
+<s:actionerror />
+
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<form action="<c:url value='/dicts/edit_town_type.action'/>" method="post">
 		<input type="hidden" name="town_type_id" value="<c:out value="${requestScope['town_type_id']}"/>"/>

@@ -3,10 +3,6 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -14,11 +10,6 @@ import java.util.Collections;
  * TownType entity class holds a general representation of various types of localities,
  * such as towns, villages, etc.
  */
-@Entity
-@Table (name = "town_types_tbl")
-@NamedQueries ({
-@NamedQuery (name = "TownType.listTownTypes", query = "FROM TownType")
-		})
 public class TownType implements java.io.Serializable {
 
 	/**

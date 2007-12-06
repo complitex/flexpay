@@ -8,6 +8,7 @@ import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -30,7 +31,8 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * @return created Country object
 	 */
 	@Transactional (readOnly = false)
-	public TownType create(Collection<TownTypeTranslation> translations) {
+	public TownType create(Collection<TownTypeTranslation> translations)
+			throws FlexPayException {
 		TownType townType = new TownType();
 
 		Set<TownTypeTranslation> translationList = new HashSet<TownTypeTranslation>();
@@ -42,11 +44,9 @@ public class TownTypeServiceImpl implements TownTypeService {
 						hasDefaultLangTranslation || translation.getLang().isDefault();
 			}
 		}
-		if (translationList.isEmpty()) {
-			throw new IllegalArgumentException("No town type translations specified");
-		}
 		if (!hasDefaultLangTranslation) {
-			throw new IllegalArgumentException("No default language town type translation");
+			throw new FlexPayException("No default language town type translation",
+					"error.town_type_no_default_translation");
 		}
 
 		townType.setStatus(TownType.STATUS_ACTIVE);
@@ -144,11 +144,11 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * @return Updated TownType object
 	 */
 	@Transactional (readOnly = false)
-	public TownType update(TownType townType, Collection<TownTypeTranslation> translations) {
-		Set<TownTypeTranslation> translationList =
-				new HashSet<TownTypeTranslation>(translations.size());
-		List<TownTypeTranslation> translationsToDelete =
-				new ArrayList<TownTypeTranslation>(translations.size());
+	public TownType update(TownType townType, Collection<TownTypeTranslation> translations)
+			throws FlexPayException {
+		Set<TownTypeTranslation> translationList = new HashSet<TownTypeTranslation>();
+		List<TownTypeTranslation> translationsToDelete = new ArrayList<TownTypeTranslation>();
+
 		boolean hasDefaultLangTranslation = false;
 		for (TownTypeTranslation translation : translations) {
 			if (StringUtils.isNotBlank(translation.getName())) {
@@ -160,7 +160,8 @@ public class TownTypeServiceImpl implements TownTypeService {
 			}
 		}
 		if (!hasDefaultLangTranslation) {
-			throw new IllegalArgumentException("No default language town type translation");
+			throw new FlexPayException("No default language town type translation",
+					"error.town_type_no_default_translation");
 		}
 
 		townType.setTypeTranslations(translationList);
@@ -190,12 +191,18 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * @param townTypes TownTypes to disable
 	 */
 	@Transactional (readOnly = false)
-	public void disable(Collection<TownType> townTypes) {
-		log.info(townTypes.size() + " types to disable");
+	public void disable(Collection<TownType> townTypes) throws FlexPayExceptionContainer {
+		if (log.isDebugEnabled()) {
+			log.debug(townTypes.size() + " types to disable");
+		}
+
 		for (TownType townType : townTypes) {
 			townType.setStatus(TownType.STATUS_DISABLED);
 			townTypeDao.update(townType);
-			log.info("Disabled: " + townType);
+
+			if (log.isDebugEnabled()) {
+				log.debug("Disabled: " + townType);
+			}
 		}
 	}
 
