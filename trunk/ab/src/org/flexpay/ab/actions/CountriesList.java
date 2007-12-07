@@ -2,7 +2,7 @@ package org.flexpay.ab.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.flexpay.ab.persistence.CountryName;
+import org.flexpay.ab.persistence.CountryNameTranslation;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.config.UserPreferences;
@@ -17,7 +17,8 @@ public class CountriesList implements ServletRequestAware {
 
 	public String execute() throws FlexPayException {
 		UserPreferences prefs = UserPreferences.getPreferences(request);
-		List<CountryName> countryNames = countryService.getCountries(prefs.getLocale());
+		List<CountryNameTranslation> countryNames =
+				countryService.getCountries(prefs.getLocale());
 		request.setAttribute("country_names", countryNames);
 
 		return ActionSupport.SUCCESS;

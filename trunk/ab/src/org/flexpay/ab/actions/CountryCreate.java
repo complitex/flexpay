@@ -3,7 +3,7 @@ package org.flexpay.ab.actions;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.flexpay.ab.persistence.CountryName;
+import org.flexpay.ab.persistence.CountryNameTranslation;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.LangNameTranslation;
@@ -24,7 +24,7 @@ public class CountryCreate implements ServletRequestAware {
 	private HttpServletRequest request;
 
 	public String execute() throws FlexPayException {
-		List<CountryName> countryNames = initCountryNames();
+		List<CountryNameTranslation> countryNames = initCountryNames();
 
 		// Need to create new Country
 		if (isPost()) {
@@ -46,13 +46,13 @@ public class CountryCreate implements ServletRequestAware {
 	 * @return List of CountryName
 	 * @throws FlexPayException if failure occurs
 	 */
-	private List<CountryName> initCountryNames() throws FlexPayException {
+	private List<CountryNameTranslation> initCountryNames() throws FlexPayException {
 		List<Language> langs = ApplicationConfig.getInstance().getLanguages();
 		UserPreferences prefs = UserPreferences.getPreferences(request);
-		List<CountryName> countryNames = new ArrayList<CountryName>(langs.size());
+		List<CountryNameTranslation> countryNames = new ArrayList<CountryNameTranslation>();
 		for (Language lang : langs) {
-			CountryName countryName = new CountryName();
-			countryName.setLanguage(lang);
+			CountryNameTranslation countryName = new CountryNameTranslation();
+			countryName.setLang(lang);
 			LangNameTranslation languageName = LanguageUtil.getLanguageName(lang, prefs.getLocale());
 			countryName.setTranslation(languageName);
 

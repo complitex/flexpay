@@ -2,6 +2,9 @@ package org.flexpay.ab.persistence;
 // Generated 15.11.2007 14:59:52 by Hibernate Tools 3.2.0.b11
 
 
+import org.flexpay.ab.persistence.temp.Person;
+import org.flexpay.ab.persistence.temp.PersonIdentity;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

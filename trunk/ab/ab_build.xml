@@ -34,6 +34,10 @@
 		<path refid="ab.production.classpath" />
 	</path>
 
+	<target name="ab.clean.build">
+		<antcall target="clean.build" />
+	</target>
+
 	<target name="ab.compile.production">
 		<antcall target="template.compile.production">
 			<param name="sources.dir" value="${ab.dir}/${src.dir}" />
@@ -43,7 +47,7 @@
 
 	<!-- Build targets -->
 	<target name="ab.build.production.jar"
-			depends="common.build.production.jar,ab.compile.production">
+			depends="common.build.production.jar,ab.clean.build,ab.compile.production">
 		<fileset dir="${build.dir}/empty" id="empty_res" />
 
 		<antcall target="template.jar">
@@ -86,6 +90,7 @@
 		<fileset id="ab.web.resources" dir="${ab.dir}/web" />
 		<antcall target="template.prepare.war">
 			<param name="to_dir" value="" />
+			<param name="src.i18n.dir" value="${build.dir}/empty" />
 			<reference refid="ab.web.resources" torefid="resources" />
 		</antcall>
 
@@ -94,6 +99,7 @@
 		</fileset>
 		<antcall target="template.prepare.war">
 			<param name="to_dir" value="/WEB-INF/classes" />
+			<param name="src.i18n.dir" value="${ab.dir}/${src.dir}" />
 			<reference refid="ab.classes.resources" torefid="resources" />
 		</antcall>
 

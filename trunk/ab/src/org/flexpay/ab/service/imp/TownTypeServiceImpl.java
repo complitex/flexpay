@@ -50,7 +50,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 		}
 
 		townType.setStatus(TownType.STATUS_ACTIVE);
-		townType.setTypeTranslations(translationList);
+		townType.setTranslations(translationList);
 
 		townTypeDao.create(townType);
 		for (TownTypeTranslation translation : translationList) {
@@ -108,7 +108,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 			TownType townType, Language lang, Language defaultLang) {
 		TownTypeTranslation defaultTranslation = null;
 
-		Collection<TownTypeTranslation> names = townType.getTypeTranslations();
+		Collection<TownTypeTranslation> names = townType.getTranslations();
 		log.debug("Gettting translation: " + lang.getLangIsoCode() + " : " + names);
 		for (TownTypeTranslation translation : names) {
 			if (lang.equals(translation.getLang())) {
@@ -164,7 +164,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 					"error.town_type_no_default_translation");
 		}
 
-		townType.setTypeTranslations(translationList);
+		townType.setTranslations(translationList);
 
 		for (TownTypeTranslation translation : translationList) {
 			if (translation.getId() == null) {

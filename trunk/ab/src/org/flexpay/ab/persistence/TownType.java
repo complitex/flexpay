@@ -18,13 +18,13 @@ public class TownType implements java.io.Serializable {
 	public static final int STATUS_ACTIVE = 0;
 
 	/**
-	 * Diasabled town type status
+	 * Disabled town type status
 	 */
 	public static final int STATUS_DISABLED = 1;
 
 	private Long id;
 	private int status;
-	private Collection<TownTypeTranslation> typeTranslations = Collections.emptyList();
+	private Collection<TownTypeTranslation> translations = Collections.emptyList();
 
 	/**
 	 * Constructs a new TownType.
@@ -55,17 +55,17 @@ public class TownType implements java.io.Serializable {
 	 *
 	 * @return Value for property 'typeTranslations'.
 	 */
-	public Collection<TownTypeTranslation> getTypeTranslations() {
-		return typeTranslations;
+	public Collection<TownTypeTranslation> getTranslations() {
+		return translations;
 	}
 
 	/**
 	 * Setter for property 'typeTranslations'.
 	 *
-	 * @param typeTranslations Value to set for property 'typeTranslations'.
+	 * @param translations Value to set for property 'typeTranslations'.
 	 */
-	public void setTypeTranslations(Collection<TownTypeTranslation> typeTranslations) {
-		this.typeTranslations = typeTranslations;
+	public void setTranslations(Collection<TownTypeTranslation> translations) {
+		this.translations = translations;
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class TownType implements java.io.Serializable {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
 				.append("Id", id)
 				.append("Status", status)
-				.append("Translations", typeTranslations.toArray())
+				.append("Translations", translations.toArray())
 				.toString();
 	}
 }

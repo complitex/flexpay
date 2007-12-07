@@ -106,7 +106,7 @@ public class TownTypeEdit extends FPActionSupport
 	 */
 	private TownTypeTranslation getTranslation(TownType townType, Language lang) {
 		// Check if translation to requested lang already exists
-		for (TownTypeTranslation translation : townType.getTypeTranslations()) {
+		for (TownTypeTranslation translation : townType.getTranslations()) {
 			if (translation.getLang().equals(lang)) {
 				return translation;
 			}
