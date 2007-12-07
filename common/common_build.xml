@@ -76,6 +76,10 @@
 		<path refid="junit.lib" />
 	</path>
 
+	<target name="common.clean.build">
+		<antcall target="clean.build" />
+	</target>
+
 	<target name="common.compile.production">
 		<antcall target="template.compile.production">
 			<param name="sources.dir" value="${common.dir}/${src.dir}" />
@@ -83,7 +87,7 @@
 		</antcall>
 	</target>
 
-	<target name="common.build.production.jar" depends="common.compile.production">
+	<target name="common.build.production.jar" depends="common.clean.build,common.compile.production">
 		<fileset dir="${build.dir}/empty" id="empty_res" />
 
 		<antcall target="template.jar">
@@ -134,6 +138,7 @@
 		<fileset id="common.web.resources" dir="${common.dir}/web" />
 		<antcall target="template.prepare.war">
 			<param name="to_dir" value="" />
+			<param name="src.i18n.dir" value="${build.dir}/empty" />
 			<reference refid="common.web.resources" torefid="resources" />
 		</antcall>
 
@@ -143,6 +148,7 @@
 		</fileset>
 		<antcall target="template.prepare.war">
 			<param name="to_dir" value="/WEB-INF/classes" />
+			<param name="src.i18n.dir" value="${common.dir}/${src.dir}" />
 			<reference refid="common.classes.resources" torefid="resources" />
 		</antcall>
 	</target>
@@ -152,8 +158,9 @@
 	<target name="common.exportschema" depends="common.compile.production">
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_common.ddl.sql" />
-			<param name="src.dir" value="${common.dir}/src"/>
-			<param name="hibernate.cfg" value="${common.dir}/web/WEB-INF/hibernate.cfg.xml" />
+			<param name="src.dir" value="${common.dir}/src" />
+			<param name="hibernate.cfg"
+				   value="${common.dir}/web/WEB-INF/hibernate.cfg.xml" />
 		</antcall>
 	</target>
 
@@ -176,6 +183,7 @@
 		<mkdir dir="${build.dir}/lib" />
 		<mkdir dir="${build.dir}/web" />
 		<mkdir dir="${build.dir}/docs" />
+		<mkdir dir="${build.dir}/src" />
 		<mkdir dir="${build.dir}/empty" />
 	</target>
 
@@ -213,6 +221,13 @@
 	<target name="template.prepare.war" depends="init.build">
 		<copy todir="${build.dir}/web${to_dir}" overwrite="true">
 			<fileset refid="resources" />
+		</copy>
+		<echo message="${src.i18n.dir}" />
+		<native2ascii encoding="utf-8" src="${src.i18n.dir}"
+					  dest="${build.dir}/src"
+					  includes="**/*.properties" />
+		<copy todir="${build.dir}/web/WEB-INF/classes" overwrite="true">
+			<fileset dir="${build.dir}/src" />
 		</copy>
 	</target>
 

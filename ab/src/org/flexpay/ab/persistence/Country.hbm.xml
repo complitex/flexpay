@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.ab.persistence">
+
+	<class name="Country" table="countries_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status" not-null="true" />
+		<set name="countryNames" inverse="true" lazy="false">
+			<key column="country_id" not-null="true" />
+			<one-to-many class="CountryNameTranslation" />
+		</set>
+		<set name="regions" inverse="true">
+			<key column="country_id" not-null="true" />
+			<one-to-many class="Region" />
+		</set>
+	</class>
+
+	<class name="CountryNameTranslation" table="country_name_translations_tbl"
+		   optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<properties name="lang_town_type_pair" unique="true">
+			<many-to-one name="country" column="country_id" lazy="false"
+						 fetch="join" not-null="true" />
+			<many-to-one name="lang" column="language_id" lazy="false" fetch="join"
+						 not-null="true" />
+		</properties>
+	</class>
+
+	<query name="Country.listCountries">from Country</query>
+
+</hibernate-mapping>

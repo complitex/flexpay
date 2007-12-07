@@ -2,6 +2,10 @@ package org.flexpay.ab.persistence;
 // Generated 15.11.2007 14:59:52 by Hibernate Tools 3.2.0.b11
 
 
+import org.flexpay.ab.persistence.temp.Buildings;
+import org.flexpay.ab.persistence.temp.District;
+import org.flexpay.ab.persistence.temp.Town;
+
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;

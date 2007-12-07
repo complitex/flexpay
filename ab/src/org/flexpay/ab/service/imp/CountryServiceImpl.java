@@ -5,8 +5,7 @@ import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.CountryDao;
 import org.flexpay.ab.dao.CountryNameDao;
 import org.flexpay.ab.persistence.Country;
-import org.flexpay.ab.persistence.CountryName;
-import org.flexpay.ab.persistence.CountryStatus;
+import org.flexpay.ab.persistence.CountryNameTranslation;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
@@ -14,9 +13,7 @@ import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Transactional (readOnly = true)
 public class CountryServiceImpl implements CountryService {
@@ -27,12 +24,12 @@ public class CountryServiceImpl implements CountryService {
 	private CountryNameDao countryNameDao;
 
 	@Transactional (readOnly = false)
-	public Country create(List<CountryName> countryNames) {
+	public Country create(List<CountryNameTranslation> countryNames) {
 		Country country = new Country();
-		country.setCountryStatus(CountryStatus.Active);
+		country.setStatus(Country.STATUS_ACTIVE);
 
-		List<CountryName> names = new ArrayList<CountryName>(countryNames.size());
-		for(CountryName name : countryNames) {
+		Set<CountryNameTranslation> names = new HashSet<CountryNameTranslation>();
+		for(CountryNameTranslation name : countryNames) {
 			if (!StringUtils.isBlank(name.getName())) {
 				name.setCountry(country);
 				names.add(name);
@@ -44,7 +41,7 @@ public class CountryServiceImpl implements CountryService {
 
 		// Save country
 		countryDao.create(country);
-		for(CountryName name : names) {
+		for(CountryNameTranslation name : names) {
 			countryNameDao.create(name);
 		}
 		country.setCountryNames(names);
@@ -56,35 +53,34 @@ public class CountryServiceImpl implements CountryService {
 		return country;
 	}
 
-	public List<CountryName> getCountries(Locale locale) throws FlexPayException {
+	public List<CountryNameTranslation> getCountries(Locale locale) throws FlexPayException {
 		Language language = LanguageUtil.getLanguage(locale);
 		Language defaultLang = ApplicationConfig.getInstance().getDefaultLanguage();
 		List<Country> countries = countryDao.listCountries();
-		List<CountryName> countryNameList = new ArrayList<CountryName>(countries.size());
+		List<CountryNameTranslation> countryNameList = new ArrayList<CountryNameTranslation>();
 
 		for (Country country : countries) {
-			CountryName name = getCountryName(country, language, defaultLang);
+			CountryNameTranslation name = getCountryName(country, language, defaultLang);
 			if ( name == null ) {
 				log.error("No name for country: " + language.getLangIsoCode() + " : " +
 						  defaultLang.getLangIsoCode() + ", " + country);
 				continue;
 			}
-			name.setTranslation(LanguageUtil.getLanguageName(name.getLanguage(), locale));
+			name.setTranslation(LanguageUtil.getLanguageName(name.getLang(), locale));
 			countryNameList.add(name);
 		}
 
 		return countryNameList;
 	}
 
-	private CountryName getCountryName(Country country, Language lang, Language defaultLang) {
-		CountryName defaultName = null;
+	private CountryNameTranslation getCountryName(Country country, Language lang, Language defaultLang) {
+		CountryNameTranslation defaultName = null;
 
-		List<CountryName> names = country.getCountryNames();
-		for (CountryName name : names) {
-			if (lang.equals(name.getLanguage())) {
+		for (CountryNameTranslation name : country.getCountryNames()) {
+			if (lang.equals(name.getLang())) {
 				return name;
 			}
-			if (defaultLang.equals(name.getLanguage())) {
+			if (defaultLang.equals(name.getLang())) {
 				defaultName = name;
 			}
 		}

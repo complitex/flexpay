@@ -1,7 +1,7 @@
 package org.flexpay.ab.service;
 
-import org.flexpay.ab.persistence.CountryName;
 import org.flexpay.ab.persistence.Country;
+import org.flexpay.ab.persistence.CountryNameTranslation;
 import org.flexpay.common.exception.FlexPayException;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public interface CountryService {
 	 * @param countryNames Country name translations
 	 * @return created Country object
 	 */
-	Country create(List<CountryName> countryNames);
+	Country create(List<CountryNameTranslation> countryNames);
 
 	/**
 	 * Get countries translations for specified locale, if translation for specified locale
@@ -25,5 +25,5 @@ public interface CountryService {
 	 * @return List of countries
 	 * @throws FlexPayException if failure occurs
 	 */
-	List<CountryName> getCountries(Locale locale) throws FlexPayException;
+	List<CountryNameTranslation> getCountries(Locale locale) throws FlexPayException;
 }

@@ -4,7 +4,8 @@
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-	<constant name="struts.custom.i18n.resources" value="i18n/common-massages,org/flexpay/ab/i18n/errors" />
+	<constant name="struts.custom.i18n.resources"
+			  value="org/flexpay/common/i18n/common-messages,org/flexpay/ab/i18n/errors" />
 
 	<package name="ab" namespace="/ab" extends="common">
 

@@ -120,8 +120,8 @@ h3
 	}	
 li
 	{
-	padding-left: 0.5em; padding-top: 0px;
-	margin-bottom: 0.5em; margin-left: 0px;
+	padding-left: 0.5em; padding-top: 0;
+	margin-bottom: 0.5em; margin-left: 0;
 	}
 
 
@@ -209,7 +209,7 @@ ul.docs
 .explorer
 	{ padding: 5px; background: #f4f9f9; border: 1px solid #dae1e1; }
 .fieldset
-	{ border: 1px solid #dae1e1; padding: 0 15 0 15px; }
+	{ border: 1px solid #dae1e1; padding: 0 15px 0 15px; }
 .legend
 	{ font-family: tahoma, sans-serif; font-size: 0.8em; font-weight: bold; background: none; }
 .cols_1
@@ -223,16 +223,20 @@ ul.docs
 .col_2s
 	{ height: 40px; font-family: tahoma, sans-serif; font-size: 0.8em; background: #ebf2f2; }
 .th
-	{ background: #e2e7e7; height: 25px; border-bottom: 3px solid #4a4f4f; 
-	font-size: 80%; font-family: tahoma, tahoma, sans-serif; font-weight: bold; color: #000; height: 30px; }
+	{ background: #e2e7e7;
+	border-bottom: 3px solid #4a4f4f;
+	font-size: 80%; font-family: tahoma, tahoma, sans-serif;
+	font-weight: bold; color: #000; height: 30px; }
 .th_s
-	{ background: #d9dede; height: 25px; border-bottom: 3px solid #4a4f4f; 
-	font-size: 80%; font-family: tahoma, tahoma, sans-serif; font-weight: bold; color: #000; height: 30px;  }
+	{ background: #d9dede;
+	border-bottom: 3px solid #4a4f4f;
+	font-size: 80%; font-family: tahoma, tahoma, sans-serif;
+	font-weight: bold; color: #000; height: 30px;  }
 
 .text-field
 	{ border: 1px solid #dae1e1; }
 .text-field-padding
-	{ padding: 0 15 0 15px; }
+	{ padding: 0 15px 0 15px; }
 
 .btn-exit
 	{ 

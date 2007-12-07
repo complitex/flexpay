@@ -1,5 +1,7 @@
 package org.flexpay.ab.persistence;
 
+import org.flexpay.ab.persistence.temp.PersonIdentity;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;

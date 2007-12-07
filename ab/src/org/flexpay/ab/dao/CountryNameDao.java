@@ -1,7 +1,7 @@
 package org.flexpay.ab.dao;
 
-import org.flexpay.ab.persistence.CountryName;
+import org.flexpay.ab.persistence.CountryNameTranslation;
 import org.flexpay.common.dao.GenericDao;
 
-public interface CountryNameDao extends GenericDao<CountryName, Long> {
+public interface CountryNameDao extends GenericDao<CountryNameTranslation, Long> {
 }
