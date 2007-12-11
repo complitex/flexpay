@@ -6,15 +6,20 @@
 
 	<constant name="struts.objectFactory" value="spring" />
 	<constant name="struts.devMode" value="true" />
-	<constant name="struts.custom.i18n.resources"
-			  value="org/flexpay/common/i18n/common-messages" />
+	<constant name="struts.custom.i18n.resources" value="/i18n/common-massages" />
+	<constant name="struts.ui.theme" value="simple" />
 
-	<package name="common" namespace="/common" extends="tiles-default">
+    <package name="common" namespace="/common" extends="tiles-default">
 
-		<interceptors>
-			<interceptor name="flexpayRoles"
-						 class="org.flexpay.common.actions.interceptor.FlexpayRolesInterceptor" />
-		</interceptors>
+        <interceptors>
+            <interceptor name="UserPreferencesInterceptor" class="org.flexpay.common.actions.interceptor.UserPreferencesInterceptor"/>
+            <interceptor name="flexpayRoles" class="org.flexpay.common.actions.interceptor.FlexpayRolesInterceptor"/>
+            <interceptor-stack name="commonDefaultStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="UserPreferencesInterceptor"/>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="commonDefaultStack"/>
 
 		<action name="welcome">
 			<result type="tiles">common.welcome</result>
