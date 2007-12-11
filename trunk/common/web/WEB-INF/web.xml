@@ -31,6 +31,7 @@
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
+	 
 	<listener>
 		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
 	</listener>
@@ -68,8 +69,14 @@
 	<filter-mapping>
 		<filter-name>actionFilter</filter-name>
 		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
 	</filter-mapping>
+	
 
+     
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>secure-resource</web-resource-name>
@@ -82,6 +89,7 @@
         </auth-constraint>
 
     </security-constraint>
+    
 
 
     <security-role>
