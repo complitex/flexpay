@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.ab.persistence">
+
+	<class name="StreetType" table="street_types_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status" not-null="true" />
+		<set name="typeTranslations" inverse="true" lazy="false">
+			<key column="street_type_id" />
+			<one-to-many class="StreetTypeTranslation" />
+		</set>
+	</class>
+
+	<class name="StreetTypeTranslation" table="street_type_translations_tbl"
+		   optimistic-lock="version">
+		<id name="id" column="ID">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<properties name="lang_street_type_pair" unique="true">
+			<many-to-one name="lang" column="language_id" lazy="false" fetch="join"
+						 class="org.flexpay.common.persistence.Language" />
+			<many-to-one name="streetType" class="StreetType" column="street_type_id"
+						 lazy="false" fetch="join" />
+		</properties>
+	</class>
+
+	<query name="StreetType.listStreetTypes">from StreetType s where s.status = ?</query>
+
+</hibernate-mapping>
