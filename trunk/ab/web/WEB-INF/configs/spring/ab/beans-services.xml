@@ -14,5 +14,10 @@
 		<property name="townTypeDao" ref="townTypeDAO" />
 		<property name="townTypeTranslationDao" ref="townTypeTranslationDao" />
 	</bean>
+	
+	<bean id="streetTypeService" class="org.flexpay.ab.service.imp.StreetTypeServiceImpl">
+		<property name="streetTypeDao" ref="streetTypeDAO" />
+		<property name="streetTypeTranslationDao" ref="streetTypeTranslationDao" />
+	</bean>
 
 </beans>

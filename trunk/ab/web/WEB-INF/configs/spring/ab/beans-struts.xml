@@ -36,5 +36,10 @@
 	<bean id="deleteTownTypesAction" class="org.flexpay.ab.actions.TownTypesDelete" scope="prototype">
 		<property name="townTypeService" ref="townTypeService" />
 	</bean>
+	
+	<!-- Street types -->
+	<bean id="listStreetTypesAction" class="org.flexpay.ab.actions.StreetTypesListAction" scope="prototype">
+		<property name="streetTypeService" ref="streetTypeService" />
+	</bean>
 
 </beans>
