@@ -9,9 +9,8 @@ import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.LanguageUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.util.TranslationUtil;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -28,7 +27,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * Create TownType
 	 *
 	 * @param translations TownType names translations
-	 * @return created Country object
+	 * @return created TownType object
 	 */
 	@Transactional (readOnly = false)
 	public TownType create(Collection<TownTypeTranslation> translations)
@@ -71,16 +70,13 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 *
 	 * @param locale Locale to get translations for
 	 * @return List of TownTypes
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          if failure occurs
+	 * @throws FlexPayException if failure occurs
 	 */
 	public List<TownTypeTranslation> getTownTypeTranslations(Locale locale)
 			throws FlexPayException {
 
 		log.debug("Getting list of TownTypes");
 
-		Language language = LanguageUtil.getLanguage(locale);
-		Language defaultLang = ApplicationConfig.getInstance().getDefaultLanguage();
 		List<TownType> townTypes = townTypeDao.listTownTypes(TownType.STATUS_ACTIVE);
 		List<TownTypeTranslation> translations =
 				new ArrayList<TownTypeTranslation>(townTypes.size());
@@ -90,40 +86,18 @@ public class TownTypeServiceImpl implements TownTypeService {
 		}
 
 		for (TownType townType : townTypes) {
-			TownTypeTranslation translation = getTypeTranslation(townType, language, defaultLang);
+			TownTypeTranslation translation = (TownTypeTranslation) TranslationUtil
+					.getTranslation(townType.getTranslations(), locale);
 			if (translation == null) {
-				log.error("No name for town type: " + language.getLangIsoCode() + " : " +
-						  defaultLang.getLangIsoCode() + ", " + townType);
+				log.error("No name for town type: " + townType);
 				continue;
 			}
-			translation.setTranslation(
+			translation.setLangTranslation(
 					LanguageUtil.getLanguageName(translation.getLang(), locale));
 			translations.add(translation);
 		}
 
 		return translations;
-	}
-
-	private TownTypeTranslation getTypeTranslation(
-			TownType townType, Language lang, Language defaultLang) {
-		TownTypeTranslation defaultTranslation = null;
-
-		Collection<TownTypeTranslation> names = townType.getTranslations();
-		log.debug("Gettting translation: " + lang.getLangIsoCode() + " : " + names);
-		for (TownTypeTranslation translation : names) {
-			if (lang.equals(translation.getLang())) {
-				log.debug("Found translation: " + translation);
-				return translation;
-			}
-			if (defaultLang.equals(translation.getLang())) {
-				log.debug("Found default translation: " + translation);
-				defaultTranslation = translation;
-			}
-
-			log.debug("Translation is invalid: " + translation);
-		}
-
-		return defaultTranslation;
 	}
 
 	/**

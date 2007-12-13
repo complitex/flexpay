@@ -2,6 +2,7 @@ package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.builder.EqualsBuilder;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -105,11 +106,27 @@ public class Country implements Serializable {
 	 * {@inheritDoc}
 	 */
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 				.append("id", id)
 				.append("Status", status)
 				.append("Names", countryNames.toArray())
 				.append("Regions", regions.toArray())
 				.toString();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (! (obj instanceof Country)) {
+			return false;
+		}
+
+		Country country = (Country) obj;
+		return new EqualsBuilder()
+				.append(status, country.status)
+				.append(countryNames, country.getCountryNames())
+				.isEquals();
 	}
 }

@@ -5,7 +5,7 @@
 <struts>
 
 	<constant name="struts.custom.i18n.resources"
-			  value="org/flexpay/common/i18n/common-messages,org/flexpay/ab/i18n/errors" />
+			  value="org/flexpay/common/i18n/common-messages,org/flexpay/ab/i18n/errors,org/flexpay/ab/i18n/messages" />
 
 	<package name="ab" namespace="/ab" extends="common">
 
@@ -32,7 +32,7 @@
 
 	</package>
 
-	<package name="country" namespace="/dicts" extends="tiles-default">
+	<package name="countries" namespace="/dicts" extends="tiles-default">
 
 		<action name="list_countries" class="listCountriesAction">
 			<result type="tiles">ab.country.list</result>
@@ -41,6 +41,28 @@
 		<action name="create_country" class="createCountryAction">
 			<result type="redirect">list_countries.action</result>
 			<result type="tiles" name="input">ab.country.create</result>
+		</action>
+
+	</package>
+
+	<package name="regions" namespace="/dicts" extends="tiles-default">
+
+		<action name="list_regions" class="listRegionsAction">
+			<result type="tiles">ab.regions.list</result>
+		</action>
+
+		<action name="create_region" class="createRegionAction">
+			<result type="redirect">list_regions.action</result>
+			<result type="tiles" name="input">ab.region.create</result>
+		</action>
+
+		<action name="edit_region" class="editRegionAction">
+			<result type="redirect">list_regions.action</result>
+			<result type="tiles" name="input">ab.region.edit</result>
+		</action>
+
+		<action name="delete_regions" class="deleteRegionsAction">
+			<result type="redirect">list_regions.action</result>
 		</action>
 
 	</package>
@@ -64,6 +86,7 @@
 		<action name="delete_town_types" class="deleteTownTypesAction">
 			<result type="redirect">list_town_types.action</result>
 		</action>
+
 	</package>
 	
 	<package name="street_types" namespace="/dicts" extends="common">

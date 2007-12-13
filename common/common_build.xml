@@ -167,7 +167,7 @@
 	<!-- Build templates -->
 	<target name="template.compile.production" depends="init.build">
 		<javac srcdir="${sources.dir}" includes="**/*.java" destdir="${build.dir}/classes"
-			   deprecation="on" source="1.5" target="1.5"
+			   deprecation="on" source="1.5" target="1.5" debug="on"
 			   classpathref="classpath" />
 	</target>
 

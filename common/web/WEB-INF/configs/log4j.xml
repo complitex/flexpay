@@ -19,9 +19,4 @@
 		<appender-ref ref="flexpay" />
 	</root>
 	
-	<logger name="com.opensymphony.xwork2.interceptor.ConversionErrorInterceptor">
-		<level value="debug" />
-		<appender-ref ref="flexpay"/>
-	</logger>
-
 </log4j:configuration>

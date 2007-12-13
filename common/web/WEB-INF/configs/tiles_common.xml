@@ -3,8 +3,6 @@
 		"http://struts.apache.org/dtds/tiles-config_2_0.dtd">
 <tiles-definitions>
 
-
-
     <definition name="common.layout.simple" template="/WEB-INF/jsp/common/layouts/simple.jsp">
         <put-attribute name="title" value="Flexpay common" />
         <put-attribute name="header" value="/WEB-INF/jsp/common/header.jsp" />
@@ -22,17 +20,6 @@
 
     <definition name="common.welcome" extends="common.layout.simple">
 		<put-attribute name="body" value="/WEB-INF/jsp/common/welcome.jsp" />
-	</definition>
-
-
-    <definition name="page" template="/WEB-INF/jsp/include/layout.jsp">
-		<put-attribute name="header" value="/WEB-INF/jsp/include/header.jsp" />
-		<put-attribute name="menu" value="/WEB-INF/jsp/include/menu.jsp" />
-		<put-attribute name="footer" value="/WEB-INF/jsp/include/footer.jsp" />
-	</definition>
-
-	<definition name="root" extends="page">
-		<put-attribute name="content" value="/WEB-INF/jsp/include/default_content.jsp" />
 	</definition>
 
 </tiles-definitions>

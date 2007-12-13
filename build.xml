@@ -8,6 +8,10 @@
 
 		<antcall target="common.runtests" />
 		<antcall target="ab.runtests" />
+
+		<!-- Build DLL schemas -->
+		<antcall target="common.exportschema" />
+		<antcall target="ab.exportschema" />
 	</target>
 
 </project>

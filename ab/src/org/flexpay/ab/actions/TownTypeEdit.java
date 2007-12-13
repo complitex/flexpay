@@ -1,6 +1,5 @@
 package org.flexpay.ab.actions;
 
-import com.opensymphony.xwork2.ActionSupport;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
@@ -38,14 +37,14 @@ public class TownTypeEdit extends FPActionSupport
 			log.debug("No id specified, redirecting to success view");
 			addActionError(getText("error.town_type_no_id"));
 			TownTypesList.setActionErrors(session, getActionErrors());
-			return ActionSupport.SUCCESS;
+			return SUCCESS;
 		}
 
 		TownType townType = townTypeService.read(id);
 		if (townType == null) {
 			addActionError(getText("error.town_type_invalid_id"));
 			TownTypesList.setActionErrors(session, getActionErrors());
-			return ActionSupport.SUCCESS;
+			return SUCCESS;
 		}
 
 		List<TownTypeTranslation> townTypeTranslations = initTypeTranslations(townType);
@@ -54,7 +53,7 @@ public class TownTypeEdit extends FPActionSupport
 		if (isPost()) {
 			try {
 				townTypeService.update(townType, townTypeTranslations);
-				return ActionSupport.SUCCESS;
+				return SUCCESS;
 			} catch (FlexPayException e) {
 				log.info("Failed editing town type: ", e);
 				addActionError(e);
@@ -63,7 +62,7 @@ public class TownTypeEdit extends FPActionSupport
 
 		request.setAttribute("town_names", townTypeTranslations);
 		request.setAttribute("town_type_id", id);
-		return ActionSupport.INPUT;
+		return INPUT;
 	}
 
 	/**
@@ -84,7 +83,7 @@ public class TownTypeEdit extends FPActionSupport
 			TownTypeTranslation translation = getTranslation(townType, lang);
 			LangNameTranslation languageName = LanguageUtil.getLanguageName(
 					lang, prefs.getLocale());
-			translation.setTranslation(languageName);
+			translation.setLangTranslation(languageName);
 
 			// Actually got a form, extract data
 			if (isPost()) {

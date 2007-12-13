@@ -19,6 +19,7 @@ public interface TownTypeService {
 	 *
 	 * @param translations TownType names translations
 	 * @return created Country object
+	 * @throws FlexPayException if failure occurs
 	 */
 	public TownType create(Collection<TownTypeTranslation> translations) throws FlexPayException;
 

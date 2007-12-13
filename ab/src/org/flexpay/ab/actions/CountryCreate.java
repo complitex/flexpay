@@ -54,7 +54,7 @@ public class CountryCreate implements ServletRequestAware {
 			CountryNameTranslation countryName = new CountryNameTranslation();
 			countryName.setLang(lang);
 			LangNameTranslation languageName = LanguageUtil.getLanguageName(lang, prefs.getLocale());
-			countryName.setTranslation(languageName);
+			countryName.setLangTranslation(languageName);
 
 			// Actually got a form, extract data
 			if (isPost()) {

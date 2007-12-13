@@ -5,43 +5,33 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.LangNameTranslation;
-import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Translation;
 
 import java.io.Serializable;
 
-public class CountryNameTranslation implements Serializable {
+public class CountryNameTranslation extends Translation implements Serializable {
 	private Long id;
-	private Language lang;
 	private Country country;
-	private String name;
 	private String shortName;
 
-	private transient LangNameTranslation translation;
+	private transient LangNameTranslation langTranslation;
 
+	/**
+	 * Getter for property 'id'.
+	 *
+	 * @return Value for property 'id'.
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * Setter for property 'id'.
+	 *
+	 * @param id Value to set for property 'id'.
+	 */
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	/**
-	 * Getter for property 'name'.
-	 *
-	 * @return Value for property 'name'.
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * Setter for property 'name'.
-	 *
-	 * @param name Value to set for property 'name'.
-	 */
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	/**
@@ -60,24 +50,6 @@ public class CountryNameTranslation implements Serializable {
 	 */
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
-	}
-
-	/**
-	 * Getter for property 'language'.
-	 *
-	 * @return Value for property 'language'.
-	 */
-	public Language getLang() {
-		return lang;
-	}
-
-	/**
-	 * Setter for property 'language'.
-	 *
-	 * @param lang Value to set for property 'language'.
-	 */
-	public void setLang(Language lang) {
-		this.lang = lang;
 	}
 
 	/**
@@ -103,39 +75,45 @@ public class CountryNameTranslation implements Serializable {
 	 *
 	 * @return Value for property 'translation'.
 	 */
-	public LangNameTranslation getTranslation() {
-		return translation;
+	public LangNameTranslation getLangTranslation() {
+		return langTranslation;
 	}
 
 	/**
 	 * Setter for property 'translation'.
 	 *
-	 * @param translation Value to set for property 'translation'.
+	 * @param langTranslation Value to set for property 'translation'.
 	 */
-	public void setTranslation(LangNameTranslation translation) {
-		this.translation = translation;
+	public void setLangTranslation(LangNameTranslation langTranslation) {
+		this.langTranslation = langTranslation;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
 				.append("id", id)
-				.append("Language", lang.getLangIsoCode())
-				.append("Name", name)
+				.append("Language", getLang().getLangIsoCode())
+				.append("Name", getName())
 				.append("Short name", shortName)
 				.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(lang)
-				.append(name)
+				.appendSuper(super.hashCode())
 				.hashCode();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -144,10 +122,10 @@ public class CountryNameTranslation implements Serializable {
 		if (!(obj instanceof CountryNameTranslation)) {
 			return false;
 		}
-		CountryNameTranslation translation = (CountryNameTranslation) obj;
+
+		CountryNameTranslation that = (CountryNameTranslation) obj;
 		return new EqualsBuilder()
-				.append(lang, translation.getLang())
-				.append(name, translation.getName())
+				.appendSuper(super.equals(that))
 				.isEquals();
 	}
 }

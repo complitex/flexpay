@@ -10,7 +10,6 @@ public class AllTests extends TestCase {
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
 		suite.addTest(org.flexpay.ab.persistence.AllTests.suite());
-		suite.addTest(new JUnit4TestAdapter(TestCommon.class));
 		return suite;
 	}
 }
