@@ -90,11 +90,15 @@
 	</package>
 	
 	<package name="street_types" namespace="/dicts" extends="common">
-
+        <action name="street_type_create" class="streetTypeCreteAction">
+			<result name="form" type="tiles">ab.street_type.create</result>
+		</action>
+		<action name="street_type_view" class="streetTypeViewAction">
+			<result name="success" type="tiles">ab.street_type.view</result>
+		</action>
 		<action name="list_street_types" class="listStreetTypesAction">
 			<result type="tiles">ab.street_types.list</result>
 		</action>
-
 	</package>
 
 </struts>
