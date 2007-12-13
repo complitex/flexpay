@@ -51,7 +51,7 @@ public class TownTypeCreate extends FPActionSupport implements ServletRequestAwa
 			TownTypeTranslation translation = new TownTypeTranslation();
 			translation.setLang(lang);
 			LangNameTranslation languageName = LanguageUtil.getLanguageName(lang, prefs.getLocale());
-			translation.setTranslation(languageName);
+			translation.setLangTranslation(languageName);
 
 			// Actually got a form, extract data
 			if (isPost()) {

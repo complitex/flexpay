@@ -23,10 +23,10 @@
 		</id>
 		<many-to-one name="region" column="region_id" not-null="true" />
 		<property name="begin" column="begin_date" type="date" />
-		<property name="end" column="ebd_date" type="date" />
+		<property name="end" column="end_date" type="date" />
 		<set name="translations" inverse="true" lazy="false">
 			<key column="region_name_id" />
-			<one-to-many class="TownTypeTranslation" />
+			<one-to-many class="RegionNameTranslation" />
 		</set>
 	</class>
 
@@ -36,12 +36,17 @@
 			<generator class="native" />
 		</id>
 		<property name="name" />
-		<properties name="lang_town_type_pair" unique="true">
+		<properties name="lang_region_name_pair" unique="true">
 			<many-to-one name="regionName" column="region_name_id" lazy="false"
-						 fetch="join" not-null="true" />
+						 fetch="join" not-null="true" class="RegionName" />
 			<many-to-one name="lang" column="language_id" lazy="false" fetch="join"
-						 not-null="true" />
+						 not-null="true"
+						 class="org.flexpay.common.persistence.Language" />
 		</properties>
 	</class>
+
+	<query name="Region.listRegions">
+		from Region r where r.status=? and r.country.id=?
+	</query>
 
 </hibernate-mapping>

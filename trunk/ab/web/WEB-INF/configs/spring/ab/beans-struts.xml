@@ -7,9 +7,6 @@
 	<import resource="beans-services.xml" />
 
 	<!-- Define struts actions beans -->
-	<bean id="helloAction" class="org.flexpay.ab.actions.TestAction" scope="prototype" />
-
-	<!-- Define struts actions beans -->
 
 	<!-- Countries -->
 	<bean id="listCountriesAction" class="org.flexpay.ab.actions.CountriesList" scope="prototype">
@@ -17,6 +14,26 @@
 	</bean>
 
 	<bean id="createCountryAction" class="org.flexpay.ab.actions.CountryCreate" scope="prototype">
+		<property name="countryService" ref="countryService" />
+	</bean>
+
+	<bean id="createRegionAction" class="org.flexpay.ab.actions.RegionCreate" scope="prototype">
+		<property name="regionService" ref="regionService" />
+		<property name="countryService" ref="countryService" />
+	</bean>
+
+	<bean id="editRegionAction" class="org.flexpay.ab.actions.RegionEdit" scope="prototype">
+		<property name="regionService" ref="regionService" />
+		<property name="countryService" ref="countryService" />
+	</bean>
+
+	<bean id="listRegionsAction" class="org.flexpay.ab.actions.RegionsList" scope="prototype">
+		<property name="regionService" ref="regionService" />
+		<property name="countryService" ref="countryService" />
+	</bean>
+
+	<bean id="deleteRegionsAction" class="org.flexpay.ab.actions.RegionsDelete" scope="prototype">
+		<property name="regionService" ref="regionService" />
 		<property name="countryService" ref="countryService" />
 	</bean>
 

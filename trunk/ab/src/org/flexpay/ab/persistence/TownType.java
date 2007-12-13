@@ -2,6 +2,8 @@ package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -93,10 +95,34 @@ public class TownType implements java.io.Serializable {
 	 */
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
 				.append("Id", id)
 				.append("Status", status)
 				.append("Translations", translations.toArray())
 				.toString();
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(translations)
+				.toHashCode();
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		} else if (!(obj instanceof TownType)) {
+			return false;
+		}
+
+		TownType that = (TownType) obj;
+
+		return new EqualsBuilder()
+				.append(translations, that.getTranslations())
+				.isEquals();
 	}
 }

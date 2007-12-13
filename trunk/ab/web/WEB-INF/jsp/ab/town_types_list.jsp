@@ -9,29 +9,31 @@
 			<td class="th"><input type="checkbox"
 								  onchange="FP.setCheckboxes(this.checked, 'townTypeIds')">
 			</td>
-			<td class="th"><spring:message code="ab.town_type_name"/></td>
+			<td class="th"><s:text name="ab.town_type_name"/></td>
 			<td class="th">&nbsp;</td>
 		</tr>
 		<c:forEach items="${requestScope['town_type_names']}" varStatus="status"
-				   var="typeName">
-			<tr>
-				<td><c:out value="${status.index + 1}"/></td>
-				<td><input type="checkbox" value="<c:out value="${typeName.townType.id}"/>"
+				   var="regionName">
+			<tr valign="middle" class="cols_1">
+				<td class="col_1s"><c:out value="${status.index + 1}"/></td>
+				<td class="col"><input type="checkbox" value="<c:out value="${regionName.townType.id}"/>"
 						   name="<c:out value="townTypeIds"/>"></td>
-				<td><c:out value="${typeName.name}"/></td>
-				<td>
-					<a href="<c:url value="/dicts/edit_town_type.action?town_type_id=${typeName.townType.id}"/>"><spring:message
-							code="common.edit_selected"/></a></td>
+				<td class="col"><c:out value="${regionName.name}"/></td>
+				<td class="col">
+					<a href="<c:url value="/dicts/edit_town_type.action?town_type_id=${regionName.townType.id}"/>"><s:text
+							name="common.edit_selected"/></a></td>
 			</tr>
 		</c:forEach>
 		<tr>
-			<td colspan="0">
+			<td colspan="4" height="3" bgcolor="#4a4f4f"/>
+		<tr>
+			<td colspan="4">
 				<input type="submit" class="btn-exit"
 					   onclick="$('ftypes').action='<c:url value="/dicts/delete_town_types.action"/>';$('ftypes').submit()"
-					   value="<spring:message code="common.delete_selected"/>"/>
+					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<c:url value="/dicts/create_town_type.action"/>'"
-					   value="<spring:message code="common.new"/>"/>
+					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
 	</form>

@@ -1,7 +1,10 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.common.persistence.LangNameObject;
 import org.flexpay.ab.persistence.temp.Town;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.util.Collections;
 import java.util.Set;
@@ -9,7 +12,7 @@ import java.util.Set;
 /**
  * Region
  */
-public class Region extends LangNameObject implements java.io.Serializable {
+public class Region implements java.io.Serializable {
 
 	public static final int STATUS_ACTIVE = 0;
 	public static final int STATUS_DISABLED = 1;
@@ -23,7 +26,9 @@ public class Region extends LangNameObject implements java.io.Serializable {
 	// Region name in current locale
 	private transient RegionName regionName;
 
-	/** Constructs a new Region. */
+	/**
+	 * Constructs a new Region.
+	 */
 	public Region() {
 	}
 
@@ -133,5 +138,49 @@ public class Region extends LangNameObject implements java.io.Serializable {
 	 */
 	public void setRegionName(RegionName regionName) {
 		this.regionName = regionName;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+				.append("id", id)
+				.append("Status", status)
+				.append("Names", names.toArray())
+				.toString();
+	}
+
+	/**
+	 * Indicates whether some other object is "equal to" this one.
+	 *
+	 * @param obj the reference object with which to compare.
+	 * @return <code>true</code> if this object is the same as the obj argument;
+	 *         <code>false</code> otherwise.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (! (obj instanceof Region)) {
+			return false;
+		}
+
+		Region region = (Region) obj;
+
+		return new EqualsBuilder()
+				.append(country, region.country)
+				.append(names, region.names)
+				.isEquals();
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(country)
+				.append(names)
+				.toHashCode();
 	}
 }

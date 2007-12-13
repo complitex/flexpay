@@ -6,6 +6,7 @@ import org.flexpay.ab.dao.CountryDao;
 import org.flexpay.ab.dao.CountryNameDao;
 import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.CountryNameTranslation;
+import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
@@ -27,6 +28,10 @@ public class CountryServiceImpl implements CountryService {
 	public Country create(List<CountryNameTranslation> countryNames) {
 		Country country = new Country();
 		country.setStatus(Country.STATUS_ACTIVE);
+
+		if (log.isInfoEnabled()) {
+			log.info("Country names to persiste: " + countryNames);
+		}
 
 		Set<CountryNameTranslation> names = new HashSet<CountryNameTranslation>();
 		for(CountryNameTranslation name : countryNames) {
@@ -66,7 +71,7 @@ public class CountryServiceImpl implements CountryService {
 						  defaultLang.getLangIsoCode() + ", " + country);
 				continue;
 			}
-			name.setTranslation(LanguageUtil.getLanguageName(name.getLang(), locale));
+			name.setLangTranslation(LanguageUtil.getLanguageName(name.getLang(), locale));
 			countryNameList.add(name);
 		}
 
@@ -86,6 +91,36 @@ public class CountryServiceImpl implements CountryService {
 		}
 
 		return defaultName;
+	}
+
+	/**
+	 * Initialise filter with the list of available countries
+	 *
+	 * @param countryFilter Filter to init
+	 * @param locale		Locale to get countries names in
+	 * @return Updated filter
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          iflanguage configuration is invalid
+	 */
+	public CountryFilter initFilter(CountryFilter countryFilter, Locale locale)
+			throws FlexPayException {
+
+		if (countryFilter == null) {
+			countryFilter = new CountryFilter();
+		}
+
+		countryFilter.setCountryNames(getCountries(locale));
+		if (countryFilter.getSelectedCountryId() == null) {
+			Collection<CountryNameTranslation> names = countryFilter.getCountryNames();
+			if (names.isEmpty()) {
+				throw new FlexPayException("No country names", "ab.no_countries");
+			}
+
+			Country firstCountry = names.iterator().next().getCountry();
+			countryFilter.setSelectedCountryId(firstCountry.getId());
+		}
+
+		return countryFilter;
 	}
 
 	public void setCountryDao(CountryDao countryDao) {

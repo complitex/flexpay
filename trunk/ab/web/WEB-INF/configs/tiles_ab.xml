@@ -26,6 +26,21 @@
         <put-attribute name="body" value="/WEB-INF/jsp/ab/country_create.jsp" />
 	</definition>
 
+	<definition name="ab.region.create" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.region.create.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/region_create.jsp" />
+	</definition>
+
+	<definition name="ab.region.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.region.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/region_edit.jsp" />
+	</definition>
+
+	<definition name="ab.regions.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.regions.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/regions_list.jsp" />
+	</definition>
+
 	<definition name="ab.town_types.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.town_type.list.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_types_list.jsp" />

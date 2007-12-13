@@ -3,19 +3,17 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.LangNameTranslation;
-import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Translation;
 
 /**
  * TownTypeTranslation is a trnaslation of TownType to particular language
  */
-public class TownTypeTranslation implements java.io.Serializable {
+public class TownTypeTranslation extends Translation implements java.io.Serializable {
 
 	private Long id;
-	private String name;
-	private Language lang;
 	private TownType townType;
 
-	private LangNameTranslation translation;
+	private LangNameTranslation langTranslation;
 
 	/**
 	 * Constructs a new TownTypeTranslation.
@@ -42,42 +40,6 @@ public class TownTypeTranslation implements java.io.Serializable {
 	}
 
 	/**
-	 * Getter for property 'name'.
-	 *
-	 * @return Value for property 'name'.
-	 */
-	public String getName() {
-		return this.name;
-	}
-
-	/**
-	 * Setter for property 'name'.
-	 *
-	 * @param name Value to set for property 'name'.
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * Getter for property 'language'.
-	 *
-	 * @return Value for property 'language'.
-	 */
-	public Language getLang() {
-		return this.lang;
-	}
-
-	/**
-	 * Setter for property 'language'.
-	 *
-	 * @param lang Value to set for property 'language'.
-	 */
-	public void setLang(Language lang) {
-		this.lang = lang;
-	}
-
-	/**
 	 * Getter for property 'townType'.
 	 *
 	 * @return Value for property 'townType'.
@@ -100,17 +62,17 @@ public class TownTypeTranslation implements java.io.Serializable {
 	 *
 	 * @return Value for property 'translation'.
 	 */
-	public LangNameTranslation getTranslation() {
-		return translation;
+	public LangNameTranslation getLangTranslation() {
+		return langTranslation;
 	}
 
 	/**
 	 * Setter for property 'translation'.
 	 *
-	 * @param translation Value to set for property 'translation'.
+	 * @param langTranslation Value to set for property 'translation'.
 	 */
-	public void setTranslation(LangNameTranslation translation) {
-		this.translation = translation;
+	public void setLangTranslation(LangNameTranslation langTranslation) {
+		this.langTranslation = langTranslation;
 	}
 
 	/**
@@ -120,10 +82,27 @@ public class TownTypeTranslation implements java.io.Serializable {
 	 */
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
 				.append("Id", id)
-				.append("Language", lang.getLangIsoCode())
-				.append("Name", name)
+				.append("Language", getLang().getLangIsoCode())
+				.append("Name", getName())
 				.toString();
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		} else if (!(o instanceof TownTypeTranslation)) {
+			return false;
+		}
+		return super.equals(o);
 	}
 }

@@ -37,7 +37,7 @@ public class StreetType  implements java.io.Serializable {
 	public static final int STATUS_ACTIVE = 0;
 
 	/**
-	 * Diasabled street type status
+	 * Disabled street type status
 	 */
 	public static final int STATUS_DISABLED = 1;
 

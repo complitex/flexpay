@@ -9,8 +9,23 @@
     <tiles:useAttribute id="title" name="title" classname="java.lang.String" />
     <title><spring:message code="<%= title%>" /></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/style/fp.css"/>"/>
+
+	<!-- calendar stylesheet -->
+	<link rel="stylesheet" type="text/css" href="<c:url value="/js/jscalendar/calendar-blue.css"/>" />
+
 	<script type="text/javascript" src="<c:url value="/js/prototype.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/js/flexpay_common.js" />"></script>
+
+	<!-- main calendar program -->
+	<script type="text/javascript" src="<c:url value="/js/jscalendar/calendar.js" />"></script>
+
+	<!-- language for the calendar -->
+	<!-- TODO: set language selector switchable -->
+	<script type="text/javascript" src="<c:url value="/js/jscalendar/lang/calendar-ru.js" />"></script>
+
+	<!-- the following script defines the Calendar.setup helper function, which makes
+		 adding a calendar a matter of 1 or 2 lines of code. -->
+	<script type="text/javascript" src="<c:url value="/js/jscalendar/calendar-setup.js" />"></script>
 </head>
 <body>
 
