@@ -58,5 +58,11 @@
 	<bean id="listStreetTypesAction" class="org.flexpay.ab.actions.StreetTypesListAction" scope="prototype">
 		<property name="streetTypeService" ref="streetTypeService" />
 	</bean>
+	<bean id="streetTypeCreteAction" class="org.flexpay.ab.actions.street_type.StreetTypeCreateAction" scope="prototype">
+		<property name="streetTypeService" ref="streetTypeService" />
+	</bean>
+	<bean id="streetTypeViewAction" class="org.flexpay.ab.actions.street_type.StreetTypeViewAction" scope="prototype">
+		<property name="streetTypeService" ref="streetTypeService" />
+	</bean>
 
 </beans>

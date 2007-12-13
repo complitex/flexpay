@@ -4,18 +4,10 @@ package org.flexpay.ab.persistence;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.Column;
+
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -43,7 +35,7 @@ public class StreetType  implements java.io.Serializable {
 
 	private Long id;
 	private int status;
-	private Collection<StreetTypeTranslation> typeTranslations = Collections.emptyList();
+	private Collection<StreetTypeTranslation> translations = Collections.emptyList();
 
 	/**
 	 * Constructs a new StreetType.
@@ -70,21 +62,21 @@ public class StreetType  implements java.io.Serializable {
 	}
 
 	/**
-	 * Getter for property 'typeTranslations'.
+	 * Getter for property 'translations'.
 	 *
-	 * @return Value for property 'typeTranslations'.
+	 * @return Value for property 'translations'.
 	 */
-	public Collection<StreetTypeTranslation> getTypeTranslations() {
-		return typeTranslations;
+	public Collection<StreetTypeTranslation> getTranslations() {
+		return translations;
 	}
 
 	/**
-	 * Setter for property 'typeTranslations'.
+	 * Setter for property 'translations'.
 	 *
-	 * @param typeTranslations Value to set for property 'typeTranslations'.
+	 * @param translations Value to set for property 'typeTranslations'.
 	 */
-	public void setTypeTranslations(Collection<StreetTypeTranslation> typeTranslations) {
-		this.typeTranslations = typeTranslations;
+	public void setTranslations(Collection<StreetTypeTranslation> translations) {
+		this.translations = translations;
 	}
 
 	/**
@@ -115,7 +107,7 @@ public class StreetType  implements java.io.Serializable {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
 				.append("Id", id)
 				.append("Status", status)
-				.append("Translations", typeTranslations.toArray())
+				.append("Translations", translations.toArray())
 				.toString();
 	}
 

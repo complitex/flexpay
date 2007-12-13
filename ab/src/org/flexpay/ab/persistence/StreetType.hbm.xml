@@ -10,7 +10,7 @@
 			<generator class="native" />
 		</id>
 		<property name="status" not-null="true" />
-		<set name="typeTranslations" inverse="true" lazy="false">
+		<set name="translations" inverse="true" lazy="false">
 			<key column="street_type_id" />
 			<one-to-many class="StreetTypeTranslation" />
 		</set>
