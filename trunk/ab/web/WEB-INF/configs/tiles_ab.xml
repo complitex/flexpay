@@ -16,6 +16,11 @@
         <put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp" />
 	</definition>
 
+	<definition name="ab.main" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.main.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/main.jsp" />
+	</definition>
+
     <definition name="ab.country.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.country.list.title" />
         <put-attribute name="body" value="/WEB-INF/jsp/ab/countries_list.jsp" />

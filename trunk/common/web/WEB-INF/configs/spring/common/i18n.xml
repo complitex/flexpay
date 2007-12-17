@@ -7,13 +7,13 @@
 		  class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
-				<value>/WEB-INF/resources/i18n/messages</value>
-				<value>/WEB-INF/resources/i18n/error</value>
+				<value>/WEB-INF/classes/org/flexpay/common/i18n/common-messages</value>
+				<value>/WEB-INF/classes/org/flexpay/ab/i18n/messages</value>
+				<value>/WEB-INF/classes/org/flexpay/ab/i18n/errors</value>
 			</list>
 		</property>
 		<property name="cacheSeconds" value="3600" />
 		<property name="useCodeAsDefaultMessage" value="true" />
-		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 
 	<bean id="localeResolver"

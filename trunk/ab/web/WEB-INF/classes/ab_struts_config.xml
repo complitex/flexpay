@@ -26,7 +26,7 @@
 		</interceptors>
 
 		<action name="set_language" class="org.flexpay.common.actions.LanguageSwitch">
-			<result type="tiles">root</result>
+			<result type="redirect">/</result>
 			<interceptor-ref name="i18n_flexpay" />
 		</action>
 
