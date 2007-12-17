@@ -6,8 +6,8 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <tiles:useAttribute id="title" name="title" classname="java.lang.String" />
-    <title><spring:message code="<%= title%>" /></title>
+    <tiles:importAttribute ignore="true" name="title" scope="request" />
+    <title><s:text name="%{#attr.title}" /></title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/style/fp.css"/>"/>
 
 	<!-- calendar stylesheet -->
@@ -41,7 +41,9 @@
 -->
 
 <div style="padding-left: 25px; padding-right: 25px;">
-    <h1><spring:message code="<%= title%>" /></h1>
+    <h1>
+      <tiles:insertTemplate template="/WEB-INF/jsp/ab/menu/title.jsp" />
+    </h1>
 </div>
 
 <div class="columns">
@@ -55,7 +57,7 @@
 
     <div class="main">
         <div class="main-content">
-            <tiles:insertAttribute name="body"/>
+            <tiles:insertAttribute name="body" ignore="true" />
         </div>
 
         <!--
