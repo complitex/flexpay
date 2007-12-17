@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <ul class="folders">
-	<li class="open"><a href="123"><b>Dictionaries</b></a>
+	<li class="open"><b>Dictionaries</b>
 		<ul class="docs">
 			<li><a href="<c:url value='/dicts/list_countries.action' />"><s:text
 					name="menu34.dictionaries.countries"/></a></li>
