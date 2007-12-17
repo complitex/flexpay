@@ -11,11 +11,11 @@
 </head>
 <body>
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
-    <tr>
-        <td>
-            <tiles:insertAttribute name="header" />
-        </td>
-    </tr>
+    <%--<tr>--%>
+        <%--<td>--%>
+            <%--<tiles:insertAttribute name="header" />--%>
+        <%--</td>--%>
+    <%--</tr>--%>
     <tr>
         <td>
             <tiles:insertAttribute name="body" />
