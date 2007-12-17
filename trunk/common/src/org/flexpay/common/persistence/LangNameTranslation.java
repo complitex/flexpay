@@ -2,6 +2,8 @@ package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -108,10 +110,31 @@ public class LangNameTranslation implements Serializable {
 	 * {@inheritDoc}
 	 */
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
 				.append("From", translationFrom.getLangIsoCode())
 				.append("Translation", translation)
 				.toString();
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(translation).append(translationFrom).toHashCode();
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		} else if (!(obj instanceof LangNameTranslation)) {
+			return false;
+		}
+		LangNameTranslation that = (LangNameTranslation) obj;
+		return new EqualsBuilder()
+				.append(translation, that.translation)
+				.append(translationFrom, that.translationFrom)
+				.isEquals();
+	}
 }
