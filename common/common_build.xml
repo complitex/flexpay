@@ -265,4 +265,16 @@
 		<sun-appserv-deploy user="${sjsas.username}" passwordfile="${sjsas.password.file}"
 							file="${application_archive}" asinstalldir="${sjsas.root}" />
 	</target>
+
+	<taskdef name="tomcat-deploy"
+			classname="org.apache.catalina.ant.DeployTask"
+			classpath="${tomcat.ant_tasks}" />
+
+	<target name="template.deploy.tomcat">
+		<tomcat-deploy url="${tomcat.manager.url}"
+            username="${tomcat.username}"
+            password="${tomcat.password}"
+            path="/"
+            war="file:${basedir}/${application_archive}"/>
+	</target>
 </project>

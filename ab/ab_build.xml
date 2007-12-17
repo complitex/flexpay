@@ -117,9 +117,11 @@
 			<reference refid="ab.classes.resources" torefid="resources" />
 		</antcall>
 
-		<move file="${build.dir}/web/WEB-INF/configs/ps/${app_server.properties}" 
+		<copy file="${build.dir}/web/WEB-INF/configs/ps/${app_server.properties}"
+			  overwrite="true"
 			  tofile="${build.dir}/web/WEB-INF/configs/spring/common/app_server.properties" />
-		<move file="${build.dir}/web/WEB-INF/configs/ps/${data_source.properties}"
+		<copy file="${build.dir}/web/WEB-INF/configs/ps/${data_source.properties}"
+			  overwrite="true"
 			  tofile="${build.dir}/web/WEB-INF/configs/spring/common/data_source.properties" />
 
 		<war destfile="${distr.dir}/${ab.war.name}" needxmlfile="false">
