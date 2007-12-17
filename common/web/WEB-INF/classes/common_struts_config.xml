@@ -12,11 +12,11 @@
     <package name="common" namespace="/common" extends="tiles-default">
 
         <interceptors>
-            <interceptor name="UserPreferencesInterceptor" class="org.flexpay.common.actions.interceptor.UserPreferencesInterceptor"/>
+            <interceptor name="userPreferences" class="org.flexpay.common.actions.interceptor.UserPreferencesInterceptor"/>
             <interceptor name="flexpayRoles" class="org.flexpay.common.actions.interceptor.FlexpayRolesInterceptor"/>
             <interceptor-stack name="commonDefaultStack">
+                <interceptor-ref name="userPreferences"/>
                 <interceptor-ref name="defaultStack"/>
-                <interceptor-ref name="UserPreferencesInterceptor"/>
             </interceptor-stack>
         </interceptors>
         <default-interceptor-ref name="commonDefaultStack"/>
