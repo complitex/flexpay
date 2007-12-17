@@ -11,12 +11,13 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 public class UserPreferencesInterceptor extends AbstractInterceptor {
 
 	public String intercept(ActionInvocation invocation) throws Exception {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		UserPreferences userPreferences = UserPreferences
-				.getPreferences(request);
-		UserPreferencesAware action = (UserPreferencesAware) invocation
-				.getAction();
-		action.setUserPreferences(userPreferences);
+		Object action = invocation.getAction();
+		if (action instanceof UserPreferencesAware) {
+			HttpServletRequest request = ServletActionContext.getRequest();
+			UserPreferences userPreferences = UserPreferences
+					.getPreferences(request);
+			((UserPreferencesAware) action).setUserPreferences(userPreferences);
+		}
 
 		return invocation.invoke();
 	}
