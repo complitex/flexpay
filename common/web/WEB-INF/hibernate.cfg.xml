@@ -7,16 +7,6 @@
 	<!-- a SessionFactory instance listed as /jndi/name -->
 	<session-factory name="flexpay">
 
-		<property name="transaction.factory_class">
-			org.hibernate.transaction.JTATransactionFactory
-		</property>
-		<property name="hibernate.transaction.manager_lookup_class">
-			org.hibernate.transaction.SunONETransactionManagerLookup
-		</property>
-
-		<property name="hibernate.hbm2ddl.auto">validate</property>
-		<property name="hibernate.show_sql">true</property>
-
 		<mapping class="org.flexpay.common.persistence.Language" />
 		<mapping class="org.flexpay.common.persistence.LangNameTranslation" />
 

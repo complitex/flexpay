@@ -87,7 +87,8 @@
 		</antcall>
 	</target>
 
-	<target name="common.build.production.jar" depends="common.clean.build,common.compile.production">
+	<target name="common.build.production.jar"
+			depends="common.clean.build,common.compile.production">
 		<fileset dir="${build.dir}/empty" id="empty_res" />
 
 		<antcall target="template.jar">
@@ -161,6 +162,8 @@
 			<param name="src.dir" value="${common.dir}/src" />
 			<param name="hibernate.cfg"
 				   value="${common.dir}/web/WEB-INF/hibernate.cfg.xml" />
+			<param name="hibernate.properties"
+				   value="${common.dir}/web/WEB-INF/configs/spring/common/data_source.properties" />
 		</antcall>
 	</target>
 

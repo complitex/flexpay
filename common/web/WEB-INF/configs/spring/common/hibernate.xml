@@ -10,14 +10,51 @@
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
     http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
 
+	<bean id="propertyConfigurer"
+		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/configs/spring/common/data_source.properties</value>
+				<value>/WEB-INF/configs/spring/common/hibernate.properties</value>
+				<value>/WEB-INF/configs/spring/common/app_server.properties</value>
+			</list>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
+
 	<!-- Look up data source via JNDI -->
-	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/FlexPay" resource-ref="false" />
+	<!--<jee:jndi-lookup id="dataSource" jndi-name="jdbc/FlexPay" resource-ref="false" />-->
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		  destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
 
 	<!-- Hibernate Session Factory -->
 	<bean id="flexpaySessionFactory"
 		  class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocations" value="/WEB-INF/*hibernate.cfg.xml" />
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.c3p0.acquire_increment">${hibernate.c3p0.acquire_increment}</prop>
+				<prop key="hibernate.c3p0.idle_test_period">${hibernate.c3p0.idle_test_period}</prop>
+				<prop key="hibernate.c3p0.max_size">${hibernate.c3p0.max_size}</prop>
+				<prop key="hibernate.c3p0.min_size">${hibernate.c3p0.min_size}</prop>
+				<prop key="hibernate.c3p0.preferredTestQuery">${hibernate.c3p0.preferredTestQuery}</prop>
+				<prop key="hibernate.c3p0.testConnectionOnCheckout">${hibernate.c3p0.testConnectionOnCheckout}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+
+				<prop key="hibernate.transaction.factory_class">${hibernate.transaction.factory_class}</prop>
+				<prop key="hibernate.transaction.manager_lookup_class">${hibernate.transaction.manager_lookup_class}</prop>
+			</props>
+		</property>
 	</bean>
 
 	<!-- Create transaction manager  -->
@@ -29,7 +66,7 @@
 
 	<bean id="cacheManager"
 		  class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-		<property name="configLocation" value="WEB-INF/ehcache.xml" />
+		<property name="configLocation" value="WEB-INF/configs/spring/common/ehcache.xml" />
 	</bean>
 
 	<bean id="ehcache"
@@ -48,15 +85,6 @@
 		the rollback rules, etc are all defined in the annotation metadata.
 	-->
 	<tx:annotation-driven transaction-manager="transactionManager" />
-
-	<bean id="propertyConfigurer"
-		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>/WEB-INF/classes/hibernate.properties</value>
-			</list>
-		</property>
-	</bean>
 
 	<bean id="hibernateTemplate"
 		  class="org.springframework.orm.hibernate3.HibernateTemplate">

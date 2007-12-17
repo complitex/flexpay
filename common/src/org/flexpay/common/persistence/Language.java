@@ -130,7 +130,7 @@ public class Language implements Serializable {
 	 * {@inheritDoc}
 	 */
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("id", id)
 				.append("Default", isDefault)
 				.append("Status", status)

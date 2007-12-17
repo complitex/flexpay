@@ -84,8 +84,22 @@
 		</antcall>
 	</target>
 
+	<target name="ab.war.production.tomcat_mysql5">
+		<antcall target="template.ab.war.production">
+			<param name="app_server.properties" value="app_server_tomcat.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="ab.war.production.glassfish_mysql5">
+		<antcall target="template.ab.war.production">
+			<param name="app_server.properties" value="app_server_glassfish.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
 	<!-- Build production web-archive -->
-	<target name="ab.war.production"
+	<target name="template.ab.war.production"
 			depends="ab.build.production.jar,common.prepare.war,init.distr">
 		<fileset id="ab.web.resources" dir="${ab.dir}/web" />
 		<antcall target="template.prepare.war">
@@ -103,6 +117,11 @@
 			<reference refid="ab.classes.resources" torefid="resources" />
 		</antcall>
 
+		<move file="${build.dir}/web/WEB-INF/configs/ps/${app_server.properties}" 
+			  tofile="${build.dir}/web/WEB-INF/configs/spring/common/app_server.properties" />
+		<move file="${build.dir}/web/WEB-INF/configs/ps/${data_source.properties}"
+			  tofile="${build.dir}/web/WEB-INF/configs/spring/common/data_source.properties" />
+
 		<war destfile="${distr.dir}/${ab.war.name}" needxmlfile="false">
 			<fileset dir="${build.dir}/web" />
 			<lib refid="ab.libraries" />
@@ -113,12 +132,16 @@
 		</antcall>
 	</target>
 
-	<target name="ab.exportschema" depends="common.compile.production,ab.compile.production">
+	<target name="ab.exportschema.mysql5"
+			depends="common.compile.production,ab.compile.production">
+		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_ab.ddl.sql" />
 			<param name="src.dir" value="${ab.dir}/src" />
 			<param name="hibernate.cfg"
 				   value="${ab.dir}/web/WEB-INF/ab_hibernate.cfg.xml" />
+			<param name="hibernate.properties"
+				   value="${common.dir}/web/WEB-INF/configs/ps/data_source_mysql5.properties" />
 		</antcall>
 	</target>
 
@@ -133,8 +156,14 @@
 		</antcall>
 	</target>
 
-	<target name="ab.deploy.sjsas" depends="ab.war.production">
+	<target name="ab.deploy.sjsas" depends="ab.war.production.glassfish_mysql5">
 		<antcall target="template.deploy.sjsas">
+			<param name="application_archive" value="${distr.dir}/${ab.war.name}" />
+		</antcall>
+	</target>
+
+	<target name="ab.deploy.tomcat" depends="ab.war.production.tomcat_mysql5">
+		<antcall target="template.deploy.tomcat">
 			<param name="application_archive" value="${distr.dir}/${ab.war.name}" />
 		</antcall>
 	</target>
