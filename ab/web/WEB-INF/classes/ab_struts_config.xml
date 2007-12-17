@@ -7,17 +7,6 @@
 	<constant name="struts.custom.i18n.resources"
 			  value="org/flexpay/common/i18n/common-messages,org/flexpay/ab/i18n/errors,org/flexpay/ab/i18n/messages" />
 
-	<package name="ab" namespace="/ab" extends="common">
-
-		<action name="main">
-			<interceptor-ref name="flexpayRoles">
-				<param name="allowedRoles">developerRole</param>
-			</interceptor-ref>
-			<result type="tiles">ab.layout.standart</result>
-		</action>
-
-	</package>
-
 	<package name="lang" namespace="/" extends="tiles-default">
 
 		<interceptors>
@@ -26,7 +15,7 @@
 		</interceptors>
 
 		<action name="set_language" class="org.flexpay.common.actions.LanguageSwitch">
-			<result type="redirect">/</result>
+			<result type="tiles">ab.main</result>
 			<interceptor-ref name="i18n_flexpay" />
 		</action>
 
