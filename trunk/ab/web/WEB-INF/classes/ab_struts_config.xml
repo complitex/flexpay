@@ -6,17 +6,17 @@
 
 	<constant name="struts.custom.i18n.resources"
 			  value="org/flexpay/common/i18n/common-messages,org/flexpay/ab/i18n/errors,org/flexpay/ab/i18n/messages" />
-
-	<package name="ab" namespace="/ab" extends="common">
+			  
+    <package name="ab" namespace="/ab" extends="common">
 
 		<action name="main">
 			<interceptor-ref name="flexpayRoles">
 				<param name="allowedRoles">developerRole</param>
 			</interceptor-ref>
-			<result type="tiles">ab.layout.standart</result>
+			<result type="tiles">ab.main</result>
 		</action>
 
-	</package>
+	</package>			  
 
 	<package name="lang" namespace="/" extends="tiles-default">
 
@@ -96,8 +96,8 @@
 		<action name="street_type_view" class="streetTypeViewAction">
 			<result name="success" type="tiles">ab.street_type.view</result>
 		</action>
-		<action name="list_street_types" class="listStreetTypesAction">
-			<result type="tiles">ab.street_types.list</result>
+		<action name="street_type_list" class="streetTypeListAction">
+			<result name="list" type="tiles">ab.street_type.list</result>
 		</action>
 	</package>
 

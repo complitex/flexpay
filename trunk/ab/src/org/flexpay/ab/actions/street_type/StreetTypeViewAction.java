@@ -3,7 +3,7 @@ package org.flexpay.ab.actions.street_type;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.service.StreetTypeService;
 
-public class StreetTypeViewAction {
+public class StreetTypeViewAction extends CommonAction {
 
 	private Long id;
 	private StreetTypeService streetTypeService;
