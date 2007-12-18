@@ -6,10 +6,17 @@ import org.flexpay.common.dao.finder.FinderExecutor;
 import org.flexpay.common.dao.finder.FinderNamingStrategy;
 import org.flexpay.common.dao.finder.impl.SimpleFinderArgumentTypeFactory;
 import org.flexpay.common.dao.finder.impl.SimpleFinderNamingStrategy;
+import org.flexpay.common.dao.paging.Page;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.dao.DataAccessException;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -53,7 +60,49 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 
 	public List<T> executeFinder(Method method, final Object[] queryArgs) {
 		final String queryName = getNamingStrategy().queryNameFromMethod(type, method);
-		return hibernateTemplate.findByNamedQuery(queryName, queryArgs);
+		return findByNamedQuery(queryName, queryArgs);
+	}
+
+	private List findByNamedQuery(final String queryName, final Object[] values) throws DataAccessException {
+		return hibernateTemplate.executeFind(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException {
+				Query queryObject = session.getNamedQuery(queryName);
+				Query queryCount = getCountQuery(session, queryName);
+				Page pageParam = null;
+				if (values != null) {
+					for (int i = 0, fix = 0; i < values.length; i++) {
+						if (values[i] instanceof Page) {
+							++fix;
+							pageParam = (Page) values[i];
+						} else {
+							queryObject.setParameter(i - fix, values[i]);
+							if (queryCount != null) {
+								queryCount.setParameter(i - fix, values[i]);
+							}
+						}
+					}
+				}
+				if (pageParam != null && queryCount != null) {
+					Long count = (Long) queryCount.uniqueResult();
+					pageParam.setTotalElements(count.intValue());
+					queryObject.setFirstResult(pageParam.getThisPageFirstElementNumber());
+					queryObject.setMaxResults(pageParam.getPageSize());
+				}
+				List results = queryObject.list();
+				if (pageParam != null) {
+					pageParam.setElements(results);
+				}
+				return results;
+			}
+		});
+	}
+
+	private Query getCountQuery(Session session, String queryName) {
+		try {
+			return session.getNamedQuery(queryName + ".count");
+		} catch (HibernateException e) {
+			return null;
+		}
 	}
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
@@ -74,5 +123,17 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 
 	public void setArgumentTypeFactory(FinderArgumentTypeFactory argumentTypeFactory) {
 		this.argumentTypeFactory = argumentTypeFactory;
+	}
+
+	private List getAllFeeds(final String queryName, final int startRecord, final int endRecord) {
+		return hibernateTemplate.executeFind(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				Query query = session.getNamedQuery(queryName);
+				query.setFirstResult(startRecord);
+				query.setMaxResults(endRecord);
+				List list = query.list();
+				return list;
+			}
+		});
 	}
 }

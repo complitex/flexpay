@@ -49,4 +49,8 @@
 		from Region r where r.status=? and r.country.id=?
 	</query>
 
+	<query name="Region.listRegions.count">
+		select count(*) from Region r where r.status=? and r.country.id=?
+	</query>
+
 </hibernate-mapping>
