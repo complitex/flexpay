@@ -92,6 +92,7 @@
 	<package name="street_types" namespace="/dicts" extends="common">
         <action name="street_type_create" class="streetTypeCreteAction">
 			<result name="form" type="tiles">ab.street_type.create</result>
+			<result name="afterSubmit" type="redirect">street_type_list.action</result>
 		</action>
 		<action name="street_type_view" class="streetTypeViewAction">
 			<result name="success" type="tiles">ab.street_type.view</result>
