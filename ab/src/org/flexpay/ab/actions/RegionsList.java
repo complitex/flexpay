@@ -12,6 +12,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DateInterval;
 import org.flexpay.common.util.config.UserPreferences;
+import org.flexpay.common.dao.paging.Page;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
@@ -37,6 +38,7 @@ public class RegionsList extends FPActionSupport
 
 	private CountryFilter countryFilter = new CountryFilter();
 	private DateInterval dateInterval = new DateInterval();
+	private Page pager = new Page();
 
 	/**
 	 * {@inheritDoc}
@@ -50,7 +52,7 @@ public class RegionsList extends FPActionSupport
 			setupDateInterval();
 
 			List<RegionName> regionNames = regionService.getRegionNames(
-					prefs.getLocale(), countryFilter, dateInterval);
+					prefs.getLocale(), countryFilter, pager, dateInterval);
 			request.setAttribute("region_names", regionNames);
 		} catch (FlexPayException e) {
 			addActionError(e);
@@ -189,5 +191,23 @@ public class RegionsList extends FPActionSupport
 	 */
 	public void setCountryFilter(CountryFilter countryFilter) {
 		this.countryFilter = countryFilter;
+	}
+
+	/**
+	 * Getter for property 'pager'.
+	 *
+	 * @return Value for property 'pager'.
+	 */
+	public Page getPager() {
+		return pager;
+	}
+
+	/**
+	 * Setter for property 'pager'.
+	 *
+	 * @param pager Value to set for property 'pager'.
+	 */
+	public void setPager(Page pager) {
+		this.pager = pager;
 	}
 }

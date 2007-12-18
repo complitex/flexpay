@@ -2,15 +2,15 @@ package org.flexpay.ab.service;
 
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.RegionName;
-import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.persistence.filters.CountryFilter;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DateInterval;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.Collection;
 
 public interface RegionService {
 
@@ -39,11 +39,12 @@ public interface RegionService {
 	 *
 	 * @param locale		Locale to get translations for
 	 * @param countryFilter Country filter
+	 * @param pager		 Regions list pager
 	 * @param dateInterval  Date interval
 	 * @return List of region names
 	 * @throws FlexPayException if failure occurs
 	 */
-	List<RegionName> getRegionNames(Locale locale, CountryFilter countryFilter, DateInterval dateInterval)
+	List<RegionName> getRegionNames(Locale locale, CountryFilter countryFilter, Page pager, DateInterval dateInterval)
 			throws FlexPayException;
 
 	/**
@@ -64,8 +65,9 @@ public interface RegionService {
 
 	/**
 	 * Update region names
-	 * @param region Region to update
-	 * @param regionNames Updated region names
+	 *
+	 * @param region		Region to update
+	 * @param regionNames   Updated region names
 	 * @param countryFilter Country Filter
 	 * @throws FlexPayExceptionContainer if failure occurs
 	 */

@@ -18,6 +18,7 @@ import org.flexpay.common.persistence.DateInterval;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.dao.paging.Page;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -101,18 +102,18 @@ public class RegionServiceImpl implements RegionService {
 	 *
 	 * @param locale		Locale to get translations for
 	 * @param countryFilter Country filter
-	 * @param dateInterval  DateInterval
-	 * @return List of region names
+	 * @param pager		 Regions list pager
+	 *@param dateInterval  DateInterval @return List of region names
 	 * @throws FlexPayException if failure occurs
 	 */
-	public List<RegionName> getRegionNames(Locale locale, CountryFilter countryFilter, DateInterval dateInterval)
+	public List<RegionName> getRegionNames(Locale locale, CountryFilter countryFilter, Page pager, DateInterval dateInterval)
 			throws FlexPayException {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Getting list of Region names: " + countryFilter);
 		}
 
-		List<Region> regions = regionDao.listRegions(
+		List<Region> regions = regionDao.listRegions( pager,
 				Region.STATUS_ACTIVE, countryFilter.getSelectedCountryId());
 		List<RegionName> regionNames = new ArrayList<RegionName>(regions.size());
 
@@ -156,7 +157,7 @@ public class RegionServiceImpl implements RegionService {
 	 * @return List of Regions
 	 */
 	public List<Region> getRegions(CountryFilter countryFilter) {
-		return regionDao.listRegions(
+		return regionDao.listRegions( 
 				Region.STATUS_ACTIVE, countryFilter.getSelectedCountryId());
 	}
 
