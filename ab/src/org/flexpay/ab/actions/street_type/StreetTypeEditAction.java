@@ -1,9 +1,13 @@
 package org.flexpay.ab.actions.street_type;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 import org.flexpay.ab.persistence.StreetType;
+import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.exception.FlexPayException;
 
@@ -12,14 +16,22 @@ import com.opensymphony.xwork2.Preparable;
 public class StreetTypeEditAction extends CommonAction implements Preparable
 {
 	private StreetTypeService streetTypeService;
-	private Long id;
 	private StreetType streetType;
+	private Map<String, StreetTypeTranslation> translationMap;
 	
 	
 	public void prepare() throws FlexPayException {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String id = request.getParameter("id");
 		streetType = streetTypeService.read(Long.valueOf(id));
+		
+		
+		
+		translationMap = new HashMap<String, StreetTypeTranslation>();
+		for(StreetTypeTranslation translation : streetType.getTranslations())
+		{
+			translationMap.put(translation.getId().toString(), translation);
+		}
 	}
 	
 	
@@ -47,12 +59,13 @@ public class StreetTypeEditAction extends CommonAction implements Preparable
 		this.streetTypeService = streetTypeService;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public StreetType getStreetType() {
 		return streetType;
+	}
+
+
+	public Map getTranslationMap() {
+		return translationMap;
 	}
 
 }
