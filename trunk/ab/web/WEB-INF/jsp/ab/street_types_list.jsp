@@ -9,35 +9,40 @@
 	  <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'streetTypeIds')">
     </td>
 	<td class="th">
-	  <spring:message code="ab.town_type_name"/>
+	  <s:text name="ab.street_type_name"/>
 	</td>
 	<td class="th">
 	  &nbsp;
 	</td>
   </tr>
   <s:iterator value="translationList" status="rowstatus">
-    <tr>
-	  <td>
+    <tr valign="middle" class="cols_1">
+	  <td class="col_1s">
 	    <s:property value="#rowstatus.index + 1" />
 	  </td>
-	  <td>
+	  <td class="col">
 	    <s:checkbox name="name" value="streetTypeIds"/>
 	  </td>
-	  <td>
-	    <a href="<s:url action='street_type_view'>     <s:param name="id" value="%{streetType.id}"/>       </s:url>">
+	  <td class="col">
+	    <a href="<s:url action='street_type_view'><s:param name="id" value="%{streetType.id}"/></s:url>">
 	      <s:property value="name"/>
 	    </a>
 	  </td>
-	  <td>
-	    edit url
+	  <td class="col">
+	    <a href="<s:url action='street_type_edit'><s:param name="id" value="%{streetType.id}"/></s:url>">
+	      <s:text name="ab.street_type.edit.link" />
+	    </a>
 	  </td>
 	</tr>
   </s:iterator>
   
+  <tr>
+    <td colspan="4" height="3" bgcolor="#4a4f4f"/>
+  <tr>
   
   <tr>
     <td>
-      <a href="<s:url action='street_type_create'/>">create</a>
+      <a href="<s:url action='street_type_create'/>"><s:text name="ab.street_type.create.link" /></a>
     </td>
   </tr>
 

@@ -100,6 +100,9 @@
 		<action name="street_type_list" class="streetTypeListAction">
 			<result name="list" type="tiles">ab.street_type.list</result>
 		</action>
+		<action name="street_type_edit" class="streetTypeEditAction">
+			<result name="form" type="tiles">ab.street_type.edit</result>
+		</action>
 	</package>
 
 </struts>
