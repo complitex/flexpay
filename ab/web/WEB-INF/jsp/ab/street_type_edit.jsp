@@ -8,7 +8,7 @@
 			<td class="th"><s:text name="common.language"/></td>
 			<td class="th"><s:text name="ab.street_type_name"/></td>
 		</tr>
-		<s:iterator value="translationList" status="rowstatus">
+		<s:iterator value="streetType.translations" status="rowstatus">
 		  <tr valign="middle" class="cols_1">
 		    <td class="col_1s">
 		      <s:property value="#rowstatus.index + 1" />
@@ -16,22 +16,23 @@
 		    <td class="col">
 		      <s:property value="getLangName(lang)" />
 		      <s:if test="lang.default == true">
-		        <font color="red">*</font>
+		        (default)<font color="red">*</font>
 		      </s:if>
 		    </td>
 		    <td class="col">
-		      <s:textfield name="translationList[%{#rowstatus.index}].name" />
+		      <s:textfield name="streetType.translations[%{#rowstatus.index}].name" value="%{name}" />
 		      <s:fielderror>
-                <s:param value="translationList[%{#rowstatus.index}].name" />
+                <s:param value="streetType.translations[%{#rowstatus.index}].name" />
               </s:fielderror>
 		    </td>
 		  </tr>
 		</s:iterator>
 		<tr>
 			<td colspan="3" height="3" bgcolor="#4a4f4f"/>
-		</td>
+		</td>	
 		<tr>
 		  <td>
+		    <s:hidden name="id" value="%{streetType.id}" />
 		    <s:submit name="submit" value="%{getText('ab.street_type.create.button')}" cssClass="btn-exit" />
 		  </td>
 		</tr>
