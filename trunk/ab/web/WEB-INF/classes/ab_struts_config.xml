@@ -102,6 +102,10 @@
 		</action>
 		<action name="street_type_edit" class="streetTypeEditAction">
 			<result name="form" type="tiles">ab.street_type.edit</result>
+			<result name="afterSubmit" type="redirect">street_type_list.action</result>
+		</action>
+		<action name="street_type_delete" class="streetTypeDeleteAction">
+			<result name="afterSubmit" type="redirect">street_type_list.action</result>
 		</action>
 	</package>
 

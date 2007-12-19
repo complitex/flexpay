@@ -67,5 +67,8 @@
 	<bean id="streetTypeEditAction" class="org.flexpay.ab.actions.street_type.StreetTypeEditAction" scope="prototype">
 		<property name="streetTypeService" ref="streetTypeService" />
 	</bean>
+	<bean id="streetTypeDeleteAction" class="org.flexpay.ab.actions.street_type.StreetTypeDeleteAction" scope="prototype">
+		<property name="streetTypeService" ref="streetTypeService" />
+	</bean>
 
 </beans>

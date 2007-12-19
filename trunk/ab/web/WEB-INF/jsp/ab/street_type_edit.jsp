@@ -5,8 +5,8 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td class="th">&nbsp;</td>
-			<td class="th"><s:text name="common.language"/></td>
-			<td class="th"><s:text name="ab.street_type_name"/></td>
+			<td class="th"><s:text name="ab.language"/></td>
+			<td class="th"><s:text name="ab.street_type"/></td>
 		</tr>
 		<s:iterator value="streetType.translations" status="rowstatus">
 		  <tr valign="middle" class="cols_1">
@@ -20,9 +20,9 @@
 		      </s:if>
 		    </td>
 		    <td class="col">
-		      <s:textfield name="streetType.translations[%{#rowstatus.index}].name" value="%{name}" />
+		      <s:textfield name="translationMap['%{id}'].name" value="%{name}" />
 		      <s:fielderror>
-                <s:param value="streetType.translations[%{#rowstatus.index}].name" />
+                <s:param value="translationMap['%{id}'].name" />
               </s:fielderror>
 		    </td>
 		  </tr>
@@ -31,9 +31,9 @@
 			<td colspan="3" height="3" bgcolor="#4a4f4f"/>
 		</td>	
 		<tr>
-		  <td>
+		  <td colspan="3">
 		    <s:hidden name="id" value="%{streetType.id}" />
-		    <s:submit name="submit" value="%{getText('ab.street_type.create.button')}" cssClass="btn-exit" />
+		    <s:submit name="submit" value="%{getText('ab.update')}" cssClass="btn-exit" />
 		  </td>
 		</tr>
 </table>
