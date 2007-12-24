@@ -4,15 +4,32 @@
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="org.flexpay.ab.persistence">
-    <class name="IdentityType" table="IdentityType" optimistic-lock="version">
-        <id name="id" column="ID">
-            <generator class="native"/>
-        </id>
 
-        <set name="identityTypeNames" table="IdentityTypeName" inverse="true">
-            <key column="identity_type_id"/>
-            <one-to-many class="IdentityTypeName"/>
-        </set>
+	<class name="IdentityType" table="identity_types_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status" not-null="true" />
+		<set name="translations" inverse="true" lazy="false">
+			<key column="identity_type_id" />
+			<one-to-many class="IdentityTypeTranslation" />
+		</set>
+	</class>
 
-    </class>
+	<class name="IdentityTypeTranslation" table="identity_type_translations_tbl"
+		   optimistic-lock="version">
+		<id name="id" column="ID">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<properties name="lang_identity_type_pair" unique="true">
+			<many-to-one name="lang" column="language_id" lazy="false" fetch="join"
+						 class="org.flexpay.common.persistence.Language" />
+			<many-to-one name="identityType" class="IdentityType" column="identity_type_id"
+						 lazy="false" fetch="join" />
+		</properties>
+	</class>
+
+	<query name="IdentityType.listIdentityTypes">from IdentityType s where s.status = ?</query>
+
 </hibernate-mapping>

@@ -108,5 +108,25 @@
 			<result name="afterSubmit" type="redirect">street_type_list.action</result>
 		</action>
 	</package>
+	
+	<package name="identity_types" namespace="/dicts" extends="common">
+        <action name="identity_type_create" class="identityTypeCreteAction">
+			<result name="form" type="tiles">ab.identity_type.create</result>
+			<result name="afterSubmit" type="redirect">identity_type_list.action</result>
+		</action>
+		<action name="identity_type_view" class="identityTypeViewAction">
+			<result name="success" type="tiles">ab.identity_type.view</result>
+		</action>
+		<action name="identity_type_list" class="identityTypeListAction">
+			<result name="list" type="tiles">ab.identity_type.list</result>
+		</action>
+		<action name="identity_type_edit" class="identityTypeEditAction">
+			<result name="form" type="tiles">ab.identity_type.edit</result>
+			<result name="afterSubmit" type="redirect">identity_type_list.action</result>
+		</action>
+		<action name="identity_type_delete" class="identityTypeDeleteAction">
+			<result name="afterSubmit" type="redirect">identity_type_list.action</result>
+		</action>
+	</package>
 
 </struts>
