@@ -1,4 +1,4 @@
-package org.flexpay.ab.actions.street_type;
+package org.flexpay.ab.actions;
 
 import org.flexpay.common.actions.interceptor.UserPreferencesAware;
 import org.flexpay.common.exception.FlexPayException;

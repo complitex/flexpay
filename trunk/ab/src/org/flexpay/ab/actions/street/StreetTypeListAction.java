@@ -1,7 +1,8 @@
-package org.flexpay.ab.actions.street_type;
+package org.flexpay.ab.actions.street;
 
 import java.util.List;
 
+import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.StreetTypeService;
 

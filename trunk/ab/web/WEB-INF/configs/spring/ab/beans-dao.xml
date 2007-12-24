@@ -99,5 +99,25 @@
 			</bean>
 		</property>
 	</bean>
+	
+	<bean id="identityTypeDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.IdentityTypeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.IdentityType" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="identityTypeTranslationDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.IdentityTypeTranslationDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.IdentityTypeTranslation" />
+			</bean>
+		</property>
+	</bean>
 
 </beans>

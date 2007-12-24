@@ -26,5 +26,10 @@
 		<property name="streetTypeDao" ref="streetTypeDAO" />
 		<property name="streetTypeTranslationDao" ref="streetTypeTranslationDao" />
 	</bean>
+	
+	<bean id="identityTypeService" class="org.flexpay.ab.service.imp.IdentityTypeServiceImpl">
+		<property name="identityTypeDao" ref="identityTypeDAO" />
+		<property name="identityTypeTranslationDao" ref="identityTypeTranslationDao" />
+	</bean>
 
 </beans>

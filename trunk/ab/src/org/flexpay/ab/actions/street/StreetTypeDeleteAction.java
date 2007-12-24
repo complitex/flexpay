@@ -1,4 +1,4 @@
-package org.flexpay.ab.actions.street_type;
+package org.flexpay.ab.actions.street;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.flexpay.ab.actions.street_type;
+package org.flexpay.ab.actions.street;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
+import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.StreetTypeService;

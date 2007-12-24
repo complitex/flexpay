@@ -1,5 +1,6 @@
-package org.flexpay.ab.actions.street_type;
+package org.flexpay.ab.actions.street;
 
+import org.flexpay.ab.actions.AbstractCreateAction;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.MultilangEntityService;
