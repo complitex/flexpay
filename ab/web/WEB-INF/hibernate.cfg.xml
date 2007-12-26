@@ -14,16 +14,16 @@
 		<mapping resource="org/flexpay/ab/persistence/Region.hbm.xml" />
 
 		<!-- Town types -->
-		<mapping resource="org/flexpay/ab/persistence/TownType.hbm.xml"/>
-		
+		<mapping resource="org/flexpay/ab/persistence/TownType.hbm.xml" />
+
 		<!-- Street types -->
-		<mapping resource="org/flexpay/ab/persistence/StreetType.hbm.xml"/>
+		<mapping resource="org/flexpay/ab/persistence/StreetType.hbm.xml" />
 
-		<!-- Identity type -->
-		<mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml"/>
+		<!-- Identity types -->
+		<mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml" />
 
-		<mapping class="org.flexpay.common.persistence.Language" />
-		<mapping class="org.flexpay.common.persistence.LangNameTranslation" />
+		<!-- common.Languages -->
+		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
 
 	</session-factory>
 

@@ -10,7 +10,7 @@
 			<generator class="native" />
 		</id>
 		<property name="status" not-null="true" />
-		<set name="countryNames" inverse="true" lazy="false">
+		<set name="countryNames" inverse="true">
 			<key column="country_id" not-null="true" />
 			<one-to-many class="CountryNameTranslation" />
 		</set>
@@ -26,15 +26,15 @@
 			<generator class="native" />
 		</id>
 		<property name="name" />
-		<property name="shortName" column="short_name" length="10" />
-		<properties name="lang_town_type_pair" unique="true">
-			<many-to-one name="country" column="country_id" lazy="false"
-						 fetch="join" not-null="true" />
-			<many-to-one name="lang" column="language_id" lazy="false" fetch="join"
-						 not-null="true" />
+		<property name="shortName" column="short_name" length="5" />
+		<properties name="lang_country_pair" unique="true">
+			<many-to-one name="country" column="country_id" not-null="true" />
+			<many-to-one name="lang" column="language_id" not-null="true" />
 		</properties>
 	</class>
 
-	<query name="Country.listCountries">from Country</query>
+	<query name="Country.listCountries">
+		FROM Country c
+	</query>
 
 </hibernate-mapping>

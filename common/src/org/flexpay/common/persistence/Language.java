@@ -1,27 +1,27 @@
 package org.flexpay.common.persistence;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.beans.propertyeditors.LocaleEditor;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
-@Entity
-@Table (name = "languages_tbl")
-@NamedQueries ({
-@NamedQuery (name = "Language.listLanguages", query = "FROM Language")
-		})
 public class Language implements Serializable {
+
+	public static final int STATUS_ACTIVE = 0;
+	public static final int STATUS_DISABLED = 1;
+
 	private Long id;
 	private boolean isDefault = false;
 	private String langIsoCode;
-	private LanguageStatus status;
-	private List<LangNameTranslation> translations = Collections.emptyList();
+	private int status;
+
+	private Set<LangNameTranslation> translations = Collections.emptySet();
 
 	/**
 	 * Constructs a new Language.
@@ -34,8 +34,6 @@ public class Language implements Serializable {
 	 *
 	 * @return Value for property 'id'.
 	 */
-	@Id
-	@GeneratedValue
 	public Long getId() {
 		return id;
 	}
@@ -54,8 +52,6 @@ public class Language implements Serializable {
 	 *
 	 * @return Value for property 'default'.
 	 */
-	@Basic
-	@Column (name = "is_default")
 	public boolean isDefault() {
 		return isDefault;
 	}
@@ -74,7 +70,6 @@ public class Language implements Serializable {
 	 *
 	 * @return Value for property 'translations'.
 	 */
-	@OneToMany (cascade = {}, mappedBy = "language", fetch = FetchType.EAGER)
 	public Collection<LangNameTranslation> getTranslations() {
 		return translations;
 	}
@@ -84,7 +79,7 @@ public class Language implements Serializable {
 	 *
 	 * @param translations Value to set for property 'translations'.
 	 */
-	public void setTranslations(List<LangNameTranslation> translations) {
+	public void setTranslations(Set<LangNameTranslation> translations) {
 		this.translations = translations;
 	}
 
@@ -93,8 +88,7 @@ public class Language implements Serializable {
 	 *
 	 * @return Value for property 'status'.
 	 */
-	@Basic
-	public LanguageStatus getStatus() {
+	public int getStatus() {
 		return status;
 	}
 
@@ -103,7 +97,7 @@ public class Language implements Serializable {
 	 *
 	 * @param status Value to set for property 'status'.
 	 */
-	public void setStatus(LanguageStatus status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 
@@ -112,7 +106,6 @@ public class Language implements Serializable {
 	 *
 	 * @return Value for property 'name'.
 	 */
-	@Column (unique = true, nullable = false)
 	public String getLangIsoCode() {
 		return langIsoCode;
 	}
@@ -139,7 +132,6 @@ public class Language implements Serializable {
 				.toString();
 	}
 
-	@Transient
 	public Locale getLocale() {
 		LocaleEditor editor = new LocaleEditor();
 		editor.setAsText(langIsoCode);
@@ -149,17 +141,14 @@ public class Language implements Serializable {
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
+		} else if (!(o instanceof Language)) {
 			return false;
 		}
 
-		Language language = (Language) o;
-		if (langIsoCode == null) {
-			return language.getLangIsoCode() == null;
-		}
-
-		return langIsoCode.equals(language.getLangIsoCode());
+		Language that = (Language) o;
+		return new EqualsBuilder()
+				.append(langIsoCode, that.getLangIsoCode())
+				.isEquals();
 	}
 
 	public int hashCode() {

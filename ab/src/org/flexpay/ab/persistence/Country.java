@@ -3,6 +3,7 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -126,7 +127,16 @@ public class Country implements Serializable {
 		Country country = (Country) obj;
 		return new EqualsBuilder()
 				.append(status, country.status)
-				.append(countryNames, country.getCountryNames())
+				.append(countryNames, country.countryNames)
 				.isEquals();
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(status)
+				.append(countryNames)
+				.toHashCode();
 	}
 }

@@ -119,10 +119,6 @@ public class TownTypeEdit extends FPActionSupport
 		return translation;
 	}
 
-	private boolean isPost() {
-		return "post".equalsIgnoreCase(request.getMethod());
-	}
-
 	/**
 	 * Sets the HTTP request object in implementing classes.
 	 *

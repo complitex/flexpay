@@ -3,10 +3,10 @@ package org.flexpay.common.util.config;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.flexpay.common.dao.LanguageDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.LangNameTranslation;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.service.LanguageService;
 import org.flexpay.common.util.LanguageUtil;
 import org.springframework.web.context.ServletContextAware;
 
@@ -29,7 +29,7 @@ public class CommonConfigLoader implements ServletContextAware {
 	// Configuration file URL
 	private URL configFile;
 
-	private LanguageDao languageDao;
+	private LanguageService languageService;
 
 	/**
 	 * Constructor for loader
@@ -55,9 +55,9 @@ public class CommonConfigLoader implements ServletContextAware {
 			digester.parse(is);
 
 			ApplicationConfig config = (ApplicationConfig) digester.getRoot();
-			if ( languageDao != null ) {
+			if (languageService != null) {
 				log.debug("Loading languages");
-				config.setLanguages(languageDao.listLanguages());
+				config.setLanguages(languageService.getLanguages());
 			}
 			if (log.isDebugEnabled()) {
 				log.debug("Loaded config: " + config.toString());
@@ -144,9 +144,9 @@ public class CommonConfigLoader implements ServletContextAware {
 	/**
 	 * Setter for property 'languageDao'.
 	 *
-	 * @param languageDao Value to set for property 'languageDao'.
+	 * @param languageService Value to set for property 'languageDao'.
 	 */
-	public void setLanguageDao(LanguageDao languageDao) {
-		this.languageDao = languageDao;
+	public void setLanguageService(LanguageService languageService) {
+		this.languageService = languageService;
 	}
 }

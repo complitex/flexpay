@@ -10,11 +10,6 @@
 				<%@ include file="filters/country_filter.jsp" %>
 			</td>
 		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/date_interval_filter.jsp" %>
-			</td>
-		</tr>
 
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
@@ -24,22 +19,17 @@
 			<td class="th" width="63%"><s:text name="ab.region_name"/></td>
 			<td class="th" width="35%">&nbsp;</td>
 		</tr>
-		<c:forEach items="${requestScope['region_names']}" varStatus="status"
-				   var="regionName">
-			<c:set var="indx" value="${status.index}" />
-			<!--status.index+ -->
+		<s:iterator value="%{regionNames}" status="status">
 			<tr valign="middle" class="cols_1">
 				<td class="col_1s" align="right"><s:property
-						value="%{attr.indx + pager.thisPageFirstElementNumber + 1}"/>&nbsp;</td>
-				<td class="col"><input type="checkbox"
-									   value="<c:out value="${regionName.region.id}"/>"
-									   name="<c:out value="regionIds"/>"></td>
-				<td class="col"><c:out value="${regionName.translation.name}"/></td>
+						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>&nbsp;</td>
+				<td class="col"><input type="checkbox" value="<s:property value="%{region.id}"/>" name="regionIds"/></td>
+				<td class="col"><s:property value="%{getTranslation(translations).name}"/></td>
 				<td class="col">
-					<a href="<c:url value="/dicts/edit_region.action?id=${regionName.region.id}"/>"><s:text
-							name="common.edit_selected"/></a></td>
+					<a href="<s:url value="/dicts/view_region.action?region.id=%{region.id}"/>"><s:text
+							name="common.view"/></a></td>
 			</tr>
-		</c:forEach>
+		</s:iterator>
 		<tr class="cols_1">
 			<td class="col" width="100%" colspan="4" align="center">
 				<%@ include file="filters/pager.jsp" %>
@@ -48,10 +38,10 @@
 		<tr>
 			<td colspan="4">
 				<input type="submit" class="btn-exit"
-					   onclick="$('fregions').action='<c:url value="/dicts/delete_regions.action"/>';$('fregions').submit()"
+					   onclick="$('fregions').action='<s:url action="delete_regions"/>';$('fregions').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<c:url value="/dicts/create_region.action"/>'"
+					   onclick="window.location='<s:url action="create_region"/>'"
 					   value="<s:text name="common.new"/>"/>
 				<input type="submit" class="btn-exit"
 					   value="<s:text name="common.refresh"/>"/>

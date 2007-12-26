@@ -1,12 +1,14 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.ab.persistence.temp.Town;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.ab.persistence.temp.Town;
+import org.flexpay.common.persistence.TimeLine;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,7 +22,7 @@ public class Region implements java.io.Serializable {
 	private Long id;
 	private Country country;
 	private int status;
-	private Set<RegionName> names = Collections.emptySet();
+	private TimeLine<RegionName, RegionNameTemporal> namesTimeLine;
 	private Set<Town> towns = Collections.emptySet();
 
 	// Region name in current locale
@@ -87,21 +89,29 @@ public class Region implements java.io.Serializable {
 	}
 
 	/**
-	 * Getter for property 'names'.
+	 * Getter for property 'namesTimeLine'.
 	 *
-	 * @return Value for property 'names'.
+	 * @return Value for property 'namesTimeLine'.
 	 */
-	public Set<RegionName> getNames() {
-		return names;
+	public TimeLine<RegionName, RegionNameTemporal> getNamesTimeLine() {
+		return namesTimeLine;
 	}
 
 	/**
-	 * Setter for property 'names'.
+	 * Setter for property 'namesTimeLine'.
 	 *
-	 * @param names Value to set for property 'names'.
+	 * @param namesTimeLine Value to set for property 'namesTimeLine'.
 	 */
-	public void setNames(Set<RegionName> names) {
-		this.names = names;
+	public void setNamesTimeLine(TimeLine<RegionName, RegionNameTemporal> namesTimeLine) {
+		this.namesTimeLine = namesTimeLine;
+	}
+
+	public void setNameTemporals(List<RegionNameTemporal> nameTemporals) {
+		namesTimeLine = new TimeLine<RegionName, RegionNameTemporal>(nameTemporals);
+	}
+
+	public List<RegionNameTemporal> getNameTemporals() {
+		return namesTimeLine.getIntervals();
 	}
 
 	/**
@@ -147,7 +157,7 @@ public class Region implements java.io.Serializable {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 				.append("id", id)
 				.append("Status", status)
-				.append("Names", names.toArray())
+				.append("Names", namesTimeLine)
 				.toString();
 	}
 
@@ -163,24 +173,24 @@ public class Region implements java.io.Serializable {
 		if (this == obj) {
 			return true;
 		}
-		if (! (obj instanceof Region)) {
+		if (!(obj instanceof Region)) {
 			return false;
 		}
 
 		Region region = (Region) obj;
 
 		return new EqualsBuilder()
-				.append(country, region.country)
-				.append(names, region.names)
+				.append(namesTimeLine, region.namesTimeLine)
 				.isEquals();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(country)
-				.append(names)
+				.append(namesTimeLine)
 				.toHashCode();
 	}
 }

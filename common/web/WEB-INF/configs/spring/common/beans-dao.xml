@@ -6,14 +6,8 @@
 	<import resource="hibernate.xml" />
 
 	<!--  Dao Layer instances -->
-	<bean id="languageDAO" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.common.dao.LanguageDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.common.persistence.Language" />
-			</bean>
-		</property>
+	<bean id="languageDAO" class="org.flexpay.common.dao.impl.LanguageDaoImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
 </beans>

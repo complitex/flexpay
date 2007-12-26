@@ -1,35 +1,36 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
-	<class name="IdentityType" table="identity_types_tbl" optimistic-lock="version">
+	<class name="IdentityType" table="identity_types_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
 		<property name="status" not-null="true" />
-		<set name="translations" inverse="true" lazy="false">
-			<key column="identity_type_id" />
+		<set name="translations" inverse="true">
+			<key column="identity_type_id" not-null="true"/>
 			<one-to-many class="IdentityTypeTranslation" />
 		</set>
 	</class>
 
-	<class name="IdentityTypeTranslation" table="identity_type_translations_tbl"
-		   optimistic-lock="version">
-		<id name="id" column="ID">
+	<class name="IdentityTypeTranslation" table="identity_type_translations_tbl">
+		<id name="id" column="id">
 			<generator class="native" />
 		</id>
 		<property name="name" />
 		<properties name="lang_identity_type_pair" unique="true">
-			<many-to-one name="lang" column="language_id" lazy="false" fetch="join"
+			<many-to-one name="lang" column="language_id" not-null="true"
 						 class="org.flexpay.common.persistence.Language" />
-			<many-to-one name="identityType" class="IdentityType" column="identity_type_id"
-						 lazy="false" fetch="join" />
+			<many-to-one name="identityType" class="IdentityType"
+						 column="identity_type_id" not-null="true"/>
 		</properties>
 	</class>
 
-	<query name="IdentityType.listIdentityTypes">from IdentityType s where s.status = ?</query>
+	<query name="IdentityType.listIdentityTypes">
+		from IdentityType s where s.status = ?
+	</query>
 
 </hibernate-mapping>

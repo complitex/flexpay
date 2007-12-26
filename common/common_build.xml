@@ -156,7 +156,7 @@
 
 	<import file="hibernate_build.xml" />
 
-	<target name="common.exportschema" depends="common.compile.production">
+	<target name="common.exportschema.mysql5" depends="common.compile.production">
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_common.ddl.sql" />
 			<param name="src.dir" value="${common.dir}/src" />
@@ -164,6 +164,7 @@
 				   value="${common.dir}/web/WEB-INF/hibernate.cfg.xml" />
 			<param name="hibernate.properties"
 				   value="${common.dir}/web/WEB-INF/configs/spring/common/data_source.properties" />
+			<param name="delimiter" value=" type=InnoDB;" />
 		</antcall>
 	</target>
 

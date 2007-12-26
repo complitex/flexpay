@@ -139,11 +139,12 @@
 		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_ab.ddl.sql" />
-			<param name="src.dir" value="${ab.dir}/src" />
+			<param name="src.dir" value="${ab.dir}/src:${common.dir}/src" />
 			<param name="hibernate.cfg"
-				   value="${ab.dir}/web/WEB-INF/ab_hibernate.cfg.xml" />
+				   value="${ab.dir}/web/WEB-INF/hibernate.cfg.xml" />
 			<param name="hibernate.properties"
 				   value="${common.dir}/web/WEB-INF/configs/ps/data_source_mysql5.properties" />
+			<param name="delimiter" value=" type=InnoDB;" />
 		</antcall>
 	</target>
 

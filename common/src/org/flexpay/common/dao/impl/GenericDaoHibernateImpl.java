@@ -16,7 +16,6 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -48,6 +47,17 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 
 	public T read(PK id) {
 		return (T) hibernateTemplate.get(type, id);
+	}
+
+	public T readFull(final PK id) {
+		final String queryName = type.getSimpleName() + ".readFull";
+		return (T) hibernateTemplate.execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException {
+				Query queryObject = session.getNamedQuery(queryName);
+				queryObject.setParameter(0, id);
+				return queryObject.uniqueResult();
+			}
+		});
 	}
 
 	public void update(T o) {
@@ -123,17 +133,5 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 
 	public void setArgumentTypeFactory(FinderArgumentTypeFactory argumentTypeFactory) {
 		this.argumentTypeFactory = argumentTypeFactory;
-	}
-
-	private List getAllFeeds(final String queryName, final int startRecord, final int endRecord) {
-		return hibernateTemplate.executeFind(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				Query query = session.getNamedQuery(queryName);
-				query.setFirstResult(startRecord);
-				query.setMaxResults(endRecord);
-				List list = query.list();
-				return list;
-			}
-		});
 	}
 }

@@ -32,7 +32,7 @@
 
 	</package>
 
-	<package name="countries" namespace="/dicts" extends="tiles-default">
+	<package name="countries" namespace="/dicts" extends="common">
 
 		<action name="list_countries" class="listCountriesAction">
 			<result type="tiles">ab.country.list</result>
@@ -45,19 +45,32 @@
 
 	</package>
 
-	<package name="regions" namespace="/dicts" extends="tiles-default">
+	<package name="regions" namespace="/dicts" extends="common">
 
 		<action name="list_regions" class="listRegionsAction">
 			<result type="tiles">ab.regions.list</result>
 		</action>
 
 		<action name="create_region" class="createRegionAction">
-			<result type="redirect">list_regions.action</result>
+			<result type="redirect-action">
+				<param name="actionName">view_region</param>
+				<param name="parse">true</param>
+				<param name="region.id">${region.id}</param>
+			</result>
 			<result type="tiles" name="input">ab.region.create</result>
 		</action>
 
+		<action name="view_region" class="viewRegionAction">
+			<result type="tiles">ab.region.view</result>
+			<result type="redirect" name="error">list_regions.action</result>
+		</action>
+
 		<action name="edit_region" class="editRegionAction">
-			<result type="redirect">list_regions.action</result>
+			<result type="redirect-action">
+				<param name="actionName">view_region</param>
+				<param name="parse">true</param>
+				<param name="region.id">${region.id}</param>
+			</result>
 			<result type="tiles" name="input">ab.region.edit</result>
 		</action>
 
@@ -67,7 +80,7 @@
 
 	</package>
 
-	<package name="town_types" namespace="/dicts" extends="tiles-default">
+	<package name="town_types" namespace="/dicts" extends="common">
 
 		<action name="list_town_types" class="listTownTypesAction">
 			<result type="tiles">ab.town_types.list</result>

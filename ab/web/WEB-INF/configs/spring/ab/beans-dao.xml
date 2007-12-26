@@ -60,6 +60,16 @@
 		</property>
 	</bean>
 
+	<bean id="regionNameTemporalDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.RegionNameTemporalDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.RegionNameTemporal" />
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="townTypeDAO" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.TownTypeDao" />

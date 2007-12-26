@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence">
+
+	<class name="Language" table="languages_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status" not-null="true" />
+		<property name="default" column="is_default" />
+		<property name="langIsoCode" column="lang_iso_code" length="3"
+				  not-null="true" unique="true" />
+		<set name="translations" inverse="true">
+			<key column="language_id" not-null="true" />
+			<one-to-many class="LangNameTranslation" />
+		</set>
+	</class>
+
+	<class name="LangNameTranslation" table="language_names_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="translation" type="string" />
+		<properties name="lang_translation_from_pair" unique="true">
+			<many-to-one name="language" column="language_id" not-null="true" />
+			<many-to-one name="translationFrom" column="translation_from_language_id"
+						 not-null="true" />
+		</properties>
+	</class>
+
+	<query name="Language.listLanguages">
+		select distinct l
+		from Language l
+			inner join fetch l.translations 
+		where l.status=0
+	</query>
+</hibernate-mapping>

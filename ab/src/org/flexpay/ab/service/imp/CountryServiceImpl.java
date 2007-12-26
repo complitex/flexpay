@@ -62,6 +62,9 @@ public class CountryServiceImpl implements CountryService {
 		Language language = LanguageUtil.getLanguage(locale);
 		Language defaultLang = ApplicationConfig.getInstance().getDefaultLanguage();
 		List<Country> countries = countryDao.listCountries();
+
+		log.info("Found " + countries.size() + " countries");
+
 		List<CountryNameTranslation> countryNameList = new ArrayList<CountryNameTranslation>();
 
 		for (Country country : countries) {
