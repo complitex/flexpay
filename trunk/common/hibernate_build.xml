@@ -49,7 +49,6 @@
 					create="true"
 					export="false"
 					outputfilename="${file_name}"
-					delimiter=";"
 					format="true" />
 		</hibernatetool>
 	</target>

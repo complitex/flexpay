@@ -65,10 +65,6 @@ public class TownTypeCreate extends FPActionSupport implements ServletRequestAwa
 
 	}
 
-	private boolean isPost() {
-		return "post".equalsIgnoreCase(request.getMethod());
-	}
-
 	/**
 	 * Sets the HTTP request object in implementing classes.
 	 *

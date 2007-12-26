@@ -7,8 +7,7 @@
 	<!-- a SessionFactory instance listed as /jndi/name -->
 	<session-factory name="flexpay">
 
-		<mapping class="org.flexpay.common.persistence.Language" />
-		<mapping class="org.flexpay.common.persistence.LangNameTranslation" />
+		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
 
 	</session-factory>
 

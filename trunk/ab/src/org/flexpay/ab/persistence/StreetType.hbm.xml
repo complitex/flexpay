@@ -10,8 +10,8 @@
 			<generator class="native" />
 		</id>
 		<property name="status" not-null="true" />
-		<set name="translations" inverse="true" lazy="false">
-			<key column="street_type_id" />
+		<set name="translations" inverse="true">
+			<key column="street_type_id" not-null="true" />
 			<one-to-many class="StreetTypeTranslation" />
 		</set>
 	</class>
@@ -23,13 +23,15 @@
 		</id>
 		<property name="name" />
 		<properties name="lang_street_type_pair" unique="true">
-			<many-to-one name="lang" column="language_id" lazy="false" fetch="join"
+			<many-to-one name="lang" column="language_id" not-null="true"
 						 class="org.flexpay.common.persistence.Language" />
 			<many-to-one name="streetType" class="StreetType" column="street_type_id"
-						 lazy="false" fetch="join" />
+						 not-null="true" />
 		</properties>
 	</class>
 
-	<query name="StreetType.listStreetTypes">from StreetType s where s.status = ?</query>
+	<query name="StreetType.listStreetTypes">
+		from StreetType s where s.status = ?
+	</query>
 
 </hibernate-mapping>

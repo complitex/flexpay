@@ -1,7 +1,7 @@
-package org.flexpay.ab.actions;
+package org.flexpay.ab.actions.region;
 
-import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
+import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.service.CountryService;
@@ -9,18 +9,17 @@ import org.flexpay.ab.service.RegionService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.util.config.UserPreferences;
+import org.flexpay.common.dao.paging.Page;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
-public class RegionsDelete extends FPActionSupport
-		implements ServletRequestAware, SessionAware {
+public class RegionsDelete extends FPActionSupport implements SessionAware {
+
+	private static Logger log = Logger.getLogger(RegionsDelete.class);
 
 	private CountryService countryService;
 	private RegionService regionService;
 
-	private HttpServletRequest request;
 	private Map<String, Object> session;
 
 	private CountryFilter countryFilter = new CountryFilter();
@@ -30,11 +29,9 @@ public class RegionsDelete extends FPActionSupport
 	 */
 	public String execute() {
 
+		log.info("execute called!");
 		try {
-			RegionsList.saveDateInterval(request);
-
-			UserPreferences prefs = UserPreferences.getPreferences(request);
-			countryFilter = countryService.initFilter(countryFilter, prefs.getLocale());
+			countryFilter = countryService.initFilter(countryFilter, userPreferences.getLocale());
 
 			Collection<Region> regionsToDisable = new ArrayList<Region>();
 			for (Region region : regionService.getRegions(countryFilter)) {
@@ -58,7 +55,7 @@ public class RegionsDelete extends FPActionSupport
 		if (!getActionErrors().isEmpty()) {
 			RegionsList.setActionErrors(session, getActionErrors());
 		}
-
+		System.out.println("SUCCESS!");
 		return SUCCESS;
 	}
 
@@ -93,15 +90,6 @@ public class RegionsDelete extends FPActionSupport
 	}
 
 	/**
-	 * Sets the HTTP request object in implementing classes.
-	 *
-	 * @param request the HTTP request.
-	 */
-	public void setServletRequest(HttpServletRequest request) {
-		this.request = request;
-	}
-
-	/**
 	 * Getter for property 'countryFilter'.
 	 *
 	 * @return Value for property 'countryFilter'.
@@ -126,5 +114,9 @@ public class RegionsDelete extends FPActionSupport
 	 */
 	public void setRegionService(RegionService regionService) {
 		this.regionService = regionService;
+	}
+
+	public void setPager(Page pager) {
+		
 	}
 }

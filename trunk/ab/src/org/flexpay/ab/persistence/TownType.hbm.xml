@@ -5,31 +5,32 @@
 
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
-	<class name="TownType" table="town_types_tbl" optimistic-lock="version">
+	<class name="TownType" table="town_types_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
 		<property name="status" not-null="true" />
-		<set name="translations" inverse="true" lazy="false">
-			<key column="town_type_id" />
+		<set name="translations" inverse="true">
+			<key column="town_type_id" not-null="true" />
 			<one-to-many class="TownTypeTranslation" />
 		</set>
 	</class>
 
-	<class name="TownTypeTranslation" table="town_type_translations_tbl"
-		   optimistic-lock="version">
+	<class name="TownTypeTranslation" table="town_type_translations_tbl">
 		<id name="id" column="ID">
 			<generator class="native" />
 		</id>
 		<property name="name" />
 		<properties name="lang_town_type_pair" unique="true">
-			<many-to-one name="lang" column="language_id" lazy="false" fetch="join"
+			<many-to-one name="lang" column="language_id"
 						 class="org.flexpay.common.persistence.Language" />
-			<many-to-one name="townType" class="TownType" column="town_type_id"
-						 lazy="false" fetch="join" />
+			<many-to-one name="townType" class="TownType" column="town_type_id" />
 		</properties>
 	</class>
 
-	<query name="TownType.listTownTypes">from TownType t where t.status = ?</query>
+	<query name="TownType.listTownTypes">
+		from TownType t
+		where t.status = ?
+		</query>
 
 </hibernate-mapping>

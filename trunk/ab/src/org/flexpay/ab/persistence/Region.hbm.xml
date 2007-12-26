@@ -11,10 +11,25 @@
 		</id>
 		<many-to-one name="country" column="country_id" not-null="true" />
 		<property name="status" not-null="true" />
-		<set name="names" inverse="true" lazy="false">
+
+		<list name="nameTemporals" inverse="true"
+			  where="invalid_date='2100-12-31'">
 			<key column="region_id" not-null="true" />
-			<one-to-many class="RegionName" />
-		</set>
+			<list-index column="begin_date" />
+			<one-to-many class="RegionNameTemporal" />
+		</list>
+	</class>
+
+	<class name="RegionNameTemporal" table="region_names_temporal_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="begin" column="begin_date" type="date" not-null="true" />
+		<property name="end" column="end_date" type="date" not-null="true" />
+		<property name="createDate" column="create_date" type="date" not-null="true" />
+		<property name="invalidDate" column="invalid_date" type="date" not-null="true" />
+		<many-to-one name="region" class="Region" column="region_id" not-null="true"/>
+		<many-to-one name="value" class="RegionName" column="region_name_id" />
 	</class>
 
 	<class name="RegionName" table="region_names_tbl" optimistic-lock="version">
@@ -22,10 +37,9 @@
 			<generator class="native" />
 		</id>
 		<many-to-one name="region" column="region_id" not-null="true" />
-		<property name="begin" column="begin_date" type="date" />
-		<property name="end" column="end_date" type="date" />
-		<set name="translations" inverse="true" lazy="false">
-			<key column="region_name_id" />
+
+		<set name="translations" inverse="true">
+			<key column="region_name_id" not-null="true" />
 			<one-to-many class="RegionNameTranslation" />
 		</set>
 	</class>
@@ -37,20 +51,51 @@
 		</id>
 		<property name="name" />
 		<properties name="lang_region_name_pair" unique="true">
-			<many-to-one name="regionName" column="region_name_id" lazy="false"
-						 fetch="join" not-null="true" class="RegionName" />
-			<many-to-one name="lang" column="language_id" lazy="false" fetch="join"
-						 not-null="true"
+			<many-to-one name="regionName" column="region_name_id"
+						 not-null="true" class="RegionName" />
+			<many-to-one name="lang" column="language_id" not-null="true"
 						 class="org.flexpay.common.persistence.Language" />
 		</properties>
 	</class>
 
 	<query name="Region.listRegions">
-		from Region r where r.status=? and r.country.id=?
+		FROM Region r
+		WHERE r.status=? and r.country.id=?
 	</query>
 
 	<query name="Region.listRegions.count">
 		select count(*) from Region r where r.status=? and r.country.id=?
+	</query>
+
+	<query name="Region.readFull">
+		SELECT DISTINCT r
+		FROM Region r
+			LEFT JOIN FETCH r.nameTemporals t
+			LEFT JOIN FETCH t.value v
+			LEFT JOIN FETCH v.translations tr
+			LEFT JOIN FETCH tr.lang l
+			LEFT JOIN FETCH l.translations
+		WHERE r.id=? and t.invalidDate='2100-12-31'
+	</query>
+
+	<query name="RegionNameTemporal.readFull">
+		SELECT DISTINCT t
+		FROM RegionNameTemporal t
+			LEFT JOIN FETCH t.value v
+			LEFT JOIN FETCH v.translations tr
+			LEFT JOIN FETCH tr.lang l
+			LEFT JOIN FETCH l.translations
+		WHERE t.id=?
+	</query>
+
+	<query name="RegionName.readFull">
+		SELECT DISTINCT n
+		FROM RegionName n
+			LEFT JOIN FETCH n.region
+			LEFT JOIN FETCH n.translations tr
+			LEFT JOIN FETCH tr.lang l
+			LEFT JOIN FETCH l.translations
+		WHERE n.id=?
 	</query>
 
 </hibernate-mapping>

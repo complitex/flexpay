@@ -1,22 +1,17 @@
 package org.flexpay.common.persistence;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * Language name translation to particular locale
  */
-@Entity
-@Table (name = "language_names_tbl",
-		uniqueConstraints = {
-		@UniqueConstraint (columnNames = {"language_id", "translation_from_language_id"})
-				})
 public class LangNameTranslation implements Serializable {
+
 	private Long id;
 	private Language language;
 	private String translation;
@@ -33,8 +28,6 @@ public class LangNameTranslation implements Serializable {
 	 *
 	 * @return Value for property 'id'.
 	 */
-	@Id
-	@GeneratedValue
 	public Long getId() {
 		return id;
 	}
@@ -53,8 +46,6 @@ public class LangNameTranslation implements Serializable {
 	 *
 	 * @return Value for property 'language'.
 	 */
-	@ManyToOne
-	@JoinColumn (name = "language_id")
 	public Language getLanguage() {
 		return language;
 	}
@@ -91,8 +82,6 @@ public class LangNameTranslation implements Serializable {
 	 *
 	 * @return Value for property 'translationFrom'.
 	 */
-	@ManyToOne
-	@JoinColumn (name = "translation_from_language_id")
 	public Language getTranslationFrom() {
 		return translationFrom;
 	}
@@ -116,14 +105,18 @@ public class LangNameTranslation implements Serializable {
 				.toString();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
 				.append(translation).append(translationFrom).toHashCode();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

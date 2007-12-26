@@ -106,9 +106,7 @@ public class CountryNameTranslation extends Translation implements Serializable 
 	 */
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder()
-				.appendSuper(super.hashCode())
-				.hashCode();
+		return super.hashCode();
 	}
 
 	/**

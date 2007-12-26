@@ -24,7 +24,7 @@
 		</s:iterator>
 		<tr>
 			<td colspan="3" height="3" bgcolor="#4a4f4f"/>
-		</td>
+		</tr>
 		<tr>
 		  <td colspan="3">
 		    <a href="<s:url action='street_type_edit'><s:param name="id" value="%{streetType.id}"/></s:url>">

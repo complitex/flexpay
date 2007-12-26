@@ -2,23 +2,15 @@ package org.flexpay.ab.service.imp;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.flexpay.ab.dao.CountryDao;
-import org.flexpay.ab.dao.RegionDao;
-import org.flexpay.ab.dao.RegionNameDao;
-import org.flexpay.ab.dao.RegionNameTranslationDao;
-import org.flexpay.ab.persistence.Country;
-import org.flexpay.ab.persistence.Region;
-import org.flexpay.ab.persistence.RegionName;
-import org.flexpay.ab.persistence.RegionNameTranslation;
+import org.flexpay.ab.dao.*;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.service.RegionService;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.DateInterval;
+import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.util.DateIntervalUtil;
-import org.flexpay.common.util.LanguageUtil;
-import org.flexpay.common.util.TranslationUtil;
-import org.flexpay.common.dao.paging.Page;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -33,6 +25,7 @@ public class RegionServiceImpl implements RegionService {
 
 	private RegionDao regionDao;
 	private RegionNameDao regionNameDao;
+	private RegionNameTemporalDao regionNameTemporalDao;
 	private RegionNameTranslationDao regionNameTranslationDao;
 	private CountryDao countryDao;
 
@@ -40,111 +33,171 @@ public class RegionServiceImpl implements RegionService {
 	 * {@inheritDoc}
 	 */
 	@Transactional (readOnly = false)
-	public Region create(List<RegionName> regionNames, CountryFilter countryFilter)
+	public Region create(List<RegionNameTranslation> nameTranslations,
+						 CountryFilter countryFilter, Date date)
 			throws FlexPayExceptionContainer {
 
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
-
 		Country country = getCountry(countryFilter, container);
-
-		// todo check if intervals are intersecting
-		Set<RegionName> names = new HashSet<RegionName>();
-		for (RegionName regionName : regionNames) {
-			RegionName name = new RegionName();
-			boolean hasDefaultTranslation = false;
-			Set<RegionNameTranslation> translations = new HashSet<RegionNameTranslation>();
-			for (RegionNameTranslation translation : regionName.getTranslations()) {
-				if (StringUtils.isNotBlank(translation.getName())) {
-					translations.add(translation);
-					hasDefaultTranslation |= translation.getLang().isDefault();
-				}
-			}
-
-			if (!hasDefaultTranslation) {
-				FlexPayException e = new FlexPayException("No default language region translation",
-						"error.region_no_default_translation",
-						DateIntervalUtil.format(regionName));
-				container.addException(e);
-				continue;
-			}
-
-			name.setTranslations(translations);
-			name.setBegin(regionName.getBegin());
-			name.setEnd(regionName.getEnd());
-			names.add(name);
-		}
-
-		if (!container.getExceptions().isEmpty()) {
-			throw container;
-		}
+		Set<RegionNameTranslation> names = getTranslations(nameTranslations, container);
 
 		Region region = new Region();
 		region.setStatus(Region.STATUS_ACTIVE);
-		region.setNames(names);
+
+		RegionNameTemporal nameTemporal = new RegionNameTemporal();
+		nameTemporal.setRegion(region);
+		nameTemporal.setBegin(date);
+		TimeLine<RegionName, RegionNameTemporal> tl =
+				new TimeLine<RegionName, RegionNameTemporal>(nameTemporal);
+		region.setNamesTimeLine(tl);
 		region.setCountry(country);
 		regionDao.create(region);
 
-		for (RegionName regionName : names) {
-			regionName.setRegion(region);
-			regionNameDao.create(regionName);
-			for (RegionNameTranslation translation : regionName.getTranslations()) {
-				translation.setRegionName(regionName);
-				regionNameTranslationDao.create(translation);
+		RegionName regionName = new RegionName();
+		regionName.setTranslations(names);
+		regionName.setRegion(region);
+		regionNameDao.create(regionName);
+
+		for (RegionNameTranslation translation : regionName.getTranslations()) {
+			translation.setRegionName(regionName);
+			regionNameTranslationDao.create(translation);
+		}
+
+		nameTemporal.setValue(regionName);
+		for (RegionNameTemporal temporal : region.getNamesTimeLine().getIntervals()) {
+			RegionName empty = new RegionName();
+			if (nameTemporal.getValue().equals(empty)) {
+				nameTemporal.setValue(null);
 			}
+			regionNameTemporalDao.create(temporal);
 		}
 
 		return region;
 	}
 
 	/**
+	 * Save region name translations
+	 *
+	 * @param region Region to update
+	 * @param temporalId	   Temporal id to apply changes for
+	 * @param nameTranslations New translations
+	 * @param date			 Date from which the name is valid
+	 * @return updated region instance
+	 * @throws FlexPayExceptionContainer exceptions container
+	 */
+	@Transactional (readOnly = false)
+	public Region save(Region region, Long temporalId, List<RegionNameTranslation> nameTranslations,
+					   Date date) throws FlexPayExceptionContainer {
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
+		Set<RegionNameTranslation> names = getTranslations(nameTranslations, container);
+		RegionNameTemporal temporal = regionNameTemporalDao.readFull(temporalId);
+		RegionName regionName = new RegionName();
+		regionName.setTranslations(names);
+		regionName.setRegion(region);
+		// no changes made, return region
+		if (temporal != null
+			&& temporal.getBegin().equals(date)
+			&& regionName.equals(temporal.getValue()) ) {
+			log.info("No changes made for region name temporal");
+			return region;
+		}
+
+		// no changes made to translation
+		if (temporal != null && regionName.equals(temporal.getValue())) {
+			regionName = temporal.getValue();
+		} else {
+			regionNameDao.create(regionName);
+			for (RegionNameTranslation translation : names) {
+				translation.setRegionName(regionName);
+				translation.setId(null);
+				regionNameTranslationDao.create(translation);
+			}
+		}
+
+		if (temporal == null) {
+			temporal = new RegionNameTemporal();
+		}
+		temporal.setBegin(date);
+		temporal.setRegion(region);
+		temporal.setValue(regionName);
+
+		TimeLine<RegionName, RegionNameTemporal> timeLine = getTimeLine(region.getId());
+		TimeLine<RegionName, RegionNameTemporal> timeLineNew =
+				DateIntervalUtil.addInterval(timeLine, temporal);
+		timeLine = DateIntervalUtil.invalidate(timeLine);
+		saveTimeLine(timeLine);
+		saveTimeLine(timeLineNew);
+		region.setNamesTimeLine(timeLineNew);
+
+		return region;
+	}
+
+	private TimeLine<RegionName, RegionNameTemporal> getTimeLine(Long regionId) {
+		Region region = regionDao.readFull(regionId);
+		return region.getNamesTimeLine();
+	}
+
+	private void saveTimeLine(TimeLine<RegionName, RegionNameTemporal> tl) {
+		for (RegionNameTemporal temporal : tl.getIntervals()) {
+			if (temporal.getId() == null) {
+				regionNameTemporalDao.create(temporal);
+			} else {
+				regionNameTemporalDao.update(temporal);
+			}
+		}
+	}
+
+	private Set<RegionNameTranslation> getTranslations(List<RegionNameTranslation> nameTranslations,
+													   FlexPayExceptionContainer container)
+		throws FlexPayExceptionContainer {
+
+		Set<RegionNameTranslation> names = new HashSet<RegionNameTranslation>();
+		for (RegionNameTranslation nameTranslation : nameTranslations) {
+			if (nameTranslation.getLang().isDefault()
+				&& StringUtils.isBlank(nameTranslation.getName())) {
+
+				FlexPayException e = new FlexPayException("No default lang translation",
+						"error.region_no_default_translation");
+				container.addException(e);
+				continue;
+			}
+			if (StringUtils.isNotBlank(nameTranslation.getName())) {
+				names.add(nameTranslation);
+			}
+		}
+
+		if (!container.getExceptions().isEmpty()) {
+			throw container;
+		}
+
+		return names;
+	}
+
+	/**
 	 * Get Region name translations for specified locale, if translation is not found check
 	 * for translation in default locale
 	 *
-	 * @param locale		Locale to get translations for
 	 * @param countryFilter Country filter
 	 * @param pager		 Regions list pager
-	 *@param dateInterval  DateInterval @return List of region names
+	 * @return List of region names
 	 * @throws FlexPayException if failure occurs
 	 */
-	public List<RegionName> getRegionNames(Locale locale, CountryFilter countryFilter, Page pager, DateInterval dateInterval)
+	public List<RegionName> getRegionNames(CountryFilter countryFilter, Page pager)
 			throws FlexPayException {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Getting list of Region names: " + countryFilter);
 		}
 
-		List<Region> regions = regionDao.listRegions( pager,
+		List<Region> regions = regionDao.listRegions(pager,
 				Region.STATUS_ACTIVE, countryFilter.getSelectedCountryId());
 		List<RegionName> regionNames = new ArrayList<RegionName>(regions.size());
 
-		if (log.isDebugEnabled()) {
-			log.debug("RegionNames: " + regions);
-		}
-
+		// Get last temporal in each region names time line
 		for (Region region : regions) {
-			RegionName regionName = (RegionName) DateIntervalUtil.getInterval(
-					region.getNames(), dateInterval);
-			if (regionName == null) {
-				log.error("No name for region in interval: " + dateInterval);
-				continue;
-			}
-
-			RegionNameTranslation translation = (RegionNameTranslation) TranslationUtil
-					.getTranslation(regionName.getTranslations(), locale);
-			regionName.setTranslation(translation);
-
-			if (log.isDebugEnabled()) {
-				log.debug("Found translation: " + translation);
-			}
-
-			if (translation == null) {
-				log.error("No translation for region name: " + regionName);
-				continue;
-			}
-			translation.setLangTranslation(
-					LanguageUtil.getLanguageName(translation.getLang(), locale));
-
-			regionNames.add(regionName);
+			List<RegionNameTemporal> temporals = region.getNameTemporals();
+			RegionNameTemporal temporal = temporals.get(temporals.size() - 1);
+			regionNames.add(regionNameDao.readFull(temporal.getValue().getId()));
 		}
 
 		return regionNames;
@@ -157,7 +210,7 @@ public class RegionServiceImpl implements RegionService {
 	 * @return List of Regions
 	 */
 	public List<Region> getRegions(CountryFilter countryFilter) {
-		return regionDao.listRegions( 
+		return regionDao.listRegions(
 				Region.STATUS_ACTIVE, countryFilter.getSelectedCountryId());
 	}
 
@@ -174,123 +227,51 @@ public class RegionServiceImpl implements RegionService {
 		}
 
 		for (Region region : regions) {
-			region.setStatus(Region.STATUS_DISABLED);
-			regionDao.update(region);
+			Region reg = regionDao.read(region.getId());
+			reg.setStatus(Region.STATUS_DISABLED);
+			regionDao.update(reg);
 
 			if (log.isDebugEnabled()) {
-				log.debug("Disabled: " + region);
+				log.debug("Disabled: " + reg);
 			}
 		}
 	}
 
 	/**
-	 * Update region names
-	 *
-	 * @param region		Region to update
-	 * @param regionNames   Updated region names
-	 * @param countryFilter CountryFilter
-	 * @throws FlexPayExceptionContainer if failure occurs
+	 * {@inheritDoc}
 	 */
-	@Transactional (readOnly = false)
-	public void update(Region region, Collection<RegionName> regionNames, CountryFilter countryFilter)
-			throws FlexPayExceptionContainer {
-
-		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
-		Country country = getCountry(countryFilter, container);
-
-		// todo check if intervals are intersecting
-		Set<RegionName> names = new HashSet<RegionName>();
-		for (RegionName regionName : regionNames) {
-			RegionName name = new RegionName();
-			boolean hasDefaultTranslation = false;
-			Set<RegionNameTranslation> translations = new HashSet<RegionNameTranslation>();
-			for (RegionNameTranslation translation : regionName.getTranslations()) {
-				if (StringUtils.isNotBlank(translation.getName())) {
-					translations.add(translation);
-					hasDefaultTranslation |= translation.getLang().isDefault();
-				}
-			}
-
-			if (!hasDefaultTranslation) {
-				FlexPayException e = new FlexPayException("No default language region translation",
-						"error.region_no_default_translation",
-						DateIntervalUtil.format(regionName));
-				container.addException(e);
-				continue;
-			}
-
-			name.setId(regionName.getId());
-			name.setTranslations(translations);
-			name.setBegin(regionName.getBegin());
-			name.setEnd(regionName.getEnd());
-			names.add(name);
+	public Map<Long, RegionNameTranslation> getTranslations(Long temporalId) {
+		RegionNameTemporal temporal = regionNameTemporalDao.readFull(temporalId);
+		log.info("RegionName temporal: " + temporal);
+		if (temporal == null || temporal.getValue() == null) {
+			return Collections.emptyMap();
 		}
-
-		if (!container.getExceptions().isEmpty()) {
-			throw container;
+		RegionName name = temporal.getValue();
+		log.info("Region name translations: " + name.getTranslations());
+		Map<Long, RegionNameTranslation> map = new HashMap<Long, RegionNameTranslation>();
+		for (RegionNameTranslation translation : name.getTranslations()) {
+			map.put(translation.getLang().getId(), translation);
 		}
-
-		Collection<RegionName> namesToDelete = getRegionNamesToDelete(region, names);
-
-		region.setNames(names);
-		region.setCountry(country);
-		regionDao.update(region);
-
-		for (RegionName regionName : names) {
-			regionName.setRegion(region);
-			if (regionName.getId() == null) {
-				regionNameDao.create(regionName);
-			} else {
-				regionNameDao.update(regionName);
-			}
-			for (RegionNameTranslation translation : regionName.getTranslations()) {
-				translation.setRegionName(regionName);
-				if (translation.getId() != null) {
-					regionNameTranslationDao.update(translation);
-				} else {
-					regionNameTranslationDao.create(translation);
-				}
-			}
-		}
-
-		for (RegionName name : namesToDelete) {
-			for (RegionNameTranslation nameTranslation : name.getTranslations()) {
-				regionNameTranslationDao.delete(nameTranslation);
-			}
-			regionNameDao.delete(name);
-		}
+		return map;
 	}
 
-	private Collection<RegionName> getRegionNamesToDelete(
-			Region region, Collection<RegionName> namesToUpdate) {
-
-		Collection<RegionName> names = region.getNames();
-		Collection<RegionName> namesToDelete = new ArrayList<RegionName>();
-
-		OUTER:
-		for (RegionName name : names) {
-			for (RegionName updateName : namesToUpdate) {
-				if (name.getId().equals(updateName.getId())) {
-					break OUTER;
-				}
-			}
-
-			namesToDelete.add(name);
-		}
-
-		return namesToDelete;
-	}
-
-	private Country getCountry(CountryFilter countryFilter, FlexPayExceptionContainer container) throws FlexPayExceptionContainer {
+	/**
+	 * Extract country from filter
+	 *
+	 * @param countryFilter Country filter
+	 * @param container	 Exception container
+	 * @return Countr if found or <code>null</code> otherwise
+	 */
+	private Country getCountry(CountryFilter countryFilter, FlexPayExceptionContainer container) {
 		if (countryFilter.getSelectedCountryId() == null) {
 			container.addException(new FlexPayException("null", "ab.region.no_country_selectected"));
-			throw container;
+			return null;
 		}
 
 		Country country = countryDao.read(countryFilter.getSelectedCountryId());
 		if (country == null) {
 			container.addException(new FlexPayException("null", "ab.region.country_id_invalid"));
-			throw container;
+			return null;
 		}
 		return country;
 	}
@@ -302,7 +283,17 @@ public class RegionServiceImpl implements RegionService {
 	 * @return Region object, or <code>null</code> if object not found
 	 */
 	public Region read(Long id) {
-		return regionDao.read(id);
+		return regionDao.readFull(id);
+	}
+
+	/**
+	 * Read Region name temporal object by its unique id
+	 *
+	 * @param id Region key
+	 * @return Region name temporal object, or <code>null</code> if object not found
+	 */
+	public RegionNameTemporal readRegionNameTemporal(Long id) {
+		return regionNameTemporalDao.readFull(id);
 	}
 
 	/**
@@ -339,5 +330,14 @@ public class RegionServiceImpl implements RegionService {
 	 */
 	public void setRegionNameTranslationDao(RegionNameTranslationDao regionNameTranslationDao) {
 		this.regionNameTranslationDao = regionNameTranslationDao;
+	}
+
+	/**
+	 * Setter for property 'regionNameTemporalDao'.
+	 *
+	 * @param regionNameTemporalDao Value to set for property 'regionNameTemporalDao'.
+	 */
+	public void setRegionNameTemporalDao(RegionNameTemporalDao regionNameTemporalDao) {
+		this.regionNameTemporalDao = regionNameTemporalDao;
 	}
 }
