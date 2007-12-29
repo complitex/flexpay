@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<constant name="struts.custom.i18n.resources"
+			  value="org/flexpay/common/i18n/common-messages,org/flexpay/ab/i18n/errors,org/flexpay/ab/i18n/messages,org/flexpay/sz/i18n/errors,org/flexpay/sz/i18n/messages" />
+			  
+    <package name="sz" namespace="/sz" extends="common">
+
+		<action name="main">
+			<result type="tiles">sz.dictionaries</result>
+		</action>
+		<action name="import">
+			<result type="tiles">sz.import</result>
+		</action>
+		<action name="processing">
+			<result type="tiles">sz.processing</result>
+		</action>
+		
+		<action name="doUpload" class="org.flexpay.sz.actions.UploadFilesAction">
+            <result name="form" type="tiles">sz.import.file.upload.form</result>
+        </action>
+
+	</package>
+	
+</struts>
