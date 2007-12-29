@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="flexpay" default="build.all">
+  <project name="flexpay" default="build.all">
 
-	<import file="ab/ab_build.xml" />
+    <import file="sz/sz_build.xml" />
 
-	<target name="build.all">
-		<antcall target="ab.war.production.glassfish_mysql5" />
+    <target name="build.all">
+      <antcall target="sz.war.production.glassfish_mysql5" />
 
-		<antcall target="common.runtests" />
-		<antcall target="ab.runtests" />
+      <antcall target="common.runtests" />
+      <antcall target="ab.runtests" />
 
-		<!-- Build DLL schemas -->
-		<antcall target="common.exportschema" />
-		<antcall target="ab.exportschema.mysql5" />
-	</target>
+      <!-- Build DLL schemas -->
+      <antcall target="common.exportschema" />
+      <antcall target="ab.exportschema.mysql5" />
+    </target>
 
-</project>
+  </project>
