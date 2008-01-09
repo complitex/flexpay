@@ -1,6 +1,6 @@
 package org.flexpay.common.util.config;
 
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.mock.web.MockServletContext;
 

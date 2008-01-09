@@ -18,30 +18,29 @@
 	<span style="float:right;">
 		<s:text name="common.pages"/>:&nbsp;
 		<s:if test="%{pager.isFirstPage() == false}">
-			1&nbsp;
+			<input type="submit" name="pager.pageNumber" value="1" class="btn-link"/>&nbsp;
 		</s:if>
 
 		<s:if test="%{pager.hasPreviousPage() && pager.previousPageNumber > 2}">
 			...&nbsp;
 		</s:if>
 
-		<s:if test="%{pager.hasPreviousPage() && pager.previousPageNumber > 0}">
-			<s:property value="%{pager.previousPageNumber}"/>&nbsp;
+		<s:if test="%{pager.hasPreviousPage() && pager.previousPageNumber > 1}">
+			<input type="submit" name="pager.pageNumber" value="<s:property value="%{pager.previousPageNumber}"/>" class="btn-link"/>&nbsp;
 		</s:if>
 
-		<input name="pager.pageNumber" type="text" class="form-input-pager"
-			   value="<s:property value="%{pager.pageNumber}" />">&nbsp;
+		<b><s:property value="%{pager.pageNumber}" /></b>&nbsp;
 
 		<s:if test="%{pager.hasNextPage() && pager.nextPageNumber < pager.lastPageNumber}">
-			<s:property value="%{pager.nextPageNumber}"/>&nbsp;
+			<input type="submit" name="pager.pageNumber" value="<s:property value="%{pager.nextPageNumber}"/>" class="btn-link"/>&nbsp;
 		</s:if>
 
-		<s:if test="%{pager.hasNextPage() && pager.nextPageNumber < pager.lastPageNumber - 2}">
+		<s:if test="%{pager.hasNextPage() && pager.nextPageNumber < pager.lastPageNumber - 1}">
 			...&nbsp;
 		</s:if>
 
 		<s:if test="%{pager.isLastPage() == false}">
-			<s:property value="pager.lastPageNumber"/>
+			<input type="submit" name="pager.pageNumber" value="<s:property value="%{pager.lastPageNumber}"/>" class="btn-link"/>&nbsp;
 		</s:if>
 		&nbsp;
 	</span>
