@@ -68,7 +68,7 @@ public class Page<E> implements Serializable {
 	 *         otherwise
 	 */
 	public boolean isLastPage() {
-		return pageNumber == getLastPageNumber();
+		return pageNumber == getLastPageNumber() - 1;
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class Page<E> implements Serializable {
 	 *         otherwise
 	 */
 	public boolean hasNextPage() {
-		return pageNumber < getLastPageNumber();
+		return pageNumber < getLastPageNumber() - 1;
 	}
 
 	/**
