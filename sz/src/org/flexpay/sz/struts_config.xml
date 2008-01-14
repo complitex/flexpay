@@ -19,7 +19,7 @@
 			<result type="tiles">sz.processing</result>
 		</action>
 		
-		<action name="doUpload" class="org.flexpay.sz.actions.UploadFilesAction">
+		<action name="doUpload" class="importFileAction">
             <result name="form" type="tiles">sz.import.file.upload.form</result>
         </action>
 
