@@ -10,4 +10,6 @@
 			<translation locale="ru" name="Английский" />
 		</language>
 	</languages>
+	<dataRoot>c://flexpay_data_root</dataRoot>
+	<szDataRoot>/sz</szDataRoot> <!-- задаётся относительно dataRoot -->
 </flexpay>
