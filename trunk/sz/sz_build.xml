@@ -119,6 +119,20 @@
 			<param name="warfile" value="${distr.dir}/${sz.war.name}" />
 		</antcall>
 	</target>
+	
+	<target name="sz.exportschema.mysql5"
+				depends="common.compile.production,ab.compile.production,sz.compile.production">
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+			<antcall target="template.schemaexport">
+				<param name="file_name" value="flexpay_sz.ddl.sql" />
+				<param name="src.dir" value="${sz.dir}/src:${ab.dir}/src:${common.dir}/src" />
+				<param name="hibernate.cfg"
+					   value="${sz.dir}/web/WEB-INF/hibernate.cfg.xml" />
+				<param name="hibernate.properties"
+					   value="${common.dir}/web/WEB-INF/configs/ps/data_source_mysql5.properties" />
+				<param name="delimiter" value=" type=InnoDB;" />
+			</antcall>
+	</target>
 
 
 

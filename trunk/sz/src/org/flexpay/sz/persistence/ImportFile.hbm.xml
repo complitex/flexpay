@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.sz.persistence">
+
+	<class name="ImportFile" table="import_files_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="region" column="region_id" not-null="true" />
+		<property name="originalFileName" column="original_file_name" not-null="true" />
+		<property name="requestFileName" column="request_file_name" not-null="true" />
+		<property name="resultFileName" column="result_file_name" />
+		<property name="fileType" column="file_type" not-null="true" />
+		<property name="fileYear" column="file_year" not-null="true" />
+		<property name="fileMonth" column="file_month" not-null="true" />
+		<property name="userName" column="user_name" not-null="true" />
+		<property name="importDate" column="import_date" not-null="true" />
+		<property name="fileStatus" column="file_status" not-null="true" />
+		<property name="fileValidation" column="file_validation" not-null="true" />
+		
+		
+	</class>
+
+	<query name="ImportFile.listImportFiles">
+		from ImportFile s
+	</query>
+
+</hibernate-mapping>
