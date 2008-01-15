@@ -16,6 +16,9 @@
 		<!-- Town types -->
 		<mapping resource="org/flexpay/ab/persistence/TownType.hbm.xml" />
 
+		<!-- Town types -->
+		<mapping resource="org/flexpay/ab/persistence/Town.hbm.xml" />
+
 		<!-- Street types -->
 		<mapping resource="org/flexpay/ab/persistence/StreetType.hbm.xml" />
 

@@ -3,17 +3,17 @@
 
 	<import file="sz/sz_build.xml" />
 
-	<target name="build.all">
-		<antcall target="sz.war.production.glassfish_mysql5" />
+    <target name="build.all">
+      <antcall target="ab.war.production.glassfish_mysql5" />
+      <antcall target="sz.war.production.glassfish_mysql5" />
 
 		<antcall target="common.runtests" />
 		<antcall target="ab.runtests" />
 
-		<!-- Build DLL schemas -->
-		<antcall target="common.exportschema.mysql5" />
-		<antcall target="ab.exportschema.mysql5" />
-		<antcall target="sz.exportschema.mysql5" />
-
-	</target>
+      <!-- Build DLL schemas -->
+      <antcall target="common.exportschema.mysql5" />
+      <antcall target="ab.exportschema.mysql5" />
+      <antcall target="sz.exportschema.mysql5" />
+    </target>
 
 </project>
