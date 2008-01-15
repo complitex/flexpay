@@ -200,7 +200,7 @@ public class TestDateIntervalUtil {
 	}
 }
 
-class Price implements TemporaryValue<Price> {
+class Price extends TemporaryValue<Price> {
 
 	int value = 0;
 

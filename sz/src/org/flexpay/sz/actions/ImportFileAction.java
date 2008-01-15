@@ -2,11 +2,7 @@ package org.flexpay.sz.actions;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +16,7 @@ import org.flexpay.ab.service.RegionService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.sz.persistence.ImportFile;
 import org.flexpay.sz.service.ImportFileService;
 
@@ -112,7 +109,8 @@ public class ImportFileAction extends CommonAction {
 		Page pager = new Page();
 		countryFilter = countryService.initFilter(countryFilter,
 				userPreferences.getLocale());
-		regionNames = regionService.getRegionNames(countryFilter, pager);
+		PrimaryKeyFilter[] filters = {countryFilter};
+		regionNames = regionService.findNames(Arrays.asList(filters), pager);
 
 		return "form";
 	}
