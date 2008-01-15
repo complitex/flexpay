@@ -2,41 +2,19 @@ package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.persistence.LangNameTranslation;
 import org.flexpay.common.persistence.Translation;
 
 /**
  * TownTypeTranslation is a trnaslation of TownType to particular language
  */
-public class TownTypeTranslation extends Translation implements java.io.Serializable {
+public class TownTypeTranslation extends Translation {
 
-	private Long id;
 	private TownType townType;
-
-	private LangNameTranslation langTranslation;
 
 	/**
 	 * Constructs a new TownTypeTranslation.
 	 */
 	public TownTypeTranslation() {
-	}
-
-	/**
-	 * Getter for property 'id'.
-	 *
-	 * @return Value for property 'id'.
-	 */
-	public Long getId() {
-		return this.id;
-	}
-
-	/**
-	 * Setter for property 'id'.
-	 *
-	 * @param id Value to set for property 'id'.
-	 */
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	/**
@@ -58,24 +36,6 @@ public class TownTypeTranslation extends Translation implements java.io.Serializ
 	}
 
 	/**
-	 * Getter for property 'translation'.
-	 *
-	 * @return Value for property 'translation'.
-	 */
-	public LangNameTranslation getLangTranslation() {
-		return langTranslation;
-	}
-
-	/**
-	 * Setter for property 'translation'.
-	 *
-	 * @param langTranslation Value to set for property 'translation'.
-	 */
-	public void setLangTranslation(LangNameTranslation langTranslation) {
-		this.langTranslation = langTranslation;
-	}
-
-	/**
 	 * Returns a string representation of the object.
 	 *
 	 * @return a string representation of the object.
@@ -83,19 +43,23 @@ public class TownTypeTranslation extends Translation implements java.io.Serializ
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-				.append("Id", id)
+				.append("Id", getId())
 				.append("Language", getLang().getLangIsoCode())
 				.append("Name", getName())
 				.toString();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		return super.hashCode();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {

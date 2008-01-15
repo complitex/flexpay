@@ -1,13 +1,11 @@
 package org.flexpay.common.persistence;
 
-import java.io.Serializable;
-
-public interface TemporaryValue<T extends TemporaryValue> extends Serializable {
+public abstract class TemporaryValue<T extends TemporaryValue> extends DomainObject {
 
 	/**
 	 * Get null value
 	 *
 	 * @return Null representation of this value
 	 */
-	public T getEmpty();
+	public abstract T getEmpty();
 }

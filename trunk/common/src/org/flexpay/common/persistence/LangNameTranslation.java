@@ -5,14 +5,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import java.io.Serializable;
-
 /**
  * Language name translation to particular locale
  */
-public class LangNameTranslation implements Serializable {
+public class LangNameTranslation extends DomainObject {
 
-	private Long id;
 	private Language language;
 	private String translation;
 	private Language translationFrom;
@@ -21,24 +18,6 @@ public class LangNameTranslation implements Serializable {
 	 * Constructs a new LanguageName.
 	 */
 	public LangNameTranslation() {
-	}
-
-	/**
-	 * Getter for property 'id'.
-	 *
-	 * @return Value for property 'id'.
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * Setter for property 'id'.
-	 *
-	 * @param id Value to set for property 'id'.
-	 */
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	/**

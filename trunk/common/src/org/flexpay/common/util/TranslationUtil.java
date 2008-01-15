@@ -22,16 +22,16 @@ public class TranslationUtil {
 	 *         <code>null</code>
 	 * @throws FlexPayException if languages configuration is invalid
 	 */
-	public static Translation getTranslation(
-			Collection<? extends Translation> translations, Locale locale)
+	public static <T extends Translation> T getTranslation(
+			Collection<T> translations, Locale locale)
 			throws FlexPayException {
 
 		Language language = LanguageUtil.getLanguage(locale);
 		Language defaultLang = ApplicationConfig.getInstance().getDefaultLanguage();
 
-		Translation defaultTranslation = null;
+		T defaultTranslation = null;
 
-		for (Translation translation : translations) {
+		for (T translation : translations) {
 			// Check if translation language is the same as required
 			if (language.equals(translation.getLang())) {
 				log.debug("Found translation: " + translation);

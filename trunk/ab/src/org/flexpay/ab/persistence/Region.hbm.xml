@@ -9,7 +9,7 @@
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<many-to-one name="country" column="country_id" not-null="true" />
+		<many-to-one name="parent" column="country_id" class="Country" not-null="true" />
 		<property name="status" not-null="true" />
 
 		<list name="nameTemporals" inverse="true"
@@ -28,7 +28,7 @@
 		<property name="end" column="end_date" type="date" not-null="true" />
 		<property name="createDate" column="create_date" type="date" not-null="true" />
 		<property name="invalidDate" column="invalid_date" type="date" not-null="true" />
-		<many-to-one name="region" class="Region" column="region_id" not-null="true"/>
+		<many-to-one name="object" class="Region" column="region_id" not-null="true"/>
 		<many-to-one name="value" class="RegionName" column="region_name_id" />
 	</class>
 
@@ -36,7 +36,7 @@
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<many-to-one name="region" column="region_id" not-null="true" />
+		<many-to-one name="object" column="region_id" class="Region" not-null="true" />
 
 		<set name="translations" inverse="true">
 			<key column="region_name_id" not-null="true" />
@@ -51,20 +51,20 @@
 		</id>
 		<property name="name" />
 		<properties name="lang_region_name_pair" unique="true">
-			<many-to-one name="regionName" column="region_name_id"
+			<many-to-one name="translatable" column="region_name_id"
 						 not-null="true" class="RegionName" />
 			<many-to-one name="lang" column="language_id" not-null="true"
 						 class="org.flexpay.common.persistence.Language" />
 		</properties>
 	</class>
 
-	<query name="Region.listRegions">
+	<query name="Region.findObjects">
 		FROM Region r
-		WHERE r.status=? and r.country.id=?
+		WHERE r.status=? and r.parent.id=?
 	</query>
 
-	<query name="Region.listRegions.count">
-		select count(*) from Region r where r.status=? and r.country.id=?
+	<query name="Region.findObjects.count">
+		select count(*) from Region r where r.status=? and r.parent.id=?
 	</query>
 
 	<query name="Region.readFull">
@@ -91,7 +91,7 @@
 	<query name="RegionName.readFull">
 		SELECT DISTINCT n
 		FROM RegionName n
-			LEFT JOIN FETCH n.region
+			LEFT JOIN FETCH n.object
 			LEFT JOIN FETCH n.translations tr
 			LEFT JOIN FETCH tr.lang l
 			LEFT JOIN FETCH l.translations

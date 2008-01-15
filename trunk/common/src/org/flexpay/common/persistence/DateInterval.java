@@ -7,14 +7,13 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Date interval is a interval of time with day granularity
  */
 public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-		implements Serializable {
+		extends DomainObject {
 
 	private Date begin;
 	private Date end;

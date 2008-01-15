@@ -1,9 +1,10 @@
 package org.flexpay.ab.persistence;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
+import org.flexpay.common.persistence.TemporaryValueWithStatus;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -12,44 +13,14 @@ import java.util.Collections;
  * TownType entity class holds a general representation of various types of localities,
  * such as towns, villages, etc.
  */
-public class TownType implements java.io.Serializable {
+public class TownType extends TemporaryValueWithStatus<TownType> {
 
-	/**
-	 * Active town type staus
-	 */
-	public static final int STATUS_ACTIVE = 0;
-
-	/**
-	 * Disabled town type status
-	 */
-	public static final int STATUS_DISABLED = 1;
-
-	private Long id;
-	private int status;
 	private Collection<TownTypeTranslation> translations = Collections.emptyList();
 
 	/**
 	 * Constructs a new TownType.
 	 */
 	public TownType() {
-	}
-
-	/**
-	 * Getter for property 'id'.
-	 *
-	 * @return Value for property 'id'.
-	 */
-	public Long getId() {
-		return this.id;
-	}
-
-	/**
-	 * Setter for property 'id'.
-	 *
-	 * @param id Value to set for property 'id'.
-	 */
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	/**
@@ -71,24 +42,6 @@ public class TownType implements java.io.Serializable {
 	}
 
 	/**
-	 * Getter for property 'status'.
-	 *
-	 * @return Value for property 'status'.
-	 */
-	public int getStatus() {
-		return status;
-	}
-
-	/**
-	 * Setter for property 'status'.
-	 *
-	 * @param status Value to set for property 'status'.
-	 */
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	/**
 	 * Returns a string representation of the object.
 	 *
 	 * @return a string representation of the object.
@@ -96,13 +49,15 @@ public class TownType implements java.io.Serializable {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-				.append("Id", id)
-				.append("Status", status)
+				.append("Id", getId())
+				.append("Status", getStatus())
 				.append("Translations", translations.toArray())
 				.toString();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
@@ -110,7 +65,9 @@ public class TownType implements java.io.Serializable {
 				.toHashCode();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -124,5 +81,14 @@ public class TownType implements java.io.Serializable {
 		return new EqualsBuilder()
 				.append(translations, that.getTranslations())
 				.isEquals();
+	}
+
+	/**
+	 * Get null value
+	 *
+	 * @return Null representation of this value
+	 */
+	public TownType getEmpty() {
+		return new TownType();
 	}
 }

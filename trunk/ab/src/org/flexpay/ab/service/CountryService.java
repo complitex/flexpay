@@ -4,11 +4,12 @@ import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.CountryNameTranslation;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.service.ParentService;
 
 import java.util.List;
 import java.util.Locale;
 
-public interface CountryService {
+public interface CountryService extends ParentService<CountryNameTranslation, CountryFilter> {
 
 	/**
 	 * Create country

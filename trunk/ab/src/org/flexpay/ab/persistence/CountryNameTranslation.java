@@ -1,38 +1,16 @@
 package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.LangNameTranslation;
 import org.flexpay.common.persistence.Translation;
 
-import java.io.Serializable;
+public class CountryNameTranslation extends Translation {
 
-public class CountryNameTranslation extends Translation implements Serializable {
-	private Long id;
-	private Country country;
 	private String shortName;
 
 	private transient LangNameTranslation langTranslation;
-
-	/**
-	 * Getter for property 'id'.
-	 *
-	 * @return Value for property 'id'.
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * Setter for property 'id'.
-	 *
-	 * @param id Value to set for property 'id'.
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	/**
 	 * Getter for property 'shortName'.
@@ -50,24 +28,6 @@ public class CountryNameTranslation extends Translation implements Serializable 
 	 */
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
-	}
-
-	/**
-	 * Getter for property 'country'.
-	 *
-	 * @return Value for property 'country'.
-	 */
-	public Country getCountry() {
-		return country;
-	}
-
-	/**
-	 * Setter for property 'country'.
-	 *
-	 * @param country Value to set for property 'country'.
-	 */
-	public void setCountry(Country country) {
-		this.country = country;
 	}
 
 	/**
@@ -94,7 +54,7 @@ public class CountryNameTranslation extends Translation implements Serializable 
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-				.append("id", id)
+				.append("id", getId())
 				.append("Language", getLang().getLangIsoCode())
 				.append("Name", getName())
 				.append("Short name", shortName)

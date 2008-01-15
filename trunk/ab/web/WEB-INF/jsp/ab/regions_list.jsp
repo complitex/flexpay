@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="fregions" method="post" action="">
+	<form id="fobjectss" method="post" action="">
 
 		<tr>
 			<td class="th" width="100%" colspan="4" align="center">
@@ -14,19 +14,19 @@
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%"><input type="checkbox"
-											 onchange="FP.setCheckboxes(this.checked, 'regionIds')">
+											 onchange="FP.setCheckboxes(this.checked, 'objectIds')">
 			</td>
 			<td class="th" width="63%"><s:text name="ab.region_name"/></td>
 			<td class="th" width="35%">&nbsp;</td>
 		</tr>
-		<s:iterator value="%{regionNames}" status="status">
+		<s:iterator value="%{objectNames}" status="status">
 			<tr valign="middle" class="cols_1">
 				<td class="col_1s" align="right"><s:property
 						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>&nbsp;</td>
-				<td class="col"><input type="checkbox" value="<s:property value="%{region.id}"/>" name="regionIds"/></td>
+				<td class="col"><input type="checkbox" value="<s:property value="%{object.id}"/>" name="objectIds"/></td>
 				<td class="col"><s:property value="%{getTranslation(translations).name}"/></td>
 				<td class="col">
-					<a href="<s:url value="/dicts/view_region.action?region.id=%{region.id}"/>"><s:text
+					<a href="<s:url value="/dicts/view_region.action?object.id=%{object.id}"/>"><s:text
 							name="common.view"/></a></td>
 			</tr>
 		</s:iterator>

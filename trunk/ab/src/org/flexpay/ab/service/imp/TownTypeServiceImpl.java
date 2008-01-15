@@ -9,7 +9,6 @@ import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,8 +91,6 @@ public class TownTypeServiceImpl implements TownTypeService {
 				log.error("No name for town type: " + townType);
 				continue;
 			}
-			translation.setLangTranslation(
-					LanguageUtil.getLanguageName(translation.getLang(), locale));
 			translations.add(translation);
 		}
 

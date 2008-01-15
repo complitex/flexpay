@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.ab.persistence">
+
+	<class name="Town" table="towns_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="parent" column="region_id" class="Region" not-null="true" />
+		<property name="status" not-null="true" />
+
+		<list name="nameTemporals" inverse="true"
+			  where="invalid_date='2100-12-31'">
+			<key column="town_id" not-null="true" />
+			<list-index column="begin_date" />
+			<one-to-many class="TownNameTemporal" />
+		</list>
+		<list name="typeTemporals" inverse="true"
+			  where="invalid_date='2100-12-31'">
+			<key column="town_id" not-null="true" />
+			<list-index column="begin_date" />
+			<one-to-many class="TownTypeTemporal" />
+		</list>
+	</class>
+
+	<class name="TownNameTemporal" table="town_names_temporal_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="begin" column="begin_date" type="date" not-null="true" />
+		<property name="end" column="end_date" type="date" not-null="true" />
+		<property name="createDate" column="create_date" type="date" not-null="true" />
+		<property name="invalidDate" column="invalid_date" type="date" not-null="true" />
+		<many-to-one name="object" class="Town" column="town_id" not-null="true"/>
+		<many-to-one name="value" class="TownName" column="town_name_id" />
+	</class>
+
+	<class name="TownName" table="town_names_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="object" column="town_id" not-null="true" class="Town"/>
+
+		<set name="translations" inverse="true">
+			<key column="town_name_id" not-null="true" />
+			<one-to-many class="TownNameTranslation" />
+		</set>
+	</class>
+
+	<class name="TownNameTranslation" table="town_name_translations_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<properties name="lang_town_name_pair" unique="true">
+			<many-to-one name="translatable" column="town_name_id"
+						 not-null="true" class="TownName" />
+			<many-to-one name="lang" column="language_id" not-null="true"
+						 class="org.flexpay.common.persistence.Language" />
+		</properties>
+	</class>
+
+	<query name="Town.findObjects">
+		FROM Town t
+		WHERE t.status=? and t.parent.id=?
+	</query>
+
+	<query name="Town.findObjects.count">
+		select count(*) from Town t where t.status=? and t.parent.id=?
+	</query>
+
+	<query name="Town.readFull">
+		SELECT DISTINCT t
+		FROM Town t
+			LEFT JOIN FETCH t.nameTemporals nt
+			LEFT JOIN FETCH nt.value nv
+			LEFT JOIN FETCH nv.translations ntr
+			LEFT JOIN FETCH ntr.lang nl
+			LEFT JOIN FETCH nl.translations
+		WHERE t.id=? and nt.invalidDate='2100-12-31'
+	</query>
+
+	<query name="TownNameTemporal.readFull">
+		SELECT DISTINCT t
+		FROM TownNameTemporal t
+			LEFT JOIN FETCH t.value v
+			LEFT JOIN FETCH v.translations tr
+			LEFT JOIN FETCH tr.lang l
+			LEFT JOIN FETCH l.translations
+		WHERE t.id=?
+	</query>
+
+	<query name="TownName.readFull">
+		SELECT DISTINCT n
+		FROM TownName n
+			LEFT JOIN FETCH n.object
+			LEFT JOIN FETCH n.translations tr
+			LEFT JOIN FETCH tr.lang l
+			LEFT JOIN FETCH l.translations
+		WHERE n.id=?
+	</query>
+
+</hibernate-mapping>

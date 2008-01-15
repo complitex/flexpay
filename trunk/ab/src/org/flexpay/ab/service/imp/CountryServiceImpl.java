@@ -10,6 +10,7 @@ import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,9 +35,9 @@ public class CountryServiceImpl implements CountryService {
 		}
 
 		Set<CountryNameTranslation> names = new HashSet<CountryNameTranslation>();
-		for(CountryNameTranslation name : countryNames) {
+		for (CountryNameTranslation name : countryNames) {
 			if (!StringUtils.isBlank(name.getName())) {
-				name.setCountry(country);
+				name.setTranslatable(country);
 				names.add(name);
 			}
 		}
@@ -46,7 +47,7 @@ public class CountryServiceImpl implements CountryService {
 
 		// Save country
 		countryDao.create(country);
-		for(CountryNameTranslation name : names) {
+		for (CountryNameTranslation name : names) {
 			countryNameDao.create(name);
 		}
 		country.setCountryNames(names);
@@ -69,7 +70,7 @@ public class CountryServiceImpl implements CountryService {
 
 		for (Country country : countries) {
 			CountryNameTranslation name = getCountryName(country, language, defaultLang);
-			if ( name == null ) {
+			if (name == null) {
 				log.error("No name for country: " + language.getLangIsoCode() + " : " +
 						  defaultLang.getLangIsoCode() + ", " + country);
 				continue;
@@ -102,8 +103,7 @@ public class CountryServiceImpl implements CountryService {
 	 * @param countryFilter Filter to init
 	 * @param locale		Locale to get countries names in
 	 * @return Updated filter
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          iflanguage configuration is invalid
+	 * @throws FlexPayException if languages configuration is invalid
 	 */
 	public CountryFilter initFilter(CountryFilter countryFilter, Locale locale)
 			throws FlexPayException {
@@ -112,18 +112,53 @@ public class CountryServiceImpl implements CountryService {
 			countryFilter = new CountryFilter();
 		}
 
-		countryFilter.setCountryNames(getCountries(locale));
-		if (countryFilter.getSelectedCountryId() == null) {
-			Collection<CountryNameTranslation> names = countryFilter.getCountryNames();
+		countryFilter.setNames(getCountries(locale));
+		if (countryFilter.getSelectedId() == null) {
+			Collection<CountryNameTranslation> names = countryFilter.getNames();
 			if (names.isEmpty()) {
 				throw new FlexPayException("No country names", "ab.no_countries");
 			}
 
-			Country firstCountry = names.iterator().next().getCountry();
-			countryFilter.setSelectedCountryId(firstCountry.getId());
+			Country firstCountry = (Country) names.iterator().next().getTranslatable();
+			countryFilter.setSelectedId(firstCountry.getId());
 		}
 
 		return countryFilter;
+	}
+
+	/**
+	 * Initialize filters
+	 *
+	 * @param filters Filters to init
+	 * @param locale  Locale to get parent names in
+	 * @return Initialised filters collection
+	 * @throws FlexPayException if failure occurs
+	 */
+	public Collection<PrimaryKeyFilter> initFilters(Collection<PrimaryKeyFilter> filters, Locale locale)
+			throws FlexPayException {
+		if (filters == null) {
+			filters = new ArrayList<PrimaryKeyFilter>();
+		}
+		CountryFilter countryFilter = filters.isEmpty() ?
+									  null : (CountryFilter)  filters.iterator().next();
+		countryFilter = initFilter(countryFilter, locale);
+		filters.clear();
+		filters.add(countryFilter);
+
+		return filters;
+	}
+
+	/**
+	 * Initialize parent filter. Possibly taking in account upper level forefather filter
+	 *
+	 * @param parentFilter	 Filter to init
+	 * @param foreFatherFilter Upper level filter
+	 * @param locale		   Locale to get parent names in
+	 * @return Initialised filter
+	 * @throws FlexPayException if failure occurs
+	 */
+	public CountryFilter initFilter(CountryFilter parentFilter, PrimaryKeyFilter foreFatherFilter, Locale locale) throws FlexPayException {
+		return initFilter(parentFilter, locale);
 	}
 
 	public void setCountryDao(CountryDao countryDao) {

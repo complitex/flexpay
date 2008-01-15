@@ -10,7 +10,7 @@
 		<td class="th">&nbsp;</td>
 	</tr>
 	<s:set name="index" value="-1" />
-	<s:iterator value="region.namesTimeLine.intervals" status="rowstatus">
+	<s:iterator value="object.namesTimeLine.intervals" status="rowstatus">
 		<s:set name="temporalId" value="id" />
 		<s:iterator value="value.translations">
 			<tr valign="middle" class="cols_1">

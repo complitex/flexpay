@@ -7,8 +7,10 @@ import org.apache.struts2.ServletActionContext;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.actions.interceptor.UserPreferencesAware;
 
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Helper ActionSupport extension, able to set
@@ -90,6 +93,10 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 	public String getLangName(Language lang) throws FlexPayException {
 		return LanguageUtil.getLanguageName(lang, userPreferences.getLocale())
 				.getTranslation();
+	}
+
+	public Translation getTranslation(Set<Translation> translations) throws FlexPayException {
+		return TranslationUtil.getTranslation(translations, userPreferences.getLocale());
 	}
 
 	public boolean isPost() {

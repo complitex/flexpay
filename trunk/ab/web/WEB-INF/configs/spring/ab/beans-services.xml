@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
 	<import resource="beans-dao.xml" />
 
@@ -11,6 +11,7 @@
 	</bean>
 
 	<bean id="regionService" class="org.flexpay.ab.service.imp.RegionServiceImpl">
+		<property name="parentService" ref="countryService" />
 		<property name="regionDao" ref="regionDAO" />
 		<property name="regionNameDao" ref="regionNameDAO" />
 		<property name="regionNameTranslationDao" ref="regionNameTranslationDAO" />
@@ -18,17 +19,26 @@
 		<property name="countryDao" ref="countryDAO" />
 	</bean>
 
+	<bean id="townService" class="org.flexpay.ab.service.imp.TownServiceImpl">
+		<property name="regionDao" ref="regionDAO" />
+		<property name="townDao" ref="townDAO" />
+		<property name="townNameDao" ref="townNameDAO" />
+		<property name="townNameTranslationDao" ref="townNameTranslationDAO" />
+		<property name="townNameTemporalDao" ref="townNameTemporalDao" />
+	</bean>
+
 	<bean id="townTypeService" class="org.flexpay.ab.service.imp.TownTypeServiceImpl">
 		<property name="townTypeDao" ref="townTypeDAO" />
 		<property name="townTypeTranslationDao" ref="townTypeTranslationDao" />
 	</bean>
-	
+
 	<bean id="streetTypeService" class="org.flexpay.ab.service.imp.StreetTypeServiceImpl">
 		<property name="streetTypeDao" ref="streetTypeDAO" />
 		<property name="streetTypeTranslationDao" ref="streetTypeTranslationDao" />
 	</bean>
-	
-	<bean id="identityTypeService" class="org.flexpay.ab.service.imp.IdentityTypeServiceImpl">
+
+	<bean id="identityTypeService"
+		  class="org.flexpay.ab.service.imp.IdentityTypeServiceImpl">
 		<property name="identityTypeDao" ref="identityTypeDAO" />
 		<property name="identityTypeTranslationDao" ref="identityTypeTranslationDao" />
 	</bean>

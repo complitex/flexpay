@@ -3,7 +3,7 @@ package org.flexpay.ab.persistence.temp;
 
 
 import org.flexpay.ab.persistence.temp.Building;
-import org.flexpay.ab.persistence.temp.Town;
+import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.Street;
 
 import java.util.HashSet;
