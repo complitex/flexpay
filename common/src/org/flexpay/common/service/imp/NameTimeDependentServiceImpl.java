@@ -1,0 +1,442 @@
+package org.flexpay.common.service.imp;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.flexpay.common.dao.GenericDao;
+import org.flexpay.common.dao.NameTimeDependentDao;
+import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.*;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.service.NameTimeDependentService;
+import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.TranslationUtil;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+
+/**
+ * Base service implementation for objects with time-dependent name
+ */
+@Transactional (readOnly = true, rollbackFor = Exception.class)
+public abstract class NameTimeDependentServiceImpl<
+		T extends Translation,
+		TV extends TemporaryName<TV, T>,
+		DI extends NameDateInterval<TV, DI>,
+		NTD extends NameTimeDependentChild<TV, DI>,
+		Parent extends DomainObject
+		> implements NameTimeDependentService<TV, DI, NTD, T> {
+
+	private static Logger log = Logger.getLogger(NameTimeDependentServiceImpl.class);
+
+	/**
+	 * Get DAO implementation working with Name time-dependent objects
+	 *
+	 * @return GenericDao implementation
+	 */
+	protected abstract NameTimeDependentDao<NTD, Long> getNameTimeDependentDao();
+
+	/**
+	 * Get DAO implementation working with DateIntervals
+	 *
+	 * @return GenericDao implementation
+	 */
+	protected abstract GenericDao<DI, Long> getNameTemporalDao();
+
+	/**
+	 * Get DAO implementation working with DateIntervals
+	 *
+	 * @return GenericDao implementation
+	 */
+	protected abstract GenericDao<TV, Long> getNameValueDao();
+
+	/**
+	 * Get DAO implementation working with name translations
+	 *
+	 * @return GenericDao implementation
+	 */
+	protected abstract GenericDao<T, Long> getNameTranslationDao();
+
+	/**
+	 * Get DAO implementation working with parent objects
+	 *
+	 * @return GenericDao implementation
+	 */
+	protected abstract GenericDao<Parent, Long> getParentDao();
+
+	/**
+	 * Getter for property 'newNameTemporal'.
+	 *
+	 * @return Value for property 'newNameTemporal'.
+	 */
+	protected abstract DI getNewNameTemporal();
+
+	/**
+	 * Getter for property 'newNameTimeDependent'.
+	 *
+	 * @return Value for property 'newNameTimeDependent'.
+	 */
+	protected abstract NTD getNewNameTimeDependent();
+
+	/**
+	 * Getter for property 'emptyName'.
+	 *
+	 * @return Value for property 'emptyName'.
+	 */
+	protected abstract TV getEmptyName();
+
+	/**
+	 * Check if disable operation on object is allowed
+	 *
+	 * @param ntd	   Name time dependent object
+	 * @param container Exceptions container to add exception for
+	 * @return <code>true</code> if operation allowed, or <code>false</otherwise>
+	 */
+	protected abstract boolean canDisable(NTD ntd, FlexPayExceptionContainer container);
+
+	/**
+	 * return base for name time-dependent objects in i18n files, like 'region', 'town',
+	 * etc.
+	 *
+	 * @return Localization key base
+	 */
+	protected abstract String getI18nKeyBase();
+
+	/**
+	 * Read name time-dependent object by its unique id
+	 *
+	 * @param id key
+	 * @return object, or <code>null</code> if not found
+	 */
+	public NTD read(Long id) {
+		return getNameTimeDependentDao().readFull(id);
+	}
+
+	/**
+	 * Disable NTD
+	 *
+	 * @param objects NTDs to disable
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if failure occurs
+	 */
+	@Transactional (readOnly = false)
+	public void disable(Collection<NTD> objects) throws FlexPayExceptionContainer {
+
+		if (log.isDebugEnabled()) {
+			log.debug(objects.size() + " objects to disable");
+		}
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
+
+		for (NTD ntd : objects) {
+			if (!canDisable(ntd, container)) {
+				continue;
+			}
+			NTD ntdDB = getNameTimeDependentDao().read(ntd.getId());
+			ntdDB.setStatus(DomainObjectWithStatus.STATUS_DISABLED);
+			getNameTimeDependentDao().update(ntdDB);
+
+			if (log.isDebugEnabled()) {
+				log.debug("Disabled: " + ntdDB);
+			}
+		}
+
+		if (!container.getExceptions().isEmpty()) {
+			throw container;
+		}
+	}
+
+	/**
+	 * Read Region name temporal object by its unique id
+	 *
+	 * @param id Region key
+	 * @return Region name temporal object, or <code>null</code> if object not found
+	 */
+	public DI readTemporalName(Long id) {
+		return getNameTemporalDao().readFull(id);
+	}
+
+	/**
+	 * Get temporal names
+	 *
+	 * @param filters Filters
+	 * @param pager   Objects list pager
+	 * @return List of names
+	 * @throws FlexPayException if failure occurs
+	 */
+	public List<TV> findNames(Collection<PrimaryKeyFilter> filters, Page pager)
+			throws FlexPayException {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Getting list of names: " + filters);
+		}
+
+		PrimaryKeyFilter[] filtersArr = filters.toArray(new PrimaryKeyFilter[filters.size()]);
+		PrimaryKeyFilter filter = filtersArr[filtersArr.length - 1];
+
+		List<NTD> ntds = getNameTimeDependentDao().findObjects(pager,
+				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
+		List<TV> names = new ArrayList<TV>(ntds.size());
+
+		// Get last temporal in each region names time line
+		for (NTD ntd : ntds) {
+			List<DI> temporals = ntd.getNameTemporals();
+			DI temporal = temporals.get(temporals.size() - 1);
+			names.add(getNameValueDao().readFull(temporal.getValue().getId()));
+		}
+
+		return names;
+	}
+
+	/**
+	 * Get temporal names
+	 *
+	 * @param filter Filter
+	 * @return List of names
+	 * @throws FlexPayException if failure occurs
+	 */
+	protected List<TV> findNames(PrimaryKeyFilter filter)
+			throws FlexPayException {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Getting list of names: " + filter);
+		}
+
+		List<NTD> ntds = getNameTimeDependentDao().findObjects(
+				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
+		List<TV> names = new ArrayList<TV>(ntds.size());
+
+		// Get last temporal in each region names time line
+		for (NTD ntd : ntds) {
+			List<DI> temporals = ntd.getNameTemporals();
+			DI temporal = temporals.get(temporals.size() - 1);
+			names.add(getNameValueDao().readFull(temporal.getValue().getId()));
+		}
+
+		return names;
+	}
+
+	protected List<T> getTranslations(PrimaryKeyFilter filter, Locale locale) throws FlexPayException {
+		List<TV> names = findNames(filter);
+		List<T> nameTranslations = new ArrayList<T>(names.size());
+		for (TV name : names) {
+			nameTranslations.add(
+					TranslationUtil.getTranslation(name.getTranslations(), locale));
+		}
+
+		return nameTranslations;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Transactional (readOnly = false)
+	public NTD create(List<T> nameTranslations, Collection<PrimaryKeyFilter> filters, Date date)
+			throws FlexPayExceptionContainer {
+
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
+		DomainObject parent = getParent(filters, container);
+		Set<T> names = getTranslations(nameTranslations, container);
+
+		NTD namable = getNewNameTimeDependent();
+		namable.setStatus(ObjectWithStatus.STATUS_ACTIVE);
+
+		DI nameTemporal = getNewNameTemporal();
+		nameTemporal.setObject(namable);
+		nameTemporal.setBegin(date);
+		TimeLine<TV, DI> tl = new TimeLine<TV, DI>(nameTemporal);
+		namable.setNamesTimeLine(tl);
+		namable.setParent(parent);
+		getNameTimeDependentDao().create(namable);
+
+		TV objectName = getEmptyName();
+		objectName.setTranslations(names);
+		objectName.setObject(namable);
+		getNameValueDao().create(objectName);
+
+		for (T translation : objectName.getTranslations()) {
+			translation.setTranslatable(objectName);
+			getNameTranslationDao().create(translation);
+		}
+
+		nameTemporal.setValue(objectName);
+		for (DI temporal : namable.getNamesTimeLine().getIntervals()) {
+			TV empty = getEmptyName();
+			if (nameTemporal.getValue().equals(empty)) {
+				nameTemporal.setValue(null);
+			}
+			getNameTemporalDao().create(temporal);
+		}
+
+		return namable;
+	}
+
+	/**
+	 * Extract parent from filter data
+	 *
+	 * @param filters   PrimaryKeyFilter parent filters
+	 * @param container Exception container
+	 * @return Country if found or <code>null</code> otherwise
+	 */
+	private DomainObject getParent(
+			Collection<PrimaryKeyFilter> filters, FlexPayExceptionContainer container) {
+		PrimaryKeyFilter[] filtersArr = filters.toArray(new PrimaryKeyFilter[filters.size()]);
+		PrimaryKeyFilter filter = filtersArr[filtersArr.length - 1];
+		if (filter.getSelectedId() == null) {
+			container.addException(new FlexPayException("null",
+					"ab." + getI18nKeyBase() + ".no_parent_selectected"));
+			return null;
+		}
+
+		GenericDao<Parent, Long> parentDao = getParentDao();
+
+		DomainObject domainObject = parentDao.read(filter.getSelectedId());
+		if (domainObject == null) {
+			container.addException(new FlexPayException("null", "ab.region.country_id_invalid"));
+			return null;
+		}
+		return domainObject;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Map<Long, T> getTranslations(Long temporalId) {
+		DI temporal = getNameTemporalDao().readFull(temporalId);
+		if (log.isInfoEnabled()) {
+			log.info("Temporal: " + temporal);
+		}
+
+		if (temporal == null || temporal.getValue() == null) {
+			return Collections.emptyMap();
+		}
+
+		TV name = temporal.getValue();
+		if (log.isInfoEnabled()) {
+			log.info("Ttranslations: " + name.getTranslations());
+		}
+
+		Map<Long, T> map = new HashMap<Long, T>();
+		for (T translation : name.getTranslations()) {
+			map.put(translation.getLang().getId(), translation);
+		}
+
+		return map;
+	}
+
+	/**
+	 * Save region name translations
+	 *
+	 * @param object		   Region to update
+	 * @param temporalId	   Temporal id to apply changes for
+	 * @param nameTranslations New translations
+	 * @param date			 Date from which the name is valid
+	 * @return updated region instance
+	 * @throws FlexPayExceptionContainer exceptions container
+	 */
+	@Transactional (readOnly = false)
+	public NTD updateNameTranslations(NTD object, Long temporalId, List<T> nameTranslations,
+									  Date date) throws FlexPayExceptionContainer {
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
+		Set<T> names = getTranslations(nameTranslations, container);
+		DI temporal = getNameTemporalDao().readFull(temporalId);
+		TV objectName = getEmptyName();
+		objectName.setTranslations(names);
+		objectName.setObject(object);
+		// no changes made, return object
+		if (temporal != null
+			&& temporal.getBegin().equals(date)
+			&& objectName.equals(temporal.getValue())) {
+			log.info("No changes made for object name temporal");
+			return object;
+		}
+
+		// no changes made to translation
+		if (temporal != null && objectName.equals(temporal.getValue())) {
+			objectName = temporal.getValue();
+		} else {
+			getNameValueDao().create(objectName);
+			for (T translation : names) {
+				translation.setTranslatable(objectName);
+				translation.setId(null);
+				getNameTranslationDao().create(translation);
+			}
+		}
+
+		if (temporal == null) {
+			temporal = getNewNameTemporal();
+		}
+		temporal.setBegin(date);
+		temporal.setObject(object);
+		temporal.setValue(objectName);
+
+		TimeLine<TV, DI> timeLine = getTimeLine(object.getId());
+		TimeLine<TV, DI> timeLineNew =
+				DateIntervalUtil.addInterval(timeLine, temporal);
+		timeLine = DateIntervalUtil.invalidate(timeLine);
+		saveTimeLine(timeLine);
+		saveTimeLine(timeLineNew);
+		object.setNamesTimeLine(timeLineNew);
+
+		return object;
+	}
+
+	private TimeLine<TV, DI> getTimeLine(Long regionId) {
+		NTD region = getNameTimeDependentDao().readFull(regionId);
+		return region.getNamesTimeLine();
+	}
+
+	private void saveTimeLine(TimeLine<TV, DI> tl) {
+		for (DI temporal : tl.getIntervals()) {
+			if (temporal.getId() == null) {
+				getNameTemporalDao().create(temporal);
+			} else {
+				getNameTemporalDao().update(temporal);
+			}
+		}
+	}
+
+	/**
+	 * Check object names translations
+	 *
+	 * @param nameTranslations translations
+	 * @param container		Errors container
+	 * @return Set of not empty translations
+	 * @throws FlexPayExceptionContainer if translations specified have invalid values
+	 */
+	private Set<T> getTranslations(List<T> nameTranslations, FlexPayExceptionContainer container)
+			throws FlexPayExceptionContainer {
+
+		Set<T> names = new HashSet<T>();
+		for (T nameTranslation : nameTranslations) {
+			if (nameTranslation.getLang().isDefault()
+				&& StringUtils.isBlank(nameTranslation.getName())) {
+
+				FlexPayException e = new FlexPayException("No default lang translation",
+						"error.no_default_translation");
+				container.addException(e);
+				continue;
+			}
+			if (StringUtils.isNotBlank(nameTranslation.getName())) {
+				names.add(nameTranslation);
+			}
+		}
+
+		if (!container.getExceptions().isEmpty()) {
+			throw container;
+		}
+
+		return names;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<NTD> find(Collection<PrimaryKeyFilter> filters) {
+		PrimaryKeyFilter[] filtersArr = filters.toArray(new PrimaryKeyFilter[filters.size()]);
+		PrimaryKeyFilter filter = filtersArr[filtersArr.length - 1];
+		return getNameTimeDependentDao().findObjects(
+				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
+	}
+
+}

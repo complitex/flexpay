@@ -21,7 +21,7 @@ public interface TownTypeService {
 	 * @return created Country object
 	 * @throws FlexPayException if failure occurs
 	 */
-	public TownType create(Collection<TownTypeTranslation> translations) throws FlexPayException;
+	TownType create(Collection<TownTypeTranslation> translations) throws FlexPayException;
 
 	/**
 	 * Read TownType object by its unique id
@@ -29,7 +29,7 @@ public interface TownTypeService {
 	 * @param id TownType key
 	 * @return TownType object, or <code>null</code> if object not found
 	 */
-	public TownType read(Long id);
+	TownType read(Long id);
 
 	/**
 	 * Get TownType translations for specified locale, if translation is not found check for

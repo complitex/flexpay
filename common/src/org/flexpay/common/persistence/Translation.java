@@ -3,63 +3,86 @@ package org.flexpay.common.persistence;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import java.io.Serializable;
+public class Translation extends DomainObject {
+	private String name;
+	private Language lang;
+	private DomainObject translatable;
 
-public class Translation implements Serializable {
-    private String name;
-    private Language lang;
-
-    /** Constructs a new Translation. */
+	/**
+	 * Constructs a new Translation.
+	 */
 	public Translation() {
-    }
+	}
 
-    public Translation(String name, Language lang) {
-        this.name = name;
-        this.lang = lang;
-    }
+	public Translation(String name, Language lang) {
+		this.name = name;
+		this.lang = lang;
+	}
 
-    /**
+	/**
 	 * Getter for property 'name'.
 	 *
 	 * @return Value for property 'name'.
 	 */
 	public String getName() {
-        return name;
-    }
+		return name;
+	}
 
-    /**
+	/**
 	 * Getter for property 'lang'.
 	 *
 	 * @return Value for property 'lang'.
 	 */
 	public Language getLang() {
-        return lang;
-    }
+		return lang;
+	}
 
-    /**
+	/**
 	 * Setter for property 'name'.
 	 *
 	 * @param name Value to set for property 'name'.
 	 */
 	public void setName(String name) {
-        this.name = name;
-    }
+		this.name = name;
+	}
 
-    /**
+	/**
+	 * Getter for property 'translatable'.
+	 *
+	 * @return Value for property 'translatable'.
+	 */
+	public DomainObject getTranslatable() {
+		return translatable;
+	}
+
+	/**
+	 * Setter for property 'translatable'.
+	 *
+	 * @param translatable Value to set for property 'translatable'.
+	 */
+	public void setTranslatable(DomainObject translatable) {
+		this.translatable = translatable;
+	}
+
+	/**
 	 * Setter for property 'lang'.
 	 *
 	 * @param lang Value to set for property 'lang'.
 	 */
 	public void setLang(Language lang) {
-        this.lang = lang;
-    }
+		this.lang = lang;
+	}
 
-    /** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	public String toString() {
-        return name + ";" + lang;
-    }
+		return name + ";" + lang;
+	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
@@ -68,12 +91,14 @@ public class Translation implements Serializable {
 				.toHashCode();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
 		}
-		if (! (o instanceof Translation)) {
+		if (!(o instanceof Translation)) {
 			return false;
 		}
 		final Translation that = (Translation) o;
@@ -83,7 +108,4 @@ public class Translation implements Serializable {
 				.append(name, that.getName())
 				.isEquals();
 	}
-
 }
-
-

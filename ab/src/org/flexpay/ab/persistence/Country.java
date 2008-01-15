@@ -1,25 +1,19 @@
 package org.flexpay.ab.persistence;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.DomainObjectWithStatus;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Set;
 
 /**
  * Country
  */
-public class Country implements Serializable {
+public class Country extends DomainObjectWithStatus {
 
-	public static final int STATUS_ACTIVE = 0;
-	public static final int STATUS_DISABLED = 1;
-
-	// Fields
-	private Long id;
-	private int status;
 	private Set<CountryNameTranslation> countryNames = Collections.emptySet();
 	private Set<Region> regions = Collections.emptySet();
 
@@ -29,42 +23,6 @@ public class Country implements Serializable {
 	 * default constructor
 	 */
 	public Country() {
-	}
-
-	/**
-	 * Getter for property 'id'.
-	 *
-	 * @return Value for property 'id'.
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * Setter for property 'id'.
-	 *
-	 * @param id Value to set for property 'id'.
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	/**
-	 * Getter for property 'status'.
-	 *
-	 * @return Value for property 'status'.
-	 */
-	public int getStatus() {
-		return status;
-	}
-
-	/**
-	 * Setter for property 'status'.
-	 *
-	 * @param status Value to set for property 'status'.
-	 */
-	public void setStatus(int status) {
-		this.status = status;
 	}
 
 	/**
@@ -108,8 +66,8 @@ public class Country implements Serializable {
 	 */
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-				.append("id", id)
-				.append("Status", status)
+				.append("id", getId())
+				.append("Status", getStatus())
 				.append("Names", countryNames.toArray())
 				.append("Regions", regions.toArray())
 				.toString();
@@ -120,22 +78,22 @@ public class Country implements Serializable {
 		if (this == obj) {
 			return true;
 		}
-		if (! (obj instanceof Country)) {
+		if (!(obj instanceof Country)) {
 			return false;
 		}
 
 		Country country = (Country) obj;
 		return new EqualsBuilder()
-				.append(status, country.status)
 				.append(countryNames, country.countryNames)
 				.isEquals();
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(status)
 				.append(countryNames)
 				.toHashCode();
 	}

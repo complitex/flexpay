@@ -1,98 +1,88 @@
 package org.flexpay.ab.persistence;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
+import org.flexpay.common.persistence.DateInterval;
 
-@Entity
-@Table (name = "town_type_temporals_tbl")
-public class TownTypeTemporal implements Serializable {
-	private Long id;
-	private TownType townType;
-	private Date beginDate;
-	private Date endDate;
+/**
+ * Temporal value of town type
+ */
+public class TownTypeTemporal extends DateInterval<TownType, TownTypeTemporal> {
+
+	private Town town;
 
 	/**
 	 * Constructs a new TownTypeTemporal.
 	 */
 	public TownTypeTemporal() {
+		super(new TownType());
 	}
 
 	/**
-	 * Getter for property 'id'.
+	 * Copy constructs a new TownTypeTemporal.
 	 *
-	 * @return Value for property 'id'.
+	 * @param temporal Another name temporal
 	 */
-	@Id
-	@GeneratedValue
-	public Long getId() {
-		return id;
+	private TownTypeTemporal(TownTypeTemporal temporal) {
+		super(temporal.getBegin(), temporal.getEnd(), temporal.getValue());
 	}
 
 	/**
-	 * Setter for property 'id'.
+	 * Getter for property 'town'.
 	 *
-	 * @param id Value to set for property 'id'.
+	 * @return Value for property 'town'.
 	 */
-	public void setId(Long id) {
-		this.id = id;
+	public Town getTown() {
+		return town;
 	}
 
 	/**
-	 * Getter for property 'townType'.
+	 * Setter for property 'town'.
 	 *
-	 * @return Value for property 'townType'.
+	 * @param town Value to set for property 'town'.
 	 */
-	@ManyToOne
-	@JoinColumn (name = "town_type_id", nullable = false)
-	public TownType getTownType() {
-		return townType;
+	public void setTown(Town town) {
+		this.town = town;
 	}
 
 	/**
-	 * Setter for property 'townType'.
+	 * Create a new copy of this interval.
 	 *
-	 * @param townType Value to set for property 'townType'.
+	 * @return Date interval copy
 	 */
-	public void setTownType(TownType townType) {
-		this.townType = townType;
+	public TownTypeTemporal copy() {
+		TownTypeTemporal temporal = new TownTypeTemporal(this);
+		temporal.setTown(getTown());
+
+		return temporal;
 	}
 
 	/**
-	 * Getter for property 'beginDate'.
-	 *
-	 * @return Value for property 'beginDate'.
+	 * {@inheritDoc}
 	 */
-	@Temporal (value = TemporalType.TIMESTAMP)
-	public Date getBeginDate() {
-		return beginDate;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		} else if (! (obj instanceof TownTypeTemporal)) {
+			return false;
+		}
+		return super.equals(obj);
 	}
 
 	/**
-	 * Setter for property 'beginDate'.
-	 *
-	 * @param beginDate Value to set for property 'beginDate'.
+	 * {@inheritDoc}
 	 */
-	public void setBeginDate(Date beginDate) {
-		this.beginDate = beginDate;
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 	/**
-	 * Getter for property 'endDate'.
+	 * Returns a string representation of the object.
 	 *
-	 * @return Value for property 'endDate'.
+	 * @return a string representation of the object.
 	 */
-	@Temporal (value = TemporalType.TIMESTAMP)
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	/**
-	 * Setter for property 'endDate'.
-	 *
-	 * @param endDate Value to set for property 'endDate'.
-	 */
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	@Override
+	public String toString() {
+		return super.toString();
 	}
 }

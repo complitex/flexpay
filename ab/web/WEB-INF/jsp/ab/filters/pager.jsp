@@ -15,7 +15,7 @@
 		</select>
 		&nbsp;<s:text name="common.items"/>
 	</span>
-	<span style="float:right;">
+	<span style="float:right;"><s:if test="%{pager.totalNumberOfElements > 0}">
 		<s:text name="common.pages"/>:&nbsp;
 		<s:if test="%{pager.isFirstPage() == false}">
 			<input type="submit" name="pager.pageNumber" value="1" class="btn-link"/>&nbsp;
@@ -43,5 +43,5 @@
 			<input type="submit" name="pager.pageNumber" value="<s:property value="%{pager.lastPageNumber}"/>" class="btn-link"/>&nbsp;
 		</s:if>
 		&nbsp;
-	</span>
+	</s:if></span>
 </div>

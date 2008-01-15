@@ -58,6 +58,6 @@
 			</td>
 		</tr>
 		<s:hidden name="temporalId" value="%{temporalId}" />
-		<s:hidden name="region.id" value="%{region.id}" />
+		<s:hidden name="object.id" value="%{object.id}" />
 	</s:form>
 </table>

@@ -30,6 +30,7 @@
         <put-attribute name="body" value="/WEB-INF/jsp/ab/country_create.jsp" />
 	</definition>
 
+	<!-- Regions -->
 	<definition name="ab.region.create" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.region.create.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/region_create.jsp" />
@@ -50,6 +51,28 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/regions_list.jsp" />
 	</definition>
 
+	<!-- Towns -->
+	<definition name="ab.town.create" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.town.create.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_create.jsp" />
+	</definition>
+
+	<definition name="ab.town.view" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.town.view.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_view.jsp" />
+	</definition>
+
+	<definition name="ab.town.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.town.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_edit.jsp" />
+	</definition>
+
+	<definition name="ab.towns.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.towns.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/towns_list.jsp" />
+	</definition>
+
+	<!-- Town types -->
 	<definition name="ab.town_types.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.town_type.list.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_types_list.jsp" />

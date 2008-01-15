@@ -55,7 +55,7 @@
 			<result type="redirect-action">
 				<param name="actionName">view_region</param>
 				<param name="parse">true</param>
-				<param name="region.id">${region.id}</param>
+				<param name="object.id">${object.id}</param>
 			</result>
 			<result type="tiles" name="input">ab.region.create</result>
 		</action>
@@ -69,13 +69,48 @@
 			<result type="redirect-action">
 				<param name="actionName">view_region</param>
 				<param name="parse">true</param>
-				<param name="region.id">${region.id}</param>
+				<param name="object.id">${object.id}</param>
 			</result>
 			<result type="tiles" name="input">ab.region.edit</result>
 		</action>
 
 		<action name="delete_regions" class="deleteRegionsAction">
 			<result type="redirect">list_regions.action</result>
+		</action>
+
+	</package>
+
+	<package name="towns" namespace="/dicts" extends="common">
+
+		<action name="list_towns" class="listTownsAction">
+			<result type="tiles">ab.towns.list</result>
+		</action>
+
+		<action name="create_town" class="createTownAction">
+			<result type="redirect-action">
+				<param name="actionName">view_town</param>
+				<param name="parse">true</param>
+				<param name="object.id">${object.id}</param>
+			</result>
+			<result type="tiles" name="input">ab.town.create</result>
+		</action>
+
+		<action name="view_town" class="viewTownAction">
+			<result type="tiles">ab.town.view</result>
+			<result type="redirect" name="error">list_towns.action</result>
+		</action>
+
+		<action name="edit_town" class="editTownAction">
+			<result type="redirect-action">
+				<param name="actionName">view_town</param>
+				<param name="parse">true</param>
+				<param name="object.id">${object.id}</param>
+			</result>
+			<result type="tiles" name="input">ab.town.edit</result>
+		</action>
+
+		<action name="delete_towns" class="deleteTownsAction">
+			<result type="redirect">list_towns.action</result>
 		</action>
 
 	</package>

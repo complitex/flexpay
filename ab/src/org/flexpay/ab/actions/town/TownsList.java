@@ -1,104 +1,20 @@
 package org.flexpay.ab.actions.town;
 
-import org.apache.log4j.Logger;
-import org.apache.struts2.interceptor.SessionAware;
-import org.flexpay.ab.persistence.TownName;
+import org.flexpay.ab.actions.nametimedependent.ListAction;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.CountryFilter;
-import org.flexpay.ab.service.CountryService;
-import org.flexpay.ab.service.RegionService;
-import org.flexpay.ab.service.TownService;
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.ab.persistence.filters.RegionFilter;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Iterator;
 
-public class TownsList extends FPActionSupport implements SessionAware {
-
-	private static Logger log = Logger.getLogger(TownsList.class);
-
-	private static final String ATTRIBUTE_ACTION_ERRORS =
-			TownsList.class.getName() + ".ACTION_ERRORS";
-
-	private Map session;
-
-	private TownService townService;
-	private RegionService regionService;
-	private CountryService countryService;
+public class TownsList extends ListAction<
+		TownName, TownNameTemporal, Town, TownNameTranslation> {
 
 	private CountryFilter countryFilter = new CountryFilter();
-	private Page pager = new Page();
-
-	private List<TownName> townNames;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	@SuppressWarnings ({"unchecked"})
-	public String execute() throws Exception {
-
-		long start = System.currentTimeMillis();
-		try {
-			countryFilter = countryService.initFilter(countryFilter, userPreferences.getLocale());
-
-//			townNames = regionService.findNames(countryFilter, pager);
-		} catch (FlexPayException e) {
-			addActionError(e);
-		}
-
-		// Retrive action errors from session if any
-		if (log.isDebugEnabled()) {
-			log.debug("Getting actionErrors: " + session.get(ATTRIBUTE_ACTION_ERRORS));
-		}
-		Collection errors = (Collection) session.remove(ATTRIBUTE_ACTION_ERRORS);
-		if (errors != null && !errors.isEmpty()) {
-			Collection actionErrors = getActionErrors();
-			actionErrors.addAll(errors);
-			setActionErrors(actionErrors);
-		}
-
-		if (log.isInfoEnabled()) {
-			log.info("Listing " + (System.currentTimeMillis() - start) + " ms");
-		}
-		return SUCCESS;
-	}
-
-	public static void setActionErrors(Map<String, Object> session, Collection actionErrors) {
-		if (log.isDebugEnabled()) {
-			log.debug("Setting actionErrors: " + actionErrors);
-		}
-		session.put(ATTRIBUTE_ACTION_ERRORS, actionErrors);
-	}
-
-	/**
-	 * Setter for property 'regionService'.
-	 *
-	 * @param regionService Value to set for property 'regionService'.
-	 */
-	public void setRegionService(RegionService regionService) {
-		this.regionService = regionService;
-	}
-
-	/**
-	 * Setter for property 'countryService'.
-	 *
-	 * @param countryService Value to set for property 'countryService'.
-	 */
-	public void setCountryService(CountryService countryService) {
-		this.countryService = countryService;
-	}
-
-	/**
-	 * Sets the Map of session attributes in the implementing class.
-	 *
-	 * @param session a Map of HTTP session attribute name/value pairs.
-	 */
-	public void setSession(Map session) {
-		this.session = session;
-	}
+	private RegionFilter regionFilter = new RegionFilter();
 
 	/**
 	 * Getter for property 'countryFilter'.
@@ -119,29 +35,43 @@ public class TownsList extends FPActionSupport implements SessionAware {
 	}
 
 	/**
-	 * Getter for property 'pager'.
+	 * Getter for property 'regionFilter'.
 	 *
-	 * @return Value for property 'pager'.
+	 * @return Value for property 'regionFilter'.
 	 */
-	public Page getPager() {
-		return pager;
+	public RegionFilter getRegionFilter() {
+		return regionFilter;
 	}
 
 	/**
-	 * Setter for property 'pager'.
+	 * Setter for property 'regionFilter'.
 	 *
-	 * @param pager Value to set for property 'pager'.
+	 * @param regionFilter Value to set for property 'regionFilter'.
 	 */
-	public void setPager(Page pager) {
-		this.pager = pager;
+	public void setRegionFilter(RegionFilter regionFilter) {
+		this.regionFilter = regionFilter;
 	}
 
 	/**
-	 * Getter for property 'regionNames'.
+	 * Get initial set of filters for action
 	 *
-	 * @return Value for property 'regionNames'.
+	 * @return Collection of filters
 	 */
-	public List<TownName> getTownNames() {
-		return townNames;
+	protected Collection<PrimaryKeyFilter> getFilters() {
+		Collection<PrimaryKeyFilter> filters = new ArrayList<PrimaryKeyFilter>();
+		filters.add(countryFilter);
+		filters.add(regionFilter);
+		return filters;
+	}
+
+	/**
+	 * Set filters for action
+	 *
+	 * @param filters collection of filters
+	 */
+	protected void setFilters(Collection<PrimaryKeyFilter> filters) {
+		Iterator it = filters.iterator();
+		countryFilter = (CountryFilter) it.next();
+		regionFilter = (RegionFilter) it.next();
 	}
 }
