@@ -3,7 +3,6 @@ package org.flexpay.ab.persistence;
 
 
 import org.flexpay.ab.persistence.temp.Buildings;
-import org.flexpay.ab.persistence.temp.District;
 
 import javax.persistence.*;
 import java.util.HashSet;

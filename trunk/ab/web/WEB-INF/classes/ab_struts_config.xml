@@ -6,8 +6,8 @@
 
 	<constant name="struts.custom.i18n.resources"
 			  value="org/flexpay/common/i18n/common-messages,org/flexpay/ab/i18n/errors,org/flexpay/ab/i18n/messages" />
-			  
-    <package name="ab" namespace="/ab" extends="common">
+
+	<package name="ab" namespace="/ab" extends="common">
 
 		<action name="main">
 			<interceptor-ref name="flexpayRoles">
@@ -16,7 +16,7 @@
 			<result type="tiles">ab.main</result>
 		</action>
 
-	</package>			  
+	</package>
 
 	<package name="lang" namespace="/" extends="tiles-default">
 
@@ -136,9 +136,44 @@
 		</action>
 
 	</package>
-	
+
+	<package name="districts" namespace="/dicts" extends="common">
+
+		<action name="list_districts" class="listDistrictsAction">
+			<result type="tiles">ab.districts.list</result>
+		</action>
+
+		<action name="create_district" class="createDistrictAction">
+			<result type="redirect-action">
+				<param name="actionName">view_district</param>
+				<param name="parse">true</param>
+				<param name="object.id">${object.id}</param>
+			</result>
+			<result type="tiles" name="input">ab.district.create</result>
+		</action>
+
+		<action name="view_district" class="viewDistrictAction">
+			<result type="tiles">ab.district.view</result>
+			<result type="redirect" name="error">list_districts.action</result>
+		</action>
+
+		<action name="edit_district" class="editDistrictAction">
+			<result type="redirect-action">
+				<param name="actionName">view_district</param>
+				<param name="parse">true</param>
+				<param name="object.id">${object.id}</param>
+			</result>
+			<result type="tiles" name="input">ab.district.edit</result>
+		</action>
+
+		<action name="delete_districts" class="deleteDistrictsAction">
+			<result type="redirect">list_districts.action</result>
+		</action>
+
+	</package>
+
 	<package name="street_types" namespace="/dicts" extends="common">
-        <action name="street_type_create" class="streetTypeCreteAction">
+		<action name="street_type_create" class="streetTypeCreteAction">
 			<result name="form" type="tiles">ab.street_type.create</result>
 			<result name="afterSubmit" type="redirect">street_type_list.action</result>
 		</action>
@@ -156,9 +191,9 @@
 			<result name="afterSubmit" type="redirect">street_type_list.action</result>
 		</action>
 	</package>
-	
+
 	<package name="identity_types" namespace="/dicts" extends="common">
-        <action name="identity_type_create" class="identityTypeCreteAction">
+		<action name="identity_type_create" class="identityTypeCreteAction">
 			<result name="form" type="tiles">ab.identity_type.create</result>
 			<result name="afterSubmit" type="redirect">identity_type_list.action</result>
 		</action>

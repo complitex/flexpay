@@ -5,6 +5,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.*;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.apache.commons.collections.ArrayStack;
 
 import java.util.Collection;
 import java.util.Date;
@@ -26,7 +27,7 @@ public interface NameTimeDependentService<
 	 * @return persisted Region object
 	 * @throws FlexPayExceptionContainer if operation fails
 	 */
-	NTD create(List<T> nameTranslations, Collection<PrimaryKeyFilter> filters, Date from)
+	NTD create(List<T> nameTranslations, ArrayStack filters, Date from)
 			throws FlexPayExceptionContainer;
 
 	/**
@@ -53,7 +54,7 @@ public interface NameTimeDependentService<
 	 * @return List of names
 	 * @throws FlexPayException if failure occurs
 	 */
-	List<TV> findNames(Collection<PrimaryKeyFilter> filters, Page pager) throws FlexPayException;
+	List<TV> findNames(ArrayStack filters, Page pager) throws FlexPayException;
 
 	/**
 	 * Get a list of available objects
@@ -61,7 +62,7 @@ public interface NameTimeDependentService<
 	 * @param filters Parent filters
 	 * @return List of Regions
 	 */
-	List<NTD> find(Collection<PrimaryKeyFilter> filters);
+	List<NTD> find(ArrayStack filters);
 
 	/**
 	 * Disable objects

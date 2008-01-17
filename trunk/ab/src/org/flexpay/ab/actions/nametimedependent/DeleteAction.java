@@ -1,5 +1,6 @@
 package org.flexpay.ab.actions.nametimedependent;
 
+import org.apache.commons.collections.ArrayStack;
 import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.ab.actions.region.RegionsList;
 import org.flexpay.common.exception.FlexPayException;
@@ -8,7 +9,6 @@ import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.Translation;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 
 import java.util.*;
 
@@ -26,7 +26,7 @@ public abstract class DeleteAction<
 	public String execute() {
 
 		try {
-			Collection<PrimaryKeyFilter> filters = parentService.initFilters(getFilters(), userPreferences.getLocale());
+			ArrayStack filters = parentService.initFilters(getFilters(), userPreferences.getLocale());
 			setFilters(filters);
 
 			Collection<NTD> objectToDisable = new ArrayList<NTD>();

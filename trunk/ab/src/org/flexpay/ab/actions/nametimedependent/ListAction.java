@@ -1,5 +1,6 @@
 package org.flexpay.ab.actions.nametimedependent;
 
+import org.apache.commons.collections.ArrayStack;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.common.dao.paging.Page;
@@ -8,7 +9,6 @@ import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.Translation;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 
 import java.util.Collection;
 import java.util.List;
@@ -38,7 +38,7 @@ public abstract class ListAction<
 
 		long start = System.currentTimeMillis();
 		try {
-			Collection<PrimaryKeyFilter> filters = parentService.initFilters(getFilters(), userPreferences.getLocale());
+			ArrayStack filters = parentService.initFilters(getFilters(), userPreferences.getLocale());
 			setFilters(filters);
 
 			objectNames = nameTimeDependentService.findNames(filters, pager);

@@ -8,6 +8,8 @@ import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TimeLine;
 
 import java.util.List;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * Town
@@ -16,7 +18,7 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 
 	private TimeLine<TownType, TownTypeTemporal> typesTimeLine;
 
-//	private Set<District> districts = new HashSet<District>(0);
+	private Set<District> districts = Collections.emptySet();
 //	private Set<Street> streets = new HashSet<Street>(0);
 //	private Set<Building> buildings = new HashSet<Building>(0);
 
@@ -24,6 +26,24 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	 * Constructs a new Town.
 	 */
 	public Town() {
+	}
+
+	/**
+	 * Getter for property 'districts'.
+	 *
+	 * @return Value for property 'districts'.
+	 */
+	public Set<District> getDistricts() {
+		return districts;
+	}
+
+	/**
+	 * Setter for property 'districts'.
+	 *
+	 * @param districts Value to set for property 'districts'.
+	 */
+	public void setDistricts(Set<District> districts) {
+		this.districts = districts;
 	}
 
 	/**
@@ -59,7 +79,8 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	 * @return Value for property 'typeTemporals'.
 	 */
 	public List<TownTypeTemporal> getTypeTemporals() {
-		return typesTimeLine.getIntervals();
+//		return typesTimeLine.getIntervals();
+		return Collections.emptyList();
 	}
 
 	/**

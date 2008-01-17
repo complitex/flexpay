@@ -1,22 +1,22 @@
 package org.flexpay.ab.service.imp;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.dao.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.common.dao.GenericDao;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
-import org.flexpay.common.service.ParentService;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.service.ParentService;
+import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Locale;
-import java.util.ArrayList;
 
 /**
  * Region service layer implementation
@@ -114,7 +114,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 * @return Localization key base
 	 */
 	protected String getI18nKeyBase() {
-		return "region";
+		return "ab.region";
 	}
 
 	/**
@@ -167,26 +167,19 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 * @param locale  Locale to get parent names in
 	 * @return Initialised filters collection
 	 */
-	public Collection<PrimaryKeyFilter> initFilters(Collection<PrimaryKeyFilter> filters, Locale locale)
+	public ArrayStack initFilters(ArrayStack filters, Locale locale)
 			throws FlexPayException {
 		if (filters == null) {
-			filters = new ArrayList<PrimaryKeyFilter>();
+			filters = new ArrayStack();
 		}
-		PrimaryKeyFilter[] filtersArr = filters.toArray(new PrimaryKeyFilter[filters.size()]);
 
-		// init country filter
-		CountryFilter countryFilter = filtersArr.length == 0 ?
-									  null : (CountryFilter) filtersArr[0];
-		countryFilter = parentService.initFilter(countryFilter, null, locale);
+		RegionFilter parentFilter = filters.isEmpty() ? null : (RegionFilter) filters.pop();
+		filters = parentService.initFilters(filters, locale);
+		CountryFilter forefatherFilter = (CountryFilter) filters.peek();
 
 		// init region filter
-		RegionFilter regionFilter = filtersArr.length == 0 ?
-									null : (RegionFilter) filtersArr[1];
-		regionFilter = initFilter(regionFilter, countryFilter, locale);
-
-		filters.clear();
-		filters.add(countryFilter);
-		filters.add(regionFilter);
+		parentFilter = initFilter(parentFilter, forefatherFilter, locale);
+		filters.push(parentFilter);
 
 		return filters;
 	}
@@ -207,14 +200,14 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		}
 
 		parentFilter.setNames(getTranslations(forefatherFilter, locale));
-		if (parentFilter.getSelectedId() == null) {
-			Collection<RegionNameTranslation> names = parentFilter.getNames();
-			if (names.isEmpty()) {
-				throw new FlexPayException("No region names", "ab.no_regions");
-			}
+		Collection<RegionNameTranslation> names = parentFilter.getNames();
+		if (names.isEmpty()) {
+			throw new FlexPayException("No region names", "ab.no_regions");
+		}
 
-			DomainObject firstObject = names.iterator().next().getTranslatable();
-			parentFilter.setSelectedId(firstObject.getId());
+		if (parentFilter.getSelectedId() == null) {
+			RegionName firstObject = (RegionName) names.iterator().next().getTranslatable();
+			parentFilter.setSelectedId(firstObject.getObject().getId());
 		}
 
 		return parentFilter;

@@ -1,6 +1,7 @@
 package org.flexpay.common.service.imp;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections.ArrayStack;
 import org.apache.log4j.Logger;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
@@ -123,8 +124,8 @@ public abstract class NameTimeDependentServiceImpl<
 	@Transactional (readOnly = false)
 	public void disable(Collection<NTD> objects) throws FlexPayExceptionContainer {
 
-		if (log.isDebugEnabled()) {
-			log.debug(objects.size() + " objects to disable");
+		if (log.isInfoEnabled()) {
+			log.info(objects.size() + " objects to disable");
 		}
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
@@ -147,10 +148,10 @@ public abstract class NameTimeDependentServiceImpl<
 	}
 
 	/**
-	 * Read Region name temporal object by its unique id
+	 * Read temporal object name by its unique id
 	 *
-	 * @param id Region key
-	 * @return Region name temporal object, or <code>null</code> if object not found
+	 * @param id key
+	 * @return temporal object name, or <code>null</code> if object not found
 	 */
 	public DI readTemporalName(Long id) {
 		return getNameTemporalDao().readFull(id);
@@ -164,21 +165,20 @@ public abstract class NameTimeDependentServiceImpl<
 	 * @return List of names
 	 * @throws FlexPayException if failure occurs
 	 */
-	public List<TV> findNames(Collection<PrimaryKeyFilter> filters, Page pager)
+	public List<TV> findNames(ArrayStack filters, Page pager)
 			throws FlexPayException {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Getting list of names: " + filters);
+		if (log.isInfoEnabled()) {
+			log.info("Getting list of names: " + filters);
 		}
 
-		PrimaryKeyFilter[] filtersArr = filters.toArray(new PrimaryKeyFilter[filters.size()]);
-		PrimaryKeyFilter filter = filtersArr[filtersArr.length - 1];
+		PrimaryKeyFilter filter = (PrimaryKeyFilter) filters.peek();
 
 		List<NTD> ntds = getNameTimeDependentDao().findObjects(pager,
 				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
 		List<TV> names = new ArrayList<TV>(ntds.size());
 
-		// Get last temporal in each region names time line
+		// Get last temporal in each object names time line
 		for (NTD ntd : ntds) {
 			List<DI> temporals = ntd.getNameTemporals();
 			DI temporal = temporals.get(temporals.size() - 1);
@@ -206,7 +206,7 @@ public abstract class NameTimeDependentServiceImpl<
 				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
 		List<TV> names = new ArrayList<TV>(ntds.size());
 
-		// Get last temporal in each region names time line
+		// Get last temporal in each object names time line
 		for (NTD ntd : ntds) {
 			List<DI> temporals = ntd.getNameTemporals();
 			DI temporal = temporals.get(temporals.size() - 1);
@@ -231,7 +231,7 @@ public abstract class NameTimeDependentServiceImpl<
 	 * {@inheritDoc}
 	 */
 	@Transactional (readOnly = false)
-	public NTD create(List<T> nameTranslations, Collection<PrimaryKeyFilter> filters, Date date)
+	public NTD create(List<T> nameTranslations, ArrayStack filters, Date date)
 			throws FlexPayExceptionContainer {
 
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
@@ -279,12 +279,12 @@ public abstract class NameTimeDependentServiceImpl<
 	 * @return Country if found or <code>null</code> otherwise
 	 */
 	private DomainObject getParent(
-			Collection<PrimaryKeyFilter> filters, FlexPayExceptionContainer container) {
-		PrimaryKeyFilter[] filtersArr = filters.toArray(new PrimaryKeyFilter[filters.size()]);
-		PrimaryKeyFilter filter = filtersArr[filtersArr.length - 1];
+			ArrayStack filters, FlexPayExceptionContainer container) {
+
+		PrimaryKeyFilter filter = (PrimaryKeyFilter) filters.peek();
 		if (filter.getSelectedId() == null) {
 			container.addException(new FlexPayException("null",
-					"ab." + getI18nKeyBase() + ".no_parent_selectected"));
+					getI18nKeyBase() + ".no_parent_selectected"));
 			return null;
 		}
 
@@ -292,7 +292,10 @@ public abstract class NameTimeDependentServiceImpl<
 
 		DomainObject domainObject = parentDao.read(filter.getSelectedId());
 		if (domainObject == null) {
-			container.addException(new FlexPayException("null", "ab.region.country_id_invalid"));
+			container.addException(new FlexPayException("null",
+					getI18nKeyBase() + ".parent_id_invalid"));
+			log.info("Failed getting parent: filter:" +
+					 filter.getClass().getName() + "[id = " + filter.getSelectedId() + "]");
 			return null;
 		}
 		return domainObject;
@@ -313,7 +316,7 @@ public abstract class NameTimeDependentServiceImpl<
 
 		TV name = temporal.getValue();
 		if (log.isInfoEnabled()) {
-			log.info("Ttranslations: " + name.getTranslations());
+			log.info("Translations: " + name.getTranslations());
 		}
 
 		Map<Long, T> map = new HashMap<Long, T>();
@@ -325,13 +328,13 @@ public abstract class NameTimeDependentServiceImpl<
 	}
 
 	/**
-	 * Save region name translations
+	 * Save object name translations
 	 *
-	 * @param object		   Region to update
+	 * @param object		   object to update
 	 * @param temporalId	   Temporal id to apply changes for
 	 * @param nameTranslations New translations
 	 * @param date			 Date from which the name is valid
-	 * @return updated region instance
+	 * @return updated object instance
 	 * @throws FlexPayExceptionContainer exceptions container
 	 */
 	@Transactional (readOnly = false)
@@ -381,9 +384,9 @@ public abstract class NameTimeDependentServiceImpl<
 		return object;
 	}
 
-	private TimeLine<TV, DI> getTimeLine(Long regionId) {
-		NTD region = getNameTimeDependentDao().readFull(regionId);
-		return region.getNamesTimeLine();
+	private TimeLine<TV, DI> getTimeLine(Long objectId) {
+		NTD object = getNameTimeDependentDao().readFull(objectId);
+		return object.getNamesTimeLine();
 	}
 
 	private void saveTimeLine(TimeLine<TV, DI> tl) {
@@ -432,11 +435,9 @@ public abstract class NameTimeDependentServiceImpl<
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<NTD> find(Collection<PrimaryKeyFilter> filters) {
-		PrimaryKeyFilter[] filtersArr = filters.toArray(new PrimaryKeyFilter[filters.size()]);
-		PrimaryKeyFilter filter = filtersArr[filtersArr.length - 1];
+	public List<NTD> find(ArrayStack filters) {
+		PrimaryKeyFilter filter = (PrimaryKeyFilter) filters.peek();
 		return getNameTimeDependentDao().findObjects(
 				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
 	}
-
 }

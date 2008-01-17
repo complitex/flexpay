@@ -1,6 +1,6 @@
 package org.flexpay.ab.actions.town;
 
-import org.flexpay.ab.actions.nametimedependent.ListAction;
+import org.flexpay.ab.actions.nametimedependent.CreateAction;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.TownName;
 import org.flexpay.ab.persistence.TownNameTemporal;
@@ -8,12 +8,13 @@ import org.flexpay.ab.persistence.TownNameTranslation;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.apache.commons.collections.ArrayStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class TownCreate extends ListAction<
+public class TownCreate extends CreateAction<
 		TownName, TownNameTemporal, Town, TownNameTranslation> {
 
 	private CountryFilter countryFilter = new CountryFilter();
@@ -60,10 +61,10 @@ public class TownCreate extends ListAction<
 	 *
 	 * @return Collection of filters
 	 */
-	protected Collection<PrimaryKeyFilter> getFilters() {
-		Collection<PrimaryKeyFilter> filters = new ArrayList<PrimaryKeyFilter>();
-		filters.add(countryFilter);
-		filters.add(regionFilter);
+	protected ArrayStack getFilters() {
+		ArrayStack filters = new ArrayStack();
+		filters.push(countryFilter);
+		filters.push(regionFilter);
 		return filters;
 	}
 
@@ -72,9 +73,8 @@ public class TownCreate extends ListAction<
 	 *
 	 * @param filters collection of filters
 	 */
-	protected void setFilters(Collection<PrimaryKeyFilter> filters) {
-		Iterator it = filters.iterator();
-		countryFilter = (CountryFilter) it.next();
-		regionFilter = (RegionFilter) it.next();
+	protected void setFilters(ArrayStack filters) {
+		regionFilter = (RegionFilter) filters.peek(0);
+		countryFilter = (CountryFilter) filters.peek(1);
 	}
 }

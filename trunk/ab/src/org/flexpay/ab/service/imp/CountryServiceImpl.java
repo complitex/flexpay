@@ -1,6 +1,7 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections.ArrayStack;
 import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.CountryDao;
 import org.flexpay.ab.dao.CountryNameDao;
@@ -113,12 +114,12 @@ public class CountryServiceImpl implements CountryService {
 		}
 
 		countryFilter.setNames(getCountries(locale));
-		if (countryFilter.getSelectedId() == null) {
-			Collection<CountryNameTranslation> names = countryFilter.getNames();
-			if (names.isEmpty()) {
-				throw new FlexPayException("No country names", "ab.no_countries");
-			}
+		Collection<CountryNameTranslation> names = countryFilter.getNames();
+		if (names.isEmpty()) {
+			throw new FlexPayException("No country names", "ab.no_countries");
+		}
 
+		if (countryFilter.getSelectedId() == null) {
 			Country firstCountry = (Country) names.iterator().next().getTranslatable();
 			countryFilter.setSelectedId(firstCountry.getId());
 		}
@@ -134,16 +135,15 @@ public class CountryServiceImpl implements CountryService {
 	 * @return Initialised filters collection
 	 * @throws FlexPayException if failure occurs
 	 */
-	public Collection<PrimaryKeyFilter> initFilters(Collection<PrimaryKeyFilter> filters, Locale locale)
+	public ArrayStack initFilters(ArrayStack filters, Locale locale)
 			throws FlexPayException {
 		if (filters == null) {
-			filters = new ArrayList<PrimaryKeyFilter>();
+			filters = new ArrayStack();
 		}
 		CountryFilter countryFilter = filters.isEmpty() ?
-									  null : (CountryFilter)  filters.iterator().next();
+									  null : (CountryFilter)  filters.pop();
 		countryFilter = initFilter(countryFilter, locale);
-		filters.clear();
-		filters.add(countryFilter);
+		filters.push(countryFilter);
 
 		return filters;
 	}

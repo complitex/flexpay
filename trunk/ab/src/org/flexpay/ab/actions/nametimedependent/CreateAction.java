@@ -1,18 +1,17 @@
 package org.flexpay.ab.actions.nametimedependent;
 
 import com.opensymphony.xwork2.Preparable;
+import org.apache.commons.collections.ArrayStack;
 import org.apache.struts2.ServletActionContext;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.*;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public abstract class CreateAction<
 	 */
 	public String execute() {
 		try {
-			Collection<PrimaryKeyFilter> filters = parentService.initFilters(getFilters(), userPreferences.getLocale());
+			ArrayStack filters = parentService.initFilters(getFilters(), userPreferences.getLocale());
 			setFilters(filters);
 			if (isPost()) {
 				object = nameTimeDependentService.create(nameTranslations, filters, date);

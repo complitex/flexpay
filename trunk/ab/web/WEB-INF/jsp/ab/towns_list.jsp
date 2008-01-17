@@ -21,7 +21,7 @@
 			<td class="th" width="1%"><input type="checkbox"
 											 onchange="FP.setCheckboxes(this.checked, 'objectIds')">
 			</td>
-			<td class="th" width="63%"><s:text name="ab.town_name"/></td>
+			<td class="th" width="63%"><s:text name="ab.town"/></td>
 			<td class="th" width="35%">&nbsp;</td>
 		</tr>
 		<s:iterator value="%{objectNames}" status="status">

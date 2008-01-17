@@ -8,8 +8,8 @@ import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.service.ParentService;
 
-public interface RegionService
-		extends ParentService<RegionNameTranslation, RegionFilter>,
+public interface RegionService extends
+		ParentService<RegionNameTranslation, RegionFilter>,
 		NameTimeDependentService<RegionName, RegionNameTemporal, Region, RegionNameTranslation> {
 
 }
