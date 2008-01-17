@@ -1,15 +1,12 @@
 package org.flexpay.ab.actions.region;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.actions.nametimedependent.CreateAction;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.RegionName;
 import org.flexpay.ab.persistence.RegionNameTemporal;
 import org.flexpay.ab.persistence.RegionNameTranslation;
 import org.flexpay.ab.persistence.filters.CountryFilter;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-
-import java.util.Collection;
-import java.util.ArrayList;
 
 public class RegionCreate extends CreateAction<
 		RegionName, RegionNameTemporal, Region, RegionNameTranslation> {
@@ -21,9 +18,9 @@ public class RegionCreate extends CreateAction<
 	 *
 	 * @return Collection of filters
 	 */
-	protected Collection<PrimaryKeyFilter> getFilters() {
-		Collection<PrimaryKeyFilter> filters = new ArrayList<PrimaryKeyFilter>();
-		filters.add(countryFilter);
+	protected ArrayStack getFilters() {
+		ArrayStack filters = new ArrayStack();
+		filters.push(countryFilter);
 		return filters;
 	}
 
@@ -32,8 +29,8 @@ public class RegionCreate extends CreateAction<
 	 *
 	 * @param filters collection of filters
 	 */
-	protected void setFilters(Collection<PrimaryKeyFilter> filters) {
-		countryFilter = (CountryFilter) filters.iterator().next();
+	protected void setFilters(ArrayStack filters) {
+		countryFilter = (CountryFilter) filters.peek(0);
 	}
 
 	/**

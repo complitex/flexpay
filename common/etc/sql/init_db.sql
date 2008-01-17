@@ -62,14 +62,14 @@ INSERT INTO town_type_translations_tbl (name, language_id, town_type_id)
 
 -- Init Regions table
 INSERT INTO regions_tbl (status, country_id) VALUES (0, @russia_id);
-SELECT @region_id:=last_insert_id();
+SELECT @region_adygeya_id:=last_insert_id();
 INSERT INTO region_names_tbl (region_id)
-	VALUES (@region_id);
+	VALUES (@region_adygeya_id);
 SELECT @region_name_id:=last_insert_id();
 INSERT INTO region_name_translations_tbl (name, region_name_id, language_id)
 	VALUES ('Республика Адыгея', @region_name_id, @ru_id);
 INSERT INTO region_names_temporal_tbl (region_id, region_name_id, begin_date, end_date, create_date, invalid_date)
-	VALUES (@region_id, @region_name_id, '1900-01-01', '2100-12-31', '2008-01-01', '2100-12-31');
+VALUES (@region_adygeya_id, @region_name_id, '1900-01-01', '2100-12-31', '2008-01-01', '2100-12-31');
 
 INSERT INTO regions_tbl (status, country_id) VALUES (0, @russia_id);
 SELECT @region_id:=last_insert_id();
@@ -950,3 +950,254 @@ INSERT INTO region_name_translations_tbl (name, region_name_id, language_id)
 	VALUES ('Ямало-Ненецкий АО', @region_name_id, @ru_id);
 INSERT INTO region_names_temporal_tbl (region_id, region_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@region_id, @region_name_id, '1900-01-01', '2100-12-31', '2008-01-01', '2100-12-31');
+
+-- Adygeya republic towns
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id) VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('Майкоп', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('станица Ханская', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('Адыгейск', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('станица Гиагинская', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('станица Дондуковская', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('аул Кошехабль', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('аул Блечепсин', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('село Вольное', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('село Натырбово', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('аул Ходзь', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('село Красногвардейское', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('село Белое', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('аул Хатукай', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('пгт Тульский', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('пгт Каменномостский', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('станица Абадзехская', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('поселок Краснооктябрьский', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('станица Кужорская', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('хутор Северо-Восточные Сады', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('аул Тахтамукай', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('пгт Энем', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('пгт Яблоновский', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('аул Понежукай', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('пгт Тлюстенхабль', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
+SELECT @town_id:=last_insert_id();
+INSERT INTO town_names_tbl (town_id)
+	VALUES (@town_id);
+SELECT @town_name_id:=last_insert_id();
+INSERT INTO town_name_translations_tbl (name, town_name_id, language_id)
+	VALUES ('аул Хакуринохабль', @town_name_id, @ru_id);
+INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+

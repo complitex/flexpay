@@ -1,15 +1,13 @@
 package org.flexpay.ab.actions.nametimedependent;
 
-import org.flexpay.common.persistence.TemporaryValue;
+import org.apache.commons.collections.ArrayStack;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
+import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.Translation;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.service.ParentService;
-
-import java.util.Collection;
 
 public abstract class ActionBase<
 		TV extends TemporaryValue<TV>,
@@ -43,13 +41,12 @@ public abstract class ActionBase<
 	 *
 	 * @return Collection of filters
 	 */
-	protected abstract Collection<PrimaryKeyFilter> getFilters();
+	protected abstract ArrayStack getFilters();
 
 	/**
 	 * Set filters for action
 	 *
 	 * @param filters collection of filters
 	 */
-	protected abstract void setFilters(Collection<PrimaryKeyFilter> filters);
-
+	protected abstract void setFilters(ArrayStack filters);
 }

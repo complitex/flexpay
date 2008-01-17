@@ -1,12 +1,21 @@
 package org.flexpay.ab.service.imp;
 
-import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.service.TownService;
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.dao.*;
-import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
-import org.flexpay.common.dao.NameTimeDependentDao;
+import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.filters.RegionFilter;
+import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.ab.service.TownService;
 import org.flexpay.common.dao.GenericDao;
+import org.flexpay.common.dao.NameTimeDependentDao;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.service.ParentService;
+import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
+
+import java.util.Collection;
+import java.util.Locale;
 
 public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		TownNameTranslation, TownName, TownNameTemporal, Town, Region>
@@ -18,6 +27,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	private TownNameTranslationDao townNameTranslationDao;
 	private RegionDao regionDao;
 
+	private ParentService<RegionNameTranslation, RegionFilter> parentService;
 
 	/**
 	 * Setter for property 'townDao'.
@@ -65,13 +75,22 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	/**
+	 * Setter for property 'parentService'.
+	 *
+	 * @param parentService Value to set for property 'parentService'.
+	 */
+	public void setParentService(ParentService<RegionNameTranslation, RegionFilter> parentService) {
+		this.parentService = parentService;
+	}
+
+	/**
 	 * return base for name time-dependent objects in i18n files, like 'region', 'town',
 	 * etc.
 	 *
 	 * @return Localization key base
 	 */
 	protected String getI18nKeyBase() {
-		return "town";
+		return "ab.town";
 	}
 
 	/**
@@ -122,7 +141,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	/**
 	 * Check if disable operation on object is allowed
 	 *
-	 * @param town	   Name time dependent object
+	 * @param town	  Name time dependent object
 	 * @param container Exceptions container to add exception for
 	 * @return <code>true</code> if operation allowed, or <code>false</otherwise>
 	 */
@@ -164,5 +183,50 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	public TownNameTranslation getEmptyNameTranslation() {
 		return new TownNameTranslation();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public TownFilter initFilter(TownFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale)
+			throws FlexPayException {
+
+		if (parentFilter == null) {
+			parentFilter = new TownFilter();
+		}
+
+		parentFilter.setNames(getTranslations(forefatherFilter, locale));
+
+		Collection<TownNameTranslation> names = parentFilter.getNames();
+		if (names.isEmpty()) {
+			throw new FlexPayException("No town names", "ab.no_towns");
+		}
+		if (parentFilter.getSelectedId() == null) {
+			TownName firstObject = (TownName) names.iterator().next().getTranslatable();
+			parentFilter.setSelectedId(firstObject.getObject().getId());
+		}
+
+		return parentFilter;
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException {
+		if (filters == null) {
+			filters = new ArrayStack();
+		}
+
+		TownFilter parentFilter = filters.isEmpty() ? null : (TownFilter) filters.pop();
+		filters = parentService.initFilters(filters, locale);
+		RegionFilter forefatherFilter = (RegionFilter) filters.peek();
+
+		// init region filter
+		parentFilter = initFilter(parentFilter, forefatherFilter, locale);
+		filters.push(parentFilter);
+
+		return filters;
+
 	}
 }

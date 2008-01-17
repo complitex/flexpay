@@ -36,7 +36,7 @@
 			<s:if test="nameTranslations.size() > 1">
 				<td class="th"><s:text name="ab.language"/></td>
 			</s:if>
-			<td class="th"><s:text name="ab.region_name"/></td>
+			<td class="th"><s:text name="ab.region"/></td>
 		</tr>
 		<s:iterator value="nameTranslations" status="rowstatus">
 			<tr valign="middle" class="cols_1">

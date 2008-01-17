@@ -2,6 +2,7 @@ package org.flexpay.ab.actions.nametimedependent;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.Preparable;
+import org.apache.commons.collections.ArrayStack;
 import org.apache.log4j.Logger;
 import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
@@ -69,5 +70,22 @@ public abstract class ObjectViewAction<
 	 */
 	public void setObject(NTD object) {
 		this.object = object;
+	}
+
+	/**
+	 * Get initial set of filters for action
+	 *
+	 * @return Collection of filters
+	 */
+	protected ArrayStack getFilters() {
+		return null;
+	}
+
+	/**
+	 * Set filters for action
+	 *
+	 * @param filters collection of filters
+	 */
+	protected void setFilters(ArrayStack filters) {
 	}
 }

@@ -55,7 +55,6 @@ public class PrimaryKeyFilter<T extends Translation> {
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
 				.append("Selected id", selectedId)
-				.append("Translations", translations.toArray())
 				.toString();
 	}
 }

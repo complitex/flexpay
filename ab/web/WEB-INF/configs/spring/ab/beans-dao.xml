@@ -111,6 +111,47 @@
 		</property>
 	</bean>
 
+	<!-- Town District DAO objects -->
+	<bean id="districtDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.DistrictDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.District" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="districtNameDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.DistrictNameDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.DistrictName" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="districtNameTranslationDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.DistrictNameTranslationDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.DistrictNameTranslation" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="districtNameTemporalDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.DistrictNameTemporalDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.DistrictNameTemporal" />
+			</bean>
+		</property>
+	</bean>
+
 	<!-- Town type DAO objects -->
 	<bean id="townTypeDAO" parent="abstractDao">
 		<property name="proxyInterfaces"

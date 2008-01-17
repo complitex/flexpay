@@ -7,6 +7,7 @@ import org.flexpay.ab.persistence.RegionNameTemporal;
 import org.flexpay.ab.persistence.RegionNameTranslation;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.apache.commons.collections.ArrayStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,9 +40,9 @@ public class RegionsDelete extends DeleteAction<
 	 *
 	 * @return Collection of filters
 	 */
-	protected Collection<PrimaryKeyFilter> getFilters() {
-		Collection<PrimaryKeyFilter> filters = new ArrayList<PrimaryKeyFilter>();
-		filters.add(countryFilter);
+	protected ArrayStack getFilters() {
+		ArrayStack filters = new ArrayStack();
+		filters.push(countryFilter);
 		return filters;
 	}
 
@@ -50,7 +51,7 @@ public class RegionsDelete extends DeleteAction<
 	 *
 	 * @param filters collection of filters
 	 */
-	protected void setFilters(Collection<PrimaryKeyFilter> filters) {
-		countryFilter = (CountryFilter) filters.iterator().next();
+	protected void setFilters(ArrayStack filters) {
+		countryFilter = (CountryFilter) filters.peek(0);
 	}
 }

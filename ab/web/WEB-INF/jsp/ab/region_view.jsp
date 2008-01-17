@@ -6,7 +6,7 @@
 		<td class="th"><s:text name="ab.from"/></td>
 		<td class="th"><s:text name="ab.till"/></td>
 		<td class="th"><s:text name="common.language"/></td>
-		<td class="th"><s:text name="ab.region_name"/></td>
+		<td class="th"><s:text name="ab.region"/></td>
 		<td class="th">&nbsp;</td>
 	</tr>
 	<s:set name="index" value="-1" />

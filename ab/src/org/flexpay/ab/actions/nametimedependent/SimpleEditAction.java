@@ -2,17 +2,20 @@ package org.flexpay.ab.actions.nametimedependent;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.Preparable;
+import org.apache.commons.collections.ArrayStack;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.*;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Region simple editor
@@ -146,7 +149,7 @@ public abstract class SimpleEditAction<
 	 *
 	 * @return Collection of filters
 	 */
-	protected Collection<PrimaryKeyFilter> getFilters() {
+	protected ArrayStack getFilters() {
 		return null;
 	}
 
@@ -155,6 +158,6 @@ public abstract class SimpleEditAction<
 	 *
 	 * @param filters collection of filters
 	 */
-	protected void setFilters(Collection<PrimaryKeyFilter> filters) {
+	protected void setFilters(ArrayStack filters) {
 	}
 }

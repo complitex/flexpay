@@ -69,6 +69,32 @@
 		<property name="parentService" ref="regionService" />
 	</bean>
 
+	<!-- Town districts -->
+	<bean id="createDistrictAction"
+		  class="org.flexpay.ab.actions.district.DistrictCreate" scope="prototype">
+		<property name="nameTimeDependentService" ref="districtService" />
+		<property name="parentService" ref="townService" />
+	</bean>
+
+	<bean id="viewDistrictAction"
+		  class="org.flexpay.ab.actions.district.DistrictView" scope="prototype">
+		<property name="nameTimeDependentService" ref="districtService" />
+	</bean>
+
+	<bean id="editDistrictAction" class="org.flexpay.ab.actions.district.DistrictEditSimple" scope="prototype">
+		<property name="nameTimeDependentService" ref="districtService" />
+	</bean>
+
+	<bean id="listDistrictsAction" class="org.flexpay.ab.actions.district.DistrictsList" scope="prototype">
+		<property name="nameTimeDependentService" ref="districtService" />
+		<property name="parentService" ref="townService" />
+	</bean>
+
+	<bean id="deleteDistrictsAction" class="org.flexpay.ab.actions.district.DistrictsDelete" scope="prototype">
+		<property name="nameTimeDependentService" ref="districtService" />
+		<property name="parentService" ref="townService" />
+	</bean>
+
 	<!-- Town types -->
 	<bean id="listTownTypesAction" class="org.flexpay.ab.actions.town.TownTypesList" scope="prototype">
 		<property name="townTypeService" ref="townTypeService" />

@@ -20,11 +20,21 @@
 	</bean>
 
 	<bean id="townService" class="org.flexpay.ab.service.imp.TownServiceImpl">
+		<property name="parentService" ref="regionService" />
 		<property name="regionDao" ref="regionDAO" />
 		<property name="townDao" ref="townDAO" />
 		<property name="townNameDao" ref="townNameDAO" />
 		<property name="townNameTranslationDao" ref="townNameTranslationDAO" />
 		<property name="townNameTemporalDao" ref="townNameTemporalDao" />
+	</bean>
+
+	<bean id="districtService" class="org.flexpay.ab.service.imp.DistrictServiceImpl">
+		<property name="parentService" ref="townService" />
+		<property name="townDao" ref="townDAO" />
+		<property name="districtDao" ref="districtDAO" />
+		<property name="districtNameDao" ref="districtNameDAO" />
+		<property name="districtNameTemporalDao" ref="districtNameTemporalDao" />
+		<property name="districtNameTranslationDao" ref="districtNameTranslationDAO" />
 	</bean>
 
 	<bean id="townTypeService" class="org.flexpay.ab.service.imp.TownTypeServiceImpl">
