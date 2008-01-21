@@ -93,6 +93,27 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/districts_list.jsp" />
 	</definition>
 
+	<!-- Streets -->
+	<definition name="ab.street.create" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.street.create.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_create.jsp" />
+	</definition>
+
+	<definition name="ab.street.view" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.street.view.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_view.jsp" />
+	</definition>
+
+	<definition name="ab.street.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.street.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_edit.jsp" />
+	</definition>
+
+	<definition name="ab.streets.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.street.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/streets_list.jsp" />
+	</definition>
+
 	<!-- Town types -->
 	<definition name="ab.town_types.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.town_type.list.title" />
