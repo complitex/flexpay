@@ -1,11 +1,6 @@
 package org.flexpay.sz.actions;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.io.FileUtils;
 import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.ab.persistence.Region;
@@ -16,9 +11,14 @@ import org.flexpay.ab.service.RegionService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.sz.persistence.ImportFile;
 import org.flexpay.sz.service.ImportFileService;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ImportFileAction extends CommonAction {
 	private static final String LIVE_PROPERTIES_FILE_TYPE = "LIVE_PROPERTIES";
@@ -27,6 +27,7 @@ public class ImportFileAction extends CommonAction {
 
 	private static Map<Integer, String> months;
 	private static Integer[] years;
+
 	static {
 		months = new TreeMap<Integer, String>();
 		months.put(0, "01");
@@ -52,6 +53,7 @@ public class ImportFileAction extends CommonAction {
 			years[i] = yearFrom + i;
 		}
 	}
+
 	private File upload;
 	private String uploadFileName;
 	private Integer year;
@@ -71,7 +73,7 @@ public class ImportFileAction extends CommonAction {
 				String originalFileName = uploadFileName;
 				Region region = regionService.read(regionId);
 				String yyyy_mm = year + "_" + (month <= 9 ? "0" : "")
-						+ (month + 1);
+								 + (month + 1);
 				File file = new File(ApplicationConfig.getInstance()
 						.getSzDataRoot(), yyyy_mm);
 				file = new File(file, requestFileName);
@@ -109,8 +111,9 @@ public class ImportFileAction extends CommonAction {
 		Page pager = new Page();
 		countryFilter = countryService.initFilter(countryFilter,
 				userPreferences.getLocale());
-		PrimaryKeyFilter[] filters = {countryFilter};
-		regionNames = regionService.findNames(Arrays.asList(filters), pager);
+		ArrayStack filtersStack = new ArrayStack();
+		filtersStack.push(countryFilter);
+		regionNames = regionService.findNames(filtersStack, pager);
 
 		return "form";
 	}

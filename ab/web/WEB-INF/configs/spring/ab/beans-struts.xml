@@ -95,6 +95,32 @@
 		<property name="parentService" ref="townService" />
 	</bean>
 
+	<!-- Strees -->
+	<bean id="createStreetAction"
+		  class="org.flexpay.ab.actions.street.StreetCreate" scope="prototype">
+		<property name="nameTimeDependentService" ref="streetService" />
+		<property name="parentService" ref="townService" />
+	</bean>
+
+	<bean id="viewStreetAction"
+		  class="org.flexpay.ab.actions.street.StreetView" scope="prototype">
+		<property name="nameTimeDependentService" ref="streetService" />
+	</bean>
+
+	<bean id="editStreetAction" class="org.flexpay.ab.actions.street.StreetEditSimple" scope="prototype">
+		<property name="nameTimeDependentService" ref="streetService" />
+	</bean>
+
+	<bean id="listStreetsAction" class="org.flexpay.ab.actions.street.StreetsList" scope="prototype">
+		<property name="nameTimeDependentService" ref="streetService" />
+		<property name="parentService" ref="townService" />
+	</bean>
+
+	<bean id="deleteStreetsAction" class="org.flexpay.ab.actions.street.StreetsDelete" scope="prototype">
+		<property name="nameTimeDependentService" ref="streetService" />
+		<property name="parentService" ref="townService" />
+	</bean>
+
 	<!-- Town types -->
 	<bean id="listTownTypesAction" class="org.flexpay.ab.actions.town.TownTypesList" scope="prototype">
 		<property name="townTypeService" ref="townTypeService" />

@@ -24,6 +24,10 @@
 			<list-index column="begin_date" />
 			<one-to-many class="TownTypeTemporal" />
 		</list>
+		<set name="districts" inverse="true">
+			<key column="town_id" not-null="true" />
+			<one-to-many class="District" />
+		</set>
 	</class>
 
 	<class name="TownNameTemporal" table="town_names_temporal_tbl">

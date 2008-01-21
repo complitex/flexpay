@@ -207,7 +207,6 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		}
 
 		return parentFilter;
-
 	}
 
 	/**

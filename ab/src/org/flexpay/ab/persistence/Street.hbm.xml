@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.ab.persistence">
+
+	<class name="Street" table="streets_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="parent" column="town_id" class="Town" not-null="true" />
+		<property name="status" not-null="true" />
+
+		<list name="nameTemporals" inverse="true"
+			  where="invalid_date='2100-12-31'">
+			<key column="street_id" not-null="true" />
+			<list-index column="begin_date" />
+			<one-to-many class="StreetNameTemporal" />
+		</list>
+	</class>
+
+	<class name="StreetNameTemporal" table="street_names_temporal_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="begin" column="begin_date" type="date" not-null="true" />
+		<property name="end" column="end_date" type="date" not-null="true" />
+		<property name="createDate" column="create_date" type="date" not-null="true" />
+		<property name="invalidDate" column="invalid_date" type="date" not-null="true" />
+		<many-to-one name="object" class="Street" column="street_id" not-null="true"/>
+		<many-to-one name="value" class="StreetName" column="street_name_id" />
+	</class>
+
+	<class name="StreetName" table="street_names_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="object" column="street_id" class="Street" not-null="true" />
+
+		<set name="translations" inverse="true">
+			<key column="street_name_id" not-null="true" />
+			<one-to-many class="StreetNameTranslation" />
+		</set>
+	</class>
+
+	<class name="StreetNameTranslation" table="street_name_translations_tbl"
+		   optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<properties name="lang_street_name_pair" unique="true">
+			<many-to-one name="translatable" column="street_name_id"
+						 not-null="true" class="StreetName" />
+			<many-to-one name="lang" column="language_id" not-null="true"
+						 class="org.flexpay.common.persistence.Language" />
+		</properties>
+	</class>
+
+	<query name="Street.findObjects">
+		FROM Street o
+		WHERE o.status=? and o.parent.id=?
+	</query>
+
+	<query name="Street.findObjects.count">
+		select count(*) from Street o where o.status=? and o.parent.id=?
+	</query>
+
+	<query name="Street.readFull">
+		SELECT DISTINCT o
+		FROM Street o
+			LEFT JOIN FETCH o.nameTemporals t
+			LEFT JOIN FETCH t.value v
+			LEFT JOIN FETCH v.translations tr
+			LEFT JOIN FETCH tr.lang l
+			LEFT JOIN FETCH l.translations
+		WHERE o.id=? and t.invalidDate='2100-12-31'
+	</query>
+
+	<query name="StreetNameTemporal.readFull">
+		SELECT DISTINCT t
+		FROM StreetNameTemporal t
+			LEFT JOIN FETCH t.value v
+			LEFT JOIN FETCH v.translations tr
+			LEFT JOIN FETCH tr.lang l
+			LEFT JOIN FETCH l.translations
+		WHERE t.id=?
+	</query>
+
+	<query name="StreetName.readFull">
+		SELECT DISTINCT n
+		FROM StreetName n
+			LEFT JOIN FETCH n.object
+			LEFT JOIN FETCH n.translations tr
+			LEFT JOIN FETCH tr.lang l
+			LEFT JOIN FETCH l.translations
+		WHERE n.id=?
+	</query>
+
+</hibernate-mapping>
