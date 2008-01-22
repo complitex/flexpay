@@ -12,6 +12,7 @@ public class AllTests extends TestCase {
 		suite.addTest(org.flexpay.common.util.AllTests.suite());
 		suite.addTest(org.flexpay.common.dao.AllTests.suite());
 		suite.addTest(org.flexpay.common.actions.AllTests.suite());
-		return suite;
+//        suite.addTest(org.flexpay.common.locking.AllTests.suite());
+        return suite;
 	}
 }

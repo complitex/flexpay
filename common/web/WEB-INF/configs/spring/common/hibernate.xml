@@ -122,4 +122,9 @@
 		</property>
 	</bean>
 
+    <bean class="org.flexpay.common.locking.LockManager"
+        init-method="getInstance" destroy-method="releaseAll">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/>
+    </bean>
+
 </beans>
