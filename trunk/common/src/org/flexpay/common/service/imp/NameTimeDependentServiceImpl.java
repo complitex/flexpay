@@ -1,7 +1,7 @@
 package org.flexpay.common.service.imp;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.collections.ArrayStack;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
@@ -181,8 +181,12 @@ public abstract class NameTimeDependentServiceImpl<
 		// Get last temporal in each object names time line
 		for (NTD ntd : ntds) {
 			List<DI> temporals = ntd.getNameTemporals();
-			DI temporal = temporals.get(temporals.size() - 1);
-			names.add(getNameValueDao().readFull(temporal.getValue().getId()));
+			if (temporals.isEmpty()) {
+				log.info("Found NTD, but no temporals: " + ntd);
+			} else {
+				DI temporal = temporals.get(temporals.size() - 1);
+				names.add(getNameValueDao().readFull(temporal.getValue().getId()));
+			}
 		}
 
 		return names;
@@ -230,15 +234,15 @@ public abstract class NameTimeDependentServiceImpl<
 	/**
 	 * {@inheritDoc}
 	 */
-	@Transactional (readOnly = false)
-	public NTD create(List<T> nameTranslations, ArrayStack filters, Date date)
+	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	public NTD create(NTD object, List<T> nameTranslations, ArrayStack filters, Date date)
 			throws FlexPayExceptionContainer {
 
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 		DomainObject parent = getParent(filters, container);
 		Set<T> names = getTranslations(nameTranslations, container);
 
-		NTD namable = getNewNameTimeDependent();
+		NTD namable = object == null ? getNewNameTimeDependent() : object;
 		namable.setStatus(ObjectWithStatus.STATUS_ACTIVE);
 
 		DI nameTemporal = getNewNameTemporal();
@@ -248,6 +252,8 @@ public abstract class NameTimeDependentServiceImpl<
 		namable.setNamesTimeLine(tl);
 		namable.setParent(parent);
 		getNameTimeDependentDao().create(namable);
+
+		namable = postCreate(namable);
 
 		TV objectName = getEmptyName();
 		objectName.setTranslations(names);
@@ -269,6 +275,18 @@ public abstract class NameTimeDependentServiceImpl<
 		}
 
 		return namable;
+	}
+
+	/**
+	 * Run any post create actions on object
+	 *
+	 * @param object Persisted object
+	 * @return The object itself
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if failure occurs
+	 */
+	public NTD postCreate(NTD object) throws FlexPayExceptionContainer {
+		return object;
 	}
 
 	/**

@@ -7,6 +7,15 @@
 
 		<tr>
 			<td class="th" width="100%" colspan="3" align="center">
+				<%@ include file="filters/town_type_filter.jsp" %>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3" height="3" bgcolor="#4a4f4f"/>
+		<tr>
+			<td colspan="3" height="20"/>
+		<tr>
+			<td class="th" width="100%" colspan="3" align="center">
 				<%@ include file="filters/country_filter.jsp" %>
 			</td>
 		</tr>

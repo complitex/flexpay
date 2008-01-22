@@ -5,12 +5,13 @@ import org.flexpay.ab.dao.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
+import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.ab.service.RegionService;
+import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	private CountryDao countryDao;
 
 	private ParentService<CountryNameTranslation, CountryFilter> parentService;
+	private TownTypeService townTypeService;
 
 	/**
 	 * TODO CHECK if region has any towns
@@ -60,6 +62,15 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	public void setParentService(ParentService<CountryNameTranslation, CountryFilter> parentService) {
 		this.parentService = parentService;
+	}
+
+	/**
+	 * Setter for property 'townTypeService'.
+	 *
+	 * @param townTypeService Value to set for property 'townTypeService'.
+	 */
+	public void setTownTypeService(TownTypeService townTypeService) {
+		this.townTypeService = townTypeService;
 	}
 
 	/**
@@ -173,6 +184,11 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 			filters = new ArrayStack();
 		}
 
+		TownTypeFilter townTypeFilter = null;
+		if (!filters.isEmpty() && filters.peek() instanceof TownTypeFilter) {
+			townTypeFilter = (TownTypeFilter) filters.pop();
+		}
+
 		RegionFilter parentFilter = filters.isEmpty() ? null : (RegionFilter) filters.pop();
 		filters = parentService.initFilters(filters, locale);
 		CountryFilter forefatherFilter = (CountryFilter) filters.peek();
@@ -180,6 +196,11 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		// init region filter
 		parentFilter = initFilter(parentFilter, forefatherFilter, locale);
 		filters.push(parentFilter);
+
+		if (townTypeFilter != null) {
+			townTypeFilter = townTypeService.initFilter(townTypeFilter, locale);
+			filters.push(townTypeFilter);
+		}
 
 		return filters;
 	}

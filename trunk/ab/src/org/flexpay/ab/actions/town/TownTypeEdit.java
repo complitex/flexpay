@@ -106,7 +106,7 @@ public class TownTypeEdit extends FPActionSupport
 
 		// Translation not found, create new one
 		TownTypeTranslation translation = new TownTypeTranslation();
-		translation.setTownType(townType);
+		translation.setTranslatable(townType);
 		translation.setLang(lang);
 
 		return translation;

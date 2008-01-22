@@ -6,6 +6,7 @@ import org.flexpay.ab.dao.TownTypeDao;
 import org.flexpay.ab.dao.TownTypeTranslationDao;
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.persistence.TownTypeTranslation;
+import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -52,7 +53,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 		townTypeDao.create(townType);
 		for (TownTypeTranslation translation : translationList) {
-			translation.setTownType(townType);
+			translation.setTranslatable(townType);
 			townTypeTranslationDao.create(translation);
 		}
 
@@ -85,7 +86,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 		}
 
 		for (TownType townType : townTypes) {
-			TownTypeTranslation translation = (TownTypeTranslation) TranslationUtil
+			TownTypeTranslation translation = TranslationUtil
 					.getTranslation(townType.getTranslations(), locale);
 			if (translation == null) {
 				log.error("No name for town type: " + townType);
@@ -178,6 +179,26 @@ public class TownTypeServiceImpl implements TownTypeService {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public TownTypeFilter initFilter(TownTypeFilter townTypeFilter, Locale locale) throws FlexPayException {
+		List<TownTypeTranslation> translations = getTownTypeTranslations(locale);
+
+		if (townTypeFilter == null) {
+			townTypeFilter = new TownTypeFilter();
+		}
+		townTypeFilter.setNames(translations);
+
+		if (townTypeFilter.getSelectedId() == null) {
+			if (translations.size() == 0) {
+				throw new FlexPayException("No town types", "ab.no_town_types");
+			}
+			townTypeFilter.setSelectedId(translations.get(0).getId());
+		}
+		return townTypeFilter;
+	}
+
+	/**
 	 * Get a list of available town types
 	 *
 	 * @return List of TownType
@@ -186,10 +207,20 @@ public class TownTypeServiceImpl implements TownTypeService {
 		return townTypeDao.listTownTypes(TownType.STATUS_ACTIVE);
 	}
 
+	/**
+	 * Setter for property 'townTypeDao'.
+	 *
+	 * @param townTypeDao Value to set for property 'townTypeDao'.
+	 */
 	public void setTownTypeDao(TownTypeDao townTypeDao) {
 		this.townTypeDao = townTypeDao;
 	}
 
+	/**
+	 * Setter for property 'townTypeTranslationDao'.
+	 *
+	 * @param townTypeTranslationDao Value to set for property 'townTypeTranslationDao'.
+	 */
 	public void setTownTypeTranslationDao(TownTypeTranslationDao townTypeTranslationDao) {
 		this.townTypeTranslationDao = townTypeTranslationDao;
 	}

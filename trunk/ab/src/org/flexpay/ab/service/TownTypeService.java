@@ -2,6 +2,7 @@ package org.flexpay.ab.service;
 
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.persistence.TownTypeTranslation;
+import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 
@@ -66,4 +67,13 @@ public interface TownTypeService {
 	 * @throws FlexPayExceptionContainer if failure occurs
 	 */
 	void disable(Collection<TownType> townTypes) throws FlexPayExceptionContainer;
+
+	/**
+	 * Initialize filter
+	 * @param townTypeFilter filter to init
+	 * @param locale Locale to get names in
+	 * @return initialized filter
+	 * @throws FlexPayException if failure occurs
+	 */
+	TownTypeFilter initFilter(TownTypeFilter townTypeFilter, Locale locale) throws FlexPayException;
 }

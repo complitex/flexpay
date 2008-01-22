@@ -9,30 +9,10 @@ import org.flexpay.common.persistence.Translation;
  */
 public class TownTypeTranslation extends Translation {
 
-	private TownType townType;
-
 	/**
 	 * Constructs a new TownTypeTranslation.
 	 */
 	public TownTypeTranslation() {
-	}
-
-	/**
-	 * Getter for property 'townType'.
-	 *
-	 * @return Value for property 'townType'.
-	 */
-	public TownType getTownType() {
-		return townType;
-	}
-
-	/**
-	 * Setter for property 'townType'.
-	 *
-	 * @param townType Value to set for property 'townType'.
-	 */
-	public void setTownType(TownType townType) {
-		this.townType = townType;
 	}
 
 	/**

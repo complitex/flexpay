@@ -12,6 +12,7 @@
 
 	<bean id="regionService" class="org.flexpay.ab.service.imp.RegionServiceImpl">
 		<property name="parentService" ref="countryService" />
+		<property name="townTypeService" ref="townTypeService" />
 		<property name="regionDao" ref="regionDAO" />
 		<property name="regionNameDao" ref="regionNameDAO" />
 		<property name="regionNameTranslationDao" ref="regionNameTranslationDAO" />
@@ -26,6 +27,8 @@
 		<property name="townNameDao" ref="townNameDAO" />
 		<property name="townNameTranslationDao" ref="townNameTranslationDAO" />
 		<property name="townNameTemporalDao" ref="townNameTemporalDao" />
+		<property name="townTypeTemporalDao" ref="townTypeTemporalDao" />
+		<property name="townTypeService" ref="townTypeService" />
 	</bean>
 
 	<bean id="districtService" class="org.flexpay.ab.service.imp.DistrictServiceImpl">

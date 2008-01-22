@@ -9,18 +9,18 @@
 			<td class="th"><input type="checkbox"
 								  onchange="FP.setCheckboxes(this.checked, 'townTypeIds')">
 			</td>
-			<td class="th"><s:text name="ab.town_type_name"/></td>
+			<td class="th"><s:text name="ab.town_type"/></td>
 			<td class="th">&nbsp;</td>
 		</tr>
 		<c:forEach items="${requestScope['town_type_names']}" varStatus="status"
-				   var="regionName">
+				   var="townName">
 			<tr valign="middle" class="cols_1">
 				<td class="col_1s"><c:out value="${status.index + 1}"/></td>
-				<td class="col"><input type="checkbox" value="<c:out value="${regionName.townType.id}"/>"
+				<td class="col"><input type="checkbox" value="<c:out value="${townName.townType.id}"/>"
 						   name="<c:out value="townTypeIds"/>"></td>
-				<td class="col"><c:out value="${regionName.name}"/></td>
+				<td class="col"><c:out value="${townName.name}"/></td>
 				<td class="col">
-					<a href="<c:url value="/dicts/edit_town_type.action?town_type_id=${regionName.townType.id}"/>"><s:text
+					<a href="<c:url value="/dicts/edit_town_type.action?town_type_id=${townName.townType.id}"/>"><s:text
 							name="common.edit_selected"/></a></td>
 			</tr>
 		</c:forEach>
