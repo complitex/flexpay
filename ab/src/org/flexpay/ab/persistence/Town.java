@@ -79,8 +79,7 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	 * @return Value for property 'typeTemporals'.
 	 */
 	public List<TownTypeTemporal> getTypeTemporals() {
-//		return typesTimeLine.getIntervals();
-		return Collections.emptyList();
+		return typesTimeLine.getIntervals();
 	}
 
 	/**

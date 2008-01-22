@@ -1,11 +1,13 @@
 package org.flexpay.common.service;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.*;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.apache.commons.collections.ArrayStack;
+import org.flexpay.common.persistence.NameDateInterval;
+import org.flexpay.common.persistence.NameTimeDependentChild;
+import org.flexpay.common.persistence.TemporaryValue;
+import org.flexpay.common.persistence.Translation;
 
 import java.util.Collection;
 import java.util.Date;
@@ -21,14 +23,24 @@ public interface NameTimeDependentService<
 	/**
 	 * Create new NameTimeDependent with a single name
 	 *
+	 * @param object		   New transient object
 	 * @param nameTranslations name translations
-	 * @param filters		   parent filters
+	 * @param filters		  parent filters
 	 * @param from			 Date from which the name is valid
-	 * @return persisted Region object
+	 * @return persisted object
 	 * @throws FlexPayExceptionContainer if operation fails
 	 */
-	NTD create(List<T> nameTranslations, ArrayStack filters, Date from)
+	NTD create(NTD object, List<T> nameTranslations, ArrayStack filters, Date from)
 			throws FlexPayExceptionContainer;
+
+	/**
+	 * Run any post create actions on object
+	 *
+	 * @param object Persisted object
+	 * @return The object itself
+	 * @throws FlexPayExceptionContainer if failure occurs
+	 */
+	NTD postCreate(NTD object) throws FlexPayExceptionContainer;
 
 	/**
 	 * Read object by its unique id
@@ -50,7 +62,7 @@ public interface NameTimeDependentService<
 	 * Get temporal names
 	 *
 	 * @param filters parent filters
-	 * @param pager  Objects list pager
+	 * @param pager   Objects list pager
 	 * @return List of names
 	 * @throws FlexPayException if failure occurs
 	 */

@@ -1,33 +1,44 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
+import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.ab.service.TownService;
+import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		TownNameTranslation, TownName, TownNameTemporal, Town, Region>
 		implements TownService {
 
+	private static Logger log = Logger.getLogger(TownServiceImpl.class);
+
 	private TownDao townDao;
 	private TownNameDao townNameDao;
 	private TownNameTemporalDao townNameTemporalDao;
 	private TownNameTranslationDao townNameTranslationDao;
 	private RegionDao regionDao;
+	private TownTypeTemporalDao townTypeTemporalDao;
 
 	private ParentService<RegionNameTranslation, RegionFilter> parentService;
+	private TownTypeService townTypeService;
 
 	/**
 	 * Setter for property 'townDao'.
@@ -84,6 +95,24 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	/**
+	 * Setter for property 'townTypeTemporalDao'.
+	 *
+	 * @param townTypeTemporalDao Value to set for property 'townTypeTemporalDao'.
+	 */
+	public void setTownTypeTemporalDao(TownTypeTemporalDao townTypeTemporalDao) {
+		this.townTypeTemporalDao = townTypeTemporalDao;
+	}
+
+	/**
+	 * Setter for property 'townTypeService'.
+	 *
+	 * @param townTypeService Value to set for property 'townTypeService'.
+	 */
+	public void setTownTypeService(TownTypeService townTypeService) {
+		this.townTypeService = townTypeService;
+	}
+
+	/**
 	 * return base for name time-dependent objects in i18n files, like 'region', 'town',
 	 * etc.
 	 *
@@ -109,6 +138,15 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	protected GenericDao<TownNameTemporal, Long> getNameTemporalDao() {
 		return townNameTemporalDao;
+	}
+
+	/**
+	 * Get DAO implementation working with DateIntervals
+	 *
+	 * @return GenericDao implementation
+	 */
+	protected GenericDao<TownTypeTemporal, Long> getTypeTemporalDao() {
+		return townTypeTemporalDao;
 	}
 
 	/**
@@ -177,6 +215,16 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	/**
+	 * Getter for property 'emptyType'.
+	 *
+	 * @return Value for property 'emptyType'.
+	 */
+	protected TownType getEmptyType() {
+		return new TownType();
+	}
+
+
+	/**
 	 * Create empty name translation
 	 *
 	 * @return name translation
@@ -226,6 +274,49 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		filters.push(parentFilter);
 
 		return filters;
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	public Town create(Town object, List<TownNameTranslation> nameTranslations, ArrayStack filters, Date date) throws FlexPayExceptionContainer {
+
+		TownTypeFilter filter = (TownTypeFilter) filters.pop();
+		if (log.isInfoEnabled()) {
+			log.info("type filter: " + filter);
+		}
+		TownType type = townTypeService.read(filter.getSelectedId());
+		TownTypeTemporal typeTemporal = new TownTypeTemporal();
+		typeTemporal.setValue(type);
+		TimeLine<TownType, TownTypeTemporal> typesTimeLine = new TimeLine<TownType, TownTypeTemporal>(typeTemporal);
+
+		Town typable = object == null ? getNewNameTimeDependent() : object;
+		typable.setTypesTimeLine(typesTimeLine);
+
+		return super.create(typable, nameTranslations, filters, date);
+	}
+
+	/**
+	 * Run any post create actions on object
+	 *
+	 * @param object Persisted object
+	 * @return The object itself
+	 * @throws FlexPayExceptionContainer if failure occurs
+	 */
+	@Override
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	public Town postCreate(Town object) throws FlexPayExceptionContainer {
+		for (TownTypeTemporal typeTemporal : object.getTypeTemporals()) {
+			TownType empty = getEmptyType();
+			typeTemporal.setTown(object);
+			if (typeTemporal.getValue().equals(empty)) {
+				typeTemporal.setValue(null);
+			}
+			getTypeTemporalDao().create(typeTemporal);
+		}
+
+		return object;
 	}
 }

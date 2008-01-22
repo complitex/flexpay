@@ -1,7 +1,6 @@
 package org.flexpay.ab.actions.town;
 
 import com.opensymphony.xwork2.ActionSupport;
-import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.service.TownTypeService;
@@ -16,8 +15,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class TownTypeCreate extends FPActionSupport implements ServletRequestAware {
-
-	private static Logger log = Logger.getLogger(TownTypeCreate.class);
 
 	private HttpServletRequest request;
 	private TownTypeService townTypeService;

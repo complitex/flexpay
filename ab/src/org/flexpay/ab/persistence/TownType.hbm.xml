@@ -24,7 +24,7 @@
 		<properties name="lang_town_type_pair" unique="true">
 			<many-to-one name="lang" column="language_id"
 						 class="org.flexpay.common.persistence.Language" />
-			<many-to-one name="townType" class="TownType" column="town_type_id" />
+			<many-to-one name="translatable" class="TownType" column="town_type_id" />
 		</properties>
 	</class>
 

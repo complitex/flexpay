@@ -213,7 +213,18 @@
 			</bean>
 		</property>
 	</bean>
-	
+
+	<bean id="townTypeTemporalDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.TownTypeTemporalDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.TownTypeTemporal" />
+			</bean>
+		</property>
+	</bean>
+
+	<!-- Street type DAO objects -->
 	<bean id="streetTypeDAO" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.StreetTypeDao" />
