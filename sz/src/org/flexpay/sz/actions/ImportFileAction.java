@@ -1,5 +1,13 @@
 package org.flexpay.sz.actions;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.io.FileUtils;
 import org.flexpay.ab.actions.CommonAction;
@@ -14,20 +22,10 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.sz.persistence.ImportFile;
 import org.flexpay.sz.service.ImportFileService;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class ImportFileAction extends CommonAction {
-	private static final String LIVE_PROPERTIES_FILE_TYPE = "LIVE_PROPERTIES";
-	private static final String LIVE_SERVICE_FILE_TYPE = "LIVE_SERVICE";
-	private static final String FORM_2_PRIVILEGE_FILE_TYPE = "FORM_2_PRIVILEGE";
 
 	private static Map<Integer, String> months;
 	private static Integer[] years;
-
 	static {
 		months = new TreeMap<Integer, String>();
 		months.put(0, "01");
@@ -53,7 +51,6 @@ public class ImportFileAction extends CommonAction {
 			years[i] = yearFrom + i;
 		}
 	}
-
 	private File upload;
 	private String uploadFileName;
 	private Integer year;
@@ -67,28 +64,24 @@ public class ImportFileAction extends CommonAction {
 
 	public String execute() throws FlexPayException {
 		if (isSubmitted()) {
-			String fileType = getFileType(uploadFileName);
+			String fileType = ImportFile.getFileType(uploadFileName);
 			if (fileType != null) {
-				String requestFileName = getRandomString();
-				String originalFileName = uploadFileName;
-				Region region = regionService.read(regionId);
-				String yyyy_mm = year + "_" + (month <= 9 ? "0" : "")
-								 + (month + 1);
-				File file = new File(ApplicationConfig.getInstance()
-						.getSzDataRoot(), yyyy_mm);
-				file = new File(file, requestFileName);
+				ImportFile importFile = new ImportFile();
+				importFile.setRequestFileName(ImportFile.getRandomString());
+				importFile.setFileYear(year);
+				importFile.setFileMonth(month);
+				File file = importFile.getFile(ApplicationConfig.getInstance()
+						.getSzDataRoot());
 				try {
 					FileUtils.copyFile(upload, file);
 				} catch (IOException e) {
 					// TODO write error to page
 				}
-				ImportFile importFile = new ImportFile();
+
+				Region region = regionService.read(regionId);
 				importFile.setRegion(region);
-				importFile.setOriginalFileName(originalFileName);
-				importFile.setRequestFileName(requestFileName);
+				importFile.setOriginalFileName(uploadFileName);
 				importFile.setFileType(fileType);
-				importFile.setFileYear(year);
-				importFile.setFileMonth(month);
 				importFile.setUserName("vld"); // TODO set user name
 				importFile.setImportDate(new Date());
 				importFile.setFileStatus(ImportFile.IMPORTED_FILE_STATUS);
@@ -116,30 +109,6 @@ public class ImportFileAction extends CommonAction {
 		regionNames = regionService.findNames(filtersStack, pager);
 
 		return "form";
-	}
-
-	private String getFileType(String fileName) {
-		if (fileName == null || "".equals(fileName)) {
-			return null;
-		}
-		Matcher m = Pattern.compile("\\d{8}\\u002Ea\\d{2}").matcher(fileName);
-		if (m.matches()) {
-			return LIVE_PROPERTIES_FILE_TYPE;
-		}
-		m = Pattern.compile("\\d{8}\\u002Eb\\d{2}").matcher(fileName);
-		if (m.matches()) {
-			return LIVE_SERVICE_FILE_TYPE;
-		}
-		m = Pattern.compile("\\d{8}\\u002Ee\\d{2}").matcher(fileName);
-		if (m.matches()) {
-			return FORM_2_PRIVILEGE_FILE_TYPE;
-		}
-
-		return null;
-	}
-
-	private String getRandomString() {
-		return System.currentTimeMillis() + "-" + Math.random();
 	}
 
 	public void setUpload(File upload) {
