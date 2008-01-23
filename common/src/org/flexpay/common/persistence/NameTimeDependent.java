@@ -2,7 +2,9 @@ package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.flexpay.common.util.DateIntervalUtil;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,6 +40,34 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	 */
 	public void setNameTemporals(List<DI> nameTemporals) {
 		namesTimeLine = new TimeLine<T, DI>(nameTemporals);
+	}
+
+	/**
+	 * Find value for date
+	 *
+	 * @param dt Date to get value for
+	 * @return Value which interval includes specified date, or <code>null</code> if not
+	 *         found
+	 */
+	public T getNameForDate(Date dt) {
+		List<DI> intervals = namesTimeLine.getIntervals();
+		for (DI di : intervals) {
+			if (DateIntervalUtil.includes(dt, di)) {
+				return di.getValue();
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Find value for current date
+	 *
+	 * @return Value which interval includes specified date, or <code>null</code> if not
+	 *         found
+	 */
+	public T getCurrentName() {
+		return getNameForDate(DateIntervalUtil.now());
 	}
 
 	/**

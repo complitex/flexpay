@@ -18,6 +18,10 @@
 			<list-index column="begin_date" />
 			<one-to-many class="StreetNameTemporal" />
 		</list>
+		<set name="districts" table="streets_districts_tbl">
+			<key column="street_id" />
+			<many-to-many class="District" column="district_id" />
+		</set>
 	</class>
 
 	<class name="StreetNameTemporal" table="street_names_temporal_tbl">
@@ -75,7 +79,11 @@
 			LEFT JOIN FETCH v.translations tr
 			LEFT JOIN FETCH tr.lang l
 			LEFT JOIN FETCH l.translations
-		WHERE o.id=? and t.invalidDate='2100-12-31'
+			LEFT JOIN FETCH o.districts d
+			LEFT JOIN FETCH d.nameTemporals dt
+			LEFT JOIN FETCH dt.value dv
+			LEFT JOIN FETCH dv.translations 
+		WHERE o.id=? and t.invalidDate='2100-12-31' and (dt is null or dt.invalidDate='2100-12-31')
 	</query>
 
 	<query name="StreetNameTemporal.readFull">

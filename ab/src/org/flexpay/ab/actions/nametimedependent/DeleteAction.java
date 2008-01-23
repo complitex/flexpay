@@ -20,6 +20,8 @@ public abstract class DeleteAction<
 
 	private Map<String, Object> session;
 
+	private Set<Long> objectIds = new HashSet<Long>();
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -64,8 +66,6 @@ public abstract class DeleteAction<
 	public void setSession(Map session) {
 		this.session = session;
 	}
-
-	private Set<Long> objectIds = new HashSet<Long>();
 
 	/**
 	 * Getter for property 'townTypeIds'.

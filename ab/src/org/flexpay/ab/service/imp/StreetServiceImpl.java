@@ -9,6 +9,10 @@ import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
+import java.util.HashSet;
 
 public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		StreetNameTranslation, StreetName, StreetNameTemporal, Street, Town>
@@ -177,5 +181,25 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	public StreetNameTranslation getEmptyNameTranslation() {
 		return new StreetNameTranslation();
+	}
+
+	/**
+	 * Save street districts
+	 *
+	 * @param street	Street to save districts for
+	 * @param objectIds List of district ids
+	 * @return saved street object
+	 */
+	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	public Street saveDistricts(Street street, Set<Long> objectIds) {
+		Set<District> districts = new HashSet<District>();
+		for (Long id : objectIds) {
+			District district = new District();
+			district.setId(id);
+			districts.add(district);
+		}
+		street.setDistricts(districts);
+		streetDao.update(street);
+		return street;
 	}
 }

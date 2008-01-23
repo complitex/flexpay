@@ -21,7 +21,21 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	public Street() {
 	}
 
+	/**
+	 * Getter for property 'districts'.
+	 *
+	 * @return Value for property 'districts'.
+	 */
+	public Set<District> getDistricts() {
+		return districts;
+	}
 
+	/**
+	 * Setter for property 'districts'.
+	 *
+	 * @param districts Value to set for property 'districts'.
+	 */
+	public void setDistricts(Set<District> districts) {
+		this.districts = districts;
+	}
 }
-
-

@@ -1385,13 +1385,13 @@ INSERT INTO town_types_temporal_tbl (town_id, town_type_id, begin_date, end_date
 
 -- Districts
 INSERT INTO districts_tbl (status, town_id) VALUES (0, @town_novosibirsk_id);
-SELECT @district_id:=last_insert_id();
-INSERT INTO district_names_tbl (district_id) VALUES (@district_id);
+SELECT @district_id_nsk_zaelcovskiy:=last_insert_id();
+INSERT INTO district_names_tbl (district_id) VALUES (@district_id_nsk_zaelcovskiy);
 SELECT @district_name_id:=last_insert_id();
 INSERT INTO district_name_translations_tbl (name, district_name_id, language_id)
 	VALUES ('Заельцовский', @district_name_id, @ru_id);
 INSERT INTO district_names_temporal_tbl (district_id, district_name_id, begin_date, end_date, create_date, invalid_date)
-	VALUES (@district_id, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+	VALUES (@district_id_nsk_zaelcovskiy, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
 INSERT INTO districts_tbl (status, town_id) VALUES (0, @town_novosibirsk_id);
 SELECT @district_id:=last_insert_id();
@@ -1457,22 +1457,22 @@ INSERT INTO district_names_temporal_tbl (district_id, district_name_id, begin_da
 	VALUES (@district_id, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
 INSERT INTO districts_tbl (status, town_id) VALUES (0, @town_novosibirsk_id);
-SELECT @district_id:=last_insert_id();
-INSERT INTO district_names_tbl (district_id) VALUES (@district_id);
+SELECT @district_id_nsk_sovetskiy:=last_insert_id();
+INSERT INTO district_names_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
 SELECT @district_name_id:=last_insert_id();
 INSERT INTO district_name_translations_tbl (name, district_name_id, language_id)
 	VALUES ('Советский', @district_name_id, @ru_id);
 INSERT INTO district_names_temporal_tbl (district_id, district_name_id, begin_date, end_date, create_date, invalid_date)
-	VALUES (@district_id, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+	VALUES (@district_id_nsk_sovetskiy, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
 INSERT INTO districts_tbl (status, town_id) VALUES (0, @town_novosibirsk_id);
-SELECT @district_id:=last_insert_id();
-INSERT INTO district_names_tbl (district_id) VALUES (@district_id);
+SELECT @district_id_nsk_centralniy:=last_insert_id();
+INSERT INTO district_names_tbl (district_id) VALUES (@district_id_nsk_centralniy);
 SELECT @district_name_id:=last_insert_id();
 INSERT INTO district_name_translations_tbl (name, district_name_id, language_id)
 	VALUES ('Центральный', @district_name_id, @ru_id);
 INSERT INTO district_names_temporal_tbl (district_id, district_name_id, begin_date, end_date, create_date, invalid_date)
-	VALUES (@district_id, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+	VALUES (@district_id_nsk_centralniy, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
 INSERT INTO districts_tbl (status, town_id) VALUES (0, @town_ufa_id);
 SELECT @district_id:=last_insert_id();
@@ -1536,3 +1536,35 @@ INSERT INTO district_name_translations_tbl (name, district_name_id, language_id)
 	VALUES ('Советский', @district_name_id, @ru_id);
 INSERT INTO district_names_temporal_tbl (district_id, district_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@district_id, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+-- Streets
+INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk);
+SELECT @street_id_demakova:=last_insert_id();
+INSERT INTO street_names_tbl (street_id) VALUES (@street_id_demakova);
+SELECT @street_name_id:=last_insert_id();
+INSERT INTO street_name_translations_tbl (name, street_name_id, language_id)
+	VALUES ('Демакова', @street_name_id, @ru_id);
+INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@street_id_demakova, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_demakova, @district_id_nsk_sovetskiy);
+
+INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk);
+SELECT @street_id_ivanova:=last_insert_id();
+INSERT INTO street_names_tbl (street_id) VALUES (@street_id_ivanova);
+SELECT @street_name_id:=last_insert_id();
+INSERT INTO street_name_translations_tbl (name, street_name_id, language_id)
+	VALUES ('Иванова', @street_name_id, @ru_id);
+INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@street_id_ivanova, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_ivanova, @district_id_nsk_sovetskiy);
+
+INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk);
+SELECT @street_id_krasniy:=last_insert_id();
+INSERT INTO street_names_tbl (street_id) VALUES (@street_id_krasniy);
+SELECT @street_name_id:=last_insert_id();
+INSERT INTO street_name_translations_tbl (name, street_name_id, language_id)
+	VALUES ('Красный проспект', @street_name_id, @ru_id);
+INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@street_id_krasniy, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_krasniy, @district_id_nsk_centralniy);
+INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_krasniy, @district_id_nsk_zaelcovskiy);

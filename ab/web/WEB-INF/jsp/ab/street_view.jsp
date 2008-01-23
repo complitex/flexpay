@@ -14,7 +14,7 @@
 		<s:set name="temporalId" value="id" />
 		<s:iterator value="value.translations">
 			<tr valign="middle" class="cols_1">
-				<td class="col_1s">
+				<td class="col_1s" align="right">
 					<s:if test="#{#rowstatus.index > index}">
 						<s:property value="#rowstatus.index + 1"/>
 					</s:if>
@@ -50,10 +50,30 @@
 		<td colspan="6" height="3" bgcolor="#4a4f4f"/>
 	</tr>
 	<tr>
+		<td class="th">&nbsp;</td>
+		<td class="th" colspan="3">&nbsp;</td>
+		<td class="th"><s:text name="ab.district"/></td>
+		<td class="th">&nbsp;</td>
+	</tr>
+	<s:iterator value="%{object.districts}" status="status">
+		<tr valign="middle" class="cols_1">
+			<td class="col_1s" align="right"><s:property
+					value="%{#status.index + 1}"/>&nbsp;</td>
+			<td colspan="3">&nbsp;</td>
+			<td class="col"><s:property value="%{getTranslation(currentName.translations).name}"/></td>
+			<td class="col">
+				<a href="<s:url value="/dicts/view_district.action?object.id=%{object.id}"/>"><s:text
+						name="common.view"/></a></td>
+		</tr>
+	</s:iterator>
+	<tr>
 		<td colspan="6">
 			<input type="button" class="btn-exit"
 				   onclick="window.location='<s:url action='edit_street'><s:param name="temporalId" value="0"/></s:url>';"
 				   value="<s:text name="common.add"/>"/>
+			<input type="button" class="btn-exit"
+				   onclick="window.location='<s:url action='edit_street_districts'><s:param name="street.id" value="%{object.id}"/></s:url>';"
+				   value="<s:text name="ab.street.manage.districts"/>"/>
 		</td>
 	</tr>
 </table>
