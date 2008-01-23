@@ -3,7 +3,7 @@
 <ul class="folders">
 	<li class="open"><b><s:text name="sz.menu2.dictionaries"/></b>
 		<ul class="docs">
-			<li><a href="#"><s:text name="sz.menu34.files"/></a></li>
+			<li><a href="<c:url value='/sz/importFileList.action' />"><s:text name="sz.menu34.files"/></a></li>
 		</ul>
 	</li>
 

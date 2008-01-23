@@ -13,5 +13,8 @@
 		<property name="countryService" ref="countryService" />
 		<property name="importFileService" ref="importFileService" />
 	</bean>
+	<bean id="importFileListAction" class="org.flexpay.sz.actions.ImportFileListAction" scope="prototype">
+		<property name="importFileService" ref="importFileService" />
+	</bean>
 	
 </beans>	

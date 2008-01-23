@@ -2,7 +2,6 @@ package org.flexpay.sz.dao;
 
 import java.util.List;
 
-import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.sz.persistence.ImportFile;
 

@@ -22,6 +22,10 @@
 		<action name="doUpload" class="importFileAction">
             <result name="form" type="tiles">sz.import.file.upload.form</result>
         </action>
+        
+        <action name="importFileList" class="importFileListAction">
+            <result name="success" type="tiles">sz.import_file.list</result>
+        </action>
 
 	</package>
 	

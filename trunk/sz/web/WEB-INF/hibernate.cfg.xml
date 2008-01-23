@@ -34,8 +34,11 @@
 		<!-- common.Languages -->
 		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
 		
-		<!-- sz.importFile -->
+		<!-- SZ ImportFile -->
 		<mapping resource="org/flexpay/sz/persistence/ImportFile.hbm.xml" />
+		
+		<!-- SZ Characteristic -->
+		<mapping resource="org/flexpay/sz/persistence/Characteristic.hbm.xml" />
 
 	</session-factory>
 
