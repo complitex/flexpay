@@ -4,7 +4,12 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 
+import java.util.Set;
+import java.util.Collections;
+
 public class District extends NameTimeDependentChild<DistrictName, DistrictNameTemporal> {
+
+	private Set<Street> streets = Collections.emptySet();
 
 	/**
 	 * Constructs a new District.
@@ -40,4 +45,21 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 		return super.hashCode();
 	}
 
+	/**
+	 * Getter for property 'streets'.
+	 *
+	 * @return Value for property 'streets'.
+	 */
+	public Set<Street> getStreets() {
+		return streets;
+	}
+
+	/**
+	 * Setter for property 'streets'.
+	 *
+	 * @param streets Value to set for property 'streets'.
+	 */
+	public void setStreets(Set<Street> streets) {
+		this.streets = streets;
+	}
 }

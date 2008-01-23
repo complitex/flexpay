@@ -66,6 +66,7 @@ public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI
 				}
 			}
 			intervals = dis;
+			intervalsChecked = true;
 		}
 		return intervals;
 	}

@@ -205,6 +205,15 @@
 			<result type="redirect">list_streets.action</result>
 		</action>
 
+		<action name="edit_street_districts" class="editStreetDistricts">
+			<result type="tiles" name="input">ab.street.edit.districts</result>
+			<result type="redirect-action">
+				<param name="actionName">view_street</param>
+				<param name="parse">true</param>
+				<param name="object.id">${street.id}</param>
+			</result>
+		</action>
+
 	</package>
 
 	<package name="street_types" namespace="/dicts" extends="common">
