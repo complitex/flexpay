@@ -1,0 +1,1 @@
+create table SEMAPHORE(semaphoreID varchar(255) , primary key(semaphoreID));
