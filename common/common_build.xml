@@ -48,6 +48,12 @@
 			<include name="junit/*.jar" />
 		</fileset>
 	</path>
+	
+	<path id="javadbf.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="javadbf/*.jar" />
+		</fileset>
+	</path>	
 
 	<path id="common.production.classpath">
 		<path refid="commons.lib" />
@@ -56,6 +62,7 @@
 		<path refid="hibernate.lib" />
 		<path refid="log4j.lib" />
 		<path refid="j2ee.lib" />
+		<path refid="javadbf.lib" />
 	</path>
 
 	<patternset id="empty_pattern" excludes="**/*.*" />
