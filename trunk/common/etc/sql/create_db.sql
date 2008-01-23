@@ -3,3 +3,5 @@ create user flexpay_user identified by 'flexpay';
 use flexpay_db;
 grant all privileges on flexpay_db.* to flexpay_user;
 flush privileges;
+
+create table SEMAPHORE(semaphoreID varchar(255) , primary key(semaphoreID));
