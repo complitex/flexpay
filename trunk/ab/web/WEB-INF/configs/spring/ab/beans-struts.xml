@@ -185,30 +185,35 @@
 	</bean>
 
 	<!-- Identity types -->
-	<bean id="identityTypeListAction"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeListAction"
-		  scope="prototype">
+	<bean id="identityTypeListAction" scope="prototype"
+		  class="org.flexpay.ab.actions.identity.IdentityTypeListAction">
 		<property name="identityTypeService" ref="identityTypeService" />
 	</bean>
-	<bean id="identityTypeCreteAction"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeCreateAction"
-		  scope="prototype">
+	<bean id="identityTypeCreteAction" scope="prototype"
+		  class="org.flexpay.ab.actions.identity.IdentityTypeCreateAction">
 		<property name="identityTypeService" ref="identityTypeService" />
 	</bean>
-	<bean id="identityTypeViewAction"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeViewAction"
-		  scope="prototype">
+	<bean id="identityTypeViewAction" scope="prototype"
+		  class="org.flexpay.ab.actions.identity.IdentityTypeViewAction">
 		<property name="identityTypeService" ref="identityTypeService" />
 	</bean>
-	<bean id="identityTypeEditAction"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeEditAction"
-		  scope="prototype">
+	<bean id="identityTypeEditAction" scope="prototype"
+		  class="org.flexpay.ab.actions.identity.IdentityTypeEditAction">
 		<property name="identityTypeService" ref="identityTypeService" />
 	</bean>
-	<bean id="identityTypeDeleteAction"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeDeleteAction"
-		  scope="prototype">
+	<bean id="identityTypeDeleteAction" scope="prototype"
+		  class="org.flexpay.ab.actions.identity.IdentityTypeDeleteAction">
 		<property name="identityTypeService" ref="identityTypeService" />
+	</bean>
+
+	<!-- Persons -->
+	<bean id="listPersons" scope="prototype"
+		  class="org.flexpay.ab.actions.person.ListPersons">
+		<property name="personService" ref="personService" />
+	</bean>
+	<bean id="viewPerson" scope="prototype"
+		  class="org.flexpay.ab.actions.person.ViewPerson">
+		<property name="personService" ref="personService" />
 	</bean>
 
 </beans>

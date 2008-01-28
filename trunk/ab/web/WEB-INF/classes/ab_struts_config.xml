@@ -256,4 +256,12 @@
 		</action>
 	</package>
 
+	<package name="persons" namespace="/dicts" extends="common">
+		<action name="list_persons" class="listPersons">
+			<result type="tiles">ab.person.list</result>
+		</action>
+		<action name="view_person" class="viewPerson">
+			<result type="tiles">ab.person.view</result>
+		</action>
+	</package>
 </struts>

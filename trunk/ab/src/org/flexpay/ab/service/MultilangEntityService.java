@@ -1,24 +1,25 @@
 package org.flexpay.ab.service;
 
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Translation;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-import org.flexpay.ab.persistence.AbstractTranslation;
-import org.flexpay.common.exception.FlexPayException;
-
 /**
  * Service interface for multilaguage entity related tasks
  */
-public interface MultilangEntityService<Entity, Translation extends AbstractTranslation> {
-	
+public interface MultilangEntityService<Entity, T extends Translation> {
+
 	/**
 	 * Create Entity
 	 *
 	 * @param translations Entity names translations
 	 * @return created Entity object
+	 * @throws FlexPayException if failure occurs
 	 */
-	public Entity create(Collection<Translation> translations) throws FlexPayException;
+	public Entity create(Collection<T> translations) throws FlexPayException;
 
 	/**
 	 * Read Entity object by its unique id
@@ -36,7 +37,7 @@ public interface MultilangEntityService<Entity, Translation extends AbstractTran
 	 * @return List of Translation
 	 * @throws FlexPayException if failure occurs
 	 */
-	List<Translation> getTranslations(Locale locale) throws FlexPayException;
+	List<T> getTranslations(Locale locale) throws FlexPayException;
 
 	/**
 	 * Get a list of available street types
@@ -48,11 +49,11 @@ public interface MultilangEntityService<Entity, Translation extends AbstractTran
 	/**
 	 * Update street type translations
 	 *
-	 * @param entity Entity to update trnaslations for
+	 * @param entity	   Entity to update trnaslations for
 	 * @param translations Translations set
 	 * @return Updated Entity object
 	 */
-	Entity update(Entity entity, Collection<Translation> translations);
+	Entity update(Entity entity, Collection<T> translations);
 
 	/**
 	 * Disable Entity

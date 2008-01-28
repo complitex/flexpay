@@ -4,30 +4,31 @@
 
 <tiles-definitions>
 
-    <definition name="ab.layout.standart" template="/WEB-INF/jsp/ab/layouts/standart.jsp">
-        <put-attribute name="title" value="ab.main.title" />
-        <put-attribute name="header" value="/WEB-INF/jsp/common/header.jsp" />
-        <put-attribute name="menu1" value="/WEB-INF/jsp/ab/menu/menu1.jsp" />
-        <put-attribute name="menu2" value="/WEB-INF/jsp/ab/menu/menu2.jsp" />
-        <put-attribute name="menu34" value="/WEB-INF/jsp/ab/menu/menu34_dictionaries.jsp" />
-        <put-attribute name="gradusnik" value="/WEB-INF/jsp/ab/menu/gradusnik.jsp" />
-        <!--<put-attribute name="body" value="/WEB-INF/jsp/ab/main.jsp" />-->
-        <put-attribute name="tip" value="/WEB-INF/jsp/ab/menu/tip.jsp" />
-        <put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp" />
+	<definition name="ab.layout.standart" template="/WEB-INF/jsp/ab/layouts/standart.jsp">
+		<put-attribute name="title" value="ab.main.title" />
+		<put-attribute name="header" value="/WEB-INF/jsp/common/header.jsp" />
+		<put-attribute name="menu1" value="/WEB-INF/jsp/ab/menu/menu1.jsp" />
+		<put-attribute name="menu2" value="/WEB-INF/jsp/ab/menu/menu2.jsp" />
+		<put-attribute name="menu34"
+					   value="/WEB-INF/jsp/ab/menu/menu34_dictionaries.jsp" />
+		<put-attribute name="gradusnik" value="/WEB-INF/jsp/ab/menu/gradusnik.jsp" />
+		<!--<put-attribute name="body" value="/WEB-INF/jsp/ab/main.jsp" />-->
+		<put-attribute name="tip" value="/WEB-INF/jsp/ab/menu/tip.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp" />
 	</definition>
 
 	<definition name="ab.main" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.main.title" />
 	</definition>
 
-    <definition name="ab.country.list" extends="ab.layout.standart">
+	<definition name="ab.country.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.country.list.title" />
-        <put-attribute name="body" value="/WEB-INF/jsp/ab/countries_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/countries_list.jsp" />
 	</definition>
 
-    <definition name="ab.country.create" extends="ab.layout.standart">
+	<definition name="ab.country.create" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.country.create.title" />
-        <put-attribute name="body" value="/WEB-INF/jsp/ab/country_create.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/country_create.jsp" />
 	</definition>
 
 	<!-- Regions -->
@@ -111,7 +112,8 @@
 
 	<definition name="ab.street.edit.districts" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.street.edit.districts.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_edit_districts_list.jsp" />
+		<put-attribute name="body"
+					   value="/WEB-INF/jsp/ab/street_edit_districts_list.jsp" />
 	</definition>
 
 	<definition name="ab.streets.list" extends="ab.layout.standart">
@@ -134,7 +136,7 @@
 		<put-attribute name="title" value="ab.town_type.edit.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_type_edit.jsp" />
 	</definition>
-	
+
 	<!-- Street types -->
 	<definition name="ab.street_type.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.street_type.list.title" />
@@ -152,7 +154,7 @@
 		<put-attribute name="title" value="ab.street_type.edit.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_type_edit.jsp" />
 	</definition>
-	
+
 	<!-- Identity types -->
 	<definition name="ab.identity_type.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.identity_type.list.title" />
@@ -171,4 +173,13 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/identity_type_edit.jsp" />
 	</definition>
 
+	<!-- Persons -->
+	<definition name="ab.person.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.persons.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/person_list.jsp" />
+	</definition>
+	<definition name="ab.person.view" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.person.view.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/person_view.jsp" />
+	</definition>
 </tiles-definitions>

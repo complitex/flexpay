@@ -60,7 +60,7 @@ public class IdentityTypeServiceImpl implements
 
 		identityTypeDao.create(identityType);
 		for (IdentityTypeTranslation translation : translationSet) {
-			translation.setIdentityType(identityType);
+			translation.setTranslatable(identityType);
 			identityTypeTranslationDao.create(translation);
 		}
 

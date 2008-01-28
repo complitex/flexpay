@@ -1,12 +1,5 @@
 package org.flexpay.ab.service.imp;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.StreetTypeDao;
@@ -20,7 +13,9 @@ import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+import java.util.*;
+
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class StreetTypeServiceImpl implements
 		StreetTypeService {
 
@@ -31,12 +26,11 @@ public class StreetTypeServiceImpl implements
 
 	/**
 	 * Create StreetType
-	 * 
-	 * @param translations
-	 *            StreetType names translations
+	 *
+	 * @param translations StreetType names translations
 	 * @return created StreetType object
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public StreetType create(Collection<StreetTypeTranslation> translations)
 			throws FlexPayException {
 		StreetType streetType = new StreetType();
@@ -59,7 +53,7 @@ public class StreetTypeServiceImpl implements
 
 		streetTypeDao.create(streetType);
 		for (StreetTypeTranslation translation : translationSet) {
-			translation.setStreetType(streetType);
+			translation.setTranslatable(streetType);
 			streetTypeTranslationDao.create(translation);
 		}
 
@@ -71,14 +65,13 @@ public class StreetTypeServiceImpl implements
 	}
 
 	/**
-	 * Get StreetType translations for specified locale, if translation is not
-	 * found check for translation in default locale
-	 * 
-	 * @param locale
-	 *            Locale to get translations for
+	 * Get StreetType translations for specified locale, if translation is not found check
+	 * for translation in default locale
+	 *
+	 * @param locale Locale to get translations for
 	 * @return List of StreetTypes
 	 * @throws org.flexpay.common.exception.FlexPayException
-	 *             if failure occurs
+	 *          if failure occurs
 	 */
 	public List<StreetTypeTranslation> getTranslations(Locale locale)
 			throws FlexPayException {
@@ -102,8 +95,8 @@ public class StreetTypeServiceImpl implements
 					language, defaultLang);
 			if (translation == null) {
 				log.error("No name for street type: "
-						+ language.getLangIsoCode() + " : "
-						+ defaultLang.getLangIsoCode() + ", " + streetType);
+						  + language.getLangIsoCode() + " : "
+						  + defaultLang.getLangIsoCode() + ", " + streetType);
 				continue;
 			}
 			translations.add(translation);
@@ -113,13 +106,13 @@ public class StreetTypeServiceImpl implements
 	}
 
 	private StreetTypeTranslation getTypeTranslation(StreetType streetType,
-			Language lang, Language defaultLang) {
+													 Language lang, Language defaultLang) {
 		StreetTypeTranslation defaultTranslation = null;
 
 		Collection<StreetTypeTranslation> names = streetType
 				.getTranslations();
 		log.debug("Gettting translation: " + lang.getLangIsoCode() + " : "
-				+ names);
+				  + names);
 		for (StreetTypeTranslation translation : names) {
 			if (lang.equals(translation.getLang())) {
 				log.debug("Found translation: " + translation);
@@ -138,9 +131,8 @@ public class StreetTypeServiceImpl implements
 
 	/**
 	 * Read StreetType object by its unique id
-	 * 
-	 * @param id
-	 *            StreetType key
+	 *
+	 * @param id StreetType key
 	 * @return StreetType object, or <code>null</code> if object not found
 	 */
 	public StreetType read(Long id) {
@@ -149,16 +141,14 @@ public class StreetTypeServiceImpl implements
 
 	/**
 	 * Update street type translations
-	 * 
-	 * @param streetType
-	 *            Street Type to update trnaslations for
-	 * @param translations
-	 *            Translations set
+	 *
+	 * @param streetType   Street Type to update trnaslations for
+	 * @param translations Translations set
 	 * @return Updated StreetType object
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public StreetType update(StreetType streetType,
-			Collection<StreetTypeTranslation> translations) {
+							 Collection<StreetTypeTranslation> translations) {
 		Set<StreetTypeTranslation> translationList = new HashSet<StreetTypeTranslation>(
 				translations.size());
 		List<StreetTypeTranslation> translationsToDelete = new ArrayList<StreetTypeTranslation>(
@@ -168,7 +158,7 @@ public class StreetTypeServiceImpl implements
 			if (StringUtils.isNotBlank(translation.getName())) {
 				translationList.add(translation);
 				hasDefaultLangTranslation = hasDefaultLangTranslation
-						|| translation.getLang().isDefault();
+											|| translation.getLang().isDefault();
 			} else if (translation.getId() != null) {
 				translationsToDelete.add(translation);
 			}
@@ -199,13 +189,12 @@ public class StreetTypeServiceImpl implements
 	}
 
 	/**
-	 * Disable StreetTypes TODO: check if there are any streets with specified
-	 * type and reject operation
-	 * 
-	 * @param streetTypes
-	 *            StreetTypes to disable
+	 * Disable StreetTypes TODO: check if there are any streets with specified type and
+	 * reject operation
+	 *
+	 * @param streetTypes StreetTypes to disable
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void disable(Collection<StreetType> streetTypes) {
 		log.info(streetTypes.size() + " types to disable");
 		for (StreetType streetType : streetTypes) {
@@ -217,7 +206,7 @@ public class StreetTypeServiceImpl implements
 
 	/**
 	 * Get a list of available street types
-	 * 
+	 *
 	 * @return List of StreetType
 	 */
 	public List<StreetType> getEntities() {

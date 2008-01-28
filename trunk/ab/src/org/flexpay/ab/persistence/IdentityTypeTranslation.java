@@ -1,41 +1,40 @@
 package org.flexpay.ab.persistence;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import org.flexpay.common.persistence.Translation;
 
 /**
  * IdentityTypeTranslation is a translation of IdentityType to particular language
  */
-@Entity
-@Table(name = "identity_type_translations_tbl", uniqueConstraints = { @UniqueConstraint(columnNames = {
-		"language_id", "identity_type_id" }) })
-public class IdentityTypeTranslation extends AbstractTranslation {
+public class IdentityTypeTranslation extends Translation {
 
-	private IdentityType identityType;
-
-	/** Constructs a new IdentityTypeTranslation. */
+	/**
+	 * Constructs a new IdentityTypeTranslation.
+	 */
 	public IdentityTypeTranslation() {
-		super();
 	}
 
 	/**
-	 * Getter for property 'identityType'.
-	 * 
-	 * @return Value for property 'identityType'.
+	 * {@inheritDoc}
 	 */
-	public IdentityType getIdentityType() {
-		return identityType;
+	@Override
+	public String toString() {
+		return super.toString();
 	}
 
 	/**
-	 * Setter for property 'identityType'.
-	 * 
-	 * @param identityType
-	 *            Value to set for property 'identityType'.
+	 * {@inheritDoc}
 	 */
-	public void setIdentityType(IdentityType identityType) {
-		this.identityType = identityType;
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object o) {
+		return o instanceof IdentityTypeTranslation && super.equals(o);
 	}
 }
 

@@ -3,6 +3,7 @@
 <ul class="folders">
 	<li class="open"><b><s:text name="menu2.dictionaries"/></b>
 		<ul class="docs">
+			<li><a href="<c:url value='/dicts/list_persons.action' />"><s:text name="menu34.dictionaries.persons"/></a></li>
 			<li><a href="<c:url value='/dicts/list_countries.action' />"><s:text name="menu34.dictionaries.countries"/></a></li>
 			<li><a href="<c:url value='/dicts/list_regions.action' />"><s:text name="menu34.dictionaries.regions"/></a></li>
 			<li><a href="<c:url value='/dicts/list_towns.action' />"><s:text name="menu34.dictionaries.towns"/></a></li>

@@ -65,4 +65,8 @@
 		<property name="identityTypeTranslationDao" ref="identityTypeTranslationDao" />
 	</bean>
 
+	<bean id="personService" class="org.flexpay.ab.service.imp.PersonServiceImpl">
+		<property name="personDao" ref="personDao" />
+	</bean>
+
 </beans>

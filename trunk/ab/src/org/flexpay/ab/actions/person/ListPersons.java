@@ -1,33 +1,32 @@
-package org.flexpay.ab.actions.nametimedependent;
+package org.flexpay.ab.actions.person;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
+import org.flexpay.ab.persistence.Person;
+import org.flexpay.ab.service.PersonService;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.NameDateInterval;
-import org.flexpay.common.persistence.NameTimeDependentChild;
-import org.flexpay.common.persistence.TemporaryValue;
-import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.service.ParentService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ListAction<
-		TV extends TemporaryValue<TV>,
-		DI extends NameDateInterval<TV, DI>,
-		NTD extends NameTimeDependentChild<TV, DI>,
-		T extends Translation> extends ActionBase<TV, DI, NTD, T> implements SessionAware {
+public class ListPersons extends FPActionSupport implements SessionAware {
 
-	private static Logger log = Logger.getLogger(ListAction.class);
+	private static Logger log = Logger.getLogger(ListPersons.class);
 
-	private static final String ATTRIBUTE_ACTION_ERRORS =
-			ListAction.class.getName() + ".ACTION_ERRORS";
+	private static final String ATTRIBUTE_ACTION_ERRORS = ListPersons.class.getName() + ".ACTION_ERRORS";
+
+	private ParentService parentService;
+	private PersonService personService;
 
 	private Map session;
+	private List<Person> persons = new ArrayList<Person>();
 	private Page pager = new Page();
-	private List<TV> objectNames;
 
 	/**
 	 * {@inheritDoc}
@@ -38,10 +37,11 @@ public abstract class ListAction<
 
 		long start = System.currentTimeMillis();
 		try {
-			ArrayStack filters = parentService.initFilters(getFilters(), userPreferences.getLocale());
+			ArrayStack filters = parentService == null ? null :
+								 parentService.initFilters(getFilters(), userPreferences.getLocale());
 			setFilters(filters);
 
-			objectNames = nameTimeDependentService.findNames(filters, pager);
+			persons = personService.findPersons(filters, pager);
 		} catch (FlexPayException e) {
 			addActionError(e);
 		}
@@ -58,7 +58,7 @@ public abstract class ListAction<
 		}
 
 		if (log.isInfoEnabled()) {
-			log.info("Listing " + (System.currentTimeMillis() - start) + " ms");
+			log.info("Listing persons" + (System.currentTimeMillis() - start) + " ms");
 		}
 		return SUCCESS;
 	}
@@ -97,12 +97,41 @@ public abstract class ListAction<
 		this.pager = pager;
 	}
 
+	private ArrayStack getFilters() {
+		ArrayStack filters = new ArrayStack();
+		filters.push(null);
+
+		return filters;
+	}
+
+	private void setFilters(ArrayStack filters) {
+
+	}
+
 	/**
-	 * Getter for property 'regionNames'.
+	 * Setter for property 'parentService'.
 	 *
-	 * @return Value for property 'regionNames'.
+	 * @param parentService Value to set for property 'parentService'.
 	 */
-	public List<TV> getObjectNames() {
-		return objectNames;
+	public void setParentService(ParentService parentService) {
+		this.parentService = parentService;
+	}
+
+	/**
+	 * Setter for property 'personService'.
+	 *
+	 * @param personService Value to set for property 'personService'.
+	 */
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
+	}
+
+	/**
+	 * Getter for property 'persons'.
+	 *
+	 * @return Value for property 'persons'.
+	 */
+	public List<Person> getPersons() {
+		return persons;
 	}
 }
