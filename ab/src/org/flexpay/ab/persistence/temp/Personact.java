@@ -3,6 +3,7 @@ package org.flexpay.ab.persistence.temp;
 
 
 import org.flexpay.ab.persistence.temp.Act;
+import org.flexpay.ab.persistence.Person;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;

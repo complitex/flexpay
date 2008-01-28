@@ -24,7 +24,7 @@
 		<properties name="lang_identity_type_pair" unique="true">
 			<many-to-one name="lang" column="language_id" not-null="true"
 						 class="org.flexpay.common.persistence.Language" />
-			<many-to-one name="identityType" class="IdentityType"
+			<many-to-one name="translatable" class="IdentityType"
 						 column="identity_type_id" not-null="true"/>
 		</properties>
 	</class>

@@ -31,6 +31,9 @@
 		<!-- Identity types -->
 		<mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml" />
 
+		<!-- Persons -->
+		<mapping resource="org/flexpay/ab/persistence/Person.hbm.xml" />
+
 		<!-- common.Languages -->
 		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
 

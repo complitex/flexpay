@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.ab.persistence">
+
+	<class name="Person" table="persons_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status" not-null="true"/>
+		<set name="personAttributes" inverse="true">
+			<key column="person_id" not-null="true" />
+			<one-to-many class="PersonAttribute" />
+		</set>
+		<set name="personIdentities" inverse="true" lazy="false">
+			<key column="person_id" not-null="true" />
+			<one-to-many class="PersonIdentity" />
+		</set>
+	</class>
+
+	<class name="PersonAttribute" table="person_attributes_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<property name="value" />
+		<properties name="lang_person_attribute_pair" unique="true">
+			<many-to-one name="lang" column="language_id" not-null="true"
+						 class="org.flexpay.common.persistence.Language" />
+			<many-to-one name="translatable" class="Person"
+						 column="person_id" not-null="true" />
+		</properties>
+	</class>
+
+	<class name="PersonIdentity" table="person_identities_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="beginDate" column="begin_date" type="date" not-null="true" />
+		<property name="endDate" column="end_date" type="date" not-null="true" />
+		<property name="birthDate" column="birth_date" type="date" not-null="true" />
+		<property name="serialNumber" column="serial_number" not-null="true" />
+		<property name="documentNumber" column="document_number" not-null="true" />
+		<property name="firstName" column="first_name" length="255" not-null="true" />
+		<property name="middleName" column="middle_name" length="255" not-null="true" />
+		<property name="lastName" column="last_name" length="255" not-null="true"/>
+		<property name="organization" length="4000" not-null="true"/>
+		<property name="default" column="is_default" type="boolean" not-null="true" />
+		<many-to-one name="identityType" column="identity_type_id" not-null="true"
+					 class="IdentityType" />
+		<many-to-one name="person" column="person_id" not-null="true" class="Person" />
+		<set name="personIdentityAttributes" inverse="true">
+			<key column="person_identity_id" not-null="true" />
+			<one-to-many class="PersonIdentityAttribute" />
+		</set>
+	</class>
+
+	<class name="PersonIdentityAttribute" table="person_identity_attributes_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<property name="value" />
+		<properties name="lang_person__identity_attribute_pair" unique="true">
+			<many-to-one name="lang" column="language_id" not-null="true"
+						 class="org.flexpay.common.persistence.Language" />
+			<many-to-one name="translatable" class="PersonIdentity"
+						 column="person_identity_id" not-null="true" />
+		</properties>
+	</class>
+
+	<query name="Person.findObjects">
+		FROM Person o
+		WHERE o.status=?
+	</query>
+
+	<query name="Person.findObjects.count">
+		select count(*) from Person o where o.status=?
+	</query>
+
+	<query name="Person.readFull">
+		SELECT DISTINCT o
+		FROM Person o
+			LEFT JOIN FETCH o.personAttributes pa
+			LEFT JOIN FETCH pa.lang pal
+			LEFT JOIN FETCH pal.translations tr
+			LEFT JOIN FETCH o.personIdentities pi
+			LEFT JOIN FETCH pi.identityType it
+			LEFT JOIN FETCH it.translations ittr
+			LEFT JOIN FETCH ittr.lang lang
+			LEFT JOIN FETCH lang.translations 
+		WHERE o.id=?
+	</query>
+
+</hibernate-mapping>

@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="fobjectss" method="post" action="">
+	<form id="fregions" method="post" action="">
 
 		<tr>
 			<td class="th" width="100%" colspan="4" align="center">

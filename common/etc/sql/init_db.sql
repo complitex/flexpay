@@ -1538,7 +1538,7 @@ INSERT INTO district_names_temporal_tbl (district_id, district_name_id, begin_da
 	VALUES (@district_id, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
 -- Streets
-INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk);
+INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
 SELECT @street_id_demakova:=last_insert_id();
 INSERT INTO street_names_tbl (street_id) VALUES (@street_id_demakova);
 SELECT @street_name_id:=last_insert_id();
@@ -1548,7 +1548,7 @@ INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, en
 	VALUES (@street_id_demakova, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_demakova, @district_id_nsk_sovetskiy);
 
-INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk);
+INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
 SELECT @street_id_ivanova:=last_insert_id();
 INSERT INTO street_names_tbl (street_id) VALUES (@street_id_ivanova);
 SELECT @street_name_id:=last_insert_id();
@@ -1558,7 +1558,7 @@ INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, en
 	VALUES (@street_id_ivanova, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_ivanova, @district_id_nsk_sovetskiy);
 
-INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk);
+INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
 SELECT @street_id_krasniy:=last_insert_id();
 INSERT INTO street_names_tbl (street_id) VALUES (@street_id_krasniy);
 SELECT @street_name_id:=last_insert_id();
@@ -1568,3 +1568,34 @@ INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, en
 	VALUES (@street_id_krasniy, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_krasniy, @district_id_nsk_centralniy);
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_krasniy, @district_id_nsk_zaelcovskiy);
+
+-- Identity types
+INSERT INTO identity_types_tbl (status) VALUES (0);
+SELECT @identity_type_passport_id:=last_insert_id();
+INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
+	VALUES ('Паспорт', @ru_id, @identity_type_passport_id);
+INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
+	VALUES ('Pasport', @en_id, @identity_type_passport_id);
+
+INSERT INTO identity_types_tbl (status) VALUES (0);
+SELECT @identity_type_foreign_passport_id:=last_insert_id();
+INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
+	VALUES ('Заграничный паспорт', @ru_id, @identity_type_foreign_passport_id);
+INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
+	VALUES ('ForeignPasport', @en_id, @identity_type_foreign_passport_id);
+
+-- Persons
+INSERT INTO persons_tbl (status) VALUES (0);
+SELECT @person_id:=last_insert_id();
+INSERT INTO person_identities_tbl (begin_date, end_date, birth_date, serial_number,
+	document_number, first_name, middle_name, last_name, organization,
+	is_default, identity_type_id, person_id)
+	VALUES ('2003-06-09', '2100-12-31', '1983-01-25', 5003,
+	1231231, 'Михаил', 'Анатольевич', 'Федько', 'ОВД Советского района города Новосибирска',
+	1, @identity_type_passport_id, @person_id);
+INSERT INTO person_identities_tbl (begin_date, end_date, birth_date, serial_number,
+	document_number, first_name, middle_name, last_name, organization,
+	is_default, identity_type_id, person_id)
+	VALUES ('2004-10-22', '2009-10-22', '1983-01-25', 60,
+	123123123, 'Mikhail', '', 'Fedko', 'ГУВД 316',
+	0, @identity_type_foreign_passport_id, @person_id);

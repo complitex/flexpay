@@ -244,7 +244,8 @@
 			</bean>
 		</property>
 	</bean>
-	
+
+	<!-- Person identities -->
 	<bean id="identityTypeDAO" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.IdentityTypeDao" />
@@ -261,6 +262,46 @@
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.ab.persistence.IdentityTypeTranslation" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="personDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.PersonDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.Person" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="personAttributeDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.PersonAttributeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.PersonAttribute" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="personIdentityDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.PersonIdentityDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.PersonIdentity" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="personIdentityAttributeDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.PersonIdentityAttributeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.PersonIdentityAttribute" />
 			</bean>
 		</property>
 	</bean>

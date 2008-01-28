@@ -3,7 +3,8 @@ package org.flexpay.ab.persistence.temp;
 
 
 import org.flexpay.ab.persistence.temp.Rooms;
-import org.flexpay.ab.persistence.temp.Person;
+import org.flexpay.ab.persistence.Person;
+import org.flexpay.ab.persistence.Building;
 
 import java.util.HashSet;
 import java.util.Set;
