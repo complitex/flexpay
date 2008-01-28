@@ -7,28 +7,25 @@
 	  &nbsp;
 	</td>
 	<td class="th">
-	  region_id
+	  <s:text name="sz.oszn" />
 	</td>
 	<td class="th">
-	  original_file_name
+	  <s:text name="sz.original_file_name" />
     </td>
 	<td class="th">
-	  result_file_name
+	  <s:text name="sz.file_type" />
 	</td>
 	<td class="th">
-	  file_type
+	  <s:text name="sz.year" />
 	</td>
 	<td class="th">
-	  file_year
+	  <s:text name="sz.month" />
 	</td>
 	<td class="th">
-	  file_month
+	  <s:text name="sz.import_date" />
 	</td>
 	<td class="th">
-	  import_date
-	</td>
-	<td class="th">
-	  user_name
+	  <s:text name="sz.user_name" />
 	</td>
   </tr>
   <s:iterator value="importFileList" status="rowstatus">
@@ -37,13 +34,10 @@
 	    <s:property value="#rowstatus.index + 1" />
 	  </td>
 	  <td class="col">
-	    <s:property value="region.id"/>
+	    <s:property value="oszn.description"/>
 	  </td>
 	  <td class="col">
 	    <s:property value="originalFileName"/>
-	  </td>
-	  <td class="col">
-	    <s:property value="resultFileName"/>
 	  </td>
 	  <td class="col">
 	    <s:property value="fileType"/>

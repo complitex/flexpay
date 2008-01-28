@@ -9,4 +9,8 @@
 		<property name="importFileDao" ref="importFileDAO" />
 	</bean>
 	
+	<bean id="osznService" class="org.flexpay.sz.service.imp.OsznServiceImpl">
+		<property name="osznDao" ref="osznDAO" />
+	</bean>
+	
 </beans>	

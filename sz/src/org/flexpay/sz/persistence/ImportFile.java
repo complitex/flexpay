@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.ab.persistence.Region;
 
 public class ImportFile implements java.io.Serializable {
 	public static final Integer IMPORTING_FILE_STATUS = 0;
@@ -25,7 +24,7 @@ public class ImportFile implements java.io.Serializable {
 	public static final String FORM_2_FILE_TYPE = "form_2";
 
 	private Long id;
-	private Region region;
+	private Oszn oszn;
 	private String originalFileName;
 	private String requestFileName;
 	private String resultFileName;
@@ -57,7 +56,7 @@ public class ImportFile implements java.io.Serializable {
 		if (fileName == null || "".equals(fileName)) {
 			return null;
 		}
-		Matcher m = Pattern.compile("\\d{8}\\u002Ea\\d{2}").matcher(fileName);
+		Matcher m = Pattern.compile("\\d{8}\\u002E(a|A)\\d{2}").matcher(fileName);
 		if (m.matches()) {
 			return ImportFile.CHARACTERISTIC_FILE_TYPE;
 		}
@@ -79,14 +78,6 @@ public class ImportFile implements java.io.Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Region getRegion() {
-		return region;
-	}
-
-	public void setRegion(Region region) {
-		this.region = region;
 	}
 
 	public String getOriginalFileName() {
@@ -177,7 +168,7 @@ public class ImportFile implements java.io.Serializable {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-				.append("Id", id).append("Region", region).append(
+				.append("Id", id).append("Oszn", oszn).append(
 						"Original file name", originalFileName).append(
 						"Request file name", requestFileName).append(
 						"Result file name", resultFileName).append("File type",
@@ -186,5 +177,13 @@ public class ImportFile implements java.io.Serializable {
 				.append("Import date", importDate).append("File status",
 						fileStatus).append("File validation", fileValidation)
 				.toString();
+	}
+
+	public Oszn getOszn() {
+		return oszn;
+	}
+
+	public void setOszn(Oszn oszn) {
+		this.oszn = oszn;
 	}
 }

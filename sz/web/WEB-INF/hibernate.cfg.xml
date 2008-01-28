@@ -42,6 +42,9 @@
 		
 		<!-- SZ Characteristic -->
 		<mapping resource="org/flexpay/sz/persistence/Characteristic.hbm.xml" />
+		
+		<!-- SZ Oszn -->
+		<mapping resource="org/flexpay/sz/persistence/Oszn.hbm.xml" />
 
 	</session-factory>
 

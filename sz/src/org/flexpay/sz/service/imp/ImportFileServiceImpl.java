@@ -41,8 +41,7 @@ public class ImportFileServiceImpl implements ImportFileService {
 	 * @return ImportFile object, or <code>null</code> if object not found
 	 */
 	public ImportFile read(Long id) {
-		// TODO realize logic
-		return null;
+		return importFileDao.read(id);
 	}
 
 	/**
@@ -55,11 +54,12 @@ public class ImportFileServiceImpl implements ImportFileService {
 	 *             if ImportFile object is invalid
 	 */
 	public ImportFile update(ImportFile importFile) throws FlexPayException {
-		// TODO realize logic
+		importFileDao.update(importFile);
+
 		return importFile;
 
 	}
-	
+
 	/**
 	 * Get a list of available identity types
 	 * 
