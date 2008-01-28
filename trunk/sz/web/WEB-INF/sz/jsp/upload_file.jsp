@@ -26,7 +26,7 @@
     <s:text name="ab.region_name" />
   </td>
   <td>
-    <s:select name="regionId" list="regionNames" listKey="region.id" listValue="%{getTranslation(translations).name}" required="true" />
+    <s:select name="osznId" list="osznList" listKey="id" listValue="description" required="true" />
   </td>
 </tr>
 

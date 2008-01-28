@@ -9,8 +9,7 @@
 	<!-- Define struts actions beans -->
 	
 	<bean id="importFileAction" class="org.flexpay.sz.actions.ImportFileAction" scope="prototype">
-		<property name="regionService" ref="regionService" />
-		<property name="countryService" ref="countryService" />
+		<property name="osznService" ref="osznService" />
 		<property name="importFileService" ref="importFileService" />
 	</bean>
 	<bean id="importFileListAction" class="org.flexpay.sz.actions.ImportFileListAction" scope="prototype">

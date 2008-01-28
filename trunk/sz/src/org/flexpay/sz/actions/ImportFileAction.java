@@ -8,19 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.io.FileUtils;
 import org.flexpay.ab.actions.CommonAction;
-import org.flexpay.ab.persistence.Region;
-import org.flexpay.ab.persistence.RegionName;
-import org.flexpay.ab.persistence.filters.CountryFilter;
-import org.flexpay.ab.service.CountryService;
-import org.flexpay.ab.service.RegionService;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.sz.persistence.ImportFile;
+import org.flexpay.sz.persistence.Oszn;
 import org.flexpay.sz.service.ImportFileService;
+import org.flexpay.sz.service.OsznService;
 
 public class ImportFileAction extends CommonAction {
 
@@ -55,11 +50,11 @@ public class ImportFileAction extends CommonAction {
 	private String uploadFileName;
 	private Integer year;
 	private Integer month;
-	private Long regionId;
+	private Long osznId;
+	private List<Oszn> osznList;
 
-	private List<RegionName> regionNames;
-	private RegionService regionService;
-	private CountryService countryService;
+	private OsznService osznService;
+	
 	private ImportFileService importFileService;
 
 	public String execute() throws FlexPayException {
@@ -78,8 +73,8 @@ public class ImportFileAction extends CommonAction {
 					// TODO write error to page
 				}
 
-				Region region = regionService.read(regionId);
-				importFile.setRegion(region);
+				Oszn oszn = osznService.read(osznId);
+				importFile.setOszn(oszn);
 				importFile.setOriginalFileName(uploadFileName);
 				importFile.setFileType(fileType);
 				importFile.setUserName("vld"); // TODO set user name
@@ -100,13 +95,7 @@ public class ImportFileAction extends CommonAction {
 			month = cal.get(Calendar.MONTH);
 		}
 
-		CountryFilter countryFilter = new CountryFilter();
-		Page pager = new Page();
-		countryFilter = countryService.initFilter(countryFilter,
-				userPreferences.getLocale());
-		ArrayStack filtersStack = new ArrayStack();
-		filtersStack.push(countryFilter);
-		regionNames = regionService.findNames(filtersStack, pager);
+		osznList = osznService.getEntities();
 
 		return "form";
 	}
@@ -139,31 +128,27 @@ public class ImportFileAction extends CommonAction {
 		this.month = month;
 	}
 
-	public List<RegionName> getRegionNames() {
-		return regionNames;
+	public void setImportFileService(ImportFileService importFileService) {
+		this.importFileService = importFileService;
 	}
 
-	public void setRegionService(RegionService regionService) {
-		this.regionService = regionService;
+	public List<Oszn> getOsznList() {
+		return osznList;
 	}
 
-	public void setCountryService(CountryService countryService) {
-		this.countryService = countryService;
+	public Long getOsznId() {
+		return osznId;
+	}
+
+	public void setOsznId(Long osznId) {
+		this.osznId = osznId;
+	}
+
+	public void setOsznService(OsznService osznService) {
+		this.osznService = osznService;
 	}
 
 	public static Map<Integer, String> getMonths() {
 		return months;
-	}
-
-	public Long getRegionId() {
-		return regionId;
-	}
-
-	public void setRegionId(Long regionId) {
-		this.regionId = regionId;
-	}
-
-	public void setImportFileService(ImportFileService importFileService) {
-		this.importFileService = importFileService;
 	}
 }

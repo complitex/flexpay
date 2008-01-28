@@ -13,4 +13,14 @@
 		</property>
 	</bean>
 	
+	<bean id="osznDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.sz.dao.OsznDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.sz.persistence.Oszn" />
+			</bean>
+		</property>
+	</bean>
+	
 </beans>	
