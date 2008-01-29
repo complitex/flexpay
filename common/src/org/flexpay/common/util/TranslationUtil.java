@@ -34,12 +34,16 @@ public class TranslationUtil {
 		for (T translation : translations) {
 			// Check if translation language is the same as required
 			if (language.equals(translation.getLang())) {
-				log.debug("Found translation: " + translation);
+				if (log.isDebugEnabled()) {
+					log.debug("Found translation: " + translation);
+				}
 				return translation;
 			}
 			// Check if translation language is the same as default and save it for a while
 			if (defaultLang.equals(translation.getLang())) {
-				log.debug("Found default translation: " + translation);
+				if (log.isDebugEnabled()) {
+					log.debug("Found default translation: " + translation);
+				}
 				defaultTranslation = translation;
 			}
 

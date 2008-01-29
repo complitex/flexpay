@@ -49,6 +49,10 @@
 		<property name="streetNameTranslationDao" ref="streetNameTranslationDAO" />
 	</bean>
 
+	<bean id="buildingService" class="org.flexpay.ab.service.imp.BuildingServiceImpl">
+		<property name="buildingsDao" ref="buildingsDao" />
+	</bean>
+
 	<bean id="townTypeService" class="org.flexpay.ab.service.imp.TownTypeServiceImpl">
 		<property name="townTypeDao" ref="townTypeDAO" />
 		<property name="townTypeTranslationDao" ref="townTypeTranslationDao" />

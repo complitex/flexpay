@@ -1,18 +1,24 @@
 package org.flexpay.ab.service.imp;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.dao.*;
 import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		StreetNameTranslation, StreetName, StreetNameTemporal, Street, Town>
@@ -201,5 +207,48 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		street.setDistricts(districts);
 		streetDao.update(street);
 		return street;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public StreetFilter initFilter(StreetFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale)
+			throws FlexPayException {
+
+		if (parentFilter == null) {
+			parentFilter = new StreetFilter();
+		}
+
+		parentFilter.setNames(getTranslations(forefatherFilter, locale));
+
+		Collection<StreetNameTranslation> names = parentFilter.getNames();
+		if (names.isEmpty()) {
+			throw new FlexPayException("No street names", "ab.no_streets");
+		}
+		if (parentFilter.getSelectedId() == null) {
+			StreetName firstObject = (StreetName) names.iterator().next().getTranslatable();
+			parentFilter.setSelectedId(firstObject.getObject().getId());
+		}
+
+		return parentFilter;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException {
+		if (filters == null) {
+			filters = new ArrayStack();
+		}
+
+		StreetFilter parentFilter = filters.isEmpty() ? null : (StreetFilter) filters.pop();
+		filters = parentService.initFilters(filters, locale);
+		TownFilter forefatherFilter = (TownFilter) filters.peek();
+
+		// init region filter
+		parentFilter = initFilter(parentFilter, forefatherFilter, locale);
+		filters.push(parentFilter);
+
+		return filters;
 	}
 }

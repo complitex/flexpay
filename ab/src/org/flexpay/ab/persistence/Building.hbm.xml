@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.ab.persistence">
+
+	<class name="Building" table="buildings_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+
+		<many-to-one name="district" column="district_id" not-null="true"
+					 class="District" />
+		<set name="buildingses" inverse="true">
+			<key column="building_id" not-null="true" />
+			<one-to-many class="Buildings" />
+		</set>
+		<set name="buildingStatuses" inverse="true">
+			<key column="biulding_id" not-null="true" />
+			<one-to-many class="BuildingStatus" />
+		</set>
+	</class>
+
+	<class name="Buildings" table="buildingses_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+
+		<property name="status" not-null="true" />
+		<many-to-one name="street" column="street_id" not-null="true" />
+		<many-to-one name="building" column="building_id" not-null="true" />
+
+		<list name="buildingAttributes" inverse="true">
+			<key column="buildings_id" not-null="true" />
+			<list-index column="attribute_type_id" />
+			<one-to-many class="BuildingAttribute" />
+		</list>
+	</class>
+
+	<class name="BuildingAttribute" table="building_attributes_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+
+		<property name="value" not-null="true" />
+		<many-to-one name="buildingAttributeType" column="attribute_type_id"
+					 not-null="true" />
+		<many-to-one name="buildings" column="buildings_id" not-null="true" />
+	</class>
+
+	<class name="BuildingAttributeType" table="building_attribute_types_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<set name="translations" inverse="true">
+			<key column="attribute_type_id" not-null="true" />
+			<one-to-many class="BuildingAttributeTypeTranslation" />
+		</set>
+	</class>
+
+	<class name="BuildingAttributeTypeTranslation"
+		   table="building_attribute_type_translations_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" not-null="true" />
+		<property name="shortName" column="short_name" />
+		<properties name="lang_building_attribute_type_pair" unique="true">
+			<many-to-one name="translatable" column="attribute_type_id" not-null="true"
+						 class="BuildingAttributeType" />
+			<many-to-one name="lang" column="language_id" not-null="true" />
+		</properties>
+	</class>
+
+	<class name="BuildingStatus" table="building_statuses_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+
+		<property name="begin" type="date" column="begin_date" not-null="true" />
+		<property name="end" type="date" column="end_date" not-null="true" />
+		<property name="value" not-null="true" />
+
+		<many-to-one name="building" column="building_id" class="Building"
+					 not-null="true" />
+	</class>
+
+	<query name="Buildings.findBuildings.count">
+		select count(*) from Buildings o where o.status=0 and o.street.id=?
+	</query>
+
+	<query name="Buildings.findBuildings">
+		SELECT DISTINCT o
+		FROM Buildings o
+		LEFT JOIN FETCH o.street street
+		LEFT JOIN FETCH street.nameTemporals temporals
+		LEFT JOIN FETCH temporals.value streetName
+		LEFT JOIN FETCH streetName.translations nameTranslations
+		LEFT JOIN FETCH nameTranslations.lang langStreet
+		LEFT JOIN FETCH langStreet.translations
+		LEFT JOIN FETCH o.buildingAttributes attrs
+		LEFT JOIN FETCH attrs.buildingAttributeType attrType
+		LEFT JOIN FETCH attrType.translations attrTypeTr
+		LEFT JOIN FETCH attrTypeTr.lang langAttr
+		LEFT JOIN FETCH langAttr.translations
+		WHERE o.status = 0 AND temporals.invalidDate = '2100-12-31' AND street.id = ?
+	</query>
+</hibernate-mapping>

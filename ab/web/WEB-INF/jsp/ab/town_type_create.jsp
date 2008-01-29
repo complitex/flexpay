@@ -6,8 +6,8 @@
 	<form action="<c:url value='/dicts/create_town_type.action'/>" method="post">
 		<tr>
 			<td class="th">&nbsp;</td>
-			<td class="th"><spring:message code="ab.language"/></td>
-			<td class="th"><spring:message code="ab.town_type"/></td>
+			<td class="th"><s:text name="ab.language"/></td>
+			<td class="th"><s:text name="ab.town_type"/></td>
 		</tr>
 		<c:forEach items="${requestScope['town_names']}" varStatus="status" var="townName">
 			<tr valign="middle" class="cols_1">
@@ -21,8 +21,7 @@
 			<td colspan="3" height="3" bgcolor="#4a4f4f"/>
 		<tr>
 			<td colspan="3">
-				<input type="submit" class="btn-exit"
-					   value="<spring:message code="common.create"/>"/>
+				<input type="submit" class="btn-exit" value="<s:text name="common.create"/>"/>
 			</td>
 		</tr>
 	</form>

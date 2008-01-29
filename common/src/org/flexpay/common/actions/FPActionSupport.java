@@ -95,7 +95,7 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 				.getTranslation();
 	}
 
-	public Translation getTranslation(Set<Translation> translations) throws FlexPayException {
+	public <T extends Translation> T getTranslation(Set<T> translations) throws FlexPayException {
 		return TranslationUtil.getTranslation(translations, userPreferences.getLocale());
 	}
 
