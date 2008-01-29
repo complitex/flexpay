@@ -16,11 +16,11 @@
 				   var="townName">
 			<tr valign="middle" class="cols_1">
 				<td class="col_1s"><c:out value="${status.index + 1}"/></td>
-				<td class="col"><input type="checkbox" value="<c:out value="${townName.townType.id}"/>"
+				<td class="col"><input type="checkbox" value="<c:out value="${townName.translatable.id}"/>"
 						   name="<c:out value="townTypeIds"/>"></td>
 				<td class="col"><c:out value="${townName.name}"/></td>
 				<td class="col">
-					<a href="<c:url value="/dicts/edit_town_type.action?town_type_id=${townName.townType.id}"/>"><s:text
+					<a href="<c:url value="/dicts/edit_town_type.action?town_type_id=${townName.translatable.id}"/>"><s:text
 							name="common.edit_selected"/></a></td>
 			</tr>
 		</c:forEach>

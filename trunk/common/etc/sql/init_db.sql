@@ -1559,6 +1559,16 @@ INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, en
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_ivanova, @district_id_nsk_sovetskiy);
 
 INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
+SELECT @street_id_rossiiskaya:=last_insert_id();
+INSERT INTO street_names_tbl (street_id) VALUES (@street_id_rossiiskaya);
+SELECT @street_name_id:=last_insert_id();
+INSERT INTO street_name_translations_tbl (name, street_name_id, language_id)
+	VALUES ('Российская', @street_name_id, @ru_id);
+INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@street_id_rossiiskaya, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_rossiiskaya, @district_id_nsk_sovetskiy);
+
+INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
 SELECT @street_id_krasniy:=last_insert_id();
 INSERT INTO street_names_tbl (street_id) VALUES (@street_id_krasniy);
 SELECT @street_name_id:=last_insert_id();
@@ -1599,3 +1609,641 @@ INSERT INTO person_identities_tbl (begin_date, end_date, birth_date, serial_numb
 	VALUES ('2004-10-22', '2009-10-22', '1983-01-25', 60,
 	123123123, 'Mikhail', '', 'Fedko', 'ГУВД 316',
 	0, @identity_type_foreign_passport_id, @person_id);
+
+-- Buildings attribute types
+INSERT INTO building_attribute_types_tbl () VALUES ();
+SELECT @attr_type_home_number_id:=last_insert_id();
+INSERT INTO building_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
+	VALUES ('Номер дома', 'д', @attr_type_home_number_id, @ru_id);
+INSERT INTO building_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
+	VALUES ('Home number', '', @attr_type_home_number_id, @en_id);
+
+INSERT INTO building_attribute_types_tbl () VALUES ();
+SELECT @attr_type_bulk_id:=last_insert_id();
+INSERT INTO building_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
+	VALUES ('Корпус', 'к', @attr_type_bulk_id, @ru_id);
+INSERT INTO building_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
+	VALUES ('Bulk', '', @attr_type_bulk_id, @en_id);
+
+-- Buildings
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('2', @attr_type_home_number_id, @buildings_id);
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('3', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('4', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('4а', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('4б', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('5', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('6', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('7', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('8', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('9', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('10', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('11', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('11а', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('13', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('14', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('14а', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('15', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('16', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('17', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('18', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('20', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('22', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('24', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('26', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('26а', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('27', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('27а', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('28', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('28а', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('29', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('30', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('30а', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('31', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('31', @attr_type_home_number_id, @buildings_id);
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('2', @attr_type_bulk_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('31', @attr_type_home_number_id, @buildings_id);
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('5', @attr_type_bulk_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('31/3', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('31/4', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('31/5', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('32', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('32а', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('33', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('33а', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('33б', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('34', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('35', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('35а', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('36', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('37', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('38', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('39', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('40', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('41', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('42', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('43', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('43', @attr_type_home_number_id, @buildings_id);
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('2', @attr_type_bulk_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('44', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('45', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('47', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('49', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('49а', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_ivanova, @building_id);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('53', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_rossiiskaya, @district_id_nsk_sovetskiy);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('13', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_rossiiskaya, @district_id_nsk_sovetskiy);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('13а', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_rossiiskaya, @district_id_nsk_sovetskiy);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('14', @attr_type_home_number_id, @buildings_id);
+
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_rossiiskaya, @district_id_nsk_sovetskiy);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('15', @attr_type_home_number_id, @buildings_id);
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_rossiiskaya, @district_id_nsk_sovetskiy);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('16', @attr_type_home_number_id, @buildings_id);
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_rossiiskaya, @district_id_nsk_sovetskiy);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('17', @attr_type_home_number_id, @buildings_id);
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_rossiiskaya, @district_id_nsk_sovetskiy);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('18', @attr_type_home_number_id, @buildings_id);
+
+INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @building_id:=last_insert_id();
+INSERT INTO buildingses_tbl (status, street_id, building_id)
+	VALUES (0, @street_id_rossiiskaya, @district_id_nsk_sovetskiy);
+SELECT @buildings_id:=last_insert_id();
+INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
+	VALUES ('19', @attr_type_home_number_id, @buildings_id);
+

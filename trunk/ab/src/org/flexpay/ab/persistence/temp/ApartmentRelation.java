@@ -121,7 +121,7 @@ public class ApartmentRelation implements java.io.Serializable {
 		this.end = end;
 	}
 
-	@ManyToMany (fetch = FetchType.LAZY, mappedBy = "apartmentRelations" )
+	@ManyToMany (fetch = FetchType.LAZY, mappedBy = "apartmentRelations")
 	public Set<Act> getActs() {
 		return this.acts;
 	}

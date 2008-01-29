@@ -81,7 +81,6 @@
 	</package>
 
 	<package name="towns" namespace="/dicts" extends="common">
-
 		<action name="list_towns" class="listTownsAction">
 			<result type="tiles">ab.towns.list</result>
 		</action>
@@ -112,11 +111,9 @@
 		<action name="delete_towns" class="deleteTownsAction">
 			<result type="redirect">list_towns.action</result>
 		</action>
-
 	</package>
 
 	<package name="town_types" namespace="/dicts" extends="common">
-
 		<action name="list_town_types" class="listTownTypesAction">
 			<result type="tiles">ab.town_types.list</result>
 		</action>
@@ -134,11 +131,9 @@
 		<action name="delete_town_types" class="deleteTownTypesAction">
 			<result type="redirect">list_town_types.action</result>
 		</action>
-
 	</package>
 
 	<package name="districts" namespace="/dicts" extends="common">
-
 		<action name="list_districts" class="listDistrictsAction">
 			<result type="tiles">ab.districts.list</result>
 		</action>
@@ -169,11 +164,9 @@
 		<action name="delete_districts" class="deleteDistrictsAction">
 			<result type="redirect">list_districts.action</result>
 		</action>
-
 	</package>
 
 	<package name="streets" namespace="/dicts" extends="common">
-
 		<action name="list_streets" class="listStreetsAction">
 			<result type="tiles">ab.streets.list</result>
 		</action>
@@ -213,7 +206,6 @@
 				<param name="object.id">${street.id}</param>
 			</result>
 		</action>
-
 	</package>
 
 	<package name="street_types" namespace="/dicts" extends="common">
@@ -264,4 +256,11 @@
 			<result type="tiles">ab.person.view</result>
 		</action>
 	</package>
+
+	<package name="buildings" namespace="/dicts" extends="common">
+		<action name="list_buildings" class="listBuildings">
+			<result type="tiles">ab.building.list</result>
+		</action>
+	</package>
+
 </struts>

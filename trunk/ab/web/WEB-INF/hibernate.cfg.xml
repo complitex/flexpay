@@ -25,6 +25,9 @@
 		<!-- Town districts -->
 		<mapping resource="org/flexpay/ab/persistence/Street.hbm.xml" />
 
+		<!-- Buildings -->
+		<mapping resource="org/flexpay/ab/persistence/Building.hbm.xml" />
+
 		<!-- Street types -->
 		<mapping resource="org/flexpay/ab/persistence/StreetType.hbm.xml" />
 
