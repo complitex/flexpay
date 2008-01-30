@@ -12,4 +12,5 @@
 	</languages>
 	<dataRoot>c://flexpay_data_root</dataRoot>
 	<szDataRoot>/sz</szDataRoot> <!-- задаётся относительно dataRoot -->
+	<szDefaultDbfFileEncoding>Cp866</szDefaultDbfFileEncoding>
 </flexpay>
