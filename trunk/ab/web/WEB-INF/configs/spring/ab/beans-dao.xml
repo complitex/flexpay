@@ -251,7 +251,7 @@
 		</property>
 	</bean>
 
-	<!-- -->
+	<!-- Buildings -->
 	<bean id="buildingDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.BuildingDao" />
@@ -310,6 +310,27 @@
 			<bean parent="abstractDaoTarget">
 				<constructor-arg
 						value="org.flexpay.ab.persistence.BuildingAttributeTypeTranslation" />
+			</bean>
+		</property>
+	</bean>
+
+	<!-- Apartments -->
+	<bean id="apartmentDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.ApartmentDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.Apartment" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="apartmentNumberDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.ApartmentNumberDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.ApartmentNumber" />
 			</bean>
 		</property>
 	</bean>

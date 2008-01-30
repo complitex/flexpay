@@ -37,7 +37,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	private RegionDao regionDao;
 	private TownTypeTemporalDao townTypeTemporalDao;
 
-	private ParentService<RegionNameTranslation, RegionFilter> parentService;
+	private ParentService<RegionFilter> parentService;
 	private TownTypeService townTypeService;
 
 	/**
@@ -90,7 +90,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @param parentService Value to set for property 'parentService'.
 	 */
-	public void setParentService(ParentService<RegionNameTranslation, RegionFilter> parentService) {
+	public void setParentService(ParentService<RegionFilter> parentService) {
 		this.parentService = parentService;
 	}
 

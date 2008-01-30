@@ -25,6 +25,9 @@
 				<a href="<s:url namespace="/dicts" action='list_buildings' includeParams="none"/>"><s:text
 						name="menu34.dictionaries.buildings"/></a></li>
 			<li>
+				<a href="<s:url namespace="/dicts" action='list_apartments' includeParams="none"/>"><s:text
+						name="menu34.dictionaries.apartments"/></a></li>
+			<li>
 				<a href="<s:url namespace="/dicts" action='list_town_types' includeParams="none" />"><s:text
 						name="menu34.dictionaries.town_types"/></a></li>
 			<li>

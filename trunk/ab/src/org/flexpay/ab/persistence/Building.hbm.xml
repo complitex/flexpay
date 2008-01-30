@@ -20,6 +20,10 @@
 			<key column="biulding_id" not-null="true" />
 			<one-to-many class="BuildingStatus" />
 		</set>
+		<set name="apartments" inverse="true">
+			<key column="building_id" not-null="true" />
+			<one-to-many class="Apartment" />
+		</set>
 	</class>
 
 	<class name="Buildings" table="buildingses_tbl">

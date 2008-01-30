@@ -10,6 +10,7 @@
 			<generator class="native" />
 		</id>
 		<property name="status" not-null="true"/>
+		<many-to-one name="apartment" class="Apartment" column="apartment_id" />
 		<set name="personAttributes" inverse="true">
 			<key column="person_id" not-null="true" />
 			<one-to-many class="PersonAttribute" />

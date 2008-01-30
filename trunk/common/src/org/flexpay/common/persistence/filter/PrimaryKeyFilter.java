@@ -2,50 +2,27 @@ package org.flexpay.common.persistence.filter;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.persistence.Translation;
 
-import java.util.Collection;
-import java.util.Collections;
-
-public class PrimaryKeyFilter<T extends Translation> {
+public class PrimaryKeyFilter {
 
 	private Long selectedId;
-	private Collection<T> translations = Collections.emptyList();
 
 	/**
-	 * Getter for property 'selectedCountryId'.
+	 * Getter for property 'selectedId'.
 	 *
-	 * @return Value for property 'selectedCountryId'.
+	 * @return Value for property 'selectedId'.
 	 */
 	public Long getSelectedId() {
 		return selectedId;
 	}
 
 	/**
-	 * Setter for property 'selectedCountryId'.
+	 * Setter for property 'selectedId'.
 	 *
-	 * @param selectedId Value to set for property 'selectedCountryId'.
+	 * @param selectedId Value to set for property 'selectedId'.
 	 */
 	public void setSelectedId(Long selectedId) {
 		this.selectedId = selectedId;
-	}
-
-	/**
-	 * Getter for property 'countryNames'.
-	 *
-	 * @return Value for property 'countryNames'.
-	 */
-	public Collection<T> getNames() {
-		return translations;
-	}
-
-	/**
-	 * Setter for property 'countryNames'.
-	 *
-	 * @param names Value to set for property 'countryNames'.
-	 */
-	public void setNames(Collection<T> names) {
-		this.translations = names;
 	}
 
 	/**

@@ -263,4 +263,10 @@
 		</action>
 	</package>
 
+	<package name="apartments" namespace="/dicts" extends="common">
+		<action name="list_apartments" class="listApartments">
+			<result type="tiles">ab.apartment.list</result>
+		</action>
+	</package>
+
 </struts>
