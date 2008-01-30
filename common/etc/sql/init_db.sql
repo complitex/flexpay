@@ -3834,4 +3834,38 @@ INSERT INTO apartments_tbl (status, building_id) VALUES (0, @building_ivanova_27
 SELECT @apartment_id:=last_insert_id();
 INSERT INTO apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	VALUES ('1900-01-01', '2100-12-31', '330', @apartment_id);
+	
+-- Sz file types
+INSERT INTO sz_file_types_tbl (file_mask, description)
+	VALUES ('(t|T)(a|A)(R|R)(i|I)(f|F)\u002E(d|D)(b|B)(f|F)', 'sz.file_type.tarif');
+INSERT INTO sz_file_types_tbl (file_mask, description)
+	VALUES ('\d{8}\u002E(a|A)\d{2}', 'sz.file_type.characteristics');
+INSERT INTO sz_file_types_tbl (file_mask, description)
+	VALUES ('\d{8}\u002E(b|B)\d{2}', 'sz.file_type.srv_types');
+INSERT INTO sz_file_types_tbl (file_mask, description)
+	VALUES ('\d{8}\u002E(e|E)\d{2}', 'sz.file_type.form2');
+INSERT INTO sz_file_types_tbl (file_mask, description)
+	VALUES ('\d{8}\u002E(c|C)\d{2}', 'sz.file_type.characteristics_response');
+INSERT INTO sz_file_types_tbl (file_mask, description)
+	VALUES ('\d{8}\u002E(d|D)\d{2}', 'sz.file_type.srv_types_response');
+
+-- Sz file status
+INSERT INTO sz_file_status_tbl (id, description)
+	VALUES (1, 'sz.file_status.imported');
+INSERT INTO sz_file_status_tbl (description)
+	VALUES (2, 'sz.file_status.marked_for_processing');
+INSERT INTO sz_file_status_tbl (description)
+	VALUES (3, 'sz.file_status.processing');
+INSERT INTO sz_file_status_tbl (description)
+	VALUES (4, 'sz.file_status.processed');
+INSERT INTO sz_file_status_tbl (description)
+	VALUES (5, 'sz.file_status.processed_with_warnings');
+INSERT INTO sz_file_status_tbl (description)
+	VALUES (6, 'sz.file_status.marked_as_deleted');
+
+-- Sz file actuality status
+INSERT INTO sz_file_actuality_status_tbl (id, description)
+	VALUES (1, 'sz.file_actuality_status.not_actualy');
+INSERT INTO sz_file_actuality_status_tbl (id, description)
+	VALUES (2, 'sz.file_actuality_status.actualy');	
 

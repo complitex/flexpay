@@ -22,6 +22,8 @@ public class ApplicationConfig {
 
 	private File dataRoot;
 	private File szDataRoot;
+	
+	private String szDefaultDbfFileEncoding;
 
 	public Date getPastInfinite() {
 		return DATE_PAST_INFINITE;
@@ -125,5 +127,15 @@ public class ApplicationConfig {
 			this.szDataRoot.mkdirs();
 		}
 	}
+
+	public String getSzDefaultDbfFileEncoding() {
+		return szDefaultDbfFileEncoding;
+	}
+
+	public void setSzDefaultDbfFileEncoding(String szDefaultDbfFileEncoding) {
+		this.szDefaultDbfFileEncoding = szDefaultDbfFileEncoding;
+	}
+
+	
 
 }
