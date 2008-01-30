@@ -41,8 +41,16 @@
 	</class>
 
 	<query name="TownType.listTownTypes">
-		from TownType t
-		where t.status = ?
+		from TownType t where t.status = ?
 	</query>
+
+	<query name="TownType.readFull">
+		from TownType t
+		LEFT JOIN FETCH t.translations tr
+		LEFT JOIN FETCH tr.lang l
+		LEFT JOIN FETCH l.translations
+		WHERE t.id = ?
+	</query>
+
 
 </hibernate-mapping>

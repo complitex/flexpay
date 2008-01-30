@@ -19,20 +19,21 @@ public class TownTypeCreate extends FPActionSupport implements ServletRequestAwa
 	private HttpServletRequest request;
 	private TownTypeService townTypeService;
 
+	private Collection<TownTypeTranslation> townNames;
+
 	public String execute() throws Exception {
-		Collection<TownTypeTranslation> townTypeTranslations = initTypeTranslations();
+		townNames = initTypeTranslations();
 
 		// Need to create new TownType
 		if (isPost()) {
 			try {
-				townTypeService.create(townTypeTranslations);
+				townTypeService.create(townNames);
 				return ActionSupport.SUCCESS;
 			} catch (FlexPayException e) {
 				addActionError(e);
 			}
 		}
 
-		request.setAttribute("town_names", townTypeTranslations);
 		return ActionSupport.INPUT;
 	}
 
@@ -72,5 +73,14 @@ public class TownTypeCreate extends FPActionSupport implements ServletRequestAwa
 	 */
 	public void setTownTypeService(TownTypeService townTypeService) {
 		this.townTypeService = townTypeService;
+	}
+
+	/**
+	 * Getter for property 'townNames'.
+	 *
+	 * @return Value for property 'townNames'.
+	 */
+	public Collection<TownTypeTranslation> getTownNames() {
+		return townNames;
 	}
 }

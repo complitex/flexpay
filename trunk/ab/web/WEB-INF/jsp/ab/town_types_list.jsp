@@ -20,7 +20,7 @@
 						   name="<c:out value="townTypeIds"/>"></td>
 				<td class="col"><c:out value="${townName.name}"/></td>
 				<td class="col">
-					<a href="<c:url value="/dicts/edit_town_type.action?town_type_id=${townName.translatable.id}"/>"><s:text
+					<a href="<c:url value="/dicts/edit_town_type.action?townTypeId=${townName.translatable.id}"/>"><s:text
 							name="common.edit_selected"/></a></td>
 			</tr>
 		</c:forEach>

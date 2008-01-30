@@ -22,8 +22,7 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
-public class IdentityTypeServiceImpl implements
-		IdentityTypeService {
+public class IdentityTypeServiceImpl implements IdentityTypeService {
 
 	private static Logger log = Logger.getLogger(IdentityTypeServiceImpl.class);
 
@@ -145,7 +144,7 @@ public class IdentityTypeServiceImpl implements
 	 * @return IdentityType object, or <code>null</code> if object not found
 	 */
 	public IdentityType read(Long id) {
-		return identityTypeDao.read(id);
+		return identityTypeDao.readFull(id);
 	}
 
 	/**

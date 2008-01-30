@@ -28,17 +28,17 @@
 	    <s:checkbox name="idList" fieldValue="%{streetType.id}" />
 	  </td>
 	  <td class="col">
-	    <a href="<s:url action='street_type_view'><s:param name="id" value="%{streetType.id}"/></s:url>">
+	    <a href="<s:url action='street_type_view'><s:param name="id" value="%{translatable.id}"/></s:url>">
 	      <s:property value="name"/>
 	    </a>
 	  </td>
 	  <td class="col">
-	    <a href="<s:url action='street_type_edit'><s:param name="id" value="%{streetType.id}"/></s:url>">
+	    <a href="<s:url action='street_type_edit'><s:param name="id" value="%{translatable.id}"/></s:url>">
 	      <s:text name="ab.edit" />
 	    </a>
 	  </td>
 	  <td class="col">
-	    <a href="<s:url action='street_type_delete'><s:param name="idList" value="%{streetType.id}"/></s:url>">
+	    <a href="<s:url action='street_type_delete'><s:param name="idList" value="%{translatable.id}"/></s:url>">
 	      <s:text name="ab.delete" />
 	    </a>
 	  </td>
