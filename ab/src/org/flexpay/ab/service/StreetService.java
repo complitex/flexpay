@@ -12,7 +12,7 @@ import java.util.Set;
 
 public interface StreetService extends NameTimeDependentService<
 		StreetName, StreetNameTemporal, Street, StreetNameTranslation>,
-		ParentService<StreetNameTranslation, StreetFilter> {
+		ParentService<StreetFilter> {
 
 	/**
 	 * Save street districts

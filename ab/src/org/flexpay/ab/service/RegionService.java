@@ -9,7 +9,7 @@ import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.service.ParentService;
 
 public interface RegionService extends
-		ParentService<RegionNameTranslation, RegionFilter>,
+		ParentService<RegionFilter>,
 		NameTimeDependentService<RegionName, RegionNameTemporal, Region, RegionNameTranslation> {
 
 }

@@ -148,6 +148,13 @@
 		<property name="parentService" ref="streetService" />
 	</bean>
 
+	<!-- Apartments -->
+	<bean id="listApartments" scope="prototype"
+		  class="org.flexpay.ab.actions.apartment.ListApartments">
+		<property name="apartmentService" ref="apartmentService" />
+		<property name="parentService" ref="buildingService" />
+	</bean>
+
 	<!-- Town types -->
 	<bean id="listTownTypesAction" class="org.flexpay.ab.actions.town.TownTypesList"
 		  scope="prototype">

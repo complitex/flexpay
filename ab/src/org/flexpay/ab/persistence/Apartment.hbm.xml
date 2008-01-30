@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.ab.persistence">
+
+	<class name="Apartment" table="apartments_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status" not-null="true" />
+		<many-to-one name="building" class="Building" column="building_id"
+					 not-null="true" />
+
+		<set name="persons" inverse="true">
+			<key column="apartment_id" />
+			<one-to-many class="Person" />
+		</set>
+		<set name="apartmentNumbers" inverse="true">
+			<key column="apartment_id" not-null="true" />
+			<one-to-many class="ApartmentNumber" />
+		</set>
+	</class>
+
+	<class name="ApartmentNumber" table="apartment_numbers_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="begin" not-null="true" type="date" column="begin_date" />
+		<property name="end" not-null="true" type="date" column="end_date" />
+		<property name="value" not-null="true" />
+		<many-to-one name="apartment" class="Apartment" column="apartment_id" />
+	</class>
+
+	<query name="Apartment.findObjects">
+		FROM Apartment o
+			LEFT JOIN FETCH o.apartmentNumbers n
+		WHERE o.status=0 and o.building.id=?
+	</query>
+
+	<query name="Apartment.findObjects.count">
+		SELECT count(*) FROM Apartment o WHERE o.status=0 and o.building.id=?
+	</query>
+
+</hibernate-mapping>

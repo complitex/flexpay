@@ -9,7 +9,7 @@ import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.service.ParentService;
 
 public interface TownService extends
-		ParentService<TownNameTranslation, TownFilter>,
+		ParentService<TownFilter>,
 		NameTimeDependentService<TownName, TownNameTemporal, Town, TownNameTranslation> {
 
 }

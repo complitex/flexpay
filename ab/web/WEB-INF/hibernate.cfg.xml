@@ -28,6 +28,9 @@
 		<!-- Buildings -->
 		<mapping resource="org/flexpay/ab/persistence/Building.hbm.xml" />
 
+		<!-- Apartments -->
+		<mapping resource="org/flexpay/ab/persistence/Apartment.hbm.xml" />
+
 		<!-- Street types -->
 		<mapping resource="org/flexpay/ab/persistence/StreetType.hbm.xml" />
 

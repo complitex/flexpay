@@ -33,7 +33,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	private RegionNameTranslationDao regionNameTranslationDao;
 	private CountryDao countryDao;
 
-	private ParentService<CountryNameTranslation, CountryFilter> parentService;
+	private ParentService<CountryFilter> parentService;
 	private TownTypeService townTypeService;
 
 	/**
@@ -60,7 +60,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @param parentService Value to set for property 'parentService'.
 	 */
-	public void setParentService(ParentService<CountryNameTranslation, CountryFilter> parentService) {
+	public void setParentService(ParentService<CountryFilter> parentService) {
 		this.parentService = parentService;
 	}
 

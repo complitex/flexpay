@@ -10,7 +10,7 @@ import java.util.Locale;
 /**
  * Service for parents of objects with time-dependent names
  */
-public interface ParentService<T extends Translation, PKF extends PrimaryKeyFilter<T>> {
+public interface ParentService<PKF extends PrimaryKeyFilter> {
 
 	/**
 	 * Initialize parent filter. Possibly taking in account upper level forefather filter

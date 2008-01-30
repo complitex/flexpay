@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		StreetNameTranslation, StreetName, StreetNameTemporal, Street, Town>
 		implements StreetService {
@@ -30,7 +31,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	private StreetNameTranslationDao streetNameTranslationDao;
 	private TownDao townDao;
 
-	private ParentService<TownNameTranslation, TownFilter> parentService;
+	private ParentService<TownFilter> parentService;
 
 
 	/**
@@ -83,7 +84,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @param parentService Value to set for property 'parentService'.
 	 */
-	public void setParentService(ParentService<TownNameTranslation, TownFilter> parentService) {
+	public void setParentService(ParentService<TownFilter> parentService) {
 		this.parentService = parentService;
 	}
 
@@ -245,7 +246,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		filters = parentService.initFilters(filters, locale);
 		TownFilter forefatherFilter = (TownFilter) filters.peek();
 
-		// init region filter
+		// init filter
 		parentFilter = initFilter(parentFilter, forefatherFilter, locale);
 		filters.push(parentFilter);
 

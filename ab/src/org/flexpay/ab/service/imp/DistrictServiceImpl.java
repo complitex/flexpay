@@ -9,7 +9,9 @@ import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 		DistrictNameTranslation, DistrictName, DistrictNameTemporal, District, Town>
 		implements DistrictService {
@@ -20,7 +22,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 	private DistrictNameTranslationDao districtNameTranslationDao;
 	private TownDao townDao;
 
-	private ParentService<TownNameTranslation, TownFilter> parentService;
+	private ParentService<TownFilter> parentService;
 
 	/**
 	 * Setter for property 'districtDao'.
@@ -117,7 +119,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @param parentService Value to set for property 'parentService'.
 	 */
-	public void setParentService(ParentService<TownNameTranslation, TownFilter> parentService) {
+	public void setParentService(ParentService<TownFilter> parentService) {
 		this.parentService = parentService;
 	}
 

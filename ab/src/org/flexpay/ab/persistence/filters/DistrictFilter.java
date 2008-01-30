@@ -1,7 +1,7 @@
 package org.flexpay.ab.persistence.filters;
 
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.ab.persistence.DistrictNameTranslation;
+import org.flexpay.common.persistence.filter.NameFilter;
 
-public class DistrictFilter extends PrimaryKeyFilter<DistrictNameTranslation> {
+public class DistrictFilter extends NameFilter<DistrictNameTranslation> {
 }

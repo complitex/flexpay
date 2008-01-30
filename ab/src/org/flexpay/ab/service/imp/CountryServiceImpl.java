@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-@Transactional (readOnly = true)
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class CountryServiceImpl implements CountryService {
 
 	private static Logger log = Logger.getLogger(CountryServiceImpl.class);
@@ -135,8 +135,7 @@ public class CountryServiceImpl implements CountryService {
 	 * @return Initialised filters collection
 	 * @throws FlexPayException if failure occurs
 	 */
-	public ArrayStack initFilters(ArrayStack filters, Locale locale)
-			throws FlexPayException {
+	public ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException {
 		if (filters == null) {
 			filters = new ArrayStack();
 		}
@@ -157,7 +156,8 @@ public class CountryServiceImpl implements CountryService {
 	 * @return Initialised filter
 	 * @throws FlexPayException if failure occurs
 	 */
-	public CountryFilter initFilter(CountryFilter parentFilter, PrimaryKeyFilter foreFatherFilter, Locale locale) throws FlexPayException {
+	public CountryFilter initFilter(CountryFilter parentFilter, PrimaryKeyFilter foreFatherFilter, Locale locale)
+			throws FlexPayException {
 		return initFilter(parentFilter, locale);
 	}
 

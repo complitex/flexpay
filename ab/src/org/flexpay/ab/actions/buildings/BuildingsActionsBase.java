@@ -1,10 +1,9 @@
 package org.flexpay.ab.actions.buildings;
 
+import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.BuildingAttribute;
 import org.flexpay.ab.persistence.BuildingAttributeTypeTranslation;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayException;
-import org.apache.log4j.Logger;
 
 import java.util.Collection;
 
@@ -15,7 +14,7 @@ public abstract class BuildingsActionsBase extends FPActionSupport {
 	public String getBuildingNumber(Collection<BuildingAttribute> attributes) {
 
 		try {
-			log.info("Getting building number");
+			log.debug("Getting building number");
 
 			StringBuilder number = new StringBuilder();
 			for (BuildingAttribute attribute : attributes) {
@@ -33,8 +32,8 @@ public abstract class BuildingsActionsBase extends FPActionSupport {
 				number.append(attribute.getValue()).append(' ');
 			}
 
-			if (log.isInfoEnabled()) {
-				log.info("Building: " + number);
+			if (log.isDebugEnabled()) {
+				log.debug("Building: " + number);
 			}
 
 			return number.toString().trim();

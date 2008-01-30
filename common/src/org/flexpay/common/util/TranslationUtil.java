@@ -47,8 +47,8 @@ public class TranslationUtil {
 				defaultTranslation = translation;
 			}
 
-			if (log.isInfoEnabled()) {
-				log.info("Translation is invalid: " + translation);
+			if (log.isDebugEnabled()) {
+				log.debug("Translation is invalid: " + translation);
 			}
 		}
 

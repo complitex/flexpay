@@ -9,7 +9,7 @@ import org.flexpay.common.service.ParentService;
 import java.util.List;
 import java.util.Locale;
 
-public interface CountryService extends ParentService<CountryNameTranslation, CountryFilter> {
+public interface CountryService extends ParentService<CountryFilter> {
 
 	/**
 	 * Create country
@@ -35,7 +35,7 @@ public interface CountryService extends ParentService<CountryNameTranslation, Co
 	 * @param countryFilter Filter to init
 	 * @param locale Locale to get countries names in
 	 * @return Updated filter
-	 * @throws FlexPayException iflanguage configuration is invalid
+	 * @throws FlexPayException if language configuration is invalid
 	 */
 	CountryFilter initFilter(CountryFilter countryFilter, Locale locale)
 			throws FlexPayException;
