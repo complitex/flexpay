@@ -1,4 +1,4 @@
-package org.flexpay.ab.persistence.temp;
+package org.flexpay.bti.persistence;
 
 import javax.persistence.*;
 import java.io.Serializable;

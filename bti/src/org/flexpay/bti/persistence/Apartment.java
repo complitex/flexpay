@@ -1,8 +1,7 @@
-package org.flexpay.ab.persistence;
+package org.flexpay.bti.persistence;
 
-import org.flexpay.ab.persistence.temp.ApartmentAttribute;
-import org.flexpay.ab.persistence.temp.ApartmentRelation;
-import org.flexpay.ab.persistence.temp.Rooms;
+import org.flexpay.ab.persistence.ApartmentNumber;
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 
 import java.util.Collections;
