@@ -1,6 +1,8 @@
-package org.flexpay.ab.persistence;
+package org.flexpay.bti.persistence;
 
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.ab.persistence.PersonAttribute;
+import org.flexpay.ab.persistence.PersonIdentity;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -11,9 +13,11 @@ import java.util.Set;
  */
 public class Person extends DomainObjectWithStatus {
 
-	private Apartment apartment;
+	     private Apartment apartment;
+	     private Set<Personact> personacts = new HashSet<Personact>(0);
 	private Set<PersonAttribute> personAttributes = new HashSet<PersonAttribute>(0);
 	private Set<PersonIdentity> personIdentities = Collections.emptySet();
+     private Set<ApartmentRelation> apartmentRelations = new HashSet<ApartmentRelation>(0);
 
 	/**
 	 * Constructs a new Person.
@@ -55,24 +59,6 @@ public class Person extends DomainObjectWithStatus {
 	 */
 	public void setPersonIdentities(Set<PersonIdentity> personIdentities) {
 		this.personIdentities = personIdentities;
-	}
-
-	/**
-	 * Getter for property 'apartment'.
-	 *
-	 * @return Value for property 'apartment'.
-	 */
-	public Apartment getApartment() {
-		return apartment;
-	}
-
-	/**
-	 * Setter for property 'apartment'.
-	 *
-	 * @param apartment Value to set for property 'apartment'.
-	 */
-	public void setApartment(Apartment apartment) {
-		this.apartment = apartment;
 	}
 
 	/**

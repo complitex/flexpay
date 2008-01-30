@@ -1,6 +1,5 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.ab.persistence.temp.Apartment;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 
 import java.util.Collections;
