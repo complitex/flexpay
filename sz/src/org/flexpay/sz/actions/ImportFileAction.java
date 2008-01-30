@@ -12,10 +12,14 @@ import org.apache.commons.io.FileUtils;
 import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.sz.persistence.ImportFile;
+import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.persistence.Oszn;
-import org.flexpay.sz.service.ImportFileService;
+import org.flexpay.sz.persistence.SzFileType;
+import org.flexpay.sz.service.SzFileService;
 import org.flexpay.sz.service.OsznService;
+import org.flexpay.sz.service.SzFileActualityStatusService;
+import org.flexpay.sz.service.SzFileStatusService;
+import org.flexpay.sz.service.SzFileTypeService;
 
 public class ImportFileAction extends CommonAction {
 
@@ -54,18 +58,21 @@ public class ImportFileAction extends CommonAction {
 	private List<Oszn> osznList;
 
 	private OsznService osznService;
-	
-	private ImportFileService importFileService;
+	private SzFileService szFileService;
+	private SzFileTypeService szFileTypeService;
+	private SzFileStatusService szFileStatusService;
+	private SzFileActualityStatusService szFileActualityStatusService;
 
 	public String execute() throws FlexPayException {
 		if (isSubmitted()) {
-			String fileType = ImportFile.getFileType(uploadFileName);
-			if (fileType != null) {
-				ImportFile importFile = new ImportFile();
-				importFile.setRequestFileName(ImportFile.getRandomString());
-				importFile.setFileYear(year);
-				importFile.setFileMonth(month);
-				File file = importFile.getFile(ApplicationConfig.getInstance()
+			SzFileType szFileType = szFileTypeService
+					.getByFileName(uploadFileName);
+			if (szFileType != null) {
+				SzFile szFile = new SzFile();
+				szFile.setInternalRequestFileName(SzFile.getRandomString());
+				szFile.setFileYear(year);
+				szFile.setFileMonth(month);
+				File file = szFile.getFile(ApplicationConfig.getInstance()
 						.getSzDataRoot());
 				try {
 					FileUtils.copyFile(upload, file);
@@ -74,19 +81,23 @@ public class ImportFileAction extends CommonAction {
 				}
 
 				Oszn oszn = osznService.read(osznId);
-				importFile.setOszn(oszn);
-				importFile.setOriginalFileName(uploadFileName);
-				importFile.setFileType(fileType);
-				importFile.setUserName("vld"); // TODO set user name
-				importFile.setImportDate(new Date());
-				importFile.setFileStatus(ImportFile.IMPORTED_FILE_STATUS);
-				importFile.setFileValidation(ImportFile.VALID_FILE_VALIDATION);
+				szFile.setOszn(oszn);
+				szFile.setRequestFileName(uploadFileName);
+				szFile.setSzFileType(szFileType);
+				szFile.setUserName("vld"); // TODO set user name
+				szFile.setImportDate(new Date());
+				szFile.setSzFileStatus(szFileStatusService
+						.read(SzFileStatusService.IMPORTED));
+				szFile.setSzFileActualityStatus(szFileActualityStatusService
+						.read(SzFileActualityStatusService.ACTUALY));
 				try {
-					importFileService.create(importFile);
+					szFileService.create(szFile);
 				} catch (FlexPayException e) {
 					file.delete();
 					// TODO write error to page
 				}
+			} else {
+				// TODO write message - wrong file name
 			}
 		} else {
 			Calendar cal = Calendar.getInstance();
@@ -128,10 +139,6 @@ public class ImportFileAction extends CommonAction {
 		this.month = month;
 	}
 
-	public void setImportFileService(ImportFileService importFileService) {
-		this.importFileService = importFileService;
-	}
-
 	public List<Oszn> getOsznList() {
 		return osznList;
 	}
@@ -150,5 +157,22 @@ public class ImportFileAction extends CommonAction {
 
 	public static Map<Integer, String> getMonths() {
 		return months;
+	}
+
+	public void setSzFileTypeService(SzFileTypeService szFileTypeService) {
+		this.szFileTypeService = szFileTypeService;
+	}
+
+	public void setSzFileStatusService(SzFileStatusService szFileStatusService) {
+		this.szFileStatusService = szFileStatusService;
+	}
+
+	public void setSzFileActualityStatusService(
+			SzFileActualityStatusService szFileActualityStatusService) {
+		this.szFileActualityStatusService = szFileActualityStatusService;
+	}
+
+	public void setSzFileService(SzFileService szFileService) {
+		this.szFileService = szFileService;
 	}
 }

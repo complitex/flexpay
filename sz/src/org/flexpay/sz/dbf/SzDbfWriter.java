@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
-
 import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFWriter;
@@ -69,7 +68,7 @@ public class SzDbfWriter<E, I extends DBFInfo<E>> {
 			OutputStream os = new FileOutputStream(file);
 			try {
 				writer.write(os);
-			} catch (DBFException e) {
+			} finally {
 				try {
 					os.close();
 				} catch (IOException ioe) {

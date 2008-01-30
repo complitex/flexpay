@@ -26,6 +26,10 @@
         <action name="importFileList" class="importFileListAction">
             <result name="success" type="tiles">sz.import_file.list</result>
         </action>
+        
+        <action name="loadSzFileToDb" class="loadSzFileToDbAction">
+            <result name="success" type="tiles">sz.import_file.list</result>
+        </action>
 
 	</package>
 	

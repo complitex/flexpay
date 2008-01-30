@@ -27,6 +27,16 @@
 	<td class="th">
 	  <s:text name="sz.user_name" />
 	</td>
+	<td class="th">
+	  status(debug info)
+	</td>
+	<td class="th">
+	  actuality status(debug info)
+	</td>
+	<td class="th">
+	  action
+	</td>
+	
   </tr>
   <s:iterator value="importFileList" status="rowstatus">
     <tr valign="middle" class="cols_1">
@@ -37,22 +47,33 @@
 	    <s:property value="oszn.description"/>
 	  </td>
 	  <td class="col">
-	    <s:property value="originalFileName"/>
+	    <s:property value="requestFileName"/>
 	  </td>
 	  <td class="col">
-	    <s:property value="fileType"/>
+	    <s:text name="%{szFileType.description}"/>
 	  </td>
 	  <td class="col">
 	    <s:property value="fileYear"/>
 	  </td>
 	  <td class="col">
-	    <s:property value="fileMonth"/>
+	    <s:property value="fileMonth + 1"/>
 	  </td>
 	  <td class="col">
 	    <s:property value="importDate"/>
 	  </td>
 	  <td class="col">
 	    <s:property value="userName"/>
+	  </td>
+	  <td class="col">
+	    <s:text name="%{szFileStatus.description}"/>
+	  </td>
+	  <td class="col">
+	    <s:text name="%{szFileActualityStatus.description}"/>
+	  </td>
+	  <td class="col">
+	    <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{id}"/></s:url>">
+	      load to DB
+	    </a>
 	  </td>
 	</tr>
   </s:iterator>

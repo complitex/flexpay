@@ -5,15 +5,27 @@
 
 	<!-- import services definitions -->
 	<import resource="beans-services.xml" />
+	
+	<!-- import logic definitions -->
+	<import resource="beans-logic.xml" />
 
 	<!-- Define struts actions beans -->
 	
 	<bean id="importFileAction" class="org.flexpay.sz.actions.ImportFileAction" scope="prototype">
 		<property name="osznService" ref="osznService" />
-		<property name="importFileService" ref="importFileService" />
+		<property name="szFileService" ref="szFileService" />
+		<property name="szFileTypeService" ref="szFileTypeService" />
+		<property name="szFileStatusService" ref="szFileStatusService" />
+		<property name="szFileActualityStatusService" ref="szFileActualityStatusService" />
 	</bean>
 	<bean id="importFileListAction" class="org.flexpay.sz.actions.ImportFileListAction" scope="prototype">
-		<property name="importFileService" ref="importFileService" />
+		<property name="szFileService" ref="szFileService" />
 	</bean>
+	<bean id="loadSzFileToDbAction" class="org.flexpay.sz.actions.LoadToDbAction" scope="prototype">
+		<property name="szFileService" ref="szFileService" />
+		<property name="szFileLoader" ref="szFileLoader" />
+	</bean>
+	
+	
 	
 </beans>	

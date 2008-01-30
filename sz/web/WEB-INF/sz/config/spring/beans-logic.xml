@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+    <bean id="characteristicRecordService" class="org.flexpay.sz.service.imp.CharacteristicRecordServiceImpl">
+		<property name="characteristicRecordDao" ref="characteristicRecordDAO" />
+	</bean>
+	
+	<bean id="szFileLoader" class="org.flexpay.sz.convert.SzFileLoader" scope="prototype">
+		<property name="recordService" ref="characteristicRecordService" />
+	</bean>
+
+
+	<bean id="importFileListAction" class="org.flexpay.sz.actions.ImportFileListAction" scope="prototype">
+		<property name="szFileService" ref="szFileService" />
+	</bean>
+	
+</beans>	
