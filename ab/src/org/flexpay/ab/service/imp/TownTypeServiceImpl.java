@@ -105,7 +105,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * @return TownType object, or <code>null</code> if object not found
 	 */
 	public TownType read(Long id) {
-		return townTypeDao.read(id);
+		return townTypeDao.readFull(id);
 	}
 
 	/**

@@ -16,8 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
-public class StreetTypeServiceImpl implements
-		StreetTypeService {
+public class StreetTypeServiceImpl implements StreetTypeService {
 
 	private static Logger log = Logger.getLogger(StreetTypeServiceImpl.class);
 
@@ -136,7 +135,7 @@ public class StreetTypeServiceImpl implements
 	 * @return StreetType object, or <code>null</code> if object not found
 	 */
 	public StreetType read(Long id) {
-		return streetTypeDao.read(id);
+		return streetTypeDao.readFull(id);
 	}
 
 	/**

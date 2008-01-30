@@ -33,4 +33,12 @@
 		from IdentityType s where s.status = ?
 	</query>
 
+	<query name="IdentityType.readFull">
+		from IdentityType o
+		LEFT JOIN FETCH o.translations tr
+		LEFT JOIN FETCH tr.lang l
+		LEFT JOIN FETCH l.translations
+		where o.id = ?
+	</query>
+
 </hibernate-mapping>

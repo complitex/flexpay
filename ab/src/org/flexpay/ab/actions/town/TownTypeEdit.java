@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
 
 public class TownTypeEdit extends FPActionSupport
 		implements ServletRequestAware, SessionAware {
@@ -25,10 +26,13 @@ public class TownTypeEdit extends FPActionSupport
 	private Map<String, Object> session;
 	private TownTypeService townTypeService;
 
+	private Long townTypeId;
+	List<TownTypeTranslation> townTypeTranslations = Collections.emptyList();
+
 	public String execute() throws FlexPayException {
 		Long id;
 		try {
-			id = Long.parseLong(request.getParameter("town_type_id"));
+			townTypeId = Long.parseLong(request.getParameter("townTypeId"));
 		} catch (NumberFormatException e) {
 			// No id specified, redirect successfully
 			log.debug("No id specified, redirecting to success view");
@@ -37,14 +41,14 @@ public class TownTypeEdit extends FPActionSupport
 			return SUCCESS;
 		}
 
-		TownType townType = townTypeService.read(id);
+		TownType townType = townTypeService.read(townTypeId);
 		if (townType == null) {
 			addActionError(getText("error.town_type_invalid_id"));
 			TownTypesList.setActionErrors(session, getActionErrors());
 			return SUCCESS;
 		}
 
-		List<TownTypeTranslation> townTypeTranslations = initTypeTranslations(townType);
+		townTypeTranslations = initTypeTranslations(townType);
 
 		// Need to update Town Type
 		if (isPost()) {
@@ -57,8 +61,6 @@ public class TownTypeEdit extends FPActionSupport
 			}
 		}
 
-		request.setAttribute("town_names", townTypeTranslations);
-		request.setAttribute("town_type_id", id);
 		return INPUT;
 	}
 
@@ -138,5 +140,23 @@ public class TownTypeEdit extends FPActionSupport
 	 */
 	public void setTownTypeService(TownTypeService townTypeService) {
 		this.townTypeService = townTypeService;
+	}
+
+	/**
+	 * Getter for property 'townTypeId'.
+	 *
+	 * @return Value for property 'townTypeId'.
+	 */
+	public Long getTownTypeId() {
+		return townTypeId;
+	}
+
+	/**
+	 * Getter for property 'townTypeTranslations'.
+	 *
+	 * @return Value for property 'townTypeTranslations'.
+	 */
+	public List<TownTypeTranslation> getTownTypeTranslations() {
+		return townTypeTranslations;
 	}
 }
