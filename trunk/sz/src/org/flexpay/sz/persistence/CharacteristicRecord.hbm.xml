@@ -5,11 +5,11 @@
 
 <hibernate-mapping package="org.flexpay.sz.persistence">
 
-	<class name="Characteristic" table="characteristics_tbl">
+	<class name="CharacteristicRecord" table="characteristic_records_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<many-to-one name="importFile" column="import_file_id" not-null="true" />
+		<many-to-one name="szFile" column="sz_file_id" not-null="true" />
 		<property name="cod" />
 		<property name="cdpr" />
 		<property name="ncard" />
@@ -22,11 +22,20 @@
 		<property name="idx" />
 		<property name="cdul" />
 		<property name="house" />
-		<property name="blild" />
+		<property name="build" />
 		<property name="apt" />
 		<property name="vl" />
 		<property name="plzag" />
 		<property name="plopal" />
 	</class>
+	
+	<query name="CharacteristicRecord.findObjects">
+		FROM CharacteristicRecord c
+		WHERE c.szFile.id=?
+	</query>
+	
+	<query name="CharacteristicRecord.findObjects.count">
+		select count(*) from CharacteristicRecord c where c.szFile.id=?
+	</query>
 
 </hibernate-mapping>

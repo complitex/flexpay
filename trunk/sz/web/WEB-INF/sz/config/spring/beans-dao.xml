@@ -3,22 +3,62 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="importFileDAO" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.sz.dao.ImportFileDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.sz.persistence.ImportFile" />
-			</bean>
-		</property>
-	</bean>
-	
-	<bean id="osznDAO" parent="abstractDao">
+    <bean id="osznDAO" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.sz.dao.OsznDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.sz.persistence.Oszn" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="szFileDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.sz.dao.SzFileDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.sz.persistence.SzFile" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="szFileTypeDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.sz.dao.SzFileTypeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.sz.persistence.SzFileType" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="szFileStatusDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.sz.dao.SzFileStatusDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.sz.persistence.SzFileStatus" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="szFileActualityStatusDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.sz.dao.SzFileActualityStatusDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.sz.persistence.SzFileActualityStatus" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="characteristicRecordDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.sz.dao.CharacteristicRecordDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.sz.persistence.CharacteristicRecord" />
 			</bean>
 		</property>
 	</bean>

@@ -43,14 +43,23 @@
 		<!-- common.Languages -->
 		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
 		
-		<!-- SZ ImportFile -->
-		<mapping resource="org/flexpay/sz/persistence/ImportFile.hbm.xml" />
+		<!-- SZ File -->
+		<mapping resource="org/flexpay/sz/persistence/SzFile.hbm.xml" />
 		
-		<!-- SZ Characteristic -->
-		<mapping resource="org/flexpay/sz/persistence/Characteristic.hbm.xml" />
+		<!-- SZ CharacteristicRecord -->
+		<mapping resource="org/flexpay/sz/persistence/CharacteristicRecord.hbm.xml" />
 		
 		<!-- SZ Oszn -->
 		<mapping resource="org/flexpay/sz/persistence/Oszn.hbm.xml" />
+		
+		<!-- SZ File type -->
+		<mapping resource="org/flexpay/sz/persistence/SzFileType.hbm.xml" />
+		
+		<!-- SZ File status -->
+		<mapping resource="org/flexpay/sz/persistence/SzFileStatus.hbm.xml" />
+		
+		<!-- SZ File actuality status -->
+		<mapping resource="org/flexpay/sz/persistence/SzFileActualityStatus.hbm.xml" />
 
 	</session-factory>
 

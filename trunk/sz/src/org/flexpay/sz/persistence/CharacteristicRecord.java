@@ -3,9 +3,9 @@ package org.flexpay.sz.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class Characteristic {
+public class CharacteristicRecord {
 	private Long id;
-	private ImportFile importFile;
+	private SzFile szFile;
 	private Double cod;
 	private Double cdpr;
 	private Double ncard;
@@ -18,13 +18,13 @@ public class Characteristic {
 	private Double idx;
 	private Double cdul;
 	private String house;
-	private String blild;
+	private String build;
 	private String apt;
 	private Double vl;
 	private Double plzag;
 	private Double plopal;
 	
-	public Characteristic()
+	public CharacteristicRecord()
 	{
 	}
 
@@ -36,12 +36,12 @@ public class Characteristic {
 		this.id = id;
 	}
 
-	public ImportFile getImportFile() {
-		return importFile;
+	public SzFile getSzFile() {
+		return szFile;
 	}
 
-	public void setImportFile(ImportFile importFile) {
-		this.importFile = importFile;
+	public void setSzFile(SzFile szFile) {
+		this.szFile = szFile;
 	}
 
 	public Double getCod() {
@@ -132,12 +132,12 @@ public class Characteristic {
 		this.house = house;
 	}
 
-	public String getBlild() {
-		return blild;
+	public String getBuild() {
+		return build;
 	}
 
-	public void setBlild(String blild) {
-		this.blild = blild;
+	public void setBuild(String build) {
+		this.build = build;
 	}
 
 	public String getApt() {
@@ -189,7 +189,7 @@ public class Characteristic {
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
 				.append("Id", id)
-				.append("ImportFile", importFile)
+				.append("SzFile", szFile)
 				.append("COD", cod)
 				.append("CDPR", cdpr)
 				.append("NCARD", ncard)
@@ -202,7 +202,7 @@ public class Characteristic {
 				.append("INDEX", idx)
 				.append("CDUL", cdul)
 				.append("HOUSE", house)
-				.append("BLILD", blild)
+				.append("BUILD", build)
 				.append("APT", apt)
 				.append("VL", vl)
 				.append("PLZAG", plzag)

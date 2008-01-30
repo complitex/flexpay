@@ -4,34 +4,34 @@ import java.util.List;
 
 import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.sz.persistence.ImportFile;
-import org.flexpay.sz.service.ImportFileService;
+import org.flexpay.sz.persistence.SzFile;
+import org.flexpay.sz.service.SzFileService;
 
 public class ImportFileListAction extends CommonAction {
 	
-	private ImportFileService importFileService;
+	private SzFileService szFileService;
 	
-	private List<ImportFile> importFileList;
+	private List<SzFile> importFileList;
 	
 	public String execute() throws FlexPayException {
 		
-		importFileList = importFileService.getEntities();
+		importFileList = szFileService.getEntities();
 		
 		
 		
 		return "success";
 	}
 
-	public void setImportFileService(ImportFileService importFileService) {
-		this.importFileService = importFileService;
-	}
-
-	public List<ImportFile> getImportFileList() {
+	public List<SzFile> getImportFileList() {
 		return importFileList;
 	}
 
-	public void setImportFileList(List<ImportFile> importFileList) {
+	public void setImportFileList(List<SzFile> importFileList) {
 		this.importFileList = importFileList;
+	}
+
+	public void setSzFileService(SzFileService szFileService) {
+		this.szFileService = szFileService;
 	}
 
 }

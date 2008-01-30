@@ -23,7 +23,7 @@
 
 <tr>
   <td>
-    <s:text name="ab.region_name" />
+    <s:text name="sz.oszn" />
   </td>
   <td>
     <s:select name="osznId" list="osznList" listKey="id" listValue="description" required="true" />
