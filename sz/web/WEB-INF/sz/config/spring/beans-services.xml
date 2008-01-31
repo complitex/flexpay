@@ -25,4 +25,12 @@
 		<property name="szFileActualityStatusDao" ref="szFileActualityStatusDAO" />
 	</bean>
 	
+	<bean id="characteristicRecordService" class="org.flexpay.sz.service.imp.CharacteristicRecordServiceImpl">
+		<property name="characteristicRecordDao" ref="characteristicRecordDAO" />
+	</bean>
+	
+	<bean id="subsidyRecordService" class="org.flexpay.sz.service.imp.SubsidyRecordServiceImpl">
+		<property name="subsidyRecordDao" ref="subsidyRecordDAO" />
+	</bean>
+	
 </beans>	

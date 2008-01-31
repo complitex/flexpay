@@ -3,9 +3,7 @@ package org.flexpay.sz.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class CharacteristicRecord {
-	private Long id;
-	private SzFile szFile;
+public class CharacteristicRecord extends Record {
 	private Double cod;
 	private Double cdpr;
 	private Double ncard;
@@ -26,22 +24,7 @@ public class CharacteristicRecord {
 	
 	public CharacteristicRecord()
 	{
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public SzFile getSzFile() {
-		return szFile;
-	}
-
-	public void setSzFile(SzFile szFile) {
-		this.szFile = szFile;
+		super();
 	}
 
 	public Double getCod() {
@@ -188,8 +171,8 @@ public class CharacteristicRecord {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-				.append("Id", id)
-				.append("SzFile", szFile)
+				.append("Id", getId())
+				.append("SzFile", getSzFile())
 				.append("COD", cod)
 				.append("CDPR", cdpr)
 				.append("NCARD", ncard)

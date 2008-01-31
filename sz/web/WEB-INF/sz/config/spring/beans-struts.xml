@@ -30,6 +30,4 @@
 		<property name="szFileLoader" ref="szFileLoader" />
 	</bean>
 	
-	
-	
 </beans>	

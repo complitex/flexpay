@@ -35,8 +35,6 @@
         <property name="living"/>
         <property name="nach"/>
         <property name="tarif"/>
-        <property name="p1"/>
-        <property name="n1"/>
         <property name="p2"/>
         <property name="n2"/>
         <property name="p3"/>
