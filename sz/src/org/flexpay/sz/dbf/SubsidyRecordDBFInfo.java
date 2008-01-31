@@ -44,7 +44,7 @@ public class SubsidyRecordDBFInfo extends DBFInfo<SubsidyRecord> {
             subsidyRecord.setP1((Double)rowData[getInd("P1")]);
             subsidyRecord.setN2((Double)rowData[getInd("N2")]);
             subsidyRecord.setP2((Double)rowData[getInd("P2")]);
-            subsidyRecord.setN3((Double)rowData[getInd("N2")]);
+            subsidyRecord.setN3((Double)rowData[getInd("N3")]);
             subsidyRecord.setP3((Double)rowData[getInd("P3")]);
             subsidyRecord.setN4((Double)rowData[getInd("N4")]);
             subsidyRecord.setP4((Double)rowData[getInd("P4")]);
