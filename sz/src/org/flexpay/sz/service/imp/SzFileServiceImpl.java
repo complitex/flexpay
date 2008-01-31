@@ -64,6 +64,7 @@ public class SzFileServiceImpl implements SzFileService {
 	 * @throws FlexPayException
 	 *             if SzFile object is invalid
 	 */
+	@Transactional(readOnly = false)
 	public SzFile update(SzFile importFile) throws FlexPayException {
 		szFileDao.update(importFile);
 

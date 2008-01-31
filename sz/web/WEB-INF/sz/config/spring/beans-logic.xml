@@ -9,6 +9,7 @@
 	
 	<bean id="szFileLoader" class="org.flexpay.sz.convert.SzFileLoader" scope="prototype">
 		<property name="recordService" ref="characteristicRecordService" />
+		<property name="szFileService" ref="szFileService" />
 	</bean>
 
 

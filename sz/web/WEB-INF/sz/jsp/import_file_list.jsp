@@ -34,8 +34,15 @@
 	  actuality status(debug info)
 	</td>
 	<td class="th">
-	  action
+	  load to DB
 	</td>
+	<td class="th">
+	  load from DB
+	</td>
+	<td class="th">
+	  response file
+	</td>
+	
 	
   </tr>
   <s:iterator value="importFileList" status="rowstatus">
@@ -75,6 +82,17 @@
 	      load to DB
 	    </a>
 	  </td>
+	  <td class="col">
+	    <a href="<s:url action='loadSzFileFromDb'><s:param name="szFileId" value="%{id}"/></s:url>">
+	      load from DB
+	    </a>
+	  </td>
+	  <td class="col">
+	    <s:if test="%{internalResponseFileName != null}">
+	      <s:property value="szDataRoot + separator + yyyyMm + separator + internalResponseFileName"/>
+	    </s:if>
+	  </td>
+	  
 	</tr>
   </s:iterator>
   

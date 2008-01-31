@@ -25,6 +25,10 @@
 		<property name="szFileService" ref="szFileService" />
 		<property name="szFileLoader" ref="szFileLoader" />
 	</bean>
+	<bean id="loadSzFileFromDbAction" class="org.flexpay.sz.actions.LoadFromDbAction" scope="prototype">
+		<property name="szFileService" ref="szFileService" />
+		<property name="szFileLoader" ref="szFileLoader" />
+	</bean>
 	
 	
 	
