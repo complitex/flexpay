@@ -4,6 +4,9 @@ import org.apache.commons.collections.ArrayStack;
 import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.StreetNameTranslation;
+import org.flexpay.ab.persistence.StreetName;
+import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.service.BuildingService;
@@ -66,15 +69,25 @@ public class BuildingServiceImpl implements BuildingService {
 
 		List<Buildings> names = parentFilter.getBuildingses();
 		if (names.isEmpty()) {
-			log.info("No buildings found");
 			throw new FlexPayException("No buildings", "ab.no_buildings");
 		}
-		if (parentFilter.getSelectedId() == null) {
+		if (parentFilter.getSelectedId() == null || !isFilterValid(parentFilter)) {
 			Buildings firstObject = names.iterator().next();
 			parentFilter.setSelectedId(firstObject.getId());
 		}
 
 		return parentFilter;
+	}
+
+	private boolean isFilterValid(BuildingsFilter filter) {
+		for (Buildings buildings : filter.getBuildingses()) {
+			Street street = buildings.getStreet();
+			if (street.getId().equals(filter.getSelectedId())) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException {
