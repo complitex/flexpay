@@ -226,12 +226,23 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		if (names.isEmpty()) {
 			throw new FlexPayException("No street names", "ab.no_streets");
 		}
-		if (parentFilter.getSelectedId() == null) {
+		if (parentFilter.getSelectedId() == null || !isFilterValid(parentFilter)) {
 			StreetName firstObject = (StreetName) names.iterator().next().getTranslatable();
 			parentFilter.setSelectedId(firstObject.getObject().getId());
 		}
 
 		return parentFilter;
+	}
+
+	private boolean isFilterValid(StreetFilter filter) {
+		for (StreetNameTranslation nameTranslation : filter.getNames()) {
+			StreetName name = (StreetName) nameTranslation.getTranslatable();
+			if (name.getObject().getId().equals(filter.getSelectedId())) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

@@ -249,12 +249,23 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		if (names.isEmpty()) {
 			throw new FlexPayException("No town names", "ab.no_towns");
 		}
-		if (parentFilter.getSelectedId() == null) {
+		if (parentFilter.getSelectedId() == null || !isFilterValid(parentFilter)) {
 			TownName firstObject = (TownName) names.iterator().next().getTranslatable();
 			parentFilter.setSelectedId(firstObject.getObject().getId());
 		}
 
 		return parentFilter;
+	}
+
+	private boolean isFilterValid(TownFilter filter) {
+		for (TownNameTranslation nameTranslation : filter.getNames()) {
+			TownName name = (TownName) nameTranslation.getTranslatable();
+			if (name.getObject().getId().equals(filter.getSelectedId())) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

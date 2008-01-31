@@ -226,11 +226,22 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 			throw new FlexPayException("No region names", "ab.no_regions");
 		}
 
-		if (parentFilter.getSelectedId() == null) {
+		if (parentFilter.getSelectedId() == null || !isFilterValid(parentFilter)) {
 			RegionName firstObject = (RegionName) names.iterator().next().getTranslatable();
 			parentFilter.setSelectedId(firstObject.getObject().getId());
 		}
 
 		return parentFilter;
+	}
+
+	private boolean isFilterValid(RegionFilter filter) {
+		for (RegionNameTranslation nameTranslation : filter.getNames()) {
+			RegionName regionName = (RegionName) nameTranslation.getTranslatable();
+			if (regionName.getObject().getId().equals(filter.getSelectedId())) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
