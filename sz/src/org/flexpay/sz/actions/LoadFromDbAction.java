@@ -10,9 +10,10 @@ public class LoadFromDbAction {
 
 	private SzFileService szFileService;
 	private SzFileLoader szFileLoader;
-
+	
 	public String execute() throws Throwable {
 		SzFile importFile = szFileService.readFull(szFileId);
+		
 		szFileLoader.loadFromDb(importFile);
 
 		return "success";
@@ -29,5 +30,5 @@ public class LoadFromDbAction {
 	public void setSzFileService(SzFileService szFileService) {
 		this.szFileService = szFileService;
 	}
-
+	
 }

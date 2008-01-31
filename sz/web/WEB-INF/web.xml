@@ -73,6 +73,15 @@
         <dispatcher>INCLUDE</dispatcher>
         <dispatcher>ERROR</dispatcher>
 	</filter-mapping>
+	
+	<servlet>
+        <servlet-name>szFileDownloadServlet</servlet-name>
+        <servlet-class>org.flexpay.sz.actions.SzFileDownloadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>szFileDownloadServlet</servlet-name>
+        <url-pattern>/szFileDownloadServlet</url-pattern>
+    </servlet-mapping>
 
 
     <security-constraint>
