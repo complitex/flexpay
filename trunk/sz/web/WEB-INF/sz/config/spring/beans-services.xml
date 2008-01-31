@@ -33,4 +33,10 @@
 		<property name="subsidyRecordDao" ref="subsidyRecordDAO" />
 	</bean>
 	
+	
+	
+	<bean id="serviceHolder" class="org.flexpay.sz.service.ServiceHolder">
+		<property name="szFileService" ref="szFileService" />
+	</bean>
+	
 </beans>	

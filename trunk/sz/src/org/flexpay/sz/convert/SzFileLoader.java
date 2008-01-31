@@ -75,6 +75,7 @@ public class SzFileLoader {
 		szFile.setInternalResponseFileName(internalResponseFileName);
 		File targetFile = szFile.getResponseFile(ApplicationConfig
 				.getInstance().getSzDataRoot());
+		
 
 		SzFileType szFileType = szFile.getSzFileType();
 

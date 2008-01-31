@@ -82,8 +82,10 @@
 	    </s:if>
 	  </td>
 	  <td class="col">
-	    <s:if test="%{internalResponseFileName != null}">
-	      <s:property value="szDataRoot + separator + yyyyMm + separator + internalResponseFileName"/>
+	    <s:if test="internalResponseFileName != null">
+	      <a href="<s:url value='/szFileDownloadServlet'><s:param name="szFileId" value="%{id}"/></s:url>">
+	        <s:property value="requestFileName"/>
+	      </a>
 	    </s:if>
 	  </td>
 	  
