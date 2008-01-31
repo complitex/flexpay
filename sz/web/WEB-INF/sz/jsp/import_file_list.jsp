@@ -28,22 +28,17 @@
 	  <s:text name="sz.user_name" />
 	</td>
 	<td class="th">
-	  status(debug info)
-	</td>
-	<td class="th">
-	  actuality status(debug info)
-	</td>
-	<td class="th">
 	  load to DB
 	</td>
 	<td class="th">
 	  load from DB
 	</td>
 	<td class="th">
+	  request file
+	</td>
+	<td class="th">
 	  response file
 	</td>
-	
-	
   </tr>
   <s:iterator value="importFileList" status="rowstatus">
     <tr valign="middle" class="cols_1">
@@ -72,12 +67,6 @@
 	    <s:property value="userName"/>
 	  </td>
 	  <td class="col">
-	    <s:text name="%{szFileStatus.description}"/>
-	  </td>
-	  <td class="col">
-	    <s:text name="%{szFileActualityStatus.description}"/>
-	  </td>
-	  <td class="col">
 	    <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{id}"/></s:url>">
 	      load to DB
 	    </a>
@@ -86,6 +75,11 @@
 	    <a href="<s:url action='loadSzFileFromDb'><s:param name="szFileId" value="%{id}"/></s:url>">
 	      load from DB
 	    </a>
+	  </td>
+	  <td class="col">
+	    <s:if test="%{internalRequestFileName != null}">
+	      <s:property value="szDataRoot + separator + yyyyMm + separator + internalRequestFileName"/>
+	    </s:if>
 	  </td>
 	  <td class="col">
 	    <s:if test="%{internalResponseFileName != null}">
@@ -97,7 +91,7 @@
   </s:iterator>
   
   <tr>
-    <td colspan="9" height="3" bgcolor="#4a4f4f"/>
+    <td colspan="12" height="3" bgcolor="#4a4f4f"/>
   <tr>
 
 </table>
