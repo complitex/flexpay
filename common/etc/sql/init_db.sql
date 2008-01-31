@@ -3837,17 +3837,17 @@ INSERT INTO apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	
 -- Sz file types
 INSERT INTO sz_file_types_tbl (file_mask, description)
-	VALUES ('(t|T)(a|A)(R|R)(i|I)(f|F)\u002E(d|D)(b|B)(f|F)', 'sz.file_type.tarif');
+	VALUES ('(t|T)(a|A)(R|R)(i|I)(f|F)\\u002E(d|D)(b|B)(f|F)', 'sz.file_type.tarif');
 INSERT INTO sz_file_types_tbl (file_mask, description)
-	VALUES ('\d{8}\u002E(a|A)\d{2}', 'sz.file_type.characteristics');
+	VALUES ('\\d{8}\\u002E(a|A)\\d{2}', 'sz.file_type.characteristics');
 INSERT INTO sz_file_types_tbl (file_mask, description)
-	VALUES ('\d{8}\u002E(b|B)\d{2}', 'sz.file_type.srv_types');
+	VALUES ('\\d{8}\\u002E(b|B)\\d{2}', 'sz.file_type.srv_types');
 INSERT INTO sz_file_types_tbl (file_mask, description)
-	VALUES ('\d{8}\u002E(e|E)\d{2}', 'sz.file_type.form2');
+	VALUES ('\\d{8}\\u002E(e|E)\\d{2}', 'sz.file_type.form2');
 INSERT INTO sz_file_types_tbl (file_mask, description)
-	VALUES ('\d{8}\u002E(c|C)\d{2}', 'sz.file_type.characteristics_response');
+	VALUES ('\\d{8}\\u002E(c|C)\\d{2}', 'sz.file_type.characteristics_response');
 INSERT INTO sz_file_types_tbl (file_mask, description)
-	VALUES ('\d{8}\u002E(d|D)\d{2}', 'sz.file_type.srv_types_response');
+	VALUES ('\\d{8}\\u002E(d|D)\\d{2}', 'sz.file_type.srv_types_response');
 
 -- Sz file status
 INSERT INTO sz_file_status_tbl (id, description)
