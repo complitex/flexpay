@@ -2,9 +2,13 @@ package org.flexpay.sz.persistence;
 
 import java.util.Date;
 
-public class SubsidyRecord {
-    private int id;//	INT(10)
-    private SzFile szFile;
+public class SubsidyRecord extends Record {
+	
+	public SubsidyRecord()
+	{
+		super();
+	}
+	
     private String surName;//	VARCHAR(30)
     private String firstName;//	VARCHAR(15)
     private String midName;//	VARCHAR(20)
@@ -29,8 +33,6 @@ public class SubsidyRecord {
     private Double living;//	NUMBER(2)
     private Double nach;//	NUMBER(10.4)
     private Double tarif;//	NUMBER(10.4)
-    private Double p1;//	NUMBER(10.4)
-    private Double n1;//	NUMBER(10.4)
     private Double p2;//	NUMBER(10.4)
     private Double n2;//	NUMBER(10.4)
     private Double p3;//	NUMBER(10.4)
@@ -48,14 +50,6 @@ public class SubsidyRecord {
     private Double orgsID;//	INT(10)
     private Double fileID;//	INT(10)
     private Double status;//	INT(10)
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getSurName() {
         return surName;
@@ -249,22 +243,6 @@ public class SubsidyRecord {
         this.tarif = tarif;
     }
 
-    public Double getP1() {
-        return p1;
-    }
-
-    public void setP1(Double p1) {
-        this.p1 = p1;
-    }
-
-    public Double getN1() {
-        return n1;
-    }
-
-    public void setN1(Double n1) {
-        this.n1 = n1;
-    }
-
     public Double getP2() {
         return p2;
     }
@@ -401,11 +379,4 @@ public class SubsidyRecord {
         this.status = status;
     }
 
-    public SzFile getSzFile() {
-        return szFile;
-    }
-
-    public void setSzFile(SzFile szFile) {
-        this.szFile = szFile;
-    }
 }

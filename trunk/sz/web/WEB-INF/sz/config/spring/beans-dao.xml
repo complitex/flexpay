@@ -63,4 +63,14 @@
 		</property>
 	</bean>
 	
+	<bean id="subsidyRecordDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.sz.dao.SubsidyRecordDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.sz.persistence.SubsidyRecord" />
+			</bean>
+		</property>
+	</bean>
+	
 </beans>	
