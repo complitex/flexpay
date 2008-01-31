@@ -28,8 +28,24 @@
         </action>
         
         <action name="loadSzFileToDb" class="loadSzFileToDbAction">
-            <result name="success" type="tiles">sz.import_file.list</result>
+            <result name="success" type="redirect">importFileList.action</result>
         </action>
+        
+        <action name="loadSzFileFromDb" class="loadSzFileFromDbAction">
+            <result name="success" type="redirect">importFileList.action</result>
+        </action>
+        
+        <action name="downloadFile" method="downloadFile" class="org.flexpay.sz.actions.FileDownloadAction">
+            <result type="stream">
+              <param name="contentType">application/octet-stream</param>
+              <param name="inputName">inputStream</param>
+              <param name="bufferSize">1024</param>
+              <param name="contentDisposition">filename="document.pdf"</param>
+            
+            </result>
+        </action>
+        
+        
 
 	</package>
 	

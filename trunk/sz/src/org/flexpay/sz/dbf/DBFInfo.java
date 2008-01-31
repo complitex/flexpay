@@ -37,7 +37,7 @@ public abstract class DBFInfo<E> {
 			init();
 		}
 
-		return indMap.get(name);
+		return indMap.get(name.toLowerCase());
 	}
 
 	DBFField[] getDBFFields() throws DBFException, FileNotFoundException {

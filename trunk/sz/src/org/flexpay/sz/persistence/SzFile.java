@@ -39,7 +39,7 @@ public class SzFile implements java.io.Serializable {
 		return System.currentTimeMillis() + "-" + Math.random();
 	}
 
-	public File getFile(File parentDir) {
+	public File getRequestFile(File parentDir) {
 		String yyyy_mm = fileYear + "_" + ((fileMonth + 1) <= 9 ? "0" : "")
 				+ (fileMonth + 1);
 		File file = new File(parentDir, yyyy_mm);
@@ -47,7 +47,21 @@ public class SzFile implements java.io.Serializable {
 
 		return file;
 	}
+	
+	public File getResponseFile(File parentDir) {
+		String yyyy_mm = fileYear + "_" + ((fileMonth + 1) <= 9 ? "0" : "")
+				+ (fileMonth + 1);
+		File file = new File(parentDir, yyyy_mm);
+		file = new File(file, internalResponseFileName);
 
+		return file;
+	}
+	
+	public String getYyyyMm() {
+		return fileYear + "_" + ((fileMonth + 1) <= 9 ? "0" : "")
+		+ (fileMonth + 1);
+	}
+	
 	public Long getId() {
 		return id;
 	}

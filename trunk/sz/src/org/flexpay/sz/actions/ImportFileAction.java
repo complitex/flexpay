@@ -72,7 +72,7 @@ public class ImportFileAction extends CommonAction {
 				szFile.setInternalRequestFileName(SzFile.getRandomString());
 				szFile.setFileYear(year);
 				szFile.setFileMonth(month);
-				File file = szFile.getFile(ApplicationConfig.getInstance()
+				File file = szFile.getRequestFile(ApplicationConfig.getInstance()
 						.getSzDataRoot());
 				try {
 					FileUtils.copyFile(upload, file);
