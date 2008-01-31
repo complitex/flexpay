@@ -1,4 +1,4 @@
-package org.flexpay.sz.Process;
+package org.flexpay.sz.process;
 
 import java.util.List;
 import java.util.Collections;
