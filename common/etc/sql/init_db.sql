@@ -3852,15 +3852,15 @@ INSERT INTO sz_file_types_tbl (file_mask, description)
 -- Sz file status
 INSERT INTO sz_file_status_tbl (id, description)
 	VALUES (1, 'sz.file_status.imported');
-INSERT INTO sz_file_status_tbl (description)
+INSERT INTO sz_file_status_tbl (id, description)
 	VALUES (2, 'sz.file_status.marked_for_processing');
-INSERT INTO sz_file_status_tbl (description)
+INSERT INTO sz_file_status_tbl (id, description)
 	VALUES (3, 'sz.file_status.processing');
-INSERT INTO sz_file_status_tbl (description)
+INSERT INTO sz_file_status_tbl (id, description)
 	VALUES (4, 'sz.file_status.processed');
-INSERT INTO sz_file_status_tbl (description)
+INSERT INTO sz_file_status_tbl (id, description)
 	VALUES (5, 'sz.file_status.processed_with_warnings');
-INSERT INTO sz_file_status_tbl (description)
+INSERT INTO sz_file_status_tbl (id, description)
 	VALUES (6, 'sz.file_status.marked_as_deleted');
 
 -- Sz file actuality status

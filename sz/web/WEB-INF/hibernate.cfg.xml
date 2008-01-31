@@ -61,6 +61,10 @@
 		<!-- SZ File actuality status -->
 		<mapping resource="org/flexpay/sz/persistence/SzFileActualityStatus.hbm.xml" />
 
-	</session-factory>
+        <!-- SZ  SubsidyRecord-->
+        <mapping resource="org/flexpay/sz/persistence/SubsidyRecord.hbm.xml" />
+
+
+    </session-factory>
 
 </hibernate-configuration>
