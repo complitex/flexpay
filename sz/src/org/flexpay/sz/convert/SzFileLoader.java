@@ -86,7 +86,9 @@ public class SzFileLoader {
 			}
 
 			szFileService.update(szFile);
-			oldInternalResponseFile.delete();
+			if (oldInternalResponseFile != null) {
+				oldInternalResponseFile.delete();
+			}
 		} catch (Throwable t) {
 			szFile.setInternalResponseFileName(null);
 			targetFile.delete();
