@@ -250,6 +250,7 @@
 			<lib dir="${common.dir}/lib/commons" />
 			<lib dir="${common.dir}/lib/struts2" />
 			<lib dir="${common.dir}/lib/log4j" />
+			<lib dir="${common.dir}/lib/javadbf" />
 			<lib dir="${build.dir}/lib" />
 		</war>
 	</target>
