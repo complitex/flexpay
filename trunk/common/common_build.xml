@@ -171,7 +171,6 @@
 				   value="${common.dir}/web/WEB-INF/hibernate.cfg.xml" />
 			<param name="hibernate.properties"
 				   value="${common.dir}/web/WEB-INF/configs/spring/common/data_source.properties" />
-			<param name="delimiter" value=" type=InnoDB;" />
 		</antcall>
 	</target>
 
@@ -264,15 +263,6 @@
 				<formatter type="brief" usefile="false" />
 			</test>
 		</junit>
-	</target>
-
-	<taskdef name="sun-appserv-deploy"
-			 classname="org.apache.tools.ant.taskdefs.optional.sun.appserv.DeployTask"
-			 classpath="${sjsas.root}/lib/sun-appserv-ant.jar" />
-
-	<target name="template.deploy.sjsas">
-		<sun-appserv-deploy user="${sjsas.username}" passwordfile="${sjsas.password.file}"
-							file="${application_archive}" asinstalldir="${sjsas.root}" />
 	</target>
 
 </project>

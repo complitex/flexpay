@@ -21,9 +21,8 @@ public class CharacteristicRecord extends Record {
 	private Double vl;
 	private Double plzag;
 	private Double plopal;
-	
-	public CharacteristicRecord()
-	{
+
+	public CharacteristicRecord() {
 		super();
 	}
 
@@ -154,7 +153,7 @@ public class CharacteristicRecord extends Record {
 	public void setPlopal(Double plopal) {
 		this.plopal = plopal;
 	}
-	
+
 	public Double getIdx() {
 		return idx;
 	}
@@ -162,7 +161,7 @@ public class CharacteristicRecord extends Record {
 	public void setIdx(Double idx) {
 		this.idx = idx;
 	}
-	
+
 	/**
 	 * Returns a string representation of the object.
 	 *

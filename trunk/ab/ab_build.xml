@@ -144,7 +144,6 @@
 				   value="${ab.dir}/web/WEB-INF/hibernate.cfg.xml" />
 			<param name="hibernate.properties"
 				   value="${common.dir}/web/WEB-INF/configs/ps/data_source_mysql5.properties" />
-			<param name="delimiter" value=" type=InnoDB;" />
 		</antcall>
 	</target>
 
@@ -159,15 +158,4 @@
 		</antcall>
 	</target>
 
-	<target name="ab.deploy.sjsas" depends="ab.war.production.glassfish_mysql5">
-		<antcall target="template.deploy.sjsas">
-			<param name="application_archive" value="${distr.dir}/${ab.war.name}" />
-		</antcall>
-	</target>
-
-	<target name="ab.deploy.tomcat" depends="ab.war.production.tomcat_mysql5">
-		<antcall target="template.deploy.tomcat">
-			<param name="application_archive" value="${distr.dir}/${ab.war.name}" />
-		</antcall>
-	</target>
 </project>

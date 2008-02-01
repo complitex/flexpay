@@ -9,12 +9,12 @@
 	<property file="common/common_build.properties" />
 
 	<property name="sz.dir" value="${basedir}/sz" />
-	
+
 	<path id="sz.lib">
 		<fileset dir="${sz.dir}/lib">
 			<include name="**/*.jar" />
 		</fileset>
-	</path>	
+	</path>
 
 	<fileset id="sz.libraries" dir="${sz.dir}/lib">
 		<include name="**/*" />
@@ -90,8 +90,6 @@
 			  overwrite="true"
 			  tofile="${build.dir}/web/WEB-INF/configs/spring/common/data_source.properties" />
 
-
-
 		<fileset id="sz.web.resources" dir="${sz.dir}/web" />
 		<antcall target="template.prepare.war">
 			<param name="to_dir" value="" />
@@ -108,8 +106,6 @@
 			<reference refid="sz.classes.resources" torefid="resources" />
 		</antcall>
 
-			  
-
 		<war destfile="${distr.dir}/${sz.war.name}" needxmlfile="false">
 			<fileset dir="${build.dir}/web" />
 			<lib refid="sz.libraries" />
@@ -119,29 +115,18 @@
 			<param name="warfile" value="${distr.dir}/${sz.war.name}" />
 		</antcall>
 	</target>
-	
+
 	<target name="sz.exportschema.mysql5"
-				depends="common.compile.production,ab.compile.production,sz.compile.production">
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
-			<antcall target="template.schemaexport">
-				<param name="file_name" value="flexpay_sz.ddl.sql" />
-				<param name="src.dir" value="${sz.dir}/src:${ab.dir}/src:${common.dir}/src" />
-				<param name="hibernate.cfg"
-					   value="${sz.dir}/web/WEB-INF/hibernate.cfg.xml" />
-				<param name="hibernate.properties"
-					   value="${common.dir}/web/WEB-INF/configs/ps/data_source_mysql5.properties" />
-				<param name="delimiter" value=" type=InnoDB;" />
-			</antcall>
+			depends="common.compile.production,ab.compile.production,sz.compile.production">
+		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+		<antcall target="template.schemaexport">
+			<param name="file_name" value="flexpay_sz.ddl.sql" />
+			<param name="src.dir" value="${sz.dir}/src:${ab.dir}/src:${common.dir}/src" />
+			<param name="hibernate.cfg"
+				   value="${sz.dir}/web/WEB-INF/hibernate.cfg.xml" />
+			<param name="hibernate.properties"
+				   value="${common.dir}/web/WEB-INF/configs/ps/data_source_mysql5.properties" />
+		</antcall>
 	</target>
-
-
-
-
-
-
-
-
-
-
 
 </project>

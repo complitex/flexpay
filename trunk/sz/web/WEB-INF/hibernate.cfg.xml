@@ -64,7 +64,9 @@
         <!-- SZ  SubsidyRecord-->
         <mapping resource="org/flexpay/sz/persistence/SubsidyRecord.hbm.xml" />
 
+		<!-- SZ corrections -->
+		<mapping resource="org/flexpay/sz/persistence/corrections/Corrections.hbm.xml" />
 
-    </session-factory>
+	</session-factory>
 
 </hibernate-configuration>
