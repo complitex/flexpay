@@ -20,6 +20,8 @@ public class LoadToDbAction extends CommonAction {
 			SzFileUtil.loadFromDb(szFile);
 		} else if ("deleteFromDb".equals(action)) {
 			SzFileUtil.deleteRecords(szFile);
+		} else if ("fullDelete".equals(action)) {
+			SzFileUtil.delete(szFile);
 		}
 
 		return "success";

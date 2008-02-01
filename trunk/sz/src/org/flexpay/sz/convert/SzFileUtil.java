@@ -27,6 +27,30 @@ public class SzFileUtil {
 
 	private static SzFileService szFileService;
 
+	public static void delete(SzFile szFile) {
+		// delete records
+		try {
+			deleteRecords(szFile);
+		} catch (NotSupportedOperationException e) {
+			// ignore
+		}
+
+		// delete response file
+		if (szFile.getInternalResponseFileName() != null) {
+			File responseFile = szFile.getResponseFile(ApplicationConfig
+					.getInstance().getSzDataRoot());
+			responseFile.delete();
+		}
+		
+		// delete request file
+		File requestFile = szFile.getRequestFile(ApplicationConfig
+				.getInstance().getSzDataRoot());
+		requestFile.delete();
+
+		// delete SzFile
+		szFileService.delete(szFile);
+	}
+
 	public static void loadToDb(SzFile szFile) throws FileNotFoundException,
 			DBFException, NotSupportedOperationException {
 
