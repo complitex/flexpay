@@ -36,5 +36,4 @@ public class LoadToDbAction extends CommonAction {
 	public void setAction(String action) {
 		this.action = action;
 	}
-
 }

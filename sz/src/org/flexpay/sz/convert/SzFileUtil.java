@@ -28,9 +28,9 @@ public class SzFileUtil {
 	private static SzFileService szFileService;
 
 	public static void loadToDb(SzFile szFile) throws FileNotFoundException,
-			DBFException, NotSupportOperationException {
-		
-		deleteRecords(szFile); 
+			DBFException, NotSupportedOperationException {
+
+		deleteRecords(szFile);
 
 		File file = szFile.getRequestFile(ApplicationConfig.getInstance()
 				.getSzDataRoot());
@@ -40,6 +40,7 @@ public class SzFileUtil {
 			SzDbfReader<CharacteristicRecord, CharacteristicDBFInfo> reader = new SzDbfReader<CharacteristicRecord, CharacteristicDBFInfo>(
 					dbfInfo, file);
 			try {
+
 				CharacteristicRecord record = null;
 				while ((record = reader.read()) != null) {
 					record.setSzFile(szFile);
@@ -63,7 +64,7 @@ public class SzFileUtil {
 				reader.close();
 			}
 		} else {
-			throw new NotSupportOperationException();
+			throw new NotSupportedOperationException();
 		}
 	}
 
@@ -153,7 +154,7 @@ public class SzFileUtil {
 					oldInternalResponseFile.delete();
 				}
 			} else {
-				throw new NotSupportOperationException();
+				throw new NotSupportedOperationException();
 			}
 		} catch (Throwable t) {
 			szFile.setInternalResponseFileName(null);
@@ -164,37 +165,37 @@ public class SzFileUtil {
 	}
 
 	public static Integer getNumberOfRecord(SzFile szFile)
-			throws NotSupportOperationException {
+			throws NotSupportedOperationException {
 		Long szFileTypeId = szFile.getSzFileType().getId();
 		if (szFileTypeId.equals(SzFileTypeService.CHARACTERISTIC)) {
 			Page<CharacteristicRecord> pager = new Page<CharacteristicRecord>();
 			pager.setPageSize(1);
-			characteristicRecordService.findObjects(pager, szFileTypeId);
+			characteristicRecordService.findObjects(pager, szFile.getId());
 			return pager.getTotalNumberOfElements();
 		} else if (szFileTypeId.equals(SzFileTypeService.SUBSIDY)) {
 			Page<SubsidyRecord> pager = new Page<SubsidyRecord>();
 			pager.setPageSize(1);
-			subsidyRecordService.findObjects(pager, szFileTypeId);
+			subsidyRecordService.findObjects(pager, szFile.getId());
 			return pager.getTotalNumberOfElements();
 		} else {
-			throw new NotSupportOperationException();
+			throw new NotSupportedOperationException();
 		}
 	}
 
 	public static boolean isLoadedToDb(SzFile szFile)
-			throws NotSupportOperationException {
+			throws NotSupportedOperationException {
 		return 0 < getNumberOfRecord(szFile);
 	}
 
 	public static void deleteRecords(SzFile szFile)
-			throws NotSupportOperationException {
+			throws NotSupportedOperationException {
 		Long szFileTypeId = szFile.getSzFileType().getId();
 		if (szFileTypeId.equals(SzFileTypeService.CHARACTERISTIC)) {
 			characteristicRecordService.deleteBySzFileId(szFile.getId());
 		} else if (szFileTypeId.equals(SzFileTypeService.SUBSIDY)) {
 			subsidyRecordService.deleteBySzFileId(szFile.getId());
 		} else {
-			throw new NotSupportOperationException();
+			throw new NotSupportedOperationException();
 		}
 	}
 

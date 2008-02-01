@@ -31,6 +31,9 @@
 	  load to DB
 	</td>
 	<td class="th">
+	  delete from DB
+	</td>
+	<td class="th">
 	  load from DB
 	</td>
 	<td class="th">
@@ -40,53 +43,60 @@
 	  response file
 	</td>
   </tr>
-  <s:iterator value="importFileList" status="rowstatus">
+  <s:iterator value="szFileWrapperList" status="rowstatus">
     <tr valign="middle" class="cols_1">
 	  <td class="col_1s">
 	    <s:property value="#rowstatus.index + 1" />
 	  </td>
 	  <td class="col">
-	    <s:property value="oszn.description"/>
+	    <s:property value="szFile.oszn.description"/>
 	  </td>
 	  <td class="col">
-	    <s:property value="requestFileName"/>
+	    <s:property value="szFile.requestFileName"/>
 	  </td>
 	  <td class="col">
-	    <s:text name="%{szFileType.description}"/>
+	    <s:text name="%{szFile.szFileType.description}"/>
 	  </td>
 	  <td class="col">
-	    <s:property value="fileYear"/>
+	    <s:property value="szFile.fileYear"/>
 	  </td>
 	  <td class="col">
-	    <s:property value="fileMonth + 1"/>
+	    <s:property value="szFile.fileMonth + 1"/>
 	  </td>
 	  <td class="col">
-	    <s:property value="importDate"/>
+	    <s:property value="szFile.importDate"/>
 	  </td>
 	  <!-- <td class="col">
 	    <s:property value="userName"/>
 	  </td> -->
 	  <td class="col">
-	    <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{id}"/><s:param name="action" value="'loadToDb'"/></s:url>">
+	    <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="action" value="'loadToDb'"/></s:url>">
 	      load to DB
 	    </a>
 	  </td>
 	  <td class="col">
-	  
-	      <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{id}"/><s:param name="action" value="'loadFromDb'"/></s:url>">
-	        load from DB
-	      </a>
-	    
-	  </td>
-	  <td class="col">
-	    <s:if test="%{internalRequestFileName != null}">
-	      <s:property value="szDataRoot + separator + yyyyMm + separator + internalRequestFileName"/>
+	    <s:if test="loadedToDb">
+	    <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="action" value="'deleteFromDb'"/></s:url>">
+	      delete from DB
+	    </a>
 	    </s:if>
 	  </td>
 	  <td class="col">
-	    <s:if test="internalResponseFileName != null">
-	      <a href="<s:url value='/szFileDownloadServlet'><s:param name="szFileId" value="%{id}"/></s:url>">
-	        <s:property value="requestFileName"/>
+	    <s:if test="loadedToDb">
+	      <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="action" value="'loadFromDb'"/></s:url>">
+	        load from DB
+	      </a>
+	    </s:if>
+	  </td>
+	  <td class="col">
+	    <s:if test="%{szFile.internalRequestFileName != null}">
+	      <s:property value="szDataRoot + separator + yyyyMm + separator + szFile.internalRequestFileName"/>
+	    </s:if>
+	  </td>
+	  <td class="col">
+	    <s:if test="szFile.internalResponseFileName != null">
+	      <a href="<s:url value='/szFileDownloadServlet'><s:param name="szFileId" value="%{szFile.id}"/></s:url>">
+	        <s:property value="szFile.requestFileName"/>
 	      </a>
 	    </s:if>
 	  </td>
