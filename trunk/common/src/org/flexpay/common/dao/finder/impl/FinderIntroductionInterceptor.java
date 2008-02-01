@@ -22,7 +22,7 @@ public class FinderIntroductionInterceptor implements IntroductionInterceptor {
 			Object[] arguments = methodInvocation.getArguments();
 			return executor.executeFinder(methodInvocation.getMethod(), arguments);
 		}
-		if (methodName.startsWith("delete")) {
+		if (!"delete".equals(methodName) && methodName.startsWith("delete")) {
 			Object[] arguments = methodInvocation.getArguments();
 			return methodExecutor.executeUpdate(methodInvocation.getMethod(), arguments);
 		}
