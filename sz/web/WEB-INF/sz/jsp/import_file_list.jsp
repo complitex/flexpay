@@ -24,9 +24,9 @@
 	<td class="th">
 	  <s:text name="sz.import_date" />
 	</td>
-	<td class="th">
+	<!-- <td class="th">
 	  <s:text name="sz.user_name" />
-	</td>
+	</td> -->
 	<td class="th">
 	  load to DB
 	</td>
@@ -63,18 +63,20 @@
 	  <td class="col">
 	    <s:property value="importDate"/>
 	  </td>
-	  <td class="col">
+	  <!-- <td class="col">
 	    <s:property value="userName"/>
-	  </td>
+	  </td> -->
 	  <td class="col">
-	    <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{id}"/></s:url>">
+	    <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{id}"/><s:param name="action" value="'loadToDb'"/></s:url>">
 	      load to DB
 	    </a>
 	  </td>
 	  <td class="col">
-	    <a href="<s:url action='loadSzFileFromDb'><s:param name="szFileId" value="%{id}"/></s:url>">
-	      load from DB
-	    </a>
+	  
+	      <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{id}"/><s:param name="action" value="'loadFromDb'"/></s:url>">
+	        load from DB
+	      </a>
+	    
 	  </td>
 	  <td class="col">
 	    <s:if test="%{internalRequestFileName != null}">
@@ -91,6 +93,7 @@
 	  
 	</tr>
   </s:iterator>
+  
   
   <tr>
     <td colspan="12" height="3" bgcolor="#4a4f4f"/>

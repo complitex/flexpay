@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface SubsidyRecordDao extends GenericDao<SubsidyRecord, Long> {
 
-        List<SubsidyRecord> findObjects(Page pager, Long szFileId);
+	List<SubsidyRecord> findObjects(Page<SubsidyRecord> pager, Long szFileId);
 
+	void deleteBySzFileId(Long id);
 
-    }
+}

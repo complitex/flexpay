@@ -1,6 +1,6 @@
 package org.flexpay.sz.actions;
 
-import org.flexpay.sz.convert.SzFileLoader;
+import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 
@@ -9,7 +9,7 @@ public class LoadFromDbAction {
 	private Long szFileId;
 
 	private SzFileService szFileService;
-	private SzFileLoader szFileLoader;
+	private SzFileUtil szFileLoader;
 	
 	public String execute() throws Throwable {
 		SzFile importFile = szFileService.readFull(szFileId);
@@ -19,7 +19,7 @@ public class LoadFromDbAction {
 		return "success";
 	}
 
-	public void setSzFileLoader(SzFileLoader szFileLoader) {
+	public void setSzFileLoader(SzFileUtil szFileLoader) {
 		this.szFileLoader = szFileLoader;
 	}
 

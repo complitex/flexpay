@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.sz.convert.NotSupportOperationException;
+import org.flexpay.sz.convert.SzFileUtil;
 
 public class SzFile implements java.io.Serializable {
 	public static final Integer IMPORTING_FILE_STATUS = 0;
@@ -47,7 +49,7 @@ public class SzFile implements java.io.Serializable {
 
 		return file;
 	}
-	
+
 	public File getResponseFile(File parentDir) {
 		String yyyy_mm = fileYear + "_" + ((fileMonth + 1) <= 9 ? "0" : "")
 				+ (fileMonth + 1);
@@ -56,12 +58,12 @@ public class SzFile implements java.io.Serializable {
 
 		return file;
 	}
-	
+
 	public String getYyyyMm() {
 		return fileYear + "_" + ((fileMonth + 1) <= 9 ? "0" : "")
-		+ (fileMonth + 1);
+				+ (fileMonth + 1);
 	}
-	
+
 	public Long getId() {
 		return id;
 	}

@@ -1,37 +1,40 @@
 package org.flexpay.sz.actions;
 
 import org.flexpay.ab.actions.CommonAction;
-import org.flexpay.sz.convert.SzFileLoader;
+import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 
 public class LoadToDbAction extends CommonAction {
-	
+
 	private Long szFileId;
-	
+	private String action;
+
 	private SzFileService szFileService;
-	private SzFileLoader szFileLoader;
-	
-	public String execute() throws Exception {
+
+	public String execute() throws Throwable {
 		SzFile szFile = szFileService.readFull(szFileId);
-		szFileLoader.loadToDb(szFile);
-		
+		if ("loadToDb".equals(action)) {
+			SzFileUtil.loadToDb(szFile);
+		} else if ("loadFromDb".equals(action)) {
+			SzFileUtil.loadFromDb(szFile);
+		} else if ("deleteFromDb".equals(action)) {
+			SzFileUtil.deleteRecords(szFile);
+		}
+
 		return "success";
 	}
-
-
-	public void setSzFileLoader(SzFileLoader szFileLoader) {
-		this.szFileLoader = szFileLoader;
-	}
-
 
 	public void setSzFileId(Long szFileId) {
 		this.szFileId = szFileId;
 	}
 
-
 	public void setSzFileService(SzFileService szFileService) {
 		this.szFileService = szFileService;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
 	}
 
 }

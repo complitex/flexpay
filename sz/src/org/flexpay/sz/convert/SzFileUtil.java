@@ -20,17 +20,17 @@ import org.flexpay.sz.service.SzFileTypeService;
 
 import com.linuxense.javadbf.DBFException;
 
-public class SzFileLoader {
+public class SzFileUtil {
 
-	RecordService<CharacteristicRecord> characteristicRecordService;
-	RecordService<SubsidyRecord> subsidyRecordService;
+	private static RecordService<CharacteristicRecord> characteristicRecordService;
+	private static RecordService<SubsidyRecord> subsidyRecordService;
 
-	SzFileService szFileService;
+	private static SzFileService szFileService;
 
-	public void loadToDb(SzFile szFile) throws FileNotFoundException,
-			DBFException {
-		// TODO delete all records for this importFile from
-		// DB(characteristics,...)
+	public static void loadToDb(SzFile szFile) throws FileNotFoundException,
+			DBFException, NotSupportOperationException {
+		
+		deleteRecords(szFile); 
 
 		File file = szFile.getRequestFile(ApplicationConfig.getInstance()
 				.getSzDataRoot());
@@ -63,10 +63,12 @@ public class SzFileLoader {
 			} finally {
 				reader.close();
 			}
+		} else {
+			throw new NotSupportOperationException();
 		}
 	}
 
-	public void loadFromDb(SzFile szFile) throws Throwable {
+	public static void loadFromDb(SzFile szFile) throws Throwable {
 		File oldInternalResponseFile = szFile.getInternalResponseFileName() == null ? null
 				: szFile.getResponseFile(ApplicationConfig.getInstance()
 						.getSzDataRoot());
@@ -75,7 +77,6 @@ public class SzFileLoader {
 		szFile.setInternalResponseFileName(internalResponseFileName);
 		File targetFile = szFile.getResponseFile(ApplicationConfig
 				.getInstance().getSzDataRoot());
-		
 
 		SzFileType szFileType = szFile.getSzFileType();
 
@@ -152,6 +153,8 @@ public class SzFileLoader {
 				if (oldInternalResponseFile != null) {
 					oldInternalResponseFile.delete();
 				}
+			} else {
+				throw new NotSupportOperationException();
 			}
 		} catch (Throwable t) {
 			szFile.setInternalResponseFileName(null);
@@ -161,18 +164,53 @@ public class SzFileLoader {
 
 	}
 
+	public static Integer getNumberOfRecord(SzFile szFile)
+			throws NotSupportOperationException {
+		Long szFileTypeId = szFile.getSzFileType().getId();
+		if (szFileTypeId.equals(SzFileTypeService.CHARACTERISTIC)) {
+			Page<CharacteristicRecord> pager = new Page<CharacteristicRecord>();
+			pager.setPageSize(1);
+			characteristicRecordService.findObjects(pager, szFileTypeId);
+			return pager.getTotalNumberOfElements();
+		} else if (szFileTypeId.equals(SzFileTypeService.SUBSIDY)) {
+			Page<SubsidyRecord> pager = new Page<SubsidyRecord>();
+			pager.setPageSize(1);
+			subsidyRecordService.findObjects(pager, szFileTypeId);
+			return pager.getTotalNumberOfElements();
+		} else {
+			throw new NotSupportOperationException();
+		}
+	}
+
+	public static boolean isLoadedToDb(SzFile szFile)
+			throws NotSupportOperationException {
+		return 0 < getNumberOfRecord(szFile);
+	}
+
+	public static void deleteRecords(SzFile szFile)
+			throws NotSupportOperationException {
+		Long szFileTypeId = szFile.getSzFileType().getId();
+		if (szFileTypeId.equals(SzFileTypeService.CHARACTERISTIC)) {
+			characteristicRecordService.deleteBySzFileId(szFile.getId());
+		} else if (szFileTypeId.equals(SzFileTypeService.SUBSIDY)) {
+			subsidyRecordService.deleteBySzFileId(szFile.getId());
+		} else {
+			throw new NotSupportOperationException();
+		}
+	}
+
 	public void setSzFileService(SzFileService szFileService) {
-		this.szFileService = szFileService;
+		SzFileUtil.szFileService = szFileService;
 	}
 
 	public void setCharacteristicRecordService(
 			RecordService<CharacteristicRecord> characteristicRecordService) {
-		this.characteristicRecordService = characteristicRecordService;
+		SzFileUtil.characteristicRecordService = characteristicRecordService;
 	}
 
 	public void setSubsidyRecordService(
 			RecordService<SubsidyRecord> subsidyRecordService) {
-		this.subsidyRecordService = subsidyRecordService;
+		SzFileUtil.subsidyRecordService = subsidyRecordService;
 	}
 
 }
