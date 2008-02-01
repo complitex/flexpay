@@ -81,6 +81,11 @@ public class SzFileServiceImpl implements SzFileService {
 		return szFileDao.listSzFiles();
 	}
 
+	@Transactional(readOnly = false)
+	public void delete(SzFile szFile) {
+		szFileDao.delete(szFile);
+	}
+
 	public void setSzFileDao(SzFileDao szFileDao) {
 		this.szFileDao = szFileDao;
 	}

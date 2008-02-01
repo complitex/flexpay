@@ -37,10 +37,10 @@
 	  load from DB
 	</td>
 	<td class="th">
-	  request file
+	  response file
 	</td>
 	<td class="th">
-	  response file
+	  delete
 	</td>
   </tr>
   <s:iterator value="szFileWrapperList" status="rowstatus">
@@ -76,10 +76,10 @@
 	  </td>
 	  <td class="col">
 	    <s:if test="loadedToDb">
-	    <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="action" value="'deleteFromDb'"/></s:url>">
-	      delete from DB
-	    </a>
-	    </s:if>
+	      <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="action" value="'deleteFromDb'"/></s:url>">
+	        delete from DB
+	      </a>
+	      </s:if>
 	  </td>
 	  <td class="col">
 	    <s:if test="loadedToDb">
@@ -89,16 +89,16 @@
 	    </s:if>
 	  </td>
 	  <td class="col">
-	    <s:if test="%{szFile.internalRequestFileName != null}">
-	      <s:property value="szDataRoot + separator + yyyyMm + separator + szFile.internalRequestFileName"/>
-	    </s:if>
-	  </td>
-	  <td class="col">
 	    <s:if test="szFile.internalResponseFileName != null">
 	      <a href="<s:url value='/szFileDownloadServlet'><s:param name="szFileId" value="%{szFile.id}"/></s:url>">
 	        <s:property value="szFile.requestFileName"/>
 	      </a>
 	    </s:if>
+	  </td>
+	  <td class="col">
+	    <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="action" value="'fullDelete'"/></s:url>">
+	      delete
+	    </a>
 	  </td>
 	  
 	</tr>
