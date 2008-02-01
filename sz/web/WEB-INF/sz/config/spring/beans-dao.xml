@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-    <bean id="osznDAO" parent="abstractDao">
+	<bean id="osznDAO" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.sz.dao.OsznDao" />
 		<property name="target">
@@ -22,7 +22,7 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 	<bean id="szFileTypeDAO" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.sz.dao.SzFileTypeDao" />
@@ -32,7 +32,7 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 	<bean id="szFileStatusDAO" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.sz.dao.SzFileStatusDao" />
@@ -42,7 +42,7 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 	<bean id="szFileActualityStatusDAO" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.sz.dao.SzFileActualityStatusDao" />
@@ -52,7 +52,7 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 	<bean id="characteristicRecordDAO" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.sz.dao.CharacteristicRecordDao" />
@@ -62,7 +62,7 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 	<bean id="subsidyRecordDAO" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.sz.dao.SubsidyRecordDao" />
@@ -72,5 +72,5 @@
 			</bean>
 		</property>
 	</bean>
-	
-</beans>	
+
+</beans>

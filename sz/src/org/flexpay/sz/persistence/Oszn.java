@@ -50,6 +50,4 @@ public class Oszn {
 	public void setDistrict(District district) {
 		this.district = district;
 	}
-	
-
 }

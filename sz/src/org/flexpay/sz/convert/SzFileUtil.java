@@ -40,7 +40,6 @@ public class SzFileUtil {
 			SzDbfReader<CharacteristicRecord, CharacteristicDBFInfo> reader = new SzDbfReader<CharacteristicRecord, CharacteristicDBFInfo>(
 					dbfInfo, file);
 			try {
-
 				CharacteristicRecord record = null;
 				while ((record = reader.read()) != null) {
 					record.setSzFile(szFile);
