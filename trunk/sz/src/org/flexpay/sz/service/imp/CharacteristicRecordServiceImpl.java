@@ -35,8 +35,20 @@ public class CharacteristicRecordServiceImpl implements
 	}
 
 	@Transactional(readOnly = false)
-	public List<CharacteristicRecord> findObjects(Page<CharacteristicRecord> pager, Long szFileId) {
+	public List<CharacteristicRecord> findObjects(
+			Page<CharacteristicRecord> pager, Long szFileId) {
 		return characteristicRecordDao.findObjects(pager, szFileId);
+	}
+
+	/**
+	 * Delete all CharacteristicRecord by SzFile
+	 * 
+	 * @param id
+	 *            CharacteristicRecord's id field
+	 */
+	@Transactional(readOnly = false)
+	public void deleteBySzFileId(Long id) {
+		characteristicRecordDao.deleteBySzFileId(id);
 	}
 
 	public void setCharacteristicRecordDao(

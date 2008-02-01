@@ -61,5 +61,9 @@
 	<query name="SubsidyRecord.findObjects.count">
 		select count(*) from SubsidyRecord c where c.szFile.id=?
 	</query>
+	
+	<query name="SubsidyRecord.deleteBySzFileId">
+		delete from SubsidyRecord c where c.szFile.id=?
+	</query>
 
 </hibernate-mapping>

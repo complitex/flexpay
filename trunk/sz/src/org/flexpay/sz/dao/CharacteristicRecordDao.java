@@ -8,7 +8,9 @@ import org.flexpay.sz.persistence.CharacteristicRecord;
 
 public interface CharacteristicRecordDao extends GenericDao<CharacteristicRecord, Long>{
 	
-	List<CharacteristicRecord> findObjects(Page pager, Long szFileId);
+	List<CharacteristicRecord> findObjects(Page<CharacteristicRecord> pager, Long szFileId);
+	
+	void deleteBySzFileId(Long id);
 	
 	
 }

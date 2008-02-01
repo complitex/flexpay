@@ -37,5 +37,9 @@
 	<query name="CharacteristicRecord.findObjects.count">
 		select count(*) from CharacteristicRecord c where c.szFile.id=?
 	</query>
+	
+	<query name="CharacteristicRecord.deleteBySzFileId">
+		delete from CharacteristicRecord c where c.szFile.id=?
+	</query>
 
 </hibernate-mapping>

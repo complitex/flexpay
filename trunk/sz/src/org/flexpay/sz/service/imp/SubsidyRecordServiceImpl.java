@@ -9,10 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
 @Transactional(readOnly = true, rollbackFor = Exception.class)
-public class SubsidyRecordServiceImpl implements
-        RecordService<SubsidyRecord> {
+public class SubsidyRecordServiceImpl implements RecordService<SubsidyRecord> {
 	private static Logger log = Logger
 			.getLogger(SubsidyRecordServiceImpl.class);
 
@@ -20,7 +18,7 @@ public class SubsidyRecordServiceImpl implements
 
 	/**
 	 * Create SubsidyRecord
-	 *
+	 * 
 	 * @param subsidyRecord
 	 *            SubsidyRecordRecord object
 	 * @return created SubsidyRecord object
@@ -36,12 +34,23 @@ public class SubsidyRecordServiceImpl implements
 	}
 
 	@Transactional(readOnly = false)
-	public List<SubsidyRecord> findObjects(Page<SubsidyRecord> pager, Long szFileId) {
+	public List<SubsidyRecord> findObjects(Page<SubsidyRecord> pager,
+			Long szFileId) {
 		return subsidyRecordDao.findObjects(pager, szFileId);
 	}
 
-	public void setSubsidyRecordDao(
-			SubsidyRecordDao subsidyRecordDao) {
+	/**
+	 * Delete all SubsidyRecord by SzFile
+	 * 
+	 * @param id
+	 *            SubsidyRecord's id field
+	 */
+	@Transactional(readOnly = false)
+	public void deleteBySzFileId(Long id) {
+		subsidyRecordDao.deleteBySzFileId(id);
+	}
+
+	public void setSubsidyRecordDao(SubsidyRecordDao subsidyRecordDao) {
 		this.subsidyRecordDao = subsidyRecordDao;
 	}
 

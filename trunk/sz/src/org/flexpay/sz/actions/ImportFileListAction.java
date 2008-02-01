@@ -44,5 +44,5 @@ public class ImportFileListAction extends CommonAction {
 	public String getSeparator() {
 		return File.separator;
 	}
-
+	
 }

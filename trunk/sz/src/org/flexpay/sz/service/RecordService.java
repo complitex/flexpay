@@ -3,8 +3,9 @@ package org.flexpay.sz.service;
 import java.util.List;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.sz.persistence.Record;
 
-public interface RecordService<R> {
+public interface RecordService<R extends Record> {
 	/**
 	 * Create Record
 	 * 
@@ -13,7 +14,23 @@ public interface RecordService<R> {
 	 * @return created Record object
 	 */
 	R create(R record);
-	
+
+	/**
+	 * Get all Record by SzFile in page mode
+	 * 
+	 * @param pager
+	 *            Page object
+	 * 
+	 * @return List of Record objects for pager
+	 */
 	List<R> findObjects(Page<R> pager, Long szFileId);
+
+	/**
+	 * Delete all Record by SzFile
+	 * 
+	 * @param id
+	 *            Record's id field
+	 */
+	void deleteBySzFileId(Long id);
 
 }
