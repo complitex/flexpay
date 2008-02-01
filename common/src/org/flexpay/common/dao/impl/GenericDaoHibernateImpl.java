@@ -4,6 +4,7 @@ import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.finder.FinderArgumentTypeFactory;
 import org.flexpay.common.dao.finder.FinderExecutor;
 import org.flexpay.common.dao.finder.FinderNamingStrategy;
+import org.flexpay.common.dao.finder.MethodExecutor;
 import org.flexpay.common.dao.finder.impl.SimpleFinderArgumentTypeFactory;
 import org.flexpay.common.dao.finder.impl.SimpleFinderNamingStrategy;
 import org.flexpay.common.dao.paging.Page;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @SuppressWarnings ({"unchecked"})
 public class GenericDaoHibernateImpl<T, PK extends Serializable>
-		implements GenericDao<T, PK>, FinderExecutor {
+		implements GenericDao<T, PK>, FinderExecutor, MethodExecutor {
 	protected HibernateTemplate hibernateTemplate;
 
 	// Default. Can override in config
@@ -71,6 +72,19 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	public List<T> executeFinder(Method method, final Object[] queryArgs) {
 		final String queryName = getNamingStrategy().queryNameFromMethod(type, method);
 		return findByNamedQuery(queryName, queryArgs);
+	}
+
+	public Integer executeUpdate(Method method, final Object[] values) {
+		final String queryName = getNamingStrategy().queryNameFromMethod(type, method);
+		return (Integer)hibernateTemplate.execute(new HibernateCallback() {
+			public Integer doInHibernate(Session session) throws HibernateException {
+				Query queryObject = session.getNamedQuery(queryName);
+				for (int i = 0; i < values.length; i++) {
+					queryObject.setParameter(i, values[i]);
+				}
+				return queryObject.executeUpdate();
+			}
+		});
 	}
 
 	private List findByNamedQuery(final String queryName, final Object[] values) throws DataAccessException {
