@@ -2,6 +2,7 @@ package org.flexpay.common.dao.finder.impl;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.flexpay.common.dao.finder.FinderExecutor;
+import org.flexpay.common.dao.finder.MethodExecutor;
 import org.springframework.aop.IntroductionInterceptor;
 
 /**
@@ -14,11 +15,16 @@ public class FinderIntroductionInterceptor implements IntroductionInterceptor {
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 
 		FinderExecutor executor = (FinderExecutor) methodInvocation.getThis();
+		MethodExecutor methodExecutor = (MethodExecutor)methodInvocation.getThis();
 
 		String methodName = methodInvocation.getMethod().getName();
 		if (methodName.startsWith("find") || methodName.startsWith("list")) {
 			Object[] arguments = methodInvocation.getArguments();
 			return executor.executeFinder(methodInvocation.getMethod(), arguments);
+		}
+		if (methodName.startsWith("delete")) {
+			Object[] arguments = methodInvocation.getArguments();
+			return methodExecutor.executeUpdate(methodInvocation.getMethod(), arguments);
 		}
 //		else if (methodName.startsWith("iterate")) {
 //			Object[] arguments = methodInvocation.getArguments();
@@ -35,6 +41,6 @@ public class FinderIntroductionInterceptor implements IntroductionInterceptor {
 	}
 
 	public boolean implementsInterface(Class intf) {
-		return intf.isInterface() && FinderExecutor.class.isAssignableFrom(intf);
+		return intf.isInterface() && (FinderExecutor.class.isAssignableFrom(intf) || MethodExecutor.class.isAssignableFrom(intf));
 	}
 }
