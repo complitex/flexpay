@@ -15,6 +15,8 @@ import org.flexpay.sz.persistence.corrections.DistrictCorrection;
 import org.flexpay.sz.persistence.corrections.StreetCorrection;
 import org.flexpay.sz.service.CorrectionsService;
 
+import java.util.List;
+
 public class CorrectionsServiceImpl implements CorrectionsService {
 
 	private DistrictCorrectionDao districtCorrectionDao;
@@ -70,10 +72,10 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	public DistrictCorrection findDistrictCorrection(Oszn oszn, String externalCode)
 			throws FlexPayException {
 
-		DistrictCorrection correction = districtCorrectionDao
+		List<DistrictCorrection> corrections = districtCorrectionDao
 				.findCorrection(oszn.getId(), externalCode);
-		if (correction != null) {
-			return correction;
+		if (corrections != null && !corrections.isEmpty()) {
+			return corrections.get(0);
 		}
 
 		throw new FlexPayException("Cannot find district correction",

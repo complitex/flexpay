@@ -1,8 +1,8 @@
 package org.flexpay.sz.service;
 
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.sz.persistence.Oszn;
-import org.flexpay.sz.persistence.corrections.DistrictCorrection;
 
 public class TestCorrectionsService extends SpringBeanAwareTestCase {
 
@@ -16,8 +16,14 @@ public class TestCorrectionsService extends SpringBeanAwareTestCase {
 
 		Oszn oszn = new Oszn();
 		oszn.setId(-5l);
-		DistrictCorrection correction = service.findDistrictCorrection(oszn, "xbz");
 
-		assertNull("Found invalid correction", correction);
+		try {
+			service.findDistrictCorrection(oszn, "xbz");
+			fail("Found invalid correction");
+
+		}
+		catch (FlexPayException e) {
+			// good execution branch, everything is ok
+		}
 	}
 }

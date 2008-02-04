@@ -52,4 +52,9 @@
 				  not-null="true" />
 	</class>
 
+	<query name="DistrictCorrection.findCorrection">
+		FROM DistrictCorrection c
+		WHERE c.oszn.id=? AND c.externalId=?
+	</query>
+
 </hibernate-mapping>
