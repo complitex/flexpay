@@ -17,20 +17,20 @@ public class SubsidyRecordDBFInfo extends DBFInfo<SubsidyRecord> {
         SubsidyRecord create(Object[] rowData) throws DBFException,
                 FileNotFoundException {
             SubsidyRecord subsidyRecord = new SubsidyRecord();
-            subsidyRecord.setSurName((String) rowData[getInd("sur_nam")]);
-            subsidyRecord.setFirstName((String) rowData[getInd("f_nam")]);
-            subsidyRecord.setMidName((String) rowData[getInd("m_nam")]);
-            subsidyRecord.setIndx((String) rowData[getInd("indx")]);
-            subsidyRecord.setN_name((String) rowData[getInd("n_name")]);
-            subsidyRecord.setN_code((String) rowData[getInd("n_code")]);
-            subsidyRecord.setStreetType((String) rowData[getInd("vul_cat")]);
-            subsidyRecord.setStreetName((String) rowData[getInd("vul_name")]);
+            subsidyRecord.setSurName(((String) rowData[getInd("sur_nam")]).trim());
+            subsidyRecord.setFirstName(((String) rowData[getInd("f_nam")]).trim());
+            subsidyRecord.setMidName(((String) rowData[getInd("m_nam")]).trim());
+            subsidyRecord.setIndx(((String) rowData[getInd("indx")]).trim());
+            subsidyRecord.setN_name(((String) rowData[getInd("n_name")]).trim());
+            subsidyRecord.setN_code(((String) rowData[getInd("n_code")]).trim());
+            subsidyRecord.setStreetType(((String) rowData[getInd("vul_cat")]).trim());
+            subsidyRecord.setStreetName(((String) rowData[getInd("vul_name")]).trim());
             subsidyRecord.setExtStreetID(new Double((String)rowData[getInd("vul_code")]));
-            subsidyRecord.setHouseNum((String) rowData[getInd("bld_num")]);
-            subsidyRecord.setPartNum((String) rowData[getInd("corp_num")]);
-            subsidyRecord.setAppartment((String) rowData[getInd("flat")]);
-            subsidyRecord.setAccount((String) rowData[getInd("own_num")]);
-            subsidyRecord.setApp_num((String) rowData[getInd("app_num")]);
+            subsidyRecord.setHouseNum(((String) rowData[getInd("bld_num")]).trim());
+            subsidyRecord.setPartNum(((String) rowData[getInd("corp_num")]).trim());
+            subsidyRecord.setAppartment(((String) rowData[getInd("flat")]).trim());
+            subsidyRecord.setAccount(((String) rowData[getInd("own_num")]).trim());
+            subsidyRecord.setApp_num(((String) rowData[getInd("app_num")]).trim());
             subsidyRecord.setBegin((Date) rowData[getInd("dat_beg")]);
             subsidyRecord.setDat_end((Date) rowData[getInd("dat_end")]);
             subsidyRecord.setCm_area((Double)rowData[getInd("cm_area")]);
@@ -74,7 +74,7 @@ public class SubsidyRecordDBFInfo extends DBFInfo<SubsidyRecord> {
             rowData[getInd("n_code")]  = subsidyRecord.getN_code();
             rowData[getInd("vul_cat")] = subsidyRecord.getStreetType();
             rowData[getInd("vul_name")] = subsidyRecord.getStreetName();
-            rowData[getInd("vul_code")] = subsidyRecord.getExtStreetID().toString();
+            rowData[getInd("vul_code")] = "" + subsidyRecord.getExtStreetID().intValue();
             rowData[getInd("bld_num")] = subsidyRecord.getHouseNum();
             rowData[getInd("corp_num")] = subsidyRecord.getPartNum();
             rowData[getInd("flat")] = subsidyRecord.getAppartment();

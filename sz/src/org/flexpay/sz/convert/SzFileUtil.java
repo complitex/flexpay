@@ -42,10 +42,12 @@ public class SzFileUtil {
 			responseFile.delete();
 		}
 		
-		// delete request file
+		// delete request file and parent dir if no more files in this dir
 		File requestFile = szFile.getRequestFile(ApplicationConfig
 				.getInstance().getSzDataRoot());
+		File parentDir = requestFile.getParentFile();
 		requestFile.delete();
+		parentDir.delete();
 
 		// delete SzFile
 		szFileService.delete(szFile);
