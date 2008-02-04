@@ -1,4 +1,4 @@
-package org.flexpay.ab;
+package org.flexpay.ab.service;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -8,8 +8,7 @@ public class AllTests extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTest(org.flexpay.ab.persistence.AllTests.suite());
-        suite.addTest(org.flexpay.ab.service.AllTests.suite());
+        suite.addTest(new TestStreetTypeService());
         return suite;
     }
 }

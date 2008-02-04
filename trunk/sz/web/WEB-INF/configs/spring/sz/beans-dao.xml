@@ -73,4 +73,44 @@
 		</property>
 	</bean>
 
+	<bean id="apartmentCorrectionDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.sz.dao.ApartmentCorrectionDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.sz.persistence.corrections.ApartmentNumberCorrection" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="buildingCorrectionDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.sz.dao.BuildingCorrectionDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.sz.persistence.corrections.BuildingNumberCorrection" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="districtCorrectionDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.sz.dao.DistrictCorrectionDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.sz.persistence.corrections.DistrictCorrection" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="streetCorrectionDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.sz.dao.StreetCorrectionDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.sz.persistence.corrections.StreetCorrection" />
+			</bean>
+		</property>
+	</bean>
+
 </beans>

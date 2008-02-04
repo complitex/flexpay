@@ -80,8 +80,16 @@
 	<path id="common.test.classpath">
 		<path refid="common.production.classpath" />
 		<path refid="common.jar" />
+		<path refid="common.test.jar" />
 		<path refid="junit.lib" />
 	</path>
+
+    <path id="common.runtests.classpath">
+        <path refid="common.test.classpath" />
+        <path location="${build.dir}/web" />
+        <path location="common/src" />
+        <path location="common/tests/data/org/flexpay/common" />
+    </path>
 
 	<target name="common.clean.build">
 		<antcall target="clean.build" />
@@ -131,11 +139,7 @@
 		</antcall>
 	</target>
 
-	<target name="common.runtests" depends="common.build.test.jar">
-		<path id="common.runtests.classpath">
-			<path refid="common.test.classpath" />
-			<path location="${build.dir}/lib/${common.tests.jar.name}" />
-		</path>
+	<target name="common.runtests" depends="common.build.test.jar,common.prepare.war">
 		<antcall target="template.run.tests">
 			<param name="test_name" value="org.flexpay.common.AllTests" />
 			<reference refid="common.runtests.classpath" torefid="classpath" />
@@ -203,6 +207,13 @@
 		<delete dir="${build.dir}/docs" includes="**/*" />
 	</target>
 
+    <target name="clean.all">
+        <delete dir="${build.dir}/classes" includes="**/*" includeemptydirs="true" />
+        <delete dir="${build.dir}/web" includes="**/*" />
+        <delete dir="${build.dir}/docs" includes="**/*" />
+        <delete dir="${build.dir}/lib" includes="**/*" />
+    </target>
+
 	<target name="init.distr">
 		<mkdir dir="${distr.dir}" />
 	</target>
@@ -255,7 +266,7 @@
 	</target>
 
 	<target name="template.run.tests">
-		<junit printsummary="yes" haltonfailure="yes" fork="yes">
+		<junit printsummary="yes" haltonfailure="yes" fork="yes" dir="${build.dir}/web">
 			<classpath>
 				<path refid="classpath" />
 			</classpath>

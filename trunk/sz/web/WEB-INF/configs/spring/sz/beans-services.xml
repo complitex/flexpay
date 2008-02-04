@@ -33,8 +33,14 @@
 		<property name="subsidyRecordDao" ref="subsidyRecordDAO" />
 	</bean>
 
-	
-	<bean id="serviceHolder" class="org.flexpay.sz.service.ServiceHolder">
+    <bean id="correctionsService" class="org.flexpay.sz.service.imp.CorrectionsServiceImpl">
+        <property name="apartmentCorrectionDao" ref="apartmentCorrectionDao" />
+        <property name="buildingCorrectionDao" ref="buildingCorrectionDao" />
+        <property name="districtCorrectionDao" ref="districtCorrectionDao" />
+        <property name="streetCorrectionDao" ref="streetCorrectionDao" />
+    </bean>
+
+    <bean id="serviceHolder" class="org.flexpay.sz.service.ServiceHolder">
 		<property name="szFileService" ref="szFileService" />
 	</bean>
 	

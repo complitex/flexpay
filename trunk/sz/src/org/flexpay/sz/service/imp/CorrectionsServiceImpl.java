@@ -23,6 +23,42 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	private ApartmentCorrectionDao apartmentCorrectionDao;
 
 	/**
+	 * Setter for property 'districtCorrectionDao'.
+	 *
+	 * @param districtCorrectionDao Value to set for property 'districtCorrectionDao'.
+	 */
+	public void setDistrictCorrectionDao(DistrictCorrectionDao districtCorrectionDao) {
+		this.districtCorrectionDao = districtCorrectionDao;
+	}
+
+	/**
+	 * Setter for property 'buildingCorrectionDao'.
+	 *
+	 * @param buildingCorrectionDao Value to set for property 'buildingCorrectionDao'.
+	 */
+	public void setBuildingCorrectionDao(BuildingCorrectionDao buildingCorrectionDao) {
+		this.buildingCorrectionDao = buildingCorrectionDao;
+	}
+
+	/**
+	 * Setter for property 'streetCorrectionDao'.
+	 *
+	 * @param streetCorrectionDao Value to set for property 'streetCorrectionDao'.
+	 */
+	public void setStreetCorrectionDao(StreetCorrectionDao streetCorrectionDao) {
+		this.streetCorrectionDao = streetCorrectionDao;
+	}
+
+	/**
+	 * Setter for property 'apartmentCorrectionDao'.
+	 *
+	 * @param apartmentCorrectionDao Value to set for property 'apartmentCorrectionDao'.
+	 */
+	public void setApartmentCorrectionDao(ApartmentCorrectionDao apartmentCorrectionDao) {
+		this.apartmentCorrectionDao = apartmentCorrectionDao;
+	}
+
+	/**
 	 * Find District correction for external organization
 	 *
 	 * @param oszn		 External organisation
