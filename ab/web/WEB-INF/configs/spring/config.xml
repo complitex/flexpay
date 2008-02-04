@@ -5,4 +5,5 @@
 
 	<import resource="common/common_config.xml" />
 	<import resource="ab/ab_config.xml" />
+
 </beans>

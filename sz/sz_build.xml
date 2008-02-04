@@ -21,6 +21,7 @@
 	</fileset>
 
 	<path id="sz.jar" location="${build.dir}/lib/${sz.jar.name}" />
+	<path id="sz.test.jar" location="${build.dir}/lib/${sz.tests.jar.name}" />
 
 	<path id="sz.production.classpath">
 		<path refid="ab.production.classpath" />
@@ -28,7 +29,23 @@
 		<path refid="ab.jar" />
 	</path>
 
-	<target name="sz.clean.build">
+    <path id="sz.test.classpath">
+        <path refid="ab.test.classpath" />
+        <path refid="sz.jar" />
+        <path refid="sz.test.jar" />
+        <path refid="sz.production.classpath" />
+    </path>
+
+    <path id="sz.runtests.classpath">
+        <path refid="ab.runtests.classpath" />
+        <path refid="sz.test.classpath" />
+        <path location="${build.dir}/web" />
+        <path location="sz/src" />
+        <path location="sz/tests/data/org/flexpay/sz" />
+    </path>
+
+
+    <target name="sz.clean.build">
 		<antcall target="clean.build" />
 	</target>
 
@@ -128,5 +145,47 @@
 				   value="${common.dir}/web/WEB-INF/configs/ps/data_source_mysql5.properties" />
 		</antcall>
 	</target>
+
+    <target name="sz.build.test.jar"
+            depends="ab.build.test.jar,sz.build.production.jar">
+        <antcall target="template.compile.test">
+            <param name="sources.dir" value="${sz.dir}/${tests.src.dir}" />
+            <reference refid="sz.test.classpath" torefid="classpath" />
+        </antcall>
+
+        <fileset id="resources" dir="${sz.dir}/${tests.resources.dir}">
+            <include name="**/*.*" />
+        </fileset>
+
+        <antcall target="template.jar">
+            <param name="dest.jar" value="${sz.tests.jar.name}" />
+            <reference refid="resources" torefid="resources" />
+        </antcall>
+    </target>
+
+    <target name="sz.prepare.war" depends="ab.prepare.war">
+        <fileset id="sz.web.resources" dir="${sz.dir}/web" />
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="" />
+            <param name="src.i18n.dir" value="${build.dir}/empty" />
+            <reference refid="sz.web.resources" torefid="resources" />
+        </antcall>
+
+        <fileset dir="${sz.dir}/${src.dir}" id="sz.classes.resources">
+            <patternset refid="resources_pattern" />
+        </fileset>
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="/WEB-INF/classes" />
+            <param name="src.i18n.dir" value="${sz.dir}/${src.dir}" />
+            <reference refid="sz.classes.resources" torefid="resources" />
+        </antcall>
+    </target>
+
+    <target name="sz.runtests" depends="sz.build.test.jar,sz.prepare.war">
+        <antcall target="template.run.tests">
+            <param name="test_name" value="org.flexpay.sz.AllTests" />
+            <reference refid="sz.runtests.classpath" torefid="classpath" />
+        </antcall>
+    </target>
 
 </project>

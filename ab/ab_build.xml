@@ -31,10 +31,19 @@
 	<path id="ab.test.classpath">
 		<path refid="common.test.classpath" />
 		<path refid="ab.jar" />
+		<path refid="ab.test.jar" />
 		<path refid="ab.production.classpath" />
 	</path>
 
-	<target name="ab.clean.build">
+    <path id="ab.runtests.classpath">
+        <path refid="common.runtests.classpath" />
+        <path refid="ab.test.classpath" />
+        <path location="${build.dir}/web" />
+        <path location="ab/src" />
+        <path location="ab/tests/data/org/flexpay/ab" />
+    </path>
+
+    <target name="ab.clean.build">
 		<antcall target="clean.build" />
 	</target>
 
@@ -98,24 +107,27 @@
 		</antcall>
 	</target>
 
-	<!-- Build production web-archive -->
-	<target name="template.ab.war.production"
-			depends="ab.build.production.jar,common.prepare.war,init.distr">
-		<fileset id="ab.web.resources" dir="${ab.dir}/web" />
-		<antcall target="template.prepare.war">
-			<param name="to_dir" value="" />
-			<param name="src.i18n.dir" value="${build.dir}/empty" />
-			<reference refid="ab.web.resources" torefid="resources" />
-		</antcall>
+    <target name="ab.prepare.war" depends="common.prepare.war">
+        <fileset id="ab.web.resources" dir="${ab.dir}/web" />
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="" />
+            <param name="src.i18n.dir" value="${build.dir}/empty" />
+            <reference refid="ab.web.resources" torefid="resources" />
+        </antcall>
 
-		<fileset dir="${ab.dir}/${src.dir}" id="ab.classes.resources">
-			<patternset refid="resources_pattern" />
-		</fileset>
-		<antcall target="template.prepare.war">
-			<param name="to_dir" value="/WEB-INF/classes" />
-			<param name="src.i18n.dir" value="${ab.dir}/${src.dir}" />
-			<reference refid="ab.classes.resources" torefid="resources" />
-		</antcall>
+        <fileset dir="${ab.dir}/${src.dir}" id="ab.classes.resources">
+            <patternset refid="resources_pattern" />
+        </fileset>
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="/WEB-INF/classes" />
+            <param name="src.i18n.dir" value="${ab.dir}/${src.dir}" />
+            <reference refid="ab.classes.resources" torefid="resources" />
+        </antcall>
+    </target>
+
+    <!-- Build production web-archive -->
+	<target name="template.ab.war.production"
+			depends="clean.all,ab.build.production.jar,ab.prepare.war,init.distr">
 
 		<copy file="${build.dir}/web/WEB-INF/configs/ps/${app_server.properties}"
 			  overwrite="true"
@@ -147,11 +159,7 @@
 		</antcall>
 	</target>
 
-	<target name="ab.runtests" depends="ab.build.test.jar">
-		<path id="ab.runtests.classpath">
-			<path refid="ab.test.classpath" />
-			<path location="${build.dir}/lib/${ab.tests.jar.name}" />
-		</path>
+	<target name="ab.runtests" depends="ab.build.test.jar,ab.prepare.war">
 		<antcall target="template.run.tests">
 			<param name="test_name" value="org.flexpay.ab.AllTests" />
 			<reference refid="ab.runtests.classpath" torefid="classpath" />
