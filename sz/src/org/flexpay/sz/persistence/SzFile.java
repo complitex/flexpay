@@ -5,8 +5,6 @@ import java.util.Date;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.sz.convert.NotSupportedOperationException;
-import org.flexpay.sz.convert.SzFileUtil;
 
 public class SzFile implements java.io.Serializable {
 	public static final Integer IMPORTING_FILE_STATUS = 0;
