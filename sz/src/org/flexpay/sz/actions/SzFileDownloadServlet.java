@@ -1,24 +1,20 @@
 package org.flexpay.sz.actions;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.ServiceHolder;
 import org.flexpay.sz.service.SzFileService;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+
 public class SzFileDownloadServlet extends HttpServlet {
 
-	private static final int BUFSIZE = 100;
+	private static Logger log = Logger.getLogger(SzFileDownloadServlet.class);
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
@@ -28,32 +24,32 @@ public class SzFileDownloadServlet extends HttpServlet {
 
 		SzFile szFile = szFileService.readFull(szFileId);
 		File szDataRoot = ApplicationConfig.getInstance().getSzDataRoot();
-		File file = null;
+		File file;
 		if (szFile != null) {
 			file = szFile.getResponseFile(szDataRoot);
+		} else {
+			OutputStream os = response.getOutputStream();
+			os.write(("File not found: " + szFileId).getBytes());
+			IOUtils.closeQuietly(os);
+			return;
 		}
 
 		response.setContentType("application/octet-stream");
 		response.setContentLength((int) file.length());
 		response.setHeader("Content-Disposition", "attachment; filename=\""
-				+ szFile.getRequestFileName() + "\"");
+												  + szFile.getRequestFileName() + "\"");
 
-		byte[] bbuf = new byte[BUFSIZE];
-		int length = 0;
 		InputStream is = null;
 		OutputStream os = null;
 		try {
-			is = new DataInputStream(new FileInputStream(file));
 			os = response.getOutputStream();
-			while ((is != null) && ((length = is.read(bbuf)) != -1)) {
-				os.write(bbuf, 0, length);
-			}
+			is = new DataInputStream(new FileInputStream(file));
+			IOUtils.copyLarge(is, os);
+		} catch (IOException e) {
+			log.error("Error getting file " + file, e);
 		} finally {
-
-			is.close();
-			os.flush();
-			os.close();
+			IOUtils.closeQuietly(is);
+			IOUtils.closeQuietly(os);
 		}
 	}
-
 }

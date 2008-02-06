@@ -67,6 +67,10 @@
 		<!-- SZ corrections -->
 		<mapping resource="org/flexpay/sz/persistence/corrections/Corrections.hbm.xml" />
 
+		<mapping resource="org/flexpay/sz/persistence/Organisation.hbm.xml" />
+
+		<mapping resource="org/flexpay/sz/persistence/ServiceTypeRecord.hbm.xml" />
+
 	</session-factory>
 
 </hibernate-configuration>

@@ -3,23 +3,19 @@ package org.flexpay.sz.service;
 import org.flexpay.sz.persistence.SzFileStatus;
 
 public interface SzFileStatusService {
-	
-	Long IMPORTED = new Long(1);
-	Long MARKED_FOR_PROCESSING = new Long(2);
-	Long PROCESSING = new Long(3);
-	Long PROCESSED = new Long(4);
-	Long PROCESSED_WITH_WARNINGS = new Long(5);
-	Long MARKED_AS_DELETED = new Long(6);
-	
+
+	Long IMPORTED = 1L;
+	Long MARKED_FOR_PROCESSING = 2L;
+	Long PROCESSING = 3L;
+	Long PROCESSED = 4L;
+	Long PROCESSED_WITH_WARNINGS = 5L;
+	Long MARKED_AS_DELETED = 6L;
+
 	/**
 	 * Read SzFileStatus object by its unique id
-	 * 
+	 *
 	 * @param id SzFileStatus key
-	 *            
 	 * @return SzFileStatus object, or <code>null</code> if object not found
 	 */
 	SzFileStatus read(Long id);
-	
-	
-
 }

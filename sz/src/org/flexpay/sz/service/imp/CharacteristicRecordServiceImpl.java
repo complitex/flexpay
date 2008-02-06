@@ -1,7 +1,5 @@
 package org.flexpay.sz.service.imp;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.sz.dao.CharacteristicRecordDao;
@@ -9,7 +7,9 @@ import org.flexpay.sz.persistence.CharacteristicRecord;
 import org.flexpay.sz.service.RecordService;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+import java.util.List;
+
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class CharacteristicRecordServiceImpl implements
 		RecordService<CharacteristicRecord> {
 	private static Logger log = Logger
@@ -19,12 +19,11 @@ public class CharacteristicRecordServiceImpl implements
 
 	/**
 	 * Create CharacteristicRecord
-	 * 
-	 * @param characteristic
-	 *            CharacteristicRecord object
+	 *
+	 * @param characteristic CharacteristicRecord object
 	 * @return created CharacteristicRecord object
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public CharacteristicRecord create(CharacteristicRecord characteristic) {
 		characteristicRecordDao.create(characteristic);
 		if (log.isDebugEnabled()) {
@@ -34,7 +33,7 @@ public class CharacteristicRecordServiceImpl implements
 		return characteristic;
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public List<CharacteristicRecord> findObjects(
 			Page<CharacteristicRecord> pager, Long szFileId) {
 		return characteristicRecordDao.findObjects(pager, szFileId);
@@ -42,11 +41,10 @@ public class CharacteristicRecordServiceImpl implements
 
 	/**
 	 * Delete all CharacteristicRecord by SzFile
-	 * 
-	 * @param id
-	 *            CharacteristicRecord's id field
+	 *
+	 * @param id CharacteristicRecord's id field
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void deleteBySzFileId(Long id) {
 		characteristicRecordDao.deleteBySzFileId(id);
 	}
@@ -55,5 +53,4 @@ public class CharacteristicRecordServiceImpl implements
 			CharacteristicRecordDao characteristicRecordDao) {
 		this.characteristicRecordDao = characteristicRecordDao;
 	}
-
 }

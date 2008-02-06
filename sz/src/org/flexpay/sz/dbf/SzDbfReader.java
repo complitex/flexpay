@@ -13,6 +13,7 @@ import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFReader;
 
 public class SzDbfReader<E, I extends DBFInfo<E>> {
+
 	private File file;
 	private InputStream is;
 	private DBFReader reader;
@@ -34,8 +35,7 @@ public class SzDbfReader<E, I extends DBFInfo<E>> {
 			init();
 		}
 
-		Object[] record = null;
-		record = reader.nextRecord();
+		Object[] record = reader.nextRecord();
 
 		return record == null ? null : dbfInfo.create(record);
 	}

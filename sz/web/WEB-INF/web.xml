@@ -111,7 +111,7 @@
     </login-config>
 
     <welcome-file-list>
-		<welcome-file>/ab_index.jsp</welcome-file>
+		<welcome-file>/sz_index.jsp</welcome-file>
 	</welcome-file-list>
 
 	<jsp-config>

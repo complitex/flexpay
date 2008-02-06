@@ -89,7 +89,7 @@ public class ImportFileAction extends CommonAction {
 				szFile.setSzFileStatus(szFileStatusService
 						.read(SzFileStatusService.IMPORTED));
 				szFile.setSzFileActualityStatus(szFileActualityStatusService
-						.read(SzFileActualityStatusService.ACTUALY));
+						.read(SzFileActualityStatusService.IS_ACTUAL));
 				try {
 					szFileService.create(szFile);
 				} catch (FlexPayException e) {

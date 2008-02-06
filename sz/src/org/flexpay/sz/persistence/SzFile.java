@@ -1,12 +1,14 @@
 package org.flexpay.sz.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.DomainObject;
+
 import java.io.File;
 import java.util.Date;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+public class SzFile extends DomainObject {
 
-public class SzFile implements java.io.Serializable {
 	public static final Integer IMPORTING_FILE_STATUS = 0;
 	public static final Integer IMPORTED_FILE_STATUS = 1;
 	public static final Integer MARKED_FOR_PROCESSING_FILE_STATUS = 2;
@@ -17,7 +19,6 @@ public class SzFile implements java.io.Serializable {
 	public static final Integer VALID_FILE_VALIDATION = 1;
 	public static final Integer INVALID_FILE_VALIDATION = 2;
 
-	private Long id;
 	private Oszn oszn;
 
 	private String requestFileName;
@@ -41,7 +42,7 @@ public class SzFile implements java.io.Serializable {
 
 	public File getRequestFile(File parentDir) {
 		String yyyy_mm = fileYear + "_" + ((fileMonth + 1) <= 9 ? "0" : "")
-				+ (fileMonth + 1);
+						 + (fileMonth + 1);
 		File file = new File(parentDir, yyyy_mm);
 		file = new File(file, internalRequestFileName);
 
@@ -50,7 +51,7 @@ public class SzFile implements java.io.Serializable {
 
 	public File getResponseFile(File parentDir) {
 		String yyyy_mm = fileYear + "_" + ((fileMonth + 1) <= 9 ? "0" : "")
-				+ (fileMonth + 1);
+						 + (fileMonth + 1);
 		File file = new File(parentDir, yyyy_mm);
 		file = new File(file, internalResponseFileName);
 
@@ -59,15 +60,7 @@ public class SzFile implements java.io.Serializable {
 
 	public String getYyyyMm() {
 		return fileYear + "_" + ((fileMonth + 1) <= 9 ? "0" : "")
-				+ (fileMonth + 1);
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
+			   + (fileMonth + 1);
 	}
 
 	public Integer getFileYear() {
@@ -144,13 +137,13 @@ public class SzFile implements java.io.Serializable {
 
 	/**
 	 * Returns a string representation of the object.
-	 * 
+	 *
 	 * @return a string representation of the object.
 	 */
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-				.append("Id", id)
+				.append("Id", getId())
 				.append("Oszn", oszn)
 				.append("Request file name", requestFileName)
 				.append("Internal request file name", internalRequestFileName)
@@ -158,8 +151,8 @@ public class SzFile implements java.io.Serializable {
 				.append("File type", szFileType).append("File year", fileYear)
 				.append("File month", fileMonth).append("User name", userName)
 				.append("Import date", importDate).append("Sz file status",
-						szFileStatus).append("Sz file actuality status",
-						szFileActualityStatus).toString();
+				szFileStatus).append("Sz file actuality status",
+				szFileActualityStatus).toString();
 	}
 
 	public SzFileStatus getSzFileStatus() {

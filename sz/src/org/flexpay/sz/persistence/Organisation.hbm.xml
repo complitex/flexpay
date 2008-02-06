@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.sz.persistence">
+
+	<class name="Organisation" table="sz_organisations_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status" not-null="true" />
+		<property name="name" not-null="true" />
+		<many-to-one name="district" class="org.flexpay.ab.persistence.District"
+					 not-null="true" column="district_id"/>
+	</class>
+
+</hibernate-mapping>

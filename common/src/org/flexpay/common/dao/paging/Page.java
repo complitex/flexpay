@@ -1,8 +1,8 @@
 package org.flexpay.common.dao.paging;
 
-import java.util.List;
-import java.util.Collections;
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * ListPage class used to implement paging
@@ -15,7 +15,9 @@ public class Page<E> implements Serializable {
 	private transient int totalElements;
 	private transient List<E> elements = Collections.emptyList();
 
-	/** Constructs a new Page. */
+	/**
+	 * Constructs a new Page.
+	 */
 	public Page() {
 		this.pageSize = 20;
 		this.pageNumber = 0;

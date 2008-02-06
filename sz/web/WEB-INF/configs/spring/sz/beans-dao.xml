@@ -73,6 +73,16 @@
 		</property>
 	</bean>
 
+	<bean id="serviceTypeRecordDAO" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.sz.dao.ServiceTypeRecordDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.sz.persistence.ServiceTypeRecord" />
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="apartmentCorrectionDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.sz.dao.ApartmentCorrectionDao" />

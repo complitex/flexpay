@@ -7,6 +7,7 @@
 		<property name="characteristicRecordService" ref="characteristicRecordService" />
 		<property name="subsidyRecordService" ref="subsidyRecordService" />
 		<property name="szFileService" ref="szFileService" />
+		<property name="serviceTypeRecordService" ref="serviceTypeRecordService" />
 	</bean>
 	
 </beans>	
