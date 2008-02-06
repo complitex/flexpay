@@ -1,7 +1,5 @@
 package org.flexpay.sz.service.imp;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.sz.dao.SzFileDao;
@@ -9,7 +7,9 @@ import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+import java.util.List;
+
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class SzFileServiceImpl implements SzFileService {
 	private static Logger log = Logger.getLogger(SzFileServiceImpl.class);
 
@@ -17,12 +17,11 @@ public class SzFileServiceImpl implements SzFileService {
 
 	/**
 	 * Create SzFile
-	 * 
-	 * @param szFile
-	 *            SzFile object
+	 *
+	 * @param importFile SzFile object
 	 * @return created ImportFile object
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public SzFile create(SzFile importFile) throws FlexPayException {
 		szFileDao.create(importFile);
 
@@ -35,9 +34,8 @@ public class SzFileServiceImpl implements SzFileService {
 
 	/**
 	 * Read SzFile object by its unique id
-	 * 
-	 * @param id
-	 *            SzFile key
+	 *
+	 * @param id SzFile key
 	 * @return SzFile object, or <code>null</code> if object not found
 	 */
 	public SzFile read(Long id) {
@@ -46,9 +44,8 @@ public class SzFileServiceImpl implements SzFileService {
 
 	/**
 	 * Read full SzFile object by its unique id
-	 * 
-	 * @param id
-	 *            SzFile key
+	 *
+	 * @param id SzFile key
 	 * @return full SzFile object, or <code>null</code> if object not found
 	 */
 	public SzFile readFull(Long id) {
@@ -57,31 +54,28 @@ public class SzFileServiceImpl implements SzFileService {
 
 	/**
 	 * Update SzFile
-	 * 
-	 * @param szFile
-	 *            SzFile to update for
+	 *
+	 * @param importFile SzFile to update for
 	 * @return Updated SzFile object
-	 * @throws FlexPayException
-	 *             if SzFile object is invalid
+	 * @throws FlexPayException if SzFile object is invalid
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public SzFile update(SzFile importFile) throws FlexPayException {
 		szFileDao.update(importFile);
 
 		return importFile;
-
 	}
 
 	/**
 	 * Get a list of available identity types
-	 * 
+	 *
 	 * @return List of SzFile
 	 */
 	public List<SzFile> getEntities() {
 		return szFileDao.listSzFiles();
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void delete(SzFile szFile) {
 		szFileDao.delete(szFile);
 	}

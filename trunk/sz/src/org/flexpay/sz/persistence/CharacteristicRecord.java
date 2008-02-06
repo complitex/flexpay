@@ -3,7 +3,13 @@ package org.flexpay.sz.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+/**
+ * Dwelling description
+ *
+ * TODO: refactor field names
+ */
 public class CharacteristicRecord extends Record {
+
 	private Double cod;
 	private Double cdpr;
 	private Double ncard;
@@ -23,7 +29,6 @@ public class CharacteristicRecord extends Record {
 	private Double plopal;
 
 	public CharacteristicRecord() {
-		super();
 	}
 
 	public Double getCod() {

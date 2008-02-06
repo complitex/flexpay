@@ -3,9 +3,10 @@ package org.flexpay.sz.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.persistence.District;
+import org.flexpay.common.persistence.DomainObject;
 
-public class Oszn {
-	private Long id;
+public class Oszn extends DomainObject {
+
 	private String description;
 	//private Organization organization;
 	private District district;
@@ -25,14 +26,6 @@ public class Oszn {
 				.append("Description", getDescription())
 				.append("District", getDistrict())
 				.toString();
-	}
-	
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
 	}
 	
 	public String getDescription() {

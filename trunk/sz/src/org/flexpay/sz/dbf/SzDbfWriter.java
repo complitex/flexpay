@@ -20,8 +20,7 @@ public class SzDbfWriter<E, I extends DBFInfo<E>> {
 	private DBFWriter writer;
 	private I dbfInfo;
 
-	public SzDbfWriter(I dbfInfo, File file, String encoding,
-			boolean isInSyncMode) {
+	public SzDbfWriter(I dbfInfo, File file, String encoding, boolean isInSyncMode) {
 		this.dbfInfo = dbfInfo;
 		this.file = file;
 		this.encoding = encoding;
@@ -46,15 +45,13 @@ public class SzDbfWriter<E, I extends DBFInfo<E>> {
 		writer.addRecord(dbfInfo.getRowData(element));
 	}
 
-	public void write(Collection<E> elements) throws DBFException,
-			FileNotFoundException {
+	public void write(Collection<E> elements) throws DBFException, FileNotFoundException {
 		for (E element : elements) {
 			write(element);
 		}
 	}
 
-	public void write(Iterator<E> iterator) throws DBFException,
-			FileNotFoundException {
+	public void write(Iterator<E> iterator) throws DBFException, FileNotFoundException {
 		E element = null;
 		while ((element = iterator.next()) != null) {
 			write(element);

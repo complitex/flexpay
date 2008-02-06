@@ -2,24 +2,16 @@ package org.flexpay.sz.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.DomainObject;
 
-public class SzFileType {
+public class SzFileType extends DomainObject {
 
-	private Long id;
 	private String fileMask;
 	private String description;
 
 	public SzFileType() {
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
 	/**
 	 * Returns a string representation of the object.
 	 * 
@@ -28,7 +20,7 @@ public class SzFileType {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-				.append("Id", id).append("File mask", fileMask).append(
+				.append("Id", getId()).append("File mask", fileMask).append(
 						"Description", description).toString();
 	}
 
