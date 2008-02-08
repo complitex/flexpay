@@ -52,6 +52,7 @@ public class ImportFileAction extends CommonAction {
 	}
 	private File upload;
 	private String uploadFileName;
+	private String contentType;
 	private Integer year;
 	private Integer month;
 	private Long osznId;
@@ -174,5 +175,13 @@ public class ImportFileAction extends CommonAction {
 
 	public void setSzFileService(SzFileService szFileService) {
 		this.szFileService = szFileService;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 }
