@@ -1,5 +1,5 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<%@ taglib uri="http://www.davidjc.com/taglibs"     prefix="djc"     %>
+
 
 
 
