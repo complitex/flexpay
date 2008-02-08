@@ -8,9 +8,15 @@
 	<constant name="struts.devMode" value="true" />
 	<constant name="struts.custom.i18n.resources" value="/i18n/common-massages" />
 	<constant name="struts.ui.theme" value="simple" />
+	<constant name="struts.multipart.maxSize" value="1073741824" />
 
     <package name="common" namespace="/common" extends="tiles-default">
 
+        <result-types>
+			<result-type name="rawtext"
+				class="com.davidjc.ajaxfileupload.result.RawTextResult"/>
+		</result-types>
+        
         <interceptors>
             <interceptor name="userPreferences" class="org.flexpay.common.actions.interceptor.UserPreferencesInterceptor"/>
             <interceptor name="flexpayRoles" class="org.flexpay.common.actions.interceptor.FlexpayRolesInterceptor"/>
@@ -20,6 +26,11 @@
             </interceptor-stack>
         </interceptors>
         <default-interceptor-ref name="commonDefaultStack"/>
+		
+		<action name="uploadprogress"
+			class="org.flexpay.common.actions.FileUploadProgressAction">
+			<result name="success" type="rawtext"/>
+		</action>
 
 		<action name="welcome">
 			<result type="tiles">common.welcome</result>
