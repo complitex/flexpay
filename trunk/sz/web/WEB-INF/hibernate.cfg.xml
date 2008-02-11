@@ -42,6 +42,7 @@
 
 		<!-- common.Languages -->
 		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
 		
 		<!-- SZ File -->
 		<mapping resource="org/flexpay/sz/persistence/SzFile.hbm.xml" />

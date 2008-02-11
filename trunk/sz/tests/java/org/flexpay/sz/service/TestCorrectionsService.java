@@ -12,7 +12,7 @@ public class TestCorrectionsService extends SpringBeanAwareTestCase {
 
 	public void testGetDistrictCorrections() throws Exception {
 		CorrectionsService service =
-				(CorrectionsService) applicationContext.getBean("correctionsService");
+				(CorrectionsService) applicationContext.getBean("correctionsServiceAb");
 
 		Oszn oszn = new Oszn();
 		oszn.setId(-5l);

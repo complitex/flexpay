@@ -9,6 +9,13 @@ public class NameFilter<T extends Translation> extends PrimaryKeyFilter {
 
 	private Collection<T> translations = Collections.emptyList();
 
+	public NameFilter() {
+	}
+
+	public NameFilter(Long selectedId) {
+		super(selectedId);
+	}
+
 	/**
 	 * Getter for property 'names'.
 	 *

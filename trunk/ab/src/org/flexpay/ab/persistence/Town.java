@@ -29,6 +29,15 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	}
 
 	/**
+	 * Constructs a new Town.
+	 *
+	 * @param id Town id
+	 */
+	public Town(Long id) {
+		super(id);
+	}
+
+	/**
 	 * Getter for property 'districts'.
 	 *
 	 * @return Value for property 'districts'.

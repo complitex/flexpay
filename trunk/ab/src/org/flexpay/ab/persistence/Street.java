@@ -1,12 +1,10 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TimeLine;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Collections;
+import java.util.Set;
 
 /**
  * Street
@@ -15,7 +13,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 
 	private Set<District> districts = Collections.emptySet();
 	private TimeLine<TownType, TownTypeTemporal> typesTimeLine;
-	private Set<Buildings> buildingses = new HashSet<Buildings>(0);
+	private Set<Buildings> buildingses = Collections.emptySet();
 
 	public Street() {
 	}
@@ -36,5 +34,23 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 */
 	public void setDistricts(Set<District> districts) {
 		this.districts = districts;
+	}
+
+	/**
+	 * Getter for property 'buildingses'.
+	 *
+	 * @return Value for property 'buildingses'.
+	 */
+	public Set<Buildings> getBuildingses() {
+		return buildingses;
+	}
+
+	/**
+	 * Setter for property 'buildingses'.
+	 *
+	 * @param buildingses Value to set for property 'buildingses'.
+	 */
+	public void setBuildingses(Set<Buildings> buildingses) {
+		this.buildingses = buildingses;
 	}
 }

@@ -12,7 +12,7 @@
 		<many-to-one name="parent" column="town_id" class="Town" not-null="true" />
 		<property name="status" not-null="true" />
 
-		<list name="nameTemporals" inverse="true"
+		<list name="nameTemporals" inverse="true" cascade="all"
 			  where="invalid_date='2100-12-31'">
 			<key column="district_id" not-null="true" />
 			<list-index column="begin_date" />
@@ -32,17 +32,20 @@
 		<property name="end" column="end_date" type="date" not-null="true" />
 		<property name="createDate" column="create_date" type="date" not-null="true" />
 		<property name="invalidDate" column="invalid_date" type="date" not-null="true" />
-		<many-to-one name="object" class="District" column="district_id" not-null="true"/>
-		<many-to-one name="value" class="DistrictName" column="district_name_id" />
+		<many-to-one name="object" class="District" column="district_id"
+					 not-null="true" />
+		<many-to-one name="value" class="DistrictName" column="district_name_id"
+					 cascade="all" />
 	</class>
 
 	<class name="DistrictName" table="district_names_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<many-to-one name="object" column="district_id" class="District" not-null="true" />
+		<many-to-one name="object" column="district_id" class="District"
+					 not-null="true" />
 
-		<set name="translations" inverse="true">
+		<set name="translations" inverse="true" cascade="all-delete-orphan">
 			<key column="district_name_id" not-null="true" />
 			<one-to-many class="DistrictNameTranslation" />
 		</set>
@@ -74,31 +77,31 @@
 	<query name="District.readFull">
 		SELECT DISTINCT o
 		FROM District o
-			LEFT JOIN FETCH o.nameTemporals t
-			LEFT JOIN FETCH t.value v
-			LEFT JOIN FETCH v.translations tr
-			LEFT JOIN FETCH tr.lang l
-			LEFT JOIN FETCH l.translations
+		LEFT JOIN FETCH o.nameTemporals t
+		LEFT JOIN FETCH t.value v
+		LEFT JOIN FETCH v.translations tr
+		LEFT JOIN FETCH tr.lang l
+		LEFT JOIN FETCH l.translations
 		WHERE o.id=? and t.invalidDate='2100-12-31'
 	</query>
 
 	<query name="DistrictNameTemporal.readFull">
 		SELECT DISTINCT t
 		FROM DistrictNameTemporal t
-			LEFT JOIN FETCH t.value v
-			LEFT JOIN FETCH v.translations tr
-			LEFT JOIN FETCH tr.lang l
-			LEFT JOIN FETCH l.translations
+		LEFT JOIN FETCH t.value v
+		LEFT JOIN FETCH v.translations tr
+		LEFT JOIN FETCH tr.lang l
+		LEFT JOIN FETCH l.translations
 		WHERE t.id=?
 	</query>
 
 	<query name="DistrictName.readFull">
 		SELECT DISTINCT n
 		FROM DistrictName n
-			LEFT JOIN FETCH n.object
-			LEFT JOIN FETCH n.translations tr
-			LEFT JOIN FETCH tr.lang l
-			LEFT JOIN FETCH l.translations
+		LEFT JOIN FETCH n.object
+		LEFT JOIN FETCH n.translations tr
+		LEFT JOIN FETCH tr.lang l
+		LEFT JOIN FETCH l.translations
 		WHERE n.id=?
 	</query>
 

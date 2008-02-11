@@ -1,56 +1,56 @@
 package org.flexpay.common.locking;
 
 import junit.framework.TestCase;
-
-import org.flexpay.common.logger.FPLogger;
+import org.apache.log4j.Logger;
 
 public class TestLockManager extends TestCase {
-    public static final String lockString = "lock String";
 
-    protected void setUp() throws Exception {
-        LockManager lockManager = LockManager.getInstance();
-        lockManager.releaseLock(lockString);
-    }
+	public static final String lockString = "lock String";
 
-    public void testLock() {
-        LockManager lockManager = LockManager.getInstance();
-        assertTrue("Lock string", lockManager.lock(lockString));
-        ConflictingThread conflictingThread = new ConflictingThread();
-        Thread runner = new Thread(conflictingThread);
-        runner.start();
+	protected void setUp() throws Exception {
+		LockManager lockManager = LockManager.getInstance();
+		lockManager.releaseLock(lockString);
+	}
 
-        try {
-            runner.join();
-        } catch (InterruptedException e) {
-            FPLogger.logMessage(FPLogger.DEBUG, "TestLockManager: testLock: interrupted!", e);
-            fail();
-        }
+	public void testLock() {
+		LockManager lockManager = LockManager.getInstance();
+		assertTrue("Lock string", lockManager.lock(lockString));
+		ConflictingThread conflictingThread = new ConflictingThread();
+		Thread runner = new Thread(conflictingThread);
+		runner.start();
 
-        assertFalse(conflictingThread.locked);
-        lockManager.releaseLock(lockString);
+		Logger log = Logger.getLogger(TestLockManager.class);
 
-        runner = new Thread(conflictingThread);
-        runner.start();
+		try {
+			runner.join();
+		} catch (InterruptedException e) {
+			log.debug("TestLockManager: testLock: interrupted!", e);
+			fail();
+		}
 
-        try {
-            runner.join();
-        } catch (InterruptedException e) {
-            FPLogger.logMessage(FPLogger.DEBUG, "TestLockManager: testLock: interrupted!", e);
-            fail();
-        }
-        assertTrue(conflictingThread.locked);
-        lockManager.releaseLock(lockString);
-    }
+		assertFalse(conflictingThread.locked);
+		lockManager.releaseLock(lockString);
+
+		runner = new Thread(conflictingThread);
+		runner.start();
+
+		try {
+			runner.join();
+		} catch (InterruptedException e) {
+			log.debug("TestLockManager: testLock: interrupted!", e);
+			fail();
+		}
+		assertTrue(conflictingThread.locked);
+		lockManager.releaseLock(lockString);
+	}
 
 
-    public class ConflictingThread implements Runnable {
-        public boolean locked = false;
+	public class ConflictingThread implements Runnable {
+		public boolean locked = false;
 
-        public void run() {
-            LockManager lockManager = LockManager.getInstance();
-            locked = lockManager.lock(lockString);
-        }
-    }
-
+		public void run() {
+			LockManager lockManager = LockManager.getInstance();
+			locked = lockManager.lock(lockString);
+		}
+	}
 }
-

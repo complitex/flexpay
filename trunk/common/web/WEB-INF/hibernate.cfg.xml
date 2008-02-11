@@ -8,6 +8,7 @@
 	<session-factory name="flexpay">
 
 		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
 
 	</session-factory>
 

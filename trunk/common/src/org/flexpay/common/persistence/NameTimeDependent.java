@@ -15,6 +15,13 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 
 	private TimeLine<T, DI> namesTimeLine;
 
+	public NameTimeDependent() {
+	}
+
+	public NameTimeDependent(Long id) {
+		super(id);
+	}
+
 	/**
 	 * Getter for property 'namesTimeLine'.
 	 *
