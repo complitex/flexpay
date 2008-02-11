@@ -14,6 +14,10 @@ public class NameTimeDependentChild<T extends TemporaryValue<T>, DI extends Date
 	public NameTimeDependentChild() {
 	}
 
+	public NameTimeDependentChild(Long id) {
+		super(id);
+	}
+
 	/**
 	 * Getter for property 'parent'.
 	 *

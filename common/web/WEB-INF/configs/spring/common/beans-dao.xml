@@ -10,4 +10,8 @@
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
+	<bean id="correctionsDao" class="org.flexpay.common.dao.impl.CorrectionsDaoImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+
 </beans>

@@ -8,7 +8,9 @@ public class AllTests extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTest(new TestStreetTypeService());
+		suite.addTest(org.flexpay.ab.service.importexport.AllTests.suite());
+		suite.addTest(new TestStreetTypeService());
+		suite.addTest(new TestDistrictService());
         return suite;
     }
 }

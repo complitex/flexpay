@@ -5,6 +5,16 @@ public class DomainObjectWithStatus extends DomainObject implements ObjectWithSt
 	private int status;
 
 	/**
+	 * Constructs a new DomainObject.
+	 */
+	public DomainObjectWithStatus() {
+	}
+
+	public DomainObjectWithStatus(Long id) {
+		super(id);
+	}
+
+	/**
 	 * Getter for property 'status'.
 	 *
 	 * @return Value for property 'status'.

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence">
+
+	<class name="DataSourceDescription" table="common_data_source_descriptions_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="description" not-null="true" />
+	</class>
+
+	<class name="DataCorrection" table="common_data_corrections_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="internalObjectId" column="internal_object_id" not-null="true" />
+		<properties name="externalid_datasource_objecttype" unique="true">
+			<property name="objectType" column="object_type" />
+			<property name="externalId" column="external_object_id" not-null="true" />
+			<many-to-one name="dataSourceDescription" class="DataSourceDescription"
+						 column="data_source_description_id" not-null="true" />
+		</properties>
+	</class>
+
+	<query name="DataSourceDescription.readFull">
+		from DataSourceDescription d
+		where d.id=?
+	</query>
+
+</hibernate-mapping>

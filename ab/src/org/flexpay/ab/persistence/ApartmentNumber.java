@@ -2,7 +2,6 @@ package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
 
-import javax.persistence.*;
 import java.util.Date;
 
 /**

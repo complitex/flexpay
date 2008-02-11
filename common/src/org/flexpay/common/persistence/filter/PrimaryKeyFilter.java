@@ -7,6 +7,13 @@ public class PrimaryKeyFilter {
 
 	private Long selectedId;
 
+	public PrimaryKeyFilter() {
+	}
+
+	public PrimaryKeyFilter(Long selectedId) {
+		this.selectedId = selectedId;
+	}
+
 	/**
 	 * Getter for property 'selectedId'.
 	 *

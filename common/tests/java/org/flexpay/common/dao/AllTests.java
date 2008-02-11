@@ -10,6 +10,7 @@ public class AllTests extends TestCase {
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
 		suite.addTest(org.flexpay.common.dao.paging.AllTests.suite());
+		suite.addTest(new TestCorrectionsDao());
 		return suite;
 	}
 }

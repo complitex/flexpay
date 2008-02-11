@@ -4,7 +4,7 @@ import org.flexpay.common.persistence.Translation;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class DistrictNameTranslation extends Translation implements java.io.Serializable {
+public class DistrictNameTranslation extends Translation {
 
 	/**
 	 * Constructs a new DistrictNameTranslation.

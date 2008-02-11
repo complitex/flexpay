@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="dataExportDao"
+		  class="org.flexpay.ab.dao.importexport.imp.HarkovCenterNachisleniyDataSource">
+		<property name="jdbcTemplate" ref="dataExportJdbcTemplate" />
+	</bean>
+
+	<!-- Data sources -->
+	<bean id="districtJdbcDataSource"
+		  class="org.flexpay.ab.dao.importexport.DistrictJdbcDataSource">
+		<property name="source" ref="dataExportDao" />
+	</bean>
+
+	<bean id="streetJdbcDataSource"
+		  class="org.flexpay.ab.dao.importexport.StreetJdbcDataSource">
+		<property name="source" ref="dataExportDao" />
+	</bean>
+
+	<!-- Data converters -->
+	<bean id="districtDataConverter"
+		  class="org.flexpay.ab.service.importexport.RawDistrictDataConverter" />
+
+	<bean id="streetDataConverter"
+		  class="org.flexpay.ab.service.importexport.RawStreetDataConverter" />
+
+
+	<bean id="typeRegistryAb"
+		  class="org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry" />
+
+	<bean id="correctionsServiceAb" class="org.flexpay.common.service.importexport.imp.CorrectionsServiceImpl">
+		<property name="correctionsDao" ref="correctionsDao" />
+		<property name="typeRegistry" ref="typeRegistryAb" />
+	</bean>
+
+	<!-- Import-Export services -->
+	<bean id="importService" class="org.flexpay.ab.service.importexport.ImportService">
+		<property name="districtDao" ref="districtDAO" />
+		<property name="districtDataSource" ref="districtJdbcDataSource" />
+		<property name="districtDataConverter" ref="districtDataConverter" />
+		<property name="correctionsService" ref="correctionsServiceAb" />
+		<property name="districtService" ref="districtService" />
+	</bean>
+
+</beans>

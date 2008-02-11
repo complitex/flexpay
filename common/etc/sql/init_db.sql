@@ -3849,9 +3849,10 @@ INSERT INTO sz_file_types_tbl (id, file_mask, description)
 INSERT INTO sz_file_types_tbl (id, file_mask, description)
 	VALUES (6,'\\d{8}\\u002E(d|D)\\d{2}', 'sz.file_type.srv_types_response');
 INSERT INTO sz_file_types_tbl (id, file_mask, description)
-	VALUES (7,'.*\\d{4}\\u002E(d|D)(b|B)(f|F)', 'sz.file_type.subsidy');	
+	VALUES (7,'.*\\d{4}\\u002E(d|D)(b|B)(f|F)', 'sz.file_type.subsidy');
 INSERT INTO sz_file_types_tbl (file_mask, description)
 	VALUES ('\\d{8}\\u002E(a|A)\\d{2}', 'sz.file_type.subsidy');
+
 -- Sz file status
 INSERT INTO sz_file_status_tbl (id, description)
 	VALUES (1, 'sz.file_status.imported');
@@ -3890,3 +3891,6 @@ insert into oszn_tbl (id, description, district_id) values (14, 'Ленинис�
 insert into oszn_tbl (id, description, district_id) values (15, 'Октябрьский', 15);
 insert into oszn_tbl (id, description, district_id) values (16, 'Орджоникидзевский', 16);
 insert into oszn_tbl (id, description, district_id) values (17, 'Советский', 17);
+
+insert into common_data_source_descriptions_tbl (id, description)
+	values (1, 'Харьковский центр начислений');
