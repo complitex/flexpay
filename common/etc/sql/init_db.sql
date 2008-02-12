@@ -3894,3 +3894,81 @@ insert into oszn_tbl (id, description, district_id) values (17, 'Советск�
 
 insert into common_data_source_descriptions_tbl (id, description)
 	values (1, 'Харьковский центр начислений');
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Улица', @ru, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Street', @en, @street_type_id);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Проспект', @ru, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Avenue', @en, @street_type_id);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Виадук', @ru, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Viaduct', @en, @street_type_id);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Переулок', @ru, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Lane', @en, @street_type_id);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Набережная', @ru, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Embankment', @en, @street_type_id);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Проезд', @ru, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Passage', @en, @street_type_id);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Площадь', @ru, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Square', @en, @street_type_id);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Шоссе', @ru, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Highway', @en, @street_type_id);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Бульвар', @ru, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Boulevard', @en, @street_type_id);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Спуск', @ru, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Slope', @en, @street_type_id);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Поселок', @ru, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Settlement', @en, @street_type_id);
+
