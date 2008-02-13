@@ -2,6 +2,7 @@ package org.flexpay.ab.dao.importexport.imp;
 
 import org.flexpay.ab.service.importexport.RawDistrictData;
 import org.flexpay.ab.service.importexport.RawStreetData;
+import org.flexpay.ab.service.importexport.RawStreetTypeData;
 import org.flexpay.common.dao.paging.Page;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
@@ -32,6 +33,18 @@ public class HarkovCenterNachisleniyDataSource extends SimpleJdbcDaoSupport {
 				data.setExternalSourceId(rs.getString(1));
 				data.addNameValuePair(RawStreetData.FIELD_NAME, rs.getString("StreetName"));
 				data.addNameValuePair(RawStreetData.FIELD_TYPE_ID, rs.getInt("StreetTypeId"));
+				return data;
+			}
+		}, pager.getThisPageFirstElementNumber(), pager.getPageSize());
+	}
+
+	private static String STREET_TYPES_QUERY = "SELECT id, StreetType FROM street_types LIMIT ?,?";
+	public List<RawStreetTypeData> getStreetTypesData(Page<RawStreetTypeData> pager) {
+		return getSimpleJdbcTemplate().query(STREET_TYPES_QUERY, new ParameterizedRowMapper<RawStreetTypeData>() {
+			public RawStreetTypeData mapRow(ResultSet rs, int i) throws SQLException {
+				RawStreetTypeData data = new RawStreetTypeData();
+				data.setExternalSourceId(rs.getString(1));
+				data.addNameValuePair(RawStreetTypeData.FIELD_NAME, rs.getString("StreetType"));
 				return data;
 			}
 		}, pager.getThisPageFirstElementNumber(), pager.getPageSize());

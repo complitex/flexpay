@@ -2,9 +2,12 @@ package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TimeLine;
+import org.flexpay.common.util.DateIntervalUtil;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.List;
+import java.util.Date;
 
 /**
  * Street
@@ -52,5 +55,69 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 */
 	public void setBuildingses(Set<Buildings> buildingses) {
 		this.buildingses = buildingses;
+	}
+
+	/**
+	 * Getter for property 'typesTimeLine'.
+	 *
+	 * @return Value for property 'typesTimeLine'.
+	 */
+	public TimeLine<TownType, TownTypeTemporal> getTypesTimeLine() {
+		return typesTimeLine;
+	}
+
+	/**
+	 * Setter for property 'typesTimeLine'.
+	 *
+	 * @param typesTimeLine Value to set for property 'typesTimeLine'.
+	 */
+	public void setTypesTimeLine(TimeLine<TownType, TownTypeTemporal> typesTimeLine) {
+		this.typesTimeLine = typesTimeLine;
+	}
+
+	/**
+	 * Setter for property 'typeTemporals'.
+	 *
+	 * @param typeTemporals Value to set for property 'typeTemporals'.
+	 */
+	public void setTypeTemporals(List<TownTypeTemporal> typeTemporals) {
+		typesTimeLine = new TimeLine<TownType, TownTypeTemporal>(typeTemporals);
+	}
+
+	/**
+	 * Getter for property 'typesTimeLine'.
+	 *
+	 * @return Value for property 'typesTimeLine'.
+	 */
+	public List<TownTypeTemporal> getTypeTemporals() {
+		return typesTimeLine.getIntervals();
+	}
+
+	/**
+	 * Find value for date
+	 *
+	 * @param dt Date to get value for
+	 * @return Value which interval includes specified date, or <code>null</code> if not
+	 *         found
+	 */
+	public TownType getTypeForDate(Date dt) {
+		List<TownTypeTemporal> intervals = typesTimeLine.getIntervals();
+		for (TownTypeTemporal di : intervals) {
+			if (DateIntervalUtil.includes(dt, di)) {
+				return di.getValue();
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Find value for current date
+	 *
+	 * @return Value which interval includes specified date, or <code>null</code> if not
+	 *         found
+	 */
+	public TownType getCurrentType() {
+		return getTypeForDate(DateIntervalUtil.now());
 	}
 }

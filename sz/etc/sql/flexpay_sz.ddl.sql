@@ -187,6 +187,14 @@
         drop 
         foreign key FK5BC6DD0A61F37403;
 
+    alter table street_types_temporal_tbl 
+        drop 
+        foreign key FK9EECCCE3311847ED;
+
+    alter table street_types_temporal_tbl 
+        drop 
+        foreign key FK9EECCCE33E877574;
+
     alter table streets_districts_tbl 
         drop 
         foreign key FKC3D529F5311847ED;
@@ -371,6 +379,8 @@
 
     drop table if exists street_types_tbl;
 
+    drop table if exists street_types_temporal_tbl;
+
     drop table if exists streets_districts_tbl;
 
     drop table if exists streets_tbl;
@@ -547,7 +557,7 @@
         internal_object_id bigint not null,
         object_type integer,
         external_object_id varchar(255) not null,
-        data_source_description_id bigint not null,
+        data_source_description_id bigint,
         primary key (id),
         unique (object_type, external_object_id, data_source_description_id)
     );
@@ -761,6 +771,17 @@
     create table street_types_tbl (
         id bigint not null auto_increment,
         status integer not null,
+        primary key (id)
+    );
+
+    create table street_types_temporal_tbl (
+        id bigint not null auto_increment,
+        begin_date date not null,
+        end_date date not null,
+        create_date date not null,
+        invalid_date date not null,
+        street_id bigint not null,
+        street_type_id bigint,
         primary key (id)
     );
 
@@ -1223,6 +1244,18 @@
         add constraint FK5BC6DD0A61F37403 
         foreign key (language_id) 
         references languages_tbl (id);
+
+    alter table street_types_temporal_tbl 
+        add index FK9EECCCE3311847ED (street_id), 
+        add constraint FK9EECCCE3311847ED 
+        foreign key (street_id) 
+        references streets_tbl (id);
+
+    alter table street_types_temporal_tbl 
+        add index FK9EECCCE33E877574 (street_type_id), 
+        add constraint FK9EECCCE33E877574 
+        foreign key (street_type_id) 
+        references street_types_tbl (id);
 
     alter table streets_districts_tbl 
         add index FKC3D529F5311847ED (street_id), 

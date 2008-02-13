@@ -21,7 +21,7 @@
 			<property name="objectType" column="object_type" />
 			<property name="externalId" column="external_object_id" not-null="true" />
 			<many-to-one name="dataSourceDescription" class="DataSourceDescription"
-						 column="data_source_description_id" not-null="true" />
+						 column="data_source_description_id" />
 		</properties>
 	</class>
 

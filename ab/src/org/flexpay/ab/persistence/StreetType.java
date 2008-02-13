@@ -1,43 +1,20 @@
 package org.flexpay.ab.persistence;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
-
-import java.util.Collection;
-import java.util.Collections;
+import org.flexpay.common.persistence.TemporaryType;
 
 /**
  * StreetType entity class holds a general representation of various types of streets.
  */
-public class StreetType extends DomainObjectWithStatus {
-
-	private Collection<StreetTypeTranslation> translations = Collections.emptyList();
+public class StreetType extends TemporaryType<StreetType, StreetTypeTranslation> {
 
 	/**
 	 * Constructs a new StreetType.
 	 */
 	public StreetType() {
-	}
-
-	/**
-	 * Getter for property 'translations'.
-	 *
-	 * @return Value for property 'translations'.
-	 */
-	public Collection<StreetTypeTranslation> getTranslations() {
-		return translations;
-	}
-
-	/**
-	 * Setter for property 'translations'.
-	 *
-	 * @param translations Value to set for property 'typeTranslations'.
-	 */
-	public void setTranslations(Collection<StreetTypeTranslation> translations) {
-		this.translations = translations;
 	}
 
 	/**
@@ -50,7 +27,7 @@ public class StreetType extends DomainObjectWithStatus {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
 				.append("Id", getId())
 				.append("Status", getStatus())
-				.append("Translations", translations.toArray())
+				.append("Translations", getTranslations().toArray())
 				.toString();
 	}
 
@@ -61,7 +38,7 @@ public class StreetType extends DomainObjectWithStatus {
 	public int hashCode() {
 		return new HashCodeBuilder()
 				.appendSuper(super.hashCode())
-				.append(translations.hashCode()).toHashCode();
+				.append(getTranslations().hashCode()).toHashCode();
 	}
 
 	/**
@@ -78,7 +55,16 @@ public class StreetType extends DomainObjectWithStatus {
 
 		return new EqualsBuilder()
 				.appendSuper(super.equals(that))
-				.append(translations, that.getTranslations())
+				.append(getTranslations(), that.getTranslations())
 				.isEquals();
+	}
+
+	/**
+	 * Get null value
+	 *
+	 * @return Null representation of this value
+	 */
+	public StreetType getEmpty() {
+		return new StreetType();
 	}
 }

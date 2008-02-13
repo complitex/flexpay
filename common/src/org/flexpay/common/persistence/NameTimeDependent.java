@@ -50,6 +50,15 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	}
 
 	/**
+	 * Getter for property 'nameTemporals'.
+	 *
+	 * @return Value for property 'nameTemporals'.
+	 */
+	public List<DI> getNameTemporals() {
+		return namesTimeLine.getIntervals();
+	}
+
+	/**
 	 * Find value for date
 	 *
 	 * @param dt Date to get value for
@@ -75,15 +84,6 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	 */
 	public T getCurrentName() {
 		return getNameForDate(DateIntervalUtil.now());
-	}
-
-	/**
-	 * Getter for property 'nameTemporals'.
-	 *
-	 * @return Value for property 'nameTemporals'.
-	 */
-	public List<DI> getNameTemporals() {
-		return namesTimeLine.getIntervals();
 	}
 
 	/**

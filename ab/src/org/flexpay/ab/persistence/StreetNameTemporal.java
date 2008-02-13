@@ -3,8 +3,9 @@ package org.flexpay.ab.persistence;
 import org.flexpay.common.persistence.NameDateInterval;
 
 public class StreetNameTemporal extends NameDateInterval<StreetName, StreetNameTemporal> {
+
 	/**
-	 * Constructs a new RegionNameTemporal.
+	 * Constructs a new NameTemporal.
 	 */
 	public StreetNameTemporal() {
 		super(new StreetName());
@@ -56,5 +57,4 @@ public class StreetNameTemporal extends NameDateInterval<StreetName, StreetNameT
 	public String toString() {
 		return super.toString();
 	}
-
 }

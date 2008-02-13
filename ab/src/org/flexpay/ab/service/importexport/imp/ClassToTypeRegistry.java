@@ -6,22 +6,25 @@ public class ClassToTypeRegistry implements org.flexpay.common.service.importexp
 
 	public int getType(Class<?> clazz) {
 		if (Person.class.isAssignableFrom(clazz)) {
-			return 0x01;
+			return 0x09;
 		}
 		if (Apartment.class.isAssignableFrom(clazz)) {
-			return 0x06;
+			return 0x08;
 		}
 		if (Buildings.class.isAssignableFrom(clazz)) {
-			return 0x05;
+			return 0x07;
 		}
 		if (Street.class.isAssignableFrom(clazz)) {
-			return 0x04;
+			return 0x06;
 		}
 		if (District.class.isAssignableFrom(clazz)) {
-			return 0x03;
+			return 0x05;
+		}
+		if (StreetType.class.isAssignableFrom(clazz)) {
+			return 0x04;
 		}
 		if (Town.class.isAssignableFrom(clazz)) {
-			return 0x02;
+			return 0x03;
 		}
 		if (Region.class.isAssignableFrom(clazz)) {
 			return 0x02;

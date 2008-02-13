@@ -14,14 +14,14 @@
 		</layout>
 	</appender>
 
-	<root>
-		<priority value="warn" />
-		<appender-ref ref="flexpay" />
-	</root>
-
 	<category name="org.flexpay" additivity="false">
 		<priority value="info" />
 		<appender-ref ref="flexpay" />
 	</category>
+
+	<root>
+		<priority value="warn" />
+		<appender-ref ref="flexpay" />
+	</root>
 
 </log4j:configuration>

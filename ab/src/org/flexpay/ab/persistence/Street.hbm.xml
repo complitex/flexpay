@@ -12,11 +12,17 @@
 		<many-to-one name="parent" column="town_id" class="Town" not-null="true" />
 		<property name="status" not-null="true" />
 
-		<list name="nameTemporals" inverse="true"
+		<list name="nameTemporals" inverse="true" cascade="all"
 			  where="invalid_date='2100-12-31'">
 			<key column="street_id" not-null="true" />
 			<list-index column="begin_date" />
 			<one-to-many class="StreetNameTemporal" />
+		</list>
+		<list name="typeTemporals" inverse="true" cascade="all"
+			  where="invalid_date='2100-12-31'">
+			<key column="street_id" not-null="true" />
+			<list-index column="begin_date" />
+			<one-to-many class="StreetTypeTemporal" />
 		</list>
 		<set name="districts" table="streets_districts_tbl">
 			<key column="street_id" />
@@ -28,6 +34,18 @@
 		</set>
 	</class>
 
+	<class name="StreetTypeTemporal" table="street_types_temporal_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="begin" column="begin_date" type="date" not-null="true" />
+		<property name="end" column="end_date" type="date" not-null="true" />
+		<property name="createDate" column="create_date" type="date" not-null="true" />
+		<property name="invalidDate" column="invalid_date" type="date" not-null="true" />
+		<many-to-one name="object" class="Street" column="street_id" not-null="true"/>
+		<many-to-one name="value" class="StreetType" cascade="all" column="street_type_id" />
+	</class>
+
 	<class name="StreetNameTemporal" table="street_names_temporal_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
@@ -37,7 +55,7 @@
 		<property name="createDate" column="create_date" type="date" not-null="true" />
 		<property name="invalidDate" column="invalid_date" type="date" not-null="true" />
 		<many-to-one name="object" class="Street" column="street_id" not-null="true"/>
-		<many-to-one name="value" class="StreetName" column="street_name_id" />
+		<many-to-one name="value" class="StreetName" cascade="all" column="street_name_id" />
 	</class>
 
 	<class name="StreetName" table="street_names_tbl" optimistic-lock="version">
@@ -46,7 +64,7 @@
 		</id>
 		<many-to-one name="object" column="street_id" class="Street" not-null="true" />
 
-		<set name="translations" inverse="true">
+		<set name="translations" inverse="true" cascade="all-delete-orphan">
 			<key column="street_name_id" not-null="true" />
 			<one-to-many class="StreetNameTranslation" />
 		</set>
