@@ -10,7 +10,8 @@ public class TestImportService extends SpringBeanAwareTestCase {
 	@Override
 	protected void runTest() throws Throwable {
 		testGetConnection();
-		testImportDistricts();
+//		testImportDistricts();
+		testImportStreetTypes();
 	}
 
 	public void testGetConnection() {
@@ -32,5 +33,15 @@ public class TestImportService extends SpringBeanAwareTestCase {
 		dsd.setId(1L);
 
 		service.importDistricts(town, dsd);
+	}
+
+	public void testImportStreetTypes() {
+		ImportService service = (ImportService) applicationContext.getBean("importService");
+		assertNotNull("ImportService is null", service);
+
+		DataSourceDescription dsd = new DataSourceDescription();
+		dsd.setId(1L);
+
+		service.importStreetTypes(dsd);
 	}
 }

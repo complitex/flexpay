@@ -6,10 +6,13 @@ import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.DistrictDao;
 import org.flexpay.ab.dao.importexport.DistrictJdbcDataSource;
 import org.flexpay.ab.dao.importexport.StreetJdbcDataSource;
+import org.flexpay.ab.dao.importexport.StreetTypeJdbcDataSource;
 import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
+import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.*;
 import org.flexpay.common.service.importexport.CorrectionsService;
@@ -26,15 +29,18 @@ public class ImportService {
 	private static Logger log = Logger.getLogger(ImportService.class);
 
 	private RawDistrictDataConverter districtDataConverter;
+	private RawStreetTypeDataConverter streetTypeDataConverter;
 	private RawStreetDataConverter streetDataConverter;
 
 	private DistrictJdbcDataSource districtDataSource;
+	private StreetTypeJdbcDataSource streetTypeDataSource;
 	private StreetJdbcDataSource streetDataSource;
 
 	private DistrictDao districtDao;
 
 	private CorrectionsService correctionsService;
 	private DistrictService districtService;
+	private StreetTypeService streetTypeService;
 
 	@Transactional (readOnly = false)
 	public void importDistricts(Town town, DataSourceDescription sourceDescription) {
@@ -84,14 +90,11 @@ public class ImportService {
 							if (log.isDebugEnabled()) {
 								log.debug("Object " + data.getName() + " found");
 							}
-							System.out.println("Object " + data.getName() + " found");
 						}
 					}
 				}
 			} catch (Exception e) {
 				log.error("Failed getting district with id: " + data.getExternalSourceId(), e);
-				System.out.println("Failed getting district with id: " + data.getExternalSourceId());
-				e.printStackTrace(System.out);
 			}
 		}
 	}
@@ -143,6 +146,77 @@ public class ImportService {
 		}
 
 		throw new IllegalArgumentException("No default lang translation found");
+	}
+
+	/**
+	 * Import street types only builds corrections and does not add any new street types to
+	 * the system, use User Interface, or plain SQL to add new types.
+	 *
+	 * @param sourceDescription Data source description
+	 */
+	@Transactional (readOnly = false)
+	public void importStreetTypes(DataSourceDescription sourceDescription) {
+		streetTypeDataSource.initialize();
+		List<StreetType> streetTypes = streetTypeService.getEntities();
+
+		if (log.isInfoEnabled()) {
+			log.info("Street types: " + streetTypes);
+		}
+
+		while (streetTypeDataSource.hasNext()) {
+			ImportOperationTypeHolder typeHolder = new ImportOperationTypeHolder();
+			RawStreetTypeData data = streetTypeDataSource.next(typeHolder);
+			try {
+				StreetType streetType = streetTypeDataConverter.fromRawData(data, sourceDescription, correctionsService);
+				StreetType correction = (StreetType) correctionsService.findCorrection(
+						data.getExternalSourceId(), StreetType.class, sourceDescription);
+				if (correction != null) {
+					log.info("Found correction!");
+					continue;
+				}
+
+				// Try to find general correction by type name
+				StreetType generalCorrection = (StreetType) correctionsService.findCorrection(
+						data.getName(), StreetType.class, null);
+
+				// found general correction, create specific one
+				if (generalCorrection != null) {
+					DataCorrection corr = correctionsService.getStub(
+							data.getExternalSourceId(), generalCorrection, sourceDescription);
+					correctionsService.save(corr);
+					log.info("Found general correction, adding special one!");
+					continue;
+				}
+
+				// try to find correction by name
+				findInternalStreetTypeByName(sourceDescription, streetTypes, data, streetType);
+
+			} catch (Exception e) {
+				log.error("Failed getting street type with id: " + data.getExternalSourceId(), e);
+			}
+		}
+	}
+
+	private void findInternalStreetTypeByName(
+			DataSourceDescription sourceDescription, List<StreetType> streetTypes,
+			RawStreetTypeData data, StreetType extStreetType) throws FlexPayException {
+
+		Translation tr = getDefaultLangTranslation(extStreetType.getTranslations());
+		String extTypeName = tr.getName().toLowerCase();
+		for (StreetType type : streetTypes) {
+			Translation ourType = getDefaultLangTranslation(type.getTranslations());
+
+			// found translation in default lang, add correction
+			if (ourType.getName().toLowerCase().equals(extTypeName)) {
+				DataCorrection corr = correctionsService.getStub(
+						data.getExternalSourceId(), type, sourceDescription);
+				correctionsService.save(corr);
+				log.info("Creating correction by street type name: " + tr.getName());
+				return;
+			}
+		}
+
+		log.error("Cannot map external street type: " + tr.getName());
 	}
 
 	/**
@@ -206,5 +280,32 @@ public class ImportService {
 	 */
 	public void setDistrictService(DistrictService districtService) {
 		this.districtService = districtService;
+	}
+
+	/**
+	 * Setter for property 'streetTypeDataConverter'.
+	 *
+	 * @param streetTypeDataConverter Value to set for property 'streetTypeDataConverter'.
+	 */
+	public void setStreetTypeDataConverter(RawStreetTypeDataConverter streetTypeDataConverter) {
+		this.streetTypeDataConverter = streetTypeDataConverter;
+	}
+
+	/**
+	 * Setter for property 'streetTypeDataSource'.
+	 *
+	 * @param streetTypeDataSource Value to set for property 'streetTypeDataSource'.
+	 */
+	public void setStreetTypeDataSource(StreetTypeJdbcDataSource streetTypeDataSource) {
+		this.streetTypeDataSource = streetTypeDataSource;
+	}
+
+	/**
+	 * Setter for property 'streetTypeService'.
+	 *
+	 * @param streetTypeService Value to set for property 'streetTypeService'.
+	 */
+	public void setStreetTypeService(StreetTypeService streetTypeService) {
+		this.streetTypeService = streetTypeService;
 	}
 }
