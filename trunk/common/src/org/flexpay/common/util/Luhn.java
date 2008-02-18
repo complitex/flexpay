@@ -3,10 +3,15 @@ package org.flexpay.common.util;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Vladislav
+ *
+ * Util class for Luhn algorithm
+ */
 public class Luhn {
-	
+
 	private static Map<Integer, Integer> digitTransformMap;
-	
+
 	static {
 		digitTransformMap = new HashMap<Integer, Integer>();
 		// key - result digit; value - source digit
@@ -20,26 +25,37 @@ public class Luhn {
 		digitTransformMap.put(7, 8);
 		digitTransformMap.put(8, 4);
 		digitTransformMap.put(9, 9);
-		
-		
+
 	}
 
+	/**
+	 * @param number String(contains only digits) for validating by Luhn algorithm
+	 * @return true if valid by Luhn algorithm, false otherwise
+	 */
 	public static boolean isValidNumber(String number) {
 		return getControlDigit(number, true) == 0;
 	}
 
+	
+	/**
+	 * @param number String contains only digits
+	 * @param ind index(start from right to left) of inserting control digit
+	 * @return source string with inserted control digit that is valid by Luhn
+	 */
 	public static String insertControlDigit(String number, int ind) {
-		if(ind > number.length()) {
-			throw new IllegalArgumentException("ind value must be equal or less then number lenth. number=" + number + "; ind=" + ind);
+		if (ind > number.length()) {
+			throw new IllegalArgumentException(
+					"ind value must be equal or less then number lenth. number="
+							+ number + "; ind=" + ind);
 		}
-		
+
 		int delimeterInd = number.length() - ind;
 		String leftPart = number.substring(0, delimeterInd);
 		String rightPart = number.substring(delimeterInd);
-		
+
 		return leftPart + getControlDigit(number, ind % 2 == 0) + rightPart;
 	}
-	
+
 	private static int getChecksum(String number) {
 		int sum = 0;
 		boolean alternate = false;
