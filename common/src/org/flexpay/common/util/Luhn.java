@@ -58,7 +58,7 @@ public class Luhn {
 	public static String insertControlDigit(String number, int ind) {
 		if (ind > number.length()) {
 			throw new IllegalArgumentException(
-					"ind value must be equal or less then number lenth. number="
+					"ind value must be equal or less then number length. number="
 							+ number + "; ind=" + ind);
 		}
 
@@ -67,10 +67,10 @@ public class Luhn {
 		String rightPart = number.substring(controlDigitInd);
 
 		int controlDigit = 0;
-		int ostatok = getChecksum(leftPart + controlDigit + rightPart) % 10;
-		if (ostatok != 0) {
-			controlDigit = isEven(controlDigitInd) ? (10 - ostatok)
-					: getSourceDigit(10 - ostatok);
+		int reminder = getChecksum(leftPart + controlDigit + rightPart) % 10;
+		if (reminder != 0) {
+			controlDigit = isEven(controlDigitInd) ? (10 - reminder)
+					: getSourceDigit(10 - reminder);
 		}
 
 		return leftPart + controlDigit + rightPart;
