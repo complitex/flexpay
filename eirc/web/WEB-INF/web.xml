@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+		 version="2.5">
+    <!--ab-->
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>FlexPay</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/configs/spring/config.xml</param-value>
+	</context-param>
+
+	<!--
+		- Location of the Log4J config file, for initialization and refresh checks.
+		- Applied by Log4jConfigListener.
+	-->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/configs/log4j.xml</param-value>
+	</context-param>
+	<context-param>
+		<param-name>definitions-config</param-name>
+		<param-value>/WEB-INF/configs/tiles_common.xml,/WEB-INF/configs/tiles_ab.xml,/WEB-INF/configs/tiles_bti.xml,/WEB-INF/configs/tiles_eirc.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>actionFilter</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+        <init-param>
+			<param-name>config</param-name>
+			<param-value>struts-default.xml,struts-plugin.xml,common_struts_config.xml,ab_struts_config.xml,bti_struts_config.xml,eirc_struts_config.xml</param-value>
+		</init-param>
+    </filter>
+	<filter-mapping>
+		<filter-name>actionFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>secure-resource</web-resource-name>
+            <url-pattern>*.action</url-pattern>
+            <http-method>POST</http-method>
+            <http-method>GET</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+
+    </security-constraint>
+
+
+    <security-role>
+        <role-name>developerRole</role-name>
+    </security-role>
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/login.jsp</form-login-page>
+            <form-error-page>/login.jsp</form-error-page>
+        </form-login-config>
+    </login-config>
+
+    <welcome-file-list>
+		<welcome-file>/bti_index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<jsp-config>
+		<taglib>
+			<taglib-uri>http://jakarta.apache.org/taglibs/datetime-1.0</taglib-uri>
+			<taglib-location>/WEB-INF/taglibs-datetime.tld</taglib-location>
+		</taglib>
+	</jsp-config>
+
+</web-app>

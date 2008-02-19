@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+
+	<!-- a SessionFactory instance listed as /jndi/name -->
+	<session-factory name="flexpay">
+
+		<!-- Countries -->
+		<mapping resource="org/flexpay/ab/persistence/Country.hbm.xml" />
+
+		<!-- Regions -->
+		<mapping resource="org/flexpay/ab/persistence/Region.hbm.xml" />
+
+		<!-- Town types -->
+		<mapping resource="org/flexpay/ab/persistence/TownType.hbm.xml" />
+
+		<!-- Town types -->
+		<mapping resource="org/flexpay/ab/persistence/Town.hbm.xml" />
+
+		<!-- Town districts -->
+		<mapping resource="org/flexpay/ab/persistence/District.hbm.xml" />
+
+		<!-- Town districts -->
+		<mapping resource="org/flexpay/ab/persistence/Street.hbm.xml" />
+
+		<!-- Buildings -->
+		<mapping resource="org/flexpay/ab/persistence/Building.hbm.xml" />
+
+		<!-- Apartments -->
+		<mapping resource="org/flexpay/ab/persistence/Apartment.hbm.xml" />
+
+		<!-- Street types -->
+		<mapping resource="org/flexpay/ab/persistence/StreetType.hbm.xml" />
+
+		<!-- Identity types -->
+		<mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml" />
+
+		<!-- Persons -->
+		<mapping resource="org/flexpay/ab/persistence/Person.hbm.xml" />
+
+		<!-- common.Languages -->
+		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
+
+		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
+
+	</session-factory>
+
+</hibernate-configuration>

@@ -12,7 +12,7 @@ public class TestCorrectionsService extends SpringBeanAwareTestCase {
 
 	public void testGetDistrictCorrections() throws Exception {
 		CorrectionsService service =
-				(CorrectionsService) applicationContext.getBean("correctionsServiceAb");
+				(CorrectionsService) applicationContext.getBean("correctionsService");
 
 		Oszn oszn = new Oszn();
 		oszn.setId(-5l);
@@ -20,7 +20,6 @@ public class TestCorrectionsService extends SpringBeanAwareTestCase {
 		try {
 			service.findDistrictCorrection(oszn, "xbz");
 			fail("Found invalid correction");
-
 		}
 		catch (FlexPayException e) {
 			// good execution branch, everything is ok
