@@ -148,7 +148,7 @@
 	</target>
 
 	<target name="eirc.exportschema.mysql5"
-			depends="bti.compile.production,eirc.compile.production">
+			depends="common.compile.production,ab.compile.production,bti.compile.production,eirc.compile.production">
 		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_eirc.ddl.sql" />
