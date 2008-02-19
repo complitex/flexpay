@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.eirc.persistence">
+
+	<class name="Organisation" table="eirc_organisations_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="inn" not-null="true" />
+		<property name="kpp" not-null="true" />
+		<property name="description" not-null="true" />
+
+	</class>
+
+</hibernate-mapping>

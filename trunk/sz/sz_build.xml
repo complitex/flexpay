@@ -149,7 +149,7 @@
 	</target>
 
 	<target name="sz.exportschema.mysql5"
-			depends="eirc.compile.production,sz.compile.production">
+			depends="common.compile.production,ab.compile.production,bti.compile.production,eirc.compile.production,sz.compile.production">
 		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_sz.ddl.sql" />

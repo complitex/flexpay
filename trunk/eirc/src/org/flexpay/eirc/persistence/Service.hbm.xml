@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.eirc.persistence">
+
+	<class name="ServiceProvider" table="eirc_service_providers_tbl"
+		   optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="organisation" column="organisation_id" not-null="true" />
+		<property name="description" not-null="true" />
+	</class>
+
+	<class name="Service" table="eirc_services_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="serviceProvider" column="provider_id" not-null="true" />
+		<many-to-one name="serviceType" column="type_id" not-null="true" />
+		<property name="description" not-null="true" />
+	</class>
+
+	<class name="ServiceType" table="eirc_service_types_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<set name="typeNames" cascade="all-delete-orphan">
+			<key column="type_id" not-null="true" />
+			<one-to-many class="ServiceTypeNameTranslation" />
+		</set>
+	</class>
+
+	<class name="ServiceTypeNameTranslation"
+		   table="eirc_service_type_name_translations_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" not-null="true" />
+		<property name="description" not-null="true" />
+		<properties name="lang_service_type_pair" unique="true">
+			<many-to-one name="lang" class="org.flexpay.common.persistence.Language"
+						 not-null="true" />
+			<many-to-one name="translatable" class="ServiceType" column="type_id"
+						 not-null="true" />
+		</properties>
+	</class>
+
+</hibernate-mapping>
