@@ -1,1 +1,169 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay_bti" basedir="..">
+
+	<import file="../ab/ab_build.xml" />
+
+	<property file="bti/bti_build.properties" />
+	<property file="ab/ab_build.properties" />
+	<property file="common/common_build.properties" />
+
+	<property name="bti.dir" value="${basedir}/bti" />
+
+	<path id="bti.lib">
+		<fileset dir="${bti.dir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<fileset id="bti.libraries" dir="${bti.dir}/lib">
+		<include name="**/*" />
+	</fileset>
+
+	<path id="bti.jar" location="${build.dir}/lib/${bti.jar.name}" />
+	<path id="bti.test.jar" location="${build.dir}/lib/${bti.tests.jar.name}" />
+
+	<path id="bti.production.classpath">
+		<path refid="ab.production.classpath" />
+		<path refid="bti.lib" />
+		<path refid="ab.jar" />
+	</path>
+
+	<path id="bti.test.classpath">
+		<path refid="ab.test.classpath" />
+		<path refid="bti.jar" />
+		<path refid="bti.test.jar" />
+		<path refid="bti.production.classpath" />
+	</path>
+
+    <path id="bti.runtests.classpath">
+        <path refid="ab.runtests.classpath" />
+        <path refid="bti.test.classpath" />
+        <path location="${build.dir}/web" />
+        <path location="bti/src" />
+        <path location="bti/tests/data/org/flexpay/bti" />
+    </path>
+
+    <target name="bti.clean.build">
+		<antcall target="clean.build" />
+	</target>
+
+	<target name="bti.compile.production">
+		<antcall target="template.compile.production">
+			<param name="sources.dir" value="${bti.dir}/${src.dir}" />
+			<reference refid="bti.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<!-- Build targets -->
+	<target name="bti.build.production.jar"
+			depends="ab.build.production.jar,bti.clean.build,bti.compile.production">
+		<fileset dir="${build.dir}/empty" id="empty_res" />
+
+		<antcall target="template.jar">
+			<param name="dest.jar" value="${bti.jar.name}" />
+			<reference refid="empty_res" torefid="resources" />
+		</antcall>
+	</target>
+
+	<target name="bti.build.test.jar"
+			depends="ab.build.test.jar,bti.build.production.jar">
+		<antcall target="template.compile.test">
+			<param name="sources.dir" value="${bti.dir}/${tests.src.dir}" />
+			<reference refid="bti.test.classpath" torefid="classpath" />
+		</antcall>
+
+		<fileset id="resources" dir="${bti.dir}/${tests.resources.dir}">
+			<include name="**/*.*" />
+		</fileset>
+
+		<antcall target="template.jar">
+			<param name="dest.jar" value="${bti.tests.jar.name}" />
+			<reference refid="resources" torefid="resources" />
+		</antcall>
+	</target>
+
+	<target name="bti.docs" depends="bti.build.production.jar">
+		<fileset id="bti.docs.resources" dir="${bti.dir}/docs" />
+		<antcall target="template.docs">
+			<param name="sources.dir" value="${bti.dir}/src" />
+			<param name="module_name" value="Bureau of techinical stock-taking" />
+			<param name="docs.file" value="${bti.docs.name}" />
+			<reference refid="bti.docs.resources" torefid="resources" />
+			<reference refid="bti.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="bti.war.production.tomcat_mysql5">
+		<antcall target="template.bti.war.production">
+			<param name="app_server.properties" value="app_server_tomcat.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="bti.war.production.glassfish_mysql5">
+		<antcall target="template.bti.war.production">
+			<param name="app_server.properties" value="app_server_glassfish.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+    <target name="bti.prepare.war" depends="ab.prepare.war">
+        <fileset id="bti.web.resources" dir="${bti.dir}/web" />
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="" />
+            <param name="src.i18n.dir" value="${build.dir}/empty" />
+            <reference refid="bti.web.resources" torefid="resources" />
+        </antcall>
+
+        <fileset dir="${bti.dir}/${src.dir}" id="bti.classes.resources">
+            <patternset refid="resources_pattern" />
+        </fileset>
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="/WEB-INF/classes" />
+            <param name="src.i18n.dir" value="${bti.dir}/${src.dir}" />
+            <reference refid="bti.classes.resources" torefid="resources" />
+        </antcall>
+    </target>
+
+    <!-- Build production web-archive -->
+	<target name="template.bti.war.production"
+			depends="clean.all,bti.build.production.jar,bti.prepare.war,init.distr">
+
+		<copy file="${build.dir}/web/WEB-INF/configs/ps/${app_server.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/configs/spring/common/app_server.properties" />
+		<copy file="${build.dir}/web/WEB-INF/configs/ps/${data_source.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/configs/spring/common/data_source.properties" />
+
+		<war destfile="${distr.dir}/${bti.war.name}" needxmlfile="false">
+			<fileset dir="${build.dir}/web" />
+			<lib refid="bti.libraries" />
+		</war>
+
+		<antcall target="common.war.include.libs">
+			<param name="warfile" value="${distr.dir}/${bti.war.name}" />
+		</antcall>
+	</target>
+
+	<target name="bti.exportschema.mysql5"
+			depends="ab.compile.production,bti.compile.production">
+		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+		<antcall target="template.schemaexport">
+			<param name="file_name" value="flexpay_bti.ddl.sql" />
+			<param name="src.dir" value="${bti.dir}/src:${ab.dir}/src:${common.dir}/src" />
+			<param name="hibernate.cfg"
+				   value="${bti.dir}/web/WEB-INF/hibernate.cfg.xml" />
+			<param name="hibernate.properties"
+				   value="${common.dir}/web/WEB-INF/configs/ps/data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="bti.runtests" depends="bti.build.test.jar,bti.prepare.war">
+		<antcall target="template.run.tests">
+			<param name="test_name" value="org.flexpay.bti.AllTests" />
+			<reference refid="bti.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+</project>

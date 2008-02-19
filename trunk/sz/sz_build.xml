@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="flexpay_sz" basedir="..">
 
-	<import file="../common/common_build.xml" />
-	<import file="../ab/ab_build.xml" />
+	<import file="../eirc/eirc_build.xml" />
 
 	<property file="sz/sz_build.properties" />
+	<property file="eirc/eirc_build.properties" />
+	<property file="bti/bti_build.properties" />
 	<property file="ab/ab_build.properties" />
 	<property file="common/common_build.properties" />
 
@@ -24,26 +25,25 @@
 	<path id="sz.test.jar" location="${build.dir}/lib/${sz.tests.jar.name}" />
 
 	<path id="sz.production.classpath">
-		<path refid="ab.production.classpath" />
+		<path refid="eirc.production.classpath" />
 		<path refid="sz.lib" />
-		<path refid="ab.jar" />
+		<path refid="eirc.jar" />
 	</path>
 
-    <path id="sz.test.classpath">
-        <path refid="ab.test.classpath" />
-        <path refid="sz.jar" />
-        <path refid="sz.test.jar" />
-        <path refid="sz.production.classpath" />
-    </path>
+	<path id="sz.test.classpath">
+		<path refid="eirc.test.classpath" />
+		<path refid="sz.jar" />
+		<path refid="sz.test.jar" />
+		<path refid="sz.production.classpath" />
+	</path>
 
     <path id="sz.runtests.classpath">
-        <path refid="ab.runtests.classpath" />
+        <path refid="eirc.runtests.classpath" />
         <path refid="sz.test.classpath" />
         <path location="${build.dir}/web" />
         <path location="sz/src" />
         <path location="sz/tests/data/org/flexpay/sz" />
     </path>
-
 
     <target name="sz.clean.build">
 		<antcall target="clean.build" />
@@ -58,12 +58,40 @@
 
 	<!-- Build targets -->
 	<target name="sz.build.production.jar"
-			depends="ab.build.production.jar,sz.clean.build,sz.compile.production">
+			depends="eirc.build.production.jar,sz.clean.build,sz.compile.production">
 		<fileset dir="${build.dir}/empty" id="empty_res" />
 
 		<antcall target="template.jar">
 			<param name="dest.jar" value="${sz.jar.name}" />
 			<reference refid="empty_res" torefid="resources" />
+		</antcall>
+	</target>
+
+	<target name="sz.build.test.jar"
+			depends="eirc.build.test.jar,sz.build.production.jar">
+		<antcall target="template.compile.test">
+			<param name="sources.dir" value="${sz.dir}/${tests.src.dir}" />
+			<reference refid="sz.test.classpath" torefid="classpath" />
+		</antcall>
+
+		<fileset id="resources" dir="${sz.dir}/${tests.resources.dir}">
+			<include name="**/*.*" />
+		</fileset>
+
+		<antcall target="template.jar">
+			<param name="dest.jar" value="${sz.tests.jar.name}" />
+			<reference refid="resources" torefid="resources" />
+		</antcall>
+	</target>
+
+	<target name="sz.docs" depends="sz.build.production.jar">
+		<fileset id="sz.docs.resources" dir="${sz.dir}/docs" />
+		<antcall target="template.docs">
+			<param name="sources.dir" value="${sz.dir}/src" />
+			<param name="module_name" value="Social protection" />
+			<param name="docs.file" value="${sz.docs.name}" />
+			<reference refid="sz.docs.resources" torefid="resources" />
+			<reference refid="sz.production.classpath" torefid="classpath" />
 		</antcall>
 	</target>
 
@@ -81,89 +109,7 @@
 		</antcall>
 	</target>
 
-	<!-- Build production web-archive -->
-	<target name="template.sz.war.production"
-			depends="sz.build.production.jar,common.prepare.war,init.distr">
-		<fileset id="ab.web.resources" dir="${ab.dir}/web" />
-		<antcall target="template.prepare.war">
-			<param name="to_dir" value="" />
-			<param name="src.i18n.dir" value="${build.dir}/empty" />
-			<reference refid="ab.web.resources" torefid="resources" />
-		</antcall>
-
-		<fileset dir="${ab.dir}/${src.dir}" id="ab.classes.resources">
-			<patternset refid="resources_pattern" />
-		</fileset>
-		<antcall target="template.prepare.war">
-			<param name="to_dir" value="/WEB-INF/classes" />
-			<param name="src.i18n.dir" value="${ab.dir}/${src.dir}" />
-			<reference refid="ab.classes.resources" torefid="resources" />
-		</antcall>
-
-		<copy file="${build.dir}/web/WEB-INF/configs/ps/${app_server.properties}"
-			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/configs/spring/common/app_server.properties" />
-		<copy file="${build.dir}/web/WEB-INF/configs/ps/${data_source.properties}"
-			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/configs/spring/common/data_source.properties" />
-
-		<fileset id="sz.web.resources" dir="${sz.dir}/web" />
-		<antcall target="template.prepare.war">
-			<param name="to_dir" value="" />
-			<param name="src.i18n.dir" value="${build.dir}/empty" />
-			<reference refid="sz.web.resources" torefid="resources" />
-		</antcall>
-
-		<fileset dir="${sz.dir}/${src.dir}" id="sz.classes.resources">
-			<patternset refid="resources_pattern" />
-		</fileset>
-		<antcall target="template.prepare.war">
-			<param name="to_dir" value="/WEB-INF/classes" />
-			<param name="src.i18n.dir" value="${sz.dir}/${src.dir}" />
-			<reference refid="sz.classes.resources" torefid="resources" />
-		</antcall>
-
-		<war destfile="${distr.dir}/${sz.war.name}" needxmlfile="false">
-			<fileset dir="${build.dir}/web" />
-			<lib refid="sz.libraries" />
-		</war>
-
-		<antcall target="common.war.include.libs">
-			<param name="warfile" value="${distr.dir}/${sz.war.name}" />
-		</antcall>
-	</target>
-
-	<target name="sz.exportschema.mysql5"
-			depends="common.compile.production,ab.compile.production,sz.compile.production">
-		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
-		<antcall target="template.schemaexport">
-			<param name="file_name" value="flexpay_sz.ddl.sql" />
-			<param name="src.dir" value="${sz.dir}/src:${ab.dir}/src:${common.dir}/src" />
-			<param name="hibernate.cfg"
-				   value="${sz.dir}/web/WEB-INF/hibernate.cfg.xml" />
-			<param name="hibernate.properties"
-				   value="${common.dir}/web/WEB-INF/configs/ps/data_source_mysql5.properties" />
-		</antcall>
-	</target>
-
-    <target name="sz.build.test.jar"
-            depends="ab.build.test.jar,sz.build.production.jar">
-        <antcall target="template.compile.test">
-            <param name="sources.dir" value="${sz.dir}/${tests.src.dir}" />
-            <reference refid="sz.test.classpath" torefid="classpath" />
-        </antcall>
-
-        <fileset id="resources" dir="${sz.dir}/${tests.resources.dir}">
-            <include name="**/*.*" />
-        </fileset>
-
-        <antcall target="template.jar">
-            <param name="dest.jar" value="${sz.tests.jar.name}" />
-            <reference refid="resources" torefid="resources" />
-        </antcall>
-    </target>
-
-    <target name="sz.prepare.war" depends="ab.prepare.war">
+    <target name="sz.prepare.war" depends="eirc.prepare.war">
         <fileset id="sz.web.resources" dir="${sz.dir}/web" />
         <antcall target="template.prepare.war">
             <param name="to_dir" value="" />
@@ -181,11 +127,45 @@
         </antcall>
     </target>
 
-    <target name="sz.runtests" depends="sz.build.test.jar,sz.prepare.war">
-        <antcall target="template.run.tests">
-            <param name="test_name" value="org.flexpay.sz.AllTests" />
-            <reference refid="sz.runtests.classpath" torefid="classpath" />
-        </antcall>
-    </target>
+    <!-- Build production web-archive -->
+	<target name="template.sz.war.production"
+			depends="clean.all,sz.build.production.jar,sz.prepare.war,init.distr">
+
+		<copy file="${build.dir}/web/WEB-INF/configs/ps/${app_server.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/configs/spring/common/app_server.properties" />
+		<copy file="${build.dir}/web/WEB-INF/configs/ps/${data_source.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/configs/spring/common/data_source.properties" />
+
+		<war destfile="${distr.dir}/${sz.war.name}" needxmlfile="false">
+			<fileset dir="${build.dir}/web" />
+			<lib refid="sz.libraries" />
+		</war>
+
+		<antcall target="common.war.include.libs">
+			<param name="warfile" value="${distr.dir}/${sz.war.name}" />
+		</antcall>
+	</target>
+
+	<target name="sz.exportschema.mysql5"
+			depends="eirc.compile.production,sz.compile.production">
+		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+		<antcall target="template.schemaexport">
+			<param name="file_name" value="flexpay_sz.ddl.sql" />
+			<param name="src.dir" value="${sz.dir}/src:${eirc.dir}/src:${bti.dir}/src:${ab.dir}/src:${common.dir}/src" />
+			<param name="hibernate.cfg"
+				   value="${sz.dir}/web/WEB-INF/hibernate.cfg.xml" />
+			<param name="hibernate.properties"
+				   value="${common.dir}/web/WEB-INF/configs/ps/data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="sz.runtests" depends="sz.build.test.jar,sz.prepare.war">
+		<antcall target="template.run.tests">
+			<param name="test_name" value="org.flexpay.sz.AllTests" />
+			<reference refid="sz.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
 
 </project>
