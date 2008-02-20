@@ -17,6 +17,10 @@ public class StreetType extends TemporaryType<StreetType, StreetTypeTranslation>
 	public StreetType() {
 	}
 
+	public StreetType(Long id) {
+		super(id);
+	}
+
 	/**
 	 * Returns a string representation of the object.
 	 *

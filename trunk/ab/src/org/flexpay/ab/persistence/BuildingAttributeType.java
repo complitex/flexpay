@@ -14,9 +14,22 @@ import java.util.Set;
  */
 public class BuildingAttributeType extends DomainObject {
 
+	public static final int TYPE_UNKNOWN = 0;
+	public static final int TYPE_NUMBER = 1;
+	public static final int TYPE_BULK = 2;
+
+	private int type = TYPE_UNKNOWN;
 	private Set<BuildingAttributeTypeTranslation> translations = Collections.emptySet();
 
 	public BuildingAttributeType() {
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 	/**
@@ -71,5 +84,23 @@ public class BuildingAttributeType extends DomainObject {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 				.append("translations", translations)
 				.toString();
+	}
+
+	/**
+	 * Check if attribute type is a building number
+	 *
+	 * @return <code>true</code> if attribute type is a building number
+	 */
+	public boolean isBuildingNumber() {
+		return type == TYPE_NUMBER;
+	}
+
+	/**
+	 * Check if attribute type is a bulk number
+	 *
+	 * @return <code>true</code> if attribute type is a bulk number
+	 */
+	public boolean isBulkNumber() {
+		return type == TYPE_BULK;
 	}
 }

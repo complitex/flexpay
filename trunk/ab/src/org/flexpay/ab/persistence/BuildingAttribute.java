@@ -109,7 +109,7 @@ public class BuildingAttribute extends DomainObject {
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 				.append("value", value)
-				.append("type", buildingAttributeType)
+				.append("type", buildingAttributeType.getType())
 				.toString();
 	}
 }

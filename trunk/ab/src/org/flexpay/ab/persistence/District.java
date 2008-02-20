@@ -17,6 +17,10 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 	public District() {
 	}
 
+	public District(Long id) {
+		super(id);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */

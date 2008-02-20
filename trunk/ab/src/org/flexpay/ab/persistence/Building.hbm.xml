@@ -12,12 +12,12 @@
 
 		<many-to-one name="district" column="district_id" not-null="true"
 					 class="District" />
-		<set name="buildingses" inverse="true">
+		<set name="buildingses" inverse="true" cascade="all">
 			<key column="building_id" not-null="true" />
 			<one-to-many class="Buildings" />
 		</set>
 		<set name="buildingStatuses" inverse="true">
-			<key column="biulding_id" not-null="true" />
+			<key column="building_id" not-null="true" />
 			<one-to-many class="BuildingStatus" />
 		</set>
 		<set name="apartments" inverse="true">
@@ -35,7 +35,7 @@
 		<many-to-one name="street" column="street_id" not-null="true" />
 		<many-to-one name="building" column="building_id" not-null="true" />
 
-		<list name="buildingAttributes" inverse="true">
+		<list name="buildingAttributes" inverse="true" cascade="all">
 			<key column="buildings_id" not-null="true" />
 			<list-index column="attribute_type_id" />
 			<one-to-many class="BuildingAttribute" />
@@ -57,7 +57,8 @@
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<set name="translations" inverse="true">
+		<property name="type" />
+		<set name="translations" inverse="true" cascade="all-delete-orphan">
 			<key column="attribute_type_id" not-null="true" />
 			<one-to-many class="BuildingAttributeTypeTranslation" />
 		</set>
@@ -110,4 +111,31 @@
 		LEFT JOIN FETCH langAttr.translations
 		WHERE o.status = 0 AND temporals.invalidDate = '2100-12-31' AND street.id = ?
 	</query>
+
+	<query name="BuildingAttributeType.findAttributeTypes">
+		FROM BuildingAttributeType
+	</query>
+
+	<query name="Buildings.findByNumber">
+		from Buildings b
+			inner join fetch b.buildingAttributes a
+			inner join fetch a.buildingAttributeType t
+		where b.building.district.id=? and b.street.id=?
+			and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
+			ba.buildingAttributeType.type=? and ba.value=?)
+			and not exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
+				ba.buildingAttributeType.type=?)
+	</query>
+
+	<query name="Buildings.findByBulkNumber">
+		from Buildings b
+			inner join fetch b.buildingAttributes a
+			inner join fetch a.buildingAttributeType t
+		where b.building.district.id=? and b.street.id=?
+			and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
+			ba.buildingAttributeType.type=? and ba.value=?)
+			and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
+				ba.buildingAttributeType.type=? and ba.value=?)
+	</query>
+
 </hibernate-mapping>
