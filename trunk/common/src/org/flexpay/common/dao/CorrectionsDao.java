@@ -30,4 +30,26 @@ public interface CorrectionsDao {
 	 * @return DomainObject
 	 */
 	DomainObject findCorrection(String externalId, int type, Class cls, DataSourceDescription sourceDescription);
+
+	/**
+	 * Get correction internal object id
+	 *
+	 * @param externalId		DataSource internal object id
+	 * @param type			  DomainObject type
+	 * @param sourceDescription Data source description
+	 * @return DomainObject
+	 */
+	public Long getInternalId(final String externalId, final int type,
+									final DataSourceDescription sourceDescription);
+
+	/**
+	 * Check if correction exists
+	 *
+	 * @param externalId		DataSource internal object id
+	 * @param type			  DomainObject type
+	 * @param cls			   DomainObject class to retrive
+	 * @param sourceDescription Data source description
+	 * @return DomainObject
+	 */
+	boolean existsCorrection(String externalId, int type, Class<?> cls, DataSourceDescription sourceDescription);
 }

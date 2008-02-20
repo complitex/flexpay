@@ -30,4 +30,10 @@
 		where d.id=?
 	</query>
 
+	<query name="DataCorrection.getInternalId" read-only="true" cache-mode="ignore" cacheable="false">
+		select new java.lang.Long(c.internalObjectId)
+		from DataCorrection c
+		where c.externalId=? AND c.objectType=? AND c.dataSourceDescription.id=? 
+	</query>
+
 </hibernate-mapping>

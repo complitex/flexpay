@@ -8,8 +8,8 @@ import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
 import org.flexpay.common.util.config.ApplicationConfig;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 public class RawStreetDataConverter implements DataConverter<Street, RawStreetData> {
 
@@ -45,7 +45,17 @@ public class RawStreetDataConverter implements DataConverter<Street, RawStreetDa
 		nameTemporal.setValue(streetName);
 		street.setNamesTimeLine(new TimeLine<StreetName, StreetNameTemporal>(nameTemporal));
 
-		// TODO add street types support
+		StreetType streetType = (StreetType) correctionsService.findCorrection(
+				streetRawData.getTypeId(), StreetType.class, dataSourceDescription);
+		if (streetType == null) {
+			throw new FlexPayException("Cannot find street type correction: " + streetRawData.getTypeId());
+		}
+		StreetTypeTemporal temporal = new StreetTypeTemporal();
+		temporal.setObject(street);
+		temporal.setValue(streetType);
+		TimeLine<StreetType, StreetTypeTemporal> typeTimeLine =
+				new TimeLine<StreetType, StreetTypeTemporal>(temporal);
+		street.setTypesTimeLine(typeTimeLine);
 
 		return street;
 	}

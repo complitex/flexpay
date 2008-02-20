@@ -10,6 +10,7 @@ public class LanguageDaoImpl implements LanguageDao {
 
 	protected HibernateTemplate hibernateTemplate;
 
+	@SuppressWarnings ({"unchecked"})
 	public List<Language> listLanguages() {
 		return hibernateTemplate.findByNamedQuery("Language.listLanguages");
 	}

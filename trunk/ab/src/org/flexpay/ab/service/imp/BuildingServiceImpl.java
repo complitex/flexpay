@@ -3,10 +3,9 @@ package org.flexpay.ab.service.imp;
 import org.apache.commons.collections.ArrayStack;
 import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.BuildingsDao;
-import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.persistence.StreetNameTranslation;
-import org.flexpay.ab.persistence.StreetName;
-import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.dao.BuildingAttributeTypeDao;
+import org.flexpay.ab.dao.BuildingsDaoExt;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.service.BuildingService;
@@ -25,6 +24,8 @@ public class BuildingServiceImpl implements BuildingService {
 	private static Logger log = Logger.getLogger(BuildingServiceImpl.class);
 
 	private BuildingsDao buildingsDao;
+	private BuildingAttributeTypeDao buildingsTypeDao;
+	private BuildingsDaoExt buildingsDaoExt;
 
 	private ParentService<StreetFilter> parentService;
 
@@ -35,6 +36,14 @@ public class BuildingServiceImpl implements BuildingService {
 	 */
 	public void setBuildingsDao(BuildingsDao buildingsDao) {
 		this.buildingsDao = buildingsDao;
+	}
+
+	public void setBuildingsTypeDao(BuildingAttributeTypeDao buildingsTypeDao) {
+		this.buildingsTypeDao = buildingsTypeDao;
+	}
+
+	public void setBuildingsDaoExt(BuildingsDaoExt buildingsDaoExt) {
+		this.buildingsDaoExt = buildingsDaoExt;
 	}
 
 	/**
@@ -104,5 +113,36 @@ public class BuildingServiceImpl implements BuildingService {
 		filters.push(parentFilter);
 
 		return filters;
+	}
+
+	/**
+	 * Get building attribute type
+	 *
+	 * @return BuildingAttributeType
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if failure occurs
+	 */
+	public BuildingAttributeType getAttributeType(int type) throws FlexPayException {
+		List<BuildingAttributeType> types = buildingsTypeDao.findAttributeTypes();
+		for (BuildingAttributeType attributeType : types) {
+			if (attributeType.getType() == type) {
+				return attributeType;
+			}
+		}
+
+		throw new FlexPayException("Unknown building attribute type: " + type);
+	}
+
+	/**
+	 * Find building by number
+	 *
+	 * @param street   Building street
+	 * @param district Building district
+	 * @param number   Building number
+	 * @param bulk	 Building bulk number
+	 * @return Buildings instance, or <code>null</null> if not found
+	 */
+	public Buildings findBuildings(Street street, District district, String number, String bulk) {
+		return buildingsDaoExt.findBuildings(street, district, number, bulk);
 	}
 }

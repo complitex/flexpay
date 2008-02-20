@@ -20,6 +20,10 @@ public abstract class TemporaryType<TV extends TemporaryValue, T extends Transla
 	protected TemporaryType() {
 	}
 
+	protected TemporaryType(Long id) {
+		super(id);
+	}
+
 	/**
 	 * Getter for property 'translations'.
 	 *

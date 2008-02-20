@@ -12,6 +12,7 @@
 
 	<bean id="correctionsDao" class="org.flexpay.common.dao.impl.CorrectionsDaoImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 
 </beans>

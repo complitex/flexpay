@@ -10,8 +10,10 @@ public class TestImportService extends SpringBeanAwareTestCase {
 	@Override
 	protected void runTest() throws Throwable {
 		testGetConnection();
-//		testImportDistricts();
+		testImportDistricts();
 		testImportStreetTypes();
+		testImportStreets();
+		testImportBuildings();
 	}
 
 	public void testGetConnection() {
@@ -22,15 +24,12 @@ public class TestImportService extends SpringBeanAwareTestCase {
 		template.execute("SELECT 1 FROM DUAL");
 	}
 
-	public void testImportDistricts() {
+	public void testImportDistricts() throws Throwable {
 		ImportService service = (ImportService) applicationContext.getBean("importService");
 		assertNotNull("ImportService is null", service);
 
-		Town town = new Town();
-		town.setId(1L);
-
-		DataSourceDescription dsd = new DataSourceDescription();
-		dsd.setId(1L);
+		Town town = new Town(1L);
+		DataSourceDescription dsd = new DataSourceDescription(1L);
 
 		service.importDistricts(town, dsd);
 	}
@@ -39,9 +38,27 @@ public class TestImportService extends SpringBeanAwareTestCase {
 		ImportService service = (ImportService) applicationContext.getBean("importService");
 		assertNotNull("ImportService is null", service);
 
-		DataSourceDescription dsd = new DataSourceDescription();
-		dsd.setId(1L);
+		DataSourceDescription dsd = new DataSourceDescription(1L);
 
 		service.importStreetTypes(dsd);
+	}
+
+	public void testImportStreets() throws Throwable {
+		ImportService service = (ImportService) applicationContext.getBean("importService");
+		assertNotNull("ImportService is null", service);
+
+		Town town = new Town(1L);
+		DataSourceDescription dsd = new DataSourceDescription(1L);
+
+		service.importStreets(town, dsd);
+	}
+
+	public void testImportBuildings() throws Throwable {
+		ImportService service = (ImportService) applicationContext.getBean("importService");
+		assertNotNull("ImportService is null", service);
+
+		DataSourceDescription dsd = new DataSourceDescription(1L);
+
+		service.importBuildings(dsd);
 	}
 }

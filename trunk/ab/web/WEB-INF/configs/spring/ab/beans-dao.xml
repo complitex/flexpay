@@ -303,6 +303,10 @@
 		</property>
 	</bean>
 
+	<bean id="buildingsDaoExt" class="org.flexpay.ab.dao.imp.BuildingsDaoExtImpl">
+		<property name="sessionFactory" ref="flexpaySessionFactory" />
+	</bean>
+
 	<bean id="buildingAttributeTypeTranslationDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.BuildingAttributeTypeTranslationDao" />

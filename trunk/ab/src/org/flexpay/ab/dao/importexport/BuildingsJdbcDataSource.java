@@ -1,7 +1,7 @@
 package org.flexpay.ab.dao.importexport;
 
 import org.flexpay.ab.dao.importexport.imp.HarkovCenterNachisleniyDataSource;
-import org.flexpay.ab.service.importexport.RawStreetData;
+import org.flexpay.ab.service.importexport.RawBuildingsData;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
@@ -9,18 +9,18 @@ import org.flexpay.common.service.importexport.RawDataSource;
 import java.util.Iterator;
 import java.util.List;
 
-public class StreetJdbcDataSource implements RawDataSource<RawStreetData> {
+public class BuildingsJdbcDataSource implements RawDataSource<RawBuildingsData> {
 
 	private HarkovCenterNachisleniyDataSource source;
-	private Page<RawStreetData> pager;
-	private Iterator<RawStreetData> dataIterator;
+	private Page<RawBuildingsData> pager;
+	private Iterator<RawBuildingsData> dataIterator;
 
 	/**
 	 * Initialize data source
 	 */
 	public void initialize() {
-		pager = new Page<RawStreetData>(300, 1);
-		List<RawStreetData> districtDatas = source.getStreetsData(pager);
+		pager = new Page<RawBuildingsData>(300, 1);
+		List<RawBuildingsData> districtDatas = source.getBuildingsData(pager);
 		dataIterator = districtDatas.iterator();
 	}
 
@@ -39,7 +39,7 @@ public class StreetJdbcDataSource implements RawDataSource<RawStreetData> {
 		// get next page
 		int nextPage = pager.getPageNumber() + 1;
 		pager.setPageNumber(nextPage);
-		List<RawStreetData> districtDatas = source.getStreetsData(pager);
+		List<RawBuildingsData> districtDatas = source.getBuildingsData(pager);
 		dataIterator = districtDatas.iterator();
 		return dataIterator.hasNext();
 	}
@@ -52,7 +52,7 @@ public class StreetJdbcDataSource implements RawDataSource<RawStreetData> {
 	 * @throws java.util.NoSuchElementException
 	 *          iteration has no more elements.
 	 */
-	public RawStreetData next(ImportOperationTypeHolder holder) {
+	public RawBuildingsData next(ImportOperationTypeHolder holder) {
 		return dataIterator.next();
 	}
 

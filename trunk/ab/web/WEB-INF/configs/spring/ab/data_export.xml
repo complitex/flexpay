@@ -8,6 +8,11 @@
 		<property name="jdbcTemplate" ref="dataExportJdbcTemplate" />
 	</bean>
 
+	<bean id="allObjectsDao"
+		  class="org.flexpay.ab.service.importexport.imp.AllObjectsDao">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+
 	<!-- Data sources -->
 	<bean id="districtJdbcDataSource"
 		  class="org.flexpay.ab.dao.importexport.DistrictJdbcDataSource">
@@ -24,6 +29,11 @@
 		<property name="source" ref="dataExportDao" />
 	</bean>
 
+	<bean id="buildingsJdbcDataSource"
+		  class="org.flexpay.ab.dao.importexport.BuildingsJdbcDataSource">
+		<property name="source" ref="dataExportDao" />
+	</bean>
+
 	<!-- Data converters -->
 	<bean id="districtDataConverter"
 		  class="org.flexpay.ab.service.importexport.RawDistrictDataConverter" />
@@ -34,26 +44,36 @@
 	<bean id="streetDataConverter"
 		  class="org.flexpay.ab.service.importexport.RawStreetDataConverter" />
 
+	<bean id="buildingsDataConverter"
+		  class="org.flexpay.ab.service.importexport.RawBuildingsDataConverter">
+		<property name="buildingService" ref="buildingService" />
+	</bean>
+
 	<bean id="typeRegistryAb"
 		  class="org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry" />
 
-	<bean id="correctionsServiceAb" class="org.flexpay.common.service.importexport.imp.CorrectionsServiceImpl">
+	<bean id="correctionsServiceAb"
+		  class="org.flexpay.common.service.importexport.imp.CorrectionsServiceImpl">
 		<property name="correctionsDao" ref="correctionsDao" />
 		<property name="typeRegistry" ref="typeRegistryAb" />
 	</bean>
 
 	<!-- Import-Export services -->
 	<bean id="importService" class="org.flexpay.ab.service.importexport.ImportService">
-		<property name="districtDao" ref="districtDAO" />
 		<property name="districtDataSource" ref="districtJdbcDataSource" />
 		<property name="districtDataConverter" ref="districtDataConverter" />
 		<property name="streetTypeDataSource" ref="streetTypeJdbcDataSource" />
+		<property name="buildingsDataSource" ref="buildingsJdbcDataSource" />
 		<property name="streetTypeDataConverter" ref="streetTypeDataConverter" />
 		<property name="streetDataSource" ref="streetJdbcDataSource" />
 		<property name="streetDataConverter" ref="streetDataConverter" />
+		<property name="buildingsDataConverter" ref="buildingsDataConverter" />
 		<property name="correctionsService" ref="correctionsServiceAb" />
 		<property name="districtService" ref="districtService" />
 		<property name="streetTypeService" ref="streetTypeService" />
+		<property name="streetService" ref="streetService" />
+		<property name="buildingService" ref="buildingService" />
+		<property name="allObjectsDao" ref="allObjectsDao" />
 	</bean>
 
 </beans>
