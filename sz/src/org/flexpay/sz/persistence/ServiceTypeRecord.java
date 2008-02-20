@@ -6,7 +6,7 @@ public class ServiceTypeRecord extends Record {
 
 	// District code
 	private Integer extDistrictCode;
-	// Organisation code
+	// Organization code
 	private Integer extOrganizationCode;
 	// dwelling owner/deadhead id
 	private Integer dwellingOwnerId;

@@ -1611,14 +1611,14 @@ INSERT INTO person_identities_tbl (begin_date, end_date, birth_date, serial_numb
 	0, @identity_type_foreign_passport_id, @person_id);
 
 -- Buildings attribute types
-INSERT INTO building_attribute_types_tbl () VALUES ();
+INSERT INTO building_attribute_types_tbl (type) VALUES (1);
 SELECT @attr_type_home_number_id:=last_insert_id();
 INSERT INTO building_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
 	VALUES ('Номер дома', 'д', @attr_type_home_number_id, @ru_id);
 INSERT INTO building_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
 	VALUES ('Home number', '', @attr_type_home_number_id, @en_id);
 
-INSERT INTO building_attribute_types_tbl () VALUES ();
+INSERT INTO building_attribute_types_tbl (type) VALUES (2);
 SELECT @attr_type_bulk_id:=last_insert_id();
 INSERT INTO building_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
 	VALUES ('Корпус', 'к', @attr_type_bulk_id, @ru_id);

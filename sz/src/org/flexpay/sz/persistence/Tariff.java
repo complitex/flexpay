@@ -1,7 +1,7 @@
 package org.flexpay.sz.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
-
+import org.flexpay.eirc.persistence.Organisation;
 import java.util.Date;
 
 public class Tariff extends DomainObject {

@@ -31,10 +31,6 @@
         drop 
         foreign key FK99B9E2CAF71F858D;
 
-    alter table building_statuses_tbl 
-        drop 
-        foreign key FK99B9E2CA76E36C25;
-
     alter table buildings_tbl 
         drop 
         foreign key FKEA6AFBBE1AE9F4D;
@@ -86,6 +82,54 @@
     alter table districts_tbl 
         drop 
         foreign key FKCA605324712C324D;
+
+    alter table eirc_account_statuses_tbl 
+        drop 
+        foreign key FKB610981B47DC07F9;
+
+    alter table eirc_organisations_tbl 
+        drop 
+        foreign key FK9AA6756E1AE9F4D;
+
+    alter table eirc_personal_account_records_tbl 
+        drop 
+        foreign key FK4883F2DA36052C2B;
+
+    alter table eirc_personal_account_records_tbl 
+        drop 
+        foreign key FK4883F2DAF6C14BBB;
+
+    alter table eirc_personal_accounts_tbl 
+        drop 
+        foreign key FK9201389A7095AEAD;
+
+    alter table eirc_personal_accounts_tbl 
+        drop 
+        foreign key FK9201389ADEF75687;
+
+    alter table eirc_personal_accounts_tbl 
+        drop 
+        foreign key FK9201389AC2AC3F08;
+
+    alter table eirc_service_providers_tbl 
+        drop 
+        foreign key FK960743AD7F30FD59;
+
+    alter table eirc_service_type_name_translations_tbl 
+        drop 
+        foreign key FKA057A044A83C068F;
+
+    alter table eirc_service_type_name_translations_tbl 
+        drop 
+        foreign key FKA057A0445A549E10;
+
+    alter table eirc_services_tbl 
+        drop 
+        foreign key FK4D78EA87A26D3B0;
+
+    alter table eirc_services_tbl 
+        drop 
+        foreign key FK4D78EA875A549E10;
 
     alter table identity_type_translations_tbl 
         drop 
@@ -247,10 +291,6 @@
         drop 
         foreign key FKC3A70A1E53508F07;
 
-    alter table sz_organisations_tbl 
-        drop 
-        foreign key FKBF17C1801AE9F4D;
-
     alter table sz_service_type_records_tbl 
         drop 
         foreign key FKAA22F5DEB955775E;
@@ -343,6 +383,22 @@
 
     drop table if exists districts_tbl;
 
+    drop table if exists eirc_account_statuses_tbl;
+
+    drop table if exists eirc_organisations_tbl;
+
+    drop table if exists eirc_personal_account_records_tbl;
+
+    drop table if exists eirc_personal_accounts_tbl;
+
+    drop table if exists eirc_service_providers_tbl;
+
+    drop table if exists eirc_service_type_name_translations_tbl;
+
+    drop table if exists eirc_service_types_tbl;
+
+    drop table if exists eirc_services_tbl;
+
     drop table if exists identity_type_translations_tbl;
 
     drop table if exists identity_types_tbl;
@@ -398,8 +454,6 @@
     drop table if exists sz_file_types_tbl;
 
     drop table if exists sz_files_tbl;
-
-    drop table if exists sz_organisations_tbl;
 
     drop table if exists sz_service_type_records_tbl;
 
@@ -494,6 +548,7 @@
 
     create table building_attribute_types_tbl (
         id bigint not null auto_increment,
+        type integer,
         primary key (id)
     );
 
@@ -511,7 +566,6 @@
         end_date date not null,
         value varchar(255) not null,
         building_id bigint not null,
-        biulding_id bigint not null,
         primary key (id)
     );
 
@@ -614,6 +668,210 @@
         id bigint not null auto_increment,
         town_id bigint not null,
         status integer not null,
+        primary key (id)
+    );
+
+    create table eirc_account_statuses_tbl (
+        id bigint not null auto_increment,
+        value varchar(255) not null,
+        language bigint not null,
+        primary key (id)
+    );
+
+    create table eirc_organisations_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        inn varchar(255) not null,
+        kpp varchar(255) not null,
+        description varchar(255) not null,
+        name varchar(255) not null,
+        district_id bigint not null,
+        primary key (id)
+    );
+
+    create table eirc_personal_account_records_tbl (
+        id bigint not null auto_increment,
+        account bigint not null,
+        service bigint not null,
+        billBeginDate date not null,
+        billEndDate date not null,
+       alter table eirc_account_statuses_tbl
+        drop
+        foreign key FKB610981B47DC07F9;
+
+    alter table eirc_organisations_tbl
+        drop
+        foreign key FK9AA6756E1AE9F4D;
+
+    alter table eirc_personal_account_records_tbl
+        drop
+        foreign key FK4883F2DA36052C2B;
+
+    alter table eirc_personal_account_records_tbl
+        drop
+        foreign key FK4883F2DAF6C14BBB;
+
+    alter table eirc_personal_accounts_tbl
+        drop
+        foreign key FK9201389A7095AEAD;
+
+    alter table eirc_personal_accounts_tbl
+        drop
+        foreign key FK9201389ADEF75687;
+
+    alter table eirc_personal_accounts_tbl
+        drop
+        foreign key FK9201389AC2AC3F08;
+
+    alter table eirc_service_providers_tbl
+        drop
+        foreign key FK960743AD7F30FD59;
+
+    alter table eirc_service_type_name_translations_tbl
+        drop
+        foreign key FKA057A044A83C068F;
+
+    alter table eirc_service_type_name_translations_tbl
+        drop
+        foreign key FKA057A0445A549E10;
+
+    alter table eirc_services_tbl
+        drop
+        foreign key FK4D78EA87A26D3B0;
+
+    alter table eirc_services_tbl
+        drop
+        foreign key FK4D78EA875A549E10;
+
+    drop table if exists eirc_account_statuses_tbl;
+
+    drop table if exists eirc_organisations_tbl;
+
+    drop table if exists eirc_personal_account_records_tbl;
+
+    drop table if exists eirc_personal_accounts_tbl;
+
+    drop table if exists eirc_service_providers_tbl;
+
+    drop table if exists eirc_service_type_name_translations_tbl;
+
+    drop table if exists eirc_service_types_tbl;
+
+    drop table if exists eirc_services_tbl;
+
+	drop table if exists sz_organisations_tbl;
+
+        create table eirc_account_statuses_tbl (
+            id bigint not null auto_increment,
+            value varchar(255) not null,
+            language bigint not null,
+            primary key (id)
+        );
+
+        create table eirc_organisations_tbl (
+            id bigint not null auto_increment,
+            status integer not null,
+            inn varchar(255) not null,
+            kpp varchar(255) not null,
+            description varchar(255) not null,
+            name varchar(255) not null,
+            district_id bigint not null,
+            primary key (id)
+        );
+
+        create table eirc_personal_account_records_tbl (
+            id bigint not null auto_increment,
+            account bigint not null,
+            service bigint not null,
+            billBeginDate date not null,
+            billEndDate date not null,
+            amount numeric(19,2) not null,
+            primary key (id),
+            unique (account, service)
+        );
+
+        create table eirc_personal_accounts_tbl (
+            id bigint not null auto_increment,
+            apartment_id bigint not null,
+            person_id bigint not null,
+            status_id bigint not null,
+            creationDate date not null,
+            primary key (id),
+            unique (apartment_id, person_id, status_id)
+        );
+
+        create table eirc_service_providers_tbl (
+            id bigint not null auto_increment,
+            organisation_id bigint not null,
+            description varchar(255) not null,
+            primary key (id)
+        );
+
+        create table eirc_service_type_name_translations_tbl (
+            id bigint not null auto_increment,
+            name varchar(255) not null,
+            description varchar(255) not null,
+            lang bigint not null,
+            type_id bigint not null,
+            primary key (id),
+            unique (lang, type_id)
+        );
+
+        create table eirc_service_types_tbl (
+            id bigint not null auto_increment,
+            primary key (id)
+        );
+
+        create table eirc_services_tbl (
+            id bigint not null auto_increment,
+            provider_id bigint not null,
+            type_id bigint not null,
+            description varchar(255) not null,
+            primary key (id)
+        );
+
+	     amount numeric(19,2) not null,
+        primary key (id),
+        unique (account, service)
+    );
+
+    create table eirc_personal_accounts_tbl (
+        id bigint not null auto_increment,
+        apartment_id bigint not null,
+        person_id bigint not null,
+        status_id bigint not null,
+        creationDate date not null,
+        primary key (id),
+        unique (apartment_id, person_id, status_id)
+    );
+
+    create table eirc_service_providers_tbl (
+        id bigint not null auto_increment,
+        organisation_id bigint not null,
+        description varchar(255) not null,
+        primary key (id)
+    );
+
+    create table eirc_service_type_name_translations_tbl (
+        id bigint not null auto_increment,
+        name varchar(255) not null,
+        description varchar(255) not null,
+        lang bigint not null,
+        type_id bigint not null,
+        primary key (id),
+        unique (lang, type_id)
+    );
+
+    create table eirc_service_types_tbl (
+        id bigint not null auto_increment,
+        primary key (id)
+    );
+
+    create table eirc_services_tbl (
+        id bigint not null auto_increment,
+        provider_id bigint not null,
+        type_id bigint not null,
+        description varchar(255) not null,
         primary key (id)
     );
 
@@ -858,14 +1116,6 @@
         primary key (id)
     );
 
-    create table sz_organisations_tbl (
-        id bigint not null auto_increment,
-        status integer not null,
-        name varchar(255) not null,
-        district_id bigint not null,
-        primary key (id)
-    );
-
     create table sz_service_type_records_tbl (
         id bigint not null auto_increment,
         sz_file_id bigint not null,
@@ -1011,12 +1261,6 @@
         foreign key (building_id) 
         references buildings_tbl (id);
 
-    alter table building_statuses_tbl 
-        add index FK99B9E2CA76E36C25 (biulding_id), 
-        add constraint FK99B9E2CA76E36C25 
-        foreign key (biulding_id) 
-        references buildings_tbl (id);
-
     alter table buildings_tbl 
         add index FKEA6AFBBE1AE9F4D (district_id), 
         add constraint FKEA6AFBBE1AE9F4D 
@@ -1094,6 +1338,78 @@
         add constraint FKCA605324712C324D 
         foreign key (town_id) 
         references towns_tbl (id);
+
+    alter table eirc_account_statuses_tbl 
+        add index FKB610981B47DC07F9 (language), 
+        add constraint FKB610981B47DC07F9 
+        foreign key (language) 
+        references languages_tbl (id);
+
+    alter table eirc_organisations_tbl 
+        add index FK9AA6756E1AE9F4D (district_id), 
+        add constraint FK9AA6756E1AE9F4D 
+        foreign key (district_id) 
+        references districts_tbl (id);
+
+    alter table eirc_personal_account_records_tbl 
+        add index FK4883F2DA36052C2B (service), 
+        add constraint FK4883F2DA36052C2B 
+        foreign key (service) 
+        references eirc_services_tbl (id);
+
+    alter table eirc_personal_account_records_tbl 
+        add index FK4883F2DAF6C14BBB (account), 
+        add constraint FK4883F2DAF6C14BBB 
+        foreign key (account) 
+        references eirc_personal_accounts_tbl (id);
+
+    alter table eirc_personal_accounts_tbl 
+        add index FK9201389A7095AEAD (person_id), 
+        add constraint FK9201389A7095AEAD 
+        foreign key (person_id) 
+        references persons_tbl (id);
+
+    alter table eirc_personal_accounts_tbl 
+        add index FK9201389ADEF75687 (apartment_id), 
+        add constraint FK9201389ADEF75687 
+        foreign key (apartment_id) 
+        references apartments_tbl (id);
+
+    alter table eirc_personal_accounts_tbl 
+        add index FK9201389AC2AC3F08 (status_id), 
+        add constraint FK9201389AC2AC3F08 
+        foreign key (status_id) 
+        references eirc_account_statuses_tbl (id);
+
+    alter table eirc_service_providers_tbl 
+        add index FK960743AD7F30FD59 (organisation_id), 
+        add constraint FK960743AD7F30FD59 
+        foreign key (organisation_id) 
+        references eirc_organisations_tbl (id);
+
+    alter table eirc_service_type_name_translations_tbl 
+        add index FKA057A044A83C068F (lang), 
+        add constraint FKA057A044A83C068F 
+        foreign key (lang) 
+        references languages_tbl (id);
+
+    alter table eirc_service_type_name_translations_tbl 
+        add index FKA057A0445A549E10 (type_id), 
+        add constraint FKA057A0445A549E10 
+        foreign key (type_id) 
+        references eirc_service_types_tbl (id);
+
+    alter table eirc_services_tbl 
+        add index FK4D78EA87A26D3B0 (provider_id), 
+        add constraint FK4D78EA87A26D3B0 
+        foreign key (provider_id) 
+        references eirc_service_providers_tbl (id);
+
+    alter table eirc_services_tbl 
+        add index FK4D78EA875A549E10 (type_id), 
+        add constraint FK4D78EA875A549E10 
+        foreign key (type_id) 
+        references eirc_service_types_tbl (id);
 
     alter table identity_type_translations_tbl 
         add index FK8DFCEF85D8765DAA (identity_type_id), 
@@ -1334,12 +1650,6 @@
         add constraint FKC3A70A1E53508F07 
         foreign key (oszn_id) 
         references oszn_tbl (id);
-
-    alter table sz_organisations_tbl 
-        add index FKBF17C1801AE9F4D (district_id), 
-        add constraint FKBF17C1801AE9F4D 
-        foreign key (district_id) 
-        references districts_tbl (id);
 
     alter table sz_service_type_records_tbl 
         add index FKAA22F5DEB955775E (deadhead_id), 

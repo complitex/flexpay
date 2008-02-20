@@ -17,7 +17,7 @@
 		<property name="cost" column="cost" not-null="true" />
 		<property name="unitCode" column="unnit_code" not-null="true" />
 		<many-to-one name="organisation" column="organisation_id"
-			class="Organisation" not-null="true" />
+			class="org.flexpay.eirc.persistence.Organisation" not-null="true" />
 	</class>
 
 </hibernate-mapping>
