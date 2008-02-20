@@ -4,31 +4,11 @@ import org.flexpay.common.persistence.TypeDateInterval;
 
 public class StreetTypeTemporal extends TypeDateInterval<StreetType, StreetTypeTemporal> {
 
-	private Street object;
-
 	/**
 	 * Constructs a new TypeTemporal.
 	 */
 	public StreetTypeTemporal() {
 		super(new StreetType());
-	}
-
-	/**
-	 * Getter for property 'object'.
-	 *
-	 * @return Value for property 'object'.
-	 */
-	public Street getObject() {
-		return object;
-	}
-
-	/**
-	 * Setter for property 'object'.
-	 *
-	 * @param object Value to set for property 'object'.
-	 */
-	public void setObject(Street object) {
-		this.object = object;
 	}
 
 	/**
