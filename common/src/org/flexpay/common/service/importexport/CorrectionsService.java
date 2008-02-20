@@ -24,6 +24,16 @@ public interface CorrectionsService {
 	DomainObject findCorrection(String externalId, Class<?> cls, DataSourceDescription sourceDescription);
 
 	/**
+	 * Check if correction exists 
+	 *
+	 * @param externalId		External id
+	 * @param cls			  Object class to find
+	 * @param sourceDescription External data source description
+	 * @return DomainObject
+	 */
+	boolean existsCorrection(String externalId, Class<?> cls, DataSourceDescription sourceDescription);
+
+	/**
 	 * Create stub for new data correction
 	 *
 	 * @param externalId External object id

@@ -14,6 +14,10 @@ public class DataSourceDescription extends DomainObject {
 	public DataSourceDescription() {
 	}
 
+	public DataSourceDescription(Long id) {
+		super(id);
+	}
+
 	/**
 	 * Getter for property 'description'.
 	 *

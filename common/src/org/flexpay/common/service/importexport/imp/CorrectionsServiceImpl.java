@@ -37,6 +37,19 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	}
 
 	/**
+	 * Check if correction exists
+	 *
+	 * @param externalId		External id
+	 * @param cls			   Object class to find
+	 * @param sourceDescription External data source description
+	 * @return DomainObject
+	 */
+	public boolean existsCorrection(String externalId, Class<?> cls, DataSourceDescription sourceDescription) {
+		int type = typeRegistry.getType(cls);
+		return correctionsDao.existsCorrection(externalId, type, cls, sourceDescription);
+	}
+
+	/**
 	 * Create stub for new data correction
 	 *
 	 * @param externalId External object id

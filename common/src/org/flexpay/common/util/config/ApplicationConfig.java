@@ -135,7 +135,4 @@ public class ApplicationConfig {
 	public void setSzDefaultDbfFileEncoding(String szDefaultDbfFileEncoding) {
 		this.szDefaultDbfFileEncoding = szDefaultDbfFileEncoding;
 	}
-
-	
-
 }

@@ -11,6 +11,8 @@ public class AllTests extends TestCase {
 		suite.addTest(org.flexpay.ab.service.importexport.AllTests.suite());
 		suite.addTest(new TestStreetTypeService());
 		suite.addTest(new TestDistrictService());
+		suite.addTest(new TestStreetService());
+		suite.addTest(new TestBuildingService());
         return suite;
     }
 }
