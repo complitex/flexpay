@@ -1,12 +1,16 @@
 package org.flexpay.eirc.persistence;
 
-import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.ab.persistence.District;
+import org.flexpay.common.persistence.DomainObjectWithStatus;
 
-public class Organisation extends DomainObject {
+public class Organisation extends DomainObjectWithStatus {
 
 	private String inn;
 	private String kpp;
 	private String description;
+
+	private String name;
+	private District district;
 
 	/**
 	 * Constructs a new DomainObject.
@@ -40,5 +44,21 @@ public class Organisation extends DomainObject {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public District getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(District district) {
+		this.district = district;
 	}
 }

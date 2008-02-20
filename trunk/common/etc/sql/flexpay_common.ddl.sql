@@ -24,7 +24,7 @@
         internal_object_id bigint not null,
         object_type integer,
         external_object_id varchar(255) not null,
-        data_source_description_id bigint not null,
+        data_source_description_id bigint,
         primary key (id),
         unique (object_type, external_object_id, data_source_description_id)
     );
