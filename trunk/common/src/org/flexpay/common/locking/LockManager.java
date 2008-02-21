@@ -71,7 +71,7 @@ public class LockManager {
 
 	private List acquireLock(StatelessSession session, String semaphoreID) {
 		SQLQuery sqlQuery = session.createSQLQuery(
-				"select semaphoreID from semaphore where semaphoreID=:semaphoreID for update nowait");
+				"select semaphoreID from semaphore where semaphoreID=:semaphoreID for update");
 		sqlQuery.addScalar("semaphoreID", Hibernate.STRING).setString("semaphoreID", semaphoreID);
 		List list;
 		try {
@@ -103,12 +103,16 @@ public class LockManager {
 	public synchronized void releaseAll() {
 		Collection<StatelessSession> sessions = lockedSessions.values();
 		for (StatelessSession session : sessions) {
-			session.getTransaction().commit();
-			session.close();
-		}
+//            if (session.getTransaction().isActive()){
+                session.getTransaction().commit();
+			    session.close();
+//            }else{
+//
+//            }
+        }
 	}
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
+		instance.hibernateTemplate = hibernateTemplate;
 	}
 }
