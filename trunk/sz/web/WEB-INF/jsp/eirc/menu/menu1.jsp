@@ -5,11 +5,11 @@
         <td class="topmenu" nowrap="1">
             <a href="<c:url value="/ab/main.action"/>" class="menu"><s:text name="menu1.ab"/></a>
         </td>
-        <td class="topmenu" nowrap="1">
-            <a href="<c:url value="/eirc/main.action"/>" class="menu"><s:text name="eirc.menu1.title"/></a>
-        </td>
         <td class="topmenu_s" nowrap="1">
-            <span class="menu"><s:text name="sz.menu1.title"/></span>
+            <span class="menu"><s:text name="eirc.menu1.title"/></span>
+        </td>
+        <td class="topmenu" nowrap="1">
+            <a href="<c:url value="/sz/main.action"/>" class="menu"><s:text name="sz.menu1.title"/></a>
         </td>
 
         <td class="topmenu_form" nowrap="1">

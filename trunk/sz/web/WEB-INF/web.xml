@@ -25,7 +25,7 @@
 	</context-param>
 	<context-param>
 		<param-name>definitions-config</param-name>
-		<param-value>/WEB-INF/configs/tiles_common.xml,/WEB-INF/configs/tiles_ab.xml,/WEB-INF/configs/tiles_sz.xml</param-value>
+		<param-value>/WEB-INF/configs/tiles_common.xml,/WEB-INF/configs/tiles_ab.xml,/WEB-INF/configs/tiles_eirc.xml,/WEB-INF/configs/tiles_sz.xml</param-value>
 	</context-param>
 
 	<listener>
@@ -62,7 +62,7 @@
 		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
         <init-param>
 			<param-name>config</param-name>
-			<param-value>struts-default.xml,struts-plugin.xml,common_struts_config.xml,ab_struts_config.xml,/org/flexpay/sz/struts_config.xml</param-value>
+			<param-value>struts-default.xml,struts-plugin.xml,common_struts_config.xml,ab_struts_config.xml,/org/flexpay/eirc/struts_config.xml,/org/flexpay/sz/struts_config.xml</param-value>
 		</init-param>
     </filter>
 	<filter-mapping>
