@@ -1,14 +1,16 @@
 package org.flexpay.eirc.util;
 
+import org.flexpay.common.service.SequenceService;
 import org.flexpay.common.util.Luhn;
+import org.flexpay.common.util.config.ApplicationConfig;
 
 public class PersonalAccountUtil {
-
-	private static long counter = System.currentTimeMillis();
+	private static SequenceService sequenceService;
 
 	public static String nextPersonalAccount() {
-		String eircId = "090"; // TODO need to retrieve it from EIRC config
-		String result = String.valueOf(++counter); // TODO need to retrieve it from sequence
+		String eircId = ApplicationConfig.getInstance().getEircId();
+		String result = sequenceService.next(
+				SequenceService.PERSONAL_ACCOUNT_SEQUENCE_ID).toString();
 		result = fillLeadingZero(result, 7);
 		result = eircId + result;
 		result = Luhn.insertControlDigit(result, 1);
@@ -26,5 +28,9 @@ public class PersonalAccountUtil {
 		buf.append(source);
 
 		return buf.toString();
+	}
+
+	public void setSequenceService(SequenceService sequenceService) {
+		PersonalAccountUtil.sequenceService = sequenceService;
 	}
 }
