@@ -3,17 +3,41 @@
 
 	<import file="sz/sz_build.xml" />
 
-    <target name="build.all">
-      <antcall target="ab.war.production.glassfish_mysql5" />
-      <antcall target="sz.war.production.glassfish_mysql5" />
+	<target name="build.all" depends="build.ddls,build.docs,build.wars" />
 
+
+	<!-- Build wars -->
+	<target name="build.wars">
+		<antcall target="ab.war.production.glassfish_mysql5" />
+		<antcall target="bti.war.production.glassfish_mysql5" />
+		<antcall target="eirc.war.production.glassfish_mysql5" />
+		<antcall target="sz.war.production.glassfish_mysql5" />
+	</target>
+
+	<!-- Build DLL schemas -->
+	<target name="build.ddls">
+		<antcall target="common.exportschema.mysql5" />
+		<antcall target="ab.exportschema.mysql5" />
+		<antcall target="bti.exportschema.mysql5" />
+		<antcall target="eirc.exportschema.mysql5" />
+		<antcall target="sz.exportschema.mysql5" />
+	</target>
+
+	<!-- Run tests -->
+	<target name="run.tests">
 		<antcall target="common.runtests" />
 		<antcall target="ab.runtests" />
+		<antcall target="bti.runtests" />
+		<antcall target="eirc.runtests" />
+		<antcall target="sz.runtests" />
+	</target>
 
-      <!-- Build DLL schemas -->
-      <antcall target="common.exportschema.mysql5" />
-      <antcall target="ab.exportschema.mysql5" />
-      <antcall target="sz.exportschema.mysql5" />
-    </target>
-
+	<!-- Build docs -->
+	<target name="build.docs">
+		<antcall target="common.docs" />
+		<antcall target="ab.docs" />
+		<antcall target="bti.docs" />
+		<antcall target="eirc.docs" />
+		<antcall target="sz.docs" />
+	</target>
 </project>
