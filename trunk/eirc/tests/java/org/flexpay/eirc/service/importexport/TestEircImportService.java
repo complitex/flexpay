@@ -1,7 +1,9 @@
 package org.flexpay.eirc.service.importexport;
 
 import org.apache.log4j.Logger;
+import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.importexport.TestImportService;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.eirc.dao.importexport.PersonalAccountJdbcDataSource;
@@ -42,10 +44,10 @@ public class TestEircImportService extends TestImportService {
 		}
 	}
 
-	public void testImportPersonalAccounts() {
+	public void testImportPersonalAccounts() throws FlexPayException {
 		EircImportService importService = (EircImportService) applicationContext
 				.getBean("importServiceEirc");
 
-		importService.importPersonalAccounts(new DataSourceDescription(1L));
+		importService.importPersonalAccounts(new Town(1L), new DataSourceDescription(1L));
 	}
 }
