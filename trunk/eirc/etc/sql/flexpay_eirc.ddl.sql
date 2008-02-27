@@ -109,11 +109,11 @@
 
     alter table eirc_service_type_name_translations_tbl 
         drop 
-        foreign key FKA057A044A83C068F;
+        foreign key FKA057A0442C648686;
 
     alter table eirc_service_type_name_translations_tbl 
         drop 
-        foreign key FKA057A0445A549E10;
+        foreign key FKA057A04461F37403;
 
     alter table eirc_services_tbl 
         drop 
@@ -559,10 +559,10 @@
         id bigint not null auto_increment,
         name varchar(255) not null,
         description varchar(255) not null,
-        lang bigint not null,
-        type_id bigint not null,
+        language_id bigint not null,
+        service_type_id bigint not null,
         primary key (id),
-        unique (lang, type_id)
+        unique (language_id, service_type_id)
     );
 
     create table eirc_service_types_tbl (
@@ -590,6 +590,7 @@
     create table identity_types_tbl (
         id bigint not null auto_increment,
         status integer not null,
+        type_enum integer not null,
         primary key (id)
     );
 
@@ -625,8 +626,8 @@
         begin_date date not null,
         end_date date not null,
         birth_date date not null,
-        serial_number integer not null,
-        document_number integer not null,
+        serial_number varchar(10) not null,
+        document_number varchar(20) not null,
         first_name varchar(255) not null,
         middle_name varchar(255) not null,
         last_name varchar(255) not null,
@@ -974,16 +975,16 @@
         references eirc_organisations_tbl (id);
 
     alter table eirc_service_type_name_translations_tbl 
-        add index FKA057A044A83C068F (lang), 
-        add constraint FKA057A044A83C068F 
-        foreign key (lang) 
-        references languages_tbl (id);
+        add index FKA057A0442C648686 (service_type_id), 
+        add constraint FKA057A0442C648686 
+        foreign key (service_type_id) 
+        references eirc_service_types_tbl (id);
 
     alter table eirc_service_type_name_translations_tbl 
-        add index FKA057A0445A549E10 (type_id), 
-        add constraint FKA057A0445A549E10 
-        foreign key (type_id) 
-        references eirc_service_types_tbl (id);
+        add index FKA057A04461F37403 (language_id), 
+        add constraint FKA057A04461F37403 
+        foreign key (language_id) 
+        references languages_tbl (id);
 
     alter table eirc_services_tbl 
         add index FK4D78EA87A26D3B0 (provider_id), 

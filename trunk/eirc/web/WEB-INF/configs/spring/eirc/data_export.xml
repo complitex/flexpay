@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="dataExportEircDao" parent="dataExportDao"
+		  class="org.flexpay.eirc.dao.importexport.imp.HarkovCenterNachisleniyDataSource">
+	</bean>
+
+	<!-- Data sources -->
+	<bean id="personalAccountJdbcDataSource"
+		  class="org.flexpay.eirc.dao.importexport.PersonalAccountJdbcDataSource">
+		<property name="source" ref="dataExportEircDao" />
+	</bean>
+
+	<!-- Data converters -->
+	<bean id="personalAccountDataConverter"
+		  class="org.flexpay.eirc.service.importexport.RawPersonalAccountDataConverter">
+		<property name="identityTypeService" ref="identityTypeService" />
+		<property name="accountStatusService" ref="accountStatusService" />
+	</bean>
+
+	<bean id="typeRegistryEirc"
+		  class="org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistry" />
+
+	<bean id="correctionsServiceEirc" parent="correctionsServiceAb"
+		  class="org.flexpay.common.service.importexport.imp.CorrectionsServiceImpl">
+		<property name="typeRegistry" ref="typeRegistryEirc" />
+	</bean>
+
+	<!-- Import-Export services -->
+	<bean id="importServiceEirc" parent="importServiceAb"
+		  class="org.flexpay.eirc.service.importexport.EircImportService">
+		<property name="personalAccountDataSource" ref="personalAccountJdbcDataSource" />
+		<property name="personalAccountDataConverter" ref="personalAccountDataConverter" />
+		<property name="correctionsService" ref="correctionsServiceEirc" />
+		<property name="personalAccountService" ref="personalAccountService" />
+	</bean>
+
+</beans>

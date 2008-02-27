@@ -19,6 +19,7 @@
 						 not-null="true" />
 		</properties>
 		<property name="creationDate" not-null="true" type="date" />
+		<property name="accountNumber" not-null="true" unique="true" column="account_number" />
 	</class>
 
 	<class name="PersonalAccountRecord" table="eirc_personal_account_records_tbl"
@@ -39,9 +40,39 @@
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<property name="value" not-null="true" />
-		<many-to-one name="language" not-null="true"
-					 class="org.flexpay.common.persistence.Language" />
+		<property name="status" not-null="true" />
+		<set name="translations" inverse="true" cascade="all-delete-orphan">
+			<key column="account_status_id" not-null="true" />
+			<one-to-many class="AccountStatusTranslation" />
+		</set>
 	</class>
+
+	<class name="AccountStatusTranslation" table="eirc_account_status_translations_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" not-null="true" />
+		<properties name="account_status_language_pair" unique="true">
+			<many-to-one name="translatable" not-null="true" column="account_status_id"
+						 class="AccountStatus" />
+			<many-to-one name="lang" not-null="true" column="language_id"
+						 class="org.flexpay.common.persistence.Language" />
+		</properties>
+	</class>
+
+	<query name="AccountStatus.findAll">
+		select distinct a
+		from AccountStatus a
+		left join fetch a.translations t
+		left join fetch t.lang
+	</query>
+	
+	<query name="PersonalAccount.findAccounts">
+		select distinct pa
+		from PersonalAccount pa
+			left join fetch pa.responsiblePerson p
+			left join fetch p.personIdentities 
+		where pa.apartment.id=?
+	</query>
 
 </hibernate-mapping>

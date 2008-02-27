@@ -4,9 +4,11 @@ import org.flexpay.common.util.Luhn;
 
 public class PersonalAccountUtil {
 
+	private static long counter = System.currentTimeMillis();
+
 	public static String nextPersonalAccount() {
 		String eircId = "090"; // TODO need to retrieve it from EIRC config
-		String result = "22"; // TODO need to retrieve it from sequence
+		String result = String.valueOf(++counter); // TODO need to retrieve it from sequence
 		result = fillLeadingZero(result, 7);
 		result = eircId + result;
 		result = Luhn.insertControlDigit(result, 1);
