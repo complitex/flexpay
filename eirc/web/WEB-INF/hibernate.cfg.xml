@@ -42,6 +42,9 @@
 
 		<!-- common.Languages -->
 		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
+		
+		<!-- common.Sequences -->
+		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
 
 		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
 
