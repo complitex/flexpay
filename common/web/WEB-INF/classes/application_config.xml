@@ -11,6 +11,7 @@
 		</language>
 	</languages>
 	<dataRoot>c://flexpay_data_root</dataRoot>
+	<eircId>090</eircId> <!-- должен состоять из цифр -->
 	<szDataRoot>/sz</szDataRoot> <!-- задаётся относительно dataRoot -->
 	<szDefaultDbfFileEncoding>Cp866</szDefaultDbfFileEncoding>
 </flexpay>

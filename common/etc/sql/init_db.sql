@@ -4007,3 +4007,6 @@ INSERT INTO eirc_account_status_translations_tbl (name, account_status_id, langu
 	VALUES ('Активный', @account_status_id, @ru_id);
 INSERT INTO eirc_account_status_translations_tbl (name, account_status_id, language_id)
 	VALUES ('Enabled', @account_status_id, @en_id);
+	
+-- Init Sequences table
+INSERT INTO sequences_tbl (id, counter, description) VALUES (1, 10, 'Последовательность для ЛС модуля ЕИРЦ');	
