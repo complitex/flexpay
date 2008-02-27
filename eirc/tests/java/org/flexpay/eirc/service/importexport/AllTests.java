@@ -1,14 +1,14 @@
-package org.flexpay.eirc;
+package org.flexpay.eirc.service.importexport;
 
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import junit.framework.Test;
+import junit.framework.TestSuite;
 
 public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
-		suite.addTest(org.flexpay.eirc.service.importexport.AllTests.suite());
+		suite.addTest(new TestEircImportService());
 		return suite;
 	}
 }

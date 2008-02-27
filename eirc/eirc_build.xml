@@ -167,4 +167,9 @@
 		</antcall>
 	</target>
 
+	<target name="eirc.prepare.for.test">
+		<antcall target="eirc.build.test.jar" />
+		<antcall target="eirc.prepare.war" />
+	</target>
+
 </project>

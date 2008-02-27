@@ -1,12 +1,13 @@
 package org.flexpay.eirc.persistence;
 
-import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.DomainObjectWithStatus;
 
-public class AccountStatus extends DomainObject {
+import java.util.Collections;
+import java.util.Set;
 
-	private String value;
-	private Language language;
+public class AccountStatus extends DomainObjectWithStatus {
+
+	private Set<AccountStatusTranslation> translations = Collections.emptySet();
 
 	/**
 	 * Constructs a new DomainObject.
@@ -18,19 +19,11 @@ public class AccountStatus extends DomainObject {
 		super(id);
 	}
 
-	public String getValue() {
-		return value;
+	public Set<AccountStatusTranslation> getTranslations() {
+		return translations;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public Language getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(Language language) {
-		this.language = language;
+	public void setTranslations(Set<AccountStatusTranslation> translations) {
+		this.translations = translations;
 	}
 }

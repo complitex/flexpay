@@ -12,6 +12,7 @@ public class PersonalAccount extends DomainObject {
 	private Apartment apartment;
 	private Date creationDate;
 	private AccountStatus status;
+	private String accountNumber;
 
 	/**
 	 * Constructs a new DomainObject.
@@ -53,5 +54,13 @@ public class PersonalAccount extends DomainObject {
 
 	public void setStatus(AccountStatus status) {
 		this.status = status;
+	}
+
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 }
