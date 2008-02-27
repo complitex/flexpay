@@ -18,6 +18,10 @@ public class Building extends DomainObjectWithStatus {
 	public Building() {
 	}
 
+	public Building(Long id) {
+		super(id);
+	}
+
 	public District getDistrict() {
 		return this.district;
 	}

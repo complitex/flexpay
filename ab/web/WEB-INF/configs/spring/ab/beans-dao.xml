@@ -304,7 +304,12 @@
 	</bean>
 
 	<bean id="buildingsDaoExt" class="org.flexpay.ab.dao.imp.BuildingsDaoExtImpl">
-		<property name="sessionFactory" ref="flexpaySessionFactory" />
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="apartmentDaoExt" class="org.flexpay.ab.dao.imp.ApartmentDaoExtImpl">
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 
 	<bean id="buildingAttributeTypeTranslationDao" parent="abstractDao">

@@ -58,6 +58,7 @@
 
 	<bean id="apartmentService" class="org.flexpay.ab.service.imp.ApartmentServiceImpl">
 		<property name="apartmentDao" ref="apartmentDao" />
+		<property name="apartmentDaoExt" ref="apartmentDaoExt" />
 	</bean>
 
 	<bean id="townTypeService" class="org.flexpay.ab.service.imp.TownTypeServiceImpl">

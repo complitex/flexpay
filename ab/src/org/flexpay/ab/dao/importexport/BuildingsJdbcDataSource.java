@@ -15,6 +15,10 @@ public class BuildingsJdbcDataSource implements RawDataSource<RawBuildingsData> 
 	private Page<RawBuildingsData> pager;
 	private Iterator<RawBuildingsData> dataIterator;
 
+	public boolean trusted() {
+		return true;
+	}
+
 	/**
 	 * Initialize data source
 	 */

@@ -11,11 +11,11 @@
 		</id>
 		<property name="status" not-null="true"/>
 		<many-to-one name="apartment" class="Apartment" column="apartment_id" />
-		<set name="personAttributes" inverse="true">
+		<set name="personAttributes" inverse="true" cascade="all">
 			<key column="person_id" not-null="true" />
 			<one-to-many class="PersonAttribute" />
 		</set>
-		<set name="personIdentities" inverse="true" lazy="false">
+		<set name="personIdentities" inverse="true" lazy="false" cascade="all">
 			<key column="person_id" not-null="true" />
 			<one-to-many class="PersonIdentity" />
 		</set>
@@ -42,8 +42,8 @@
 		<property name="beginDate" column="begin_date" type="date" not-null="true" />
 		<property name="endDate" column="end_date" type="date" not-null="true" />
 		<property name="birthDate" column="birth_date" type="date" not-null="true" />
-		<property name="serialNumber" column="serial_number" not-null="true" />
-		<property name="documentNumber" column="document_number" not-null="true" />
+		<property name="serialNumber" column="serial_number" length="10" not-null="true" />
+		<property name="documentNumber" column="document_number" length="20" not-null="true" />
 		<property name="firstName" column="first_name" length="255" not-null="true" />
 		<property name="middleName" column="middle_name" length="255" not-null="true" />
 		<property name="lastName" column="last_name" length="255" not-null="true"/>

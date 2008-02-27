@@ -34,6 +34,11 @@
 		<property name="source" ref="dataExportDao" />
 	</bean>
 
+	<bean id="apartmentJdbcDataSource"
+		  class="org.flexpay.ab.dao.importexport.ApartmentJdbcDataSource">
+		<property name="source" ref="dataExportDao" />
+	</bean>
+
 	<!-- Data converters -->
 	<bean id="districtDataConverter"
 		  class="org.flexpay.ab.service.importexport.RawDistrictDataConverter" />
@@ -49,6 +54,11 @@
 		<property name="buildingService" ref="buildingService" />
 	</bean>
 
+	<bean id="apartmentDataConverter"
+		  class="org.flexpay.ab.service.importexport.RawApartmentDataConverter">
+		<property name="buildingService" ref="buildingService" />
+	</bean>
+
 	<bean id="typeRegistryAb"
 		  class="org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry" />
 
@@ -59,20 +69,23 @@
 	</bean>
 
 	<!-- Import-Export services -->
-	<bean id="importService" class="org.flexpay.ab.service.importexport.ImportService">
+	<bean id="importServiceAb" class="org.flexpay.ab.service.importexport.ImportService">
 		<property name="districtDataSource" ref="districtJdbcDataSource" />
 		<property name="districtDataConverter" ref="districtDataConverter" />
 		<property name="streetTypeDataSource" ref="streetTypeJdbcDataSource" />
 		<property name="buildingsDataSource" ref="buildingsJdbcDataSource" />
+		<property name="apartmentDataSource" ref="apartmentJdbcDataSource" />
 		<property name="streetTypeDataConverter" ref="streetTypeDataConverter" />
 		<property name="streetDataSource" ref="streetJdbcDataSource" />
 		<property name="streetDataConverter" ref="streetDataConverter" />
 		<property name="buildingsDataConverter" ref="buildingsDataConverter" />
+		<property name="apartmentDataConverter" ref="apartmentDataConverter" />
 		<property name="correctionsService" ref="correctionsServiceAb" />
 		<property name="districtService" ref="districtService" />
 		<property name="streetTypeService" ref="streetTypeService" />
 		<property name="streetService" ref="streetService" />
 		<property name="buildingService" ref="buildingService" />
+		<property name="apartmentService" ref="apartmentService" />
 		<property name="allObjectsDao" ref="allObjectsDao" />
 	</bean>
 

@@ -279,6 +279,7 @@
 				<path refid="classpath" />
 			</classpath>
 			<sysproperty key="log4j.configuration" value="WEB-INF/configs/log4j.xml" />
+			<jvmarg value="-Xmx150m" />
 			<test name="${test_name}" haltonfailure="yes">
 				<formatter type="brief" usefile="false" />
 			</test>

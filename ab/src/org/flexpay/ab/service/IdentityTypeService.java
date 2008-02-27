@@ -6,4 +6,11 @@ import org.flexpay.ab.persistence.IdentityTypeTranslation;
 public interface IdentityTypeService extends
 		MultilangEntityService<IdentityType, IdentityTypeTranslation> {
 
+	/**
+	 * Find identity type by enum id
+	 *
+	 * @param typeId Type id
+	 * @return IdentityType if found, or <code>null</code> otherwise
+	 */
+	IdentityType getType(int typeId);
 }

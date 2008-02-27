@@ -15,6 +15,10 @@ public class StreetJdbcDataSource implements RawDataSource<RawStreetData> {
 	private Page<RawStreetData> pager;
 	private Iterator<RawStreetData> dataIterator;
 
+	public boolean trusted() {
+		return true;
+	}
+
 	/**
 	 * Initialize data source
 	 */

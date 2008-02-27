@@ -17,7 +17,7 @@
 			<key column="apartment_id" />
 			<one-to-many class="Person" />
 		</set>
-		<set name="apartmentNumbers" inverse="true">
+		<set name="apartmentNumbers" inverse="true" cascade="all-delete-orphan">
 			<key column="apartment_id" not-null="true" />
 			<one-to-many class="ApartmentNumber" />
 		</set>
@@ -41,6 +41,13 @@
 
 	<query name="Apartment.findObjects.count">
 		SELECT count(*) FROM Apartment o WHERE o.status=0 and o.building.id=?
+	</query>
+
+	<query name="Apartment.findByNumber">
+		FROM Apartment a
+			LEFT JOIN FETCH a.apartmentNumbers
+		WHERE a.building.id=? AND
+			EXISTS (FROM ApartmentNumber n WHERE n.apartment.id=a.id AND n.value=? and n.end>? )
 	</query>
 
 </hibernate-mapping>

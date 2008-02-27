@@ -10,10 +10,8 @@ import java.util.Map;
  */
 public class Luhn {
 
-	private static Map<Integer, Integer> directMap = new HashMap<Integer, Integer>(
-			10);;
-	private static Map<Integer, Integer> reverseMap = new HashMap<Integer, Integer>(
-			10);
+	private static Map<Integer, Integer> directMap = new HashMap<Integer, Integer>(10);
+	private static Map<Integer, Integer> reverseMap = new HashMap<Integer, Integer>(10);
 
 	static {
 		directMap.put(0, 0);

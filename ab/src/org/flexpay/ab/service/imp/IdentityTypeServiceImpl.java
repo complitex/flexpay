@@ -29,6 +29,8 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	private IdentityTypeDao identityTypeDao;
 	private IdentityTypeTranslationDao identityTypeTranslationDao;
 
+	private List<IdentityType> identityTypes;
+
 	/**
 	 * Create IdentityType
 	 * 
@@ -199,8 +201,8 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	}
 
 	/**
-	 * Disable IdentityTypes TODO: check if there are any streets with specified
-	 * type and reject operation
+	 * Disable IdentityTypes
+	 * TODO: check if there are any streets with specified type and reject operation
 	 * 
 	 * @param identityTypes
 	 *            IdentityTypes to disable
@@ -213,6 +215,25 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 			identityTypeDao.update(identityType);
 			log.info("Disabled: " + identityType);
 		}
+	}
+
+	/**
+	 * Find identity type by enum id
+	 *
+	 * @param typeId Type id
+	 * @return IdentityType if found, or <code>null</code> otherwise
+	 */
+	public IdentityType getType(int typeId) {
+		if (identityTypes == null) {
+			identityTypes = getEntities();
+		}
+		for (IdentityType type : identityTypes) {
+			if (type.getTypeId() == typeId) {
+				return type;
+			}
+		}
+
+		return null;
 	}
 
 	/**

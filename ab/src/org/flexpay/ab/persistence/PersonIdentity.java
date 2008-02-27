@@ -20,8 +20,8 @@ public class PersonIdentity extends DomainObject {
 	private String firstName;
 	private String lastName;
 	private String middleName;
-	private int serialNumber;
-	private int documentNumber;
+	private String serialNumber;
+	private String documentNumber;
 	private boolean isDefault;
 	private Set<PersonIdentityAttribute> personIdentityAttributes = Collections.emptySet();
 
@@ -84,19 +84,19 @@ public class PersonIdentity extends DomainObject {
 		this.middleName = middleName;
 	}
 
-	public int getSerialNumber() {
+	public String getSerialNumber() {
 		return this.serialNumber;
 	}
 
-	public void setSerialNumber(int serialNumber) {
+	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
 	}
 
-	public int getDocumentNumber() {
+	public String getDocumentNumber() {
 		return this.documentNumber;
 	}
 
-	public void setDocumentNumber(int documentNumber) {
+	public void setDocumentNumber(String documentNumber) {
 		this.documentNumber = documentNumber;
 	}
 
