@@ -1,7 +1,8 @@
 package org.flexpay.ab.dao.importexport;
 
 import org.flexpay.ab.dao.importexport.imp.HarkovCenterNachisleniyDataSource;
-import org.flexpay.ab.service.importexport.RawDistrictData;
+import org.flexpay.ab.service.importexport.RawBuildingsData;
+import org.flexpay.ab.service.importexport.RawApartmentData;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
@@ -9,11 +10,11 @@ import org.flexpay.common.service.importexport.RawDataSource;
 import java.util.Iterator;
 import java.util.List;
 
-public class DistrictJdbcDataSource implements RawDataSource<RawDistrictData> {
+public class ApartmentJdbcDataSource implements RawDataSource<RawApartmentData> {
 
 	private HarkovCenterNachisleniyDataSource source;
-	private Page<RawDistrictData> pager;
-	private Iterator<RawDistrictData> dataIterator;
+	private Page<RawApartmentData> pager;
+	private Iterator<RawApartmentData> dataIterator;
 
 	public boolean trusted() {
 		return true;
@@ -23,8 +24,8 @@ public class DistrictJdbcDataSource implements RawDataSource<RawDistrictData> {
 	 * Initialize data source
 	 */
 	public void initialize() {
-		pager = new Page<RawDistrictData>();
-		List<RawDistrictData> districtDatas = source.getDistrictsData(pager);
+		pager = new Page<RawApartmentData>(1000, 1);
+		List<RawApartmentData> districtDatas = source.getApartmentsData(pager);
 		dataIterator = districtDatas.iterator();
 	}
 
@@ -43,7 +44,7 @@ public class DistrictJdbcDataSource implements RawDataSource<RawDistrictData> {
 		// get next page
 		int nextPage = pager.getPageNumber() + 1;
 		pager.setPageNumber(nextPage);
-		List<RawDistrictData> districtDatas = source.getDistrictsData(pager);
+		List<RawApartmentData> districtDatas = source.getApartmentsData(pager);
 		dataIterator = districtDatas.iterator();
 		return dataIterator.hasNext();
 	}
@@ -56,7 +57,7 @@ public class DistrictJdbcDataSource implements RawDataSource<RawDistrictData> {
 	 * @throws java.util.NoSuchElementException
 	 *          iteration has no more elements.
 	 */
-	public RawDistrictData next(ImportOperationTypeHolder holder) {
+	public RawApartmentData next(ImportOperationTypeHolder holder) {
 		return dataIterator.next();
 	}
 

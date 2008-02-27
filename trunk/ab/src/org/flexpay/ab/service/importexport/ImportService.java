@@ -2,16 +2,10 @@ package org.flexpay.ab.service.importexport;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.log4j.Logger;
-import org.flexpay.ab.dao.importexport.BuildingsJdbcDataSource;
-import org.flexpay.ab.dao.importexport.DistrictJdbcDataSource;
-import org.flexpay.ab.dao.importexport.StreetJdbcDataSource;
-import org.flexpay.ab.dao.importexport.StreetTypeJdbcDataSource;
+import org.flexpay.ab.dao.importexport.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.TownFilter;
-import org.flexpay.ab.service.BuildingService;
-import org.flexpay.ab.service.DistrictService;
-import org.flexpay.ab.service.StreetService;
-import org.flexpay.ab.service.StreetTypeService;
+import org.flexpay.ab.service.*;
 import org.flexpay.ab.service.importexport.imp.AllObjectsDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.*;
@@ -26,57 +20,78 @@ import java.util.*;
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class ImportService {
 
-	private static Logger log = Logger.getLogger(ImportService.class);
+	protected Logger log = Logger.getLogger(getClass());
 
 	private RawDistrictDataConverter districtDataConverter;
 	private RawStreetTypeDataConverter streetTypeDataConverter;
 	private RawStreetDataConverter streetDataConverter;
 	private RawBuildingsDataConverter buildingsDataConverter;
+	private RawApartmentDataConverter apartmentDataConverter;
 
 	private DistrictJdbcDataSource districtDataSource;
 	private StreetTypeJdbcDataSource streetTypeDataSource;
 	private StreetJdbcDataSource streetDataSource;
 	private BuildingsJdbcDataSource buildingsDataSource;
+	private ApartmentJdbcDataSource apartmentDataSource;
 
 	private AllObjectsDao allObjectsDao;
 
-	private CorrectionsService correctionsService;
+	protected CorrectionsService correctionsService;
 	private DistrictService districtService;
-	private StreetTypeService streetTypeService;
-	private StreetService streetService;
-	private BuildingService buildingService;
+	protected StreetTypeService streetTypeService;
+	protected StreetService streetService;
+	protected BuildingService buildingService;
+	protected ApartmentService apartmentService;
 
-	private List<DomainObject> objectsStack = new ArrayList<DomainObject>();
+	private static final int STACK_SIZE = 1000;
 
+	private List<DomainObject> objectsStack = new ArrayList<DomainObject>(STACK_SIZE + 20);
+
+	/**
+	 * Run flush objects operation
+	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-	private void flushStack() {
-		DomainObject prevObj = null;
-		for (DomainObject object : objectsStack) {
-			if (object instanceof DataCorrection) {
-				DataCorrection corr = (DataCorrection) object;
-				if (corr.getInternalObjectId() == null) {
-					if (prevObj == null) {
-						log.error("Failed saving correction, object not specified: " + corr);
-					} else {
-						corr.setInternalObjectId(prevObj.getId());
+	protected void flushStack() {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Starting flushing stack, size: " + objectsStack.size());
+		}
+
+		try {
+			allObjectsDao.openSession();
+
+			DomainObject prevObj = null;
+			for (DomainObject object : objectsStack) {
+				if (object instanceof DataCorrection) {
+					DataCorrection corr = (DataCorrection) object;
+					if (corr.getInternalObjectId() == null) {
+						if (prevObj == null) {
+							log.error("Failed saving correction, object not specified: " + corr);
+						} else {
+							corr.setInternalObjectId(prevObj.getId());
+						}
 					}
 				}
+
+				// Save building itself instead of its buildings address
+				if (object instanceof Buildings) {
+					allObjectsDao.save(((Buildings) object).getBuilding());
+				} else {
+					allObjectsDao.save(object);
+				}
+				prevObj = object;
 			}
-			// Save building itself instead of its buildings address
-			if (object instanceof Buildings) {
-				log.info("Saving building!");
-				allObjectsDao.save(((Buildings) object).getBuilding());
-				log.info("Saved: buildings id: " + object.getId());
-			} else {
-				allObjectsDao.save(object);
-			}
-			prevObj = object;
+		} catch (Exception e) {
+			allObjectsDao.setRollbackOnly();
+			throw new RuntimeException("Failed saving objects", e);
+		} finally {
+			allObjectsDao.closeSession();
 		}
 		objectsStack.clear();
 	}
 
-	private void addToStack(DomainObject object) {
-		if (objectsStack.size() >= 20 && objectsStack.get(objectsStack.size() - 1) instanceof DataCorrection) {
+	protected void addToStack(DomainObject object) {
+		if (objectsStack.size() >= STACK_SIZE && objectsStack.get(objectsStack.size() - 1) instanceof DataCorrection) {
 			flushStack();
 		}
 		objectsStack.add(object);
@@ -171,6 +186,7 @@ public class ImportService {
 			log.debug("Town streets: " + townStreets);
 		}
 		Map<String, List<Street>> nameObjsMap = initializeNamesToObjectsMap(townStreets);
+
 		streetDataSource.initialize();
 		long tm = System.currentTimeMillis();
 		while (streetDataSource.hasNext()) {
@@ -192,7 +208,6 @@ public class ImportService {
 				}
 
 				// Find object by its name
-//				Street nameMatchObj = null;
 				Street nameMatchObj = findObject(nameObjsMap, street);
 
 				saveStreetCorrection(sourceDescription, data, street, persistentObj, nameMatchObj);
@@ -278,7 +293,7 @@ public class ImportService {
 	 * @throws FlexPayException if language configuration is invalid
 	 */
 	@SuppressWarnings ({"unchecked"})
-	private <NTD extends NameTimeDependentChild> Map<String, List<NTD>> initializeNamesToObjectsMap(List<NTD> ntds)
+	protected <NTD extends NameTimeDependentChild> Map<String, List<NTD>> initializeNamesToObjectsMap(List<NTD> ntds)
 			throws FlexPayException {
 
 		Map<String, List<NTD>> stringNTDMap = new HashMap<String, List<NTD>>(ntds.size());
@@ -404,33 +419,104 @@ public class ImportService {
 			log.info("Starting import buildings at " + new Date());
 		}
 
-		while (buildingsDataSource.hasNext()) {
+		try {
+			while (buildingsDataSource.hasNext()) {
+				ImportOperationTypeHolder typeHolder = new ImportOperationTypeHolder();
+				RawBuildingsData data = buildingsDataSource.next(typeHolder);
+
+				try {
+					Buildings buildings = buildingsDataConverter.fromRawData(
+							data, sourceDescription, correctionsService);
+
+					Buildings correction = (Buildings) correctionsService.findCorrection(
+							data.getExternalSourceId(), Buildings.class, sourceDescription);
+
+					if (correction != null) {
+						if (log.isInfoEnabled()) {
+							log.info("Found correction for building #" + data.getExternalSourceId());
+						}
+						continue;
+					}
+
+					Buildings persistent = buildingService.findBuildings(
+							buildings.getStreet(), buildings.getBuilding().getDistrict(),
+							buildings.getNumber(), buildings.getBulk());
+					if (persistent == null) {
+						addToStack(buildings);
+						persistent = buildings;
+						if (log.isInfoEnabled()) {
+							log.info("Creating new building: " + buildings.getNumber() +
+									 " - " + buildings.getBulk());
+						}
+					}
+
+					DataCorrection corr = correctionsService.getStub(
+							data.getExternalSourceId(), persistent, sourceDescription);
+					addToStack(corr);
+
+					log.info("Creating new building correction");
+
+				} catch (Exception e) {
+					log.error("Failed getting building with id: " + data.getExternalSourceId(), e);
+					throw e;
+				}
+			}
+
+			flushStack();
+
+			if (log.isInfoEnabled()) {
+				log.info("End import buildings at " + new Date() + ", total time: " +
+						 (System.currentTimeMillis() - time) + "ms");
+			}
+		} catch (Throwable t) {
+			log.error("Failure", t);
+			throw new RuntimeException(t.getMessage(), t);
+		}
+	}
+
+	@Transactional (readOnly = false)
+	public void importApartments(DataSourceDescription sourceDescription) throws Exception {
+		apartmentDataSource.initialize();
+
+		long time = System.currentTimeMillis();
+		if (log.isInfoEnabled()) {
+			log.info("Starting import buildings at " + new Date());
+		}
+
+		long counter = 0;
+		long cycleTime = System.currentTimeMillis();
+		while (apartmentDataSource.hasNext()) {
+
+			if (log.isInfoEnabled()) {
+				long now = System.currentTimeMillis();
+				log.info("Apartment #" + (++counter) + ", time spent: " + (now - cycleTime));
+				cycleTime = now;
+			}
+
 			ImportOperationTypeHolder typeHolder = new ImportOperationTypeHolder();
-			RawBuildingsData data = buildingsDataSource.next(typeHolder);
+			RawApartmentData data = apartmentDataSource.next(typeHolder);
 
 			try {
-				Buildings buildings = buildingsDataConverter.fromRawData(
-						data, sourceDescription, correctionsService);
-
-				Buildings correction = (Buildings) correctionsService.findCorrection(
-						data.getExternalSourceId(), Buildings.class, sourceDescription);
+				Apartment correction = (Apartment) correctionsService.findCorrection(
+						data.getExternalSourceId(), Apartment.class, sourceDescription);
 
 				if (correction != null) {
-					if (log.isInfoEnabled()) {
-						log.info("Found correction for building #" + data.getExternalSourceId());
+					if (log.isDebugEnabled()) {
+						log.debug("Found correction for apartment #" + data.getExternalSourceId());
 					}
 					continue;
 				}
 
-				Buildings persistent = buildingService.findBuildings(
-						buildings.getStreet(), buildings.getBuilding().getDistrict(),
-						buildings.getNumber(), buildings.getBulk());
+				Apartment apartment = apartmentDataConverter.fromRawData(
+						data, sourceDescription, correctionsService);
+
+				Apartment persistent = apartmentService.findApartmentStub(
+						apartment.getBuilding(), apartment.getNumber());
 				if (persistent == null) {
-					addToStack(buildings);
-					persistent = buildings;
-					if (log.isInfoEnabled()) {
-						log.info("Creating new building: " + buildings.getNumber() +
-								 " - " + buildings.getBulk());
+					addToStack(apartment);
+					persistent = apartment;
+					if (log.isDebugEnabled()) {
+						log.debug("Creating new apartment: " + apartment.getNumber());
 					}
 				}
 
@@ -438,7 +524,7 @@ public class ImportService {
 						data.getExternalSourceId(), persistent, sourceDescription);
 				addToStack(corr);
 
-				log.info("Creating new building correction");
+				log.debug("Creating new apartment correction");
 
 			} catch (Exception e) {
 				log.error("Failed getting building with id: " + data.getExternalSourceId(), e);
@@ -539,6 +625,10 @@ public class ImportService {
 		this.buildingsDataSource = buildingsDataSource;
 	}
 
+	public void setApartmentDataSource(ApartmentJdbcDataSource apartmentDataSource) {
+		this.apartmentDataSource = apartmentDataSource;
+	}
+
 	/**
 	 * Setter for property 'streetTypeService'.
 	 *
@@ -552,8 +642,16 @@ public class ImportService {
 		this.buildingsDataConverter = buildingsDataConverter;
 	}
 
+	public void setApartmentDataConverter(RawApartmentDataConverter apartmentDataConverter) {
+		this.apartmentDataConverter = apartmentDataConverter;
+	}
+
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
+	}
+
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
 	}
 
 	public void setAllObjectsDao(AllObjectsDao allObjectsDao) {

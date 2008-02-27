@@ -145,4 +145,26 @@ public class BuildingServiceImpl implements BuildingService {
 	public Buildings findBuildings(Street street, District district, String number, String bulk) {
 		return buildingsDaoExt.findBuildings(street, district, number, bulk);
 	}
+
+	/**
+	 * Find building by number
+	 *
+	 * @param street   Building street
+	 * @param number   Building number
+	 * @param bulk	 Building bulk number
+	 * @return Buildings instance, or <code>null</null> if not found
+	 */
+	public Buildings findBuildings(Street street, String number, String bulk) {
+		return buildingsDaoExt.findBuildings(street, number, bulk);
+	}
+
+	/**
+	 * Find building by buildings stub
+	 *
+	 * @param buildingsStub object with id only
+	 * @return Building instance
+	 */
+	public Building findBuilding(Buildings buildingsStub) {
+		return buildingsDaoExt.findBuilding(buildingsStub);
+	}
 }

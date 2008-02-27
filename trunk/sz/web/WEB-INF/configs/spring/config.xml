@@ -5,6 +5,8 @@
 
 	<import resource="common/common_config.xml" />
 	<import resource="ab/ab_config.xml" />
+	<import resource="bti/bti_config.xml" />
+	<import resource="eirc/eirc_config.xml" />
 
 	<import resource="sz/beans-struts.xml" />
 

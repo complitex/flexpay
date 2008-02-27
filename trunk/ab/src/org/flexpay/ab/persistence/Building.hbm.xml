@@ -116,7 +116,7 @@
 		FROM BuildingAttributeType
 	</query>
 
-	<query name="Buildings.findByNumber">
+	<query name="Buildings.findByNumberWithDistrict">
 		from Buildings b
 			inner join fetch b.buildingAttributes a
 			inner join fetch a.buildingAttributeType t
@@ -127,11 +127,33 @@
 				ba.buildingAttributeType.type=?)
 	</query>
 
-	<query name="Buildings.findByBulkNumber">
+	<query name="Buildings.findByBulkNumberWithDistrict">
 		from Buildings b
 			inner join fetch b.buildingAttributes a
 			inner join fetch a.buildingAttributeType t
 		where b.building.district.id=? and b.street.id=?
+			and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
+			ba.buildingAttributeType.type=? and ba.value=?)
+			and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
+				ba.buildingAttributeType.type=? and ba.value=?)
+	</query>
+
+	<query name="Buildings.findByNumber">
+		from Buildings b
+			inner join fetch b.buildingAttributes a
+			inner join fetch a.buildingAttributeType t
+		where b.street.id=?
+			and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
+			ba.buildingAttributeType.type=? and ba.value=?)
+			and not exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
+				ba.buildingAttributeType.type=?)
+	</query>
+
+	<query name="Buildings.findByBulkNumber">
+		from Buildings b
+			inner join fetch b.buildingAttributes a
+			inner join fetch a.buildingAttributeType t
+		where b.street.id=?
 			and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
 			ba.buildingAttributeType.type=? and ba.value=?)
 			and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and

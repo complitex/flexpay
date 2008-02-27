@@ -83,9 +83,13 @@
         drop 
         foreign key FKCA605324712C324D;
 
-    alter table eirc_account_statuses_tbl 
+    alter table eirc_account_status_translations_tbl 
         drop 
-        foreign key FKB610981B47DC07F9;
+        foreign key FK4FFD8012AC8FAF76;
+
+    alter table eirc_account_status_translations_tbl 
+        drop 
+        foreign key FK4FFD801261F37403;
 
     alter table eirc_organisations_tbl 
         drop 
@@ -117,11 +121,11 @@
 
     alter table eirc_service_type_name_translations_tbl 
         drop 
-        foreign key FKA057A044A83C068F;
+        foreign key FKA057A0442C648686;
 
     alter table eirc_service_type_name_translations_tbl 
         drop 
-        foreign key FKA057A0445A549E10;
+        foreign key FKA057A04461F37403;
 
     alter table eirc_services_tbl 
         drop 
@@ -382,6 +386,8 @@
     drop table if exists district_names_temporal_tbl;
 
     drop table if exists districts_tbl;
+
+    drop table if exists eirc_account_status_translations_tbl;
 
     drop table if exists eirc_account_statuses_tbl;
 
@@ -671,10 +677,18 @@
         primary key (id)
     );
 
+    create table eirc_account_status_translations_tbl (
+        id bigint not null auto_increment,
+        name varchar(255) not null,
+        account_status_id bigint not null,
+        language_id bigint not null,
+        primary key (id),
+        unique (account_status_id, language_id)
+    );
+
     create table eirc_account_statuses_tbl (
         id bigint not null auto_increment,
-        value varchar(255) not null,
-        language bigint not null,
+        status integer not null,
         primary key (id)
     );
 
@@ -695,7 +709,7 @@
         service bigint not null,
         billBeginDate date not null,
         billEndDate date not null,
-        amount numeric(19,2) not null,
+        amount decimal(19,2) not null,
         primary key (id),
         unique (account, service)
     );
@@ -706,6 +720,7 @@
         person_id bigint not null,
         status_id bigint not null,
         creationDate date not null,
+        account_number varchar(255) not null unique,
         primary key (id),
         unique (apartment_id, person_id, status_id)
     );
@@ -721,10 +736,10 @@
         id bigint not null auto_increment,
         name varchar(255) not null,
         description varchar(255) not null,
-        lang bigint not null,
-        type_id bigint not null,
+        language_id bigint not null,
+        service_type_id bigint not null,
         primary key (id),
-        unique (lang, type_id)
+        unique (language_id, service_type_id)
     );
 
     create table eirc_service_types_tbl (
@@ -752,6 +767,7 @@
     create table identity_types_tbl (
         id bigint not null auto_increment,
         status integer not null,
+        type_enum integer not null,
         primary key (id)
     );
 
@@ -794,8 +810,8 @@
         begin_date date not null,
         end_date date not null,
         birth_date date not null,
-        serial_number integer not null,
-        document_number integer not null,
+        serial_number varchar(10) not null,
+        document_number varchar(20) not null,
         first_name varchar(255) not null,
         middle_name varchar(255) not null,
         last_name varchar(255) not null,
@@ -1204,10 +1220,16 @@
         foreign key (town_id) 
         references towns_tbl (id);
 
-    alter table eirc_account_statuses_tbl 
-        add index FKB610981B47DC07F9 (language), 
-        add constraint FKB610981B47DC07F9 
-        foreign key (language) 
+    alter table eirc_account_status_translations_tbl 
+        add index FK4FFD8012AC8FAF76 (account_status_id), 
+        add constraint FK4FFD8012AC8FAF76 
+        foreign key (account_status_id) 
+        references eirc_account_statuses_tbl (id);
+
+    alter table eirc_account_status_translations_tbl 
+        add index FK4FFD801261F37403 (language_id), 
+        add constraint FK4FFD801261F37403 
+        foreign key (language_id) 
         references languages_tbl (id);
 
     alter table eirc_organisations_tbl 
@@ -1253,16 +1275,16 @@
         references eirc_organisations_tbl (id);
 
     alter table eirc_service_type_name_translations_tbl 
-        add index FKA057A044A83C068F (lang), 
-        add constraint FKA057A044A83C068F 
-        foreign key (lang) 
-        references languages_tbl (id);
+        add index FKA057A0442C648686 (service_type_id), 
+        add constraint FKA057A0442C648686 
+        foreign key (service_type_id) 
+        references eirc_service_types_tbl (id);
 
     alter table eirc_service_type_name_translations_tbl 
-        add index FKA057A0445A549E10 (type_id), 
-        add constraint FKA057A0445A549E10 
-        foreign key (type_id) 
-        references eirc_service_types_tbl (id);
+        add index FKA057A04461F37403 (language_id), 
+        add constraint FKA057A04461F37403 
+        foreign key (language_id) 
+        references languages_tbl (id);
 
     alter table eirc_services_tbl 
         add index FK4D78EA87A26D3B0 (provider_id), 

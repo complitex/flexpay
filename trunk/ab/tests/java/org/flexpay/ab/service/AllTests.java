@@ -13,6 +13,7 @@ public class AllTests extends TestCase {
 		suite.addTest(new TestDistrictService());
 		suite.addTest(new TestStreetService());
 		suite.addTest(new TestBuildingService());
-        return suite;
+		suite.addTest(new TestApartmentService());
+		return suite;
     }
 }

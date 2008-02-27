@@ -2,6 +2,8 @@ package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.util.DateIntervalUtil;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.util.Collections;
 import java.util.Set;
@@ -17,6 +19,10 @@ public class Apartment extends DomainObjectWithStatus {
 	private Set<Person> persons = Collections.emptySet();
 
 	public Apartment() {
+	}
+
+	public Apartment(Long id) {
+		super(id);
 	}
 
 	public Building getBuilding() {
@@ -68,5 +74,11 @@ public class Apartment extends DomainObjectWithStatus {
 	 */
 	public String getNumber() {
 		return getNumberForDate(DateIntervalUtil.now());
+	}
+
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("numbers", apartmentNumbers.toArray())
+				.toString();
 	}
 }

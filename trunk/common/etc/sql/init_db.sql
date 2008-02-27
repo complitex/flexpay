@@ -1580,19 +1580,19 @@ INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_kr
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_krasniy, @district_id_nsk_zaelcovskiy);
 
 -- Identity types
-INSERT INTO identity_types_tbl (status) VALUES (0);
+INSERT INTO identity_types_tbl (status, type_enum) VALUES (0, 1);
 SELECT @identity_type_passport_id:=last_insert_id();
 INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
 	VALUES ('Паспорт', @ru_id, @identity_type_passport_id);
 INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
-	VALUES ('Pasport', @en_id, @identity_type_passport_id);
+	VALUES ('Passport', @en_id, @identity_type_passport_id);
 
-INSERT INTO identity_types_tbl (status) VALUES (0);
+INSERT INTO identity_types_tbl (status, type_enum) VALUES (0, 2);
 SELECT @identity_type_foreign_passport_id:=last_insert_id();
 INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
 	VALUES ('Заграничный паспорт', @ru_id, @identity_type_foreign_passport_id);
 INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
-	VALUES ('ForeignPasport', @en_id, @identity_type_foreign_passport_id);
+	VALUES ('ForeignPassport', @en_id, @identity_type_foreign_passport_id);
 
 -- Persons
 INSERT INTO persons_tbl (status) VALUES (0);
@@ -3993,3 +3993,17 @@ INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
 INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
 	VALUES (@street_type_id, 0x04, 'пос', NULL);
 
+
+INSERT INTO eirc_account_statuses_tbl (status) VALUES (1);
+SELECT @account_status_id:=last_insert_id();
+INSERT INTO eirc_account_status_translations_tbl (name, account_status_id, language_id)
+	VALUES ('Неактивный', @account_status_id, @ru_id);
+INSERT INTO eirc_account_status_translations_tbl (name, account_status_id, language_id)
+	VALUES ('Disabled', @account_status_id, @en_id);
+
+INSERT INTO eirc_account_statuses_tbl (status) VALUES (0);
+SELECT @account_status_id:=last_insert_id();
+INSERT INTO eirc_account_status_translations_tbl (name, account_status_id, language_id)
+	VALUES ('Активный', @account_status_id, @ru_id);
+INSERT INTO eirc_account_status_translations_tbl (name, account_status_id, language_id)
+	VALUES ('Enabled', @account_status_id, @en_id);

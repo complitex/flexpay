@@ -13,6 +13,12 @@ import java.util.Collections;
  */
 public class IdentityType extends DomainObjectWithStatus {
 
+	public static int TYPE_UNKNOWN = 0;
+	public static int TYPE_PASSPORT = 1;
+	public static int TYPE_FOREIGN_PASSPORT = 2;
+
+	private int typeId = TYPE_UNKNOWN;
+
 	private Collection<IdentityTypeTranslation> translations = Collections.emptyList();
 
 	/**
@@ -37,6 +43,14 @@ public class IdentityType extends DomainObjectWithStatus {
 	 */
 	public void setTranslations(Collection<IdentityTypeTranslation> translations) {
 		this.translations = translations;
+	}
+
+	public int getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
 	}
 
 	/**

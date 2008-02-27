@@ -3,6 +3,13 @@ package org.flexpay.common.service.importexport;
 public interface RawDataSource<T extends RawData> {
 
 	/**
+	 * Check if source is trusted and new objects are allowed to be created from this source
+	 *
+	 * @return <code>true</code> if the source is trusted, or <code>false</code> otherwise
+	 */
+	boolean trusted();
+
+	/**
 	 * Initialize data source
 	 */
 	void initialize();

@@ -1,10 +1,7 @@
 package org.flexpay.ab.service;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.persistence.BuildingAttributeType;
-import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.persistence.Street;
-import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.ParentService;
@@ -35,4 +32,22 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 * @return Buildings instance, or <code>null</null> if not found
 	 */
 	Buildings findBuildings(Street street, District district, String number, String bulk);
+
+	/**
+	 * Find building by number
+	 *
+	 * @param street Building street
+	 * @param number Building number
+	 * @param bulk Building bulk number
+	 * @return Buildings instance, or <code>null</null> if not found
+	 */
+	Buildings findBuildings(Street street, String number, String bulk);
+
+	/**
+	 * Find building by buildings stub
+	 *
+	 * @param buildingsStub object with id only
+	 * @return Building instance
+	 */
+	Building findBuilding(Buildings buildingsStub);
 }

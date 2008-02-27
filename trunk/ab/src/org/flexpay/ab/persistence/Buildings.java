@@ -19,6 +19,10 @@ public class Buildings extends DomainObjectWithStatus {
 	public Buildings() {
 	}
 
+	public Buildings(Long id) {
+		super(id);
+	}
+
 	public Street getStreet() {
 		return this.street;
 	}

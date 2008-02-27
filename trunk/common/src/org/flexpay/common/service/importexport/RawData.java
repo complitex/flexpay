@@ -5,11 +5,12 @@ import org.flexpay.common.persistence.DomainObject;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Serializable;
 
 /**
  * Raw import data for DomainObject
  */
-public abstract class RawData<Obj extends DomainObject> {
+public abstract class RawData<Obj extends DomainObject> implements Serializable {
 
 	private String externalSourceId;
 	private Map<String, Object> nameToValuesMap = new HashMap<String, Object>();
@@ -66,4 +67,9 @@ public abstract class RawData<Obj extends DomainObject> {
 	 * @return Set of attribute names;
 	 */
 	public abstract Collection<String> getPossibleNames();
+
+	protected String getParam(String param) {
+		Object obj = getNameToValuesMap().get(param);
+		return obj == null ? null : obj.toString();
+	}
 }

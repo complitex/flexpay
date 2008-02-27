@@ -10,10 +10,11 @@ public class TestImportService extends SpringBeanAwareTestCase {
 	@Override
 	protected void runTest() throws Throwable {
 		testGetConnection();
-		testImportDistricts();
-		testImportStreetTypes();
-		testImportStreets();
-		testImportBuildings();
+//		testImportDistricts();
+//		testImportStreetTypes();
+//		testImportStreets();
+//		testImportBuildings();
+//		testImportApartments();
 	}
 
 	public void testGetConnection() {
@@ -25,40 +26,28 @@ public class TestImportService extends SpringBeanAwareTestCase {
 	}
 
 	public void testImportDistricts() throws Throwable {
-		ImportService service = (ImportService) applicationContext.getBean("importService");
-		assertNotNull("ImportService is null", service);
-
-		Town town = new Town(1L);
-		DataSourceDescription dsd = new DataSourceDescription(1L);
-
-		service.importDistricts(town, dsd);
+		getImportService().importDistricts(new Town(1L), new DataSourceDescription(1L));
 	}
 
 	public void testImportStreetTypes() {
-		ImportService service = (ImportService) applicationContext.getBean("importService");
-		assertNotNull("ImportService is null", service);
-
-		DataSourceDescription dsd = new DataSourceDescription(1L);
-
-		service.importStreetTypes(dsd);
+		getImportService().importStreetTypes(new DataSourceDescription(1L));
 	}
 
 	public void testImportStreets() throws Throwable {
-		ImportService service = (ImportService) applicationContext.getBean("importService");
-		assertNotNull("ImportService is null", service);
-
-		Town town = new Town(1L);
-		DataSourceDescription dsd = new DataSourceDescription(1L);
-
-		service.importStreets(town, dsd);
+		getImportService().importStreets(new Town(1L), new DataSourceDescription(1L));
 	}
 
 	public void testImportBuildings() throws Throwable {
-		ImportService service = (ImportService) applicationContext.getBean("importService");
+		getImportService().importBuildings(new DataSourceDescription(1L));
+	}
+
+	public void testImportApartments() throws Throwable {
+		getImportService().importApartments(new DataSourceDescription(1L));
+	}
+
+	protected ImportService getImportService() {
+		ImportService service = (ImportService) applicationContext.getBean("importServiceAb");
 		assertNotNull("ImportService is null", service);
-
-		DataSourceDescription dsd = new DataSourceDescription(1L);
-
-		service.importBuildings(dsd);
+		return service;
 	}
 }
