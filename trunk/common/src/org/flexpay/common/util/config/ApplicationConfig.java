@@ -21,6 +21,7 @@ public class ApplicationConfig {
 			2100, 11, 31).getTime();
 
 	private File dataRoot;
+	private String eircId;
 	private File szDataRoot;
 	
 	private String szDefaultDbfFileEncoding;
@@ -134,5 +135,13 @@ public class ApplicationConfig {
 
 	public void setSzDefaultDbfFileEncoding(String szDefaultDbfFileEncoding) {
 		this.szDefaultDbfFileEncoding = szDefaultDbfFileEncoding;
+	}
+
+	public String getEircId() {
+		return eircId;
+	}
+
+	public void setEircId(String eircId) {
+		this.eircId = eircId;
 	}
 }
