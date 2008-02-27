@@ -20,7 +20,7 @@
 			 classpath="${sjsas.root}/lib/sun-appserv-ant.jar" />
 
 	<target name="template.deploy.sjsas">
-		<sun-appserv-deploy user="${sjsas.username}" passwordfile="${sjsas.password.file}"
+		<sun-appserv-deploy user="${sjsas.username}" passwordfile="${sjsas.password.file}" upload="false"
 							file="${application_archive}" asinstalldir="${sjsas.root}" />
 	</target>
 
