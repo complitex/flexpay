@@ -17,7 +17,7 @@ public class SpRegistry extends DomainObject {
 	private Date tillDate;
 	private Long sender;
 	private Long recipient;
-	private BigDecimal sum;
+	private BigDecimal amount;
 	private String containers;
 	
 	/**
@@ -142,18 +142,15 @@ public class SpRegistry extends DomainObject {
 		this.recordNum = recordNum;
 	}
 	/**
-	 * @return the sum
+	 * @return the amount
 	 */
-	public BigDecimal getSum() {
-		return sum;
+	public BigDecimal getAmount() {
+		return amount;
 	}
 	/**
-	 * @param sum the sum to set
+	 * @param amount the amount to set
 	 */
-	public void setSum(BigDecimal sum) {
-		this.sum = sum;
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
 	}
-	
-	
-
 }

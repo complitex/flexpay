@@ -13,13 +13,13 @@ public class SpRegistryRecord extends DomainObject {
 	private String streetType;
 	private String streetName;
 	private String buildingNum;
-	private String buildingPartNum;
-	private String apartamentNum;
+	private String buildingBulkNum;
+	private String apartmentNum;
 	private String firstName;
 	private String lastName;
 	private Date date;
-	private Long uno;
-	private BigDecimal sum;
+	private Long uniqueOperationNumber;
+	private BigDecimal amount;
 	private String containers;
 	
 	/**
@@ -107,28 +107,28 @@ public class SpRegistryRecord extends DomainObject {
 		this.buildingNum = buildingNum;
 	}
 	/**
-	 * @return the buildingPartNum
+	 * @return the buildingBulkNum
 	 */
-	public String getBuildingPartNum() {
-		return buildingPartNum;
+	public String getBuildingBulkNum() {
+		return buildingBulkNum;
 	}
 	/**
-	 * @param buildingPartNum the buildingPartNum to set
+	 * @param buildingBulkNum the buildingBulkNum to set
 	 */
-	public void setBuildingPartNum(String buildingPartNum) {
-		this.buildingPartNum = buildingPartNum;
+	public void setBuildingBulkNum(String buildingBulkNum) {
+		this.buildingBulkNum = buildingBulkNum;
 	}
 	/**
-	 * @return the apartamentNum
+	 * @return the apartmentNum
 	 */
-	public String getApartamentNum() {
-		return apartamentNum;
+	public String getApartmentNum() {
+		return apartmentNum;
 	}
 	/**
-	 * @param apartamentNum the apartamentNum to set
+	 * @param apartmentNum the apartmentNum to set
 	 */
-	public void setApartamentNum(String apartamentNum) {
-		this.apartamentNum = apartamentNum;
+	public void setApartmentNum(String apartmentNum) {
+		this.apartmentNum = apartmentNum;
 	}
 	/**
 	 * @return the firstName
@@ -167,28 +167,28 @@ public class SpRegistryRecord extends DomainObject {
 		this.date = date;
 	}
 	/**
-	 * @return the uno
+	 * @return the uniqueOperationNumber
 	 */
-	public Long getUno() {
-		return uno;
+	public Long getUniqueOperationNumber() {
+		return uniqueOperationNumber;
 	}
 	/**
-	 * @param uno the uno to set
+	 * @param uniqueOperationNumber the uniqueOperationNumber to set
 	 */
-	public void setUno(Long uno) {
-		this.uno = uno;
+	public void setUniqueOperationNumber(Long uniqueOperationNumber) {
+		this.uniqueOperationNumber = uniqueOperationNumber;
 	}
 	/**
-	 * @return the sum
+	 * @return the amount
 	 */
-	public BigDecimal getSum() {
-		return sum;
+	public BigDecimal getAmount() {
+		return amount;
 	}
 	/**
-	 * @param sum the sum to set
+	 * @param amount the amount to set
 	 */
-	public void setSum(BigDecimal sum) {
-		this.sum = sum;
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
 	}
 	/**
 	 * @return the containers
