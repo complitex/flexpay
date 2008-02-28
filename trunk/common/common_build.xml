@@ -54,14 +54,21 @@
 			<include name="javadbf/*.jar" />
 		</fileset>
 	</path>	
-	
+
 	<path id="ajax.lib">
 		<fileset dir="${common.dir}/lib">
 			<include name="ajax/*.jar" />
 		</fileset>
 	</path>
 
-	<path id="common.production.classpath">
+    <path id="jbpm_jpdl.lib">
+        <fileset dir="${common.dir}/lib">
+            <include name="jbpm/*.jar"/>
+            <include name="jbpm/*.txt"/>
+        </fileset>
+    </path>
+
+    <path id="common.production.classpath">
 		<path refid="commons.lib" />
 		<path refid="spring.lib" />
 		<path refid="struts.lib" />
@@ -69,7 +76,8 @@
 		<path refid="log4j.lib" />
 		<path refid="j2ee.lib" />
 		<path refid="javadbf.lib" />
-		<path refid="ajax.lib" />
+        <path refid="jbpm_jpdl.lib" />
+        <path refid="ajax.lib" />
 	</path>
 
 	<patternset id="empty_pattern" excludes="**/*.*" />
@@ -267,7 +275,8 @@
 			<lib dir="${common.dir}/lib/commons" />
 			<lib dir="${common.dir}/lib/struts2" />
 			<lib dir="${common.dir}/lib/log4j" />
-			<lib dir="${common.dir}/lib/javadbf" />
+            <lib dir="${common.dir}/lib/jbpm"/>
+            <lib dir="${common.dir}/lib/javadbf" />
 			<lib dir="${common.dir}/lib/ajax" />
 			<lib dir="${build.dir}/lib" />
 		</war>

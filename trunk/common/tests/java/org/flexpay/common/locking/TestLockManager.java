@@ -14,7 +14,7 @@ public class TestLockManager extends TestCase {
 
 	public void testLock() {
 		LockManager lockManager = LockManager.getInstance();
-		assertTrue("Lock string", lockManager.lock(lockString));
+		assertTrue("lock string", lockManager.lock(lockString));
 		ConflictingThread conflictingThread = new ConflictingThread();
 		Thread runner = new Thread(conflictingThread);
 		runner.start();
