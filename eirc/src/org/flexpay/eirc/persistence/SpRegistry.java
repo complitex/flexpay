@@ -1,5 +1,6 @@
 package org.flexpay.eirc.persistence;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.flexpay.common.persistence.DomainObject;
@@ -16,7 +17,7 @@ public class SpRegistry extends DomainObject {
 	private Date tillDate;
 	private Long sender;
 	private Long recipient;
-	private Double sum;
+	private BigDecimal sum;
 	private String containers;
 	
 	/**
@@ -105,18 +106,6 @@ public class SpRegistry extends DomainObject {
 		this.recipient = recipient;
 	}
 	/**
-	 * @return the sum
-	 */
-	public Double getSum() {
-		return sum;
-	}
-	/**
-	 * @param sum the sum to set
-	 */
-	public void setSum(Double sum) {
-		this.sum = sum;
-	}
-	/**
 	 * @return the containers
 	 */
 	public String getContainers() {
@@ -151,6 +140,18 @@ public class SpRegistry extends DomainObject {
 	 */
 	public void setRecordNum(Long recordNum) {
 		this.recordNum = recordNum;
+	}
+	/**
+	 * @return the sum
+	 */
+	public BigDecimal getSum() {
+		return sum;
+	}
+	/**
+	 * @param sum the sum to set
+	 */
+	public void setSum(BigDecimal sum) {
+		this.sum = sum;
 	}
 	
 	
