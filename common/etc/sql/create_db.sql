@@ -6,7 +6,7 @@ grant all privileges on flexpay_db.* to flexpay_user;
 flush privileges;
 
 drop table if exists SEMAPHORE;
-create table SEMAPHORE(semaphoreID varchar(255) , primary key(semaphoreID));
+create table semaphore(semaphoreID varchar(255) , primary key(semaphoreID));
 
 drop table if exists common_version_tbl;
 CREATE TABLE common_version_tbl (
