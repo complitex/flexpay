@@ -19,6 +19,10 @@ public class StreetTypeJdbcDataSource implements RawDataSource<RawStreetTypeData
 		return true;
 	}
 
+	public RawStreetTypeData getById(String objId) {
+		throw new UnsupportedOperationException("Not implemented");
+	}
+
 	/**
 	 * Initialize data source
 	 */

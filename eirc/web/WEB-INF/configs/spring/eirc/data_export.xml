@@ -28,6 +28,10 @@
 		<property name="typeRegistry" ref="typeRegistryEirc" />
 	</bean>
 
+	<bean id="importErrorServiceEirc" parent="importErrorServiceTemplate">
+		<property name="registry" ref="typeRegistryEirc" />
+	</bean>
+
 	<!-- Import-Export services -->
 	<bean id="importServiceEirc" parent="importServiceAb"
 		  class="org.flexpay.eirc.service.importexport.EircImportService">
@@ -35,6 +39,9 @@
 		<property name="personalAccountDataConverter" ref="personalAccountDataConverter" />
 		<property name="correctionsService" ref="correctionsServiceEirc" />
 		<property name="personalAccountService" ref="personalAccountService" />
+		<property name="errorsSupport" ref="importErrorSupport" />
+		<property name="importErrorService" ref="importErrorServiceEirc" />
+		<property name="registry" ref="typeRegistryEirc" />
 	</bean>
 
 </beans>

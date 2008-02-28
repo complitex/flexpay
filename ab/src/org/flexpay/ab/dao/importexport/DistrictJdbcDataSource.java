@@ -19,6 +19,10 @@ public class DistrictJdbcDataSource implements RawDataSource<RawDistrictData> {
 		return true;
 	}
 
+	public RawDistrictData getById(String objId) {
+		throw new UnsupportedOperationException("Not implemented");
+	}
+
 	/**
 	 * Initialize data source
 	 */

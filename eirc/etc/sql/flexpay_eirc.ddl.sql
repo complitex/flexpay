@@ -43,6 +43,10 @@
         drop 
         foreign key FKF86BDC935BA789BB;
 
+    alter table common_import_errors_tbl 
+        drop 
+        foreign key FKBAEED8705355D490;
+
     alter table country_name_translations_tbl 
         drop 
         foreign key FK5673A52C9E89EB47;
@@ -75,9 +79,13 @@
         drop 
         foreign key FKCA605324712C324D;
 
-    alter table eirc_account_statuses_tbl 
+    alter table eirc_account_status_translations_tbl 
         drop 
-        foreign key FKB610981B47DC07F9;
+        foreign key FK4FFD8012AC8FAF76;
+
+    alter table eirc_account_status_translations_tbl 
+        drop 
+        foreign key FK4FFD801261F37403;
 
     alter table eirc_organisations_tbl 
         drop 
@@ -299,6 +307,10 @@
 
     drop table if exists common_data_source_descriptions_tbl;
 
+    drop table if exists common_import_errors_tbl;
+
+    drop table if exists common_sequences_tbl;
+
     drop table if exists countries_tbl;
 
     drop table if exists country_name_translations_tbl;
@@ -310,6 +322,8 @@
     drop table if exists district_names_temporal_tbl;
 
     drop table if exists districts_tbl;
+
+    drop table if exists eirc_account_status_translations_tbl;
 
     drop table if exists eirc_account_statuses_tbl;
 
@@ -326,6 +340,8 @@
     drop table if exists eirc_service_types_tbl;
 
     drop table if exists eirc_services_tbl;
+
+    drop table if exists eirc_sp_files_tbl;
 
     drop table if exists identity_type_translations_tbl;
 
@@ -460,6 +476,23 @@
         primary key (id)
     );
 
+    create table common_import_errors_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        source_description_id bigint not null,
+        object_type integer not null,
+        ext_object_id varchar(255) not null,
+        handler_object_name varchar(255) not null,
+        primary key (id)
+    );
+
+    create table common_sequences_tbl (
+        id bigint not null auto_increment,
+        counter bigint not null,
+        description varchar(255),
+        primary key (id)
+    );
+
     create table countries_tbl (
         id bigint not null auto_increment,
         status integer not null,
@@ -509,10 +542,18 @@
         primary key (id)
     );
 
+    create table eirc_account_status_translations_tbl (
+        id bigint not null auto_increment,
+        name varchar(255) not null,
+        account_status_id bigint not null,
+        language_id bigint not null,
+        primary key (id),
+        unique (account_status_id, language_id)
+    );
+
     create table eirc_account_statuses_tbl (
         id bigint not null auto_increment,
-        value varchar(255) not null,
-        language bigint not null,
+        status integer not null,
         primary key (id)
     );
 
@@ -533,7 +574,7 @@
         service bigint not null,
         billBeginDate date not null,
         billEndDate date not null,
-        amount numeric(19,2) not null,
+        amount decimal(19,2) not null,
         primary key (id),
         unique (account, service)
     );
@@ -544,6 +585,7 @@
         person_id bigint not null,
         status_id bigint not null,
         creationDate date not null,
+        account_number varchar(255) not null unique,
         primary key (id),
         unique (apartment_id, person_id, status_id)
     );
@@ -575,6 +617,16 @@
         provider_id bigint not null,
         type_id bigint not null,
         description varchar(255) not null,
+        primary key (id)
+    );
+
+    create table eirc_sp_files_tbl (
+        id bigint not null auto_increment,
+        request_file_name varchar(255) not null,
+        internal_request_file_name varchar(255) not null,
+        internal_response_file_name varchar(255),
+        user_name varchar(255) not null,
+        import_date datetime not null,
         primary key (id)
     );
 
@@ -878,6 +930,12 @@
         foreign key (data_source_description_id) 
         references common_data_source_descriptions_tbl (id);
 
+    alter table common_import_errors_tbl 
+        add index FKBAEED8705355D490 (source_description_id), 
+        add constraint FKBAEED8705355D490 
+        foreign key (source_description_id) 
+        references common_data_source_descriptions_tbl (id);
+
     alter table country_name_translations_tbl 
         add index FK5673A52C9E89EB47 (country_id), 
         add constraint FK5673A52C9E89EB47 
@@ -926,10 +984,16 @@
         foreign key (town_id) 
         references towns_tbl (id);
 
-    alter table eirc_account_statuses_tbl 
-        add index FKB610981B47DC07F9 (language), 
-        add constraint FKB610981B47DC07F9 
-        foreign key (language) 
+    alter table eirc_account_status_translations_tbl 
+        add index FK4FFD8012AC8FAF76 (account_status_id), 
+        add constraint FK4FFD8012AC8FAF76 
+        foreign key (account_status_id) 
+        references eirc_account_statuses_tbl (id);
+
+    alter table eirc_account_status_translations_tbl 
+        add index FK4FFD801261F37403 (language_id), 
+        add constraint FK4FFD801261F37403 
+        foreign key (language_id) 
         references languages_tbl (id);
 
     alter table eirc_organisations_tbl 

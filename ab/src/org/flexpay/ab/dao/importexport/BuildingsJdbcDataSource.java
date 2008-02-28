@@ -19,6 +19,10 @@ public class BuildingsJdbcDataSource implements RawDataSource<RawBuildingsData> 
 		return true;
 	}
 
+	public RawBuildingsData getById(String objId) {
+		throw new UnsupportedOperationException("Not implemented");
+	}
+
 	/**
 	 * Initialize data source
 	 */

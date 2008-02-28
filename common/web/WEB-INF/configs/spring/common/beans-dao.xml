@@ -25,4 +25,14 @@
 		</property>
 	</bean>
 
+	<bean id="importErrorDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.common.dao.ImportErrorDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.common.persistence.ImportError" />
+			</bean>
+		</property>
+	</bean>
+
 </beans>

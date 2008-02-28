@@ -1,7 +1,6 @@
 package org.flexpay.ab.dao.importexport;
 
 import org.flexpay.ab.dao.importexport.imp.HarkovCenterNachisleniyDataSource;
-import org.flexpay.ab.service.importexport.RawBuildingsData;
 import org.flexpay.ab.service.importexport.RawApartmentData;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
@@ -18,6 +17,10 @@ public class ApartmentJdbcDataSource implements RawDataSource<RawApartmentData> 
 
 	public boolean trusted() {
 		return true;
+	}
+
+	public RawApartmentData getById(String objId) {
+		throw new UnsupportedOperationException("Not implemented");
 	}
 
 	/**

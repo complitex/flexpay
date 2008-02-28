@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence">
+
+	<class name="ImportError" table="common_import_errors_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status" not-null="true" />
+
+		<many-to-one name="sourceDescription" column="source_description_id" not-null="true"
+			class="DataSourceDescription" />
+		<property name="objectType" column="object_type" not-null="true" />
+		<property name="sourceObjectId" column="ext_object_id" not-null="true" />
+		<property name="dataSourceBean" column="handler_object_name" not-null="true" />
+	</class>
+
+	<query name="ImportError.listErrorsByType">
+		from ImportError
+		where status=0 and objectType=?
+	</query>
+
+	<query name="ImportError.listDataSourceErrors">
+		from ImportError
+		where status=0 and sourceDescription.id=? and objectType=?
+	</query>
+
+	<query name="ImportError.listDescriptions">
+		select distinct sourceDescription
+		from ImportError
+		where status=0 and objectType=?
+	</query>
+
+</hibernate-mapping>
