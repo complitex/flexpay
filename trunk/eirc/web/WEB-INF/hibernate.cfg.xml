@@ -51,6 +51,8 @@
 		<mapping resource="org/flexpay/eirc/persistence/Organisation.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/Service.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/PersonalAccount.hbm.xml" />
+		
+		<mapping resource="org/flexpay/eirc/persistence/SpFile.hbm.xml" />
 
 	</session-factory>
 

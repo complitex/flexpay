@@ -4,5 +4,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
 	<import resource="beans_services.xml" />
+	
+	<bean id="spFileCreateAction" class="org.flexpay.eirc.actions.SpFileCreateAction"
+		  scope="prototype">
+		<property name="spFileService" ref="spFileService" />
+	</bean>
+	
+	<bean id="spFileListAction" class="org.flexpay.eirc.actions.SpFileListAction"
+		  scope="prototype">
+		<property name="spFileService" ref="spFileService" />
+	</bean>
 
 </beans>
