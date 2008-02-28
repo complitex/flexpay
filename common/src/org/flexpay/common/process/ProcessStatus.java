@@ -8,7 +8,7 @@ public class ProcessStatus {
     private Date start;
     private Date end;
     private long id;
-    private int status;
+    private ProcessState state;
 
     public File getLog() {
         return log;
@@ -42,11 +42,11 @@ public class ProcessStatus {
         this.id = id;
     }
 
-    public int getStatus() {
-        return status;
+    public ProcessState getState() {
+        return state;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setState(ProcessState state) {
+        this.state = state;
     }
 }
