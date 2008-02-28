@@ -3,7 +3,7 @@
 
 	<import file="sz/sz_build.xml" />
 
-	<target name="build.all" depends="build.ddls,build.docs,build.wars" />
+	<target name="build.all" depends="build.ddls,build.docs,build.wars,run.tests" />
 
 
 	<!-- Build wars -->
