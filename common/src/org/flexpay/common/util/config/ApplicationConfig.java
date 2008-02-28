@@ -21,9 +21,11 @@ public class ApplicationConfig {
 			2100, 11, 31).getTime();
 
 	private File dataRoot;
-	private String eircId;
-	private File szDataRoot;
 	
+	private File eircDataRoot;
+	private String eircId;
+	
+	private File szDataRoot;
 	private String szDefaultDbfFileEncoding;
 
 	public Date getPastInfinite() {
@@ -143,5 +145,16 @@ public class ApplicationConfig {
 
 	public void setEircId(String eircId) {
 		this.eircId = eircId;
+	}
+
+	public File getEircDataRoot() {
+		return eircDataRoot;
+	}
+
+	public void setEircDataRoot(String eircDataRoot) {
+		this.eircDataRoot = new File(dataRoot, eircDataRoot);
+		if (!this.eircDataRoot.exists()) {
+			this.eircDataRoot.mkdirs();
+		}
 	}
 }

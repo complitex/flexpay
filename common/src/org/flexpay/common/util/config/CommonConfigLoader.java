@@ -124,8 +124,12 @@ public class CommonConfigLoader implements ServletContextAware {
 		// Set flexpay root to create Config instance
 		d.addObjectCreate("flexpay", getConfigClass());
 		d.addSetProperties("flexpay");
+		
 		d.addCallMethod("flexpay/dataRoot", "setDataRoot", 0);
+		
+		d.addCallMethod("flexpay/eircDataRoot", "setEircDataRoot", 0);
 		d.addCallMethod("flexpay/eircId", "setEircId", 0);
+		
 		d.addCallMethod("flexpay/szDataRoot", "setSzDataRoot", 0);
 		d.addCallMethod("flexpay/szDefaultDbfFileEncoding", "setSzDefaultDbfFileEncoding", 0);
 	}
