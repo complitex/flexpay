@@ -60,9 +60,9 @@
 				</prop>
 				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
 
-				<!--<prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop>-->
-				<!--<prop key="hibernate.cache.use_query_cache">true</prop>-->
-				<!--<prop key="hibernate.cache.use_second_level_cache">true</prop>-->
+				<prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
 
 				<prop key="hibernate.transaction.factory_class">
 					${hibernate.transaction.factory_class}
