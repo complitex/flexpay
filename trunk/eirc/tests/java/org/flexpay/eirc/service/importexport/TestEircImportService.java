@@ -20,7 +20,7 @@ public class TestEircImportService extends TestImportService {
 	protected void runTest() throws Throwable {
 		super.runTest();
 //		testReadRawPersonalAccounts();
-		testImportPersonalAccounts();
+//		testImportPersonalAccounts();
 	}
 
 	public void testReadRawPersonalAccounts() {

@@ -3,6 +3,10 @@
         drop 
         foreign key FKF86BDC935BA789BB;
 
+    alter table common_import_errors_tbl 
+        drop 
+        foreign key FKBAEED8705355D490;
+
     alter table language_names_tbl 
         drop 
         foreign key FKF47122208626C2BC;
@@ -14,6 +18,10 @@
     drop table if exists common_data_corrections_tbl;
 
     drop table if exists common_data_source_descriptions_tbl;
+
+    drop table if exists common_import_errors_tbl;
+
+    drop table if exists common_sequences_tbl;
 
     drop table if exists language_names_tbl;
 
@@ -32,6 +40,23 @@
     create table common_data_source_descriptions_tbl (
         id bigint not null auto_increment,
         description varchar(255) not null,
+        primary key (id)
+    );
+
+    create table common_import_errors_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        source_description_id bigint not null,
+        object_type integer not null,
+        ext_object_id varchar(255) not null,
+        handler_object_name varchar(255) not null,
+        primary key (id)
+    );
+
+    create table common_sequences_tbl (
+        id bigint not null auto_increment,
+        counter bigint not null,
+        description varchar(255),
         primary key (id)
     );
 
@@ -56,6 +81,12 @@
         add index FKF86BDC935BA789BB (data_source_description_id), 
         add constraint FKF86BDC935BA789BB 
         foreign key (data_source_description_id) 
+        references common_data_source_descriptions_tbl (id);
+
+    alter table common_import_errors_tbl 
+        add index FKBAEED8705355D490 (source_description_id), 
+        add constraint FKBAEED8705355D490 
+        foreign key (source_description_id) 
         references common_data_source_descriptions_tbl (id);
 
     alter table language_names_tbl 

@@ -50,7 +50,7 @@ public class LockManager {
 			// create semaphore
 			try {
 				session.connection().createStatement().executeUpdate(
-						"insert into semaphore (semaphoreID) values ('" + semaphoreID + "')");
+						"insert into common_semaphores_tbl (semaphoreID) values ('" + semaphoreID + "')");
 			} catch (SQLException e) {
 				log.error("LockManager: lock: Create semaphore " + semaphoreID + " exception!", e);
 			}
@@ -71,7 +71,7 @@ public class LockManager {
 
 	private List acquireLock(StatelessSession session, String semaphoreID) {
 		SQLQuery sqlQuery = session.createSQLQuery(
-				"select semaphoreID from semaphore where semaphoreID=:semaphoreID for update");
+				"select semaphoreID from common_semaphores_tbl where semaphoreID=:semaphoreID for update");
 		sqlQuery.addScalar("semaphoreID", Hibernate.STRING).setString("semaphoreID", semaphoreID);
 		List list;
 		try {

@@ -9,4 +9,12 @@
 		<property name="sequenceDao" ref="sequenceDao" />
 	</bean>
 
+	<bean id="importErrorSupport"
+		  class="org.flexpay.common.service.importexport.ImportErrorsSupport" />
+
+	<bean class="org.flexpay.common.service.importexport.imp.ImportErrorServiceImpl"
+		  abstract="true" id="importErrorServiceTemplate">
+		<property name="errorDao" ref="importErrorDao" />
+	</bean>
+
 </beans>

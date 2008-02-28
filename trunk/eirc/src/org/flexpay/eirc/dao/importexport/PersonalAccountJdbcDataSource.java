@@ -27,6 +27,10 @@ public class PersonalAccountJdbcDataSource implements RawDataSource<RawPersonalA
 		return true;
 	}
 
+	public RawPersonalAccountData getById(String objId) {
+		throw new UnsupportedOperationException("Not implemented");
+	}
+
 	/**
 	 * Initialize data source
 	 */

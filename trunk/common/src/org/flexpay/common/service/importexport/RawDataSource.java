@@ -10,6 +10,14 @@ public interface RawDataSource<T extends RawData> {
 	boolean trusted();
 
 	/**
+	 * Find raw data by its id
+	 *
+	 * @param objId Raw data id
+	 * @return raw data
+	 */
+	T getById(String objId);
+
+	/**
 	 * Initialize data source
 	 */
 	void initialize();

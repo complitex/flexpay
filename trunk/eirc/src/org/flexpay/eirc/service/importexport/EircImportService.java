@@ -7,6 +7,10 @@ import org.flexpay.ab.service.importexport.ImportService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.flexpay.common.service.importexport.ImportErrorService;
+import org.flexpay.common.service.importexport.ImportErrorsSupport;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.eirc.dao.importexport.PersonalAccountJdbcDataSource;
 import org.flexpay.eirc.persistence.PersonalAccount;
@@ -24,6 +28,10 @@ public class EircImportService extends ImportService {
 	private RawPersonalAccountDataConverter personalAccountDataConverter;
 
 	private PersonalAccountService personalAccountService;
+
+	private ImportErrorService importErrorService;
+	private ImportErrorsSupport errorsSupport;
+	private ClassToTypeRegistry registry;
 
 	public void importPersonalAccounts(Town town, DataSourceDescription sd)
 			throws FlexPayException {
@@ -104,6 +112,16 @@ public class EircImportService extends ImportService {
 		}
 
 		flushStack();
+	}
+
+	private void addImportError(DataSourceDescription ds, RawPersonalAccountData data) {
+		ImportError error = new ImportError();
+		error.setSourceDescription(ds);
+		error.setSourceObjectId(data.getExtAccount());
+		error.setObjectType(registry.getType(PersonalAccount.class));
+		errorsSupport.setDataSourceBean(error, personalAccountDataSource);
+
+		importErrorService.addError(error);
 	}
 
 	private PersonalAccount findPersonalAccount(Apartment apartment, RawPersonalAccountData data) {
@@ -267,5 +285,32 @@ public class EircImportService extends ImportService {
 
 	public void setPersonalAccountService(PersonalAccountService personalAccountService) {
 		this.personalAccountService = personalAccountService;
+	}
+
+	/**
+	 * Setter for property 'importErrorService'.
+	 *
+	 * @param importErrorService Value to set for property 'importErrorService'.
+	 */
+	public void setImportErrorService(ImportErrorService importErrorService) {
+		this.importErrorService = importErrorService;
+	}
+
+	/**
+	 * Setter for property 'errorsSupport'.
+	 *
+	 * @param errorsSupport Value to set for property 'errorsSupport'.
+	 */
+	public void setErrorsSupport(ImportErrorsSupport errorsSupport) {
+		this.errorsSupport = errorsSupport;
+	}
+
+	/**
+	 * Setter for property 'registry'.
+	 *
+	 * @param registry Value to set for property 'registry'.
+	 */
+	public void setRegistry(ClassToTypeRegistry registry) {
+		this.registry = registry;
 	}
 }

@@ -43,6 +43,10 @@
         drop 
         foreign key FKF86BDC935BA789BB;
 
+    alter table common_import_errors_tbl 
+        drop 
+        foreign key FKBAEED8705355D490;
+
     alter table country_name_translations_tbl 
         drop 
         foreign key FK5673A52C9E89EB47;
@@ -251,6 +255,10 @@
 
     drop table if exists common_data_source_descriptions_tbl;
 
+    drop table if exists common_import_errors_tbl;
+
+    drop table if exists common_sequences_tbl;
+
     drop table if exists countries_tbl;
 
     drop table if exists country_name_translations_tbl;
@@ -396,6 +404,23 @@
         primary key (id)
     );
 
+    create table common_import_errors_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        source_description_id bigint not null,
+        object_type integer not null,
+        ext_object_id varchar(255) not null,
+        handler_object_name varchar(255) not null,
+        primary key (id)
+    );
+
+    create table common_sequences_tbl (
+        id bigint not null auto_increment,
+        counter bigint not null,
+        description varchar(255),
+        primary key (id)
+    );
+
     create table countries_tbl (
         id bigint not null auto_increment,
         status integer not null,
@@ -457,6 +482,7 @@
     create table identity_types_tbl (
         id bigint not null auto_increment,
         status integer not null,
+        type_enum integer not null,
         primary key (id)
     );
 
@@ -492,8 +518,8 @@
         begin_date date not null,
         end_date date not null,
         birth_date date not null,
-        serial_number integer not null,
-        document_number integer not null,
+        serial_number varchar(10) not null,
+        document_number varchar(20) not null,
         first_name varchar(255) not null,
         middle_name varchar(255) not null,
         last_name varchar(255) not null,
@@ -742,6 +768,12 @@
         add index FKF86BDC935BA789BB (data_source_description_id), 
         add constraint FKF86BDC935BA789BB 
         foreign key (data_source_description_id) 
+        references common_data_source_descriptions_tbl (id);
+
+    alter table common_import_errors_tbl 
+        add index FKBAEED8705355D490 (source_description_id), 
+        add constraint FKBAEED8705355D490 
+        foreign key (source_description_id) 
         references common_data_source_descriptions_tbl (id);
 
     alter table country_name_translations_tbl 
