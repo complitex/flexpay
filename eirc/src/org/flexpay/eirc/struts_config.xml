@@ -13,6 +13,14 @@
 			<result type="tiles">eirc.import</result>
 		</action>
 		
+		<action name="spFileCreate" class="spFileCreateAction">
+			<result name="form" type="tiles">eirc.import.file.upload.form</result>
+		</action>
+		
+		<action name="spFileList" class="spFileListAction">
+			<result name="success" type="tiles">eirc.import.file.list</result>
+		</action>
+		
 
 	</package>
 	

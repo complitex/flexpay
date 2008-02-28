@@ -14,5 +14,10 @@
 		  class="org.flexpay.eirc.service.imp.PersonalAccountServiceImpl">
 		<property name="personalAccountDao" ref="personalAccountDao" />
 	</bean>
+	
+	<bean id="spFileService"
+		  class="org.flexpay.eirc.service.imp.SpFileServiceImpl">
+		<property name="spFileDao" ref="spFileDao" />
+	</bean>
 
 </beans>

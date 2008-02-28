@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.eirc.persistence">
+
+	<class name="SpFile" table="sp_files_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="requestFileName" column="request_file_name" not-null="true" />
+		<property name="internalRequestFileName" column="internal_request_file_name" not-null="true" />
+		<property name="internalResponseFileName" column="internal_response_file_name" />
+		<property name="userName" column="user_name" not-null="true" />
+		<property name="importDate" column="import_date" not-null="true" />
+	</class>
+	
+	<query name="SpFile.listSpFiles">
+		select distinct s
+		from SpFile s
+	</query>
+
+</hibernate-mapping>
