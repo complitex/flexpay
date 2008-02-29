@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- Define struts actions beans -->
+
+	<bean id="importFileAction" class="org.flexpay.sz.actions.ImportFileAction"
+		  scope="prototype">
+		<property name="osznService" ref="osznService" />
+		<property name="szFileService" ref="szFileService" />
+		<property name="szFileTypeService" ref="szFileTypeService" />
+		<property name="szFileStatusService" ref="szFileStatusService" />
+		<property name="szFileActualityStatusService"
+				  ref="szFileActualityStatusService" />
+	</bean>
+	<bean id="importFileListAction" class="org.flexpay.sz.actions.ImportFileListAction"
+		  scope="prototype">
+		<property name="szFileService" ref="szFileService" />
+	</bean>
+	<bean id="loadSzFileToDbAction" class="org.flexpay.sz.actions.LoadToDbAction"
+		  scope="prototype">
+		<property name="szFileService" ref="szFileService" />
+	</bean>
+	<bean id="loadSzFileFromDbAction" class="org.flexpay.sz.actions.LoadFromDbAction"
+		  scope="prototype">
+		<property name="szFileService" ref="szFileService" />
+	</bean>
+
+</beans>

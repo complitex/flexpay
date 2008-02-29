@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:jee="http://www.springframework.org/schema/jee"
+	   xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+
+	<bean id="propertyConfigurer"
+		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/common/configs/spring/data_source.properties</value>
+				<value>/WEB-INF/common/configs/spring/hibernate.properties</value>
+				<value>/WEB-INF/common/configs/spring/app_server.properties</value>
+			</list>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
+
+	<!-- Look up data source via JNDI -->
+	<!--<jee:jndi-lookup id="dataSource" jndi-name="jdbc/FlexPay" resource-ref="false" />-->
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		  destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+	<!-- Hibernate Session Factory -->
+	<bean id="flexpaySessionFactory"
+		  class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocations" value="/WEB-INF/*hibernate.cfg.xml" />
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.c3p0.acquire_increment">
+					${hibernate.c3p0.acquire_increment}
+				</prop>
+				<prop key="hibernate.c3p0.idle_test_period">
+					${hibernate.c3p0.idle_test_period}
+				</prop>
+				<prop key="hibernate.c3p0.max_size">${hibernate.c3p0.max_size}</prop>
+				<prop key="hibernate.c3p0.min_size">${hibernate.c3p0.min_size}</prop>
+				<prop key="hibernate.c3p0.preferredTestQuery">
+					${hibernate.c3p0.preferredTestQuery}
+				</prop>
+				<prop key="hibernate.c3p0.testConnectionOnCheckout">
+					${hibernate.c3p0.testConnectionOnCheckout}
+				</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+
+				<prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+
+				<prop key="hibernate.transaction.factory_class">
+					${hibernate.transaction.factory_class}
+				</prop>
+				<prop key="hibernate.transaction.manager_lookup_class">
+					${hibernate.transaction.manager_lookup_class}
+				</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- Create transaction manager  -->
+	<bean id="transactionManager"
+		  class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sessionFactory" ref="flexpaySessionFactory" />
+	</bean>
+
+	<bean id="cacheManager"
+		  class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="/WEB-INF/common/configs/spring/ehcache.xml" />
+	</bean>
+
+	<bean id="ehcache"
+		  class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="cacheName" value="${ehcache.cacheName}" />
+	</bean>
+
+	<!--
+		Indicates that transaction
+		configuration is defined by Java5 annotations on bean classes, and
+		that proxies are automatically to be created for the relevant
+		annotated beans.
+
+		Transaction semantics such as propagation settings, the isolation level,
+		the rollback rules, etc are all defined in the annotation metadata.
+	-->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="hibernateTemplate"
+		  class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="flexpaySessionFactory" />
+	</bean>
+
+	<!--  Dao Layer generic config-->
+	<bean id="namingStrategy"
+		  class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+		<property name="staticField" value="${namingStrategy.staticField}" />
+	</bean>
+
+	<bean id="extendedFinderNamingStrategy"
+		  class="org.flexpay.common.dao.finder.impl.ExtendedFinderNamingStrategy" />
+	<bean id="finderIntroductionAdvisor"
+		  class="org.flexpay.common.dao.finder.impl.FinderIntroductionAdvisor" />
+
+	<bean id="abstractDaoTarget"
+		  class="org.flexpay.common.dao.impl.GenericDaoHibernateImpl" abstract="true">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+		<property name="namingStrategy" ref="extendedFinderNamingStrategy" />
+	</bean>
+
+	<bean id="abstractDao" abstract="true"
+		  class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interceptorNames">
+			<list>
+				<value>finderIntroductionAdvisor</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="LockManager" class="org.flexpay.common.locking.LockManager"
+		  factory-method="getInstance" destroy-method="releaseAll">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+
+    <bean id="jbpmConfiguration"
+      class="org.springmodules.workflow.jbpm31.LocalJbpmConfigurationFactoryBean">
+        <property name="sessionFactory" ref="flexpaySessionFactory"/>
+        <property name="configuration" value="WEB-INF/common/configs/jbpm/jbpm.cfg.xml"/>
+    </bean>
+
+    <bean name="processManager" class="org.flexpay.common.process.ProcessManager"
+        factory-method="getInstance" destroy-method="unload">
+        <property name="jbpmConfiguration" ref="jbpmConfiguration"/>
+    </bean>
+
+
+</beans>

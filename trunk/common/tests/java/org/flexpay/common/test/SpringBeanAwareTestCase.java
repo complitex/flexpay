@@ -10,7 +10,7 @@ public abstract class SpringBeanAwareTestCase extends AbstractDependencyInjectio
     @Override
     protected String[] getConfigLocations() {
         return new String[] {
-                "file:WEB-INF/configs/spring/config.xml"
+                "file:WEB-INF/applicationContext.xml"
         };
     }
 }

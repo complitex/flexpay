@@ -12,7 +12,7 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/configs/spring/config.xml</param-value>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
 	</context-param>
 
 	<!--
@@ -21,11 +21,11 @@
 	-->
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>
-		<param-value>/WEB-INF/configs/log4j.xml</param-value>
+		<param-value>/WEB-INF/common/configs/log4j.xml</param-value>
 	</context-param>
 	<context-param>
 		<param-name>definitions-config</param-name>
-		<param-value>/WEB-INF/configs/tiles_common.xml,/WEB-INF/configs/tiles_ab.xml,/WEB-INF/configs/tiles_eirc.xml,/WEB-INF/configs/tiles_sz.xml</param-value>
+		<param-value>/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/eirc/configs/tiles_eirc.xml,/WEB-INF/sz/configs/tiles_sz.xml</param-value>
 	</context-param>
 
 	<listener>
