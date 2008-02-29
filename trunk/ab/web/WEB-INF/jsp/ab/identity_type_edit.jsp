@@ -29,7 +29,7 @@
 		</s:iterator>
 		<tr>
 			<td colspan="3" height="3" bgcolor="#4a4f4f"/>
-		</td>	
+		</tr>	
 		<tr>
 		  <td colspan="3">
 		    <s:hidden name="id" value="%{streetType.id}" />

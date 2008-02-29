@@ -36,7 +36,7 @@ public interface SzFileService {
 	/**
 	 * Update SzFile
 	 * 
-	 * @param szFile
+	 * @param importFile
 	 *            SzFile to update for
 	 * @return Updated ImportFile object
 	 * @throws FlexPayException

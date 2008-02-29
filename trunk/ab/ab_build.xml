@@ -107,7 +107,7 @@
 		</antcall>
 	</target>
 
-    <target name="ab.prepare.war" depends="common.prepare.war">
+    <target name="ab.prepare.war" depends="ab.build.test.jar,common.prepare.war">
         <fileset id="ab.web.resources" dir="${ab.dir}/web" />
         <antcall target="template.prepare.war">
             <param name="to_dir" value="" />
@@ -159,7 +159,7 @@
 		</antcall>
 	</target>
 
-	<target name="ab.runtests" depends="ab.build.test.jar,ab.prepare.war">
+	<target name="ab.runtests" depends="ab.prepare.war">
 		<antcall target="template.run.tests">
 			<param name="test_name" value="org.flexpay.ab.AllTests" />
 			<reference refid="ab.runtests.classpath" torefid="classpath" />

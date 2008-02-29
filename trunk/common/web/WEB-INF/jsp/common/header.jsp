@@ -7,7 +7,7 @@
     <tr class="verytop">
         <td>
             <a href="<c:url value="/" />">
-                <img src="<c:url value="/img/logo.gif" />"
+                <img src="<c:url value="/resources/common/img/logo.gif" />"
                      width="123" height="37"
                      alt="FlexPay" border="0" hspace="25"
                      vspace="6"/>
