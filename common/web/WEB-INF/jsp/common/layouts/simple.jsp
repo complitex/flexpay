@@ -7,7 +7,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<title><tiles:getAsString name="title"/></title>
-	<link rel="stylesheet" type="text/css" href="<c:url value="/style/fp.css"/>"/>
+	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/common/style/fp.css"/>"/>
 </head>
 <body>
 <table cellpadding="0" cellspacing="0" border="0" width="100%">

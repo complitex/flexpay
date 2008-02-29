@@ -93,11 +93,11 @@
 
     alter table eirc_personal_account_records_tbl 
         drop 
-        foreign key FK4883F2DA36052C2B;
+        foreign key FK4883F2DAD0BDDFB;
 
     alter table eirc_personal_account_records_tbl 
         drop 
-        foreign key FK4883F2DAF6C14BBB;
+        foreign key FK4883F2DA58F3985B;
 
     alter table eirc_personal_accounts_tbl 
         drop 
@@ -570,13 +570,13 @@
 
     create table eirc_personal_account_records_tbl (
         id bigint not null auto_increment,
-        account bigint not null,
-        service bigint not null,
-        billBeginDate date not null,
-        billEndDate date not null,
+        account_id bigint not null,
+        service_id bigint not null,
+        bill_begin_date date not null,
+        bill_end_date date not null,
         amount decimal(19,2) not null,
         primary key (id),
-        unique (account, service)
+        unique (account_id, service_id)
     );
 
     create table eirc_personal_accounts_tbl (
@@ -584,7 +584,7 @@
         apartment_id bigint not null,
         person_id bigint not null,
         status_id bigint not null,
-        creationDate date not null,
+        creation_date date not null,
         account_number varchar(255) not null unique,
         primary key (id),
         unique (apartment_id, person_id, status_id)
@@ -1003,16 +1003,16 @@
         references districts_tbl (id);
 
     alter table eirc_personal_account_records_tbl 
-        add index FK4883F2DA36052C2B (service), 
-        add constraint FK4883F2DA36052C2B 
-        foreign key (service) 
-        references eirc_services_tbl (id);
+        add index FK4883F2DAD0BDDFB (account_id), 
+        add constraint FK4883F2DAD0BDDFB 
+        foreign key (account_id) 
+        references eirc_personal_accounts_tbl (id);
 
     alter table eirc_personal_account_records_tbl 
-        add index FK4883F2DAF6C14BBB (account), 
-        add constraint FK4883F2DAF6C14BBB 
-        foreign key (account) 
-        references eirc_personal_accounts_tbl (id);
+        add index FK4883F2DA58F3985B (service_id), 
+        add constraint FK4883F2DA58F3985B 
+        foreign key (service_id) 
+        references eirc_services_tbl (id);
 
     alter table eirc_personal_accounts_tbl 
         add index FK9201389A7095AEAD (person_id), 

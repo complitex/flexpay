@@ -142,7 +142,7 @@
     <bean id="jbpmConfiguration"
       class="org.springmodules.workflow.jbpm31.LocalJbpmConfigurationFactoryBean">
         <property name="sessionFactory" ref="flexpaySessionFactory"/>
-        <property name="configuration" value="classpath:WEB-INF/configs/jbpm/jbpm.cfg.xml"/>
+        <property name="configuration" value="WEB-INF/configs/jbpm/jbpm.cfg.xml"/>
     </bean>
 
     <bean name="processManager" class="org.flexpay.common.process.ProcessManager"

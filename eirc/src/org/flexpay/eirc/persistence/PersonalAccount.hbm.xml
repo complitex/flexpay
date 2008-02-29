@@ -18,7 +18,7 @@
 			<many-to-one name="status" class="AccountStatus" column="status_id"
 						 not-null="true" />
 		</properties>
-		<property name="creationDate" not-null="true" type="date" />
+		<property name="creationDate" not-null="true" type="date" column="creation_date" />
 		<property name="accountNumber" not-null="true" unique="true" column="account_number" />
 	</class>
 
@@ -28,11 +28,11 @@
 			<generator class="native" />
 		</id>
 		<properties name="account_record_service_pair" unique="true">
-			<many-to-one name="account" class="PersonalAccount" not-null="true" />
-			<many-to-one name="service" class="Service" not-null="true" />
+			<many-to-one name="account" column="account_id" class="PersonalAccount" not-null="true" />
+			<many-to-one name="service" column="service_id" class="Service" not-null="true" />
 		</properties>
-		<property name="billBeginDate" not-null="true" type="date" />
-		<property name="billEndDate" not-null="true" type="date" />
+		<property name="billBeginDate" column="bill_begin_date" not-null="true" type="date" />
+		<property name="billEndDate"  column="bill_end_date" not-null="true" type="date" />
 		<property name="amount" type="big_decimal" not-null="true" />
 	</class>
 

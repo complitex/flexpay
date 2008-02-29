@@ -12,7 +12,7 @@
 	 -->
 	<bean class="org.flexpay.common.util.config.CommonConfigLoader"
 		  init-method="loadConfig" depends-on="languageDAO">
-		<constructor-arg index="0" value="classpath:application_config.xml" />
+		<constructor-arg index="0" value="classpath:org/flexpay/common/application_config.xml" />
 		<property name="languageService" ref="languageService" />
 	</bean>
 

@@ -384,7 +384,8 @@ public class ImportService {
 
 			} catch (Exception e) {
 				log.error("Failed getting street type with id: " + data.getExternalSourceId(), e);
-			}
+                throw new RuntimeException(e);
+            }
 		}
 	}
 
@@ -396,7 +397,7 @@ public class ImportService {
 		String extTypeName = tr.getName().toLowerCase();
 		for (StreetType type : streetTypes) {
 			Translation ourType = getDefaultLangTranslation(type.getTranslations());
-
+            log.info("Our type : "+ourType.getName());
 			// found translation in default lang, add correction
 			if (ourType.getName().toLowerCase().equals(extTypeName)) {
 				DataCorrection corr = correctionsService.getStub(

@@ -20,7 +20,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<div align="center"><img src="<c:url value="/img/logo.gif" />"
+						<div align="center"><img src="<c:url value="/resources/common/img/logo.gif" />"
 												 width="123" height="37"
 												 alt="FlexPay" border="0" hspace="25"
 												 vspace="6"/></div>
