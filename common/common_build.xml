@@ -189,7 +189,7 @@
 			<param name="hibernate.cfg"
 				   value="${common.dir}/web/WEB-INF/hibernate.cfg.xml" />
 			<param name="hibernate.properties"
-				   value="${common.dir}/web/WEB-INF/configs/spring/common/data_source.properties" />
+				   value="${common.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
 		</antcall>
 	</target>
 
@@ -287,7 +287,7 @@
 			<classpath>
 				<path refid="classpath" />
 			</classpath>
-			<sysproperty key="log4j.configuration" value="WEB-INF/configs/log4j.xml" />
+			<sysproperty key="log4j.configuration" value="WEB-INF/common/configs/log4j.xml" />
 			<jvmarg value="-Xmx150m" />
 			<test name="${test_name}" haltonfailure="yes">
 				<formatter type="brief" usefile="false" />

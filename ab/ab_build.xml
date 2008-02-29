@@ -129,12 +129,12 @@
 	<target name="template.ab.war.production"
 			depends="clean.all,ab.build.production.jar,ab.prepare.war,init.distr">
 
-		<copy file="${build.dir}/web/WEB-INF/configs/ps/${app_server.properties}"
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
 			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/configs/spring/common/app_server.properties" />
-		<copy file="${build.dir}/web/WEB-INF/configs/ps/${data_source.properties}"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
 			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/configs/spring/common/data_source.properties" />
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
 
 		<war destfile="${distr.dir}/${ab.war.name}" needxmlfile="false">
 			<fileset dir="${build.dir}/web" />
@@ -155,7 +155,7 @@
 			<param name="hibernate.cfg"
 				   value="${ab.dir}/web/WEB-INF/hibernate.cfg.xml" />
 			<param name="hibernate.properties"
-				   value="${common.dir}/web/WEB-INF/configs/ps/data_source_mysql5.properties" />
+				   value="${common.dir}/web/WEB-INF/common/configs/ps/data_source_mysql5.properties" />
 		</antcall>
 	</target>
 
