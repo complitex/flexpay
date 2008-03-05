@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class FlexpayRolesInterceptor extends RolesInterceptor {
 
-    private static final String DEFAULT_FORBIDDEN_URL = "/forbidden.jsp";
+    private static final String DEFAULT_FORBIDDEN_URL = "/resources/common/jsp/forbidden.jsp";
     private static final String DEFAULT_LOGIN_URL = "/login.jsp";
 
     private String forbiddenURL = null;

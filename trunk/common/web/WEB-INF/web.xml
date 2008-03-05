@@ -99,19 +99,19 @@
 	<login-config>
 		<auth-method>FORM</auth-method>
 		<form-login-config>
-			<form-login-page>/login.jsp</form-login-page>
-			<form-error-page>/login.jsp</form-error-page>
+			<form-login-page>/resources/common/jsp/login.jsp</form-login-page>
+			<form-error-page>/resources/common/jsp/login.jsp</form-error-page>
 		</form-login-config>
 	</login-config>
 
 	<welcome-file-list>
-		<welcome-file>/common_index.jsp</welcome-file>
+		<welcome-file>/resources/common/jsp/index.jsp</welcome-file>
 	</welcome-file-list>
 
 	<jsp-config>
 		<taglib>
 			<taglib-uri>http://jakarta.apache.org/taglibs/datetime-1.0</taglib-uri>
-			<taglib-location>/WEB-INF/taglibs-datetime.tld</taglib-location>
+			<taglib-location>/WEB-INF/common/taglibs-datetime.tld</taglib-location>
 		</taglib>
 	</jsp-config>
 

@@ -18,7 +18,7 @@
                 if (request.getUserPrincipal() != null) {
             %>
             <span class="text-small">User: <%=request.getUserPrincipal()%>
-                <a href="<c:url value="/logout.jsp" />">
+                <a href="<c:url value="/resources/common/jsp/logout.jsp" />">
                     &nbsp
                     <s:text name="logout.link.title" />
                 </a>
