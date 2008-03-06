@@ -5,8 +5,8 @@ import org.flexpay.common.persistence.DomainObjectWithStatus;
 
 public class Organisation extends DomainObjectWithStatus {
 
-	private String inn;
-	private String kpp;
+	private String individualTaxNumber;
+	private String kpp; // code prichiny postanovki na nalogoviy uchet (TODO: translate me)
 	private String description;
 
 	private String name;
@@ -22,12 +22,12 @@ public class Organisation extends DomainObjectWithStatus {
 		super(id);
 	}
 
-	public String getInn() {
-		return inn;
+	public String getIndividualTaxNumber() {
+		return individualTaxNumber;
 	}
 
-	public void setInn(String inn) {
-		this.inn = inn;
+	public void setIndividualTaxNumber(String individualTaxNumber) {
+		this.individualTaxNumber = individualTaxNumber;
 	}
 
 	public String getKpp() {

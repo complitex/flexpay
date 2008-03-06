@@ -66,7 +66,8 @@ public class ProcessManager implements Runnable {
      * @throws ProcessDefinitionException when can't deplot process definition to jbpm
      * @throws ProcessManagerConfigurationException when misconfiguration present
      */
-    public long deployProcessDefinition( String name, boolean replace) throws ProcessDefinitionException, ProcessManagerConfigurationException {
+    public long deployProcessDefinition( String name, boolean replace)
+			throws ProcessDefinitionException, ProcessManagerConfigurationException {
 
         //@todo get InputStream by process name
 
@@ -292,7 +293,8 @@ public class ProcessManager implements Runnable {
       * @param task taskInstance to start
      * @return true if task started
      */
-    protected boolean startTask(TaskInstance task) {
+    @SuppressWarnings ({"unchecked"})
+	protected boolean startTask(TaskInstance task) {
         // get ProcessInstance dictionary to pass it to Job
         ProcessInstance pi = task.getTaskMgmtInstance().getProcessInstance();
         ContextInstance ci = pi.getContextInstance();
@@ -300,14 +302,14 @@ public class ProcessManager implements Runnable {
         if (startTaskCounter == null) {
             startTaskCounter = 1;
         } else {
-            startTaskCounter = new Integer(startTaskCounter.intValue() + 1);
+            startTaskCounter = startTaskCounter + 1;
         }
         ci.setVariable("StartTaskCounter", startTaskCounter, task.getToken());
 
         String ti = String.valueOf(task.getId());
         String pid = String.valueOf(pi.getId());
 
-        if (startTaskCounter.intValue() <= startTaskLimit) {
+        if (startTaskCounter <= startTaskLimit) {
             HashMap<Serializable,Serializable> params = (HashMap<Serializable,Serializable>) ci.getVariables();
 
             FPLogger.logMessage(FPLogger.INFO, "Starting task \"" + task.getName() + "\" (" + ti + ", pid - " + pid + ")");
@@ -331,7 +333,7 @@ public class ProcessManager implements Runnable {
     }
 
     /**
-     * Cal;led when process job was finished
+     * Called when process job was finished
      * @param taskId Task ID
      * @param parameters Task context parameters
      * @param transition transition name

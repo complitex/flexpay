@@ -1,8 +1,14 @@
 package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.DataSourceDescription;
 
 public class ServiceProvider extends DomainObject {
+
+	private Long providerNumber;
+	private String description;
+	private Organisation organisation;
+	private DataSourceDescription dataSourceDescription;
 
 	/**
 	 * Constructs a new DomainObject.
@@ -14,8 +20,13 @@ public class ServiceProvider extends DomainObject {
 		super(id);
 	}
 
-	private String description;
-	private Organisation organisation;
+	public Long getProviderNumber() {
+		return providerNumber;
+	}
+
+	public void setProviderNumber(Long providerNumber) {
+		this.providerNumber = providerNumber;
+	}
 
 	public String getDescription() {
 		return description;
@@ -31,5 +42,23 @@ public class ServiceProvider extends DomainObject {
 
 	public void setOrganisation(Organisation organisation) {
 		this.organisation = organisation;
+	}
+
+	/**
+	 * Getter for property 'dataSourceDescription'.
+	 *
+	 * @return Value for property 'dataSourceDescription'.
+	 */
+	public DataSourceDescription getDataSourceDescription() {
+		return dataSourceDescription;
+	}
+
+	/**
+	 * Setter for property 'dataSourceDescription'.
+	 *
+	 * @param dataSourceDescription Value to set for property 'dataSourceDescription'.
+	 */
+	public void setDataSourceDescription(DataSourceDescription dataSourceDescription) {
+		this.dataSourceDescription = dataSourceDescription;
 	}
 }

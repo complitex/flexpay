@@ -1,32 +1,27 @@
 package org.flexpay.common.util.config;
 
-import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
-import org.springframework.mock.web.MockServletContext;
-
-import javax.servlet.ServletContext;
-import java.net.URL;
+import org.flexpay.common.test.SpringBeanAwareTestCase;
 
 /**
  * Test is config loads OK
  */
-public class TestCommonConfigLoader {
+public class TestCommonConfigLoader extends SpringBeanAwareTestCase {
 
-	@Test
+	/**
+	 * Override to run the test and assert its state.
+	 *
+	 * @throws Throwable if any exception is thrown
+	 */
+	protected void runTest() throws Throwable {
+		testConfigLoader();
+	}
+
 	public void testConfigLoader() throws Exception {
 
-		URL url = getClass().getClassLoader().getResource(
-				"org/flexpay/common/application_config.xml" );
+		ApplicationConfig config = ApplicationConfig.getInstance();
+		assertNotNull("Configuration load failed", config);
 
-		CommonConfigLoader configLoader = new CommonConfigLoader(url);
-		configLoader.loadConfig();
-
-		assertNotNull("Configuration load failed", ApplicationConfig.getInstance());
-
-		ServletContext context = new MockServletContext();
-		configLoader.setServletContext(context);
-		configLoader.setApplicationProperties();
-
-		System.out.println("Languages: " + context.getAttribute("languages"));
+		assertNotNull("Test data root setup failed", config.getDataRoot());
+		assertEquals("Test prop setup failed", "123", config.getTestProp());
 	}
 }

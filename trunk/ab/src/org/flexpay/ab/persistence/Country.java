@@ -25,6 +25,10 @@ public class Country extends DomainObjectWithStatus {
 	public Country() {
 	}
 
+	public Country(Long id) {
+		super(id);
+	}
+
 	/**
 	 * Getter for property 'regions'.
 	 *

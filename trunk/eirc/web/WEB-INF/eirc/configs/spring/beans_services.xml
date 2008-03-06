@@ -18,4 +18,24 @@
 		<property name="spFileDao" ref="spFileDao" />
 	</bean>
 
+	<bean class="org.flexpay.eirc.dao.importexport.ServiceProvidersDataSource">
+		<property name="registryRecordDao" ref="spRegistryRecordDao" />
+	</bean>
+
+	<bean id="spService" class="org.flexpay.eirc.service.imp.SPServiceImpl">
+		<property name="serviceDaoExt" ref="serviceDaoExt" />
+	</bean>
+
+	<bean id="serviceOperationsFactory"
+		  class="org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory">
+
+	</bean>
+
+	<bean id="serviceProviderFileProcessor" 
+		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor">
+		<property name="serviceOperationsFactory" ref="serviceOperationsFactory" />
+		<property name="spFileService" ref="spFileService" />
+		<property name="spService" ref="spService" />
+	</bean>
+
 </beans>

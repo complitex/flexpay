@@ -81,16 +81,16 @@
 		<property name="sessionFactory" ref="flexpaySessionFactory" />
 	</bean>
 
-	<bean id="cacheManager"
-		  class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-		<property name="configLocation" value="/WEB-INF/common/configs/spring/ehcache.xml" />
-	</bean>
+	<!--<bean id="cacheManager"-->
+		  <!--class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">-->
+		<!--<property name="configLocation" value="/WEB-INF/common/configs/spring/ehcache.xml" />-->
+	<!--</bean>-->
 
-	<bean id="ehcache"
-		  class="org.springframework.cache.ehcache.EhCacheFactoryBean">
-		<property name="cacheManager" ref="cacheManager" />
-		<property name="cacheName" value="${ehcache.cacheName}" />
-	</bean>
+	<!--<bean id="ehcache"-->
+		  <!--class="org.springframework.cache.ehcache.EhCacheFactoryBean">-->
+		<!--<property name="cacheManager" ref="cacheManager" />-->
+		<!--<property name="cacheName" value="${ehcache.cacheName}" />-->
+	<!--</bean>-->
 
 	<!--
 		Indicates that transaction

@@ -15,18 +15,18 @@ public class ApplicationConfig {
 	private List<Language> languages = new ArrayList<Language>(3);
 	public static final String USER_PREFERENCES_SESSION_ATTRIBUTE = "FLEXPAY_USER_PREFERENCES_SESSION_ATTRIBUTE";
 
-	private static final Date DATE_PAST_INFINITE = new GregorianCalendar(1900,
-			0, 1).getTime();
-	private static final Date DATE_FUTURE_INFINITE = new GregorianCalendar(
-			2100, 11, 31).getTime();
+	private static final Date DATE_PAST_INFINITE = new GregorianCalendar(1900, 0, 1).getTime();
+	private static final Date DATE_FUTURE_INFINITE = new GregorianCalendar(2100, 11, 31).getTime();
 
 	private File dataRoot;
-	
+
 	private File eircDataRoot;
 	private String eircId;
-	
+
 	private File szDataRoot;
 	private String szDefaultDbfFileEncoding;
+
+	private String testProp;
 
 	public Date getPastInfinite() {
 		return DATE_PAST_INFINITE;
@@ -38,7 +38,7 @@ public class ApplicationConfig {
 
 	/**
 	 * Getter for property 'instance'.
-	 * 
+	 *
 	 * @return Value for property 'instance'.
 	 */
 	public static ApplicationConfig getInstance() {
@@ -51,12 +51,12 @@ public class ApplicationConfig {
 	/**
 	 * Do not instantiate ApplicationConfig.
 	 */
-	public ApplicationConfig() {
+	protected ApplicationConfig() {
 	}
 
 	/**
 	 * Getter for property 'languages'.
-	 * 
+	 *
 	 * @return Value for property 'languages'.
 	 */
 	public List<Language> getLanguages() {
@@ -69,9 +69,8 @@ public class ApplicationConfig {
 
 	/**
 	 * Setter for property 'languages'.
-	 * 
-	 * @param languages
-	 *            Value to set for property 'languages'.
+	 *
+	 * @param languages Value to set for property 'languages'.
 	 */
 	public void setLanguages(List<Language> languages) {
 		this.languages = languages;
@@ -79,10 +78,9 @@ public class ApplicationConfig {
 
 	/**
 	 * Get Default Language configuaration option
-	 * 
+	 *
 	 * @return Language
-	 * @throws FlexPayException
-	 *             if Default language is not configured
+	 * @throws FlexPayException if Default language is not configured
 	 */
 	public Language getDefaultLanguage() throws FlexPayException {
 		for (Language language : languages) {
@@ -95,15 +93,16 @@ public class ApplicationConfig {
 
 	/**
 	 * Setter for property 'instance'.
-	 * 
-	 * @param config
-	 *            Value to set for property 'instance'.
+	 *
+	 * @param config Value to set for property 'instance'.
 	 */
 	static void setInstance(ApplicationConfig config) {
 		instance = config;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
 				.append("languages", languages.toArray()).toString();
@@ -156,5 +155,13 @@ public class ApplicationConfig {
 		if (!this.eircDataRoot.exists()) {
 			this.eircDataRoot.mkdirs();
 		}
+	}
+
+	public String getTestProp() {
+		return testProp;
+	}
+
+	public void setTestProp(String prop) {
+		this.testProp = prop;
 	}
 }

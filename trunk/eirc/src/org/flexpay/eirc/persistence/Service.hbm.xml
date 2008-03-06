@@ -11,7 +11,12 @@
 			<generator class="native" />
 		</id>
 		<many-to-one name="organisation" column="organisation_id" not-null="true" />
+		<many-to-one name="dataSourceDescription" column="data_source_description_id"
+					 not-null="true"
+					 class="org.flexpay.common.persistence.DataSourceDescription" />
 		<property name="description" not-null="true" />
+		<property name="providerNumber" not-null="true" column="provider_number"
+				  unique="true" />
 	</class>
 
 	<class name="Service" table="eirc_services_tbl" optimistic-lock="version">
@@ -27,6 +32,9 @@
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
+		<property name="status" not-null="true" />
+		<property name="code" not-null="true" />
+
 		<set name="typeNames" inverse="true" cascade="all-delete-orphan">
 			<key column="service_type_id" not-null="true" />
 			<one-to-many class="ServiceTypeNameTranslation" />
@@ -44,7 +52,7 @@
 			<many-to-one name="lang" class="org.flexpay.common.persistence.Language"
 						 not-null="true" column="language_id" />
 			<many-to-one name="translatable" class="ServiceType" column="service_type_id"
-					not-null="true" />
+						 not-null="true" />
 		</properties>
 	</class>
 

@@ -48,6 +48,8 @@ public class TestEircImportService extends TestImportService {
 		EircImportService importService = (EircImportService) applicationContext
 				.getBean("importServiceEirc");
 
-		importService.importPersonalAccounts(new Town(1L), new DataSourceDescription(1L));
+		PersonalAccountJdbcDataSource dataSource = (PersonalAccountJdbcDataSource) applicationContext
+				.getBean("personalAccountJdbcDataSource");
+		importService.importPersonalAccounts(new Town(1L), new DataSourceDescription(1L), dataSource);
 	}
 }

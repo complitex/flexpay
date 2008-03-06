@@ -3,7 +3,7 @@ package org.flexpay.common.test;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 /**
- * Base class for all Springframework initialised beans aware tests
+ * Base class for all SpringFramework initialised beans aware tests
  */
 public abstract class SpringBeanAwareTestCase extends AbstractDependencyInjectionSpringContextTests {
 

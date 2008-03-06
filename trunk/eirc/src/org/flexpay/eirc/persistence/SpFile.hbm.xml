@@ -16,9 +16,72 @@
 		<property name="importDate" column="import_date" not-null="true" />
 	</class>
 	
+	<class name="SpRegistry" table="eirc_sp_registries_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="registryNumber" column="registry_number" />
+		<property name="recordsNumber" column="records_number" />
+		<property name="creationDate" column="creation_date" type="timestamp" />
+		<property name="fromDate" column="from_date" type="timestamp" />
+		<property name="tillDate" column="till_date" type="timestamp" />
+		<property name="senderCode" column="sender_code" />
+		<property name="recipientCode" column="recipient_code" />
+		<property name="amount" column="amount" type="big_decimal" />
+		<property name="containers" column="containers" />
+		<many-to-one name="registryType" column="registry_type_id" not-null="true"
+			class="SpRegistryType" />
+
+		<many-to-one name="spFile" column="sp_file_id" not-null="true" class="SpFile" />
+		<many-to-one name="serviceProvider" column="service_provider_id"
+			class="ServiceProvider" />
+	</class>
+
+	<class name="SpRegistryType" table="eirc_sp_registry_types_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" not-null="true" />
+		<property name="direction" not-null="true" />
+	</class>
+
+	<class name="SpRegistryRecord" table="eirc_sp_registry_records_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="serviceCode" column="service_code" />
+		<property name="personalAccountExt" column="personal_account_ext" />
+		<property name="city" column="city" />
+		<property name="streetType" column="street_type" />
+		<property name="streetName" column="street_name" />
+		<property name="buildingNum" column="building_number" />
+		<property name="buildingBulkNum" column="bulk_number" />
+		<property name="apartmentNum" column="apartment_number" />
+		<property name="firstName" column="first_name" />
+		<property name="middleName" column="middle_name" />
+		<property name="lastName" column="last_name" />
+		<property name="operationDate" column="operation_date" type="timestamp" />
+		<property name="uniqueOperationNumber" column="unique_operation_number" />
+		<property name="amount" column="amount" type="big_decimal" />
+		<property name="containers" column="containers" />
+
+		<many-to-one name="account" column="personal_account_id" />
+		<many-to-one name="spRegistry" column="registry_id" not-null="true" />
+	 </class>
+
 	<query name="SpFile.listSpFiles">
 		select distinct s
 		from SpFile s
+	</query>
+
+	<query name="SpFile.listRegistries">
+		from SpRegistry
+		where spFile.id=?
+	</query>
+
+	<query name="SpFile.listRegistryRecords">
+		from SpRegistryRecord r
+		where r.spRegistry.id=?
 	</query>
 
 </hibernate-mapping>

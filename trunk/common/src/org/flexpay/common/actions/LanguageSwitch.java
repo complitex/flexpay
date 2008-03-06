@@ -7,7 +7,8 @@ public class LanguageSwitch extends ActionSupport {
 
 	/**
 	 * Dummy action
-	 * @return
+	 * 
+	 * @return execute status
 	 */
 	public String execute() {
 
