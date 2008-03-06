@@ -96,13 +96,13 @@
     <login-config>
         <auth-method>FORM</auth-method>
         <form-login-config>
-            <form-login-page>/login.jsp</form-login-page>
-            <form-error-page>/login.jsp</form-error-page>
+            <form-login-page>/resources/common/jsp/login.jsp</form-login-page>
+            <form-error-page>/resources/common/jsp/login.jsp</form-error-page>
         </form-login-config>
     </login-config>
 
     <welcome-file-list>
-		<welcome-file>/eirc_index.jsp</welcome-file>
+		<welcome-file>/resources/eirc/jsp/index.jsp</welcome-file>
 	</welcome-file-list>
 
 	<jsp-config>
