@@ -26,6 +26,10 @@
 	<!-- the following script defines the Calendar.setup helper function, which makes
 		 adding a calendar a matter of 1 or 2 lines of code. -->
 	<script type="text/javascript" src="<c:url value="/resources/common/js/jscalendar/calendar-setup.js" />"></script>
+	
+	<!-- Text field autocomplete script -->
+	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/common/js/autosuggest/autosuggest_inquisitor.css"/>" />
+	<script type="text/javascript" src="<c:url value="/resources/common/js/autosuggest/bsn.AutoSuggest_2.1.3_comp.js" />"></script>
 </head>
 <body>
 
