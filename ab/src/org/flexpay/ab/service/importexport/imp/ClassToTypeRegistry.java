@@ -1,10 +1,11 @@
 package org.flexpay.ab.service.importexport.imp;
 
 import org.flexpay.ab.persistence.*;
+import org.flexpay.common.persistence.DomainObject;
 
 public class ClassToTypeRegistry implements org.flexpay.common.service.importexport.ClassToTypeRegistry {
 
-	public int getType(Class<?> clazz) {
+	public int getType(Class<? extends DomainObject> clazz) {
 		if (Person.class.isAssignableFrom(clazz)) {
 			return 0x09;
 		}

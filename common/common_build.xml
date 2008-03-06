@@ -258,7 +258,6 @@
 		<copy todir="${build.dir}/web${to_dir}" overwrite="true">
 			<fileset refid="resources" />
 		</copy>
-		<echo message="${src.i18n.dir}" />
 		<native2ascii encoding="utf-8" src="${src.i18n.dir}"
 					  dest="${build.dir}/src"
 					  includes="**/*.properties" />
@@ -287,7 +286,8 @@
 			<classpath>
 				<path refid="classpath" />
 			</classpath>
-			<sysproperty key="log4j.configuration" value="WEB-INF/common/configs/log4j.xml" />
+			<sysproperty key="log4j.configuration" value="org/flexpay/common/log4j.xml" />
+			<sysproperty key="java.naming.factory.initial" value="org.flexpay.common.test.MockInitialContextFactory" />
 			<jvmarg value="-Xmx150m" />
 			<test name="${test_name}" haltonfailure="yes">
 				<formatter type="brief" usefile="false" />

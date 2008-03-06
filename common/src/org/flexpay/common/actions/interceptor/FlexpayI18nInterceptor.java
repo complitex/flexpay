@@ -21,7 +21,7 @@ public class FlexpayI18nInterceptor extends I18nInterceptor {
 	/**
 	 * Request attribute to hold the current LocaleResolver, retrievable by views.
 	 *
-	 * @see org.springframework.web.servlet.support.RequestContextUtils#getLocaleResolver
+	 * {@link org.springframework.web.servlet.support.RequestContextUtils#getLocaleResolver}
 	 */
 	public static final String LOCALE_RESOLVER_ATTRIBUTE =
 			DispatcherServlet.class.getName() + ".LOCALE_RESOLVER";

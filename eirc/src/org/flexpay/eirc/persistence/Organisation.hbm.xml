@@ -10,13 +10,12 @@
 			<generator class="native" />
 		</id>
 		<property name="status" not-null="true" />
-		<property name="inn" not-null="true" />
+		<property name="individualTaxNumber" column="individual_tax_number" not-null="true" />
 		<property name="kpp" not-null="true" />
 		<property name="description" not-null="true" />
 		<property name="name" not-null="true" />
 		<many-to-one name="district" not-null="true" column="district_id"
 					 class="org.flexpay.ab.persistence.District" />
-
 	</class>
 
 </hibernate-mapping>

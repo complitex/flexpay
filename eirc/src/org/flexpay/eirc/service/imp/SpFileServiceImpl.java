@@ -6,6 +6,8 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.dao.SpFileDao;
 import org.flexpay.eirc.persistence.SpFile;
+import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.service.SpFileService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,6 +74,26 @@ public class SpFileServiceImpl implements SpFileService {
 	@Transactional(readOnly = false)
 	public void delete(SpFile spFile) {
 		spFileDao.delete(spFile);
+	}
+
+	/**
+	 * Get registries for file
+	 *
+	 * @param spFile ServiceProvider obtained file
+	 * @return List of registries in a file
+	 */
+	public List<SpRegistry> getRegistries(SpFile spFile) {
+		return spFileDao.listRegistries(spFile.getId());
+	}
+
+	/**
+	 * Get registry records for the header
+	 *
+	 * @param registry Registry header
+	 * @return list of records
+	 */
+	public List<SpRegistryRecord> getRegistryRecords(SpRegistry registry) {
+		return spFileDao.listRegistryRecords(registry.getId());
 	}
 
 	public void setSpFileDao(SpFileDao spFileDao) {

@@ -2,7 +2,6 @@ package org.flexpay.eirc.dao.importexport;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
-import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.dao.importexport.imp.HarkovCenterNachisleniyDataSource;
 import org.flexpay.eirc.service.importexport.RawPersonalAccountData;
 
@@ -11,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class PersonalAccountJdbcDataSource implements RawDataSource<RawPersonalAccountData> {
+public class PersonalAccountJdbcDataSource implements RawPersonalAccountDataSource {
 
 	private HarkovCenterNachisleniyDataSource source;
 	private Page<RawPersonalAccountData> pager;

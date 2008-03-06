@@ -20,6 +20,10 @@ public class Region extends NameTimeDependentChild<RegionName, RegionNameTempora
 	public Region() {
 	}
 
+	public Region(Long id) {
+		super(id);
+	}
+
 	/**
 	 * Getter for property 'towns'.
 	 *

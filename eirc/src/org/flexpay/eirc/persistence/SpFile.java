@@ -1,9 +1,5 @@
 package org.flexpay.eirc.persistence;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Date;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -11,7 +7,15 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+
+/**
+ * Service Provider data file
+ */
 public class SpFile extends DomainObject {
+
 	private String requestFileName;
 	private String internalRequestFileName;
 	private String internalResponseFileName;
@@ -20,29 +24,29 @@ public class SpFile extends DomainObject {
 	private Date importDate;
 
 	public File saveToFileSystem(File source) throws IOException {
-		if(!source.exists()) {
-			throw new IllegalArgumentException("File " + source + " must be exist");
+		if (!source.exists()) {
+			throw new IllegalArgumentException("File " + source + " not exists");
 		}
-		
+
 		this.setInternalRequestFileName(StringUtil.getRandomString());
 		File requestFile = this.getRequestFile();
 		FileUtils.copyFile(source, requestFile);
-		
+
 		return requestFile;
 	}
-	
+
 	public File getRequestFile() {
-		if(internalRequestFileName == null) {
+		if (internalRequestFileName == null) {
 			return null;
 		}
-		
+
 		return new File(ApplicationConfig.getInstance().getEircDataRoot(),
 				internalRequestFileName);
 	}
 
 	/**
 	 * Returns a string representation of the object.
-	 * 
+	 *
 	 * @return a string representation of the object.
 	 */
 	@Override
@@ -95,5 +99,4 @@ public class SpFile extends DomainObject {
 	public void setImportDate(Date importDate) {
 		this.importDate = importDate;
 	}
-
 }

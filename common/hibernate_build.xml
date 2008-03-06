@@ -3,9 +3,16 @@
 
 	<import file="common_build.xml" />
 
+	<path id="hibernate.tool.lib">
+		<path refid="hibernate.lib" />
+		<!-- Include log4j configuration file to classpath -->
+	</path>
+
+
 	<taskdef name="hibernatetool"
 			 classname="org.hibernate.tool.ant.HibernateToolTask"
-			 classpathref="hibernate.lib" />
+			 classpath="${common.dir}/tests/data/org/flexpay/common"
+			 classpathref="hibernate.tool.lib" />
 
 	<target name="reveng.hbmxml"
 			description="Produces XML mapping files in src directory">
@@ -38,18 +45,14 @@
 	<target name="template.schemaexport"
 			description="Exports a generated schema to file">
 		<mkdir dir="${build.dir}/src/sql" />
-		<hibernatetool destdir="${build.dir}/src/sql" classpath="${build.dir}/classes:${src.dir}">
-			<annotationconfiguration
-					configurationfile="${hibernate.cfg}"
-					propertyfile="${hibernate.properties}">
-					</annotationconfiguration>
+		<hibernatetool destdir="${build.dir}/src/sql"
+					   classpath="${build.dir}/classes:${src.dir}">
 
-			<hbm2ddl
-					drop="true"
-					create="true"
-					export="false"
-					outputfilename="${file_name}"
-					format="true" />
+			<annotationconfiguration configurationfile="${hibernate.cfg}"
+									 propertyfile="${hibernate.properties}" />
+
+			<hbm2ddl drop="true" create="true" export="false"
+					 outputfilename="${file_name}" format="true" />
 		</hibernatetool>
 	</target>
 

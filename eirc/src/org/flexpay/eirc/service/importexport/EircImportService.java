@@ -13,6 +13,7 @@ import org.flexpay.common.service.importexport.ImportErrorService;
 import org.flexpay.common.service.importexport.ImportErrorsSupport;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.eirc.dao.importexport.PersonalAccountJdbcDataSource;
+import org.flexpay.eirc.dao.importexport.RawPersonalAccountDataSource;
 import org.flexpay.eirc.persistence.PersonalAccount;
 import org.flexpay.eirc.service.PersonalAccountService;
 import org.flexpay.eirc.util.PersonalAccountUtil;
@@ -33,7 +34,7 @@ public class EircImportService extends ImportService {
 	private ImportErrorsSupport errorsSupport;
 	private ClassToTypeRegistry registry;
 
-	public void importPersonalAccounts(Town town, DataSourceDescription sd)
+	public void importPersonalAccounts(Town town, DataSourceDescription sd, RawPersonalAccountDataSource sataSource)
 			throws FlexPayException {
 
 		ArrayStack filters = new ArrayStack();
@@ -42,14 +43,14 @@ public class EircImportService extends ImportService {
 		if (log.isDebugEnabled()) {
 			log.debug("Town streets: " + townStreets);
 		}
-		Map<String, List<Street>> nameObjsMap = initializeNamesToObjectsMap(townStreets);
 
+		Map<String, List<Street>> nameObjsMap = initializeNamesToObjectsMap(townStreets);
 		Map<String, StreetType> nameTypeMap = initializeTypeNamesToObjectsMap();
 
-		personalAccountDataSource.initialize();
-		while (personalAccountDataSource.hasNext()) {
+		sataSource.initialize();
+		while (sataSource.hasNext()) {
 			ImportOperationTypeHolder typeHolder = new ImportOperationTypeHolder();
-			RawPersonalAccountData data = personalAccountDataSource.next(typeHolder);
+			RawPersonalAccountData data = sataSource.next(typeHolder);
 
 			if (data == null) {
 				log.info("Empty data read");
@@ -71,7 +72,7 @@ public class EircImportService extends ImportService {
 				rawAccount.setAccountNumber(PersonalAccountUtil.nextPersonalAccount());
 
 				// if data source is considered trusted - add new PersonalAccount
-				if (personalAccountDataSource.trusted()) {
+				if (sataSource.trusted()) {
 
 					if (log.isInfoEnabled()) {
 						log.info("Creating new person, personal account and correction: #"
@@ -89,14 +90,14 @@ public class EircImportService extends ImportService {
 					Apartment apartment = findApartment(nameObjsMap, nameTypeMap, sd, data);
 
 					if (apartment == null) {
-						// TODO: put raw data to errors list
+						addImportError(sd, data);
 						continue;
 					}
 
 					// OK, apartment found, now scan for personal accounts
 					PersonalAccount account = findPersonalAccount(apartment, data);
 					if (account == null) {
-						// TODO: put raw data to errors list
+						addImportError(sd, data);
 						continue;
 					}
 
@@ -196,6 +197,7 @@ public class EircImportService extends ImportService {
 		Street streetByName = findStreet(nameObjsMap, nameTypeMap, data);
 		if (streetByName == null) {
 			log.warn("Failed getting street for account #" + data.getExternalSourceId());
+			return null;
 		}
 		return findApartment(data, streetByName);
 	}
