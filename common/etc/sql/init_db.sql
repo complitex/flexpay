@@ -4038,3 +4038,13 @@ INSERT INTO eirc_account_status_translations_tbl (name, account_status_id, langu
 	
 -- Init Sequences table
 INSERT INTO common_sequences_tbl (id, counter, description) VALUES (1, 10, 'Последовательность для ЛС модуля ЕИРЦ');	
+
+-- Init personal account record types
+INSERT INTO eirc_personal_account_record_types_tbl (type_id, description)
+	VALUES (0, 'Ошибочный');
+INSERT INTO eirc_personal_account_record_types_tbl (type_id, description)
+	VALUES (1, 'Входящая оплата');
+INSERT INTO eirc_personal_account_record_types_tbl (type_id, description)
+	VALUES (2, 'Исходящая оплата');
+INSERT INTO eirc_personal_account_record_types_tbl (type_id, description)
+	VALUES (3, 'Сальдо');

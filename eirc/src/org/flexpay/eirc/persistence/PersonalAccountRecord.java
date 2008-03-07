@@ -7,11 +7,10 @@ import java.util.Date;
 
 public class PersonalAccountRecord extends DomainObject {
 
-	private PersonalAccount account;
-	private Date billBeginDate;
-	private Date billEndDate;
-	private Service service;
+	private PersonalAccountRecordType recordType;
+	private Date operationDate;
 	private BigDecimal amount;
+	private Consumer consumer;
 
 	/**
 	 * Constructs a new DomainObject.
@@ -23,43 +22,75 @@ public class PersonalAccountRecord extends DomainObject {
 		super(id);
 	}
 
-	public PersonalAccount getAccount() {
-		return account;
+	/**
+	 * Getter for property 'recordType'.
+	 *
+	 * @return Value for property 'recordType'.
+	 */
+	public PersonalAccountRecordType getRecordType() {
+		return recordType;
 	}
 
-	public void setAccount(PersonalAccount account) {
-		this.account = account;
+	/**
+	 * Setter for property 'recordType'.
+	 *
+	 * @param recordType Value to set for property 'recordType'.
+	 */
+	public void setRecordType(PersonalAccountRecordType recordType) {
+		this.recordType = recordType;
 	}
 
-	public Date getBillBeginDate() {
-		return billBeginDate;
-	}
-
-	public void setBillBeginDate(Date billBeginDate) {
-		this.billBeginDate = billBeginDate;
-	}
-
-	public Date getBillEndDate() {
-		return billEndDate;
-	}
-
-	public void setBillEndDate(Date billEndDate) {
-		this.billEndDate = billEndDate;
-	}
-
-	public Service getService() {
-		return service;
-	}
-
-	public void setService(Service service) {
-		this.service = service;
-	}
-
+	/**
+	 * Getter for property 'amount'.
+	 *
+	 * @return Value for property 'amount'.
+	 */
 	public BigDecimal getAmount() {
 		return amount;
 	}
 
+	/**
+	 * Setter for property 'amount'.
+	 *
+	 * @param amount Value to set for property 'amount'.
+	 */
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
+	}
+
+	/**
+	 * Getter for property 'operationDate'.
+	 *
+	 * @return Value for property 'operationDate'.
+	 */
+	public Date getOperationDate() {
+		return operationDate;
+	}
+
+	/**
+	 * Setter for property 'operationDate'.
+	 *
+	 * @param operationDate Value to set for property 'operationDate'.
+	 */
+	public void setOperationDate(Date operationDate) {
+		this.operationDate = operationDate;
+	}
+
+	/**
+	 * Getter for property 'consumer'.
+	 *
+	 * @return Value for property 'consumer'.
+	 */
+	public Consumer getConsumer() {
+		return consumer;
+	}
+
+	/**
+	 * Setter for property 'consumer'.
+	 *
+	 * @param consumer Value to set for property 'consumer'.
+	 */
+	public void setConsumer(Consumer consumer) {
+		this.consumer = consumer;
 	}
 }
