@@ -14,7 +14,7 @@
    <tr class="cols_1">
 			<td class="col" width="100%" colspan="4" align="center">
 			    Paging area
-			    <s:include value="filters/pager.jsp" />
+			    <s:include value="/WEB-INF/jsp/ab/filters/pager.jsp" />
 			</td>
 		</tr>
 		
