@@ -18,8 +18,32 @@
 			<many-to-one name="status" class="AccountStatus" column="status_id"
 						 not-null="true" />
 		</properties>
-		<property name="creationDate" not-null="true" type="date" column="creation_date" />
-		<property name="accountNumber" not-null="true" unique="true" column="account_number" />
+		<property name="creationDate" not-null="true" type="date"
+				  column="creation_date" />
+		<property name="accountNumber" not-null="true" unique="true"
+				  column="account_number" />
+	</class>
+
+	<class name="PersonalAccountRecordType" table="eirc_personal_account_record_types_tbl"
+		   optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="description" not-null="true" />
+		<property name="typeId" not-null="true" column="type_enum_id" />
+	</class>
+
+	<class name="Consumer" table="eirc_consumers_tbl"
+		   optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status" column="status" not-null="true" />
+		<property name="externalAccountNumber" not-null="true"
+				  column="external_account_number" />
+		<many-to-one name="service" column="service_id" not-null="true" class="Service" />
+		<many-to-one name="internalAccount" not-null="true" column="account_id"
+					 class="PersonalAccount" />
 	</class>
 
 	<class name="PersonalAccountRecord" table="eirc_personal_account_records_tbl"
@@ -27,13 +51,13 @@
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<properties name="account_record_service_pair" unique="true">
-			<many-to-one name="account" column="account_id" class="PersonalAccount" not-null="true" />
-			<many-to-one name="service" column="service_id" class="Service" not-null="true" />
-		</properties>
-		<property name="billBeginDate" column="bill_begin_date" not-null="true" type="date" />
-		<property name="billEndDate"  column="bill_end_date" not-null="true" type="date" />
+		<many-to-one name="consumer" column="consumer_id" class="Consumer"
+					 not-null="true" />
+		<property name="operationDate" column="operation_date" not-null="true"
+				  type="timestamp" />
 		<property name="amount" type="big_decimal" not-null="true" />
+		<many-to-one name="recordType" column="record_type_id"
+					 class="PersonalAccountRecordType" not-null="true" />
 	</class>
 
 	<class name="AccountStatus" table="eirc_account_statuses_tbl">
@@ -66,12 +90,12 @@
 		left join fetch a.translations t
 		left join fetch t.lang
 	</query>
-	
+
 	<query name="PersonalAccount.findAccounts">
 		select distinct pa
 		from PersonalAccount pa
-			left join fetch pa.responsiblePerson p
-			left join fetch p.personIdentities 
+		left join fetch pa.responsiblePerson p
+		left join fetch p.personIdentities
 		where pa.apartment.id=?
 	</query>
 

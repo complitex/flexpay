@@ -2,6 +2,7 @@ package org.flexpay.eirc.persistence.exchange;
 
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.PersonalAccountRecord;
 import org.flexpay.common.exception.FlexPayException;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class SimplePayment extends Operation {
 	public void process(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
 		Date paymentDate = record.getOperationDate();
 
-		// TODO: process payment
+		PersonalAccountRecord accountRecord = new PersonalAccountRecord();
 	}
 
 	/**

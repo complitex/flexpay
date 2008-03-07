@@ -95,17 +95,25 @@
         drop 
         foreign key FK4FFD801261F37403;
 
+    alter table eirc_consumers_tbl 
+        drop 
+        foreign key FK9751FED2D0BDDFB;
+
+    alter table eirc_consumers_tbl 
+        drop 
+        foreign key FK9751FED258F3985B;
+
     alter table eirc_organisations_tbl 
         drop 
         foreign key FK9AA6756E1AE9F4D;
 
     alter table eirc_personal_account_records_tbl 
         drop 
-        foreign key FK4883F2DAD0BDDFB;
+        foreign key FK4883F2DA91349F59;
 
     alter table eirc_personal_account_records_tbl 
         drop 
-        foreign key FK4883F2DA58F3985B;
+        foreign key FK4883F2DAA16375AB;
 
     alter table eirc_personal_accounts_tbl 
         drop 
@@ -423,7 +431,11 @@
 
     drop table if exists eirc_account_statuses_tbl;
 
+    drop table if exists eirc_consumers_tbl;
+
     drop table if exists eirc_organisations_tbl;
+
+    drop table if exists eirc_personal_account_record_types_tbl;
 
     drop table if exists eirc_personal_account_records_tbl;
 
@@ -749,6 +761,15 @@
         primary key (id)
     );
 
+    create table eirc_consumers_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        external_account_number varchar(255) not null,
+        service_id bigint not null,
+        account_id bigint not null,
+        primary key (id)
+    );
+
     create table eirc_organisations_tbl (
         id bigint not null auto_increment,
         status integer not null,
@@ -760,15 +781,20 @@
         primary key (id)
     );
 
+    create table eirc_personal_account_record_types_tbl (
+        id bigint not null auto_increment,
+        description integer not null,
+        type_enum_id integer not null,
+        primary key (id)
+    );
+
     create table eirc_personal_account_records_tbl (
         id bigint not null auto_increment,
-        account_id bigint not null,
-        service_id bigint not null,
-        bill_begin_date date not null,
-        bill_end_date date not null,
+        consumer_id bigint not null,
+        operation_date datetime not null,
         amount decimal(19,2) not null,
-        primary key (id),
-        unique (account_id, service_id)
+        record_type_id bigint not null,
+        primary key (id)
     );
 
     create table eirc_personal_accounts_tbl (
@@ -1355,6 +1381,18 @@
         foreign key (language_id) 
         references languages_tbl (id);
 
+    alter table eirc_consumers_tbl 
+        add index FK9751FED2D0BDDFB (account_id), 
+        add constraint FK9751FED2D0BDDFB 
+        foreign key (account_id) 
+        references eirc_personal_accounts_tbl (id);
+
+    alter table eirc_consumers_tbl 
+        add index FK9751FED258F3985B (service_id), 
+        add constraint FK9751FED258F3985B 
+        foreign key (service_id) 
+        references eirc_services_tbl (id);
+
     alter table eirc_organisations_tbl 
         add index FK9AA6756E1AE9F4D (district_id), 
         add constraint FK9AA6756E1AE9F4D 
@@ -1362,16 +1400,16 @@
         references districts_tbl (id);
 
     alter table eirc_personal_account_records_tbl 
-        add index FK4883F2DAD0BDDFB (account_id), 
-        add constraint FK4883F2DAD0BDDFB 
-        foreign key (account_id) 
-        references eirc_personal_accounts_tbl (id);
+        add index FK4883F2DA91349F59 (consumer_id), 
+        add constraint FK4883F2DA91349F59 
+        foreign key (consumer_id) 
+        references eirc_consumers_tbl (id);
 
     alter table eirc_personal_account_records_tbl 
-        add index FK4883F2DA58F3985B (service_id), 
-        add constraint FK4883F2DA58F3985B 
-        foreign key (service_id) 
-        references eirc_services_tbl (id);
+        add index FK4883F2DAA16375AB (record_type_id), 
+        add constraint FK4883F2DAA16375AB 
+        foreign key (record_type_id) 
+        references eirc_personal_account_record_types_tbl (id);
 
     alter table eirc_personal_accounts_tbl 
         add index FK9201389A7095AEAD (person_id), 
