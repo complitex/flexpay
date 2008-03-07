@@ -96,7 +96,7 @@ INSERT INTO town_type_translations_tbl (name, language_id, town_type_id)
 	VALUES ('Isolated farmstead', @en_id, @town_type_isolated_farmstead_id);
 
 -- Init Regions table
-INSERT INTO regions_tbl (status, country_id) VALUES (0, @russia_id);
+INSERT INTO regions_tbl (status, country_id) VALUES (0, @ukraine_id);
 SELECT @region_harkovschina_id:=last_insert_id();
 INSERT INTO region_names_tbl (region_id) VALUES (@region_harkovschina_id);
 SELECT @region_name_id:=last_insert_id();
