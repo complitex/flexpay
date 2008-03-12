@@ -21,6 +21,10 @@
 			<result name="success" type="tiles">eirc.import.file.list</result>
 		</action>
 		
+		<action name="spFileAction" class="spFileAction">
+			<result name="success" type="redirect">spFileList.action</result>
+		</action>
+		
 		<action name="data">
 			<result type="tiles">eirc.data</result>
 		</action>
@@ -44,6 +48,8 @@
 		<action name="building_ajax" class="buildingAjaxAction">
 			<result name="success" type="dispatcher">/WEB-INF/jsp/eirc/data/correspondence/building_ajax.jsp</result>
 		</action>
+		
+		
 		
 
 	</package>

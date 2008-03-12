@@ -17,6 +17,21 @@
 		  class="org.flexpay.eirc.service.imp.SpFileServiceImpl">
 		<property name="spFileDao" ref="spFileDao" />
 	</bean>
+	
+	<bean id="spRegistryService"
+		  class="org.flexpay.eirc.service.imp.SpRegistryServiceImpl">
+		<property name="spRegistryDao" ref="spRegistryDao" />
+	</bean>
+	
+	<bean id="spRegistryRecordService"
+		  class="org.flexpay.eirc.service.imp.SpRegistryRecordServiceImpl">
+		<property name="spRegistryRecordDao" ref="spRegistryRecordDao" />
+	</bean>
+	
+	<bean id="spRegistryTypeService"
+		  class="org.flexpay.eirc.service.imp.SpRegistryTypeServiceImpl">
+		<property name="spRegistryTypeDao" ref="spRegistryTypeDao" />
+	</bean>
 
 	<bean class="org.flexpay.eirc.dao.importexport.ServiceProvidersDataSource">
 		<property name="registryRecordDao" ref="spRegistryRecordDao" />

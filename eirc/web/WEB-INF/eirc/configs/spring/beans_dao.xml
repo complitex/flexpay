@@ -20,7 +20,7 @@
 			</bean>
 		</property>
 	</bean>
-
+	
 	<bean id="spFileDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.SpFileDao" />
@@ -30,7 +30,7 @@
 			</bean>
 		</property>
 	</bean>
-
+	
 	<bean id="spRegistryDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.SpRegistryDao" />
@@ -40,13 +40,23 @@
 			</bean>
 		</property>
 	</bean>
-
+	
 	<bean id="spRegistryRecordDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.SpRegistryRecordDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.eirc.persistence.SpRegistryRecord" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="spRegistryTypeDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.eirc.dao.SpRegistryTypeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.eirc.persistence.SpRegistryType" />
 			</bean>
 		</property>
 	</bean>

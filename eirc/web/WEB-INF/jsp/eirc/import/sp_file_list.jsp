@@ -46,10 +46,9 @@
 	    <s:property value="userName"/>
 	  </td> -->
 	  <td class="col">
-	    <!-- <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="action" value="'loadToDb'"/></s:url>">
+	    <a href="<s:url action='spFileAction'><s:param name="spFileId" value="%{id}"/><s:param name="action" value="'loadToDb'"/></s:url>">
 	      load to DB
-	    </a> -->
-	    ---
+	    </a>
 	  </td>
 	  <td class="col">
 	    <!-- <s:if test="loadedToDb">
@@ -87,6 +86,15 @@
   
   <tr>
     <td colspan="12" height="3" bgcolor="#4a4f4f"/>
+  <tr>
+  
+  <tr>
+    <td>
+      <s:property value="spFileFormatException" />
+      <s:if test="spFileFormatException != null">
+        SpFile format exception. Position: <s:property value="spFileFormatException.position" />
+      </s:if>
+    </td>
   <tr>
 
 </table>
