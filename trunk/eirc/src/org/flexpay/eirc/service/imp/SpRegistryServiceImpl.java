@@ -1,6 +1,9 @@
 package org.flexpay.eirc.service.imp;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.dao.SpRegistryDao;
 import org.flexpay.eirc.persistence.SpRegistry;
@@ -29,6 +32,18 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 		}
 
 		return spRegistry;
+	}
+
+	/**
+	 * Get all SpRegistry by SpFile in page mode
+	 * 
+	 * @param pager
+	 *            Page object
+	 * @return List of SpRegistry objects for pager
+	 */
+	@Transactional(readOnly = false)
+	public List<SpRegistry> findObjects(Page<SpRegistry> pager, Long spFileId) {
+		return spRegistryDao.findObjects(pager, spFileId);
 	}
 
 	/**

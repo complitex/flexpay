@@ -23,9 +23,9 @@ public class StreetAjaxAction {
 		List<StreetStub> streetList = new ArrayList<StreetStub>();
 		
 		streetList.add(new StreetStub(1L, "Banana street"));
-		streetList.add(new StreetStub(1L, "Apple street"));
-		streetList.add(new StreetStub(1L, "Wall street"));
-		streetList.add(new StreetStub(1L, "Bulvar Kapucinov"));
+		streetList.add(new StreetStub(2L, "Apple street"));
+		streetList.add(new StreetStub(3L, "Wall street"));
+		streetList.add(new StreetStub(4L, "Bulvar Kapucinov"));
 		
 		return streetList;
 	}

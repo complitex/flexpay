@@ -10,6 +10,7 @@ import org.flexpay.eirc.service.SpRegistryService;
 import org.flexpay.eirc.service.SpRegistryTypeService;
 import org.flexpay.eirc.sp.SpFileFormatException;
 import org.flexpay.eirc.sp.SpFileParser;
+import org.flexpay.eirc.sp.SpFileUtil;
 
 public class SpFileAction {
 
@@ -26,12 +27,8 @@ public class SpFileAction {
 			FlexPayException {
 		SpFile spFile = spFileService.read(spFileId);
 		if ("loadToDb".equals(action)) {
-			SpFileParser spFileParser = new SpFileParser(spFile);
-			spFileParser.setSpRegistryService(spRegistryService);
-			spFileParser.setSpRegistryTypeService(spRegistryTypeService);
-			spFileParser.setSpRegistryRecordService(spRegistryRecordService);
 			try {
-				spFileParser.parse();
+				SpFileUtil.loadToDb(spFile);
 			} catch (SpFileFormatException e) {
 				spFileFormatException = e;
 			}

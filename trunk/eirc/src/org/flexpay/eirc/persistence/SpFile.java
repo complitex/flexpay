@@ -43,7 +43,7 @@ public class SpFile extends DomainObject {
 		return new File(ApplicationConfig.getInstance().getEircDataRoot(),
 				internalRequestFileName);
 	}
-
+	
 	/**
 	 * Returns a string representation of the object.
 	 *

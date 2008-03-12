@@ -46,9 +46,11 @@
 	    <s:property value="userName"/>
 	  </td> -->
 	  <td class="col">
-	    <a href="<s:url action='spFileAction'><s:param name="spFileId" value="%{id}"/><s:param name="action" value="'loadToDb'"/></s:url>">
-	      load to DB
-	    </a>
+	    <s:if test="!@org.flexpay.eirc.sp.SpFileUtil@isLoadedToDb(id)">
+	      <a href="<s:url action='spFileAction'><s:param name="spFileId" value="%{id}"/><s:param name="action" value="'loadToDb'"/></s:url>">
+	        load to DB
+	      </a>
+	    </s:if>
 	  </td>
 	  <td class="col">
 	    <!-- <s:if test="loadedToDb">

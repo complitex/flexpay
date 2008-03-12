@@ -39,7 +39,7 @@ public class SpFileParser {
 	private SpRegistry spRegistry;
 	private long registryRecordCounter;
 	private Message message;
-
+	
 	public SpFileParser(SpFile spFile) {
 		this.spFile = spFile;
 	}
