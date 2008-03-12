@@ -13,6 +13,14 @@
 		<property name="spFileService" ref="spFileService" />
 	</bean>
 	
+	<bean id="spFileAction" class="org.flexpay.eirc.actions.SpFileAction"
+		  scope="prototype">
+		<property name="spFileService" ref="spFileService" />
+		<property name="spRegistryService" ref="spRegistryService" />
+		<property name="spRegistryRecordService" ref="spRegistryRecordService" />  
+		<property name="spRegistryTypeService" ref="spRegistryTypeService" />
+	</bean>
+	
 	<bean id="correspondenceExternalAction" class="org.flexpay.eirc.actions.CorrespondenceExternalAction"
 		  scope="prototype">
 	</bean>
@@ -24,5 +32,7 @@
 	<bean id="buildingAjaxAction" class="org.flexpay.eirc.actions.BuildingAjaxAction"
 		  scope="prototype">
 	</bean>
+	
+	
 
 </beans>

@@ -108,7 +108,7 @@ function setBuildings() {
         buildingSelectElem.options[buildingSelectElem.options.length] = option;
       }
       
-      document.getElementById('internalFrame').location.href = 'abrakadabra';
+      //document.getElementById('internalFrame').location.href = 'abrakadabra';
    }
 }
 

@@ -1,0 +1,10 @@
+INSERT INTO eirc_sp_registry_types_tbl (id, name, direction) VALUES (1, 'Сальдо', 'Входящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, name, direction) VALUES (2, 'Начисление', 'Входящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, name, direction) VALUES (3, 'Извещение', 'Входящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, name, direction) VALUES (4, 'Счета на закрытие', 'Входящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, name, direction) VALUES (5, 'Информационный', 'Входящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, name, direction) VALUES (6, 'Корректировки', 'Входящий/Исходящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, name, direction) VALUES (7, 'Наличные оплаты', 'Входящий/Исходящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, name, direction) VALUES (8, 'Безналичные оплаты', 'Входящий/Исходящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, name, direction) VALUES (9, 'Возвраты платежей', 'Входящий/Исходящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, name, direction) VALUES (10, 'Ошибки', 'Входящий/Исходящий');

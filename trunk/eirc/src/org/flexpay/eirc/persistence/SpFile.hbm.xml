@@ -49,8 +49,8 @@
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<property name="serviceCode" column="service_code" />
-		<property name="personalAccountExt" column="personal_account_ext" />
+		<property name="serviceCode" column="service_code" not-null="true" />
+		<property name="personalAccountExt" column="personal_account_ext" not-null="true" />
 		<property name="city" column="city" />
 		<property name="streetType" column="street_type" />
 		<property name="streetName" column="street_name" />
@@ -60,7 +60,7 @@
 		<property name="firstName" column="first_name" />
 		<property name="middleName" column="middle_name" />
 		<property name="lastName" column="last_name" />
-		<property name="operationDate" column="operation_date" type="timestamp" />
+		<property name="operationDate" column="operation_date" type="timestamp" not-null="true" />
 		<property name="uniqueOperationNumber" column="unique_operation_number" />
 		<property name="amount" column="amount" type="big_decimal" />
 		<property name="containers" column="containers" />
