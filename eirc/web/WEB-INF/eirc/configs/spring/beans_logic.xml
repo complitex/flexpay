@@ -7,4 +7,10 @@
 		<property name="sequenceService" ref="sequenceService" />
 	</bean>
 	
+	<bean id="spFileUtil" class="org.flexpay.eirc.sp.SpFileUtil">
+		<property name="spRegistryService" ref="spRegistryService" />
+		<property name="spRegistryRecordService" ref="spRegistryRecordService" />
+		<property name="spRegistryTypeService" ref="spRegistryTypeService" />
+	</bean>
+	
 </beans>	

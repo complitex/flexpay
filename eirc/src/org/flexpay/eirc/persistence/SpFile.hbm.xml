@@ -83,5 +83,14 @@
 		from SpRegistryRecord r
 		where r.spRegistry.id=?
 	</query>
+	
+	<query name="SpRegistry.findObjects">
+		FROM SpRegistry r
+		WHERE r.spFile.id=?
+	</query>
+	
+	<query name="SpRegistry.findObjects.count">
+		select count(*) from SpRegistry r where r.spFile.id=?
+	</query>
 
 </hibernate-mapping>
