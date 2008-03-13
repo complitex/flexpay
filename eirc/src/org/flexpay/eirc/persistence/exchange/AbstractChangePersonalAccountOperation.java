@@ -7,7 +7,7 @@ public abstract class AbstractChangePersonalAccountOperation extends Operation {
 	protected String oldValue;
 	protected String newValue;
 
-	protected AbstraсtChangePersonalAccountOperation(List<String> datum)
+	protected AbstractChangePersonalAccountOperation(List<String> datum)
 		throws InvalidContainerException {
 
 		super(Integer.valueOf(datum.get(0)));
@@ -17,5 +17,6 @@ public abstract class AbstractChangePersonalAccountOperation extends Operation {
 
 		oldValue = datum.get(1);
 		newValue = datum.get(2);
-	}
+        
+    }
 }
