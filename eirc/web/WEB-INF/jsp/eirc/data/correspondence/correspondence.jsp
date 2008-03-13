@@ -100,7 +100,7 @@ function setInternalSources() {
 <script type="text/javascript">
 	var options = {
 		script:"<s:url value='/eirc/street_ajax.action' />?",
-		varname:"input",
+		varname:"streetVar",
 		json:true,
 		shownoresults:false,
 		maxresults:6,
