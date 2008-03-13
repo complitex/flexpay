@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  */
-public abstract class SetPrivilegePersonOperation extends AbstraсtChangePersonalAccountOperation {
+public abstract class SetPrivilegePersonOperation extends AbstractChangePersonalAccountOperation {
 
 	public SetPrivilegePersonOperation(List<String> datum) throws InvalidContainerException {
 		super(datum);
