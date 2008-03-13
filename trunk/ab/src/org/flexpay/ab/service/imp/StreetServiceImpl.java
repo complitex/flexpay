@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -262,5 +263,11 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		filters.push(parentFilter);
 
 		return filters;
+	}
+	
+	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	public List<Street> findByTownAndName(Long townId, String name) {
+		List<Street> streetList = streetDao.findByTownAndName(townId, name);
+		return streetList;
 	}
 }

@@ -8,6 +8,7 @@ import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.service.ParentService;
 
+import java.util.List;
 import java.util.Set;
 
 public interface StreetService extends NameTimeDependentService<
@@ -22,4 +23,7 @@ public interface StreetService extends NameTimeDependentService<
 	 * @return saved street object
 	 */
 	Street saveDistricts(Street street, Set<Long> objectIds);
+	
+	
+	List<Street> findByTownAndName(Long townId, String name);
 }
