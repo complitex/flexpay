@@ -127,5 +127,17 @@
 			LEFT JOIN FETCH l.translations
 		WHERE n.id=?
 	</query>
+	
+ 	<query name="Street.findByTownAndName">
+ 	  SELECT DISTINCT s
+	  FROM Street s
+	    LEFT JOIN FETCH s.nameTemporals t
+ 	    LEFT JOIN FETCH t.value v
+ 	    LEFT JOIN FETCH v.translations tr
+	  WHERE 
+	    s.parent.id=? AND
+		t.invalidDate='2100-12-31' AND
+		tr.name like ?
+	</query>
 
 </hibernate-mapping>
