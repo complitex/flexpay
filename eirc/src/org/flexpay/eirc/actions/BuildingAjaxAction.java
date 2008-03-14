@@ -1,73 +1,43 @@
 package org.flexpay.eirc.actions;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.service.BuildingService;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 
 public class BuildingAjaxAction {
 
+	private BuildingService buildingService;
+
 	private Long streetId;
-	private List<BuildingStub> buildingList;
+	private List<Buildings> buildingsList;
 
 	public String execute() throws FlexPayException {
-		buildingList = getBuildingListByStreetId(streetId);
+		buildingsList = getBuildingListByStreetId(streetId);
 
 		return "success";
 	}
 
-	List<BuildingStub> getBuildingListByStreetId(Long streetId) {
-		List<BuildingStub> buildingList = new ArrayList<BuildingStub>();
-		if (streetId == null) {
-			//return buildingList;
+	List<Buildings> getBuildingListByStreetId(Long streetId) {
+		Page pager = new Page(200, 1);
+		List<Buildings> buildingsList = null;
+		while (true) {
+			if (buildingsList == null) {
+				buildingsList = buildingService.getBuildings(streetId, pager);
+			} else {
+				buildingsList.addAll(buildingService.getBuildings(streetId,
+						pager));
+			}
+			if (pager.hasNextPage()) {
+				pager.setPageNumber(pager.getNextPageNumber());
+			} else {
+				break;
+			}
 		}
 
-		buildingList.add(new BuildingStub(1L, "1"));
-		buildingList.add(new BuildingStub(2L, "2"));
-		buildingList.add(new BuildingStub(3L, "3"));
-
-		return buildingList;
-	}
-
-	static class BuildingStub {
-		private Long id;
-		private String name;
-
-		BuildingStub(Long id, String name) {
-			this.id = id;
-			this.name = name;
-		}
-
-		/**
-		 * @return the id
-		 */
-		public Long getId() {
-			return id;
-		}
-
-		/**
-		 * @param id
-		 *            the id to set
-		 */
-		public void setId(Long id) {
-			this.id = id;
-		}
-
-		/**
-		 * @return the name
-		 */
-		public String getName() {
-			return name;
-		}
-
-		/**
-		 * @param name
-		 *            the name to set
-		 */
-		public void setName(String name) {
-			this.name = name;
-		}
-
+		return buildingsList;
 	}
 
 	/**
@@ -79,10 +49,18 @@ public class BuildingAjaxAction {
 	}
 
 	/**
-	 * @return the buildingList
+	 * @param buildingService
+	 *            the buildingService to set
 	 */
-	public List<BuildingStub> getBuildingList() {
-		return buildingList;
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
+	}
+
+	/**
+	 * @return the buildingsList
+	 */
+	public List<Buildings> getBuildingsList() {
+		return buildingsList;
 	}
 
 }

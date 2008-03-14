@@ -129,7 +129,7 @@ function setBuildings() {
       clearSelect(buildingSelectElem);
       buildingSelectElem.options[0] = new Option('---', '---');
       for(i = 0; i < buildingArray.length; i++) {
-        option = new Option(buildingArray[i].id, buildingArray[i].value)
+        option = new Option(buildingArray[i].value, buildingArray[i].id)
         buildingSelectElem.options[buildingSelectElem.options.length] = option;
    }
 }

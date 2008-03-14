@@ -6,6 +6,8 @@ import java.util.Set;
 import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.StreetNameTranslation;
+import org.flexpay.ab.persistence.StreetType;
+import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
@@ -34,7 +36,7 @@ public class StreetAjaxAction extends CommonAction {
 		return streetList;
 	}
 
-	public Translation getTranslation(Street street) throws FlexPayException {
+	public Translation getNameTranslation(Street street) throws FlexPayException {
 		Set<StreetNameTranslation> translationSet = street.getCurrentName()
 				.getTranslations();
 		Language language = LanguageUtil.getLanguage(userPreferences
@@ -55,6 +57,38 @@ public class StreetAjaxAction extends CommonAction {
 
 		return result;
 	}
+	
+	/*private Translation getTranslation(Object translationSet) throws FlexPayException {
+		
+		Language language = LanguageUtil.getLanguage(userPreferences
+				.getLocale());
+		Language defaultLang = ApplicationConfig.getInstance()
+				.getDefaultLanguage();
+		Translation result = null;
+		for (Object translation : (Set) translationSet) {
+			
+			if (language.equals(((Translation) translation).getLang())) {
+				result = (Translation) translation;
+				break;
+			} else if (defaultLang.equals(((Translation) translation).getLang())) {
+				result = (Translation) translation;
+			} else if (result == null) {
+				result = (Translation) translation;
+			}
+		}
+
+		return result;
+		
+	}*/
+	
+	public Translation getTypeTranslation(Street street) throws FlexPayException {
+		Set<StreetTypeTranslation> translationSet = street.getCurrentType()
+				.getTranslations();
+		
+		return getTranslation(translationSet);
+	}
+	
+	
 
 	/**
 	 * @param streetVar

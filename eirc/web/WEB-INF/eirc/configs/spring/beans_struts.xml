@@ -32,6 +32,7 @@
 	
 	<bean id="buildingAjaxAction" class="org.flexpay.eirc.actions.BuildingAjaxAction"
 		  scope="prototype">
+		  <property name="buildingService" ref="buildingService" />
 	</bean>
 	
 	
