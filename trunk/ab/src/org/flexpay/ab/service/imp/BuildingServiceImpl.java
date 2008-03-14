@@ -59,6 +59,10 @@ public class BuildingServiceImpl implements BuildingService {
 		StreetFilter filter = (StreetFilter) filters.peek();
 		return buildingsDao.findBuildings(filter.getSelectedId(), pager);
 	}
+	
+	public List<Buildings> getBuildings(Long streetId, Page pager) {
+		return buildingsDao.findBuildings(streetId, pager);
+	}
 
 	public BuildingsFilter initFilter(BuildingsFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale)
 			throws FlexPayException {

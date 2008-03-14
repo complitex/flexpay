@@ -12,6 +12,8 @@ import java.util.List;
 public interface BuildingService extends ParentService<BuildingsFilter> {
 
 	public List<Buildings> getBuildings(ArrayStack filters, Page pager);
+	
+	public List<Buildings> getBuildings(Long streetId, Page pager);
 
 	/**
 	 * Get building attribute type
@@ -50,4 +52,6 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 * @return Building instance
 	 */
 	Building findBuilding(Buildings buildingsStub);
+	
+	
 }
