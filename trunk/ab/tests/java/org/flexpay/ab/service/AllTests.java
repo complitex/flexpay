@@ -14,6 +14,7 @@ public class AllTests extends TestCase {
 		suite.addTest(new TestStreetService());
 		suite.addTest(new TestBuildingService());
 		suite.addTest(new TestApartmentService());
+		suite.addTest(new TestPersonDao());
 		return suite;
     }
 }

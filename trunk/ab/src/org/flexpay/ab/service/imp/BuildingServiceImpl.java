@@ -119,6 +119,8 @@ public class BuildingServiceImpl implements BuildingService {
 		return filters;
 	}
 
+	private List<BuildingAttributeType> cachedTypes = null;
+
 	/**
 	 * Get building attribute type
 	 *
@@ -127,8 +129,10 @@ public class BuildingServiceImpl implements BuildingService {
 	 *          if failure occurs
 	 */
 	public BuildingAttributeType getAttributeType(int type) throws FlexPayException {
-		List<BuildingAttributeType> types = buildingsTypeDao.findAttributeTypes();
-		for (BuildingAttributeType attributeType : types) {
+		if (cachedTypes == null) {
+			cachedTypes = buildingsTypeDao.findAttributeTypes();
+		}
+		for (BuildingAttributeType attributeType : cachedTypes) {
 			if (attributeType.getType() == type) {
 				return attributeType;
 			}
@@ -146,6 +150,7 @@ public class BuildingServiceImpl implements BuildingService {
 	 * @param bulk	 Building bulk number
 	 * @return Buildings instance, or <code>null</null> if not found
 	 */
+	@Transactional (readOnly = true, rollbackFor = Exception.class)
 	public Buildings findBuildings(Street street, District district, String number, String bulk) {
 		return buildingsDaoExt.findBuildings(street, district, number, bulk);
 	}
@@ -158,6 +163,7 @@ public class BuildingServiceImpl implements BuildingService {
 	 * @param bulk	 Building bulk number
 	 * @return Buildings instance, or <code>null</null> if not found
 	 */
+	@Transactional (readOnly = true, rollbackFor = Exception.class)
 	public Buildings findBuildings(Street street, String number, String bulk) {
 		return buildingsDaoExt.findBuildings(street, number, bulk);
 	}

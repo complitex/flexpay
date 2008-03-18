@@ -3,24 +3,14 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="accountStatusDao" class="org.flexpay.eirc.dao.imp.AccountStatusDaoImpl">
-		<property name="hibernateTemplate" ref="hibernateTemplate" />
-	</bean>
-
 	<bean id="serviceDaoExt" class="org.flexpay.eirc.dao.imp.ServiceDaoExtImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-	<bean id="personalAccountDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.PersonalAccountDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.PersonalAccount" />
-			</bean>
-		</property>
+	<bean id="spFileDaoExt" class="org.flexpay.eirc.dao.imp.SpFileDaoExtImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
-	
+
 	<bean id="spFileDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.SpFileDao" />
@@ -57,6 +47,36 @@
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.eirc.persistence.SpRegistryType" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="consumerDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.eirc.dao.ConsumerDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.eirc.persistence.Consumer" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="organisationDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.eirc.dao.OrganisationDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.eirc.persistence.Organisation" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="accountRecordDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.eirc.dao.AccountRecordDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.eirc.persistence.AccountRecord" />
 			</bean>
 		</property>
 	</bean>

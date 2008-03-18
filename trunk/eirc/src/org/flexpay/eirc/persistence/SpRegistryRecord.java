@@ -24,8 +24,7 @@ public class SpRegistryRecord extends DomainObject {
 	private BigDecimal amount;
 	private String containers;
 
-	private PersonalAccount account;
-	private Service service;
+	private AbstractConsumer consumer;
 
 	/**
 	 * @return the spRegistry
@@ -260,34 +259,16 @@ public class SpRegistryRecord extends DomainObject {
 	 *
 	 * @return Value for property 'account'.
 	 */
-	public PersonalAccount getAccount() {
-		return account;
+	public AbstractConsumer getConsumer() {
+		return consumer;
 	}
 
 	/**
 	 * Setter for property 'account'.
 	 *
-	 * @param account Value to set for property 'account'.
+	 * @param consumer Value to set for property 'account'.
 	 */
-	public void setAccount(PersonalAccount account) {
-		this.account = account;
-	}
-
-	/**
-	 * Getter for property 'service'.
-	 *
-	 * @return Value for property 'service'.
-	 */
-	public Service getService() {
-		return service;
-	}
-
-	/**
-	 * Setter for property 'service'.
-	 *
-	 * @param service Value to set for property 'service'.
-	 */
-	public void setService(Service service) {
-		this.service = service;
+	public void setConsumer(AbstractConsumer consumer) {
+		this.consumer = consumer;
 	}
 }

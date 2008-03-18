@@ -166,4 +166,16 @@
 		</antcall>
 	</target>
 
+	<target name="ab.run.standalone" depends="ab.prepare.war">
+		<antcall target="template.run.standalone">
+			<reference refid="ab.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="ab.profile.standalone" depends="ab.prepare.war">
+		<antcall target="template.profile.standalone">
+			<reference refid="ab.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
 </project>

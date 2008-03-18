@@ -21,6 +21,10 @@ public class Person extends DomainObjectWithStatus {
 	public Person() {
 	}
 
+	public Person(Long id) {
+		super(id);
+	}
+
 	/**
 	 * Getter for property 'personAttributes'.
 	 *

@@ -34,5 +34,6 @@ public class EircConfigLoader extends CommonConfigLoader {
 		d.addSetProperties("flexpay/defaultCountry", "id", "defaultCountryId");
 		d.addSetProperties("flexpay/defaultRegion", "id", "defaultRegionId");
 		d.addSetProperties("flexpay/defaultTown", "id", "defaultTownId");
+		d.addSetProperties("flexpay/organisation", "id", "selfOrganisationId");
 	}
 }

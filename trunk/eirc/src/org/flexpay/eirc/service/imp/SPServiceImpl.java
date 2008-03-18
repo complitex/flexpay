@@ -4,6 +4,7 @@ import org.flexpay.eirc.dao.ServiceDaoExt;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.ServiceType;
+import org.flexpay.eirc.persistence.AccountRecordType;
 import org.flexpay.eirc.service.SPService;
 
 public class SPServiceImpl implements SPService {
@@ -51,7 +52,28 @@ public class SPServiceImpl implements SPService {
 	 *         available from <code>provider</code>
 	 */
 	public Service getService(ServiceProvider provider, ServiceType type) {
-		return null;
+		Service service = serviceDaoExt.findService(provider.getId(), type.getId());
+		if (service == null) {
+			throw new IllegalArgumentException(
+					"Cannot find service (code " + type.getCode() + ") for provider" + provider.getId());
+		}
+
+		return service;
+	}
+
+	/**
+	 * Get record type by type id
+	 *
+	 * @param typeId Record type enum id
+	 * @return record type
+	 */
+	public AccountRecordType getRecordType(int typeId) {
+		AccountRecordType type = serviceDaoExt.findRecordType(typeId);
+		if (type == null) {
+			throw new IllegalArgumentException("Cannot find record type #" + typeId);
+		}
+
+		return type;
 	}
 
 	/**

@@ -63,6 +63,9 @@
 				<prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop>
 				<prop key="hibernate.cache.use_query_cache">true</prop>
 				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.provider_configuration_file_resource_path">
+					${hibernate.cache.provider_configuration_file_resource_path}
+				</prop>
 
 				<prop key="hibernate.transaction.factory_class">
 					${hibernate.transaction.factory_class}
@@ -83,7 +86,7 @@
 
 	<!--<bean id="cacheManager"-->
 		  <!--class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">-->
-		<!--<property name="configLocation" value="/WEB-INF/common/configs/spring/ehcache.xml" />-->
+		<!--<property name="configLocation" value="WEB-INF/common/configs/spring/ehcache.xml" />-->
 	<!--</bean>-->
 
 	<!--<bean id="ehcache"-->

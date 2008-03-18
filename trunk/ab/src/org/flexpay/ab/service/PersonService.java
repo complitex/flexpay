@@ -24,4 +24,12 @@ public interface PersonService {
 	 * @return Person instance, or <code>null</code> if not found
 	 */
 	Person read(Long id);
+
+	/**
+	 * Find persistent person by identity
+	 *
+	 * @param person Identity data
+	 * @return Person stub if persitent person matches specified identity
+	 */
+	Person findPersonStub(Person person);
 }

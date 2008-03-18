@@ -1,20 +1,21 @@
-package org.flexpay.eirc.dao.importexport;
+package org.flexpay.ab.dao.importexport;
 
+import org.flexpay.ab.dao.importexport.imp.HarkovCenterNachisleniyDataSource;
+import org.flexpay.ab.service.importexport.RawPersonData;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
-import org.flexpay.eirc.dao.importexport.imp.HarkovCenterNachisleniyDataSource;
-import org.flexpay.eirc.service.importexport.RawPersonalAccountData;
+import org.flexpay.common.service.importexport.RawDataSource;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class PersonalAccountJdbcDataSource implements RawPersonalAccountDataSource {
+public class PersonJdbcDataSource implements RawDataSource<RawPersonData> {
 
 	private HarkovCenterNachisleniyDataSource source;
-	private Page<RawPersonalAccountData> pager;
-	private Iterator<RawPersonalAccountData> dataIterator;
+	private Page<RawPersonData> pager;
+	private Iterator<RawPersonData> dataIterator;
 
 	private Set<String> forbiddenPersons = new HashSet<String>();
 
@@ -26,7 +27,7 @@ public class PersonalAccountJdbcDataSource implements RawPersonalAccountDataSour
 		return true;
 	}
 
-	public RawPersonalAccountData getById(String objId) {
+	public RawPersonData getById(String objId) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
 
@@ -34,8 +35,8 @@ public class PersonalAccountJdbcDataSource implements RawPersonalAccountDataSour
 	 * Initialize data source
 	 */
 	public void initialize() {
-		pager = new Page<RawPersonalAccountData>(1000, 1);
-		List<RawPersonalAccountData> datas = source.getPersonalAccountData(pager);
+		pager = new Page<RawPersonData>(10000, 1);
+		List<RawPersonData> datas = source.getPersonalAccountData(pager);
 		dataIterator = datas.iterator();
 	}
 
@@ -54,7 +55,7 @@ public class PersonalAccountJdbcDataSource implements RawPersonalAccountDataSour
 		// get next page
 		int nextPage = pager.getPageNumber() + 1;
 		pager.setPageNumber(nextPage);
-		List<RawPersonalAccountData> datas = source.getPersonalAccountData(pager);
+		List<RawPersonData> datas = source.getPersonalAccountData(pager);
 		dataIterator = datas.iterator();
 		return dataIterator.hasNext();
 	}
@@ -67,8 +68,8 @@ public class PersonalAccountJdbcDataSource implements RawPersonalAccountDataSour
 	 * @throws java.util.NoSuchElementException
 	 *          iteration has no more elements.
 	 */
-	public RawPersonalAccountData next(ImportOperationTypeHolder holder) {
-		RawPersonalAccountData data = dataIterator.next();
+	public RawPersonData next(ImportOperationTypeHolder holder) {
+		RawPersonData data = dataIterator.next();
 		if (forbiddenPersons.contains(data.getLastName())) {
 			return null;
 		}

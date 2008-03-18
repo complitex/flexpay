@@ -18,4 +18,8 @@
 					 class="org.flexpay.ab.persistence.District" />
 	</class>
 
+	<query name="Organisation.findOrganisationsById">
+		from Organisation where individualTaxNumber=?
+	</query>
+
 </hibernate-mapping>

@@ -1,6 +1,5 @@
 package org.flexpay.ab.dao.imp;
 
-import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.ApartmentDaoExt;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;

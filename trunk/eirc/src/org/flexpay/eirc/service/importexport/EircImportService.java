@@ -3,42 +3,31 @@ package org.flexpay.eirc.service.importexport;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.service.importexport.ImportService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.common.persistence.ImportError;
-import org.flexpay.common.service.importexport.ClassToTypeRegistry;
-import org.flexpay.common.service.importexport.ImportErrorService;
-import org.flexpay.common.service.importexport.ImportErrorsSupport;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
-import org.flexpay.eirc.dao.importexport.PersonalAccountJdbcDataSource;
-import org.flexpay.eirc.dao.importexport.RawPersonalAccountDataSource;
-import org.flexpay.eirc.persistence.PersonalAccount;
-import org.flexpay.eirc.service.PersonalAccountService;
-import org.flexpay.eirc.util.PersonalAccountUtil;
+import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
+import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.service.ConsumerService;
+import org.flexpay.eirc.util.config.ApplicationConfig;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EircImportService extends ImportService {
 
-	private PersonalAccountJdbcDataSource personalAccountDataSource;
-	private RawPersonalAccountDataConverter personalAccountDataConverter;
+	private RawConsumerDataConverter consumerDataConverter;
+	private ConsumerService consumerService;
+	private IdentityTypeService typeService;
 
-	private PersonalAccountService personalAccountService;
-
-	private ImportErrorService importErrorService;
-	private ImportErrorsSupport errorsSupport;
-	private ClassToTypeRegistry registry;
-
-	public void importPersonalAccounts(Town town, DataSourceDescription sd, RawPersonalAccountDataSource sataSource)
+	public void importConsumers(DataSourceDescription sd, RawConsumersDataSource dataSource)
 			throws FlexPayException {
 
+		Town defaultTown = ApplicationConfig.getInstance().getDefaultTown();
 		ArrayStack filters = new ArrayStack();
-		filters.push(new TownFilter(town.getId()));
+		filters.push(new TownFilter(defaultTown.getId()));
 		List<Street> townStreets = streetService.find(filters);
 		if (log.isDebugEnabled()) {
 			log.debug("Town streets: " + townStreets);
@@ -47,10 +36,11 @@ public class EircImportService extends ImportService {
 		Map<String, List<Street>> nameObjsMap = initializeNamesToObjectsMap(townStreets);
 		Map<String, StreetType> nameTypeMap = initializeTypeNamesToObjectsMap();
 
-		sataSource.initialize();
-		while (sataSource.hasNext()) {
+		dataSource.initialize();
+		while (dataSource.hasNext()) {
+
 			ImportOperationTypeHolder typeHolder = new ImportOperationTypeHolder();
-			RawPersonalAccountData data = sataSource.next(typeHolder);
+			RawConsumerData data = dataSource.next(typeHolder);
 
 			if (data == null) {
 				log.info("Empty data read");
@@ -59,55 +49,62 @@ public class EircImportService extends ImportService {
 
 			try {
 				// Find object by correction
-				PersonalAccount persistentObj = (PersonalAccount) correctionsService.findCorrection(
-						data.getExtAccount(), PersonalAccount.class, sd);
+				Consumer persistentObj = (Consumer) correctionsService.findCorrection(
+						data.getCorrectionId(), Consumer.class, sd);
 
 				if (persistentObj != null) {
-					log.info("Found existing personal account correction: #" + data.getExternalSourceId());
+					log.info("Found existing consumer correction: #" + data.getExternalSourceId());
 					continue;
 				}
 
-				PersonalAccount rawAccount = personalAccountDataConverter.fromRawData(
+				Consumer rawConsumer = consumerDataConverter.fromRawData(
 						data, sd, correctionsService);
-				rawAccount.setAccountNumber(PersonalAccountUtil.nextPersonalAccount());
 
-				// if data source is considered trusted - add new PersonalAccount
-				if (sataSource.trusted()) {
-
-					if (log.isInfoEnabled()) {
-						log.info("Creating new person, personal account and correction: #"
-								 + data.getExternalSourceId());
-					}
-
-					addToStack(rawAccount.getResponsiblePerson());
-					addToStack(rawAccount);
-
-					DataCorrection corr = correctionsService.getStub(
-							data.getExtAccount(), rawAccount, sd);
-					addToStack(corr);
-				} else {
+				if (rawConsumer.getApartment() == null) {
 					// Find apartment
 					Apartment apartment = findApartment(nameObjsMap, nameTypeMap, sd, data);
-
 					if (apartment == null) {
-						addImportError(sd, data);
+						addImportError(sd, data.getExternalSourceId(), Apartment.class, dataSource);
 						continue;
 					}
-
-					// OK, apartment found, now scan for personal accounts
-					PersonalAccount account = findPersonalAccount(apartment, data);
-					if (account == null) {
-						addImportError(sd, data);
-						continue;
-					}
-
-					// Account found, add new correction
-					DataCorrection corr = correctionsService.getStub(
-							data.getExtAccount(), account, sd);
-					addToStack(corr);
+					rawConsumer.setApartment(apartment);
 				}
+
+				if (rawConsumer.getResponsiblePerson() == null) {
+					Person person = findPerson(data);
+					if (person == null) {
+						addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
+						continue;
+					}
+					// found person by name
+					DataCorrection corr = correctionsService.getStub(
+							data.getPersonCorrectionId(), person, sd);
+					addToStack(corr);
+					rawConsumer.setResponsiblePerson(person);
+				}
+
+				if (rawConsumer.getService() == null) {
+					log.error("Not found provider #" + data.getRegistry().getSenderCode() +
+							  " service by code: " + data.getRegistryRecord().getServiceCode());
+					continue;
+				}
+
+				Consumer persistent = consumerService.findConsumer(rawConsumer);
+				if (persistent == null) {
+					log.info("Creating new consumer: " + data.getCorrectionId());
+					addToStack(rawConsumer);
+					persistent = rawConsumer;
+				}
+
+				// Consumer found/created, add new correction
+				if (log.isInfoEnabled()) {
+					log.info("Creating new consumer: " + data.getCorrectionId());
+				}
+				DataCorrection corr = correctionsService.getStub(
+						data.getCorrectionId(), persistent, sd);
+				addToStack(corr);
 			} catch (Exception e) {
-				log.error("Failed getting personal account: " + data.toString(), e);
+				log.error("Failed getting consumer: " + data.toString(), e);
 				throw new RuntimeException(e);
 			}
 		}
@@ -115,46 +112,21 @@ public class EircImportService extends ImportService {
 		flushStack();
 	}
 
-	private void addImportError(DataSourceDescription ds, RawPersonalAccountData data) {
-		ImportError error = new ImportError();
-		error.setSourceDescription(ds);
-		error.setSourceObjectId(data.getExtAccount());
-		error.setObjectType(registry.getType(PersonalAccount.class));
-		errorsSupport.setDataSourceBean(error, personalAccountDataSource);
+	private Person findPerson(RawConsumerData data) {
 
-		importErrorService.addError(error);
-	}
+		PersonIdentity identity = new PersonIdentity();
+		identity.setFirstName(data.getFirstName());
+		identity.setMiddleName(data.getMiddleName());
+		identity.setLastName(data.getLastName());
+		identity.setDefault(true);
+		identity.setIdentityType(typeService.getType(IdentityType.TYPE_NAME_PASSPORT));
 
-	private PersonalAccount findPersonalAccount(Apartment apartment, RawPersonalAccountData data) {
+		Person example = new Person();
+		Set<PersonIdentity> identities = new HashSet<PersonIdentity>();
+		identities.add(identity);
+		example.setPersonIdentities(identities);
 
-		List<PersonalAccount> filteredAccounts = new ArrayList<PersonalAccount>();
-		List<PersonalAccount> accounts = personalAccountService.findAccounts(apartment);
-		if (accounts.isEmpty()) {
-			log.warn("No Personal accounts were created for apartment #" + apartment.getId());
-			return null;
-		}
-
-		String lastName = data.getLastName().toLowerCase();
-		for (PersonalAccount account : accounts) {
-			Person person = account.getResponsiblePerson();
-			for (PersonIdentity identity : person.getPersonIdentities()) {
-				if (identity.getLastName().toLowerCase().equals(lastName)) {
-					filteredAccounts.add(account);
-					break;
-				}
-			}
-		}
-
-		if (filteredAccounts.isEmpty()) {
-			log.warn("No personal accounts were found by last name for apartment #" + apartment.getId());
-			return null;
-		}
-		if (filteredAccounts.size() > 1) {
-			log.warn("Several personal accounts were found by last name for apartment #" + apartment.getId());
-			return null;
-		}
-
-		return filteredAccounts.get(0);
+		return personService.findPersonStub(example);
 	}
 
 	private Map<String, StreetType> initializeTypeNamesToObjectsMap() {
@@ -170,7 +142,7 @@ public class EircImportService extends ImportService {
 
 	private Apartment findApartment(Map<String, List<Street>> nameObjsMap,
 									Map<String, StreetType> nameTypeMap,
-									DataSourceDescription sourceDescription, RawPersonalAccountData data) {
+									DataSourceDescription sourceDescription, RawConsumerData data) {
 
 		// try to find by apartment correction
 		Apartment apartmentById = (Apartment) correctionsService.findCorrection(
@@ -203,8 +175,8 @@ public class EircImportService extends ImportService {
 	}
 
 	private Street findStreet(Map<String, List<Street>> nameObjsMap,
-							  Map<String, StreetType> nameTypeMap, RawPersonalAccountData data) {
-		List<Street> streets = nameObjsMap.get(data.getStreet().toLowerCase());
+							  Map<String, StreetType> nameTypeMap, RawConsumerData data) {
+		List<Street> streets = nameObjsMap.get(data.getAddressStreet().toLowerCase());
 		// no candidates
 		if (streets == null) {
 			return null;
@@ -217,8 +189,8 @@ public class EircImportService extends ImportService {
 
 		StreetType streetType = findStreetType(nameTypeMap, data);
 		if (streetType == null) {
-			log.warn("Found several streets, but no type was found: " + data.getStreetType() +
-					 ", " + data.getStreet());
+			log.warn("Found several streets, but no type was found: " + data.getAddressStreetType() +
+					 ", " + data.getAddressStreet());
 			return null;
 		}
 
@@ -227,8 +199,8 @@ public class EircImportService extends ImportService {
 			return filteredStreets.get(0);
 		}
 
-		log.warn("Cannot find street candidate, even by type: " + data.getStreetType() +
-				 ", " + data.getStreet());
+		log.warn("Cannot find street candidate, even by type: " + data.getAddressStreetType() +
+				 ", " + data.getAddressStreet());
 		return null;
 	}
 
@@ -243,28 +215,28 @@ public class EircImportService extends ImportService {
 		return filteredStreets;
 	}
 
-	private StreetType findStreetType(Map<String, StreetType> nameTypeMap, RawPersonalAccountData data) {
+	private StreetType findStreetType(Map<String, StreetType> nameTypeMap, RawConsumerData data) {
 
 		StreetType typeById = (StreetType) correctionsService.findCorrection(
-				data.getStreetType(), StreetType.class, null);
+				data.getAddressStreetType(), StreetType.class, null);
 		if (typeById != null) {
 			return typeById;
 		}
 
-		return nameTypeMap.get(data.getStreetType().toLowerCase());
+		return nameTypeMap.get(data.getAddressStreetType().toLowerCase());
 	}
 
-	private Apartment findApartment(RawPersonalAccountData data, Street street) {
-		Buildings buildings = buildingService.findBuildings(street, data.getBuilding(), data.getBulk());
+	private Apartment findApartment(RawConsumerData data, Street street) {
+		Buildings buildings = buildingService.findBuildings(street, data.getAddressHouse(), data.getAddressBulk());
 		if (buildings == null) {
-			log.warn("Failed getting building for account #" + data.getExternalSourceId());
+			log.warn("Failed getting building for consumer: " + data.getExternalSourceId());
 			return null;
 		}
 
 		return findApartment(data, buildings);
 	}
 
-	private Apartment findApartment(RawPersonalAccountData data, Buildings buildings) {
+	private Apartment findApartment(RawConsumerData data, Buildings buildings) {
 		Building building = buildings.getBuilding();
 		if (building == null) {
 			building = buildingService.findBuilding(buildings);
@@ -274,45 +246,33 @@ public class EircImportService extends ImportService {
 			}
 		}
 
-		return apartmentService.findApartmentStub(building, data.getApartment());
-	}
-
-	public void setPersonalAccountDataSource(PersonalAccountJdbcDataSource personalAccountDataSource) {
-		this.personalAccountDataSource = personalAccountDataSource;
-	}
-
-	public void setPersonalAccountDataConverter(RawPersonalAccountDataConverter personalAccountDataConverter) {
-		this.personalAccountDataConverter = personalAccountDataConverter;
-	}
-
-	public void setPersonalAccountService(PersonalAccountService personalAccountService) {
-		this.personalAccountService = personalAccountService;
+		return apartmentService.findApartmentStub(building, data.getAddressApartment());
 	}
 
 	/**
-	 * Setter for property 'importErrorService'.
+	 * Setter for property 'consumerDataConverter'.
 	 *
-	 * @param importErrorService Value to set for property 'importErrorService'.
+	 * @param consumerDataConverter Value to set for property 'consumerDataConverter'.
 	 */
-	public void setImportErrorService(ImportErrorService importErrorService) {
-		this.importErrorService = importErrorService;
+	public void setConsumerDataConverter(RawConsumerDataConverter consumerDataConverter) {
+		this.consumerDataConverter = consumerDataConverter;
 	}
 
 	/**
-	 * Setter for property 'errorsSupport'.
+	 * Setter for property 'consumerService'.
 	 *
-	 * @param errorsSupport Value to set for property 'errorsSupport'.
+	 * @param consumerService Value to set for property 'consumerService'.
 	 */
-	public void setErrorsSupport(ImportErrorsSupport errorsSupport) {
-		this.errorsSupport = errorsSupport;
+	public void setConsumerService(ConsumerService consumerService) {
+		this.consumerService = consumerService;
 	}
 
 	/**
-	 * Setter for property 'registry'.
+	 * Setter for property 'typeService'.
 	 *
-	 * @param registry Value to set for property 'registry'.
+	 * @param typeService Value to set for property 'typeService'.
 	 */
-	public void setRegistry(ClassToTypeRegistry registry) {
-		this.registry = registry;
+	public void setTypeService(IdentityTypeService typeService) {
+		this.typeService = typeService;
 	}
 }

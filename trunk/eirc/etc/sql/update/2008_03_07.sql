@@ -163,4 +163,4 @@ INSERT INTO eirc_personal_account_record_types_tbl (type_id, description)
 INSERT INTO eirc_personal_account_record_types_tbl (type_id, description)
 	VALUES (3, 'Сальдо');
 
-UPDATE common_version_tbl SET last_modified_date='2007-03-07', date_version=0;
+UPDATE common_version_tbl SET last_modified_date='2007-03-07', date_version=1;

@@ -48,12 +48,12 @@
 			<include name="junit/*.jar" />
 		</fileset>
 	</path>
-	
+
 	<path id="javadbf.lib">
 		<fileset dir="${common.dir}/lib">
 			<include name="javadbf/*.jar" />
 		</fileset>
-	</path>	
+	</path>
 
 	<path id="ajax.lib">
 		<fileset dir="${common.dir}/lib">
@@ -61,14 +61,14 @@
 		</fileset>
 	</path>
 
-    <path id="jbpm_jpdl.lib">
-        <fileset dir="${common.dir}/lib">
-            <include name="jbpm/*.jar"/>
-            <include name="jbpm/*.txt"/>
-        </fileset>
-    </path>
+	<path id="jbpm_jpdl.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="jbpm/*.jar" />
+			<include name="jbpm/*.txt" />
+		</fileset>
+	</path>
 
-    <path id="common.production.classpath">
+	<path id="common.production.classpath">
 		<path refid="commons.lib" />
 		<path refid="spring.lib" />
 		<path refid="struts.lib" />
@@ -76,8 +76,8 @@
 		<path refid="log4j.lib" />
 		<path refid="j2ee.lib" />
 		<path refid="javadbf.lib" />
-        <path refid="jbpm_jpdl.lib" />
-        <path refid="ajax.lib" />
+		<path refid="jbpm_jpdl.lib" />
+		<path refid="ajax.lib" />
 	</path>
 
 	<patternset id="empty_pattern" excludes="**/*.*" />
@@ -99,12 +99,12 @@
 		<path refid="junit.lib" />
 	</path>
 
-    <path id="common.runtests.classpath">
-        <path refid="common.test.classpath" />
-        <path location="${build.dir}/web" />
-        <path location="common/src" />
-        <path location="common/tests/data/org/flexpay/common" />
-    </path>
+	<path id="common.runtests.classpath">
+		<path refid="common.test.classpath" />
+		<path location="${build.dir}/web" />
+		<path location="common/src" />
+		<path location="common/tests/data/org/flexpay/common" />
+	</path>
 
 	<target name="common.clean.build">
 		<antcall target="clean.build" />
@@ -222,12 +222,12 @@
 		<delete dir="${build.dir}/docs" includes="**/*" />
 	</target>
 
-    <target name="clean.all">
-        <delete dir="${build.dir}/classes" includes="**/*" includeemptydirs="true" />
-        <delete dir="${build.dir}/web" includes="**/*" />
-        <delete dir="${build.dir}/docs" includes="**/*" />
-        <delete dir="${build.dir}/lib" includes="**/*" />
-    </target>
+	<target name="clean.all">
+		<delete dir="${build.dir}/classes" includes="**/*" includeemptydirs="true" />
+		<delete dir="${build.dir}/web" includes="**/*" />
+		<delete dir="${build.dir}/docs" includes="**/*" />
+		<delete dir="${build.dir}/lib" includes="**/*" />
+	</target>
 
 	<target name="init.distr">
 		<mkdir dir="${distr.dir}" />
@@ -274,8 +274,8 @@
 			<lib dir="${common.dir}/lib/commons" />
 			<lib dir="${common.dir}/lib/struts2" />
 			<lib dir="${common.dir}/lib/log4j" />
-            <lib dir="${common.dir}/lib/jbpm"/>
-            <lib dir="${common.dir}/lib/javadbf" />
+			<lib dir="${common.dir}/lib/jbpm" />
+			<lib dir="${common.dir}/lib/javadbf" />
 			<lib dir="${common.dir}/lib/ajax" />
 			<lib dir="${build.dir}/lib" />
 		</war>
@@ -287,12 +287,37 @@
 				<path refid="classpath" />
 			</classpath>
 			<sysproperty key="log4j.configuration" value="org/flexpay/common/log4j.xml" />
-			<sysproperty key="java.naming.factory.initial" value="org.flexpay.common.test.MockInitialContextFactory" />
+			<sysproperty key="java.naming.factory.initial"
+						 value="org.flexpay.common.test.MockInitialContextFactory" />
 			<jvmarg value="-Xmx150m" />
 			<test name="${test_name}" haltonfailure="yes">
 				<formatter type="brief" usefile="false" />
 			</test>
 		</junit>
+	</target>
+
+	<target name="template.run.standalone">
+		<java classpathref="classpath"
+			  classname="org.flexpay.common.util.standalone.ApplicationRunner"
+			  dir="${build.dir}/web" fork="yes">
+			<jvmarg value="-Xmx150m" />
+		</java>
+	</target>
+
+	<target name="template.profile.standalone">
+		<fail unless="netbeans.home">This target can only run inside the NetBeans IDE.
+		</fail>
+
+		<nbprofiledirect>
+			<classpath refid="classpath" />
+		</nbprofiledirect>
+
+		<java classpathref="classpath"
+			  classname="org.flexpay.common.util.standalone.ApplicationRunner"
+			  dir="${build.dir}/web" fork="yes">
+			<jvmarg value="${profiler.info.jvmargs.agent}" />
+			<jvmarg value="-Xmx150m" />
+		</java>
 	</target>
 
 </project>

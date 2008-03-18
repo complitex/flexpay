@@ -17,6 +17,10 @@ public class IdentityType extends DomainObjectWithStatus {
 	public static int TYPE_PASSPORT = 1;
 	public static int TYPE_FOREIGN_PASSPORT = 2;
 
+	public static String TYPE_NAME_UNKNOWN = "unknown";
+	public static String TYPE_NAME_PASSPORT = "passport";
+	public static String TYPE_NAME_FOREIGN_PASSPORT = "foreignPassport";
+
 	private int typeId = TYPE_UNKNOWN;
 
 	private Collection<IdentityTypeTranslation> translations = Collections.emptyList();
@@ -25,6 +29,10 @@ public class IdentityType extends DomainObjectWithStatus {
 	 * Constructs a new IdentityType.
 	 */
 	public IdentityType() {
+	}
+
+	public IdentityType(Long id) {
+		super(id);
 	}
 
 	/**

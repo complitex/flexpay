@@ -2,7 +2,7 @@ package org.flexpay.eirc.persistence.exchange;
 
 import java.util.List;
 
-public abstract class AbstractChangePersonalAccountOperation extends Operation {
+public abstract class AbstractChangePersonalAccountOperation extends ContainerOperation {
 
 	protected String oldValue;
 	protected String newValue;

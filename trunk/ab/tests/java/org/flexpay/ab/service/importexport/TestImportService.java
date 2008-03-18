@@ -15,6 +15,7 @@ public class TestImportService extends SpringBeanAwareTestCase {
 //		testImportStreets();
 //		testImportBuildings();
 //		testImportApartments();
+//		testImportPersons();
 	}
 
 	public void testGetConnection() {
@@ -43,6 +44,10 @@ public class TestImportService extends SpringBeanAwareTestCase {
 
 	public void testImportApartments() throws Throwable {
 		getImportService().importApartments(new DataSourceDescription(1L));
+	}
+
+	public void testImportPersons() throws Throwable {
+		getImportService().importPersons(new DataSourceDescription(1L));
 	}
 
 	protected ImportService getImportService() {

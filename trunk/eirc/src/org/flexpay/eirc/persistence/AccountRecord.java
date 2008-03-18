@@ -1,24 +1,29 @@
 package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class PersonalAccountRecord extends DomainObject {
+public class AccountRecord extends DomainObject {
 
-	private PersonalAccountRecordType recordType;
+	private AccountRecordType recordType;
 	private Date operationDate;
 	private BigDecimal amount;
-	private Consumer consumer;
+	private AbstractConsumer consumer;
+
+	// Organisation performed operation with the account
+	private Organisation organisation;
 
 	/**
 	 * Constructs a new DomainObject.
 	 */
-	public PersonalAccountRecord() {
+	public AccountRecord() {
 	}
 
-	public PersonalAccountRecord(Long id) {
+	public AccountRecord(Long id) {
 		super(id);
 	}
 
@@ -27,7 +32,7 @@ public class PersonalAccountRecord extends DomainObject {
 	 *
 	 * @return Value for property 'recordType'.
 	 */
-	public PersonalAccountRecordType getRecordType() {
+	public AccountRecordType getRecordType() {
 		return recordType;
 	}
 
@@ -36,7 +41,7 @@ public class PersonalAccountRecord extends DomainObject {
 	 *
 	 * @param recordType Value to set for property 'recordType'.
 	 */
-	public void setRecordType(PersonalAccountRecordType recordType) {
+	public void setRecordType(AccountRecordType recordType) {
 		this.recordType = recordType;
 	}
 
@@ -81,7 +86,7 @@ public class PersonalAccountRecord extends DomainObject {
 	 *
 	 * @return Value for property 'consumer'.
 	 */
-	public Consumer getConsumer() {
+	public AbstractConsumer getConsumer() {
 		return consumer;
 	}
 
@@ -90,7 +95,35 @@ public class PersonalAccountRecord extends DomainObject {
 	 *
 	 * @param consumer Value to set for property 'consumer'.
 	 */
-	public void setConsumer(Consumer consumer) {
+	public void setConsumer(AbstractConsumer consumer) {
 		this.consumer = consumer;
+	}
+
+	/**
+	 * Getter for property 'organisation'.
+	 *
+	 * @return Value for property 'organisation'.
+	 */
+	public Organisation getOrganisation() {
+		return organisation;
+	}
+
+	/**
+	 * Setter for property 'organisation'.
+	 *
+	 * @param organisation Value to set for property 'organisation'.
+	 */
+	public void setOrganisation(Organisation organisation) {
+		this.organisation = organisation;
+	}
+
+	public String toString() {
+		return new ToStringBuilder(this,  ToStringStyle.DEFAULT_STYLE)
+				.append("id", getId())
+				.append("organisation", getOrganisation().getId())
+				.append("date", getOperationDate())
+				.append("amount", getAmount())
+				.append("type", getRecordType().getDescription())
+				.toString();
 	}
 }

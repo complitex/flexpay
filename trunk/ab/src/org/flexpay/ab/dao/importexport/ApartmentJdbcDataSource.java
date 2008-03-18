@@ -27,7 +27,7 @@ public class ApartmentJdbcDataSource implements RawDataSource<RawApartmentData> 
 	 * Initialize data source
 	 */
 	public void initialize() {
-		pager = new Page<RawApartmentData>(1000, 1);
+		pager = new Page<RawApartmentData>(10000, 1);
 		List<RawApartmentData> districtDatas = source.getApartmentsData(pager);
 		dataIterator = districtDatas.iterator();
 	}

@@ -39,6 +39,11 @@
 		<property name="source" ref="dataExportDao" />
 	</bean>
 
+	<bean id="personJdbcDataSource"
+		  class="org.flexpay.ab.dao.importexport.PersonJdbcDataSource">
+		<property name="source" ref="dataExportDao" />
+	</bean>
+
 	<!-- Data converters -->
 	<bean id="districtDataConverter"
 		  class="org.flexpay.ab.service.importexport.RawDistrictDataConverter" />
@@ -59,6 +64,11 @@
 		<property name="buildingService" ref="buildingService" />
 	</bean>
 
+	<bean id="personDataConverter"
+		  class="org.flexpay.ab.service.importexport.RawPersonDataConverter">
+		<property name="identityTypeService" ref="identityTypeService" />
+	</bean>
+
 	<bean id="typeRegistryAb"
 		  class="org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry" />
 
@@ -68,6 +78,10 @@
 		<property name="typeRegistry" ref="typeRegistryAb" />
 	</bean>
 
+	<bean id="importErrorServiceAb" parent="importErrorServiceTemplate">
+		<property name="registry" ref="typeRegistryAb" />
+	</bean>
+
 	<!-- Import-Export services -->
 	<bean id="importServiceAb" class="org.flexpay.ab.service.importexport.ImportService">
 		<property name="districtDataSource" ref="districtJdbcDataSource" />
@@ -75,18 +89,24 @@
 		<property name="streetTypeDataSource" ref="streetTypeJdbcDataSource" />
 		<property name="buildingsDataSource" ref="buildingsJdbcDataSource" />
 		<property name="apartmentDataSource" ref="apartmentJdbcDataSource" />
+		<property name="personDataSource" ref="personJdbcDataSource" />
 		<property name="streetTypeDataConverter" ref="streetTypeDataConverter" />
 		<property name="streetDataSource" ref="streetJdbcDataSource" />
 		<property name="streetDataConverter" ref="streetDataConverter" />
 		<property name="buildingsDataConverter" ref="buildingsDataConverter" />
 		<property name="apartmentDataConverter" ref="apartmentDataConverter" />
+		<property name="personDataConverter" ref="personDataConverter" />
 		<property name="correctionsService" ref="correctionsServiceAb" />
 		<property name="districtService" ref="districtService" />
 		<property name="streetTypeService" ref="streetTypeService" />
 		<property name="streetService" ref="streetService" />
 		<property name="buildingService" ref="buildingService" />
 		<property name="apartmentService" ref="apartmentService" />
+		<property name="personService" ref="personService" />
 		<property name="allObjectsDao" ref="allObjectsDao" />
+		<property name="errorsSupport" ref="importErrorSupport" />
+		<property name="importErrorService" ref="importErrorServiceAb" />
+		<property name="registry" ref="typeRegistryAb" />
 	</bean>
 
 </beans>

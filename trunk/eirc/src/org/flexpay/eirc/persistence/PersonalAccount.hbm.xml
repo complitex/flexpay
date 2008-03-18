@@ -5,26 +5,22 @@
 
 <hibernate-mapping package="org.flexpay.eirc.persistence">
 
-	<class name="PersonalAccount" table="eirc_personal_accounts_tbl"
-		   optimistic-lock="version">
+	<class name="Consumer" table="eirc_consumers_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<properties name="apartment_person_accountStatus_tuple" unique="true">
-			<many-to-one name="apartment" class="org.flexpay.ab.persistence.Apartment"
-						 column="apartment_id" not-null="true" />
-			<many-to-one name="responsiblePerson" column="person_id"
-						 class="org.flexpay.ab.persistence.Person" not-null="true" />
-			<many-to-one name="status" class="AccountStatus" column="status_id"
-						 not-null="true" />
-		</properties>
-		<property name="creationDate" not-null="true" type="date"
-				  column="creation_date" />
-		<property name="accountNumber" not-null="true" unique="true"
-				  column="account_number" />
+		<property name="status" column="status" not-null="true" />
+		<property name="externalAccountNumber" not-null="true"
+				  column="external_account_number" />
+		<many-to-one name="service" column="service_id" not-null="true" class="Service" />
+		<many-to-one name="responsiblePerson" column="person_id" not-null="true"
+					 class="org.flexpay.ab.persistence.Person" />
+
+		<many-to-one name="apartment" column="apartment_id" not-null="true"
+					 class="org.flexpay.ab.persistence.Apartment" />
 	</class>
 
-	<class name="PersonalAccountRecordType" table="eirc_personal_account_record_types_tbl"
+	<class name="AccountRecordType" table="eirc_account_record_types_tbl"
 		   optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
@@ -33,70 +29,34 @@
 		<property name="typeId" not-null="true" column="type_enum_id" />
 	</class>
 
-	<class name="Consumer" table="eirc_consumers_tbl"
-		   optimistic-lock="version">
-		<id name="id" column="id">
-			<generator class="native" />
-		</id>
-		<property name="status" column="status" not-null="true" />
-		<property name="externalAccountNumber" not-null="true"
-				  column="external_account_number" />
-		<many-to-one name="service" column="service_id" not-null="true" class="Service" />
-		<many-to-one name="internalAccount" not-null="true" column="account_id"
-					 class="PersonalAccount" />
-	</class>
-
-	<class name="PersonalAccountRecord" table="eirc_personal_account_records_tbl"
-		   optimistic-lock="version">
+	<class name="AccountRecord" table="eirc_account_records_tbl"
+		   optimistic-lock="version" entity-name="AccountRecord">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
 		<many-to-one name="consumer" column="consumer_id" class="Consumer"
 					 not-null="true" />
+		<many-to-one name="organisation" column="organisation_id"
+					 class="Organisation" not-null="true" />
 		<property name="operationDate" column="operation_date" not-null="true"
 				  type="timestamp" />
 		<property name="amount" type="big_decimal" not-null="true" />
 		<many-to-one name="recordType" column="record_type_id"
-					 class="PersonalAccountRecordType" not-null="true" />
+					 class="AccountRecordType" not-null="true" />
 	</class>
 
-	<class name="AccountStatus" table="eirc_account_statuses_tbl">
-		<id name="id" column="id">
-			<generator class="native" />
-		</id>
-		<property name="status" not-null="true" />
-		<set name="translations" inverse="true" cascade="all-delete-orphan">
-			<key column="account_status_id" not-null="true" />
-			<one-to-many class="AccountStatusTranslation" />
-		</set>
-	</class>
-
-	<class name="AccountStatusTranslation" table="eirc_account_status_translations_tbl">
-		<id name="id" column="id">
-			<generator class="native" />
-		</id>
-		<property name="name" not-null="true" />
-		<properties name="account_status_language_pair" unique="true">
-			<many-to-one name="translatable" not-null="true" column="account_status_id"
-						 class="AccountStatus" />
-			<many-to-one name="lang" not-null="true" column="language_id"
-						 class="org.flexpay.common.persistence.Language" />
-		</properties>
-	</class>
-
-	<query name="AccountStatus.findAll">
-		select distinct a
-		from AccountStatus a
-		left join fetch a.translations t
-		left join fetch t.lang
+	<query name="AccountRecord.findRegisteredRecords">
+		from AccountRecord
+		where organisation.id=? and consumer.id=? and operationDate=? and amount=? and
+		recordType.id=?
 	</query>
 
-	<query name="PersonalAccount.findAccounts">
-		select distinct pa
-		from PersonalAccount pa
-		left join fetch pa.responsiblePerson p
-		left join fetch p.personIdentities
-		where pa.apartment.id=?
+	<query name="Consumer.findConsumers">
+		from Consumer
+		where responsiblePerson.id = ?
+			and service.id = ?
+			and externalAccountNumber = ?
+			and apartment.id = ?
 	</query>
 
 </hibernate-mapping>
