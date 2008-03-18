@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.DomainObject;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Date;
 import java.io.Serializable;
 
 /**
@@ -67,6 +68,11 @@ public abstract class RawData<Obj extends DomainObject> implements Serializable 
 	 * @return Set of attribute names;
 	 */
 	public abstract Collection<String> getPossibleNames();
+
+	protected Date getDateParam(String param) {
+		Object obj = getNameToValuesMap().get(param);
+		return obj == null ? null : (Date)obj;
+	}
 
 	protected String getParam(String param) {
 		Object obj = getNameToValuesMap().get(param);

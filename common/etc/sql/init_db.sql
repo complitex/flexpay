@@ -4021,30 +4021,15 @@ INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
 INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
 	VALUES (@street_type_id, 0x04, 'пос', NULL);
 
-
-INSERT INTO eirc_account_statuses_tbl (status) VALUES (1);
-SELECT @account_status_id:=last_insert_id();
-INSERT INTO eirc_account_status_translations_tbl (name, account_status_id, language_id)
-	VALUES ('Неактивный', @account_status_id, @ru_id);
-INSERT INTO eirc_account_status_translations_tbl (name, account_status_id, language_id)
-	VALUES ('Disabled', @account_status_id, @en_id);
-
-INSERT INTO eirc_account_statuses_tbl (status) VALUES (0);
-SELECT @account_status_id:=last_insert_id();
-INSERT INTO eirc_account_status_translations_tbl (name, account_status_id, language_id)
-	VALUES ('Активный', @account_status_id, @ru_id);
-INSERT INTO eirc_account_status_translations_tbl (name, account_status_id, language_id)
-	VALUES ('Enabled', @account_status_id, @en_id);
-	
 -- Init Sequences table
 INSERT INTO common_sequences_tbl (id, counter, description) VALUES (1, 10, 'Последовательность для ЛС модуля ЕИРЦ');	
 
 -- Init personal account record types
-INSERT INTO eirc_personal_account_record_types_tbl (type_id, description)
+INSERT INTO eirc_account_record_types_tbl (type_enum_id, description)
 	VALUES (0, 'Ошибочный');
-INSERT INTO eirc_personal_account_record_types_tbl (type_id, description)
+INSERT INTO eirc_account_record_types_tbl (type_enum_id, description)
 	VALUES (1, 'Входящая оплата');
-INSERT INTO eirc_personal_account_record_types_tbl (type_id, description)
+INSERT INTO eirc_account_record_types_tbl (type_enum_id, description)
 	VALUES (2, 'Исходящая оплата');
-INSERT INTO eirc_personal_account_record_types_tbl (type_id, description)
+INSERT INTO eirc_account_record_types_tbl (type_enum_id, description)
 	VALUES (3, 'Сальдо');

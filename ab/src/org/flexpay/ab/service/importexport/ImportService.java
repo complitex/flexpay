@@ -9,8 +9,7 @@ import org.flexpay.ab.service.*;
 import org.flexpay.ab.service.importexport.imp.AllObjectsDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.*;
-import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
+import org.flexpay.common.service.importexport.*;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,12 +26,14 @@ public class ImportService {
 	private RawStreetDataConverter streetDataConverter;
 	private RawBuildingsDataConverter buildingsDataConverter;
 	private RawApartmentDataConverter apartmentDataConverter;
+	private RawPersonDataConverter personDataConverter;
 
 	private DistrictJdbcDataSource districtDataSource;
 	private StreetTypeJdbcDataSource streetTypeDataSource;
 	private StreetJdbcDataSource streetDataSource;
 	private BuildingsJdbcDataSource buildingsDataSource;
 	private ApartmentJdbcDataSource apartmentDataSource;
+	private PersonJdbcDataSource personDataSource;
 
 	private AllObjectsDao allObjectsDao;
 
@@ -42,10 +43,32 @@ public class ImportService {
 	protected StreetService streetService;
 	protected BuildingService buildingService;
 	protected ApartmentService apartmentService;
+	protected PersonService personService;
 
-	private static final int STACK_SIZE = 1000;
+	private ImportErrorService importErrorService;
+	private ImportErrorsSupport errorsSupport;
+	private ClassToTypeRegistry registry;
 
-	private List<DomainObject> objectsStack = new ArrayList<DomainObject>(STACK_SIZE + 20);
+
+	private static final int STACK_SIZE = 20;
+
+	private List<DomainObject> objectsStack = new ArrayList<DomainObject>(STACK_SIZE + 5);
+
+	protected void addPersonImportError(DataSourceDescription sd, RawPersonData data) {
+		addImportError(sd, data.getExternalSourceId(), Person.class, personDataSource);
+	}
+
+	protected void addImportError(DataSourceDescription sd, String externalSourceId,
+						Class<? extends DomainObject> clazz, RawDataSource<? extends RawData> source) {
+
+		ImportError error = new ImportError();
+		error.setSourceDescription(sd);
+		error.setSourceObjectId(externalSourceId);
+		error.setObjectType(registry.getType(clazz));
+		errorsSupport.setDataSourceBean(error, source);
+
+		importErrorService.addError(error);
+	}
 
 	/**
 	 * Run flush objects operation
@@ -95,6 +118,7 @@ public class ImportService {
 			flushStack();
 		}
 		objectsStack.add(object);
+//		allObjectsDao.save(object);
 	}
 
 	@Transactional (readOnly = false)
@@ -384,8 +408,8 @@ public class ImportService {
 
 			} catch (Exception e) {
 				log.error("Failed getting street type with id: " + data.getExternalSourceId(), e);
-                throw new RuntimeException(e);
-            }
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
@@ -397,13 +421,17 @@ public class ImportService {
 		String extTypeName = tr.getName().toLowerCase();
 		for (StreetType type : streetTypes) {
 			Translation ourType = getDefaultLangTranslation(type.getTranslations());
-            log.info("Our type : "+ourType.getName());
+			if (log.isInfoEnabled()) {
+				log.info("Our street type : " + ourType.getName());
+			}
 			// found translation in default lang, add correction
 			if (ourType.getName().toLowerCase().equals(extTypeName)) {
 				DataCorrection corr = correctionsService.getStub(
 						data.getExternalSourceId(), type, sourceDescription);
 				correctionsService.save(corr);
-				log.info("Creating correction by street type name: " + tr.getName());
+				if (log.isInfoEnabled()) {
+					log.info("Creating correction by street type name: " + tr.getName());
+				}
 				return;
 			}
 		}
@@ -426,9 +454,6 @@ public class ImportService {
 				RawBuildingsData data = buildingsDataSource.next(typeHolder);
 
 				try {
-					Buildings buildings = buildingsDataConverter.fromRawData(
-							data, sourceDescription, correctionsService);
-
 					Buildings correction = (Buildings) correctionsService.findCorrection(
 							data.getExternalSourceId(), Buildings.class, sourceDescription);
 
@@ -439,11 +464,16 @@ public class ImportService {
 						continue;
 					}
 
+					Buildings buildings = buildingsDataConverter.fromRawData(
+							data, sourceDescription, correctionsService);
+
 					Buildings persistent = buildingService.findBuildings(
 							buildings.getStreet(), buildings.getBuilding().getDistrict(),
 							buildings.getNumber(), buildings.getBulk());
 					if (persistent == null) {
+						// TODO: return back
 						addToStack(buildings);
+//						addToStack(buildings.getBuilding());
 						persistent = buildings;
 						if (log.isInfoEnabled()) {
 							log.info("Creating new building: " + buildings.getNumber() +
@@ -481,7 +511,7 @@ public class ImportService {
 
 		long time = System.currentTimeMillis();
 		if (log.isInfoEnabled()) {
-			log.info("Starting import buildings at " + new Date());
+			log.info("Starting import apartments at " + new Date());
 		}
 
 		long counter = 0;
@@ -528,7 +558,7 @@ public class ImportService {
 				log.debug("Creating new apartment correction");
 
 			} catch (Exception e) {
-				log.error("Failed getting building with id: " + data.getExternalSourceId(), e);
+				log.error("Failed getting apartment with id: " + data.getExternalSourceId(), e);
 				throw e;
 			}
 		}
@@ -536,7 +566,82 @@ public class ImportService {
 		flushStack();
 
 		if (log.isInfoEnabled()) {
-			log.info("End import buildings at " + new Date() + ", total time: " +
+			log.info("End import apartments at " + new Date() + ", total time: " +
+					 (System.currentTimeMillis() - time) + "ms");
+		}
+	}
+
+	@Transactional (readOnly = false)
+	public void importPersons(DataSourceDescription sourceDescription) throws Exception {
+		personDataSource.initialize();
+
+		long time = System.currentTimeMillis();
+		if (log.isInfoEnabled()) {
+			log.info("Starting import persons at " + new Date());
+		}
+
+		long counter = 0;
+		long cycleTime = System.currentTimeMillis();
+		while (personDataSource.hasNext()) {
+
+			if (log.isInfoEnabled()) {
+				long now = System.currentTimeMillis();
+				log.info("Person #" + (++counter) + ", time spent: " + (now - cycleTime));
+				cycleTime = now;
+			}
+
+			ImportOperationTypeHolder typeHolder = new ImportOperationTypeHolder();
+			RawPersonData data = personDataSource.next(typeHolder);
+			if (data == null) {
+				continue;
+			}
+
+			try {
+				Person correction = (Person) correctionsService.findCorrection(
+						data.getExternalSourceId(), Person.class, sourceDescription);
+
+				if (correction != null) {
+					if (log.isInfoEnabled()) {
+						log.info("Found correction for person " + data.getExternalSourceId());
+					}
+					continue;
+				}
+
+				Person person = personDataConverter.fromRawData(
+						data, sourceDescription, correctionsService);
+
+				Person persistent = personService.findPersonStub(person);
+				if (persistent == null) {
+					if (personDataSource.trusted()) {
+						addToStack(person);
+						persistent = person;
+						if (log.isInfoEnabled()) {
+							log.info("Creating new person: " + person);
+						}
+					} else {
+						addPersonImportError(sourceDescription, data);
+						log.warn("Cannot find person: " + person);
+						continue;
+					}
+				}
+
+				// persistent person found, set up correction
+				DataCorrection corr = correctionsService.getStub(
+						data.getExternalSourceId(), persistent, sourceDescription);
+				addToStack(corr);
+
+				log.info("Creating new person correction");
+
+			} catch (Exception e) {
+				log.error("Failed getting person: " + data.getExternalSourceId(), e);
+				throw e;
+			}
+		}
+
+		flushStack();
+
+		if (log.isInfoEnabled()) {
+			log.info("End import persons at " + new Date() + ", total time: " +
 					 (System.currentTimeMillis() - time) + "ms");
 		}
 	}
@@ -557,6 +662,15 @@ public class ImportService {
 	 */
 	public void setStreetDataConverter(RawStreetDataConverter streetDataConverter) {
 		this.streetDataConverter = streetDataConverter;
+	}
+
+	/**
+	 * Setter for property 'personDataConverter'.
+	 *
+	 * @param personDataConverter Value to set for property 'personDataConverter'.
+	 */
+	public void setPersonDataConverter(RawPersonDataConverter personDataConverter) {
+		this.personDataConverter = personDataConverter;
 	}
 
 	/**
@@ -631,6 +745,24 @@ public class ImportService {
 	}
 
 	/**
+	 * Setter for property 'personDataSource'.
+	 *
+	 * @param personDataSource Value to set for property 'personDataSource'.
+	 */
+	public void setPersonDataSource(PersonJdbcDataSource personDataSource) {
+		this.personDataSource = personDataSource;
+	}
+
+	/**
+	 * Setter for property 'personService'.
+	 *
+	 * @param personService Value to set for property 'personService'.
+	 */
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
+	}
+
+	/**
 	 * Setter for property 'streetTypeService'.
 	 *
 	 * @param streetTypeService Value to set for property 'streetTypeService'.
@@ -657,5 +789,32 @@ public class ImportService {
 
 	public void setAllObjectsDao(AllObjectsDao allObjectsDao) {
 		this.allObjectsDao = allObjectsDao;
+	}
+
+	/**
+	 * Setter for property 'importErrorService'.
+	 *
+	 * @param importErrorService Value to set for property 'importErrorService'.
+	 */
+	public void setImportErrorService(ImportErrorService importErrorService) {
+		this.importErrorService = importErrorService;
+	}
+
+	/**
+	 * Setter for property 'errorsSupport'.
+	 *
+	 * @param errorsSupport Value to set for property 'errorsSupport'.
+	 */
+	public void setErrorsSupport(ImportErrorsSupport errorsSupport) {
+		this.errorsSupport = errorsSupport;
+	}
+
+	/**
+	 * Setter for property 'registry'.
+	 *
+	 * @param registry Value to set for property 'registry'.
+	 */
+	public void setRegistry(ClassToTypeRegistry registry) {
+		this.registry = registry;
 	}
 }

@@ -3,21 +3,16 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="dataExportEircDao" parent="dataExportDao"
-		  class="org.flexpay.eirc.dao.importexport.imp.HarkovCenterNachisleniyDataSource">
-	</bean>
-
 	<!-- Data sources -->
-	<bean id="personalAccountJdbcDataSource"
-		  class="org.flexpay.eirc.dao.importexport.PersonalAccountJdbcDataSource">
-		<property name="source" ref="dataExportEircDao" />
+	<bean id="consumersDataSource"
+		  class="org.flexpay.eirc.dao.importexport.RawConsumersDataSource">
+		<property name="registryRecordDao" ref="spRegistryRecordDao" />
 	</bean>
 
 	<!-- Data converters -->
-	<bean id="personalAccountDataConverter"
-		  class="org.flexpay.eirc.service.importexport.RawPersonalAccountDataConverter">
-		<property name="identityTypeService" ref="identityTypeService" />
-		<property name="accountStatusService" ref="accountStatusService" />
+	<bean id="consumerDataConverter"
+		  class="org.flexpay.eirc.service.importexport.RawConsumerDataConverter">
+		<property name="spService" ref="spService" />
 	</bean>
 
 	<bean id="typeRegistryEirc"
@@ -35,13 +30,11 @@
 	<!-- Import-Export services -->
 	<bean id="importServiceEirc" parent="importServiceAb"
 		  class="org.flexpay.eirc.service.importexport.EircImportService">
-		<property name="personalAccountDataSource" ref="personalAccountJdbcDataSource" />
-		<property name="personalAccountDataConverter" ref="personalAccountDataConverter" />
 		<property name="correctionsService" ref="correctionsServiceEirc" />
-		<property name="personalAccountService" ref="personalAccountService" />
-		<property name="errorsSupport" ref="importErrorSupport" />
-		<property name="importErrorService" ref="importErrorServiceEirc" />
 		<property name="registry" ref="typeRegistryEirc" />
+		<property name="typeService" ref="identityTypeService" />
+		<property name="consumerDataConverter" ref="consumerDataConverter" />
+		<property name="consumerService" ref="consumerService" />
 	</bean>
 
 </beans>

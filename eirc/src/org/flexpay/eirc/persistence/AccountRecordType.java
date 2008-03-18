@@ -5,7 +5,7 @@ import org.flexpay.common.persistence.DomainObject;
 /**
  * Personal account record types
  */
-public class PersonalAccountRecordType extends DomainObject {
+public class AccountRecordType extends DomainObject {
 
 	public static int TYPE_UNKNOWN = 0;
 	public static int TYPE_PAYMENT_INCOMING = 1;
@@ -18,10 +18,10 @@ public class PersonalAccountRecordType extends DomainObject {
 	/**
 	 * Constructs a new DomainObject.
 	 */
-	public PersonalAccountRecordType() {
+	public AccountRecordType() {
 	}
 
-	public PersonalAccountRecordType(Long id) {
+	public AccountRecordType(Long id) {
 		super(id);
 	}
 

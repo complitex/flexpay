@@ -4,6 +4,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.SpRegistryType;
 
 import java.util.List;
 
@@ -64,4 +65,13 @@ public interface SpFileService {
 	 * @return list of records
 	 */
 	List<SpRegistryRecord> getRegistryRecords(SpRegistry registry);
+
+	/**
+	 * Find registry type by id
+	 *
+	 * @param type SpRegistryType enum id
+	 * @return SpRegistryType if found
+	 * @throws InvalidRegistryTypeException if registry type is not supported
+	 */
+	SpRegistryType getRegistryType(int type) throws InvalidRegistryTypeException;
 }

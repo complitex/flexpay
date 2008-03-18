@@ -13,4 +13,12 @@ public interface IdentityTypeService extends
 	 * @return IdentityType if found, or <code>null</code> otherwise
 	 */
 	IdentityType getType(int typeId);
+
+	/**
+	 * Find identity type by name
+	 *
+	 * @param typeName Type name
+	 * @return IdentityType if found, or <code>null</code> otherwise
+	 */
+	IdentityType getType(String typeName);
 }

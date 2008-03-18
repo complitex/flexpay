@@ -3,6 +3,7 @@ package org.flexpay.ab.service.imp;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.dao.PersonDao;
+import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.apache.commons.collections.ArrayStack;
@@ -14,6 +15,7 @@ import java.util.List;
 public class PersonServiceImpl implements PersonService {
 
 	private PersonDao personDao;
+	private PersonDaoExt personDaoExt;
 
 	/**
 	 * Setter for property 'personDao'.
@@ -22,6 +24,15 @@ public class PersonServiceImpl implements PersonService {
 	 */
 	public void setPersonDao(PersonDao personDao) {
 		this.personDao = personDao;
+	}
+
+	/**
+	 * Setter for property 'personDaoExt'.
+	 *
+	 * @param personDaoExt Value to set for property 'personDaoExt'.
+	 */
+	public void setPersonDaoExt(PersonDaoExt personDaoExt) {
+		this.personDaoExt = personDaoExt;
 	}
 
 	/**
@@ -43,5 +54,15 @@ public class PersonServiceImpl implements PersonService {
 	 */
 	public Person read(Long id) {
 		return personDao.readFull(id);
+	}
+
+	/**
+	 * Find persistent person by identity
+	 *
+	 * @param person Identity data
+	 * @return Person stub if persitent person matches specified identity
+	 */
+	public Person findPersonStub(Person person) {
+		return personDaoExt.findPersonStub(person);
 	}
 }

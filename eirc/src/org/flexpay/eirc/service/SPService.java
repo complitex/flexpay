@@ -1,8 +1,6 @@
 package org.flexpay.eirc.service;
 
-import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.ServiceProvider;
-import org.flexpay.eirc.persistence.ServiceType;
+import org.flexpay.eirc.persistence.*;
 
 /**
  * Service providers helper service
@@ -36,4 +34,12 @@ public interface SPService {
 	 *         available from <code>provider</code>
 	 */
 	Service getService(ServiceProvider provider, ServiceType type);
+
+	/**
+	 * Get record type by type id
+	 *
+	 * @param typeId Record type enum id
+	 * @return record type
+	 */
+	AccountRecordType getRecordType(int typeId);
 }

@@ -1,6 +1,8 @@
 package org.flexpay.eirc.persistence.exchange;
 
-public class InvalidContainerException extends Exception {
+import org.flexpay.common.exception.FlexPayException;
+
+public class InvalidContainerException extends FlexPayException {
 
 	public InvalidContainerException(String s) {
 		super(s);

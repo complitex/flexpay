@@ -1,7 +1,6 @@
 package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.DataSourceDescription;
 
 import java.math.BigDecimal;
 import java.util.Date;

@@ -43,6 +43,7 @@
 		</id>
 		<property name="name" not-null="true" />
 		<property name="direction" not-null="true" />
+		<property name="typeId" column="type_enum_id" not-null="true" />
 	</class>
 
 	<class name="SpRegistryRecord" table="eirc_sp_registry_records_tbl" optimistic-lock="version">
@@ -65,7 +66,7 @@
 		<property name="amount" column="amount" type="big_decimal" />
 		<property name="containers" column="containers" />
 
-		<many-to-one name="account" column="personal_account_id" />
+		<many-to-one name="consumer" column="consumer_id" class="Consumer"/>
 		<many-to-one name="spRegistry" column="registry_id" not-null="true" />
 	 </class>
 

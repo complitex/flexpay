@@ -1,12 +1,10 @@
 package org.flexpay.eirc.persistence;
 
-import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.ab.persistence.Apartment;
 
-public class Consumer extends DomainObjectWithStatus {
+public class Consumer extends AbstractConsumer {
 
-	private PersonalAccount internalAccount;
-	private Service service;
-	private String externalAccountNumber;
+	private Apartment apartment;
 
 	/**
 	 * Constructs a new DomainObject.
@@ -19,56 +17,20 @@ public class Consumer extends DomainObjectWithStatus {
 	}
 
 	/**
-	 * Getter for property 'internalAccount'.
+	 * Getter for property 'apartment'.
 	 *
-	 * @return Value for property 'internalAccount'.
+	 * @return Value for property 'apartment'.
 	 */
-	public PersonalAccount getInternalAccount() {
-		return internalAccount;
+	public Apartment getApartment() {
+		return apartment;
 	}
 
 	/**
-	 * Setter for property 'internalAccount'.
+	 * Setter for property 'apartment'.
 	 *
-	 * @param internalAccount Value to set for property 'internalAccount'.
+	 * @param apartment Value to set for property 'apartment'.
 	 */
-	public void setInternalAccount(PersonalAccount internalAccount) {
-		this.internalAccount = internalAccount;
-	}
-
-	/**
-	 * Getter for property 'service'.
-	 *
-	 * @return Value for property 'service'.
-	 */
-	public Service getService() {
-		return service;
-	}
-
-	/**
-	 * Setter for property 'service'.
-	 *
-	 * @param service Value to set for property 'service'.
-	 */
-	public void setService(Service service) {
-		this.service = service;
-	}
-
-	/**
-	 * Getter for property 'externalAccountNumber'.
-	 *
-	 * @return Value for property 'externalAccountNumber'.
-	 */
-	public String getExternalAccountNumber() {
-		return externalAccountNumber;
-	}
-
-	/**
-	 * Setter for property 'externalAccountNumber'.
-	 *
-	 * @param externalAccountNumber Value to set for property 'externalAccountNumber'.
-	 */
-	public void setExternalAccountNumber(String externalAccountNumber) {
-		this.externalAccountNumber = externalAccountNumber;
+	public void setApartment(Apartment apartment) {
+		this.apartment = apartment;
 	}
 }

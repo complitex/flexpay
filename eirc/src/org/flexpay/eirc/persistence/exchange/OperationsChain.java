@@ -14,7 +14,6 @@ public class OperationsChain extends Operation {
 	private List<Operation> containers = Collections.emptyList();
 
 	public OperationsChain(List<Operation> containers) {
-		super(0);
 		this.containers = containers;
 	}
 

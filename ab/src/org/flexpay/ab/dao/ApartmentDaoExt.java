@@ -11,5 +11,5 @@ public interface ApartmentDaoExt {
 	 * @param number   Building number
 	 * @return Apartment instance, or <code>null</null> if not found
 	 */
-	public Apartment findApartmentStub(Building building, String number);
+	Apartment findApartmentStub(Building building, String number);
 }

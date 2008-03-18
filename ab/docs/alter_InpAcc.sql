@@ -67,6 +67,7 @@ create table apartments(
 	BuildingId int(10) NOT NULL,
 	PRIMARY KEY (id)) COLLATE utf8_unicode_ci;
 alter table apartments add index i_apartment_building (Apartment, BuildingId);
+alter table apartments add index i_building (BuildingId);
 insert into apartments (Apartment, BuildingId) select distinct Appartment, BuildingId from InpAcc;
 update InpAcc inp set AppartmentID = (select id from apartments a where a.Apartment=inp.Appartment and a.BuildingId=inp.BuildingId);
 

@@ -1,39 +1,53 @@
 package org.flexpay.eirc.service.exchange;
 
-import org.flexpay.eirc.persistence.*;
-import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
-import org.flexpay.eirc.persistence.exchange.Operation;
-import org.flexpay.eirc.persistence.exchange.InvalidContainerException;
-import org.flexpay.eirc.service.SpFileService;
-import org.flexpay.eirc.service.SPService;
-import org.flexpay.common.exception.FlexPayException;
 import org.apache.log4j.Logger;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
+import org.flexpay.eirc.persistence.*;
+import org.flexpay.eirc.persistence.exchange.InvalidContainerException;
+import org.flexpay.eirc.persistence.exchange.Operation;
+import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
+import org.flexpay.eirc.service.SPService;
+import org.flexpay.eirc.service.SpFileService;
+import org.flexpay.eirc.service.importexport.EircImportService;
 
 import java.util.List;
 
 /**
- * Processor of instructions specified by service provider, usually payments, balance notifications, etc.
- * <br />
- * Precondition for processing file is complete import operation, i.e. all records
- * should already have assigned PersonalAccount.
+ * Processor of instructions specified by service provider, usually payments, balance
+ * notifications, etc. <br /> Precondition for processing file is complete import
+ * operation, i.e. all records should already have assigned PersonalAccount.
  */
 public class ServiceProviderFileProcessor {
 
-	private ServiceOperationsFactory serviceOperationsFactory;
-
-	private SpFileService spFileService;
-	private SPService spService;
-
 	private static Logger log = Logger.getLogger(ServiceProviderFileProcessor.class);
 
+	private ServiceOperationsFactory serviceOperationsFactory;
+
+	private SPService spService;
+	private SpFileService spFileService;
+
+	private EircImportService importService;
+
+	private RawConsumersDataSource rawConsumersDataSource;
+
+	/**
+	 * Run processing of a provider data file
+	 *
+	 * @param file uploaded SpFile
+	 */
 	public void processFile(SpFile file) {
 		List<SpRegistry> registries = spFileService.getRegistries(file);
 		for (SpRegistry registry : registries) {
 			processHeader(registry);
 
+			if (!setupRecordsConsumer(registry)) {
+				continue;
+			}
+
 			List<SpRegistryRecord> records = spFileService.getRegistryRecords(registry);
 			for (SpRegistryRecord record : records) {
-				processRecords(registry, record);
+				processRecord(registry, record);
 			}
 		}
 	}
@@ -52,8 +66,9 @@ public class ServiceProviderFileProcessor {
 
 		registry.setServiceProvider(provider);
 
+		// process header containers
 		try {
-			Operation op = serviceOperationsFactory.getContainer(registry);
+			Operation op = serviceOperationsFactory.getContainerOperation(registry);
 			op.process(registry, null);
 		} catch (InvalidContainerException e) {
 			log.error("Failed constructing container for registry: " + registry, e);
@@ -63,19 +78,34 @@ public class ServiceProviderFileProcessor {
 	}
 
 	/**
+	 * Set up consumers for records
+	 *
+	 * @param registry SpRegistry to process
+	 * @return <code>true</code> if setup run without errors, or <code>false</code>
+	 *         otherwise
+	 */
+	private boolean setupRecordsConsumer(SpRegistry registry) {
+		rawConsumersDataSource.setRegistry(registry);
+		try {
+			importService.importConsumers(
+					registry.getServiceProvider().getDataSourceDescription(),
+					rawConsumersDataSource);
+			return true;
+		} catch (FlexPayException e) {
+			log.error("Failed setting consumers", e);
+			return false;
+		}
+	}
+
+	/**
 	 * Run processing on single registry record
 	 *
 	 * @param registry Registry header
-	 * @param record Registry record
+	 * @param record   Registry record
 	 */
-	private void processRecords(SpRegistry registry, SpRegistryRecord record) {
-
-		ServiceType type = spService.getServiceType(record.getServiceCode().intValue());
-		Service service = spService.getService(registry.getServiceProvider(), type);
-		record.setService(service);
-
+	private void processRecord(SpRegistry registry, SpRegistryRecord record) {
 		try {
-			Operation op = serviceOperationsFactory.getContainer(record);
+			Operation op = serviceOperationsFactory.getOperation(registry, record);
 			op.process(registry, record);
 		} catch (InvalidContainerException e) {
 			log.error("Failed constructing container for registry record: " + record, e);
@@ -109,5 +139,23 @@ public class ServiceProviderFileProcessor {
 	 */
 	public void setSpService(SPService spService) {
 		this.spService = spService;
+	}
+
+	/**
+	 * Setter for property 'importService'.
+	 *
+	 * @param importService Value to set for property 'importService'.
+	 */
+	public void setImportService(EircImportService importService) {
+		this.importService = importService;
+	}
+
+	/**
+	 * Setter for property 'rawConsumersDataSource'.
+	 *
+	 * @param rawConsumersDataSource Value to set for property 'rawConsumersDataSource'.
+	 */
+	public void setRawConsumersDataSource(RawConsumersDataSource rawConsumersDataSource) {
+		this.rawConsumersDataSource = rawConsumersDataSource;
 	}
 }

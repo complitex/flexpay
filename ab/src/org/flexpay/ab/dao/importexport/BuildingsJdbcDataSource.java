@@ -27,7 +27,7 @@ public class BuildingsJdbcDataSource implements RawDataSource<RawBuildingsData> 
 	 * Initialize data source
 	 */
 	public void initialize() {
-		pager = new Page<RawBuildingsData>(300, 1);
+		pager = new Page<RawBuildingsData>(100, 1);
 		List<RawBuildingsData> districtDatas = source.getBuildingsData(pager);
 		dataIterator = districtDatas.iterator();
 	}

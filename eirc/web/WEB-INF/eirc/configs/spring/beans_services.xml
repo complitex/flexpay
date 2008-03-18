@@ -3,19 +3,10 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="accountStatusService"
-		  class="org.flexpay.eirc.service.imp.AccountStatusServiceImpl">
-		<property name="accountStatusDao" ref="accountStatusDao" />
-	</bean>
-
-	<bean id="personalAccountService"
-		  class="org.flexpay.eirc.service.imp.PersonalAccountServiceImpl">
-		<property name="personalAccountDao" ref="personalAccountDao" />
-	</bean>
-	
 	<bean id="spFileService"
 		  class="org.flexpay.eirc.service.imp.SpFileServiceImpl">
 		<property name="spFileDao" ref="spFileDao" />
+		<property name="spFileDaoExt" ref="spFileDaoExt" />
 	</bean>
 	
 	<bean id="spRegistryService"
@@ -33,10 +24,6 @@
 		<property name="spRegistryTypeDao" ref="spRegistryTypeDao" />
 	</bean>
 
-	<bean class="org.flexpay.eirc.dao.importexport.ServiceProvidersDataSource">
-		<property name="registryRecordDao" ref="spRegistryRecordDao" />
-	</bean>
-
 	<bean id="spService" class="org.flexpay.eirc.service.imp.SPServiceImpl">
 		<property name="serviceDaoExt" ref="serviceDaoExt" />
 	</bean>
@@ -46,11 +33,21 @@
 
 	</bean>
 
+	<bean id="consumerService" class="org.flexpay.eirc.service.imp.ConsumerServiceImpl">
+		<property name="consumerDao" ref="consumerDao" />
+	</bean>
+
+	<bean id="organisationService" class="org.flexpay.eirc.service.imp.OrganisationServiceImpl">
+		<property name="organisationDao" ref="organisationDao" />
+	</bean>
+
 	<bean id="serviceProviderFileProcessor" 
 		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor">
 		<property name="serviceOperationsFactory" ref="serviceOperationsFactory" />
 		<property name="spFileService" ref="spFileService" />
 		<property name="spService" ref="spService" />
+		<property name="importService" ref="importServiceEirc" />
+		<property name="rawConsumersDataSource" ref="consumersDataSource" />
 	</bean>
 
 </beans>

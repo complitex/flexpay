@@ -27,7 +27,7 @@ public class StreetJdbcDataSource implements RawDataSource<RawStreetData> {
 	 * Initialize data source
 	 */
 	public void initialize() {
-		pager = new Page<RawStreetData>(300, 1);
+		pager = new Page<RawStreetData>(100, 1);
 		List<RawStreetData> districtDatas = source.getStreetsData(pager);
 		dataIterator = districtDatas.iterator();
 	}

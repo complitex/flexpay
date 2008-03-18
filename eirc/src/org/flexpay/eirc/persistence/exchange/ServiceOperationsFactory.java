@@ -1,24 +1,34 @@
 package org.flexpay.eirc.persistence.exchange;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
-import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.SpRegistryType;
+import org.flexpay.eirc.service.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceOperationsFactory {
 
+	private SpFileService spFileService;
+	private SPService spService;
+	private AccountRecordService accountRecordService;
+	private OrganisationService organisationService;
+	private ReportPeriodService reportPeriodService;
+
 	/**
-	 * Get instance of OperationContainer for registry record
+	 * Get instance of Operation for registry record
 	 *
-	 * @param record Registry record
-	 * @return OperationContainer instance
+	 * @param registry Registry header
+	 * @param record   Registry record
+	 * @return Operation instance
 	 * @throws InvalidContainerException if record contains invalid operation container
 	 *                                   information
 	 */
-	public Operation getContainer(SpRegistryRecord record) throws InvalidContainerException {
+	public Operation getOperation(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
 
 		if (StringUtils.isEmpty(record.getContainers())) {
 			throw new InvalidContainerException("No data in record #" + record.getId());
@@ -31,18 +41,32 @@ public class ServiceOperationsFactory {
 			operations.add(container);
 		}
 
+		// none containers found, should be defined by registry type
+		if (operations.isEmpty()) {
+			return getOperation(registry);
+		}
+
 		return operations.size() > 1 ? new OperationsChain(operations) : operations.get(0);
+	}
+
+	private Operation getOperation(SpRegistry registry) throws FlexPayException {
+		int typeId = registry.getRegistryType().getTypeId();
+		if (typeId == SpRegistryType.TYPE_BALANCE) {
+			return new BalanceOperation(this);
+		}
+
+		throw new UnsupportedRegistryTypeException("Registry type: " + typeId + " is not supported");
 	}
 
 	/**
 	 * Get instance of OperationContainer for registry record
 	 *
-	 * @param registry SpRegistry 
+	 * @param registry SpRegistry
 	 * @return OperationContainer instance
 	 * @throws InvalidContainerException if record contains invalid operation container
 	 *                                   information
 	 */
-	public Operation getContainer(SpRegistry registry) throws InvalidContainerException {
+	public Operation getContainerOperation(SpRegistry registry) throws InvalidContainerException {
 
 		if (StringUtils.isEmpty(registry.getContainers())) {
 			throw new InvalidContainerException("No data in registry #" + registry.getId());
@@ -92,9 +116,9 @@ public class ServiceOperationsFactory {
 //			case 12:
 //				return new SetPrivilegePersonsNumberOperation(datum);
 
-				// Payment
+			// Payment
 			case 50:
-				return new SimplePayment(datum);
+				return new SimplePayment(this, datum);
 
 				// General info
 //			case 100:
@@ -115,11 +139,51 @@ public class ServiceOperationsFactory {
 	 * Split string with delimiter taking in account {@link Operation#ESCAPE_SIMBOL}
 	 *
 	 * @param containers Containers data
-	 * @param delimiter Delimiter simbol
+	 * @param delimiter  Delimiter simbol
 	 * @return List of separate containers
 	 */
 	private List<String> splitEscapableData(String containers, char delimiter) {
 
 		return StringUtil.splitEscapable(containers, delimiter, Operation.ESCAPE_SIMBOL);
+	}
+
+	public SpFileService getSpFileService() {
+		return spFileService;
+	}
+
+	public void setSpFileService(SpFileService spFileService) {
+		this.spFileService = spFileService;
+	}
+
+	public SPService getSpService() {
+		return spService;
+	}
+
+	public void setSpService(SPService spService) {
+		this.spService = spService;
+	}
+
+	public void setOrganisationService(OrganisationService organisationService) {
+		this.organisationService = organisationService;
+	}
+
+	public OrganisationService getOrganisationService() {
+		return organisationService;
+	}
+
+	public void setAccountRecordService(AccountRecordService accountRecordService) {
+		this.accountRecordService = accountRecordService;
+	}
+
+	public AccountRecordService getAccountRecordService() {
+		return accountRecordService;
+	}
+
+	public ReportPeriodService getReportPeriodService() {
+		return reportPeriodService;
+	}
+
+	public void setReportPeriodService(ReportPeriodService reportPeriodService) {
+		this.reportPeriodService = reportPeriodService;
 	}
 }

@@ -213,7 +213,10 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 		for (IdentityType identityType : identityTypes) {
 			identityType.setStatus(IdentityType.STATUS_DISABLED);
 			identityTypeDao.update(identityType);
-			log.info("Disabled: " + identityType);
+
+			if (log.isInfoEnabled()) {
+				log.info("Disabled: " + identityType);
+			}
 		}
 	}
 
@@ -234,6 +237,22 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Find identity type by name
+	 *
+	 * @param typeName Type name
+	 * @return IdentityType if found, or <code>null</code> otherwise
+	 */
+	public IdentityType getType(String typeName) {
+		if (IdentityType.TYPE_NAME_PASSPORT.equals(typeName))
+			return getType(IdentityType.TYPE_PASSPORT);
+
+		if (IdentityType.TYPE_NAME_FOREIGN_PASSPORT.equals(typeName))
+			return getType(IdentityType.TYPE_FOREIGN_PASSPORT);
+
+		return getType(IdentityType.TYPE_PASSPORT);
 	}
 
 	/**

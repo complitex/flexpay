@@ -6,19 +6,18 @@ import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.dao.SpRegistryRecordDao;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
-import org.flexpay.eirc.service.importexport.RawPersonalAccountData;
+import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 import java.util.Iterator;
 import java.util.List;
 
-public class ServiceProvidersDataSource implements RawDataSource<RawPersonalAccountData> {
+public class RawConsumersDataSource implements RawDataSource<RawConsumerData> {
 
 	private SpRegistryRecordDao registryRecordDao;
+	private SpRegistry registry;
 
 	private Page<SpRegistryRecord> pager;
 	private Iterator<SpRegistryRecord> dataIterator;
-
-	private SpRegistry registry;
 
 	/**
 	 * Check if source is trusted and new objects are allowed to be created from this source
@@ -35,15 +34,35 @@ public class ServiceProvidersDataSource implements RawDataSource<RawPersonalAcco
 	 * @param objId Raw data id
 	 * @return raw data
 	 */
-	public RawPersonalAccountData getById(String objId) {
-		return convert(registryRecordDao.read(Long.valueOf(objId)));
+	public RawConsumerData getById(String objId) {
+		return convert(registryRecordDao.read(Long.parseLong(objId)));
+	}
+
+	private RawConsumerData convert(SpRegistryRecord record) {
+		RawConsumerData data = new RawConsumerData();
+		data.setExternalSourceId(String.valueOf(record.getId()));
+		data.addNameValuePair(RawConsumerData.FIELD_ACCOUNT_NUMBER, record.getPersonalAccountExt());
+		data.addNameValuePair(RawConsumerData.FIELD_FIRST_NAME, record.getFirstName());
+		data.addNameValuePair(RawConsumerData.FIELD_MIDDLE_NAME, record.getMiddleName());
+		data.addNameValuePair(RawConsumerData.FIELD_LAST_NAME, record.getLastName());
+		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_CITY, record.getCity());
+		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_STREET, record.getStreetName());
+		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_STREET_TYPE, record.getStreetType());
+		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_HOUSE, record.getBuildingNum());
+		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_BULK, record.getBuildingBulkNum());
+		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_APARTMENT, record.getApartmentNum());
+
+		data.addNameValuePair(RawConsumerData.FIELD_REGISTRY_HEADER, registry);
+		data.addNameValuePair(RawConsumerData.FIELD_REGISTRY_RECORD, record);
+
+		return data;
 	}
 
 	/**
 	 * Initialize data source
 	 */
 	public void initialize() {
-		pager = new Page<SpRegistryRecord>(1000, 1);
+		pager = new Page<SpRegistryRecord>(10000, 1);
 		List<SpRegistryRecord> datum = registryRecordDao.listRecords(registry.getId(), pager);
 		dataIterator = datum.iterator();
 	}
@@ -76,37 +95,8 @@ public class ServiceProvidersDataSource implements RawDataSource<RawPersonalAcco
 	 * @throws java.util.NoSuchElementException
 	 *          iteration has no more elements.
 	 */
-	public RawPersonalAccountData next(ImportOperationTypeHolder holder) {
+	public RawConsumerData next(ImportOperationTypeHolder holder) {
 		return convert(dataIterator.next());
-	}
-
-	private RawPersonalAccountData convert(SpRegistryRecord record) {
-		RawPersonalAccountData data = new RawPersonalAccountData();
-		data.setExternalSourceId(String.valueOf(record.getId()));
-//		data.addNameValuePair(RawPersonalAccountData.FIELD_DISTRICT, record.getDistrict());
-//		data.addNameValuePair(RawPersonalAccountData.FIELD_DISTRICT_ID, record.getDistrictId());
-		data.addNameValuePair(RawPersonalAccountData.FIELD_STREET, record.getStreetName());
-//		data.addNameValuePair(RawPersonalAccountData.FIELD_STREET_ID, record.getStreetId());
-		data.addNameValuePair(RawPersonalAccountData.FIELD_STREET_TYPE, record.getStreetType());
-		data.addNameValuePair(RawPersonalAccountData.FIELD_BUILDING, record.getBuildingNum());
-		data.addNameValuePair(RawPersonalAccountData.FIELD_BULK, record.getBuildingBulkNum());
-//		data.addNameValuePair(RawPersonalAccountData.FIELD_BUILDING_ID, record.getBuildingId());
-		data.addNameValuePair(RawPersonalAccountData.FIELD_APARTMENT, record.getApartmentNum());
-//		data.addNameValuePair(RawPersonalAccountData.FIELD_APARTMENT_ID, record.getApartmentId());
-		data.addNameValuePair(RawPersonalAccountData.FIELD_EXT_ACCOUNT, record.getPersonalAccountExt());
-		data.addNameValuePair(RawPersonalAccountData.FIELD_FIRST_NAME, record.getFirstName());
-//		data.addNameValuePair(RawPersonalAccountData.FIELD_MIDDLE_NAME, record.getMiddleName());
-		data.addNameValuePair(RawPersonalAccountData.FIELD_LAST_NAME, record.getLastName());
-		return data;
-	}
-
-	/**
-	 * Setter for property 'registryRecordDao'.
-	 *
-	 * @param registryRecordDao Value to set for property 'registryRecordDao'.
-	 */
-	public void setRegistryRecordDao(SpRegistryRecordDao registryRecordDao) {
-		this.registryRecordDao = registryRecordDao;
 	}
 
 	/**
@@ -116,5 +106,14 @@ public class ServiceProvidersDataSource implements RawDataSource<RawPersonalAcco
 	 */
 	public void setRegistry(SpRegistry registry) {
 		this.registry = registry;
+	}
+
+	/**
+	 * Setter for property 'registryRecordDao'.
+	 *
+	 * @param registryRecordDao Value to set for property 'registryRecordDao'.
+	 */
+	public void setRegistryRecordDao(SpRegistryRecordDao registryRecordDao) {
+		this.registryRecordDao = registryRecordDao;
 	}
 }

@@ -8,5 +8,6 @@
 	<defaultCountry id="3">Украина</defaultCountry>
 	<defaultRegion id="1">Харьковская область</defaultRegion>
 	<defaultTown id="1">Харьков</defaultTown>
+	<organisation id="1">Единый информационный центр</organisation>
 
 </flexpay>
