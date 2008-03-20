@@ -67,6 +67,12 @@
 			<include name="jbpm/*.txt" />
 		</fileset>
 	</path>
+	
+	<path id="itext.lib">
+			<fileset dir="${common.dir}/lib">
+				<include name="itext/*.jar" />
+			</fileset>
+		</path>
 
 	<path id="common.production.classpath">
 		<path refid="commons.lib" />
@@ -78,6 +84,7 @@
 		<path refid="javadbf.lib" />
 		<path refid="jbpm_jpdl.lib" />
 		<path refid="ajax.lib" />
+		<path refid="itext.lib" />
 	</path>
 
 	<patternset id="empty_pattern" excludes="**/*.*" />
@@ -277,6 +284,7 @@
 			<lib dir="${common.dir}/lib/jbpm" />
 			<lib dir="${common.dir}/lib/javadbf" />
 			<lib dir="${common.dir}/lib/ajax" />
+			<lib dir="${common.dir}/lib/itext" />
 			<lib dir="${build.dir}/lib" />
 		</war>
 	</target>
