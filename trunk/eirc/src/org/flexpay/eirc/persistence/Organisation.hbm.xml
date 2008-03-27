@@ -14,12 +14,13 @@
 		<property name="kpp" not-null="true" />
 		<property name="description" not-null="true" />
 		<property name="name" not-null="true" />
+		<property name="uniqueId" not-null="true" column="unique_id" unique="true" />
 		<many-to-one name="district" not-null="true" column="district_id"
 					 class="org.flexpay.ab.persistence.District" />
 	</class>
 
 	<query name="Organisation.findOrganisationsById">
-		from Organisation where individualTaxNumber=?
+		from Organisation where uniqueId=?
 	</query>
 
 </hibernate-mapping>

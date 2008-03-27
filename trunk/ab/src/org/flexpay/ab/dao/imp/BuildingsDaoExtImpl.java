@@ -7,10 +7,13 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.dao.EmptyResultDataAccessException;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -68,6 +71,15 @@ public class BuildingsDaoExtImpl extends SimpleJdbcDaoSupport implements Buildin
 	 * @return Buildings instance, or <code>null</null> if not found
 	 */
 	public Buildings findBuildings(final Street street, final String number, final String bulk) {
+
+		if (true) {
+			if (StringUtils.isNotEmpty(bulk)) {
+				return doFindBuildings(street, number, bulk);
+			} else {
+				return doFindBuildings(street, number);
+			}
+		}
+
 		Object obj = hibernateTemplate.execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 
@@ -119,4 +131,45 @@ public class BuildingsDaoExtImpl extends SimpleJdbcDaoSupport implements Buildin
 
 		return building;
 	}
+
+	String sql1 = "select * from buildingses_tbl bs where bs.street_id=? and exists ( " +
+				  "select a.id from building_attributes_tbl a, building_attribute_types_tbl at " +
+				  "where a.attribute_type_id=at.id and a.buildings_id=bs.id and at.type=1 and a.value=? " +
+				  ") and not exists (" +
+				  "select a.id from building_attributes_tbl a, building_attribute_types_tbl at " +
+				  "where a.attribute_type_id=at.id and a.buildings_id=bs.id and at.type=2 " +
+				  ")";
+	String sql2 = "select * from buildingses_tbl bs where bs.street_id=? and exists ( " +
+				  "select a.id from building_attributes_tbl a, building_attribute_types_tbl at " +
+				  "where a.attribute_type_id=at.id and a.buildings_id=bs.id and at.type=1 and a.value=? " +
+				  ") and exists (" +
+				  "select a.id from building_attributes_tbl a, building_attribute_types_tbl at " +
+				  "where a.attribute_type_id=at.id and a.buildings_id=bs.id and at.type=2 and a.value=? " +
+				  ")";
+
+	private Buildings doFindBuildings(Street street, String number, String bulk) {
+		return getSimpleJdbcTemplate().queryForObject(sql2, new ParameterizedRowMapper<Buildings>() {
+			public Buildings mapRow(ResultSet rs, int i) throws SQLException {
+				Buildings buildings = new Buildings(rs.getLong("id"));
+				buildings.setBuilding(new Building(rs.getLong("building_id")));
+				return buildings;
+			}
+		}, street.getId(), number, bulk
+		);
+	}
+
+	private Buildings doFindBuildings(Street street, String number) {
+		try {
+		return getSimpleJdbcTemplate().queryForObject(sql1, new ParameterizedRowMapper<Buildings>() {
+			public Buildings mapRow(ResultSet rs, int i) throws SQLException {
+				Buildings buildings = new Buildings(rs.getLong("id"));
+				buildings.setBuilding(new Building(rs.getLong("building_id")));
+				return buildings;
+			}
+		}, street.getId(), number);
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
 }

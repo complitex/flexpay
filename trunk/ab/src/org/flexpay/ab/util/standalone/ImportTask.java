@@ -16,11 +16,11 @@ public class ImportTask implements StandaloneTask {
 	 */
 	public void execute() {
 		try {
-//			importService.importDistricts(town, sourceDescription);
-//			importService.importStreetTypes(sourceDescription);
-//			importService.importStreets(town, sourceDescription);
-//			importService.importBuildings(sourceDescription);
-//			importService.importApartments(sourceDescription);
+			importService.importDistricts(town, sourceDescription);
+			importService.importStreetTypes(sourceDescription);
+			importService.importStreets(town, sourceDescription);
+			importService.importBuildings(sourceDescription);
+			importService.importApartments(sourceDescription);
 			importService.importPersons(sourceDescription);
 		} catch (Exception e) {
 			throw new RuntimeException("Failed importing apartments", e);

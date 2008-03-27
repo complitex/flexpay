@@ -29,8 +29,7 @@
 		<property name="typeId" not-null="true" column="type_enum_id" />
 	</class>
 
-	<class name="AccountRecord" table="eirc_account_records_tbl"
-		   optimistic-lock="version" entity-name="AccountRecord">
+	<class name="AccountRecord" table="eirc_account_records_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -45,10 +44,25 @@
 					 class="AccountRecordType" not-null="true" />
 	</class>
 
+	<query name="AccountRecord.findRegisteredRecords.count">
+		select count(*) from AccountRecord
+		where organisation.id=? and consumer.id=? and operationDate=? and amount=? and
+		recordType.id=?
+	</query>
+
 	<query name="AccountRecord.findRegisteredRecords">
 		from AccountRecord
 		where organisation.id=? and consumer.id=? and operationDate=? and amount=? and
 		recordType.id=?
+	</query>
+
+	<query name="Consumer.findConsumers.count">
+		select count(*) 
+		from Consumer
+		where responsiblePerson.id = ?
+			and service.id = ?
+			and externalAccountNumber = ?
+			and apartment.id = ?
 	</query>
 
 	<query name="Consumer.findConsumers">

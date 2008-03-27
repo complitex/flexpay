@@ -95,6 +95,104 @@ INSERT INTO town_type_translations_tbl (name, language_id, town_type_id)
 INSERT INTO town_type_translations_tbl (name, language_id, town_type_id)
 	VALUES ('Isolated farmstead', @en_id, @town_type_isolated_farmstead_id);
 
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_street:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Улица', @ru_id, @street_type_street);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Street', @en_id, @street_type_street);
+
+INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	VALUES (@street_type_street, 0x04, 'ул', NULL);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Проспект', @ru_id, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Avenue', @en_id, @street_type_id);
+INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	VALUES (@street_type_id, 0x04, 'просп', NULL);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Виадук', @ru_id, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Viaduct', @en_id, @street_type_id);
+INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	VALUES (@street_type_id, 0x04, 'в-д', NULL);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Переулок', @ru_id, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Lane', @en_id, @street_type_id);
+INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	VALUES (@street_type_id, 0x04, 'пер', NULL);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Набережная', @ru_id, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Embankment', @en_id, @street_type_id);
+INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	VALUES (@street_type_id, 0x04, 'наб', NULL);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Проезд', @ru_id, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Passage', @en_id, @street_type_id);
+INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	VALUES (@street_type_id, 0x04, 'пр-д', NULL);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Площадь', @ru_id, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Square', @en_id, @street_type_id);
+INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	VALUES (@street_type_id, 0x04, 'пл', NULL);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Шоссе', @ru_id, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Highway', @en_id, @street_type_id);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Бульвар', @ru_id, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Boulevard', @en_id, @street_type_id);
+INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	VALUES (@street_type_id, 0x04, 'б-р', NULL);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Спуск', @ru_id, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Slope', @en_id, @street_type_id);
+INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	VALUES (@street_type_id, 0x04, 'сп', NULL);
+
+INSERT INTO street_types_tbl (status) VALUES (0);
+SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Поселок', @ru_id, @street_type_id);
+INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
+	VALUES ('Settlement', @en_id, @street_type_id);
+INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	VALUES (@street_type_id, 0x04, 'пос', NULL);
+
 -- Init Regions table
 INSERT INTO regions_tbl (status, country_id) VALUES (0, @ukraine_id);
 SELECT @region_harkovschina_id:=last_insert_id();
@@ -989,7 +1087,7 @@ INSERT INTO region_name_translations_tbl (name, region_name_id, language_id)
 INSERT INTO region_names_temporal_tbl (region_id, region_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@region_id, @region_name_id, '1900-01-01', '2100-12-31', '2008-01-01', '2100-12-31');
 
--- Harkov region towns
+-- Init Harkov region towns
 INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_harkovschina_id);
 SELECT @town_id:=last_insert_id();
 INSERT INTO town_names_tbl (town_id) VALUES (@town_id);
@@ -1001,7 +1099,7 @@ INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date
 INSERT INTO town_types_temporal_tbl (town_id, town_type_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@town_id, @town_type_town_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
--- Adygeya republic towns
+-- Init Adygeya republic towns
 INSERT INTO towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
 SELECT @town_id:=last_insert_id();
 INSERT INTO town_names_tbl (town_id) VALUES (@town_id);
@@ -1411,7 +1509,7 @@ INSERT INTO town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date
 INSERT INTO town_types_temporal_tbl (town_id, town_type_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@town_id, @town_type_town_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
--- Districts
+-- Init Districts
 INSERT INTO districts_tbl (status, town_id) VALUES (0, @town_novosibirsk_id);
 SELECT @district_id_nsk_zaelcovskiy:=last_insert_id();
 INSERT INTO district_names_tbl (district_id) VALUES (@district_id_nsk_zaelcovskiy);
@@ -1565,7 +1663,7 @@ INSERT INTO district_name_translations_tbl (name, district_name_id, language_id)
 INSERT INTO district_names_temporal_tbl (district_id, district_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@district_id, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
--- Streets
+-- Init Streets
 INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
 SELECT @street_id_demakova:=last_insert_id();
 INSERT INTO street_names_tbl (street_id) VALUES (@street_id_demakova);
@@ -1574,6 +1672,8 @@ INSERT INTO street_name_translations_tbl (name, street_name_id, language_id)
 	VALUES ('Демакова', @street_name_id, @ru_id);
 INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@street_id_demakova, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+INSERT INTO street_types_temporal_tbl (street_id, street_type_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@street_id_demakova, @street_type_street_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_demakova, @district_id_nsk_sovetskiy);
 
 INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
@@ -1584,6 +1684,8 @@ INSERT INTO street_name_translations_tbl (name, street_name_id, language_id)
 	VALUES ('Иванова', @street_name_id, @ru_id);
 INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@street_id_ivanova, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+INSERT INTO street_types_temporal_tbl (street_id, street_type_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@street_id_ivanova, @street_type_street_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_ivanova, @district_id_nsk_sovetskiy);
 
 INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
@@ -1594,6 +1696,8 @@ INSERT INTO street_name_translations_tbl (name, street_name_id, language_id)
 	VALUES ('Российская', @street_name_id, @ru_id);
 INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@street_id_rossiiskaya, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+INSERT INTO street_types_temporal_tbl (street_id, street_type_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@street_id_rossiiskaya, @street_type_street_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_rossiiskaya, @district_id_nsk_sovetskiy);
 
 INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
@@ -1604,10 +1708,12 @@ INSERT INTO street_name_translations_tbl (name, street_name_id, language_id)
 	VALUES ('Красный проспект', @street_name_id, @ru_id);
 INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@street_id_krasniy, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+INSERT INTO street_types_temporal_tbl (street_id, street_type_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@street_id_krasniy, @street_type_street_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_krasniy, @district_id_nsk_centralniy);
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_krasniy, @district_id_nsk_zaelcovskiy);
 
--- Identity types
+-- Init Identity types
 INSERT INTO identity_types_tbl (status, type_enum) VALUES (0, 1);
 SELECT @identity_type_passport_id:=last_insert_id();
 INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
@@ -1622,7 +1728,7 @@ INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
 INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
 	VALUES ('ForeignPassport', @en_id, @identity_type_foreign_passport_id);
 
--- Persons
+-- Init Persons
 INSERT INTO persons_tbl (status) VALUES (0);
 SELECT @person_id:=last_insert_id();
 INSERT INTO person_identities_tbl (begin_date, end_date, birth_date, serial_number,
@@ -1638,7 +1744,7 @@ INSERT INTO person_identities_tbl (begin_date, end_date, birth_date, serial_numb
 	123123123, 'Mikhail', '', 'Fedko', 'ГУВД 316',
 	0, @identity_type_foreign_passport_id, @person_id);
 
--- Buildings attribute types
+-- Init Buildings attribute types
 INSERT INTO building_attribute_types_tbl (type) VALUES (1);
 SELECT @attr_type_home_number_id:=last_insert_id();
 INSERT INTO building_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
@@ -1653,7 +1759,7 @@ INSERT INTO building_attribute_type_translations_tbl (name, short_name, attribut
 INSERT INTO building_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
 	VALUES ('Bulk', '', @attr_type_bulk_id, @en_id);
 
--- Buildings
+-- Init Buildings
 INSERT INTO buildings_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
 SELECT @building_id:=last_insert_id();
 INSERT INTO buildingses_tbl (status, street_id, building_id)
@@ -2212,7 +2318,7 @@ SELECT @buildings_id:=last_insert_id();
 INSERT INTO building_attributes_tbl (value, attribute_type_id, buildings_id)
 	VALUES ('19', @attr_type_home_number_id, @buildings_id);
 
--- Apartments for Novosibirsk, Ivanova st., 27
+-- Init Apartments for Novosibirsk, Ivanova st., 27
 INSERT INTO apartments_tbl (status, building_id) VALUES (0, @building_ivanova_27_id);
 SELECT @apartment_id:=last_insert_id();
 INSERT INTO apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
@@ -3863,7 +3969,7 @@ SELECT @apartment_id:=last_insert_id();
 INSERT INTO apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	VALUES ('1900-01-01', '2100-12-31', '330', @apartment_id);
 	
--- Sz file types
+-- Init Sz file types
 INSERT INTO sz_file_types_tbl (id, file_mask, description)
 	VALUES (1, '(t|T)(a|A)(R|R)(i|I)(f|F)\\u002E(d|D)(b|B)(f|F)', 'sz.file_type.tarif');
 INSERT INTO sz_file_types_tbl (id, file_mask, description)
@@ -3881,7 +3987,7 @@ INSERT INTO sz_file_types_tbl (id, file_mask, description)
 INSERT INTO sz_file_types_tbl (file_mask, description)
 	VALUES ('\\d{8}\\u002E(a|A)\\d{2}', 'sz.file_type.subsidy');
 
--- Sz file status
+-- Init Sz file status
 INSERT INTO sz_file_status_tbl (id, description)
 	VALUES (1, 'sz.file_status.imported');
 INSERT INTO sz_file_status_tbl (id, description)
@@ -3895,13 +4001,13 @@ INSERT INTO sz_file_status_tbl (id, description)
 INSERT INTO sz_file_status_tbl (id, description)
 	VALUES (6, 'sz.file_status.marked_as_deleted');
 
--- Sz file actuality status
+-- Init Sz file actuality status
 INSERT INTO sz_file_actuality_status_tbl (id, description)
 	VALUES (1, 'sz.file_actuality_status.not_actualy');
 INSERT INTO sz_file_actuality_status_tbl (id, description)
 	VALUES (2, 'sz.file_actuality_status.actualy');	
 
--- OSZN orgs
+-- Init OSZN orgs
 insert into oszn_tbl (id, district_id,description) values (1, 1,'Заельцовский');
 insert into oszn_tbl (id, district_id,description) values (2, 2,'Дзержинский');
 insert into oszn_tbl (id, description, district_id) values (3, 'Железнодорожный', 3);
@@ -3923,104 +4029,6 @@ insert into oszn_tbl (id, description, district_id) values (17, 'Советск�
 insert into common_data_source_descriptions_tbl (id, description)
 	values (1, 'Харьковский центр начислений');
 
-INSERT INTO street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Улица', @ru_id, @street_type_id);
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Street', @en_id, @street_type_id);
-
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'ул', NULL);
-
-INSERT INTO street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Проспект', @ru_id, @street_type_id);
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Avenue', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'просп', NULL);
-
-INSERT INTO street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Виадук', @ru_id, @street_type_id);
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Viaduct', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'в-д', NULL);
-
-INSERT INTO street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Переулок', @ru_id, @street_type_id);
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Lane', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'пер', NULL);
-
-INSERT INTO street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Набережная', @ru_id, @street_type_id);
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Embankment', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'наб', NULL);
-
-INSERT INTO street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Проезд', @ru_id, @street_type_id);
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Passage', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'пр-д', NULL);
-
-INSERT INTO street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Площадь', @ru_id, @street_type_id);
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Square', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'пл', NULL);
-
-INSERT INTO street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Шоссе', @ru_id, @street_type_id);
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Highway', @en_id, @street_type_id);
-
-INSERT INTO street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Бульвар', @ru_id, @street_type_id);
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Boulevard', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'б-р', NULL);
-
-INSERT INTO street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Спуск', @ru_id, @street_type_id);
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Slope', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'сп', NULL);
-
-INSERT INTO street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Поселок', @ru_id, @street_type_id);
-INSERT INTO street_type_translations_tbl (name, language_id, street_type_id)
-	VALUES ('Settlement', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'пос', NULL);
-
 -- Init Sequences table
 INSERT INTO common_sequences_tbl (id, counter, description) VALUES (1, 10, 'Последовательность для ЛС модуля ЕИРЦ');	
 
@@ -4033,3 +4041,162 @@ INSERT INTO eirc_account_record_types_tbl (type_enum_id, description)
 	VALUES (2, 'Исходящая оплата');
 INSERT INTO eirc_account_record_types_tbl (type_enum_id, description)
 	VALUES (3, 'Сальдо');
+
+-- Init service providers registry types
+INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (1, 1, 'Сальдо', 'Входящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (2, 2, 'Начисление', 'Входящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (3, 3, 'Извещение', 'Входящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (4, 4, 'Счета на закрытие', 'Входящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (5, 5, 'Информационный', 'Входящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (6, 6, 'Корректировки', 'Входящий/Исходящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (7, 7, 'Наличные оплаты', 'Входящий/Исходящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (8, 8, 'Безналичные оплаты', 'Входящий/Исходящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (9, 9, 'Возвраты платежей', 'Входящий/Исходящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (10, 10, 'Ошибки', 'Входящий/Исходящий');
+
+-- Init organisations
+-- Init organisations
+INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, description, name, district_id, unique_id)
+	VALUES (0, '-------', '123', 'Eirc itself', 'EIRC', @district_id_nsk_sovetskiy, '1');
+SELECT @organisation_eirc:=last_insert_id();
+INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, description, name, district_id, unique_id)
+	VALUES (0, '123123123', '123', 'Test organisation', 'ЖКО', @district_id_nsk_sovetskiy, '2');
+SELECT @organisation_zhko:=last_insert_id();
+INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, description, name, district_id, unique_id)
+	VALUES (0, '456456456', '56', 'Test organisation 2', 'ТСЖ', @district_id_nsk_sovetskiy, '3');
+SELECT @organisation_tszh:=last_insert_id();
+
+-- Init service providers
+INSERT INTO common_data_source_descriptions_tbl (description) VALUES ('Источник - ЖКО Советского района');
+SELECT @source_description_id:=last_insert_id();
+INSERT INTO eirc_service_providers_tbl(organisation_id, data_source_description_id, description, provider_number)
+	VALUES (@organisation_zhko, @source_description_id, 'ПУ ЖКО', '1');
+SELECT @service_provider_zhko:=last_insert_id();
+
+INSERT INTO common_data_source_descriptions_tbl (description) VALUES ('Источник - ТСЖ Советского района');
+SELECT @source_description_id:=last_insert_id();
+INSERT INTO eirc_service_providers_tbl(organisation_id, data_source_description_id, description, provider_number)
+	VALUES (@organisation_tszh, @source_description_id, 'ПУ тсж', '2');
+SELECT @service_provider_tszh:=last_insert_id();
+
+-- Init service types
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 1);
+SELECT @service_vodootvedenie:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Водоотведение', '', @ru_id, @service_vodootvedenie);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 2);
+SELECT @service_dogs:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Содержание собак', '', @ru_id, @service_dogs);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 3);
+SELECT @service_garage:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Гараж', '', @ru_id, @service_garage);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 4);
+SELECT @service_heating:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Отопление', '', @ru_id, @service_heating);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 5);
+SELECT @service_water_cooling:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Подогрев воды', '', @ru_id, @service_water_cooling);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 6);
+SELECT @service_cold_water:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Холодная вода', '', @ru_id, @service_cold_water);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 7);
+SELECT @service_hot_water:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Горячая вода', '', @ru_id, @service_hot_water);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 8);
+SELECT @service_cleaning:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Уборка территории', '', @ru_id, @service_cleaning);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 9);
+SELECT @service_cleaning_ext:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Уборка валов, тех.этажей, крыш', '', @ru_id, @service_cleaning_ext);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 10);
+SELECT @service_TBO:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Вывоз и утилизация ТБО', '', @ru_id, @service_TBO);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 11);
+SELECT @service_maintainance_water_supply:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('ТО систем водоснабжения', '', @ru_id, @service_maintainance_water_supply);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 12);
+SELECT @service_maintainance_vodootvedenie:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('ТО систем водоотведения', '', @ru_id, @service_maintainance_vodootvedenie);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 13);
+SELECT @service_maintainance:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('ТО систем', '', @ru_id, @service_maintainance);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 14);
+SELECT @service_fog_canals:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Обслуживание дымоотв. каналов', '', @ru_id, @service_fog_canals);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 15);
+SELECT @service_lighting:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Освещение мест общего пльзования', '', @ru_id, @service_lighting);
+
+-- Init services
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_vodootvedenie, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_vodootvedenie, '');
+
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_lighting, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_lighting, '');
+
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_fog_canals, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_fog_canals, '');
+
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_maintainance, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_maintainance, '');
+
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_maintainance_vodootvedenie, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_maintainance_vodootvedenie, '');
+
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_maintainance_water_supply, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_maintainance_water_supply, '');
+
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_TBO, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_TBO, '');
+
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_cleaning_ext, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_cleaning_ext, '');
+
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_cleaning, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_cleaning, '');
+
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_hot_water, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_hot_water, '');
+
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_cold_water, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_cold_water, '');
+
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_dogs, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_dogs, '');
+
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_garage, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_garage, '');
+
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_heating, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_heating, '');
+
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_water_cooling, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_water_cooling, '');

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="flexpay" default="build.all">
 
+	<import file="ab_sync/ab_sync_build.xml" />
 	<import file="sz/sz_build.xml" />
 
 	<target name="build.all" depends="build.ddls,build.docs,build.wars,run.tests" />
@@ -9,6 +10,7 @@
 	<!-- Build wars -->
 	<target name="build.wars">
 		<antcall target="ab.war.production.glassfish_mysql5" />
+		<antcall target="ab_sync.war.production.glassfish_mysql5" />
 		<antcall target="bti.war.production.glassfish_mysql5" />
 		<antcall target="eirc.war.production.glassfish_mysql5" />
 		<antcall target="sz.war.production.glassfish_mysql5" />
@@ -18,6 +20,7 @@
 	<target name="build.ddls">
 		<antcall target="common.exportschema.mysql5" />
 		<antcall target="ab.exportschema.mysql5" />
+		<antcall target="ab_sync.exportschema.mysql5" />
 		<antcall target="bti.exportschema.mysql5" />
 		<antcall target="eirc.exportschema.mysql5" />
 		<antcall target="sz.exportschema.mysql5" />
@@ -36,6 +39,7 @@
 	<target name="build.docs">
 		<antcall target="common.docs" />
 		<antcall target="ab.docs" />
+		<antcall target="ab_sync.docs" />
 		<antcall target="bti.docs" />
 		<antcall target="eirc.docs" />
 		<antcall target="sz.docs" />

@@ -23,6 +23,16 @@ public class SpFile extends DomainObject {
 	private String userName;
 	private Date importDate;
 
+	/**
+	 * Constructs a new DomainObject.
+	 */
+	public SpFile() {
+	}
+
+	public SpFile(Long id) {
+		super(id);
+	}
+
 	public File saveToFileSystem(File source) throws IOException {
 		if (!source.exists()) {
 			throw new IllegalArgumentException("File " + source + " not exists");

@@ -45,7 +45,7 @@ public class RawStreetDataConverter implements DataConverter<Street, RawStreetDa
 		nameTemporal.setValue(streetName);
 		street.setNamesTimeLine(new TimeLine<StreetName, StreetNameTemporal>(nameTemporal));
 
-		StreetType streetType = (StreetType) correctionsService.findCorrection(
+		StreetType streetType = correctionsService.findCorrection(
 				streetRawData.getTypeId(), StreetType.class, dataSourceDescription);
 		if (streetType == null) {
 			throw new FlexPayException("Cannot find street type correction: " + streetRawData.getTypeId());

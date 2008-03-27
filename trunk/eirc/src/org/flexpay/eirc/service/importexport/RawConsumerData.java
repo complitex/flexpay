@@ -16,7 +16,7 @@ public class RawConsumerData extends RawData<Consumer> {
 	public static final String FIELD_FIRST_NAME = "firstName";
 	public static final String FIELD_MIDDLE_NAME = "middleName";
 	public static final String FIELD_LAST_NAME = "lastName";
-	public static final String FIELD_ACCOUNT_NUMBER = "lastName";
+	public static final String FIELD_ACCOUNT_NUMBER = "accountNumber";
 	public static final String FIELD_ADDRESS_CITY = "city";
 	public static final String FIELD_ADDRESS_STREET = "street";
 	public static final String FIELD_ADDRESS_STREET_TYPE = "streetType";

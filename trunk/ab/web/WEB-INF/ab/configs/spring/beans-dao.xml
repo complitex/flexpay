@@ -308,6 +308,11 @@
 
 	<bean id="personDaoExt" class="org.flexpay.ab.dao.imp.PersonDaoExtImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
+		<property name="personDaoExtJdbc">
+			<bean class="org.flexpay.ab.dao.imp.PersonDaoExtJdbcImpl">
+				<property name="dataSource" ref="dataSource" />
+			</bean>
+		</property>
 	</bean>
 
 	<bean id="buildingAttributeTypeTranslationDao" parent="abstractDao">

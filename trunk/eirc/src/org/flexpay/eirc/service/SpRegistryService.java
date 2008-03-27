@@ -45,5 +45,4 @@ public interface SpRegistryService {
 	SpRegistry update(SpRegistry spRegistry) throws FlexPayException;
 
 	void delete(SpRegistry spRegistry);
-
 }

@@ -7,6 +7,10 @@ import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.AccountRecordType;
 import org.flexpay.eirc.service.SPService;
 
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+
 public class SPServiceImpl implements SPService {
 
 	private ServiceDaoExt serviceDaoExt;
@@ -19,12 +23,30 @@ public class SPServiceImpl implements SPService {
 	 * @throws IllegalArgumentException if the <code>code</code> is invalid
 	 */
 	public ServiceType getServiceType(int code) throws IllegalArgumentException {
+		if (code2TypeCache == null) {
+			initializeServiceTypesCache();
+		}
+		if (code2TypeCache.containsKey(code)) {
+			return code2TypeCache.get(code);
+		}
 		ServiceType type = serviceDaoExt.findByCode(code);
 		if (type == null) {
 			throw new IllegalArgumentException("Cannot find service type with code #" + code);
 		}
 
+		code2TypeCache.put(code, type);
+
 		return type;
+	}
+
+	private Map<Integer, ServiceType> code2TypeCache;
+
+	private void initializeServiceTypesCache() {
+		code2TypeCache = new HashMap<Integer, ServiceType>();
+		List<ServiceType> types = serviceDaoExt.getServiceTypes();
+		for (ServiceType type : types) {
+			code2TypeCache.put(type.getCode(), type);
+		}
 	}
 
 	/**

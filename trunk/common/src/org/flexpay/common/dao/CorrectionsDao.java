@@ -29,7 +29,7 @@ public interface CorrectionsDao {
 	 * @param sourceDescription Data source description
 	 * @return DomainObject
 	 */
-	DomainObject findCorrection(String externalId, int type, Class cls, DataSourceDescription sourceDescription);
+	<T extends DomainObject> T findCorrection(String externalId, int type, Class<T> cls, DataSourceDescription sourceDescription);
 
 	/**
 	 * Get correction internal object id

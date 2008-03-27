@@ -11,9 +11,8 @@ public interface OrganisationDao extends GenericDao<Organisation, Long> {
 	/**
 	 * Find organisation by id
 	 *
-	 * @param pager Page
 	 * @param id Organisation id
 	 * @return List if organisations
 	 */
-	List<Organisation> findOrganisationsById(Page pager, String id);
+	List<Organisation> findOrganisationsById(String id);
 }

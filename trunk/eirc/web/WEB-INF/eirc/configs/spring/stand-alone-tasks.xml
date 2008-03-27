@@ -3,4 +3,16 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
+	<bean class="org.flexpay.common.util.standalone.StandaloneTasksHolder">
+		<property name="standaloneTasks">
+			<list>
+				<!-- run sp file processing -->
+				<bean class="org.flexpay.eirc.util.standalone.RunSpFileProcessing">
+					<property name="fileProcessor" ref="serviceProviderFileProcessor" />
+				</bean>
+			</list>
+		</property>
+
+	</bean>
+
 </beans>

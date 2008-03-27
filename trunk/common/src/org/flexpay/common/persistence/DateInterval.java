@@ -4,10 +4,12 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Date interval is a interval of time with day granularity
@@ -73,7 +75,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 		if (begin == null || begin.compareTo(pastInfinite) < 0) {
 			this.begin = pastInfinite;
 		} else {
-			this.begin = begin;
+			this.begin = DateUtils.truncate(begin, Calendar.DAY_OF_MONTH);
 		}
 	}
 
@@ -96,7 +98,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 		if (end == null || end.compareTo(futureInfinite) > 0) {
 			this.end = futureInfinite;
 		} else {
-			this.end = end;
+			this.end = DateUtils.truncate(end, Calendar.DAY_OF_MONTH);
 		}
 	}
 

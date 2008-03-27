@@ -10,12 +10,13 @@
 			<generator class="native" />
 		</id>
 		<property name="requestFileName" column="request_file_name" not-null="true" />
-		<property name="internalRequestFileName" column="internal_request_file_name" not-null="true" />
+		<property name="internalRequestFileName" column="internal_request_file_name"
+				  not-null="true" />
 		<property name="internalResponseFileName" column="internal_response_file_name" />
 		<property name="userName" column="user_name" not-null="true" />
 		<property name="importDate" column="import_date" not-null="true" />
 	</class>
-	
+
 	<class name="SpRegistry" table="eirc_sp_registries_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
@@ -30,14 +31,15 @@
 		<property name="amount" column="amount" type="big_decimal" />
 		<property name="containers" column="containers" />
 		<many-to-one name="registryType" column="registry_type_id" not-null="true"
-			class="SpRegistryType" />
+					 class="SpRegistryType" />
 
 		<many-to-one name="spFile" column="sp_file_id" not-null="true" class="SpFile" />
 		<many-to-one name="serviceProvider" column="service_provider_id"
-			class="ServiceProvider" />
+					 class="ServiceProvider" />
 	</class>
 
-	<class name="SpRegistryType" table="eirc_sp_registry_types_tbl" optimistic-lock="version">
+	<class name="SpRegistryType" table="eirc_sp_registry_types_tbl"
+		   optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -46,12 +48,13 @@
 		<property name="typeId" column="type_enum_id" not-null="true" />
 	</class>
 
-	<class name="SpRegistryRecord" table="eirc_sp_registry_records_tbl" optimistic-lock="version">
+	<class name="SpRegistryRecord" table="eirc_sp_registry_records_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
 		<property name="serviceCode" column="service_code" not-null="true" />
-		<property name="personalAccountExt" column="personal_account_ext" not-null="true" />
+		<property name="personalAccountExt" column="personal_account_ext"
+				  not-null="true" />
 		<property name="city" column="city" />
 		<property name="streetType" column="street_type" />
 		<property name="streetName" column="street_name" />
@@ -61,37 +64,59 @@
 		<property name="firstName" column="first_name" />
 		<property name="middleName" column="middle_name" />
 		<property name="lastName" column="last_name" />
-		<property name="operationDate" column="operation_date" type="timestamp" not-null="true" />
+		<property name="operationDate" column="operation_date" type="timestamp"
+				  not-null="true" />
 		<property name="uniqueOperationNumber" column="unique_operation_number" />
 		<property name="amount" column="amount" type="big_decimal" />
 		<property name="containers" column="containers" />
 
-		<many-to-one name="consumer" column="consumer_id" class="Consumer"/>
-		<many-to-one name="spRegistry" column="registry_id" not-null="true" />
-	 </class>
+		<many-to-one name="consumer" column="consumer_id" class="Consumer" />
+		<many-to-one name="spRegistry" column="registry_id" class="SpRegistry"
+					 not-null="true" />
+	</class>
+
+	<query name="SpFile.listSpFiles.count">
+		select count(*) from SpFile
+	</query>
 
 	<query name="SpFile.listSpFiles">
-		select distinct s
-		from SpFile s
+		select distinct s from SpFile s
+	</query>
+
+	<query name="SpFile.listRegistries.count">
+		select count(*) from SpRegistry where spFile.id=?
 	</query>
 
 	<query name="SpFile.listRegistries">
-		from SpRegistry
-		where spFile.id=?
+		from SpRegistry r inner join fetch r.registryType where r.spFile.id=?
+	</query>
+
+	<query name="SpFile.listRegistryRecords.count">
+		select count(*) from SpRegistryRecord where spRegistry.id=?
 	</query>
 
 	<query name="SpFile.listRegistryRecords">
-		from SpRegistryRecord r
-		where r.spRegistry.id=?
+		from SpRegistryRecord where spRegistry.id=?
 	</query>
-	
+
 	<query name="SpRegistry.findObjects">
-		FROM SpRegistry r
-		WHERE r.spFile.id=?
+		from SpRegistry r where r.spFile.id=?
 	</query>
-	
+
+	<query name="SpRegistry.deleteRecords">
+		delete from SpRegistryRecord where spRegistry.id=?
+	</query>
+
 	<query name="SpRegistry.findObjects.count">
 		select count(*) from SpRegistry r where r.spFile.id=?
+	</query>
+
+	<query name="SpRegistryRecord.listRecords">
+		select distinct r from SpRegistryRecord r where r.spRegistry.id=?
+	</query>
+
+	<query name="SpRegistryRecord.listRecords.count">
+		select count(*) from SpRegistryRecord where spRegistry.id=?
 	</query>
 
 </hibernate-mapping>

@@ -13,7 +13,7 @@ public class AccountRecordType extends DomainObject {
 	public static int TYPE_BALANCE = 3;
 
 	private int typeId;
-	private int description;
+	private String description;
 
 	/**
 	 * Constructs a new DomainObject.
@@ -48,7 +48,7 @@ public class AccountRecordType extends DomainObject {
 	 *
 	 * @return Value for property 'description'.
 	 */
-	public int getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
@@ -57,7 +57,7 @@ public class AccountRecordType extends DomainObject {
 	 *
 	 * @param description Value to set for property 'description'.
 	 */
-	public void setDescription(int description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 }

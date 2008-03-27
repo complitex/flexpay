@@ -11,10 +11,23 @@ import java.io.Serializable;
  * rest of the method name
  */
 public interface GenericDao<T, PK extends Serializable> {
+
 	PK create(T newInstance);
 
+	/**
+	 * Read persistent object
+	 * 
+	 * @param id Object identifier
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
 	T read(PK id);
 
+	/**
+	 * Read full persistent object info
+	 * 
+	 * @param id Object identifier
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
 	T readFull(PK id);
 
 	void update(T transientObject);

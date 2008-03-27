@@ -31,7 +31,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 * @param sourceDescription External data source description
 	 * @return DomainObject
 	 */
-	public DomainObject findCorrection(String externalId, Class<? extends DomainObject> cls, DataSourceDescription sourceDescription) {
+	public <T extends DomainObject> T findCorrection(String externalId, Class<T> cls, DataSourceDescription sourceDescription) {
 		int type = typeRegistry.getType(cls);
 		return correctionsDao.findCorrection(externalId, type, cls, sourceDescription);
 	}

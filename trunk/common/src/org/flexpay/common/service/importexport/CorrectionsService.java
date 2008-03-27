@@ -21,7 +21,7 @@ public interface CorrectionsService {
 	 * @param sourceDescription External data source description
 	 * @return DomainObject
 	 */
-	DomainObject findCorrection(String externalId, Class<? extends DomainObject> cls, DataSourceDescription sourceDescription);
+	<T extends DomainObject> T findCorrection(String externalId, Class<T> cls, DataSourceDescription sourceDescription);
 
 	/**
 	 * Check if correction exists 

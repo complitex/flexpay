@@ -37,14 +37,33 @@ public class ServiceProviderFileProcessor {
 	 * @param file uploaded SpFile
 	 */
 	public void processFile(SpFile file) {
+
+		if (log.isInfoEnabled()) {
+			log.info("Starting processing file");
+		}
+
 		List<SpRegistry> registries = spFileService.getRegistries(file);
+		if (log.isInfoEnabled() && registries.isEmpty()) {
+			log.info("File does not have any registries");
+		}
+
 		for (SpRegistry registry : registries) {
+
+			if (log.isInfoEnabled()) {
+				log.info("Starting processing registry #" + registry.getId());			
+			}
 			processHeader(registry);
 
+			if (log.isInfoEnabled()) {
+				log.info("Starting importing consumers");
+			}
 			if (!setupRecordsConsumer(registry)) {
 				continue;
 			}
 
+			if (log.isInfoEnabled()) {
+				log.info("Starting processing records");
+			}
 			List<SpRegistryRecord> records = spFileService.getRegistryRecords(registry);
 			for (SpRegistryRecord record : records) {
 				processRecord(registry, record);

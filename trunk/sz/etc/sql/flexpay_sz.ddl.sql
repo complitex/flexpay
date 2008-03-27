@@ -730,7 +730,7 @@
 
     create table eirc_account_record_types_tbl (
         id bigint not null auto_increment,
-        description integer not null,
+        description varchar(255) not null,
         type_enum_id integer not null,
         primary key (id)
     );
@@ -762,6 +762,7 @@
         kpp varchar(255) not null,
         description varchar(255) not null,
         name varchar(255) not null,
+        unique_id varchar(255) not null unique,
         district_id bigint not null,
         primary key (id)
     );

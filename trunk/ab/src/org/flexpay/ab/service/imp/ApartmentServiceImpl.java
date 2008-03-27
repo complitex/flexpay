@@ -8,6 +8,7 @@ import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.exception.FlexPayException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -45,5 +46,21 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 */
 	public Apartment findApartmentStub(Building building, String number) {
 		return apartmentDaoExt.findApartmentStub(building, number);
+	}
+
+	public String getApartmentNumber(Apartment apartment) throws FlexPayException {
+		Apartment persistent = apartmentDao.readFull(apartment.getId());
+		return persistent.getNumber();
+	}
+
+	/**
+	 * Get building apartment belongs to
+	 *
+	 * @param apartment Apartment stub
+	 * @return Building stub
+	 */
+	public Building getBuilding(Apartment apartment) {
+		Apartment persistent = apartmentDao.read(apartment.getId());
+		return persistent.getBuilding();
 	}
 }

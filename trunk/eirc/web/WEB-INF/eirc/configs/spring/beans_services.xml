@@ -30,11 +30,19 @@
 
 	<bean id="serviceOperationsFactory"
 		  class="org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory">
-
+		<property name="spService" ref="spService" />
+		<property name="spFileService" ref="spFileService" />
+		<property name="accountRecordService" ref="accountRecordService" />
+		<property name="organisationService" ref="organisationService" />
 	</bean>
 
 	<bean id="consumerService" class="org.flexpay.eirc.service.imp.ConsumerServiceImpl">
 		<property name="consumerDao" ref="consumerDao" />
+		<property name="consumerDaoExt" ref="consumerDaoExt" />
+	</bean>
+
+	<bean id="accountRecordService" class="org.flexpay.eirc.service.imp.AccountRecordServiceImpl">
+		<property name="accountRecordDao" ref="accountRecordDao" />
 	</bean>
 
 	<bean id="organisationService" class="org.flexpay.eirc.service.imp.OrganisationServiceImpl">

@@ -5,7 +5,11 @@ import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.AccountRecordType;
 
+import java.util.List;
+
 public interface ServiceDaoExt {
+
+	List<ServiceType> getServiceTypes();
 
 	/**
 	 * Find Service type by its code

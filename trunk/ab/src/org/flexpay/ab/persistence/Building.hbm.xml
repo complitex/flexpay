@@ -160,4 +160,10 @@
 				ba.buildingAttributeType.type=? and ba.value=?)
 	</query>
 
+	<query name="Buildings.findBuildingBuildings">
+		from Buildings b
+			inner join fetch b.buildingAttributes a
+			inner join fetch a.buildingAttributeType t
+		where b.building.id=?
+	</query>
 </hibernate-mapping>

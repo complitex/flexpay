@@ -41,15 +41,15 @@ public class CorrectionsDaoImpl extends SimpleJdbcDaoSupport implements Correcti
 	 * @param sourceDescription Data source description
 	 * @return DomainObject
 	 */
-	public DomainObject findCorrection(String externalId, int type,
-									   final Class cls, DataSourceDescription sourceDescription) {
+	public <T extends DomainObject> T findCorrection(String externalId, int type,
+									   final Class<T> cls, DataSourceDescription sourceDescription) {
 
 		Long id = sourceDescription != null ?
 				  getInternalId(externalId, type, sourceDescription) :
 				  getInternalCommonId(externalId, type);
 		if (id != null) {
 			try {
-				DomainObject object = (DomainObject) cls.newInstance();
+				T object = cls.newInstance();
 				object.setId(id);
 				return object;
 			} catch (Exception e) {

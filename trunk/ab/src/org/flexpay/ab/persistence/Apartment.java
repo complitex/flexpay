@@ -14,6 +14,8 @@ import java.util.Date;
  */
 public class Apartment extends DomainObjectWithStatus {
 
+	public static final String NUMBER_UNKNOWN = "unknown";
+
 	private Building building;
 	private Set<ApartmentNumber> apartmentNumbers = Collections.emptySet();
 	private Set<Person> persons = Collections.emptySet();
@@ -64,7 +66,7 @@ public class Apartment extends DomainObjectWithStatus {
 			}
 		}
 
-		return "unknown";
+		return NUMBER_UNKNOWN;
 	}
 
 	/**

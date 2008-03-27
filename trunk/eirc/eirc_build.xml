@@ -41,7 +41,7 @@
         <path refid="eirc.test.classpath" />
         <path location="${build.dir}/web" />
         <path location="eirc/src" />
-        <path location="eirc/tests/data/org/flexpay/eirc" />
+        <path location="${eirc.dir}/tests/data" />
     </path>
 
     <target name="eirc.clean.build">
@@ -108,7 +108,7 @@
 		</antcall>
 	</target>
 
-    <target name="eirc.prepare.war" depends="bti.prepare.war">
+    <target name="eirc.prepare.war" depends="eirc.build.test.jar,bti.prepare.war">
         <fileset id="eirc.web.resources" dir="${eirc.dir}/web" />
         <antcall target="template.prepare.war">
             <param name="to_dir" value="" />
@@ -170,6 +170,18 @@
 	<target name="eirc.prepare.for.test">
 		<antcall target="eirc.build.test.jar" />
 		<antcall target="eirc.prepare.war" />
+	</target>
+
+	<target name="eirc.run.standalone" depends="eirc.prepare.war">
+		<antcall target="template.run.standalone">
+			<reference refid="eirc.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="eirc.profile.standalone" depends="eirc.prepare.war">
+		<antcall target="template.profile.standalone">
+			<reference refid="eirc.runtests.classpath" torefid="classpath" />
+		</antcall>
 	</target>
 
 </project>

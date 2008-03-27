@@ -27,8 +27,36 @@ public class TranslationUtil {
 			throws FlexPayException {
 
 		Language language = LanguageUtil.getLanguage(locale);
-		Language defaultLang = ApplicationConfig.getInstance().getDefaultLanguage();
+		return getTranslation(translations, language);
+	}
 
+	/**
+	 * Find translation object in collection for default <code>language</locale>
+	 *
+	 * @param translations Collection of object translations
+	 * @return Translation in defualt language, or <code>null</code>
+	 * @throws FlexPayException if languages configuration is invalid
+	 */
+	public static <T extends Translation> T getTranslation(Collection<T> translations)
+			throws FlexPayException {
+
+		return getTranslation(translations, ApplicationConfig.getInstance().getDefaultLanguage());
+	}
+
+	/**
+	 * Find translation object in collection for specified <code>language</locale>
+	 *
+	 * @param translations Collection of object translations
+	 * @param language	   Language to get translation in
+	 * @return Translation in specified locale if found, or in defualt locale, or
+	 *         <code>null</code>
+	 * @throws FlexPayException if languages configuration is invalid
+	 */
+	public static <T extends Translation> T getTranslation(
+			Collection<T> translations, Language language)
+			throws FlexPayException {
+
+		Language defaultLang = ApplicationConfig.getInstance().getDefaultLanguage();
 		T defaultTranslation = null;
 
 		for (T translation : translations) {
@@ -52,7 +80,7 @@ public class TranslationUtil {
 			}
 		}
 
-		// Translatio was not found, return in default language if any 
+		// Translation was not found, return in default language if any
 		return defaultTranslation;
 	}
 }

@@ -8,6 +8,7 @@ public class Organisation extends DomainObjectWithStatus {
 	private String individualTaxNumber;
 	private String kpp; // code prichiny postanovki na nalogoviy uchet (TODO: translate me)
 	private String description;
+	private String uniqueId;
 
 	private String name;
 	private District district;
@@ -60,5 +61,13 @@ public class Organisation extends DomainObjectWithStatus {
 
 	public void setDistrict(District district) {
 		this.district = district;
+	}
+
+	public String getUniqueId() {
+		return uniqueId;
+	}
+
+	public void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
 	}
 }
