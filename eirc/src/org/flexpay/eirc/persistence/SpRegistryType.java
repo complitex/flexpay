@@ -11,6 +11,12 @@ public class SpRegistryType extends DomainObject {
 	private String direction;
 	private int typeId;
 
+	/**
+	 * Constructs a new DomainObject.
+	 */
+	public SpRegistryType() {
+	}
+
 	public SpRegistryType(Long id) {
 		super(id);
 	}

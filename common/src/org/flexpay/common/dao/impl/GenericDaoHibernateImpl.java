@@ -1,5 +1,6 @@
 package org.flexpay.common.dao.impl;
 
+import org.apache.log4j.Logger;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.finder.FinderArgumentTypeFactory;
 import org.flexpay.common.dao.finder.FinderExecutor;
@@ -27,6 +28,9 @@ import java.util.List;
 @SuppressWarnings ({"unchecked"})
 public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		implements GenericDao<T, PK>, FinderExecutor, MethodExecutor {
+
+	private static Logger log = Logger.getLogger(GenericDaoHibernateImpl.class);
+
 	protected HibernateTemplate hibernateTemplate;
 
 	// Default. Can override in config
@@ -76,7 +80,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 
 	public Integer executeUpdate(Method method, final Object[] values) {
 		final String queryName = getNamingStrategy().queryNameFromMethod(type, method);
-		return (Integer)hibernateTemplate.execute(new HibernateCallback() {
+		return (Integer) hibernateTemplate.execute(new HibernateCallback() {
 			public Integer doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.getNamedQuery(queryName);
 				for (int i = 0; i < values.length; i++) {
@@ -109,8 +113,14 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 				if (pageParam != null && queryCount != null) {
 					Long count = (Long) queryCount.uniqueResult();
 					pageParam.setTotalElements(count.intValue());
+					if (log.isDebugEnabled()) {
+						log.debug(String.format("Setting page for query: %s %d - %d", queryName,
+								pageParam.getThisPageFirstElementNumber(), pageParam.getPageSize()));
+					}
 					queryObject.setFirstResult(pageParam.getThisPageFirstElementNumber());
 					queryObject.setMaxResults(pageParam.getPageSize());
+				} else if (pageParam != null) {
+					log.warn("Page parameter found, but no count query found: " + queryName + ", invalid API usage");
 				}
 				List results = queryObject.list();
 				if (pageParam != null) {

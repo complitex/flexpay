@@ -8,36 +8,49 @@ import org.flexpay.ab.service.importexport.ImportService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class EircImportService extends ImportService {
 
 	private RawConsumerDataConverter consumerDataConverter;
 	private ConsumerService consumerService;
 	private IdentityTypeService typeService;
 
+	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public void importConsumers(DataSourceDescription sd, RawConsumersDataSource dataSource)
 			throws FlexPayException {
+
+		if (log.isInfoEnabled()) {
+			log.info("Starting importing consumers for data source: " + sd.getId());
+		}
 
 		Town defaultTown = ApplicationConfig.getInstance().getDefaultTown();
 		ArrayStack filters = new ArrayStack();
 		filters.push(new TownFilter(defaultTown.getId()));
 		List<Street> townStreets = streetService.find(filters);
-		if (log.isDebugEnabled()) {
-			log.debug("Town streets: " + townStreets);
-		}
 
 		Map<String, List<Street>> nameObjsMap = initializeNamesToObjectsMap(townStreets);
 		Map<String, StreetType> nameTypeMap = initializeTypeNamesToObjectsMap();
 
+		if (log.isInfoEnabled()) {
+			log.info("Streets number: " + nameObjsMap.keySet().size());
+			log.info("Street types: " + nameTypeMap.keySet());
+		}
+
 		dataSource.initialize();
+		long now = System.currentTimeMillis();
 		while (dataSource.hasNext()) {
+
+			logTime(now, 0);
 
 			ImportOperationTypeHolder typeHolder = new ImportOperationTypeHolder();
 			RawConsumerData data = dataSource.next(typeHolder);
@@ -47,19 +60,24 @@ public class EircImportService extends ImportService {
 				continue;
 			}
 
+			logTime(now, 1);
+
 			try {
 				// Find object by correction
-				Consumer persistentObj = (Consumer) correctionsService.findCorrection(
+				Consumer persistentObj = correctionsService.findCorrection(
 						data.getCorrectionId(), Consumer.class, sd);
 
+				logTime(now, 2);
 				if (persistentObj != null) {
 					log.info("Found existing consumer correction: #" + data.getExternalSourceId());
+					postSaveConsumer(data, persistentObj);
 					continue;
 				}
 
 				Consumer rawConsumer = consumerDataConverter.fromRawData(
 						data, sd, correctionsService);
 
+				logTime(now, 3);
 				if (rawConsumer.getApartment() == null) {
 					// Find apartment
 					Apartment apartment = findApartment(nameObjsMap, nameTypeMap, sd, data);
@@ -67,12 +85,19 @@ public class EircImportService extends ImportService {
 						addImportError(sd, data.getExternalSourceId(), Apartment.class, dataSource);
 						continue;
 					}
+					DataCorrection corr = correctionsService.getStub(
+							data.getApartmentId(), apartment, sd);
+					addToStack(corr);
 					rawConsumer.setApartment(apartment);
 				}
+				log.info("Found apartment: " + data.getApartmentId());
 
+				logTime(now, 4);
 				if (rawConsumer.getResponsiblePerson() == null) {
 					Person person = findPerson(data);
 					if (person == null) {
+						logTime(now, 51);
+						log.error("Person not found: " + data.getPersonCorrectionId());
 						addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
 						continue;
 					}
@@ -82,13 +107,17 @@ public class EircImportService extends ImportService {
 					addToStack(corr);
 					rawConsumer.setResponsiblePerson(person);
 				}
+				log.info("Found responsible person: " + data.getPersonCorrectionId());
 
+				logTime(now, 5);
 				if (rawConsumer.getService() == null) {
 					log.error("Not found provider #" + data.getRegistry().getSenderCode() +
 							  " service by code: " + data.getRegistryRecord().getServiceCode());
 					continue;
 				}
+				log.info("Found service");
 
+				logTime(now, 6);
 				Consumer persistent = consumerService.findConsumer(rawConsumer);
 				if (persistent == null) {
 					log.info("Creating new consumer: " + data.getCorrectionId());
@@ -98,18 +127,36 @@ public class EircImportService extends ImportService {
 
 				// Consumer found/created, add new correction
 				if (log.isInfoEnabled()) {
-					log.info("Creating new consumer: " + data.getCorrectionId());
+					log.info("Creating new consumer correction: " + data.getCorrectionId());
 				}
 				DataCorrection corr = correctionsService.getStub(
 						data.getCorrectionId(), persistent, sd);
 				addToStack(corr);
+
+				logTime(now, 7);
+
+				postSaveConsumer(data, persistent);
+				logTime(now, 8);
 			} catch (Exception e) {
 				log.error("Failed getting consumer: " + data.toString(), e);
 				throw new RuntimeException(e);
+			} finally {
+				now = System.currentTimeMillis();
 			}
 		}
 
 		flushStack();
+	}
+
+	private void postSaveConsumer(RawConsumerData data, Consumer consumer) {
+		data.getRegistryRecord().setConsumer(consumer);
+		addToStack(data.getRegistryRecord());
+	}
+
+	private void logTime(long start, int label) {
+		if (log.isInfoEnabled()) {
+			log.info("Time spent " + label + ": " + ((System.currentTimeMillis() - start) / 1000) + " ms. ");
+		}
 	}
 
 	private Person findPerson(RawConsumerData data) {
@@ -145,21 +192,21 @@ public class EircImportService extends ImportService {
 									DataSourceDescription sourceDescription, RawConsumerData data) {
 
 		// try to find by apartment correction
-		Apartment apartmentById = (Apartment) correctionsService.findCorrection(
+		Apartment apartmentById = correctionsService.findCorrection(
 				data.getApartmentId(), Apartment.class, sourceDescription);
 		if (apartmentById != null) {
 			log.info("Found apartment correction");
 			return apartmentById;
 		}
 
-		Buildings buildingsById = (Buildings) correctionsService.findCorrection(
+		Buildings buildingsById = correctionsService.findCorrection(
 				data.getBuildingId(), Buildings.class, sourceDescription);
 		if (buildingsById != null) {
 			log.info("Found buildings correction");
 			return findApartment(data, buildingsById);
 		}
 
-		Street streetById = (Street) correctionsService.findCorrection(
+		Street streetById = correctionsService.findCorrection(
 				data.getStreetId(), Street.class, sourceDescription);
 		if (streetById != null) {
 			log.info("Found street correction");
@@ -179,11 +226,13 @@ public class EircImportService extends ImportService {
 		List<Street> streets = nameObjsMap.get(data.getAddressStreet().toLowerCase());
 		// no candidates
 		if (streets == null) {
+			log.info("No candidates for street: " + data.getAddressStreet());
 			return null;
 		}
 
 		// the only candidate
 		if (streets.size() == 1) {
+			log.info("Unique candidate for street: " + data.getAddressStreet());
 			return streets.get(0);
 		}
 
@@ -196,6 +245,7 @@ public class EircImportService extends ImportService {
 
 		List<Street> filteredStreets = filterStreetsbyType(streets, streetType);
 		if (filteredStreets.size() == 1) {
+			log.info("Street filtered by type: " + data.getAddressStreet());
 			return filteredStreets.get(0);
 		}
 
@@ -217,7 +267,7 @@ public class EircImportService extends ImportService {
 
 	private StreetType findStreetType(Map<String, StreetType> nameTypeMap, RawConsumerData data) {
 
-		StreetType typeById = (StreetType) correctionsService.findCorrection(
+		StreetType typeById = correctionsService.findCorrection(
 				data.getAddressStreetType(), StreetType.class, null);
 		if (typeById != null) {
 			return typeById;
@@ -229,7 +279,8 @@ public class EircImportService extends ImportService {
 	private Apartment findApartment(RawConsumerData data, Street street) {
 		Buildings buildings = buildingService.findBuildings(street, data.getAddressHouse(), data.getAddressBulk());
 		if (buildings == null) {
-			log.warn("Failed getting building for consumer: " + data.getExternalSourceId());
+			log.warn(String.format("Failed getting building for consumer, Street(%d, %s), Building(%s, %s) ",
+					street.getId(), data.getAddressStreet(), data.getAddressHouse(), data.getAddressBulk()));
 			return null;
 		}
 
@@ -247,6 +298,11 @@ public class EircImportService extends ImportService {
 		}
 
 		return apartmentService.findApartmentStub(building, data.getAddressApartment());
+	}
+
+	protected void addToStack(DomainObject object) {
+		super.addToStack(object);
+		flushStack();
 	}
 
 	/**

@@ -79,17 +79,25 @@
         drop 
         foreign key FKCA605324712C324D;
 
-    alter table eirc_account_status_translations_tbl 
+    alter table eirc_account_records_tbl 
         drop 
-        foreign key FK4FFD8012AC8FAF76;
+        foreign key FKE517FBC591349F59;
 
-    alter table eirc_account_status_translations_tbl 
+    alter table eirc_account_records_tbl 
         drop 
-        foreign key FK4FFD801261F37403;
+        foreign key FKE517FBC5E1B5250B;
+
+    alter table eirc_account_records_tbl 
+        drop 
+        foreign key FKE517FBC57F30FD59;
 
     alter table eirc_consumers_tbl 
         drop 
-        foreign key FK9751FED2D0BDDFB;
+        foreign key FK9751FED27095AEAD;
+
+    alter table eirc_consumers_tbl 
+        drop 
+        foreign key FK9751FED2DEF75687;
 
     alter table eirc_consumers_tbl 
         drop 
@@ -98,26 +106,6 @@
     alter table eirc_organisations_tbl 
         drop 
         foreign key FK9AA6756E1AE9F4D;
-
-    alter table eirc_personal_account_records_tbl 
-        drop 
-        foreign key FK4883F2DA91349F59;
-
-    alter table eirc_personal_account_records_tbl 
-        drop 
-        foreign key FK4883F2DAA16375AB;
-
-    alter table eirc_personal_accounts_tbl 
-        drop 
-        foreign key FK9201389A7095AEAD;
-
-    alter table eirc_personal_accounts_tbl 
-        drop 
-        foreign key FK9201389ADEF75687;
-
-    alter table eirc_personal_accounts_tbl 
-        drop 
-        foreign key FK9201389AC2AC3F08;
 
     alter table eirc_service_providers_tbl 
         drop 
@@ -157,11 +145,11 @@
 
     alter table eirc_sp_registry_records_tbl 
         drop 
-        foreign key FKD41D6777B835A55A;
+        foreign key FKD41D677728C54FB6;
 
     alter table eirc_sp_registry_records_tbl 
         drop 
-        foreign key FKD41D677728C54FB6;
+        foreign key FKD41D677791349F59;
 
     alter table identity_type_translations_tbl 
         drop 
@@ -355,19 +343,13 @@
 
     drop table if exists districts_tbl;
 
-    drop table if exists eirc_account_status_translations_tbl;
+    drop table if exists eirc_account_record_types_tbl;
 
-    drop table if exists eirc_account_statuses_tbl;
+    drop table if exists eirc_account_records_tbl;
 
     drop table if exists eirc_consumers_tbl;
 
     drop table if exists eirc_organisations_tbl;
-
-    drop table if exists eirc_personal_account_record_types_tbl;
-
-    drop table if exists eirc_personal_account_records_tbl;
-
-    drop table if exists eirc_personal_accounts_tbl;
 
     drop table if exists eirc_service_providers_tbl;
 
@@ -584,18 +566,20 @@
         primary key (id)
     );
 
-    create table eirc_account_status_translations_tbl (
+    create table eirc_account_record_types_tbl (
         id bigint not null auto_increment,
-        name varchar(255) not null,
-        account_status_id bigint not null,
-        language_id bigint not null,
-        primary key (id),
-        unique (account_status_id, language_id)
+        description varchar(255) not null,
+        type_enum_id integer not null,
+        primary key (id)
     );
 
-    create table eirc_account_statuses_tbl (
+    create table eirc_account_records_tbl (
         id bigint not null auto_increment,
-        status integer not null,
+        consumer_id bigint not null,
+        organisation_id bigint not null,
+        operation_date datetime not null,
+        amount decimal(19,2) not null,
+        record_type_id bigint not null,
         primary key (id)
     );
 
@@ -604,7 +588,8 @@
         status integer not null,
         external_account_number varchar(255) not null,
         service_id bigint not null,
-        account_id bigint not null,
+        person_id bigint not null,
+        apartment_id bigint not null,
         primary key (id)
     );
 
@@ -615,35 +600,9 @@
         kpp varchar(255) not null,
         description varchar(255) not null,
         name varchar(255) not null,
+        unique_id varchar(255) not null unique,
         district_id bigint not null,
         primary key (id)
-    );
-
-    create table eirc_personal_account_record_types_tbl (
-        id bigint not null auto_increment,
-        description integer not null,
-        type_enum_id integer not null,
-        primary key (id)
-    );
-
-    create table eirc_personal_account_records_tbl (
-        id bigint not null auto_increment,
-        consumer_id bigint not null,
-        operation_date datetime not null,
-        amount decimal(19,2) not null,
-        record_type_id bigint not null,
-        primary key (id)
-    );
-
-    create table eirc_personal_accounts_tbl (
-        id bigint not null auto_increment,
-        apartment_id bigint not null,
-        person_id bigint not null,
-        status_id bigint not null,
-        creation_date date not null,
-        account_number varchar(255) not null unique,
-        primary key (id),
-        unique (apartment_id, person_id, status_id)
     );
 
     create table eirc_service_providers_tbl (
@@ -709,8 +668,8 @@
 
     create table eirc_sp_registry_records_tbl (
         id bigint not null auto_increment,
-        service_code bigint,
-        personal_account_ext varchar(255),
+        service_code bigint not null,
+        personal_account_ext varchar(255) not null,
         city varchar(255),
         street_type varchar(255),
         street_name varchar(255),
@@ -720,11 +679,11 @@
         first_name varchar(255),
         middle_name varchar(255),
         last_name varchar(255),
-        operation_date datetime,
+        operation_date datetime not null,
         unique_operation_number bigint,
         amount decimal(19,2),
         containers varchar(255),
-        personal_account_id bigint,
+        consumer_id bigint,
         registry_id bigint not null,
         primary key (id)
     );
@@ -733,6 +692,7 @@
         id bigint not null auto_increment,
         name varchar(255) not null,
         direction varchar(255) not null,
+        type_enum_id integer not null,
         primary key (id)
     );
 
@@ -1090,23 +1050,35 @@
         foreign key (town_id) 
         references towns_tbl (id);
 
-    alter table eirc_account_status_translations_tbl 
-        add index FK4FFD8012AC8FAF76 (account_status_id), 
-        add constraint FK4FFD8012AC8FAF76 
-        foreign key (account_status_id) 
-        references eirc_account_statuses_tbl (id);
+    alter table eirc_account_records_tbl 
+        add index FKE517FBC591349F59 (consumer_id), 
+        add constraint FKE517FBC591349F59 
+        foreign key (consumer_id) 
+        references eirc_consumers_tbl (id);
 
-    alter table eirc_account_status_translations_tbl 
-        add index FK4FFD801261F37403 (language_id), 
-        add constraint FK4FFD801261F37403 
-        foreign key (language_id) 
-        references languages_tbl (id);
+    alter table eirc_account_records_tbl 
+        add index FKE517FBC5E1B5250B (record_type_id), 
+        add constraint FKE517FBC5E1B5250B 
+        foreign key (record_type_id) 
+        references eirc_account_record_types_tbl (id);
+
+    alter table eirc_account_records_tbl 
+        add index FKE517FBC57F30FD59 (organisation_id), 
+        add constraint FKE517FBC57F30FD59 
+        foreign key (organisation_id) 
+        references eirc_organisations_tbl (id);
 
     alter table eirc_consumers_tbl 
-        add index FK9751FED2D0BDDFB (account_id), 
-        add constraint FK9751FED2D0BDDFB 
-        foreign key (account_id) 
-        references eirc_personal_accounts_tbl (id);
+        add index FK9751FED27095AEAD (person_id), 
+        add constraint FK9751FED27095AEAD 
+        foreign key (person_id) 
+        references persons_tbl (id);
+
+    alter table eirc_consumers_tbl 
+        add index FK9751FED2DEF75687 (apartment_id), 
+        add constraint FK9751FED2DEF75687 
+        foreign key (apartment_id) 
+        references apartments_tbl (id);
 
     alter table eirc_consumers_tbl 
         add index FK9751FED258F3985B (service_id), 
@@ -1119,36 +1091,6 @@
         add constraint FK9AA6756E1AE9F4D 
         foreign key (district_id) 
         references districts_tbl (id);
-
-    alter table eirc_personal_account_records_tbl 
-        add index FK4883F2DA91349F59 (consumer_id), 
-        add constraint FK4883F2DA91349F59 
-        foreign key (consumer_id) 
-        references eirc_consumers_tbl (id);
-
-    alter table eirc_personal_account_records_tbl 
-        add index FK4883F2DAA16375AB (record_type_id), 
-        add constraint FK4883F2DAA16375AB 
-        foreign key (record_type_id) 
-        references eirc_personal_account_record_types_tbl (id);
-
-    alter table eirc_personal_accounts_tbl 
-        add index FK9201389A7095AEAD (person_id), 
-        add constraint FK9201389A7095AEAD 
-        foreign key (person_id) 
-        references persons_tbl (id);
-
-    alter table eirc_personal_accounts_tbl 
-        add index FK9201389ADEF75687 (apartment_id), 
-        add constraint FK9201389ADEF75687 
-        foreign key (apartment_id) 
-        references apartments_tbl (id);
-
-    alter table eirc_personal_accounts_tbl 
-        add index FK9201389AC2AC3F08 (status_id), 
-        add constraint FK9201389AC2AC3F08 
-        foreign key (status_id) 
-        references eirc_account_statuses_tbl (id);
 
     alter table eirc_service_providers_tbl 
         add index FK960743AD5BA789BB (data_source_description_id), 
@@ -1205,16 +1147,16 @@
         references eirc_sp_files_tbl (id);
 
     alter table eirc_sp_registry_records_tbl 
-        add index FKD41D6777B835A55A (personal_account_id), 
-        add constraint FKD41D6777B835A55A 
-        foreign key (personal_account_id) 
-        references eirc_personal_accounts_tbl (id);
-
-    alter table eirc_sp_registry_records_tbl 
         add index FKD41D677728C54FB6 (registry_id), 
         add constraint FKD41D677728C54FB6 
         foreign key (registry_id) 
         references eirc_sp_registries_tbl (id);
+
+    alter table eirc_sp_registry_records_tbl 
+        add index FKD41D677791349F59 (consumer_id), 
+        add constraint FKD41D677791349F59 
+        foreign key (consumer_id) 
+        references eirc_consumers_tbl (id);
 
     alter table identity_type_translations_tbl 
         add index FK8DFCEF85D8765DAA (identity_type_id), 

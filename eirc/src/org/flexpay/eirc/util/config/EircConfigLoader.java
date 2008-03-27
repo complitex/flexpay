@@ -1,11 +1,12 @@
 package org.flexpay.eirc.util.config;
 
 import org.flexpay.common.util.config.CommonConfigLoader;
+import org.flexpay.ab.util.config.AbConfigLoader;
 import org.apache.commons.digester.Digester;
 
 import java.net.URL;
 
-public class EircConfigLoader extends CommonConfigLoader {
+public class EircConfigLoader extends AbConfigLoader {
 
 	public EircConfigLoader(URL[] configFiles) {
 		super(configFiles);
@@ -28,12 +29,6 @@ public class EircConfigLoader extends CommonConfigLoader {
 	protected void addRules(Digester d) {
 		super.addRules(d);
 
-//		d.addCallMethod("flexpay/defaultCountry", "setDefaultCountry", 0);
-//		d.addCallMethod("flexpay/defaultRegion", "setDefaultRegion", 0);
-//		d.addCallMethod("flexpay/defaultTown", "setDefaultTown", 0);
-		d.addSetProperties("flexpay/defaultCountry", "id", "defaultCountryId");
-		d.addSetProperties("flexpay/defaultRegion", "id", "defaultRegionId");
-		d.addSetProperties("flexpay/defaultTown", "id", "defaultTownId");
 		d.addSetProperties("flexpay/organisation", "id", "selfOrganisationId");
 	}
 }

@@ -5,6 +5,7 @@ import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.service.AccountRecordService;
 import org.flexpay.eirc.service.OrganisationService;
 import org.flexpay.eirc.service.SPService;
+import org.flexpay.eirc.service.SpRegistryTypeService;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -40,12 +41,13 @@ public class SimplePayment extends ContainerOperation {
 
 		// record not registered before, so just create it
 		if (registeredRecord == null) {
+			log.info("No registered record, creating a new one");
 			recordService.create(accountRecord);
 			return;
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Skipping already registered record: " + accountRecord);
+		if (log.isInfoEnabled()) {
+			log.info("Skipping already registered record: " + accountRecord);
 		}
 	}
 
@@ -62,14 +64,14 @@ public class SimplePayment extends ContainerOperation {
 		accountRecord.setOperationDate(record.getOperationDate());
 		accountRecord.setAmount(record.getAmount());
 
-		SPService spService = factory.getSpService();
 		int registryTypeID = registry.getRegistryType().getTypeId();
-		if (registryTypeID != SpRegistryType.TYPE_PAYMENT) {
+		if (registryTypeID != SpRegistryTypeService.NALICHNIE_OPLATI) {
 			throw new IllegalOperationStateException(
 					"Illegal registry type #" + registryTypeID + " for simple payment operation");
 		}
 
 		// setup payment record type
+		SPService spService = factory.getSpService();
 		AccountRecordType type = spService.getRecordType(AccountRecordType.TYPE_PAYMENT_INCOMING);
 		if (type == null) {
 			throw new IllegalOperationStateException("Not found simple payment type, was DB inited?");
@@ -82,6 +84,8 @@ public class SimplePayment extends ContainerOperation {
 		if (organisation == null) {
 			throw new FlexPayException("Organisation id is invalid: " + organisationId);
 		}
+		accountRecord.setOrganisation(organisation);
+		accountRecord.setConsumer(record.getConsumer());
 		return accountRecord;
 	}
 

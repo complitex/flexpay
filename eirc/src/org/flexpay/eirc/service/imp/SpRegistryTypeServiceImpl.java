@@ -30,5 +30,4 @@ public class SpRegistryTypeServiceImpl implements SpRegistryTypeService {
 	public void setSpRegistryTypeDao(SpRegistryTypeDao spRegistryTypeDao) {
 		this.spRegistryTypeDao = spRegistryTypeDao;
 	}
-
 }

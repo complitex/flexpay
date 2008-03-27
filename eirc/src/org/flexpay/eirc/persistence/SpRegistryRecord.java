@@ -1,6 +1,8 @@
 package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -270,5 +272,23 @@ public class SpRegistryRecord extends DomainObject {
 	 */
 	public void setConsumer(AbstractConsumer consumer) {
 		this.consumer = consumer;
+	}
+
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("id", getId())
+				.append("code", getServiceCode())
+				.append("amount", getAmount())
+				.append("firstName", getFirstName())
+				.append("middleName", getMiddleName())
+				.append("lastName", getLastName())
+				.append("city", getCity())
+				.append("street", getStreetName() )
+				.append("streetType", getStreetType())
+				.append("building", getBuildingNum())
+				.append("bulk", getBuildingBulkNum())
+				.append("apartment", getApartmentNum())
+				.append("containers", getContainers())
+				.toString();
 	}
 }

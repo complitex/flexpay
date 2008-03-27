@@ -7,5 +7,8 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.SpRegistry;
 
 public interface SpRegistryDao extends GenericDao<SpRegistry, Long> {
+
 	List<SpRegistry> findObjects(Page<SpRegistry> pager, Long spFileId);
+
+	void deleteRecords(Long registryId);
 }

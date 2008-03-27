@@ -35,7 +35,7 @@ public class ImportService {
 	private ApartmentJdbcDataSource apartmentDataSource;
 	private PersonJdbcDataSource personDataSource;
 
-	private AllObjectsDao allObjectsDao;
+	protected AllObjectsDao allObjectsDao;
 
 	protected CorrectionsService correctionsService;
 	private DistrictService districtService;
@@ -98,9 +98,9 @@ public class ImportService {
 
 				// Save building itself instead of its buildings address
 				if (object instanceof Buildings) {
-					allObjectsDao.save(((Buildings) object).getBuilding());
+					allObjectsDao.saveOrUpdate(((Buildings) object).getBuilding());
 				} else {
-					allObjectsDao.save(object);
+					allObjectsDao.saveOrUpdate(object);
 				}
 				prevObj = object;
 			}
@@ -143,7 +143,7 @@ public class ImportService {
 				district.setParent(town);
 
 				// Find object by correction
-				District persistentObj = (District) correctionsService.findCorrection(
+				District persistentObj = correctionsService.findCorrection(
 						data.getExternalSourceId(), District.class, sourceDescription);
 
 				// Find object by its name
@@ -222,7 +222,7 @@ public class ImportService {
 				street.setParent(town);
 
 				// Find object by correction
-				Street persistentObj = (Street) correctionsService.findCorrection(
+				Street persistentObj = correctionsService.findCorrection(
 						data.getExternalSourceId(), Street.class, sourceDescription);
 				boolean found = correctionsService.existsCorrection(
 						data.getExternalSourceId(), Street.class, sourceDescription);
@@ -383,7 +383,7 @@ public class ImportService {
 			RawStreetTypeData data = streetTypeDataSource.next(typeHolder);
 			try {
 				StreetType streetType = streetTypeDataConverter.fromRawData(data, sourceDescription, correctionsService);
-				StreetType correction = (StreetType) correctionsService.findCorrection(
+				StreetType correction = correctionsService.findCorrection(
 						data.getExternalSourceId(), StreetType.class, sourceDescription);
 				if (correction != null) {
 					log.info("Found street type correction!");
@@ -391,7 +391,7 @@ public class ImportService {
 				}
 
 				// Try to find general correction by type name
-				StreetType generalCorrection = (StreetType) correctionsService.findCorrection(
+				StreetType generalCorrection = correctionsService.findCorrection(
 						data.getName(), StreetType.class, null);
 
 				// found general correction, create specific one
@@ -454,7 +454,7 @@ public class ImportService {
 				RawBuildingsData data = buildingsDataSource.next(typeHolder);
 
 				try {
-					Buildings correction = (Buildings) correctionsService.findCorrection(
+					Buildings correction = correctionsService.findCorrection(
 							data.getExternalSourceId(), Buildings.class, sourceDescription);
 
 					if (correction != null) {
@@ -528,7 +528,7 @@ public class ImportService {
 			RawApartmentData data = apartmentDataSource.next(typeHolder);
 
 			try {
-				Apartment correction = (Apartment) correctionsService.findCorrection(
+				Apartment correction = correctionsService.findCorrection(
 						data.getExternalSourceId(), Apartment.class, sourceDescription);
 
 				if (correction != null) {
@@ -597,7 +597,7 @@ public class ImportService {
 			}
 
 			try {
-				Person correction = (Person) correctionsService.findCorrection(
+				Person correction = correctionsService.findCorrection(
 						data.getExternalSourceId(), Person.class, sourceDescription);
 
 				if (correction != null) {

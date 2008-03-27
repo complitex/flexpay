@@ -40,7 +40,7 @@
         <path refid="bti.test.classpath" />
         <path location="${build.dir}/web" />
         <path location="bti/src" />
-        <path location="bti/tests/data/org/flexpay/bti" />
+        <path location="bti/tests/data" />
     </path>
 
     <target name="bti.clean.build">

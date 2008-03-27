@@ -177,4 +177,19 @@ public class BuildingServiceImpl implements BuildingService {
 	public Building findBuilding(Buildings buildingsStub) {
 		return buildingsDaoExt.findBuilding(buildingsStub);
 	}
+
+	/**
+	 * Find single Building relation for building stub
+	 *
+	 * @param building Building stub
+	 * @return Buildings instance
+	 * @throws FlexPayException if building does not have any buildingses
+	 */
+	public Buildings getFirstBuildings(Building building) throws FlexPayException {
+		List<Buildings> buildingses = buildingsDao.findBuildingBuildings(building.getId(), new Page());
+		if (buildingses.isEmpty()) {
+			throw new FlexPayException("Building #" + building.getId() + " does not have any buildings");
+		}
+		return buildingses.get(0);
+	}
 }

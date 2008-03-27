@@ -39,6 +39,13 @@
 		WHERE o.status=0 and o.building.id=?
 	</query>
 
+	<query name="Apartment.readFull">
+		SELECT DISTINCT a
+		FROM Apartment a
+			LEFT JOIN FETCH a.apartmentNumbers
+		WHERE a.id=?
+	</query>
+
 	<query name="Apartment.findObjects.count">
 		SELECT count(*) FROM Apartment o WHERE o.status=0 and o.building.id=?
 	</query>

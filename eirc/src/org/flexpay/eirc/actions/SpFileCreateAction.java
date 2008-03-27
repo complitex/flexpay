@@ -8,6 +8,7 @@ import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.service.SpFileService;
+import org.apache.commons.lang.StringUtils;
 
 public class SpFileCreateAction extends CommonAction {
 	private File upload;
@@ -19,7 +20,7 @@ public class SpFileCreateAction extends CommonAction {
 
 	public String execute() throws IOException, FlexPayException {
 		if (isSubmitted()) {
-			if (uploadFileName != null && !"".equals(uploadFileName)) {
+			if (StringUtils.isNotEmpty(uploadFileName)) {
 				SpFile spFile = new SpFile();
 				spFile.saveToFileSystem(upload);
 

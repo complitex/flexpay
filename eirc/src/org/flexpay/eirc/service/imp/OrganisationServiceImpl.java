@@ -3,7 +3,6 @@ package org.flexpay.eirc.service.imp;
 import org.flexpay.eirc.service.OrganisationService;
 import org.flexpay.eirc.persistence.Organisation;
 import org.flexpay.eirc.dao.OrganisationDao;
-import org.flexpay.common.dao.paging.Page;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class OrganisationServiceImpl implements OrganisationService {
 	 */
 	public Organisation getOrganisation(String organisationId) {
 		List<Organisation> organisations =  organisationDao.findOrganisationsById(
-				new Page(1, 1), organisationId);
+				organisationId);
 		return organisations.isEmpty() ? null : organisations.get(0);
 	}
 

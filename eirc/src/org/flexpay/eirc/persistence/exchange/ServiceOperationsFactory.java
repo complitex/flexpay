@@ -1,8 +1,8 @@
 package org.flexpay.eirc.persistence.exchange;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.persistence.SpRegistryType;
@@ -69,7 +69,7 @@ public class ServiceOperationsFactory {
 	public Operation getContainerOperation(SpRegistry registry) throws InvalidContainerException {
 
 		if (StringUtils.isEmpty(registry.getContainers())) {
-			throw new InvalidContainerException("No data in registry #" + registry.getId());
+			return new NoneOperation();
 		}
 
 		List<String> containersData = parseContainersData(registry.getContainers());

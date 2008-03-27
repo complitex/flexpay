@@ -33,14 +33,14 @@ public class RawBuildingsDataConverter implements DataConverter<Buildings, RawBu
 
 		Buildings buildings = new Buildings();
 
-		Street street = (Street) correctionsService.findCorrection(
+		Street street = correctionsService.findCorrection(
 				rawData.getStreetId(), Street.class, dataSourceDescription);
 		if (street == null) {
 			throw new FlexPayException("Cannot find street");
 		}
 		buildings.setStreet(street);
 
-		District district = (District) correctionsService.findCorrection(
+		District district = correctionsService.findCorrection(
 				rawData.getDistrictId(), District.class, dataSourceDescription);
 		if (district == null) {
 			throw new FlexPayException("Cannot find district");

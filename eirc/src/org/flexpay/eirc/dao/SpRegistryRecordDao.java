@@ -8,12 +8,4 @@ import java.util.List;
 
 public interface SpRegistryRecordDao extends GenericDao<SpRegistryRecord, Long> {
 
-	/**
-	 * List registry records
-	 *
-	 * @param id Registry id
-	 * @param pager Pager
-	 * @return list of records
-	 */
-	List<SpRegistryRecord> listRecords(Long id, Page pager);
 }

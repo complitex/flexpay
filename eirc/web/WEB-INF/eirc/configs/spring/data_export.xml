@@ -7,6 +7,7 @@
 	<bean id="consumersDataSource"
 		  class="org.flexpay.eirc.dao.importexport.RawConsumersDataSource">
 		<property name="registryRecordDao" ref="spRegistryRecordDao" />
+		<property name="registryRecordDaoExt" ref="spRegistryRecordDaoExt" />
 	</bean>
 
 	<!-- Data converters -->
@@ -35,6 +36,15 @@
 		<property name="typeService" ref="identityTypeService" />
 		<property name="consumerDataConverter" ref="consumerDataConverter" />
 		<property name="consumerService" ref="consumerService" />
+	</bean>
+
+	<bean id="spFilesExchangeHelper"
+		  class="org.flexpay.eirc.service.exchange.ExchangeHelper">
+		<property name="apartmentService" ref="apartmentService" />
+		<property name="buildingService" ref="buildingService" />
+		<property name="streetService" ref="streetService" />
+		<property name="townService" ref="townService" />
+		<property name="personService" ref="personService" />
 	</bean>
 
 </beans>

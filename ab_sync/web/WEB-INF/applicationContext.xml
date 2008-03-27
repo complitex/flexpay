@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- ConfigLoader is a subject to replace in dependent modules -->
+	<bean id="commonConfigLoader" class="org.flexpay.common.util.config.CommonConfigLoader"
+		  init-method="loadConfig" depends-on="languageDAO" >
+		<constructor-arg index="0">
+			<list>
+				<value>classpath:org/flexpay/common/application_config.xml</value>
+				<value>classpath:org/flexpay/common/application_config_test.xml</value>
+			</list>
+		</constructor-arg>
+		<property name="languageService" ref="languageService" />
+	</bean>
+
+    <import resource="common/configs/spring/config.xml" />
+    <import resource="ab/configs/spring/config.xml" />
+    <import resource="ab_sync/configs/spring/config.xml" />
+
+</beans>

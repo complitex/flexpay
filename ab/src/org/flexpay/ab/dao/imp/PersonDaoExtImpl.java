@@ -17,6 +17,8 @@ import java.util.List;
 
 public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoExt {
 
+	private PersonDaoExtJdbcImpl personDaoExtJdbc;
+
 	/**
 	 * Find persistent person by identity
 	 *
@@ -24,19 +26,27 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 	 * @return Person stub if persistent person matches specified identity
 	 */
 	public Person findPersonStub(Person person) {
+
+		if (true) {
+			return personDaoExtJdbc.findPersonStub(person);
+		}
+
 		final PersonIdentity identity = person.getDefaultIdentity();
-//		List identities = getHibernateTemplate().findByExample(identity);
 		List identities = getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				Criteria crit = session.createCriteria(PersonIdentity.class)
 						.setMaxResults(2)
 						.add(Restrictions.eq("firstName", identity.getFirstName()))
-						.add(Restrictions.eq("middleName", identity.getMiddleName()))
 						.add(Restrictions.eq("lastName", identity.getLastName()));
 
+				if (StringUtils.isNotEmpty(identity.getMiddleName())) {
+					crit.add(Restrictions.eq("middleName", identity.getMiddleName()));
+				} else {
+					crit.add(Restrictions.isNull("middleName"));
+				}
+
 				if (identity.getIdentityType().getTypeId() != IdentityType.TYPE_UNKNOWN) {
-					crit.createCriteria("identityType").add(
-							Restrictions.eq("typeId", identity.getIdentityType().getTypeId()));
+					crit.add(Restrictions.eq("identityType.id", identity.getIdentityType().getId()));
 				}
 
 				if (StringUtils.isNotEmpty(identity.getOrganization())) {
@@ -60,5 +70,9 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 
 		PersonIdentity res = (PersonIdentity) identities.get(0);
 		return res.getPerson();
+	}
+
+	public void setPersonDaoExtJdbc(PersonDaoExtJdbcImpl personDaoExtJdbc) {
+		this.personDaoExtJdbc = personDaoExtJdbc;
 	}
 }

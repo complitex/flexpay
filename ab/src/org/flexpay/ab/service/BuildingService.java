@@ -52,6 +52,13 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 * @return Building instance
 	 */
 	Building findBuilding(Buildings buildingsStub);
-	
-	
+
+	/**
+	 * Find single Building relation for building stub
+	 *
+	 * @param building Building stub
+	 * @return Buildings instance
+	 * @throws FlexPayException if building does not have any buildingses
+	 */
+	Buildings getFirstBuildings(Building building) throws FlexPayException;
 }

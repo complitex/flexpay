@@ -67,12 +67,18 @@
 			<include name="jbpm/*.txt" />
 		</fileset>
 	</path>
-	
+
 	<path id="itext.lib">
-			<fileset dir="${common.dir}/lib">
-				<include name="itext/*.jar" />
-			</fileset>
-		</path>
+		<fileset dir="${common.dir}/lib">
+			<include name="itext/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="quartz.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="quartz/*.jar" />
+		</fileset>
+	</path>
 
 	<path id="common.production.classpath">
 		<path refid="commons.lib" />
@@ -85,6 +91,7 @@
 		<path refid="jbpm_jpdl.lib" />
 		<path refid="ajax.lib" />
 		<path refid="itext.lib" />
+		<path refid="quartz.lib" />
 	</path>
 
 	<patternset id="empty_pattern" excludes="**/*.*" />
@@ -110,6 +117,7 @@
 		<path refid="common.test.classpath" />
 		<path location="${build.dir}/web" />
 		<path location="common/src" />
+		<path location="common/tests/data" />
 		<path location="common/tests/data/org/flexpay/common" />
 	</path>
 
@@ -249,7 +257,7 @@
 
 	<target name="template.docs" depends="init.build,init.distr,clean.build">
 		<javadoc sourcepath="${sources.dir}" destdir="${build.dir}/docs/api"
-				 windowtitle="FlexPay ${module_name} API"
+				 windowtitle="FlexPay ${module_name} API" encoding="UTF-8"
 				 defaultexcludes="yes" author="true" version="true" use="true"
 				 classpathref="classpath">
 			<bottom>
@@ -285,6 +293,7 @@
 			<lib dir="${common.dir}/lib/javadbf" />
 			<lib dir="${common.dir}/lib/ajax" />
 			<lib dir="${common.dir}/lib/itext" />
+			<lib dir="${common.dir}/lib/quartz" />
 			<lib dir="${build.dir}/lib" />
 		</war>
 	</target>

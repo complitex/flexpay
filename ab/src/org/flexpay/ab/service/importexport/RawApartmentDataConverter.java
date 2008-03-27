@@ -36,7 +36,7 @@ public class RawApartmentDataConverter implements DataConverter<Apartment, RawAp
 
 		Apartment apartment = new Apartment();
 
-		Buildings buildings = (Buildings) correctionsService.findCorrection(
+		Buildings buildings = correctionsService.findCorrection(
 				rawData.getBuildingId(), Buildings.class, dataSourceDescription);
 		if (buildings == null) {
 			throw new FlexPayException("Failed finding building for apartment #" + rawData.getExternalSourceId());

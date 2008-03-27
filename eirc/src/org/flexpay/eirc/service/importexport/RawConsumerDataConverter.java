@@ -25,9 +25,9 @@ public class RawConsumerDataConverter implements DataConverter<Consumer, RawCons
 	public Consumer fromRawData(RawConsumerData rawData, DataSourceDescription sd, CorrectionsService correctionsService)
 			throws FlexPayException {
 
-		Person personStub = (Person) correctionsService.findCorrection(
+		Person personStub = correctionsService.findCorrection(
 				rawData.getPersonCorrectionId(), Person.class, sd);
-		Apartment apartmentStub = (Apartment) correctionsService.findCorrection(
+		Apartment apartmentStub = correctionsService.findCorrection(
 				rawData.getApartmentId(), Apartment.class, sd);
 
 		SpRegistry registry = rawData.getRegistry();

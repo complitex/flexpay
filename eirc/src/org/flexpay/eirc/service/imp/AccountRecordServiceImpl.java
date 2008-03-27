@@ -65,6 +65,11 @@ public class AccountRecordServiceImpl implements AccountRecordService {
 	 */
 	@Transactional (readOnly = true, rollbackFor = Exception.class)
 	public BigDecimal getCurrentBalance(AbstractConsumer consumer) {
+		// TODO implement me
 		return null;
+	}
+
+	public void setAccountRecordDao(AccountRecordDao accountRecordDao) {
+		this.accountRecordDao = accountRecordDao;
 	}
 }

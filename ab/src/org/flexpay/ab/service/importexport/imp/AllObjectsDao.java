@@ -15,8 +15,8 @@ public class AllObjectsDao {
 
 	private long counter = 0;
 
-	public void save(DomainObject domainObject) {
-		session.save(domainObject);
+	public void saveOrUpdate(DomainObject domainObject) {
+		session.saveOrUpdate(domainObject);
 //		hibernateTemplate.save(domainObject);
 		++counter;
 		if (counter == 15) {

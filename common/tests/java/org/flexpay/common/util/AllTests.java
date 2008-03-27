@@ -12,6 +12,7 @@ public class AllTests extends TestCase {
 		suite.addTest(org.flexpay.common.util.config.AllTests.suite());
 		suite.addTest(new JUnit4TestAdapter(TestDateIntervalUtil.class));
 		suite.addTest(new JUnit4TestAdapter(TestStringUtil.class));
+		suite.addTest(new JUnit4TestAdapter(TestCRCUtil.class));
 		return suite;
 	}
 }

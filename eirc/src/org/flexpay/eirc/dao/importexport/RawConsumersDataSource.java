@@ -4,6 +4,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.dao.SpRegistryRecordDao;
+import org.flexpay.eirc.dao.SpRegistryRecordDaoExt;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
@@ -14,6 +15,7 @@ import java.util.List;
 public class RawConsumersDataSource implements RawDataSource<RawConsumerData> {
 
 	private SpRegistryRecordDao registryRecordDao;
+	private SpRegistryRecordDaoExt registryRecordDaoExt;
 	private SpRegistry registry;
 
 	private Page<SpRegistryRecord> pager;
@@ -62,8 +64,8 @@ public class RawConsumersDataSource implements RawDataSource<RawConsumerData> {
 	 * Initialize data source
 	 */
 	public void initialize() {
-		pager = new Page<SpRegistryRecord>(10000, 1);
-		List<SpRegistryRecord> datum = registryRecordDao.listRecords(registry.getId(), pager);
+		pager = new Page<SpRegistryRecord>(50, 1);
+		List<SpRegistryRecord> datum = registryRecordDaoExt.listRecordsForUpdate(registry.getId(), pager);
 		dataIterator = datum.iterator();
 	}
 
@@ -82,7 +84,7 @@ public class RawConsumersDataSource implements RawDataSource<RawConsumerData> {
 		// get next page
 		int nextPage = pager.getPageNumber() + 1;
 		pager.setPageNumber(nextPage);
-		List<SpRegistryRecord> datum = registryRecordDao.listRecords(registry.getId(), pager);
+		List<SpRegistryRecord> datum = registryRecordDaoExt.listRecordsForUpdate(registry.getId(), pager);
 		dataIterator = datum.iterator();
 		return dataIterator.hasNext();
 	}
@@ -115,5 +117,14 @@ public class RawConsumersDataSource implements RawDataSource<RawConsumerData> {
 	 */
 	public void setRegistryRecordDao(SpRegistryRecordDao registryRecordDao) {
 		this.registryRecordDao = registryRecordDao;
+	}
+
+	/**
+	 * Setter for property 'registryRecordDaoExt'.
+	 *
+	 * @param registryRecordDaoExt Value to set for property 'registryRecordDaoExt'.
+	 */
+	public void setRegistryRecordDaoExt(SpRegistryRecordDaoExt registryRecordDaoExt) {
+		this.registryRecordDaoExt = registryRecordDaoExt;
 	}
 }
