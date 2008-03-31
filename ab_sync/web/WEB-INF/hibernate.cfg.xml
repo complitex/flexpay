@@ -27,6 +27,7 @@
 
 		<!-- Buildings -->
 		<mapping resource="org/flexpay/ab/persistence/Building.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/BuildingBase.hbm.xml" />
 
 		<!-- Apartments -->
 		<mapping resource="org/flexpay/ab/persistence/Apartment.hbm.xml" />
