@@ -163,7 +163,7 @@
 
 	<target name="ab_sync.runtests" depends="ab_sync.prepare.war">
 		<antcall target="template.run.tests">
-			<param name="test_name" value="org.flexpay.ab.AllTests" />
+			<param name="test_name" value="org.flexpay.ab.sync.AllTests" />
 			<reference refid="ab_sync.runtests.classpath" torefid="classpath" />
 		</antcall>
 	</target>

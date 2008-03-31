@@ -6,8 +6,8 @@ import org.flexpay.ab.dao.TownDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
@@ -71,7 +71,12 @@ public class TownProcessor extends AbstractProcessor<Town> {
 		nameTemporal.setValue(townName);
 
 		TimeLine<TownName, TownNameTemporal> timeLine = town.getNamesTimeLine();
-		timeLine = DateIntervalUtil.addInterval(timeLine, nameTemporal);
+		if (timeLine != null) {
+			timeLine = DateIntervalUtil.addInterval(timeLine, nameTemporal);
+		} else {
+			nameTemporal.setBegin(ApplicationConfig.getInstance().getPastInfinite());
+			timeLine = new TimeLine<TownName, TownNameTemporal>(nameTemporal);
+		}
 
 		town.setNamesTimeLine(timeLine);
 	}
@@ -87,16 +92,19 @@ public class TownProcessor extends AbstractProcessor<Town> {
 	public void setProperty(DomainObject object, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 		Town town = (Town) object;
-		if (record.getFieldName().equalsIgnoreCase(PROP_NAME)) {
-			TownName townName = town.getCurrentName();
-			String name = TranslationUtil.getTranslation(townName.getTranslations()).getName();
+		switch (record.getFieldType()) {
+			case Unknown:
+				TownName townName = town.getCurrentName();
+				if (townName != null) {
+					String name = TranslationUtil.getTranslation(townName.getTranslations()).getName();
 
-			if (name.equals(record.getCurrentValue())) {
-				log.info("History town name is the same as in DB: " + name);
-				return;
-			}
+					if (name.equals(record.getCurrentValue())) {
+						log.info("History town name is the same as in DB: " + name);
+						return;
+					}
+				}
 
-			setName(town, name, record.getRecordDate());
+				setName(town, record.getCurrentValue(), record.getRecordDate());
 		}
 	}
 

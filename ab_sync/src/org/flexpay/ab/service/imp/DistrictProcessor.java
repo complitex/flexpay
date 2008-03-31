@@ -2,7 +2,6 @@ package org.flexpay.ab.service.imp;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.ab.dao.DistrictDao;
-import org.flexpay.ab.dao.TownDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
@@ -20,7 +19,6 @@ import java.util.Set;
 public class DistrictProcessor extends AbstractProcessor<District> {
 
 	private DistrictDao districtDao;
-	private TownDao townDao;
 
 	public DistrictProcessor() {
 		super(District.class);
@@ -66,27 +64,14 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 		nameTemporal.setValue(districtName);
 
 		TimeLine<DistrictName, DistrictNameTemporal> timeLine = district.getNamesTimeLine();
-		timeLine = DateIntervalUtil.addInterval(timeLine, nameTemporal);
+		if (timeLine != null) {
+			timeLine = DateIntervalUtil.addInterval(timeLine, nameTemporal);
+		} else {
+			nameTemporal.setBegin(ApplicationConfig.getInstance().getPastInfinite());
+			timeLine = new TimeLine<DistrictName, DistrictNameTemporal>(nameTemporal);
+		}
 
 		district.setNamesTimeLine(timeLine);
-	}
-
-	private void setTownId(District district, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
-			throws Exception {
-
-		Town stub = cs.findCorrection(record.getCurrentValue(), Town.class, sd);
-		if (stub == null) {
-			throw new RuntimeException(String.format("No correction for town #%s DataSourceDescription %d, " +
-					"cannot set up reference for district", record.getCurrentValue(), sd.getId()));
-		}
-
-		if (townDao.read(stub.getId()) == null) {
-			throw new RuntimeException(String.format("Correction for town #%s DataSourceDescription %d is invalid, " +
-					"no town with id %d, cannot set up reference for district",
-					record.getCurrentValue(), sd.getId(), stub.getId()));
-		}
-
-		district.setParent(stub);
 	}
 
 	/**
@@ -100,19 +85,20 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 			throws Exception {
 
 		District district = (District) object;
-		if (PROP_NAME.equals(record.getFieldName())) {
-			DistrictName districtName = district.getCurrentName();
-			String name = TranslationUtil.getTranslation(districtName.getTranslations()).getName();
+		switch (record.getFieldType()) {
+			case District:
+				DistrictName districtName = district.getCurrentName();
+				if (districtName != null) {
+					String name = TranslationUtil.getTranslation(districtName.getTranslations()).getName();
 
-			if (name.equals(record.getCurrentValue())) {
-				log.info("History district name is the same as in DB: " + name);
-				return;
-			}
+					if (name.equals(record.getCurrentValue())) {
+						log.info("History district name is the same as in DB: " + name);
+						return;
+					}
+				}
 
-			setName(district, name, record.getRecordDate());
-			districtDao.update(district);
-		} else if (PROP_TOWN_ID.equals(record.getFieldName())) {
-			setTownId(district, record, sd, cs);
+				setName(district, record.getCurrentValue(), record.getRecordDate());
+				break;
 		}
 	}
 
@@ -131,9 +117,5 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 
 	public void setDistrictDao(DistrictDao districtDao) {
 		this.districtDao = districtDao;
-	}
-
-	public void setTownDao(TownDao townDao) {
-		this.townDao = townDao;
 	}
 }

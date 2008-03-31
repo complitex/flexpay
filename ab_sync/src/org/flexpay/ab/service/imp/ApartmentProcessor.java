@@ -2,10 +2,7 @@ package org.flexpay.ab.service.imp;
 
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.BuildingsDao;
-import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.ApartmentNumber;
-import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.persistence.HistoryRecord;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
@@ -55,12 +52,15 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	public void setProperty(DomainObject object, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 		Apartment apartment = (Apartment) object;
-		if (PROP_APARTMENT_NUMBER.equals(record.getFieldName())) {
-			setNumber(apartment, record);
-		} else if (PROP_BUILDING_ID.equals(record.getFieldName())) {
-			setBuildingId(apartment, record, sd, cs);
-		} else {
-			log.info("Unknown property: " + record.getFieldName());
+		switch (record.getFieldType()) {
+			case Apartment:
+				setNumber(apartment, record);
+				break;
+			case BuildingId:
+				setBuildingId(apartment, record, sd, cs);
+				break;
+			default:
+				log.info("Unknown apartment property: " + record.getFieldType());
 		}
 	}
 
