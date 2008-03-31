@@ -5,13 +5,14 @@
 
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 	    <property name="location" value="/WEB-INF/synchronization.properties" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
 	</bean>
 
 	<bean id="syncABDataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
-		<property name="url" value="${}" />
-		<property name="driverClassName" value="${}" />
-		<property name="username" value="${ab.sync.СALCULATION_СENTR_USERNAME}" />
-		<property name="password" value="${ab.sync.СALCULATION_СENTR_PASSWD}" />
+		<property name="url" value="${ab.sync.CALCULATION_CENTR_URL}" />
+		<property name="driverClassName" value="${ab.sync.CALCULATION_CENTR_DRIVER}" />
+		<property name="username" value="${ab.sync.CALCULATION_CENTR_USERNAME}" />
+		<property name="password" value="${ab.sync.CALCULATION_CENTR_PASSWD}" />
 	</bean>
 
 	<bean id="historyDaoJdbc" class="org.flexpay.ab.dao.imp.HistoryDaoJdbcImpl">
@@ -24,13 +25,14 @@
 				<prop key="fieldObjectTypeId">${ab.sync.history.table.field.fieldObjectTypeId}</prop>
 				<prop key="fieldObjectId">${ab.sync.history.table.field.fieldObjectId}</prop>
 				<prop key="fieldFieldName">${ab.sync.history.table.field.fieldFieldName}</prop>
+				<prop key="fieldActionType">${ab.sync.history.table.field.fieldActionType}</prop>
 			</props>
 		</constructor-arg>
 		<property name="dataSource" ref="syncABDataSource" />
 	</bean>
 
 	<bean id="configDaoJdbc" class="org.flexpay.ab.dao.imp.UpdateConfigDaoJdbcImpl">
-		<property name="dataSource" ref="dataSource" />
+		<property name="dataSource" ref="syncABDataSource" />
 	</bean>
 
 

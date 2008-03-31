@@ -2,7 +2,6 @@ package org.flexpay.ab.service.imp;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.ab.dao.StreetDao;
-import org.flexpay.ab.dao.TownDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
@@ -20,7 +19,6 @@ import java.util.Set;
 public class StreetProcessor extends AbstractProcessor<Street> {
 
 	private StreetDao streetDao;
-	private TownDao townDao;
 
 	public StreetProcessor() {
 		super(Street.class);
@@ -66,27 +64,14 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 		nameTemporal.setValue(streetName);
 
 		TimeLine<StreetName, StreetNameTemporal> timeLine = street.getNamesTimeLine();
-		timeLine = DateIntervalUtil.addInterval(timeLine, nameTemporal);
+		if (timeLine != null) {
+			timeLine = DateIntervalUtil.addInterval(timeLine, nameTemporal);
+		} else {
+			nameTemporal.setBegin(ApplicationConfig.getInstance().getPastInfinite());
+			timeLine = new TimeLine<StreetName, StreetNameTemporal>(nameTemporal);
+		}
 
 		street.setNamesTimeLine(timeLine);
-	}
-
-	private void setTownId(Street street, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
-			throws Exception {
-
-		Town stub = cs.findCorrection(record.getCurrentValue(), Town.class, sd);
-		if (stub == null) {
-			throw new RuntimeException(String.format("No correction for town #%s DataSourceDescription %d, " +
-					"cannot set up reference for street", record.getCurrentValue(), sd.getId()));
-		}
-
-		if (townDao.read(stub.getId()) == null) {
-			throw new RuntimeException(String.format("Correction for town #%s DataSourceDescription %d is invalid, " +
-					"no town with id %d, cannot set up reference for street",
-					record.getCurrentValue(), sd.getId(), stub.getId()));
-		}
-
-		street.setParent(stub);
 	}
 
 	private void setStreetTypeId(Street street, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs) {
@@ -123,22 +108,23 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 			throws Exception {
 
 		Street street = (Street) object;
-		if (PROP_NAME.equals(record.getFieldName())) {
+		switch (record.getFieldType()) {
+			case StreetName:
+				StreetName streetName = street.getCurrentName();
+				if (streetName != null) {
+					String name = TranslationUtil.getTranslation(streetName.getTranslations()).getName();
 
-			StreetName streetName = street.getCurrentName();
-			String name = TranslationUtil.getTranslation(streetName.getTranslations()).getName();
+					if (name.equals(record.getCurrentValue())) {
+						log.info("History street name is the same as in DB: " + name);
+						return;
+					}
+				}
 
-			if (name.equals(record.getCurrentValue())) {
-				log.info("History street name is the same as in DB: " + name);
-				return;
-			}
-
-			setName(street, name, record.getRecordDate());
-			streetDao.update(street);
-		} else if (PROP_TOWN_ID.equals(record.getFieldName())) {
-			setTownId(street, record, sd, cs);
-		} else if (PROP_STREET_TYPE_ID.equals(record.getFieldName())) {
-			setStreetTypeId(street, record, sd, cs);
+				setName(street, record.getCurrentValue(), record.getRecordDate());
+				break;
+			case StreetTypeId:
+				setStreetTypeId(street, record, sd, cs);
+				break;
 		}
 	}
 
@@ -157,9 +143,5 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 
 	public void setStreetDao(StreetDao streetDao) {
 		this.streetDao = streetDao;
-	}
-
-	public void setTownDao(TownDao townDao) {
-		this.townDao = townDao;
 	}
 }

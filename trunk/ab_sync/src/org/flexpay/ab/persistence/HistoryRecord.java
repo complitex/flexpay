@@ -8,7 +8,7 @@ public class HistoryRecord {
 	private String oldValue;
 	private String currentValue;
 	private Long objectId;
-	private String fieldName;
+	private FieldType fieldType;
 	private ObjectType objectType;
 	private SyncAction syncAction;
 
@@ -44,12 +44,12 @@ public class HistoryRecord {
 		this.objectId = objectId;
 	}
 
-	public String getFieldName() {
-		return fieldName;
+	public FieldType getFieldType() {
+		return fieldType;
 	}
 
-	public void setFieldName(String fieldName) {
-		this.fieldName = fieldName;
+	public void setFieldType(FieldType fieldType) {
+		this.fieldType = fieldType;
 	}
 
 	public ObjectType getObjectType() {

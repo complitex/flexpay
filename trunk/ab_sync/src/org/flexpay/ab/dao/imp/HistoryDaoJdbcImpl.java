@@ -1,12 +1,14 @@
 package org.flexpay.ab.dao.imp;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.HistoryDao;
+import org.flexpay.ab.persistence.FieldType;
 import org.flexpay.ab.persistence.HistoryRecord;
 import org.flexpay.ab.persistence.ObjectType;
+import org.flexpay.ab.persistence.SyncAction;
 import org.flexpay.common.dao.paging.Page;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.apache.commons.lang.StringUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,6 +27,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	private String fieldObjectTypeId;
 	private String fieldObjectId;
 	private String fieldFieldName;
+	private String fieldActionType;
 
 	public HistoryDaoJdbcImpl(Properties props) {
 
@@ -35,10 +38,11 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 		fieldObjectTypeId = props.getProperty("fieldObjectTypeId");
 		fieldObjectId = props.getProperty("fieldObjectId");
 		fieldFieldName = props.getProperty("fieldFieldName");
+		fieldActionType = props.getProperty("fieldActionType");
 
 		validateConfig();
 
-		sqlGetRecords = String.format("select * from %s where %2$s >= ? order by 2$ limit ?,?", tableName, fieldRecordDate);
+		sqlGetRecords = String.format("select * from %s where %2$s >= ? order by %2$s limit ?,?", tableName, fieldRecordDate);
 	}
 
 	private void validateConfig() {
@@ -60,6 +64,9 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 		if (StringUtils.isBlank(fieldFieldName)) {
 			throw new IllegalArgumentException("Invalid configuration, property fieldFieldName cannot be blank.");
 		}
+		if (StringUtils.isBlank(fieldActionType)) {
+			throw new IllegalArgumentException("Invalid configuration, property fieldActionType cannot be blank.");
+		}
 	}
 
 	/**
@@ -79,7 +86,8 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 				record.setCurrentValue(rs.getString(fieldCurrentValue));
 				record.setObjectType(ObjectType.getById(rs.getInt(fieldObjectTypeId)));
 				record.setObjectId(rs.getLong(fieldObjectId));
-				record.setFieldName(rs.getString(fieldFieldName));
+				record.setFieldType(FieldType.getById(rs.getInt(fieldFieldName)));
+				record.setSyncAction(SyncAction.getByCode(rs.getInt(fieldActionType)));
 
 				return record;
 			}

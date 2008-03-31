@@ -66,6 +66,10 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	 *         found
 	 */
 	public T getNameForDate(Date dt) {
+		if (namesTimeLine == null) {
+			return null;
+		}
+
 		List<DI> intervals = namesTimeLine.getIntervals();
 		for (DI di : intervals) {
 			if (DateIntervalUtil.includes(dt, di)) {

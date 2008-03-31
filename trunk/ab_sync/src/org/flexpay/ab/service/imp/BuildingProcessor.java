@@ -87,14 +87,21 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	public void setProperty(DomainObject object, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 		Buildings buildings = (Buildings) object;
-		if (PROP_DISTRICT_ID.equals(record.getFieldName())) {
-			setDistrictId(buildings.getBuilding(), record, sd, cs);
-		} else if (PROP_STREET_ID.equals(record.getFieldName())) {
-			setStreetId(buildings, record, sd, cs);
-		} else if (PROP_BUILDING_NUMBER.equals(record.getFieldName())) {
-			setBuildingNumber(buildings, record);
-		} else if (PROP_BUILDING_BULK.equals(record.getFieldName())) {
-			setBuildingBulk(buildings, record);
+		switch (record.getFieldType()) {
+			case DistrictId:
+				setDistrictId(buildings.getBuilding(), record, sd, cs);
+				break;
+			case StreetId:
+				setStreetId(buildings, record, sd, cs);
+				break;
+			case HouseNumber:
+				setBuildingNumber(buildings, record);
+				break;
+			case Bulk:
+				setBuildingBulk(buildings, record);
+				break;
+			default:
+				log.info("Unknown building property: " + record.getFieldType());
 		}
 	}
 

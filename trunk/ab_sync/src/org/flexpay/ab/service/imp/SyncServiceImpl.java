@@ -51,9 +51,11 @@ public class SyncServiceImpl implements SyncService {
 		processor = null;
 
 		while (true) {
+			log.info("Starting sync for next records");
 			List<HistoryRecord> records = historyDao.getRecords(new Page(10, 1), config.getLastRecordUpdateTime());
 			if (records.isEmpty()) {
 				saveObject();
+				log.info("No more records.");
 				break;
 			}
 
@@ -67,8 +69,14 @@ public class SyncServiceImpl implements SyncService {
 					}
 					processRecord(record);
 				}
+
+				if (true) {
+					log.info("Break!");
+					break;
+				}
 			} catch (Exception e) {
-				log.error("failed processing record");
+				log.error("failed processing record", e);
+				break;
 			}
 		}
 	}

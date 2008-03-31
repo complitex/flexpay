@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.ab.persistence">
+
+	<class name="Building" table="buildings_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+
+		<many-to-one name="district" column="district_id" not-null="true"
+					 class="District" />
+		<set name="buildingses" inverse="true" cascade="all">
+			<key column="building_id" not-null="true" />
+			<one-to-many class="Buildings" />
+		</set>
+		<set name="buildingStatuses" inverse="true">
+			<key column="building_id" not-null="true" />
+			<one-to-many class="BuildingStatus" />
+		</set>
+		<set name="apartments" inverse="true">
+			<key column="building_id" not-null="true" />
+			<one-to-many class="Apartment" />
+		</set>
+	</class>
+
+</hibernate-mapping>

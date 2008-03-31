@@ -13,18 +13,6 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	// Logger
 	protected final Logger log = Logger.getLogger(getClass());
 
-	// Properties names
-	public static final String PROP_NAME = "name";
-	public static final String PROP_TOWN_ID = "";
-	public static final String PROP_STREET_ID = "";
-	public static final String PROP_STREET_TYPE_ID = "";
-	public static final String PROP_DISTRICT_ID = "";
-	public static final String PROP_BUILDING_ID = "";
-	public static final String PROP_BUILDING_NUMBER = "";
-	public static final String PROP_BUILDING_BULK = "";
-	public static final String PROP_APARTMENT_NUMBER = "";
-
-
 	private Class<T> type;
 
 	protected AbstractProcessor(Class<T> type) {
