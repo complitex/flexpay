@@ -2,28 +2,23 @@ package org.flexpay.ab.service.imp;
 
 import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.HistoryDao;
-import org.flexpay.ab.dao.UpdateConfigDao;
 import org.flexpay.ab.persistence.HistoryRecord;
 import org.flexpay.ab.persistence.ObjectType;
-import org.flexpay.ab.persistence.UpdateConfig;
 import org.flexpay.ab.service.SyncService;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.common.util.DateIntervalUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//@Transactional(readOnly = false, rollbackFor = Exception.class)
 public class SyncServiceImpl implements SyncService {
 
 	private static Logger log = Logger.getLogger(SyncServiceImpl.class);
 
 	private HistoryDao historyDao;
-	private UpdateConfigDao updateConfigDao;
 	private CorrectionsService correctionsService;
 	private DataSourceDescription sd;
 
@@ -33,6 +28,8 @@ public class SyncServiceImpl implements SyncService {
 	private StreetProcessor streetProcessor;
 	private DistrictProcessor districtProcessor;
 	private StreetTypeProcessor streetTypeProcessor;
+
+	private LockManager lockManager;
 
 	private Long prevId = -1L;
 	private ObjectType prevType = ObjectType.Unknown;
@@ -44,52 +41,54 @@ public class SyncServiceImpl implements SyncService {
 	 * Synchronize Address Bureau
 	 */
 	public void syncAB() {
-		UpdateConfig config = updateConfigDao.getConfig();
-		config.setLastUpdateDate(DateIntervalUtil.now());
-		config.setLastRecordUpdateTime(ApplicationConfig.getInstance().getPastInfinite());
 
-		prevId = -1L;
-		prevType = ObjectType.Unknown;
-		prevObj = null;
-		processor = null;
-
-		int count = 0;
-
-		while (true) {
-			log.debug("Starting sync for next records");
-			List<HistoryRecord> records = historyDao.getRecords(new Page(100, 1), config.getLastRecordUpdateTime());
-			if (records.isEmpty() || recordBuffer.containsAll(records)) {
-				saveObject();
-				log.debug("No more records.");
-				break;
-			}
-
-			try {
-				for (HistoryRecord record : records) {
-					if (!prevId.equals(record.getObjectId()) || prevType != record.getObjectType()) {
-						saveObject();
-						prevId = record.getObjectId();
-						prevType = record.getObjectType();
-//						config.setLastRecordUpdateTime(record.getRecordDate());
-					}
-					if (log.isInfoEnabled()) {
-						log.info("Sync record: " + record);
-					}
-					processRecord(record);
-					recordBuffer.add(record);
-					++count;
-				}
-
-//				if (prevType == ObjectType.Building)
-//					break;
-
-			} catch (Exception e) {
-				log.error("failed processing record", e);
-				break;
-			}
+		if (!lockManager.lock("sync_ab_lock")) {
+			log.debug("Another process has already requested a lock and is working");
+			return;
 		}
 
-		log.info("Processed records: " + count);
+		try {
+			prevId = -1L;
+			prevType = ObjectType.Unknown;
+			prevObj = null;
+			processor = null;
+
+			int count = 0;
+
+			while (true) {
+				log.debug("Starting sync for next records");
+				List<HistoryRecord> records = historyDao.getRecords(new Page(100, 1));
+				if (records.isEmpty() || recordBuffer.containsAll(records)) {
+					saveObject();
+					log.debug("No more records.");
+					break;
+				}
+
+				try {
+					for (HistoryRecord record : records) {
+						if (!prevId.equals(record.getObjectId()) || prevType != record.getObjectType()) {
+							saveObject();
+							prevId = record.getObjectId();
+							prevType = record.getObjectType();
+						}
+						if (log.isDebugEnabled()) {
+							log.debug("Sync record: " + record);
+						}
+						processRecord(record);
+						recordBuffer.add(record);
+						++count;
+					}
+				} catch (Exception e) {
+					log.error("failed processing record", e);
+					break;
+				}
+			}
+
+			log.info("Processed history records: " + count);
+
+		} finally {
+			lockManager.releaseLock("sync_ab_lock");
+		}
 	}
 
 	private void saveObject() {
@@ -151,10 +150,6 @@ public class SyncServiceImpl implements SyncService {
 		this.historyDao = historyDao;
 	}
 
-	public void setUpdateConfigDao(UpdateConfigDao updateConfigDao) {
-		this.updateConfigDao = updateConfigDao;
-	}
-
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
 	}
@@ -181,6 +176,10 @@ public class SyncServiceImpl implements SyncService {
 
 	public void setStreetTypeProcessor(StreetTypeProcessor streetTypeProcessor) {
 		this.streetTypeProcessor = streetTypeProcessor;
+	}
+
+	public void setLockManager(LockManager lockManager) {
+		this.lockManager = lockManager;
 	}
 
 	public void setSd(DataSourceDescription sd) {

@@ -2,7 +2,6 @@ package org.flexpay.ab.sync;
 
 import org.apache.log4j.Logger;
 import org.flexpay.ab.service.SyncService;
-import org.flexpay.common.locking.LockManager;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
@@ -13,7 +12,6 @@ public class SyncAbJob extends QuartzJobBean {
 
 	private Logger log = Logger.getLogger(getClass());
 
-	private LockManager lockManager;
 	private SyncService syncService;
 
 	public SyncAbJob() {
@@ -29,24 +27,12 @@ public class SyncAbJob extends QuartzJobBean {
 			log.debug("Starting sync at " + new Date());
 		}
 
-		if (!lockManager.lock("sync_ab_lock")) {
-			log.debug("Another process has already requested a lock and is working");
-			return;
-		}
-
 		try {
 			// do the job
 			syncService.syncAB();
 		} catch (Exception e) {
 			log.error("Sync failed", e);
-		} finally {
-			// and release a lock
-			lockManager.releaseLock("sync_ab_lock");
 		}
-	}
-
-	public void setLockManager(LockManager lockManager) {
-		this.lockManager = lockManager;
 	}
 
 	public void setSyncService(SyncService syncService) {

@@ -19,8 +19,8 @@ public class UpdateConfigDaoJdbcImpl extends SimpleJdbcDaoSupport implements Upd
 		return getSimpleJdbcTemplate().queryForObject("select * from ab_sync_config_tbl", new ParameterizedRowMapper<UpdateConfig>() {
 			public UpdateConfig mapRow(ResultSet rs, int i) throws SQLException {
 				UpdateConfig config = new UpdateConfig();
-				config.setLastUpdateDate(rs.getDate("last_update"));
-				config.setLastRecordUpdateTime(rs.getDate("last_record_update"));
+				config.setLastUpdateDate(rs.getTimestamp("last_update"));
+				config.setLastRecordUpdateTime(rs.getTimestamp("last_record_update"));
 				return config;
 			}
 		});

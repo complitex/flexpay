@@ -40,18 +40,25 @@
 	<bean id="abSyncService" class="org.flexpay.ab.service.imp.SyncServiceImpl">
 		<property name="correctionsService" ref="correctionsServiceAb" />
 		<property name="historyDao" ref="historyDaoJdbc" />
-		<property name="updateConfigDao" ref="configDaoJdbc" />
 		<property name="townProcessor" ref="townProcessor" />
 		<property name="buildingProcessor" ref="buildingProcessor" />
 		<property name="apartmentProcessor" ref="apartmentProcessor" />
 		<property name="streetProcessor" ref="streetProcessor" />
 		<property name="districtProcessor" ref="districtProcessor" />
 		<property name="streetTypeProcessor" ref="streetTypeProcessor" />
+		<property name="lockManager" ref="LockManager" />
 		<property name="sd">
 			<bean class="org.flexpay.common.persistence.DataSourceDescription">
 				<constructor-arg index="0" value="${ab.sync.data.source.id}" />
 			</bean>
 		</property>
+	</bean>
+
+	<bean id="historyDumpService" class="org.flexpay.ab.service.imp.HistoryDumpServiceImpl">
+		<property name="historyDao" ref="historyDaoJdbc" />
+		<property name="historySourceDao" ref="historySourceDao" />
+		<property name="updateConfigDao" ref="syncConfigDaoJdbc" />
+		<property name="lockManager" ref="LockManager" />
 	</bean>
 
 </beans>

@@ -9,6 +9,7 @@ public class AllTests extends TestCase {
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
 		suite.addTest(new TestSyncAbJob());
+		suite.addTest(new TestDumpHistoryJob());
 		return suite;
 	}
 }
