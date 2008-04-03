@@ -1,6 +1,5 @@
 package org.flexpay.ab.dao.imp;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.HistoryDao;
 import org.flexpay.ab.persistence.FieldType;
 import org.flexpay.ab.persistence.HistoryRecord;
@@ -12,93 +11,36 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
 import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryDao {
-
-	private String sqlGetRecords;
-	private String sqlSetProcessed;
-
-	private String tableName;
-	private String fieldRecordDate;
-	private String fieldOldValue;
-	private String fieldCurrentValue;
-	private String fieldObjectTypeId;
-	private String fieldObjectId;
-	private String fieldFieldName;
-	private String fieldActionType;
-
-	public HistoryDaoJdbcImpl(Properties props) {
-
-		tableName = props.getProperty("historyTableName");
-		fieldRecordDate = props.getProperty("fieldRecordDate");
-		fieldOldValue = props.getProperty("fieldOldValue");
-		fieldCurrentValue = props.getProperty("fieldCurrentValue");
-		fieldObjectTypeId = props.getProperty("fieldObjectTypeId");
-		fieldObjectId = props.getProperty("fieldObjectId");
-		fieldFieldName = props.getProperty("fieldFieldName");
-		fieldActionType = props.getProperty("fieldActionType");
-
-		validateConfig();
-
-		sqlGetRecords = String.format("select * from %s where %2$s >= ? and processed=0 order by order_weight, %2$s limit ?,?", tableName, fieldRecordDate);
-		sqlSetProcessed = String.format("update %s set processed=1 where %s=? and %s $oldValue and %s $currentValue and %s=? and %s=? and %s $field and %s=?",
-				tableName, fieldRecordDate, fieldOldValue, fieldCurrentValue, fieldObjectTypeId,
-				fieldObjectId, fieldFieldName, fieldActionType);
-	}
-
-	private void validateConfig() {
-		if (StringUtils.isBlank(tableName)) {
-			throw new IllegalArgumentException("Invalid configuration, property historyTableName cannot be blank.");
-		}
-		if (StringUtils.isBlank(fieldRecordDate)) {
-			throw new IllegalArgumentException("Invalid configuration, property fieldRecordDate cannot be blank.");
-		}
-		if (StringUtils.isBlank(fieldOldValue)) {
-			throw new IllegalArgumentException("Invalid configuration, property fieldOldValue cannot be blank.");
-		}
-		if (StringUtils.isBlank(fieldCurrentValue)) {
-			throw new IllegalArgumentException("Invalid configuration, property fieldCurrentValue cannot be blank.");
-		}
-		if (StringUtils.isBlank(fieldObjectTypeId)) {
-			throw new IllegalArgumentException("Invalid configuration, property fieldObjectTypeId cannot be blank.");
-		}
-		if (StringUtils.isBlank(fieldFieldName)) {
-			throw new IllegalArgumentException("Invalid configuration, property fieldFieldName cannot be blank.");
-		}
-		if (StringUtils.isBlank(fieldActionType)) {
-			throw new IllegalArgumentException("Invalid configuration, property fieldActionType cannot be blank.");
-		}
-	}
 
 	/**
 	 * List history records
 	 *
-	 * @param pager			Page instance
-	 * @param lastModifiedDate Date to filter records
+	 * @param pager Page instance
 	 * @return List of HistoryRecord instances
 	 */
-	public List<HistoryRecord> getRecords(Page pager, Date lastModifiedDate) {
+	public List<HistoryRecord> getRecords(Page pager) {
+		String sqlGetRecords = "select * from ab_sync_changes_tbl where processed=0 order by order_weight, record_date limit ?,?";
 		return getSimpleJdbcTemplate().query(sqlGetRecords, new ParameterizedRowMapper<HistoryRecord>() {
 			public HistoryRecord mapRow(ResultSet rs, int i) throws SQLException {
 				HistoryRecord record = new HistoryRecord();
 
-				record.setRecordDate(rs.getTimestamp(fieldRecordDate));
-				record.setOldValue(rs.getString(fieldOldValue));
-				record.setCurrentValue(rs.getString(fieldCurrentValue));
-				record.setObjectType(ObjectType.getById(rs.getInt(fieldObjectTypeId)));
-				record.setObjectId(rs.getLong(fieldObjectId));
-				if (rs.getObject(fieldFieldName) != null) {
-					record.setFieldType(FieldType.getById(rs.getInt(fieldFieldName)));
+				record.setRecordDate(rs.getTimestamp("record_date"));
+				record.setOldValue(rs.getString("old_value"));
+				record.setCurrentValue(rs.getString("current_value"));
+				record.setObjectType(ObjectType.getById(rs.getInt("object_type")));
+				record.setObjectId(rs.getLong("object_id"));
+				if (rs.getObject("field") != null) {
+					record.setFieldType(FieldType.getById(rs.getInt("field")));
 				}
-				record.setSyncAction(SyncAction.getByCode(rs.getInt(fieldActionType)));
+				record.setSyncAction(SyncAction.getByCode(rs.getInt("action_type")));
 
 				return record;
 			}
-		}, lastModifiedDate, pager.getThisPageFirstElementNumber(), pager.getPageSize());
+		}, pager.getThisPageFirstElementNumber(), pager.getPageSize());
 	}
 
 	/**
@@ -108,28 +50,60 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	 */
 	public void setProcessed(List<HistoryRecord> records) {
 		for (HistoryRecord record : records) {
-			ArrayList<Object> params = new ArrayList<Object>();
-			params.add(record.getRecordDate());
-			if (record.getOldValue() != null) {
-				params.add(record.getOldValue());
-			}
-			if (record.getCurrentValue() != null) {
-				params.add(record.getCurrentValue());
-			}
-			params.add(record.getObjectType().getId());
-			params.add(record.getObjectId());
-			if (record.getFieldType() != null) {
-				params.add(record.getFieldType().getId());
-			}
-			params.add(record.getSyncAction().getCode());
-			getSimpleJdbcTemplate().update(getSetProcessedSql(record), params.toArray());
+			getSimpleJdbcTemplate().update(getSetProcessedSql(record), getParams(record));
 		}
 	}
 
+	private Object[] getParams(HistoryRecord record) {
+		ArrayList<Object> params = new ArrayList<Object>();
+		params.add(record.getRecordDate());
+		if (record.getOldValue() != null) {
+			params.add(record.getOldValue());
+		}
+		if (record.getCurrentValue() != null) {
+			params.add(record.getCurrentValue());
+		}
+		params.add(record.getObjectType().getId());
+		params.add(record.getObjectId());
+		if (record.getFieldType() != null) {
+			params.add(record.getFieldType().getId());
+		}
+		params.add(record.getSyncAction().getCode());
+
+		return params.toArray(new Object[params.size()]);
+	}
+
+	private String getWhere(HistoryRecord record) {
+		return ("where record_date=? and old_value $oldValue and " +
+				"current_value $currentValue and object_type=? and object_id=? and field $field and action_type=?")
+						.replace("$oldValue", record.getOldValue() == null ? "is null" : "= ?")
+						.replace("$currentValue", record.getCurrentValue() == null ? "is null" : "= ?")
+						.replace("$field", record.getFieldType() == null ? "is null" : "= ?");
+	}
+
 	private String getSetProcessedSql(HistoryRecord record) {
-		return sqlSetProcessed
-				.replace("$oldValue", record.getOldValue() == null ? "is null" : "= ?")
-				.replace("$currentValue", record.getCurrentValue() == null ? "is null" : "= ?")
-				.replace("$field", record.getFieldType() == null ? "is null" : "= ?" );
+		return "update ab_sync_changes_tbl set processed=1 " + getWhere(record);
+	}
+
+	/**
+	 * Create a new history record
+	 *
+	 * @param record HistoryRecord
+	 */
+	public void addRecord(HistoryRecord record) {
+
+		// check if record was already dumped
+		int count = getSimpleJdbcTemplate().queryForInt("select count(1) from ab_sync_changes_tbl " + getWhere(record),
+				getParams(record));
+		if (count > 0) {
+			return;
+		}
+
+		getSimpleJdbcTemplate().update("INSERT INTO ab_sync_changes_tbl " +
+				"(record_date, old_value, current_value, object_type, object_id, field, action_type, processed, order_weight)" +
+				" VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?)",
+				record.getRecordDate(), record.getOldValue(), record.getCurrentValue(), record.getObjectType().getId(),
+				record.getObjectId(), record.getFieldType().getId(), record.getSyncAction().getCode(),
+				0, record.getObjectType().getOrderWeight());
 	}
 }

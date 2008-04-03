@@ -85,14 +85,14 @@
 	</bean>
 
 	<!--<bean id="cacheManager"-->
-		  <!--class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">-->
-		<!--<property name="configLocation" value="WEB-INF/common/configs/spring/ehcache.xml" />-->
+	<!--class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">-->
+	<!--<property name="configLocation" value="WEB-INF/common/configs/spring/ehcache.xml" />-->
 	<!--</bean>-->
 
 	<!--<bean id="ehcache"-->
-		  <!--class="org.springframework.cache.ehcache.EhCacheFactoryBean">-->
-		<!--<property name="cacheManager" ref="cacheManager" />-->
-		<!--<property name="cacheName" value="${ehcache.cacheName}" />-->
+	<!--class="org.springframework.cache.ehcache.EhCacheFactoryBean">-->
+	<!--<property name="cacheManager" ref="cacheManager" />-->
+	<!--<property name="cacheName" value="${ehcache.cacheName}" />-->
 	<!--</bean>-->
 
 	<!--
@@ -142,16 +142,16 @@
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-    <bean id="jbpmConfiguration"
-      class="org.springmodules.workflow.jbpm31.LocalJbpmConfigurationFactoryBean">
-        <property name="sessionFactory" ref="flexpaySessionFactory"/>
-        <property name="configuration" value="WEB-INF/common/configs/jbpm/jbpm.cfg.xml"/>
-    </bean>
+	<bean id="jbpmConfiguration"
+		  class="org.springmodules.workflow.jbpm31.LocalJbpmConfigurationFactoryBean">
+		<property name="sessionFactory" ref="flexpaySessionFactory" />
+		<property name="configuration" value="WEB-INF/common/configs/jbpm/jbpm.cfg.xml" />
+	</bean>
 
-    <bean name="processManager" class="org.flexpay.common.process.ProcessManager"
-        factory-method="getInstance" destroy-method="unload">
-        <property name="jbpmConfiguration" ref="jbpmConfiguration"/>
-    </bean>
+	<bean name="processManager" class="org.flexpay.common.process.ProcessManager"
+		  factory-method="getInstance" destroy-method="unload">
+		<property name="jbpmConfiguration" ref="jbpmConfiguration" />
+	</bean>
 
 
 </beans>

@@ -3,25 +3,39 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean name="jobDetailBean" class="org.springframework.scheduling.quartz.JobDetailBean">
+	<bean name="jobSyncDetailBean" class="org.springframework.scheduling.quartz.JobDetailBean">
 		<property name="jobClass" value="org.flexpay.ab.sync.SyncAbJob" />
 		<property name="jobDataAsMap">
 			<map>
-				<entry key="lockManager" value-ref="LockManager" />
 				<entry key="syncService" value-ref="abSyncService" />
 			</map>
 		</property>
 	</bean>
 
-	<bean id="jobsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-		<property name="jobDetail" ref="jobDetailBean" />
-		<property name="cronExpression" value="${ab.sync.cron.schedule}" />
+	<bean name="jobHistoryDumpDetailBean" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="org.flexpay.ab.sync.DumpHistoryJob" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="historyDumpService" value-ref="historyDumpService" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="jobSyncTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="jobSyncDetailBean" />
+		<property name="cronExpression" value="${ab.sync.cron.schedule.sync}" />
+	</bean>
+
+	<bean id="jobHistoryDumpTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="jobHistoryDumpDetailBean" />
+		<property name="cronExpression" value="${ab.sync.cron.schedule.dump}" />
 	</bean>
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="jobsTrigger" />
+				<!--<ref bean="jobSyncTrigger" />-->
+				<ref bean="jobHistoryDumpTrigger" />
 			</list>
 		</property>
 		<property name="quartzProperties">
