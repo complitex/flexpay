@@ -19,4 +19,8 @@ public enum ObjectType {
 
 		throw new IllegalArgumentException("Invalid ObjectType id: " + id);
 	}
+
+	public int getId() {
+		return id;
+	}
 }

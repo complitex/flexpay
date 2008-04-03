@@ -3,6 +3,8 @@ package org.flexpay.ab.service.imp;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
@@ -19,6 +21,7 @@ import java.util.Set;
 public class StreetProcessor extends AbstractProcessor<Street> {
 
 	private StreetDao streetDao;
+	private StreetService streetService;
 
 	public StreetProcessor() {
 		super(Street.class);
@@ -77,8 +80,9 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	private void setStreetTypeId(Street street, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs) {
 		StreetType stub = cs.findCorrection(record.getCurrentValue(), StreetType.class, sd);
 		if (stub == null) {
-			throw new RuntimeException(String.format("No correction for street type #%s DataSourceDescription %d, " +
+			log.error(String.format("No correction for street type #%s DataSourceDescription %d, " +
 					"cannot set up reference for street", record.getCurrentValue(), sd.getId()));
+			return;
 		}
 
 		StreetType persistentType = street.getTypeForDate(record.getRecordDate());
@@ -93,7 +97,12 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 		temporal.setObject(street);
 
 		TimeLine<StreetType, StreetTypeTemporal> timeLine = street.getTypesTimeLine();
-		timeLine = DateIntervalUtil.addInterval(timeLine, temporal);
+		if (timeLine == null) {
+			temporal.setBegin(ApplicationConfig.getInstance().getPastInfinite());
+			timeLine = new TimeLine<StreetType, StreetTypeTemporal>(temporal);
+		} else {
+			timeLine = DateIntervalUtil.addInterval(timeLine, temporal);
+		}
 		street.setTypesTimeLine(timeLine);
 	}
 
@@ -115,7 +124,9 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 					String name = TranslationUtil.getTranslation(streetName.getTranslations()).getName();
 
 					if (name.equals(record.getCurrentValue())) {
-						log.info("History street name is the same as in DB: " + name);
+						if (log.isDebugEnabled()) {
+							log.debug("History street name is the same as in DB: " + name);
+						}
 						return;
 					}
 				}
@@ -126,6 +137,23 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 				setStreetTypeId(street, record, sd, cs);
 				break;
 		}
+	}
+
+	/**
+	 * Try to find persistent object by set properties
+	 *
+	 * @param object DomainObject
+	 * @param sd	 DataSourceDescription
+	 * @param cs	 CorrectionsService
+	 * @return Persistent object stub if exists, or <code>null</code> otherwise
+	 */
+	protected Street findPersistentObject(Street object, DataSourceDescription sd, CorrectionsService cs) {
+		StreetName name = object.getCurrentName();
+		if (name == null || name.getTranslations().isEmpty()) {
+			return null;
+		}
+		String nameStr = name.getTranslations().iterator().next().getName();
+		return streetService.findByName(nameStr.toLowerCase(), new TownFilter(object.getParent().getId()));
 	}
 
 	/**
@@ -143,5 +171,9 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 
 	public void setStreetDao(StreetDao streetDao) {
 		this.streetDao = streetDao;
+	}
+
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
 	}
 }

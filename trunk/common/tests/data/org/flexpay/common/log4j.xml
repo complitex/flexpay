@@ -10,7 +10,7 @@
 		<param name="File" value="${java.io.tmpdir}/logs/flexpay_log_test.txt" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
-				   value="%-5p %c - %m\n" />
+				   value="%d %5p [%t] (%c %F:%L) - %m%n" />
 		</layout>
 	</appender>
 

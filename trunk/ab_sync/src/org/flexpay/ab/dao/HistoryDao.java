@@ -16,4 +16,11 @@ public interface HistoryDao {
 	 * @return List of HistoryRecord instances
 	 */
 	List<HistoryRecord> getRecords(Page pager, Date lastModifiedDate);
+
+	/**
+	 * Set records as processed
+	 *
+	 * @param records List of history records to mark as processed
+	 */
+	void setProcessed(List<HistoryRecord> records);
 }

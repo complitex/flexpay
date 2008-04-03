@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 
 import java.util.Collection;
 import java.util.Date;
@@ -111,4 +112,13 @@ public interface NameTimeDependentService<
 	 * @return name translation
 	 */
 	T getEmptyNameTranslation();
+
+	/**
+	 * Find existing object by name
+	 *
+	 * @param name	 Object name to search
+	 * @param filter Parent object filter
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	NTD findByName(String name, PrimaryKeyFilter filter);
 }

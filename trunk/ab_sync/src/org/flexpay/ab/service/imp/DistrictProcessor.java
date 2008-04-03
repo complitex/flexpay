@@ -3,6 +3,8 @@ package org.flexpay.ab.service.imp;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.ab.dao.DistrictDao;
 import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
@@ -19,6 +21,7 @@ import java.util.Set;
 public class DistrictProcessor extends AbstractProcessor<District> {
 
 	private DistrictDao districtDao;
+	private DistrictService districtService;
 
 	public DistrictProcessor() {
 		super(District.class);
@@ -92,7 +95,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 					String name = TranslationUtil.getTranslation(districtName.getTranslations()).getName();
 
 					if (name.equals(record.getCurrentValue())) {
-						log.info("History district name is the same as in DB: " + name);
+						log.debug("History district name is the same as in DB: " + name);
 						return;
 					}
 				}
@@ -100,6 +103,23 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 				setName(district, record.getCurrentValue(), record.getRecordDate());
 				break;
 		}
+	}
+
+	/**
+	 * Try to find persistent object by set properties
+	 *
+	 * @param object DomainObject
+	 * @param sd	 DataSourceDescription
+	 * @param cs	 CorrectionsService
+	 * @return Persistent object stub if exists, or <code>null</code> otherwise
+	 */
+	protected District findPersistentObject(District object, DataSourceDescription sd, CorrectionsService cs) {
+		DistrictName name = object.getCurrentName();
+		if (name == null || name.getTranslations().isEmpty()) {
+			return null;
+		}
+		String nameStr = name.getTranslations().iterator().next().getName();
+		return districtService.findByName(nameStr.toLowerCase(), new TownFilter(object.getParent().getId()));
 	}
 
 	/**
@@ -117,5 +137,9 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 
 	public void setDistrictDao(DistrictDao districtDao) {
 		this.districtDao = districtDao;
+	}
+
+	public void setDistrictService(DistrictService districtService) {
+		this.districtService = districtService;
 	}
 }

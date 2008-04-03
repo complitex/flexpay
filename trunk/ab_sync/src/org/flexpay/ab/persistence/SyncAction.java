@@ -23,4 +23,8 @@ public enum SyncAction {
 
 		throw new IllegalArgumentException("Unsupported sync operation type code: " + code);
 	}
+
+	public int getCode() {
+		return code;
+	}
 }

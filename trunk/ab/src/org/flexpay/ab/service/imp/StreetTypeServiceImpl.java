@@ -9,6 +9,7 @@ import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Transactional;
@@ -201,6 +202,24 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 			streetTypeDao.update(streetType);
 			log.info("Disabled: " + streetType);
 		}
+	}
+
+	@Transactional (readOnly = true)
+	public StreetType findTypeByName(String typeName) throws FlexPayException {
+		for (StreetType type : getEntities()) {
+			for (Translation ourType : type.getTranslations()) {
+				if (log.isDebugEnabled()) {
+					log.debug("Internal street type : " + ourType.getName());
+				}
+
+				if (ourType.getName().equalsIgnoreCase(typeName)) {
+					return type;
+				}
+			}
+		}
+
+		return null;
+
 	}
 
 	/**

@@ -458,4 +458,29 @@ public abstract class NameTimeDependentServiceImpl<
 		return getNameTimeDependentDao().findObjects(
 				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
 	}
+
+	/**
+	 * Find existing object by name
+	 *
+	 * @param name	 Object name to search
+	 * @param filter Parent object filter
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	public NTD findByName(String name, PrimaryKeyFilter filter) {
+		List<NTD> objs = getNameTimeDependentDao().findObjects(
+				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
+		for (NTD obj : objs) {
+			TV nameObj = obj.getCurrentName();
+			if (nameObj == null) {
+				continue;
+			}
+			for (T translation : nameObj.getTranslations()) {
+				if (translation.getName().equalsIgnoreCase(name)) {
+					return obj;
+				}
+			}
+		}
+
+		return null;
+	}
 }

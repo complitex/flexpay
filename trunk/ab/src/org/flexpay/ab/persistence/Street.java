@@ -109,6 +109,9 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 *         found
 	 */
 	public StreetType getTypeForDate(Date dt) {
+		if (typesTimeLine == null) {
+			return null;
+		}
 		List<StreetTypeTemporal> intervals = typesTimeLine.getIntervals();
 		for (StreetTypeTemporal di : intervals) {
 			if (DateIntervalUtil.includes(dt, di)) {
