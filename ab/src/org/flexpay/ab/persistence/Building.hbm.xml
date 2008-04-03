@@ -70,6 +70,12 @@
 					 not-null="true" />
 	</class>
 
+	<query name="Buildings.readFull">
+		select distinct b
+		from Buildings b left join fetch b.buildingAttributes a left join fetch a.buildingAttributeType 
+		where b.id=?
+	</query>
+
 	<query name="Buildings.findBuildings.count">
 		select count(*) from Buildings o where o.status=0 and o.street.id=?
 	</query>

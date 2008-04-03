@@ -4,19 +4,20 @@ import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.HistoryDao;
 import org.flexpay.ab.dao.UpdateConfigDao;
 import org.flexpay.ab.persistence.HistoryRecord;
-import org.flexpay.ab.persistence.UpdateConfig;
 import org.flexpay.ab.persistence.ObjectType;
+import org.flexpay.ab.persistence.UpdateConfig;
 import org.flexpay.ab.service.SyncService;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.DateIntervalUtil;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Transactional(readOnly = false, rollbackFor = Exception.class)
+//@Transactional(readOnly = false, rollbackFor = Exception.class)
 public class SyncServiceImpl implements SyncService {
 
 	private static Logger log = Logger.getLogger(SyncServiceImpl.class);
@@ -37,6 +38,7 @@ public class SyncServiceImpl implements SyncService {
 	private ObjectType prevType = ObjectType.Unknown;
 	private DomainObject prevObj = null;
 	private AbstractProcessor processor = null;
+	private List<HistoryRecord> recordBuffer = new ArrayList<HistoryRecord>();
 
 	/**
 	 * Synchronize Address Bureau
@@ -44,18 +46,21 @@ public class SyncServiceImpl implements SyncService {
 	public void syncAB() {
 		UpdateConfig config = updateConfigDao.getConfig();
 		config.setLastUpdateDate(DateIntervalUtil.now());
+		config.setLastRecordUpdateTime(ApplicationConfig.getInstance().getPastInfinite());
 
 		prevId = -1L;
 		prevType = ObjectType.Unknown;
 		prevObj = null;
 		processor = null;
 
+		int count = 0;
+
 		while (true) {
-			log.info("Starting sync for next records");
-			List<HistoryRecord> records = historyDao.getRecords(new Page(10, 1), config.getLastRecordUpdateTime());
-			if (records.isEmpty()) {
+			log.debug("Starting sync for next records");
+			List<HistoryRecord> records = historyDao.getRecords(new Page(100, 1), config.getLastRecordUpdateTime());
+			if (records.isEmpty() || recordBuffer.containsAll(records)) {
 				saveObject();
-				log.info("No more records.");
+				log.debug("No more records.");
 				break;
 			}
 
@@ -65,26 +70,37 @@ public class SyncServiceImpl implements SyncService {
 						saveObject();
 						prevId = record.getObjectId();
 						prevType = record.getObjectType();
-						config.setLastRecordUpdateTime(record.getRecordDate());
+//						config.setLastRecordUpdateTime(record.getRecordDate());
+					}
+					if (log.isInfoEnabled()) {
+						log.info("Sync record: " + record);
 					}
 					processRecord(record);
+					recordBuffer.add(record);
+					++count;
 				}
 
-				if (true) {
-					log.info("Break!");
-					break;
-				}
+//				if (prevType == ObjectType.Building)
+//					break;
+
 			} catch (Exception e) {
 				log.error("failed processing record", e);
 				break;
 			}
 		}
+
+		log.info("Processed records: " + count);
 	}
 
 	private void saveObject() {
-		if (prevObj != null ) {
+		if (prevObj != null) {
 			processor.saveObject(prevObj, String.valueOf(prevId), sd, correctionsService);
 		}
+		if (log.isDebugEnabled()) {
+			log.debug("Marking as processed " + recordBuffer.size() + " history records.");
+		}
+		historyDao.setProcessed(recordBuffer);
+		recordBuffer.clear();
 		prevObj = null;
 		prevId = -1L;
 		processor = null;

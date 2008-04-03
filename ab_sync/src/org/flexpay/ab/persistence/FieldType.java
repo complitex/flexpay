@@ -22,4 +22,8 @@ public enum FieldType {
 
 		throw new IllegalArgumentException("Invalid field type code: " + id);
 	}
+
+	public int getId() {
+		return id;
+	}
 }

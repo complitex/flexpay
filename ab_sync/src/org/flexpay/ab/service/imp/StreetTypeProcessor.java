@@ -4,14 +4,17 @@ import org.flexpay.ab.dao.StreetTypeDao;
 import org.flexpay.ab.persistence.HistoryRecord;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
+import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.TranslationUtil;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Dummy implementation, does nothing usefull
@@ -19,6 +22,7 @@ import java.util.HashSet;
 public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 
 	private StreetTypeDao streetTypeDao;
+	private StreetTypeService streetTypeService;
 
 	public StreetTypeProcessor() {
 		super(StreetType.class);
@@ -41,7 +45,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @return DomainObject instance
 	 */
 	protected StreetType readObject(StreetType stub) {
-		return streetTypeDao.read(stub.getId());
+		return streetTypeDao.readFull(stub.getId());
 	}
 
 	/**
@@ -55,20 +59,35 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 */
 	public void setProperty(DomainObject object, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
+		if (log.isDebugEnabled()) {
+			log.debug("About to set property: " + record.getFieldType());
+		}
+
 		StreetType streetType = (StreetType) object;
 		switch (record.getFieldType()) {
 			case StreetType:
-				String name = TranslationUtil.getTranslation(streetType.getTranslations()).getName();
+				Translation typeTranslation = TranslationUtil.getTranslation(streetType.getTranslations());
+				if (typeTranslation != null) {
+					String name = typeTranslation.getName();
 
-				if (name.equals(record.getCurrentValue())) {
-					log.info("History street type name is the same as in DB: " + name);
-					return;
+					if (name.equals(record.getCurrentValue())) {
+						if (log.isDebugEnabled()) {
+							log.debug("History street type name is the same as in DB: " + name);
+						}
+						return;
+					}
+				}
+
+				if (log.isDebugEnabled()) {
+					log.debug("Setting street type name, object is new: " + (object.getId() == null));
 				}
 
 				setName(streetType, record.getCurrentValue());
 				break;
 			default:
-				log.info("Unknown street type field: " + record.getFieldType());
+				if (log.isInfoEnabled()) {
+					log.debug("Unknown street type field: " + record.getFieldType());
+				}
 		}
 	}
 
@@ -84,6 +103,40 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	}
 
 	/**
+	 * Try to find persistent object by set properties
+	 *
+	 * @param object DomainObject
+	 * @param sd	 DataSourceDescription
+	 * @param cs	 CorrectionsService
+	 * @return Persistent object stub if exists, or <code>null</code> otherwise
+	 */
+	protected StreetType findPersistentObject(StreetType object, DataSourceDescription sd, CorrectionsService cs) {
+
+		if (object.getTranslations().isEmpty()) {
+			return null;
+		}
+
+		try {
+			StreetTypeTranslation translation = object.getTranslations().iterator().next();
+			if (translation == null) {
+				return null;
+			}
+
+			// Try to find general correction by type name
+			StreetType generalCorrection = cs.findCorrection(translation.getName(), StreetType.class, null);
+			if (generalCorrection != null) {
+				return generalCorrection;
+			}
+
+			return streetTypeService.findTypeByName(translation.getName());
+
+		} catch (FlexPayException e) {
+			log.info("Cannot find persistent street type by example: ", e);
+			return null;
+		}
+	}
+
+	/**
 	 * Save DomainObject
 	 *
 	 * @param object Object to save
@@ -94,5 +147,13 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 		} else {
 			streetTypeDao.create(object);
 		}
+	}
+
+	public void setStreetTypeDao(StreetTypeDao streetTypeDao) {
+		this.streetTypeDao = streetTypeDao;
+	}
+
+	public void setStreetTypeService(StreetTypeService streetTypeService) {
+		this.streetTypeService = streetTypeService;
 	}
 }

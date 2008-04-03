@@ -15,10 +15,12 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.ArrayList;
 
 public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryDao {
 
 	private String sqlGetRecords;
+	private String sqlSetProcessed;
 
 	private String tableName;
 	private String fieldRecordDate;
@@ -42,7 +44,10 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 
 		validateConfig();
 
-		sqlGetRecords = String.format("select * from %s where %2$s >= ? order by %2$s limit ?,?", tableName, fieldRecordDate);
+		sqlGetRecords = String.format("select * from %s where %2$s >= ? and processed=0 order by order_weight, %2$s limit ?,?", tableName, fieldRecordDate);
+		sqlSetProcessed = String.format("update %s set processed=1 where %s=? and %s $oldValue and %s $currentValue and %s=? and %s=? and %s $field and %s=?",
+				tableName, fieldRecordDate, fieldOldValue, fieldCurrentValue, fieldObjectTypeId,
+				fieldObjectId, fieldFieldName, fieldActionType);
 	}
 
 	private void validateConfig() {
@@ -81,16 +86,50 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 			public HistoryRecord mapRow(ResultSet rs, int i) throws SQLException {
 				HistoryRecord record = new HistoryRecord();
 
-				record.setRecordDate(rs.getDate(fieldRecordDate));
+				record.setRecordDate(rs.getTimestamp(fieldRecordDate));
 				record.setOldValue(rs.getString(fieldOldValue));
 				record.setCurrentValue(rs.getString(fieldCurrentValue));
 				record.setObjectType(ObjectType.getById(rs.getInt(fieldObjectTypeId)));
 				record.setObjectId(rs.getLong(fieldObjectId));
-				record.setFieldType(FieldType.getById(rs.getInt(fieldFieldName)));
+				if (rs.getObject(fieldFieldName) != null) {
+					record.setFieldType(FieldType.getById(rs.getInt(fieldFieldName)));
+				}
 				record.setSyncAction(SyncAction.getByCode(rs.getInt(fieldActionType)));
 
 				return record;
 			}
 		}, lastModifiedDate, pager.getThisPageFirstElementNumber(), pager.getPageSize());
+	}
+
+	/**
+	 * Set records as processed
+	 *
+	 * @param records List of history records to mark as processed
+	 */
+	public void setProcessed(List<HistoryRecord> records) {
+		for (HistoryRecord record : records) {
+			ArrayList<Object> params = new ArrayList<Object>();
+			params.add(record.getRecordDate());
+			if (record.getOldValue() != null) {
+				params.add(record.getOldValue());
+			}
+			if (record.getCurrentValue() != null) {
+				params.add(record.getCurrentValue());
+			}
+			params.add(record.getObjectType().getId());
+			params.add(record.getObjectId());
+			if (record.getFieldType() != null) {
+				params.add(record.getFieldType().getId());
+			}
+			params.add(record.getSyncAction().getCode());
+			getSimpleJdbcTemplate().update(getSetProcessedSql(record), params.toArray());
+		}
+	}
+
+	private String getSetProcessedSql(HistoryRecord record) {
+		return sqlSetProcessed
+				.replace("$oldValue", record.getOldValue() == null ? "is null" : "= ?")
+				.replace("$currentValue", record.getCurrentValue() == null ? "is null" : "= ?")
+				.replace("$field", record.getFieldType() == null ? "is null" : "= ?" );
 	}
 }

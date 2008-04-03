@@ -99,13 +99,27 @@ public class TownProcessor extends AbstractProcessor<Town> {
 					String name = TranslationUtil.getTranslation(townName.getTranslations()).getName();
 
 					if (name.equals(record.getCurrentValue())) {
-						log.info("History town name is the same as in DB: " + name);
+						if (log.isDebugEnabled()) {
+							log.debug("History town name is the same as in DB: " + name);
+						}
 						return;
 					}
 				}
 
 				setName(town, record.getCurrentValue(), record.getRecordDate());
 		}
+	}
+
+	/**
+	 * Try to find persistent object by set properties
+	 *
+	 * @param object DomainObject
+	 * @param sd	 DataSourceDescription
+	 * @param cs	 CorrectionsService
+	 * @return Persistent object stub if exists, or <code>null</code> otherwise
+	 */
+	protected Town findPersistentObject(Town object, DataSourceDescription sd, CorrectionsService cs) {
+		return null;
 	}
 
 	/**

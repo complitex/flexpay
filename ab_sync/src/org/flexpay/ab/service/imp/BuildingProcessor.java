@@ -9,6 +9,7 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,6 +39,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 		buildings.setBuilding(building);
 
 		Set<Buildings> buildingses = new HashSet<Buildings>();
+		buildingses.add(buildings);
 		building.setBuildingses(buildingses);
 
 		return buildings;
@@ -50,13 +52,17 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	 * @return DomainObject instance
 	 */
 	protected Buildings readObject(Buildings stub) {
-		Buildings buildings = buildingsDao.read(stub.getId());
+		Buildings buildings = buildingsDao.readFull(stub.getId());
 		Set<Buildings> buildingses = new HashSet<Buildings>();
 		buildingses.add(buildings);
 
 		Building buildingStub = new Building(buildings.getBuilding().getId());
 		buildings.setBuilding(buildingStub);
 		buildingStub.setBuildingses(buildingses);
+
+		if (log.isDebugEnabled()) {
+			log.debug("Read building: " + buildingStub);
+		}
 
 		return buildings;
 	}
@@ -70,6 +76,10 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 		Building building = object.getBuilding();
 		if (object.getId() == null) {
 			buildingDao.create(building);
+
+			if (log.isDebugEnabled()) {
+				log.debug(String.format("Created building: %s", building.toString()));
+			}
 		} else {
 			buildingDao.update(building);
 		}
@@ -101,11 +111,15 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 				setBuildingBulk(buildings, record);
 				break;
 			default:
-				log.info("Unknown building property: " + record.getFieldType());
+				if (log.isDebugEnabled()) {
+					log.debug("Unknown building property: " + record.getFieldType());
+				}
 		}
 	}
 
 	private void setBuildingNumber(Buildings buildings, HistoryRecord record) throws Exception {
+
+		log.info("Setting building number");
 
 		String value = buildings.getNumber();
 		if (value != null && !value.equals(record.getCurrentValue())) {
@@ -119,25 +133,43 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 		}
 
 		// Check if number already exists
-		boolean found = false;
+		BuildingAttribute numberAttribute = null;
 		for (BuildingAttribute attribute : attributes) {
+			if (attribute == null) {
+				continue;
+			}
 			if (attribute.getBuildingAttributeType().getType() == BuildingAttributeType.TYPE_NUMBER) {
-				attribute.setValue(record.getCurrentValue());
-				found = true;
+				numberAttribute = attribute;
 				break;
 			}
 		}
 
-		// Create a new attribute
-		if (!found) {
-			BuildingAttributeType type = buildingService.getAttributeType(BuildingAttributeType.TYPE_BULK);
-			BuildingAttribute attribute = new BuildingAttribute();
-			attribute.setValue(record.getCurrentValue());
-			attribute.setBuildings(buildings);
-			attribute.setBuildingAttributeType(type);
+		if (StringUtils.isEmpty(record.getCurrentValue())) {
+			if (numberAttribute != null) {
+				attributes.remove(numberAttribute);
+				buildings.setBuildingAttributes(attributes);
+			}
+			return;
 		}
 
+		// Create a new attribute
+		if (numberAttribute == null) {
+			BuildingAttributeType type = buildingService.getAttributeType(BuildingAttributeType.TYPE_NUMBER);
+			BuildingAttribute attribute = new BuildingAttribute();
+			attribute.setBuildings(buildings);
+			attribute.setBuildingAttributeType(type);
+			numberAttribute = attribute;
+		}
+
+		numberAttribute.setValue(record.getCurrentValue());
+		attributes.add(numberAttribute);
+
 		buildings.setBuildingAttributes(attributes);
+
+		if (log.isInfoEnabled()) {
+			log.info(String.format("Building number to set: %s, actual number: %s",
+					record.getCurrentValue(), buildings.getNumber()));
+		}
 	}
 
 	private void setBuildingBulk(Buildings buildings, HistoryRecord record) throws Exception {
@@ -154,23 +186,36 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 		}
 
 		// Check if bulk already exists
-		boolean found = false;
+		BuildingAttribute numberAttribute = null;
 		for (BuildingAttribute attribute : attributes) {
+			if (attribute == null) {
+				continue;
+			}
 			if (attribute.getBuildingAttributeType().getType() == BuildingAttributeType.TYPE_BULK) {
-				attribute.setValue(record.getCurrentValue());
-				found = true;
+				numberAttribute = attribute;
 				break;
 			}
 		}
 
+		if (StringUtils.isEmpty(record.getCurrentValue())) {
+			if (numberAttribute != null) {
+				attributes.remove(numberAttribute);
+				buildings.setBuildingAttributes(attributes);
+			}
+			return;
+		}
+
 		// Create a new attribute
-		if (!found) {
+		if (numberAttribute == null) {
 			BuildingAttributeType type = buildingService.getAttributeType(BuildingAttributeType.TYPE_BULK);
 			BuildingAttribute attribute = new BuildingAttribute();
-			attribute.setValue(record.getCurrentValue());
 			attribute.setBuildings(buildings);
 			attribute.setBuildingAttributeType(type);
+			numberAttribute = attribute;
 		}
+
+		numberAttribute.setValue(record.getCurrentValue());
+		attributes.add(numberAttribute);
 
 		buildings.setBuildingAttributes(attributes);
 	}
@@ -178,14 +223,16 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	private void setDistrictId(Building building, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs) {
 		District stub = cs.findCorrection(record.getCurrentValue(), District.class, sd);
 		if (stub == null) {
-			throw new RuntimeException(String.format("No correction for district #%s DataSourceDescription %d, " +
+			log.error(String.format("No correction for district #%s DataSourceDescription %d, " +
 					"cannot set up reference for building", record.getCurrentValue(), sd.getId()));
+			return;
 		}
 
 		if (districtDao.read(stub.getId()) == null) {
-			throw new RuntimeException(String.format("Correction for district #%s DataSourceDescription %d is invalid, " +
+			log.error(String.format("Correction for district #%s DataSourceDescription %d is invalid, " +
 					"no district with id %d, cannot set up reference for building",
 					record.getCurrentValue(), sd.getId(), stub.getId()));
+			return;
 		}
 
 		building.setDistrict(stub);
@@ -194,17 +241,37 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	private void setStreetId(Buildings building, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs) {
 		Street stub = cs.findCorrection(record.getCurrentValue(), Street.class, sd);
 		if (stub == null) {
-			throw new RuntimeException(String.format("No correction for street #%s DataSourceDescription %d, " +
+			log.error(String.format("No correction for street #%s DataSourceDescription %d, " +
 					"cannot set up reference for building", record.getCurrentValue(), sd.getId()));
+			return;
 		}
 
 		if (streetDao.read(stub.getId()) == null) {
-			throw new RuntimeException(String.format("Correction for street #%s DataSourceDescription %d is invalid, " +
+			log.error(String.format("Correction for street #%s DataSourceDescription %d is invalid, " +
 					"no street with id %d, cannot set up reference for building",
 					record.getCurrentValue(), sd.getId(), stub.getId()));
+			return;
 		}
 
 		building.setStreet(stub);
+	}
+
+	/**
+	 * Try to find persistent object by set properties
+	 *
+	 * @param object DomainObject
+	 * @param sd	 DataSourceDescription
+	 * @param cs	 CorrectionsService
+	 * @return Persistent object stub if exists, or <code>null</code> otherwise
+	 */
+	protected Buildings findPersistentObject(Buildings object, DataSourceDescription sd, CorrectionsService cs) {
+		String number = object.getNumber();
+		String bulk = object.getBulk();
+		if (object.getStreet() == null || number == null) {
+			return null;
+		}
+
+		return buildingService.findBuildings(object.getStreet(), number, bulk);
 	}
 
 	public void setBuildingDao(BuildingDao buildingDao) {

@@ -1,6 +1,8 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.util.Collections;
 import java.util.Set;
@@ -52,5 +54,16 @@ public class Building extends DomainObjectWithStatus {
 
 	public void setApartments(Set<Apartment> apartments) {
 		this.apartments = apartments;
+	}
+
+	/**
+	 * Returns a string representation of the object.
+	 *
+	 * @return a string representation of the object.
+	 */
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("buildings", buildingses.toArray())
+				.toString();
 	}
 }

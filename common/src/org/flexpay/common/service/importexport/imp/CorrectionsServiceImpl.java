@@ -19,6 +19,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 *
 	 * @param correction DataCorrection
 	 */
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void save(DataCorrection correction) {
 		correctionsDao.save(correction);
 	}

@@ -34,7 +34,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 		if (obj == null) {
 			T stub = cs.findCorrection(extId, type, sd);
 			if (stub != null) {
-				log.info("External object already exists: " + extId);
+				log.debug("External object already exists: " + extId);
 				return readObject(stub);
 			}
 
@@ -64,6 +64,9 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 */
 	public void deleteObject(DomainObject domainObject) {
 		DomainObjectWithStatus objectWithStatus = (DomainObjectWithStatus) domainObject;
+		if (objectWithStatus == null) {
+			return;
+		}
 		objectWithStatus.setStatus(DomainObjectWithStatus.STATUS_DISABLED);
 	}
 
@@ -90,11 +93,16 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 		if (obj == null) {
 			T stub = cs.findCorrection(extId, type, sd);
 			if (stub != null) {
-				log.info("External object already exists: " + extId);
+				if (log.isDebugEnabled()) {
+					log.debug("External object already exists: " + extId);
+				}
 				return readObject(stub);
 			}
 
-			throw new IllegalArgumentException("Cannot find correction for object of type " + type + " with id " + extId);
+			if (log.isDebugEnabled()) {
+				log.debug("Cannot find correction for object of type " + type + " with id " + extId + ", creating a stub");
+			}
+			return doCreateObject();
 		}
 
 		if (!type.isInstance(obj)) {
@@ -125,16 +133,58 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @param cs		 CorrectionsService
 	 */
 	public void saveObject(DomainObject object, String externalId, DataSourceDescription sd, CorrectionsService cs) {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Saving object: " + object.getId() + ", externalID: " + externalId);
+		}
+
 		Long id = object.getId();
 		T obj = type.cast(object);
+		if (id == null) {
+			// cannot delete unknown object
+			if (obj instanceof DomainObjectWithStatus) {
+				DomainObjectWithStatus withStatus = (DomainObjectWithStatus) obj;
+				if (withStatus.getStatus() == DomainObjectWithStatus.STATUS_DISABLED) {
+					log.warn("Deleting unknown object nothing to do");
+					return;
+				}
+			}
+		}
+
+		T stub = findPersistentObject(obj, sd, cs);
+		if (stub != null) {
+			log.info("Found similar object, need to add correction only");
+			if (cs.existsCorrection(externalId, type, sd)) {
+				log.debug("Correction already exists");
+				return;
+			}
+			log.debug("Creating correction");
+			// found similar object just create a reference to it
+			obj.setId(stub.getId());
+			DataCorrection correction = cs.getStub(externalId, obj, sd);
+			cs.save(correction);
+			return;
+		}
+
+		log.info("Performing save");
 		doSaveObject(obj);
 
-		// created a new object, need to add a correction
-		if (id == null) {
+		if (id == null && obj.getId() != null) {
+			log.info("Adding a new object correction: " + obj.getId());
 			DataCorrection correction = cs.getStub(externalId, obj, sd);
 			cs.save(correction);
 		}
 	}
+
+	/**
+	 * Try to find persistent object by set properties
+	 *
+	 * @param object DomainObject
+	 * @param sd DataSourceDescription
+	 * @param cs CorrectionsService
+	 * @return Persistent object stub if exists, or <code>null</code> otherwise
+	 */
+	protected abstract T findPersistentObject(T object, DataSourceDescription sd, CorrectionsService cs);
 
 	/**
 	 * Save DomainObject

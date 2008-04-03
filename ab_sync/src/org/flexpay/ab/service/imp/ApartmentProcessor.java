@@ -4,6 +4,7 @@ import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.service.importexport.CorrectionsService;
@@ -15,6 +16,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 
 	private ApartmentDao apartmentDao;
 	private BuildingsDao buildingsDao;
+	private ApartmentService apartmentService;
 
 	public ApartmentProcessor() {
 		super(Apartment.class);
@@ -60,7 +62,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 				setBuildingId(apartment, record, sd, cs);
 				break;
 			default:
-				log.info("Unknown apartment property: " + record.getFieldType());
+				log.debug("Unknown apartment property: " + record.getFieldType());
 		}
 	}
 
@@ -69,15 +71,17 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 
 		Buildings stub = cs.findCorrection(record.getCurrentValue(), Buildings.class, sd);
 		if (stub == null) {
-			throw new RuntimeException(String.format("No correction for buildings #%s DataSourceDescription %d, " +
+			log.error(String.format("No correction for buildings #%s DataSourceDescription %d, " +
 					"cannot set up building reference for apartment", record.getCurrentValue(), sd.getId()));
+			return;
 		}
 
 		Buildings buildings = buildingsDao.read(stub.getId());
 		if (buildings == null) {
-			throw new RuntimeException(String.format("Correction for buildings #%s DataSourceDescription %d is invalid, " +
+			log.error(String.format("Correction for buildings #%s DataSourceDescription %d is invalid, " +
 					"no buildings with id %d, cannot set up building reference for apartment",
 					record.getCurrentValue(), sd.getId(), stub.getId()));
+			return;
 		}
 		apartment.setBuilding(buildings.getBuilding());
 	}
@@ -113,11 +117,30 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param object Object to save
 	 */
 	public void doSaveObject(Apartment object) {
+		if (object.getBuilding() == null) {
+			log.warn("Invalid sync data, no building specified");
+			return;
+		}
 		if (object.getId() == null) {
 			apartmentDao.create(object);
 		} else {
 			apartmentDao.update(object);
 		}
+	}
+
+	/**
+	 * Try to find persistent object by set properties
+	 *
+	 * @param object DomainObject
+	 * @param sd	 DataSourceDescription
+	 * @param cs	 CorrectionsService
+	 * @return Persistent object stub if exists, or <code>null</code> otherwise
+	 */
+	protected Apartment findPersistentObject(Apartment object, DataSourceDescription sd, CorrectionsService cs) {
+		if (object.getBuilding() == null || object.getApartmentNumbers().isEmpty()) {
+			return null;
+		}
+		return apartmentService.findApartmentStub(object.getBuilding(), object.getNumber());
 	}
 
 	public void setApartmentDao(ApartmentDao apartmentDao) {
@@ -126,5 +149,9 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 
 	public void setBuildingsDao(BuildingsDao buildingsDao) {
 		this.buildingsDao = buildingsDao;
+	}
+
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
 	}
 }
