@@ -55,6 +55,14 @@
 		where organisation.id=? and consumer.id=? and operationDate=? and amount=? and
 		recordType.id=?
 	</query>
+	
+	<query name="AccountRecord.findForTicket">
+		SELECT DISTINCT record
+		FROM AccountRecord record
+		WHERE record.consumer.responsiblePerson.id=? AND
+		      record.consumer.apartment.id=?
+		ORDER BY record.consumer.service.serviceType.id, record.operationDate
+	</query>
 
 	<query name="Consumer.findConsumers.count">
 		select count(*) 

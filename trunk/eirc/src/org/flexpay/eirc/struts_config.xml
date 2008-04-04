@@ -50,6 +50,18 @@
 		</action>
 		
 		
+		<action name="processing">
+			<result type="tiles">eirc.processing</result>
+		</action>
+		
+		<action name="generateTickets" class="generateTicketsAction">
+			<result type="tiles">eirc.processing.generate_tickets</result>
+		</action>
+		
+		
+		<action name="tickets">
+			<result type="tiles">eirc.tickets</result>
+		</action>
 		
 
 	</package>

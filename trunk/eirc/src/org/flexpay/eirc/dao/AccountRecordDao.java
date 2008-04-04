@@ -23,4 +23,12 @@ public interface AccountRecordDao extends GenericDao<AccountRecord, Long> {
 	 */
 	List<AccountRecord> findRegisteredRecords(
 			Page page, Long organisationId, Long consumerId, Date operationDate, BigDecimal amount, Long recordTypeId);
+	
+	/**
+	 * Find AccountRecord for Person
+	 *
+	 * @param personId Person key
+	 * @return List of AccountRecord sorted by ServiceType and operationDate
+	 */
+	List<AccountRecord> findForTicket(Long personId, Long apartmentId);
 }

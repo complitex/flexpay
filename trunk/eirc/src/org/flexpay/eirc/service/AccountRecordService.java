@@ -33,4 +33,12 @@ public interface AccountRecordService {
 	 * @return current consumer balance
 	 */
 	BigDecimal getCurrentBalance(AbstractConsumer consumer);
+	
+	/**
+	 * Find AccountRecord for Person
+	 *
+	 * @param personId Person key
+	 * @return List of AccountRecord sorted by ServiceType and operationDate
+	 */
+	List<AccountRecord> findForTicket(Long personId, Long apartmentId);
 }

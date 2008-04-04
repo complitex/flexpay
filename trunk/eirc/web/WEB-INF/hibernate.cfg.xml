@@ -60,6 +60,9 @@
 		<!-- <mapping resource="org/flexpay/eirc/persistence/SpRegistryType.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/SpRegistry.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/SpRegistryRecord.hbm.xml" /> -->
+		
+		<mapping resource="org/flexpay/eirc/persistence/Ticket.hbm.xml" />
+		
 
 	</session-factory>
 

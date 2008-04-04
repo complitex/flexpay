@@ -68,6 +68,16 @@ public class AccountRecordServiceImpl implements AccountRecordService {
 		// TODO implement me
 		return null;
 	}
+	
+	/**
+	 * Find AccountRecord for Person
+	 *
+	 * @param personId Person key
+	 * @return List of AccountRecord sorted by ServiceType and operationDate
+	 */
+	public List<AccountRecord> findForTicket(Long personId, Long apartmentId) {
+		return accountRecordDao.findForTicket(personId, apartmentId);
+	}
 
 	public void setAccountRecordDao(AccountRecordDao accountRecordDao) {
 		this.accountRecordDao = accountRecordDao;
