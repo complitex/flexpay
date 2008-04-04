@@ -5,6 +5,7 @@
 	
 	<eircDataRoot>/eirc</eircDataRoot> <!-- задаётся относительно dataRoot -->
 	<eircId>090</eircId> <!-- должен состоять из цифр -->
+	<eircKvitPattern>/kvitPattern.pdf</eircKvitPattern> <!-- PDF файл с шаблоном квитанции. Задаётся относительно eircDataRoot -->
 	
 	<szDataRoot>/sz</szDataRoot> <!-- задаётся относительно dataRoot -->
 	<szDefaultDbfFileEncoding>Cp866</szDefaultDbfFileEncoding>
