@@ -134,6 +134,7 @@
 	    LEFT JOIN FETCH s.nameTemporals t
  	    LEFT JOIN FETCH t.value v
  	    LEFT JOIN FETCH v.translations tr
+ 	    LEFT JOIN FETCH tr.lang l
  	    LEFT JOIN FETCH s.typeTemporals tt
  	    LEFT JOIN FETCH tt.value tv
  	    LEFT JOIN FETCH tv.translations ttr
