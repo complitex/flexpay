@@ -21,6 +21,7 @@ public class ApplicationConfig {
 	private File dataRoot;
 
 	private File eircDataRoot;
+	private File eircKvitPattern;
 	private String eircId;
 
 	private File szDataRoot;
@@ -163,5 +164,19 @@ public class ApplicationConfig {
 
 	public void setTestProp(String prop) {
 		this.testProp = prop;
+	}
+
+	/**
+	 * @return the eircKvitPattern
+	 */
+	public File getEircKvitPattern() {
+		return eircKvitPattern;
+	}
+
+	/**
+	 * @param eircKvitPattern the eircKvitPattern to set
+	 */
+	public void setEircKvitPattern(String eircKvitPattern) {
+		this.eircKvitPattern = new File(eircDataRoot, eircKvitPattern);
 	}
 }
