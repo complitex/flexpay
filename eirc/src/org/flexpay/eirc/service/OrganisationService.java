@@ -1,5 +1,7 @@
 package org.flexpay.eirc.service;
 
+import java.util.List;
+
 import org.flexpay.eirc.persistence.Organisation;
 
 public interface OrganisationService {
@@ -11,4 +13,5 @@ public interface OrganisationService {
 	 * @return Organisation if found, or <code>null</code> otherwise
 	 */
 	Organisation getOrganisation(String organisationId);
+	
 }

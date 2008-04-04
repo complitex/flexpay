@@ -103,7 +103,8 @@ function setInternalSources() {
 		varname:"streetVar",
 		json:true,
 		shownoresults:false,
-		maxresults:6,
+		minchars:3,
+		maxresults:1000,
 		timeout:10000,
 		callback: sendBuildingRequest
 	};

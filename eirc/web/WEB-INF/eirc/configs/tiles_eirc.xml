@@ -33,6 +33,23 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correspondence.jsp" />
   </definition>
   
+  <!-- Processing -->
+  <definition name="eirc.processing" extends="eirc.import">
+  		<put-attribute name="title" value="eirc.menu2.processing" />
+  		<put-attribute name="menu34" value="/WEB-INF/jsp/eirc/menu/menu34_processing.jsp" />
+  </definition>
+  
+  <definition name="eirc.processing.generate_tickets" extends="eirc.processing">
+  		<put-attribute name="title" value="eirc.menu34.processing.generate_tickets" />
+  		<put-attribute name="body" value="/WEB-INF/jsp/eirc/processing/generate_tickets.jsp" />
+  </definition>
+    
+  
+  <!-- Tickets -->
+  <definition name="eirc.tickets" extends="eirc.import">
+  		<put-attribute name="title" value="eirc.menu2.tickets" />
+  		<put-attribute name="menu34" value="/WEB-INF/jsp/eirc/menu/menu34_tickets.jsp" />
+  </definition>
   
 
 </tiles-definitions>

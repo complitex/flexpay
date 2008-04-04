@@ -1,10 +1,9 @@
 package org.flexpay.eirc.dao;
 
-import org.flexpay.common.dao.GenericDao;
-import org.flexpay.common.dao.paging.Page;
-import org.flexpay.eirc.persistence.Organisation;
-
 import java.util.List;
+
+import org.flexpay.common.dao.GenericDao;
+import org.flexpay.eirc.persistence.Organisation;
 
 public interface OrganisationDao extends GenericDao<Organisation, Long> {
 
@@ -15,4 +14,5 @@ public interface OrganisationDao extends GenericDao<Organisation, Long> {
 	 * @return List if organisations
 	 */
 	List<Organisation> findOrganisationsById(String id);
+	
 }

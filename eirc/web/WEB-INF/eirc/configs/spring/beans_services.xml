@@ -57,5 +57,20 @@
 		<property name="importService" ref="importServiceEirc" />
 		<property name="rawConsumersDataSource" ref="consumersDataSource" />
 	</bean>
-
+	
+	<bean id="serviceOrganisationService" class="org.flexpay.eirc.service.imp.ServiceOrganisationServiceImpl">
+		<property name="serviceOrganisationDao" ref="serviceOrganisationDao" />
+	</bean>
+	
+	<bean id="ticketServiceAmountService" class="org.flexpay.eirc.service.imp.TicketServiceAmountServiceImpl">
+		<property name="ticketServiceAmountDao" ref="ticketServiceAmountDao" />
+	</bean>
+	
+	<bean id="ticketService" class="org.flexpay.eirc.service.imp.TicketServiceImpl">
+		<property name="ticketDao" ref="ticketDao" />
+		<property name="serviceOrganisationService" ref="serviceOrganisationService" />
+		<property name="accountRecordService" ref="accountRecordService" />
+		<property name="ticketServiceAmountService" ref="ticketServiceAmountService" />
+	</bean>
+	
 </beans>

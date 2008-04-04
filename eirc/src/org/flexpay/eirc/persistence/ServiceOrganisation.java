@@ -2,6 +2,7 @@ package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Set;
 public class ServiceOrganisation extends DomainObjectWithStatus {
 
 	private Organisation organisation;
-	private Set<ServedBuilding> servedBuildings;
+	private Set<ServedBuilding> servedBuildings = Collections.emptySet();
 
 	/**
 	 * Constructs a new DomainObject.
