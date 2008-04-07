@@ -1673,7 +1673,7 @@ INSERT INTO street_name_translations_tbl (name, street_name_id, language_id)
 INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@street_id_demakova, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO street_types_temporal_tbl (street_id, street_type_id, begin_date, end_date, create_date, invalid_date)
-	VALUES (@street_id_demakova, @street_type_street_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+	VALUES (@street_id_demakova, @street_type_street, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_demakova, @district_id_nsk_sovetskiy);
 
 INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
@@ -1685,7 +1685,7 @@ INSERT INTO street_name_translations_tbl (name, street_name_id, language_id)
 INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@street_id_ivanova, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO street_types_temporal_tbl (street_id, street_type_id, begin_date, end_date, create_date, invalid_date)
-	VALUES (@street_id_ivanova, @street_type_street_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+	VALUES (@street_id_ivanova, @street_type_street, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_ivanova, @district_id_nsk_sovetskiy);
 
 INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
@@ -1697,7 +1697,7 @@ INSERT INTO street_name_translations_tbl (name, street_name_id, language_id)
 INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@street_id_rossiiskaya, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO street_types_temporal_tbl (street_id, street_type_id, begin_date, end_date, create_date, invalid_date)
-	VALUES (@street_id_rossiiskaya, @street_type_street_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+	VALUES (@street_id_rossiiskaya, @street_type_street, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_rossiiskaya, @district_id_nsk_sovetskiy);
 
 INSERT INTO streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
@@ -1709,7 +1709,7 @@ INSERT INTO street_name_translations_tbl (name, street_name_id, language_id)
 INSERT INTO street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@street_id_krasniy, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO street_types_temporal_tbl (street_id, street_type_id, begin_date, end_date, create_date, invalid_date)
-	VALUES (@street_id_krasniy, @street_type_street_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+	VALUES (@street_id_krasniy, @street_type_street, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_krasniy, @district_id_nsk_centralniy);
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_krasniy, @district_id_nsk_zaelcovskiy);
 
