@@ -376,6 +376,7 @@
 
     create table buildings_tbl (
         id bigint not null auto_increment,
+        building_type varchar(255) not null,
         district_id bigint not null,
         primary key (id)
     );
@@ -628,7 +629,7 @@
         create_date date not null,
         invalid_date date not null,
         street_id bigint not null,
-        street_type_id bigint,
+        street_type_id bigint not null,
         primary key (id)
     );
 

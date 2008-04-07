@@ -31,6 +31,14 @@
         drop 
         foreign key FKEA6AFBBE1AE9F4D;
 
+    alter table buildings_tbl 
+        drop 
+        foreign key FKEA6AFBBEF77A6E1C;
+
+    alter table buildings_tbl 
+        drop 
+        foreign key FKEA6AFBBE2924A765;
+
     alter table buildingses_tbl 
         drop 
         foreign key FK5C8CDAC311847ED;
@@ -107,6 +115,10 @@
         drop 
         foreign key FK9AA6756E1AE9F4D;
 
+    alter table eirc_service_organisations_tbl 
+        drop 
+        foreign key FKB7C04C647F30FD59;
+
     alter table eirc_service_providers_tbl 
         drop 
         foreign key FK960743AD5BA789BB;
@@ -150,6 +162,26 @@
     alter table eirc_sp_registry_records_tbl 
         drop 
         foreign key FKD41D677791349F59;
+
+    alter table eirc_ticket_service_amounts_tbl 
+        drop 
+        foreign key FK4C259507DA8E0B59;
+
+    alter table eirc_ticket_service_amounts_tbl 
+        drop 
+        foreign key FK4C2595072C648686;
+
+    alter table eirc_tickets_tbl 
+        drop 
+        foreign key FK9C84E2FC7095AEAD;
+
+    alter table eirc_tickets_tbl 
+        drop 
+        foreign key FK9C84E2FCFCB9D686;
+
+    alter table eirc_tickets_tbl 
+        drop 
+        foreign key FK9C84E2FCDEF75687;
 
     alter table identity_type_translations_tbl 
         drop 
@@ -351,6 +383,8 @@
 
     drop table if exists eirc_organisations_tbl;
 
+    drop table if exists eirc_service_organisations_tbl;
+
     drop table if exists eirc_service_providers_tbl;
 
     drop table if exists eirc_service_type_name_translations_tbl;
@@ -366,6 +400,10 @@
     drop table if exists eirc_sp_registry_records_tbl;
 
     drop table if exists eirc_sp_registry_types_tbl;
+
+    drop table if exists eirc_ticket_service_amounts_tbl;
+
+    drop table if exists eirc_tickets_tbl;
 
     drop table if exists identity_type_translations_tbl;
 
@@ -472,7 +510,9 @@
 
     create table buildings_tbl (
         id bigint not null auto_increment,
+        building_type integer not null,
         district_id bigint not null,
+        eirc_service_organisation_id bigint,
         primary key (id)
     );
 
@@ -605,6 +645,13 @@
         primary key (id)
     );
 
+    create table eirc_service_organisations_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        organisation_id bigint not null,
+        primary key (id)
+    );
+
     create table eirc_service_providers_tbl (
         id bigint not null auto_increment,
         organisation_id bigint not null,
@@ -693,6 +740,27 @@
         name varchar(255) not null,
         direction varchar(255) not null,
         type_enum_id integer not null,
+        primary key (id)
+    );
+
+    create table eirc_ticket_service_amounts_tbl (
+        id bigint not null auto_increment,
+        ticket_id bigint,
+        service_type_id bigint not null,
+        date_from_amount decimal(19,2) not null,
+        date_till_amount decimal(19,2) not null,
+        primary key (id)
+    );
+
+    create table eirc_tickets_tbl (
+        id bigint not null auto_increment,
+        creation_date datetime not null,
+        service_organisation_id bigint not null,
+        person_id bigint not null,
+        ticket_number integer not null,
+        date_from datetime not null,
+        date_till datetime not null,
+        apartment_id bigint not null,
         primary key (id)
     );
 
@@ -854,7 +922,7 @@
         create_date date not null,
         invalid_date date not null,
         street_id bigint not null,
-        street_type_id bigint,
+        street_type_id bigint not null,
         primary key (id)
     );
 
@@ -978,6 +1046,18 @@
         foreign key (district_id) 
         references districts_tbl (id);
 
+    alter table buildings_tbl 
+        add index FKEA6AFBBEF77A6E1C (eirc_service_organisation_id), 
+        add constraint FKEA6AFBBEF77A6E1C 
+        foreign key (eirc_service_organisation_id) 
+        references eirc_service_organisations_tbl (id);
+
+    alter table buildings_tbl 
+        add index FKEA6AFBBE2924A765 (eirc_service_organisation_id), 
+        add constraint FKEA6AFBBE2924A765 
+        foreign key (eirc_service_organisation_id) 
+        references eirc_organisations_tbl (id);
+
     alter table buildingses_tbl 
         add index FK5C8CDAC311847ED (street_id), 
         add constraint FK5C8CDAC311847ED 
@@ -1092,6 +1172,12 @@
         foreign key (district_id) 
         references districts_tbl (id);
 
+    alter table eirc_service_organisations_tbl 
+        add index FKB7C04C647F30FD59 (organisation_id), 
+        add constraint FKB7C04C647F30FD59 
+        foreign key (organisation_id) 
+        references eirc_organisations_tbl (id);
+
     alter table eirc_service_providers_tbl 
         add index FK960743AD5BA789BB (data_source_description_id), 
         add constraint FK960743AD5BA789BB 
@@ -1157,6 +1243,36 @@
         add constraint FKD41D677791349F59 
         foreign key (consumer_id) 
         references eirc_consumers_tbl (id);
+
+    alter table eirc_ticket_service_amounts_tbl 
+        add index FK4C259507DA8E0B59 (ticket_id), 
+        add constraint FK4C259507DA8E0B59 
+        foreign key (ticket_id) 
+        references eirc_tickets_tbl (id);
+
+    alter table eirc_ticket_service_amounts_tbl 
+        add index FK4C2595072C648686 (service_type_id), 
+        add constraint FK4C2595072C648686 
+        foreign key (service_type_id) 
+        references eirc_service_types_tbl (id);
+
+    alter table eirc_tickets_tbl 
+        add index FK9C84E2FC7095AEAD (person_id), 
+        add constraint FK9C84E2FC7095AEAD 
+        foreign key (person_id) 
+        references persons_tbl (id);
+
+    alter table eirc_tickets_tbl 
+        add index FK9C84E2FCFCB9D686 (service_organisation_id), 
+        add constraint FK9C84E2FCFCB9D686 
+        foreign key (service_organisation_id) 
+        references eirc_service_organisations_tbl (id);
+
+    alter table eirc_tickets_tbl 
+        add index FK9C84E2FCDEF75687 (apartment_id), 
+        add constraint FK9C84E2FCDEF75687 
+        foreign key (apartment_id) 
+        references apartments_tbl (id);
 
     alter table identity_type_translations_tbl 
         add index FK8DFCEF85D8765DAA (identity_type_id), 

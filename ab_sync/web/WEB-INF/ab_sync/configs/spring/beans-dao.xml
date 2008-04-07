@@ -20,7 +20,7 @@
 	</bean>
 
 	<!-- Look up data source via JNDI -->
-	<!--<jee:jndi-lookup id="dataSource" jndi-name="jdbc/FlexPay" resource-ref="false" />-->
+	<!--<jee:jndi-lookup id="syncABDataSource" jndi-name="jdbc/FlexPay" resource-ref="false" />-->
 
 	<bean id="historyDaoJdbc" class="org.flexpay.ab.dao.imp.HistoryDaoJdbcImpl">
 		<property name="dataSource" ref="dataSource" />

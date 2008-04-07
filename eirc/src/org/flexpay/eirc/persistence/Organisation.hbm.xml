@@ -26,7 +26,7 @@
 		<property name="status" not-null="true" />
 		<many-to-one name="organisation" column="organisation_id" not-null="true" />
 		<set name="buildings" inverse="true">
-			<key column="service_organisation_id" />
+			<key column="eirc_service_organisation_id" />
 			<one-to-many class="org.flexpay.eirc.persistence.ServedBuilding" />
 		</set>
 	</class>
