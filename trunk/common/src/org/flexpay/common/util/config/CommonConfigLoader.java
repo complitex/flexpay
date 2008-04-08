@@ -12,6 +12,8 @@ import org.flexpay.common.util.LanguageUtil;
 import org.springframework.web.context.ServletContextAware;
 
 import javax.servlet.ServletContext;
+
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ public class CommonConfigLoader implements ServletContextAware {
 	 */
 	public void loadConfig() throws Exception {
 		ApplicationConfig config = getNewConfig();
+		config.setWebAppRoot(new File(context.getRealPath("/")));
 		log.info("Starting loading configs");
 		for (URL url : configFiles) {
 			InputStreamReader is = null;
@@ -125,9 +128,6 @@ public class CommonConfigLoader implements ServletContextAware {
 	protected void addRules(Digester d) {
 
 		d.addCallMethod("flexpay/dataRoot", "setDataRoot", 0);
-		d.addCallMethod("flexpay/eircDataRoot", "setEircDataRoot", 0);
-		d.addCallMethod("flexpay/eircKvitPattern", "setEircKvitPattern", 0);
-		d.addCallMethod("flexpay/eircId", "setEircId", 0);
 		d.addCallMethod("flexpay/szDataRoot", "setSzDataRoot", 0);
 		d.addCallMethod("flexpay/szDefaultDbfFileEncoding", "setSzDefaultDbfFileEncoding", 0);
 
