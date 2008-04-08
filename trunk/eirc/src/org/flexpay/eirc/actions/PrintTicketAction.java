@@ -111,6 +111,9 @@ public class PrintTicketAction extends CommonAction {
 					Ticket ticket = (Ticket) element;
 					TicketForm ticketForm = tickerService.getTicketForm(ticket
 							.getId());
+					if(ticketForm == null) {
+						continue;
+					}
 					byteArray = ticketWriter.writeGetByteArray(ticketForm);
 				}
 				a3Writer.write(byteArray);

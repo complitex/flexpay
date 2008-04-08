@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.persistence.Street;
@@ -177,13 +178,6 @@ public class TicketServiceImpl implements TicketService {
 		return null;
 	}
 
-	private PersonIdentity getTargetPersonIdentity(Person person) {
-		// TODO what PersonIdentity we need to use ?
-		Set<PersonIdentity> personIdentitySet = person.getPersonIdentities();
-		return personIdentitySet.isEmpty() ? null : personIdentitySet
-				.iterator().next();
-	}
-
 	public TicketForm getTicketForm(Long ticketId) throws FlexPayException {
 		Ticket ticket = ticketDao.read(ticketId);
 		DateFormat format = new SimpleDateFormat("MM.yyyy");
@@ -193,17 +187,36 @@ public class TicketServiceImpl implements TicketService {
 		format = new SimpleDateFormat("dd.MM.yyyy");
 		form.creationDate = format.format(ticket.getCreationDate());
 
-		Person person = ticket.getPerson();
-		Set<PersonIdentity> personIdentitySet = person.getPersonIdentities();
-		if (personIdentitySet.isEmpty()) {
+		PersonIdentity personIdentity = getTargetPersonIdentity(ticket.getPerson());
+		if(personIdentity == null) {
 			return null;
 		}
-		PersonIdentity personIdentity = personIdentitySet.iterator().next();
 		form.payer = personIdentity.getFirstName() + " "
 				+ personIdentity.getMiddleName() + " "
 				+ personIdentity.getLastName();
+		
+		form.address = getAddressStr(ticket, true);
 
 		return form;
+	}
+	
+	private PersonIdentity getTargetPersonIdentity(Person person) {
+		Set<PersonIdentity> personIdentitySet = person.getPersonIdentities();
+		if(personIdentitySet.isEmpty()) {
+			return null;
+		}
+		PersonIdentity defaultPersonIdentity = null;
+		for(PersonIdentity personIdentity : personIdentitySet) {
+			if(personIdentity.getIdentityType().getTypeId() == IdentityType.TYPE_PASSPORT) {
+				return personIdentity; 
+			} else if(personIdentity.getIdentityType().getTypeId() == IdentityType.TYPE_FOREIGN_PASSPORT) {
+				defaultPersonIdentity = personIdentity;
+			} else if(defaultPersonIdentity == null) {
+				defaultPersonIdentity = personIdentity;
+			}
+		}
+		
+		return defaultPersonIdentity;
 	}
 
 	public List<Object> getTicketsWithDelimiters(Long serviceOrganisationId,
@@ -216,7 +229,7 @@ public class TicketServiceImpl implements TicketService {
 		List<Object> result = new ArrayList<Object>();
 		Iterator<Ticket> it = ticketList.iterator();
 		Ticket lastTicket = it.next();
-		result.add(getTitle(lastTicket));
+		result.add(getAddressStr(lastTicket, false));
 		result.add(lastTicket);
 		while (it.hasNext()) {
 			Ticket ticket = it.next();
@@ -229,7 +242,7 @@ public class TicketServiceImpl implements TicketService {
 
 			if (ticket.getApartment().getBuilding().getId() != lastTicket
 					.getApartment().getBuilding().getId()) {
-				result.add(getTitle(ticket));
+				result.add(getAddressStr(ticket, false));
 			}
 			result.add(ticket);
 			lastTicket = ticket;
@@ -238,9 +251,12 @@ public class TicketServiceImpl implements TicketService {
 		return result;
 	}
 
-	private String getTitle(Ticket ticket) throws FlexPayException {
+	private String getAddressStr(Ticket ticket, boolean withApartmentNumber) throws FlexPayException {
 		Set<Buildings> buildingsSet = ticket.getApartment().getBuilding()
 				.getBuildingses();
+		if(buildingsSet.isEmpty()) {
+			return null;
+		}
 		Buildings buildings = buildingsSet.iterator().next();
 		Street street = buildings.getStreet();
 		StreetName streetName = street.getCurrentName();
@@ -252,8 +268,7 @@ public class TicketServiceImpl implements TicketService {
 
 		return streetTypeTranslation.getName() + " "
 				+ streetNameTranslation.getName() + ", д."
-				+ buildings.getNumber() + ", кв."
-				+ ticket.getApartment().getNumber();
+				+ buildings.getNumber() + (withApartmentNumber ? ", кв." + ticket.getApartment().getNumber() : "");
 	}
 
 	/**
