@@ -45,4 +45,18 @@
 
 </s:form>
 
+
+<tr>
+  <td colspan="2" align="center">
+    &nbsp;
+  </td>
+</tr>
+
+<tr>
+  <td colspan="2" align="center">
+    <s:if test="resultFile != null">
+    Generated file <s:property value="resultFile" />
+    </s:if>
+  </td>
+</tr>
 </table>

@@ -35,6 +35,8 @@ public class PrintTicketAction extends CommonAction {
 	private Integer month;
 	private Long serviceOrganisationId;
 	private List<ServiceOrganisation> serviceOrganizationList;
+	
+	private String resultFile;
 
 	public String execute() throws IOException, DocumentException {
 		if (isSubmitted()) {
@@ -50,7 +52,7 @@ public class PrintTicketAction extends CommonAction {
 			cal.add(Calendar.MONTH, 1);
 			Date dateTill = cal.getTime();
 
-			print(serviceOrganisationId, dateFrom, dateTill);
+			resultFile = print(serviceOrganisationId, dateFrom, dateTill);
 
 		}
 		initDefaultDate();
@@ -66,13 +68,13 @@ public class PrintTicketAction extends CommonAction {
 		month = cal.get(Calendar.MONTH);
 	}
 
-	private void print(Long serviceOrganisationId, Date dateFrom, Date dateTill)
+	private String print(Long serviceOrganisationId, Date dateFrom, Date dateTill)
 			throws IOException, DocumentException {
 		List<Object> ticketsWithDelimiters = tickerService
 				.getTicketsWithDelimiters(serviceOrganisationId, dateFrom,
 						dateTill);
 		if(ticketsWithDelimiters.isEmpty()) {
-			return;
+			return null;
 		}
 
 		int length = ticketsWithDelimiters.size();
@@ -128,6 +130,7 @@ public class PrintTicketAction extends CommonAction {
 
 		a3Writer.close();
 
+		return outputA3File.getAbsolutePath();
 	}
 
 	/**
@@ -190,6 +193,13 @@ public class PrintTicketAction extends CommonAction {
 	public void setServiceOrganisationService(
 			ServiceOrganisationService serviceOrganisationService) {
 		this.serviceOrganisationService = serviceOrganisationService;
+	}
+
+	/**
+	 * @return the resultFile
+	 */
+	public String getResultFile() {
+		return resultFile;
 	}
 
 }
