@@ -188,14 +188,16 @@ public class TicketServiceImpl implements TicketService {
 		form.creationDate = format.format(ticket.getCreationDate());
 
 		PersonIdentity personIdentity = getTargetPersonIdentity(ticket.getPerson());
-		if(personIdentity == null) {
-			return null;
+		if(personIdentity != null) {
+			form.payer = personIdentity.getFirstName() + " "
+			+ personIdentity.getMiddleName() + " "
+			+ personIdentity.getLastName();
 		}
-		form.payer = personIdentity.getFirstName() + " "
-				+ personIdentity.getMiddleName() + " "
-				+ personIdentity.getLastName();
 		
-		form.address = getAddressStr(ticket, true);
+		String addressStr = getAddressStr(ticket, true);
+		if(addressStr != null) {
+			form.address = getAddressStr(ticket, true);
+		}
 
 		return form;
 	}
