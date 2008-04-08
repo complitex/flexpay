@@ -51,5 +51,10 @@
   		<put-attribute name="menu34" value="/WEB-INF/jsp/eirc/menu/menu34_tickets.jsp" />
   </definition>
   
+  <definition name="eirc.tickets.print_tickets" extends="eirc.tickets">
+  		<put-attribute name="title" value="eirc.menu34.tickets.print_tickets" />
+  		<put-attribute name="body" value="/WEB-INF/jsp/eirc/tickets/print_tickets.jsp" />
+  </definition>
+  
 
 </tiles-definitions>

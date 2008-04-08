@@ -1,6 +1,8 @@
 package org.flexpay.eirc.pdf;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,32 +13,53 @@ import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 
-public class PdfKvitWriter {
-	private PdfReader kvitPattern;
+public class PdfTicketWriter {
+	// private PdfReader kvitPattern;
+	private File kvitPatternFile;
+	private PdfReader titlePattern;
 	private ByteArrayOutputStream baos;
 
-	public PdfKvitWriter(InputStream kvitPattern) throws IOException {
+	public PdfTicketWriter(File kvitPatternFile, InputStream titlePattern)
+			throws IOException {
 		baos = new ByteArrayOutputStream();
-		this.kvitPattern = new PdfReader(kvitPattern);
+		this.kvitPatternFile = kvitPatternFile;
+		this.titlePattern = new PdfReader(titlePattern);
 	}
 
-	public byte[] writeGetByteArray(KvitForm kvitForm)
+	public byte[] writeGetByteArray(TicketForm kvitForm)
 			throws DocumentException, IOException {
 		baos.reset();
 		write(baos, kvitForm);
 		return baos.toByteArray();
 	}
 
-	public void write(OutputStream os, KvitForm kvitForm)
+	public void write(OutputStream os, TicketForm kvitForm)
 			throws DocumentException, IOException {
-		PdfStamper stamper = new PdfStamper(kvitPattern, os);
+		PdfStamper stamper = new PdfStamper(new PdfReader(new FileInputStream(
+				kvitPatternFile)), os);
 		stamper.setFormFlattening(true);
 		AcroFields form = stamper.getAcroFields();
 		fillForm(form, kvitForm);
 		stamper.close();
 	}
 
-	private void fillForm(AcroFields form, KvitForm kvitForm)
+	public byte[] writeTitleGetByteArray(String title)
+			throws DocumentException, IOException {
+		baos.reset();
+		writeTitle(baos, title);
+		return baos.toByteArray();
+	}
+
+	public void writeTitle(OutputStream os, String title)
+			throws DocumentException, IOException {
+		PdfStamper stamper = new PdfStamper(titlePattern, os);
+		stamper.setFormFlattening(true);
+		AcroFields form = stamper.getAcroFields();
+		form.setField("name", title);
+		stamper.close();
+	}
+
+	private void fillForm(AcroFields form, TicketForm kvitForm)
 			throws IOException, DocumentException {
 		form.setField("date", kvitForm.date);
 		form.setField("creationDate", kvitForm.creationDate);
@@ -78,7 +101,7 @@ public class PdfKvitWriter {
 		}
 	}
 
-	public static class KvitForm {
+	public static class TicketForm {
 		public String date = "";
 		public String creationDate = "";
 		public String paySum = "";

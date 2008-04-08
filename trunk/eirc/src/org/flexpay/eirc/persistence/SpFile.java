@@ -5,7 +5,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.eirc.util.config.ApplicationConfig;
 
 import java.io.File;
 import java.io.IOException;

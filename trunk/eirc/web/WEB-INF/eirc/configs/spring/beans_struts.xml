@@ -42,6 +42,12 @@
 		  <property name="tickerService" ref="ticketService" />
 	</bean>
 	
+	<bean id="printTicketsAction" class="org.flexpay.eirc.actions.PrintTicketAction"
+		  scope="prototype">
+		  <property name="serviceOrganisationService" ref="serviceOrganisationService" />
+		  <property name="tickerService" ref="ticketService" />
+	</bean>
+	
 	
 
 </beans>

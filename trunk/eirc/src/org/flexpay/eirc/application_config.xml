@@ -6,5 +6,8 @@
 		TODO: implement find by name lookup
 	-->
 	<organisation id="1">Единый информационный центр</organisation>
+	
+	<eircDataRoot>/eirc</eircDataRoot> <!-- задаётся относительно dataRoot -->
+	<eircId>090</eircId> <!-- должен состоять из цифр -->
 
 </flexpay>

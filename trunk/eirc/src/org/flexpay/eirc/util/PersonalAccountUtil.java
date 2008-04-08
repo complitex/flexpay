@@ -2,7 +2,7 @@ package org.flexpay.eirc.util;
 
 import org.flexpay.common.service.SequenceService;
 import org.flexpay.common.util.Luhn;
-import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.eirc.util.config.ApplicationConfig;
 
 public class PersonalAccountUtil {
 	private static SequenceService sequenceService;

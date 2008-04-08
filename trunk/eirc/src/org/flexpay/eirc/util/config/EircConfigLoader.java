@@ -30,5 +30,8 @@ public class EircConfigLoader extends AbConfigLoader {
 		super.addRules(d);
 
 		d.addSetProperties("flexpay/organisation", "id", "selfOrganisationId");
+		
+		d.addCallMethod("flexpay/eircDataRoot", "setEircDataRoot", 0);
+		d.addCallMethod("flexpay/eircId", "setEircId", 0);
 	}
 }
