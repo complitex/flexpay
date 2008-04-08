@@ -30,6 +30,23 @@
 			<one-to-many class="TicketServiceAmount" />
 		</set>
 	</class>
+	
+	<query name="Ticket.findObjectsByPersonAndTillDate">
+		FROM Ticket t
+		WHERE t.person.id=? AND t.dateTill=?
+	</query>
+	
+	<query name="Ticket.findObjectsByPersonAndTillDate.count">
+		select count(*) from Ticket t where t.person.id=? AND t.dateTill=?
+	</query>
+	
+	<query name="Ticket.findByOrganisationAndInterval">
+		FROM Ticket t
+		WHERE t.serviceOrganisation.id=? AND
+		      t.dateFrom=? AND
+		      t.dateTill=?
+		ORDER BY t.apartment.building.id
+	</query>
 
 
 </hibernate-mapping>

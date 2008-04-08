@@ -52,42 +52,6 @@ public class GenerateTicketAction extends CommonAction {
 		return "success";
 	}
 	
-	private void processBuilding(ServedBuilding building) {
-		Set<Buildings> buildingsSet = building.getBuildingses();
-		if(buildingsSet.isEmpty()) {
-			return;
-		}
-		String buildingsNumber = null;
-		Street street = null;
-		for(Buildings buildings : buildingsSet) {
-			buildingsNumber = buildings.getNumber();
-			street = buildings.getStreet();
-			if(buildingsNumber != null && street != null) {
-				break;
-			}
-		}
-		
-		Set<Apartment> apartmentSet = building.getApartments();
-		for(Apartment apartament : apartmentSet) {
-			Set<ApartmentNumber> apartmentNumberSet = apartament.getApartmentNumbers();
-			Set<Person>personSet = apartament.getPersons();
-			for(Person person : personSet) {
-				PersonIdentity personIdentity = getTargetPersonIdentity(person.getPersonIdentities());
-				String firstName = personIdentity.getFirstName();
-				String lastName = personIdentity.getLastName();
-				String middleName = personIdentity.getMiddleName();
-			}
-		}
-		
-		
-	}
-	
-	private PersonIdentity getTargetPersonIdentity(Set<PersonIdentity> personIdentitySet) {
-		// TODO what person identity we need &
-		return personIdentitySet.isEmpty() ? null : personIdentitySet.iterator().next();
-	}
-	
-	
 	
 	private void initDefaultDate() {
 		Calendar cal = Calendar.getInstance();
