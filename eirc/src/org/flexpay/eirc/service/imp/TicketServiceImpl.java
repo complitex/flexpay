@@ -220,6 +220,13 @@ public class TicketServiceImpl implements TicketService {
 		result.add(lastTicket);
 		while (it.hasNext()) {
 			Ticket ticket = it.next();
+			if (lastTicket.getPerson().getId() == ticket.getPerson().getId()
+					&& lastTicket.getDateTill().equals(ticket.getDateTill())
+					&& lastTicket.getApartment().getId() == ticket
+							.getApartment().getId()) {
+				continue;
+			}
+
 			if (ticket.getApartment().getBuilding().getId() != lastTicket
 					.getApartment().getBuilding().getId()) {
 				result.add(getTitle(ticket));
