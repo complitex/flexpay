@@ -17,12 +17,10 @@ public class ApplicationConfig {
 
 	private static final Date DATE_PAST_INFINITE = new GregorianCalendar(1900, 0, 1).getTime();
 	private static final Date DATE_FUTURE_INFINITE = new GregorianCalendar(2100, 11, 31).getTime();
+	
+	private File webAppRoot;
 
 	private File dataRoot;
-
-	private File eircDataRoot;
-	private File eircKvitPattern;
-	private String eircId;
 
 	private File szDataRoot;
 	private String szDefaultDbfFileEncoding;
@@ -139,24 +137,7 @@ public class ApplicationConfig {
 		this.szDefaultDbfFileEncoding = szDefaultDbfFileEncoding;
 	}
 
-	public String getEircId() {
-		return eircId;
-	}
-
-	public void setEircId(String eircId) {
-		this.eircId = eircId;
-	}
-
-	public File getEircDataRoot() {
-		return eircDataRoot;
-	}
-
-	public void setEircDataRoot(String eircDataRoot) {
-		this.eircDataRoot = new File(dataRoot, eircDataRoot);
-		if (!this.eircDataRoot.exists()) {
-			this.eircDataRoot.mkdirs();
-		}
-	}
+	
 
 	public String getTestProp() {
 		return testProp;
@@ -167,16 +148,16 @@ public class ApplicationConfig {
 	}
 
 	/**
-	 * @return the eircKvitPattern
+	 * @return the webAppRoot
 	 */
-	public File getEircKvitPattern() {
-		return eircKvitPattern;
+	public File getWebAppRoot() {
+		return webAppRoot;
 	}
 
 	/**
-	 * @param eircKvitPattern the eircKvitPattern to set
+	 * @param webAppRoot the webAppRoot to set
 	 */
-	public void setEircKvitPattern(String eircKvitPattern) {
-		this.eircKvitPattern = new File(eircDataRoot, eircKvitPattern);
+	public void setWebAppRoot(File webAppRoot) {
+		this.webAppRoot = webAppRoot;
 	}
 }
