@@ -34,10 +34,11 @@ public class PrintTicketAction extends CommonAction {
 	private Integer month;
 	private Long serviceOrganisationId;
 	private List<ServiceOrganisation> serviceOrganizationList;
-	
+
 	private String resultFile;
 
-	public String execute() throws IOException, DocumentException, FlexPayException {
+	public String execute() throws IOException, DocumentException,
+			FlexPayException {
 		if (isSubmitted()) {
 			Calendar cal = Calendar.getInstance();
 			cal.set(Calendar.YEAR, year);
@@ -67,12 +68,13 @@ public class PrintTicketAction extends CommonAction {
 		month = cal.get(Calendar.MONTH);
 	}
 
-	private String print(Long serviceOrganisationId, Date dateFrom, Date dateTill)
-			throws IOException, DocumentException, FlexPayException {
+	private String print(Long serviceOrganisationId, Date dateFrom,
+			Date dateTill) throws IOException, DocumentException,
+			FlexPayException {
 		List<Object> ticketsWithDelimiters = tickerService
 				.getTicketsWithDelimiters(serviceOrganisationId, dateFrom,
 						dateTill);
-		if(ticketsWithDelimiters.isEmpty()) {
+		if (ticketsWithDelimiters.isEmpty()) {
 			return null;
 		}
 
@@ -98,35 +100,23 @@ public class PrintTicketAction extends CommonAction {
 				titlePattern);
 		DateFormat format = new SimpleDateFormat("MM.yyyy");
 		File outputA3File = new File(ApplicationConfig.getInstance()
-				.getEircDataRoot(), serviceOrganisationId + "_" + format.format(dateFrom) + ".pdf");
+				.getEircDataRoot(), serviceOrganisationId + "_"
+				+ format.format(dateFrom) + ".pdf");
 		OutputStream os = new FileOutputStream(outputA3File);
 		PdfA3Writer a3Writer = new PdfA3Writer(os);
 
 		for (Object element : finalArray) {
-			try {
-				byte[] byteArray = null;
-				if (element instanceof String) {
-					byteArray = ticketWriter.writeTitleGetByteArray((String) element);
-				} else {
-					Ticket ticket = (Ticket) element;
-					TicketForm ticketForm = tickerService.getTicketForm(ticket
-							.getId());
-					if(ticketForm == null) {
-						continue;
-					}
-					byteArray = ticketWriter.writeGetByteArray(ticketForm);
-				}
-				a3Writer.write(byteArray);
-			} catch (FlexPayException e) {
-				// ignore. just print next ticket.
-				int i = 1;
-			} catch (IOException e) {
-				// ignore. just print next ticket.
-				int i = 1;
-			} catch (DocumentException e) {
-				// ignore. just print next ticket.
-				int i = 1;
+			byte[] byteArray = null;
+			if (element instanceof String) {
+				byteArray = ticketWriter
+						.writeTitleGetByteArray((String) element);
+			} else {
+				Ticket ticket = (Ticket) element;
+				TicketForm ticketForm = tickerService.getTicketForm(ticket
+						.getId());
+				byteArray = ticketWriter.writeGetByteArray(ticketForm);
 			}
+			a3Writer.write(byteArray);
 		}
 
 		a3Writer.close();
