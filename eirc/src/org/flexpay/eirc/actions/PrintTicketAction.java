@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.flexpay.ab.actions.CommonAction;
-import org.flexpay.ab.persistence.Building;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.pdf.PdfA3Writer;
 import org.flexpay.eirc.pdf.PdfTicketWriter;
@@ -38,7 +37,7 @@ public class PrintTicketAction extends CommonAction {
 	
 	private String resultFile;
 
-	public String execute() throws IOException, DocumentException {
+	public String execute() throws IOException, DocumentException, FlexPayException {
 		if (isSubmitted()) {
 			Calendar cal = Calendar.getInstance();
 			cal.set(Calendar.YEAR, year);
@@ -69,7 +68,7 @@ public class PrintTicketAction extends CommonAction {
 	}
 
 	private String print(Long serviceOrganisationId, Date dateFrom, Date dateTill)
-			throws IOException, DocumentException {
+			throws IOException, DocumentException, FlexPayException {
 		List<Object> ticketsWithDelimiters = tickerService
 				.getTicketsWithDelimiters(serviceOrganisationId, dateFrom,
 						dateTill);
@@ -106,9 +105,8 @@ public class PrintTicketAction extends CommonAction {
 		for (Object element : finalArray) {
 			try {
 				byte[] byteArray = null;
-				if (element instanceof Building) {
-					String title = "title";
-					byteArray = ticketWriter.writeTitleGetByteArray(title);
+				if (element instanceof String) {
+					byteArray = ticketWriter.writeTitleGetByteArray((String) element);
 				} else {
 					Ticket ticket = (Ticket) element;
 					TicketForm ticketForm = tickerService.getTicketForm(ticket

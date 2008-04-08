@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -182,73 +183,71 @@ public class TicketServiceImpl implements TicketService {
 		return personIdentitySet.isEmpty() ? null : personIdentitySet
 				.iterator().next();
 	}
-	
-	
-	
-	
-	
-	
-	
+
 	public TicketForm getTicketForm(Long ticketId) throws FlexPayException {
 		Ticket ticket = ticketDao.read(ticketId);
 		DateFormat format = new SimpleDateFormat("MM.yyyy");
 		TicketForm form = new TicketForm();
 		form.date = format.format(ticket.getDateFrom());
-		
+
 		format = new SimpleDateFormat("dd.MM.yyyy");
 		form.creationDate = format.format(ticket.getCreationDate());
-		
+
 		Person person = ticket.getPerson();
 		Set<PersonIdentity> personIdentitySet = person.getPersonIdentities();
-		if(personIdentitySet.isEmpty()) {
+		if (personIdentitySet.isEmpty()) {
 			return null;
 		}
 		PersonIdentity personIdentity = personIdentitySet.iterator().next();
-		form.payer = personIdentity.getFirstName() + " " + personIdentity.getMiddleName() + " " + personIdentity.getLastName();
-		
-		
-		/*Set<Buildings> buildingsSet = ticket.getApartment().getBuilding().getBuildingses();
-		if(buildingsSet.isEmpty()) {
-			return null;
-		}
-		Buildings buildings = buildingsSet.iterator().next();
-		Street street = buildings.getStreet();
-		StreetName streetName = street.getCurrentName();
-		StreetNameTranslation streetNameTranslation = TranslationUtil.getTranslation(streetName.getTranslations());
-		StreetType streetType = street.getCurrentType();
-		StreetTypeTranslation streetTypeTranslation = TranslationUtil.getTranslation(streetType.getTranslations());
-		form.address = streetTypeTranslation.getName() + " " + streetNameTranslation.getName() + ", д." + buildings.getNumber() + ", кв." + ticket.getApartment().getNumber();*/ 
-		
+		form.payer = personIdentity.getFirstName() + " "
+				+ personIdentity.getMiddleName() + " "
+				+ personIdentity.getLastName();
+
 		return form;
 	}
-	
-	//TODO fix title
-	public List<Object> getTicketsWithDelimiters(Long serviceOrganisationId, Date dateFrom, Date dateTill) {
-		List<Ticket> ticketList = ticketDao.findByOrganisationAndInterval(serviceOrganisationId, dateFrom, dateTill);
-		if(ticketList.isEmpty()) {
+
+	public List<Object> getTicketsWithDelimiters(Long serviceOrganisationId,
+			Date dateFrom, Date dateTill) throws FlexPayException {
+		List<Ticket> ticketList = ticketDao.findByOrganisationAndInterval(
+				serviceOrganisationId, dateFrom, dateTill);
+		if (ticketList.isEmpty()) {
 			return Collections.EMPTY_LIST;
 		}
 		List<Object> result = new ArrayList<Object>();
-		
-		
-		
-		Ticket last = null;
-		for(Ticket ticket : ticketList) {
-			if(last != null && last.getServiceOrganisation().getId() != ticket.getServiceOrganisation().getId()) {
-				result.add(last.getApartment().getBuilding());
+		Iterator<Ticket> it = ticketList.iterator();
+		Ticket lastTicket = it.next();
+		result.add(getTitle(lastTicket));
+		result.add(lastTicket);
+		while (it.hasNext()) {
+			Ticket ticket = it.next();
+			if (ticket.getApartment().getBuilding().getId() != lastTicket
+					.getApartment().getBuilding().getId()) {
+				result.add(getTitle(ticket));
 			}
 			result.add(ticket);
-			last = ticket;
+			lastTicket = ticket;
 		}
-		
+
 		return result;
 	}
-	
-	
-	
-	
-	
-	
+
+	private String getTitle(Ticket ticket) throws FlexPayException {
+		Set<Buildings> buildingsSet = ticket.getApartment().getBuilding()
+				.getBuildingses();
+		Buildings buildings = buildingsSet.iterator().next();
+		Street street = buildings.getStreet();
+		StreetName streetName = street.getCurrentName();
+		StreetNameTranslation streetNameTranslation = TranslationUtil
+				.getTranslation(streetName.getTranslations());
+		StreetType streetType = street.getCurrentType();
+		StreetTypeTranslation streetTypeTranslation = TranslationUtil
+				.getTranslation(streetType.getTranslations());
+
+		return streetTypeTranslation.getName() + " "
+				+ streetNameTranslation.getName() + ", д."
+				+ buildings.getNumber() + ", кв."
+				+ ticket.getApartment().getNumber();
+	}
 
 	/**
 	 * @param serviceOrganisationService

@@ -21,7 +21,7 @@ public interface TicketService {
 			Date dateFrom, Date dateTill);
 
 	List<Object> getTicketsWithDelimiters(Long serviceOrganisationId,
-			Date dateFrom, Date dateTill);
+			Date dateFrom, Date dateTill) throws FlexPayException;
 
 	TicketForm getTicketForm(Long ticketId) throws FlexPayException;
 
