@@ -510,7 +510,7 @@
 
     create table buildings_tbl (
         id bigint not null auto_increment,
-        building_type integer not null,
+        building_type varchar(255) not null,
         district_id bigint not null,
         eirc_service_organisation_id bigint,
         primary key (id)

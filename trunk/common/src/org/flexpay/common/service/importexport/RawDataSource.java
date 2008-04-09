@@ -23,6 +23,11 @@ public interface RawDataSource<T extends RawData> {
 	void initialize();
 
 	/**
+	 * Release all resources taken
+	 */
+	void close();
+
+	/**
 	 * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns
 	 * <tt>true</tt> if <tt>next</tt> would return an element rather than throwing an
 	 * exception.)

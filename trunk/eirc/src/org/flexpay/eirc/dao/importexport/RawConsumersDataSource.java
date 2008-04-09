@@ -70,6 +70,12 @@ public class RawConsumersDataSource implements RawDataSource<RawConsumerData> {
 	}
 
 	/**
+	 * Release all resources taken
+	 */
+	public void close() {
+	}
+
+	/**
 	 * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns
 	 * <tt>true</tt> if <tt>next</tt> would return an element rather than throwing an
 	 * exception.)

@@ -1,11 +1,11 @@
-package org.flexpay.ab.util.standalone;
+package org.flexpay.samples.ab.importexport.street;
 
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.importexport.ImportService;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.util.standalone.StandaloneTask;
 
-public class ImportTask implements StandaloneTask {
+public class ImportStreetsTask implements StandaloneTask {
 
 	private ImportService importService;
 	private DataSourceDescription sourceDescription;
@@ -16,14 +16,11 @@ public class ImportTask implements StandaloneTask {
 	 */
 	public void execute() {
 		try {
-			importService.importDistricts(town, sourceDescription);
-			importService.importStreetTypes(sourceDescription);
+			importService.setStreetDataConverter(new RawStreetDataConverter());
+			importService.setStreetDataSource(new RawStreetDataSource());
 			importService.importStreets(town, sourceDescription);
-			importService.importBuildings(sourceDescription);
-			importService.importApartments(sourceDescription);
-			importService.importPersons(sourceDescription);
 		} catch (Exception e) {
-			throw new RuntimeException("Failed importing objects", e);
+			throw new RuntimeException("Failed importing streets", e);
 		}
 	}
 
