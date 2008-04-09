@@ -16,21 +16,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class ImportService {
 
 	protected Logger log = Logger.getLogger(getClass());
 
 	private RawDistrictDataConverter districtDataConverter;
 	private RawStreetTypeDataConverter streetTypeDataConverter;
-	private RawStreetDataConverter streetDataConverter;
+	private DataConverter streetDataConverter;
 	private RawBuildingsDataConverter buildingsDataConverter;
 	private RawApartmentDataConverter apartmentDataConverter;
 	private RawPersonDataConverter personDataConverter;
 
 	private DistrictJdbcDataSource districtDataSource;
 	private StreetTypeJdbcDataSource streetTypeDataSource;
-	private StreetJdbcDataSource streetDataSource;
+	private RawDataSource<? extends RawData<Street>> streetDataSource;
 	private BuildingsJdbcDataSource buildingsDataSource;
 	private ApartmentJdbcDataSource apartmentDataSource;
 	private PersonJdbcDataSource personDataSource;
@@ -73,7 +73,7 @@ public class ImportService {
 	/**
 	 * Run flush objects operation
 	 */
-	@Transactional(readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+	@Transactional (readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 	protected void flushStack() {
 
 		if (log.isDebugEnabled()) {
@@ -121,7 +121,7 @@ public class ImportService {
 //		allObjectsDao.save(object);
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void importDistricts(Town town, DataSourceDescription sourceDescription)
 			throws FlexPayException {
 
@@ -190,11 +190,12 @@ public class ImportService {
 
 		if (log.isInfoEnabled()) {
 			log.info("End import districts at " + new Date() + ", total time: " +
-					(System.currentTimeMillis() - time) + "ms");
+					 (System.currentTimeMillis() - time) + "ms");
 		}
 	}
 
-	@Transactional(readOnly = false)
+	@SuppressWarnings ({"unchecked"})
+	@Transactional (readOnly = false)
 	public void importStreets(Town town, DataSourceDescription sourceDescription)
 			throws FlexPayException {
 
@@ -215,10 +216,11 @@ public class ImportService {
 		long tm = System.currentTimeMillis();
 		while (streetDataSource.hasNext()) {
 			ImportOperationTypeHolder typeHolder = new ImportOperationTypeHolder();
-			RawStreetData data = streetDataSource.next(typeHolder);
+			RawData<Street> data = streetDataSource.next(typeHolder);
 
 			try {
-				Street street = streetDataConverter.fromRawData(data, sourceDescription, correctionsService);
+				// todo: jenerify me
+				Street street = (Street) streetDataConverter.fromRawData(data, sourceDescription, correctionsService);
 				street.setParent(town);
 
 				// Find object by correction
@@ -227,8 +229,8 @@ public class ImportService {
 				boolean found = correctionsService.existsCorrection(
 						data.getExternalSourceId(), Street.class, sourceDescription);
 				if (log.isInfoEnabled()) {
-					log.info((found ? "F" : "Not f") + "ound street " + data.getName() + ", total time: " +
-							(System.currentTimeMillis() - tm) + "ms");
+					log.info((found ? "F" : "Not f") + "ound street " + data + ", total time: " +
+							 (System.currentTimeMillis() - tm) + "ms");
 				}
 
 				// Find object by its name
@@ -238,7 +240,7 @@ public class ImportService {
 
 				tm = System.currentTimeMillis();
 			} catch (Exception e) {
-				log.error("Failed getting street: " + data.getName(), e);
+				log.error("Failed getting street: " + data, e);
 				throw new RuntimeException(e);
 			}
 		}
@@ -246,29 +248,29 @@ public class ImportService {
 
 		if (log.isInfoEnabled()) {
 			log.info("End import streets at " + new Date() + ", total time: " +
-					(System.currentTimeMillis() - time) + "ms");
+					 (System.currentTimeMillis() - time) + "ms");
 		}
 	}
 
-	private void saveStreetCorrection(DataSourceDescription sourceDescription, RawStreetData data, Street street,
+	private void saveStreetCorrection(DataSourceDescription sourceDescription, RawData<Street> data, Street street,
 									  Street persistentObj, Street nameMatchObj) {
 		// no corrections found
 		if (persistentObj == null) {
 			// this is a new object
 			if (nameMatchObj == null) {
-				log.info("Creating new Street: " + data.getName());
+				log.info("Creating new Street: " + data);
 				addToStack(street);
 			} else {
 				// already existing object
 				street = nameMatchObj;
 			}
-			log.info("Creating new street correction: " + data.getName());
+			log.info("Creating new street correction: " + data);
 			DataCorrection correction = correctionsService.getStub(
 					data.getExternalSourceId(), street, sourceDescription);
 			addToStack(correction);
 		} else {
 			if (nameMatchObj == null) {
-				log.warn("Invalid correction found, no street found: " + data.getName());
+				log.warn("Invalid correction found, no street found: " + data);
 				addToStack(street);
 				DataCorrection correction = correctionsService.getStub(
 						data.getExternalSourceId(), street, sourceDescription);
@@ -276,18 +278,18 @@ public class ImportService {
 			} else {
 				//	correction found but objects do not match
 				if (!nameMatchObj.getId().equals(persistentObj.getId())) {
-					log.warn("Found by name street does not match correction: " + data.getName());
+					log.warn("Found by name street does not match correction: " + data);
 					// TODO decide what to do here
 				} else {
 					if (log.isInfoEnabled()) {
-						log.info("Street " + data.getName() + " found");
+						log.info("Street " + data + " found");
 					}
 				}
 			}
 		}
 	}
 
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings ({"unchecked"})
 	private <NTD extends NameTimeDependentChild> NTD findObject(Map<String, List<NTD>> ntdsMap, NTD newObj)
 			throws FlexPayException {
 
@@ -316,7 +318,7 @@ public class ImportService {
 	 * @return mapping
 	 * @throws FlexPayException if language configuration is invalid
 	 */
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings ({"unchecked"})
 	protected <NTD extends NameTimeDependentChild> Map<String, List<NTD>> initializeNamesToObjectsMap(List<NTD> ntds)
 			throws FlexPayException {
 
@@ -326,7 +328,7 @@ public class ImportService {
 			Translation defTranslation = getDefaultLangTranslation(tmpName.getTranslations());
 			String name = defTranslation.getName().toLowerCase();
 			List<NTD> val = stringNTDMap.containsKey(name) ?
-					stringNTDMap.get(name) : new ArrayList<NTD>();
+							stringNTDMap.get(name) : new ArrayList<NTD>();
 			val.add(object);
 			stringNTDMap.put(name, val);
 		}
@@ -334,7 +336,7 @@ public class ImportService {
 		return stringNTDMap;
 	}
 
-	@SuppressWarnings({"ParameterAlwaysCastBeforeUse"})
+	@SuppressWarnings ({"ParameterAlwaysCastBeforeUse"})
 	private boolean nonNameAttributesEquals(Object oldObj, Object newObj) {
 		if (oldObj instanceof Street) {
 			Street stOld = (Street) oldObj, stNew = (Street) newObj;
@@ -369,7 +371,7 @@ public class ImportService {
 	 *
 	 * @param sourceDescription Data source description
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void importStreetTypes(DataSourceDescription sourceDescription) {
 		streetTypeDataSource.initialize();
 
@@ -426,7 +428,7 @@ public class ImportService {
 		}
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void importBuildings(DataSourceDescription sourceDescription) throws Exception {
 		buildingsDataSource.initialize();
 
@@ -464,7 +466,7 @@ public class ImportService {
 						persistent = buildings;
 						if (log.isInfoEnabled()) {
 							log.info("Creating new building: " + buildings.getNumber() +
-									" - " + buildings.getBulk());
+									 " - " + buildings.getBulk());
 						}
 					}
 
@@ -484,7 +486,7 @@ public class ImportService {
 
 			if (log.isInfoEnabled()) {
 				log.info("End import buildings at " + new Date() + ", total time: " +
-						(System.currentTimeMillis() - time) + "ms");
+						 (System.currentTimeMillis() - time) + "ms");
 			}
 		} catch (Throwable t) {
 			log.error("Failure", t);
@@ -492,7 +494,7 @@ public class ImportService {
 		}
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void importApartments(DataSourceDescription sourceDescription) throws Exception {
 		apartmentDataSource.initialize();
 
@@ -554,11 +556,11 @@ public class ImportService {
 
 		if (log.isInfoEnabled()) {
 			log.info("End import apartments at " + new Date() + ", total time: " +
-					(System.currentTimeMillis() - time) + "ms");
+					 (System.currentTimeMillis() - time) + "ms");
 		}
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void importPersons(DataSourceDescription sourceDescription) throws Exception {
 		personDataSource.initialize();
 
@@ -629,7 +631,7 @@ public class ImportService {
 
 		if (log.isInfoEnabled()) {
 			log.info("End import persons at " + new Date() + ", total time: " +
-					(System.currentTimeMillis() - time) + "ms");
+					 (System.currentTimeMillis() - time) + "ms");
 		}
 	}
 
@@ -647,7 +649,7 @@ public class ImportService {
 	 *
 	 * @param streetDataConverter Value to set for property 'streetDataConverter'.
 	 */
-	public void setStreetDataConverter(RawStreetDataConverter streetDataConverter) {
+	public void setStreetDataConverter(DataConverter streetDataConverter) {
 		this.streetDataConverter = streetDataConverter;
 	}
 
@@ -674,7 +676,7 @@ public class ImportService {
 	 *
 	 * @param streetDataSource Value to set for property 'streetDataSource'.
 	 */
-	public void setStreetDataSource(StreetJdbcDataSource streetDataSource) {
+	public void setStreetDataSource(RawDataSource<? extends RawData<Street>> streetDataSource) {
 		this.streetDataSource = streetDataSource;
 	}
 
