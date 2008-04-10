@@ -4055,7 +4055,6 @@ INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUE
 INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (10, 10, 'Ошибки', 'Входящий/Исходящий');
 
 -- Init organisations
--- Init organisations
 INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, description, name, district_id, unique_id)
 	VALUES (0, '-------', '123', 'Eirc itself', 'EIRC', @district_id_nsk_sovetskiy, '1');
 SELECT @organisation_eirc:=last_insert_id();
@@ -4065,6 +4064,9 @@ SELECT @organisation_zhko:=last_insert_id();
 INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, description, name, district_id, unique_id)
 	VALUES (0, '456456456', '56', 'Test organisation 2', 'ТСЖ', @district_id_nsk_sovetskiy, '3');
 SELECT @organisation_tszh:=last_insert_id();
+INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, description, name, district_id, unique_id)
+	VALUES (0, '1111111', '56', 'Calculation center', 'CN', @district_id_nsk_sovetskiy, '10');
+SELECT @organisation_cn:=last_insert_id();
 
 -- Init service providers
 INSERT INTO common_data_source_descriptions_tbl (description) VALUES ('Источник - ЖКО Советского района');
@@ -4078,6 +4080,12 @@ SELECT @source_description_id:=last_insert_id();
 INSERT INTO eirc_service_providers_tbl(organisation_id, data_source_description_id, description, provider_number)
 	VALUES (@organisation_tszh, @source_description_id, 'ПУ тсж', '2');
 SELECT @service_provider_tszh:=last_insert_id();
+
+INSERT INTO common_data_source_descriptions_tbl (description) VALUES ('Источник - Тестовые данные ПУ из ЦН');
+SELECT @source_description_id:=last_insert_id();
+INSERT INTO eirc_service_providers_tbl(organisation_id, data_source_description_id, description, provider_number)
+	VALUES (@organisation_cn, @source_description_id, 'ПУ тсж', '10');
+SELECT @service_provider_cn:=last_insert_id();
 
 -- Init service types
 INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 1);
@@ -4158,45 +4166,60 @@ INSERT INTO eirc_service_type_name_translations_tbl (name, description, language
 -- Init services
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_vodootvedenie, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_vodootvedenie, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_vodootvedenie, '');
 
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_lighting, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_lighting, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_lighting, '');
 
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_fog_canals, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_fog_canals, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_fog_canals, '');
 
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_maintainance, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_maintainance, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_maintainance, '');
 
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_maintainance_vodootvedenie, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_maintainance_vodootvedenie, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_maintainance_vodootvedenie, '');
 
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_maintainance_water_supply, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_maintainance_water_supply, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_maintainance_water_supply, '');
 
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_TBO, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_TBO, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_TBO, '');
 
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_cleaning_ext, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_cleaning_ext, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_cleaning_ext, '');
 
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_cleaning, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_cleaning, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_cleaning, '');
 
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_hot_water, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_hot_water, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_hot_water, '');
 
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_cold_water, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_cold_water, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_cold_water, '');
 
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_dogs, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_dogs, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_dogs, '');
 
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_garage, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_garage, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_garage, '');
 
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_heating, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_heating, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_heating, '');
 
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_water_cooling, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_water_cooling, '');
+INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_water_cooling, '');

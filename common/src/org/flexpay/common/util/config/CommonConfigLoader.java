@@ -50,7 +50,9 @@ public class CommonConfigLoader implements ServletContextAware {
 	 */
 	public void loadConfig() throws Exception {
 		ApplicationConfig config = getNewConfig();
-		config.setWebAppRoot(new File(context.getRealPath("/")));
+		if (context != null) {
+			config.setWebAppRoot(new File(context.getRealPath("/")));
+		}
 		log.info("Starting loading configs");
 		for (URL url : configFiles) {
 			InputStreamReader is = null;

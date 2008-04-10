@@ -8,12 +8,14 @@ import org.flexpay.ab.persistence.SyncAction;
 import org.flexpay.common.dao.paging.Page;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional(readOnly = true, rollbackFor = Exception.class)
 public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryDao {
 
 	/**
@@ -90,6 +92,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	 *
 	 * @param record HistoryRecord
 	 */
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void addRecord(HistoryRecord record) {
 
 		// check if record was already dumped

@@ -6,12 +6,12 @@ import org.flexpay.ab.persistence.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -148,25 +148,28 @@ public class BuildingsDaoExtImpl extends SimpleJdbcDaoSupport implements Buildin
 				  ")";
 
 	private Buildings doFindBuildings(Street street, String number, String bulk) {
-		return getSimpleJdbcTemplate().queryForObject(sql2, new ParameterizedRowMapper<Buildings>() {
-			public Buildings mapRow(ResultSet rs, int i) throws SQLException {
-				Buildings buildings = new Buildings(rs.getLong("id"));
-				buildings.setBuilding(new Building(rs.getLong("building_id")));
-				return buildings;
-			}
-		}, street.getId(), number, bulk
-		);
+		try {
+			return getSimpleJdbcTemplate().queryForObject(sql2, new ParameterizedRowMapper<Buildings>() {
+				public Buildings mapRow(ResultSet rs, int i) throws SQLException {
+					Buildings buildings = new Buildings(rs.getLong("id"));
+					buildings.setBuilding(new Building(rs.getLong("building_id")));
+					return buildings;
+				}
+			}, street.getId(), number, bulk);
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
 	}
 
 	private Buildings doFindBuildings(Street street, String number) {
 		try {
-		return getSimpleJdbcTemplate().queryForObject(sql1, new ParameterizedRowMapper<Buildings>() {
-			public Buildings mapRow(ResultSet rs, int i) throws SQLException {
-				Buildings buildings = new Buildings(rs.getLong("id"));
-				buildings.setBuilding(new Building(rs.getLong("building_id")));
-				return buildings;
-			}
-		}, street.getId(), number);
+			return getSimpleJdbcTemplate().queryForObject(sql1, new ParameterizedRowMapper<Buildings>() {
+				public Buildings mapRow(ResultSet rs, int i) throws SQLException {
+					Buildings buildings = new Buildings(rs.getLong("id"));
+					buildings.setBuilding(new Building(rs.getLong("building_id")));
+					return buildings;
+				}
+			}, street.getId(), number);
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
