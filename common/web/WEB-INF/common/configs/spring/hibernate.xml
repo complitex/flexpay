@@ -67,12 +67,12 @@
 					${hibernate.cache.provider_configuration_file_resource_path}
 				</prop>
 
-				<prop key="hibernate.transaction.factory_class">
-					${hibernate.transaction.factory_class}
-				</prop>
-				<prop key="hibernate.transaction.manager_lookup_class">
-					${hibernate.transaction.manager_lookup_class}
-				</prop>
+				<!--<prop key="hibernate.transaction.factory_class">-->
+					<!--${hibernate.transaction.factory_class}-->
+				<!--</prop>-->
+				<!--<prop key="hibernate.transaction.manager_lookup_class">-->
+					<!--${hibernate.transaction.manager_lookup_class}-->
+				<!--</prop>-->
 			</props>
 		</property>
 	</bean>

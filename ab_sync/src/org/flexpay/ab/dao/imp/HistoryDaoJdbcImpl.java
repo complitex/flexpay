@@ -25,7 +25,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	 * @return List of HistoryRecord instances
 	 */
 	public List<HistoryRecord> getRecords(Page pager) {
-		String sqlGetRecords = "select * from ab_sync_changes_tbl where processed=0 order by order_weight, record_date limit ?,?";
+		String sqlGetRecords = "select * from ab_sync_changes_tbl where processed=0 order by order_weight, object_id, record_date limit ?,?";
 		return getSimpleJdbcTemplate().query(sqlGetRecords, new ParameterizedRowMapper<HistoryRecord>() {
 			public HistoryRecord mapRow(ResultSet rs, int i) throws SQLException {
 				HistoryRecord record = new HistoryRecord();
@@ -50,6 +50,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	 *
 	 * @param records List of history records to mark as processed
 	 */
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void setProcessed(List<HistoryRecord> records) {
 		for (HistoryRecord record : records) {
 			getSimpleJdbcTemplate().update(getSetProcessedSql(record), getParams(record));

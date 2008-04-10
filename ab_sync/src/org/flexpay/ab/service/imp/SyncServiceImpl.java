@@ -52,6 +52,7 @@ public class SyncServiceImpl implements SyncService {
 			prevType = ObjectType.Unknown;
 			prevObj = null;
 			processor = null;
+			recordBuffer = new ArrayList<HistoryRecord>();
 
 			int count = 0;
 
