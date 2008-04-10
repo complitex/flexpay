@@ -8,6 +8,7 @@ import org.flexpay.ab.persistence.SyncAction;
 import org.flexpay.common.dao.paging.Page;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -103,7 +104,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 				"(record_date, old_value, current_value, object_type, object_id, field, action_type, processed, order_weight)" +
 				" VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?)",
 				record.getRecordDate(), record.getOldValue(), record.getCurrentValue(), record.getObjectType().getId(),
-				record.getObjectId(), record.getFieldType().getId(), record.getSyncAction().getCode(),
+				record.getObjectId(), record.getFieldType() != null ? record.getFieldType().getId() : null, record.getSyncAction().getCode(),
 				0, record.getObjectType().getOrderWeight());
 	}
 }
