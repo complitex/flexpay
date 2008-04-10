@@ -12,15 +12,15 @@
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
 	</bean>
 
-	<bean id="syncABDataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
-		<property name="url" value="${ab.sync.CALCULATION_CENTR_URL}" />
-		<property name="driverClassName" value="${ab.sync.CALCULATION_CENTR_DRIVER}" />
-		<property name="username" value="${ab.sync.CALCULATION_CENTR_USERNAME}" />
-		<property name="password" value="${ab.sync.CALCULATION_CENTR_PASSWD}" />
-	</bean>
+	<!--<bean id="syncABDataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">-->
+		<!--<property name="url" value="${ab.sync.CALCULATION_CENTR_URL}" />-->
+		<!--<property name="driverClassName" value="${ab.sync.CALCULATION_CENTR_DRIVER}" />-->
+		<!--<property name="username" value="${ab.sync.CALCULATION_CENTR_USERNAME}" />-->
+		<!--<property name="password" value="${ab.sync.CALCULATION_CENTR_PASSWD}" />-->
+	<!--</bean>-->
 
 	<!-- Look up data source via JNDI -->
-	<!--<jee:jndi-lookup id="syncABDataSource" jndi-name="jdbc/FlexPay" resource-ref="false" />-->
+	<jee:jndi-lookup id="syncABDataSource" jndi-name="jdbc/FlexPay" resource-ref="false" />
 
 	<bean id="historyDaoJdbc" class="org.flexpay.ab.dao.imp.HistoryDaoJdbcImpl">
 		<property name="dataSource" ref="dataSource" />

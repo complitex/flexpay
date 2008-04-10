@@ -8,7 +8,6 @@ import org.flexpay.ab.persistence.SyncAction;
 import org.flexpay.common.dao.paging.Page;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -77,9 +76,9 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	private String getWhere(HistoryRecord record) {
 		return ("where record_date=? and old_value $oldValue and " +
 				"current_value $currentValue and object_type=? and object_id=? and field $field and action_type=?")
-						.replace("$oldValue", record.getOldValue() == null ? "is null" : "= ?")
-						.replace("$currentValue", record.getCurrentValue() == null ? "is null" : "= ?")
-						.replace("$field", record.getFieldType() == null ? "is null" : "= ?");
+				.replace("$oldValue", record.getOldValue() == null ? "is null" : "= ?")
+				.replace("$currentValue", record.getCurrentValue() == null ? "is null" : "= ?")
+				.replace("$field", record.getFieldType() == null ? "is null" : "= ?");
 	}
 
 	private String getSetProcessedSql(HistoryRecord record) {
@@ -101,8 +100,8 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 		}
 
 		getSimpleJdbcTemplate().update("INSERT INTO ab_sync_changes_tbl " +
-				"(record_date, old_value, current_value, object_type, object_id, field, action_type, processed, order_weight)" +
-				" VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?)",
+									   "(record_date, old_value, current_value, object_type, object_id, field, action_type, processed, order_weight)" +
+									   " VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?)",
 				record.getRecordDate(), record.getOldValue(), record.getCurrentValue(), record.getObjectType().getId(),
 				record.getObjectId(), record.getFieldType() != null ? record.getFieldType().getId() : null, record.getSyncAction().getCode(),
 				0, record.getObjectType().getOrderWeight());
