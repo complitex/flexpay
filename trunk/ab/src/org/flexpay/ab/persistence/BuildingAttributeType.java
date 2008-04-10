@@ -56,7 +56,7 @@ public class BuildingAttributeType extends DomainObject {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(translations.toArray()).toHashCode();
+				.append(type).toHashCode();
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class BuildingAttributeType extends DomainObject {
 
 		BuildingAttributeType that = (BuildingAttributeType) obj;
 		return new EqualsBuilder()
-				.append(translations, that.getTranslations())
+				.append(type, that.type)
 				.isEquals();
 	}
 
@@ -82,7 +82,7 @@ public class BuildingAttributeType extends DomainObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-				.append("translations", translations)
+				.append("type", type)
 				.toString();
 	}
 

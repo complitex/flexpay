@@ -83,7 +83,6 @@ public class LockManager {
 		return list;
 	}
 
-
 	/**
 	 * Release locked semaphore.
 	 *
