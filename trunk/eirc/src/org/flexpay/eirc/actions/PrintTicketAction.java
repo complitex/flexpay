@@ -1,17 +1,6 @@
 package org.flexpay.eirc.actions;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
+import com.lowagie.text.DocumentException;
 import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.pdf.PdfA3Writer;
@@ -23,7 +12,12 @@ import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.flexpay.eirc.service.TicketService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 
-import com.lowagie.text.DocumentException;
+import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class PrintTicketAction extends CommonAction {
 
@@ -37,8 +31,7 @@ public class PrintTicketAction extends CommonAction {
 
 	private String resultFile;
 
-	public String execute() throws IOException, DocumentException,
-			FlexPayException {
+	public String execute() throws IOException, DocumentException, FlexPayException {
 		if (isSubmitted()) {
 			Calendar cal = Calendar.getInstance();
 			cal.set(Calendar.YEAR, year);
@@ -69,11 +62,10 @@ public class PrintTicketAction extends CommonAction {
 	}
 
 	private String print(Long serviceOrganisationId, Date dateFrom,
-			Date dateTill) throws IOException, DocumentException,
-			FlexPayException {
+						 Date dateTill) throws IOException, DocumentException,
+											   FlexPayException {
 		List<Object> ticketsWithDelimiters = tickerService
-				.getTicketsWithDelimiters(serviceOrganisationId, dateFrom,
-						dateTill);
+				.getTicketsWithDelimiters(serviceOrganisationId, dateFrom, dateTill);
 		if (ticketsWithDelimiters.isEmpty()) {
 			return null;
 		}
@@ -86,8 +78,7 @@ public class PrintTicketAction extends CommonAction {
 		for (int i = 0; i < pageNumber; i++) {
 			for (int j = 0; (j < 6) && ((a2Ind = i * 6 + j) < length); j++) {
 				a1Ind = j * pageNumber + i;
-				finalArray[a2Ind] = (a1Ind < length) ? ticketsWithDelimiters
-						.get(a1Ind) : null;
+				finalArray[a2Ind] = a1Ind < length ? ticketsWithDelimiters.get(a1Ind) : null;
 			}
 		}
 
@@ -101,19 +92,17 @@ public class PrintTicketAction extends CommonAction {
 		DateFormat format = new SimpleDateFormat("MM.yyyy");
 		File outputA3File = new File(ApplicationConfig.getInstance()
 				.getEircDataRoot(), serviceOrganisationId + "_"
-				+ format.format(dateFrom) + ".pdf");
+									+ format.format(dateFrom) + ".pdf");
 		OutputStream os = new FileOutputStream(outputA3File);
 		PdfA3Writer a3Writer = new PdfA3Writer(os);
 
 		for (Object element : finalArray) {
-			byte[] byteArray = null;
+			byte[] byteArray;
 			if (element instanceof String) {
-				byteArray = ticketWriter
-						.writeTitleGetByteArray((String) element);
+				byteArray = ticketWriter.writeTitleGetByteArray((String) element);
 			} else {
 				Ticket ticket = (Ticket) element;
-				TicketForm ticketForm = tickerService.getTicketForm(ticket
-						.getId());
+				TicketForm ticketForm = tickerService.getTicketForm(ticket.getId());
 				byteArray = ticketWriter.writeGetByteArray(ticketForm);
 			}
 			a3Writer.write(byteArray);
@@ -125,8 +114,7 @@ public class PrintTicketAction extends CommonAction {
 	}
 
 	/**
-	 * @param tickerService
-	 *            the tickerService to set
+	 * @param tickerService the tickerService to set
 	 */
 	public void setTickerService(TicketService tickerService) {
 		this.tickerService = tickerService;
@@ -140,8 +128,7 @@ public class PrintTicketAction extends CommonAction {
 	}
 
 	/**
-	 * @param year
-	 *            the year to set
+	 * @param year the year to set
 	 */
 	public void setYear(Integer year) {
 		this.year = year;
@@ -155,16 +142,14 @@ public class PrintTicketAction extends CommonAction {
 	}
 
 	/**
-	 * @param month
-	 *            the month to set
+	 * @param month the month to set
 	 */
 	public void setMonth(Integer month) {
 		this.month = month;
 	}
 
 	/**
-	 * @param serviceOrganisationId
-	 *            the serviceOrganisationId to set
+	 * @param serviceOrganisationId the serviceOrganisationId to set
 	 */
 	public void setServiceOrganisationId(Long serviceOrganisationId) {
 		this.serviceOrganisationId = serviceOrganisationId;
@@ -178,8 +163,7 @@ public class PrintTicketAction extends CommonAction {
 	}
 
 	/**
-	 * @param serviceOrganisationService
-	 *            the serviceOrganisationService to set
+	 * @param serviceOrganisationService the serviceOrganisationService to set
 	 */
 	public void setServiceOrganisationService(
 			ServiceOrganisationService serviceOrganisationService) {

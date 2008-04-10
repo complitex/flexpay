@@ -45,7 +45,8 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	public void testSpFileProcessing() throws Throwable {
 //		File generatedFile = generatePaymentsFile();
 //		SpFile file = uploadFile(generatedFile.getAbsolutePath());
-		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/payments_100.bin");
+//		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/payments_100.bin");
+		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree.txt");
 
 		try {
 			fileProcessor.processFile(file);

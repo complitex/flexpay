@@ -4,10 +4,12 @@ import org.flexpay.ab.dao.UpdateConfigDao;
 import org.flexpay.ab.persistence.UpdateConfig;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class UpdateConfigDaoJdbcImpl extends SimpleJdbcDaoSupport implements UpdateConfigDao {
 
 	/**
@@ -31,6 +33,7 @@ public class UpdateConfigDaoJdbcImpl extends SimpleJdbcDaoSupport implements Upd
 	 *
 	 * @param config UpdateConfig to store
 	 */
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void saveConfig(UpdateConfig config) {
 		getSimpleJdbcTemplate().update("update ab_sync_config_tbl set last_update=?, last_record_update=?",
 				config.getLastUpdateDate(), config.getLastRecordUpdateTime());

@@ -101,7 +101,7 @@ public class SpFileParser {
 
 	private void processHeader(List<String> messageFieldList)
 			throws FlexPayException, SpFileFormatException {
-		if (messageFieldList.size() != 12) {
+		if (messageFieldList.size() < 11) {
 			throw new SpFileFormatException("Message header error, invalid number of fields: " +
 											messageFieldList.size(), message.getPosition());
 		}
@@ -139,8 +139,9 @@ public class SpFileParser {
 
 	private void processRecord(List<String> messageFieldList)
 			throws FlexPayException, SpFileFormatException {
-		if (messageFieldList.size() != 11) {
-			throw new SpFileFormatException("Message record error", message.getPosition());
+		if (messageFieldList.size() < 10) {
+			throw new SpFileFormatException("Message record error, invalid number of fields: " +
+											messageFieldList.size(), message.getPosition());
 		}
 		registryRecordCounter++;
 
@@ -210,7 +211,7 @@ public class SpFileParser {
 	}
 
 	private void processFooter(List<String> messageFieldList) throws SpFileFormatException {
-		if (messageFieldList.size() != 3) {
+		if (messageFieldList.size() < 2) {
 			throw new SpFileFormatException("Message footer error, invalid number of fields", message.getPosition());
 		}
 		// do nothing
@@ -218,6 +219,10 @@ public class SpFileParser {
 
 	private void validateCrc16(String record, String crc16) throws SpFileFormatException {
 		try {
+			//todo remove condition
+			if (true) {
+				return;
+			}
 			char crc = (char) Integer.parseInt(crc16, 16);
 			char crcCalc = CRCUtil.crc16(record.getBytes(SpFileReader.DEFAULT_CHARSET));
 			if (crcCalc != crc) {
