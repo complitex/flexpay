@@ -94,8 +94,7 @@ public class BuildingServiceImpl implements BuildingService {
 
 	private boolean isFilterValid(BuildingsFilter filter) {
 		for (Buildings buildings : filter.getBuildingses()) {
-			Street street = buildings.getStreet();
-			if (street.getId().equals(filter.getSelectedId())) {
+			if (buildings.getId().equals(filter.getSelectedId())) {
 				return true;
 			}
 		}
