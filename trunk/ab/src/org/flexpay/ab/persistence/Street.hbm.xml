@@ -104,8 +104,11 @@
 			LEFT JOIN FETCH o.districts d
 			LEFT JOIN FETCH d.nameTemporals dt
 			LEFT JOIN FETCH dt.value dv
-			LEFT JOIN FETCH dv.translations 
-		WHERE o.id=? and t.invalidDate='2100-12-31' and (dt is null or dt.invalidDate='2100-12-31')
+			LEFT JOIN FETCH dv.translations
+            LEFT JOIN FETCH o.typeTemporals st
+            LEFT JOIN FETCH st.value stv
+        WHERE o.id=? and t.invalidDate='2100-12-31' and (dt is null or dt.invalidDate='2100-12-31')
+              and (st is null or st.invalidDate ='2100-12-31')
 	</query>
 
 	<query name="StreetNameTemporal.readFull">
@@ -138,7 +141,7 @@
  	    LEFT JOIN FETCH s.typeTemporals tt
  	    LEFT JOIN FETCH tt.value tv
  	    LEFT JOIN FETCH tv.translations ttr
-	  WHERE 
+	  WHERE
 	    s.parent.id=? AND
 		t.invalidDate='2100-12-31' AND
 		tr.name like ?
