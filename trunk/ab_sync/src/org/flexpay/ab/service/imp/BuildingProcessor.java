@@ -56,12 +56,12 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 		Set<Buildings> buildingses = new HashSet<Buildings>();
 		buildingses.add(buildings);
 
-		Building buildingStub = new Building(buildings.getBuilding().getId());
-		buildings.setBuilding(buildingStub);
-		buildingStub.setBuildingses(buildingses);
+		Building building = buildingDao.read(buildings.getBuilding().getId());
+		buildings.setBuilding(building);
+		building.setBuildingses(buildingses);
 
 		if (log.isDebugEnabled()) {
-			log.debug("Read building: " + buildingStub);
+			log.debug("Read building: " + building);
 		}
 
 		return buildings;
