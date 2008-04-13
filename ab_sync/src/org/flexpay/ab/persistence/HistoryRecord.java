@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class HistoryRecord {
 
+	private Long recordId;
 	private Date recordDate;
 	private String oldValue;
 	private String currentValue;
@@ -16,6 +17,14 @@ public class HistoryRecord {
 	private ObjectType objectType;
 	private SyncAction syncAction;
 	private int processed;
+
+	public Long getRecordId() {
+		return recordId;
+	}
+
+	public void setRecordId(Long recordId) {
+		this.recordId = recordId;
+	}
 
 	public Date getRecordDate() {
 		return recordDate;

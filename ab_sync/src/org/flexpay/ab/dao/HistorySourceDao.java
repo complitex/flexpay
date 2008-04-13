@@ -3,7 +3,6 @@ package org.flexpay.ab.dao;
 import org.flexpay.ab.persistence.HistoryRecord;
 
 import java.util.List;
-import java.util.Date;
 
 public interface HistorySourceDao {
 
@@ -13,5 +12,5 @@ public interface HistorySourceDao {
 	 * @param lastRecord Last record obtained
 	 * @return List of new records
 	 */
-	List<HistoryRecord> getRecords(Date lastRecord);
+	List<HistoryRecord> getRecords(Long lastRecord);
 }

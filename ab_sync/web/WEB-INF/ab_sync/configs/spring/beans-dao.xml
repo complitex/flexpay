@@ -30,6 +30,7 @@
 		<constructor-arg index="0">
 			<props>
 				<prop key="historyTableName">${ab.sync.history.table.name}</prop>
+				<prop key="fieldRecordId">${ab.sync.history.table.field.fieldRecordId}</prop>
 				<prop key="fieldRecordDate">${ab.sync.history.table.field.fieldRecordDate}</prop>
 				<prop key="fieldOldValue">${ab.sync.history.table.field.fieldOldValue}</prop>
 				<prop key="fieldCurrentValue">${ab.sync.history.table.field.fieldCurrentValue}</prop>

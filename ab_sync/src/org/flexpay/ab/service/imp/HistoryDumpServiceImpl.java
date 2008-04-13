@@ -33,12 +33,12 @@ public class HistoryDumpServiceImpl implements HistoryDumpService {
 		try {
 			UpdateConfig config = updateConfigDao.getConfig();
 			if (log.isInfoEnabled()) {
-				log.info("Last dumped record time was: " + config.getLastRecordUpdateTime());
+				log.info("Last dumped record was: " + config.getLastDumpedRecordId());
 			}
-			List<HistoryRecord> records = historySourceDao.getRecords(config.getLastRecordUpdateTime());
+			List<HistoryRecord> records = historySourceDao.getRecords(config.getLastDumpedRecordId());
 			for (HistoryRecord record : records) {
 				historyDao.addRecord(record);
-				config.setLastRecordUpdateTime(record.getRecordDate());
+				config.setLastDumpedRecordId(record.getRecordId());
 			}
 
 			updateConfigDao.saveConfig(config);

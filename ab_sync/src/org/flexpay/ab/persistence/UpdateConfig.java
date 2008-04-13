@@ -7,7 +7,7 @@ import java.util.Date;
 public class UpdateConfig extends DomainObject {
 
 	private Date lastUpdateDate;
-	private Date lastRecordUpdateTime;
+	private Long lastDumpedRecordId;
 
 	/**
 	 * Getter for property 'lastUpdateDate'.
@@ -27,21 +27,11 @@ public class UpdateConfig extends DomainObject {
 		this.lastUpdateDate = lastUpdateDate;
 	}
 
-	/**
-	 * Getter for property 'lastRecordUpdateTime'.
-	 *
-	 * @return Value for property 'lastRecordUpdateTime'.
-	 */
-	public Date getLastRecordUpdateTime() {
-		return lastRecordUpdateTime;
+	public Long getLastDumpedRecordId() {
+		return lastDumpedRecordId;
 	}
 
-	/**
-	 * Setter for property 'lastRecordUpdateTime'.
-	 *
-	 * @param lastRecordUpdateTime Value to set for property 'lastRecordUpdateTime'.
-	 */
-	public void setLastRecordUpdateTime(Date lastRecordUpdateTime) {
-		this.lastRecordUpdateTime = lastRecordUpdateTime;
+	public void setLastDumpedRecordId(Long lastDumpedRecordId) {
+		this.lastDumpedRecordId = lastDumpedRecordId;
 	}
 }
