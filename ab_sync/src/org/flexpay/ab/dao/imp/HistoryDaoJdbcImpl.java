@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ArrayList;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryDao {
@@ -53,8 +54,40 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public void setProcessed(List<HistoryRecord> records) {
 		for (HistoryRecord record : records) {
-			getSimpleJdbcTemplate().update("update ab_sync_changes_tbl set processed=1 where record_id=?", record.getRecordId());
+			getSimpleJdbcTemplate().update(getSetProcessedSql(record), getParams(record));
 		}
+	}
+
+	private Object[] getParams(HistoryRecord record) {
+		ArrayList<Object> params = new ArrayList<Object>();
+		params.add(record.getRecordId());
+		params.add(record.getRecordDate());
+		if (record.getOldValue() != null) {
+			params.add(record.getOldValue());
+		}
+		if (record.getCurrentValue() != null) {
+			params.add(record.getCurrentValue());
+		}
+		params.add(record.getObjectType().getId());
+		params.add(record.getObjectId());
+		if (record.getFieldType() != null) {
+			params.add(record.getFieldType().getId());
+		}
+		params.add(record.getSyncAction().getCode());
+
+		return params.toArray(new Object[params.size()]);
+	}
+
+	private String getWhere(HistoryRecord record) {
+		return ("where record_id=? and record_date=? and old_value $oldValue and " +
+				"current_value $currentValue and object_type=? and object_id=? and field $field and action_type=?")
+				.replace("$oldValue", record.getOldValue() == null ? "is null" : "= ?")
+				.replace("$currentValue", record.getCurrentValue() == null ? "is null" : "= ?")
+				.replace("$field", record.getFieldType() == null ? "is null" : "= ?");
+	}
+
+	private String getSetProcessedSql(HistoryRecord record) {
+		return "update ab_sync_changes_tbl set processed=1 " + getWhere(record);
 	}
 
 	/**
@@ -66,9 +99,8 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	public void addRecord(HistoryRecord record) {
 
 		// check if record was already dumped
-		int count = getSimpleJdbcTemplate().queryForInt(
-				"select count(1) from ab_sync_changes_tbl where record_id=?",
-				record.getRecordId());
+		int count = getSimpleJdbcTemplate().queryForInt("select count(1) from ab_sync_changes_tbl " + getWhere(record),
+				getParams(record));
 		if (count > 0) {
 			return;
 		}
