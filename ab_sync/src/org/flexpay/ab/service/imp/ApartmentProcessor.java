@@ -100,6 +100,13 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 			apartment.setApartmentNumbers(numberSet);
 		}
 
+		// set up previous numbers to end at the record's operation date
+		for (ApartmentNumber number : apartment.getApartmentNumbers()) {
+			if (number.getEnd().after(record.getRecordDate())) {
+				number.setEnd(record.getRecordDate());
+			}
+		}
+
 		// Create a new apartment number and setup its properties
 		ApartmentNumber number = new ApartmentNumber();
 		number.setBegin(record.getRecordDate());
