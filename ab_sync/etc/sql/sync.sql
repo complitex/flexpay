@@ -1,3 +1,6 @@
+drop table if exists ab_sync_config_tbl;
+drop table if exists ab_sync_changes_tbl;
+
 -- Create and initialize sync tables
 create table ab_sync_config_tbl (
 	last_update datetime not null,
