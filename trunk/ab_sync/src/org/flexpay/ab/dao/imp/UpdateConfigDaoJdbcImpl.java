@@ -22,7 +22,7 @@ public class UpdateConfigDaoJdbcImpl extends SimpleJdbcDaoSupport implements Upd
 			public UpdateConfig mapRow(ResultSet rs, int i) throws SQLException {
 				UpdateConfig config = new UpdateConfig();
 				config.setLastUpdateDate(rs.getTimestamp("last_update"));
-				config.setLastRecordUpdateTime(rs.getTimestamp("last_record_update"));
+				config.setLastDumpedRecordId(rs.getLong("last_record_id"));
 				return config;
 			}
 		});
@@ -35,7 +35,7 @@ public class UpdateConfigDaoJdbcImpl extends SimpleJdbcDaoSupport implements Upd
 	 */
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void saveConfig(UpdateConfig config) {
-		getSimpleJdbcTemplate().update("update ab_sync_config_tbl set last_update=?, last_record_update=?",
-				config.getLastUpdateDate(), config.getLastRecordUpdateTime());
+		getSimpleJdbcTemplate().update("update ab_sync_config_tbl set last_update=?, last_record_id=?",
+				config.getLastUpdateDate(), config.getLastDumpedRecordId());
 	}
 }

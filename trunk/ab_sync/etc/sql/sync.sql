@@ -1,12 +1,13 @@
 -- Create and initialize sync tables
 create table ab_sync_config_tbl (
 	last_update datetime not null,
-	last_record_update datetime
+	last_record_id BIGINT NOT NULL
 );
 
-insert into ab_sync_config_tbl (last_update, last_record_update) values ('1900-01-01', '1900-01-01');
+insert into ab_sync_config_tbl (last_update, last_record_id) values ('1900-01-01', -1);
 
 create table ab_sync_changes_tbl (
+	record_id BIGINT NOT NULL,
 	record_date DATETIME NOT NULL,
 	old_value VARCHAR(2000),
 	current_value VARCHAR(2000),
