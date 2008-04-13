@@ -75,7 +75,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 
 		getSimpleJdbcTemplate().update("INSERT INTO ab_sync_changes_tbl " +
 									   "(record_id, record_date, old_value, current_value, object_type, object_id, field, action_type, processed, order_weight)" +
-									   " VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?)",
+									   " VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?, ?)",
 				record.getRecordId(), record.getRecordDate(), record.getOldValue(), record.getCurrentValue(), record.getObjectType().getId(),
 				record.getObjectId(), record.getFieldType() != null ? record.getFieldType().getId() : null, record.getSyncAction().getCode(),
 				0, record.getObjectType().getOrderWeight());
