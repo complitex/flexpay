@@ -35,7 +35,7 @@ public class PdfA3Writer {
 	public void write(PdfReader kvit) throws IOException {
 		PdfImportedPage page = writer.getImportedPage(kvit, 1);
 		float kvitHeight = page.getHeight();
-		float delta = (PageSize.A3.getWidth() / 3 - kvitHeight) / 2;
+		float delta = (PageSize.A3.getWidth() / 2 - kvitHeight) / 2;
 		if (kvitCount == 0) {
 			document.newPage();
 			cb.addTemplate(page, 0f, 1f, -1f, 0f, delta + kvitHeight,
@@ -44,21 +44,15 @@ public class PdfA3Writer {
 			cb.addTemplate(page, 0f, 1f, -1f, 0f, delta * 3 + kvitHeight * 2,
 					PageSize.A3.getHeight() / 2);
 		} else if (kvitCount == 2) {
-			cb.addTemplate(page, 0f, 1f, -1f, 0f, delta * 5 + kvitHeight * 3,
-					PageSize.A3.getHeight() / 2);
-		} else if (kvitCount == 3) {
 			cb.addTemplate(page, 0f, 1f, -1f, 0f, delta + kvitHeight, 0);
-		} else if (kvitCount == 4) {
+		} else if (kvitCount == 3) {
 			cb.addTemplate(page, 0f, 1f, -1f, 0f, delta * 3 + kvitHeight
 							* 2, 0);
-		} else if (kvitCount == 5) {
-			cb.addTemplate(page, 0f, 1f, -1f, 0f, delta * 5 + kvitHeight
-							* 3, 0);
 		}
 		
 		writer.freeReader(kvit);
 
-		if (kvitCount < 5) {
+		if (kvitCount < 3) {
 			kvitCount++;
 		} else {
 			kvitCount = 0;

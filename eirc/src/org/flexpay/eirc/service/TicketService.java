@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.eirc.pdf.PdfTicketWriter.TicketForm;
+import org.flexpay.eirc.pdf.PdfTicketWriter.TicketInfo;
 import org.flexpay.eirc.persistence.Ticket;
 
 public interface TicketService {
@@ -23,6 +23,6 @@ public interface TicketService {
 	List<Object> getTicketsWithDelimiters(Long serviceOrganisationId,
 			Date dateFrom, Date dateTill) throws FlexPayException;
 
-	TicketForm getTicketForm(Long ticketId) throws FlexPayException;
+	TicketInfo getTicketInfo(Long ticketId) throws FlexPayException;
 
 }
