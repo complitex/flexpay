@@ -99,6 +99,8 @@ public class ImportService {
 				// Save building itself instead of its buildings address
 				if (object instanceof Buildings) {
 					allObjectsDao.saveOrUpdate(((Buildings) object).getBuilding());
+				} else if (object instanceof DataCorrection) {
+					correctionsService.save((DataCorrection) object);
 				} else {
 					allObjectsDao.saveOrUpdate(object);
 				}

@@ -1,6 +1,5 @@
 package org.flexpay.ab.persistence;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -57,10 +56,7 @@ public class StreetType extends TemporaryType<StreetType, StreetTypeTranslation>
 		}
 		StreetType that = (StreetType) obj;
 
-		return new EqualsBuilder()
-				.appendSuper(super.equals(that))
-				.append(getTranslations(), that.getTranslations())
-				.isEquals();
+		return super.equals(that);
 	}
 
 	/**
