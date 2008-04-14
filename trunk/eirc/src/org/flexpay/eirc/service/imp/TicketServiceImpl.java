@@ -1,14 +1,13 @@
 package org.flexpay.eirc.service.imp;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -25,9 +24,11 @@ import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.eirc.dao.TicketDao;
-import org.flexpay.eirc.pdf.PdfTicketWriter.TicketForm;
+import org.flexpay.eirc.pdf.PdfTicketWriter.ServiceAmountInfo;
+import org.flexpay.eirc.pdf.PdfTicketWriter.TicketInfo;
 import org.flexpay.eirc.persistence.AccountRecord;
 import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
@@ -178,46 +179,57 @@ public class TicketServiceImpl implements TicketService {
 		return null;
 	}
 
-	public TicketForm getTicketForm(Long ticketId) throws FlexPayException {
+	public TicketInfo getTicketInfo(Long ticketId) throws FlexPayException {
 		Ticket ticket = ticketDao.read(ticketId);
-		DateFormat format = new SimpleDateFormat("MM.yyyy");
-		TicketForm form = new TicketForm();
-		form.date = format.format(ticket.getDateFrom());
-
-		format = new SimpleDateFormat("dd.MM.yyyy");
-		form.creationDate = format.format(ticket.getCreationDate());
-
-		PersonIdentity personIdentity = getTargetPersonIdentity(ticket.getPerson());
-		if(personIdentity != null) {
-			form.payer = personIdentity.getFirstName() + " "
-			+ personIdentity.getMiddleName() + " "
-			+ personIdentity.getLastName();
+		TicketInfo ticketInfo = new TicketInfo();
+		ticketInfo.dateFrom = ticket.getDateFrom();
+		ticketInfo.dateTill = ticket.getDateTill();
+		ticketInfo.creationDate = ticket.getCreationDate();
+		ticketInfo.ticketNumber = ticket.getId();
+		PersonIdentity personIdentity = getTargetPersonIdentity(ticket
+				.getPerson());
+		if (personIdentity != null) {
+			ticketInfo.payer = personIdentity.getFirstName() + " "
+					+ personIdentity.getMiddleName() + " "
+					+ personIdentity.getLastName();
+		}
+		String addressStr = getAddressStr(ticket, true);
+		if (addressStr != null) {
+			ticketInfo.address = getAddressStr(ticket, true);
+		}
+		Set<TicketServiceAmount> ticketSetviceAmountSet = ticket.getTicketServiceAmounts();
+		Map<Integer, ServiceAmountInfo> serviceAmountInfoMap = new HashMap<Integer, ServiceAmountInfo>();
+		ticketInfo.serviceAmountInfoMap = serviceAmountInfoMap;
+		for(TicketServiceAmount ticketServiceAmount : ticketSetviceAmountSet) {
+			ServiceAmountInfo serviceAmountInfo = new ServiceAmountInfo();
+			ServiceType serviceType = ticketServiceAmount.getServiceType();
+			Translation translation = TranslationUtil.getTranslation(serviceType.getTypeNames());
+			serviceAmountInfo.name = translation.getName();
+			serviceAmountInfo.dateFromAmount = ticketServiceAmount.getDateFromAmount();
+			serviceAmountInfo.dateTillAmount = ticketServiceAmount.getDateTillAmount();
+			serviceAmountInfo.code = serviceType.getCode();
+			serviceAmountInfoMap.put(serviceAmountInfo.code, serviceAmountInfo);
 		}
 		
-		String addressStr = getAddressStr(ticket, true);
-		if(addressStr != null) {
-			form.address = getAddressStr(ticket, true);
-		}
-
-		return form;
+		return ticketInfo;
 	}
-	
+
 	private PersonIdentity getTargetPersonIdentity(Person person) {
 		Set<PersonIdentity> personIdentitySet = person.getPersonIdentities();
-		if(personIdentitySet.isEmpty()) {
+		if (personIdentitySet.isEmpty()) {
 			return null;
 		}
 		PersonIdentity defaultPersonIdentity = null;
-		for(PersonIdentity personIdentity : personIdentitySet) {
-			if(personIdentity.getIdentityType().getTypeId() == IdentityType.TYPE_PASSPORT) {
-				return personIdentity; 
-			} else if(personIdentity.getIdentityType().getTypeId() == IdentityType.TYPE_FOREIGN_PASSPORT) {
+		for (PersonIdentity personIdentity : personIdentitySet) {
+			if (personIdentity.getIdentityType().getTypeId() == IdentityType.TYPE_PASSPORT) {
+				return personIdentity;
+			} else if (personIdentity.getIdentityType().getTypeId() == IdentityType.TYPE_FOREIGN_PASSPORT) {
 				defaultPersonIdentity = personIdentity;
-			} else if(defaultPersonIdentity == null) {
+			} else if (defaultPersonIdentity == null) {
 				defaultPersonIdentity = personIdentity;
 			}
 		}
-		
+
 		return defaultPersonIdentity;
 	}
 
@@ -253,10 +265,11 @@ public class TicketServiceImpl implements TicketService {
 		return result;
 	}
 
-	private String getAddressStr(Ticket ticket, boolean withApartmentNumber) throws FlexPayException {
+	private String getAddressStr(Ticket ticket, boolean withApartmentNumber)
+			throws FlexPayException {
 		Set<Buildings> buildingsSet = ticket.getApartment().getBuilding()
 				.getBuildingses();
-		if(buildingsSet.isEmpty()) {
+		if (buildingsSet.isEmpty()) {
 			return null;
 		}
 		Buildings buildings = buildingsSet.iterator().next();
@@ -268,9 +281,13 @@ public class TicketServiceImpl implements TicketService {
 		StreetTypeTranslation streetTypeTranslation = TranslationUtil
 				.getTranslation(streetType.getTranslations());
 
-		return streetTypeTranslation.getName() + " "
-				+ streetNameTranslation.getName() + ", д."
-				+ buildings.getNumber() + (withApartmentNumber ? ", кв." + ticket.getApartment().getNumber() : "");
+		return streetTypeTranslation.getName()
+				+ " "
+				+ streetNameTranslation.getName()
+				+ ", д."
+				+ buildings.getNumber()
+				+ (withApartmentNumber ? ", кв."
+						+ ticket.getApartment().getNumber() : "");
 	}
 
 	/**
