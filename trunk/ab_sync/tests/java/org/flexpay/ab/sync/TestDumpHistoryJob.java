@@ -1,6 +1,5 @@
 package org.flexpay.ab.sync;
 
-import org.flexpay.ab.service.HistoryDumpService;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 
 public class TestDumpHistoryJob extends SpringBeanAwareTestCase {
@@ -12,9 +11,7 @@ public class TestDumpHistoryJob extends SpringBeanAwareTestCase {
 
 	public void testDumpHistory() throws Throwable {
 
-//		HistoryDumpService dumpService = (HistoryDumpService) applicationContext.getBean("historyDumpService");
-//		dumpService.dumpHistory();
-
-		Thread.sleep( 60 * 1000 );
+		// let a scheduled task do the job
+//		Thread.sleep( 60 * 1000 );
 	}
 }
