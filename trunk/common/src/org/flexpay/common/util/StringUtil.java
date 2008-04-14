@@ -1,9 +1,31 @@
 package org.flexpay.common.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StringUtil {
+	private static Map<Integer, String> monthRusMap;
+	static {
+		monthRusMap = new HashMap<Integer, String>(12);
+		monthRusMap.put(0, "январь");
+		monthRusMap.put(1, "февраль");
+		monthRusMap.put(2, "март");
+		monthRusMap.put(3, "апрель");
+		monthRusMap.put(4, "май");
+		monthRusMap.put(5, "июнь");
+		monthRusMap.put(6, "июль");
+		monthRusMap.put(7, "август");
+		monthRusMap.put(8, "сентябрь");
+		monthRusMap.put(9, "октябрь");
+		monthRusMap.put(10, "ноябрь");
+		monthRusMap.put(11, "декабрь");
+	}
+	
+	public static String getMonthRus(Integer month) {
+		return monthRusMap.get(month);
+	}
 
 	/**
 	 * TODO: find out the fuck for this method is
@@ -65,6 +87,19 @@ public class StringUtil {
 		}
 
 		return datum;
+	}
+	
+	public static String fillLeadingZero(String source, int targetLenth) {
+		StringBuffer buf = new StringBuffer();
+		int count = targetLenth - source.length();
+		if (count > 0) {
+			for (int i = 0; i < count; i++) {
+				buf.append("0");
+			}
+		}
+		buf.append(source);
+
+		return buf.toString();
 	}
 
 }
