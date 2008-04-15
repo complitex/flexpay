@@ -126,8 +126,6 @@ public class ServiceProviderFileProcessor {
 		try {
 			Operation op = serviceOperationsFactory.getOperation(registry, record);
 			op.process(registry, record);
-		} catch (InvalidContainerException e) {
-			log.error("Failed constructing container for registry record: " + record, e);
 		} catch (FlexPayException e) {
 			log.error("Failed processing registry record containers: " + registry, e);
 		}

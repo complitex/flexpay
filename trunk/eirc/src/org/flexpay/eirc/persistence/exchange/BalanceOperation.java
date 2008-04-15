@@ -12,7 +12,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class BalanceOperation extends Operation {
 
@@ -37,6 +36,15 @@ public class BalanceOperation extends Operation {
 		AccountRecordService recordService = factory.getAccountRecordService();
 		SPService spService = factory.getSpService();
 
+		if (record.getConsumer() == null) {
+			log.error("Record consumer not set up: " + record);
+			return;
+		}
+
+		if (record.getAmount() == null) {
+			record.setAmount(BigDecimal.ZERO);
+		}
+
 		// if registry is for open report period - just modify balance
 		if (reportPeriodService.isInOpenPeriod(registry.getFromDate())) {
 			BigDecimal balance = recordService.getCurrentBalance(record.getConsumer());
@@ -50,12 +58,15 @@ public class BalanceOperation extends Operation {
 			newRecord.setAmount(balanceCorrection);
 			newRecord.setConsumer(record.getConsumer());
 			newRecord.setOrganisation(ApplicationConfig.getInstance().getSelfOrganisation());
-			newRecord.setOperationDate(new Date());
-			newRecord.setRecordType(spService.getRecordType(AccountRecordType.TYPE_UNKNOWN));
+			newRecord.setOperationDate(record.getOperationDate());
+
+			AccountRecordType type = spService.getRecordType(AccountRecordType.TYPE_BALANCE_CORRECTION);
+			if (type == null) {
+				throw new IllegalOperationStateException("Not found balance correction type, was DB inited?");
+			}
+			newRecord.setRecordType(type);
 
 			recordService.create(newRecord);
 		}
-
-		
 	}
 }

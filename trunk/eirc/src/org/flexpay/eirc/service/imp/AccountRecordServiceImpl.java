@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Date;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class AccountRecordServiceImpl implements AccountRecordService {
@@ -63,12 +64,22 @@ public class AccountRecordServiceImpl implements AccountRecordService {
 	 * @param consumer Consumer instance
 	 * @return current consumer balance
 	 */
-	@Transactional (readOnly = true, rollbackFor = Exception.class)
 	public BigDecimal getCurrentBalance(AbstractConsumer consumer) {
-		// TODO implement me
-		return null;
+		return getBalanceForDate(consumer, new Date());
 	}
-	
+
+	/**
+	 * Calculate current consumer balance
+	 *
+	 * @param consumer Consumer instance
+	 * @param date	 Date to calculate balance
+	 * @return current consumer balance
+	 */
+	public BigDecimal getBalanceForDate(AbstractConsumer consumer, Date date) {
+		List<BigDecimal> balance = accountRecordDao.findBalanceForDate(consumer.getId(), date);
+		return balance.get(0) == null ? BigDecimal.ZERO : balance.get(0);
+	}
+
 	/**
 	 * Find AccountRecord for Person
 	 *

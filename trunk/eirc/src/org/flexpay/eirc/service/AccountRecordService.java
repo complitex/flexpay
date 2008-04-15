@@ -5,6 +5,7 @@ import org.flexpay.eirc.persistence.AbstractConsumer;
 import org.flexpay.common.exception.FlexPayException;
 
 import java.util.List;
+import java.util.Date;
 import java.math.BigDecimal;
 
 public interface AccountRecordService {
@@ -33,11 +34,21 @@ public interface AccountRecordService {
 	 * @return current consumer balance
 	 */
 	BigDecimal getCurrentBalance(AbstractConsumer consumer);
-	
+
+	/**
+	 * Calculate current consumer balance
+	 *
+	 * @param consumer Consumer instance
+	 * @param date Date to calculate balance
+	 * @return current consumer balance
+	 */
+	BigDecimal getBalanceForDate(AbstractConsumer consumer, Date date);
+
 	/**
 	 * Find AccountRecord for Person
 	 *
 	 * @param personId Person key
+	 * @param apartmentId Apartment identifier
 	 * @return List of AccountRecord sorted by ServiceType and operationDate
 	 */
 	List<AccountRecord> findForTicket(Long personId, Long apartmentId);

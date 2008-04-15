@@ -34,6 +34,7 @@
 		<property name="spFileService" ref="spFileService" />
 		<property name="accountRecordService" ref="accountRecordService" />
 		<property name="organisationService" ref="organisationService" />
+		<property name="reportPeriodService" ref="reportPeriodService" />
 	</bean>
 
 	<bean id="consumerService" class="org.flexpay.eirc.service.imp.ConsumerServiceImpl">
@@ -49,7 +50,9 @@
 		<property name="organisationDao" ref="organisationDao" />
 	</bean>
 
-	<bean id="serviceProviderFileProcessor" 
+	<bean id="reportPeriodService" class="org.flexpay.eirc.service.imp.ReportPeriodServiceImpl" />
+
+	<bean id="serviceProviderFileProcessor"
 		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor">
 		<property name="serviceOperationsFactory" ref="serviceOperationsFactory" />
 		<property name="spFileService" ref="spFileService" />
