@@ -317,7 +317,7 @@
 		<java classpathref="classpath"
 			  classname="org.flexpay.common.util.standalone.ApplicationRunner"
 			  dir="${build.dir}/web" fork="yes">
-			<jvmarg value="-Xmx150m" />
+			<jvmarg value="-Xmx350m" />
 		</java>
 	</target>
 

@@ -8,9 +8,10 @@ import org.flexpay.common.persistence.DomainObject;
 public class AccountRecordType extends DomainObject {
 
 	public static int TYPE_UNKNOWN = 0;
-	public static int TYPE_PAYMENT_INCOMING = 1;
-	public static int TYPE_PAYMENT_OUTGOING = 2;
-	public static int TYPE_BALANCE = 3;
+	public static int TYPE_PAYMENT = 1;
+	public static int TYPE_SERVICE_FEE = 2;
+	public static int TYPE_BALANCE_CORRECTION = 3;
+	public static int TYPE_CORRECTION = 4;
 
 	private int typeId;
 	private String description;

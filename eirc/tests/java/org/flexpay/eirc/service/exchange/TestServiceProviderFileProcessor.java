@@ -124,7 +124,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		record.setOperationDate(new Date(begin.getTime() + (rand.nextLong() % diff)));
 
 		record.setId(Math.abs(rand.nextLong()));
-		record.setRecordType(spService.getRecordType(AccountRecordType.TYPE_PAYMENT_OUTGOING));
+		record.setRecordType(spService.getRecordType(AccountRecordType.TYPE_PAYMENT));
 		record.setOrganisation(ApplicationConfig.getInstance().getSelfOrganisation());
 		record.setAmount(amount);
 
