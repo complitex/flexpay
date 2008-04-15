@@ -72,7 +72,7 @@ public class SimplePayment extends ContainerOperation {
 
 		// setup payment record type
 		SPService spService = factory.getSpService();
-		AccountRecordType type = spService.getRecordType(AccountRecordType.TYPE_PAYMENT_INCOMING);
+		AccountRecordType type = spService.getRecordType(AccountRecordType.TYPE_PAYMENT);
 		if (type == null) {
 			throw new IllegalOperationStateException("Not found simple payment type, was DB inited?");
 		}
