@@ -31,7 +31,7 @@ public class ServiceOperationsFactory {
 	public Operation getOperation(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
 
 		if (StringUtils.isEmpty(record.getContainers())) {
-			throw new InvalidContainerException("No data in record #" + record.getId());
+			return getOperation(registry);
 		}
 
 		List<String> containersData = parseContainersData(record.getContainers());

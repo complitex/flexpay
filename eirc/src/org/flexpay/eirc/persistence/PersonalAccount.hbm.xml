@@ -56,6 +56,14 @@
 		recordType.id=?
 	</query>
 	
+	<query name="AccountRecord.findBalanceForDate">
+	<![CDATA[
+		SELECT SUM(record.amount)
+		FROM AccountRecord record
+		WHERE record.consumer.id=? AND record.operationDate<=?
+	]]>
+	</query>
+
 	<query name="AccountRecord.findForTicket">
 		SELECT DISTINCT record
 		FROM AccountRecord record

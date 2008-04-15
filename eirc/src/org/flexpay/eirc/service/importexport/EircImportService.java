@@ -87,6 +87,7 @@ public class EircImportService extends ImportService {
 					}
 					DataCorrection corr = correctionsService.getStub(
 							data.getApartmentId(), apartment, sd);
+					log.info("Adding apartment correction: " + data.getApartmentId());
 					addToStack(corr);
 					rawConsumer.setApartment(apartment);
 				}
@@ -192,6 +193,7 @@ public class EircImportService extends ImportService {
 									DataSourceDescription sourceDescription, RawConsumerData data) {
 
 		// try to find by apartment correction
+		log.info("Checking for apartment correction: " + data.getApartmentId());
 		Apartment apartmentById = correctionsService.findCorrection(
 				data.getApartmentId(), Apartment.class, sourceDescription);
 		if (apartmentById != null) {
