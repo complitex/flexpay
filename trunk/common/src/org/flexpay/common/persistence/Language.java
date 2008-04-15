@@ -86,7 +86,6 @@ public class Language extends DomainObjectWithStatus {
 				.append("Default", isDefault)
 				.append("Status", getStatus())
 				.append("Iso Code", langIsoCode)
-				.append("Translations", translations.toArray())
 				.toString();
 	}
 
