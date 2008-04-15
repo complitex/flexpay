@@ -21,7 +21,7 @@ public class StreetNameTranslation extends Translation {
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
 				.append("Id", getId())
-				.append("Language", getLang().getLangIsoCode())
+				//.append("Language", getLang().getLangIsoCode())
 				.append("Name", getName())
 				.toString();
 	}
