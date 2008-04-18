@@ -147,7 +147,17 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 		if (object.getBuilding() == null || object.getApartmentNumbers().isEmpty()) {
 			return null;
 		}
-		return apartmentService.findApartmentStub(object.getBuilding(), object.getNumber());
+
+		if (log.isDebugEnabled()) {
+			log.debug("Checking if apartment exists: " + object);
+		}
+
+		Apartment stub = apartmentService.findApartmentStub(object.getBuilding(), object.getNumber());
+		if (stub != null && log.isDebugEnabled()) {
+			log.debug("Found apartment stub: " + stub);
+		}
+
+		return stub;
 	}
 
 	public void setApartmentDao(ApartmentDao apartmentDao) {
