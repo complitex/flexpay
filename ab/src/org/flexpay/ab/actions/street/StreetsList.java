@@ -9,6 +9,7 @@ import org.flexpay.ab.persistence.StreetNameTranslation;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.common.exception.FlexPayException;
 
 public class StreetsList extends ListAction<
 		StreetName, StreetNameTemporal, Street, StreetNameTranslation> {
@@ -16,6 +17,10 @@ public class StreetsList extends ListAction<
 	private CountryFilter countryFilter = new CountryFilter();
 	private RegionFilter regionFilter = new RegionFilter();
 	private TownFilter townFilter = new TownFilter();
+
+	protected void initObjects(ArrayStack filters) throws FlexPayException {
+		objectNames = nameTimeDependentService.find(filters, pager);
+	}
 
 	/**
 	 * Getter for property 'countryFilter'.

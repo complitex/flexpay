@@ -73,9 +73,18 @@ public interface NameTimeDependentService<
 	 * Get a list of available objects
 	 *
 	 * @param filters Parent filters
-	 * @return List of Regions
+	 * @return List of Objects
 	 */
 	List<NTD> find(ArrayStack filters);
+
+	/**
+	 * Get a list of available objects
+	 *
+	 * @param filters Parent filters
+	 * @param pager Page
+	 * @return List of Objects
+	 */
+	List<NTD> find(ArrayStack filters, Page pager);
 
 	/**
 	 * Disable objects

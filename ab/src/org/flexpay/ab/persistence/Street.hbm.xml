@@ -85,12 +85,23 @@
 	</class>
 
 	<query name="Street.findObjects">
+		SELECT DISTINCT o
 		FROM Street o
-		WHERE o.status=? and o.parent.id=?
+			LEFT JOIN FETCH o.nameTemporals t
+			LEFT JOIN FETCH t.value v
+			LEFT JOIN FETCH v.translations tr
+			LEFT JOIN FETCH tr.lang l
+			LEFT JOIN FETCH o.typeTemporals tt
+			LEFT JOIN FETCH tt.value tv
+			LEFT JOIN FETCH tv.translations ttr
+			LEFT JOIN FETCH ttr.lang tl
+        WHERE t.invalidDate='2100-12-31' and (tt is null or tt.invalidDate ='2100-12-31')
+			  and o.status=? and o.parent.id=?
 	</query>
 
 	<query name="Street.findObjects.count">
-		select count(*) from Street o where o.status=? and o.parent.id=?
+		select count(*) from Street o
+		where o.status=? and o.parent.id=?
 	</query>
 
 	<query name="Street.readFull">
