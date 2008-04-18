@@ -166,7 +166,9 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 			return;
 		}
 
-		log.info("Performing save");
+		if (log.isInfoEnabled()) {
+			log.info("Performing save: " + obj);
+		}
 		doSaveObject(obj);
 
 		if (id == null && obj.getId() != null) {
