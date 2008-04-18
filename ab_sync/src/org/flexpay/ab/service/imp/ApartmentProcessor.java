@@ -149,7 +149,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 		}
 
 		if (log.isDebugEnabled()) {
-			log.debug("Checking if apartment exists: " + object);
+			log.debug("Checking if apartment exists: " + object + "(number: " + object.getNumber() + ")");
 		}
 
 		Apartment stub = apartmentService.findApartmentStub(object.getBuilding(), object.getNumber());
