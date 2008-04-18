@@ -80,6 +80,7 @@ public class Apartment extends DomainObjectWithStatus {
 
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("id", getId())
 				.append("numbers", apartmentNumbers.toArray())
 				.toString();
 	}

@@ -54,6 +54,7 @@ public class ApartmentNumber extends DomainObject {
 
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("id", getId())
 				.append("number", value)
 				.append("begin", DateIntervalUtil.format(begin))
 				.append("end", DateIntervalUtil.format(end))
