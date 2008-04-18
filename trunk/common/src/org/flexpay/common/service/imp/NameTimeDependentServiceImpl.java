@@ -460,6 +460,15 @@ public abstract class NameTimeDependentServiceImpl<
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public List<NTD> find(ArrayStack filters, Page pager) {
+		PrimaryKeyFilter filter = (PrimaryKeyFilter) filters.peek();
+		return getNameTimeDependentDao().findObjects(
+				pager, ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
+	}
+
+	/**
 	 * Find existing object by name
 	 *
 	 * @param name	 Object name to search

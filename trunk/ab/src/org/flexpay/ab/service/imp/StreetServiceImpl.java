@@ -267,7 +267,6 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public List<Street> findByTownAndName(Long townId, String name) {
-		List<Street> streetList = streetDao.findByTownAndName(townId, name);
-		return streetList;
+		return streetDao.findByTownAndName(townId, name);
 	}
 }

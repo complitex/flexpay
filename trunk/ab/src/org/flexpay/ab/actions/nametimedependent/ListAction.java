@@ -26,8 +26,8 @@ public abstract class ListAction<
 			ListAction.class.getName() + ".ACTION_ERRORS";
 
 	private Map session;
-	private Page pager = new Page();
-	private List<TV> objectNames;
+	protected Page pager = new Page();
+	protected List objectNames;
 
 	/**
 	 * {@inheritDoc}
@@ -41,7 +41,7 @@ public abstract class ListAction<
 			ArrayStack filters = parentService.initFilters(getFilters(), userPreferences.getLocale());
 			setFilters(filters);
 
-			objectNames = nameTimeDependentService.findNames(filters, pager);
+			initObjects(filters);
 		} catch (FlexPayException e) {
 			addActionError(e);
 		}
@@ -61,6 +61,10 @@ public abstract class ListAction<
 			log.info("Listing " + (System.currentTimeMillis() - start) + " ms");
 		}
 		return SUCCESS;
+	}
+
+	protected void initObjects(ArrayStack filters) throws FlexPayException {
+		objectNames = nameTimeDependentService.findNames(filters, pager);
 	}
 
 	public static void setActionErrors(Map<String, Object> session, Collection actionErrors) {
@@ -98,11 +102,11 @@ public abstract class ListAction<
 	}
 
 	/**
-	 * Getter for property 'regionNames'.
+	 * Getter for property 'objectNames'.
 	 *
-	 * @return Value for property 'regionNames'.
+	 * @return Value for property 'objectNames'.
 	 */
-	public List<TV> getObjectNames() {
+	public List getObjectNames() {
 		return objectNames;
 	}
 }
