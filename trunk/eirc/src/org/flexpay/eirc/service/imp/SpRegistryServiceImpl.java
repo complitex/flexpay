@@ -1,12 +1,16 @@
 package org.flexpay.eirc.service.imp;
 
 import java.util.List;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.dao.SpRegistryDao;
+import org.flexpay.eirc.dao.SpRegistryDaoExt;
 import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.eirc.persistence.filters.OrganisationFilter;
+import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.flexpay.eirc.service.SpRegistryService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +19,7 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	private static Logger log = Logger.getLogger(SpRegistryServiceImpl.class);
 
 	private SpRegistryDao spRegistryDao;
+	private SpRegistryDaoExt spRegistryDaoExt;
 
 	/**
 	 * Create SpRegistry
@@ -79,6 +84,23 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	}
 
 	/**
+	 * Find registries
+	 *
+	 * @param senderFilter	sender organisation filter
+	 * @param recipientFilter recipient organisation filter
+	 * @param typeFilter	  registry type filter
+	 * @param fromDate		registry generation start date
+	 * @param tillDate		registry generation end date
+	 * @param pager		   Page
+	 * @return list of registries matching specified criteria
+	 */
+	public List<SpRegistry> findObjects(OrganisationFilter senderFilter, OrganisationFilter recipientFilter,
+										RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page pager) {
+		return spRegistryDaoExt.findRegistries(senderFilter, recipientFilter,
+										typeFilter, fromDate, tillDate, pager);
+	}
+
+	/**
 	 * @param spRegistryDao
 	 *            the spRegistryDao to set
 	 */
@@ -86,4 +108,7 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 		this.spRegistryDao = spRegistryDao;
 	}
 
+	public void setSpRegistryDaoExt(SpRegistryDaoExt spRegistryDaoExt) {
+		this.spRegistryDaoExt = spRegistryDaoExt;
+	}
 }

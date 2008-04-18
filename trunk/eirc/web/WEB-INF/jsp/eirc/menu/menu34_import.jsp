@@ -8,6 +8,9 @@
 		<ul class="docs">
 			<li><a href="<c:url value='/eirc/spFileList.action' />"><s:text name="eirc.menu34.sp_file_list"/></a></li>
 		</ul>
+		<ul class="docs">
+			<li><a href="<c:url value='/eirc/registries_list.action' />"><s:text name="eirc.menu34.registries"/></a></li>
+		</ul>
 	</li>
 	
 

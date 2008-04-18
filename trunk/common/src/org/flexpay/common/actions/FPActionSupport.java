@@ -25,7 +25,7 @@ import java.util.Set;
  */
 public class FPActionSupport extends ActionSupport implements UserPreferencesAware {
 
-	private static Logger log = Logger.getLogger(FPActionSupport.class);
+	protected Logger log = Logger.getLogger(getClass());
 
 	protected UserPreferences userPreferences;
 
@@ -68,20 +68,13 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 		try {
 			SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
 			param = request.getParameter(name);
-			Date dt = df.parse(param);
 
-			if (log.isDebugEnabled()) {
-				log.debug("Parsed date: " + name + ": " + dt);
-			}
-
-			return dt;
+			return df.parse(param);
 		} catch (Exception e) {
 			if (StringUtils.isNotBlank(param)) {
 				throw new FlexPayException("Invalid date", "error.invalid_date", param);
 			}
-			if (log.isDebugEnabled()) {
-				log.debug("Cannot parse date " + name + ": " + param);
-			}
+
 			return null;
 		}
 	}

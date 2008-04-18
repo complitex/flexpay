@@ -1,6 +1,7 @@
 package org.flexpay.eirc.service;
 
 import org.flexpay.eirc.persistence.SpRegistryType;
+import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 
 public interface SpRegistryTypeService {
 	public static final Long SALDO = 1L;
@@ -22,4 +23,11 @@ public interface SpRegistryTypeService {
 	 * @return SpRegistryType object, or <code>null</code> if object not found
 	 */
 	SpRegistryType read(Long id);
+
+	/**
+	 * init filter
+	 *
+	 * @param registryTypeFilter filter to init
+	 */
+	void initFilter(RegistryTypeFilter registryTypeFilter);
 }

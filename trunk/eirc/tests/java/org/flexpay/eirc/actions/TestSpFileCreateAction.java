@@ -40,6 +40,7 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 		} finally {
 			IOUtils.closeQuietly(is);
 			IOUtils.closeQuietly(os);
+			tmpDataFile.delete();
 		}
 
 		fileCreateAction.setUpload(tmpDataFile);

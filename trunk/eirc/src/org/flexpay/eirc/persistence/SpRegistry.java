@@ -24,6 +24,8 @@ public class SpRegistry extends DomainObject {
 
 	private String containers;
 
+	private Organisation sender;
+	private Organisation recipient;
 	private ServiceProvider serviceProvider;
 
 	/**
@@ -196,5 +198,21 @@ public class SpRegistry extends DomainObject {
 	 */
 	public void setServiceProvider(ServiceProvider serviceProvider) {
 		this.serviceProvider = serviceProvider;
+	}
+
+	public Organisation getSender() {
+		return sender;
+	}
+
+	public void setSender(Organisation sender) {
+		this.sender = sender;
+	}
+
+	public Organisation getRecipient() {
+		return recipient;
+	}
+
+	public void setRecipient(Organisation recipient) {
+		this.recipient = recipient;
 	}
 }

@@ -47,14 +47,14 @@
 	  </td> -->
 	  <td class="col">
 	    <s:if test="!@org.flexpay.eirc.sp.SpFileUtil@isLoadedToDb(id)">
-	      <a href="<s:url action='spFileAction'><s:param name="spFileId" value="%{id}"/><s:param name="actions" value="'loadToDb'"/></s:url>">
+	      <a href="<s:url action='spFileAction'><s:param name="spFileId" value="%{id}"/><s:param name="action" value="'loadToDb'"/></s:url>">
 	        load to DB
 	      </a>
 	    </s:if>
 	  </td>
 	  <td class="col">
 	    <!-- <s:if test="loadedToDb">
-	      <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="actions" value="'deleteFromDb'"/></s:url>">
+	      <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="action" value="'deleteFromDb'"/></s:url>">
 	        delete from DB
 	      </a>
 	      </s:if> -->
@@ -62,7 +62,7 @@
 	  </td>
 	  <td class="col">
 	    <!-- <s:if test="loadedToDb">
-	      <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="actions" value="'loadFromDb'"/></s:url>">
+	      <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="action" value="'loadFromDb'"/></s:url>">
 	        load from DB
 	      </a>
 	    </s:if> -->
@@ -76,7 +76,7 @@
 	    </s:if>
 	  </td>
 	  <td class="col">
-	    <!--  <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="actions" value="'fullDelete'"/></s:url>">
+	    <!--  <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="action" value="'fullDelete'"/></s:url>">
 	      delete
 	    </a> -->
 	    ---

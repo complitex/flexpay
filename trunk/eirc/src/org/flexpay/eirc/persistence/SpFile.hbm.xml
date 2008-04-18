@@ -99,6 +99,10 @@
 		from SpRegistryRecord where spRegistry.id=?
 	</query>
 
+	<query name="SpRegistryType.findAll">
+		from SpRegistryType 
+	</query>
+
 	<query name="SpRegistry.findObjects">
 		from SpRegistry r where r.spFile.id=?
 	</query>
@@ -112,11 +116,11 @@
 	</query>
 
 	<query name="SpRegistryRecord.listRecords">
-		select distinct r from SpRegistryRecord r where r.spRegistry.id=?
+		select distinct r from SpRegistryRecord r where r.spRegistry.id=? and r.consumer is null
 	</query>
 
 	<query name="SpRegistryRecord.listRecords.count">
-		select count(*) from SpRegistryRecord where spRegistry.id=?
+		select count(*) from SpRegistryRecord where spRegistry.id=? and consumer is null
 	</query>
 
 </hibernate-mapping>

@@ -19,6 +19,11 @@ public class ImportError extends DomainObjectWithStatus {
 	private String dataSourceBean;
 
 	/**
+	 * Error message localisation code
+	 */
+	private String errorId;
+
+	/**
 	 * Constructs a new DomainObject.
 	 */
 	public ImportError() {
@@ -98,5 +103,13 @@ public class ImportError extends DomainObjectWithStatus {
 	 */
 	public void setDataSourceBean(String dataSourceBean) {
 		this.dataSourceBean = dataSourceBean;
+	}
+
+	public String getErrorId() {
+		return errorId;
+	}
+
+	public void setErrorId(String errorId) {
+		this.errorId = errorId;
 	}
 }

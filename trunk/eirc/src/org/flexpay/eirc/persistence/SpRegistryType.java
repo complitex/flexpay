@@ -1,6 +1,8 @@
 package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 public class SpRegistryType extends DomainObject {
 	public static final int TYPE_UNKNOWN = 0;
@@ -62,5 +64,13 @@ public class SpRegistryType extends DomainObject {
 	 */
 	public void setTypeId(int typeId) {
 		this.typeId = typeId;
+	}
+
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("id", getId())
+				.append("name", name)
+				.append("typeId", typeId)
+				.toString();
 	}
 }

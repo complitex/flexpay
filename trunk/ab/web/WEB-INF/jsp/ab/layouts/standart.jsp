@@ -29,7 +29,7 @@
 	
 	<!-- Text field autocomplete script -->
 	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/common/js/autosuggest/autosuggest_inquisitor.css"/>" />
-	<script type="text/javascript" src="<c:url value="/resources/common/js/autosuggest/bsn.AutoSuggest_2.1.3_comp.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/common/js/autosuggest/bsn.AutoSuggest_2.1.3.js" />"></script>
 </head>
 <body>
 

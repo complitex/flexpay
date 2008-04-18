@@ -2,13 +2,11 @@ body
 	{
 	color: #000;
 	background-color: #fff;
-        margin-left: 0px;
-        margin-bottom: 2em;
-        margin-right: 0px;
-        margin-top: 0px;
-        padding: 0px;
-        font-family: tahoma, serif;
-        font-weight: normal;
+	margin: 0 0 2em 0;
+
+	padding: 0;
+	font-family: tahoma, serif;
+	font-weight: normal;
 	}
 b
 	{font-weight: bold;}
@@ -128,7 +126,7 @@ li
 
 ul.folders
 	{
-	margin-top: 0em; margin-left: 1em;
+	margin-top: 0; margin-left: 1em;
 	padding-left: 10px;
 	font-family: tahoma, sans-serif; font-size: 0.8em; font-weight: normal;
 	list-style-image: url('../img/i_folder_close.gif');
@@ -136,7 +134,7 @@ ul.folders
 
 ul.folders li.open
 	{
-	margin-top: 0em; margin-left: 0em;
+	margin-top: 0; margin-left: 0;
 	padding-left: 5px;
 	font-family: tahoma, sans-serif; font-weight: normal;
 	list-style-image: url('../img/i_folder_open.gif');
@@ -144,7 +142,7 @@ ul.folders li.open
 
 ul.docs
 	{
-	margin-top: 0em; margin-left: 1em;
+	margin-top: 0; margin-left: 1em;
 	padding-left: 10px;
 	font-family: tahoma, sans-serif; font-size: 0.85em; font-weight: normal;
 	list-style-image: url('../img/i_doc.gif');
@@ -193,11 +191,11 @@ ul.docs
 .columns .main-tip
 	{ float: left; }
 
-.columns .left { width: 25%; //margin-right: -100%; }
-.columns .main { width: 75%; //margin-left: 25%; //display: inline;}
+.columns .left { width: 25%; margin-right: -100%; }
+.columns .main { width: 75%; margin-left: 25%; display: inline;}
 
-.columns .main-content { width: 66%; //margin-right: -100%; }
-.columns .main-tip { width: 33%; //margin-left: 66%; //display: inline; }
+.columns .main-content { width: 66%; margin-right: -100%; }
+.columns .main-tip { width: 33%; margin-left: 66%; display: inline; }
 
 .main-tip-padding
 	{ padding-left: 25px; }
@@ -243,28 +241,28 @@ ul.docs
 .btn-exit
 	{
 	width: 75px; height: 20px;
-	border: 0px solid #000; border-top: 1px solid #fff; border-bottom: 1px solid #000;
+	border: 0 solid #000; border-top: 1px solid #fff; border-bottom: 1px solid #000;
 	text-align: center; font-size: 0.7em; font-family: tahoma, sans-serif;
 	font-weight: normal; color: #000; background: url('../img/fon_btn_exit.gif') bottom left repeat-x;
 	}
 .btn-search
 	{
 	width: 75px; height: 20px;
-	border: 0px solid #000; border-top: 1px solid #fff; border-bottom: 1px solid #000;
+	border: 0 solid #000; border-top: 1px solid #fff; border-bottom: 1px solid #000;
 	text-align: center; font-size: 0.7em; font-family: tahoma, sans-serif;
 	font-weight: normal; color: #000; background: url('../img/fon_btn_search.gif') bottom left repeat-x;
 	}
 .btn-save
 	{
 	width: 75px; height: 20px;
-	border: 0px solid #000; border-top: 1px solid #fff; border-bottom: 1px solid #000;
+	border: 0 solid #000; border-top: 1px solid #fff; border-bottom: 1px solid #000;
 	text-align: center; font-size: 0.7em; font-family: tahoma, sans-serif;
 	font-weight: normal; color: #000; background: url('../img/fon_btn_save.gif') bottom left repeat-x;
 	}
 .btn-cancel
 	{
 	width: 75px; height: 20px;
-	border: 0px solid #000; border-top: 1px solid #fff; border-bottom: 1px solid #000;
+	border: 0 solid #000; border-top: 1px solid #fff; border-bottom: 1px solid #000;
 	text-align: center; font-size: 0.7em; font-family: tahoma, sans-serif;
 	font-weight: normal; color: #000; background: url('../img/fon_btn_cancel.gif') bottom left repeat-x;
 	}
