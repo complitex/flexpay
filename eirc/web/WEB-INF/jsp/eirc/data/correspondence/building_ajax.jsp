@@ -1,5 +1,5 @@
+<%@page contentType="application/json;charset=UTF-8" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-
 
 {"results": [
 <s:iterator value="buildingsList">

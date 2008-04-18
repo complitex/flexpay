@@ -1,53 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
 	<bean id="spFileCreateAction" class="org.flexpay.eirc.actions.SpFileCreateAction"
 		  scope="prototype">
 		<property name="spFileService" ref="spFileService" />
 	</bean>
-	
+
 	<bean id="spFileListAction" class="org.flexpay.eirc.actions.SpFileListAction"
 		  scope="prototype">
 		<property name="spFileService" ref="spFileService" />
 	</bean>
-	
+
 	<bean id="spFileAction" class="org.flexpay.eirc.actions.SpFileAction"
 		  scope="prototype">
 		<property name="spFileService" ref="spFileService" />
 		<property name="spRegistryService" ref="spRegistryService" />
-		<property name="spRegistryRecordService" ref="spRegistryRecordService" />  
+		<property name="spRegistryRecordService" ref="spRegistryRecordService" />
 		<property name="spRegistryTypeService" ref="spRegistryTypeService" />
 	</bean>
-	
-	<bean id="correspondenceExternalAction" class="org.flexpay.eirc.actions.CorrespondenceExternalAction"
+
+	<bean id="correspondenceExternalAction"
+		  class="org.flexpay.eirc.actions.CorrespondenceExternalAction"
 		  scope="prototype">
+		<property name="parentService" ref="townService" />
 	</bean>
-	
+
 	<bean id="streetAjaxAction" class="org.flexpay.eirc.actions.StreetAjaxAction"
 		  scope="prototype">
-		  <property name="streetService" ref="streetService" />
+		<property name="streetService" ref="streetService" />
 	</bean>
-	
+
 	<bean id="buildingAjaxAction" class="org.flexpay.eirc.actions.BuildingAjaxAction"
 		  scope="prototype">
-		  <property name="buildingService" ref="buildingService" />
+		<property name="buildingService" ref="buildingService" />
 	</bean>
-	
-	
+
+
 	<bean id="generateTicketsAction" class="org.flexpay.eirc.actions.GenerateTicketAction"
 		  scope="prototype">
-		  <property name="serviceOrganisationService" ref="serviceOrganisationService" />
-		  <property name="tickerService" ref="ticketService" />
+		<property name="serviceOrganisationService" ref="serviceOrganisationService" />
+		<property name="tickerService" ref="ticketService" />
 	</bean>
-	
+
 	<bean id="printTicketsAction" class="org.flexpay.eirc.actions.PrintTicketAction"
 		  scope="prototype">
-		  <property name="serviceOrganisationService" ref="serviceOrganisationService" />
-		  <property name="tickerService" ref="ticketService" />
+		<property name="serviceOrganisationService" ref="serviceOrganisationService" />
+		<property name="tickerService" ref="ticketService" />
 	</bean>
-	
-	
+
+	<bean id="listRegistriesAction"
+		  class="org.flexpay.eirc.actions.registry.ListRegistriesAction">
+		<property name="registryService" ref="spRegistryService" />
+		<property name="organisationService" ref="organisationService" />
+		<property name="registryTypeService" ref="spRegistryTypeService" />
+	</bean>
 
 </beans>

@@ -2,6 +2,8 @@ package org.flexpay.eirc.persistence;
 
 import org.flexpay.ab.persistence.District;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 public class Organisation extends DomainObjectWithStatus {
 
@@ -69,5 +71,15 @@ public class Organisation extends DomainObjectWithStatus {
 
 	public void setUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
+	}
+
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("id", getId())
+				.append("KPP", kpp)
+				.append("INN", individualTaxNumber)
+				.append("name", name)
+				.append("description", description)
+				.toString();
 	}
 }

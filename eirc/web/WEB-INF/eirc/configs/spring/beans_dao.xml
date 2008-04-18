@@ -16,6 +16,11 @@
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
+	<bean id="spRegistryDaoExt" class="org.flexpay.eirc.dao.imp.SpRegistryDaoExtImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+
+
 	<bean id="spFileDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.SpFileDao" />

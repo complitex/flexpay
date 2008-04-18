@@ -4,57 +4,63 @@
 
 <tiles-definitions>
 
-  <!-- Import -->
-  <definition name="eirc.import" extends="ab.layout.standart">
-        <put-attribute name="title" value="eirc.menu2.import" />
+	<!-- Import -->
+	<definition name="eirc.import" extends="ab.layout.standart">
+		<put-attribute name="title" value="eirc.menu2.import" />
 		<put-attribute name="menu1" value="/WEB-INF/jsp/eirc/menu/menu1.jsp" />
 		<put-attribute name="menu2" value="/WEB-INF/jsp/eirc/menu/menu2.jsp" />
 		<put-attribute name="menu34" value="/WEB-INF/jsp/eirc/menu/menu34_import.jsp" />
-  </definition>
-  
-  <definition name="eirc.import.file.upload.form" extends="eirc.import">
-  		<put-attribute name="title" value="eirc.menu34.files.upload" />
+	</definition>
+
+	<definition name="eirc.import.file.upload.form" extends="eirc.import">
+		<put-attribute name="title" value="eirc.menu34.files.upload" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/import/upload_file.jsp" />
-  </definition>
-  
-  <definition name="eirc.import.file.list" extends="eirc.import">
-  		<put-attribute name="title" value="eirc.menu34.sp_file_list" />
+	</definition>
+
+	<definition name="eirc.import.file.list" extends="eirc.import">
+		<put-attribute name="title" value="eirc.menu34.sp_file_list" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/import/sp_file_list.jsp" />
-  </definition>
-  
-  <!-- Data -->
-  <definition name="eirc.data" extends="eirc.import">
-  		<put-attribute name="title" value="eirc.menu2.data" />
-  		<put-attribute name="menu34" value="/WEB-INF/jsp/eirc/menu/menu34_data.jsp" />
-  </definition>
-  
-  <definition name="eirc.data.correspondence" extends="eirc.data">
-  		<put-attribute name="title" value="eirc.menu34_data.correspondence" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correspondence.jsp" />
-  </definition>
-  
-  <!-- Processing -->
-  <definition name="eirc.processing" extends="eirc.import">
-  		<put-attribute name="title" value="eirc.menu2.processing" />
-  		<put-attribute name="menu34" value="/WEB-INF/jsp/eirc/menu/menu34_processing.jsp" />
-  </definition>
-  
-  <definition name="eirc.processing.generate_tickets" extends="eirc.processing">
-  		<put-attribute name="title" value="eirc.menu34.processing.generate_tickets" />
-  		<put-attribute name="body" value="/WEB-INF/jsp/eirc/processing/generate_tickets.jsp" />
-  </definition>
-    
-  
-  <!-- Tickets -->
-  <definition name="eirc.tickets" extends="eirc.import">
-  		<put-attribute name="title" value="eirc.menu2.tickets" />
-  		<put-attribute name="menu34" value="/WEB-INF/jsp/eirc/menu/menu34_tickets.jsp" />
-  </definition>
-  
-  <definition name="eirc.tickets.print_tickets" extends="eirc.tickets">
-  		<put-attribute name="title" value="eirc.menu34.tickets.print_tickets" />
-  		<put-attribute name="body" value="/WEB-INF/jsp/eirc/tickets/print_tickets.jsp" />
-  </definition>
-  
+	</definition>
+
+	<!-- Data -->
+	<definition name="eirc.data" extends="eirc.import">
+		<put-attribute name="title" value="eirc.menu2.data" />
+		<put-attribute name="menu34" value="/WEB-INF/jsp/eirc/menu/menu34_data.jsp" />
+	</definition>
+
+	<definition name="eirc.data.correspondence" extends="eirc.data">
+		<put-attribute name="title" value="eirc.menu34_data.correspondence" />
+		<put-attribute name="body"
+					   value="/WEB-INF/jsp/eirc/data/correspondence/correspondence.jsp" />
+	</definition>
+
+	<!-- Processing -->
+	<definition name="eirc.processing" extends="eirc.import">
+		<put-attribute name="title" value="eirc.menu2.processing" />
+		<put-attribute name="menu34"
+					   value="/WEB-INF/jsp/eirc/menu/menu34_processing.jsp" />
+	</definition>
+
+	<definition name="eirc.processing.generate_tickets" extends="eirc.processing">
+		<put-attribute name="title" value="eirc.menu34.processing.generate_tickets" />
+		<put-attribute name="body"
+					   value="/WEB-INF/jsp/eirc/processing/generate_tickets.jsp" />
+	</definition>
+
+
+	<!-- Tickets -->
+	<definition name="eirc.tickets" extends="eirc.import">
+		<put-attribute name="title" value="eirc.menu2.tickets" />
+		<put-attribute name="menu34" value="/WEB-INF/jsp/eirc/menu/menu34_tickets.jsp" />
+	</definition>
+
+	<definition name="eirc.tickets.print_tickets" extends="eirc.tickets">
+		<put-attribute name="title" value="eirc.menu34.tickets.print_tickets" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/tickets/print_tickets.jsp" />
+	</definition>
+
+	<definition name="eirc.registry.list" extends="eirc.import">
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
+	</definition>
 
 </tiles-definitions>

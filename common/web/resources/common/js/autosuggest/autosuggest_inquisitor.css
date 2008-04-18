@@ -134,8 +134,8 @@ div.autosuggest ul li.as_highlight a span
 div.autosuggest ul li a .tl,
 div.autosuggest ul li a .tr
 {
-	background-image: transparent;
-	background-repeat: no-repeat;
+	background: transparent no-repeat;
+
 	width: 6px;
 	height: 6px;
 	position: absolute;

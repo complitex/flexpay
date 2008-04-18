@@ -1,11 +1,14 @@
 package org.flexpay.common.persistence.filter;
 
 import org.flexpay.common.persistence.Translation;
+import org.apache.log4j.Logger;
 
 import java.util.Collection;
 import java.util.Collections;
 
 public class NameFilter<T extends Translation> extends PrimaryKeyFilter {
+
+	private static Logger log = Logger.getLogger(NameFilter.class);
 
 	private Collection<T> translations = Collections.emptyList();
 
@@ -32,5 +35,9 @@ public class NameFilter<T extends Translation> extends PrimaryKeyFilter {
 	 */
 	public void setNames(Collection<T> names) {
 		this.translations = names;
+
+		if (log.isDebugEnabled()) {
+			log.debug("Filter names: " + translations);
+		}
 	}
 }

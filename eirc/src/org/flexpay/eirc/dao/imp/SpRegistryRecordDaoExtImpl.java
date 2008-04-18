@@ -4,7 +4,6 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.dao.SpRegistryRecordDaoExt;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.hibernate.HibernateException;
-import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -30,7 +29,6 @@ public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements S
 				pager.setTotalElements(count.intValue());
 
 				return session.getNamedQuery("SpRegistryRecord.listRecords")
-//						.setLockMode("r", LockMode.UPGRADE)
 						.setFirstResult(pager.getThisPageFirstElementNumber())
 						.setMaxResults(pager.getPageSize())
 						.setLong(0, id)

@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<link rel="stylesheet" type="text/css" href="<c:url value="/style/fp.css"/>"/>
+<link rel="stylesheet" type="text/css" href="<s:url value="/resources/common/style/fp.css"/>"/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
   <tr>

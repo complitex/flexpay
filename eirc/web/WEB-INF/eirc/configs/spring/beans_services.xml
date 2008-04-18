@@ -12,6 +12,7 @@
 	<bean id="spRegistryService"
 		  class="org.flexpay.eirc.service.imp.SpRegistryServiceImpl">
 		<property name="spRegistryDao" ref="spRegistryDao" />
+		<property name="spRegistryDaoExt" ref="spRegistryDaoExt" />
 	</bean>
 	
 	<bean id="spRegistryRecordService"

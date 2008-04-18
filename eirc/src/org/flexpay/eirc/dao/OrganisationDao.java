@@ -14,5 +14,11 @@ public interface OrganisationDao extends GenericDao<Organisation, Long> {
 	 * @return List if organisations
 	 */
 	List<Organisation> findOrganisationsById(String id);
-	
+
+	/**
+	 * get all organisations
+	 *
+	 * @return List of organisations
+	 */
+	List<Organisation> findAllOrganisations();
 }

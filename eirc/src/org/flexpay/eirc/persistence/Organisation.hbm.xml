@@ -35,7 +35,10 @@
 		from Organisation where uniqueId=?
 	</query>
 	
-	
+	<query name="Organisation.findAllOrganisations">
+		from Organisation where status=0 order by name
+	</query>
+
 	
 	<query name="ServiceOrganisation.findServedBuildings">
 		from ServedBuilding where service_organisation_id=?
