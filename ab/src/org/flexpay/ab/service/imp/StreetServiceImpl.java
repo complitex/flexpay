@@ -1,11 +1,13 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
+import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.StreetService;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.exception.FlexPayException;
@@ -13,23 +15,24 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
+import org.flexpay.common.util.DateIntervalUtil;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		StreetNameTranslation, StreetName, StreetNameTemporal, Street, Town>
 		implements StreetService {
 
+	private final Logger log = Logger.getLogger(getClass());
+
 	private StreetDao streetDao;
+	private StreetDaoExt streetDaoExt;
 	private StreetNameDao streetNameDao;
 	private StreetNameTemporalDao streetNameTemporalDao;
 	private StreetNameTranslationDao streetNameTranslationDao;
+	private StreetTypeTemporalDao streetTypeTemporalDao;
 	private TownDao townDao;
 
 	private ParentService<TownFilter> parentService;
@@ -42,6 +45,10 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	public void setStreetDao(StreetDao streetDao) {
 		this.streetDao = streetDao;
+	}
+
+	public void setStreetDaoExt(StreetDaoExt streetDaoExt) {
+		this.streetDaoExt = streetDaoExt;
 	}
 
 	/**
@@ -87,6 +94,10 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	public void setParentService(ParentService<TownFilter> parentService) {
 		this.parentService = parentService;
+	}
+
+	public void setStreetTypeTemporalDao(StreetTypeTemporalDao streetTypeTemporalDao) {
+		this.streetTypeTemporalDao = streetTypeTemporalDao;
 	}
 
 	/**
@@ -264,9 +275,32 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 
 		return filters;
 	}
-	
+
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public List<Street> findByTownAndName(Long townId, String name) {
 		return streetDao.findByTownAndName(townId, name);
+	}
+
+	/**
+	 * Save Street types timeline
+	 *
+	 * @param object Street to update
+	 */
+	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	public void saveTypes(Street object) {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Types to save: " + object.getTypeTemporals());
+		}
+
+		streetDaoExt.invalidateTypeTemporals(object.getId(), ApplicationConfig.getInstance().getFutureInfinite(), DateIntervalUtil.now());
+
+		for (StreetTypeTemporal temporal : object.getTypeTemporals()) {
+			if (temporal.getId() != null) {
+				streetTypeTemporalDao.update(temporal);
+			} else {
+				streetTypeTemporalDao.create(temporal);
+			}
+		}
 	}
 }

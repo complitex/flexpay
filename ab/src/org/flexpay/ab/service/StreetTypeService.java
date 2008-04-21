@@ -2,7 +2,10 @@ package org.flexpay.ab.service;
 
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
+import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.common.exception.FlexPayException;
+
+import java.util.Locale;
 
 public interface StreetTypeService extends
 		MultilangEntityService<StreetType, StreetTypeTranslation> {
@@ -15,4 +18,13 @@ public interface StreetTypeService extends
 	 * @throws FlexPayException if failure occurs
 	 */
 	StreetType findTypeByName(String typeName) throws FlexPayException;
+
+	/**
+	 * Initialize street type filter
+	 *
+	 * @param streetTypeFilter Filter to init
+	 * @param locale Locale to get filter translations in
+	 * @throws FlexPayException if failure occurs
+	 */
+	void initFilter(StreetTypeFilter streetTypeFilter, Locale locale) throws FlexPayException;
 }

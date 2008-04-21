@@ -6,6 +6,7 @@ import org.flexpay.ab.dao.StreetTypeDao;
 import org.flexpay.ab.dao.StreetTypeTranslationDao;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
+import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
@@ -220,6 +221,19 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 
 		return null;
 
+	}
+
+	/**
+	 * Initialize street type filter
+	 *
+	 * @param streetTypeFilter Filter to init
+	 * @param locale Locale to get filter translations in
+	 * @throws FlexPayException if failure occurs
+	 */
+	public void initFilter(StreetTypeFilter streetTypeFilter, Locale locale)
+		throws FlexPayException {
+		List<StreetTypeTranslation> translations = getTranslations(locale);
+		streetTypeFilter.setNames(translations);
 	}
 
 	/**

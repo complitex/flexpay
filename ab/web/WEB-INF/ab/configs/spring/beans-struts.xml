@@ -120,6 +120,12 @@
 		<property name="nameTimeDependentService" ref="streetService" />
 	</bean>
 
+	<bean id="editStreetTypeAction" class="org.flexpay.ab.actions.street.StreetEditTypeAction"
+		  scope="prototype">
+		<property name="streetService" ref="streetService" />
+		<property name="streetTypeService" ref="streetTypeService" />
+	</bean>
+
 	<bean id="editStreetDistricts"
 		  class="org.flexpay.ab.actions.street.EditStreetDistricts" scope="prototype">
 		<property name="districtService" ref="districtService" />

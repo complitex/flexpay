@@ -192,6 +192,16 @@
 		</property>
 	</bean>
 
+	<bean id="streetTypeTemporalDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.ab.dao.StreetTypeTemporalDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.StreetTypeTemporal" />
+			</bean>
+		</property>
+	</bean>
+
 	<!-- Town type DAO objects -->
 	<bean id="townTypeDAO" parent="abstractDao">
 		<property name="proxyInterfaces"
@@ -304,6 +314,10 @@
 
 	<bean id="apartmentDaoExt" class="org.flexpay.ab.dao.imp.ApartmentDaoExtImpl">
 		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="streetDaoExt" class="org.flexpay.ab.dao.imp.StreetDaoExtImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
 	<bean id="personDaoExt" class="org.flexpay.ab.dao.imp.PersonDaoExtImpl">
