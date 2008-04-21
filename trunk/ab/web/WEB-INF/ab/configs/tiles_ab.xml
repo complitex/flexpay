@@ -110,6 +110,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_edit.jsp" />
 	</definition>
 
+	<definition name="ab.street.edit.type" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.street.edit.type.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_edit_type.jsp" />
+	</definition>
+
 	<definition name="ab.street.edit.districts" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.street.edit.districts.title" />
 		<put-attribute name="body"

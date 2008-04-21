@@ -194,6 +194,15 @@
 			<result type="tiles" name="input">ab.street.edit</result>
 		</action>
 
+		<action name="edit_street_type" class="editStreetTypeAction">
+			<result type="redirect-action">
+				<param name="actionName">view_street</param>
+				<param name="parse">true</param>
+				<param name="object.id">${object.id}</param>
+			</result>
+			<result type="tiles" name="input">ab.street.edit.type</result>
+		</action>
+
 		<action name="delete_streets" class="deleteStreetsAction">
 			<result type="redirect">list_streets.action</result>
 		</action>

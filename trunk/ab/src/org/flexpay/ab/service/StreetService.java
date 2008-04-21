@@ -26,4 +26,11 @@ public interface StreetService extends NameTimeDependentService<
 	
 	
 	List<Street> findByTownAndName(Long townId, String name);
+
+	/**
+	 * Save Street types timeline
+	 *
+	 * @param object Street to update
+	 */
+	void saveTypes(Street object);
 }
