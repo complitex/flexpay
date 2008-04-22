@@ -2,6 +2,7 @@ package org.flexpay.common.util;
 
 import org.flexpay.common.util.config.ApplicationConfig;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -37,7 +38,9 @@ public class DateUtil {
 		}
 	}
 	
-	
+	public static String format(Date date, String pattern) {
+		return new SimpleDateFormat(pattern).format(date);
+	}
 	
 	/**
 	 * Check if the date is valid for application
