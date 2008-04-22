@@ -24,5 +24,7 @@ public interface TicketService {
 			Date dateFrom, Date dateTill) throws FlexPayException;
 
 	TicketInfo getTicketInfo(Long ticketId) throws FlexPayException;
+	
+	public void payTicket(Long ticketId);
 
 }

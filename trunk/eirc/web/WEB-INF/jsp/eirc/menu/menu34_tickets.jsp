@@ -5,6 +5,9 @@
 		<ul class="docs">
 			<li><a href="<c:url value='/eirc/printTickets.action' />"><s:text name="eirc.menu34.tickets.print_tickets"/></a></li>
 		</ul>
+		<ul class="docs">
+			<li><a href="<c:url value='/eirc/ticketPayForm.action' />"><s:text name="eirc.menu34.tickets.pay_ticket"/></a></li>
+		</ul>
 	</li>
 	
 

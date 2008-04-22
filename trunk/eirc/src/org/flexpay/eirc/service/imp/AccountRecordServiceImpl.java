@@ -10,8 +10,8 @@ import org.flexpay.eirc.service.IllegalRecordsStateException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class AccountRecordServiceImpl implements AccountRecordService {
@@ -81,13 +81,15 @@ public class AccountRecordServiceImpl implements AccountRecordService {
 	}
 
 	/**
-	 * Find AccountRecord for Person
+	 * Calculate sum of AccountRecord.amount by Person, Apartment and with operationDate before date-parameter 
 	 *
 	 * @param personId Person key
-	 * @return List of AccountRecord sorted by ServiceType and operationDate
+	 * @param apartmentId Apartment key
+	 * @param date Date 
+	 * @return List of calculated sum
 	 */
-	public List<AccountRecord> findForTicket(Long personId, Long apartmentId) {
-		return accountRecordDao.findForTicket(personId, apartmentId);
+	public List<Object[]> findCalculateServiceAmount(Long personId, Long apartmentId, Date date) {
+		return accountRecordDao.findCalculateServiceAmount(personId, apartmentId, date);
 	}
 
 	public void setAccountRecordDao(AccountRecordDao accountRecordDao) {

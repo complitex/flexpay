@@ -30,6 +30,8 @@ import org.flexpay.eirc.dao.TicketDao;
 import org.flexpay.eirc.pdf.PdfTicketWriter.ServiceAmountInfo;
 import org.flexpay.eirc.pdf.PdfTicketWriter.TicketInfo;
 import org.flexpay.eirc.persistence.AccountRecord;
+import org.flexpay.eirc.persistence.AccountRecordType;
+import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
 import org.flexpay.eirc.persistence.ServiceType;
@@ -106,29 +108,36 @@ public class TicketServiceImpl implements TicketService {
 		ticket.setApartment(apartment);
 		create(ticket);
 
-		List<AccountRecord> accountRecordList = accountRecordService
-				.findForTicket(person.getId(), apartment.getId());
-		List<AccountRecord> tempList = null;
-		ServiceType currentServiceType = null;
-		for (AccountRecord accountRecord : accountRecordList) {
-			if (currentServiceType == null
-					|| currentServiceType.getId() != accountRecord
-							.getConsumer().getService().getServiceType()
-							.getId()) {
-				if (tempList != null && !tempList.isEmpty()) {
-					ticketServiceAmountService.create(getTicketServiceAmount(
-							ticket, currentServiceType, tempList, dateFrom,
-							dateTill));
-				}
-				currentServiceType = accountRecord.getConsumer().getService()
-						.getServiceType();
-				tempList = new ArrayList<AccountRecord>();
-			}
-			tempList.add(accountRecord);
+		List<Object[]> serviceAmountDateFromList = accountRecordService
+				.findCalculateServiceAmount(person.getId(), apartment.getId(),
+						dateFrom);
+		List<Object[]> serviceAmountDateTillList = accountRecordService
+				.findCalculateServiceAmount(person.getId(), apartment.getId(),
+						dateTill);
+		Map<Long, TicketServiceAmount> map = new HashMap<Long, TicketServiceAmount>(
+				serviceAmountDateTillList.size());
+		for (Object[] element : serviceAmountDateFromList) {
+			TicketServiceAmount amount = new TicketServiceAmount();
+			amount.setTicket(ticket);
+			amount.setConsumer(new Consumer((Long) element[0]));
+			amount.setDateFromAmount((BigDecimal) element[1]);
+			map.put(amount.getConsumer().getId(), amount);
 		}
-		if (tempList != null && !tempList.isEmpty()) {
-			ticketServiceAmountService.create(getTicketServiceAmount(ticket,
-					currentServiceType, tempList, dateFrom, dateTill));
+		for (Object[] element : serviceAmountDateTillList) {
+			TicketServiceAmount amount = map.get(element[0]);
+			if (amount != null) {
+				amount.setDateTillAmount((BigDecimal) element[1]);
+			} else {
+				amount = new TicketServiceAmount();
+				amount.setTicket(ticket);
+				amount.setConsumer(new Consumer((Long) element[0]));
+				amount.setDateTillAmount((BigDecimal) element[1]);
+				map.put(amount.getConsumer().getId(), amount);
+			}
+		}
+		for (Iterator<TicketServiceAmount> it = map.values().iterator(); it
+				.hasNext();) {
+			ticketServiceAmountService.create(it.next());
 		}
 	}
 
@@ -138,32 +147,6 @@ public class TicketServiceImpl implements TicketService {
 		ticketDao.findObjectsByPersonAndTillDate(pager, person.getId(),
 				dateTill);
 		return pager.getTotalNumberOfElements();
-	}
-
-	private TicketServiceAmount getTicketServiceAmount(Ticket ticket,
-			ServiceType serviceType, List<AccountRecord> accountRecordList,
-			Date dateFrom, Date dateTill) {
-		TicketServiceAmount ticketServiceAmount = new TicketServiceAmount();
-		ticketServiceAmount.setTicket(ticket);
-		ticketServiceAmount.setServiceType(serviceType);
-
-		BigDecimal dateFromAmount = BigDecimal.ZERO;
-		BigDecimal dateTillAmount = BigDecimal.ZERO;
-		for (AccountRecord accountRecord : accountRecordList) {
-			if (accountRecord.getOperationDate().before(dateFrom)) {
-				dateFromAmount = dateFromAmount.add(accountRecord.getAmount());
-			} else if (accountRecord.getOperationDate().before(dateTill)) {
-				dateTillAmount = dateTillAmount.add(accountRecord.getAmount());
-			} else {
-				break;
-			}
-		}
-		dateTillAmount = dateTillAmount.add(dateFromAmount);
-
-		ticketServiceAmount.setDateFromAmount(dateFromAmount);
-		ticketServiceAmount.setDateTillAmount(dateTillAmount);
-
-		return ticketServiceAmount;
 	}
 
 	private Object[] getTargetBuildingNumberAndStreet(Building building) {
@@ -197,21 +180,49 @@ public class TicketServiceImpl implements TicketService {
 		if (addressStr != null) {
 			ticketInfo.address = getAddressStr(ticket, true);
 		}
-		Set<TicketServiceAmount> ticketSetviceAmountSet = ticket.getTicketServiceAmounts();
+		Set<TicketServiceAmount> ticketSetviceAmountSet = ticket
+				.getTicketServiceAmounts();
 		Map<Integer, ServiceAmountInfo> serviceAmountInfoMap = new HashMap<Integer, ServiceAmountInfo>();
 		ticketInfo.serviceAmountInfoMap = serviceAmountInfoMap;
-		for(TicketServiceAmount ticketServiceAmount : ticketSetviceAmountSet) {
-			ServiceAmountInfo serviceAmountInfo = new ServiceAmountInfo();
-			ServiceType serviceType = ticketServiceAmount.getServiceType();
-			Translation translation = TranslationUtil.getTranslation(serviceType.getTypeNames());
-			serviceAmountInfo.name = translation.getName();
-			serviceAmountInfo.dateFromAmount = ticketServiceAmount.getDateFromAmount();
-			serviceAmountInfo.dateTillAmount = ticketServiceAmount.getDateTillAmount();
-			serviceAmountInfo.code = serviceType.getCode();
-			serviceAmountInfoMap.put(serviceAmountInfo.code, serviceAmountInfo);
+		for (TicketServiceAmount ticketServiceAmount : ticketSetviceAmountSet) {
+			ServiceType serviceType = ticketServiceAmount.getConsumer()
+					.getService().getServiceType();
+			Translation translation = TranslationUtil
+					.getTranslation(serviceType.getTypeNames());
+
+			ServiceAmountInfo serviceAmountInfo = serviceAmountInfoMap
+					.get(serviceType.getCode());
+			if (serviceAmountInfo == null) {
+				serviceAmountInfo = new ServiceAmountInfo();
+				if (translation != null) {
+					serviceAmountInfo.name = translation.getName();
+				}
+				serviceAmountInfo.dateFromAmount = getAbsAmount(ticketServiceAmount
+						.getDateFromAmount());
+				serviceAmountInfo.dateTillAmount = getAbsAmount(ticketServiceAmount
+						.getDateTillAmount());
+				serviceAmountInfo.code = serviceType.getCode();
+				serviceAmountInfoMap.put(serviceAmountInfo.code,
+						serviceAmountInfo);
+			} else {
+				serviceAmountInfo.dateFromAmount = serviceAmountInfo.dateFromAmount
+						.add(getAbsAmount(ticketServiceAmount
+								.getDateFromAmount()));
+				serviceAmountInfo.dateTillAmount = serviceAmountInfo.dateTillAmount
+						.add(getAbsAmount(ticketServiceAmount
+								.getDateTillAmount()));
+			}
 		}
-		
+
 		return ticketInfo;
+	}
+
+	private BigDecimal getAbsAmount(BigDecimal amount) {
+		if (amount == null || amount.compareTo(BigDecimal.ZERO) >= 0) {
+			return BigDecimal.ZERO;
+		} else {
+			return amount.abs();
+		}
 	}
 
 	private PersonIdentity getTargetPersonIdentity(Person person) {
@@ -288,6 +299,26 @@ public class TicketServiceImpl implements TicketService {
 				+ buildings.getNumber()
 				+ (withApartmentNumber ? ", кв."
 						+ ticket.getApartment().getNumber() : "");
+	}
+
+	@Transactional(readOnly = false)
+	public void payTicket(Long ticketId) {
+		Ticket ticket = ticketDao.read(ticketId);
+		Set<TicketServiceAmount> ticketServiceAmountSet = ticket
+				.getTicketServiceAmounts();
+		Date operationDate = new Date();
+		for (TicketServiceAmount ticketServiceAmount : ticketServiceAmountSet) {
+			BigDecimal amount = ticketServiceAmount.getDateTillAmount();
+			if (amount == null || amount.compareTo(BigDecimal.ZERO) >= 0) {
+				continue;
+			}
+			AccountRecord record = new AccountRecord();
+			record.setAmount(amount.abs());
+			record.setConsumer(ticketServiceAmount.getConsumer());
+			record.setOperationDate(operationDate);
+			record.setRecordType(new AccountRecordType(Long.valueOf(AccountRecordType.TYPE_PAYMENT)));
+			accountRecordService.create(record);
+		}
 	}
 
 	/**
