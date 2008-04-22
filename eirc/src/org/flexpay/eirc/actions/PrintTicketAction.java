@@ -27,7 +27,7 @@ import com.lowagie.text.DocumentException;
 
 public class PrintTicketAction extends CommonAction {
 
-	private TicketService tickerService;
+	private TicketService ticketService;
 	private ServiceOrganisationService serviceOrganisationService;
 
 	private Integer year;
@@ -71,7 +71,7 @@ public class PrintTicketAction extends CommonAction {
 	private String print(Long serviceOrganisationId, Date dateFrom,
 			Date dateTill) throws IOException, DocumentException,
 			FlexPayException {
-		List<Object> ticketsWithDelimiters = tickerService
+		List<Object> ticketsWithDelimiters = ticketService
 				.getTicketsWithDelimiters(serviceOrganisationId, dateFrom,
 						dateTill);
 		if (ticketsWithDelimiters.isEmpty()) {
@@ -112,7 +112,7 @@ public class PrintTicketAction extends CommonAction {
 						.writeTitleGetByteArray((String) element);
 			} else {
 				Ticket ticket = (Ticket) element;
-				TicketInfo ticketInfo = tickerService.getTicketInfo(ticket
+				TicketInfo ticketInfo = ticketService.getTicketInfo(ticket
 						.getId());
 				byteArray = ticketWriter.writeGetByteArray(ticketInfo);
 			}
@@ -128,8 +128,8 @@ public class PrintTicketAction extends CommonAction {
 	 * @param tickerService
 	 *            the tickerService to set
 	 */
-	public void setTickerService(TicketService tickerService) {
-		this.tickerService = tickerService;
+	public void setTicketService(TicketService ticketService) {
+		this.ticketService = ticketService;
 	}
 
 	/**

@@ -34,11 +34,12 @@ public interface AccountRecordDao extends GenericDao<AccountRecord, Long> {
 	List<BigDecimal> findBalanceForDate(Long consumerId, Date date);
 
 	/**
-	 * Find AccountRecord for Person
+	 * Calculate sum of AccountRecord.amount by Person, Apartment and with operationDate before date-parameter 
 	 *
 	 * @param personId Person key
 	 * @param apartmentId Apartment key
-	 * @return List of AccountRecord sorted by ServiceType and operationDate
+	 * @param date Date 
+	 * @return List of Object[]. First array element of type Long and contain service_id
 	 */
-	List<AccountRecord> findForTicket(Long personId, Long apartmentId);
+	List<Object[]> findCalculateServiceAmount(Long personId, Long apartmentId, Date date);
 }

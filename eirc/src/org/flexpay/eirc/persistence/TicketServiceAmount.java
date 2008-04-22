@@ -6,7 +6,7 @@ import org.flexpay.common.persistence.DomainObject;
 
 public class TicketServiceAmount extends DomainObject {
 	private Ticket ticket;
-	private ServiceType serviceType;
+	private Consumer consumer;
 	private BigDecimal dateFromAmount;
 	private BigDecimal dateTillAmount;
 
@@ -32,17 +32,17 @@ public class TicketServiceAmount extends DomainObject {
 	}
 
 	/**
-	 * @return the serviceType
+	 * @return the consumer
 	 */
-	public ServiceType getServiceType() {
-		return serviceType;
+	public Consumer getConsumer() {
+		return consumer;
 	}
 
 	/**
-	 * @param serviceType the serviceType to set
+	 * @param consumer the consumer to set
 	 */
-	public void setServiceType(ServiceType serviceType) {
-		this.serviceType = serviceType;
+	public void setConsumer(Consumer consumer) {
+		this.consumer = consumer;
 	}
 
 	/**

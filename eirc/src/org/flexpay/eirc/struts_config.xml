@@ -66,6 +66,16 @@
 		<action name="printTickets" class="printTicketsAction">
 			<result type="tiles">eirc.tickets.print_tickets</result>
 		</action>
+		
+		<action name="ticketPayForm" class="ticketPayFormAction">
+			<result name="form" type="tiles">eirc.tickets.ticket_find</result>
+			<result name="pay" type="tiles">eirc.tickets.ticket_pay_form</result>
+		</action>
+		
+		<action name="ticketPay" class="ticketPayAction">
+			<result name="success" type="tiles">eirc.tickets.ticket_pay_form</result>
+		</action>
+		
 
 		<action name="registries_list" class="listRegistriesAction">
 			<result type="tiles">eirc.registry.list</result>

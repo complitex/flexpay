@@ -36,7 +36,7 @@
 		<many-to-one name="consumer" column="consumer_id" class="Consumer"
 					 not-null="true" />
 		<many-to-one name="organisation" column="organisation_id"
-					 class="Organisation" not-null="true" />
+					 class="Organisation" not-null="false" />
 		<property name="operationDate" column="operation_date" not-null="true"
 				  type="timestamp" />
 		<property name="amount" type="big_decimal" not-null="true" />
@@ -63,13 +63,14 @@
 		WHERE record.consumer.id=? AND record.operationDate<=?
 	]]>
 	</query>
-
-	<query name="AccountRecord.findForTicket">
-		SELECT DISTINCT record
+	
+	<query name="AccountRecord.findCalculateServiceAmount">
+		SELECT record.consumer.id, sum(record.amount)
 		FROM AccountRecord record
 		WHERE record.consumer.responsiblePerson.id=? AND
-		      record.consumer.apartment.id=?
-		ORDER BY record.consumer.service.serviceType.id, record.operationDate
+		      record.consumer.apartment.id=? AND
+		      record.operationDate <![CDATA[<]]> ?
+		GROUP BY record.consumer.id      
 	</query>
 
 	<query name="Consumer.findConsumers.count">

@@ -96,127 +96,77 @@ public class PdfTicketWriter {
 		form.setField("address", ticketInfo.address);
 		form.setField("address_copy1", ticketInfo.address);
 
-		BigDecimal dateFromSum = new BigDecimal(0);
-		BigDecimal dateTillSum = new BigDecimal(0);
-
 		// Services 2-5
-		ServiceAmountInfo serviceAmountInfo = null;
-		for (int i = 2; i <= 5; i++) {
-			serviceAmountInfo = ticketInfo.serviceAmountInfoMap.get(i);
-			if (serviceAmountInfo != null) {
-				if (serviceAmountInfo.dateFromAmount.compareTo(BigDecimal.ZERO) == -1) {
-					dateFromSum = dateFromSum
-							.add(serviceAmountInfo.dateFromAmount);
+		if (ticketInfo.serviceAmountInfoMap != null) {
+			ServiceAmountInfo serviceAmountInfo = null;
+			for (int i = 2; i <= 5; i++) {
+				serviceAmountInfo = ticketInfo.serviceAmountInfoMap.get(i);
+				if (serviceAmountInfo != null) {
+					String[] amountDigitArray = getStringArray(serviceAmountInfo.dateTillAmount);
+					form.setField("service" + i + "_amount_digit0",
+							amountDigitArray[0]);
+					form.setField("service" + i + "_amount_digit1",
+							amountDigitArray[1]);
+					form.setField("service" + i + "_amount_digit2",
+							amountDigitArray[2]);
+					form.setField("service" + i + "_amount_digit3",
+							amountDigitArray[3]);
+					form.setField("service" + i + "_amount_digit4",
+							amountDigitArray[4]);
+					form.setField("service" + i + "_amount_digit5",
+							amountDigitArray[5]);
+					form.setField("service" + i + "_amount",
+							serviceAmountInfo.dateTillAmount.toString());
+					form.setField("service" + i + "_dateFrom_amount",
+							serviceAmountInfo.dateFromAmount.toString());
+					form.setField("service" + i + "_dateTill_amount",
+							serviceAmountInfo.dateTillAmount.toString());
 				}
-				if (serviceAmountInfo.dateTillAmount.compareTo(BigDecimal.ZERO) == -1) {
-					dateTillSum = dateTillSum
-							.add(serviceAmountInfo.dateTillAmount);
-				}
-				String[] amountDigitArray = getStringArray(serviceAmountInfo.dateTillAmount.abs());
-				form.setField("service" + i + "_amount_digit0",
-						amountDigitArray[0]);
-				form.setField("service" + i + "_amount_digit1",
-						amountDigitArray[1]);
-				form.setField("service" + i + "_amount_digit2",
-						amountDigitArray[2]);
-				form.setField("service" + i + "_amount_digit3",
-						amountDigitArray[3]);
-				form.setField("service" + i + "_amount_digit4",
-						amountDigitArray[4]);
-				form.setField("service" + i + "_amount_digit5",
-						amountDigitArray[5]);
-				form.setField("service" + i + "_amount",
-						serviceAmountInfo.dateTillAmount.abs().toString());
-				form.setField("service" + i + "_dateFrom_amount",
-						serviceAmountInfo.dateFromAmount.abs().toString());
-				form.setField("service" + i + "_dateTill_amount",
-						serviceAmountInfo.dateTillAmount.abs().toString());
 			}
 		}
 
-		// Services 8-15
-		BigDecimal dateFromAmount = new BigDecimal(0);
-		BigDecimal dateTillAmount = new BigDecimal(0);
-		for (int i = 8; i <= 15; i++) {
-			serviceAmountInfo = ticketInfo.serviceAmountInfoMap.get(i);
-			if (serviceAmountInfo != null) {
-				if (serviceAmountInfo.dateFromAmount.compareTo(BigDecimal.ZERO) == -1) {
-					dateFromAmount = dateFromAmount
-							.add(serviceAmountInfo.dateFromAmount);
-				}
-				if (serviceAmountInfo.dateTillAmount.compareTo(BigDecimal.ZERO) == -1) {
-					dateTillAmount = dateTillAmount
-							.add(serviceAmountInfo.dateTillAmount);
-				}
-			}
-		}
-		if (dateFromAmount.compareTo(BigDecimal.ZERO) == -1) {
-			dateFromSum = dateFromSum
-					.add(dateFromAmount);
-		}
-		if (dateTillAmount.compareTo(BigDecimal.ZERO) == -1) {
-			dateTillSum = dateTillSum
-					.add(dateTillAmount);
-		}
-		String[] amountDigitArray = getStringArray(dateTillAmount.abs());
+		// Kvartplata services
+		BigDecimal dateFromSum = ticketInfo.getKvartplataDateFromSum();
+		BigDecimal dateTillSum = ticketInfo.getKvartplataDateTillSum();
+		String[] amountDigitArray = getStringArray(dateTillSum);
 		form.setField("kvartpl_amount_digit0", amountDigitArray[0]);
 		form.setField("kvartpl_amount_digit1", amountDigitArray[1]);
 		form.setField("kvartpl_amount_digit2", amountDigitArray[2]);
 		form.setField("kvartpl_amount_digit3", amountDigitArray[3]);
 		form.setField("kvartpl_amount_digit4", amountDigitArray[4]);
 		form.setField("kvartpl_amount_digit5", amountDigitArray[5]);
-		form.setField("kvartpl_amount", dateTillAmount.abs().toString());
-		form.setField("kvartpl_dateFrom_amount", dateFromAmount.abs().toString());
-		form.setField("kvartpl_dateTill_amount", dateTillAmount.abs().toString());
+		form.setField("kvartpl_amount", dateTillSum.toString());
+		form.setField("kvartpl_dateFrom_amount", dateFromSum.toString());
+		form.setField("kvartpl_dateTill_amount", dateTillSum.toString());
 
-		//services 6-7
-		dateFromAmount = new BigDecimal(0);
-		dateTillAmount = new BigDecimal(0);
-		for (int i = 6; i <= 7; i++) {
-			serviceAmountInfo = ticketInfo.serviceAmountInfoMap.get(i);
-			if (serviceAmountInfo != null) {
-				if (serviceAmountInfo.dateFromAmount.compareTo(BigDecimal.ZERO) == -1) {
-					dateFromAmount = dateFromAmount
-							.add(serviceAmountInfo.dateFromAmount);
-				}
-				if (serviceAmountInfo.dateTillAmount.compareTo(BigDecimal.ZERO) == -1) {
-					dateTillAmount = dateTillAmount
-							.add(serviceAmountInfo.dateTillAmount);
-				}
-			}
-		}
-		if (dateFromAmount.compareTo(BigDecimal.ZERO) == -1) {
-			dateFromSum = dateFromSum
-					.add(dateFromAmount);
-		}
-		if (dateTillAmount.compareTo(BigDecimal.ZERO) == -1) {
-			dateTillSum = dateTillSum
-					.add(dateTillAmount);
-		}
-		amountDigitArray = getStringArray(dateTillAmount.abs());
+		// Waterin services
+		dateFromSum = ticketInfo.getWaterinDateFromSum();
+		dateTillSum = ticketInfo.getWaterinDateTillSum();
+		amountDigitArray = getStringArray(dateTillSum);
 		form.setField("waterin_amount_digit0", amountDigitArray[0]);
 		form.setField("waterin_amount_digit1", amountDigitArray[1]);
 		form.setField("waterin_amount_digit2", amountDigitArray[2]);
 		form.setField("waterin_amount_digit3", amountDigitArray[3]);
 		form.setField("waterin_amount_digit4", amountDigitArray[4]);
 		form.setField("waterin_amount_digit5", amountDigitArray[5]);
-		form.setField("waterin_amount", dateTillAmount.abs().toString());
-		form.setField("waterin_dateFrom_amount", dateFromAmount.abs().toString());
-		form.setField("waterin_dateTill_amount", dateTillAmount.abs().toString());
-		
-		//Services sum
-		amountDigitArray = getStringArray(dateTillSum.abs());
+		form.setField("waterin_amount", dateTillSum.toString());
+		form.setField("waterin_dateFrom_amount", dateFromSum.toString());
+		form.setField("waterin_dateTill_amount", dateTillSum.toString());
+
+		// Services sum
+		dateFromSum = ticketInfo.getDateFromSum();
+		dateTillSum = ticketInfo.getDateTillSum();
+		amountDigitArray = getStringArray(dateTillSum);
 		form.setField("sum_amount_digit0", amountDigitArray[0]);
 		form.setField("sum_amount_digit1", amountDigitArray[1]);
 		form.setField("sum_amount_digit2", amountDigitArray[2]);
 		form.setField("sum_amount_digit3", amountDigitArray[3]);
 		form.setField("sum_amount_digit4", amountDigitArray[4]);
 		form.setField("sum_amount_digit5", amountDigitArray[5]);
-		form.setField("sum_amount", dateTillSum.abs().toString());
-		form.setField("paySum", dateTillSum.abs().toString());
-		form.setField("sum_dateFrom_amount", dateFromSum.abs().toString());
-		form.setField("sum_dateTill_amount", dateTillSum.abs().toString());
-
+		form.setField("sum_amount", dateTillSum.toString());
+		form.setField("paySum", dateTillSum.toString());
+		form.setField("sum_dateFrom_amount", dateFromSum.toString());
+		form.setField("sum_dateTill_amount", dateTillSum.toString());
 	}
 
 	private String[] getStringArray(BigDecimal amount) {
@@ -269,6 +219,53 @@ public class PdfTicketWriter {
 		public String address;
 		public Map<Integer, ServiceAmountInfo> serviceAmountInfoMap;
 
+		public BigDecimal getKvartplataDateFromSum() {
+			return getServicesAmount(8, 15, true);
+		}
+
+		public BigDecimal getKvartplataDateTillSum() {
+			return getServicesAmount(8, 15, false);
+		}
+
+		public BigDecimal getWaterinDateFromSum() {
+			return getServicesAmount(6, 7, true);
+		}
+
+		public BigDecimal getWaterinDateTillSum() {
+			return getServicesAmount(6, 7, false);
+		}
+
+		public BigDecimal getDateFromSum() {
+			return getServicesAmount(2, 15, true);
+		}
+
+		public BigDecimal getDateTillSum() {
+			return getServicesAmount(2, 15, false);
+		}
+
+		private BigDecimal getServicesAmount(int ind1, int ind2, boolean flag) {
+			BigDecimal sum = BigDecimal.ZERO;
+			ServiceAmountInfo serviceAmountInfo = null;
+			if (serviceAmountInfoMap != null) {
+				for (int i = ind1; i <= ind2; i++) {
+					serviceAmountInfo = serviceAmountInfoMap.get(i);
+					if (serviceAmountInfo != null) {
+						if (flag) {
+							if (serviceAmountInfo.dateFromAmount != null) {
+								sum = sum.add(serviceAmountInfo.dateFromAmount);
+							}
+						} else {
+							if (serviceAmountInfo.dateTillAmount != null) {
+								sum = sum.add(serviceAmountInfo.dateTillAmount);
+							}
+						}
+					}
+				}
+			}
+
+			return sum;
+		}
+
 	}
 
 	public static class ServiceAmountInfo {
@@ -276,8 +273,56 @@ public class PdfTicketWriter {
 		public Integer code;
 		public BigDecimal dateFromAmount;
 		public BigDecimal dateTillAmount;
+		
+		
+		/**
+		 * @return the name
+		 */
+		public String getName() {
+			return name;
+		}
+		/**
+		 * @param name the name to set
+		 */
+		public void setName(String name) {
+			this.name = name;
+		}
+		/**
+		 * @return the code
+		 */
+		public Integer getCode() {
+			return code;
+		}
+		/**
+		 * @param code the code to set
+		 */
+		public void setCode(Integer code) {
+			this.code = code;
+		}
+		/**
+		 * @return the dateFromAmount
+		 */
+		public BigDecimal getDateFromAmount() {
+			return dateFromAmount;
+		}
+		/**
+		 * @param dateFromAmount the dateFromAmount to set
+		 */
+		public void setDateFromAmount(BigDecimal dateFromAmount) {
+			this.dateFromAmount = dateFromAmount;
+		}
+		/**
+		 * @return the dateTillAmount
+		 */
+		public BigDecimal getDateTillAmount() {
+			return dateTillAmount;
+		}
+		/**
+		 * @param dateTillAmount the dateTillAmount to set
+		 */
+		public void setDateTillAmount(BigDecimal dateTillAmount) {
+			this.dateTillAmount = dateTillAmount;
+		}
 	}
-
-	
 
 }

@@ -9,7 +9,7 @@
 			<generator class="native" />
 		</id>
 		<many-to-one name="ticket" column="ticket_id" />
-		<many-to-one name="serviceType" column="service_type_id" not-null="true" />
+		<many-to-one name="consumer" column="consumer_id" not-null="true" />
 		<property name="dateFromAmount" not-null="true" column="date_from_amount" />
 		<property name="dateTillAmount" not-null="true" column="date_till_amount" />
 	</class>
