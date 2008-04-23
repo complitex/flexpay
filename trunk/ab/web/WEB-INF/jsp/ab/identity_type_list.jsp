@@ -25,20 +25,20 @@
 	    <s:property value="#rowstatus.index + 1" />
 	  </td>
 	  <td class="col">
-	    <s:checkbox name="idList" fieldValue="%{identityType.id}" />
+	    <s:checkbox name="idList" fieldValue="%{translatable.id}" />
 	  </td>
 	  <td class="col">
-	    <a href="<s:url action='identity_type_view'><s:param name="id" value="%{identityType.id}"/></s:url>">
+	    <a href="<s:url action='identity_type_view'><s:param name="id" value="%{translatable.id}"/></s:url>">
 	      <s:property value="name"/>
 	    </a>
 	  </td>
 	  <td class="col">
-	    <a href="<s:url action='identity_type_edit'><s:param name="id" value="%{identityType.id}"/></s:url>">
+	    <a href="<s:url action='identity_type_edit'><s:param name="id" value="%{translatable.id}"/></s:url>">
 	      <s:text name="ab.edit" />
 	    </a>
 	  </td>
 	  <td class="col">
-	    <a href="<s:url action='identity_type_delete'><s:param name="idList" value="%{identityType.id}"/></s:url>">
+	    <a href="<s:url action='identity_type_delete'><s:param name="idList" value="%{translatable.id}"/></s:url>">
 	      <s:text name="ab.delete" />
 	    </a>
 	  </td>
