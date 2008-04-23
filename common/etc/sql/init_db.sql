@@ -4223,3 +4223,59 @@ INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@servi
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_zhko, @service_water_cooling, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_tszh, @service_water_cooling, '');
 INSERT INTO eirc_services_tbl (provider_id, type_id, description) VALUES (@service_provider_cn, @service_water_cooling, '');
+
+-- Init SpRegistryStatuses
+INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (0);
+SELECT @sp_registry_status_loading:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (1);
+SELECT @sp_registry_status_loaded:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (2);
+SELECT @sp_registry_status_loading_canceled:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (3);
+SELECT @sp_registry_status_loaded_with_error:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (4);
+SELECT @sp_registry_status_processing:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (5);
+SELECT @sp_registry_status_processing_with_error:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (6);
+SELECT @sp_registry_status_processed:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (7);
+SELECT @sp_registry_status_processed_with_error:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (8);
+SELECT @sp_registry_status_processing_canceled:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (9);
+SELECT @sp_registry_status_rollbacking:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (10);
+SELECT @sp_registry_status_rollbacked:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (11);
+SELECT @sp_registry_status_creating:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (12);
+SELECT @sp_registry_status_created:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (13);
+SELECT @sp_registry_status_creating_canceled:=last_insert_id();
+
+-- Init SpRegistryArchiveStatuses
+INSERT INTO eirc_sp_registry_archive_statuses_tbl (code) VALUES (0);
+SELECT @sp_registry_archive_status_none:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_archive_statuses_tbl (code) VALUES (1);
+SELECT @sp_registry_archive_status_archiving:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_archive_statuses_tbl (code) VALUES (2);
+SELECT @sp_registry_archive_status_archived:=last_insert_id();
+
+INSERT INTO eirc_sp_registry_archive_statuses_tbl (code) VALUES (3);
+SELECT @sp_registry_archive_status_canceled:=last_insert_id();
