@@ -1,15 +1,14 @@
 package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TimeLine;
 
-import java.util.List;
 import java.util.Collections;
 import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * Town
@@ -78,7 +77,7 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	 *
 	 * @param temporals Value to set for property 'typeTemporals'.
 	 */
-	public void setTypeTemporals(List<TownTypeTemporal> temporals) {
+	public void setTypeTemporals(SortedSet<TownTypeTemporal> temporals) {
 		typesTimeLine = new TimeLine<TownType, TownTypeTemporal>(temporals);
 	}
 
@@ -87,8 +86,8 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	 *
 	 * @return Value for property 'typeTemporals'.
 	 */
-	public List<TownTypeTemporal> getTypeTemporals() {
-		return typesTimeLine.getIntervals();
+	public SortedSet<TownTypeTemporal> getTypeTemporals() {
+		return typesTimeLine.getIntervalsSet();
 	}
 
 	/**

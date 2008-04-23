@@ -298,12 +298,14 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		if (log.isInfoEnabled()) {
 			log.info("type filter: " + filter);
 		}
+		Town typable = object == null ? getNewNameTimeDependent() : object;
+
 		TownType type = townTypeService.read(filter.getSelectedId());
 		TownTypeTemporal typeTemporal = new TownTypeTemporal();
 		typeTemporal.setValue(type);
+		typeTemporal.setTown(typable);
 		TimeLine<TownType, TownTypeTemporal> typesTimeLine = new TimeLine<TownType, TownTypeTemporal>(typeTemporal);
 
-		Town typable = object == null ? getNewNameTimeDependent() : object;
 		typable.setTypesTimeLine(typesTimeLine);
 
 		return super.create(typable, nameTranslations, filters, date);
@@ -325,7 +327,6 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 			if (typeTemporal.getValue().equals(empty)) {
 				typeTemporal.setValue(null);
 			}
-			getTypeTemporalDao().create(typeTemporal);
 		}
 
 		return object;

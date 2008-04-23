@@ -12,7 +12,7 @@
 		<many-to-one name="parent" column="country_id" class="Country" not-null="true" />
 		<property name="status" not-null="true" />
 
-		<set name="nameTemporals" inverse="true" sort="natural"
+		<set name="nameTemporals" inverse="true" sort="natural" cascade="all"
 			  where="invalid_date='2100-12-31'">
 			<key column="region_id" not-null="true" />
 			<one-to-many class="RegionNameTemporal" />
@@ -28,7 +28,7 @@
 		<property name="createDate" column="create_date" type="date" not-null="true" />
 		<property name="invalidDate" column="invalid_date" type="date" not-null="true" />
 		<many-to-one name="object" class="Region" column="region_id" not-null="true"/>
-		<many-to-one name="value" class="RegionName" column="region_name_id" />
+		<many-to-one name="value" class="RegionName" column="region_name_id" cascade="all"/>
 	</class>
 
 	<class name="RegionName" table="region_names_tbl" optimistic-lock="version">
@@ -37,7 +37,7 @@
 		</id>
 		<many-to-one name="object" column="region_id" class="Region" not-null="true" />
 
-		<set name="translations" inverse="true">
+		<set name="translations" inverse="true" cascade="all-delete-orphan">
 			<key column="region_name_id" not-null="true" />
 			<one-to-many class="RegionNameTranslation" />
 		</set>

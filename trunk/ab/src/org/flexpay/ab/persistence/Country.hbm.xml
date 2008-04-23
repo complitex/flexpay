@@ -10,7 +10,7 @@
 			<generator class="native" />
 		</id>
 		<property name="status" not-null="true" />
-		<set name="countryNames" inverse="true">
+		<set name="countryNames" inverse="true" cascade="all">
 			<key column="country_id" not-null="true" />
 			<one-to-many class="CountryNameTranslation" />
 		</set>
