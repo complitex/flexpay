@@ -22,6 +22,7 @@
 			<generator class="native" />
 		</id>
 		<property name="name" />
+		<property name="shortName" column="short_name" />
 		<properties name="lang_street_type_pair" unique="true">
 			<many-to-one name="lang" column="language_id" not-null="true"
 						 class="org.flexpay.common.persistence.Language" />
