@@ -1,12 +1,11 @@
 package org.flexpay.common.persistence;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import java.util.Set;
 import java.util.Collections;
+import java.util.Set;
 
 /**
  * Temporary object name having reference to object and a collection of translations
@@ -81,13 +80,5 @@ public abstract class TemporaryName<TV extends TemporaryValue, T extends Transla
 		TemporaryName that = (TemporaryName) obj;
 		return new EqualsBuilder()
 				.append(translations, that.getTranslations()).isEquals();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(translations).toHashCode();
 	}
 }

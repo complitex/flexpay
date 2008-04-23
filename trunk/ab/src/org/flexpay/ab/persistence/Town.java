@@ -122,15 +122,4 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 				.appendSuper(super.equals(obj))
 				.isEquals();
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder()
-				.append(typesTimeLine)
-				.appendSuper(super.hashCode())
-				.toHashCode();
-	}
 }

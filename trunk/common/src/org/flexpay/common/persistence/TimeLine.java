@@ -3,17 +3,16 @@ package org.flexpay.common.persistence;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Storage for a sorted list of intervals covering time line
  */
 public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> {
 
-	// a set of intervals fully covering time line,
+	// a set of intervals is fully covering time line,
 	// probably single interval with infinite bounds
-	private List<DI> intervals;
+	private Collection<DI> intervals;
 	private transient boolean intervalsChecked = false;
 
 	/**
@@ -44,7 +43,7 @@ public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI
 	 *
 	 * @param intervals Date intervals list
 	 */
-	public TimeLine(List<DI> intervals) {
+	public TimeLine(Collection<DI> intervals) {
 		this.intervals = intervals;
 		intervalsChecked = false;
 //		if (!DateIntervalUtil.isValid(this)) {
@@ -68,7 +67,16 @@ public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI
 			intervals = dis;
 			intervalsChecked = true;
 		}
-		return intervals;
+		return (List<DI>)intervals;
+	}
+
+	/**
+	 * Getter for property 'intervals'.
+	 *
+	 * @return Value for property 'intervals'.
+	 */
+	public SortedSet<DI> getIntervalsSet() {
+		return new TreeSet<DI>(getIntervals());
 	}
 
 	/**

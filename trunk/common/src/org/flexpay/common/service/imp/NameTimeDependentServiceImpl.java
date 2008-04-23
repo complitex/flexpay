@@ -180,11 +180,12 @@ public abstract class NameTimeDependentServiceImpl<
 
 		// Get last temporal in each object names time line
 		for (NTD ntd : ntds) {
-			List<DI> temporals = ntd.getNameTemporals();
-			if (temporals.isEmpty()) {
+			Collection<DI> temporals = ntd.getNameTemporals();
+			LinkedList<DI> wrapper = new LinkedList<DI>(temporals);
+			if (wrapper.isEmpty()) {
 				log.info("Found NTD, but no temporals: " + ntd);
 			} else {
-				DI temporal = temporals.get(temporals.size() - 1);
+				DI temporal = wrapper.getLast();
 				names.add(getNameValueDao().readFull(temporal.getValue().getId()));
 			}
 		}
@@ -212,8 +213,8 @@ public abstract class NameTimeDependentServiceImpl<
 
 		// Get last temporal in each object names time line
 		for (NTD ntd : ntds) {
-			List<DI> temporals = ntd.getNameTemporals();
-			DI temporal = temporals.get(temporals.size() - 1);
+			LinkedList<DI> temporals = new LinkedList<DI>(ntd.getNameTemporals());
+			DI temporal = temporals.getLast();
 			names.add(getNameValueDao().readFull(temporal.getValue().getId()));
 		}
 
@@ -376,12 +377,11 @@ public abstract class NameTimeDependentServiceImpl<
 		if (temporal != null && objectName.equals(temporal.getValue())) {
 			objectName = temporal.getValue();
 		} else {
-			getNameValueDao().create(objectName);
 			for (T translation : names) {
 				translation.setTranslatable(objectName);
 				translation.setId(null);
-				getNameTranslationDao().create(translation);
 			}
+			getNameValueDao().create(objectName);
 		}
 
 		if (temporal == null) {

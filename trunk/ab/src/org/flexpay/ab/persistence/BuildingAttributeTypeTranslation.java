@@ -45,14 +45,6 @@ public class BuildingAttributeTypeTranslation extends Translation {
 	}
 
 	@Override
-	public int hashCode() {
-		return new HashCodeBuilder()
-				.append(shortName)
-				.appendSuper(super.hashCode())
-				.toHashCode();
-	}
-
-	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 				.appendSuper(super.toString())

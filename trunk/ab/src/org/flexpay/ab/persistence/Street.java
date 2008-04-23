@@ -1,17 +1,13 @@
 package org.flexpay.ab.persistence;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.util.DateIntervalUtil;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 
-import java.util.Collections;
-import java.util.Set;
-import java.util.List;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Street
@@ -88,7 +84,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 *
 	 * @param typeTemporals Value to set for property 'typeTemporals'.
 	 */
-	public void setTypeTemporals(List<StreetTypeTemporal> typeTemporals) {
+	public void setTypeTemporals(SortedSet<StreetTypeTemporal> typeTemporals) {
 		typesTimeLine = new TimeLine<StreetType, StreetTypeTemporal>(typeTemporals);
 	}
 
@@ -97,8 +93,8 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 *
 	 * @return Value for property 'typesTimeLine'.
 	 */
-	public List<StreetTypeTemporal> getTypeTemporals() {
-		return typesTimeLine.getIntervals();
+	public SortedSet<StreetTypeTemporal> getTypeTemporals() {
+		return typesTimeLine.getIntervalsSet();
 	}
 
 	/**
@@ -150,17 +146,6 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 				.appendSuper(super.equals(obj))
 				.append(typesTimeLine, that.typesTimeLine)
 				.isEquals();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder()
-				.appendSuper(super.hashCode())
-				.append(typesTimeLine)
-				.toHashCode();
 	}
 
 	@Override

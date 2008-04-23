@@ -6,20 +6,24 @@
 	<bean class="org.flexpay.common.util.standalone.StandaloneTasksHolder">
 		<property name="standaloneTasks">
 			<list>
-				<bean class="org.flexpay.ab.util.standalone.ImportTask">
+				<!--<bean class="org.flexpay.ab.util.standalone.ImportTask">-->
 
 					<!-- Accounts import task for the DataSourceDescription(1L), Town(1L) -->
-					<property name="sourceDescription">
-						<bean class="org.flexpay.common.persistence.DataSourceDescription">
-							<constructor-arg index="0" type="java.lang.Long" value="1" />
-						</bean>
-					</property>
-					<property name="town">
-						<bean class="org.flexpay.ab.persistence.Town">
-							<constructor-arg index="0" type="java.lang.Long" value="1" />
-						</bean>
-					</property>
-					<property name="importService" ref="importServiceAb" />
+					<!--<property name="sourceDescription">-->
+						<!--<bean class="org.flexpay.common.persistence.DataSourceDescription">-->
+							<!--<constructor-arg index="0" type="java.lang.Long" value="1" />-->
+						<!--</bean>-->
+					<!--</property>-->
+					<!--<property name="town">-->
+						<!--<bean class="org.flexpay.ab.persistence.Town">-->
+							<!--<constructor-arg index="0" type="java.lang.Long" value="1" />-->
+						<!--</bean>-->
+					<!--</property>-->
+					<!--<property name="importService" ref="importServiceAb" />-->
+				<!--</bean>-->
+				<bean class="org.flexpay.ab.util.standalone.RetriveStreetTask">
+					<property name="streetDao" ref="streetDAO" />
+					<property name="streetService" ref="streetService" />
 				</bean>
 			</list>
 		</property>

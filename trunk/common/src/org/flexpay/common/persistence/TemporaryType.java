@@ -86,12 +86,4 @@ public abstract class TemporaryType<TV extends TemporaryValue, T extends Transla
 		return new EqualsBuilder()
 				.append(translations, that.getTranslations()).isEquals();
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(translations).toHashCode();
-	}
 }

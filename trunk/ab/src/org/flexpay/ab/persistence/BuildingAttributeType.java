@@ -54,15 +54,6 @@ public class BuildingAttributeType extends DomainObject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int hashCode() {
-		return new HashCodeBuilder()
-				.append(type).toHashCode();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
