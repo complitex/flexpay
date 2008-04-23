@@ -214,6 +214,10 @@ public abstract class NameTimeDependentServiceImpl<
 		// Get last temporal in each object names time line
 		for (NTD ntd : ntds) {
 			LinkedList<DI> temporals = new LinkedList<DI>(ntd.getNameTemporals());
+			if (temporals.isEmpty()) {
+				log.warn("Object does not have any temporals: " + ntd);
+				continue;
+			}
 			DI temporal = temporals.getLast();
 			names.add(getNameValueDao().readFull(temporal.getValue().getId()));
 		}
@@ -245,35 +249,33 @@ public abstract class NameTimeDependentServiceImpl<
 
 		NTD namable = object == null ? getNewNameTimeDependent() : object;
 		namable.setStatus(ObjectWithStatus.STATUS_ACTIVE);
+		namable.setParent(parent);
 
 		DI nameTemporal = getNewNameTemporal();
 		nameTemporal.setObject(namable);
 		nameTemporal.setBegin(date);
 		TimeLine<TV, DI> tl = new TimeLine<TV, DI>(nameTemporal);
 		namable.setNamesTimeLine(tl);
-		namable.setParent(parent);
-		getNameTimeDependentDao().create(namable);
 
 		namable = postCreate(namable);
 
 		TV objectName = getEmptyName();
 		objectName.setTranslations(names);
 		objectName.setObject(namable);
-		getNameValueDao().create(objectName);
 
 		for (T translation : objectName.getTranslations()) {
 			translation.setTranslatable(objectName);
-			getNameTranslationDao().create(translation);
 		}
 
 		nameTemporal.setValue(objectName);
 		for (DI temporal : namable.getNamesTimeLine().getIntervals()) {
 			TV empty = getEmptyName();
-			if (nameTemporal.getValue().equals(empty)) {
-				nameTemporal.setValue(null);
+			if (temporal.getValue().equals(empty)) {
+				temporal.setValue(null);
 			}
-			getNameTemporalDao().create(temporal);
 		}
+
+		getNameTimeDependentDao().create(namable);
 
 		return namable;
 	}

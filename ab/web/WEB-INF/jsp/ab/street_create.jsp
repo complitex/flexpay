@@ -23,7 +23,7 @@
 		<tr>
 			<td class="th" width="100%" colspan="3" align="center">
 				<s:textfield name="date" id="date"/>
-				<img src="<s:url value="/js/jscalendar/img.gif"/>" alt=""
+				<img src="<s:url value="/resources/common/js/jscalendar/img.gif"/>" alt=""
 					 id="trigger_from"
 					 style="cursor: pointer; border: 1px solid red;"
 					 title="<s:text name="common.calendar"/>"
