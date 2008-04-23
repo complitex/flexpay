@@ -42,14 +42,6 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	/**
 	 * Getter for property 'streets'.
 	 *
 	 * @return Value for property 'streets'.

@@ -25,14 +25,6 @@ public class StreetTypeTranslation extends Translation {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public boolean equals(Object o) {
 		return o instanceof StreetTypeTranslation && super.equals(o);
 	}

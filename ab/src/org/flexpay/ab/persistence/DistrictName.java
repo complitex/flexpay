@@ -33,14 +33,6 @@ public class DistrictName extends TemporaryName<DistrictName, DistrictNameTransl
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	/**
 	 * Get null value
 	 *
 	 * @return Null representation of this value

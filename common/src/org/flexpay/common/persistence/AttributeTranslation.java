@@ -46,17 +46,6 @@ public class AttributeTranslation extends Translation {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder()
-				.append(value)
-				.appendSuper(super.hashCode())
-				.toHashCode();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;

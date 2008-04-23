@@ -41,14 +41,6 @@ public class StreetTypeTemporal extends TypeDateInterval<StreetType, StreetTypeT
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	/**
 	 * Returns a string representation of the object.
 	 *
 	 * @return a string representation of the object.

@@ -53,8 +53,7 @@
 		<td class="th">&nbsp;</td>
 		<td class="th"><s:text name="ab.from"/></td>
 		<td class="th"><s:text name="ab.till"/></td>
-		<td class="th"><s:text name="common.language"/></td>
-		<td class="th"><s:text name="ab.street_type"/></td>
+		<td class="th" colspan="2"><s:text name="ab.street_type"/></td>
 		<td class="th">&nbsp;</td>
 	</tr>
 	<s:set name="index" value="-1" />
@@ -77,10 +76,7 @@
 						<s:property value="format(end)"/>
 					</s:if>
 				</td>
-				<td class="col">
-					<s:property value="getLangName(#translation.lang)"/>
-				</td>
-				<td class="col">
+				<td class="col" colspan="2">
 					<s:property value="%{#translation.name}"/>
 				</td>
 				<td class="col">

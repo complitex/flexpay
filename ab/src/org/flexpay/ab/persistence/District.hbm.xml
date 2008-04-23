@@ -12,12 +12,11 @@
 		<many-to-one name="parent" column="town_id" class="Town" not-null="true" />
 		<property name="status" not-null="true" />
 
-		<list name="nameTemporals" inverse="true" cascade="all"
-			  where="invalid_date='2100-12-31'">
+		<set name="nameTemporals" inverse="true" cascade="all"
+			  where="invalid_date='2100-12-31'" sort="natural">
 			<key column="district_id" not-null="true" />
-			<list-index column="begin_date" />
 			<one-to-many class="DistrictNameTemporal" />
-		</list>
+		</set>
 		<set name="streets" table="streets_districts_tbl">
 			<key column="district_id" />
 			<many-to-many class="Street" column="street_id" />

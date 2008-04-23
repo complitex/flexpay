@@ -15,7 +15,7 @@ import java.util.Calendar;
  * Date interval is a interval of time with day granularity
  */
 public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-		extends DomainObject {
+		extends DomainObject implements Comparable<DI> {
 
 	private Date begin;
 	private Date end;
@@ -239,5 +239,9 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	public boolean dataEquals(DateInterval di) {
 		return (value == null && di.getValue() == null) ||
 			   (value != null && value.equals(di.getValue()));
+	}
+
+	public int compareTo(DI o) {
+		return begin.compareTo(o.getBegin());
 	}
 }

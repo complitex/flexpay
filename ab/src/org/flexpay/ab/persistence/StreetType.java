@@ -38,16 +38,6 @@ public class StreetType extends TemporaryType<StreetType, StreetTypeTranslation>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int hashCode() {
-		return new HashCodeBuilder()
-				.appendSuper(super.hashCode())
-				.append(getTranslations().hashCode()).toHashCode();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;

@@ -91,14 +91,4 @@ public class Country extends DomainObjectWithStatus {
 				.append(countryNames, country.countryNames)
 				.isEquals();
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder()
-				.append(countryNames)
-				.toHashCode();
-	}
 }

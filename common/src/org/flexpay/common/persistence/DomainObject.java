@@ -36,4 +36,8 @@ public class DomainObject implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public int hashCode() {
+		return id == null ? 0 : id.hashCode();
+	}
 }

@@ -40,7 +40,6 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 		} finally {
 			IOUtils.closeQuietly(is);
 			IOUtils.closeQuietly(os);
-			tmpDataFile.delete();
 		}
 
 		fileCreateAction.setUpload(tmpDataFile);
@@ -58,6 +57,7 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 
 	protected void deleteFile(SpFile file) {
 		fileService.delete(file);
+		fileCreateAction.getUpload().delete();
 	}
 
 	protected void prepareTestInstance() throws Exception {

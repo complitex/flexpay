@@ -28,14 +28,6 @@ public class DistrictNameTranslation extends Translation {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;

@@ -41,14 +41,6 @@ public class StreetNameTemporal extends NameDateInterval<StreetName, StreetNameT
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	/**
 	 * Returns a string representation of the object.
 	 *
 	 * @return a string representation of the object.

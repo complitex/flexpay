@@ -12,18 +12,16 @@
 		<many-to-one name="parent" column="town_id" class="Town" not-null="true" />
 		<property name="status" not-null="true" />
 
-		<list name="nameTemporals" inverse="true" cascade="all"
-			  where="invalid_date='2100-12-31'">
+		<set name="nameTemporals" inverse="true" cascade="all" lazy="true"
+			  where="invalid_date='2100-12-31'" sort="natural">
 			<key column="street_id" not-null="true" />
-			<list-index column="begin_date" />
 			<one-to-many class="StreetNameTemporal" />
-		</list>
-		<list name="typeTemporals" inverse="true" cascade="all"
-			  where="invalid_date='2100-12-31'">
+		</set>
+		<set name="typeTemporals" inverse="true" cascade="all" lazy="true"
+			  where="invalid_date='2100-12-31'" sort="natural">
 			<key column="street_id" not-null="true" />
-			<list-index column="begin_date" />
 			<one-to-many class="StreetTypeTemporal" />
-		</list>
+		</set>
 		<set name="districts" table="streets_districts_tbl">
 			<key column="street_id" />
 			<many-to-many class="District" column="district_id" />
@@ -105,7 +103,7 @@
 	</query>
 
 	<query name="Street.readFull">
-		SELECT DISTINCT o
+		SELECT distinct o
 		FROM Street o
 			LEFT JOIN FETCH o.nameTemporals t
 			LEFT JOIN FETCH t.value v
@@ -121,8 +119,7 @@
 			LEFT JOIN FETCH d.nameTemporals dt
 			LEFT JOIN FETCH dt.value dv
 			LEFT JOIN FETCH dv.translations
-        WHERE o.id=? and t.invalidDate='2100-12-31' and (dt is null or dt.invalidDate='2100-12-31')
-              and (tt is null or tt.invalidDate ='2100-12-31')
+        WHERE o.id=? and (dt is null or dt.invalidDate='2100-12-31')
 	</query>
 
 	<query name="StreetNameTemporal.readFull">

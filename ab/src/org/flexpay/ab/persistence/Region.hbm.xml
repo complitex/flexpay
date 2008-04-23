@@ -12,12 +12,11 @@
 		<many-to-one name="parent" column="country_id" class="Country" not-null="true" />
 		<property name="status" not-null="true" />
 
-		<list name="nameTemporals" inverse="true"
+		<set name="nameTemporals" inverse="true" sort="natural"
 			  where="invalid_date='2100-12-31'">
 			<key column="region_id" not-null="true" />
-			<list-index column="begin_date" />
 			<one-to-many class="RegionNameTemporal" />
-		</list>
+		</set>
 	</class>
 
 	<class name="RegionNameTemporal" table="region_names_temporal_tbl">

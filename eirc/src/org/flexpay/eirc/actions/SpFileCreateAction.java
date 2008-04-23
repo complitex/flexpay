@@ -45,6 +45,10 @@ public class SpFileCreateAction extends CommonAction {
 		this.upload = upload;
 	}
 
+	public File getUpload() {
+		return upload;
+	}
+
 	public void setUploadFileName(String uploadFileName) {
 		this.uploadFileName = uploadFileName;
 	}

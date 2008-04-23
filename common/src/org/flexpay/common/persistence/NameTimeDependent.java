@@ -4,9 +4,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.flexpay.common.util.DateIntervalUtil;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * Base class for objects that has time-dependent name
@@ -46,7 +44,7 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	 *
 	 * @param nameTemporals Value to set for property 'nameTemporals'.
 	 */
-	public void setNameTemporals(List<DI> nameTemporals) {
+	public void setNameTemporals(SortedSet<DI> nameTemporals) {
 		namesTimeLine = new TimeLine<T, DI>(nameTemporals);
 	}
 
@@ -55,8 +53,8 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	 *
 	 * @return Value for property 'nameTemporals'.
 	 */
-	public List<DI> getNameTemporals() {
-		return namesTimeLine.getIntervals();
+	public SortedSet<DI> getNameTemporals() {
+		return namesTimeLine.getIntervalsSet();
 	}
 
 	/**
