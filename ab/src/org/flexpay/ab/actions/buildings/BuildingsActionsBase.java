@@ -24,7 +24,7 @@ public abstract class BuildingsActionsBase extends FPActionSupport {
 				BuildingAttributeTypeTranslation attributeTypeTranslation =
 						getTranslation(attribute.getBuildingAttributeType().getTranslations());
 				if (attributeTypeTranslation.getShortName() != null) {
-					number.append(attributeTypeTranslation.getShortName());
+					number.append(attributeTypeTranslation.getShortName() + ' ');
 				} else {
 					number.append(attributeTypeTranslation.getName()).append(' ');
 				}
