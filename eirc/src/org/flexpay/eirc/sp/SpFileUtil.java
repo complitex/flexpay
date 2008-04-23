@@ -6,14 +6,18 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.eirc.service.SpRegistryArchiveStatusService;
 import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.SpRegistryService;
+import org.flexpay.eirc.service.SpRegistryStatusService;
 import org.flexpay.eirc.service.SpRegistryTypeService;
 
 public class SpFileUtil {
 	private static SpRegistryService spRegistryService;
 	private static SpRegistryRecordService spRegistryRecordService;
 	private static SpRegistryTypeService spRegistryTypeService;
+	private static SpRegistryStatusService spRegistryStatusService;
+	private static SpRegistryArchiveStatusService spRegistryArchiveStatusService;
 
 	public static void loadToDb(SpFile spFile) throws IOException,
 			SpFileFormatException, FlexPayException {
@@ -21,6 +25,10 @@ public class SpFileUtil {
 		spFileParser.setSpRegistryService(spRegistryService);
 		spFileParser.setSpRegistryTypeService(spRegistryTypeService);
 		spFileParser.setSpRegistryRecordService(spRegistryRecordService);
+		spFileParser.setSpRegistryStatusService(spRegistryStatusService);
+		spFileParser
+				.setSpRegistryArchiveStatusService(spRegistryArchiveStatusService);
+
 		spFileParser.parse();
 	}
 
@@ -59,5 +67,21 @@ public class SpFileUtil {
 	public void setSpRegistryTypeService(
 			SpRegistryTypeService spRegistryTypeService) {
 		SpFileUtil.spRegistryTypeService = spRegistryTypeService;
+	}
+
+	/**
+	 * @param spRegistryStatusService the spRegistryStatusService to set
+	 */
+	public void setSpRegistryStatusService(
+			SpRegistryStatusService spRegistryStatusService) {
+		SpFileUtil.spRegistryStatusService = spRegistryStatusService;
+	}
+
+	/**
+	 * @param spRegistryArchiveStatusService the spRegistryArchiveStatusService to set
+	 */
+	public void setSpRegistryArchiveStatusService(
+			SpRegistryArchiveStatusService spRegistryArchiveStatusService) {
+		SpFileUtil.spRegistryArchiveStatusService = spRegistryArchiveStatusService;
 	}
 }

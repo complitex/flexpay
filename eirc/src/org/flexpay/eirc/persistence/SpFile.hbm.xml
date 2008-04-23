@@ -36,6 +36,8 @@
 		<many-to-one name="spFile" column="sp_file_id" not-null="true" class="SpFile" />
 		<many-to-one name="serviceProvider" column="service_provider_id"
 					 class="ServiceProvider" />
+		<many-to-one name="registryStatus" column="registry_status_id" not-null="true" class="SpRegistryStatus" />			 
+		<many-to-one name="archiveStatus" column="archive_status_id" not-null="true" class="SpRegistryArchiveStatus" />
 	</class>
 
 	<class name="SpRegistryType" table="eirc_sp_registry_types_tbl"
@@ -46,6 +48,22 @@
 		<property name="name" not-null="true" />
 		<property name="direction" not-null="true" />
 		<property name="typeId" column="type_enum_id" not-null="true" />
+	</class>
+	
+	<class name="SpRegistryStatus" table="eirc_sp_registry_statuses_tbl"
+		   optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="code" not-null="true" unique="true" />
+	</class>
+	
+	<class name="SpRegistryArchiveStatus" table="eirc_sp_registry_archive_statuses_tbl"
+		   optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="code" not-null="true" unique="true" />
 	</class>
 
 	<class name="SpRegistryRecord" table="eirc_sp_registry_records_tbl">
@@ -121,6 +139,14 @@
 
 	<query name="SpRegistryRecord.listRecords.count">
 		select count(*) from SpRegistryRecord where spRegistry.id=? and consumer is null
+	</query>
+	
+	<query name="SpRegistryStatus.findByCode">
+		from SpRegistryStatus s where s.code=?
+	</query>
+	
+	<query name="SpRegistryArchiveStatus.findByCode">
+		from SpRegistryArchiveStatus s where s.code=?
 	</query>
 
 </hibernate-mapping>

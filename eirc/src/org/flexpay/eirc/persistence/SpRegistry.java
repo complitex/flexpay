@@ -27,6 +27,23 @@ public class SpRegistry extends DomainObject {
 	private Organisation sender;
 	private Organisation recipient;
 	private ServiceProvider serviceProvider;
+	
+	private SpRegistryStatus registryStatus;
+	private SpRegistryArchiveStatus archiveStatus;
+
+	/**
+	 * @return the registryStatus
+	 */
+	public SpRegistryStatus getRegistryStatus() {
+		return registryStatus;
+	}
+
+	/**
+	 * @param registryStatus the registryStatus to set
+	 */
+	public void setRegistryStatus(SpRegistryStatus registryStatus) {
+		this.registryStatus = registryStatus;
+	}
 
 	/**
 	 * @return the spFile
@@ -214,5 +231,19 @@ public class SpRegistry extends DomainObject {
 
 	public void setRecipient(Organisation recipient) {
 		this.recipient = recipient;
+	}
+
+	/**
+	 * @return the archiveStatus
+	 */
+	public SpRegistryArchiveStatus getArchiveStatus() {
+		return archiveStatus;
+	}
+
+	/**
+	 * @param archiveStatus the archiveStatus to set
+	 */
+	public void setArchiveStatus(SpRegistryArchiveStatus archiveStatus) {
+		this.archiveStatus = archiveStatus;
 	}
 }

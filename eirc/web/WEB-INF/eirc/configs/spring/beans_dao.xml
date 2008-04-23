@@ -129,5 +129,25 @@
 			</bean>
 		</property>
 	</bean>
+	
+	<bean id="spRegistryStatusDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.eirc.dao.SpRegistryStatusDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.eirc.persistence.SpRegistryStatus" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="spRegistryArchiveStatusDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.eirc.dao.SpRegistryArchiveStatusDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.eirc.persistence.SpRegistryArchiveStatus" />
+			</bean>
+		</property>
+	</bean>
 
 </beans>

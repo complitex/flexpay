@@ -77,4 +77,12 @@
 		<property name="ticketServiceAmountService" ref="ticketServiceAmountService" />
 	</bean>
 	
+	<bean id="spRegistryStatusService" class="org.flexpay.eirc.service.imp.SpRegistryStatusServiceImpl">
+		<property name="spRegistryStatusDao" ref="spRegistryStatusDao" />
+	</bean>
+	
+	<bean id="spRegistryArchiveStatusService" class="org.flexpay.eirc.service.imp.SpRegistryArchiveStatusServiceImpl">
+		<property name="spRegistryArchiveStatusDao" ref="spRegistryArchiveStatusDao" />
+	</bean>
+	
 </beans>
