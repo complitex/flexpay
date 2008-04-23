@@ -11,6 +11,8 @@
 		<property name="spRegistryService" ref="spRegistryService" />
 		<property name="spRegistryRecordService" ref="spRegistryRecordService" />
 		<property name="spRegistryTypeService" ref="spRegistryTypeService" />
+		<property name="spRegistryStatusService" ref="spRegistryStatusService" />
+		<property name="spRegistryArchiveStatusService" ref="spRegistryArchiveStatusService" />
 	</bean>
 	
 </beans>	
