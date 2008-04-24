@@ -164,7 +164,7 @@ SELECT @street_type_id:=LAST_INSERT_ID();
 INSERT INTO street_type_translations_tbl (name, short_name, language_id, street_type_id)
 	VALUES ('Шоссе', 'шос', @ru_id, @street_type_id);
 INSERT INTO street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Highway', 'hig' @en_id, @street_type_id);
+	VALUES ('Highway', 'hig', @en_id, @street_type_id);
 
 INSERT INTO street_types_tbl (status) VALUES (0);
 SELECT @street_type_id:=LAST_INSERT_ID();
