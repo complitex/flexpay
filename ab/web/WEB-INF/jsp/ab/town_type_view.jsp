@@ -4,10 +4,10 @@
 		<tr>
 			<td class="th">&nbsp;</td>
 			<td class="th"><s:text name="ab.language"/></td>
-			<td class="th"><s:text name="ab.street_type"/></td>
+			<td class="th"><s:text name="ab.town_type"/></td>
 			<td class="th"><s:text name="ab.short_name"/></td>
 		</tr>
-		<s:iterator value="streetType.translations" status="rowstatus">
+		<s:iterator value="townType.translations" status="rowstatus">
 		  <tr valign="middle" class="cols_1">
 		    <td class="col_1s">
 		      <s:property value="#rowstatus.index + 1" />
@@ -31,7 +31,7 @@
 		</tr>
 		<tr>
 		  <td colspan="4">
-		    <a href="<s:url action='street_type_edit'><s:param name="id" value="%{streetType.id}"/></s:url>">
+		    <a href="<s:url action='town_type_edit'><s:param name="id" value="%{townType.id}"/></s:url>">
 	          <s:text name="ab.edit" />
 	        </a>
 		  </td>

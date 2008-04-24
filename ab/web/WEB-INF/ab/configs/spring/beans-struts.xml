@@ -159,23 +159,24 @@
 	</bean>
 
 	<!-- Town types -->
-	<bean id="listTownTypesAction" class="org.flexpay.ab.actions.town.TownTypesList"
-		  scope="prototype">
+	<bean id="townTypeListAction"
+		  class="org.flexpay.ab.actions.town.TownTypeListAction" scope="prototype">
 		<property name="townTypeService" ref="townTypeService" />
 	</bean>
-
-	<bean id="createTownTypeAction" class="org.flexpay.ab.actions.town.TownTypeCreate"
-		  scope="prototype">
+	<bean id="townTypeCreteAction"
+		  class="org.flexpay.ab.actions.town.TownTypeCreateAction" scope="prototype">
 		<property name="townTypeService" ref="townTypeService" />
 	</bean>
-
-	<bean id="editTownTypeAction" class="org.flexpay.ab.actions.town.TownTypeEdit"
-		  scope="prototype">
+	<bean id="townTypeViewAction"
+		  class="org.flexpay.ab.actions.town.TownTypeViewAction" scope="prototype">
 		<property name="townTypeService" ref="townTypeService" />
 	</bean>
-
-	<bean id="deleteTownTypesAction" class="org.flexpay.ab.actions.town.TownTypesDelete"
-		  scope="prototype">
+	<bean id="townTypeEditAction"
+		  class="org.flexpay.ab.actions.town.TownTypeEditAction" scope="prototype">
+		<property name="townTypeService" ref="townTypeService" />
+	</bean>
+	<bean id="townTypeDeleteAction"
+		  class="org.flexpay.ab.actions.town.TownTypeDeleteAction" scope="prototype">
 		<property name="townTypeService" ref="townTypeService" />
 	</bean>
 

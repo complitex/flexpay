@@ -114,22 +114,22 @@
 	</package>
 
 	<package name="town_types" namespace="/dicts" extends="common">
-		<action name="list_town_types" class="listTownTypesAction">
-			<result type="tiles">ab.town_types.list</result>
+		<action name="town_type_create" class="townTypeCreteAction">
+			<result name="form" type="tiles">ab.town_type.create</result>
+			<result name="afterSubmit" type="redirect">town_type_list.action</result>
 		</action>
-
-		<action name="create_town_type" class="createTownTypeAction">
-			<result type="redirect">list_town_types.action</result>
-			<result type="tiles" name="input">ab.town_type.create</result>
+		<action name="town_type_view" class="townTypeViewAction">
+			<result name="success" type="tiles">ab.town_type.view</result>
 		</action>
-
-		<action name="edit_town_type" class="editTownTypeAction">
-			<result type="redirect">list_town_types.action</result>
-			<result type="tiles" name="input">ab.town_type.edit</result>
+		<action name="town_type_list" class="townTypeListAction">
+			<result name="list" type="tiles">ab.town_type.list</result>
 		</action>
-
-		<action name="delete_town_types" class="deleteTownTypesAction">
-			<result type="redirect">list_town_types.action</result>
+		<action name="town_type_edit" class="townTypeEditAction">
+			<result name="form" type="tiles">ab.town_type.edit</result>
+			<result name="afterSubmit" type="redirect">town_type_list.action</result>
+		</action>
+		<action name="town_type_delete" class="townTypeDeleteAction">
+			<result name="afterSubmit" type="redirect">town_type_list.action</result>
 		</action>
 	</package>
 

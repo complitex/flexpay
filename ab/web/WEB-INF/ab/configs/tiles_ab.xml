@@ -127,16 +127,18 @@
 	</definition>
 
 	<!-- Town types -->
-	<definition name="ab.town_types.list" extends="ab.layout.standart">
+	<definition name="ab.town_type.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.town_type.list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_types_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_type_list.jsp" />
 	</definition>
-
 	<definition name="ab.town_type.create" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.town_type.create.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_type_create.jsp" />
 	</definition>
-
+	<definition name="ab.town_type.view" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.town_type.view.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_type_view.jsp" />
+	</definition>
 	<definition name="ab.town_type.edit" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.town_type.edit.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_type_edit.jsp" />
