@@ -45,9 +45,7 @@
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<property name="name" not-null="true" />
-		<property name="direction" not-null="true" />
-		<property name="typeId" column="type_enum_id" not-null="true" />
+		<property name="code" column="code" not-null="true" />
 	</class>
 	
 	<class name="SpRegistryStatus" table="eirc_sp_registry_statuses_tbl"
