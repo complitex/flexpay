@@ -36,7 +36,7 @@
 						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>&nbsp;</td>
 				<td class="col"><input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/></td>
 				<td class="col"><s:property value="%{getTranslation(getCurrentName().translations).name}"/></td>
-				<td class="col"><s:property value="%{getTranslation(getCurrentType().translations).shortName}"/></td>
+				<td class="col"><s:property value="%{getTranslation(getCurrentType().translations).name}"/></td>
 				<td class="col">
 					<a href="<s:url value="/dicts/view_street.action?object.id=%{id}"/>"><s:text
 							name="common.view"/></a></td>
