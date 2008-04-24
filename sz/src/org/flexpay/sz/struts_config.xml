@@ -21,6 +21,7 @@
 
 		<action name="doUpload" class="importFileAction">
 			<result name="form" type="tiles">sz.import.file.upload.form</result>
+			<result name="oszn_absent" type="tiles">sz.import.file.upload.oszn_absent</result>
 		</action>
 
 		<action name="importFileList" class="importFileListAction">

@@ -21,6 +21,9 @@
   <definition name="sz.import.file.upload.form" extends="sz.import">
 		<put-attribute name="body" value="/WEB-INF/sz/jsp/upload_file.jsp" />
   </definition>
+	  <definition name="sz.import.file.upload.oszn_absent" extends="sz.import.file.upload.form">
+			<put-attribute name="body" value="/WEB-INF/sz/jsp/upload_file_oszn_absent.jsp" />
+	  </definition>
   
   <definition name="sz.import_file.list" extends="sz.dictionaries">
 		<put-attribute name="body" value="/WEB-INF/sz/jsp/import_file_list.jsp" />
