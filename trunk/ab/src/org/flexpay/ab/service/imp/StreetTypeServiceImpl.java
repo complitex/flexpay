@@ -50,7 +50,6 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		}
 
 		streetType.setStatus(StreetType.STATUS_ACTIVE);
-		streetType.setTranslations(translationSet);
 
 		streetTypeDao.create(streetType);
 		for (StreetTypeTranslation translation : translationSet) {
