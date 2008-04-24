@@ -50,7 +50,7 @@ public class ServiceOperationsFactory {
 	}
 
 	private Operation getOperation(SpRegistry registry) throws FlexPayException {
-		int typeId = registry.getRegistryType().getTypeId();
+		int typeId = registry.getRegistryType().getCode();
 		if (typeId == SpRegistryType.TYPE_BALANCE) {
 			return new BalanceOperation(this);
 		}
