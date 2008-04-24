@@ -64,7 +64,7 @@ public class SimplePayment extends ContainerOperation {
 		accountRecord.setOperationDate(record.getOperationDate());
 		accountRecord.setAmount(record.getAmount());
 
-		int registryTypeID = registry.getRegistryType().getTypeId();
+		int registryTypeID = registry.getRegistryType().getCode();
 		if (registryTypeID != SpRegistryTypeService.NALICHNIE_OPLATI) {
 			throw new IllegalOperationStateException(
 					"Illegal registry type #" + registryTypeID + " for simple payment operation");
