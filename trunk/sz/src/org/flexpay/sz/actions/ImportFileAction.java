@@ -108,6 +108,9 @@ public class ImportFileAction extends CommonAction {
 		}
 
 		osznList = osznService.getEntities();
+		if(osznList.isEmpty()) {
+			return "oszn_absent";
+		}
 
 		return "form";
 	}
