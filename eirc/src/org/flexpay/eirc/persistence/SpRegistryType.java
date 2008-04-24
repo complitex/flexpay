@@ -9,9 +9,7 @@ public class SpRegistryType extends DomainObject {
 	public static final int TYPE_BALANCE = 1;
 	public static final int TYPE_PAYMENT = 2;
 
-	private String name;
-	private String direction;
-	private int typeId;
+	private int code;
 
 	/**
 	 * Constructs a new DomainObject.
@@ -23,38 +21,14 @@ public class SpRegistryType extends DomainObject {
 		super(id);
 	}
 	
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-	/**
-	 * @return the direction
-	 */
-	public String getDirection() {
-		return direction;
-	}
-	/**
-	 * @param direction the direction to set
-	 */
-	public void setDirection(String direction) {
-		this.direction = direction;
-	}
 
 	/**
-	 * Getter for property 'typeId'.
+	 * Getter for property 'code'.
 	 *
-	 * @return Value for property 'typeId'.
+	 * @return Value for property 'code'.
 	 */
-	public int getTypeId() {
-		return typeId;
+	public int getCode() {
+		return code;
 	}
 
 	/**
@@ -62,15 +36,13 @@ public class SpRegistryType extends DomainObject {
 	 *
 	 * @param typeId Value to set for property 'typeId'.
 	 */
-	public void setTypeId(int typeId) {
-		this.typeId = typeId;
+	public void setCode(int typeId) {
+		this.code = typeId;
 	}
 
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("id", getId())
-				.append("name", name)
-				.append("typeId", typeId)
+				.append("code: ", code)
 				.toString();
 	}
 }

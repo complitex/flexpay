@@ -4043,16 +4043,16 @@ INSERT INTO eirc_account_record_types_tbl (type_enum_id, description)
 	VALUES (3, 'Сальдо');
 
 -- Init service providers registry types
-INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (1, 1, 'Сальдо', 'Входящий');
-INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (2, 2, 'Начисление', 'Входящий');
-INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (3, 3, 'Извещение', 'Входящий');
-INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (4, 4, 'Счета на закрытие', 'Входящий');
-INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (5, 5, 'Информационный', 'Входящий');
-INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (6, 6, 'Корректировки', 'Входящий/Исходящий');
-INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (7, 7, 'Наличные оплаты', 'Входящий/Исходящий');
-INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (8, 8, 'Безналичные оплаты', 'Входящий/Исходящий');
-INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (9, 9, 'Возвраты платежей', 'Входящий/Исходящий');
-INSERT INTO eirc_sp_registry_types_tbl (id, type_enum_id, name, direction) VALUES (10, 10, 'Ошибки', 'Входящий/Исходящий');
+INSERT INTO eirc_sp_registry_types_tbl (id, code) VALUES (1, 1);
+INSERT INTO eirc_sp_registry_types_tbl (id, code) VALUES (2, 2);
+INSERT INTO eirc_sp_registry_types_tbl (id, code) VALUES (3, 3);
+INSERT INTO eirc_sp_registry_types_tbl (id, code) VALUES (4, 4);
+INSERT INTO eirc_sp_registry_types_tbl (id, code) VALUES (5, 5);
+INSERT INTO eirc_sp_registry_types_tbl (id, code) VALUES (6, 6);
+INSERT INTO eirc_sp_registry_types_tbl (id, code) VALUES (7, 7);
+INSERT INTO eirc_sp_registry_types_tbl (id, code) VALUES (8, 8);
+INSERT INTO eirc_sp_registry_types_tbl (id, code) VALUES (9, 9);
+INSERT INTO eirc_sp_registry_types_tbl (id, code) VALUES (10, 10);
 
 -- Init organisations
 INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, description, name, district_id, unique_id)
