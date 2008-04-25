@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="fregions" method="post" action="">
+	<form id="fregions" method="post" action="<s:url value="/dicts/list_regions.action" includeParams="none" />">
 
 		<tr>
 			<td class="th" width="100%" colspan="4" align="center">
@@ -24,7 +24,11 @@
 				<td class="col_1s" align="right"><s:property
 						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>&nbsp;</td>
 				<td class="col"><input type="checkbox" value="<s:property value="%{object.id}"/>" name="objectIds"/></td>
-				<td class="col"><s:property value="%{getTranslation(translations).name}"/></td>
+				<td class="col">
+					<a href="<s:url value="/dicts/list_towns.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{object.id}"/>">
+						<s:property value="%{getTranslation(translations).name}"/>
+					</a>
+				</td>
 				<td class="col">
 					<a href="<s:url value="/dicts/view_region.action?object.id=%{object.id}"/>"><s:text
 							name="common.view"/></a></td>

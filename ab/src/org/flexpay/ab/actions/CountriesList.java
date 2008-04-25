@@ -14,12 +14,12 @@ public class CountriesList implements ServletRequestAware {
 
 	private CountryService countryService;
 	private HttpServletRequest request;
+	private List<CountryNameTranslation> translationList;
 
 	public String execute() throws FlexPayException {
 		UserPreferences prefs = UserPreferences.getPreferences(request);
-		List<CountryNameTranslation> countryNames =
-				countryService.getCountries(prefs.getLocale());
-		request.setAttribute("country_names", countryNames);
+		translationList = countryService.getCountries(prefs.getLocale());
+		//request.setAttribute("country_names", countryNames);
 
 		return ActionSupport.SUCCESS;
 	}
@@ -35,5 +35,12 @@ public class CountriesList implements ServletRequestAware {
 	 */
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
+	}
+
+	/**
+	 * @return the translationList
+	 */
+	public List<CountryNameTranslation> getTranslationList() {
+		return translationList;
 	}
 }
