@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="fobjects" method="post" action="">
+	<form id="fobjects" method="post" action="<s:url value="/dicts/list_buildings.action" includeParams="none" />">
 
 		<tr>
 			<td class="th" width="100%" colspan="4" align="center">
@@ -35,12 +35,18 @@
 		</tr>
 		<s:iterator value="%{buildingsList}" status="status">
 			<tr valign="middle" class="cols_1">
-				<td class="col_1s" align="right"><s:property
-						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>&nbsp;</td>
-				<td class="col"><input type="checkbox" value="<s:property value="%{id}"/>"
-									   name="objectIds"/></td>
-				<td class="col"><s:property
-						value="%{getBuildingNumber(buildingAttributes)}"/></td>
+				<td class="col_1s" align="right">
+					<s:property	value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
+					&nbsp;
+				</td>
+				<td class="col">
+					<input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
+				</td>
+				<td class="col">
+					<a href="<s:url value="/dicts/list_apartments.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{regionFilter.selectedId}&townFilter.selectedId=%{townFilter.selectedId}&streetFilter.selectedId=%{streetFilter.selectedId}&buildingsFilter.selectedId=%{id}"/>">
+						<s:property	value="%{getBuildingNumber(buildingAttributes)}"/>
+					</a>
+				</td>
 			</tr>
 		</s:iterator>
 		<tr class="cols_1">

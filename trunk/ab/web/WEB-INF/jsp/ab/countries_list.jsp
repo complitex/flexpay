@@ -7,14 +7,24 @@
 		<td class="th"><s:text name="ab.country_name"/></td>
 		<td class="th"><s:text name="ab.country_shortname"/></td>
 	</tr>
-	<c:forEach items="${requestScope['country_names']}" varStatus="status" var="rNameTrans">
+	<s:iterator value="translationList" status="rowstatus">
 		<tr valign="middle" class="cols_1">
-			<td class="col_1s" align="right"><c:out value="${status.index + 1}"/></td>
-			<td class="col" align="center"><input type="checkbox"></td>
-			<td class="col"><c:out value="${rNameTrans.name}"/></td>
-			<td class="col"><c:out value="${rNameTrans.shortName}"/></td>
+			<td class="col_1s" align="right">
+				<s:property value="#rowstatus.index + 1" />
+			</td>
+			<td class="col" align="center">
+				<input type="checkbox">
+			</td>
+			<td class="col"> 
+				<a href="<s:url action='list_regions.action'><s:param name="countryFilter.selectedId" value="%{translatable.id}"/></s:url>">
+	            	<s:property value="name" />
+	            </a>
+			</td>
+			<td class="col">
+				<s:property value="shortName" />
+			</td>
 		</tr>
-	</c:forEach>
+	</s:iterator>
 	<tr>
 		<td colspan="4" height="3" bgcolor="#4a4f4f" /></tr>
 	<tr>
