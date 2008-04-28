@@ -86,6 +86,7 @@ public class SimplePayment extends ContainerOperation {
 		}
 		accountRecord.setOrganisation(organisation);
 		accountRecord.setConsumer(record.getConsumer());
+		accountRecord.setSourceRegistryRecord(record);
 		return accountRecord;
 	}
 

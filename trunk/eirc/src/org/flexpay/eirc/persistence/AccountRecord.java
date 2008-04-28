@@ -12,6 +12,7 @@ public class AccountRecord extends DomainObject {
 	private AccountRecordType recordType;
 	private Date operationDate;
 	private BigDecimal amount;
+	private SpRegistryRecord sourceRegistryRecord;
 	private AbstractConsumer consumer;
 
 	// Organisation performed operation with the account
@@ -115,6 +116,14 @@ public class AccountRecord extends DomainObject {
 	 */
 	public void setOrganisation(Organisation organisation) {
 		this.organisation = organisation;
+	}
+
+	public SpRegistryRecord getSourceRegistryRecord() {
+		return sourceRegistryRecord;
+	}
+
+	public void setSourceRegistryRecord(SpRegistryRecord sourceRegistryRecord) {
+		this.sourceRegistryRecord = sourceRegistryRecord;
 	}
 
 	public String toString() {

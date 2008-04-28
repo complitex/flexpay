@@ -99,6 +99,10 @@
         drop 
         foreign key FKE517FBC57F30FD59;
 
+    alter table eirc_account_records_tbl 
+        drop 
+        foreign key FK_registry_record;
+
     alter table eirc_consumers_tbl 
         drop 
         foreign key FK9751FED27095AEAD;
@@ -633,6 +637,7 @@
         operation_date datetime not null,
         amount decimal(19,2) not null,
         record_type_id bigint not null,
+        source_registry_record_id bigint,
         primary key (id)
     );
 
@@ -1174,6 +1179,12 @@
         add constraint FKE517FBC57F30FD59 
         foreign key (organisation_id) 
         references eirc_organisations_tbl (id);
+
+    alter table eirc_account_records_tbl 
+        add index FK_registry_record (source_registry_record_id), 
+        add constraint FK_registry_record 
+        foreign key (source_registry_record_id) 
+        references eirc_sp_registry_records_tbl (id);
 
     alter table eirc_consumers_tbl 
         add index FK9751FED27095AEAD (person_id), 
