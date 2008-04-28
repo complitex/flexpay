@@ -35,6 +35,11 @@
 		<property name="buildingsDao" ref="buildingsDao" />
 		<property name="apartmentService" ref="apartmentService" />
 	</bean>
+	<bean id="personProcessor" class="org.flexpay.ab.service.imp.PersonProcessor">
+		<property name="personDao" ref="personDao" />
+		<property name="personService" ref="personService" />
+		<property name="identityTypeService" ref="identityTypeService" />
+	</bean>
 
 
 	<bean id="abSyncService" class="org.flexpay.ab.service.imp.SyncServiceImpl">
@@ -46,6 +51,7 @@
 		<property name="streetProcessor" ref="streetProcessor" />
 		<property name="districtProcessor" ref="districtProcessor" />
 		<property name="streetTypeProcessor" ref="streetTypeProcessor" />
+		<property name="personProcessor" ref="personProcessor" />
 		<property name="lockManager" ref="LockManager" />
 		<property name="sd">
 			<bean class="org.flexpay.common.persistence.DataSourceDescription">
