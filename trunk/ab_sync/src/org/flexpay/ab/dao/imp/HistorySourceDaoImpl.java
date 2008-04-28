@@ -39,10 +39,9 @@ public class HistorySourceDaoImpl extends SimpleJdbcDaoSupport implements Histor
 		fieldObjectId = props.getProperty("fieldObjectId");
 		fieldFieldName = props.getProperty("fieldFieldName");
 		fieldActionType = props.getProperty("fieldActionType");
+		sqlGetRecords = props.getProperty("sqlGetRecords");
 
 		validateConfig();
-
-		sqlGetRecords = String.format("select * from %s where %s>=?", tableName, fieldRecordId);
 	}
 
 	private void validateConfig() {

@@ -31,7 +31,7 @@
 		<property name="cronExpression" value="${ab.sync.cron.schedule.dump}" />
 	</bean>
 
-	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	<bean id="schedulerFactoryBeanAbSync" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
 				<ref bean="jobSyncTrigger" />
@@ -43,5 +43,6 @@
 				<prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
 			</props>
 		</property>
+		<property name="startupDelay" value="20" />
 	</bean>
 </beans>

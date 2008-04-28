@@ -4,11 +4,12 @@ import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.HistoryDao;
 import org.flexpay.ab.dao.HistorySourceDao;
 import org.flexpay.ab.dao.UpdateConfigDao;
-import org.flexpay.ab.service.HistoryDumpService;
-import org.flexpay.ab.persistence.UpdateConfig;
 import org.flexpay.ab.persistence.HistoryRecord;
+import org.flexpay.ab.persistence.UpdateConfig;
+import org.flexpay.ab.service.HistoryDumpService;
 import org.flexpay.common.locking.LockManager;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class HistoryDumpServiceImpl implements HistoryDumpService {
@@ -30,22 +31,41 @@ public class HistoryDumpServiceImpl implements HistoryDumpService {
 			return;
 		}
 
+		long nRecords = 0;
 		try {
 			UpdateConfig config = updateConfigDao.getConfig();
 			if (log.isInfoEnabled()) {
 				log.info("Last dumped record was: " + config.getLastDumpedRecordId());
 			}
-			List<HistoryRecord> records = historySourceDao.getRecords(config.getLastDumpedRecordId());
-			for (HistoryRecord record : records) {
-				historyDao.addRecord(record);
-				config.setLastDumpedRecordId(record.getRecordId());
-			}
+			List<HistoryRecord> records;
+			do {
+				records = historySourceDao.getRecords(config.getLastDumpedRecordId());
+				for (HistoryRecord record : records) {
+					historyDao.addRecord(record);
+					++nRecords;
+					config.setLastDumpedRecordId(record.getRecordId());
+				}
 
-			updateConfigDao.saveConfig(config);
+				updateConfigDao.saveConfig(config);
+			} while (hasNewRecords(records, config));
 		} finally {
 			// and release a lock
 			lockManager.releaseLock("sync_ab_lock");
 		}
+
+		log.info("Dumped " + nRecords + " records.");
+	}
+
+	private boolean hasNewRecords(List<HistoryRecord> records, UpdateConfig config) {
+		Iterator<HistoryRecord> it = records.iterator();
+		while (it.hasNext()) {
+			HistoryRecord record = it.next();
+			if (!record.getRecordId().equals(config.getLastDumpedRecordId())) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public void setUpdateConfigDao(UpdateConfigDao updateConfigDao) {

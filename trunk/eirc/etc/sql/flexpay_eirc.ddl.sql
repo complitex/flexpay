@@ -149,6 +149,14 @@
 
     alter table eirc_sp_registries_tbl 
         drop 
+        foreign key FK8F6F49524B0FEDC6;
+
+    alter table eirc_sp_registries_tbl 
+        drop 
+        foreign key FK8F6F495212E06FB1;
+
+    alter table eirc_sp_registries_tbl 
+        drop 
         foreign key FK8F6F495212902C71;
 
     alter table eirc_sp_registries_tbl 
@@ -169,7 +177,7 @@
 
     alter table eirc_ticket_service_amounts_tbl 
         drop 
-        foreign key FK4C2595072C648686;
+        foreign key FK4C25950791349F59;
 
     alter table eirc_tickets_tbl 
         drop 
@@ -397,7 +405,11 @@
 
     drop table if exists eirc_sp_registries_tbl;
 
+    drop table if exists eirc_sp_registry_archive_statuses_tbl;
+
     drop table if exists eirc_sp_registry_records_tbl;
+
+    drop table if exists eirc_sp_registry_statuses_tbl;
 
     drop table if exists eirc_sp_registry_types_tbl;
 
@@ -547,6 +559,7 @@
         object_type integer not null,
         ext_object_id varchar(255) not null,
         handler_object_name varchar(255) not null,
+        error_key varchar(255),
         primary key (id)
     );
 
@@ -616,7 +629,7 @@
     create table eirc_account_records_tbl (
         id bigint not null auto_increment,
         consumer_id bigint not null,
-        organisation_id bigint not null,
+        organisation_id bigint,
         operation_date datetime not null,
         amount decimal(19,2) not null,
         record_type_id bigint not null,
@@ -710,6 +723,14 @@
         registry_type_id bigint not null,
         sp_file_id bigint not null,
         service_provider_id bigint,
+        registry_status_id bigint not null,
+        archive_status_id bigint not null,
+        primary key (id)
+    );
+
+    create table eirc_sp_registry_archive_statuses_tbl (
+        id bigint not null auto_increment,
+        code integer not null unique,
         primary key (id)
     );
 
@@ -735,18 +756,22 @@
         primary key (id)
     );
 
+    create table eirc_sp_registry_statuses_tbl (
+        id bigint not null auto_increment,
+        code integer not null unique,
+        primary key (id)
+    );
+
     create table eirc_sp_registry_types_tbl (
         id bigint not null auto_increment,
-        name varchar(255) not null,
-        direction varchar(255) not null,
-        type_enum_id integer not null,
+        code integer not null,
         primary key (id)
     );
 
     create table eirc_ticket_service_amounts_tbl (
         id bigint not null auto_increment,
         ticket_id bigint,
-        service_type_id bigint not null,
+        consumer_id bigint not null,
         date_from_amount decimal(19,2) not null,
         date_till_amount decimal(19,2) not null,
         primary key (id)
@@ -903,6 +928,7 @@
     create table street_type_translations_tbl (
         id bigint not null auto_increment,
         name varchar(255),
+        short_name varchar(255),
         language_id bigint not null,
         street_type_id bigint not null,
         primary key (id),
@@ -968,6 +994,7 @@
     create table town_type_translations_tbl (
         ID bigint not null auto_increment,
         name varchar(255),
+        short_name varchar(255),
         language_id bigint,
         town_type_id bigint,
         primary key (ID),
@@ -1221,6 +1248,18 @@
         references eirc_service_providers_tbl (id);
 
     alter table eirc_sp_registries_tbl 
+        add index FK8F6F49524B0FEDC6 (archive_status_id), 
+        add constraint FK8F6F49524B0FEDC6 
+        foreign key (archive_status_id) 
+        references eirc_sp_registry_archive_statuses_tbl (id);
+
+    alter table eirc_sp_registries_tbl 
+        add index FK8F6F495212E06FB1 (registry_status_id), 
+        add constraint FK8F6F495212E06FB1 
+        foreign key (registry_status_id) 
+        references eirc_sp_registry_statuses_tbl (id);
+
+    alter table eirc_sp_registries_tbl 
         add index FK8F6F495212902C71 (registry_type_id), 
         add constraint FK8F6F495212902C71 
         foreign key (registry_type_id) 
@@ -1251,10 +1290,10 @@
         references eirc_tickets_tbl (id);
 
     alter table eirc_ticket_service_amounts_tbl 
-        add index FK4C2595072C648686 (service_type_id), 
-        add constraint FK4C2595072C648686 
-        foreign key (service_type_id) 
-        references eirc_service_types_tbl (id);
+        add index FK4C25950791349F59 (consumer_id), 
+        add constraint FK4C25950791349F59 
+        foreign key (consumer_id) 
+        references eirc_consumers_tbl (id);
 
     alter table eirc_tickets_tbl 
         add index FK9C84E2FC7095AEAD (person_id), 

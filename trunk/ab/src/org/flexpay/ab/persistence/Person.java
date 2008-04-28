@@ -3,8 +3,8 @@ package org.flexpay.ab.persistence;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Person
@@ -12,7 +12,7 @@ import java.util.Set;
 public class Person extends DomainObjectWithStatus {
 
 	private Apartment apartment;
-	private Set<PersonAttribute> personAttributes = new HashSet<PersonAttribute>(0);
+	private Set<PersonAttribute> personAttributes = Collections.emptySet();
 	private Set<PersonIdentity> personIdentities = Collections.emptySet();
 
 	/**
@@ -92,5 +92,44 @@ public class Person extends DomainObjectWithStatus {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Set person attribute, create, update or delete attribute operation.
+	 *
+	 * @param attribute PersonAttribute to set up
+	 */
+	public void setAttribute(PersonAttribute attribute) {
+		boolean needRemove = false;
+		for (PersonAttribute attr : personAttributes) {
+			if (attr.getName().equals(attribute.getName()) && attr.getLang().equals(attribute.getLang())) {
+				// new value is null, need to remove it
+				if (attribute.getValue() == null) {
+					needRemove = true;
+					attribute = attr;
+					break;
+				}
+				attr.setValue(attribute.getValue());
+				return;
+			}
+		}
+
+		if (needRemove) {
+			personAttributes.remove(attribute);
+		} else {
+			if (personAttributes == Collections.EMPTY_SET) {
+				personAttributes = new HashSet<PersonAttribute>();
+			}
+
+			personAttributes.add(attribute);
+		}
+	}
+
+	public void addIdentity(PersonIdentity identity) {
+		if (personIdentities == Collections.EMPTY_SET) {
+			personIdentities = new HashSet<PersonIdentity>();
+		}
+
+		personIdentities.add(identity);
 	}
 }
