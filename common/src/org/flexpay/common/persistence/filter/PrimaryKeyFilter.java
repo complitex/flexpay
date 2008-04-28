@@ -6,6 +6,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class PrimaryKeyFilter extends ObjectFilter {
 
 	private Long selectedId;
+	private Long defaultId;
 
 	public PrimaryKeyFilter() {
 	}
@@ -31,6 +32,20 @@ public class PrimaryKeyFilter extends ObjectFilter {
 	public void setSelectedId(Long selectedId) {
 		this.selectedId = selectedId;
 	}
+	
+	/**
+	 * @return the defaultId
+	 */
+	public Long getDefaultId() {
+		return defaultId;
+	}
+
+	/**
+	 * @param defaultId the defaultId to set
+	 */
+	public void setDefaultId(Long defaultId) {
+		this.defaultId = defaultId;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -41,4 +56,5 @@ public class PrimaryKeyFilter extends ObjectFilter {
 				.append("Selected id", selectedId)
 				.toString();
 	}
+
 }
