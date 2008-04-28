@@ -9,6 +9,8 @@ import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.persistence.filter.NameFilter;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 
 import java.util.Collection;
 import java.util.List;
@@ -38,7 +40,11 @@ public abstract class ListAction<
 
 		long start = System.currentTimeMillis();
 		try {
-			ArrayStack filters = parentService.initFilters(getFilters(), userPreferences.getLocale());
+			ArrayStack filterArrayStack = getFilters();
+			for(Object filter : filterArrayStack) {
+				initFilterId((PrimaryKeyFilter) filter);
+			}
+			ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
 			setFilters(filters);
 
 			initObjects(filters);
@@ -61,6 +67,22 @@ public abstract class ListAction<
 			log.info("Listing " + (System.currentTimeMillis() - start) + " ms");
 		}
 		return SUCCESS;
+	}
+	
+	private void initFilterId(PrimaryKeyFilter filter) {
+		Long selectedId = filter.getSelectedId();
+		Long defaultId = filter.getDefaultId();
+		String filterName = filter.getClass().getName();
+		Long inSessionId = (Long) session.get(filterName);
+		if(selectedId == null) {
+			if(inSessionId == null) {
+				filter.setSelectedId(defaultId);
+			} else {
+				filter.setSelectedId(inSessionId);
+			}
+		} else {
+			session.put(filterName, selectedId);
+		}
 	}
 
 	protected void initObjects(ArrayStack filters) throws FlexPayException {
