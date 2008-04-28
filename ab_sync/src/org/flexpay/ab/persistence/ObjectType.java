@@ -2,9 +2,10 @@ package org.flexpay.ab.persistence;
 
 public enum ObjectType {
 
-	Unknown(-1, -1), Town(0, 0), District(1, 1), Street(2, 3), Building(3, 4), StreetType(4, 2), Apartment(5, 5);
+	Unknown(-1, -1), Town(0, 0), District(1, 1), Street(2, 3), Building(3, 4),
+	StreetType(4, 2), Apartment(5, 5), Person(6, 6);
 
-	private static ObjectType[] types = {Town, District, Street, Building, StreetType, Apartment};
+	private static ObjectType[] types = {Town, District, Street, Building, StreetType, Apartment, Person};
 
 	private int id;
 	private int orderWeight;

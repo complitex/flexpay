@@ -25,12 +25,12 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 	 * @param person Identity data
 	 * @return Person stub if persistent person matches specified identity
 	 */
-	public Person findPersonStub(Person person) {
+	public Person findPersonStub(final Person person) {
 
-		if (true) {
-			return personDaoExtJdbc.findPersonStub(person);
-		}
-
+//		if (true) {
+//			return personDaoExtJdbc.findPersonStub(person);
+//		}
+//
 		final PersonIdentity identity = person.getDefaultIdentity();
 		List identities = getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
@@ -58,7 +58,12 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 				if (StringUtils.isNotEmpty(identity.getDocumentNumber())) {
 					crit.add(Restrictions.eq("documentNumber", identity.getDocumentNumber()));
 				}
-				// todo: add other criteria as well
+				if (person.getApartment() != null) {
+					crit
+							.createAlias("person", "p")
+							.createAlias("p.apartment", "a")
+							.add(Restrictions.eq("a.id", person.getApartment().getId()));
+				}
 
 				return crit.list();
 			}

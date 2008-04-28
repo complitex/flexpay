@@ -28,6 +28,7 @@ public class SyncServiceImpl implements SyncService {
 	private StreetProcessor streetProcessor;
 	private DistrictProcessor districtProcessor;
 	private StreetTypeProcessor streetTypeProcessor;
+	private PersonProcessor personProcessor;
 
 	private LockManager lockManager;
 
@@ -112,6 +113,9 @@ public class SyncServiceImpl implements SyncService {
 			case Apartment:
 				processor = apartmentProcessor;
 				break;
+			case Person:
+				processor = personProcessor;
+				break;
 			case Building:
 				processor = buildingProcessor;
 				break;
@@ -177,6 +181,10 @@ public class SyncServiceImpl implements SyncService {
 
 	public void setStreetTypeProcessor(StreetTypeProcessor streetTypeProcessor) {
 		this.streetTypeProcessor = streetTypeProcessor;
+	}
+
+	public void setPersonProcessor(PersonProcessor personProcessor) {
+		this.personProcessor = personProcessor;
 	}
 
 	public void setLockManager(LockManager lockManager) {
