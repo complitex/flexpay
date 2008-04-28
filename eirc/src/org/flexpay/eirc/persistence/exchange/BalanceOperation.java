@@ -59,6 +59,7 @@ public class BalanceOperation extends Operation {
 			newRecord.setConsumer(record.getConsumer());
 			newRecord.setOrganisation(ApplicationConfig.getInstance().getSelfOrganisation());
 			newRecord.setOperationDate(record.getOperationDate());
+			newRecord.setSourceRegistryRecord(record);
 
 			AccountRecordType type = spService.getRecordType(AccountRecordType.TYPE_BALANCE_CORRECTION);
 			if (type == null) {

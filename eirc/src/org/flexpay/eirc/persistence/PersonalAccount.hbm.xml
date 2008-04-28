@@ -29,7 +29,8 @@
 		<property name="typeId" not-null="true" column="type_enum_id" />
 	</class>
 
-	<class name="AccountRecord" table="eirc_account_records_tbl" optimistic-lock="version">
+	<class name="AccountRecord" table="eirc_account_records_tbl"
+		   optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -42,6 +43,9 @@
 		<property name="amount" type="big_decimal" not-null="true" />
 		<many-to-one name="recordType" column="record_type_id"
 					 class="AccountRecordType" not-null="true" />
+		<many-to-one name="sourceRegistryRecord" column="source_registry_record_id"
+					 class="SpRegistryRecord" not-null="false"
+					 foreign-key="FK_registry_record" />
 	</class>
 
 	<query name="AccountRecord.findRegisteredRecords.count">
@@ -55,39 +59,39 @@
 		where organisation.id=? and consumer.id=? and operationDate=? and amount=? and
 		recordType.id=?
 	</query>
-	
+
 	<query name="AccountRecord.findBalanceForDate">
-	<![CDATA[
+		<![CDATA[
 		SELECT SUM(record.amount)
 		FROM AccountRecord record
 		WHERE record.consumer.id=? AND record.operationDate<=?
 	]]>
 	</query>
-	
+
 	<query name="AccountRecord.findCalculateServiceAmount">
 		SELECT record.consumer.id, sum(record.amount)
 		FROM AccountRecord record
 		WHERE record.consumer.responsiblePerson.id=? AND
-		      record.consumer.apartment.id=? AND
-		      record.operationDate <![CDATA[<]]> ?
-		GROUP BY record.consumer.id      
+		record.consumer.apartment.id=? AND
+		record.operationDate <![CDATA[<]]> ?
+		GROUP BY record.consumer.id
 	</query>
 
 	<query name="Consumer.findConsumers.count">
-		select count(*) 
+		select count(*)
 		from Consumer
 		where responsiblePerson.id = ?
-			and service.id = ?
-			and externalAccountNumber = ?
-			and apartment.id = ?
+		and service.id = ?
+		and externalAccountNumber = ?
+		and apartment.id = ?
 	</query>
 
 	<query name="Consumer.findConsumers">
 		from Consumer
 		where responsiblePerson.id = ?
-			and service.id = ?
-			and externalAccountNumber = ?
-			and apartment.id = ?
+		and service.id = ?
+		and externalAccountNumber = ?
+		and apartment.id = ?
 	</query>
 
 </hibernate-mapping>

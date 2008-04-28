@@ -3,7 +3,7 @@ package org.flexpay.common.persistence.filter;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class PrimaryKeyFilter {
+public class PrimaryKeyFilter extends ObjectFilter {
 
 	private Long selectedId;
 
