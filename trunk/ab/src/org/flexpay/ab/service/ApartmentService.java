@@ -1,12 +1,12 @@
 package org.flexpay.ab.service;
 
+import java.util.List;
+
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-
-import java.util.List;
 
 public interface ApartmentService {
 
@@ -14,27 +14,34 @@ public interface ApartmentService {
 
 	/**
 	 * Try to find apartment by building and number
-	 *
-	 * @param building Building
-	 * @param number Apartment number
+	 * 
+	 * @param building
+	 *            Building
+	 * @param number
+	 *            Apartment number
 	 * @return Apartment if found, or <code>null</code> otherwise
 	 */
 	Apartment findApartmentStub(Building building, String number);
 
 	/**
 	 * Get apartment number
-	 *
-	 * @param apartment Apartment, possibly a stub
+	 * 
+	 * @param apartment
+	 *            Apartment, possibly a stub
 	 * @return Apartment number
-	 * @throws FlexPayException if apartment specified is invalid
+	 * @throws FlexPayException
+	 *             if apartment specified is invalid
 	 */
 	String getApartmentNumber(Apartment apartment) throws FlexPayException;
 
 	/**
 	 * Get building apartment belongs to
-	 *
-	 * @param apartment Apartment stub
+	 * 
+	 * @param apartment
+	 *            Apartment stub
 	 * @return Building stub
 	 */
 	Building getBuilding(Apartment apartment);
+
+	public String getAddress(Apartment apartment) throws FlexPayException;
 }

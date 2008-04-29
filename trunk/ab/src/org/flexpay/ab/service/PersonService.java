@@ -4,6 +4,7 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.dao.paging.Page;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface PersonService {
@@ -32,4 +33,10 @@ public interface PersonService {
 	 * @return Person stub if persitent person matches specified identity
 	 */
 	Person findPersonStub(Person person);
+	
+	/**
+	 * Update person
+	 * @param person Person
+	 */
+	void update(Person person);
 }

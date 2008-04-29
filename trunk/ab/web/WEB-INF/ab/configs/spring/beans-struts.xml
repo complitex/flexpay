@@ -232,6 +232,11 @@
 	<bean id="viewPerson" scope="prototype"
 		  class="org.flexpay.ab.actions.person.ViewPerson">
 		<property name="personService" ref="personService" />
+		<property name="apartmentService" ref="apartmentService" />
+	</bean>
+	<bean id="setRegistrationAction" scope="prototype"
+		  class="org.flexpay.ab.actions.person.SetRegistrationAction">
+		<property name="personService" ref="personService" />
 	</bean>
 
 </beans>

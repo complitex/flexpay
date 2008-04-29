@@ -11,6 +11,7 @@ import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 
 import java.util.ArrayList;
@@ -20,8 +21,9 @@ import java.util.Map;
 
 public class ListBuildings extends BuildingsActionsBase implements SessionAware {
 
-	private static final String ATTRIBUTE_ACTION_ERRORS =
-			ListBuildings.class.getName() + ".ACTION_ERRORS";
+	private static final String ATTRIBUTE_ACTION_ERRORS = ListBuildings.class
+			.getName()
+			+ ".ACTION_ERRORS";
 
 	private static Logger log = Logger.getLogger(ListBuildings.class);
 
@@ -41,11 +43,16 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 	 * {@inheritDoc}
 	 */
 	@Override
-	@SuppressWarnings ({"unchecked"})
+	@SuppressWarnings( { "unchecked" })
 	public String execute() throws Exception {
 		long start = System.currentTimeMillis();
 		try {
-			ArrayStack filters = parentService.initFilters(getFilters(), userPreferences.getLocale());
+			ArrayStack filterArrayStack = getFilters();
+			for (Object filter : filterArrayStack) {
+				((PrimaryKeyFilter) filter).initFilter(session);
+			}
+			ArrayStack filters = parentService.initFilters(filterArrayStack,
+					userPreferences.getLocale());
 			setFilters(filters);
 
 			buildingsList = buildingService.getBuildings(filters, pager);
@@ -55,9 +62,11 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 		// Retrieve action errors from session if any
 		if (log.isDebugEnabled()) {
-			log.debug("Getting actionErrors: " + session.get(ATTRIBUTE_ACTION_ERRORS));
+			log.debug("Getting actionErrors: "
+					+ session.get(ATTRIBUTE_ACTION_ERRORS));
 		}
-		Collection errors = (Collection) session.remove(ATTRIBUTE_ACTION_ERRORS);
+		Collection errors = (Collection) session
+				.remove(ATTRIBUTE_ACTION_ERRORS);
 		if (errors != null && !errors.isEmpty()) {
 			Collection actionErrors = getActionErrors();
 			actionErrors.addAll(errors);
@@ -72,7 +81,7 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Getter for property 'filters'.
-	 *
+	 * 
 	 * @return Value for property 'filters'.
 	 */
 	public ArrayStack getFilters() {
@@ -88,8 +97,9 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Setter for property 'filters'.
-	 *
-	 * @param filters Value to set for property 'filters'.
+	 * 
+	 * @param filters
+	 *            Value to set for property 'filters'.
 	 */
 	public void setFilters(ArrayStack filters) {
 		countryFilter = (CountryFilter) filters.peek(3);
@@ -100,7 +110,7 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Getter for property 'countryFilter'.
-	 *
+	 * 
 	 * @return Value for property 'countryFilter'.
 	 */
 	public CountryFilter getCountryFilter() {
@@ -109,8 +119,9 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Setter for property 'countryFilter'.
-	 *
-	 * @param countryFilter Value to set for property 'countryFilter'.
+	 * 
+	 * @param countryFilter
+	 *            Value to set for property 'countryFilter'.
 	 */
 	public void setCountryFilter(CountryFilter countryFilter) {
 		this.countryFilter = countryFilter;
@@ -118,7 +129,7 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Getter for property 'regionFilter'.
-	 *
+	 * 
 	 * @return Value for property 'regionFilter'.
 	 */
 	public RegionFilter getRegionFilter() {
@@ -127,8 +138,9 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Setter for property 'regionFilter'.
-	 *
-	 * @param regionFilter Value to set for property 'regionFilter'.
+	 * 
+	 * @param regionFilter
+	 *            Value to set for property 'regionFilter'.
 	 */
 	public void setRegionFilter(RegionFilter regionFilter) {
 		this.regionFilter = regionFilter;
@@ -136,7 +148,7 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Getter for property 'townFilter'.
-	 *
+	 * 
 	 * @return Value for property 'townFilter'.
 	 */
 	public TownFilter getTownFilter() {
@@ -145,8 +157,9 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Setter for property 'townFilter'.
-	 *
-	 * @param townFilter Value to set for property 'townFilter'.
+	 * 
+	 * @param townFilter
+	 *            Value to set for property 'townFilter'.
 	 */
 	public void setTownFilter(TownFilter townFilter) {
 		this.townFilter = townFilter;
@@ -154,7 +167,7 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Getter for property 'streetFilter'.
-	 *
+	 * 
 	 * @return Value for property 'streetFilter'.
 	 */
 	public StreetFilter getStreetFilter() {
@@ -163,8 +176,9 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Setter for property 'streetFilter'.
-	 *
-	 * @param streetFilter Value to set for property 'streetFilter'.
+	 * 
+	 * @param streetFilter
+	 *            Value to set for property 'streetFilter'.
 	 */
 	public void setStreetFilter(StreetFilter streetFilter) {
 		this.streetFilter = streetFilter;
@@ -172,8 +186,9 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Setter for property 'buildingsService'.
-	 *
-	 * @param buildingService Value to set for property 'buildingsService'.
+	 * 
+	 * @param buildingService
+	 *            Value to set for property 'buildingsService'.
 	 */
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
@@ -181,8 +196,9 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Setter for property 'parentService'.
-	 *
-	 * @param parentService Value to set for property 'parentService'.
+	 * 
+	 * @param parentService
+	 *            Value to set for property 'parentService'.
 	 */
 	public void setParentService(ParentService parentService) {
 		this.parentService = parentService;
@@ -190,7 +206,7 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Getter for property 'buildingsList'.
-	 *
+	 * 
 	 * @return Value for property 'buildingsList'.
 	 */
 	public List<Buildings> getBuildingsList() {
@@ -199,7 +215,7 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Getter for property 'pager'.
-	 *
+	 * 
 	 * @return Value for property 'pager'.
 	 */
 	public Page getPager() {
@@ -208,14 +224,16 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Setter for property 'pager'.
-	 *
-	 * @param pager Value to set for property 'pager'.
+	 * 
+	 * @param pager
+	 *            Value to set for property 'pager'.
 	 */
 	public void setPager(Page pager) {
 		this.pager = pager;
 	}
 
-	public static void setActionErrors(Map<String, Object> session, Collection actionErrors) {
+	public static void setActionErrors(Map<String, Object> session,
+			Collection actionErrors) {
 		if (log.isDebugEnabled()) {
 			log.debug("Setting actionErrors: " + actionErrors);
 		}
@@ -224,8 +242,9 @@ public class ListBuildings extends BuildingsActionsBase implements SessionAware 
 
 	/**
 	 * Sets the Map of session attributes in the implementing class.
-	 *
-	 * @param session a Map of HTTP session attribute name/value pairs.
+	 * 
+	 * @param session
+	 *            a Map of HTTP session attribute name/value pairs.
 	 */
 	public void setSession(Map session) {
 		this.session = session;

@@ -42,7 +42,7 @@ public abstract class ListAction<
 		try {
 			ArrayStack filterArrayStack = getFilters();
 			for(Object filter : filterArrayStack) {
-				initFilterId((PrimaryKeyFilter) filter);
+				((PrimaryKeyFilter) filter).initFilter(session);
 			}
 			ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
 			setFilters(filters);
@@ -69,7 +69,7 @@ public abstract class ListAction<
 		return SUCCESS;
 	}
 	
-	private void initFilterId(PrimaryKeyFilter filter) {
+	/*private void initFilterId(PrimaryKeyFilter filter) {
 		Long selectedId = filter.getSelectedId();
 		Long defaultId = filter.getDefaultId();
 		String filterName = filter.getClass().getName();
@@ -83,7 +83,7 @@ public abstract class ListAction<
 		} else {
 			session.put(filterName, selectedId);
 		}
-	}
+	}*/
 
 	protected void initObjects(ArrayStack filters) throws FlexPayException {
 		objectNames = nameTimeDependentService.findNames(filters, pager);
