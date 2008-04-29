@@ -10,7 +10,7 @@ public class AllTests extends TestCase {
 		TestSuite suite = new TestSuite();
 		suite.addTest(new SchedulerStopper());
 		suite.addTest(new TestSyncAbJob());
-//		suite.addTest(new TestDumpHistoryJob());
+		suite.addTest(new TestDumpHistoryJob());
 		return suite;
 	}
 }
