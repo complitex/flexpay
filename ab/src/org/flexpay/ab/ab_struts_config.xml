@@ -264,6 +264,22 @@
 		<action name="view_person" class="viewPerson">
 			<result type="tiles">ab.person.view</result>
 		</action>
+		<action name="setRegistrationForm" class="listApartments">
+			<result type="tiles">ab.person.set_registration_form</result>
+		</action>
+		<action name="setRegistration" class="setRegistrationAction">
+			<result name="success" type="redirect-action">
+				<param name="actionName">view_person</param>
+				<param name="parse">true</param>
+				<param name="person.id">${personId}</param>
+			</result>
+			<result name="form" type="redirect-action">
+				<param name="actionName">setRegistrationForm</param>
+				<param name="parse">true</param>
+				<param name="person.id">${personId}</param>
+				<param name="apartment_not_selected">true</param>
+			</result>
+		</action>
 	</package>
 
 	<package name="buildings" namespace="/dicts" extends="common">

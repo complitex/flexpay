@@ -65,4 +65,13 @@ public class PersonServiceImpl implements PersonService {
 	public Person findPersonStub(Person person) {
 		return personDaoExt.findPersonStub(person);
 	}
+	
+	/**
+	 * Update person
+	 * @param person Person
+	 */
+	@Transactional(readOnly = false)
+	public void update(Person person) {
+		personDao.update(person);
+	}
 }

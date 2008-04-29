@@ -46,4 +46,16 @@
 			<td colspan="2" height="3" bgcolor="#4a4f4f"/>
 		</tr>
 	</s:iterator>
+	<tr class="cols_1">
+		<td class="th"><s:text name="ab.person.registration_address"/></td>
+		<td class="col_1">
+			<s:property value="address"/>
+			<a href="<s:url value="/dicts/setRegistrationForm.action" />">
+						<s:text name="ab.edit"/>
+			</a>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" height="3" bgcolor="#4a4f4f"/>
+	</tr>
 </table>
