@@ -1,30 +1,20 @@
 package org.flexpay.eirc.sp;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.util.StringUtil;
+import org.flexpay.eirc.persistence.*;
+import org.flexpay.eirc.service.*;
+import org.flexpay.eirc.sp.SpFileReader.Message;
+
 import java.io.*;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.StringUtil;
-import org.flexpay.common.util.CRCUtil;
-import org.flexpay.eirc.persistence.SpFile;
-import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryArchiveStatus;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
-import org.flexpay.eirc.persistence.SpRegistryStatus;
-import org.flexpay.eirc.persistence.SpRegistryType;
-import org.flexpay.eirc.service.SpRegistryArchiveStatusService;
-import org.flexpay.eirc.service.SpRegistryRecordService;
-import org.flexpay.eirc.service.SpRegistryService;
-import org.flexpay.eirc.service.SpRegistryStatusService;
-import org.flexpay.eirc.service.SpRegistryTypeService;
-import org.flexpay.eirc.sp.SpFileReader.Message;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 
 public class SpFileParser {
 
@@ -34,8 +24,7 @@ public class SpFileParser {
 	public static final String ADDRESS_DELIMITER = ",";
 	public static final String FIO_DELIMITER = ",";
 
-	public static final DateFormat dateFormat = new SimpleDateFormat(
-			"ddMMyyyyHHmmss");
+	public static final DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
 
 	private SpRegistryService spRegistryService;
 	private SpRegistryRecordService spRegistryRecordService;
@@ -91,11 +80,7 @@ public class SpFileParser {
 			return;
 		}
 
-		List<String> messageFieldList = StringUtil.tokenize(messageValue,
-				RECORD_DELIMITER);
-		String crc16 = messageFieldList.get(messageFieldList.size() - 1);
-
-		validateCrc16(joinFields(messageType, messageFieldList), crc16);
+		List<String> messageFieldList = StringUtil.tokenize(messageValue, RECORD_DELIMITER);
 
 		if (messageType.equals(Message.MESSAGE_TYPE_HEADER)) {
 			processHeader(messageFieldList);
@@ -104,17 +89,6 @@ public class SpFileParser {
 		} else if (messageType.equals(Message.MESSAGE_TYPE_FOOTER)) {
 			processFooter(messageFieldList);
 		}
-	}
-
-	// get original string crc calculated on
-	private String joinFields(int type, List<String> messageFieldList) {
-		StringBuilder buf = new StringBuilder();
-		buf.append((char) type);
-		for (int i = 0; i < messageFieldList.size() - 1; ++i) {
-			buf.append(messageFieldList.get(i)).append(RECORD_DELIMITER);
-		}
-
-		return buf.toString();
 	}
 
 	private void processHeader(List<String> messageFieldList)
@@ -139,26 +113,32 @@ public class SpFileParser {
 		}
 		try {
 			int n = 0;
-			spRegistry.setRegistryNumber(Long.valueOf(messageFieldList.get(n++)));
-			SpRegistryType spRegistryType = spRegistryTypeService.read(Long.valueOf(messageFieldList.get(n++)));
+			spRegistry.setRegistryNumber(Long.valueOf(messageFieldList.get(++n)));
+			SpRegistryType spRegistryType = spRegistryTypeService.read(Long.valueOf(messageFieldList.get(++n)));
 			spRegistry.setRegistryType(spRegistryType);
-			spRegistry.setRecordsNumber(Long.valueOf(messageFieldList.get(n++)));
-			spRegistry.setCreationDate(dateFormat.parse(messageFieldList.get(n++)));
-			spRegistry.setFromDate(dateFormat.parse(messageFieldList.get(n++)));
-			spRegistry.setTillDate(dateFormat.parse(messageFieldList.get(n++)));
-			spRegistry.setSenderCode(Long.valueOf(messageFieldList.get(n++)));
-			spRegistry.setRecipientCode(Long.valueOf(messageFieldList.get(n++)));
-			String amountStr = messageFieldList.get(n++);
+			spRegistry.setRecordsNumber(Long.valueOf(messageFieldList.get(++n)));
+			spRegistry.setCreationDate(dateFormat.parse(messageFieldList.get(++n)));
+			spRegistry.setFromDate(dateFormat.parse(messageFieldList.get(++n)));
+			spRegistry.setTillDate(dateFormat.parse(messageFieldList.get(++n)));
+			spRegistry.setSenderCode(Long.valueOf(messageFieldList.get(++n)));
+			spRegistry.setRecipientCode(Long.valueOf(messageFieldList.get(++n)));
+			String amountStr = messageFieldList.get(++n);
 			if (StringUtils.isNotEmpty(amountStr)) {
 				spRegistry.setAmount(new BigDecimal(amountStr));
 			}
-			spRegistry.setContainers(messageFieldList.get(n++));
+			spRegistry.setContainers(messageFieldList.get(++n));
+
+			if (log.isInfoEnabled()) {
+				log.info("Creating new registry: " + spRegistry);
+			}
 
 			this.spRegistry = spRegistryService.create(spRegistry);
 		} catch (NumberFormatException e) {
+			log.error("Header parse error", e);
 			throw new SpFileFormatException("Header parse error", message
 					.getPosition());
 		} catch (ParseException e) {
+			log.error("Header parse error", e);
 			throw new SpFileFormatException("Header parse error", message
 					.getPosition());
 		}
@@ -196,10 +176,8 @@ public class SpFileParser {
 						ADDRESS_DELIMITER);
 				if (addressFieldList.size() != 6) {
 					throw new SpFileFormatException(
-							String
-									.format(
-											"Address group '%s' has invalid number of fields %d",
-											addressStr, addressFieldList.size()),
+							String.format("Address group '%s' has invalid number of fields %d",
+									addressStr, addressFieldList.size()),
 							message.getPosition());
 				}
 				record.setCity(addressFieldList.get(0));
@@ -259,7 +237,7 @@ public class SpFileParser {
 		if (messageFieldList.size() < 2) {
 			throw new SpFileFormatException(
 					"Message footer error, invalid number of fields", message
-							.getPosition());
+					.getPosition());
 		}
 		// do nothing
 	}
@@ -270,7 +248,7 @@ public class SpFileParser {
 			return;
 		}
 
-		if (spRegistry.getRecordsNumber().longValue() != registryRecordCounter) {
+		if (spRegistry.getRecordsNumber() != registryRecordCounter) {
 			throw new SpFileFormatException("Registry records amount error");
 		}
 		spRegistry.setRegistryStatus(spRegistryStatusService
@@ -278,38 +256,15 @@ public class SpFileParser {
 		spRegistryService.update(spRegistry);
 	}
 
-	private void validateCrc16(String record, String crc16)
-			throws SpFileFormatException {
-		try {
-			// todo remove condition
-			if (true) {
-				return;
-			}
-			char crc = (char) Integer.parseInt(crc16, 16);
-			char crcCalc = CRCUtil.crc16(record
-					.getBytes(SpFileReader.DEFAULT_CHARSET));
-			if (crcCalc != crc) {
-				throw new CRC16Exception(String.format(
-						"crc16 failure for record: %s, calculated %x", record,
-						(int) crcCalc));
-			}
-		} catch (UnsupportedEncodingException e) {
-			// should not reach!
-			throw new RuntimeException(e);
-		}
-	}
-
 	/**
-	 * @param spRegistryService
-	 *            the spRegistryService to set
+	 * @param spRegistryService the spRegistryService to set
 	 */
 	public void setSpRegistryService(SpRegistryService spRegistryService) {
 		this.spRegistryService = spRegistryService;
 	}
 
 	/**
-	 * @param spRegistryRecordService
-	 *            the spRegistryRecordService to set
+	 * @param spRegistryRecordService the spRegistryRecordService to set
 	 */
 	public void setSpRegistryRecordService(
 			SpRegistryRecordService spRegistryRecordService) {
@@ -317,8 +272,7 @@ public class SpFileParser {
 	}
 
 	/**
-	 * @param spRegistryTypeService
-	 *            the spRegistryTypeService to set
+	 * @param spRegistryTypeService the spRegistryTypeService to set
 	 */
 	public void setSpRegistryTypeService(
 			SpRegistryTypeService spRegistryTypeService) {
@@ -326,8 +280,7 @@ public class SpFileParser {
 	}
 
 	/**
-	 * @param spRegistryStatusService
-	 *            the spRegistryStatusService to set
+	 * @param spRegistryStatusService the spRegistryStatusService to set
 	 */
 	public void setSpRegistryStatusService(
 			SpRegistryStatusService spRegistryStatusService) {
@@ -335,8 +288,7 @@ public class SpFileParser {
 	}
 
 	/**
-	 * @param spRegistryArchiveStatusService
-	 *            the spRegistryArchiveStatusService to set
+	 * @param spRegistryArchiveStatusService the spRegistryArchiveStatusService to set
 	 */
 	public void setSpRegistryArchiveStatusService(
 			SpRegistryArchiveStatusService spRegistryArchiveStatusService) {
