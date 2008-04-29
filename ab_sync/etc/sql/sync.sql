@@ -22,3 +22,4 @@ create table ab_sync_changes_tbl (
 	order_weight INTEGER NOT NULL DEFAULT 0
 );
 
+ALTER TABLE ab_sync_changes_tbl ADD INDEX Index_record_id (record_id);

@@ -10,7 +10,6 @@ import org.flexpay.ab.service.HistoryDumpService;
 import org.flexpay.common.locking.LockManager;
 
 import java.util.Iterator;
-import java.util.List;
 
 public class HistoryDumpServiceImpl implements HistoryDumpService {
 
@@ -37,35 +36,33 @@ public class HistoryDumpServiceImpl implements HistoryDumpService {
 			if (log.isInfoEnabled()) {
 				log.info("Last dumped record was: " + config.getLastDumpedRecordId());
 			}
-			List<HistoryRecord> records;
+
+			boolean hasNew = false;
 			do {
-				records = historySourceDao.getRecords(config.getLastDumpedRecordId());
-				for (HistoryRecord record : records) {
+				Iterator<HistoryRecord> it = historySourceDao.getRecords(config.getLastDumpedRecordId());
+				while (it.hasNext()) {
+					HistoryRecord record = it.next();
 					historyDao.addRecord(record);
 					++nRecords;
+					if (!record.getRecordId().equals(config.getLastDumpedRecordId())) {
+						hasNew = true;
+					}
 					config.setLastDumpedRecordId(record.getRecordId());
 				}
 
 				updateConfigDao.saveConfig(config);
-			} while (hasNewRecords(records, config));
+			} while (hasNew);
+		} catch (Exception e) {
+			throw new RuntimeException("Failed dumping history", e);
 		} finally {
-			// and release a lock
+			// release a lock
 			lockManager.releaseLock("sync_ab_lock");
+
+			// and close histroy source
+			historySourceDao.close();
 		}
 
 		log.info("Dumped " + nRecords + " records.");
-	}
-
-	private boolean hasNewRecords(List<HistoryRecord> records, UpdateConfig config) {
-		Iterator<HistoryRecord> it = records.iterator();
-		while (it.hasNext()) {
-			HistoryRecord record = it.next();
-			if (!record.getRecordId().equals(config.getLastDumpedRecordId())) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	public void setUpdateConfigDao(UpdateConfigDao updateConfigDao) {
