@@ -1,11 +1,10 @@
 package org.flexpay.ab.actions.person;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.ab.persistence.Apartment;
+import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.PersonService;
-import org.apache.log4j.Logger;
+import org.flexpay.common.actions.FPActionSupport;
 
 public class ViewPerson extends FPActionSupport {
 
@@ -13,7 +12,7 @@ public class ViewPerson extends FPActionSupport {
 
 	private PersonService personService;
 	private ApartmentService apartmentService;
-	String address;
+	String address = "";
 
 	private Person person = new Person();
 
@@ -22,7 +21,9 @@ public class ViewPerson extends FPActionSupport {
 		log.info("Object: " + person);
 		if (person.getId() != null) {
 			person = personService.read(person.getId());
-			address = apartmentService.getAddress(person.getApartment());
+			if (person.getApartment() != null) {
+				address = apartmentService.getAddress(person.getApartment());
+			}
 			return SUCCESS;
 		} else {
 			addActionError(getText("error.no_id"));
