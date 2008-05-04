@@ -6,7 +6,9 @@ import java.util.Set;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.ApartmentDaoExt;
+import org.flexpay.ab.dao.ApartmentNumberDao;
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.ApartmentNumber;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.persistence.Street;
@@ -16,8 +18,11 @@ import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +31,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 
 	private ApartmentDao apartmentDao;
 	private ApartmentDaoExt apartmentDaoExt;
+	private ApartmentNumberDao apartmentNumberDao;
 
 	/**
 	 * Setter for property 'apartmentDao'.
@@ -54,15 +60,29 @@ public class ApartmentServiceImpl implements ApartmentService {
 		}
 		Buildings buildings = buildingsSet.iterator().next();
 		Street street = buildings.getStreet();
-		StreetName streetName = street.getCurrentName();
-		StreetNameTranslation streetNameTranslation = TranslationUtil
-				.getTranslation(streetName.getTranslations());
-		StreetType streetType = street.getCurrentType();
-		StreetTypeTranslation streetTypeTranslation = TranslationUtil
-				.getTranslation(streetType.getTranslations());
+		String streetNameStr = "";
+		if (street.getCurrentName() != null) {
+			StreetNameTranslation streetNameTranslation = TranslationUtil
+					.getTranslation(street.getCurrentName().getTranslations());
+			if (streetNameTranslation != null
+					&& streetNameTranslation.getName() != null) {
+				streetNameStr = streetNameTranslation.getName();
+			}
+		}
+		String streetTypeStr = "";
+		if (street.getCurrentType() != null) {
+			StreetTypeTranslation streetTypeTranslation = TranslationUtil
+					.getTranslation(street.getCurrentType().getTranslations());
+			if (streetTypeTranslation != null) {
+				if (streetTypeTranslation.getShortName() != null) {
+					streetTypeStr = streetTypeTranslation.getShortName();
+				} else if (streetTypeTranslation.getName() != null) {
+					streetTypeStr = streetTypeTranslation.getName();
+				}
+			}
+		}
 
-		return streetTypeTranslation.getShortName() + " "
-				+ streetNameTranslation.getName() + ", д."
+		return streetTypeStr + " " + streetNameStr + ", д."
 				+ buildings.getNumber() + ", кв." + apartment.getNumber();
 	}
 
@@ -86,6 +106,50 @@ public class ApartmentServiceImpl implements ApartmentService {
 	}
 
 	/**
+	 * Read full apartment information
+	 * 
+	 * @param id
+	 *            Apartment id
+	 * @return Apartment instance, or <code>null</code> if not found
+	 */
+	public Apartment readFull(Long id) {
+		return apartmentDao.readFull(id);
+	}
+
+	/**
+	 * Validate that given number not alredy exist in given apartment's
+	 * building. If not exist then set new number for given apartment.
+	 * 
+	 * @param apartment
+	 *            Apartment
+	 * @param number
+	 *            apartment number
+	 * @return true if this number is successfully set, false if given number
+	 *         alredy exist in given apartment's building.
+	 */
+	@Transactional(readOnly = false)
+	public boolean setApartmentNumber(Apartment apartment, String number) {
+		Apartment persistent = apartmentDao.readFull(apartment.getId());
+		Building building = persistent.getBuilding();
+		Set<Apartment> apartmentSet = building.getApartments();
+		for (Apartment a : apartmentSet) {
+			if (number.equals(a.getNumber())) {
+				return false;
+			}
+		}
+
+		ApartmentNumber apartmentNumber = new ApartmentNumber();
+		apartmentNumber.setApartment(persistent);
+		apartmentNumber.setBegin(DateIntervalUtil.now());
+		apartmentNumber.setEnd(ApplicationConfig.getInstance()
+				.getFutureInfinite());
+		apartmentNumber.setValue(number);
+		apartmentNumberDao.create(apartmentNumber);
+
+		return true;
+	}
+
+	/**
 	 * Get building apartment belongs to
 	 * 
 	 * @param apartment
@@ -95,5 +159,13 @@ public class ApartmentServiceImpl implements ApartmentService {
 	public Building getBuilding(Apartment apartment) {
 		Apartment persistent = apartmentDao.read(apartment.getId());
 		return persistent.getBuilding();
+	}
+
+	/**
+	 * @param apartmentNumberDao
+	 *            the apartmentNumberDao to set
+	 */
+	public void setApartmentNumberDao(ApartmentNumberDao apartmentNumberDao) {
+		this.apartmentNumberDao = apartmentNumberDao;
 	}
 }
