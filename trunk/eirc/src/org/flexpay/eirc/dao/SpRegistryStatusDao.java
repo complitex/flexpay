@@ -6,6 +6,6 @@ import org.flexpay.common.dao.GenericDao;
 import org.flexpay.eirc.persistence.SpRegistryStatus;
 
 public interface SpRegistryStatusDao extends GenericDao<SpRegistryStatus, Long> {
-	List<SpRegistryStatus> findByCode(int code);
 
+	List<SpRegistryStatus> findAll();
 }

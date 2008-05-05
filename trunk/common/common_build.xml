@@ -27,6 +27,7 @@
 		<fileset dir="${common.dir}/lib">
 			<include name="hibernate3/*.jar" />
 			<include name="antlr/*.jar" />
+			<include name="log4j/*.jar" />
 		</fileset>
 		<path refid="commons.lib" />
 	</path>

@@ -2,15 +2,14 @@ package org.flexpay.ab.actions.street;
 
 import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.Street;
-import org.flexpay.ab.persistence.StreetTypeTemporal;
 import org.flexpay.ab.persistence.StreetType;
+import org.flexpay.ab.persistence.StreetTypeTemporal;
 import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.persistence.TimeLine;
 
 import java.text.ParseException;
 
@@ -54,8 +53,12 @@ public class StreetEditTypeAction extends FPActionSupport {
 
 		// do save 
 		if (isPost()) {
-			TimeLine<StreetType, StreetTypeTemporal> tl = DateIntervalUtil.addInterval(object.getTypesTimeLine(), temporal);
-			object.setTypesTimeLine(tl);
+			object.addTypeTemporal(temporal);
+
+			if (log.isDebugEnabled()) {
+				log.debug("Types: " + object.getTypeTemporals());
+				log.debug("Temporal: " + temporal);
+			}
 
 			streetService.saveTypes(object);
 

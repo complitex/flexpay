@@ -29,6 +29,7 @@ public class SPServiceImpl implements SPService {
 		if (code2TypeCache.containsKey(code)) {
 			return code2TypeCache.get(code);
 		}
+
 		ServiceType type = serviceDaoExt.findByCode(code);
 		if (type == null) {
 			throw new IllegalArgumentException("Cannot find service type with code #" + code);
@@ -39,13 +40,33 @@ public class SPServiceImpl implements SPService {
 		return type;
 	}
 
+	/**
+	 * Read service type details
+	 *
+	 * @param typeStub Service type stub
+	 * @return Service type
+	 */
+	public ServiceType getServiceType(ServiceType typeStub) {
+		if (id2TypeCache == null) {
+			initializeServiceTypesCache();
+		}
+		if (id2TypeCache.containsKey(typeStub.getId())) {
+			return id2TypeCache.get(typeStub.getId());
+		}
+
+		throw new IllegalArgumentException("Cannot find service type with id " + typeStub.getId());
+	}
+
 	private Map<Integer, ServiceType> code2TypeCache;
+	private Map<Long, ServiceType> id2TypeCache;
 
 	private void initializeServiceTypesCache() {
 		code2TypeCache = new HashMap<Integer, ServiceType>();
+		id2TypeCache = new HashMap<Long, ServiceType>();
 		List<ServiceType> types = serviceDaoExt.getServiceTypes();
 		for (ServiceType type : types) {
 			code2TypeCache.put(type.getCode(), type);
+			id2TypeCache.put(type.getId(), type);
 		}
 	}
 

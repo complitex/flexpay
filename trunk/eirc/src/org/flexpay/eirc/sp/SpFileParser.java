@@ -31,19 +31,16 @@ public class SpFileParser {
 	private SpRegistryTypeService spRegistryTypeService;
 	private SpRegistryStatusService spRegistryStatusService;
 	private SpRegistryArchiveStatusService spRegistryArchiveStatusService;
+	private SpRegistryRecordStatusService registryRecordStatusService;
 
-	private SpFile spFile;
+	private OrganisationService organisationService;
+	private SPService spService;
 
 	private SpRegistry spRegistry;
 	private long registryRecordCounter;
 	private Message message;
 
-	public SpFileParser(SpFile spFile) {
-		this.spFile = spFile;
-	}
-
-	public void parse() throws IOException, SpFileFormatException,
-			FlexPayException {
+	public void parse(SpFile spFile) throws IOException, FlexPayException {
 		File file = spFile.getRequestFile();
 		if (file == null) {
 			throw new FileNotFoundException("For SpFile(id=" + spFile.getId()
@@ -56,7 +53,7 @@ public class SpFileParser {
 
 		try {
 			while ((message = reader.readMessage()) != null) {
-				processMessage();
+				processMessage(spFile);
 			}
 			finalizeRegistry();
 		} catch (Throwable t) {
@@ -66,13 +63,13 @@ public class SpFileParser {
 						.findByCode(SpRegistryStatus.LOADED_WITH_ERROR));
 				spRegistryService.update(spRegistry);
 			}
+			throw new RuntimeException("Fialed parsing registry file", t);
 		} finally {
 			IOUtils.closeQuietly(is);
 		}
 	}
 
-	private void processMessage() throws SpFileFormatException,
-			FlexPayException {
+	private void processMessage(SpFile spFile) throws SpFileFormatException, FlexPayException {
 
 		String messageValue = message.getBody();
 		Integer messageType = message.getType();
@@ -83,7 +80,7 @@ public class SpFileParser {
 		List<String> messageFieldList = StringUtil.tokenize(messageValue, RECORD_DELIMITER);
 
 		if (messageType.equals(Message.MESSAGE_TYPE_HEADER)) {
-			processHeader(messageFieldList);
+			processHeader(spFile, messageFieldList);
 		} else if (messageType.equals(Message.MESSAGE_TYPE_RECORD)) {
 			processRecord(messageFieldList);
 		} else if (messageType.equals(Message.MESSAGE_TYPE_FOOTER)) {
@@ -91,7 +88,7 @@ public class SpFileParser {
 		}
 	}
 
-	private void processHeader(List<String> messageFieldList)
+	private void processHeader(SpFile spFile, List<String> messageFieldList)
 			throws FlexPayException, SpFileFormatException {
 		if (messageFieldList.size() < 11) {
 			throw new SpFileFormatException(
@@ -103,10 +100,8 @@ public class SpFileParser {
 
 		registryRecordCounter = 0;
 		SpRegistry spRegistry = new SpRegistry();
-		spRegistry.setArchiveStatus(spRegistryArchiveStatusService
-				.findByCode(SpRegistryArchiveStatus.NONE));
-		spRegistry.setRegistryStatus(spRegistryStatusService
-				.findByCode(SpRegistryStatus.LOADING));
+		spRegistry.setArchiveStatus(spRegistryArchiveStatusService.findByCode(SpRegistryArchiveStatus.NONE));
+		spRegistry.setRegistryStatus(spRegistryStatusService.findByCode(SpRegistryStatus.LOADING));
 		spRegistry.setSpFile(spFile);
 		if (log.isInfoEnabled()) {
 			log.info("adding header: " + messageFieldList);
@@ -132,23 +127,23 @@ public class SpFileParser {
 				log.info("Creating new registry: " + spRegistry);
 			}
 
+			spRegistry.setRecipient(organisationService.getOrganisation(String.valueOf(spRegistry.getRecipientCode())));
+			spRegistry.setSender(organisationService.getOrganisation(String.valueOf(spRegistry.getSenderCode())));
+
 			this.spRegistry = spRegistryService.create(spRegistry);
 		} catch (NumberFormatException e) {
 			log.error("Header parse error", e);
-			throw new SpFileFormatException("Header parse error", message
-					.getPosition());
+			throw new SpFileFormatException("Header parse error", message.getPosition());
 		} catch (ParseException e) {
 			log.error("Header parse error", e);
-			throw new SpFileFormatException("Header parse error", message
-					.getPosition());
+			throw new SpFileFormatException("Header parse error", message.getPosition());
 		}
 	}
 
 	private void processRecord(List<String> messageFieldList)
 			throws FlexPayException, SpFileFormatException {
 		if (spRegistry == null) {
-			throw new SpFileFormatException(
-					"Error - registry must start before record");
+			throw new SpFileFormatException("Error - registry must start before record");
 		}
 
 		if (messageFieldList.size() < 10) {
@@ -170,6 +165,7 @@ public class SpFileParser {
 			record.setServiceCode(Long.valueOf(messageFieldList.get(++n)));
 			record.setPersonalAccountExt(messageFieldList.get(++n));
 
+			// setup consumer address
 			String addressStr = messageFieldList.get(++n);
 			if (StringUtils.isNotEmpty(addressStr)) {
 				List<String> addressFieldList = StringUtil.tokenize(addressStr,
@@ -188,38 +184,49 @@ public class SpFileParser {
 				record.setApartmentNum(addressFieldList.get(5));
 			}
 
+			// setup person first, middle, last names
 			String fioStr = messageFieldList.get(++n);
 			if (StringUtils.isNotEmpty(fioStr)) {
-				List<String> fioFieldList = StringUtil.tokenize(fioStr,
-						FIO_DELIMITER);
+				List<String> fioFieldList = StringUtil.tokenize(fioStr, FIO_DELIMITER);
 				if (fioFieldList.size() != 3) {
-					throw new SpFileFormatException("Group FIO has error",
-							message.getPosition());
+					throw new SpFileFormatException("Group FIO has error", message.getPosition());
 				}
 				record.setLastName(fioFieldList.get(0));
 				record.setFirstName(fioFieldList.get(1));
 				record.setMiddleName(fioFieldList.get(2));
 			}
 
-			record
-					.setOperationDate(dateFormat.parse(messageFieldList
-							.get(++n)));
+			// setup operation date
+			record.setOperationDate(dateFormat.parse(messageFieldList.get(++n)));
 
+			// setup unique operation number
 			String uniqueOperationNumberStr = messageFieldList.get(++n);
 			if (StringUtils.isNotEmpty(uniqueOperationNumberStr)) {
-				record.setUniqueOperationNumber(Long
-						.valueOf(uniqueOperationNumberStr));
+				record.setUniqueOperationNumber(Long.valueOf(uniqueOperationNumberStr));
 			}
 
+			// setup amount
 			String amountStr = messageFieldList.get(++n);
 			if (StringUtils.isNotEmpty(amountStr)) {
 				record.setAmount(new BigDecimal(amountStr));
 			}
 
+			// setup containers
 			String containersStr = messageFieldList.get(++n);
 			if (StringUtils.isNotEmpty(containersStr)) {
 				record.setContainers(containersStr);
 			}
+
+			// setup record service type
+			ServiceType serviceType = spService.getServiceType(record.getServiceCode().intValue());
+			record.setServiceType(serviceType);
+
+			// setup record statud
+			SpRegistryRecordStatus status = registryRecordStatusService.findByCode(SpRegistryRecordStatus.LOADED);
+			if (status == null) {
+				throw new FlexPayException("Record status LOADED not found, was DB inited?");
+			}
+			record.setRecordStatus(status);
 
 		} catch (NumberFormatException e) {
 			throw new SpFileFormatException("Record parse error", message
@@ -236,14 +243,12 @@ public class SpFileParser {
 			throws SpFileFormatException {
 		if (messageFieldList.size() < 2) {
 			throw new SpFileFormatException(
-					"Message footer error, invalid number of fields", message
-					.getPosition());
+					"Message footer error, invalid number of fields", message.getPosition());
 		}
 		// do nothing
 	}
 
-	private void finalizeRegistry() throws SpFileFormatException,
-			FlexPayException {
+	private void finalizeRegistry() throws SpFileFormatException, FlexPayException {
 		if (spRegistry == null) {
 			return;
 		}
@@ -251,8 +256,7 @@ public class SpFileParser {
 		if (spRegistry.getRecordsNumber() != registryRecordCounter) {
 			throw new SpFileFormatException("Registry records amount error");
 		}
-		spRegistry.setRegistryStatus(spRegistryStatusService
-				.findByCode(SpRegistryStatus.LOADED));
+		spRegistry.setRegistryStatus(spRegistryStatusService.findByCode(SpRegistryStatus.LOADED));
 		spRegistryService.update(spRegistry);
 	}
 
@@ -266,32 +270,40 @@ public class SpFileParser {
 	/**
 	 * @param spRegistryRecordService the spRegistryRecordService to set
 	 */
-	public void setSpRegistryRecordService(
-			SpRegistryRecordService spRegistryRecordService) {
+	public void setSpRegistryRecordService(SpRegistryRecordService spRegistryRecordService) {
 		this.spRegistryRecordService = spRegistryRecordService;
 	}
 
 	/**
 	 * @param spRegistryTypeService the spRegistryTypeService to set
 	 */
-	public void setSpRegistryTypeService(
-			SpRegistryTypeService spRegistryTypeService) {
+	public void setSpRegistryTypeService(SpRegistryTypeService spRegistryTypeService) {
 		this.spRegistryTypeService = spRegistryTypeService;
 	}
 
 	/**
 	 * @param spRegistryStatusService the spRegistryStatusService to set
 	 */
-	public void setSpRegistryStatusService(
-			SpRegistryStatusService spRegistryStatusService) {
+	public void setSpRegistryStatusService(SpRegistryStatusService spRegistryStatusService) {
 		this.spRegistryStatusService = spRegistryStatusService;
 	}
 
 	/**
 	 * @param spRegistryArchiveStatusService the spRegistryArchiveStatusService to set
 	 */
-	public void setSpRegistryArchiveStatusService(
-			SpRegistryArchiveStatusService spRegistryArchiveStatusService) {
+	public void setSpRegistryArchiveStatusService(SpRegistryArchiveStatusService spRegistryArchiveStatusService) {
 		this.spRegistryArchiveStatusService = spRegistryArchiveStatusService;
+	}
+
+	public void setOrganisationService(OrganisationService organisationService) {
+		this.organisationService = organisationService;
+	}
+
+	public void setRegistryRecordStatusService(SpRegistryRecordStatusService registryRecordStatusService) {
+		this.registryRecordStatusService = registryRecordStatusService;
+	}
+
+	public void setSpService(SPService spService) {
+		this.spService = spService;
 	}
 }

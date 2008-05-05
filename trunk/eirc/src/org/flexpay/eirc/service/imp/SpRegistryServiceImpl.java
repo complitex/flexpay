@@ -12,6 +12,7 @@ import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.flexpay.eirc.service.SpRegistryService;
+import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
@@ -20,6 +21,8 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 
 	private SpRegistryDao spRegistryDao;
 	private SpRegistryDaoExt spRegistryDaoExt;
+
+	private SpRegistryRecordService spRegistryRecordService;
 
 	/**
 	 * Create SpRegistry
@@ -59,7 +62,10 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	 * @return SpRegistry object, or <code>null</code> if object not found
 	 */
 	public SpRegistry read(Long id) {
-		return spRegistryDao.read(id);
+		SpRegistry registry = spRegistryDao.readFull(id);
+		registry.setErrorsNumber(spRegistryRecordService.getErrorsNumber(registry));
+
+		return registry;
 	}
 
 	/**
@@ -110,5 +116,9 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 
 	public void setSpRegistryDaoExt(SpRegistryDaoExt spRegistryDaoExt) {
 		this.spRegistryDaoExt = spRegistryDaoExt;
+	}
+
+	public void setSpRegistryRecordService(SpRegistryRecordService spRegistryRecordService) {
+		this.spRegistryRecordService = spRegistryRecordService;
 	}
 }

@@ -1,7 +1,6 @@
 package org.flexpay.eirc.actions;
 
 import org.flexpay.eirc.dao.SpRegistryDao;
-import org.flexpay.eirc.dao.SpRegistryRecordDao;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.SpFileService;
@@ -18,7 +17,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	}
 
 	public void testUploadFile() throws Throwable {
-		SpFile newFile = uploadFile("org/flexpay/eirc/actions/sp/payments_100.44268.bin");
+		SpFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.txt");
 
 		// do clean up
 		deleteRecords(newFile);

@@ -3,6 +3,7 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.log4j.Logger;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.util.DateIntervalUtil;
@@ -13,6 +14,9 @@ import java.util.*;
  * Street
  */
 public class Street extends NameTimeDependentChild<StreetName, StreetNameTemporal> {
+
+	private static Logger log = Logger.getLogger(Street.class);
+	private static final SortedSet<StreetTypeTemporal> EMPTY_SORTED_SET = Collections.unmodifiableSortedSet(new TreeSet<StreetTypeTemporal>());
 
 	private Set<District> districts = Collections.emptySet();
 	private TimeLine<StreetType, StreetTypeTemporal> typesTimeLine;
@@ -70,6 +74,18 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		return typesTimeLine;
 	}
 
+	public Street addTypeTemporal(StreetTypeTemporal temporal) {
+		if (typesTimeLine == null) {
+			log.debug("Creating new street types timeline");
+			typesTimeLine = new TimeLine<StreetType, StreetTypeTemporal>(temporal);
+		} else {
+			log.debug("Adding  new street type interval");
+			typesTimeLine = DateIntervalUtil.addInterval(typesTimeLine, temporal);
+		}
+
+		return this;
+	}
+
 	/**
 	 * Setter for property 'typesTimeLine'.
 	 *
@@ -94,6 +110,9 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 * @return Value for property 'typesTimeLine'.
 	 */
 	public SortedSet<StreetTypeTemporal> getTypeTemporals() {
+		if (typesTimeLine == null) {
+			return EMPTY_SORTED_SET;
+		}
 		return typesTimeLine.getIntervalsSet();
 	}
 

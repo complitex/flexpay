@@ -1,6 +1,7 @@
 package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.ImportError;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -10,6 +11,7 @@ import java.util.Date;
 public class SpRegistryRecord extends DomainObject {
 
 	private SpRegistry spRegistry;
+	private SpRegistryRecordStatus recordStatus;
 	private Long serviceCode;
 	private String personalAccountExt;
 	private String city;
@@ -27,6 +29,8 @@ public class SpRegistryRecord extends DomainObject {
 	private String containers;
 
 	private AbstractConsumer consumer;
+	private ServiceType serviceType;
+	private ImportError importError;
 
 	/**
 	 * @return the spRegistry
@@ -272,6 +276,30 @@ public class SpRegistryRecord extends DomainObject {
 	 */
 	public void setConsumer(AbstractConsumer consumer) {
 		this.consumer = consumer;
+	}
+
+	public SpRegistryRecordStatus getRecordStatus() {
+		return recordStatus;
+	}
+
+	public void setRecordStatus(SpRegistryRecordStatus recordStatus) {
+		this.recordStatus = recordStatus;
+	}
+
+	public ServiceType getServiceType() {
+		return serviceType;
+	}
+
+	public void setServiceType(ServiceType serviceType) {
+		this.serviceType = serviceType;
+	}
+
+	public ImportError getImportError() {
+		return importError;
+	}
+
+	public void setImportError(ImportError importError) {
+		this.importError = importError;
 	}
 
 	public String toString() {

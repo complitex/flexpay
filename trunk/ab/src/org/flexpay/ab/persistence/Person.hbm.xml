@@ -44,9 +44,9 @@
 		<property name="birthDate" column="birth_date" type="date" not-null="true" />
 		<property name="serialNumber" column="serial_number" length="10" not-null="true" />
 		<property name="documentNumber" column="document_number" length="20" not-null="true" />
-		<property name="firstName" column="first_name" length="255" not-null="true" />
-		<property name="middleName" column="middle_name" length="255" not-null="true" />
-		<property name="lastName" column="last_name" length="255" not-null="true"/>
+		<property name="firstName" column="first_name" length="255" not-null="true" index="data_index" />
+		<property name="middleName" column="middle_name" length="255" not-null="true" index="data_index" />
+		<property name="lastName" column="last_name" length="255" not-null="true" index="data_index" />
 		<property name="organization" length="4000" not-null="true"/>
 		<property name="default" column="is_default" type="boolean" not-null="true" />
 		<many-to-one name="identityType" column="identity_type_id" not-null="true"
@@ -91,7 +91,7 @@
 			LEFT JOIN FETCH pi.identityType it
 			LEFT JOIN FETCH it.translations ittr
 			LEFT JOIN FETCH ittr.lang lang
-			LEFT JOIN FETCH lang.translations 
+			LEFT JOIN FETCH lang.translations
 		WHERE o.id=?
 	</query>
 

@@ -8,18 +8,20 @@
 		<property name="spFileDao" ref="spFileDao" />
 		<property name="spFileDaoExt" ref="spFileDaoExt" />
 	</bean>
-	
+
 	<bean id="spRegistryService"
 		  class="org.flexpay.eirc.service.imp.SpRegistryServiceImpl">
 		<property name="spRegistryDao" ref="spRegistryDao" />
 		<property name="spRegistryDaoExt" ref="spRegistryDaoExt" />
+		<property name="spRegistryRecordService" ref="spRegistryRecordService" />
 	</bean>
-	
+
 	<bean id="spRegistryRecordService"
 		  class="org.flexpay.eirc.service.imp.SpRegistryRecordServiceImpl">
 		<property name="spRegistryRecordDao" ref="spRegistryRecordDao" />
+		<property name="spRegistryRecordDaoExt" ref="spRegistryRecordDaoExt" />
 	</bean>
-	
+
 	<bean id="spRegistryTypeService"
 		  class="org.flexpay.eirc.service.imp.SpRegistryTypeServiceImpl">
 		<property name="spRegistryTypeDao" ref="spRegistryTypeDao" />
@@ -27,6 +29,17 @@
 
 	<bean id="spService" class="org.flexpay.eirc.service.imp.SPServiceImpl">
 		<property name="serviceDaoExt" ref="serviceDaoExt" />
+	</bean>
+
+	<bean id="spFileParser" class="org.flexpay.eirc.sp.SpFileParser">
+		<property name="spRegistryService" ref="spRegistryService" />
+		<property name="spRegistryRecordService" ref="spRegistryRecordService" />
+		<property name="spRegistryTypeService" ref="spRegistryTypeService" />
+		<property name="spRegistryStatusService" ref="spRegistryStatusService" />
+		<property name="spRegistryArchiveStatusService" ref="spRegistryArchiveStatusService" />
+		<property name="registryRecordStatusService" ref="spRegistryRecordStatusService" />
+		<property name="organisationService" ref="organisationService" />
+		<property name="spService" ref="spService" />
 	</bean>
 
 	<bean id="serviceOperationsFactory"
@@ -61,28 +74,32 @@
 		<property name="importService" ref="importServiceEirc" />
 		<property name="rawConsumersDataSource" ref="consumersDataSource" />
 	</bean>
-	
+
 	<bean id="serviceOrganisationService" class="org.flexpay.eirc.service.imp.ServiceOrganisationServiceImpl">
 		<property name="serviceOrganisationDao" ref="serviceOrganisationDao" />
 	</bean>
-	
+
 	<bean id="ticketServiceAmountService" class="org.flexpay.eirc.service.imp.TicketServiceAmountServiceImpl">
 		<property name="ticketServiceAmountDao" ref="ticketServiceAmountDao" />
 	</bean>
-	
+
 	<bean id="ticketService" class="org.flexpay.eirc.service.imp.TicketServiceImpl">
 		<property name="ticketDao" ref="ticketDao" />
 		<property name="serviceOrganisationService" ref="serviceOrganisationService" />
 		<property name="accountRecordService" ref="accountRecordService" />
 		<property name="ticketServiceAmountService" ref="ticketServiceAmountService" />
 	</bean>
-	
+
 	<bean id="spRegistryStatusService" class="org.flexpay.eirc.service.imp.SpRegistryStatusServiceImpl">
 		<property name="spRegistryStatusDao" ref="spRegistryStatusDao" />
 	</bean>
-	
+
 	<bean id="spRegistryArchiveStatusService" class="org.flexpay.eirc.service.imp.SpRegistryArchiveStatusServiceImpl">
 		<property name="spRegistryArchiveStatusDao" ref="spRegistryArchiveStatusDao" />
 	</bean>
-	
+
+	<bean id="spRegistryRecordStatusService" class="org.flexpay.eirc.service.imp.SpRegistryRecordStatusServiceImpl">
+		<property name="spRegistryRecordStatusDao" ref="spRegistryRecordStatusDao" />
+	</bean>
+
 </beans>

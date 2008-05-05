@@ -25,6 +25,15 @@ public interface SPService {
 	 */
 	ServiceType getServiceType(int code) throws IllegalArgumentException;
 
+
+	/**
+	 * Read service type details
+	 *
+	 * @param typeStub Service type stub
+	 * @return Service type
+	 */
+	ServiceType getServiceType(ServiceType typeStub);
+
 	/**
 	 * Find service of specified <code>type</code> for provider
 	 *

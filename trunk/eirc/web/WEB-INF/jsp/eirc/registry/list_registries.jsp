@@ -22,6 +22,7 @@
 			<td class="th"><s:text name="eirc.load_date"/></td>
 			<td class="th"><s:text name="eirc.records_number"/></td>
 			<td class="th"><s:text name="eirc.status"/></td>
+			<td class="th">&nbsp;</td>
 		</tr>
 		<s:iterator value="registries">
 			<tr valign="middle" class="cols_1">
@@ -33,6 +34,7 @@
 				<td class="col"><s:property value="spFile.importDate"/></td>
 				<td class="col"><s:property value="recordsNumber"/></td>
 				<td class="col">-----</td>
+				<td class="col"><a href="<s:url value="/eirc/registry_view.action?registry.id=%{id}"/>" ><s:text name="common.view"/></a></td>
 			</tr>
 		</s:iterator>
 		<tr>
