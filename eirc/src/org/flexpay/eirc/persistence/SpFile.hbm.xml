@@ -36,8 +36,26 @@
 		<many-to-one name="spFile" column="sp_file_id" not-null="true" class="SpFile" />
 		<many-to-one name="serviceProvider" column="service_provider_id"
 					 class="ServiceProvider" />
-		<many-to-one name="registryStatus" column="registry_status_id" not-null="true" class="SpRegistryStatus" />			 
-		<many-to-one name="archiveStatus" column="archive_status_id" not-null="true" class="SpRegistryArchiveStatus" />
+		<many-to-one name="registryStatus" class="SpRegistryStatus" foreign-key="FK_status">
+			<column name="registry_status_id" not-null="true">
+				<comment>Registry status reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="archiveStatus" class="SpRegistryArchiveStatus" foreign-key="FK_archive_status">
+			<column name="archive_status_id" not-null="true">
+				<comment>Registry archive status reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="sender" class="Organisation" foreign-key="FK_sender">
+			<column name="sender_id" not-null="false">
+				<comment>Sender organisation reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="recipient" class="Organisation" foreign-key="FK_recipient">
+			<column name="recipient_id" not-null="false">
+				<comment>Recipient organisation reference</comment>
+			</column>
+		</many-to-one>
 	</class>
 
 	<class name="SpRegistryType" table="eirc_sp_registry_types_tbl"
@@ -47,7 +65,7 @@
 		</id>
 		<property name="code" column="code" not-null="true" />
 	</class>
-	
+
 	<class name="SpRegistryStatus" table="eirc_sp_registry_statuses_tbl"
 		   optimistic-lock="version">
 		<id name="id" column="id">
@@ -55,7 +73,14 @@
 		</id>
 		<property name="code" not-null="true" unique="true" />
 	</class>
-	
+
+	<class name="SpRegistryRecordStatus" table="eirc_sp_registry_record_statuses_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="code" not-null="true" unique="true" />
+	</class>
+
 	<class name="SpRegistryArchiveStatus" table="eirc_sp_registry_archive_statuses_tbl"
 		   optimistic-lock="version">
 		<id name="id" column="id">
@@ -87,8 +112,26 @@
 		<property name="containers" column="containers" />
 
 		<many-to-one name="consumer" column="consumer_id" class="Consumer" />
-		<many-to-one name="spRegistry" column="registry_id" class="SpRegistry"
-					 not-null="true" />
+		<many-to-one name="spRegistry" class="SpRegistry"  foreign-key="FK_registry">
+			<column name="registry_id" not-null="true">
+				<comment>Registry reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="recordStatus" class="SpRegistryRecordStatus" foreign-key="FK_record_status">
+			<column name="record_status_id" not-null="false">
+				<comment>Record status reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="serviceType" class="ServiceType" foreign-key="FK_service_type">
+			<column name="service_type_id" not-null="false">
+				<comment>Service type reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="importError" class="org.flexpay.common.persistence.ImportError" foreign-key="FK_import_error">
+			<column name="import_error_id" not-null="false">
+				<comment>Import error reference</comment>
+			</column>
+		</many-to-one>
 	</class>
 
 	<query name="SpFile.listSpFiles.count">
@@ -116,7 +159,17 @@
 	</query>
 
 	<query name="SpRegistryType.findAll">
-		from SpRegistryType 
+		from SpRegistryType
+	</query>
+
+	<query name="SpRegistry.readFull">
+		select distinct r
+		from SpRegistry r
+		left join fetch r.registryType
+		left join fetch r.registryStatus
+		left join fetch r.sender
+		left join fetch r.recipient
+		where r.id=?
 	</query>
 
 	<query name="SpRegistry.findObjects">
@@ -138,11 +191,15 @@
 	<query name="SpRegistryRecord.listRecords.count">
 		select count(*) from SpRegistryRecord where spRegistry.id=? and consumer is null
 	</query>
-	
-	<query name="SpRegistryStatus.findByCode">
-		from SpRegistryStatus s where s.code=?
+
+	<query name="SpRegistryStatus.findAll">
+		from SpRegistryStatus
 	</query>
-	
+
+	<query name="SpRegistryRecordStatus.findAll">
+		from SpRegistryRecordStatus
+	</query>
+
 	<query name="SpRegistryArchiveStatus.findByCode">
 		from SpRegistryArchiveStatus s where s.code=?
 	</query>

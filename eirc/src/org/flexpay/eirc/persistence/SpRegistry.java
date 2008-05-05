@@ -31,6 +31,18 @@ public class SpRegistry extends DomainObject {
 	private SpRegistryStatus registryStatus;
 	private SpRegistryArchiveStatus archiveStatus;
 
+	private transient int errorsNumber;
+
+	/**
+	 * Constructs a new DomainObject.
+	 */
+	public SpRegistry() {
+	}
+
+	public SpRegistry(Long id) {
+		super(id);
+	}
+
 	/**
 	 * @return the registryStatus
 	 */
@@ -245,5 +257,13 @@ public class SpRegistry extends DomainObject {
 	 */
 	public void setArchiveStatus(SpRegistryArchiveStatus archiveStatus) {
 		this.archiveStatus = archiveStatus;
+	}
+
+	public int getErrorsNumber() {
+		return errorsNumber;
+	}
+
+	public void setErrorsNumber(int errorsNumber) {
+		this.errorsNumber = errorsNumber;
 	}
 }

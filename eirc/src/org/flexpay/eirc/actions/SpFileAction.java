@@ -1,7 +1,5 @@
 package org.flexpay.eirc.actions;
 
-import java.io.IOException;
-
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.service.SpFileService;
@@ -9,8 +7,9 @@ import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.SpRegistryService;
 import org.flexpay.eirc.service.SpRegistryTypeService;
 import org.flexpay.eirc.sp.SpFileFormatException;
-import org.flexpay.eirc.sp.SpFileParser;
 import org.flexpay.eirc.sp.SpFileUtil;
+
+import java.io.IOException;
 
 public class SpFileAction {
 
@@ -23,8 +22,7 @@ public class SpFileAction {
 	private SpRegistryRecordService spRegistryRecordService;
 	private SpRegistryTypeService spRegistryTypeService;
 
-	public String execute() throws IOException, SpFileFormatException,
-			FlexPayException {
+	public String execute() throws IOException, SpFileFormatException, FlexPayException {
 		SpFile spFile = spFileService.read(spFileId);
 		if ("loadToDb".equals(action)) {
 			try {
@@ -44,50 +42,42 @@ public class SpFileAction {
 	}
 
 	/**
-	 * @param spFileId
-	 *            the spFileId to set
+	 * @param spFileId the spFileId to set
 	 */
 	public void setSpFileId(Long spFileId) {
 		this.spFileId = spFileId;
 	}
 
 	/**
-	 * @param action
-	 *            the action to set
+	 * @param action the action to set
 	 */
 	public void setAction(String action) {
 		this.action = action;
 	}
 
 	/**
-	 * @param spRegistryService
-	 *            the spRegistryService to set
+	 * @param spRegistryService the spRegistryService to set
 	 */
 	public void setSpRegistryService(SpRegistryService spRegistryService) {
 		this.spRegistryService = spRegistryService;
 	}
 
 	/**
-	 * @param spRegistryRecordService
-	 *            the spRegistryRecordService to set
+	 * @param spRegistryRecordService the spRegistryRecordService to set
 	 */
-	public void setSpRegistryRecordService(
-			SpRegistryRecordService spRegistryRecordService) {
+	public void setSpRegistryRecordService(SpRegistryRecordService spRegistryRecordService) {
 		this.spRegistryRecordService = spRegistryRecordService;
 	}
 
 	/**
-	 * @param spRegistryTypeService
-	 *            the spRegistryTypeService to set
+	 * @param spRegistryTypeService the spRegistryTypeService to set
 	 */
-	public void setSpRegistryTypeService(
-			SpRegistryTypeService spRegistryTypeService) {
+	public void setSpRegistryTypeService(SpRegistryTypeService spRegistryTypeService) {
 		this.spRegistryTypeService = spRegistryTypeService;
 	}
 
 	/**
-	 * @param spFileService
-	 *            the spFileService to set
+	 * @param spFileService the spFileService to set
 	 */
 	public void setSpFileService(SpFileService spFileService) {
 		this.spFileService = spFileService;
@@ -99,5 +89,4 @@ public class SpFileAction {
 	public SpFileFormatException getSpFileFormatException() {
 		return spFileFormatException;
 	}
-
 }

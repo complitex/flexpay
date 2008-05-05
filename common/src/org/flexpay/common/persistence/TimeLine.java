@@ -1,5 +1,6 @@
 package org.flexpay.common.persistence;
 
+import org.apache.log4j.Logger;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
@@ -9,6 +10,8 @@ import java.util.*;
  * Storage for a sorted list of intervals covering time line
  */
 public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> {
+
+	private static Logger log = Logger.getLogger(TimeLine.class);
 
 	// a set of intervals is fully covering time line,
 	// probably single interval with infinite bounds
@@ -27,15 +30,23 @@ public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI
 			copy.setBegin(ApplicationConfig.getInstance().getPastInfinite());
 			copy.setEnd(DateIntervalUtil.previous(di.getBegin()));
 			intervals.add(copy);
+
+			log.debug("Added empty begin");
 		}
 		intervals.add(di);
+		log.debug("Added interval");
 		if (!di.getEnd().equals(ApplicationConfig.getInstance().getFutureInfinite())) {
 			DI copy = di.getEmpty();
 			copy.setBegin(DateIntervalUtil.next(di.getEnd()));
 			copy.setEnd(ApplicationConfig.getInstance().getFutureInfinite());
 			intervals.add(copy);
+			log.debug("Added empty end");
 		}
 		intervalsChecked = true;
+
+		if (log.isDebugEnabled()) {
+			log.debug("Well done: " + intervals);
+		}
 	}
 
 	/**
@@ -67,7 +78,7 @@ public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI
 			intervals = dis;
 			intervalsChecked = true;
 		}
-		return (List<DI>)intervals;
+		return (List<DI>) intervals;
 	}
 
 	/**

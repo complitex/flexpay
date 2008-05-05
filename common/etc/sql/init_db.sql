@@ -4267,6 +4267,12 @@ SELECT @sp_registry_status_created:=last_insert_id();
 INSERT INTO eirc_sp_registry_statuses_tbl (code) VALUES (13);
 SELECT @sp_registry_status_creating_canceled:=last_insert_id();
 
+-- Init SpRegistryRecordStatus 
+INSERT INTO eirc_sp_registry_record_statuses_tbl (code) VALUES (1);
+INSERT INTO eirc_sp_registry_record_statuses_tbl (code) VALUES (2);
+INSERT INTO eirc_sp_registry_record_statuses_tbl (code) VALUES (3);
+INSERT INTO eirc_sp_registry_record_statuses_tbl (code) VALUES (4);
+
 -- Init SpRegistryArchiveStatuses
 INSERT INTO eirc_sp_registry_archive_statuses_tbl (code) VALUES (0);
 SELECT @sp_registry_archive_status_none:=last_insert_id();

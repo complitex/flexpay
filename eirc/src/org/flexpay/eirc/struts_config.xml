@@ -81,6 +81,10 @@
 			<result type="tiles">eirc.registry.list</result>
 		</action>
 
+		<action name="registry_view" class="showRegistryAction">
+			<result type="tiles">eirc.registry.view</result>
+		</action>
+
 	</package>
 	
 </struts>

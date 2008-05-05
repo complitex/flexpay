@@ -8,7 +8,7 @@
 		<tr>
 			<td class="th" width="100%" colspan="3" align="center">
 				<s:text name="ab.from" />&nbsp;
-				<s:textfield name="date" id="temporal.date" value="%{date}"/>
+				<s:textfield name="date" id="date" value="%{date}"/>
 				<img src="<s:url value="/resources/common/js/jscalendar/img.gif"/>" alt=""
 					 id="trigger_from"
 					 style="cursor: pointer; border: 1px solid red;"

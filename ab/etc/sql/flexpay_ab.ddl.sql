@@ -177,11 +177,11 @@
 
     alter table street_types_temporal_tbl 
         drop 
-        foreign key FK9EECCCE3311847ED;
+        foreign key FK_street;
 
     alter table street_types_temporal_tbl 
         drop 
-        foreign key FK9EECCCE33E877574;
+        foreign key FK_street_type;
 
     alter table streets_districts_tbl 
         drop 
@@ -412,6 +412,7 @@
         object_type integer not null,
         ext_object_id varchar(255) not null,
         handler_object_name varchar(255) not null,
+        error_key varchar(255),
         primary key (id)
     );
 
@@ -610,6 +611,7 @@
     create table street_type_translations_tbl (
         id bigint not null auto_increment,
         name varchar(255),
+        short_name varchar(255),
         language_id bigint not null,
         street_type_id bigint not null,
         primary key (id),
@@ -629,7 +631,7 @@
         create_date date not null,
         invalid_date date not null,
         street_id bigint not null,
-        street_type_id bigint not null,
+        street_type_id bigint comment 'Street type reference',
         primary key (id)
     );
 
@@ -675,6 +677,7 @@
     create table town_type_translations_tbl (
         ID bigint not null auto_increment,
         name varchar(255),
+        short_name varchar(255),
         language_id bigint,
         town_type_id bigint,
         primary key (ID),
@@ -861,6 +864,8 @@
         foreign key (language_id) 
         references languages_tbl (id);
 
+    create index data_index on person_identities_tbl (first_name, middle_name, last_name);
+
     alter table person_identities_tbl 
         add index FKD319C905D8765DAA (identity_type_id), 
         add constraint FKD319C905D8765DAA 
@@ -970,14 +975,14 @@
         references languages_tbl (id);
 
     alter table street_types_temporal_tbl 
-        add index FK9EECCCE3311847ED (street_id), 
-        add constraint FK9EECCCE3311847ED 
+        add index FK_street (street_id), 
+        add constraint FK_street 
         foreign key (street_id) 
         references streets_tbl (id);
 
     alter table street_types_temporal_tbl 
-        add index FK9EECCCE33E877574 (street_type_id), 
-        add constraint FK9EECCCE33E877574 
+        add index FK_street_type (street_type_id), 
+        add constraint FK_street_type 
         foreign key (street_type_id) 
         references street_types_tbl (id);
 

@@ -58,11 +58,19 @@
 		  <property name="ticketService" ref="ticketService" />
 	</bean>
 	
-	<bean id="listRegistriesAction"
+	<bean id="listRegistriesAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.ListRegistriesAction">
 		<property name="registryService" ref="spRegistryService" />
 		<property name="organisationService" ref="organisationService" />
 		<property name="registryTypeService" ref="spRegistryTypeService" />
+	</bean>
+
+	<bean id="showRegistryAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.registry.ShowRegistryAction">
+		<property name="registryService" ref="spRegistryService" />
+		<property name="registryRecordService" ref="spRegistryRecordService" />
+		<property name="classToTypeRegistry" ref="typeRegistryEirc" />
+		<property name="spService" ref="spService" />
 	</bean>
 
 </beans>

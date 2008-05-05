@@ -15,7 +15,7 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 
 	@SuppressWarnings({"unchecked"})
 	public List<ServiceType> getServiceTypes() {
-		return getHibernateTemplate().find("from ServiceType where status=0");
+		return getHibernateTemplate().find("select distinct t from ServiceType t left join fetch t.typeNames n left join fetch n.lang where t.status=0");
 	}
 
 	/**

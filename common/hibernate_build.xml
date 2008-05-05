@@ -5,7 +5,6 @@
 
 	<path id="hibernate.tool.lib">
 		<path refid="hibernate.lib" />
-		<!-- Include log4j configuration file to classpath -->
 	</path>
 
 

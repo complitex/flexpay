@@ -242,6 +242,10 @@ public class DateIntervalUtil {
 			tlNew.addAll(intersect(diOld, di));
 		}
 
+		if (tlNew.isEmpty()) {
+			return new TimeLine<T,DI>(di);
+		}
+
 		// join equal data intervals
 		return new TimeLine<T, DI>(join(tlNew));
 	}
