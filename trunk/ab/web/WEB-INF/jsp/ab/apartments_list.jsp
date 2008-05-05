@@ -36,7 +36,7 @@
 			<td class="th" width="1%"><input type="checkbox"
 											 onchange="FP.setCheckboxes(this.checked, 'objectIds')">
 			</td>
-			<td class="th" width="98%"><s:text name="ab.apartment"/></td>
+			<td colspan="2" class="th" width="98%"><s:text name="ab.apartment"/></td>
 		</tr>
 		<s:iterator value="%{apartments}" status="status">
 			<tr valign="middle" class="cols_1">
@@ -50,10 +50,15 @@
 				<td class="col">
 					<s:property	value="%{number}"/>
 				</td>
+				<td class="col">
+					<a href="<s:url action='apartmentEditAction'><s:param name="apartment.id" value="%{id}"/></s:url>">
+	      				<s:text name="ab.edit" />
+	    			</a>
+				</td>
 			</tr>
 		</s:iterator>
 		<tr class="cols_1">
-			<td class="col" width="100%" colspan="3" align="center">
+			<td class="col" width="100%" colspan="4" align="center">
 				<%@ include file="filters/pager.jsp" %>
 			</td>
 		</tr>
