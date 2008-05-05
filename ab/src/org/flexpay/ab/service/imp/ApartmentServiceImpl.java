@@ -1,5 +1,6 @@
 package org.flexpay.ab.service.imp;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,6 +12,7 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ApartmentNumber;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.ObjectAlreadyExistException;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.StreetName;
 import org.flexpay.ab.persistence.StreetNameTranslation;
@@ -126,27 +128,28 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 *            apartment number
 	 * @return true if this number is successfully set, false if given number
 	 *         alredy exist in given apartment's building.
+	 * @throws ObjectAlreadyExistException 
 	 */
 	@Transactional(readOnly = false)
-	public boolean setApartmentNumber(Apartment apartment, String number) {
-		Apartment persistent = apartmentDao.readFull(apartment.getId());
-		Building building = persistent.getBuilding();
-		Set<Apartment> apartmentSet = building.getApartments();
-		for (Apartment a : apartmentSet) {
-			if (number.equals(a.getNumber())) {
-				return false;
-			}
-		}
+	public void setApartmentNumber(Apartment apartment, String number) throws ObjectAlreadyExistException {
+		apartment = apartmentDao.read(apartment.getId());
+		apartment.setNumber(number);
+		apartmentDao.update(apartment);
+		
 
-		ApartmentNumber apartmentNumber = new ApartmentNumber();
-		apartmentNumber.setApartment(persistent);
+		/*ApartmentNumber apartmentNumber = new ApartmentNumber();
+		apartmentNumber.setApartment(apartment);
 		apartmentNumber.setBegin(DateIntervalUtil.now());
 		apartmentNumber.setEnd(ApplicationConfig.getInstance()
 				.getFutureInfinite());
 		apartmentNumber.setValue(number);
 		apartmentNumberDao.create(apartmentNumber);
-
-		return true;
+		
+		if (apartment.getApartmentNumbers().isEmpty()) {
+			Set<ApartmentNumber> numberSet = new HashSet<ApartmentNumber>();
+			apartment.setApartmentNumbers(numberSet);
+		}
+		apartment.getApartmentNumbers().add(apartmentNumber);*/
 	}
 
 	/**
