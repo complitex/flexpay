@@ -3,9 +3,11 @@ package org.flexpay.ab.actions.nametimedependent;
 import com.opensymphony.xwork2.Preparable;
 import org.apache.commons.collections.ArrayStack;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.*;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
@@ -14,16 +16,24 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-public abstract class CreateAction<
-		TV extends TemporaryValue<TV>,
-		DI extends NameDateInterval<TV, DI>,
-		NTD extends NameTimeDependentChild<TV, DI>,
-		T extends Translation> extends ActionBase<TV, DI, NTD, T> implements Preparable {
+public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends NameDateInterval<TV, DI>, NTD extends NameTimeDependentChild<TV, DI>, T extends Translation>
+		extends ActionBase<TV, DI, NTD, T> implements Preparable, SessionAware {
 
 	private List<T> nameTranslations = new ArrayList<T>();
 	private Date date;
 	private NTD object;
+
+	private Map session;
+
+	/**
+	 * @param session
+	 *            the session to set
+	 */
+	public void setSession(Map session) {
+		this.session = session;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -32,9 +42,11 @@ public abstract class CreateAction<
 		HttpServletRequest request = ServletActionContext.getRequest();
 		List<Language> langs = ApplicationConfig.getInstance().getLanguages();
 		for (Language lang : langs) {
-			T nameTranslation = nameTimeDependentService.getEmptyNameTranslation();
+			T nameTranslation = nameTimeDependentService
+					.getEmptyNameTranslation();
 			nameTranslation.setLang(lang);
-			nameTranslation.setName(request.getParameter("translation." + lang.getId()));
+			nameTranslation.setName(request.getParameter("translation."
+					+ lang.getId()));
 			nameTranslations.add(nameTranslation);
 		}
 	}
@@ -44,10 +56,16 @@ public abstract class CreateAction<
 	 */
 	public String execute() {
 		try {
-			ArrayStack filters = parentService.initFilters(getFilters(), userPreferences.getLocale());
+			ArrayStack filterArrayStack = getFilters();
+			for (Object filter : filterArrayStack) {
+				((PrimaryKeyFilter) filter).initFilter(session);
+			}
+			ArrayStack filters = parentService.initFilters(filterArrayStack,
+					userPreferences.getLocale());
 			setFilters(filters);
 			if (isPost()) {
-				object = nameTimeDependentService.create(null, nameTranslations, filters, date);
+				object = nameTimeDependentService.create(null,
+						nameTranslations, filters, date);
 
 				return SUCCESS;
 			}
@@ -61,7 +79,7 @@ public abstract class CreateAction<
 
 	/**
 	 * Getter for property 'nameTranslations'.
-	 *
+	 * 
 	 * @return Value for property 'nameTranslations'.
 	 */
 	public List<T> getNameTranslations() {
@@ -70,7 +88,7 @@ public abstract class CreateAction<
 
 	/**
 	 * Getter for property 'date'.
-	 *
+	 * 
 	 * @return Value for property 'date'.
 	 */
 	public String getDate() {
@@ -80,8 +98,9 @@ public abstract class CreateAction<
 
 	/**
 	 * Setter for property 'date'.
-	 *
-	 * @param dt Value to set for property 'date'.
+	 * 
+	 * @param dt
+	 *            Value to set for property 'date'.
 	 */
 	public void setDate(String dt) {
 		try {
@@ -93,7 +112,7 @@ public abstract class CreateAction<
 
 	/**
 	 * Getter for property 'region'.
-	 *
+	 * 
 	 * @return Value for property 'region'.
 	 */
 	public NTD getObject() {
