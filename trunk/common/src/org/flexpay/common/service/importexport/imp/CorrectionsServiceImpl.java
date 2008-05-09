@@ -47,7 +47,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 */
 	public boolean existsCorrection(String externalId, Class<? extends DomainObject> cls, DataSourceDescription sourceDescription) {
 		int type = typeRegistry.getType(cls);
-		return correctionsDao.existsCorrection(externalId, type, cls, sourceDescription);
+		return correctionsDao.existsCorrection(externalId, type, sourceDescription);
 	}
 
 	/**
@@ -59,7 +59,13 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 * @return stub for a new DataCorrection
 	 */
 	public DataCorrection getStub(String externalId, DomainObject obj, DataSourceDescription sourceDescription) {
-		DataCorrection correction = new DataCorrection();
+
+		int type = typeRegistry.getType(obj.getClass());
+		DataCorrection correction = correctionsDao.findCorrection(externalId, type, sourceDescription);
+		if (correction == null) {
+			correction = new DataCorrection();
+		}
+
 		correction.setExternalId(externalId);
 		correction.setInternalObjectId(obj.getId());
 		correction.setDataSourceDescription(sourceDescription);

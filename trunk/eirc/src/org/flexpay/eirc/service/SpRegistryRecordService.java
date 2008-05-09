@@ -2,6 +2,7 @@ package org.flexpay.eirc.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
@@ -61,4 +62,21 @@ public interface SpRegistryRecordService {
 	 * @return number of errors
 	 */
 	int getErrorsNumber(SpRegistry registry);
+
+	/**
+	 * Find data source description for record
+	 *
+	 * @param record Registry record
+	 * @return DataSourceDescription
+	 */
+	DataSourceDescription getDataSourceDescription(SpRegistryRecord record);
+
+	/**
+	 * Set record status to fixed and invalidate error
+	 *
+	 * @param record Registry record
+	 * @return updated record
+	 * @throws FlexPayException if failure occurs
+	 */
+	SpRegistryRecord removeError(SpRegistryRecord record) throws FlexPayException;
 }

@@ -73,4 +73,21 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/registry/view_registry.jsp" />
 	</definition>
 
+	<!-- Registry record corrections -->
+	<definition name="eirc.registry.record.correct_address" extends="ab.layout.content">
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
+	</definition>
+
+	<definition name="eirc.registry.record.correct_address_complete" extends="ab.layout.content">
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_address_complete.jsp" />
+	</definition>
+
+	<definition name="eirc.registry.record.correct_person" extends="ab.layout.content">
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_person.jsp" />
+	</definition>
+
+	<definition name="eirc.registry.record.correct_person_complete" extends="ab.layout.content">
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_person_complete.jsp" />
+	</definition>
+
 </tiles-definitions>

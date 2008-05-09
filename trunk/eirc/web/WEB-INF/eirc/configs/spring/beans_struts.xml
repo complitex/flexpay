@@ -17,47 +17,47 @@
 		  scope="prototype">
 		<property name="spFileService" ref="spFileService" />
 		<property name="spRegistryService" ref="spRegistryService" />
-		<property name="spRegistryRecordService" ref="spRegistryRecordService" />  
+		<property name="spRegistryRecordService" ref="spRegistryRecordService" />
 		<property name="spRegistryTypeService" ref="spRegistryTypeService" />
 	</bean>
-	
+
 	<bean id="correspondenceExternalAction" class="org.flexpay.eirc.actions.CorrespondenceExternalAction"
 		  scope="prototype">
 	</bean>
-	
+
 	<bean id="streetAjaxAction" class="org.flexpay.eirc.actions.StreetAjaxAction"
 		  scope="prototype">
-		  <property name="streetService" ref="streetService" />
+		<property name="streetService" ref="streetService" />
 	</bean>
-	
+
 	<bean id="buildingAjaxAction" class="org.flexpay.eirc.actions.BuildingAjaxAction"
 		  scope="prototype">
-		  <property name="buildingService" ref="buildingService" />
+		<property name="buildingService" ref="buildingService" />
 	</bean>
-	
-	
+
+
 	<bean id="generateTicketsAction" class="org.flexpay.eirc.actions.GenerateTicketAction"
 		  scope="prototype">
-		  <property name="serviceOrganisationService" ref="serviceOrganisationService" />
-		  <property name="tickerService" ref="ticketService" />
+		<property name="serviceOrganisationService" ref="serviceOrganisationService" />
+		<property name="tickerService" ref="ticketService" />
 	</bean>
-	
+
 	<bean id="printTicketsAction" class="org.flexpay.eirc.actions.PrintTicketAction"
 		  scope="prototype">
-		  <property name="serviceOrganisationService" ref="serviceOrganisationService" />
-		  <property name="ticketService" ref="ticketService" />
+		<property name="serviceOrganisationService" ref="serviceOrganisationService" />
+		<property name="ticketService" ref="ticketService" />
 	</bean>
-	
+
 	<bean id="ticketPayFormAction" class="org.flexpay.eirc.actions.TicketPayFormAction"
 		  scope="prototype">
-		  <property name="ticketService" ref="ticketService" />
+		<property name="ticketService" ref="ticketService" />
 	</bean>
-	
+
 	<bean id="ticketPayAction" class="org.flexpay.eirc.actions.TicketPayAction"
 		  scope="prototype">
-		  <property name="ticketService" ref="ticketService" />
+		<property name="ticketService" ref="ticketService" />
 	</bean>
-	
+
 	<bean id="listRegistriesAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.ListRegistriesAction">
 		<property name="registryService" ref="spRegistryService" />
@@ -71,6 +71,25 @@
 		<property name="registryRecordService" ref="spRegistryRecordService" />
 		<property name="classToTypeRegistry" ref="typeRegistryEirc" />
 		<property name="spService" ref="spService" />
+	</bean>
+
+	<bean id="selectCorrectionTypeAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.registry.corrections.SelectTypeAction">
+		<property name="registryRecordService" ref="spRegistryRecordService" />
+		<property name="typeRegistry" ref="typeRegistryEirc" />
+	</bean>
+
+	<bean id="correctRecordAddressAction" scope="prototype" parent="listApartments"
+		  class="org.flexpay.eirc.actions.registry.corrections.CorrectAddressAction">
+		<property name="consumersDataSource" ref="consumersDataSource" />
+		<property name="correctionsService" ref="correctionsServiceEirc" />
+		<property name="recordService" ref="spRegistryRecordService" />
+		<property name="spService" ref="spService" />
+		<property name="typeRegistry" ref="typeRegistryEirc" />
+	</bean>
+
+	<bean id="correctRecordPersonAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.registry.corrections.CorrectPersonAction">
 	</bean>
 
 </beans>

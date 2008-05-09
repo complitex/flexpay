@@ -21,11 +21,9 @@ public class ListApartments extends BuildingsActionsBase implements
 		SessionAware {
 
 	private static final String ATTRIBUTE_ACTION_ERRORS = ListApartments.class
-			.getName()
-			+ ".ACTION_ERRORS";
+			.getName()+ ".ACTION_ERRORS";
 
-	private static Logger log = Logger
-			.getLogger(org.flexpay.ab.actions.buildings.ListBuildings.class);
+	private static Logger log = Logger.getLogger(ListApartments.class);
 
 	private ParentService<BuildingsFilter> parentService;
 	private ApartmentService apartmentService;
@@ -33,8 +31,8 @@ public class ListApartments extends BuildingsActionsBase implements
 	private CountryFilter countryFilter = new CountryFilter();
 	private RegionFilter regionFilter = new RegionFilter();
 	private TownFilter townFilter = new TownFilter();
-	private StreetFilter streetFilter = new StreetFilter();
-	private BuildingsFilter buildingsFilter = new BuildingsFilter();
+	protected StreetFilter streetFilter = new StreetFilter();
+	protected BuildingsFilter buildingsFilter = new BuildingsFilter();
 	private Page pager = new Page();
 	private Map session;
 

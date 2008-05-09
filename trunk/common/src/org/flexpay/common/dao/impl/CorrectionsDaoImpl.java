@@ -5,10 +5,13 @@ import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class CorrectionsDaoImpl extends SimpleJdbcDaoSupport implements CorrectionsDao {
 
@@ -64,13 +67,33 @@ public class CorrectionsDaoImpl extends SimpleJdbcDaoSupport implements Correcti
 	 *
 	 * @param externalId		DataSource internal object id
 	 * @param type			  DomainObject type
-	 * @param cls			   DomainObject class to retrive
 	 * @param sourceDescription Data source description
 	 * @return DomainObject
 	 */
-	public boolean existsCorrection(final String externalId, final int type, Class<?> cls,
+	public boolean existsCorrection(final String externalId, final int type,
 									final DataSourceDescription sourceDescription) {
 		return getInternalId(externalId, type, sourceDescription) != null;
+	}
+
+	public DataCorrection findCorrection(final String externalId, final int type, final DataSourceDescription sourceDescription) {
+
+		Object[] params = {externalId, type, sourceDescription.getId()};
+		List result = getJdbcTemplate().query("select id, internal_object_id from common_data_corrections_tbl " +
+											  "where external_object_id=? and object_type=? and data_source_description_id=?",
+				params, new RowMapper() {
+			public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+				DataCorrection correction = new DataCorrection();
+				correction.setId(rs.getLong("id"));
+				correction.setInternalObjectId(rs.getLong("internal_object_id"));
+				correction.setDataSourceDescription(sourceDescription);
+				correction.setObjectType(type);
+				correction.setExternalId(externalId);
+
+				return correction;
+			}
+		});
+
+		return result.isEmpty() ? null : (DataCorrection) result.get(0);
 	}
 
 	/**
