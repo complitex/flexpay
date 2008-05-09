@@ -184,6 +184,14 @@
 		select count(*) from SpRegistry r where r.spFile.id=?
 	</query>
 
+	<query name="SpRegistryRecord.readFull">
+		select distinct r from SpRegistryRecord r left join fetch r.importError where r.id=?
+	</query>
+
+	<query name="SpRegistryRecord.findDataSourceDescription">
+		select r.spRegistry.serviceProvider.dataSourceDescription from SpRegistryRecord r where r.id=?
+	</query>
+
 	<query name="SpRegistryRecord.listRecords">
 		select distinct r from SpRegistryRecord r where r.spRegistry.id=? and r.consumer is null
 	</query>

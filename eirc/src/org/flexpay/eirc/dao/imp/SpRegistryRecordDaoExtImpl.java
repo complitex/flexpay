@@ -2,6 +2,7 @@ package org.flexpay.eirc.dao.imp;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.eirc.dao.SpRegistryRecordDaoExt;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
@@ -116,5 +117,14 @@ public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements S
 			}
 		});
 		return count.intValue();
+	}
+
+	public DataSourceDescription getDataSourceDescription(final Long id) {
+		return (DataSourceDescription) getHibernateTemplate().execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				return session.getNamedQuery("SpRegistryRecord.findDataSourceDescription")
+						.setLong(0, id).uniqueResult();
+			}
+		});
 	}
 }

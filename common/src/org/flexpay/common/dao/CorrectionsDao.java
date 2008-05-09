@@ -47,9 +47,18 @@ public interface CorrectionsDao {
 	 *
 	 * @param externalId		DataSource internal object id
 	 * @param type			  DomainObject type
-	 * @param cls			   DomainObject class to retrive
 	 * @param sourceDescription Data source description
 	 * @return DomainObject
 	 */
-	boolean existsCorrection(String externalId, int type, Class<?> cls, DataSourceDescription sourceDescription);
+	boolean existsCorrection(String externalId, int type, DataSourceDescription sourceDescription);
+
+	/**
+	 * Find existing correction if any
+	 *
+	 * @param externalId External object id
+	 * @param type Object type id
+	 * @param sourceDescription Source description
+	 * @return DataCorrection if exists, or <code>null</code> otherwise
+	 */
+	DataCorrection findCorrection(String externalId, int type, DataSourceDescription sourceDescription);
 }

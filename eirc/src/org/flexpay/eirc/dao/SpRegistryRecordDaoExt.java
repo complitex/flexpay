@@ -1,6 +1,7 @@
 package org.flexpay.eirc.dao;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
@@ -37,4 +38,12 @@ public interface SpRegistryRecordDaoExt {
 	 * @return number of errors
 	 */
 	int getErrorsNumber(Long registryId);
+
+	/**
+	 * Find data source description for record
+	 *
+	 * @param id Registry record identifier
+	 * @return DataSourceDescription
+	 */
+	DataSourceDescription getDataSourceDescription(Long id);
 }

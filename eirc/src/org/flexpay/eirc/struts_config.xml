@@ -12,71 +12,72 @@
 		<action name="main">
 			<result type="tiles">eirc.import</result>
 		</action>
-		
+
 		<action name="spFileCreate" class="spFileCreateAction">
 			<result name="form" type="tiles">eirc.import.file.upload.form</result>
 		</action>
-		
+
 		<action name="spFileList" class="spFileListAction">
 			<result name="success" type="tiles">eirc.import.file.list</result>
 		</action>
-		
+
 		<action name="spFileAction" class="spFileAction">
 			<result name="success" type="redirect">spFileList.action</result>
 		</action>
-		
+
 		<action name="data">
 			<result type="tiles">eirc.data</result>
 		</action>
-		
+
 		<action name="correspondence">
 			<result type="tiles">eirc.data.correspondence</result>
 		</action>
-		
+
 		<action name="correspondence_external" class="correspondenceExternalAction">
 			<result type="dispatcher">/WEB-INF/jsp/eirc/data/correspondence/external_data.jsp</result>
 		</action>
-		
+
 		<action name="correspondence_internal">
 			<result type="dispatcher">/WEB-INF/jsp/eirc/data/correspondence/internal_data.jsp</result>
 		</action>
-		
+
 		<action name="street_ajax" class="streetAjaxAction">
 			<result name="success" type="dispatcher">/WEB-INF/jsp/eirc/data/correspondence/street_ajax.jsp</result>
 		</action>
-		
+
 		<action name="building_ajax" class="buildingAjaxAction">
 			<result name="success" type="dispatcher">/WEB-INF/jsp/eirc/data/correspondence/building_ajax.jsp</result>
 		</action>
-		
-		
+
+
 		<action name="processing">
 			<result type="tiles">eirc.processing</result>
 		</action>
-		
+
 		<action name="generateTickets" class="generateTicketsAction">
 			<result type="tiles">eirc.processing.generate_tickets</result>
 		</action>
-		
-		
+
+
 		<action name="tickets">
 			<result type="tiles">eirc.tickets</result>
 		</action>
-		
+
 		<action name="printTickets" class="printTicketsAction">
 			<result type="tiles">eirc.tickets.print_tickets</result>
 		</action>
-		
+
 		<action name="ticketPayForm" class="ticketPayFormAction">
 			<result name="form" type="tiles">eirc.tickets.ticket_find</result>
 			<result name="pay" type="tiles">eirc.tickets.ticket_pay_form</result>
 		</action>
-		
+
 		<action name="ticketPay" class="ticketPayAction">
 			<result name="success" type="tiles">eirc.tickets.ticket_pay_form</result>
 		</action>
-		
 
+
+		<!-- Registries -->
 		<action name="registries_list" class="listRegistriesAction">
 			<result type="tiles">eirc.registry.list</result>
 		</action>
@@ -85,6 +86,31 @@
 			<result type="tiles">eirc.registry.view</result>
 		</action>
 
+		<action name="select_correction_type" class="selectCorrectionTypeAction">
+			<result name="input">/WEB-INF/jsp/eirc/data/correspondence/select_correction_type.jsp</result>
+			<result name="error">/WEB-INF/jsp/eirc/data/correspondence/select_correction_type_error.jsp</result>
+			<result name="address" type="redirect-action">
+				<param name="actionName">registry_record_correct_address</param>
+				<param name="parse">true</param>
+				<param name="record.id">${record.id}</param>
+			</result>
+			<result name="person" type="redirect-action">
+				<param name="actionName">registry_record_correct_person</param>
+				<param name="parse">true</param>
+				<param name="record.id">${record.id}</param>
+			</result>
+		</action>
+
+		<action name="registry_record_correct_address" class="correctRecordAddressAction">
+			<result type="tiles">eirc.registry.record.correct_address</result>
+			<result name="complete" type="tiles">eirc.registry.record.correct_address_complete</result>
+		</action>
+
+		<action name="registry_record_correct_person" class="correctRecordPersonAction">
+			<result type="tiles">eirc.registry.record.correct_person</result>
+			<result name="complete" type="tiles">eirc.registry.record.correct_address_complete</result>
+		</action>
+
 	</package>
-	
+
 </struts>
