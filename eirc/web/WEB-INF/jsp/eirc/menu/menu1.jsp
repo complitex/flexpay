@@ -24,12 +24,9 @@
 				</tr>
 			</table>
 		</td>
-        <form name="search">
-            <td class="topmenu_form_search" nowrap="1">
-                <input type="text" class="form-search">&nbsp;<input type="button" value='<s:text name="menu1.search"/>'class="btn-search"/>
-            </td>
-        </form>
-
-
+        <!--<form name="search">-->
+		<!--<td class="topmenu_form_search" nowrap="1" >-->
+			<!--<input type="text" class="form-search">&nbsp;<input type="button" value="Найти" class="btn-search" />-->
+		<!--</td></form>-->
     </tr>
 </table>
