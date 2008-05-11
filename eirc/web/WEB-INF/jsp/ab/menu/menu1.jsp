@@ -25,8 +25,9 @@
 			</table>
 		</td>
         <!--<form name="search">-->
-		<!--<td class="topmenu_form_search" nowrap="1" >-->
-			<!--<input type="text" class="form-search">&nbsp;<input type="button" value="Íàéòè" class="btn-search" />-->
-		<!--</td></form>-->
+		<td class="topmenu_form_search" nowrap="1" >&nbsp;
+			<!--<input type="text" class="form-search">&nbsp;<input type="button" value="ÐÐ°Ð¹Ñ‚Ð¸" class="btn-search" />-->
+		</td>
+        <!--</form>-->
     </tr>
 </table>
