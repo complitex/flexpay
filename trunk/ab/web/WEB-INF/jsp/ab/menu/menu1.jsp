@@ -27,8 +27,9 @@
 			</table>
 		</td>
         <!--<form name="search">-->
-		<!--<td class="topmenu_form_search" nowrap="1" >-->
+		<td class="topmenu_form_search" nowrap="1" >&nbsp;
 			<!--<input type="text" class="form-search">&nbsp;<input type="button" value="Найти" class="btn-search" />-->
-		<!--</td></form>-->
+		</td>
+        <!--</form>-->
     </tr>
 </table>
