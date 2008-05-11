@@ -429,7 +429,7 @@
 
     drop table if exists eirc_registries_tbl;
 
-    drop table if exists eirc_sp_registry_archive_statuses_tbl;
+    drop table if exists eirc_registry_archive_statuses_tbl;
 
     drop table if exists eirc_registry_record_statuses_tbl;
 
@@ -757,7 +757,7 @@
         primary key (id)
     );
 
-    create table eirc_sp_registry_archive_statuses_tbl (
+    create table eirc_registry_archive_statuses_tbl (
         id bigint not null auto_increment,
         code integer not null unique,
         primary key (id)
@@ -794,7 +794,7 @@
         primary key (id)
     );
 
-    create table eirc_sp_registry_statuses_tbl (
+    create table eirc_registry_statuses_tbl (
         id bigint not null auto_increment,
         code integer not null unique,
         primary key (id)
@@ -1295,7 +1295,7 @@
         add index FK_archive_status (archive_status_id), 
         add constraint FK_archive_status 
         foreign key (archive_status_id) 
-        references eirc_sp_registry_archive_statuses_tbl (id);
+        references eirc_registry_archive_statuses_tbl (id);
 
     alter table eirc_registries_tbl
         add index FK_sender (sender_id), 
@@ -1307,7 +1307,7 @@
         add index FK_status (registry_status_id), 
         add constraint FK_status 
         foreign key (registry_status_id) 
-        references eirc_sp_registry_statuses_tbl (id);
+        references eirc_registry_statuses_tbl (id);
 
     alter table eirc_registries_tbl
         add index FK_recipient (recipient_id), 
