@@ -151,23 +151,23 @@
         drop 
         foreign key FK4D78EA875A549E10;
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         drop 
         foreign key FK8F6F49528819126;
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         drop 
         foreign key FK8F6F495212902C71;
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         drop 
         foreign key FK8F6F4952D1F3C974;
 
-    alter table eirc_sp_registry_records_tbl 
+    alter table eirc_registry_records_tbl
         drop 
         foreign key FKD41D677728C54FB6;
 
-    alter table eirc_sp_registry_records_tbl 
+    alter table eirc_registry_records_tbl
         drop 
         foreign key FKD41D677791349F59;
 
@@ -465,13 +465,13 @@
 
     drop table if exists eirc_services_tbl;
 
-    drop table if exists eirc_sp_files_tbl;
+    drop table if exists eirc_registry_files_tbl;
 
-    drop table if exists eirc_sp_registries_tbl;
+    drop table if exists eirc_registries_tbl;
 
-    drop table if exists eirc_sp_registry_records_tbl;
+    drop table if exists eirc_registry_records_tbl;
 
-    drop table if exists eirc_sp_registry_types_tbl;
+    drop table if exists eirc_registry_types_tbl;
 
     drop table if exists eirc_ticket_service_amounts_tbl;
 
@@ -848,7 +848,7 @@
         primary key (id)
     );
 
-    create table eirc_sp_files_tbl (
+    create table eirc_registry_files_tbl (
         id bigint not null auto_increment,
         request_file_name varchar(255) not null,
         internal_request_file_name varchar(255) not null,
@@ -858,7 +858,7 @@
         primary key (id)
     );
 
-    create table eirc_sp_registries_tbl (
+    create table eirc_registries_tbl (
         id bigint not null auto_increment,
         registry_number bigint,
         records_number bigint,
@@ -875,7 +875,7 @@
         primary key (id)
     );
 
-    create table eirc_sp_registry_records_tbl (
+    create table eirc_registry_records_tbl (
         id bigint not null auto_increment,
         service_code bigint not null,
         personal_account_ext varchar(255) not null,
@@ -897,7 +897,7 @@
         primary key (id)
     );
 
-    create table eirc_sp_registry_types_tbl (
+    create table eirc_registry_types_tbl (
         id bigint not null auto_increment,
         name varchar(255) not null,
         direction varchar(255) not null,
@@ -1493,31 +1493,31 @@
         foreign key (type_id) 
         references eirc_service_types_tbl (id);
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         add index FK8F6F49528819126 (service_provider_id), 
         add constraint FK8F6F49528819126 
         foreign key (service_provider_id) 
         references eirc_service_providers_tbl (id);
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         add index FK8F6F495212902C71 (registry_type_id), 
         add constraint FK8F6F495212902C71 
         foreign key (registry_type_id) 
-        references eirc_sp_registry_types_tbl (id);
+        references eirc_registry_types_tbl (id);
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         add index FK8F6F4952D1F3C974 (sp_file_id), 
         add constraint FK8F6F4952D1F3C974 
         foreign key (sp_file_id) 
-        references eirc_sp_files_tbl (id);
+        references eirc_registry_files_tbl (id);
 
-    alter table eirc_sp_registry_records_tbl 
+    alter table eirc_registry_records_tbl
         add index FKD41D677728C54FB6 (registry_id), 
         add constraint FKD41D677728C54FB6 
         foreign key (registry_id) 
-        references eirc_sp_registries_tbl (id);
+        references eirc_registries_tbl (id);
 
-    alter table eirc_sp_registry_records_tbl 
+    alter table eirc_registry_records_tbl
         add index FKD41D677791349F59 (consumer_id), 
         add constraint FKD41D677791349F59 
         foreign key (consumer_id) 

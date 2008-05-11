@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.flexpay.eirc.persistence">
 
-	<class name="SpFile" table="eirc_sp_files_tbl" optimistic-lock="version">
+	<class name="SpFile" table="eirc_registry_files_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -17,7 +17,7 @@
 		<property name="importDate" column="import_date" not-null="true" />
 	</class>
 
-	<class name="SpRegistry" table="eirc_sp_registries_tbl" optimistic-lock="version">
+	<class name="SpRegistry" table="eirc_registries_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -58,7 +58,7 @@
 		</many-to-one>
 	</class>
 
-	<class name="SpRegistryType" table="eirc_sp_registry_types_tbl"
+	<class name="SpRegistryType" table="eirc_registry_types_tbl"
 		   optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
@@ -74,7 +74,7 @@
 		<property name="code" not-null="true" unique="true" />
 	</class>
 
-	<class name="SpRegistryRecordStatus" table="eirc_sp_registry_record_statuses_tbl">
+	<class name="SpRegistryRecordStatus" table="eirc_registry_record_statuses_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -89,7 +89,7 @@
 		<property name="code" not-null="true" unique="true" />
 	</class>
 
-	<class name="SpRegistryRecord" table="eirc_sp_registry_records_tbl">
+	<class name="SpRegistryRecord" table="eirc_registry_records_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>

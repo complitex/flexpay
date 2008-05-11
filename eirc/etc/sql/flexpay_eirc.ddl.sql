@@ -147,51 +147,51 @@
         drop 
         foreign key FK4D78EA875A549E10;
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         drop 
         foreign key FK8F6F49528819126;
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         drop 
         foreign key FK_archive_status;
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         drop 
         foreign key FK_sender;
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         drop 
         foreign key FK_status;
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         drop 
         foreign key FK_recipient;
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         drop 
         foreign key FK8F6F495212902C71;
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         drop 
         foreign key FK8F6F4952D1F3C974;
 
-    alter table eirc_sp_registry_records_tbl 
+    alter table eirc_registry_records_tbl
         drop 
         foreign key FK_registry;
 
-    alter table eirc_sp_registry_records_tbl 
+    alter table eirc_registry_records_tbl
         drop 
         foreign key FK_service_type;
 
-    alter table eirc_sp_registry_records_tbl 
+    alter table eirc_registry_records_tbl
         drop 
         foreign key FKD41D677791349F59;
 
-    alter table eirc_sp_registry_records_tbl 
+    alter table eirc_registry_records_tbl
         drop 
         foreign key FK_import_error;
 
-    alter table eirc_sp_registry_records_tbl 
+    alter table eirc_registry_records_tbl
         drop 
         foreign key FK_record_status;
 
@@ -425,19 +425,19 @@
 
     drop table if exists eirc_services_tbl;
 
-    drop table if exists eirc_sp_files_tbl;
+    drop table if exists eirc_registry_files_tbl;
 
-    drop table if exists eirc_sp_registries_tbl;
+    drop table if exists eirc_registries_tbl;
 
     drop table if exists eirc_sp_registry_archive_statuses_tbl;
 
-    drop table if exists eirc_sp_registry_record_statuses_tbl;
+    drop table if exists eirc_registry_record_statuses_tbl;
 
-    drop table if exists eirc_sp_registry_records_tbl;
+    drop table if exists eirc_registry_records_tbl;
 
     drop table if exists eirc_sp_registry_statuses_tbl;
 
-    drop table if exists eirc_sp_registry_types_tbl;
+    drop table if exists eirc_registry_types_tbl;
 
     drop table if exists eirc_ticket_service_amounts_tbl;
 
@@ -726,7 +726,7 @@
         primary key (id)
     );
 
-    create table eirc_sp_files_tbl (
+    create table eirc_registry_files_tbl (
         id bigint not null auto_increment,
         request_file_name varchar(255) not null,
         internal_request_file_name varchar(255) not null,
@@ -736,7 +736,7 @@
         primary key (id)
     );
 
-    create table eirc_sp_registries_tbl (
+    create table eirc_registries_tbl (
         id bigint not null auto_increment,
         registry_number bigint,
         records_number bigint,
@@ -763,13 +763,13 @@
         primary key (id)
     );
 
-    create table eirc_sp_registry_record_statuses_tbl (
+    create table eirc_registry_record_statuses_tbl (
         id bigint not null auto_increment,
         code integer not null unique,
         primary key (id)
     );
 
-    create table eirc_sp_registry_records_tbl (
+    create table eirc_registry_records_tbl (
         id bigint not null auto_increment,
         service_code bigint not null,
         personal_account_ext varchar(255) not null,
@@ -800,7 +800,7 @@
         primary key (id)
     );
 
-    create table eirc_sp_registry_types_tbl (
+    create table eirc_registry_types_tbl (
         id bigint not null auto_increment,
         code integer not null,
         primary key (id)
@@ -1217,7 +1217,7 @@
         add index FK_registry_record (source_registry_record_id), 
         add constraint FK_registry_record 
         foreign key (source_registry_record_id) 
-        references eirc_sp_registry_records_tbl (id);
+        references eirc_registry_records_tbl (id);
 
     alter table eirc_consumers_tbl 
         add index FK9751FED27095AEAD (person_id), 
@@ -1285,77 +1285,77 @@
         foreign key (type_id) 
         references eirc_service_types_tbl (id);
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         add index FK8F6F49528819126 (service_provider_id), 
         add constraint FK8F6F49528819126 
         foreign key (service_provider_id) 
         references eirc_service_providers_tbl (id);
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         add index FK_archive_status (archive_status_id), 
         add constraint FK_archive_status 
         foreign key (archive_status_id) 
         references eirc_sp_registry_archive_statuses_tbl (id);
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         add index FK_sender (sender_id), 
         add constraint FK_sender 
         foreign key (sender_id) 
         references eirc_organisations_tbl (id);
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         add index FK_status (registry_status_id), 
         add constraint FK_status 
         foreign key (registry_status_id) 
         references eirc_sp_registry_statuses_tbl (id);
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         add index FK_recipient (recipient_id), 
         add constraint FK_recipient 
         foreign key (recipient_id) 
         references eirc_organisations_tbl (id);
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         add index FK8F6F495212902C71 (registry_type_id), 
         add constraint FK8F6F495212902C71 
         foreign key (registry_type_id) 
-        references eirc_sp_registry_types_tbl (id);
+        references eirc_registry_types_tbl (id);
 
-    alter table eirc_sp_registries_tbl 
+    alter table eirc_registries_tbl
         add index FK8F6F4952D1F3C974 (sp_file_id), 
         add constraint FK8F6F4952D1F3C974 
         foreign key (sp_file_id) 
-        references eirc_sp_files_tbl (id);
+        references eirc_registry_files_tbl (id);
 
-    alter table eirc_sp_registry_records_tbl 
+    alter table eirc_registry_records_tbl
         add index FK_registry (registry_id), 
         add constraint FK_registry 
         foreign key (registry_id) 
-        references eirc_sp_registries_tbl (id);
+        references eirc_registries_tbl (id);
 
-    alter table eirc_sp_registry_records_tbl 
+    alter table eirc_registry_records_tbl
         add index FK_service_type (service_type_id), 
         add constraint FK_service_type 
         foreign key (service_type_id) 
         references eirc_service_types_tbl (id);
 
-    alter table eirc_sp_registry_records_tbl 
+    alter table eirc_registry_records_tbl
         add index FKD41D677791349F59 (consumer_id), 
         add constraint FKD41D677791349F59 
         foreign key (consumer_id) 
         references eirc_consumers_tbl (id);
 
-    alter table eirc_sp_registry_records_tbl 
+    alter table eirc_registry_records_tbl
         add index FK_import_error (import_error_id), 
         add constraint FK_import_error 
         foreign key (import_error_id) 
         references common_import_errors_tbl (id);
 
-    alter table eirc_sp_registry_records_tbl 
+    alter table eirc_registry_records_tbl
         add index FK_record_status (record_status_id), 
         add constraint FK_record_status 
         foreign key (record_status_id) 
-        references eirc_sp_registry_record_statuses_tbl (id);
+        references eirc_registry_record_statuses_tbl (id);
 
     alter table eirc_ticket_service_amounts_tbl 
         add index FK4C259507DA8E0B59 (ticket_id), 
