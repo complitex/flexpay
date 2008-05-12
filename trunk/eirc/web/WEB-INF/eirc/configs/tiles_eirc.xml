@@ -18,7 +18,7 @@
 	</definition>
 
 	<definition name="eirc.import.file.list" extends="eirc.import">
-		<put-attribute name="title" value="eirc.menu34.sp_file_list" />
+		<put-attribute name="title" value="eirc.menu34.file_list" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/import/sp_file_list.jsp" />
 	</definition>
 
