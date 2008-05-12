@@ -2,7 +2,7 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<tr>
 		<td class="th">&nbsp;</td>
-		<td class="th" align="center"><input type="checkbox" onclick="select_checkboxes(this.value)">
+		<td class="th" align="center"><input type="checkbox" onclick="FP.setCheckboxes(this.checked,'objectIds')">
 		</td>
 		<td class="th"><s:text name="ab.country_name"/></td>
 		<td class="th"><s:text name="ab.country_shortname"/></td>
@@ -13,7 +13,7 @@
 				<s:property value="#rowstatus.index + 1" />
 			</td>
 			<td class="col" align="center">
-				<input type="checkbox">
+				<input type="checkbox" name="objectIds">
 			</td>
 			<td class="col"> 
 				<a href="<s:url action='list_regions.action'><s:param name="countryFilter.selectedId" value="%{translatable.id}"/></s:url>">
