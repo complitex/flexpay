@@ -87,8 +87,8 @@
 		</action>
 
 		<action name="select_correction_type" class="selectCorrectionTypeAction">
-			<result name="input">/WEB-INF/jsp/eirc/data/correspondence/select_correction_type.jsp</result>
-			<result name="error">/WEB-INF/jsp/eirc/data/correspondence/select_correction_type_error.jsp</result>
+			<result name="input" type="tiles">eirc.select_correction_type</result>
+			<result name="error" type="tiles">eirc.correction_type_error</result>
 			<result name="address" type="redirect-action">
 				<param name="actionName">registry_record_correct_address</param>
 				<param name="parse">true</param>

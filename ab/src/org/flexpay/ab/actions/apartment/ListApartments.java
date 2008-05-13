@@ -26,11 +26,11 @@ public class ListApartments extends BuildingsActionsBase implements
 	private static Logger log = Logger.getLogger(ListApartments.class);
 
 	private ParentService<BuildingsFilter> parentService;
-	private ApartmentService apartmentService;
+	protected ApartmentService apartmentService;
 
-	private CountryFilter countryFilter = new CountryFilter();
-	private RegionFilter regionFilter = new RegionFilter();
-	private TownFilter townFilter = new TownFilter();
+	protected CountryFilter countryFilter = new CountryFilter();
+	protected RegionFilter regionFilter = new RegionFilter();
+	protected TownFilter townFilter = new TownFilter();
 	protected StreetFilter streetFilter = new StreetFilter();
 	protected BuildingsFilter buildingsFilter = new BuildingsFilter();
 	private Page pager = new Page();

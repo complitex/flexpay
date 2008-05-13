@@ -59,9 +59,16 @@ public interface ApartmentService {
 	 *
 	 * @param apartment Apartment
 	 * @param number apartment number
-	 * @return true if this number is successfully set, false if given number alredy exist in given apartment's building.
+	 * @throws ObjectAlreadyExistException if given number alredy exists in given apartment's building.
 	 */
 	void setApartmentNumber(Apartment apartment, String number) throws ObjectAlreadyExistException;
 
 	public String getAddress(Apartment apartment) throws FlexPayException;
+
+	/**
+	 * Create a new apartment
+	 *
+	 * @param apartment Apartment object
+	 */
+	void create(Apartment apartment);
 }

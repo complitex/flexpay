@@ -61,4 +61,15 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 * @throws FlexPayException if building does not have any buildingses
 	 */
 	Buildings getFirstBuildings(Building building) throws FlexPayException;
+
+	/**
+	 * Create a new Buildings
+	 *
+	 * @param street Street
+	 * @param district District
+	 * @param numberValue Buildings number
+	 * @param bulkValue Buildings bulk
+	 * @return new Buildings object created
+	 */
+	Buildings createBuildings(Street street, District district, String numberValue, String bulkValue) throws FlexPayException;
 }

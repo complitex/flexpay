@@ -37,6 +37,7 @@
 		FROM Apartment o
 			LEFT JOIN FETCH o.apartmentNumbers n
 		WHERE o.status=0 and o.building.id=?
+		ORDER BY cast(n.value, int)
 	</query>
 
 	<query name="Apartment.readFull">

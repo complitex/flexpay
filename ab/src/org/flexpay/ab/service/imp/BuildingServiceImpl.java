@@ -1,12 +1,15 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.dao.BuildingAttributeTypeDao;
+import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.dao.BuildingsDaoExt;
+import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
+import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.dao.paging.Page;
@@ -15,25 +18,25 @@ import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional(readOnly = true, rollbackFor = Exception.class)
 public class BuildingServiceImpl implements BuildingService {
 
 	private static Logger log = Logger.getLogger(BuildingServiceImpl.class);
 
+	private BuildingDao buildingDao;
 	private BuildingsDao buildingsDao;
 	private BuildingAttributeTypeDao buildingsTypeDao;
 	private BuildingsDaoExt buildingsDaoExt;
 
 	private ParentService<StreetFilter> parentService;
+	private ParentService<DistrictFilter> districtParentService;
 
-	/**
-	 * Setter for property 'buildingsDao'.
-	 *
-	 * @param buildingsDao Value to set for property 'buildingsDao'.
-	 */
+	public void setBuildingDao(BuildingDao buildingDao) {
+		this.buildingDao = buildingDao;
+	}
+
 	public void setBuildingsDao(BuildingsDao buildingsDao) {
 		this.buildingsDao = buildingsDao;
 	}
@@ -55,11 +58,19 @@ public class BuildingServiceImpl implements BuildingService {
 		this.parentService = parentService;
 	}
 
+	public void setDistrictParentService(ParentService<DistrictFilter> districtParentService) {
+		this.districtParentService = districtParentService;
+	}
+
 	public List<Buildings> getBuildings(ArrayStack filters, Page pager) {
 		StreetFilter filter = (StreetFilter) filters.peek();
+		if (filters.size() > 1 && filters.peek(1) instanceof DistrictFilter) {
+			DistrictFilter districtFilter = (DistrictFilter) filters.peek(1);
+			return buildingsDao.findStreetDistrictBuildings(filter.getSelectedId(), districtFilter.getSelectedId(), pager);
+		}
 		return buildingsDao.findBuildings(filter.getSelectedId(), pager);
 	}
-	
+
 	public List<Buildings> getBuildings(Long streetId, Page pager) {
 		return buildingsDao.findBuildings(streetId, pager);
 	}
@@ -108,14 +119,63 @@ public class BuildingServiceImpl implements BuildingService {
 		}
 
 		BuildingsFilter parentFilter = filters.isEmpty() ? null : (BuildingsFilter) filters.pop();
-		filters = parentService.initFilters(filters, locale);
-		StreetFilter forefatherFilter = (StreetFilter) filters.peek();
 
-		// init filter
-		parentFilter = initFilter(parentFilter, forefatherFilter, locale);
-		filters.push(parentFilter);
+		// check if a districts filter present
+		if (filters.size() > 1 && filters.peek(1) instanceof DistrictFilter) {
+			StreetFilter streetFilter = (StreetFilter) filters.pop();
+
+			filters = districtParentService.initFilters(filters, locale);
+			DistrictFilter districtFilter = (DistrictFilter) filters.pop();
+
+			filters.push(streetFilter);
+			filters = parentService.initFilters(filters, locale);
+			streetFilter = (StreetFilter) filters.pop();
+
+			filters.push(districtFilter);
+			filters.push(streetFilter);
+
+			// init filter
+			parentFilter = initFilter(parentFilter, streetFilter, districtFilter);
+			filters.push(parentFilter);
+		} else {
+			filters = parentService.initFilters(filters, locale);
+			StreetFilter forefatherFilter = (StreetFilter) filters.peek();
+
+			// init filter
+			parentFilter = initFilter(parentFilter, forefatherFilter, locale);
+			filters.push(parentFilter);
+		}
 
 		return filters;
+	}
+
+	private BuildingsFilter initFilter(BuildingsFilter buildingFilter, StreetFilter streetFilter, DistrictFilter districtFilter)
+			throws FlexPayException {
+
+		if (buildingFilter == null) {
+			buildingFilter = new BuildingsFilter();
+		}
+
+		if (log.isInfoEnabled()) {
+			log.info("Getting list of buildings, street filter: " + streetFilter + ", district filter: " + districtFilter);
+		}
+
+		ArrayStack filters = new ArrayStack();
+		filters.push(districtFilter);
+		filters.push(streetFilter);
+		Page pager = new Page(100000, 1);
+		buildingFilter.setBuildingses(getBuildings(filters, pager));
+
+		List<Buildings> names = buildingFilter.getBuildingses();
+		if (names.isEmpty()) {
+			throw new FlexPayException("No buildings", "ab.no_buildings");
+		}
+		if (buildingFilter.getSelectedId() == null || !isFilterValid(buildingFilter)) {
+			Buildings firstObject = names.iterator().next();
+			buildingFilter.setSelectedId(firstObject.getId());
+		}
+
+		return buildingFilter;
 	}
 
 	private List<BuildingAttributeType> cachedTypes = null;
@@ -149,7 +209,7 @@ public class BuildingServiceImpl implements BuildingService {
 	 * @param bulk	 Building bulk number
 	 * @return Buildings instance, or <code>null</null> if not found
 	 */
-	@Transactional (readOnly = true, rollbackFor = Exception.class)
+	@Transactional(readOnly = true, rollbackFor = Exception.class)
 	public Buildings findBuildings(Street street, District district, String number, String bulk) {
 		return buildingsDaoExt.findBuildings(street, district, number, bulk);
 	}
@@ -157,12 +217,12 @@ public class BuildingServiceImpl implements BuildingService {
 	/**
 	 * Find building by number
 	 *
-	 * @param street   Building street
-	 * @param number   Building number
-	 * @param bulk	 Building bulk number
+	 * @param street Building street
+	 * @param number Building number
+	 * @param bulk   Building bulk number
 	 * @return Buildings instance, or <code>null</null> if not found
 	 */
-	@Transactional (readOnly = true, rollbackFor = Exception.class)
+	@Transactional(readOnly = true, rollbackFor = Exception.class)
 	public Buildings findBuildings(Street street, String number, String bulk) {
 		return buildingsDaoExt.findBuildings(street, number, bulk);
 	}
@@ -190,5 +250,49 @@ public class BuildingServiceImpl implements BuildingService {
 			throw new FlexPayException("Building #" + building.getId() + " does not have any buildings");
 		}
 		return buildingses.get(0);
+	}
+
+	/**
+	 * Create a new Buildings
+	 *
+	 * @param street Street
+	 * @param district District
+	 * @param numberValue Buildings number
+	 * @param bulkValue Buildings bulk
+	 * @return new Buildings object created
+	 */
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	public Buildings createBuildings(Street street, District district, String numberValue, String bulkValue)
+			throws FlexPayException {
+		Building building = new Building();
+		building.setDistrict(district);
+
+		Buildings buildings = new Buildings();
+		buildings.setBuilding(building);
+		Set<Buildings> buildingses = new HashSet<Buildings>();
+		buildingses.add(buildings);
+		building.setBuildingses(buildingses);
+		buildings.setStreet(street);
+
+		List<BuildingAttribute> attributes = new ArrayList<BuildingAttribute>();
+		BuildingAttribute number = new BuildingAttribute();
+		number.setBuildingAttributeType(getAttributeType(BuildingAttributeType.TYPE_NUMBER));
+		number.setBuildings(buildings);
+		number.setValue(numberValue);
+		attributes.add(number);
+
+		if (StringUtils.isNotBlank(bulkValue)) {
+			BuildingAttribute bulk = new BuildingAttribute();
+			bulk.setBuildingAttributeType(getAttributeType(BuildingAttributeType.TYPE_BULK));
+			bulk.setBuildings(buildings);
+			bulk.setValue(bulkValue);
+			attributes.add(bulk);
+		}
+
+		buildings.setBuildingAttributes(attributes);
+
+		buildingDao.create(building);
+
+		return buildings;
 	}
 }

@@ -23,7 +23,7 @@ public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
 	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
 	private Page<SpRegistryRecord> pager = new Page<SpRegistryRecord>();
 
-	private SpRegistry registry = new SpRegistry(8L);
+	private SpRegistry registry = new SpRegistry(9L);
 
 	/**
 	 * Override to run the test and assert its state.

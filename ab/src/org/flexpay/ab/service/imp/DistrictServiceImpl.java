@@ -1,17 +1,24 @@
 package org.flexpay.ab.service.imp;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.dao.*;
 import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+import java.util.Collection;
+import java.util.Locale;
+
+@Transactional(readOnly = true, rollbackFor = Exception.class)
 public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 		DistrictNameTranslation, DistrictName, DistrictNameTemporal, District, Town>
 		implements DistrictService {
@@ -168,6 +175,53 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	protected boolean canDisable(District district, FlexPayExceptionContainer container) {
 		return true;
+	}
+
+	public DistrictFilter initFilter(DistrictFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale) throws FlexPayException {
+		if (parentFilter == null) {
+			parentFilter = new DistrictFilter();
+		}
+
+		parentFilter.setNames(getTranslations(forefatherFilter, locale));
+
+		Collection<DistrictNameTranslation> names = parentFilter.getNames();
+		if (names.isEmpty()) {
+			throw new FlexPayException("No district names", "ab.no_districts");
+		}
+		if (parentFilter.getSelectedId() == null || !isFilterValid(parentFilter)) {
+			DistrictName firstObject = (DistrictName) names.iterator().next().getTranslatable();
+			parentFilter.setSelectedId(firstObject.getObject().getId());
+		}
+
+		return parentFilter;
+
+	}
+
+	private boolean isFilterValid(DistrictFilter filter) {
+		for (DistrictNameTranslation nameTranslation : filter.getNames()) {
+			DistrictName name = (DistrictName) nameTranslation.getTranslatable();
+			if (name.getObject().getId().equals(filter.getSelectedId())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException {
+		if (filters == null) {
+			filters = new ArrayStack();
+		}
+
+		DistrictFilter parentFilter = filters.isEmpty() ? null : (DistrictFilter) filters.pop();
+		filters = parentService.initFilters(filters, locale);
+		TownFilter forefatherFilter = (TownFilter) filters.peek();
+
+		// init filter
+		parentFilter = initFilter(parentFilter, forefatherFilter, locale);
+		filters.push(parentFilter);
+
+		return filters;
 	}
 
 	/**

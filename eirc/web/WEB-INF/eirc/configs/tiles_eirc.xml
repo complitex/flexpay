@@ -74,6 +74,14 @@
 	</definition>
 
 	<!-- Registry record corrections -->
+	<definition name="eirc.select_correction_type" extends="ab.layout.content">
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/select_correction_type.jsp" />
+	</definition>
+
+	<definition name="eirc.correction_type_error" extends="ab.layout.content">
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/select_correction_type_error.jsp" />
+	</definition>
+
 	<definition name="eirc.registry.record.correct_address" extends="ab.layout.content">
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
 	</definition>

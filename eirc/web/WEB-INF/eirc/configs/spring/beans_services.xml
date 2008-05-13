@@ -20,6 +20,8 @@
 		  class="org.flexpay.eirc.service.imp.SpRegistryRecordServiceImpl">
 		<property name="spRegistryRecordDao" ref="spRegistryRecordDao" />
 		<property name="spRegistryRecordDaoExt" ref="spRegistryRecordDaoExt" />
+		<property name="importErrorDao" ref="importErrorDao" />
+		<property name="recordStatusService" ref="spRegistryRecordStatusService" />
 	</bean>
 
 	<bean id="spRegistryTypeService"
