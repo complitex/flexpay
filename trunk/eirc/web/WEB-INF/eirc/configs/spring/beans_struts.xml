@@ -86,6 +86,7 @@
 		<property name="recordService" ref="spRegistryRecordService" />
 		<property name="spService" ref="spService" />
 		<property name="typeRegistry" ref="typeRegistryEirc" />
+		<property name="buildingService" ref="buildingService" />
 	</bean>
 
 	<bean id="correctRecordPersonAction" scope="prototype"

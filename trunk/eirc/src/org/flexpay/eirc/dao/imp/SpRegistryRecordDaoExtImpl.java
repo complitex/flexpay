@@ -1,26 +1,26 @@
 package org.flexpay.eirc.dao.imp;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.ImportError;
 import org.flexpay.eirc.dao.SpRegistryRecordDaoExt;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
-import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements SpRegistryRecordDaoExt {
+
+	private Logger log = Logger.getLogger(getClass());
 
 	/**
 	 * List registry records
@@ -58,49 +58,60 @@ public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements S
 	@SuppressWarnings({"unchecked"})
 	public List<SpRegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter,
 												RegistryRecordStatusFilter recordStatusFilter, final Page<SpRegistryRecord> pager) {
-		final DetachedCriteria criteria = DetachedCriteria.forClass(SpRegistryRecord.class, "rr")
-				.createAlias("rr.spRegistry", "r")
-				.add(Restrictions.eq("r.id", registryId))
-				.createAlias("rr.importError", "e")
-				.setFetchMode("rr.importError", FetchMode.JOIN)
-				.createAlias("rr.recordStatus", "rs")
-				.setFetchMode("rr.recordStatus", FetchMode.JOIN);
+		final StringBuilder hql = new StringBuilder("select distinct rr from SpRegistryRecord rr " +
+				"inner join fetch rr.spRegistry r " +
+				"inner join fetch rr.recordStatus rs " +
+				"left join fetch rr.importError e where r.id=? ");
+
+		final StringBuilder hqlCount = new StringBuilder("select count(*) from SpRegistryRecord rr " +
+				"inner join rr.spRegistry r " +
+				"inner join rr.recordStatus rs " +
+				"left join rr.importError e where r.id=? ");
+
+		final List<Object> params = new ArrayList<Object>();
+		params.add(registryId);
 
 		// filter by record status
 		if (recordStatusFilter.needFilter()) {
-			criteria.add(Restrictions.eq("rs.code", recordStatusFilter.getSelectedStatus()));
+			hql.append("and rs.code=? ");
+			hqlCount.append("and rs.code=? ");
+			params.add(recordStatusFilter.getSelectedStatus());
 		}
 
 		if (importErrorTypeFilter.needFilter()) {
 			if (importErrorTypeFilter.needFilterWithoutErrors()) {
-				criteria.add(Restrictions.isNull("rr.importError"));
+				hql.append("and rs.importError is null ");
+				hqlCount.append("and rs.importError is null ");
 			} else {
-				criteria.add(Restrictions.eq("e.status", ImportError.STATUS_ACTIVE))
-						.add(Restrictions.eq("e.objectType", importErrorTypeFilter.getSelectedType()));
+				hql.append("and e.status=? and e.objectType=?");
+				hqlCount.append("and e.status=? and e.objectType=?");
+				params.add(ImportError.STATUS_ACTIVE);
+				params.add(importErrorTypeFilter.getSelectedType());
 			}
 		}
 
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-
-				Number count = (Number) criteria.setProjection(Projections.count("rr.id"))
-						.getExecutableCriteria(session).uniqueResult();
-				if (count == null) {
-					pager.setTotalElements(0);
-				} else {
-					pager.setTotalElements(count.intValue());
+				if (log.isDebugEnabled()) {
+					log.debug("Filter records hql: " + hqlCount);
 				}
 
-				// http://forum.hibernate.org/viewtopic.php?t=939039
-				criteria.setProjection(null)
-						.setResultTransformer(Criteria.ROOT_ENTITY);
+				Number count = (Number) setParameters(session.createQuery(hqlCount.toString()), params).uniqueResult();
+				pager.setTotalElements(count.intValue());
 
-				return criteria.getExecutableCriteria(session)
+				return setParameters(session.createQuery(hql.toString()), params)
 						.setMaxResults(pager.getPageSize())
 						.setFirstResult(pager.getThisPageFirstElementNumber())
 						.list();
 			}
 		});
+	}
+
+	private Query setParameters(Query query, List<Object> params) {
+		for (int n = 0; n < params.size(); ++n) {
+			query.setParameter(n, params.get(n));
+		}
+		return query;
 	}
 
 	/**

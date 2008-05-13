@@ -77,13 +77,6 @@ public class ServiceProviderFileProcessor {
 	 * @param registry Registry header
 	 */
 	private void processHeader(SpRegistry registry) {
-		ServiceProvider provider = spService.getProvider(registry.getSenderCode());
-		if (provider == null) {
-			log.error("Failed processing registry header, provider not found: #" + registry.getSenderCode());
-			return;
-		}
-
-		registry.setServiceProvider(provider);
 
 		// process header containers
 		try {

@@ -26,7 +26,7 @@ public class StreetType extends TemporaryType<StreetType, StreetTypeTranslation>
 	 */
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("Id", getId())
 				.append("Status", getStatus())
 				.append("Translations", getTranslations().toArray())

@@ -109,7 +109,13 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 * @return DataSourceDescription
 	 */
 	public DataSourceDescription getDataSourceDescription(SpRegistryRecord record) {
-		return spRegistryRecordDaoExt.getDataSourceDescription(record.getId());
+		DataSourceDescription sd = spRegistryRecordDaoExt.getDataSourceDescription(record.getId());
+
+		if (log.isDebugEnabled()) {
+			log.debug("Record Data source: " + sd);
+		}
+
+		return sd;
 	}
 
 	/**
@@ -150,5 +156,13 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 
 	public void setSpRegistryRecordDaoExt(SpRegistryRecordDaoExt spRegistryRecordDaoExt) {
 		this.spRegistryRecordDaoExt = spRegistryRecordDaoExt;
+	}
+
+	public void setRecordStatusService(SpRegistryRecordStatusService recordStatusService) {
+		this.recordStatusService = recordStatusService;
+	}
+
+	public void setImportErrorDao(ImportErrorDao importErrorDao) {
+		this.importErrorDao = importErrorDao;
 	}
 }

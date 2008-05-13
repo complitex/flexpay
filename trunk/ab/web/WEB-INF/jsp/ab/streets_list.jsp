@@ -34,7 +34,6 @@
 			<tr valign="middle" class="cols_1">
 				<td class="col_1s" align="right">
 					<s:property	value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
-					&nbsp;
 				</td>
 				<td class="col">
 					<input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>

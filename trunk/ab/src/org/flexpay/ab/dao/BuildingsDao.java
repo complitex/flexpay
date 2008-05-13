@@ -18,6 +18,16 @@ public interface BuildingsDao extends GenericDao<Buildings, Long> {
 	List<Buildings> findBuildings(Long streetId, Page pager);
 
 	/**
+	 * Find buildings in the street and district
+	 *
+	 * @param streetId Street identifier
+	 * @param districtId District identifier
+	 * @param pager Page instance
+	 * @return list of buildings for the street
+	 */
+	List<Buildings> findStreetDistrictBuildings(Long streetId, Long districtId, Page pager);
+
+	/**
 	 * Find buildings relations for building
 	 *
 	 * @param buildingId Building identifier

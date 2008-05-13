@@ -1,7 +1,11 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<div align="center" width="100%">
-	<s:text name="ab.select_correction_type" />:
-	<input type="radio" id="address" onchange="window.location = <s:url action="registry_record_correct_address" />" /> <s:text name="ab.address" />
-	<input type="radio" id="person" onchange="window.location = <s:url action="registry_record_correct_person" />" /> <s:text name="ab.person" />
-</div>
+<table cellpadding="3" cellspacing="1" border="0" width="100%">
+	<tr><td class="th"><s:text name="ab.select_correction_type" /></td></tr>
+
+	<tr class="cols_1"><td class="col">
+	<input type="radio" id="address" name="type" onclick="window.location='<s:url action="registry_record_correct_address" />'" /> <s:text name="ab.address" />
+	</td></tr>
+	<tr class="cols_1"><td class="col">
+	<input type="radio" id="person" name="type" onclick="alert('Not implemented')" /> <s:text name="ab.person" />
+</table>

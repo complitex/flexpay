@@ -130,6 +130,13 @@ public class SpFileParser {
 			spRegistry.setRecipient(organisationService.getOrganisation(String.valueOf(spRegistry.getRecipientCode())));
 			spRegistry.setSender(organisationService.getOrganisation(String.valueOf(spRegistry.getSenderCode())));
 
+			ServiceProvider provider = spService.getProvider(spRegistry.getSenderCode());
+			if (provider == null) {
+				log.error("Failed processing registry header, provider not found: #" + spRegistry.getSenderCode());
+				throw new FlexPayException("Cannot find service provider " + spRegistry.getSenderCode());
+			}
+			spRegistry.setServiceProvider(provider);
+
 			this.spRegistry = spRegistryService.create(spRegistry);
 		} catch (NumberFormatException e) {
 			log.error("Header parse error", e);

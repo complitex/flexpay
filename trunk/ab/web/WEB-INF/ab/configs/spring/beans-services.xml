@@ -50,11 +50,13 @@
 	</bean>
 
 	<bean id="buildingService" class="org.flexpay.ab.service.imp.BuildingServiceImpl">
+		<property name="buildingDao" ref="buildingDao" />
 		<property name="buildingsDao" ref="buildingsDao" />
 		<property name="buildingsTypeDao" ref="buildingAttributeTypeDao" />
 		<property name="buildingsDaoExt" ref="buildingsDaoExt" />
 		<property name="parentService" ref="streetService" />
-	</bean>
+        <property name="districtParentService" ref="districtService" />
+    </bean>
 
 	<bean id="apartmentService" class="org.flexpay.ab.service.imp.ApartmentServiceImpl">
 		<property name="apartmentDao" ref="apartmentDao" />

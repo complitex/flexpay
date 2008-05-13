@@ -97,6 +97,21 @@
 		WHERE o.status = 0 AND temporals.invalidDate = '2100-12-31' AND street.id = ?
 	</query>
 
+	<query name="Buildings.findStreetDistrictBuildings.count">
+		select count(*) from Buildings o where o.status=0 and o.street.id=? and o.building.district.id=?
+	</query>
+
+	<query name="Buildings.findStreetDistrictBuildings">
+		SELECT DISTINCT o
+		FROM Buildings o
+		LEFT JOIN FETCH o.buildingAttributes attrs
+		LEFT JOIN FETCH attrs.buildingAttributeType attrType
+		LEFT JOIN FETCH attrType.translations attrTypeTr
+		LEFT JOIN FETCH attrTypeTr.lang langAttr
+		LEFT JOIN FETCH langAttr.translations
+		WHERE o.status = 0 AND o.street.id=? AND o.building.district.id=?
+	</query>
+
 	<query name="BuildingAttributeType.findAttributeTypes">
 		FROM BuildingAttributeType
 	</query>

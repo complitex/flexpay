@@ -15,11 +15,13 @@ a
 a:link
 	{color:#036; text-decoration:underline;}
 a:visited
-	{color:#603; text-decoration:underline;}
+	{color:#036; text-decoration:underline;}
 a:hover
 	{color:#369; text-decoration:underline;}
 
-
+img {
+	border: 0px;
+}
 
 span.menu
 	{
@@ -101,6 +103,13 @@ h1
 	font-weight: normal;
 	margin-bottom: 1em;
 	}
+h2
+	{
+	font-family: tahoma, sans-serif;
+	font-size: 1.2em;
+	font-weight: normal;
+	margin-bottom: 1em;
+	}
 h3
 	{
 	font-family: tahoma, sans-serif;
@@ -118,15 +127,15 @@ h3
 	}
 li
 	{
-	padding-left: 0.5em; padding-top: 0;
-	margin-bottom: 0.5em; margin-left: 0;
+	padding-left: 0.5em; padding-top: 0px;
+	margin-bottom: 0.5em; margin-left: 0px;
 	}
 
 
 
 ul.folders
 	{
-	margin-top: 0; margin-left: 1em;
+	margin-top: 0em; margin-left: 1em;
 	padding-left: 10px;
 	font-family: tahoma, sans-serif; font-size: 0.8em; font-weight: normal;
 	list-style-image: url('../img/i_folder_close.gif');
@@ -134,7 +143,7 @@ ul.folders
 
 ul.folders li.open
 	{
-	margin-top: 0; margin-left: 0;
+	margin-top: 0em; margin-left: 0em;
 	padding-left: 5px;
 	font-family: tahoma, sans-serif; font-weight: normal;
 	list-style-image: url('../img/i_folder_open.gif');
@@ -142,7 +151,7 @@ ul.folders li.open
 
 ul.docs
 	{
-	margin-top: 0; margin-left: 1em;
+	margin-top: 0em; margin-left: 1em;
 	padding-left: 10px;
 	font-family: tahoma, sans-serif; font-size: 0.85em; font-weight: normal;
 	list-style-image: url('../img/i_doc.gif');
@@ -173,6 +182,8 @@ ul.docs
 
 .form-select
 	{ border: 1px solid #b3b9c3; height: 20px; background: #fff; font-size: 0.7em; font-family: tahoma, sans-serif; color: #000; }
+.form-select-100p
+	{ border: 1px solid #b3b9c3; width:99%; height: 20px; background: #fff; font-size: 0.7em; font-family: tahoma, sans-serif; color: #000; }
 .form-search
 	{ float: left; width:50%; border: 1px solid #b3b9c3; height: 20px; background: #fff; font-size: 0.8em; font-family: tahoma, sans-serif; color: #000; }
 .form-textarea
@@ -181,8 +192,12 @@ ul.docs
 	{ border: 1px solid #b3b9c3; width:99%; height: 20px; background: #fff; font-size: 0.8em; font-family: tahoma, sans-serif; color: #000; }
 .form-input-txt-numb
 	{ border: 1px solid #b3b9c3; width:50px; height: 20px; background: #fff; font-size: 0.8em; font-family: tahoma, sans-serif; color: #000; text-align: right; }
-.form-input-pager
-	{ border: 1px solid #b3b9c3; width:25px; height: 20px; background: #fff; font-size: 0.8em; font-family: tahoma, sans-serif; color: #000; text-align: center; }
+.form-input-txt-green
+	{ border: 1px solid #aca; width:99%; height: 20px; background: #efe; font-size: 0.8em; font-family: tahoma, sans-serif; color: #060; }
+.form-input-txt-red
+	{ border: 1px solid #caa; width:99%; height: 20px; background: #fee; font-size: 0.8em; font-family: tahoma, sans-serif; color: #c00; padding: 0 5 0 5px; }
+.form
+	{ }
 
 .columns { clear: both; width: 99%; }
 .columns .left,
@@ -226,12 +241,12 @@ ul.docs
 	{ background: #e2e7e7;
 	border-bottom: 3px solid #4a4f4f;
 	font-size: 80%; font-family: tahoma, tahoma, sans-serif;
-	font-weight: bold; color: #000; height: 30px; }
+	font-weight: bold; color: #000; }
 .th_s
 	{ background: #d9dede;
 	border-bottom: 3px solid #4a4f4f;
 	font-size: 80%; font-family: tahoma, tahoma, sans-serif;
-	font-weight: bold; color: #000; height: 30px;  }
+	font-weight: bold; color: #000; }
 
 .text-field
 	{ border: 1px solid #dae1e1; }

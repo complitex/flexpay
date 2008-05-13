@@ -1,32 +1,19 @@
 package org.flexpay.ab.service.imp;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.ApartmentDaoExt;
 import org.flexpay.ab.dao.ApartmentNumberDao;
-import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.ApartmentNumber;
-import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.persistence.ObjectAlreadyExistException;
-import org.flexpay.ab.persistence.Street;
-import org.flexpay.ab.persistence.StreetName;
-import org.flexpay.ab.persistence.StreetNameTranslation;
-import org.flexpay.ab.persistence.StreetType;
-import org.flexpay.ab.persistence.StreetTypeTranslation;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.service.ApartmentService;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.DateIntervalUtil;
-import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Set;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class ApartmentServiceImpl implements ApartmentService {
@@ -37,9 +24,8 @@ public class ApartmentServiceImpl implements ApartmentService {
 
 	/**
 	 * Setter for property 'apartmentDao'.
-	 * 
-	 * @param apartmentDao
-	 *            Value to set for property 'apartmentDao'.
+	 *
+	 * @param apartmentDao Value to set for property 'apartmentDao'.
 	 */
 	public void setApartmentDao(ApartmentDao apartmentDao) {
 		this.apartmentDao = apartmentDao;
@@ -90,11 +76,9 @@ public class ApartmentServiceImpl implements ApartmentService {
 
 	/**
 	 * Try to find apartment by building and number
-	 * 
-	 * @param building
-	 *            Building
-	 * @param number
-	 *            Apartment number
+	 *
+	 * @param building Building
+	 * @param number   Apartment number
 	 * @return Apartment if found, or <code>null</code> otherwise
 	 */
 	public Apartment findApartmentStub(Building building, String number) {
@@ -109,9 +93,8 @@ public class ApartmentServiceImpl implements ApartmentService {
 
 	/**
 	 * Read full apartment information
-	 * 
-	 * @param id
-	 *            Apartment id
+	 *
+	 * @param id Apartment id
 	 * @return Apartment instance, or <code>null</code> if not found
 	 */
 	public Apartment readFull(Long id) {
@@ -121,21 +104,16 @@ public class ApartmentServiceImpl implements ApartmentService {
 	/**
 	 * Validate that given number not alredy exist in given apartment's
 	 * building. If not exist then set new number for given apartment.
-	 * 
-	 * @param apartment
-	 *            Apartment
-	 * @param number
-	 *            apartment number
-	 * @return true if this number is successfully set, false if given number
-	 *         alredy exist in given apartment's building.
-	 * @throws ObjectAlreadyExistException 
+	 *
+	 * @param apartment Apartment
+	 * @param number	apartment number
+	 * @throws ObjectAlreadyExistException
 	 */
 	@Transactional(readOnly = false)
 	public void setApartmentNumber(Apartment apartment, String number) throws ObjectAlreadyExistException {
 		apartment = apartmentDao.read(apartment.getId());
 		apartment.setNumber(number);
 		apartmentDao.update(apartment);
-		
 
 		/*ApartmentNumber apartmentNumber = new ApartmentNumber();
 		apartmentNumber.setApartment(apartment);
@@ -154,9 +132,8 @@ public class ApartmentServiceImpl implements ApartmentService {
 
 	/**
 	 * Get building apartment belongs to
-	 * 
-	 * @param apartment
-	 *            Apartment stub
+	 *
+	 * @param apartment Apartment stub
 	 * @return Building stub
 	 */
 	public Building getBuilding(Apartment apartment) {
@@ -164,9 +141,12 @@ public class ApartmentServiceImpl implements ApartmentService {
 		return persistent.getBuilding();
 	}
 
+	public void create(Apartment apartment) {
+		apartmentDao.create(apartment);
+	}
+
 	/**
-	 * @param apartmentNumberDao
-	 *            the apartmentNumberDao to set
+	 * @param apartmentNumberDao the apartmentNumberDao to set
 	 */
 	public void setApartmentNumberDao(ApartmentNumberDao apartmentNumberDao) {
 		this.apartmentNumberDao = apartmentNumberDao;
