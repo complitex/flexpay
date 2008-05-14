@@ -1,11 +1,10 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<tr>
-		<td class="th">&nbsp;</td>
-		<td class="th" align="center"><input type="checkbox" onclick="FP.setCheckboxes(this.checked,'objectIds')">
-		</td>
-		<td class="th"><s:text name="ab.country_name"/></td>
-		<td class="th"><s:text name="ab.country_shortname"/></td>
+		<td class="th" width="1%">&nbsp;</td>
+		<td class="th" width="1%"><input type="checkbox" onclick="FP.setCheckboxes(this.checked,'objectIds')"></td>
+		<td class="th" width="63%"><s:text name="ab.country_name"/></td>
+		<td class="th" width="35%"><s:text name="ab.country_shortname"/></td>
 	</tr>
 	<s:iterator value="translationList" status="rowstatus">
 		<tr valign="middle" class="cols_1">
@@ -30,7 +29,7 @@
 	<tr>
 		<td colspan="4">
 			<input type="submit" class="btn-exit"
-				   onclick="window.location='<c:url value="/dicts/create_country.action"/>'"
+				   onclick="window.location='<s:url value="/dicts/create_country.action"/>'"
 				   value="<s:text name="common.new"/>"/>
 		</td>
 	</tr>

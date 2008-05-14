@@ -6,28 +6,8 @@
 	<form id="fobjects" method="post" action="<s:url value="/dicts/list_apartments.action" includeParams="none" />">
 
 		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/country_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/region_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/town_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/street_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/buildings_filter.jsp" %>
+			<td colspan="4">
+				<%@ include file="filters/groups/country_region_town_street_building.jsp" %>
 			</td>
 		</tr>
 
@@ -51,18 +31,15 @@
 				</td>
 				<td class="col">
 					<a href="<s:url action='apartmentEditAction'><s:param name="apartment.id" value="%{id}"/></s:url>">
-	      				<s:text name="ab.edit" />
+	      				<img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
+						 title="<s:text name="common.edit"/>" />
 	    			</a>
 				</td>
 			</tr>
 		</s:iterator>
-		<tr class="cols_1">
-			<td class="col" width="100%" colspan="4" align="center">
-				<%@ include file="filters/pager.jsp" %>
-			</td>
-		</tr>
 		<tr>
-			<td colspan="3">
+			<td colspan="4">
+				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
 				<%--onclick="$('fobjects').action='<s:url action="delete_apartments"/>';$('fobjects').submit()"--%>
 					   onclick="alert('<s:text name="error.not_implemented" />')"
@@ -71,8 +48,6 @@
 				<%--onclick="window.location='<s:url action="create_apartment"/>'"--%>
 					   onclick="alert('<s:text name="error.not_implemented" />')"
 					   value="<s:text name="common.new"/>"/>
-				<input type="submit" class="btn-exit"
-					   value="<s:text name="common.refresh"/>"/>
 			</td>
 		</tr>
 	</form>

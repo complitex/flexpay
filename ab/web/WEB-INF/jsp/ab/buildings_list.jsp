@@ -6,23 +6,8 @@
 	<form id="fobjects" method="post" action="<s:url value="/dicts/list_buildings.action" includeParams="none" />">
 
 		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/country_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/region_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/town_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/street_filter.jsp" %>
+			<td colspan="4">
+				<%@ include file="filters/groups/country_region_town_street.jsp" %>
 			</td>
 		</tr>
 
@@ -38,7 +23,6 @@
 			<tr valign="middle" class="cols_1">
 				<td class="col_1s" align="right">
 					<s:property	value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
-					&nbsp;
 				</td>
 				<td class="col">
 					<input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
@@ -50,18 +34,15 @@
 				</td>
 				<td class="col">
 					<a href="<s:url value="/dicts/buildingsEditAction.action?buildings.id=%{id}"/>">
-						<s:text name="ab.edit"/>
+						<img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
+						 title="<s:text name="common.edit"/>" />
 					</a>
 				</td>
 			</tr>
 		</s:iterator>
-		<tr class="cols_1">
-			<td class="col" width="100%" colspan="3" align="center">
-				<%@ include file="filters/pager.jsp" %>
-			</td>
-		</tr>
 		<tr>
-			<td colspan="3">
+			<td colspan="4">
+				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
 				<%--onclick="$('fobjects').action='<s:url action="delete_buildings"/>';$('fobjects').submit()"--%>
 					   onclick="alert('<s:text name="error.not_implemented" />')"
@@ -69,8 +50,6 @@
 				<input type="button" class="btn-exit"
 				       onclick="window.location='<s:url action="buildingsCreateAction"/>'"
 					   value="<s:text name="common.new"/>"/>
-				<input type="submit" class="btn-exit"
-					   value="<s:text name="common.refresh"/>"/>
 			</td>
 		</tr>
 	</form>

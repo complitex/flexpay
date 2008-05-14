@@ -11,6 +11,7 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
+import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.service.ConsumerService;
@@ -27,7 +28,7 @@ public class EircImportService extends ImportService {
 	private IdentityTypeService typeService;
 
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
-	public void importConsumers(DataSourceDescription sd, RawConsumersDataSource dataSource)
+	public void importConsumers(DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
 			throws FlexPayException {
 
 		if (log.isInfoEnabled()) {
@@ -200,7 +201,7 @@ public class EircImportService extends ImportService {
 	private Apartment findApartment(Map<String, List<Street>> nameObjsMap,
 									Map<String, StreetType> nameTypeMap,
 									DataSourceDescription sd, RawConsumerData data,
-									RawConsumersDataSource dataSource) {
+									RawDataSource<RawConsumerData> dataSource) {
 
 		// try to find by apartment correction
 		log.info("Checking for apartment correction: " + data.getApartmentId());
@@ -235,7 +236,7 @@ public class EircImportService extends ImportService {
 
 	private Street findStreet(Map<String, List<Street>> nameObjsMap,
 							  Map<String, StreetType> nameTypeMap, RawConsumerData data,
-							  DataSourceDescription sd, RawConsumersDataSource dataSource) {
+							  DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource) {
 		List<Street> streets = nameObjsMap.get(data.getAddressStreet().toLowerCase());
 		// no candidates
 		if (streets == null) {
@@ -292,7 +293,7 @@ public class EircImportService extends ImportService {
 		return nameTypeMap.get(data.getAddressStreetType().toLowerCase());
 	}
 
-	private Apartment findApartment(RawConsumerData data, Street street, DataSourceDescription sd, RawConsumersDataSource dataSource) {
+	private Apartment findApartment(RawConsumerData data, Street street, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource) {
 		Buildings buildings = buildingService.findBuildings(street, data.getAddressHouse(), data.getAddressBulk());
 		if (buildings == null) {
 			log.warn(String.format("Failed getting building for consumer, Street(%d, %s), Building(%s, %s) ",
@@ -306,7 +307,7 @@ public class EircImportService extends ImportService {
 		return findApartment(data, buildings, sd, dataSource);
 	}
 
-	private Apartment findApartment(RawConsumerData data, Buildings buildings, DataSourceDescription sd, RawConsumersDataSource dataSource) {
+	private Apartment findApartment(RawConsumerData data, Buildings buildings, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource) {
 		Building building = buildings.getBuilding();
 		if (building == null) {
 			building = buildingService.findBuilding(buildings);

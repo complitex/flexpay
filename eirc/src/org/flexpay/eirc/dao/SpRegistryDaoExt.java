@@ -7,6 +7,8 @@ import org.flexpay.common.dao.paging.Page;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.Collection;
 
 public interface SpRegistryDaoExt {
 
@@ -23,4 +25,12 @@ public interface SpRegistryDaoExt {
 	 */
 	List<SpRegistry> findRegistries(OrganisationFilter senderFilter, OrganisationFilter recipientFilter,
 									RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page pager);
+
+	/**
+	 * Find registries by identifiers
+	 *
+	 * @param objectIds Set of registry identifiers
+	 * @return collection of registries
+	 */
+	Collection<SpRegistry> findRegistries(Set<Long> objectIds);
 }
