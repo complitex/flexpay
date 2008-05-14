@@ -16,11 +16,13 @@ import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
-public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
-		DistrictNameTranslation, DistrictName, DistrictNameTemporal, District, Town>
+public class DistrictServiceImpl
+		extends
+		NameTimeDependentServiceImpl<DistrictNameTranslation, DistrictName, DistrictNameTemporal, District, Town>
 		implements DistrictService {
 
 	private DistrictDao districtDao;
@@ -33,8 +35,9 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	/**
 	 * Setter for property 'districtDao'.
-	 *
-	 * @param districtDao Value to set for property 'districtDao'.
+	 * 
+	 * @param districtDao
+	 *            Value to set for property 'districtDao'.
 	 */
 	public void setDistrictDao(DistrictDao districtDao) {
 		this.districtDao = districtDao;
@@ -42,8 +45,9 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	/**
 	 * Setter for property 'districtNameDao'.
-	 *
-	 * @param districtNameDao Value to set for property 'districtNameDao'.
+	 * 
+	 * @param districtNameDao
+	 *            Value to set for property 'districtNameDao'.
 	 */
 	public void setDistrictNameDao(DistrictNameDao districtNameDao) {
 		this.districtNameDao = districtNameDao;
@@ -51,26 +55,31 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	/**
 	 * Setter for property 'districtNameTemporalDao'.
-	 *
-	 * @param districtNameTemporalDao Value to set for property 'districtNameTemporalDao'.
+	 * 
+	 * @param districtNameTemporalDao
+	 *            Value to set for property 'districtNameTemporalDao'.
 	 */
-	public void setDistrictNameTemporalDao(DistrictNameTemporalDao districtNameTemporalDao) {
+	public void setDistrictNameTemporalDao(
+			DistrictNameTemporalDao districtNameTemporalDao) {
 		this.districtNameTemporalDao = districtNameTemporalDao;
 	}
 
 	/**
 	 * Setter for property 'districtNameTranslationDao'.
-	 *
-	 * @param districtNameTranslationDao Value to set for property 'districtNameTranslationDao'.
+	 * 
+	 * @param districtNameTranslationDao
+	 *            Value to set for property 'districtNameTranslationDao'.
 	 */
-	public void setDistrictNameTranslationDao(DistrictNameTranslationDao districtNameTranslationDao) {
+	public void setDistrictNameTranslationDao(
+			DistrictNameTranslationDao districtNameTranslationDao) {
 		this.districtNameTranslationDao = districtNameTranslationDao;
 	}
 
 	/**
 	 * Setter for property 'townDao'.
-	 *
-	 * @param townDao Value to set for property 'townDao'.
+	 * 
+	 * @param townDao
+	 *            Value to set for property 'townDao'.
 	 */
 	public void setTownDao(TownDao townDao) {
 		this.townDao = townDao;
@@ -78,7 +87,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	/**
 	 * Get DAO implementation working with Name time-dependent objects
-	 *
+	 * 
 	 * @return GenericDao implementation
 	 */
 	protected NameTimeDependentDao<District, Long> getNameTimeDependentDao() {
@@ -87,7 +96,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	/**
 	 * Get DAO implementation working with DateIntervals
-	 *
+	 * 
 	 * @return GenericDao implementation
 	 */
 	protected GenericDao<DistrictNameTemporal, Long> getNameTemporalDao() {
@@ -96,7 +105,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	/**
 	 * Get DAO implementation working with DateIntervals
-	 *
+	 * 
 	 * @return GenericDao implementation
 	 */
 	protected GenericDao<DistrictName, Long> getNameValueDao() {
@@ -105,7 +114,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	/**
 	 * Get DAO implementation working with name translations
-	 *
+	 * 
 	 * @return GenericDao implementation
 	 */
 	protected GenericDao<DistrictNameTranslation, Long> getNameTranslationDao() {
@@ -114,7 +123,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	/**
 	 * Get DAO implementation working with parent objects
-	 *
+	 * 
 	 * @return GenericDao implementation
 	 */
 	protected GenericDao<Town, Long> getParentDao() {
@@ -123,8 +132,9 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	/**
 	 * Setter for property 'parentService'.
-	 *
-	 * @param parentService Value to set for property 'parentService'.
+	 * 
+	 * @param parentService
+	 *            Value to set for property 'parentService'.
 	 */
 	public void setParentService(ParentService<TownFilter> parentService) {
 		this.parentService = parentService;
@@ -132,7 +142,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	/**
 	 * Getter for property 'newNameTemporal'.
-	 *
+	 * 
 	 * @return Value for property 'newNameTemporal'.
 	 */
 	protected DistrictNameTemporal getNewNameTemporal() {
@@ -141,7 +151,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	/**
 	 * Getter for property 'newNameTimeDependent'.
-	 *
+	 * 
 	 * @return Value for property 'newNameTimeDependent'.
 	 */
 	protected District getNewNameTimeDependent() {
@@ -150,7 +160,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	/**
 	 * Getter for property 'emptyName'.
-	 *
+	 * 
 	 * @return Value for property 'emptyName'.
 	 */
 	protected DistrictName getEmptyName() {
@@ -159,7 +169,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	/**
 	 * Create empty name translation
-	 *
+	 * 
 	 * @return name translation
 	 */
 	public DistrictNameTranslation getEmptyNameTranslation() {
@@ -168,16 +178,22 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	/**
 	 * Check if disable operation on object is allowed
-	 *
-	 * @param district  Name time dependent object
-	 * @param container Exceptions container to add exception for
-	 * @return <code>true</code> if operation allowed, or <code>false</otherwise>
+	 * 
+	 * @param district
+	 *            Name time dependent object
+	 * @param container
+	 *            Exceptions container to add exception for
+	 * @return <code>true</code> if operation allowed, or
+	 *         <code>false</otherwise>
 	 */
-	protected boolean canDisable(District district, FlexPayExceptionContainer container) {
+	protected boolean canDisable(District district,
+			FlexPayExceptionContainer container) {
 		return true;
 	}
 
-	public DistrictFilter initFilter(DistrictFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale) throws FlexPayException {
+	public DistrictFilter initFilter(DistrictFilter parentFilter,
+			PrimaryKeyFilter forefatherFilter, Locale locale)
+			throws FlexPayException {
 		if (parentFilter == null) {
 			parentFilter = new DistrictFilter();
 		}
@@ -188,8 +204,10 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 		if (names.isEmpty()) {
 			throw new FlexPayException("No district names", "ab.no_districts");
 		}
-		if (parentFilter.getSelectedId() == null || !isFilterValid(parentFilter)) {
-			DistrictName firstObject = (DistrictName) names.iterator().next().getTranslatable();
+		if (parentFilter.getSelectedId() == null
+				|| !isFilterValid(parentFilter)) {
+			DistrictName firstObject = (DistrictName) names.iterator().next()
+					.getTranslatable();
 			parentFilter.setSelectedId(firstObject.getObject().getId());
 		}
 
@@ -199,7 +217,8 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	private boolean isFilterValid(DistrictFilter filter) {
 		for (DistrictNameTranslation nameTranslation : filter.getNames()) {
-			DistrictName name = (DistrictName) nameTranslation.getTranslatable();
+			DistrictName name = (DistrictName) nameTranslation
+					.getTranslatable();
 			if (name.getObject().getId().equals(filter.getSelectedId())) {
 				return true;
 			}
@@ -208,12 +227,14 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 		return false;
 	}
 
-	public ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException {
+	public ArrayStack initFilters(ArrayStack filters, Locale locale)
+			throws FlexPayException {
 		if (filters == null) {
 			filters = new ArrayStack();
 		}
 
-		DistrictFilter parentFilter = filters.isEmpty() ? null : (DistrictFilter) filters.pop();
+		DistrictFilter parentFilter = filters.isEmpty() ? null
+				: (DistrictFilter) filters.pop();
 		filters = parentService.initFilters(filters, locale);
 		TownFilter forefatherFilter = (TownFilter) filters.peek();
 
@@ -225,12 +246,22 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	/**
-	 * return base for name time-dependent objects in i18n files, like 'region', 'town',
-	 * etc.
-	 *
+	 * return base for name time-dependent objects in i18n files, like 'region',
+	 * 'town', etc.
+	 * 
 	 * @return Localization key base
 	 */
 	protected String getI18nKeyBase() {
 		return "ab.district";
+	}
+
+	public List<District> findByTown(Long townId) {
+		List<District> districtList = districtDao.findObjects(
+				District.STATUS_ACTIVE, townId);
+		for (District district : districtList) {
+			district = districtDao.readFull(district.getId());
+		}
+
+		return districtList;
 	}
 }

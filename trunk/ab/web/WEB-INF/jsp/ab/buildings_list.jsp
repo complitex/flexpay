@@ -44,8 +44,7 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-				<%--onclick="$('fobjects').action='<s:url action="delete_buildings"/>';$('fobjects').submit()"--%>
-					   onclick="alert('<s:text name="error.not_implemented" />')"
+				       onclick="$('fobjects').action='<s:url action="buildingsDeleteAction" />';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 				       onclick="window.location='<s:url action="buildingsCreateAction"/>'"

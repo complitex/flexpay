@@ -25,19 +25,9 @@ public class BuildingsEditAction extends CommonAction {
 		typeBulk = buildingService.getAttributeType(BuildingAttributeType.TYPE_BULK);
 		buildings = buildingService.readFull(buildings.getId());
 		if(isSubmitted()) {
-			List<BuildingAttribute> toDelete = new ArrayList<BuildingAttribute>();
-			if(numberVal == null || numberVal.equals("")) {
-				toDelete.add(buildings.getNumberAttribute());
-			} else {
-				buildings.setBuildingAttribute(numberVal, typeNumber);
-			}
-			if(bulkVal == null || bulkVal.equals("")) {
-				toDelete.add(buildings.getBulkAttribute());
-			} else {
-				buildings.setBuildingAttribute(bulkVal, typeBulk);
-			}
-			
-			buildingService.update(buildings, toDelete);
+			buildings.setBuildingAttribute(numberVal, typeNumber);
+			buildings.setBuildingAttribute(bulkVal, typeBulk);
+			buildingService.update(buildings);
 		}
 
 		return "form";

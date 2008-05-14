@@ -25,6 +25,6 @@
 </table>
 
 <s:hidden name="buildings.id" value="%{buildings.id}" />
-<s:submit name="submit" value="%{getText('ab.update')}" cssClass="btn-exit" />
+<s:submit name="submit" value="%{getText('common.save')}" cssClass="btn-exit" />
 
 </s:form>
