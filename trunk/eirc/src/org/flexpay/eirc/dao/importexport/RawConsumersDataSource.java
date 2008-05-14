@@ -1,7 +1,6 @@
 package org.flexpay.eirc.dao.importexport;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.dao.SpRegistryRecordDao;
 import org.flexpay.eirc.dao.SpRegistryRecordDaoExt;
@@ -9,26 +8,15 @@ import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
-import java.util.Iterator;
 import java.util.List;
 
-public class RawConsumersDataSource implements RawDataSource<RawConsumerData> {
+public class RawConsumersDataSource extends RawConsumersDataSourceBase implements RawDataSource<RawConsumerData> {
 
 	private SpRegistryRecordDao registryRecordDao;
 	private SpRegistryRecordDaoExt registryRecordDaoExt;
 	private SpRegistry registry;
 
 	private Page<SpRegistryRecord> pager;
-	private Iterator<SpRegistryRecord> dataIterator;
-
-	/**
-	 * Check if source is trusted and new objects are allowed to be created from this source
-	 *
-	 * @return <code>true</code> if the source is trusted, or <code>false</code> otherwise
-	 */
-	public boolean trusted() {
-		return false;
-	}
 
 	/**
 	 * Find raw data by its id
@@ -38,26 +26,6 @@ public class RawConsumersDataSource implements RawDataSource<RawConsumerData> {
 	 */
 	public RawConsumerData getById(String objId) {
 		return convert(registryRecordDao.read(Long.parseLong(objId)));
-	}
-
-	private RawConsumerData convert(SpRegistryRecord record) {
-		RawConsumerData data = new RawConsumerData();
-		data.setExternalSourceId(String.valueOf(record.getId()));
-		data.addNameValuePair(RawConsumerData.FIELD_ACCOUNT_NUMBER, record.getPersonalAccountExt());
-		data.addNameValuePair(RawConsumerData.FIELD_FIRST_NAME, record.getFirstName());
-		data.addNameValuePair(RawConsumerData.FIELD_MIDDLE_NAME, record.getMiddleName());
-		data.addNameValuePair(RawConsumerData.FIELD_LAST_NAME, record.getLastName());
-		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_CITY, record.getCity());
-		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_STREET, record.getStreetName());
-		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_STREET_TYPE, record.getStreetType());
-		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_HOUSE, record.getBuildingNum());
-		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_BULK, record.getBuildingBulkNum());
-		data.addNameValuePair(RawConsumerData.FIELD_ADDRESS_APARTMENT, record.getApartmentNum());
-
-		data.addNameValuePair(RawConsumerData.FIELD_REGISTRY_HEADER, registry);
-		data.addNameValuePair(RawConsumerData.FIELD_REGISTRY_RECORD, record);
-
-		return data;
 	}
 
 	/**
@@ -93,18 +61,6 @@ public class RawConsumersDataSource implements RawDataSource<RawConsumerData> {
 		List<SpRegistryRecord> datum = registryRecordDaoExt.listRecordsForUpdate(registry.getId(), pager);
 		dataIterator = datum.iterator();
 		return dataIterator.hasNext();
-	}
-
-	/**
-	 * Returns the next new imported element in the iteration.
-	 *
-	 * @param holder Operation type holder
-	 * @return the next element in the iteration.
-	 * @throws java.util.NoSuchElementException
-	 *          iteration has no more elements.
-	 */
-	public RawConsumerData next(ImportOperationTypeHolder holder) {
-		return convert(dataIterator.next());
 	}
 
 	/**

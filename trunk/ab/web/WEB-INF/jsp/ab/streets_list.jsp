@@ -6,18 +6,8 @@
 	<form id="fobjects" method="post" action="<s:url value="/dicts/list_streets.action" includeParams="none" />">
 
 		<tr>
-			<td class="th" width="100%" colspan="5" align="center">
-				<%@ include file="filters/country_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="5" align="center">
-				<%@ include file="filters/region_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="5" align="center">
-				<%@ include file="filters/town_filter.jsp" %>
+			<td colspan="5">
+				<%@ include file="filters/groups/country_region_town.jsp" %>
 			</td>
 		</tr>
 
@@ -48,26 +38,20 @@
 				</td>
 				<td class="col">
 					<a href="<s:url value="/dicts/view_street.action?object.id=%{id}"/>">
-						<s:text name="common.view"/>
-					</a>
+						<img src="<s:url value="/resources/common/img/i_view.gif" />" alt="<s:text name="common.view"/>"
+						 title="<s:text name="common.view"/>" /></a>
 				</td>
 			</tr>
 		</s:iterator>
-		<tr class="cols_1">
-			<td class="col" width="100%" colspan="5" align="center">
-				<%@ include file="filters/pager.jsp" %>
-			</td>
-		</tr>
 		<tr>
 			<td colspan="5">
+				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
 					   onclick="$('fobjects').action='<s:url action="delete_streets"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="create_street"/>'"
 					   value="<s:text name="common.new"/>"/>
-				<input type="submit" class="btn-exit"
-					   value="<s:text name="common.refresh"/>"/>
 			</td>
 		</tr>
 	</form>

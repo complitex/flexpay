@@ -28,25 +28,21 @@
 				<td class="col"><s:property
 						value="%{format(defaultIdentity.birthDate)}"/></td>
 				<td class="col">
-					<a href="<s:url value="/dicts/view_person.action?person.id=%{id}"/>"><s:text
-							name="common.view"/></a></td>
+					<a href="<s:url value="/dicts/view_person.action?person.id=%{id}"/>">
+						<img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.set" />"
+						title="<s:text name="common.set" />" />
+					</a></td>
 			</tr>
 		</s:iterator>
-		<tr class="cols_1">
-			<td class="col" width="100%" colspan="7" align="center">
-				<%@ include file="filters/pager.jsp" %>
-			</td>
-		</tr>
 		<tr>
 			<td colspan="7">
+				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
 					   onclick="$('fobjects').action='<s:url action="delete_persons"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="create_person"/>'"
 					   value="<s:text name="common.new"/>"/>
-				<input type="submit" class="btn-exit"
-					   value="<s:text name="common.refresh"/>"/>
 			</td>
 		</tr>
 

@@ -1,7 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<s:form method="post">
+<s:form method="post" id="fregistries">
 	<%@include file="../filters/sender_organisation_filter.jsp" %>&nbsp;&nbsp;
 	<%@include file="../filters/recipient_organisation_filter.jsp" %>&nbsp;&nbsp;
 	<%@include file="../filters/registry_type_filter.jsp" %>&nbsp;&nbsp;
@@ -10,11 +9,12 @@
 
 	<s:text name="eirc.generated"/>&nbsp;
 	<%@include file="../filters/date_interval_filter.jsp" %>
-	<input type="submit" value="<s:text name="eirc.filter" />"/>
+	<input type="submit" value="<s:text name="eirc.filter" />" class="btn-exit" />
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
-			<td class="th">&nbsp;</td>
+			<td class="th" width="1%">&nbsp;</td>
+			<td class="th"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds')"></td>
 			<td class="th"><s:text name="eirc.date"/></td>
 			<td class="th"><s:text name="eirc.sender"/></td>
 			<td class="th"><s:text name="eirc.recipient"/></td>
@@ -24,9 +24,11 @@
 			<td class="th"><s:text name="eirc.status"/></td>
 			<td class="th">&nbsp;</td>
 		</tr>
-		<s:iterator value="registries">
+		<s:iterator value="registries"  status="status">
 			<tr valign="middle" class="cols_1">
-				<td class="col_1s"><s:checkbox name="objectIds"/></td>
+				<td class="col" align="right"><s:property
+						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/></td>
+				<td class="col"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/></td>
 				<td class="col"><s:property value="creationDate"/></td>
 				<td class="col"><s:property value="sender.name"/></td>
 				<td class="col"><s:property value="recipient.name"/></td>
@@ -40,10 +42,10 @@
 			</tr>
 		</s:iterator>
 		<tr>
-			<td colspan="8">
-				<input type="submit" value="<s:text name="eirc.process" />"
-					onclick="alert('Not implemented yet'); return false;"	/>
+			<td colspan="9">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+				<input type="submit" value="<s:text name="eirc.process" />" class="btn-exit"
+					onclick="$('fregistries').action='<s:url action="process_registries"/>';$('fregistries').submit()" />
 			</td>
 		</tr>
 	</table>

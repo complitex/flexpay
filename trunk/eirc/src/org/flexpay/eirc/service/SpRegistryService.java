@@ -8,6 +8,8 @@ import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.Collection;
 
 public interface SpRegistryService {
 
@@ -61,4 +63,12 @@ public interface SpRegistryService {
 	 */
 	List<SpRegistry> findObjects(OrganisationFilter senderFilter, OrganisationFilter recipientFilter,
 								 RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page pager);
+
+	/**
+	 * Find registries by identifiers
+	 *
+	 * @param objectIds Set of registry identifiers
+	 * @return collection of registries
+	 */
+	Collection<SpRegistry> findObjects(Set<Long> objectIds);
 }

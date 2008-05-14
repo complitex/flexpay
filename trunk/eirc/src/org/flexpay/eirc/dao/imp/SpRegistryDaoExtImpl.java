@@ -13,6 +13,8 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Collection;
+import java.util.Set;
 
 public class SpRegistryDaoExtImpl extends HibernateDaoSupport implements SpRegistryDaoExt {
 
@@ -68,5 +70,16 @@ public class SpRegistryDaoExtImpl extends HibernateDaoSupport implements SpRegis
 		pager.setTotalElements(count.intValue());
 
 		return registries;
+	}
+
+	/**
+	 * Find registries by identifiers
+	 *
+	 * @param objectIds Set of registry identifiers
+	 * @return collection of registries
+	 */
+	public Collection<SpRegistry> findRegistries(Set<Long> objectIds) {
+		Object[] params = {objectIds};
+		return getHibernateTemplate().find("from SpRegistry where id in ?", params);
 	}
 }

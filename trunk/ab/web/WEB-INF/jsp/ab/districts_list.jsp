@@ -6,18 +6,8 @@
 	<form id="fobjects" method="post" action="">
 
 		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/country_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/region_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/town_filter.jsp" %>
+			<td colspan="4">
+				<%@ include file="filters/groups/country_region_town.jsp" %>
 			</td>
 		</tr>
 
@@ -36,25 +26,21 @@
 				<td class="col"><input type="checkbox" value="<s:property value="%{object.id}"/>" name="objectIds"/></td>
 				<td class="col"><s:property value="%{getTranslation(translations).name}"/></td>
 				<td class="col">
-					<a href="<s:url value="/dicts/view_district.action?object.id=%{object.id}"/>"><s:text
-							name="common.view"/></a></td>
+					<a href="<s:url value="/dicts/view_district.action?object.id=%{object.id}"/>">
+						<img src="<s:url value="/resources/common/img/i_view.gif" />" alt="<s:text name="common.view"/>"
+						 title="<s:text name="common.view"/>" />
+					</a></td>
 			</tr>
 		</s:iterator>
-		<tr class="cols_1">
-			<td class="col" width="100%" colspan="4" align="center">
-				<%@ include file="filters/pager.jsp" %>
-			</td>
-		</tr>
 		<tr>
 			<td colspan="4">
+				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
 					   onclick="$('fobjects').action='<s:url action="delete_districts"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="create_district"/>'"
 					   value="<s:text name="common.new"/>"/>
-				<input type="submit" class="btn-exit"
-					   value="<s:text name="common.refresh"/>"/>
 			</td>
 		</tr>
 	</form>

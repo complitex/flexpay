@@ -6,21 +6,13 @@
 	<form id="fobjects" method="post" action="<s:url value="/dicts/list_towns.action" includeParams="none" />">
 
 		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/country_filter.jsp" %>
+			<td colspan="4">
+				<%@ include file="filters/groups/country_region.jsp" %>
 			</td>
 		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/region_filter.jsp" %>
-			</td>
-		</tr>
-
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
-			<td class="th" width="1%"><input type="checkbox"
-											 onchange="FP.setCheckboxes(this.checked, 'objectIds')">
-			</td>
+			<td class="th" width="1%"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds')"></td>
 			<td class="th" width="63%"><s:text name="ab.town"/></td>
 			<td class="th" width="35%">&nbsp;</td>
 		</tr>
@@ -35,25 +27,20 @@
 					</a>
 				</td>
 				<td class="col">
-					<a href="<s:url value="/dicts/view_town.action?object.id=%{object.id}"/>"><s:text
-							name="common.view"/></a></td>
+					<a href="<s:url value="/dicts/view_town.action?object.id=%{object.id}"/>">
+						<img src="<s:url value="/resources/common/img/i_view.gif" />" alt="<s:text name="common.view"/>"
+						 title="<s:text name="common.view"/>" /></a></td>
 			</tr>
 		</s:iterator>
-		<tr class="cols_1">
-			<td class="col" width="100%" colspan="4" align="center">
-				<%@ include file="filters/pager.jsp" %>
-			</td>
-		</tr>
 		<tr>
 			<td colspan="4">
+				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
 					   onclick="$('fobjects').action='<s:url action="delete_towns"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="create_town"/>'"
 					   value="<s:text name="common.new"/>"/>
-				<input type="submit" class="btn-exit"
-					   value="<s:text name="common.refresh"/>"/>
 			</td>
 		</tr>
 	</form>

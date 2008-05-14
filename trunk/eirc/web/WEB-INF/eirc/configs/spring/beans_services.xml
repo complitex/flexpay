@@ -72,7 +72,6 @@
 		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor">
 		<property name="serviceOperationsFactory" ref="serviceOperationsFactory" />
 		<property name="spFileService" ref="spFileService" />
-		<property name="spService" ref="spService" />
 		<property name="importService" ref="importServiceEirc" />
 		<property name="rawConsumersDataSource" ref="consumersDataSource" />
 	</bean>

@@ -2,6 +2,8 @@ package org.flexpay.eirc.service.imp;
 
 import java.util.List;
 import java.util.Date;
+import java.util.Collection;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
@@ -104,6 +106,16 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 										RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page pager) {
 		return spRegistryDaoExt.findRegistries(senderFilter, recipientFilter,
 										typeFilter, fromDate, tillDate, pager);
+	}
+
+	/**
+	 * Find registries by identifiers
+	 *
+	 * @param objectIds Set of registry identifiers
+	 * @return collection of registries
+	 */
+	public Collection<SpRegistry> findObjects(Set<Long> objectIds) {
+		return spRegistryDaoExt.findRegistries(objectIds);
 	}
 
 	/**
