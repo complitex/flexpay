@@ -288,9 +288,13 @@
 		</action>
 		<action name="buildingsCreateAction" class="buildingsCreateAction">
 			<result name="form" type="tiles">ab.buildings.create</result>
+			<result name="list" type="redirect-action">list_buildings</result>
 		</action>
 		<action name="buildingsEditAction" class="buildingsEditAction">
 			<result name="form" type="tiles">ab.buildings.edit</result>
+		</action>
+		<action name="buildingsDeleteAction" class="buildingsDeleteAction">
+			<result type="redirect-action">list_buildings</result>
 		</action>
 	</package>
 

@@ -6,6 +6,7 @@ import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.exception.FlexPayException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Locale;
@@ -76,24 +77,49 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 *             if building does not have any buildingses
 	 */
 	Buildings getFirstBuildings(Building building) throws FlexPayException;
-	
+
 	Buildings readFull(Long buildingsId);
 
 	/**
 	 * Update buildings
-	 * @param buildings Buildings
-	 * @param toDelete List of BuildingAttribute to delete or <code>null</null> if nothing to delete
+	 * 
+	 * @param buildings
+	 *            Buildings
+	 * @param toDelete
+	 *            List of BuildingAttribute to delete or
+	 *            <code>null</null> if nothing to delete
 	 */
-	void update(Buildings buildings, List<BuildingAttribute> toDelete);
+	void update(Buildings buildings);
 
 	/**
 	 * Create a new Buildings
-	 *
-	 * @param street Street
-	 * @param district District
-	 * @param numberValue Buildings number
-	 * @param bulkValue Buildings bulk
+	 * 
+	 * @param street
+	 *            Street
+	 * @param district
+	 *            District
+	 * @param numberValue
+	 *            Buildings number
+	 * @param bulkValue
+	 *            Buildings bulk
 	 * @return new Buildings object created
 	 */
-	Buildings createBuildings(Street street, District district, String numberValue, String bulkValue) throws FlexPayException;
+	Buildings createBuildings(Street street, District district,
+			String numberValue, String bulkValue) throws FlexPayException;
+
+	/**
+	 * Create a new Buildings
+	 * 
+	 * @param building
+	 *            Building
+	 * @param street
+	 *            Street
+	 * @param numberValue
+	 *            Buildings number
+	 * @param bulkValue
+	 *            Buildings bulk
+	 * @return new Buildings object created
+	 */
+	Buildings createBuildings(Building building, Street street,
+			String numberValue, String bulkValue) throws FlexPayException;
 }

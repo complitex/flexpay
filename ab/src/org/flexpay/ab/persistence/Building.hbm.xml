@@ -19,6 +19,7 @@
 			<list-index column="attribute_type_id" />
 			<one-to-many class="BuildingAttribute" />
 		</list>
+		<property name="primaryStatus" column="primary_status" />
 	</class>
 
 	<class name="BuildingAttribute" table="building_attributes_tbl">

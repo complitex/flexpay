@@ -20,6 +20,7 @@ public class Buildings extends DomainObjectWithStatus {
 	private Building building;
 	private List<BuildingAttribute> buildingAttributes = Collections
 			.emptyList();
+	private Boolean primaryStatus;
 
 	public Buildings() {
 	}
@@ -98,16 +99,19 @@ public class Buildings extends DomainObjectWithStatus {
 	}
 
 	public void setBuildingAttribute(String value, BuildingAttributeType type) {
-		if (value == null ||"".equals(value)) {
-			return;
-		}
 		BuildingAttribute attribute = null;
 		for (BuildingAttribute attr : buildingAttributes) {
-			if (attr != null
-					&& type.equals(attr.getBuildingAttributeType())) {
+			if (attr != null && type.equals(attr.getBuildingAttributeType())) {
 				attribute = attr;
 				break;
 			}
+		}
+
+		if (value == null || "".equals(value)) {
+			if (attribute != null) {
+				buildingAttributes.remove(attribute);
+			}
+			return;
 		}
 
 		if (attribute == null) {
@@ -120,8 +124,6 @@ public class Buildings extends DomainObjectWithStatus {
 			buildingAttributes.add(attribute);
 		}
 		attribute.setValue(value);
-		
-		return;
 	}
 
 	/**
@@ -156,5 +158,20 @@ public class Buildings extends DomainObjectWithStatus {
 		}
 
 		return result.toString();
+	}
+
+	/**
+	 * @return the primaryStatus
+	 */
+	public Boolean getPrimaryStatus() {
+		return primaryStatus;
+	}
+
+	/**
+	 * @param primaryStatus
+	 *            the primaryStatus to set
+	 */
+	public void setPrimaryStatus(Boolean primaryStatus) {
+		this.primaryStatus = primaryStatus;
 	}
 }
