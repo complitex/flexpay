@@ -21,16 +21,16 @@ public class Translation extends DomainObject {
 
 	/**
 	 * Getter for property 'name'.
-	 *
+	 * 
 	 * @return Value for property 'name'.
 	 */
 	public String getName() {
-		return name;
+		return name != null ? name : "";
 	}
 
 	/**
 	 * Getter for property 'lang'.
-	 *
+	 * 
 	 * @return Value for property 'lang'.
 	 */
 	public Language getLang() {
@@ -39,8 +39,9 @@ public class Translation extends DomainObject {
 
 	/**
 	 * Setter for property 'name'.
-	 *
-	 * @param name Value to set for property 'name'.
+	 * 
+	 * @param name
+	 *            Value to set for property 'name'.
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -48,7 +49,7 @@ public class Translation extends DomainObject {
 
 	/**
 	 * Getter for property 'translatable'.
-	 *
+	 * 
 	 * @return Value for property 'translatable'.
 	 */
 	public DomainObject getTranslatable() {
@@ -57,8 +58,9 @@ public class Translation extends DomainObject {
 
 	/**
 	 * Setter for property 'translatable'.
-	 *
-	 * @param translatable Value to set for property 'translatable'.
+	 * 
+	 * @param translatable
+	 *            Value to set for property 'translatable'.
 	 */
 	public void setTranslatable(DomainObject translatable) {
 		this.translatable = translatable;
@@ -66,8 +68,9 @@ public class Translation extends DomainObject {
 
 	/**
 	 * Setter for property 'lang'.
-	 *
-	 * @param lang Value to set for property 'lang'.
+	 * 
+	 * @param lang
+	 *            Value to set for property 'lang'.
 	 */
 	public void setLang(Language lang) {
 		this.lang = lang;
@@ -85,10 +88,7 @@ public class Translation extends DomainObject {
 	 */
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder()
-				.append(lang)
-				.append(name)
-				.toHashCode();
+		return new HashCodeBuilder().append(lang).append(name).toHashCode();
 	}
 
 	/**
@@ -103,9 +103,7 @@ public class Translation extends DomainObject {
 		}
 		final Translation that = (Translation) o;
 
-		return new EqualsBuilder()
-				.append(lang, that.getLang())
-				.append(name, that.getName())
-				.isEquals();
+		return new EqualsBuilder().append(lang, that.getLang()).append(name,
+				that.getName()).isEquals();
 	}
 }
