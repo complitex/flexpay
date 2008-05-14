@@ -12,7 +12,7 @@ public class StreetTypeListAction extends CommonAction {
 	private List<StreetTypeTranslation> translationList;
 
 	public String execute() throws Exception {
-		translationList = streetTypeService.getTranslations(userPreferences.getLocale());
+		translationList = streetTypeService.getTranslations(getUserPreferences().getLocale());
 
 		return "list";
 	}

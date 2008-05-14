@@ -286,6 +286,12 @@
 		<action name="list_buildings" class="listBuildings">
 			<result type="tiles">ab.building.list</result>
 		</action>
+		<action name="buildingsCreateAction" class="buildingsCreateAction">
+			<result name="form" type="tiles">ab.buildings.create</result>
+		</action>
+		<action name="buildingsEditAction" class="buildingsEditAction">
+			<result name="form" type="tiles">ab.buildings.edit</result>
+		</action>
 	</package>
 
 	<package name="apartments" namespace="/dicts" extends="common">

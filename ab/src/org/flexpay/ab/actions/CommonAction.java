@@ -11,7 +11,7 @@ import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.UserPreferences;
 
 public class CommonAction implements UserPreferencesAware {
-	protected UserPreferences userPreferences;
+	private UserPreferences userPreferences;
 	private String submit;
 
 	public boolean isSubmitted() {
@@ -35,6 +35,13 @@ public class CommonAction implements UserPreferencesAware {
 	{
 		return TranslationUtil.getTranslation(
 				translations, userPreferences.getLocale());
+	}
+
+	/**
+	 * @return the userPreferences
+	 */
+	public UserPreferences getUserPreferences() {
+		return userPreferences;
 	}
 
 }

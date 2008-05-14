@@ -303,4 +303,9 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 			}
 		}
 	}
+	
+	public String format(Street street, Locale locale, boolean shortMode) throws FlexPayException {
+		street = streetDao.read(street.getId());
+		return street.format(locale, shortMode);
+	}
 }

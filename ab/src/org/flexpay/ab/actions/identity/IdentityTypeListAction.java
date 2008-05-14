@@ -12,7 +12,7 @@ public class IdentityTypeListAction extends CommonAction
 	private List<IdentityTypeTranslation> translationList;
 	
 	public String execute() throws Exception {
-		translationList = identityTypeService.getTranslations(userPreferences.getLocale());
+		translationList = identityTypeService.getTranslations(getUserPreferences().getLocale());
 		
 		return "list";
 	}

@@ -6,7 +6,7 @@ import org.flexpay.common.persistence.Translation;
  * StreetTypeTranslation is a translation of StreetType to particular language
  */
 public class StreetTypeTranslation extends Translation {
-	
+
 	private String shortName;
 
 	/**
@@ -14,20 +14,21 @@ public class StreetTypeTranslation extends Translation {
 	 */
 	public StreetTypeTranslation() {
 	}
-	
+
 	/**
 	 * Getter for property 'shortName'.
-	 *
+	 * 
 	 * @return Value for property 'shortName'.
 	 */
 	public String getShortName() {
-		return shortName;
+		return shortName != null ? shortName : "";
 	}
 
 	/**
 	 * Setter for property 'shortName'.
-	 *
-	 * @param shortName Value to set for property 'shortName'.
+	 * 
+	 * @param shortName
+	 *            Value to set for property 'shortName'.
 	 */
 	public void setShortName(String shortName) {
 		this.shortName = shortName;

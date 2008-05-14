@@ -150,6 +150,15 @@
 		<property name="buildingService" ref="buildingService" />
 		<property name="parentService" ref="streetService" />
 	</bean>
+	<bean id="buildingsCreateAction" scope="prototype"
+		  class="org.flexpay.ab.actions.buildings.BuildingsCreateAction">
+		<property name="buildingService" ref="buildingService" />
+		<property name="parentService" ref="streetService" />	  
+	</bean>
+	<bean id="buildingsEditAction" scope="prototype"
+		  class="org.flexpay.ab.actions.buildings.BuildingsEditAction">
+		<property name="buildingService" ref="buildingService" />	  
+	</bean>
 
 	<!-- Apartments -->
 	<bean id="listApartments" scope="prototype"
