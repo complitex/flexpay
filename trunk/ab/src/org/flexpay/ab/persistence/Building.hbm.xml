@@ -71,9 +71,27 @@
 	</class>
 
 	<query name="Buildings.readFull">
-		select distinct b
-		from Buildings b left join fetch b.buildingAttributes a left join fetch a.buildingAttributeType 
-		where b.id=?
+		SELECT DISTINCT o
+		FROM Buildings o
+		LEFT JOIN FETCH o.street street
+		LEFT JOIN FETCH street.nameTemporals temporals
+		LEFT JOIN FETCH temporals.value streetName
+		LEFT JOIN FETCH streetName.translations nameTranslations
+		LEFT JOIN FETCH nameTranslations.lang langStreet
+		LEFT JOIN FETCH langStreet.translations
+		
+		LEFT JOIN FETCH street.typeTemporals typeTemporals
+		LEFT JOIN FETCH typeTemporals.value streetType
+		LEFT JOIN FETCH streetType.translations typeTranslations
+		LEFT JOIN FETCH typeTranslations.lang typeTransLang
+		LEFT JOIN FETCH typeTransLang.translations
+		
+		LEFT JOIN FETCH o.buildingAttributes attrs
+		LEFT JOIN FETCH attrs.buildingAttributeType attrType
+		LEFT JOIN FETCH attrType.translations attrTypeTr
+		LEFT JOIN FETCH attrTypeTr.lang langAttr
+		LEFT JOIN FETCH langAttr.translations 
+		WHERE o.id=?
 	</query>
 
 	<query name="Buildings.findBuildings.count">
@@ -113,7 +131,9 @@
 	</query>
 
 	<query name="BuildingAttributeType.findAttributeTypes">
-		FROM BuildingAttributeType
+		FROM BuildingAttributeType type
+		LEFT JOIN FETCH type.translations typeTr
+		LEFT JOIN FETCH typeTr.lang langAttr
 	</query>
 
 	<query name="Buildings.findByNumberWithDistrict">

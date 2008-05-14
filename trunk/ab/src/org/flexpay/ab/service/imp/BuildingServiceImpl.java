@@ -3,6 +3,7 @@ package org.flexpay.ab.service.imp;
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.flexpay.ab.dao.BuildingAttributeDao;
 import org.flexpay.ab.dao.BuildingAttributeTypeDao;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.dao.BuildingsDaoExt;
@@ -27,6 +28,7 @@ public class BuildingServiceImpl implements BuildingService {
 
 	private BuildingDao buildingDao;
 	private BuildingsDao buildingsDao;
+	private BuildingAttributeDao buildingAttributeDao;
 	private BuildingAttributeTypeDao buildingsTypeDao;
 	private BuildingsDaoExt buildingsDaoExt;
 
@@ -294,5 +296,37 @@ public class BuildingServiceImpl implements BuildingService {
 		buildingDao.create(building);
 
 		return buildings;
+	}
+	
+	public Buildings readFull(Long buildingsId) {
+		return buildingsDao.readFull(buildingsId);
+	}
+
+	/**
+	 * Update buildings
+	 * 
+	 * @param buildings
+	 *            Buildings
+	 */
+	@Transactional(readOnly = false)
+	public void update(Buildings buildings, List<BuildingAttribute> toDelete) {
+		if (toDelete != null) {
+			for (BuildingAttribute attr : toDelete) {
+				if (attr != null) {
+					buildingAttributeDao.delete(attr);
+					buildings.getBuildingAttributes().remove(attr);
+				}
+			}
+		}
+		buildingsDao.update(buildings);
+	}
+
+	/**
+	 * @param buildingAttributeDao
+	 *            the buildingAttributeDao to set
+	 */
+	public void setBuildingAttributeDao(
+			BuildingAttributeDao buildingAttributeDao) {
+		this.buildingAttributeDao = buildingAttributeDao;
 	}
 }

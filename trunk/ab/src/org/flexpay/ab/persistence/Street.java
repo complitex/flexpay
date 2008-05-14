@@ -4,9 +4,11 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.TranslationUtil;
 
 import java.util.*;
 
@@ -173,5 +175,14 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 				.append("Name", getCurrentName())
 				.append("Type", getCurrentType())
 				.toString();
+	}
+	
+	public String format(Locale locale, boolean shortMode) throws FlexPayException {
+		StreetTypeTranslation typeTanslation = TranslationUtil.getTranslation(getCurrentType().getTranslations(), locale);
+		StreetNameTranslation nameTanslation = TranslationUtil.getTranslation(getCurrentName().getTranslations(), locale);
+		String typeStr = typeTanslation == null ? "" : (shortMode ? typeTanslation.getShortName() + "." : typeTanslation.getName());
+		String nameStr = nameTanslation == null ? "" : nameTanslation.getName();
+		
+		return typeStr + " " + nameStr;
 	}
 }

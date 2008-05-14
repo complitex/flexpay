@@ -11,7 +11,7 @@ public class TownTypeListAction  extends CommonAction {
 	private List<TownTypeTranslation> translationList;
 
 	public String execute() throws Exception {
-		translationList = townTypeService.getTranslations(userPreferences.getLocale());
+		translationList = townTypeService.getTranslations(getUserPreferences().getLocale());
 
 		return "list";
 	}
