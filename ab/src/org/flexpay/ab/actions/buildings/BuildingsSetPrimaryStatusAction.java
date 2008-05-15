@@ -1,26 +1,26 @@
 package org.flexpay.ab.actions.buildings;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.common.exception.FlexPayException;
 
-public class BuildingsDeleteAction extends CommonAction {
+public class BuildingsSetPrimaryStatusAction {
+
 	private BuildingService buildingService;
 
-	private List<Long> objectIds = Collections.emptyList();
+	private Buildings buildings;
 	private Long redirectBuildingsId;
 
-	public String execute() {
-		for (Long id : objectIds) {
-			Buildings buildings = buildingService.readFull(id);
-			buildings.setStatus(Buildings.STATUS_DISABLED);
-			buildingService.update(buildings);
+	public String execute() throws FlexPayException {
+		buildings = buildingService.readFull(buildings.getId());
+		for (Buildings current : buildingService.getBuildingBuildings(buildings
+				.getBuilding())) {
+			current.setPrimaryStatus(buildings.getId().longValue() == current
+					.getId().longValue() ? true : false);
+			buildingService.update(current);
 		}
 
-		return redirectBuildingsId == null ? "buildings_list" : "edit";
+		return "success";
 	}
 
 	/**
@@ -32,11 +32,18 @@ public class BuildingsDeleteAction extends CommonAction {
 	}
 
 	/**
-	 * @param objectIds
-	 *            the objectIds to set
+	 * @return the buildings
 	 */
-	public void setObjectIds(List<Long> objectIds) {
-		this.objectIds = objectIds;
+	public Buildings getBuildings() {
+		return buildings;
+	}
+
+	/**
+	 * @param buildings
+	 *            the buildings to set
+	 */
+	public void setBuildings(Buildings buildings) {
+		this.buildings = buildings;
 	}
 
 	/**

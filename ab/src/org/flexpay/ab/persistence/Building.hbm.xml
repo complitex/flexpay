@@ -92,7 +92,7 @@
 		LEFT JOIN FETCH attrType.translations attrTypeTr
 		LEFT JOIN FETCH attrTypeTr.lang langAttr
 		LEFT JOIN FETCH langAttr.translations 
-		WHERE o.id=?
+		WHERE o.id=? and o.status=0
 	</query>
 
 	<query name="Buildings.findBuildings.count">
@@ -182,9 +182,10 @@
 	</query>
 
 	<query name="Buildings.findBuildingBuildings">
+	    select distinct b
 		from Buildings b
 			inner join fetch b.buildingAttributes a
 			inner join fetch a.buildingAttributeType t
-		where b.building.id=?
+		where b.building.id=? and b.status=0
 	</query>
 </hibernate-mapping>

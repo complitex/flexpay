@@ -1,7 +1,9 @@
 package org.flexpay.ab.actions.buildings;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.ab.persistence.BuildingAttribute;
@@ -12,8 +14,11 @@ import org.flexpay.common.exception.FlexPayException;
 
 public class BuildingsEditAction extends CommonAction {
 
-	private Buildings buildings;
 	private BuildingService buildingService;
+	
+	private Buildings buildings;
+	private List<Buildings> alternateBuildingsList = new ArrayList<Buildings>();
+	
 	private BuildingAttributeType typeNumber;
 	private BuildingAttributeType typeBulk;
 	
@@ -24,6 +29,12 @@ public class BuildingsEditAction extends CommonAction {
 		typeNumber = buildingService.getAttributeType(BuildingAttributeType.TYPE_NUMBER);
 		typeBulk = buildingService.getAttributeType(BuildingAttributeType.TYPE_BULK);
 		buildings = buildingService.readFull(buildings.getId());
+		for(Buildings current : buildingService.getBuildingBuildings(buildings.getBuilding())) {
+			if(buildings.getId().longValue() != current.getId().longValue()) {
+				alternateBuildingsList.add(buildingService.readFull(current.getId()));
+			}
+		}
+		
 		if(isSubmitted()) {
 			buildings.setBuildingAttribute(numberVal, typeNumber);
 			buildings.setBuildingAttribute(bulkVal, typeBulk);
@@ -84,5 +95,11 @@ public class BuildingsEditAction extends CommonAction {
 		this.bulkVal = bulkVal;
 	}
 
+	/**
+	 * @return the alternateBuildingsList
+	 */
+	public List<Buildings> getAlternateBuildingsList() {
+		return alternateBuildingsList;
+	}
 
 }

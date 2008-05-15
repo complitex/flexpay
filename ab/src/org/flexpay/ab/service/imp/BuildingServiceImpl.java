@@ -348,11 +348,7 @@ public class BuildingServiceImpl implements BuildingService {
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public Buildings createBuildings(Building building, Street street,
 			String numberValue, String bulkValue) throws FlexPayException {
-		// Building building = new Building();
-		// building.setDistrict(district);
-
 		Buildings buildings = new Buildings();
-		// buildings.setPrimaryStatus(true);
 		buildings.setBuilding(building);
 		Set<Buildings> buildingses = new HashSet<Buildings>();
 		buildingses.add(buildings);
@@ -403,6 +399,20 @@ public class BuildingServiceImpl implements BuildingService {
 		 * buildingAttributeDao.delete(persistence.getBulkAttribute()); }
 		 */
 		buildingsDao.update(buildings);
+	}
+
+	/**
+	 * Find all Buildings relation for building stub
+	 * 
+	 * @param building
+	 *            Building stub
+	 * @return List of Buildings
+	 * @throws FlexPayException
+	 *             if building does not have any buildingses
+	 */
+	public List<Buildings> getBuildingBuildings(Building building)
+			throws FlexPayException {
+		return buildingsDao.findBuildingBuildings(building.getId(), new Page());
 	}
 
 	/**

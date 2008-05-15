@@ -122,4 +122,16 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	Buildings createBuildings(Building building, Street street,
 			String numberValue, String bulkValue) throws FlexPayException;
+
+	/**
+	 * Find all Buildings relation for building stub
+	 * 
+	 * @param building
+	 *            Building stub
+	 * @return List of Buildings
+	 * @throws FlexPayException
+	 *             if building does not have any buildingses
+	 */
+	List<Buildings> getBuildingBuildings(Building building)
+			throws FlexPayException;
 }
