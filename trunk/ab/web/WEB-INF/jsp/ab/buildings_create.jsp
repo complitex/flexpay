@@ -5,29 +5,23 @@
 	<li><span class="errorMessage"><s:text name="%{filterError}" /></span></li>
 </ul>
 
-<table>
+<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
 <form id="fobjects" method="post" action="<s:url value="/dicts/buildingsCreateAction.action" includeParams="none" />">
 		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/country_filter.jsp" %>
+			<td colspan="4">
+				<%@ include file="filters/groups/country_region_town_street.jsp" %>
 			</td>
 		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/region_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/town_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/street_filter.jsp" %>
-			</td>
-		</tr>
+		
+  <tr>
+    <td>
+	  <input type="submit"
+	         class="btn-exit"
+	         onclick="$('fobjects').action='<s:url action="buildingsCreateAction" includeParams="none" />?action=create';$('fobjects').submit()"
+	         value="<s:text name="ab.create"/>"/>
+    </td>
+  </tr>	
 		
   <tr>
     <td>
@@ -66,14 +60,11 @@
   
   <tr>
     <td>
+
 	  <input type="submit"
 	         class="btn-exit"
 	         onclick="$('fobjects').action='<s:url action="buildingsCreateAction" includeParams="none" />?action=create';$('fobjects').submit()"
 	         value="<s:text name="ab.create"/>"/>
-	         				   
-	  <input type="submit"
-	         class="btn-exit"
-			 value="<s:text name="common.refresh"/>"/>
     </td>
   </tr>
 

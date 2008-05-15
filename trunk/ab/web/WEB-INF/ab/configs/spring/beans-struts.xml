@@ -164,6 +164,10 @@
 		  class="org.flexpay.ab.actions.buildings.BuildingsDeleteAction">
 		<property name="buildingService" ref="buildingService" />	  
 	</bean>
+	<bean id="buildingsSetPrimaryStatusAction" scope="prototype"
+		  class="org.flexpay.ab.actions.buildings.BuildingsSetPrimaryStatusAction">
+		<property name="buildingService" ref="buildingService" />	  
+	</bean>
 
 	<!-- Apartments -->
 	<bean id="listApartments" scope="prototype"

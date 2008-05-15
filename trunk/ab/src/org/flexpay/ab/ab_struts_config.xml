@@ -294,7 +294,19 @@
 			<result name="form" type="tiles">ab.buildings.edit</result>
 		</action>
 		<action name="buildingsDeleteAction" class="buildingsDeleteAction">
-			<result type="redirect-action">list_buildings</result>
+			<result name="buildings_list" type="redirect-action">list_buildings</result>
+			<result name="edit" type="redirect-action">
+				<param name="actionName">buildingsEditAction</param>
+				<param name="parse">true</param>
+				<param name="buildings.id">${redirectBuildingsId}</param>
+			</result>
+		</action>
+		<action name="buildingsSetPrimaryStatusAction" class="buildingsSetPrimaryStatusAction">
+			<result type="redirect-action">
+				<param name="actionName">buildingsEditAction</param>
+				<param name="parse">true</param>
+				<param name="buildings.id">${redirectBuildingsId!=null ? redirectBuildingsId : buildings.id}</param>
+			</result>
 		</action>
 	</package>
 

@@ -10,6 +10,18 @@
 				<%@ include file="filters/groups/country_region_town_street.jsp" %>
 			</td>
 		</tr>
+		
+		<tr>
+			<td colspan="4">
+				<%@ include file="filters/pager.jsp" %>
+				<input type="submit" class="btn-exit"
+				       onclick="$('fobjects').action='<s:url action="buildingsDeleteAction" />';$('fobjects').submit()"
+					   value="<s:text name="common.delete_selected"/>"/>
+				<input type="button" class="btn-exit"
+				       onclick="window.location='<s:url action="buildingsCreateAction"/>'"
+					   value="<s:text name="common.new"/>"/>
+			</td>
+		</tr>
 
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
