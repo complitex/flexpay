@@ -8,7 +8,9 @@ import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.ab.actions.CommonAction;
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAttributeType;
+import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.filters.CountryFilter;
@@ -35,47 +37,56 @@ public class BuildingsCreateAction extends CommonAction implements SessionAware 
 
 	private BuildingAttributeType typeNumber;
 	private BuildingAttributeType typeBulk;
-	
+
 	private List<District> districtList = Collections.emptyList();
-	
+	private District district;
+
 	private String action;
 	private Long districtId;
+	private Long buildingId;
 	private String numberValue;
 	private String bulkValue;
-	
+	private Buildings createdBuildings;
+
 	private String filterError;
 	private String districtError;
 	private String streetError;
 	private String buildingAttrError;
-	
-	
+
 	public String execute() throws FlexPayException {
-		if("create".equals(action)) {
-			if(districtId == null) {
+		if ("create".equals(action)) {
+			if (districtId == null) {
 				districtError = "ab.buildings.create.district_required";
 			}
-			if(streetFilter.getSelectedId() == null) {
+			if (streetFilter.getSelectedId() == null) {
 				streetError = "ab.buildings.create.street_required";
 			}
-			if(StringUtils.isEmpty(numberValue) && StringUtils.isEmpty(bulkValue)) {
+			if (StringUtils.isEmpty(numberValue)
+					&& StringUtils.isEmpty(bulkValue)) {
 				buildingAttrError = "ab.buildings.create.buildings_attr_required";
 			}
-			
-			if(streetFilter.getSelectedId() != null && districtId != null && (!StringUtils.isEmpty(numberValue) || !StringUtils.isEmpty(bulkValue))) {
-				buildingService.createBuildings(new Street(streetFilter.getSelectedId()), new District(districtId), numberValue, bulkValue);
-				return "list";
+
+			if (streetFilter.getSelectedId() != null
+					&& districtId != null
+					&& (!StringUtils.isEmpty(numberValue) || !StringUtils
+							.isEmpty(bulkValue))) {
+				createdBuildings = buildingId == null ? buildingService
+						.createBuildings(new Street(streetFilter
+								.getSelectedId()), new District(districtId),
+								numberValue, bulkValue)
+						: buildingService.createBuildings(new Building(
+								buildingId), new Street(streetFilter
+								.getSelectedId()), numberValue, bulkValue);
+
+				return "edit";
 			}
 		}
-		
+
 		typeNumber = buildingService
 				.getAttributeType(BuildingAttributeType.TYPE_NUMBER);
 		typeBulk = buildingService
 				.getAttributeType(BuildingAttributeType.TYPE_BULK);
 
-		if(action != null && action.equals("create")) {
-			
-		}
-		
 		try {
 			ArrayStack filterArrayStack = getFilters();
 			for (Object filter : filterArrayStack) {
@@ -84,8 +95,14 @@ public class BuildingsCreateAction extends CommonAction implements SessionAware 
 			ArrayStack filters = parentService.initFilters(filterArrayStack,
 					getUserPreferences().getLocale());
 			setFilters(filters);
-			
-			districtList = districtService.findByTown(townFilter.getSelectedId());
+
+			if (buildingId != null) {
+				Building building = buildingService.readBuilding(buildingId);
+				district = districtService.read(building.getDistrict().getId());
+			} else {
+				districtList = districtService.findByTown(townFilter
+						.getSelectedId());
+			}
 		} catch (FlexPayException e) {
 			filterError = e.getErrorKey();
 		}
@@ -101,13 +118,12 @@ public class BuildingsCreateAction extends CommonAction implements SessionAware 
 	}
 
 	/**
-	 * @param action the action to set
+	 * @param action
+	 *            the action to set
 	 */
 	public void setAction(String action) {
 		this.action = action;
 	}
-
-	
 
 	/**
 	 * Getter for property 'filters'.
@@ -243,16 +259,15 @@ public class BuildingsCreateAction extends CommonAction implements SessionAware 
 	/**
 	 * @return the typeNumber
 	 */
-	public BuildingAttributeType getTypeNumber() {
-		return typeNumber;
-	}
-
-	/**
-	 * @return the typeBulk
+	/*
+	 * public BuildingAttributeType getTypeNumber() { return typeNumber; }
+	 * 
+	 *//**
+		 * @return the typeBulk
+		 */
+	/*
+	 * public BuildingAttributeType getTypeBulk() { return typeBulk; }
 	 */
-	public BuildingAttributeType getTypeBulk() {
-		return typeBulk;
-	}
 
 	/**
 	 * @return the districtList
@@ -262,12 +277,13 @@ public class BuildingsCreateAction extends CommonAction implements SessionAware 
 	}
 
 	/**
-	 * @param districtService the districtService to set
+	 * @param districtService
+	 *            the districtService to set
 	 */
 	public void setDistrictService(DistrictService districtService) {
 		this.districtService = districtService;
 	}
-	
+
 	/**
 	 * @return the districtId
 	 */
@@ -276,7 +292,8 @@ public class BuildingsCreateAction extends CommonAction implements SessionAware 
 	}
 
 	/**
-	 * @param districtId the districtId to set
+	 * @param districtId
+	 *            the districtId to set
 	 */
 	public void setDistrictId(Long districtId) {
 		this.districtId = districtId;
@@ -304,14 +321,16 @@ public class BuildingsCreateAction extends CommonAction implements SessionAware 
 	}
 
 	/**
-	 * @param numberValue the numberValue to set
+	 * @param numberValue
+	 *            the numberValue to set
 	 */
 	public void setNumberValue(String numberValue) {
 		this.numberValue = numberValue;
 	}
 
 	/**
-	 * @param bulkValue the bulkValue to set
+	 * @param bulkValue
+	 *            the bulkValue to set
 	 */
 	public void setBulkValue(String bulkValue) {
 		this.bulkValue = bulkValue;
@@ -331,6 +350,47 @@ public class BuildingsCreateAction extends CommonAction implements SessionAware 
 		return bulkValue;
 	}
 
-	
+	/**
+	 * @param buildingId
+	 *            the buildingId to set
+	 */
+	public void setBuildingId(Long buildingId) {
+		this.buildingId = buildingId;
+	}
+
+	/**
+	 * @return the district
+	 */
+	public District getDistrict() {
+		return district;
+	}
+
+	/**
+	 * @return the typeNumber
+	 */
+	public BuildingAttributeType getTypeNumber() {
+		return typeNumber;
+	}
+
+	/**
+	 * @return the typeBulk
+	 */
+	public BuildingAttributeType getTypeBulk() {
+		return typeBulk;
+	}
+
+	/**
+	 * @return the buildingId
+	 */
+	public Long getBuildingId() {
+		return buildingId;
+	}
+
+	/**
+	 * @return the createdBuildings
+	 */
+	public Buildings getCreatedBuildings() {
+		return createdBuildings;
+	}
 
 }
