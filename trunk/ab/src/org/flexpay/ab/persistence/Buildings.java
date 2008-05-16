@@ -2,9 +2,11 @@ package org.flexpay.ab.persistence;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -18,8 +20,8 @@ public class Buildings extends DomainObjectWithStatus {
 
 	private Street street;
 	private Building building;
-	private List<BuildingAttribute> buildingAttributes = Collections
-			.emptyList();
+	private Set<BuildingAttribute> buildingAttributes = Collections
+			.emptySet();
 	private Boolean primaryStatus;
 
 	public Buildings() {
@@ -45,11 +47,11 @@ public class Buildings extends DomainObjectWithStatus {
 		this.building = building;
 	}
 
-	public List<BuildingAttribute> getBuildingAttributes() {
+	public Set<BuildingAttribute> getBuildingAttributes() {
 		return this.buildingAttributes;
 	}
 
-	public void setBuildingAttributes(List<BuildingAttribute> buildingAttributes) {
+	public void setBuildingAttributes(Set<BuildingAttribute> buildingAttributes) {
 		this.buildingAttributes = buildingAttributes;
 	}
 
@@ -119,7 +121,7 @@ public class Buildings extends DomainObjectWithStatus {
 			attribute.setBuildingAttributeType(type);
 			attribute.setBuildings(this);
 			if (buildingAttributes.isEmpty()) {
-				buildingAttributes = new ArrayList<BuildingAttribute>();
+				buildingAttributes = new HashSet<BuildingAttribute>();
 			}
 			buildingAttributes.add(attribute);
 		}

@@ -1,14 +1,24 @@
 package org.flexpay.ab.service.imp;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.BuildingAttributeDao;
 import org.flexpay.ab.dao.BuildingAttributeTypeDao;
+import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.dao.BuildingsDaoExt;
-import org.flexpay.ab.dao.BuildingDao;
-import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAttribute;
+import org.flexpay.ab.persistence.BuildingAttributeType;
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.ab.persistence.filters.StreetFilter;
@@ -18,8 +28,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class BuildingServiceImpl implements BuildingService {
@@ -308,7 +316,7 @@ public class BuildingServiceImpl implements BuildingService {
 		building.setBuildingses(buildingses);
 		buildings.setStreet(street);
 
-		List<BuildingAttribute> attributes = new ArrayList<BuildingAttribute>();
+		Set<BuildingAttribute> attributes = new HashSet<BuildingAttribute>();
 		BuildingAttribute number = new BuildingAttribute();
 		number
 				.setBuildingAttributeType(getAttributeType(BuildingAttributeType.TYPE_NUMBER));
@@ -355,7 +363,7 @@ public class BuildingServiceImpl implements BuildingService {
 		building.setBuildingses(buildingses);
 		buildings.setStreet(street);
 
-		List<BuildingAttribute> attributes = new ArrayList<BuildingAttribute>();
+		Set<BuildingAttribute> attributes = new HashSet<BuildingAttribute>();
 		BuildingAttribute number = new BuildingAttribute();
 		number
 				.setBuildingAttributeType(getAttributeType(BuildingAttributeType.TYPE_NUMBER));
