@@ -1,35 +1,42 @@
 package org.flexpay.ab.service.importexport;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAttribute;
+import org.flexpay.ab.persistence.BuildingAttributeType;
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
-
-public class RawBuildingsDataConverter implements DataConverter<Buildings, RawBuildingsData> {
+public class RawBuildingsDataConverter implements
+		DataConverter<Buildings, RawBuildingsData> {
 
 	private BuildingService buildingService;
 
 	/**
 	 * Convert raw data to domain object
-	 *
-	 * @param rawData			   RawData
-	 * @param dataSourceDescription Data source description
-	 * @param correctionsService	CorrectionsService
+	 * 
+	 * @param rawData
+	 *            RawData
+	 * @param dataSourceDescription
+	 *            Data source description
+	 * @param correctionsService
+	 *            CorrectionsService
 	 * @return DomainObject
-	 * @throws FlexPayException if failure occurs
+	 * @throws FlexPayException
+	 *             if failure occurs
 	 */
 	public Buildings fromRawData(RawBuildingsData rawData,
-								 DataSourceDescription dataSourceDescription,
-								 CorrectionsService correctionsService)
-			throws FlexPayException {
+			DataSourceDescription dataSourceDescription,
+			CorrectionsService correctionsService) throws FlexPayException {
 
 		Buildings buildings = new Buildings();
 
@@ -40,8 +47,8 @@ public class RawBuildingsDataConverter implements DataConverter<Buildings, RawBu
 		}
 		buildings.setStreet(street);
 
-		District district = correctionsService.findCorrection(
-				rawData.getDistrictId(), District.class, dataSourceDescription);
+		District district = correctionsService.findCorrection(rawData
+				.getDistrictId(), District.class, dataSourceDescription);
 		if (district == null) {
 			throw new FlexPayException("Cannot find district");
 		}
@@ -54,20 +61,20 @@ public class RawBuildingsDataConverter implements DataConverter<Buildings, RawBu
 		building.setBuildingses(buildingses);
 		buildings.setBuilding(building);
 
-		List<BuildingAttribute> attributes = new ArrayList<BuildingAttribute>();
+		Set<BuildingAttribute> attributes = new HashSet<BuildingAttribute>();
 
 		BuildingAttribute number = new BuildingAttribute();
 		number.setValue(rawData.getNumber());
-		number.setBuildingAttributeType(
-				buildingService.getAttributeType(BuildingAttributeType.TYPE_NUMBER));
+		number.setBuildingAttributeType(buildingService
+				.getAttributeType(BuildingAttributeType.TYPE_NUMBER));
 		number.setBuildings(buildings);
 		attributes.add(number);
 
 		if (StringUtils.isNotBlank(rawData.getBulkNumber())) {
 			BuildingAttribute bulk = new BuildingAttribute();
 			bulk.setValue(rawData.getBulkNumber());
-			bulk.setBuildingAttributeType(
-					buildingService.getAttributeType(BuildingAttributeType.TYPE_BULK));
+			bulk.setBuildingAttributeType(buildingService
+					.getAttributeType(BuildingAttributeType.TYPE_BULK));
 			bulk.setBuildings(buildings);
 			attributes.add(bulk);
 		}

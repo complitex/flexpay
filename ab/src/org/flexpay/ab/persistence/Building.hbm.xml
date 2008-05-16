@@ -14,11 +14,18 @@
 		<many-to-one name="street" column="street_id" not-null="true" />
 		<many-to-one name="building" column="building_id" not-null="true" />
 
+        <!-- 
 		<list name="buildingAttributes" inverse="true" cascade="all">
 			<key column="buildings_id" not-null="true" />
 			<list-index column="attribute_type_id" />
 			<one-to-many class="BuildingAttribute" />
 		</list>
+		 -->
+		<set name="buildingAttributes" inverse="true" cascade="all">
+			<key column="buildings_id" not-null="true" />
+			<one-to-many class="BuildingAttribute" />
+		</set>
+		 
 		<property name="primaryStatus" column="primary_status" />
 	</class>
 
