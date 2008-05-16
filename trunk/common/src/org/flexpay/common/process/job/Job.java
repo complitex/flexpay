@@ -5,6 +5,7 @@ import org.flexpay.common.logger.FPLogger;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Random;
 import java.io.Serializable;
 
 public abstract class Job implements Runnable{
@@ -19,7 +20,18 @@ public abstract class Job implements Runnable{
     private HashMap <Serializable, Serializable> parameters = new HashMap<Serializable, Serializable> ();
     private Long taskId;
     private Long processId;
-    
+    /**
+     * object for generate random string of transaction id (job id)
+     */
+    private final static Random random = new Random();
+
+    public Job(){
+        synchronized (random) {
+            long n = random.nextLong();
+            this.id = Long.toString(Math.abs(n), Character.MAX_RADIX);
+        }
+    }
+
     public void run() {
         JobManager jobMgr = JobManager.getInstance();
         setStart(new Date());
@@ -47,7 +59,7 @@ public abstract class Job implements Runnable{
         return jobThread;
     }
 
-    public abstract String execute(HashMap parameters) throws FlexPayException;
+    public abstract String execute(HashMap<Serializable, Serializable> parameters) throws FlexPayException;
 
     public Thread getJobThread() {
         return jobThread;

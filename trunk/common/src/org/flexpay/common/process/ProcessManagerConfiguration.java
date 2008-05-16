@@ -1,6 +1,7 @@
 package org.flexpay.common.process;
 
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.process.exception.JobConfigurationNotFoundException;
 
 public class ProcessManagerConfiguration {
 
@@ -11,7 +12,7 @@ public class ProcessManagerConfiguration {
     private static String connectionUsername;
     private static String connectionPassword;
 
-    private ProcessManagerConfiguration(){}
+    protected ProcessManagerConfiguration(){}
 
     public synchronized static ProcessManagerConfiguration getInstance(){
         if (instance == null) instance = new ProcessManagerConfiguration();
@@ -19,7 +20,7 @@ public class ProcessManagerConfiguration {
     }
 
 
-    public String getJobClazzName(String jobName) throws FlexPayException {
+    public String getJobClazzName(String jobName) throws JobConfigurationNotFoundException {
        return "";
 
     }

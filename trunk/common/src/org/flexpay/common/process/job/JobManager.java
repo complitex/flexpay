@@ -105,13 +105,13 @@ public class JobManager {
      * @throws org.flexpay.common.exception.FlexPayException if one of exception accured
      */
     public synchronized boolean addJob(long processId, long taskId, String jobName, HashMap<Serializable, Serializable> parameters)
-        throws FlexPayException {
+        throws JobInstantiationException, JobClassNotFoundException, JobConfigurationNotFoundException{
     
         ClassLoader classLoader = this.getClass().getClassLoader();
         String jobClassName;
         try {
             jobClassName = ProcessManagerConfiguration.getInstance().getJobClazzName(jobName);
-        } catch (FlexPayException e) {
+        } catch (JobConfigurationNotFoundException e) {
             FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Configuration fault", e);
             throw new JobConfigurationNotFoundException(e);
         }
@@ -136,6 +136,9 @@ public class JobManager {
             FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Instantiation exception when creating instance of " + jobClassName, e);
             throw new JobInstantiationException("Instantiation exception when creating instance of " + jobClassName);
         } catch (IllegalAccessException e) {
+            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Illegal exception when creating instance of " + jobClassName, e);
+            throw new JobInstantiationException("Illegal exception when creating instance of " + jobClassName);
+        } catch (ClassCastException e){
             FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Illegal exception when creating instance of " + jobClassName, e);
             throw new JobInstantiationException("Illegal exception when creating instance of " + jobClassName);
         }
@@ -170,6 +173,5 @@ public class JobManager {
           }
         }
         return false;
-    }
-
+    }    
 }
