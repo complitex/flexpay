@@ -11,12 +11,12 @@ public abstract class Job implements Runnable{
 
     public final static String NEXT = "next";
     public final static String ERROR = "error";
-    private final static String STATUS_ERROR = "ERROR_STATUS";
+    public final static String STATUS_ERROR = "ERROR_STATUS";
     private Thread jobThread = null;
     private String id;
     private Date start;
     private Date end;
-    private HashMap <Serializable, Serializable> parameters;
+    private HashMap <Serializable, Serializable> parameters = new HashMap<Serializable, Serializable> ();
     private Long taskId;
     private Long processId;
     
@@ -81,7 +81,7 @@ public abstract class Job implements Runnable{
         this.end = end;
     }
 
-    public HashMap getParameters() {
+    public HashMap<Serializable, Serializable> getParameters() {
         return parameters;
     }
 
