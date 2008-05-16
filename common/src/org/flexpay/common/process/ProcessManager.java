@@ -27,7 +27,7 @@ public class ProcessManager implements Runnable {
     /**
      * singleton instance
      */
-    private static ProcessManager instance;
+    protected static ProcessManager instance;
     public static final String PROCESS_INSTANCE_ID = "ProcessInstanceID";
 
     private boolean stop = true;
@@ -338,7 +338,7 @@ public class ProcessManager implements Runnable {
      * @param parameters Task context parameters
      * @param transition transition name
      */
-    public void jobFinished(Long taskId, HashMap<Serializable, Serializable> parameters, String transition) {
+    public synchronized void jobFinished(Long taskId, HashMap<Serializable, Serializable> parameters, String transition) {
         // this method called by Job to report finish
         FPLogger.logMessage(FPLogger.DEBUG, "ProcessManager: jobFinished: taskId: " + taskId);
 
@@ -456,8 +456,10 @@ public class ProcessManager implements Runnable {
     /**
      * Unload process manager and stop process manager thread
      */
-    public void unload() {
-        instance.stop();
-        instance = null;
+    public static synchronized void unload() {
+        if (instance != null){
+            instance.stop();
+            instance = null;
+        }
     }
 }
