@@ -75,7 +75,7 @@
                 cssClass="btn-exit" />
 	  <input type="button"
 	         class="btn-exit"
-			 onclick="window.location='<s:url action="buildingsCreateAction"/>'"
+			 onclick="window.location='<s:url action="buildingsCreateAction" includeParams="none" />?buildingId=<s:property value="buildings.building.id" />'"
 			 value="<s:text name="common.new"/>"/>
 	  <input type="button"
 	         class="btn-exit"
@@ -83,6 +83,7 @@
 			 value="<s:text name="ab.delete"/>"/>
 	  <input type="button"
 	         class="btn-exit"
+	         
 			 onclick="window.location='<s:url action="buildingsSetPrimaryStatusAction" includeParams="none" />?buildings.id=<s:property value="buildings.id" />'"
 			 value="<s:text name="ab.ab.buildings.set_primary_status"/>"/>		 		 
 	</td>

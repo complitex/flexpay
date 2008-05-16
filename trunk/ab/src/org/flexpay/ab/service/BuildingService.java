@@ -134,4 +134,6 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	List<Buildings> getBuildingBuildings(Building building)
 			throws FlexPayException;
+
+	Building readBuilding(Long id);
 }

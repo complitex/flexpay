@@ -63,7 +63,7 @@ public class Building extends DomainObjectWithStatus {
 	 */
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("buildings", buildingses.toArray())
+				.append("id", getId())
 				.toString();
 	}
 }

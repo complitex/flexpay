@@ -415,6 +415,10 @@ public class BuildingServiceImpl implements BuildingService {
 		return buildingsDao.findBuildingBuildings(building.getId(), new Page());
 	}
 
+	public Building readBuilding(Long id) {
+		return buildingDao.read(id);
+	}
+
 	/**
 	 * @param buildingAttributeDao
 	 *            the buildingAttributeDao to set
