@@ -1,17 +1,22 @@
 package org.flexpay.common.locking;
 
-import junit.framework.TestCase;
 import org.apache.log4j.Logger;
+import org.flexpay.common.test.SpringBeanAwareTestCase;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
-public class TestLockManager extends TestCase {
+public class TestLockManager extends SpringBeanAwareTestCase {
 
 	public static final String lockString = "lock String";
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		LockManager lockManager = LockManager.getInstance();
 		lockManager.releaseLock(lockString);
 	}
 
+	@Test
 	public void testLock() {
 		LockManager lockManager = LockManager.getInstance();
 		assertTrue("lock string", lockManager.lock(lockString));
@@ -25,7 +30,7 @@ public class TestLockManager extends TestCase {
 			runner.join();
 		} catch (InterruptedException e) {
 			log.debug("TestLockManager: testLock: interrupted!", e);
-			fail();
+			fail("TestLockManager: testLock: interrupted!");
 		}
 
 		assertFalse(conflictingThread.locked);

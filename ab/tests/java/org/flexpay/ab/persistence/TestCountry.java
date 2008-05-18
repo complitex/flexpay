@@ -1,10 +1,12 @@
 package org.flexpay.ab.persistence;
 
 import junit.framework.TestCase;
+import org.junit.Test;
 
-public class TestCountry extends TestCase {
+public class TestCountry {
 
-    public void testCountryName(){
+	@Test
+	public void testCountryName(){
         Country country = new Country();
         String lang = "english";
         String longName = "Russia";

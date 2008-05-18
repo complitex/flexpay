@@ -1,20 +1,14 @@
 package org.flexpay.ab.persistence;
 
-import junit.framework.TestCase;
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class AllTests extends TestCase {
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+		TestCountry.class
+		})
+public class AllTests {
 
-    public AllTests(String name) {
-        super(name);
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTestSuite(TestCountry.class);
-        return suite;
-    }
 }
 
 

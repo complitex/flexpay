@@ -141,6 +141,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 		return persistent.getBuilding();
 	}
 
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void create(Apartment apartment) {
 		apartmentDao.create(apartment);
 	}

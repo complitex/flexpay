@@ -6,15 +6,19 @@ import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.hibernate.FetchMode;
+import org.hibernate.Session;
+import org.hibernate.HibernateException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Projections;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate3.HibernateCallback;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Collection;
 import java.util.Set;
+import java.sql.SQLException;
 
 public class SpRegistryDaoExtImpl extends HibernateDaoSupport implements SpRegistryDaoExt {
 
@@ -37,6 +41,7 @@ public class SpRegistryDaoExtImpl extends HibernateDaoSupport implements SpRegis
 		DetachedCriteria criteria = DetachedCriteria.forClass(SpRegistry.class)
 				.setFetchMode("spFile", FetchMode.JOIN)
 				.setFetchMode("registryType", FetchMode.JOIN)
+				.setFetchMode("registryStatus", FetchMode.JOIN)
 				.setFetchMode("sender", FetchMode.JOIN)
 				.setFetchMode("recipient", FetchMode.JOIN)
 				.setFetchMode("serviceProvider", FetchMode.JOIN);
@@ -78,8 +83,16 @@ public class SpRegistryDaoExtImpl extends HibernateDaoSupport implements SpRegis
 	 * @param objectIds Set of registry identifiers
 	 * @return collection of registries
 	 */
-	public Collection<SpRegistry> findRegistries(Set<Long> objectIds) {
-		Object[] params = {objectIds};
-		return getHibernateTemplate().find("from SpRegistry where id in ?", params);
+	@SuppressWarnings({"unchecked"})
+	public Collection<SpRegistry> findRegistries(final Set<Long> objectIds) {
+		return getHibernateTemplate().executeFind(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				return session.createQuery("from SpRegistry r inner join fetch r.serviceProvider sp " +
+						"inner join fetch sp.dataSourceDescription inner join fetch r.registryType " +
+						"inner join fetch r.registryStatus " +
+						"where r.id in (:ids)")
+						.setParameterList("ids", objectIds).list();
+			}
+		});
 	}
 }

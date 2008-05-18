@@ -3,26 +3,24 @@ package org.flexpay.sz.service;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.sz.persistence.Oszn;
+import static org.junit.Assert.fail;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.ExpectedException;
 
 public class TestCorrectionsService extends SpringBeanAwareTestCase {
 
-	protected void runTest() throws Throwable {
-		testGetDistrictCorrections();
-	}
+	@Autowired
+	protected CorrectionsService service;
 
+	@Test
+	@ExpectedException(FlexPayException.class)
 	public void testGetDistrictCorrections() throws Exception {
-		CorrectionsService service =
-				(CorrectionsService) applicationContext.getBean("correctionsService");
 
 		Oszn oszn = new Oszn();
 		oszn.setId(-5l);
 
-		try {
-			service.findDistrictCorrection(oszn, "xbz");
-			fail("Found invalid correction");
-		}
-		catch (FlexPayException e) {
-			// good execution branch, everything is ok
-		}
+		service.findDistrictCorrection(oszn, "xbz");
+		fail("Found invalid correction");
 	}
 }

@@ -1,24 +1,10 @@
 package org.flexpay.ab.service.imp;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.flexpay.ab.dao.BuildingAttributeDao;
-import org.flexpay.ab.dao.BuildingAttributeTypeDao;
-import org.flexpay.ab.dao.BuildingDao;
-import org.flexpay.ab.dao.BuildingsDao;
-import org.flexpay.ab.dao.BuildingsDaoExt;
-import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.BuildingAttribute;
-import org.flexpay.ab.persistence.BuildingAttributeType;
-import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.persistence.District;
-import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.dao.*;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.ab.persistence.filters.StreetFilter;
@@ -29,6 +15,9 @@ import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Locale;
+
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class BuildingServiceImpl implements BuildingService {
 
@@ -36,7 +25,6 @@ public class BuildingServiceImpl implements BuildingService {
 
 	private BuildingDao buildingDao;
 	private BuildingsDao buildingsDao;
-	private BuildingAttributeDao buildingAttributeDao;
 	private BuildingAttributeTypeDao buildingsTypeDao;
 	private BuildingsDaoExt buildingsDaoExt;
 
@@ -61,9 +49,8 @@ public class BuildingServiceImpl implements BuildingService {
 
 	/**
 	 * Setter for property 'parentService'.
-	 * 
-	 * @param parentService
-	 *            Value to set for property 'parentService'.
+	 *
+	 * @param parentService Value to set for property 'parentService'.
 	 */
 	public void setParentService(ParentService<StreetFilter> parentService) {
 		this.parentService = parentService;
@@ -89,7 +76,7 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 	public BuildingsFilter initFilter(BuildingsFilter parentFilter,
-			PrimaryKeyFilter forefatherFilter, Locale locale)
+									  PrimaryKeyFilter forefatherFilter, Locale locale)
 			throws FlexPayException {
 
 		if (parentFilter == null) {
@@ -169,7 +156,7 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 	private BuildingsFilter initFilter(BuildingsFilter buildingFilter,
-			StreetFilter streetFilter, DistrictFilter districtFilter)
+									   StreetFilter streetFilter, DistrictFilter districtFilter)
 			throws FlexPayException {
 
 		if (buildingFilter == null) {
@@ -204,10 +191,10 @@ public class BuildingServiceImpl implements BuildingService {
 
 	/**
 	 * Get building attribute type
-	 * 
+	 *
 	 * @return BuildingAttributeType
 	 * @throws org.flexpay.common.exception.FlexPayException
-	 *             if failure occurs
+	 *          if failure occurs
 	 */
 	public BuildingAttributeType getAttributeType(int type)
 			throws FlexPayException {
@@ -225,32 +212,25 @@ public class BuildingServiceImpl implements BuildingService {
 
 	/**
 	 * Find building by number
-	 * 
-	 * @param street
-	 *            Building street
-	 * @param district
-	 *            Building district
-	 * @param number
-	 *            Building number
-	 * @param bulk
-	 *            Building bulk number
+	 *
+	 * @param street   Building street
+	 * @param district Building district
+	 * @param number   Building number
+	 * @param bulk	 Building bulk number
 	 * @return Buildings instance, or <code>null</null> if not found
 	 */
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
 	public Buildings findBuildings(Street street, District district,
-			String number, String bulk) {
+								   String number, String bulk) {
 		return buildingsDaoExt.findBuildings(street, district, number, bulk);
 	}
 
 	/**
 	 * Find building by number
-	 * 
-	 * @param street
-	 *            Building street
-	 * @param number
-	 *            Building number
-	 * @param bulk
-	 *            Building bulk number
+	 *
+	 * @param street Building street
+	 * @param number Building number
+	 * @param bulk   Building bulk number
 	 * @return Buildings instance, or <code>null</null> if not found
 	 */
 	@Transactional(readOnly = true, rollbackFor = Exception.class)
@@ -260,9 +240,8 @@ public class BuildingServiceImpl implements BuildingService {
 
 	/**
 	 * Find building by buildings stub
-	 * 
-	 * @param buildingsStub
-	 *            object with id only
+	 *
+	 * @param buildingsStub object with id only
 	 * @return Building instance
 	 */
 	public Building findBuilding(Buildings buildingsStub) {
@@ -271,12 +250,10 @@ public class BuildingServiceImpl implements BuildingService {
 
 	/**
 	 * Find single Building relation for building stub
-	 * 
-	 * @param building
-	 *            Building stub
+	 *
+	 * @param building Building stub
 	 * @return Buildings instance
-	 * @throws FlexPayException
-	 *             if building does not have any buildingses
+	 * @throws FlexPayException if building does not have any buildingses
 	 */
 	public Buildings getFirstBuildings(Building building)
 			throws FlexPayException {
@@ -291,49 +268,29 @@ public class BuildingServiceImpl implements BuildingService {
 
 	/**
 	 * Create a new Buildings
-	 * 
-	 * @param street
-	 *            Street
-	 * @param district
-	 *            District
-	 * @param numberValue
-	 *            Buildings number
-	 * @param bulkValue
-	 *            Buildings bulk
+	 *
+	 * @param street	  Street
+	 * @param district	District
+	 * @param numberValue Buildings number
+	 * @param bulkValue   Buildings bulk
 	 * @return new Buildings object created
 	 */
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public Buildings createBuildings(Street street, District district,
-			String numberValue, String bulkValue) throws FlexPayException {
+									 String numberValue, String bulkValue) throws FlexPayException {
 		Building building = new Building();
 		building.setDistrict(district);
 
 		Buildings buildings = new Buildings();
 		buildings.setPrimaryStatus(true);
-		buildings.setBuilding(building);
-		Set<Buildings> buildingses = new HashSet<Buildings>();
-		buildingses.add(buildings);
-		building.setBuildingses(buildingses);
 		buildings.setStreet(street);
+		building.addBuildings(buildings);
 
-		Set<BuildingAttribute> attributes = new HashSet<BuildingAttribute>();
-		BuildingAttribute number = new BuildingAttribute();
-		number
-				.setBuildingAttributeType(getAttributeType(BuildingAttributeType.TYPE_NUMBER));
-		number.setBuildings(buildings);
-		number.setValue(numberValue);
-		attributes.add(number);
+		buildings.setBuildingAttribute(numberValue, getAttributeType(BuildingAttributeType.TYPE_NUMBER));
 
 		if (StringUtils.isNotBlank(bulkValue)) {
-			BuildingAttribute bulk = new BuildingAttribute();
-			bulk
-					.setBuildingAttributeType(getAttributeType(BuildingAttributeType.TYPE_BULK));
-			bulk.setBuildings(buildings);
-			bulk.setValue(bulkValue);
-			attributes.add(bulk);
+			buildings.setBuildingAttribute(numberValue, getAttributeType(BuildingAttributeType.TYPE_BULK));
 		}
-
-		buildings.setBuildingAttributes(attributes);
 
 		buildingDao.create(building);
 
@@ -342,45 +299,26 @@ public class BuildingServiceImpl implements BuildingService {
 
 	/**
 	 * Create a new Buildings
-	 * 
-	 * @param building
-	 *            Building
-	 * @param street
-	 *            Street
-	 * @param numberValue
-	 *            Buildings number
-	 * @param bulkValue
-	 *            Buildings bulk
+	 *
+	 * @param building	Building
+	 * @param street	  Street
+	 * @param numberValue Buildings number
+	 * @param bulkValue   Buildings bulk
 	 * @return new Buildings object created
 	 */
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public Buildings createBuildings(Building building, Street street,
-			String numberValue, String bulkValue) throws FlexPayException {
-		Buildings buildings = new Buildings();
-		buildings.setBuilding(building);
-		Set<Buildings> buildingses = new HashSet<Buildings>();
-		buildingses.add(buildings);
-		building.setBuildingses(buildingses);
-		buildings.setStreet(street);
+									 String numberValue, String bulkValue) throws FlexPayException {
 
-		Set<BuildingAttribute> attributes = new HashSet<BuildingAttribute>();
-		BuildingAttribute number = new BuildingAttribute();
-		number
-				.setBuildingAttributeType(getAttributeType(BuildingAttributeType.TYPE_NUMBER));
-		number.setBuildings(buildings);
-		number.setValue(numberValue);
-		attributes.add(number);
+		Buildings buildings = new Buildings();
+		buildings.setStreet(street);
+		building.addBuildings(buildings);
+
+		buildings.setBuildingAttribute(numberValue, getAttributeType(BuildingAttributeType.TYPE_NUMBER));
 
 		if (StringUtils.isNotBlank(bulkValue)) {
-			BuildingAttribute bulk = new BuildingAttribute();
-			bulk
-					.setBuildingAttributeType(getAttributeType(BuildingAttributeType.TYPE_BULK));
-			bulk.setBuildings(buildings);
-			bulk.setValue(bulkValue);
-			attributes.add(bulk);
+			buildings.setBuildingAttribute(numberValue, getAttributeType(BuildingAttributeType.TYPE_BULK));
 		}
-
-		buildings.setBuildingAttributes(attributes);
 
 		buildingsDao.create(buildings);
 
@@ -393,9 +331,8 @@ public class BuildingServiceImpl implements BuildingService {
 
 	/**
 	 * Update buildings
-	 * 
-	 * @param buildings
-	 *            Buildings
+	 *
+	 * @param buildings Buildings
 	 */
 	@Transactional(readOnly = false)
 	public void update(Buildings buildings) {
@@ -411,12 +348,10 @@ public class BuildingServiceImpl implements BuildingService {
 
 	/**
 	 * Find all Buildings relation for building stub
-	 * 
-	 * @param building
-	 *            Building stub
+	 *
+	 * @param building Building stub
 	 * @return List of Buildings
-	 * @throws FlexPayException
-	 *             if building does not have any buildingses
+	 * @throws FlexPayException if building does not have any buildingses
 	 */
 	public List<Buildings> getBuildingBuildings(Building building)
 			throws FlexPayException {
@@ -425,14 +360,5 @@ public class BuildingServiceImpl implements BuildingService {
 
 	public Building readBuilding(Long id) {
 		return buildingDao.read(id);
-	}
-
-	/**
-	 * @param buildingAttributeDao
-	 *            the buildingAttributeDao to set
-	 */
-	public void setBuildingAttributeDao(
-			BuildingAttributeDao buildingAttributeDao) {
-		this.buildingAttributeDao = buildingAttributeDao;
 	}
 }

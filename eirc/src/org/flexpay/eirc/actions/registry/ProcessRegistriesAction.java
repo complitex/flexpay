@@ -17,26 +17,27 @@ public class ProcessRegistriesAction extends FPActionSupport {
 	private ServiceProviderFileProcessor providerFileProcessor;
 
 	public String execute() throws Exception {
+
+		log.debug("About to execute ProcessRegistriesAction");
+
 		Collection<SpRegistry> registries = registryService.findObjects(objectIds);
 		providerFileProcessor.processRegistries(registries);
-		return super.execute();
+		return SUCCESS;
 	}
 
-	/**
-	 * Getter for property 'townTypeIds'.
-	 *
-	 * @return Value for property 'townTypeIds'.
-	 */
 	public Set<Long> getObjectIds() {
 		return objectIds;
 	}
 
-	/**
-	 * Setter for property 'townTypeIds'.
-	 *
-	 * @param objectIds Value to set for property 'townTypeIds'.
-	 */
 	public void setObjectIds(Set<Long> objectIds) {
 		this.objectIds = objectIds;
+	}
+
+	public void setRegistryService(SpRegistryService registryService) {
+		this.registryService = registryService;
+	}
+
+	public void setProviderFileProcessor(ServiceProviderFileProcessor providerFileProcessor) {
+		this.providerFileProcessor = providerFileProcessor;
 	}
 }

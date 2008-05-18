@@ -16,6 +16,10 @@ import org.flexpay.eirc.sp.SpFileParser;
 import org.flexpay.eirc.sp.SpFileReader;
 import org.flexpay.eirc.test.RandomObjects;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.Ignore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -27,21 +31,23 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 
 	private static Logger log = Logger.getLogger(TestServiceProviderFileProcessor.class);
 
+	@Autowired
 	private ServiceProviderFileProcessor fileProcessor;
+	@Autowired
 	private ExchangeHelper exchangeHelper;
+	@Autowired
+	private SPService spService;
+
 	private RandomObjects randomObjects;
 
-	private SPService spService;
 
 	private static final char DELIMITER_RECORDS = SpFileParser.RECORD_DELIMITER.charAt(0);
 	private static final char DELIMITER_CONTAINER = ':';
 
 	private Random rand = new Random();
 
-	protected void runTest() throws Throwable {
-		testSpFileProcessing();
-	}
-
+	@Ignore
+	@Test
 	public void testSpFileProcessing() throws Throwable {
 //		File generatedFile = generatePaymentsFile();
 //		SpFile file = uploadFile(generatedFile.getAbsolutePath());
@@ -289,12 +295,8 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		return buf.toString();
 	}
 
-	protected void prepareTestInstance() throws Exception {
-		super.prepareTestInstance();
-
-		fileProcessor = (ServiceProviderFileProcessor) applicationContext.getBean("serviceProviderFileProcessor");
-		exchangeHelper = (ExchangeHelper) applicationContext.getBean("spFilesExchangeHelper");
-		spService = (SPService) applicationContext.getBean("spService");
+	@Before
+	public void prepareTestInstance() throws Exception {
 
 		randomObjects = new RandomObjects(rand, applicationContext);
 	}

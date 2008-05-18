@@ -10,13 +10,13 @@ public class SpRegistryRecordStatus extends DomainObject {
 	private static Map<Integer, String> typeToName = new HashMap<Integer, String>();
 
 	public static final int LOADED = 1;
-	public static final int LOADED_WITH_ERROR = 2;
+	public static final int PROCESSED_WITH_ERROR = 2;
 	public static final int FIXED = 3;
 	public static final int PROCESSED = 4;
 
 	static {
 		typeToName.put(LOADED, "eirc.registry.record.status.LOADED");
-		typeToName.put(LOADED_WITH_ERROR, "eirc.registry.record.status.LOADED_WITH_ERROR");
+		typeToName.put(PROCESSED_WITH_ERROR, "eirc.registry.record.status.PROCESSED_WITH_ERROR");
 		typeToName.put(FIXED, "eirc.registry.record.status.FIXED");
 		typeToName.put(PROCESSED, "eirc.registry.record.status.PROCESSED");
 	}

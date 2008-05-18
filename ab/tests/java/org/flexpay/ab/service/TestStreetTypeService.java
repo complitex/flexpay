@@ -5,6 +5,9 @@ import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,25 +15,21 @@ import java.util.Set;
 
 public class TestStreetTypeService extends SpringBeanAwareTestCase {
 
-	@Override
-	protected void runTest() throws Throwable {
-		testGetStreetTypes();
-		testCreateStreetType();
-	}
+	@Autowired
+	protected StreetTypeService service;
+	@Autowired
+	protected StreetTypeDao streetTypeDao;
 
+	@Test
 	public void testGetStreetTypes() {
-		StreetTypeService service =
-				(StreetTypeService) applicationContext.getBean("streetTypeService");
 
 		List<StreetType> streetTypes = service.getEntities();
 
-		assertNotNull("No streets", streetTypes);
-//        assertFalse("No street types defined", streetTypes.isEmpty());
+		assertNotNull("No street types", streetTypes);
 	}
 
+	@Test
 	public void testCreateStreetType() throws Throwable {
-		StreetTypeDao streetTypeDao =
-				(StreetTypeDao) applicationContext.getBean("streetTypeDAO");
 
 		StreetType streetType = new StreetType();
 		StreetTypeTranslation typeTranslation = new StreetTypeTranslation();

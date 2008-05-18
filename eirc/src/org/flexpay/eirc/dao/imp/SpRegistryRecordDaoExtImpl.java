@@ -1,5 +1,6 @@
 package org.flexpay.eirc.dao.imp;
 
+import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
@@ -12,10 +13,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements SpRegistryRecordDaoExt {
@@ -80,8 +81,8 @@ public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements S
 
 		if (importErrorTypeFilter.needFilter()) {
 			if (importErrorTypeFilter.needFilterWithoutErrors()) {
-				hql.append("and rs.importError is null ");
-				hqlCount.append("and rs.importError is null ");
+				hql.append("and rr.importError is null ");
+				hqlCount.append("and rr.importError is null ");
 			} else {
 				hql.append("and e.status=? and e.objectType=?");
 				hqlCount.append("and e.status=? and e.objectType=?");
@@ -138,4 +139,25 @@ public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements S
 			}
 		});
 	}
+
+	/**
+	 * Find registries by identifiers
+	 *
+	 * @param objectIds Set of registry identifiers
+	 * @return collection of registries
+	 */
+	@SuppressWarnings({"unchecked"})
+	public List<SpRegistryRecord> findRecords(final Long registryId, final Collection<Long> objectIds) {
+		return getHibernateTemplate().executeFind(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				return session.createQuery("from SpRegistryRecord r inner join fetch r.spRegistry rr " +
+						"inner join fetch rr.serviceProvider sp inner join fetch sp.dataSourceDescription " +
+						"inner join fetch rr.registryType where rr.id=:rId and r.id in (:ids)")
+						.setParameterList("ids", objectIds)
+						.setLong("rId", registryId)
+						.list();
+			}
+		});
+	}
+
 }

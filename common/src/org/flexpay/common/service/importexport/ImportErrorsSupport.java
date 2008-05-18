@@ -4,6 +4,9 @@ import org.flexpay.common.persistence.ImportError;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import java.util.Map;
+import java.util.HashMap;
+
 /**
  * Helper to work with import errors objects
  */
@@ -39,6 +42,9 @@ public class ImportErrorsSupport implements ApplicationContextAware {
 	 * @throws RuntimeException if no bean exists
 	 */
 	public ImportError setDataSourceBean(ImportError importError, RawDataSource source) {
+		if (aliasesMap.containsKey(source)) {
+			source = aliasesMap.get(source);
+		}
 		String[] beanNames = context.getBeanNamesForType(RawDataSource.class);
 		for (String beanName : beanNames) {
 			if (context.getBean(beanName) == source) {
@@ -48,5 +54,20 @@ public class ImportErrorsSupport implements ApplicationContextAware {
 		}
 
 		throw new RuntimeException("RawDataSource is invalid instance: " + source);
+	}
+
+	private Map<RawDataSource, RawDataSource> aliasesMap = new HashMap<RawDataSource, RawDataSource>();
+
+	/**
+	 * Register <code>source</code> RawDataSource as the link to <code>alias</code>
+	 * @param source Link data source
+	 * @param alias Alias data source
+	 */
+	public void registerAlias(RawDataSource source, RawDataSource alias) {
+		aliasesMap.put(source, alias);
+	}
+
+	public void unregisterAlias(RawDataSource source) {
+		aliasesMap.remove(source);
 	}
 }

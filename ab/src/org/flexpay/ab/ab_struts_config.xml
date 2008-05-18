@@ -18,20 +18,6 @@
 
 	</package>
 
-	<package name="lang" namespace="/" extends="tiles-default">
-
-		<interceptors>
-			<interceptor name="i18n_flexpay"
-						 class="org.flexpay.common.actions.interceptor.FlexpayI18nInterceptor" />
-		</interceptors>
-
-		<action name="set_language" class="org.flexpay.common.actions.LanguageSwitch">
-			<result type="tiles">ab.main</result>
-			<interceptor-ref name="i18n_flexpay" />
-		</action>
-
-	</package>
-
 	<package name="countries" namespace="/dicts" extends="common">
 
 		<action name="list_countries" class="listCountriesAction">

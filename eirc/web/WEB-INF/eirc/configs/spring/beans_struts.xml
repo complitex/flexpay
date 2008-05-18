@@ -16,9 +16,6 @@
 	<bean id="spFileAction" class="org.flexpay.eirc.actions.SpFileAction"
 		  scope="prototype">
 		<property name="spFileService" ref="spFileService" />
-		<property name="spRegistryService" ref="spRegistryService" />
-		<property name="spRegistryRecordService" ref="spRegistryRecordService" />
-		<property name="spRegistryTypeService" ref="spRegistryTypeService" />
 	</bean>
 
 	<bean id="correspondenceExternalAction" class="org.flexpay.eirc.actions.CorrespondenceExternalAction"
@@ -65,6 +62,19 @@
 		<property name="registryTypeService" ref="spRegistryTypeService" />
 	</bean>
 
+	<bean id="processRegistriesAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.registry.ProcessRegistriesAction">
+		<property name="providerFileProcessor" ref="serviceProviderFileProcessor" />
+		<property name="registryService" ref="spRegistryService" />
+	</bean>
+
+	<bean id="processRegistryRecordsAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.registry.ProcessRegistryRecordsAction">
+		<property name="providerFileProcessor" ref="serviceProviderFileProcessor" />
+		<property name="registryRecordService" ref="spRegistryRecordService" />
+		<property name="registryService" ref="spRegistryService" />
+	</bean>
+
 	<bean id="showRegistryAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.ShowRegistryAction">
 		<property name="registryService" ref="spRegistryService" />
@@ -86,7 +96,6 @@
 		<property name="recordService" ref="spRegistryRecordService" />
 		<property name="spService" ref="spService" />
 		<property name="typeRegistry" ref="typeRegistryEirc" />
-		<property name="buildingService" ref="buildingService" />
 	</bean>
 
 	<bean id="correctRecordPersonAction" scope="prototype"

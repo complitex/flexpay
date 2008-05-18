@@ -6,6 +6,8 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.persistence.*;
+import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
+import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.sp.SpFileReader.Message;
 
@@ -29,9 +31,10 @@ public class SpFileParser {
 	private SpRegistryService spRegistryService;
 	private SpRegistryRecordService spRegistryRecordService;
 	private SpRegistryTypeService spRegistryTypeService;
-	private SpRegistryStatusService spRegistryStatusService;
 	private SpRegistryArchiveStatusService spRegistryArchiveStatusService;
-	private SpRegistryRecordStatusService registryRecordStatusService;
+
+	private RegistryWorkflowManager registryWorkflowManager;
+	private RegistryRecordWorkflowManager recordWorkflowManager;
 
 	private OrganisationService organisationService;
 	private SPService spService;
@@ -40,7 +43,7 @@ public class SpFileParser {
 	private long registryRecordCounter;
 	private Message message;
 
-	public void parse(SpFile spFile) throws IOException, FlexPayException {
+	public void parse(SpFile spFile) throws Exception {
 		File file = spFile.getRequestFile();
 		if (file == null) {
 			throw new FileNotFoundException("For SpFile(id=" + spFile.getId()
@@ -57,19 +60,16 @@ public class SpFileParser {
 			}
 			finalizeRegistry();
 		} catch (Throwable t) {
-			if (spRegistry != null
-					&& spRegistry.getRegistryStatus().getCode() == SpRegistryStatus.LOADING) {
-				spRegistry.setRegistryStatus(spRegistryStatusService
-						.findByCode(SpRegistryStatus.LOADED_WITH_ERROR));
-				spRegistryService.update(spRegistry);
+			if (spRegistry != null) {
+				registryWorkflowManager.setNextErrorStatus(spRegistry);
 			}
-			throw new RuntimeException("Fialed parsing registry file", t);
+			throw new Exception("Fialed parsing registry file", t);
 		} finally {
 			IOUtils.closeQuietly(is);
 		}
 	}
 
-	private void processMessage(SpFile spFile) throws SpFileFormatException, FlexPayException {
+	private void processMessage(SpFile spFile) throws Exception {
 
 		String messageValue = message.getBody();
 		Integer messageType = message.getType();
@@ -88,8 +88,7 @@ public class SpFileParser {
 		}
 	}
 
-	private void processHeader(SpFile spFile, List<String> messageFieldList)
-			throws FlexPayException, SpFileFormatException {
+	private void processHeader(SpFile spFile, List<String> messageFieldList) throws Exception {
 		if (messageFieldList.size() < 11) {
 			throw new SpFileFormatException(
 					"Message header error, invalid number of fields: "
@@ -101,7 +100,7 @@ public class SpFileParser {
 		registryRecordCounter = 0;
 		SpRegistry spRegistry = new SpRegistry();
 		spRegistry.setArchiveStatus(spRegistryArchiveStatusService.findByCode(SpRegistryArchiveStatus.NONE));
-		spRegistry.setRegistryStatus(spRegistryStatusService.findByCode(SpRegistryStatus.LOADING));
+		registryWorkflowManager.setInitialStatus(spRegistry);
 		spRegistry.setSpFile(spFile);
 		if (log.isInfoEnabled()) {
 			log.info("adding header: " + messageFieldList);
@@ -147,8 +146,7 @@ public class SpFileParser {
 		}
 	}
 
-	private void processRecord(List<String> messageFieldList)
-			throws FlexPayException, SpFileFormatException {
+	private void processRecord(List<String> messageFieldList) throws Exception {
 		if (spRegistry == null) {
 			throw new SpFileFormatException("Error - registry must start before record");
 		}
@@ -228,19 +226,13 @@ public class SpFileParser {
 			ServiceType serviceType = spService.getServiceType(record.getServiceCode().intValue());
 			record.setServiceType(serviceType);
 
-			// setup record statud
-			SpRegistryRecordStatus status = registryRecordStatusService.findByCode(SpRegistryRecordStatus.LOADED);
-			if (status == null) {
-				throw new FlexPayException("Record status LOADED not found, was DB inited?");
-			}
-			record.setRecordStatus(status);
+			// setup record status
+			recordWorkflowManager.setInitialStatus(record);
 
 		} catch (NumberFormatException e) {
-			throw new SpFileFormatException("Record parse error", message
-					.getPosition());
+			throw new SpFileFormatException("Record parse error", message.getPosition());
 		} catch (ParseException e) {
-			throw new SpFileFormatException("Record parse error", message
-					.getPosition());
+			throw new SpFileFormatException("Record parse error", message.getPosition());
 		}
 
 		spRegistryRecordService.create(record);
@@ -255,7 +247,7 @@ public class SpFileParser {
 		// do nothing
 	}
 
-	private void finalizeRegistry() throws SpFileFormatException, FlexPayException {
+	private void finalizeRegistry() throws Exception {
 		if (spRegistry == null) {
 			return;
 		}
@@ -263,8 +255,8 @@ public class SpFileParser {
 		if (spRegistry.getRecordsNumber() != registryRecordCounter) {
 			throw new SpFileFormatException("Registry records amount error");
 		}
-		spRegistry.setRegistryStatus(spRegistryStatusService.findByCode(SpRegistryStatus.LOADED));
-		spRegistryService.update(spRegistry);
+
+		registryWorkflowManager.setNextSuccessStatus(spRegistry);
 	}
 
 	/**
@@ -289,13 +281,6 @@ public class SpFileParser {
 	}
 
 	/**
-	 * @param spRegistryStatusService the spRegistryStatusService to set
-	 */
-	public void setSpRegistryStatusService(SpRegistryStatusService spRegistryStatusService) {
-		this.spRegistryStatusService = spRegistryStatusService;
-	}
-
-	/**
 	 * @param spRegistryArchiveStatusService the spRegistryArchiveStatusService to set
 	 */
 	public void setSpRegistryArchiveStatusService(SpRegistryArchiveStatusService spRegistryArchiveStatusService) {
@@ -306,11 +291,15 @@ public class SpFileParser {
 		this.organisationService = organisationService;
 	}
 
-	public void setRegistryRecordStatusService(SpRegistryRecordStatusService registryRecordStatusService) {
-		this.registryRecordStatusService = registryRecordStatusService;
-	}
-
 	public void setSpService(SPService spService) {
 		this.spService = spService;
+	}
+
+	public void setRegistryWorkflowManager(RegistryWorkflowManager registryWorkflowManager) {
+		this.registryWorkflowManager = registryWorkflowManager;
+	}
+
+	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
+		this.recordWorkflowManager = recordWorkflowManager;
 	}
 }

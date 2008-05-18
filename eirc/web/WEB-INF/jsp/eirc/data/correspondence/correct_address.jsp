@@ -53,12 +53,6 @@
 				<s:hidden name="record.id" value="%{record.id}" />
 				<input type="submit" onclick="$('setupType').value = 'refresh'" class="btn-exit"
 					   value="<s:text name="common.refresh"/>" />
-				<input type="submit" onclick="$('setupType').value = 'create-apartment'" class="btn-exit"
-					   value="<s:text name="eirc.create_apartment"/>" />
-				<input type="submit" onclick="$('setupType').value = 'create-building'" class="btn-exit"
-					   value="<s:text name="eirc.create_building"/>" />
-				<input type="submit" onclick="$('setupType').value = 'create-street'" class="btn-exit"
-					   value="<s:text name="eirc.create_street"/>" />
 				<input type="submit" onclick="$('setupType').value = 'apartment'" class="btn-exit"
 					   value="<s:text name="common.set"/>" />
 				<input type="submit" onclick="$('setupType').value = 'building'" class="btn-exit"
@@ -75,8 +69,6 @@
 
 		var type = $('setupType').value;
 		if (type == 'refresh') {
-			return true;
-		} else if (type == 'create-apartment' || type == 'create-building' || type == 'create-street' ) {
 			return true;
 		}
 

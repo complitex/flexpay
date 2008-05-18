@@ -2,7 +2,7 @@ package org.flexpay.common.persistence;
 
 public class DomainObjectWithStatus extends DomainObject implements ObjectWithStatus {
 
-	private int status;
+	private int status = ObjectWithStatus.STATUS_ACTIVE;
 
 	/**
 	 * Constructs a new DomainObject.

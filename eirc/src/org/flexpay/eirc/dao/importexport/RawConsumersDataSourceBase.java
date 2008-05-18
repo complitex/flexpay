@@ -4,10 +4,13 @@ import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
+import org.apache.log4j.Logger;
 
 import java.util.Iterator;
 
 public abstract class RawConsumersDataSourceBase implements RawDataSource<RawConsumerData> {
+
+	protected Logger log = Logger.getLogger(getClass());
 
 	protected Iterator<SpRegistryRecord> dataIterator;
 
@@ -21,6 +24,10 @@ public abstract class RawConsumersDataSourceBase implements RawDataSource<RawCon
 	}
 
 	protected RawConsumerData convert(SpRegistryRecord record) {
+		if (record == null) {
+			return null;
+		}
+
 		RawConsumerData data = new RawConsumerData();
 		data.setExternalSourceId(String.valueOf(record.getId()));
 		data.addNameValuePair(RawConsumerData.FIELD_ACCOUNT_NUMBER, record.getPersonalAccountExt());

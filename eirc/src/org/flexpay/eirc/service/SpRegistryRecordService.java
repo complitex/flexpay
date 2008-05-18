@@ -9,6 +9,8 @@ import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 
 import java.util.List;
+import java.util.Set;
+import java.util.Collection;
 
 public interface SpRegistryRecordService {
 
@@ -76,7 +78,16 @@ public interface SpRegistryRecordService {
 	 *
 	 * @param record Registry record
 	 * @return updated record
-	 * @throws FlexPayException if failure occurs
+	 * @throws Exception if failure occurs
 	 */
-	SpRegistryRecord removeError(SpRegistryRecord record) throws FlexPayException;
+	SpRegistryRecord removeError(SpRegistryRecord record) throws Exception;
+
+	/**
+	 * Find registry records by identifiers
+	 *
+	 * @param registry Registry to get records for
+	 * @param objectIds Set of identifiers
+	 * @return Records
+	 */
+	Collection<SpRegistryRecord> findObjects(SpRegistry registry, Set<Long> objectIds);
 }

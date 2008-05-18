@@ -1,18 +1,15 @@
 package org.flexpay.common.util;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.framework.JUnit4TestAdapter;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class AllTests extends TestCase {
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+		org.flexpay.common.util.config.AllTests.class,
+		TestDateIntervalUtil.class,
+		TestStringUtil.class,
+		TestCRCUtil.class
+		})
+public class AllTests {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
-		suite.addTest(org.flexpay.common.util.config.AllTests.suite());
-		suite.addTest(new JUnit4TestAdapter(TestDateIntervalUtil.class));
-		suite.addTest(new JUnit4TestAdapter(TestStringUtil.class));
-		suite.addTest(new JUnit4TestAdapter(TestCRCUtil.class));
-		return suite;
-	}
 }

@@ -1,15 +1,12 @@
 package org.flexpay.common.util.config;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+		TestCommonConfigLoader.class
+		})
+public class AllTests {
 
-public class AllTests extends TestCase {
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
-		suite.addTest(new TestCommonConfigLoader());
-		return suite;
-	}
 }

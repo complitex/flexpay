@@ -111,6 +111,23 @@
 			<result name="complete" type="tiles">eirc.registry.record.correct_address_complete</result>
 		</action>
 
+		<action name="process_registries" class="processRegistriesAction">
+			<result type="redirect-action">
+				<param name="actionName">registries_list</param>
+			</result>
+		</action>
+
+		<action name="process_registry_records" class="processRegistryRecordsAction">
+			<result type="redirect-action">
+				<param name="actionName">registry_view</param>
+				<param name="parse">true</param>
+				<param name="registry.id">${registry.id}</param>
+			</result>
+			<result name="error" type="redirect-action">
+				<param name="actionName">registries_list</param>
+			</result>
+		</action>
+
 	</package>
 
 </struts>

@@ -150,12 +150,13 @@
 		from SpRegistry r inner join fetch r.registryType where r.spFile.id=?
 	</query>
 
-	<query name="SpFile.listRegistryRecords.count">
-		select count(*) from SpRegistryRecord where spRegistry.id=?
-	</query>
+	<query name="SpFile.listRecordsForProcessing">
+		from SpRegistryRecord rr
+			inner join fetch rr.spRegistry r
+			inner join fetch r.registryStatus rs
+			inner join fetch rr.recordStatus rrs
 
-	<query name="SpFile.listRegistryRecords">
-		from SpRegistryRecord where spRegistry.id=?
+		where r.id=? and rrs.code != 4
 	</query>
 
 	<query name="SpRegistryType.findAll">
@@ -169,6 +170,8 @@
 		left join fetch r.registryStatus
 		left join fetch r.sender
 		left join fetch r.recipient
+		left join fetch r.serviceProvider sp
+		left join fetch sp.dataSourceDescription 
 		where r.id=?
 	</query>
 

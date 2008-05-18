@@ -4,18 +4,22 @@ import org.flexpay.eirc.dao.SpRegistryDao;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.SpFileService;
+import org.junit.Test;
+import org.junit.Ignore;
+import static org.junit.Assert.assertEquals;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestSpFileAction extends TestSpFileCreateAction {
 
+	@Autowired
 	private SpFileAction fileAction;
+	@Autowired
 	private SpFileService fileService;
-
+	@Autowired
 	private SpRegistryDao spRegistryDao;
 
-	protected void runTest() throws Throwable {
-		testUploadFile();
-	}
-
+	@Ignore
+	@Test
 	public void testUploadFile() throws Throwable {
 		SpFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.txt");
 
@@ -42,14 +46,5 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 			throw fileAction.getSpFileFormatException();
 		}
 		return newFile;
-	}
-
-	protected void prepareTestInstance() throws Exception {
-		fileService = (SpFileService) applicationContext.getBean("spFileService");
-		fileAction = (SpFileAction) applicationContext.getBean("spFileAction");
-
-		spRegistryDao = (SpRegistryDao) applicationContext.getBean("spRegistryDao");
-
-		super.prepareTestInstance();
 	}
 }

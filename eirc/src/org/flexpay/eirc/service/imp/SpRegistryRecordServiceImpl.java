@@ -2,33 +2,31 @@ package org.flexpay.eirc.service.imp;
 
 import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.dao.ImportErrorDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.common.persistence.ImportError;
-import org.flexpay.common.persistence.ObjectWithStatus;
 import org.flexpay.eirc.dao.SpRegistryRecordDao;
 import org.flexpay.eirc.dao.SpRegistryRecordDaoExt;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
-import org.flexpay.eirc.persistence.SpRegistryRecordStatus;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
+import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.service.SpRegistryRecordService;
-import org.flexpay.eirc.service.SpRegistryRecordStatusService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	private static Logger log = Logger
 			.getLogger(SpRegistryRecordServiceImpl.class);
 
-	private SpRegistryRecordStatusService recordStatusService;
-	private ImportErrorDao importErrorDao;
 	private SpRegistryRecordDao spRegistryRecordDao;
 	private SpRegistryRecordDaoExt spRegistryRecordDaoExt;
+
+	private RegistryRecordWorkflowManager workflowManager;
 
 	/**
 	 * Create SpRegistryRecord
@@ -124,27 +122,22 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 * @param record Registry record
 	 * @return updated record
 	 */
-	public SpRegistryRecord removeError(SpRegistryRecord record) throws FlexPayException {
-		if (record.getImportError() == null) {
-			return record;
-		}
+	@Transactional(readOnly = false)
+	public SpRegistryRecord removeError(SpRegistryRecord record) throws Exception {
 
-		SpRegistryRecordStatus status = recordStatusService.findByCode(SpRegistryRecordStatus.FIXED);
-		if (status == null) {
-			throw new FlexPayException("Registry record status FIXED was not found, was DB inited?");
-		}
-
-		// disable error
-		ImportError error = record.getImportError();
-		error.setStatus(ObjectWithStatus.STATUS_DISABLED);
-		importErrorDao.update(error);
-
-		// remove error and set status to FIXED
-		record.setImportError(null);
-		record.setRecordStatus(status);
-		spRegistryRecordDao.update(record);
-
+		workflowManager.setNextSuccessStatus(record);
 		return record;
+	}
+
+	/**
+	 * Find registry records by identifiers
+	 *
+	 * @param registry  Registry to get records for
+	 * @param objectIds Set of identifiers
+	 * @return Records
+	 */
+	public Collection<SpRegistryRecord> findObjects(SpRegistry registry, Set<Long> objectIds) {
+		return spRegistryRecordDaoExt.findRecords(registry.getId(), objectIds);
 	}
 
 	/**
@@ -158,11 +151,7 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 		this.spRegistryRecordDaoExt = spRegistryRecordDaoExt;
 	}
 
-	public void setRecordStatusService(SpRegistryRecordStatusService recordStatusService) {
-		this.recordStatusService = recordStatusService;
-	}
-
-	public void setImportErrorDao(ImportErrorDao importErrorDao) {
-		this.importErrorDao = importErrorDao;
+	public void setWorkflowManager(RegistryRecordWorkflowManager workflowManager) {
+		this.workflowManager = workflowManager;
 	}
 }

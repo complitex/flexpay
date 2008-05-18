@@ -6,6 +6,9 @@ import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,20 +17,11 @@ public class TestStreetService extends SpringBeanAwareTestCase {
 
 	private Logger log = Logger.getLogger(getClass());
 
-	/**
-	 * Override to run the test and assert its state.
-	 *
-	 * @throws Throwable if any exception is thrown
-	 */
-	@Override
-	protected void runTest() throws Throwable {
-		testCreateStreet();
-		testRetriveStreetTypes();
-	}
+	@Autowired
+	protected StreetDao streetDao;
 
+	@Test
 	public void testCreateStreet() throws Throwable {
-		StreetDao streetDao =
-				(StreetDao) applicationContext.getBean("streetDAO");
 
 		Town town = new Town(1L);
 
@@ -64,13 +58,13 @@ public class TestStreetService extends SpringBeanAwareTestCase {
 		streetDao.delete(street);
 	}
 
+	@Test
 	public void testRetriveStreetTypes() throws Throwable {
-		StreetDao streetDao =
-				(StreetDao) applicationContext.getBean("streetDAO");
+
 		Street street = streetDao.readFull(6L);
 
 		if (street == null) {
-			fail("Street retrival failed :(");
+			assertNotNull("Street retrival failed :(", street);
 		}
 
 		for (StreetTypeTemporal temporal : street.getTypeTemporals()) {

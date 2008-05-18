@@ -35,6 +35,8 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase implement
 		pager = new Page<SpRegistryRecord>(50, 1);
 		List<SpRegistryRecord> datum = registryRecordDaoExt.listRecordsForUpdate(registry.getId(), pager);
 		dataIterator = datum.iterator();
+
+		log.debug("Inited db data source");
 	}
 
 	/**

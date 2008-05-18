@@ -12,7 +12,7 @@ public class SpFileUtil {
 	private static SpRegistryService spRegistryService;
 	private static SpFileParser spFileParser;
 
-	public static void loadToDb(SpFile spFile) throws IOException, SpFileFormatException, FlexPayException {
+	public static void loadToDb(SpFile spFile) throws Exception {
 
 		spFileParser.parse(spFile);
 	}

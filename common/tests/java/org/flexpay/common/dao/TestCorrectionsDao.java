@@ -1,19 +1,19 @@
 package org.flexpay.common.dao;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.common.test.SpringBeanAwareTestCase;
+import static org.junit.Assert.assertNull;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestCorrectionsDao extends SpringBeanAwareTestCase {
 
-	@Override
-	protected void runTest() throws Throwable {
-		testGetLanguages();
-	}
+	@Autowired
+	protected CorrectionsDao correctionsDao;
 
-	public void testGetLanguages() {
-		CorrectionsDao correctionsDao =
-				(CorrectionsDao) applicationContext.getBean("correctionsDao");
+	@Test
+	public void testGetLanguage() {
 
 		DataSourceDescription dsd = new DataSourceDescription();
 		dsd.setId(-4L);

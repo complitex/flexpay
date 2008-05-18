@@ -1,14 +1,10 @@
 package org.flexpay.common.actions;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class AllTests extends TestCase {
+@RunWith(Suite.class)
+@Suite.SuiteClasses({})
+public class AllTests {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
-		return suite;
-	}
 }

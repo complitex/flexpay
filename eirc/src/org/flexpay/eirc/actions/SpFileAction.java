@@ -1,15 +1,9 @@
 package org.flexpay.eirc.actions;
 
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.service.SpFileService;
-import org.flexpay.eirc.service.SpRegistryRecordService;
-import org.flexpay.eirc.service.SpRegistryService;
-import org.flexpay.eirc.service.SpRegistryTypeService;
 import org.flexpay.eirc.sp.SpFileFormatException;
 import org.flexpay.eirc.sp.SpFileUtil;
-
-import java.io.IOException;
 
 public class SpFileAction {
 
@@ -18,11 +12,8 @@ public class SpFileAction {
 	private SpFileFormatException spFileFormatException;
 
 	private SpFileService spFileService;
-	private SpRegistryService spRegistryService;
-	private SpRegistryRecordService spRegistryRecordService;
-	private SpRegistryTypeService spRegistryTypeService;
 
-	public String execute() throws IOException, SpFileFormatException, FlexPayException {
+	public String execute() throws Exception {
 		SpFile spFile = spFileService.read(spFileId);
 		if ("loadToDb".equals(action)) {
 			try {
@@ -53,27 +44,6 @@ public class SpFileAction {
 	 */
 	public void setAction(String action) {
 		this.action = action;
-	}
-
-	/**
-	 * @param spRegistryService the spRegistryService to set
-	 */
-	public void setSpRegistryService(SpRegistryService spRegistryService) {
-		this.spRegistryService = spRegistryService;
-	}
-
-	/**
-	 * @param spRegistryRecordService the spRegistryRecordService to set
-	 */
-	public void setSpRegistryRecordService(SpRegistryRecordService spRegistryRecordService) {
-		this.spRegistryRecordService = spRegistryRecordService;
-	}
-
-	/**
-	 * @param spRegistryTypeService the spRegistryTypeService to set
-	 */
-	public void setSpRegistryTypeService(SpRegistryTypeService spRegistryTypeService) {
-		this.spRegistryTypeService = spRegistryTypeService;
 	}
 
 	/**

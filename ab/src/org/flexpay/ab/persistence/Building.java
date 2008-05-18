@@ -6,6 +6,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Building
@@ -54,6 +55,15 @@ public class Building extends DomainObjectWithStatus {
 
 	public void setApartments(Set<Apartment> apartments) {
 		this.apartments = apartments;
+	}
+
+	public void addBuildings(Buildings buildings) {
+		if (buildingses == Collections.EMPTY_SET) {
+			buildingses = new HashSet<Buildings>();
+		}
+
+		buildings.setBuilding(this);
+		buildingses.add(buildings);
 	}
 
 	/**

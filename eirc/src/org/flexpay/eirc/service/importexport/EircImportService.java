@@ -12,22 +12,25 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
-import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
+import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional(readOnly = true, rollbackFor = Exception.class)
 public class EircImportService extends ImportService {
 
 	private RawConsumerDataConverter consumerDataConverter;
 	private ConsumerService consumerService;
 	private IdentityTypeService typeService;
 
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	private RegistryRecordWorkflowManager recordWorkflowManager;
+
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void importConsumers(DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
 			throws FlexPayException {
 
@@ -62,6 +65,15 @@ public class EircImportService extends ImportService {
 				continue;
 			}
 
+			try {
+				recordWorkflowManager.startProcessing(data.getRegistryRecord());
+			} catch (TransitionNotAllowed e) {
+				if (log.isInfoEnabled()) {
+					log.info("Skipping record, processing not allowed: " + data.getExternalSourceId());
+				}
+				continue;
+			}
+
 			logTime(now, 1);
 
 			try {
@@ -76,8 +88,7 @@ public class EircImportService extends ImportService {
 					continue;
 				}
 
-				Consumer rawConsumer = consumerDataConverter.fromRawData(
-						data, sd, correctionsService);
+				Consumer rawConsumer = consumerDataConverter.fromRawData(data, sd, correctionsService);
 
 				logTime(now, 3);
 				if (rawConsumer.getApartment() == null) {
@@ -117,7 +128,7 @@ public class EircImportService extends ImportService {
 				logTime(now, 5);
 				if (rawConsumer.getService() == null) {
 					log.error("Not found provider #" + data.getRegistry().getSenderCode() +
-							  " service by code: " + data.getRegistryRecord().getServiceCode());
+							" service by code: " + data.getRegistryRecord().getServiceCode());
 					continue;
 				}
 				log.info("Found service");
@@ -158,10 +169,8 @@ public class EircImportService extends ImportService {
 		addToStack(data.getRegistryRecord());
 	}
 
-	private void setConsumerError(RawConsumerData data, ImportError error) {
-		data.getRegistryRecord().setImportError(error);
-		addToStack(error);
-		addToStack(data.getRegistryRecord());
+	private void setConsumerError(RawConsumerData data, ImportError error) throws Exception {
+		recordWorkflowManager.setNextErrorStatus(data.getRegistryRecord(), error);
 	}
 
 	private void logTime(long start, int label) {
@@ -201,7 +210,7 @@ public class EircImportService extends ImportService {
 	private Apartment findApartment(Map<String, List<Street>> nameObjsMap,
 									Map<String, StreetType> nameTypeMap,
 									DataSourceDescription sd, RawConsumerData data,
-									RawDataSource<RawConsumerData> dataSource) {
+									RawDataSource<RawConsumerData> dataSource) throws Exception {
 
 		// try to find by apartment correction
 		log.info("Checking for apartment correction: " + data.getApartmentId());
@@ -236,7 +245,7 @@ public class EircImportService extends ImportService {
 
 	private Street findStreet(Map<String, List<Street>> nameObjsMap,
 							  Map<String, StreetType> nameTypeMap, RawConsumerData data,
-							  DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource) {
+							  DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource) throws Exception {
 		List<Street> streets = nameObjsMap.get(data.getAddressStreet().toLowerCase());
 		// no candidates
 		if (streets == null) {
@@ -250,7 +259,7 @@ public class EircImportService extends ImportService {
 		StreetType streetType = findStreetType(nameTypeMap, data);
 		if (streetType == null) {
 			log.warn("Found several streets, but no type was found: " + data.getAddressStreetType() +
-					 ", " + data.getAddressStreet());
+					", " + data.getAddressStreet());
 			ImportError error = addImportError(sd, data.getExternalSourceId(), StreetType.class, dataSource);
 			error.setErrorId("error.eirc.import.street_type_not_found");
 			setConsumerError(data, error);
@@ -264,7 +273,7 @@ public class EircImportService extends ImportService {
 		}
 
 		log.warn("Cannot find street candidate, even by type: " + data.getAddressStreetType() +
-				 ", " + data.getAddressStreet());
+				", " + data.getAddressStreet());
 		ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
 		error.setErrorId("error.eirc.import.street_too_many_variants");
 		setConsumerError(data, error);
@@ -293,7 +302,8 @@ public class EircImportService extends ImportService {
 		return nameTypeMap.get(data.getAddressStreetType().toLowerCase());
 	}
 
-	private Apartment findApartment(RawConsumerData data, Street street, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource) {
+	private Apartment findApartment(RawConsumerData data, Street street, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
+			throws Exception {
 		Buildings buildings = buildingService.findBuildings(street, data.getAddressHouse(), data.getAddressBulk());
 		if (buildings == null) {
 			log.warn(String.format("Failed getting building for consumer, Street(%d, %s), Building(%s, %s) ",
@@ -307,7 +317,8 @@ public class EircImportService extends ImportService {
 		return findApartment(data, buildings, sd, dataSource);
 	}
 
-	private Apartment findApartment(RawConsumerData data, Buildings buildings, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource) {
+	private Apartment findApartment(RawConsumerData data, Buildings buildings, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
+			throws Exception {
 		Building building = buildings.getBuilding();
 		if (building == null) {
 			building = buildingService.findBuilding(buildings);
@@ -336,30 +347,19 @@ public class EircImportService extends ImportService {
 		flushStack();
 	}
 
-	/**
-	 * Setter for property 'consumerDataConverter'.
-	 *
-	 * @param consumerDataConverter Value to set for property 'consumerDataConverter'.
-	 */
 	public void setConsumerDataConverter(RawConsumerDataConverter consumerDataConverter) {
 		this.consumerDataConverter = consumerDataConverter;
 	}
 
-	/**
-	 * Setter for property 'consumerService'.
-	 *
-	 * @param consumerService Value to set for property 'consumerService'.
-	 */
 	public void setConsumerService(ConsumerService consumerService) {
 		this.consumerService = consumerService;
 	}
 
-	/**
-	 * Setter for property 'typeService'.
-	 *
-	 * @param typeService Value to set for property 'typeService'.
-	 */
 	public void setTypeService(IdentityTypeService typeService) {
 		this.typeService = typeService;
+	}
+
+	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
+		this.recordWorkflowManager = recordWorkflowManager;
 	}
 }

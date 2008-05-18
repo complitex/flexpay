@@ -1,11 +1,11 @@
 package org.flexpay.eirc.actions.registry.corrections;
 
 import org.apache.commons.collections.ArrayStack;
-import org.apache.log4j.Logger;
 import org.flexpay.ab.actions.apartment.ListApartments;
-import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.filters.*;
-import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
@@ -22,8 +22,6 @@ import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 public class CorrectAddressAction extends ListApartments {
 
-	private Logger log = Logger.getLogger(getClass());
-
 	private String setupType;
 	private Apartment object = new Apartment();
 	private SpRegistryRecord record = new SpRegistryRecord();
@@ -35,7 +33,6 @@ public class CorrectAddressAction extends ListApartments {
 	private SpRegistryRecordService recordService;
 	private SPService spService;
 	private ClassToTypeRegistry typeRegistry;
-	private BuildingService buildingService;
 
 	public String execute() throws Exception {
 
@@ -44,10 +41,7 @@ public class CorrectAddressAction extends ListApartments {
 		boolean setupApartment = "apartment".equals(setupType);
 		boolean setupBuilding = "building".equals(setupType);
 		boolean setupStreet = "street".equals(setupType);
-		boolean createApartment = "create-apartment".equals(setupType);
-		boolean createBuilding = "create-building".equals(setupType);
-		boolean createStreet = "create-street".equals(setupType);
-		if (setupApartment || setupBuilding || setupStreet || createApartment || createBuilding || createStreet) {
+		if (setupApartment || setupBuilding || setupStreet) {
 
 			DataSourceDescription sd = recordService.getDataSourceDescription(record);
 			if (sd == null) {
@@ -56,18 +50,6 @@ public class CorrectAddressAction extends ListApartments {
 			}
 
 			RawConsumerData data = consumersDataSource.getById(String.valueOf(record.getId()));
-
-			if (createApartment) {
-				return createApartment(sd, data);
-			}
-
-			if (createBuilding) {
-				return createBuilding(sd, data);
-			}
-
-			if (createStreet) {
-				return createStreet(sd, data);
-			}
 
 			// add correction for apartment
 			DataCorrection correction = correctionsService.getStub(data.getApartmentId(), object, sd);
@@ -91,52 +73,6 @@ public class CorrectAddressAction extends ListApartments {
 			return "complete";
 		}
 		return super.execute();
-	}
-
-	private String createApartment(DataSourceDescription sd, RawConsumerData data) throws Exception {
-
-		Buildings buildings = new Buildings(buildingsFilter.getSelectedId());
-		Building building = buildingService.findBuilding(buildings);
-		if (building == null) {
-			addActionError(getText("eirc.building_not_exists"));
-			return super.execute();
-		}
-		Apartment apartment = new Apartment();
-		apartment.setBuilding(building);
-		apartment.setNumber(data.getAddressApartment());
-		apartmentService.create(apartment);
-
-		DataCorrection correction = correctionsService.getStub(data.getApartmentId(), apartment, sd);
-		correctionsService.save(correction);
-
-		return super.execute();
-	}
-
-	private String createStreet(DataSourceDescription sd, RawConsumerData data) throws Exception {
-		addActionError("Street creation not implemented yet");
-		return super.execute();
-	}
-
-	private String createBuilding(DataSourceDescription sd, RawConsumerData data) throws Exception {
-		Street street = new Street(streetFilter.getSelectedId());
-		District district = new District(districtFilter.getSelectedId());
-
-		String numberValue = data.getAddressHouse();
-		String bulkValue = data.getAddressBulk();
-
-		try {
-			Buildings buildings = buildingService.createBuildings(street, district, numberValue, bulkValue);
-			DataCorrection correction = correctionsService.getStub(data.getBuildingId(), buildings, sd);
-			correctionsService.save(correction);
-		} catch (FlexPayException e) {
-			log.error("Failed creating building", e);
-			addActionError(getText("eirc.building_create_failed"));
-			return super.execute();
-		}
-
-		record = recordService.removeError(record);
-
-		return "complete";
 	}
 
 	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {
@@ -236,9 +172,5 @@ public class CorrectAddressAction extends ListApartments {
 
 	public void setTypeRegistry(ClassToTypeRegistry typeRegistry) {
 		this.typeRegistry = typeRegistry;
-	}
-
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
 	}
 }
