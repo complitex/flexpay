@@ -27,7 +27,12 @@ public class UserPreferences {
 		if (prefs == null) {
 			prefs = new UserPreferences();
 			Language lang = ApplicationConfig.getInstance().getDefaultLanguage();
-			prefs.locale = lang.getLocale();
+			prefs.setLocale(lang.getLocale());
+		}
+
+		Locale locale = (Locale) WebUtils.getSessionAttribute(request, "WW_TRANS_I18N_LOCALE");
+		if (locale != null) {
+			prefs.setLocale(locale);
 		}
 
 		return prefs;
