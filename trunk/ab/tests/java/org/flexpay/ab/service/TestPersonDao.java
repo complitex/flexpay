@@ -5,24 +5,22 @@ import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.Person;
+import static org.junit.Assert.assertNull;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;
 import java.util.HashSet;
 
 public class TestPersonDao extends SpringBeanAwareTestCase {
 
-	/**
-	 * Override to run the test and assert its state.
-	 *
-	 * @throws Throwable if any exception is thrown
-	 */
-	protected void runTest() throws Throwable {
-		testFindPersonStub();
-	}
+	@Autowired
+	protected IdentityTypeService identityTypeService;
+	@Autowired
+	protected PersonDaoExt personDaoExt;
 
+	@Test
 	public void testFindPersonStub() throws Throwable {
-		IdentityTypeService identityTypeService = (IdentityTypeService)
-				applicationContext.getBean("identityTypeService");
 
 		PersonIdentity identity = new PersonIdentity();
 		identity.setFirstName("test");
@@ -30,9 +28,6 @@ public class TestPersonDao extends SpringBeanAwareTestCase {
 		identity.setLastName("test");
 		identity.setDefault(true);
 		identity.setIdentityType(identityTypeService.getType(IdentityType.TYPE_PASSPORT));
-
-		PersonDaoExt personDaoExt = (PersonDaoExt)
-				applicationContext.getBean("personDaoExt");
 
 		Person person = new Person();
 		Set<PersonIdentity> identitySet = new HashSet<PersonIdentity>();

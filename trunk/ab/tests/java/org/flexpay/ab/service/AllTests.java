@@ -1,20 +1,18 @@
 package org.flexpay.ab.service;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class AllTests extends TestCase {
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+		org.flexpay.ab.service.importexport.AllTests.class,
+		TestBuildingService.class,
+		TestApartmentService.class,
+		TestStreetTypeService.class,
+		TestDistrictService.class,
+		TestStreetService.class,
+		TestPersonDao.class
+		})
+public class AllTests {
 
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-		suite.addTest(org.flexpay.ab.service.importexport.AllTests.suite());
-		suite.addTest(new TestStreetTypeService());
-		suite.addTest(new TestDistrictService());
-		suite.addTest(new TestStreetService());
-		suite.addTest(new TestBuildingService());
-		suite.addTest(new TestApartmentService());
-		suite.addTest(new TestPersonDao());
-		return suite;
-    }
 }

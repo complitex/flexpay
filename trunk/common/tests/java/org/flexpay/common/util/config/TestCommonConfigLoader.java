@@ -1,21 +1,17 @@
 package org.flexpay.common.util.config;
 
 import org.flexpay.common.test.SpringBeanAwareTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
 /**
  * Test is config loads OK
  */
 public class TestCommonConfigLoader extends SpringBeanAwareTestCase {
 
-	/**
-	 * Override to run the test and assert its state.
-	 *
-	 * @throws Throwable if any exception is thrown
-	 */
-	protected void runTest() throws Throwable {
-		testConfigLoader();
-	}
 
+	@Test
 	public void testConfigLoader() throws Exception {
 
 		ApplicationConfig config = ApplicationConfig.getInstance();

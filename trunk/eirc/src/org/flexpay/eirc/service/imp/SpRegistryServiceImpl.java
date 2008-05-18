@@ -1,10 +1,5 @@
 package org.flexpay.eirc.service.imp;
 
-import java.util.List;
-import java.util.Date;
-import java.util.Collection;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
@@ -13,9 +8,14 @@ import org.flexpay.eirc.dao.SpRegistryDaoExt;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
-import org.flexpay.eirc.service.SpRegistryService;
 import org.flexpay.eirc.service.SpRegistryRecordService;
+import org.flexpay.eirc.service.SpRegistryService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class SpRegistryServiceImpl implements SpRegistryService {
@@ -28,9 +28,8 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 
 	/**
 	 * Create SpRegistry
-	 * 
-	 * @param spRegistry
-	 *            SpRegistry object
+	 *
+	 * @param spRegistry SpRegistry object
 	 * @return created SpRegistry object
 	 */
 	@Transactional(readOnly = false)
@@ -46,9 +45,8 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 
 	/**
 	 * Get all SpRegistry by SpFile in page mode
-	 * 
-	 * @param pager
-	 *            Page object
+	 *
+	 * @param pager Page object
 	 * @return List of SpRegistry objects for pager
 	 */
 	@Transactional(readOnly = false)
@@ -58,13 +56,18 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 
 	/**
 	 * Read SpRegistry object by its unique id
-	 * 
-	 * @param id
-	 *            SpRegistry key
+	 *
+	 * @param id SpRegistry key
 	 * @return SpRegistry object, or <code>null</code> if object not found
 	 */
 	public SpRegistry read(Long id) {
 		SpRegistry registry = spRegistryDao.readFull(id);
+		if (registry == null) {
+			if (log.isDebugEnabled()) {
+				log.debug("Registry #" + id + " not found");
+			}
+			return null;
+		}
 		registry.setErrorsNumber(spRegistryRecordService.getErrorsNumber(registry));
 
 		return registry;
@@ -72,12 +75,10 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 
 	/**
 	 * Update SpRegistry
-	 * 
-	 * @param spRegistry
-	 *            SpRegistry to update for
+	 *
+	 * @param spRegistry SpRegistry to update for
 	 * @return Updated SpRegistry object
-	 * @throws FlexPayException
-	 *             if SpRegistry object is invalid
+	 * @throws FlexPayException if SpRegistry object is invalid
 	 */
 	@Transactional(readOnly = false)
 	public SpRegistry update(SpRegistry spRegistry) throws FlexPayException {
@@ -105,7 +106,7 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	public List<SpRegistry> findObjects(OrganisationFilter senderFilter, OrganisationFilter recipientFilter,
 										RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page pager) {
 		return spRegistryDaoExt.findRegistries(senderFilter, recipientFilter,
-										typeFilter, fromDate, tillDate, pager);
+				typeFilter, fromDate, tillDate, pager);
 	}
 
 	/**
@@ -119,8 +120,7 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	}
 
 	/**
-	 * @param spRegistryDao
-	 *            the spRegistryDao to set
+	 * @param spRegistryDao the spRegistryDao to set
 	 */
 	public void setSpRegistryDao(SpRegistryDao spRegistryDao) {
 		this.spRegistryDao = spRegistryDao;

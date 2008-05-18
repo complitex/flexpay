@@ -59,12 +59,12 @@ public interface SpFileService {
 	List<SpRegistry> getRegistries(SpFile spFile);
 
 	/**
-	 * Get registry records for the header
+	 * Get registry records for processing
 	 *
 	 * @param registry Registry header
 	 * @return list of records
 	 */
-	List<SpRegistryRecord> getRegistryRecords(SpRegistry registry);
+	List<SpRegistryRecord> getRecordsForProcessing(SpRegistry registry);
 
 	/**
 	 * Find registry type by id

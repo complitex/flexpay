@@ -36,6 +36,7 @@
 		<property name="typeService" ref="identityTypeService" />
 		<property name="consumerDataConverter" ref="consumerDataConverter" />
 		<property name="consumerService" ref="consumerService" />
+		<property name="recordWorkflowManager" ref="registryRecordWorkflowManager" />
 	</bean>
 
 	<bean id="spFilesExchangeHelper"

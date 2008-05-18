@@ -4056,7 +4056,7 @@ INSERT INTO eirc_registry_types_tbl (id, code) VALUES (10, 10);
 
 -- Init organisations
 INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, description, name, district_id, unique_id)
-	VALUES (0, '-------', '123', 'Eirc itself', 'EIRC', @district_id_nsk_sovetskiy, '1');
+	VALUES (0, '-------', '123', 'Eirc itself', 'EIRC', @district_id_nsk_sovetskiy, '0');
 SELECT @organisation_eirc:=last_insert_id();
 INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, description, name, district_id, unique_id)
 	VALUES (0, '123123123', '123', 'Test organisation', 'ЖКО', @district_id_nsk_sovetskiy, '2');

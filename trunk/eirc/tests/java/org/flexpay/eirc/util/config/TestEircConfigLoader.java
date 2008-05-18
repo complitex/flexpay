@@ -1,22 +1,15 @@
 package org.flexpay.eirc.util.config;
 
 import org.flexpay.common.util.config.TestCommonConfigLoader;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
 /**
  * Test is config loads OK
  */
 public class TestEircConfigLoader extends TestCommonConfigLoader {
 
-	/**
-	 * Override to run the test and assert its state.
-	 *
-	 * @throws Throwable if any exception is thrown
-	 */
-	protected void runTest() throws Throwable {
-		super.runTest();
-		testEircConfigLoader();
-	}
-
+	@Test
 	public void testEircConfigLoader() throws Exception {
 
 		ApplicationConfig config = ApplicationConfig.getInstance();

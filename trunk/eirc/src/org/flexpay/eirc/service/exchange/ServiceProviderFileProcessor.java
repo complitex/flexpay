@@ -2,6 +2,8 @@ package org.flexpay.eirc.service.exchange;
 
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.service.importexport.ImportErrorsSupport;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.dao.importexport.InMemoryRawConsumersDataSource;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
@@ -11,6 +13,8 @@ import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.persistence.exchange.InvalidContainerException;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
+import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
+import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
 import org.flexpay.eirc.service.SpFileService;
 import org.flexpay.eirc.service.importexport.EircImportService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
@@ -34,13 +38,18 @@ public class ServiceProviderFileProcessor {
 	private EircImportService importService;
 
 	private RawConsumersDataSource rawConsumersDataSource;
+	private ImportErrorsSupport errorsSupport;
+	private RegistryWorkflowManager registryWorkflowManager;
+	private RegistryRecordWorkflowManager recordWorkflowManager;
 
 	/**
-	 * Run processing of a provider data file
+	 * Run processing of a registry data file
 	 *
 	 * @param file uploaded SpFile
+	 * @throws FlexPayExceptionContainer if registry processing failed
+	 * @throws Exception				 if failure occurs
 	 */
-	public void processFile(SpFile file) {
+	public void processFile(SpFile file) throws Exception {
 
 		if (log.isInfoEnabled()) {
 			log.info("Starting processing file");
@@ -54,10 +63,21 @@ public class ServiceProviderFileProcessor {
 		processRegistries(registries);
 	}
 
-	public void processRegistries(Collection<SpRegistry> registries) {
+	/**
+	 * Run processing of a <code>registries</code>
+	 *
+	 * @param registries Registries to process
+	 * @throws FlexPayExceptionContainer if registry processing failed
+	 * @throws Exception				 if failure occurs
+	 */
+	public void processRegistries(Collection<SpRegistry> registries) throws Exception {
 
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 		for (SpRegistry registry : registries) {
+
 			try {
+				registryWorkflowManager.startProcessing(registry);
+
 				if (log.isInfoEnabled()) {
 					log.info("Starting processing registry #" + registry.getId());
 				}
@@ -70,22 +90,41 @@ public class ServiceProviderFileProcessor {
 				}
 
 				log.info("Starting processing records");
-				List<SpRegistryRecord> records = spFileService.getRegistryRecords(registry);
+				List<SpRegistryRecord> records = spFileService.getRecordsForProcessing(registry);
 				for (SpRegistryRecord record : records) {
 					processRecord(registry, record);
 				}
+				registryWorkflowManager.setNextSuccessStatus(registry);
 			} catch (Exception e) {
-				log.error("Failed processing registry: " + registry, e);
+				String errMsg = "Failed processing registry: " + registry;
+				log.error(errMsg, e);
+				registryWorkflowManager.setNextErrorStatus(registry);
+				container.addException(new FlexPayException(errMsg, e));
 			}
+		}
+
+		if (!container.getExceptions().isEmpty()) {
+			throw container;
 		}
 	}
 
-	public void processRecords(SpRegistry registry, Collection<SpRegistryRecord> records) {
+	public void processRecords(SpRegistry registry, Collection<SpRegistryRecord> records) throws Exception {
 		RawDataSource<RawConsumerData> dataSource = new InMemoryRawConsumersDataSource(records);
-		setupRecordsConsumer(registry, dataSource);
+		errorsSupport.registerAlias(dataSource, rawConsumersDataSource);
 
-		for (SpRegistryRecord record : records) {
-			processRecord(registry, record);
+		try {
+			registryWorkflowManager.startProcessing(registry);
+			setupRecordsConsumer(registry, dataSource);
+
+			for (SpRegistryRecord record : records) {
+				processRecord(registry, record);
+			}
+			registryWorkflowManager.setNextSuccessStatus(registry);
+		} catch (Exception e) {
+			log.error("Failed processing registry records", e);
+			registryWorkflowManager.setNextErrorStatus(registry);
+		} finally {
+			errorsSupport.unregisterAlias(dataSource);
 		}
 	}
 
@@ -132,49 +171,45 @@ public class ServiceProviderFileProcessor {
 	 *
 	 * @param registry Registry header
 	 * @param record   Registry record
+	 * @throws Exception if failure occurs
 	 */
-	private void processRecord(SpRegistry registry, SpRegistryRecord record) {
+	private void processRecord(SpRegistry registry, SpRegistryRecord record) throws Exception {
 		try {
+			recordWorkflowManager.startProcessing(record);
 			Operation op = serviceOperationsFactory.getOperation(registry, record);
 			op.process(registry, record);
-		} catch (FlexPayException e) {
-			log.error("Failed processing registry record containers: " + registry, e);
+			recordWorkflowManager.setNextSuccessStatus(record);
+		} catch (Exception e) {
+			log.error("Failed processing registry record: " + record, e);
+			recordWorkflowManager.setNextErrorStatus(record);
 		}
 	}
 
-	/**
-	 * Setter for property 'operationFactory'.
-	 *
-	 * @param serviceOperationsFactory Value to set for property 'operationFactory'.
-	 */
 	public void setServiceOperationsFactory(ServiceOperationsFactory serviceOperationsFactory) {
 		this.serviceOperationsFactory = serviceOperationsFactory;
 	}
 
-	/**
-	 * Setter for property 'spFileService'.
-	 *
-	 * @param spFileService Value to set for property 'spFileService'.
-	 */
 	public void setSpFileService(SpFileService spFileService) {
 		this.spFileService = spFileService;
 	}
 
-	/**
-	 * Setter for property 'importService'.
-	 *
-	 * @param importService Value to set for property 'importService'.
-	 */
 	public void setImportService(EircImportService importService) {
 		this.importService = importService;
 	}
 
-	/**
-	 * Setter for property 'rawConsumersDataSource'.
-	 *
-	 * @param rawConsumersDataSource Value to set for property 'rawConsumersDataSource'.
-	 */
 	public void setRawConsumersDataSource(RawConsumersDataSource rawConsumersDataSource) {
 		this.rawConsumersDataSource = rawConsumersDataSource;
+	}
+
+	public void setErrorsSupport(ImportErrorsSupport errorsSupport) {
+		this.errorsSupport = errorsSupport;
+	}
+
+	public void setRegistryWorkflowManager(RegistryWorkflowManager registryWorkflowManager) {
+		this.registryWorkflowManager = registryWorkflowManager;
+	}
+
+	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
+		this.recordWorkflowManager = recordWorkflowManager;
 	}
 }

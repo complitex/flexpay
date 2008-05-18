@@ -4,16 +4,16 @@ import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 public class InMemoryRawConsumersDataSource extends RawConsumersDataSourceBase {
 
 	private Collection<SpRegistryRecord> records;
-	private Iterator<SpRegistryRecord> dataIterator;
 
 	public InMemoryRawConsumersDataSource(Collection<SpRegistryRecord> records) {
 		this.records = records;
 		dataIterator = records.iterator();
+
+		log.debug("Created inmemory data source");
 	}
 
 	/**
@@ -45,6 +45,8 @@ public class InMemoryRawConsumersDataSource extends RawConsumersDataSourceBase {
 	 * Initialize data source
 	 */
 	public void initialize() {
+
+		log.debug("Inited inmemory data source");
 	}
 
 	/**

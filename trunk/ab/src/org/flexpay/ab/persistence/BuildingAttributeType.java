@@ -1,10 +1,8 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.common.persistence.DomainObject;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.DomainObject;
 
 import java.util.Collections;
 import java.util.Set;
@@ -62,9 +60,11 @@ public class BuildingAttributeType extends DomainObject {
 		}
 
 		BuildingAttributeType that = (BuildingAttributeType) obj;
-		return new EqualsBuilder()
-				.append(type, that.type)
-				.isEquals();
+		return type == that.type;
+	}
+
+	public int hashCode() {
+		return type;
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class BuildingAttributeType extends DomainObject {
 	 */
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("type", type)
 				.toString();
 	}

@@ -1,32 +1,27 @@
 package org.flexpay.ab.service;
 
-import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ApartmentNumber;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.ApplicationConfig;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class TestApartmentService extends SpringBeanAwareTestCase {
 
-	/**
-	 * Override to run the test and assert its state.
-	 *
-	 * @throws Throwable if any exception is thrown
-	 */
-	@Override
-	protected void runTest() throws Throwable {
-		testCreateApartment();
-		testFindApartment();
-	}
+	@Autowired
+	protected ApartmentService apartmentService;
+	@Autowired
+	protected ApartmentDao apartmentDao;
 
+	@Test
 	public void testCreateApartment() throws Throwable {
-		ApartmentDao apartmentDao =
-				(ApartmentDao) applicationContext.getBean("apartmentDao");
 
 		Apartment apartment = new Apartment();
 		apartment.setBuilding(new Building(26L));
@@ -49,15 +44,11 @@ public class TestApartmentService extends SpringBeanAwareTestCase {
 		apartmentDao.delete(apartment);
 	}
 
+	@Test
 	public void testFindApartment() throws Throwable {
-
-		ApartmentService apartmentService =
-				(ApartmentService) applicationContext.getBean("apartmentService");
 
 		// See init_db script
 		Apartment apartment = apartmentService.findApartmentStub(new Building(26L), "31");
-
-		Logger.getLogger("org.flexpay.ab.Test").error(apartment);
 
 		assertNotNull("Apartment find faild", apartment);
 	}

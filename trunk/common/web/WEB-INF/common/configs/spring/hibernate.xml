@@ -153,5 +153,4 @@
 		<property name="jbpmConfiguration" ref="jbpmConfiguration" />
 	</bean>
 
-
 </beans>

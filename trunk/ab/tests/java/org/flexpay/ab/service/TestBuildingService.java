@@ -1,102 +1,118 @@
 package org.flexpay.ab.service;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.BuildingDao;
-import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.BuildingAttribute;
-import org.flexpay.ab.persistence.BuildingAttributeType;
-import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.persistence.District;
-import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.dao.BuildingsDao;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class TestBuildingService extends SpringBeanAwareTestCase {
 
-	/**
-	 * Override to run the test and assert its state.
-	 * 
-	 * @throws Throwable
-	 *             if any exception is thrown
-	 */
-	@Override
-	protected void runTest() throws Throwable {
-		testCreateBuilding();
-		testFindBuildings();
-		testFindBulkBuildings();
-	}
+	@Autowired
+	protected BuildingDao buildingDao;
+	@Autowired
+	protected BuildingsDao buildingsDao;
+	@Autowired
+	protected BuildingService buildingService;
 
-	public void testCreateBuilding() throws Throwable {
-		BuildingDao buildingDao = (BuildingDao) applicationContext
-				.getBean("buildingDao");
-		BuildingService buildingService = (BuildingService) applicationContext
-				.getBean("buildingService");
+	// See init_db script
+	private Street street = new Street(2L);
+	private District district = new District(9L);
+
+	private BuildingAttributeType numberType;
+	private BuildingAttributeType bulkType;
+
+	private Building newBuilding() {
 
 		Building building = new Building();
 		building.setDistrict(new District(1L));
+		return building;
+	}
+
+	private Buildings newBuildings(Building building) {
 
 		Buildings buildings = new Buildings();
-		buildings.setBuilding(building);
-		buildings.setStreet(new Street(1L));
-		buildings.setStatus(Buildings.STATUS_ACTIVE);
+		buildings.setStreet(street);
+		building.addBuildings(buildings);
+		return buildings;
+	}
 
-		BuildingAttribute number = new BuildingAttribute();
-		number.setBuildingAttributeType(buildingService
-				.getAttributeType(BuildingAttributeType.TYPE_NUMBER));
-		number.setValue("Test number #123");
-		number.setBuildings(buildings);
+	@Transactional(readOnly = false)
+	@Test
+	public void testDeleteAttribute() throws Throwable {
 
-		BuildingAttribute bulkNumber = new BuildingAttribute();
-		bulkNumber.setBuildingAttributeType(buildingService
-				.getAttributeType(BuildingAttributeType.TYPE_BULK));
-		bulkNumber.setValue("Test bulk number #1");
-		bulkNumber.setBuildings(buildings);
+		Building building = newBuilding();
+		Buildings buildings = newBuildings(building);
 
-		Set<BuildingAttribute> attributes = new HashSet<BuildingAttribute>();
-		attributes.add(number);
-		attributes.add(bulkNumber);
-		buildings.setBuildingAttributes(attributes);
-
-		Set<Buildings> buildingses = new HashSet<Buildings>();
-		buildingses.add(buildings);
-		building.setBuildingses(buildingses);
+		buildings.setBuildingAttribute("#123", numberType);
+		buildings.setBuildingAttribute("#1", bulkType);
 
 		buildingDao.create(building);
 
-		assertNotNull("Building create failed", building.getId());
-		assertNotNull("Buildings create failed", buildings.getId());
-		assertNotNull("Buildings number create failed", number.getId());
-		assertNotNull("Buildings bulk number create failed", bulkNumber.getId());
+		try {
+			buildings.setBuildingAttribute(null, bulkType);
+			buildingsDao.update(buildings);
+			assertEquals("Buildings attribute delete method failed", 1, buildings.getBuildingAttributes().size());
 
-		buildingDao.delete(building);
+			assertTrue("Buildings attribute delete persistence failed", StringUtils.isEmpty(buildings.getBulk()));
+		} finally {
+			buildingDao.delete(building);
+		}
 	}
 
+	@Test
+	public void testCreateBuilding() throws Throwable {
+
+		Building building = newBuilding();
+		Buildings buildings = newBuildings(building);
+
+		BuildingAttribute number = buildings.setBuildingAttribute("Test number #123", numberType);
+		BuildingAttribute bulk = buildings.setBuildingAttribute("Test bulk number #1", bulkType);
+
+		buildingDao.create(building);
+
+		try {
+			assertNotNull("Building create failed", building.getId());
+			assertNotNull("Buildings create failed", buildings.getId());
+			assertNotNull("Buildings number create failed", number.getId());
+			assertNotNull("Buildings bulk number create failed", bulk.getId());
+		} finally {
+			buildingDao.delete(building);
+		}
+
+	}
+
+	@Test
 	public void testFindBulkBuildings() throws Throwable {
-		BuildingService buildingService = (BuildingService) applicationContext
-				.getBean("buildingService");
 
 		// See init_db script
-		Buildings buildings = buildingService.findBuildings(new Street(2L),
-				new District(9L), "31", "2");
+		Buildings buildings = buildingService.findBuildings(street, district, "31", "2");
 
 		assertNotNull("Building find with bulk number faild", buildings);
 		assertEquals("Invalid number", "31", buildings.getNumber());
 		assertEquals("Invalid number", "2", buildings.getBulk());
 	}
 
+	@Test
 	public void testFindBuildings() throws Throwable {
-		BuildingService buildingService = (BuildingService) applicationContext
-				.getBean("buildingService");
 
 		// See init_db script
-		Buildings buildings = buildingService.findBuildings(new Street(2L),
-				new District(9L), "31", "");
+		Buildings buildings = buildingService.findBuildings(new Street(2L), new District(9L), "31", "");
 
 		assertNotNull("Building find faild", buildings);
 		assertEquals("Invalid building number", "31", buildings.getNumber());
-		assertTrue("Not empty bulk number", StringUtils.isEmpty(buildings
-				.getBulk()));
+		assertTrue("Not empty bulk number", StringUtils.isEmpty(buildings.getBulk()));
+	}
+
+	@Before
+	public void prepare() throws Exception {
+		numberType = buildingService.getAttributeType(BuildingAttributeType.TYPE_NUMBER);
+		bulkType = buildingService.getAttributeType(BuildingAttributeType.TYPE_BULK);
 	}
 }

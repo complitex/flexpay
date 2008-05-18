@@ -1,21 +1,21 @@
 package org.flexpay.common.service;
 
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
+import static junit.framework.Assert.assertFalse;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class LanguageServiceTest extends SpringBeanAwareTestCase {
 
-	@Override
-	protected void runTest() throws Throwable {
-		testGetLanguages();
-	}
+	@Autowired
+	protected LanguageService languageService;
 
+	@Test
 	public void testGetLanguages() {
-		LanguageService languageService =
-				(LanguageService) applicationContext.getBean("languageService");
 
 		List<Language> languages = languageService.getLanguages();
 

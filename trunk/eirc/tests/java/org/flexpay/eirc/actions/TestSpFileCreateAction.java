@@ -4,6 +4,11 @@ import org.apache.commons.io.IOUtils;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.service.SpFileService;
+import org.junit.Test;
+import org.junit.Ignore;
+import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,13 +18,13 @@ import java.util.List;
 
 public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 
+	@Autowired
 	private SpFileService fileService;
+	@Autowired
 	private SpFileCreateAction fileCreateAction;
 
-	protected void runTest() throws Throwable {
-		testCreateSpFile();
-	}
-
+	@Ignore
+	@Test
 	public void testCreateSpFile() throws Throwable {
 		SpFile newFile = createSpFile("org/flexpay/eirc/actions/sp/payments_100.44268.bin");
 		deleteFile(newFile);
@@ -58,10 +63,5 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 	protected void deleteFile(SpFile file) {
 		fileService.delete(file);
 		fileCreateAction.getUpload().delete();
-	}
-
-	protected void prepareTestInstance() throws Exception {
-		fileService = (SpFileService) applicationContext.getBean("spFileService");
-		fileCreateAction = (SpFileCreateAction) applicationContext.getBean("spFileCreateAction");
 	}
 }

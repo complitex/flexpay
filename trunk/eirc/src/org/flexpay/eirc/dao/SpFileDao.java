@@ -30,5 +30,5 @@ public interface SpFileDao extends GenericDao<SpFile, Long>{
 	 * @param registryId Registry header id
 	 * @return list of registrie records
 	 */
-	List<SpRegistryRecord> listRegistryRecords(Long registryId);
+	List<SpRegistryRecord> listRecordsForProcessing(Long registryId);
 }

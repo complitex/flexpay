@@ -1,14 +1,11 @@
 package org.flexpay.sz.service;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class AllTests extends TestCase {
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
-		suite.addTest(new TestCorrectionsService());
-		return suite;
-	}
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+		TestCorrectionsService.class
+		})
+public class AllTests {
 }

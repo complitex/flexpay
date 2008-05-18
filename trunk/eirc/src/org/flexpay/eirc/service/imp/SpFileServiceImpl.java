@@ -92,8 +92,8 @@ public class SpFileServiceImpl implements SpFileService {
 	 * @param registry Registry header
 	 * @return list of records
 	 */
-	public List<SpRegistryRecord> getRegistryRecords(SpRegistry registry) {
-		return spFileDao.listRegistryRecords(registry.getId());
+	public List<SpRegistryRecord> getRecordsForProcessing(SpRegistry registry) {
+		return spFileDao.listRecordsForProcessing(registry.getId());
 	}
 
 	/**

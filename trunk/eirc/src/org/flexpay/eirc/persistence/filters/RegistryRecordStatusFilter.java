@@ -14,7 +14,7 @@ public class RegistryRecordStatusFilter extends ObjectFilter {
 	static {
 		statusTypes.put(TYPE_ALL, "eirc.registry.record.status");
 		statusTypes.put(SpRegistryRecordStatus.LOADED, "eirc.registry.record.status.LOADED");
-		statusTypes.put(SpRegistryRecordStatus.LOADED_WITH_ERROR, "eirc.registry.record.status.LOADED_WITH_ERROR");
+		statusTypes.put(SpRegistryRecordStatus.PROCESSED_WITH_ERROR, "eirc.registry.record.status.PROCESSED_WITH_ERROR");
 		statusTypes.put(SpRegistryRecordStatus.FIXED, "eirc.registry.record.status.FIXED");
 		statusTypes.put(SpRegistryRecordStatus.PROCESSED, "eirc.registry.record.status.PROCESSED");
 	}

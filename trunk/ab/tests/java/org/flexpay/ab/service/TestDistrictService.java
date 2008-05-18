@@ -5,25 +5,19 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class TestDistrictService extends SpringBeanAwareTestCase {
 
-	/**
-	 * Override to run the test and assert its state.
-	 *
-	 * @throws Throwable if any exception is thrown
-	 */
-	@Override
-	protected void runTest() throws Throwable {
-		testCreateDistrict();
-	}
+	@Autowired
+	private DistrictDao districtDao;
 
+	@Test
 	public void testCreateDistrict() throws Throwable {
-		DistrictDao districtDao =
-				(DistrictDao) applicationContext.getBean("districtDAO");
 
 		Town town = new Town(1L);
 

@@ -1,15 +1,21 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:form method="post" id="fregistries">
-	<%@include file="../filters/sender_organisation_filter.jsp" %>&nbsp;&nbsp;
-	<%@include file="../filters/recipient_organisation_filter.jsp" %>&nbsp;&nbsp;
-	<%@include file="../filters/registry_type_filter.jsp" %>&nbsp;&nbsp;
+	<%@include file="../filters/sender_organisation_filter.jsp" %>
+	&nbsp;&nbsp;
+	<%@include file="../filters/recipient_organisation_filter.jsp" %>
+	&nbsp;&nbsp;
+	<%@include file="../filters/registry_type_filter.jsp" %>
+	&nbsp;&nbsp;
 
 	<br/>
 
+	<span class="text">
 	<s:text name="eirc.generated"/>&nbsp;
 	<%@include file="../filters/date_interval_filter.jsp" %>
-	<input type="submit" value="<s:text name="eirc.filter" />" class="btn-exit" />
+	</span>
+
+	<input type="submit" value="<s:text name="eirc.filter" />" class="btn-exit"/>
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
@@ -24,28 +30,29 @@
 			<td class="th"><s:text name="eirc.status"/></td>
 			<td class="th">&nbsp;</td>
 		</tr>
-		<s:iterator value="registries"  status="status">
+		<s:iterator value="registries" status="status">
 			<tr valign="middle" class="cols_1">
-				<td class="col" align="right"><s:property
+				<td class="col" width="1%"><s:property
 						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/></td>
-				<td class="col"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/></td>
-				<td class="col"><s:property value="creationDate"/></td>
+				<td class="col" width="1%"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/>
+				</td>
+				<td class="col"><s:date name="creationDate" format="yyyy/MM/dd"/></td>
 				<td class="col"><s:property value="sender.name"/></td>
 				<td class="col"><s:property value="recipient.name"/></td>
-				<td class="col"><s:property value="registryType.name"/></td>
-				<td class="col"><s:property value="spFile.importDate"/></td>
+				<td class="col"><s:text name="%{registryType.i18nName}"/></td>
+				<td class="col"><s:date name="spFile.importDate" format="yyyy/MM/dd HH:mm:ss"/></td>
 				<td class="col"><s:property value="recordsNumber"/></td>
-				<td class="col">-----</td>
-				<td class="col"><a href="<s:url value="/eirc/registry_view.action?registry.id=%{id}"/>" >
-					<img src="<s:url value="/resources/common/img/i_view.gif" />" alt="<s:text name="common.view"/>" 
-						 title="<s:text name="common.view"/>" /></a></td>
+				<td class="col"><s:text name="%{registryStatus.i18nName}"/></td>
+				<td class="col"><a href="<s:url value="/eirc/registry_view.action?registry.id=%{id}"/>">
+					<img src="<s:url value="/resources/common/img/i_view.gif" />" alt="<s:text name="common.view"/>"
+						 title="<s:text name="common.view"/>"/></a></td>
 			</tr>
 		</s:iterator>
 		<tr>
-			<td colspan="9">
+			<td colspan="10">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" value="<s:text name="eirc.process" />" class="btn-exit"
-					onclick="$('fregistries').action='<s:url action="process_registries"/>';$('fregistries').submit()" />
+					   onclick="$('fregistries').action='<s:url action="process_registries"/>';"/>
 			</td>
 		</tr>
 	</table>

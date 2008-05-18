@@ -52,7 +52,6 @@
 	<bean id="buildingService" class="org.flexpay.ab.service.imp.BuildingServiceImpl">
 		<property name="buildingDao" ref="buildingDao" />
 		<property name="buildingsDao" ref="buildingsDao" />
-		<property name="buildingAttributeDao" ref="buildingAttributeDao" />
 		<property name="buildingsTypeDao" ref="buildingAttributeTypeDao" />
 		<property name="buildingsDaoExt" ref="buildingsDaoExt" />
 		<property name="parentService" ref="streetService" />

@@ -1,16 +1,14 @@
 package org.flexpay.eirc.service;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class AllTests extends TestCase {
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+		org.flexpay.eirc.service.importexport.AllTests.class,
+		org.flexpay.eirc.service.exchange.AllTests.class,
+		org.flexpay.eirc.service.registry.AllTests.class
+		})
+public class AllTests {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
-//		suite.addTest(org.flexpay.eirc.service.importexport.AllTests.suite());
-//		suite.addTest(org.flexpay.eirc.service.exchange.AllTests.suite());
-		suite.addTest(org.flexpay.eirc.service.registry.AllTests.suite());
-		return suite;
-	}
 }

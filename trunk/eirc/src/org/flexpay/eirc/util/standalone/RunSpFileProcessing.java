@@ -3,9 +3,11 @@ package org.flexpay.eirc.util.standalone;
 import org.flexpay.common.util.standalone.StandaloneTask;
 import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
 import org.flexpay.eirc.persistence.SpFile;
+import org.apache.log4j.Logger;
 
 public class RunSpFileProcessing implements StandaloneTask {
 
+	private Logger log = Logger.getLogger(getClass());
 	private ServiceProviderFileProcessor fileProcessor;
 
 	/**
@@ -13,7 +15,11 @@ public class RunSpFileProcessing implements StandaloneTask {
 	 */
 	public void execute() {
 
-		fileProcessor.processFile(new SpFile(33L));
+		try {
+			fileProcessor.processFile(new SpFile(33L));
+		} catch (Exception e) {
+			log.error("Failed processing registry file", e);
+		}
 	}
 
 	/**

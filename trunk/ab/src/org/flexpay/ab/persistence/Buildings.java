@@ -1,17 +1,12 @@
 package org.flexpay.ab.persistence;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+
+import java.util.*;
 
 /**
  * Buildings is a logical relation between building and several street addresses
@@ -20,8 +15,7 @@ public class Buildings extends DomainObjectWithStatus {
 
 	private Street street;
 	private Building building;
-	private Set<BuildingAttribute> buildingAttributes = Collections
-			.emptySet();
+	private List<BuildingAttribute> buildingAttributes = Collections.emptyList();
 	private Boolean primaryStatus;
 
 	public Buildings() {
@@ -47,24 +41,23 @@ public class Buildings extends DomainObjectWithStatus {
 		this.building = building;
 	}
 
-	public Set<BuildingAttribute> getBuildingAttributes() {
+	public List<BuildingAttribute> getBuildingAttributes() {
 		return this.buildingAttributes;
 	}
 
-	public void setBuildingAttributes(Set<BuildingAttribute> buildingAttributes) {
+	public void setBuildingAttributes(List<BuildingAttribute> buildingAttributes) {
 		this.buildingAttributes = buildingAttributes;
 	}
 
 	/**
 	 * Get building attribute
-	 * 
+	 *
 	 * @return BuildingAttribute number if attribute specified, or
 	 *         <code>null</code> otherwise
 	 */
 	public BuildingAttribute getNumberAttribute() {
 		for (BuildingAttribute attribute : buildingAttributes) {
-			if (attribute != null
-					&& attribute.getBuildingAttributeType().isBuildingNumber()) {
+			if (attribute.getBuildingAttributeType().isBuildingNumber()) {
 				return attribute;
 			}
 		}
@@ -74,14 +67,13 @@ public class Buildings extends DomainObjectWithStatus {
 
 	/**
 	 * Get building attribute
-	 * 
+	 *
 	 * @return BuildingAttribute bulk if attribute specified, or
 	 *         <code>null</code> otherwise
 	 */
 	public BuildingAttribute getBulkAttribute() {
 		for (BuildingAttribute attribute : buildingAttributes) {
-			if (attribute != null
-					&& attribute.getBuildingAttributeType().isBulkNumber()) {
+			if (attribute.getBuildingAttributeType().isBulkNumber()) {
 				return attribute;
 			}
 		}
@@ -91,7 +83,7 @@ public class Buildings extends DomainObjectWithStatus {
 
 	/**
 	 * Get building number
-	 * 
+	 *
 	 * @return Building number if attribute specified, or <code>null</code>
 	 *         otherwise
 	 */
@@ -100,37 +92,42 @@ public class Buildings extends DomainObjectWithStatus {
 		return attribute == null ? null : attribute.getValue();
 	}
 
-	public void setBuildingAttribute(String value, BuildingAttributeType type) {
+	public BuildingAttribute setBuildingAttribute(String value, BuildingAttributeType type) {
 		BuildingAttribute attribute = null;
 		for (BuildingAttribute attr : buildingAttributes) {
-			if (attr != null && type.equals(attr.getBuildingAttributeType())) {
+			if (type.equals(attr.getBuildingAttributeType())) {
 				attribute = attr;
 				break;
 			}
 		}
 
-		if (value == null || "".equals(value)) {
+		if (StringUtils.isEmpty(value)) {
 			if (attribute != null) {
+				int oldSize = buildingAttributes.size();
 				buildingAttributes.remove(attribute);
+				System.out.println("Removing attribute, size new: " + buildingAttributes.size() + ", old: " + oldSize +
+					"\n attributes: " + buildingAttributes + "\n class: " + buildingAttributes.getClass() +
+					"\n To delete: " + attribute);
 			}
-			return;
+			return attribute;
 		}
 
 		if (attribute == null) {
 			attribute = new BuildingAttribute();
 			attribute.setBuildingAttributeType(type);
 			attribute.setBuildings(this);
-			if (buildingAttributes.isEmpty()) {
-				buildingAttributes = new HashSet<BuildingAttribute>();
+			if (buildingAttributes == Collections.EMPTY_LIST) {
+				buildingAttributes = new ArrayList<BuildingAttribute>();
 			}
 			buildingAttributes.add(attribute);
 		}
 		attribute.setValue(value);
+		return attribute;
 	}
 
 	/**
 	 * Get building optional bulk number
-	 * 
+	 *
 	 * @return Building number if attribute specified, or <code>null</code>
 	 *         otherwise
 	 */
@@ -170,8 +167,7 @@ public class Buildings extends DomainObjectWithStatus {
 	}
 
 	/**
-	 * @param primaryStatus
-	 *            the primaryStatus to set
+	 * @param primaryStatus the primaryStatus to set
 	 */
 	public void setPrimaryStatus(Boolean primaryStatus) {
 		this.primaryStatus = primaryStatus;
