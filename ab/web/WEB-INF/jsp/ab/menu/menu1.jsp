@@ -15,14 +15,14 @@
 			<table cellpadding="0" cellspacing="0" border="0">
 				<tr>
 					<td><span class="text-small"><s:text name="header.language"/>:&nbsp;</span></td>
-					<form action="<c:url value="/set_language.action"/>" method="get">
+					<s:form method="get">
 						<td><select class="form-select" name="request_locale" onchange="this.form.submit()">
 							<c:forEach items="${applicationScope['languages']}" var="lang">
 								<option value="<c:out value="${lang.language.locale}" />" <c:if test="${sessionScope['current_locale'].id == lang.language.id}">selected</c:if>><c:out value="${lang.translation}"/></option>
 							</c:forEach>
 						</select>
 						</td>
-					</form>
+					</s:form>
 				</tr>
 			</table>
 		</td>
