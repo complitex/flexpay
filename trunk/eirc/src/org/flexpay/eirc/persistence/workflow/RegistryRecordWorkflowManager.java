@@ -9,15 +9,17 @@ import org.flexpay.eirc.persistence.SpRegistryRecordStatus;
 import static org.flexpay.eirc.persistence.SpRegistryRecordStatus.*;
 import org.flexpay.eirc.service.SpRegistryRecordStatusService;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.log4j.Logger;
 
 import java.util.*;
 
 /**
  * Helper class for registry records workflow
  */
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+@Transactional(readOnly = true)
 public class RegistryRecordWorkflowManager {
 
+	private Logger log = Logger.getLogger(getClass());
 	private RegistryWorkflowManager registryWorkflowManager;
 
 	private SpRegistryRecordStatusService statusService;
@@ -66,6 +68,7 @@ public class RegistryRecordWorkflowManager {
 	 * @param record Registry record to start
 	 * @throws TransitionNotAllowed if record processing is not possible
 	 */
+	@Transactional(readOnly = false)
 	public void startProcessing(SpRegistryRecord record) throws TransitionNotAllowed {
 		if (!hasSuccessTransition(record)) {
 			throw new TransitionNotAllowed("Registry processing not allowed");
@@ -92,7 +95,7 @@ public class RegistryRecordWorkflowManager {
 	 * @param record Registry record to update
 	 * @throws TransitionNotAllowed if error transition is not allowed
 	 */
-	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	@Transactional(readOnly = false)
 	public void setNextErrorStatus(SpRegistryRecord record) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(record));
 		if (allowedCodes.size() < 2) {
@@ -110,7 +113,7 @@ public class RegistryRecordWorkflowManager {
 	 * @param error  ImportError
 	 * @throws TransitionNotAllowed if error transition is not allowed
 	 */
-	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	@Transactional(readOnly = false)
 	public void setNextErrorStatus(SpRegistryRecord record, ImportError error) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(record));
 		if (allowedCodes.size() < 2) {
@@ -124,6 +127,10 @@ public class RegistryRecordWorkflowManager {
 	}
 
 	private void markRegistryAsHavingError(SpRegistryRecord record) throws TransitionNotAllowed {
+		if (log.isDebugEnabled()) {
+			log.debug("Setting record errorous: " + record);
+		}
+
 		registryWorkflowManager.markProcessingHasError(record.getSpRegistry());
 	}
 
@@ -133,7 +140,7 @@ public class RegistryRecordWorkflowManager {
 	 * @param record Registry record to update
 	 * @throws TransitionNotAllowed if success transition is not allowed
 	 */
-	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	@Transactional(readOnly = false)
 	public void setNextSuccessStatus(SpRegistryRecord record) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(record));
 		if (allowedCodes.size() < 1) {
@@ -153,6 +160,7 @@ public class RegistryRecordWorkflowManager {
 	 * @param record Registry record
 	 * @return updated record
 	 */
+	@Transactional(readOnly = false)
 	public SpRegistryRecord removeError(SpRegistryRecord record) {
 		if (record.getImportError() == null) {
 			return record;
@@ -176,7 +184,7 @@ public class RegistryRecordWorkflowManager {
 	 * @return SpRegistryRecord back
 	 * @throws TransitionNotAllowed if registry already has a status
 	 */
-	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	@Transactional(readOnly = false)
 	public SpRegistryRecord setInitialStatus(SpRegistryRecord record) throws TransitionNotAllowed {
 		if (record.getRecordStatus() != null) {
 			if (code(record) != LOADED) {
@@ -209,7 +217,7 @@ public class RegistryRecordWorkflowManager {
 	 * @param status Next status to set
 	 * @throws TransitionNotAllowed if transition from old to a new status is not allowed
 	 */
-	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	@Transactional(readOnly = false)
 	public void setNextStatus(SpRegistryRecord record, SpRegistryRecordStatus status) throws TransitionNotAllowed {
 		if (!canTransit(record, status)) {
 			throw new TransitionNotAllowed("Invalid transition request, was " + record.getRecordStatus() + ", requested " + status);

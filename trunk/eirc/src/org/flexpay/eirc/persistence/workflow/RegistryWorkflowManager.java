@@ -7,6 +7,7 @@ import static org.flexpay.eirc.persistence.SpRegistryStatus.*;
 import org.flexpay.eirc.service.SpRegistryStatusService;
 import org.flexpay.eirc.dao.SpRegistryDao;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.log4j.Logger;
 
 import java.util.*;
 
@@ -15,6 +16,8 @@ import java.util.*;
  */
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class RegistryWorkflowManager {
+
+	private Logger log = Logger.getLogger(getClass());
 
 	private SpRegistryStatusService statusService;
 	private SpRegistryDao registryDao;
@@ -222,8 +225,17 @@ public class RegistryWorkflowManager {
 			throw new TransitionNotAllowed("Cannot mark not processing registry as having errors");
 		}
 
+		if (log.isDebugEnabled()) {
+			log.debug("Setting registry errorous: " + spRegistry);
+		}
+
 		if (code == PROCESSING) {
+			log.debug("Updating registry status");
 			setNextErrorStatus(spRegistry);
+		} else {
+			if (log.isDebugEnabled()) {
+				log.info("Not updating registry status, current is " + code);
+			}
 		}
 	}
 }

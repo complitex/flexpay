@@ -150,9 +150,15 @@ public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements S
 	public List<SpRegistryRecord> findRecords(final Long registryId, final Collection<Long> objectIds) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				return session.createQuery("from SpRegistryRecord r inner join fetch r.spRegistry rr " +
-						"inner join fetch rr.serviceProvider sp inner join fetch sp.dataSourceDescription " +
-						"inner join fetch rr.registryType where rr.id=:rId and r.id in (:ids)")
+				return session.createQuery("from SpRegistryRecord r " +
+						"inner join fetch r.spRegistry rr " +
+						"inner join fetch rr.registryStatus " +
+						"inner join fetch rr.serviceProvider sp " +
+						"inner join fetch sp.dataSourceDescription " +
+						"inner join fetch r.recordStatus " +
+						"inner join fetch rr.registryType " +
+						"left join fetch r.importError " +
+						"where rr.id=:rId and r.id in (:ids)")
 						.setParameterList("ids", objectIds)
 						.setLong("rId", registryId)
 						.list();

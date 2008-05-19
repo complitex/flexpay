@@ -10,6 +10,7 @@ import java.util.Date;
  */
 public class SpRegistry extends DomainObject {
 
+	private Integer version;
 	private SpFile spFile;
 	private SpRegistryType registryType;
 

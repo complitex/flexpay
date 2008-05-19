@@ -10,12 +10,12 @@ import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
-import org.flexpay.eirc.persistence.exchange.InvalidContainerException;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
 import org.flexpay.eirc.service.SpFileService;
+import org.flexpay.eirc.service.SpRegistryService;
 import org.flexpay.eirc.service.importexport.EircImportService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
@@ -34,6 +34,7 @@ public class ServiceProviderFileProcessor {
 	private ServiceOperationsFactory serviceOperationsFactory;
 
 	private SpFileService spFileService;
+	private SpRegistryService spRegistryService;
 
 	private EircImportService importService;
 
@@ -85,21 +86,21 @@ public class ServiceProviderFileProcessor {
 
 				log.info("Starting importing consumers");
 				rawConsumersDataSource.setRegistry(registry);
-				if (!setupRecordsConsumer(registry, rawConsumersDataSource)) {
-					continue;
-				}
+				setupRecordsConsumer(registry, rawConsumersDataSource);
 
 				log.info("Starting processing records");
 				List<SpRegistryRecord> records = spFileService.getRecordsForProcessing(registry);
 				for (SpRegistryRecord record : records) {
 					processRecord(registry, record);
 				}
-				registryWorkflowManager.setNextSuccessStatus(registry);
 			} catch (Exception e) {
 				String errMsg = "Failed processing registry: " + registry;
 				log.error(errMsg, e);
-				registryWorkflowManager.setNextErrorStatus(registry);
 				container.addException(new FlexPayException(errMsg, e));
+			} finally {
+				// no error should go to PROCESSED, with errors should go to PROCESSED_WITH_ERROR
+				registry = spRegistryService.read(registry.getId());
+				registryWorkflowManager.setNextSuccessStatus(registry);
 			}
 		}
 
@@ -113,17 +114,28 @@ public class ServiceProviderFileProcessor {
 		errorsSupport.registerAlias(dataSource, rawConsumersDataSource);
 
 		try {
+			// setup records registry to the same object
+			for (SpRegistryRecord record : records) {
+				if (record.getSpRegistry().getId().equals(registry.getId())) {
+					record.setSpRegistry(registry);
+				} else {
+					throw new FlexPayException("Only records of the same registry allowed for group proctssing");
+				}
+			}
+
 			registryWorkflowManager.startProcessing(registry);
 			setupRecordsConsumer(registry, dataSource);
 
 			for (SpRegistryRecord record : records) {
 				processRecord(registry, record);
 			}
-			registryWorkflowManager.setNextSuccessStatus(registry);
 		} catch (Exception e) {
-			log.error("Failed processing registry records", e);
-			registryWorkflowManager.setNextErrorStatus(registry);
+			String errMsg = "Failed processing registry records: " + registry;
+			log.error(errMsg, e);
+			throw new FlexPayException(errMsg, e);
 		} finally {
+			registry = spRegistryService.read(registry.getId());
+			registryWorkflowManager.setNextSuccessStatus(registry);
 			errorsSupport.unregisterAlias(dataSource);
 		}
 	}
@@ -132,17 +144,19 @@ public class ServiceProviderFileProcessor {
 	 * Run processing on registry header
 	 *
 	 * @param registry Registry header
+	 * @throws Exception if failure occurs
 	 */
-	private void processHeader(SpRegistry registry) {
+	private void processHeader(SpRegistry registry) throws Exception {
 
 		// process header containers
 		try {
 			Operation op = serviceOperationsFactory.getContainerOperation(registry);
 			op.process(registry, null);
-		} catch (InvalidContainerException e) {
+		} catch (Exception e) {
 			log.error("Failed constructing container for registry: " + registry, e);
-		} catch (FlexPayException e) {
-			log.error("Failed processing registry header containers: " + registry, e);
+			// in processing, notify have error
+			registryWorkflowManager.setNextErrorStatus(registry);
+			throw e;
 		}
 	}
 
@@ -175,18 +189,21 @@ public class ServiceProviderFileProcessor {
 	 */
 	private void processRecord(SpRegistry registry, SpRegistryRecord record) throws Exception {
 		try {
-			recordWorkflowManager.startProcessing(record);
 			Operation op = serviceOperationsFactory.getOperation(registry, record);
 			op.process(registry, record);
 			recordWorkflowManager.setNextSuccessStatus(record);
 		} catch (Exception e) {
-			log.error("Failed processing registry record: " + record, e);
 			recordWorkflowManager.setNextErrorStatus(record);
+			log.error("Failed processing registry record: " + record, e);
 		}
 	}
 
 	public void setServiceOperationsFactory(ServiceOperationsFactory serviceOperationsFactory) {
 		this.serviceOperationsFactory = serviceOperationsFactory;
+	}
+
+	public void setSpRegistryService(SpRegistryService spRegistryService) {
+		this.spRegistryService = spRegistryService;
 	}
 
 	public void setSpFileService(SpFileService spFileService) {
