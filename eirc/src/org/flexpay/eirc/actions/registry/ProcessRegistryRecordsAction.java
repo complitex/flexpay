@@ -31,8 +31,16 @@ public class ProcessRegistryRecordsAction extends FPActionSupport {
 			return ERROR;
 		}
 
-		Collection<SpRegistryRecord> records = registryRecordService.findObjects(registry, objectIds);
-		providerFileProcessor.processRecords(registry, records);
+		if (objectIds.isEmpty()) {
+			return SUCCESS;
+		}
+
+		try {
+			Collection<SpRegistryRecord> records = registryRecordService.findObjects(registry, objectIds);
+			providerFileProcessor.processRecords(registry, records);
+		} catch (Exception e) {
+			addActionError(e.getMessage());
+		}
 
 		return SUCCESS;
 	}

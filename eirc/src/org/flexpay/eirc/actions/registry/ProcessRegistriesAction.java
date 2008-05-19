@@ -18,6 +18,11 @@ public class ProcessRegistriesAction extends FPActionSupport {
 
 	public String execute() throws Exception {
 
+		if (objectIds.isEmpty()) {
+			// just redirect, no registries to process
+			return SUCCESS;
+		}
+
 		log.debug("About to execute ProcessRegistriesAction");
 
 		Collection<SpRegistry> registries = registryService.findObjects(objectIds);

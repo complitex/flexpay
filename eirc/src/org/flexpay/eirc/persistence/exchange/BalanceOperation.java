@@ -37,8 +37,7 @@ public class BalanceOperation extends Operation {
 		SPService spService = factory.getSpService();
 
 		if (record.getConsumer() == null) {
-			log.error("Record consumer not set up: " + record);
-			return;
+			throw new FlexPayException("Record consumer not set up");
 		}
 
 		if (record.getAmount() == null) {
@@ -49,7 +48,9 @@ public class BalanceOperation extends Operation {
 		if (reportPeriodService.isInOpenPeriod(registry.getFromDate())) {
 			BigDecimal balance = recordService.getCurrentBalance(record.getConsumer());
 			if (balance.equals(record.getAmount())) {
-				log.info("Balance OK for consumer #" + record.getConsumer().getId());
+				if (log.isInfoEnabled()) {
+					log.info("Balance OK for consumer #" + record.getConsumer().getId());
+				}
 				return;
 			}
 

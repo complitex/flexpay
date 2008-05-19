@@ -83,6 +83,7 @@
 		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor">
 		<property name="serviceOperationsFactory" ref="serviceOperationsFactory" />
 		<property name="spFileService" ref="spFileService" />
+		<property name="spRegistryService" ref="spRegistryService" />
 		<property name="importService" ref="importServiceEirc" />
 		<property name="rawConsumersDataSource" ref="consumersDataSource" />
 		<property name="errorsSupport" ref="importErrorSupport" />
