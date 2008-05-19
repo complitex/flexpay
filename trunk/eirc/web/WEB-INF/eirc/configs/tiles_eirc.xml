@@ -86,6 +86,14 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
 	</definition>
 
+	<definition name="eirc.registry.record.correct_address_building" extends="ab.layout.content">
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_address_building.jsp" />
+	</definition>
+
+	<definition name="eirc.registry.record.correct_address_street" extends="ab.layout.content">
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_address_street.jsp" />
+	</definition>
+
 	<definition name="eirc.registry.record.correct_address_complete" extends="ab.layout.content">
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_address_complete.jsp" />
 	</definition>

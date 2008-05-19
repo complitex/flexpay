@@ -109,6 +109,7 @@ public class BuildingAttribute extends DomainObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("id", getId())
 				.append("value", value)
 				.append("type", buildingAttributeType.getType())
 				.toString();

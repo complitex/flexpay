@@ -8,6 +8,7 @@ import org.flexpay.common.test.SpringBeanAwareTestCase;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +46,7 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 
 	@Transactional(readOnly = false)
 	@Test
+	@Ignore
 	public void testDeleteAttribute() throws Throwable {
 
 		Building building = newBuilding();

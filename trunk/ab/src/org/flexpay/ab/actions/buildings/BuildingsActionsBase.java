@@ -14,7 +14,9 @@ public abstract class BuildingsActionsBase extends FPActionSupport {
 	public String getBuildingNumber(Collection<BuildingAttribute> attributes) {
 
 		try {
-			log.debug("Getting building number");
+			if (log.isDebugEnabled()) {
+				log.debug("Getting building number, attributes: " + attributes);
+			}
 
 			StringBuilder number = new StringBuilder();
 			for (BuildingAttribute attribute : attributes) {

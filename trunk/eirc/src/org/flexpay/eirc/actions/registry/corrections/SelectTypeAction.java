@@ -32,11 +32,15 @@ public class SelectTypeAction extends FPActionSupport {
 		if (importError != null) {
 			int objectType = importError.getObjectType();
 			if (typeRegistry.getType(StreetType.class) == objectType ||
-					typeRegistry.getType(Street.class) == objectType ||
-					typeRegistry.getType(Buildings.class) == objectType ||
-					typeRegistry.getType(org.flexpay.ab.persistence.Apartment.class) == objectType ||
+					typeRegistry.getType(Street.class) == objectType) {
+				return "street";
+			}
+			if (typeRegistry.getType(Buildings.class) == objectType) {
+				return "building";
+			}
+			if (typeRegistry.getType(org.flexpay.ab.persistence.Apartment.class) == objectType ||
 					typeRegistry.getType(org.flexpay.bti.persistence.Apartment.class) == objectType) {
-				return "address";
+				return "apartment";
 			}
 			if (typeRegistry.getType(org.flexpay.ab.persistence.Person.class) == objectType ||
 					typeRegistry.getType(org.flexpay.bti.persistence.Person.class) == objectType) {

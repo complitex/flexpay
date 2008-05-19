@@ -15,7 +15,7 @@ public class Buildings extends DomainObjectWithStatus {
 
 	private Street street;
 	private Building building;
-	private List<BuildingAttribute> buildingAttributes = Collections.emptyList();
+	private Set<BuildingAttribute> buildingAttributes = Collections.emptySet();
 	private Boolean primaryStatus;
 
 	public Buildings() {
@@ -41,11 +41,11 @@ public class Buildings extends DomainObjectWithStatus {
 		this.building = building;
 	}
 
-	public List<BuildingAttribute> getBuildingAttributes() {
+	public Set<BuildingAttribute> getBuildingAttributes() {
 		return this.buildingAttributes;
 	}
 
-	public void setBuildingAttributes(List<BuildingAttribute> buildingAttributes) {
+	public void setBuildingAttributes(Set<BuildingAttribute> buildingAttributes) {
 		this.buildingAttributes = buildingAttributes;
 	}
 
@@ -103,11 +103,7 @@ public class Buildings extends DomainObjectWithStatus {
 
 		if (StringUtils.isEmpty(value)) {
 			if (attribute != null) {
-				int oldSize = buildingAttributes.size();
 				buildingAttributes.remove(attribute);
-				System.out.println("Removing attribute, size new: " + buildingAttributes.size() + ", old: " + oldSize +
-					"\n attributes: " + buildingAttributes + "\n class: " + buildingAttributes.getClass() +
-					"\n To delete: " + attribute);
 			}
 			return attribute;
 		}
@@ -116,8 +112,8 @@ public class Buildings extends DomainObjectWithStatus {
 			attribute = new BuildingAttribute();
 			attribute.setBuildingAttributeType(type);
 			attribute.setBuildings(this);
-			if (buildingAttributes == Collections.EMPTY_LIST) {
-				buildingAttributes = new ArrayList<BuildingAttribute>();
+			if (buildingAttributes == Collections.EMPTY_SET) {
+				buildingAttributes = new HashSet<BuildingAttribute>();
 			}
 			buildingAttributes.add(attribute);
 		}

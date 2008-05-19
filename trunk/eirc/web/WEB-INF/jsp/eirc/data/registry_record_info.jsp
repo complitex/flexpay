@@ -12,7 +12,7 @@
 			<s:property value="%{record.lastName}" /></td>
 	</tr>
 	<tr class="cols_1">
-		<td class="col"><b><s:text name="eirc.date" />:</b> <s:property value="%{record.operationDate}" /></td>
+		<td class="col"><b><s:text name="eirc.date" />:</b> <s:date format="yyyy/MM/dd" name="record.operationDate" /></td>
 		<td class="col"><b><s:text name="eirc.registry.record.amount" />:</b> <s:property value="%{record.amount}" /></td>
 	</tr>
 	<tr class="cols_1">
