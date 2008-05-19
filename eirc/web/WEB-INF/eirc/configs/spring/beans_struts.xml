@@ -98,6 +98,22 @@
 		<property name="typeRegistry" ref="typeRegistryEirc" />
 	</bean>
 
+	<bean id="correctBuildingAddressAction" scope="prototype" parent="listBuildings"
+		  class="org.flexpay.eirc.actions.registry.corrections.CorrectBuildingAction">
+		<property name="consumersDataSource" ref="consumersDataSource" />
+		<property name="correctionsService" ref="correctionsServiceEirc" />
+		<property name="recordService" ref="spRegistryRecordService" />
+		<property name="spService" ref="spService" />
+	</bean>
+
+	<bean id="correctStreetAddressAction" scope="prototype" parent="listStreetsAction"
+		  class="org.flexpay.eirc.actions.registry.corrections.CorrectStreetAction">
+		<property name="consumersDataSource" ref="consumersDataSource" />
+		<property name="correctionsService" ref="correctionsServiceEirc" />
+		<property name="recordService" ref="spRegistryRecordService" />
+		<property name="spService" ref="spService" />
+	</bean>
+
 	<bean id="correctRecordPersonAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectPersonAction">
 	</bean>

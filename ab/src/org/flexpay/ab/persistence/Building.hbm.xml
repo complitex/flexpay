@@ -14,10 +14,10 @@
 		<many-to-one name="street" column="street_id" not-null="true"/>
 		<many-to-one name="building" column="building_id" not-null="true"/>
 
-		<bag name="buildingAttributes" inverse="true" cascade="all-delete-orphan">
+		<set name="buildingAttributes" inverse="true" cascade="all-delete-orphan">
 			<key column="buildings_id" not-null="true"/>
 			<one-to-many class="BuildingAttribute"/>
-		</bag>
+		</set>
 
 		<property name="primaryStatus" column="primary_status"/>
 	</class>
