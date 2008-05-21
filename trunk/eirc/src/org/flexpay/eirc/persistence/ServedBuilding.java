@@ -2,13 +2,13 @@ package org.flexpay.eirc.persistence;
 
 public class ServedBuilding extends org.flexpay.ab.persistence.Building {
 
-	private Organisation serviceOrganisation;
+	private ServiceOrganisation serviceOrganisation;
 
-	public Organisation getServiceOrganisation() {
+	public ServiceOrganisation getServiceOrganisation() {
 		return serviceOrganisation;
 	}
 
-	public void setServiceOrganisation(Organisation serviceOrganisation) {
+	public void setServiceOrganisation(ServiceOrganisation serviceOrganisation) {
 		this.serviceOrganisation = serviceOrganisation;
 	}
 }

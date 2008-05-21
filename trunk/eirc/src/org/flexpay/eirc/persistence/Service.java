@@ -2,10 +2,13 @@ package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
 
+import java.util.Set;
+import java.util.Collections;
+
 public class Service extends DomainObject {
 
 	private ServiceProvider serviceProvider;
-	private String description;
+	private Set<ServiceDescription> descriptions = Collections.emptySet();
 	private ServiceType serviceType;
 
 	/**
@@ -26,12 +29,12 @@ public class Service extends DomainObject {
 		this.serviceProvider = serviceProvider;
 	}
 
-	public String getDescription() {
-		return description;
+	public Set<ServiceDescription> getDescriptions() {
+		return descriptions;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescriptions(Set<ServiceDescription> descriptions) {
+		this.descriptions = descriptions;
 	}
 
 	public ServiceType getServiceType() {

@@ -7,52 +7,62 @@
 
 	<class name="SpFile" table="eirc_registry_files_tbl" optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native" />
+			<generator class="native"/>
 		</id>
-		<property name="requestFileName" column="request_file_name" not-null="true" />
+		<property name="requestFileName" column="request_file_name" not-null="true"/>
 		<property name="internalRequestFileName" column="internal_request_file_name"
-				  not-null="true" />
-		<property name="internalResponseFileName" column="internal_response_file_name" />
-		<property name="userName" column="user_name" not-null="true" />
-		<property name="importDate" column="import_date" not-null="true" />
+				  not-null="true"/>
+		<property name="internalResponseFileName" column="internal_response_file_name"/>
+		<property name="userName" column="user_name" not-null="true"/>
+		<property name="importDate" column="import_date" not-null="true"/>
 	</class>
 
 	<class name="SpRegistry" table="eirc_registries_tbl" optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native" />
+			<generator class="native"/>
 		</id>
-		<version name="version" column="version" access="field" />
-		<property name="registryNumber" column="registry_number" />
-		<property name="recordsNumber" column="records_number" />
-		<property name="creationDate" column="creation_date" type="timestamp" />
-		<property name="fromDate" column="from_date" type="timestamp" />
-		<property name="tillDate" column="till_date" type="timestamp" />
-		<property name="senderCode" column="sender_code" />
-		<property name="recipientCode" column="recipient_code" />
-		<property name="amount" column="amount" type="big_decimal" />
-		<property name="containers" column="containers" />
-		<many-to-one name="registryType" column="registry_type_id" not-null="true" foreign-key="FK_registry_type"
-					 class="SpRegistryType" />
+		<version name="version" column="version" access="field"/>
+		<property name="registryNumber" column="registry_number"/>
+		<property name="recordsNumber" column="records_number"/>
+		<property name="creationDate" column="creation_date" type="timestamp"/>
+		<property name="fromDate" column="from_date" type="timestamp"/>
+		<property name="tillDate" column="till_date" type="timestamp"/>
+		<property name="senderCode" column="sender_code"/>
+		<property name="recipientCode" column="recipient_code"/>
+		<property name="amount" column="amount" type="big_decimal"/>
+		<property name="containers" column="containers"/>
+		<many-to-one name="registryType" foreign-key="FK_eirc_registry_registry_type" class="SpRegistryType">
+			<column name="registry_type_id" not-null="true">
+				<comment>Registry type reference</comment>
+			</column>
+		</many-to-one>
 
-		<many-to-one name="spFile" column="sp_file_id" not-null="true" class="SpFile" />
-		<many-to-one name="serviceProvider" column="service_provider_id" foreign-key="FK_service_provider"
-					 class="ServiceProvider" />
-		<many-to-one name="registryStatus" class="SpRegistryStatus" foreign-key="FK_status">
+		<many-to-one name="spFile" foreign-key="FK_eirc_registry_file" class="SpFile">
+			<column name="sp_file_id" not-null="false">
+				<comment>Registry file reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="serviceProvider" foreign-key="FK_eirc_registry_service_provider" class="ServiceProvider">
+			<column name="service_provider_id" not-null="false">
+				<comment>Service provider reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="registryStatus" class="SpRegistryStatus" foreign-key="FK_eirc_registry_status">
 			<column name="registry_status_id" not-null="true">
 				<comment>Registry status reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="archiveStatus" class="SpRegistryArchiveStatus" foreign-key="FK_archive_status">
+		<many-to-one name="archiveStatus" class="SpRegistryArchiveStatus" foreign-key="FK_eirc_registry_archive_status">
 			<column name="archive_status_id" not-null="true">
 				<comment>Registry archive status reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="sender" class="Organisation" foreign-key="FK_sender">
+		<many-to-one name="sender" class="Organisation" foreign-key="FK_eirc_registry_sender">
 			<column name="sender_id" not-null="false">
 				<comment>Sender organisation reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="recipient" class="Organisation" foreign-key="FK_recipient">
+		<many-to-one name="recipient" class="Organisation" foreign-key="FK_eirc_registry_recipient">
 			<column name="recipient_id" not-null="false">
 				<comment>Recipient organisation reference</comment>
 			</column>
@@ -62,73 +72,78 @@
 	<class name="SpRegistryType" table="eirc_registry_types_tbl"
 		   optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native" />
+			<generator class="native"/>
 		</id>
-		<property name="code" column="code" not-null="true" />
+		<property name="code" column="code" not-null="true"/>
 	</class>
 
 	<class name="SpRegistryStatus" table="eirc_registry_statuses_tbl"
 		   optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native" />
+			<generator class="native"/>
 		</id>
-		<property name="code" not-null="true" unique="true" />
+		<property name="code" not-null="true" unique="true"/>
 	</class>
 
 	<class name="SpRegistryRecordStatus" table="eirc_registry_record_statuses_tbl">
 		<id name="id" column="id">
-			<generator class="native" />
+			<generator class="native"/>
 		</id>
-		<property name="code" not-null="true" unique="true" />
+		<property name="code" not-null="true" unique="true"/>
 	</class>
 
 	<class name="SpRegistryArchiveStatus" table="eirc_registry_archive_statuses_tbl"
 		   optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native" />
+			<generator class="native"/>
 		</id>
-		<property name="code" not-null="true" unique="true" />
+		<property name="code" not-null="true" unique="true"/>
 	</class>
 
 	<class name="SpRegistryRecord" table="eirc_registry_records_tbl">
 		<id name="id" column="id">
-			<generator class="native" />
+			<generator class="native"/>
 		</id>
-		<property name="serviceCode" column="service_code" not-null="true" />
+		<property name="serviceCode" column="service_code" not-null="true"/>
 		<property name="personalAccountExt" column="personal_account_ext"
-				  not-null="true" />
-		<property name="city" column="city" />
-		<property name="streetType" column="street_type" />
-		<property name="streetName" column="street_name" />
-		<property name="buildingNum" column="building_number" />
-		<property name="buildingBulkNum" column="bulk_number" />
-		<property name="apartmentNum" column="apartment_number" />
-		<property name="firstName" column="first_name" />
-		<property name="middleName" column="middle_name" />
-		<property name="lastName" column="last_name" />
+				  not-null="true"/>
+		<property name="city" column="city"/>
+		<property name="streetType" column="street_type"/>
+		<property name="streetName" column="street_name"/>
+		<property name="buildingNum" column="building_number"/>
+		<property name="buildingBulkNum" column="bulk_number"/>
+		<property name="apartmentNum" column="apartment_number"/>
+		<property name="firstName" column="first_name"/>
+		<property name="middleName" column="middle_name"/>
+		<property name="lastName" column="last_name"/>
 		<property name="operationDate" column="operation_date" type="timestamp"
-				  not-null="true" />
-		<property name="uniqueOperationNumber" column="unique_operation_number" />
-		<property name="amount" column="amount" type="big_decimal" />
-		<property name="containers" column="containers" />
+				  not-null="true"/>
+		<property name="uniqueOperationNumber" column="unique_operation_number"/>
+		<property name="amount" column="amount" type="big_decimal"/>
+		<property name="containers" column="containers"/>
 
-		<many-to-one name="consumer" column="consumer_id" class="Consumer" />
-		<many-to-one name="spRegistry" class="SpRegistry"  foreign-key="FK_registry">
+		<many-to-one name="consumer" foreign-key="FK_eirc_registry_record_consumer" class="Consumer">
+			<column name="consumer_id" not-null="false">
+				<comment>Consumer reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="spRegistry" class="SpRegistry" foreign-key="FK_eirc_registry_record_registry">
 			<column name="registry_id" not-null="true">
 				<comment>Registry reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="recordStatus" class="SpRegistryRecordStatus" foreign-key="FK_record_status">
+		<many-to-one name="recordStatus" class="SpRegistryRecordStatus" foreign-key="FK_eirc_registry_record_record_status">
 			<column name="record_status_id" not-null="false">
 				<comment>Record status reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="serviceType" class="ServiceType" foreign-key="FK_service_type">
+		<many-to-one name="serviceType" class="ServiceType" foreign-key="FK_eirc_registry_record_service_type">
 			<column name="service_type_id" not-null="false">
 				<comment>Service type reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="importError" class="org.flexpay.common.persistence.ImportError" foreign-key="FK_import_error">
+		<many-to-one name="importError" foreign-key="FK_eirc_registry_record_import_error"
+					 class="org.flexpay.common.persistence.ImportError">
 			<column name="import_error_id" not-null="false">
 				<comment>Import error reference</comment>
 			</column>
@@ -153,10 +168,10 @@
 
 	<query name="SpFile.listRecordsForProcessing">
 		from SpRegistryRecord rr
-			inner join fetch rr.spRegistry r
-			inner join fetch r.registryStatus rs
-			inner join fetch rr.recordStatus rrs
-			left join fetch rr.importError 
+		inner join fetch rr.spRegistry r
+		inner join fetch r.registryStatus rs
+		inner join fetch rr.recordStatus rrs
+		left join fetch rr.importError
 
 		where r.id=? and rrs.code NOT IN (2, 4)
 	</query>
@@ -173,7 +188,7 @@
 		left join fetch r.sender
 		left join fetch r.recipient
 		left join fetch r.serviceProvider sp
-		left join fetch sp.dataSourceDescription 
+		left join fetch sp.dataSourceDescription
 		where r.id=?
 	</query>
 

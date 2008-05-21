@@ -3,10 +3,13 @@ package org.flexpay.eirc.persistence;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.DataSourceDescription;
 
+import java.util.Set;
+import java.util.Collections;
+
 public class ServiceProvider extends DomainObject {
 
 	private Long providerNumber;
-	private String description;
+	private Set<ServiceProviderDescription> descriptions = Collections.emptySet();
 	private Organisation organisation;
 	private DataSourceDescription dataSourceDescription;
 
@@ -28,12 +31,12 @@ public class ServiceProvider extends DomainObject {
 		this.providerNumber = providerNumber;
 	}
 
-	public String getDescription() {
-		return description;
+	public Set<ServiceProviderDescription> getDescriptions() {
+		return descriptions;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescriptions(Set<ServiceProviderDescription> descriptions) {
+		this.descriptions = descriptions;
 	}
 
 	public Organisation getOrganisation() {

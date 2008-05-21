@@ -5,54 +5,117 @@
 
 <hibernate-mapping package="org.flexpay.eirc.persistence">
 
-	<class name="ServiceProvider" table="eirc_service_providers_tbl"
-		   optimistic-lock="version">
+	<class name="ServiceProvider" table="eirc_service_providers_tbl" optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native" />
+			<generator class="native"/>
 		</id>
-		<many-to-one name="organisation" column="organisation_id" not-null="true" />
-		<many-to-one name="dataSourceDescription" column="data_source_description_id"
-					 not-null="true"
-					 class="org.flexpay.common.persistence.DataSourceDescription" />
-		<property name="description" not-null="true" />
-		<property name="providerNumber" not-null="true" column="provider_number"
-				  unique="true" />
+		<many-to-one name="organisation" class="Organisation" foreign-key="FK_eirc_service_provider_organisation">
+			<column name="organisation_id" not-null="true">
+				<comment>Organisation reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="dataSourceDescription" foreign-key="FK_eirc_service_provider_data_source_description"
+					 class="org.flexpay.common.persistence.DataSourceDescription">
+			<column name="data_source_description_id" not-null="true">
+				<comment>Data source description reference</comment>
+			</column>
+		</many-to-one>
+		<set name="descriptions" inverse="true">
+			<key column="service_provider_id" not-null="true"/>
+			<one-to-many class="ServiceProviderDescription"/>
+		</set>
+		<property name="providerNumber" not-null="true" column="provider_number" unique="true"/>
+	</class>
+
+	<class name="ServiceProviderDescription" table="eirc_service_provider_descriptions_tbl">
+		<id name="id" column="id">
+			<generator class="native"/>
+		</id>
+		<property name="name"/>
+		<properties name="lang_service_provider_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_eirc_service_provider_description_language" class="org.flexpay.common.persistence.Language">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" class="ServiceProvider" foreign-key="FK_eirc_service_provider_description_service_provider">
+				<column name="service_provider_id" not-null="true">
+					<comment>Service provider reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
 	</class>
 
 	<class name="Service" table="eirc_services_tbl" optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native" />
+			<generator class="native"/>
 		</id>
-		<many-to-one name="serviceProvider" column="provider_id" not-null="true" />
-		<many-to-one name="serviceType" column="type_id" not-null="true" />
-		<property name="description" not-null="true" />
+		<many-to-one name="serviceProvider" foreign-key="FK_eirc_service_service_provider" class="ServiceProvider">
+			<column name="provider_id" not-null="true">
+				<comment>Service provider reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="serviceType" foreign-key="FK_eirc_service_service_type" class="ServiceType">
+			<column name="type_id" not-null="true">
+				<comment>Service type reference</comment>
+			</column>
+		</many-to-one>
+		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
+			<key column="service_id" not-null="true"/>
+			<one-to-many class="ServiceDescription"/>
+		</set>
+	</class>
+
+	<class name="ServiceDescription" table="eirc_service_descriptions_tbl">
+		<id name="id" column="id">
+			<generator class="native"/>
+		</id>
+		<property name="name"/>
+		<properties name="lang_service_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_eirc_service_desciption_language" class="org.flexpay.common.persistence.Language">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" class="Service" foreign-key="FK_eirc_service__description_service">
+				<column name="service_id" not-null="true">
+					<comment>Service reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
 	</class>
 
 	<class name="ServiceType" table="eirc_service_types_tbl" optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native" />
+			<generator class="native"/>
 		</id>
-		<property name="status" not-null="true" />
-		<property name="code" not-null="true" />
+		<property name="status" not-null="true"/>
+		<property name="code" not-null="true"/>
 
 		<set name="typeNames" inverse="true" cascade="all-delete-orphan">
-			<key column="service_type_id" not-null="true" />
-			<one-to-many class="ServiceTypeNameTranslation" />
+			<key column="service_type_id" not-null="true"/>
+			<one-to-many class="ServiceTypeNameTranslation"/>
 		</set>
 	</class>
 
 	<class name="ServiceTypeNameTranslation"
 		   table="eirc_service_type_name_translations_tbl" optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native" />
+			<generator class="native"/>
 		</id>
-		<property name="name" not-null="true" />
-		<property name="description" not-null="true" />
+		<property name="name" not-null="true"/>
+		<property name="description" not-null="true"/>
 		<properties name="lang_service_type_pair" unique="true">
-			<many-to-one name="lang" class="org.flexpay.common.persistence.Language"
-						 not-null="true" column="language_id" />
-			<many-to-one name="translatable" class="ServiceType" column="service_type_id"
-						 not-null="true" />
+			<many-to-one name="lang" foreign-key="FK_eirc_service_type_name_translation_language" class="org.flexpay.common.persistence.Language">
+				<column not-null="true" name="language_id">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" foreign-key="FK_eirc_service_type_name_translation_service_type" class="ServiceType">
+				<column name="service_type_id" not-null="true">
+					<comment>Service type reference</comment>
+				</column>
+			</many-to-one>
 		</properties>
 	</class>
 
