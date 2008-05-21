@@ -1,9 +1,12 @@
 package org.flexpay.ab.dao;
 
-import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.persistence.Street;
-import org.flexpay.ab.persistence.District;
+import java.util.Set;
+
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAttribute;
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.persistence.Street;
 
 public interface BuildingsDaoExt {
 
@@ -26,7 +29,16 @@ public interface BuildingsDaoExt {
 	 * @param bulk   Building bulk number
 	 * @return Buildings instance, or <code>null</null> if not found
 	 */
-	public Buildings findBuildings(Street street, String number, String bulk);
+	Buildings findBuildings(Street street, String number, String bulk);
+	
+	/**
+	 * Find building by street and attributes
+	 *
+	 * @param street Building street
+	 * @param buildingAttributes Building attributes
+	 * @return Buildings instance, or <code>null</null> if not found
+	 */
+	Buildings findBuildings(Street street, Set<BuildingAttribute> buildingAttributes);
 
 	/**
 	 * Find Building stub by Buildings stub (i.e. object that does not have reference to its building)

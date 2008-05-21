@@ -48,7 +48,17 @@ public class Buildings extends DomainObjectWithStatus {
 	public void setBuildingAttributes(Set<BuildingAttribute> buildingAttributes) {
 		this.buildingAttributes = buildingAttributes;
 	}
-
+	
+	public BuildingAttribute getAttribute(BuildingAttributeType type) {
+		for (BuildingAttribute attribute : buildingAttributes) {
+			if (attribute.getBuildingAttributeType().equals(type)) {
+				return attribute;
+			}
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * Get building attribute
 	 *

@@ -1,8 +1,19 @@
 package org.flexpay.ab.dao.imp;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.BuildingsDaoExt;
-import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAttribute;
+import org.flexpay.ab.persistence.BuildingAttributeType;
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.persistence.Street;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -12,10 +23,6 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
 
 public class BuildingsDaoExtImpl extends SimpleJdbcDaoSupport implements BuildingsDaoExt {
 
@@ -173,6 +180,48 @@ public class BuildingsDaoExtImpl extends SimpleJdbcDaoSupport implements Buildin
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
+	}
+	
+	/**
+	 * Find building by street and attributes
+	 *
+	 * @param street Building street
+	 * @param buildingAttributes Building attributes
+	 * @return Buildings instance, or <code>null</null> if not found
+	 */
+	public Buildings findBuildings(Street street, Set<BuildingAttribute> buildingAttributes) {
+		final StringBuilder hql = new StringBuilder("from Buildings b" +
+		" inner join fetch b.buildingAttributes a" +
+		" inner join fetch a.buildingAttributeType t" +
+		" where b.status=0 and b.street.id=?");
+		final List<Object> params = new ArrayList<Object>();
+		params.add(street.getId());
+		
+		for(BuildingAttribute attr : buildingAttributes) {
+			if(!StringUtils.isEmpty(attr.getValue())) {
+				hql.append(" and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and" +
+		               	   " ba.buildingAttributeType.type=? and ba.value=?)");
+				params.add(attr.getBuildingAttributeType().getType());
+				params.add(attr.getValue());
+			}
+		}
+		
+		Object obj = hibernateTemplate.execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				List objects = setParameters(session.createQuery(hql.toString()), params).list();
+
+				return objects.isEmpty() ? null : objects.get(0);
+			}
+		});
+
+		return (Buildings) obj;
+	}
+	
+	private Query setParameters(Query query, List<Object> params) {
+		for (int n = 0; n < params.size(); ++n) {
+			query.setParameter(n, params.get(n));
+		}
+		return query;
 	}
 
 }

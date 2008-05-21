@@ -12,7 +12,43 @@
 
 		<tr>
 			<td colspan="4">
-				<%@ include file="filters/groups/country_region_town_street.jsp" %>
+				<table width="100%">
+					<col width="16%" align="center">
+					<col width="16%" align="center">
+					<col width="16%" align="right">
+					<col width="16%" align="left">
+					<col width="18%" align="right">
+					<col width="18%" align="left">
+			
+					<tr>
+						<td class="filter"><s:text name="ab.country"/></td>
+						<td>
+							<select name="countryFilter.selectedId" onchange="this.form.submit()" class="form-select" <s:if test="district != null" >disabled="1"</s:if>>
+  								<s:iterator value="countryFilter.names" >
+									<option  value="<s:property value="translatable.id"/>"<s:if test="%{translatable.id == countryFilter.selectedId}"> selected</s:if>><s:property value="name"/>
+									</option>
+  								</s:iterator>
+							</select>
+						</td>
+						<td class="filter"><s:text name="ab.region"/></td>
+						<td>
+							<select name="regionFilter.selectedId" onchange="this.form.submit()" class="form-select" <s:if test="district != null" >disabled="1"</s:if>><s:iterator value="regionFilter.names">
+								<option value="<s:property value="translatable.object.id"/>"<s:if test="%{translatable.object.id == regionFilter.selectedId}"> selected</s:if>><s:property value="name"/></option></s:iterator>
+							</select>
+						</td>
+						<td class="filter"><s:text name="ab.town"/></td>
+						<td>
+							<select name="townFilter.selectedId" onchange="this.form.submit()" class="form-select" <s:if test="district != null" >disabled="1"</s:if>><s:iterator value="townFilter.names">
+								<option value="<s:property value="translatable.object.id"/>"<s:if test="%{translatable.object.id == townFilter.selectedId}"> selected</s:if>><s:property value="name"/></option></s:iterator>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td class="filter"><s:text name="ab.street"/></td>
+						<td><%@include file="filters/street_filter.jsp" %></td>
+						<td colspan="4">&nbsp;</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 		
@@ -29,23 +65,19 @@
         <s:select name="districtId" list="districtList" listKey="id" listValue="%{getTranslation(currentName.translations).name}" />
       </s:if>  
     </td>
-  </tr>		
+  </tr>
+  
+  <s:iterator value="buildings.buildingAttributes">
   <tr valign="middle" class="cols_1">
-    <td>
-      <s:property value="%{getTranslation(typeNumber.translations).name}" />
+    <td class="col">
+      <s:property value="%{getTranslation(buildingAttributeType.translations).name}" />
     </td>
-    <td>
-      <s:textfield name="numberValue" value="%{numberValue}"/>
+    <td class="col" align="center">
+      <s:textfield name="attributeMap['%{buildingAttributeType.type}'].value" value="" />
     </td>
   </tr>
-  <tr valign="middle" class="cols_1">
-    <td>
-      <s:property value="%{getTranslation(typeBulk.translations).name}" />
-    </td>
-    <td>
-      <s:textfield name="bulkValue" value="%{bulkValue}"/>
-    </td>
-  </tr>
+  </s:iterator>
+  		
   
   <tr>
     <td>
@@ -63,6 +95,7 @@
 	    <li><span class="errorMessage"><s:text name="%{districtError}" /></span></li>
 	    <li><span class="errorMessage"><s:text name="%{streetError}" /></span></li>
 	    <li><span class="errorMessage"><s:text name="%{buildingAttrError}" /></span></li>
+	    <li><span class="errorMessage"><s:text name="%{creatingError}" /></span></li>
       </ul>
     </td>
   </tr>
