@@ -51,7 +51,7 @@ public class ServiceOperationsFactory {
 
 	private Operation getOperation(SpRegistry registry) throws FlexPayException {
 		int typeId = registry.getRegistryType().getCode();
-		if (typeId == SpRegistryType.TYPE_BALANCE) {
+		if (typeId == SpRegistryType.TYPE_SALDO) {
 			return new BalanceOperation(this);
 		}
 

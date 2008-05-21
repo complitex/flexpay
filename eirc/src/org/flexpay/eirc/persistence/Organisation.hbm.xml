@@ -110,19 +110,24 @@
 	</query>
 
 	<query name="Organisation.findAllOrganisations">
-		from Organisation where status=0 order by name
+		select distinct o
+		from Organisation o
+		 	left join fetch o.names
+		 	left join fetch o.descriptions 
+		where o.status=0
+		order by cast(o.uniqueId, int)
 	</query>
 
 
 	<query name="ServiceOrganisation.findServedBuildings">
-		from ServedBuilding where service_organisation_id=?
+		from ServedBuilding where serviceOrganisation.id=?
 	</query>
 
 
 	<query name="ServiceOrganisation.readFull">
 		SELECT DISTINCT so
 		FROM ServiceOrganisation so
-		LEFT JOIN FETCH so.organisation o
+		INNER JOIN FETCH so.organisation o
 		LEFT JOIN FETCH so.buildings sb
 		LEFT JOIN FETCH sb.apartments a
 		LEFT JOIN FETCH a.persons
@@ -132,7 +137,7 @@
 	<query name="ServiceOrganisation.listServiceOrganisation">
 		SELECT DISTINCT so
 		FROM ServiceOrganisation so
-		LEFT JOIN FETCH so.organisation o
+		INNER JOIN FETCH so.organisation o
 	</query>
 
 
