@@ -37,8 +37,8 @@
 				<td class="col" width="1%"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/>
 				</td>
 				<td class="col"><s:date name="creationDate" format="yyyy/MM/dd"/></td>
-				<td class="col"><s:property value="sender.name"/></td>
-				<td class="col"><s:property value="recipient.name"/></td>
+				<td class="col"><s:property value="getTranslation(sender.names).name"/></td>
+				<td class="col"><s:property value="getTranslation(recipient.names).name"/></td>
 				<td class="col"><s:text name="%{registryType.i18nName}"/></td>
 				<td class="col"><s:date name="spFile.importDate" format="yyyy/MM/dd HH:mm:ss"/></td>
 				<td class="col"><s:property value="recordsNumber"/></td>

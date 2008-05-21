@@ -183,10 +183,14 @@
 	<query name="SpRegistry.readFull">
 		select distinct r
 		from SpRegistry r
-		left join fetch r.registryType
-		left join fetch r.registryStatus
-		left join fetch r.sender
-		left join fetch r.recipient
+		inner join fetch r.registryType
+		inner join fetch r.registryStatus
+		inner join fetch r.sender sender
+		left join fetch sender.names
+		left join fetch sender.descriptions 
+		inner join fetch r.recipient recipient
+		left join fetch recipient.names
+		left join fetch recipient.descriptions 
 		left join fetch r.serviceProvider sp
 		left join fetch sp.dataSourceDescription
 		where r.id=?
@@ -205,7 +209,11 @@
 	</query>
 
 	<query name="SpRegistryRecord.readFull">
-		select distinct r from SpRegistryRecord r left join fetch r.importError where r.id=?
+		select distinct r
+		from SpRegistryRecord r
+		 	inner join fetch r.recordStatus 
+			left join fetch r.importError
+		where r.id=?
 	</query>
 
 	<query name="SpRegistryRecord.findDataSourceDescription">

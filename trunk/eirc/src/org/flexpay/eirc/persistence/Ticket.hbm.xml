@@ -65,7 +65,7 @@
 		WHERE t.serviceOrganisation.id=? AND
 		      t.dateFrom=? AND
 		      t.dateTill=?
-		ORDER BY t.apartment.building.id, t.person, t.dateTill, t.apartment, t.ticketNumber desc
+		ORDER BY t.apartment.building.id, t.person.id, t.dateTill, t.apartment.id, t.ticketNumber desc
 	</query>
 
 

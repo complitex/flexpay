@@ -3,12 +3,12 @@
 	<tr class="cols_1">
 		<td class="col"><b><s:text name="eirc.registry.number" />:</b> <s:property
 				value="%{registry.registryNumber}" /></td>
-		<td class="col"><b><s:text name="eirc.sender" />:</b> <s:property value="%{registry.sender.name}" /></td>
+		<td class="col"><b><s:text name="eirc.sender" />:</b> <s:property value="%{getTranslation(registry.sender.names).name}" /></td>
 	</tr>
 	<tr class="cols_1">
 		<td class="col"><b><s:text name="eirc.registry_type" />:</b> <s:text
 				name="%{registry.registryType.i18nName}" /></td>
-		<td class="col"><b><s:text name="eirc.recipient" />:</b> <s:property value="%{registry.recipient.name}" />
+		<td class="col"><b><s:text name="eirc.recipient" />:</b> <s:property value="%{getTranslation(registry.recipient.names).name}" />
 		</td>
 	</tr>
 	<tr class="cols_1">
