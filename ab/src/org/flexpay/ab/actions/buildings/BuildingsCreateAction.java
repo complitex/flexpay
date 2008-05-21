@@ -69,10 +69,12 @@ public class BuildingsCreateAction extends CommonAction implements
 		Set<BuildingAttribute> buildingAttributeSet = new HashSet<BuildingAttribute>();
 		attributeMap = new HashMap<String, BuildingAttribute>();
 		for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
-			BuildingAttribute attr = new BuildingAttribute();
-			attr.setBuildingAttributeType(type);
-			buildingAttributeSet.add(attr);
-			attributeMap.put("" + type.getType(), attr);
+			if(attributeMap.get("" + type.getType()) == null) {
+				BuildingAttribute attr = new BuildingAttribute();
+				attr.setBuildingAttributeType(type);
+				buildingAttributeSet.add(attr);
+				attributeMap.put("" + type.getType(), attr);
+			}
 		}
 		buildings.setBuildingAttributes(buildingAttributeSet);
 	}
