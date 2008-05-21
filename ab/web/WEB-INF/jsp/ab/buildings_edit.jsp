@@ -53,7 +53,25 @@
       <s:if test="buildings.primaryStatus">(<s:text name="ab.buildings.primary_status"/>)</s:if>
     </td>
   </tr>
-
+  
+  
+  
+  
+  <s:iterator value="attributeMap.values">
+  <tr valign="middle" class="cols_1">
+    <td class="col">
+      <s:property value="%{getTranslation(buildingAttributeType.translations).name}" />
+    </td>
+    <td class="col" align="center">
+      <s:textfield name="attributeMap['%{buildingAttributeType.type}'].value" value="%{value}" />
+    </td>
+  </tr>
+  </s:iterator>
+  
+  
+  
+  
+  <!-- 
   <tr valign="middle" class="cols_1">
     <td class="col">
       <s:property value="%{getTranslation(typeNumber.translations).name}" />
@@ -70,7 +88,8 @@
       <s:textfield name="bulkVal" value="%{buildings.bulk}" />
     </td>
   </tr>
-
+ -->
+ 
   <tr>
 	<td colspan="2">
       <s:submit name="submit"

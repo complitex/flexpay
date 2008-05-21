@@ -278,7 +278,7 @@
 			<result name="edit" type="redirect-action">
 				<param name="actionName">buildingsEditAction</param>
 				<param name="parse">true</param>
-				<param name="buildings.id">${createdBuildings.id}</param>
+				<param name="buildings.id">${buildings.id}</param>
 			</result>
 		</action>
 		<action name="buildingsEditAction" class="buildingsEditAction">

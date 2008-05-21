@@ -1,15 +1,19 @@
 package org.flexpay.ab.service;
 
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAttribute;
+import org.flexpay.ab.persistence.BuildingAttributeType;
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.service.ParentService;
 import org.flexpay.common.exception.FlexPayException;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Locale;
+import org.flexpay.common.service.ParentService;
 
 public interface BuildingService extends ParentService<BuildingsFilter> {
 
@@ -28,6 +32,15 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	public BuildingAttributeType getAttributeType(int type)
 			throws FlexPayException;
+	
+	/**
+	 * Get building attribute types
+	 *
+	 * @return BuildingAttributeType list
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if failure occurs
+	 */
+	public List<BuildingAttributeType> getAttributeTypes();
 
 	/**
 	 * Find building by number
@@ -123,6 +136,28 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	Buildings createBuildings(Building building, Street street,
 			String numberValue, String bulkValue) throws FlexPayException;
 
+	/**
+	 * Create a new Buildings
+	 *
+	 * @param building	Building
+	 * @param street	  Street
+	 * @param attrs Buildings attributes
+	 * @return new Buildings object created
+	 */
+	Buildings createBuildings(Building building, Street street,
+			Set<BuildingAttribute> attrs) throws FlexPayException;
+	
+	/**
+	 * Create a new Buildings
+	 *
+	 * @param street	  Street
+	 * @param district	District
+	  * @param attrs Buildings attributes
+	 * @return new Buildings object created
+	 */
+	Buildings createBuildings(Street street, District district,
+			Set<BuildingAttribute> attrs) throws FlexPayException;
+	
 	/**
 	 * Find all Buildings relation for building stub
 	 * 

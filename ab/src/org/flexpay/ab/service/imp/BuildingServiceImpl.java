@@ -1,10 +1,22 @@
 package org.flexpay.ab.service.imp;
 
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.flexpay.ab.dao.*;
-import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.dao.BuildingAttributeTypeDao;
+import org.flexpay.ab.dao.BuildingDao;
+import org.flexpay.ab.dao.BuildingsDao;
+import org.flexpay.ab.dao.BuildingsDaoExt;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAttribute;
+import org.flexpay.ab.persistence.BuildingAttributeType;
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.ab.persistence.filters.StreetFilter;
@@ -14,9 +26,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Locale;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class BuildingServiceImpl implements BuildingService {
@@ -209,6 +218,21 @@ public class BuildingServiceImpl implements BuildingService {
 
 		throw new FlexPayException("Unknown building attribute type: " + type);
 	}
+	
+	/**
+	 * Get building attribute types
+	 *
+	 * @return BuildingAttributeType list
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if failure occurs
+	 */
+	public List<BuildingAttributeType> getAttributeTypes() {
+		if (cachedTypes == null) {
+			cachedTypes = buildingsTypeDao.findAttributeTypes();
+		}
+		
+		return cachedTypes;
+	}
 
 	/**
 	 * Find building by number
@@ -323,6 +347,63 @@ public class BuildingServiceImpl implements BuildingService {
 		buildingsDao.create(buildings);
 
 		return buildings;
+	}
+	
+	private Buildings createBuildings(Building building, District district, Street street, Set<BuildingAttribute> attrs) throws FlexPayException {
+		if(buildingsDaoExt.findBuildings(street, attrs) != null) {
+			throw new FlexPayException("Address with given street and building attributes alredy exist", "ab.adress_alredy_exist");
+		}
+		
+		Buildings buildings = new Buildings();
+		Building b = null;
+		if(building == null) {
+			b = new Building();
+			b.setDistrict(district);
+			buildings.setPrimaryStatus(true);
+		}
+		
+		buildings.setStreet(street);
+		b.addBuildings(buildings);
+		
+		for(BuildingAttribute attr : attrs) {
+			buildings.setBuildingAttribute(attr.getValue(), attr.getBuildingAttributeType());
+		}
+		
+		if(building == null) {
+			buildingDao.create(b);
+		} else {
+			buildingsDao.create(buildings);
+		}
+		
+		return buildings;
+	}
+	
+	/**
+	 * Create a new Buildings
+	 *
+	 * @param building	Building
+	 * @param street	  Street
+	 * @param attrs Buildings attributes
+	 * @return new Buildings object created
+	 */
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	public Buildings createBuildings(Building building, Street street,
+			Set<BuildingAttribute> attrs) throws FlexPayException {
+		return createBuildings(building, null, street, attrs);
+	}
+	
+	/**
+	 * Create a new Buildings
+	 *
+	 * @param street	  Street
+	 * @param district	District
+	  * @param attrs Buildings attributes
+	 * @return new Buildings object created
+	 */
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	public Buildings createBuildings(Street street, District district,
+			Set<BuildingAttribute> attrs) throws FlexPayException {
+		return createBuildings(null, district, street, attrs);
 	}
 
 	public Buildings readFull(Long buildingsId) {

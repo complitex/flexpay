@@ -1,14 +1,19 @@
 package org.flexpay.ab.actions.buildings;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAttribute;
 import org.flexpay.ab.persistence.BuildingAttributeType;
 import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.persistence.District;
@@ -20,10 +25,15 @@ import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
+import org.flexpay.common.util.config.ApplicationConfig;
 
-public class BuildingsCreateAction extends CommonAction implements SessionAware {
+import com.opensymphony.xwork2.Preparable;
+
+public class BuildingsCreateAction extends CommonAction implements
+		SessionAware, Preparable {
 
 	private ParentService parentService;
 	private BuildingService buildingService;
@@ -44,48 +54,71 @@ public class BuildingsCreateAction extends CommonAction implements SessionAware 
 	private String action;
 	private Long districtId;
 	private Long buildingId;
-	private String numberValue;
-	private String bulkValue;
-	private Buildings createdBuildings;
+	// private String numberValue;
+	// private String bulkValue;
+	private Buildings buildings = new Buildings();
+	private Map<String, BuildingAttribute> attributeMap;
 
 	private String filterError;
 	private String districtError;
 	private String streetError;
 	private String buildingAttrError;
+	private String creatingError;
+
+	public void prepare() {
+		Set<BuildingAttribute> buildingAttributeSet = new HashSet<BuildingAttribute>();
+		attributeMap = new HashMap<String, BuildingAttribute>();
+		for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
+			BuildingAttribute attr = new BuildingAttribute();
+			attr.setBuildingAttributeType(type);
+			buildingAttributeSet.add(attr);
+			attributeMap.put("" + type.getType(), attr);
+		}
+		buildings.setBuildingAttributes(buildingAttributeSet);
+	}
 
 	public String execute() throws FlexPayException {
 		if ("create".equals(action)) {
+
 			if (districtId == null) {
 				districtError = "ab.buildings.create.district_required";
 			}
 			if (streetFilter.getSelectedId() == null) {
 				streetError = "ab.buildings.create.street_required";
 			}
-			if (StringUtils.isEmpty(numberValue)
-					&& StringUtils.isEmpty(bulkValue)) {
+
+			boolean isAttrEmpty = true;
+			for (BuildingAttribute attr : buildings.getBuildingAttributes()) {
+				if (!StringUtils.isEmpty(attr.getValue())) {
+					isAttrEmpty = false;
+					break;
+				}
+			}
+			if (isAttrEmpty) {
 				buildingAttrError = "ab.buildings.create.buildings_attr_required";
 			}
 
-			if (streetFilter.getSelectedId() != null
-					&& districtId != null
-					&& (!StringUtils.isEmpty(numberValue) || !StringUtils
-							.isEmpty(bulkValue))) {
-				createdBuildings = buildingId == null ? buildingService
-						.createBuildings(new Street(streetFilter
-								.getSelectedId()), new District(districtId),
-								numberValue, bulkValue)
-						: buildingService.createBuildings(new Building(
-								buildingId), new Street(streetFilter
-								.getSelectedId()), numberValue, bulkValue);
+			if (streetFilter.getSelectedId() != null && districtId != null
+					&& !isAttrEmpty) {
 
-				return "edit";
+				try {
+					if (buildingId == null) {
+						buildings = buildingService.createBuildings(new Street(
+								streetFilter.getSelectedId()), new District(
+								districtId), buildings.getBuildingAttributes());
+						return "list";
+					} else {
+						buildings = buildingService.createBuildings(
+								new Building(buildingId), new Street(
+										streetFilter.getSelectedId()),
+								buildings.getBuildingAttributes());
+						return "edit";
+					}
+				} catch (FlexPayException e) {
+					creatingError = e.getErrorKey();
+				}
 			}
 		}
-
-		typeNumber = buildingService
-				.getAttributeType(BuildingAttributeType.TYPE_NUMBER);
-		typeBulk = buildingService
-				.getAttributeType(BuildingAttributeType.TYPE_BULK);
 
 		try {
 			ArrayStack filterArrayStack = getFilters();
@@ -108,6 +141,11 @@ public class BuildingsCreateAction extends CommonAction implements SessionAware 
 		}
 
 		return "form";
+	}
+
+	public BuildingAttribute getAttribute(int attrType) throws FlexPayException {
+		return buildings.getAttribute(buildingService
+				.getAttributeType(attrType));
 	}
 
 	/**
@@ -321,36 +359,6 @@ public class BuildingsCreateAction extends CommonAction implements SessionAware 
 	}
 
 	/**
-	 * @param numberValue
-	 *            the numberValue to set
-	 */
-	public void setNumberValue(String numberValue) {
-		this.numberValue = numberValue;
-	}
-
-	/**
-	 * @param bulkValue
-	 *            the bulkValue to set
-	 */
-	public void setBulkValue(String bulkValue) {
-		this.bulkValue = bulkValue;
-	}
-
-	/**
-	 * @return the numberValue
-	 */
-	public String getNumberValue() {
-		return numberValue;
-	}
-
-	/**
-	 * @return the bulkValue
-	 */
-	public String getBulkValue() {
-		return bulkValue;
-	}
-
-	/**
 	 * @param buildingId
 	 *            the buildingId to set
 	 */
@@ -389,8 +397,30 @@ public class BuildingsCreateAction extends CommonAction implements SessionAware 
 	/**
 	 * @return the createdBuildings
 	 */
-	public Buildings getCreatedBuildings() {
-		return createdBuildings;
+	public Buildings getBuildings() {
+		return buildings;
+	}
+
+	/**
+	 * @return the attributeMap
+	 */
+	public Map<String, BuildingAttribute> getAttributeMap() {
+		return attributeMap;
+	}
+
+	/**
+	 * @param attributeMap
+	 *            the attributeMap to set
+	 */
+	public void setAttributeMap(Map<String, BuildingAttribute> attributeMap) {
+		this.attributeMap = attributeMap;
+	}
+
+	/**
+	 * @return the creatingError
+	 */
+	public String getCreatingError() {
+		return creatingError;
 	}
 
 }
