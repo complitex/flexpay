@@ -4055,18 +4055,34 @@ INSERT INTO eirc_registry_types_tbl (id, code) VALUES (9, 9);
 INSERT INTO eirc_registry_types_tbl (id, code) VALUES (10, 10);
 
 -- Init organisations
-INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, description, name, district_id, unique_id)
-	VALUES (0, '-------', '123', 'Eirc itself', 'EIRC', @district_id_nsk_sovetskiy, '0');
+INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, unique_id)
+	VALUES (0, '-------', '123', '0');
 SELECT @organisation_eirc:=last_insert_id();
-INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, description, name, district_id, unique_id)
-	VALUES (0, '123123123', '123', 'Test organisation', 'ЖКО', @district_id_nsk_sovetskiy, '2');
+INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
+	VALUES ('Eirc itself', @ru_id, @organisation_eirc);
+INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
+	VALUES ('EIRC', @ru_id, @organisation_eirc);
+INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, unique_id)
+	VALUES (0, '123123123', '123', '2');
 SELECT @organisation_zhko:=last_insert_id();
-INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, description, name, district_id, unique_id)
-	VALUES (0, '456456456', '56', 'Test organisation 2', 'ТСЖ', @district_id_nsk_sovetskiy, '3');
+INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
+	VALUES ('Test organisation', @ru_id, @organisation_zhko);
+INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
+	VALUES ('ЖКО', @ru_id, @organisation_zhko);
+INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, unique_id)
+	VALUES (0, '456456456', '56', '3');
 SELECT @organisation_tszh:=last_insert_id();
-INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, description, name, district_id, unique_id)
-	VALUES (0, '1111111', '56', 'Calculation center', 'CN', @district_id_nsk_sovetskiy, '10');
+INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
+	VALUES ('Test organisation 2', @ru_id, @organisation_tszh);
+INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
+	VALUES ('ТСЖ', @ru_id, @organisation_tszh);
+INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, unique_id)
+	VALUES (0, '1111111', '56', '10');
 SELECT @organisation_cn:=last_insert_id();
+INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
+	VALUES ('Calculation center', @ru_id, @organisation_cn);
+INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
+	VALUES ('CN', @ru_id, @organisation_cn);
 
 -- Init service providers
 INSERT INTO common_data_source_descriptions_tbl (description) VALUES ('Источник - ЖКО Советского района');

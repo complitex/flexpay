@@ -5,7 +5,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.beans.propertyeditors.LocaleEditor;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
@@ -46,7 +45,7 @@ public class Language extends DomainObjectWithStatus {
 	 *
 	 * @return Value for property 'translations'.
 	 */
-	public Collection<LangNameTranslation> getTranslations() {
+	public Set<LangNameTranslation> getTranslations() {
 		return translations;
 	}
 

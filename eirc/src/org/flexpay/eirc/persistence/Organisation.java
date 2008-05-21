@@ -1,19 +1,19 @@
 package org.flexpay.eirc.persistence;
 
-import org.flexpay.ab.persistence.District;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.DomainObjectWithStatus;
+
+import java.util.Collections;
+import java.util.Set;
 
 public class Organisation extends DomainObjectWithStatus {
 
 	private String individualTaxNumber;
 	private String kpp; // code prichiny postanovki na nalogoviy uchet (TODO: translate me)
-	private String description;
+	private Set<OrganisationDescription> descriptions = Collections.emptySet();
+	private Set<OrganisationName> names = Collections.emptySet();
 	private String uniqueId;
-
-	private String name;
-	private District district;
 
 	/**
 	 * Constructs a new DomainObject.
@@ -41,28 +41,20 @@ public class Organisation extends DomainObjectWithStatus {
 		this.kpp = kpp;
 	}
 
-	public String getDescription() {
-		return description;
+	public Set<OrganisationDescription> getDescriptions() {
+		return descriptions;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescriptions(Set<OrganisationDescription> descriptions) {
+		this.descriptions = descriptions;
 	}
 
-	public String getName() {
-		return name;
+	public Set<OrganisationName> getNames() {
+		return names;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public District getDistrict() {
-		return district;
-	}
-
-	public void setDistrict(District district) {
-		this.district = district;
+	public void setNames(Set<OrganisationName> names) {
+		this.names = names;
 	}
 
 	public String getUniqueId() {
@@ -78,8 +70,8 @@ public class Organisation extends DomainObjectWithStatus {
 				.append("id", getId())
 				.append("KPP", kpp)
 				.append("INN", individualTaxNumber)
-				.append("name", name)
-				.append("description", description)
+				.append("names", getNames())
+				.append("descriptions", getDescriptions())
 				.toString();
 	}
 }

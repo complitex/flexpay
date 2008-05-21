@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import javax.sql.DataSource;
 
@@ -15,9 +16,16 @@ import javax.sql.DataSource;
 @TransactionConfiguration(transactionManager="transactionManager")
 public abstract class SpringBeanAwareTestCase extends AbstractTransactionalJUnit4SpringContextTests {
 
+	protected HibernateTemplate hibernateTemplate;
+
 	@Override
 	@Autowired
 	public void setDataSource(@Qualifier("dataSource")DataSource dataSource) {
 		super.setDataSource(dataSource);
+	}
+
+	@Autowired
+	public void setHibernateTemplate(@Qualifier("hibernateTemplate")HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
 	}
 }
