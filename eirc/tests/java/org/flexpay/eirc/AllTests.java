@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		org.flexpay.eirc.actions.AllTests.class,
 		org.flexpay.eirc.service.AllTests.class,
-		org.flexpay.eirc.util.config.AllTests.class
+		org.flexpay.eirc.util.config.AllTests.class,
+		org.flexpay.eirc.sp.AllTests.class
 		})
 public class AllTests extends TestCase {
 
