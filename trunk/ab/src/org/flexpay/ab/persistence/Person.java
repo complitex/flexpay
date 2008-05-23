@@ -1,8 +1,11 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.util.DateIntervalUtil;
 
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -11,9 +14,9 @@ import java.util.HashSet;
  */
 public class Person extends DomainObjectWithStatus {
 
-	private Apartment apartment;
 	private Set<PersonAttribute> personAttributes = Collections.emptySet();
 	private Set<PersonIdentity> personIdentities = Collections.emptySet();
+	private Set<PersonRegistration> personRegistrations = Collections.emptySet();
 
 	/**
 	 * Constructs a new Person.
@@ -59,24 +62,6 @@ public class Person extends DomainObjectWithStatus {
 	 */
 	public void setPersonIdentities(Set<PersonIdentity> personIdentities) {
 		this.personIdentities = personIdentities;
-	}
-
-	/**
-	 * Getter for property 'apartment'.
-	 *
-	 * @return Value for property 'apartment'.
-	 */
-	public Apartment getApartment() {
-		return apartment;
-	}
-
-	/**
-	 * Setter for property 'apartment'.
-	 *
-	 * @param apartment Value to set for property 'apartment'.
-	 */
-	public void setApartment(Apartment apartment) {
-		this.apartment = apartment;
 	}
 
 	/**
@@ -132,4 +117,29 @@ public class Person extends DomainObjectWithStatus {
 
 		personIdentities.add(identity);
 	}
+	
+	public Apartment getApartment() {
+		// TODO realize it
+		return null;
+	}
+	
+	public void setApartment(Apartment apartment) {
+		// TODO realize it
+	}
+
+	/**
+	 * @return the personRegistrations
+	 */
+	public Set<PersonRegistration> getPersonRegistrations() {
+		return personRegistrations;
+	}
+
+	/**
+	 * @param personRegistrations the personRegistrations to set
+	 */
+	public void setPersonRegistrations(Set<PersonRegistration> personRegistrations) {
+		this.personRegistrations = personRegistrations;
+	}
+	
+	
 }
