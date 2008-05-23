@@ -13,13 +13,13 @@
 		<many-to-one name="building" class="Building" column="building_id"
 					 not-null="true" />
 
-		<set name="persons" inverse="true">
-			<key column="apartment_id" />
-			<one-to-many class="Person" />
-		</set>
 		<set name="apartmentNumbers" inverse="true" cascade="all-delete-orphan">
 			<key column="apartment_id" not-null="true" />
 			<one-to-many class="ApartmentNumber" />
+		</set>
+		<set name="personRegistrations" inverse="true" lazy="false" cascade="all">
+			<key column="person_id" not-null="true" />
+			<one-to-many class="PersonRegistration" />
 		</set>
 	</class>
 
@@ -44,6 +44,7 @@
 		SELECT DISTINCT a
 		FROM Apartment a
 			LEFT JOIN FETCH a.apartmentNumbers
+			LEFT JOIN FETCH a.personRegistrations r
 		WHERE a.id=?
 	</query>
 

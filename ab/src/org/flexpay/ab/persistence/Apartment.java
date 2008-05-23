@@ -20,7 +20,7 @@ public class Apartment extends DomainObjectWithStatus {
 
 	private Building building;
 	private Set<ApartmentNumber> apartmentNumbers = Collections.emptySet();
-	private Set<Person> persons = Collections.emptySet();
+	private Set<PersonRegistration> personRegistrations = Collections.emptySet();
 
 	public Apartment() {
 	}
@@ -43,14 +43,6 @@ public class Apartment extends DomainObjectWithStatus {
 
 	public void setApartmentNumbers(Set<ApartmentNumber> apartmentNumbers) {
 		this.apartmentNumbers = apartmentNumbers;
-	}
-
-	public Set<Person> getPersons() {
-		return this.persons;
-	}
-
-	public void setPersons(Set<Person> persons) {
-		this.persons = persons;
 	}
 
 	/**
@@ -120,10 +112,31 @@ public class Apartment extends DomainObjectWithStatus {
 		// Add number to apartment numbers set
 		getApartmentNumbers().add(apartmentNumber);
 	}
+	
+	
+	public Set<Person> getPersons() {
+		// TODO realize it
+		return Collections.emptySet();
+	}
+
 
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append(
 				"id", getId()).append("numbers", apartmentNumbers.toArray())
 				.toString();
+	}
+
+	/**
+	 * @return the personRegistrations
+	 */
+	public Set<PersonRegistration> getPersonRegistrations() {
+		return personRegistrations;
+	}
+
+	/**
+	 * @param personRegistrations the personRegistrations to set
+	 */
+	public void setPersonRegistrations(Set<PersonRegistration> personRegistrations) {
+		this.personRegistrations = personRegistrations;
 	}
 }
