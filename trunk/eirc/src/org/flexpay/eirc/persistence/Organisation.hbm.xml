@@ -130,7 +130,8 @@
 		INNER JOIN FETCH so.organisation o
 		LEFT JOIN FETCH so.buildings sb
 		LEFT JOIN FETCH sb.apartments a
-		LEFT JOIN FETCH a.persons
+		LEFT JOIN FETCH a.personRegistrations r
+		LEFT JOIN FETCH r.person
 		WHERE so.id=?
 	</query>
 
