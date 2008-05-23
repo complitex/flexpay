@@ -1,4 +1,4 @@
-create table person_registrations_tbl (
+create table ab_person_registrations_tbl (
         id bigint not null auto_increment,
         begin_date date not null,
         end_date date not null,
@@ -7,14 +7,14 @@ create table person_registrations_tbl (
         primary key (id)
     );
 	
-alter table person_registrations_tbl 
-        add index FK87E75A6FDEF75687 (apartment_id), 
-        add constraint FK87E75A6FDEF75687 
+alter table ab_person_registrations_tbl 
+        add index INDX_ab_person_registrations#apartment_id (apartment_id), 
+        add constraint FP_ab_person_registrations#apartment_id
         foreign key (apartment_id) 
         references apartments_tbl (id);
 
-alter table person_registrations_tbl 
-        add index FK87E75A6F7095AEAD (person_id), 
-        add constraint FK87E75A6F7095AEAD 
+alter table ab_person_registrations_tbl 
+        add index INDX_ab_person_registrations#person_id (person_id), 
+        add constraint FP_ab_person_registrations#person_id 
         foreign key (person_id) 
         references persons_tbl (id);
