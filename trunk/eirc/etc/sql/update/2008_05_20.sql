@@ -18,8 +18,8 @@ alter table eirc_registries_tbl drop index FKAFD3F6C48819126, drop foreign key F
 alter table eirc_registries_tbl drop index FKAFD3F6C412902C71, drop foreign key FKAFD3F6C412902C71;
 alter table eirc_service_organisations_tbl drop index FKB7C04C647F30FD59, drop foreign key FKB7C04C647F30FD59;
 
-alter table eirc_registries_tbl drop index FKAFD3F6C48819126, drop foreign key FKAFD3F6C48819126;
-alter table eirc_registries_tbl drop index FKAFD3F6C412902C71, drop foreign key FKAFD3F6C412902C71;
+--alter table eirc_registries_tbl drop index FKAFD3F6C48819126, drop foreign key FKAFD3F6C48819126;
+--alter table eirc_registries_tbl drop index FKAFD3F6C412902C71, drop foreign key FKAFD3F6C412902C71;
 alter table eirc_registries_tbl drop index FKAFD3F6C4D1F3C974, drop foreign key FKAFD3F6C4D1F3C974;
 ALTER TABLE eirc_registries_tbl
 	DROP INDEX FK_archive_status,
@@ -171,11 +171,11 @@ alter table eirc_account_records_tbl
 	add constraint FK_eirc_account_record_consumer
 	foreign key (consumer_id)
 	references eirc_consumers_tbl (id);
-alter table eirc_account_records_tbl
-	add index FK_eirc_account_record_consumer (consumer_id),
-	add constraint FK_eirc_account_record_consumer
-	foreign key (consumer_id)
-	references eirc_consumers_tbl (id);
+--alter table eirc_account_records_tbl
+--	add index FK_eirc_account_record_consumer (consumer_id),
+--	add constraint FK_eirc_account_record_consumer
+--	foreign key (consumer_id)
+--	references eirc_consumers_tbl (id);
 
 alter table eirc_account_records_tbl
 	add index FK_eirc_account_record_record_type (record_type_id),
