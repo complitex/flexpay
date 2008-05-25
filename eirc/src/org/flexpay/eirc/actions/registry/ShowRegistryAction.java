@@ -33,7 +33,7 @@ public class ShowRegistryAction extends FPActionSupport {
 
 	public String execute() throws Exception {
 		if (registry.getId() == null) {
-			log.warn("No registryId specified, give up.");
+			addActionError("No registryId specified, give up.");
 			return ERROR;
 		}
 		importErrorTypeFilter.init(classToTypeRegistry);

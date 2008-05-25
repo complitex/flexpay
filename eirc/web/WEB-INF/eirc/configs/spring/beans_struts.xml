@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="spFileCreateAction" class="org.flexpay.eirc.actions.SpFileCreateAction"
 		  scope="prototype">
@@ -82,6 +85,18 @@
 		<property name="classToTypeRegistry" ref="typeRegistryEirc" />
 		<property name="spService" ref="spService" />
 	</bean>
+
+	<bean id="listOrganisationsAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.ListOrganisationsAction"
+		  p:organisationService-ref="organisationService" />
+
+	<bean id="deleteOrganisationsAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.DeleteOrganisationsAction"
+		  p:organisationService-ref="organisationService" />
+
+	<bean id="editOrganisationAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.EditOrganisationAction"
+		  p:organisationService-ref="organisationService" />
 
 	<bean id="selectCorrectionTypeAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.corrections.SelectTypeAction">

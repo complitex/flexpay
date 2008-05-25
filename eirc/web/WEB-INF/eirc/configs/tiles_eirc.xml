@@ -12,6 +12,13 @@
 		<put-attribute name="menu34" value="/WEB-INF/jsp/eirc/menu/menu34_import.jsp" />
 	</definition>
 
+	<definition name="eirc.dictionaries" extends="ab.layout.standart">
+		<put-attribute name="title" value="eirc.menu2.dictionaries" />
+		<put-attribute name="menu1" value="/WEB-INF/jsp/eirc/menu/menu1.jsp" />
+		<put-attribute name="menu2" value="/WEB-INF/jsp/eirc/menu/menu2.jsp" />
+		<put-attribute name="menu34" value="/WEB-INF/jsp/eirc/menu/menu34_dictionaries.jsp" />
+	</definition>
+
 	<definition name="eirc.import.file.upload.form" extends="eirc.import">
 		<put-attribute name="title" value="eirc.menu34.files.upload" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/import/upload_file.jsp" />
@@ -65,6 +72,20 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/tickets/ticket_pay_form.jsp" />
 	</definition>
 
+
+	<!-- Organisations -->
+	<definition name="eirc.organisations.list" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.menu34.organisations" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/organisations/list_organisations.jsp" />
+	</definition>
+
+	<definition name="eirc.organisation.edit" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.organisation" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/organisations/edit_organisation.jsp" />
+	</definition>
+
+
+	<!-- Registries -->
 	<definition name="eirc.registry.list" extends="eirc.import">
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
 	</definition>

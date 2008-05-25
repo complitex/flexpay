@@ -1,6 +1,7 @@
 package org.flexpay.ab.service;
 
 import org.apache.commons.lang.StringUtils;
+import org.flexpay.ab.dao.BuildingAttributeDao;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.*;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.annotation.NotTransactional;
 
 @Transactional
 public class TestBuildingService extends SpringBeanAwareTestCase {
@@ -19,6 +21,8 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	protected BuildingDao buildingDao;
 	@Autowired
 	protected BuildingsDao buildingsDao;
+	@Autowired
+	protected BuildingAttributeDao buildingAttributeDao;
 	@Autowired
 	protected BuildingService buildingService;
 
@@ -44,10 +48,9 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 		return buildings;
 	}
 
-	@Transactional(readOnly = false)
+	@NotTransactional
 	@Test
-	@Ignore
-	public void testDeleteAttribute() throws Throwable {
+	public void testDeleteAttributeNotTx() throws Throwable {
 
 		Building building = newBuilding();
 		Buildings buildings = newBuildings(building);
@@ -58,17 +61,49 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 		buildingDao.create(building);
 
 		try {
-			buildings.setBuildingAttribute(null, bulkType);
+			BuildingAttribute bulk = buildings.setBuildingAttribute(null, bulkType);
+			assertNotNull("Bulk is NULL!", bulk);
 			buildingsDao.update(buildings);
+//			buildingAttributeDao.delete(bulk);
+
+			buildings = buildingsDao.readFull(buildings.getId());
 			assertEquals("Buildings attribute delete method failed", 1, buildings.getBuildingAttributes().size());
 
 			assertTrue("Buildings attribute delete persistence failed", StringUtils.isEmpty(buildings.getBulk()));
 		} finally {
-			buildingDao.delete(building);
+			buildingDao.delete(buildingDao.readFull(building.getId()));
+		}
+	}
+
+	@Transactional
+	@Test
+	public void testDeleteAttributeTx() throws Throwable {
+
+		Building building = newBuilding();
+		Buildings buildings = newBuildings(building);
+
+		buildings.setBuildingAttribute("#123", numberType);
+		buildings.setBuildingAttribute("#1", bulkType);
+
+		buildingDao.create(building);
+
+		try {
+			BuildingAttribute bulk = buildings.setBuildingAttribute(null, bulkType);
+//			buildingsDao.update(buildings);
+			buildingAttributeDao.delete(bulk);
+			hibernateTemplate.flush();
+
+			buildings = buildingsDao.readFull(buildings.getId());
+			assertEquals("Buildings attribute delete method failed", 1, buildings.getBuildingAttributes().size());
+
+			assertTrue("Buildings attribute delete persistence failed", StringUtils.isEmpty(buildings.getBulk()));
+		} finally {
+			buildingDao.delete(buildingDao.readFull(building.getId()));
 		}
 	}
 
 	@Test
+	@Ignore
 	public void testCreateBuilding() throws Throwable {
 
 		Building building = newBuilding();
@@ -91,6 +126,7 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	}
 
 	@Test
+	@Ignore
 	public void testFindBulkBuildings() throws Throwable {
 
 		// See init_db script
@@ -102,6 +138,7 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	}
 
 	@Test
+	@Ignore
 	public void testFindBuildings() throws Throwable {
 
 		// See init_db script

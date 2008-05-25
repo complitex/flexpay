@@ -28,4 +28,12 @@
 		</set>
 	</class>
 
+	<query name="Building.readFull">
+		select distinct b
+		from Building b
+			left join fetch b.buildingses bs
+			left join fetch bs.buildingAttributes ba
+			inner join fetch ba.buildingAttributeType
+		where b.id=?
+	</query>
 </hibernate-mapping>
