@@ -22,6 +22,10 @@ public class Language extends DomainObjectWithStatus {
 	public Language() {
 	}
 
+	public Language(Long id) {
+		super(id);
+	}
+
 	/**
 	 * Getter for property 'default'.
 	 *

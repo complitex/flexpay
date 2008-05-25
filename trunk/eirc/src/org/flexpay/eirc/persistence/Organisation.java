@@ -1,10 +1,12 @@
 package org.flexpay.eirc.persistence;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Organisation extends DomainObjectWithStatus {
@@ -14,6 +16,7 @@ public class Organisation extends DomainObjectWithStatus {
 	private Set<OrganisationDescription> descriptions = Collections.emptySet();
 	private Set<OrganisationName> names = Collections.emptySet();
 	private String uniqueId;
+	private Integer version;
 
 	/**
 	 * Constructs a new DomainObject.
@@ -73,5 +76,65 @@ public class Organisation extends DomainObjectWithStatus {
 				.append("names", getNames())
 				.append("descriptions", getDescriptions())
 				.toString();
+	}
+
+	public void addName(OrganisationName organisationName) {
+		if (names == Collections.EMPTY_SET) {
+			names = new HashSet<OrganisationName>();
+		}
+
+		OrganisationName candidate = null;
+		for (OrganisationName name : names) {
+			if (name.getLang().getId().equals(organisationName.getLang().getId())) {
+				candidate = name;
+				break;
+			}
+		}
+
+		if (candidate != null) {
+			if (StringUtils.isBlank(organisationName.getName())) {
+				names.remove(candidate);
+				return;
+			}
+			candidate.setName(organisationName.getName());
+			return;
+		}
+
+		if (StringUtils.isBlank(organisationName.getName())) {
+			return;
+		}
+
+		organisationName.setTranslatable(this);
+		names.add(organisationName);
+	}
+
+	public void addDescription(OrganisationDescription organisationDescription) {
+		if (descriptions == Collections.EMPTY_SET) {
+			descriptions = new HashSet<OrganisationDescription>();
+		}
+
+		OrganisationDescription candidate = null;
+		for (OrganisationDescription description : descriptions) {
+			if (description.getLang().getId().equals(organisationDescription.getLang().getId())) {
+				candidate = description;
+				break;
+			}
+		}
+
+		if (candidate != null) {
+			if (StringUtils.isBlank(organisationDescription.getName())) {
+				descriptions.remove(candidate);
+				return;
+			}
+			candidate.setName(organisationDescription.getName());
+			return;
+		}
+
+		if (StringUtils.isBlank(organisationDescription.getName())) {
+			return;
+		}
+
+		organisationDescription.setTranslatable(this);
+		descriptions.add(organisationDescription);
 	}
 }

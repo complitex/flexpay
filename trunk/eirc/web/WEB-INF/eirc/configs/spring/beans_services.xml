@@ -75,6 +75,7 @@
 
 	<bean id="organisationService" class="org.flexpay.eirc.service.imp.OrganisationServiceImpl">
 		<property name="organisationDao" ref="organisationDao" />
+		<property name="organisationDaoExt" ref="organisationDaoExt" />
 	</bean>
 
 	<bean id="reportPeriodService" class="org.flexpay.eirc.service.imp.ReportPeriodServiceImpl" />

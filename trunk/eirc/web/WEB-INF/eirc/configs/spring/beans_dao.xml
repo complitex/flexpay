@@ -90,6 +90,10 @@
 		</property>
 	</bean>
 
+	<bean id="organisationDaoExt" class="org.flexpay.eirc.dao.imp.OrganisationDaoExtImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+	
 	<bean id="accountRecordDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.AccountRecordDao" />

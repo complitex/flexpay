@@ -10,7 +10,9 @@ public class FlexPayExceptionContainer extends Exception {
 
 	private Collection<FlexPayException> exceptions = new ArrayList<FlexPayException>();
 
-	/** Constructs a new FlexPayExceptionContainer. */
+	/**
+	 * Constructs a new FlexPayExceptionContainer.
+	 */
 	public FlexPayExceptionContainer() {
 	}
 
@@ -39,5 +41,14 @@ public class FlexPayExceptionContainer extends Exception {
 	 */
 	public Collection<FlexPayException> getExceptions() {
 		return exceptions;
+	}
+
+	/**
+	 * Check if container has any exceptions set
+	 *
+	 * @return <code>true</code> if there is at least one exception in container
+	 */
+	public boolean isEmpty() {
+		return exceptions.isEmpty();
 	}
 }

@@ -100,6 +100,7 @@ public class BuildingAttribute extends DomainObject {
 	public int hashCode() {
 		return new HashCodeBuilder()
 				.append(value).append(buildingAttributeType)
+				.append(buildingAttributeType)
 				.toHashCode();
 	}
 
