@@ -27,7 +27,7 @@ public class DeleteOrganisationsAction extends FPActionSupport {
 		this.objectIds = objectIds;
 	}
 
-	public void setOrganisationService(OrganisationServiceImpl organisationService) {
+	public void setOrganisationService(OrganisationService organisationService) {
 		this.organisationService = organisationService;
 	}
 }
