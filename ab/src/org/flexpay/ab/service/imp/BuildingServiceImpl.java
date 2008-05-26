@@ -355,23 +355,19 @@ public class BuildingServiceImpl implements BuildingService {
 		}
 		
 		Buildings buildings = new Buildings();
-		Building b = null;
-		if(building == null) {
-			b = new Building();
-			b.setDistrict(district);
-			buildings.setPrimaryStatus(true);
-		}
-		
 		buildings.setStreet(street);
-		b.addBuildings(buildings);
-		
 		for(BuildingAttribute attr : attrs) {
 			buildings.setBuildingAttribute(attr.getValue(), attr.getBuildingAttributeType());
 		}
 		
 		if(building == null) {
-			buildingDao.create(b);
+			building = new Building();
+			building.setDistrict(district);
+			buildings.setPrimaryStatus(true);
+			building.addBuildings(buildings);
+			buildingDao.create(building);
 		} else {
+			building.addBuildings(buildings);
 			buildingsDao.create(buildings);
 		}
 		
