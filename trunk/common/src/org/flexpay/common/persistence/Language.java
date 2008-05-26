@@ -114,4 +114,14 @@ public class Language extends DomainObjectWithStatus {
 	public int hashCode() {
 		return langIsoCode.hashCode();
 	}
+
+	public String getName() {
+		for (LangNameTranslation translation : translations) {
+			if (translation.getTranslationFrom().getId().equals(getId())) {
+				return translation.getTranslation();
+			}
+		}
+
+		return null;
+	}
 }
