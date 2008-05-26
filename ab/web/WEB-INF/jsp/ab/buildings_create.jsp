@@ -1,9 +1,11 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 
+<s:if test="errorMessage != null">
 <ul>
 	<li><span class="errorMessage"><s:text name="%{filterError}" /></span></li>
 </ul>
+</s:if>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
@@ -53,10 +55,10 @@
 		</tr>
 		
   <tr valign="middle" class="cols_1">
-    <td>
+    <td class="col">
       <s:text name="ab.district" />
     </td>
-    <td>
+    <td class="col" align="center">
       <s:if test="district != null" >
         <s:property value="%{getTranslation(district.currentName.translations).name}" />
         <s:hidden name="districtId" value="%{district.id}" />
@@ -92,10 +94,18 @@
   <tr>
     <td>
       <ul>
-	    <li><span class="errorMessage"><s:text name="%{districtError}" /></span></li>
-	    <li><span class="errorMessage"><s:text name="%{streetError}" /></span></li>
-	    <li><span class="errorMessage"><s:text name="%{buildingAttrError}" /></span></li>
-	    <li><span class="errorMessage"><s:text name="%{creatingError}" /></span></li>
+        <s:if test="districtError != null">
+	      <li><span class="errorMessage"><s:text name="%{districtError}" /></span></li>
+	    </s:if>
+	    <s:if test="streetError != null">
+	      <li><span class="errorMessage"><s:text name="%{streetError}" /></span></li>
+	    </s:if>
+	    <s:if test="buildingAttrError != null">
+	      <li><span class="errorMessage"><s:text name="%{buildingAttrError}" /></span></li>
+	    </s:if>
+	    <s:if test="creatingError != null">
+	      <li><span class="errorMessage"><s:text name="%{creatingError}" /></span></li>
+	    </s:if>
       </ul>
     </td>
   </tr>
