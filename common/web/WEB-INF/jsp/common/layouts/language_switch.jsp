@@ -5,9 +5,9 @@
 			<td><span class="text-small"><s:text name="header.language"/>:&nbsp;</span></td>
 			<s:form method="get">
 				<td><select class="form-select" name="request_locale" onchange="this.form.submit()">
-					<c:forEach items="${applicationScope['languages']}" var="lang">
-						<option value="<c:out value="${lang.language.locale}" />" <c:if test="${sessionScope['current_locale'].id == lang.language.id}">selected</c:if>><c:out value="${lang.translation}"/></option>
-					</c:forEach>
+					<s:iterator value="@org.flexpay.common.util.config.ApplicationConfig@getInstance().getLanguages()" >
+						<option value="<s:property value="%{langIsoCode}" />" <s:if test="%{#session.WW_TRANS_I18N_LOCALE.toString() == langIsoCode}">selected</s:if>><s:property value="name" /></option>
+					</s:iterator>
 				</select>
 				</td>
 			</s:form>
