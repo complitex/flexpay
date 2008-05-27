@@ -115,10 +115,34 @@ public class Apartment extends DomainObjectWithStatus {
 	
 	
 	public Set<Person> getPersons() {
-		// TODO realize it
-		return Collections.emptySet();
+		return getPersons(DateIntervalUtil.now());
 	}
-
+	
+	public Set<Person> getPersons(Date date) {
+		Set<Person> persons = new HashSet<Person>();
+		for(PersonRegistration reg : personRegistrations) {
+			if(reg.isValid(date)) {
+				persons.add(reg.getPerson());
+			}
+		}
+		
+		return persons;
+	}
+	
+	public Set<PersonRegistration> getValidPersonRegistrations() {
+		return getValidPersonRegistrations(DateIntervalUtil.now());
+	}
+	
+	public Set<PersonRegistration> getValidPersonRegistrations(Date date) {
+		Set<PersonRegistration> result = new HashSet<PersonRegistration>();
+		for(PersonRegistration reg : personRegistrations) {
+			if(reg.isValid(date)) {
+				result.add(reg);
+			}
+		}
+		
+		return result;
+	}
 
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append(

@@ -1,38 +1,70 @@
 package org.flexpay.ab.actions.apartment;
 
-import org.flexpay.ab.actions.CommonAction;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ObjectAlreadyExistException;
+import org.flexpay.ab.persistence.Person;
+import org.flexpay.ab.persistence.PersonRegistration;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.exception.FlexPayException;
 
-public class ApartmentEditAction extends CommonAction {
-	public static final int STATUS_BLANC_NUMBER = 0;
-	public static final int STATUS_NUMBER_ALREDY_EXIST = 1;
-
+public class ApartmentEditAction extends FiltersBaseAction {
 	private ApartmentService apartmentService;
 
 	private Apartment apartment;
 	private String apartmentNumber;
-	private int status = -1;
+	private String numberError;
 
 	public String execute() throws FlexPayException {
 		if (isSubmitted()) {
 			if (apartmentNumber == null || apartmentNumber.equals("")) {
-				status = STATUS_BLANC_NUMBER;
+				//status = STATUS_BLANC_NUMBER;
 			} else {
 				try {
 					apartmentService.setApartmentNumber(apartment,
 							apartmentNumber);
 					return "list";
 				} catch (ObjectAlreadyExistException e) {
-					status = STATUS_NUMBER_ALREDY_EXIST;
+					//status = STATUS_NUMBER_ALREDY_EXIST;
 				}
 			}
 		}
+		
+		getCountryFilter().setDisabled(true);
+		getRegionFilter().setDisabled(true);
+		getTownFilter().setDisabled(true);
+		getStreetFilter().setDisabled(true);
+		getBuildingsFilter().setDisabled(true);
+		initFilters();
 
-		apartment = apartmentService.readFull(apartment.getId());
+		apartment = apartmentService.readWithPersons(apartment.getId());
+		
+		
+		
+		
+		
+		
+		
 		return "form";
+	}
+	
+	public List<PersonRegistration> sortPersonRegistrations(Set<PersonRegistration> registrations) {
+		List<PersonRegistration> result = new ArrayList<PersonRegistration>(registrations);
+		
+		Collections.sort(result, new Comparator () {
+	        public int compare(Object o1, Object o2) {
+	        	PersonRegistration pr1 = (PersonRegistration)o1;
+	        	PersonRegistration pr2 = (PersonRegistration)o2;
+	            return pr1.getBeginDate().compareTo(pr2.getBeginDate());
+	        }
+	    });
+		
+		return result;
 	}
 
 	/**
@@ -59,15 +91,14 @@ public class ApartmentEditAction extends CommonAction {
 	}
 
 	/**
-	 * @return the status
+	 * @return the numberError
 	 */
-	public int getStatus() {
-		return status;
+	public String getNumberError() {
+		return numberError;
 	}
 
 	/**
-	 * @param apartmentNumber
-	 *            the apartmentNumber to set
+	 * @param apartmentNumber the apartmentNumber to set
 	 */
 	public void setApartmentNumber(String apartmentNumber) {
 		this.apartmentNumber = apartmentNumber;

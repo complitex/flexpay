@@ -145,6 +145,17 @@ public class ApartmentServiceImpl implements ApartmentService {
 	public void create(Apartment apartment) {
 		apartmentDao.create(apartment);
 	}
+	
+	/**
+	 * Read apartment with registered persons
+	 * 
+	 * @param id Object identifier
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	public Apartment readWithPersons(Long id) {
+		List<Apartment> apartments = apartmentDao.findWithPersonsFull(id);
+		return apartments.isEmpty() ? null : apartments.get(0);
+	}
 
 	/**
 	 * @param apartmentNumberDao the apartmentNumberDao to set

@@ -58,5 +58,22 @@
 		WHERE a.building.id=? AND
 			EXISTS (FROM ApartmentNumber n WHERE n.apartment.id=a.id AND n.value=? and n.end>? )
 	</query>
+	
+	<query name="Apartment.findWithPersonsFull">
+		SELECT DISTINCT a
+		FROM Apartment a
+			LEFT JOIN FETCH a.apartmentNumbers
+			LEFT JOIN FETCH a.personRegistrations r
+			LEFT JOIN FETCH r.person p
+			LEFT JOIN FETCH p.personAttributes pa
+			LEFT JOIN FETCH pa.lang pal
+			LEFT JOIN FETCH pal.translations tr
+			LEFT JOIN FETCH p.personIdentities pi
+			LEFT JOIN FETCH pi.identityType it
+			LEFT JOIN FETCH it.translations ittr
+			LEFT JOIN FETCH ittr.lang lang
+			LEFT JOIN FETCH lang.translations
+		WHERE a.id=?
+	</query>
 
 </hibernate-mapping>
