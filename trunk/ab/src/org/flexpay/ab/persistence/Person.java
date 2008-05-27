@@ -119,7 +119,20 @@ public class Person extends DomainObjectWithStatus {
 	}
 	
 	public Apartment getApartment() {
-		// TODO realize it
+		return getApartment(DateIntervalUtil.now());
+	}
+	
+	public Apartment getApartment(Date date) {
+		if(personRegistrations.isEmpty()) {
+			return null;
+		}
+		
+		for(PersonRegistration reg : personRegistrations) {
+			if(reg.isValid(date)) {
+				return reg.getApartment();
+			}
+		}
+		
 		return null;
 	}
 	

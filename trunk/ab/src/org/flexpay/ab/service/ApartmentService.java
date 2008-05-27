@@ -71,4 +71,12 @@ public interface ApartmentService {
 	 * @param apartment Apartment object
 	 */
 	void create(Apartment apartment);
+	
+	/**
+	 * Read apartment with registered persons
+	 * 
+	 * @param id Object identifier
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	Apartment readWithPersons(Long id);
 }

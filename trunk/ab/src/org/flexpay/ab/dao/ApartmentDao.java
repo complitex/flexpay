@@ -16,4 +16,12 @@ public interface ApartmentDao extends GenericDao<Apartment, Long> {
 	 * @return list of apartments in the building
 	 */
 	List<Apartment> findObjects(Long buildingId, Page pager);
+	
+	/**
+	 * Read apartment with registered persons
+	 * 
+	 * @param id Object identifier
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	List<Apartment> findWithPersonsFull(Long id);
 }

@@ -177,6 +177,7 @@
 	</bean>
 	<bean id="apartmentEditAction" scope="prototype"
 		  class="org.flexpay.ab.actions.apartment.ApartmentEditAction">
+		<property name="parentService" ref="buildingService" /> 
 		<property name="apartmentService" ref="apartmentService" />
 	</bean>
 

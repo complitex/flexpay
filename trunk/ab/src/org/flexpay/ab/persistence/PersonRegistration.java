@@ -59,5 +59,9 @@ public class PersonRegistration extends DomainObject {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+	
+	public boolean isValid(Date date) {
+		return date.after(beginDate) && !date.after(endDate) ? true : false;
+	}
 
 }
