@@ -29,6 +29,11 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 	protected Logger log = Logger.getLogger(getClass());
 
 	protected UserPreferences userPreferences;
+	private String submit;
+	
+	public boolean isSubmitted() {
+		return submit != null;
+	}
 
 	/**
 	 * Add several action errors
@@ -82,6 +87,14 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 
 	public void setUserPreferences(UserPreferences userPreferences) {
 		this.userPreferences = userPreferences;
+	}
+	
+	public UserPreferences getUserPreferences() {
+		return userPreferences;
+	}
+	
+	public void setSubmit(String submit) {
+		this.submit = submit;
 	}
 
 	public Language getLang(Long id) {
