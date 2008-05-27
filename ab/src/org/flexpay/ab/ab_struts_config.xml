@@ -10,8 +10,8 @@
 	<package name="ab" namespace="/ab" extends="common">
 
 		<action name="main">
-			<interceptor-ref name="flexpayRoles">
-				<param name="allowedRoles">developerRole</param>
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">developerRole</param>
 			</interceptor-ref>
 			<result type="tiles">ab.main</result>
 		</action>
