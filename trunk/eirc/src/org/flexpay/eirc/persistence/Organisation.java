@@ -78,7 +78,7 @@ public class Organisation extends DomainObjectWithStatus {
 				.toString();
 	}
 
-	public void addName(OrganisationName organisationName) {
+	public void setName(OrganisationName organisationName) {
 		if (names == Collections.EMPTY_SET) {
 			names = new HashSet<OrganisationName>();
 		}
