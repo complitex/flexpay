@@ -1,6 +1,5 @@
 package org.flexpay.eirc.actions.organisation;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
@@ -43,30 +42,26 @@ public class EditOrganisationAction extends FPActionSupport {
 			log.info("Organisation descriptions: " + descriptions);
 		}
 
-		for (Map.Entry<Long, String> name : names.entrySet()) {
-			String value = name.getValue();
-			Language lang = getLang(name.getKey());
-			if (StringUtils.isNotBlank(value)) {
-				OrganisationName organisationName = new OrganisationName();
-				organisationName.setLang(lang);
-				organisationName.setName(value);
-				org.addName(organisationName);
-			}
-		}
-
 		org.setKpp(organisation.getKpp());
 		org.setIndividualTaxNumber(organisation.getIndividualTaxNumber());
 		org.setUniqueId(organisation.getUniqueId());
 
+		for (Map.Entry<Long, String> name : names.entrySet()) {
+			String value = name.getValue();
+			Language lang = getLang(name.getKey());
+			OrganisationName organisationName = new OrganisationName();
+			organisationName.setLang(lang);
+			organisationName.setName(value);
+			org.setName(organisationName);
+		}
+
 		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			if (StringUtils.isNotBlank(value)) {
-				OrganisationDescription organisationDescription = new OrganisationDescription();
-				organisationDescription.setLang(lang);
-				organisationDescription.setName(value);
-				org.addDescription(organisationDescription);
-			}
+			OrganisationDescription organisationDescription = new OrganisationDescription();
+			organisationDescription.setLang(lang);
+			organisationDescription.setName(value);
+			org.addDescription(organisationDescription);
 		}
 
 		try {
