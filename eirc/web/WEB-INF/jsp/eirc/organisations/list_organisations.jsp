@@ -6,9 +6,9 @@
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds')"></td>
-			<td class="th"><s:text name="eirc.organisation.name"/></td>
-			<td class="th"><s:text name="eirc.organisation.description"/></td>
-			<td class="th"><s:text name="eirc.organisation.unique_id"/></td>
+            <td class="th"><s:text name="eirc.organisation.id"/></td>
+            <td class="th"><s:text name="eirc.organisation.name"/></td>
+			<%--<td class="th"><s:text name="eirc.organisation.description"/></td>--%>
 			<td class="th"><s:text name="eirc.organisation.kpp"/></td>
 			<td class="th"><s:text name="eirc.organisation.inn"/></td>
 			<td class="th">&nbsp;</td>
@@ -19,9 +19,9 @@
 						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/></td>
 				<td class="col" width="1%"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/>
 				</td>
-				<td class="col"><s:property value="getTranslation(names).name"/></td>
-				<td class="col"><s:property value="getTranslation(descriptions).name"/></td>
-				<td class="col"><s:property value="uniqueId"/></td>
+                <td class="col"><s:property value="uniqueId"/></td>
+                <td class="col"><s:property value="getTranslation(names).name"/></td>
+				<%--<td class="col"><s:property value="getTranslation(descriptions).name"/></td>--%>
 				<td class="col"><s:property value="kpp"/></td>
 				<td class="col"><s:property value="individualTaxNumber"/></td>
 				<td class="col"><a href="<s:url value="/eirc/organisation_edit.action?organisation.id=%{id}"/>">
