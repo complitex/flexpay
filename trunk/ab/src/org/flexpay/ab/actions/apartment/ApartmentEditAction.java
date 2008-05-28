@@ -8,7 +8,6 @@ import java.util.Set;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ObjectAlreadyExistException;
-import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonRegistration;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.exception.FlexPayException;
@@ -35,11 +34,11 @@ public class ApartmentEditAction extends FiltersBaseAction {
 			}
 		}
 		
-		getCountryFilter().setDisabled(true);
-		getRegionFilter().setDisabled(true);
-		getTownFilter().setDisabled(true);
-		getStreetFilter().setDisabled(true);
-		getBuildingsFilter().setDisabled(true);
+		getCountryFilter().setReadOnly(true);
+		getRegionFilter().setReadOnly(true);
+		getTownFilter().setReadOnly(true);
+		getStreetFilter().setReadOnly(true);
+		getBuildingsFilter().setReadOnly(true);
 		initFilters();
 
 		apartment = apartmentService.readWithPersons(apartment.getId());
