@@ -9,7 +9,6 @@ public class PrimaryKeyFilter extends ObjectFilter {
 
 	private Long selectedId;
 	private Long defaultId;
-	private boolean disabled;
 
 	public PrimaryKeyFilter() {
 	}
@@ -74,19 +73,4 @@ public class PrimaryKeyFilter extends ObjectFilter {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
 				.append("Selected id", selectedId).toString();
 	}
-
-	/**
-	 * @return the disabled
-	 */
-	public boolean isDisabled() {
-		return disabled;
-	}
-
-	/**
-	 * @param disabled the disabled to set
-	 */
-	public void setDisabled(boolean disabled) {
-		this.disabled = disabled;
-	}
-
 }
