@@ -1,14 +1,17 @@
 package org.flexpay.eirc.persistence;
 
-import org.flexpay.common.persistence.DomainObject;
+import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.util.TranslationUtil;
 
-import java.util.Set;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
-public class ServiceProvider extends DomainObject {
+public class ServiceProvider extends DomainObjectWithStatus {
 
-	private Long providerNumber;
 	private Set<ServiceProviderDescription> descriptions = Collections.emptySet();
 	private Organisation organisation;
 	private DataSourceDescription dataSourceDescription;
@@ -21,14 +24,6 @@ public class ServiceProvider extends DomainObject {
 
 	public ServiceProvider(Long id) {
 		super(id);
-	}
-
-	public Long getProviderNumber() {
-		return providerNumber;
-	}
-
-	public void setProviderNumber(Long providerNumber) {
-		this.providerNumber = providerNumber;
 	}
 
 	public Set<ServiceProviderDescription> getDescriptions() {
@@ -63,5 +58,44 @@ public class ServiceProvider extends DomainObject {
 	 */
 	public void setDataSourceDescription(DataSourceDescription dataSourceDescription) {
 		this.dataSourceDescription = dataSourceDescription;
+	}
+
+	public void setDescription(ServiceProviderDescription description) {
+		if (descriptions == Collections.EMPTY_SET) {
+			descriptions = new HashSet<ServiceProviderDescription>();
+		}
+
+		ServiceProviderDescription candidate = null;
+		for (ServiceProviderDescription descr : descriptions) {
+			if (descr.getLang().getId().equals(description.getLang().getId())) {
+				candidate = descr;
+				break;
+			}
+		}
+
+		if (candidate != null) {
+			if (StringUtils.isBlank(description.getName())) {
+				descriptions.remove(candidate);
+				return;
+			}
+			candidate.setName(description.getName());
+			return;
+		}
+
+		if (StringUtils.isBlank(description.getName())) {
+			return;
+		}
+
+		description.setTranslatable(this);
+		descriptions.add(description);
+	}
+
+	public String getDefaultDescription() {
+		try {
+			ServiceProviderDescription desc = TranslationUtil.getTranslation(getDescriptions());
+			return desc != null ? desc.getName() : "";
+		} catch (FlexPayException e) {
+			return "";
+		}
 	}
 }

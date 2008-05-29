@@ -22,6 +22,10 @@
 			<key column="organisation_id" not-null="true"/>
 			<one-to-many class="OrganisationName"/>
 		</set>
+		<set name="serviceProviders" inverse="true">
+			<key column="organisation_id" not-null="true"/>
+			<one-to-many class="ServiceProvider"/>
+		</set>
 	</class>
 
 	<class name="OrganisationDescription" table="eirc_organisation_descriptions_tbl">

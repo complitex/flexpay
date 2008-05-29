@@ -37,7 +37,7 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 	public ServiceProvider findByNumber(Long number) {
 		try {
 			getHibernateTemplate().setMaxResults(1);
-			List objects = getHibernateTemplate().find("from ServiceProvider where providerNumber=?", number);
+			List objects = getHibernateTemplate().find("from ServiceProvider where organisation.id=?", number);
 			return objects.isEmpty() ? null : (ServiceProvider) objects.get(0);
 		} finally {
 			getHibernateTemplate().setMaxResults(0);

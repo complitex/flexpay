@@ -79,7 +79,7 @@ public class OrganisationServiceImpl implements OrganisationService {
 	 * @return Organisation
 	 */
 	public Organisation read(Organisation stub) {
-		if (stub.getId() != null && stub.getId() != 0) {
+		if (stub.isNotNew()) {
 			return organisationDao.readFull(stub.getId());
 		}
 
@@ -133,8 +133,8 @@ public class OrganisationServiceImpl implements OrganisationService {
 		}
 
 		boolean defaultDescFound = false;
-		for (OrganisationDescription name : organisation.getDescriptions()) {
-			if (name.getLang().isDefault() && StringUtils.isNotBlank(name.getName())) {
+		for (OrganisationDescription description : organisation.getDescriptions()) {
+			if (description.getLang().isDefault() && StringUtils.isNotBlank(description.getName())) {
 				defaultDescFound = true;
 			}
 		}

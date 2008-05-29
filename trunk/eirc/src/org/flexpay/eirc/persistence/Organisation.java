@@ -15,6 +15,7 @@ public class Organisation extends DomainObjectWithStatus {
 	private String kpp; // code prichiny postanovki na nalogoviy uchet (TODO: translate me)
 	private Set<OrganisationDescription> descriptions = Collections.emptySet();
 	private Set<OrganisationName> names = Collections.emptySet();
+	private Set<ServiceProvider> serviceProviders = Collections.emptySet();
 	private String uniqueId;
 	private Integer version;
 
@@ -108,7 +109,7 @@ public class Organisation extends DomainObjectWithStatus {
 		names.add(organisationName);
 	}
 
-	public void addDescription(OrganisationDescription organisationDescription) {
+	public void setDescription(OrganisationDescription organisationDescription) {
 		if (descriptions == Collections.EMPTY_SET) {
 			descriptions = new HashSet<OrganisationDescription>();
 		}
@@ -136,5 +137,13 @@ public class Organisation extends DomainObjectWithStatus {
 
 		organisationDescription.setTranslatable(this);
 		descriptions.add(organisationDescription);
+	}
+
+	public Set<ServiceProvider> getServiceProviders() {
+		return serviceProviders;
+	}
+
+	public void setServiceProviders(Set<ServiceProvider> serviceProviders) {
+		this.serviceProviders = serviceProviders;
 	}
 }

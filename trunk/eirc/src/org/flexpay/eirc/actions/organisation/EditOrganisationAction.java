@@ -61,7 +61,7 @@ public class EditOrganisationAction extends FPActionSupport {
 			OrganisationDescription organisationDescription = new OrganisationDescription();
 			organisationDescription.setLang(lang);
 			organisationDescription.setName(value);
-			org.addDescription(organisationDescription);
+			org.setDescription(organisationDescription);
 		}
 
 		try {

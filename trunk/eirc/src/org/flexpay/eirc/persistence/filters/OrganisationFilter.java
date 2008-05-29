@@ -20,4 +20,14 @@ public class OrganisationFilter extends PrimaryKeyFilter {
 	public void setOrganisations(List<Organisation> organisations) {
 		this.organisations = organisations;
 	}
+
+	public Organisation getSelected() {
+		for (Organisation org : organisations) {
+			if (org.getId().equals(getSelectedId())) {
+				return org;
+			}
+		}
+
+		return null;
+	}
 }

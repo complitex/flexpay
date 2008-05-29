@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="eirc-service-providers" namespace="/eirc" extends="common">
+
+		<!-- Service Providers -->
+		<action name="service_providers_list" class="listServiceProvidersAction">
+			<result type="tiles">eirc.service_providers.list</result>
+		</action>
+
+		<action name="service_providers_delete" class="deleteServiceProvidersAction">
+			<result type="redirect-action">service_providers_list</result>
+		</action>
+
+		<action name="service_provider_edit" class="editServiceProviderAction">
+			<result name="input" type="tiles">eirc.service_provider.edit</result>
+			<result type="redirect-action">
+				<param name="actionName">service_providers_list</param>
+			</result>
+		</action>
+
+	</package>
+</struts>
