@@ -65,6 +65,16 @@ public class Building extends DomainObjectWithStatus {
 		buildings.setBuilding(this);
 		buildingses.add(buildings);
 	}
+	
+	public Buildings getDefaultBuildings() {
+		for(Buildings buildings : buildingses) {
+			if(buildings.getPrimaryStatus() != null && buildings.getPrimaryStatus().booleanValue() == true) {
+				return buildings;
+			}
+		}
+		
+		return buildingses.isEmpty() ? null : buildingses.iterator().next();
+	}
 
 	/**
 	 * Returns a string representation of the object.

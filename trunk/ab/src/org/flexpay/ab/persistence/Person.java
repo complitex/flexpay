@@ -1,8 +1,11 @@
 package org.flexpay.ab.persistence;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -137,16 +140,28 @@ public class Person extends DomainObjectWithStatus {
 		return null;
 	}
 	
-	public void setApartment(Apartment apartment) {
+	public void setApartment(Apartment apartment) throws FlexPayException {
 		setPersonRegistration(apartment, null, null);
 	}
 	
-	public void setPersonRegistration(Apartment apartment, Date beginDate, Date endDate) {
-		if(beginDate == null) {
+	public void setPersonRegistration(Apartment apartment, Date beginDate, Date endDate) throws FlexPayException {
+		if(beginDate == null || beginDate.before(ApplicationConfig.getInstance().getPastInfinite())) {
 			beginDate = ApplicationConfig.getInstance().getPastInfinite();
 		}
-		if(endDate == null) {
+		if(endDate == null || endDate.after(ApplicationConfig.getInstance().getFutureInfinite())) {
 			endDate = ApplicationConfig.getInstance().getFutureInfinite();
+		}
+		
+		beginDate = DateUtils.truncate(beginDate, Calendar.DAY_OF_MONTH);
+		endDate = DateUtils.truncate(endDate, Calendar.DAY_OF_MONTH);
+		
+		if(beginDate.after(endDate)) {
+			throw new FlexPayException("beginDate can not be after endDate", "ab.person.registration.error.begin_after_end");
+		}
+		
+		Date[] dateInterval = getBeginValidInterval();
+		if(beginDate.before(dateInterval[0]) || beginDate.after(dateInterval[1])) {
+			throw new FlexPayException("beginDate valid interval error", "ab.person.registration.error.begin_date_interval_error");
 		}
 		
 		for(PersonRegistration reg : personRegistrations) {
@@ -161,6 +176,24 @@ public class Person extends DomainObjectWithStatus {
 		reg.setBeginDate(beginDate);
 		reg.setEndDate(endDate);
 		personRegistrations.add(reg);
+	}
+	
+	public Date[] getBeginValidInterval() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(DateIntervalUtil.now());
+		cal.add(Calendar.MONTH, -3);
+		Date date1 = cal.getTime();
+		
+		cal.add(Calendar.MONTH, 4);
+		Date date2 = cal.getTime();
+		
+		for(PersonRegistration reg : personRegistrations) {
+			if(reg.getBeginDate().after(date1)) {
+				date1 = reg.getBeginDate();
+			}
+		}
+		
+		return new Date[] {date1, date2};
 	}
 
 	/**

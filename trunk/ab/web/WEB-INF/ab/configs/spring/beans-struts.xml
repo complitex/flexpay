@@ -267,7 +267,10 @@
 	</bean>
 	<bean id="setRegistrationAction" scope="prototype"
 		  class="org.flexpay.ab.actions.person.SetRegistrationAction">
+		<property name="parentService" ref="buildingService" /> 
+		<property name="apartmentService" ref="apartmentService" />
 		<property name="personService" ref="personService" />
+		<property name="buildingService" ref="buildingService" />
 	</bean>
 
 </beans>

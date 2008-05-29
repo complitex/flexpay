@@ -6,6 +6,10 @@ import org.flexpay.ab.dao.ApartmentDaoExt;
 import org.flexpay.ab.dao.ApartmentNumberDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
+import org.flexpay.ab.persistence.filters.CountryFilter;
+import org.flexpay.ab.persistence.filters.RegionFilter;
+import org.flexpay.ab.persistence.filters.StreetFilter;
+import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
@@ -162,5 +166,18 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 */
 	public void setApartmentNumberDao(ApartmentNumberDao apartmentNumberDao) {
 		this.apartmentNumberDao = apartmentNumberDao;
+	}
+	
+	public void fillFilterIds(Apartment apartment, CountryFilter countryFilter, RegionFilter regionFilter, TownFilter townFilter, StreetFilter streetFilter, BuildingsFilter buildingsFilter) {
+		apartment = apartmentDao.read(apartment.getId());
+		Buildings buildings = apartment.getBuilding().getDefaultBuildings();
+		buildingsFilter.setSelectedId(buildings.getId());
+		Street street = buildings.getStreet();
+		streetFilter.setSelectedId(street.getId());
+		Town town = (Town) street.getParent();
+		townFilter.setSelectedId(town.getId());
+		Region region = (Region) town.getParent();
+		regionFilter.setSelectedId(region.getId());
+		countryFilter.setSelectedId(region.getParent().getId());
 	}
 }
