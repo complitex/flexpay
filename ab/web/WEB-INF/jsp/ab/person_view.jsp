@@ -50,7 +50,7 @@
 		<td class="th"><s:text name="ab.person.registration_address"/></td>
 		<td class="col_1">
 			<s:property value="address"/>
-			<a href="<s:url value="/dicts/setRegistrationForm.action" />">
+			<a href="<s:url value="/dicts/setRegistrationAction.action" />">
 						<s:text name="ab.edit"/>
 			</a>
 		</td>

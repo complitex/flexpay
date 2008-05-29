@@ -84,4 +84,13 @@ public class ApartmentEditAction extends FiltersBaseAction {
 		this.apartmentNumber = apartmentNumber;
 	}
 
+
+
+	/**
+	 * @return the apartmentService
+	 */
+	public ApartmentService getApartmentService() {
+		return apartmentService;
+	}
+
 }
