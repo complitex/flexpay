@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.io.Serializable;
 
 import org.flexpay.common.process.ProcessManager;
-
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.After;
 
 public class TestJob extends TestCase {
     private final static String TEST_STRING = "test string";
@@ -16,16 +18,19 @@ public class TestJob extends TestCase {
 
     volatile boolean is_job_finished = false;
 
+    @Before
     public void setUp() throws Exception {
         this.is_job_finished = false;
         ProcessManager.unload();
         super.setUp();
     }
 
+    @After
     public void tearDown() throws Exception {
         super.tearDown();
     }
 
+    @Test
     public void testRun() throws Exception {
         ProcessManager pm = new ProcessManager() {
             {
@@ -49,7 +54,7 @@ public class TestJob extends TestCase {
         assertEquals(TEST_STRING, parameters.get(TEST_STRING));
     }
 
-
+    @Test
     public void testJobException() throws Exception {
         ProcessManager pm = new ProcessManager() {
             {
