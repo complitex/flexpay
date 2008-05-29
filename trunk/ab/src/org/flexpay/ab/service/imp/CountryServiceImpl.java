@@ -1,7 +1,14 @@
 package org.flexpay.ab.service.imp;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
 import org.apache.commons.collections.ArrayStack;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.CountryDao;
 import org.flexpay.ab.dao.CountryNameDao;
@@ -15,8 +22,6 @@ import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class CountryServiceImpl implements CountryService {
@@ -167,5 +172,9 @@ public class CountryServiceImpl implements CountryService {
 
 	public void setCountryNameDao(CountryNameDao countryNameDao) {
 		this.countryNameDao = countryNameDao;
+	}
+	
+	public Country readFull(Long id) {
+		return countryDao.readFull(id);
 	}
 }

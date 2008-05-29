@@ -1,14 +1,7 @@
 package org.flexpay.ab.actions.apartment;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ObjectAlreadyExistException;
-import org.flexpay.ab.persistence.PersonRegistration;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.exception.FlexPayException;
 
@@ -52,19 +45,7 @@ public class ApartmentEditAction extends FiltersBaseAction {
 		return "form";
 	}
 	
-	public List<PersonRegistration> sortPersonRegistrations(Set<PersonRegistration> registrations) {
-		List<PersonRegistration> result = new ArrayList<PersonRegistration>(registrations);
-		
-		Collections.sort(result, new Comparator () {
-	        public int compare(Object o1, Object o2) {
-	        	PersonRegistration pr1 = (PersonRegistration)o1;
-	        	PersonRegistration pr2 = (PersonRegistration)o2;
-	            return pr1.getBeginDate().compareTo(pr2.getBeginDate());
-	        }
-	    });
-		
-		return result;
-	}
+	
 
 	/**
 	 * @param apartmentService

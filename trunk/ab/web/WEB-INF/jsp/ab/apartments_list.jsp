@@ -27,10 +27,12 @@
 					<input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
 				</td>
 				<td class="col">
-					<s:property	value="%{number}"/>
+					<a href="<s:url action='apartmentRegistrationsAction'><s:param name="apartment.id" value="%{id}"/><s:param name="buildings.id" value="%{buildingsFilter.selectedId}"/></s:url>">
+	      				<s:property	value="%{number}"/>
+	    			</a>
 				</td>
 				<td class="col">
-					<a href="<s:url action='apartmentEditAction'><s:param name="apartment.id" value="%{id}"/></s:url>">
+					<a href="<s:url action='apartmentEditAction'><s:param name="apartment.id" value="%{id}"/><s:param name="buildings.id" value="%{buildingsFilter.selectedId}"/></s:url>">
 	      				<img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
 						 title="<s:text name="common.edit"/>" />
 	    			</a>

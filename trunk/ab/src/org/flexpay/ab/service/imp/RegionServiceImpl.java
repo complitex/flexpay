@@ -244,4 +244,8 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 
 		return false;
 	}
+	
+	public Region readFull(Long id) {
+		return regionDao.readFull(id);
+	}
 }

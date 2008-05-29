@@ -22,55 +22,51 @@
 	<s:form id="srform" action="setRegistrationForm">
 	<form id="srform" method="post" action="<s:url value="/dicts/setRegistrationForm" />">
 		<input type="hidden" name="personId" value="<%=request.getParameter("person.id") %>" />
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/country_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/region_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/town_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/street_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="4" align="center">
-				<%@ include file="filters/buildings_filter.jsp" %>
-			</td>
-		</tr>
+	<tr>
+		<td class="filter"><s:text name="ab.country"/></td>
+		<td><%@include file="filters/country_filter.jsp" %></td>
+		<td class="filter"><s:text name="ab.region"/></td>
+		<td><%@include file="filters/region_filter.jsp" %></td>
+	</tr>
+	<tr>
+		<td class="filter"><s:text name="ab.town"/></td>
+		<td><%@include file="filters/town_filter.jsp" %></td>
+		<td class="filter"><s:text name="ab.street"/></td>
+		<td><%@include file="filters/street_filter.jsp" %></td>
+	</tr>
+	<tr>
+		<td class="filter"><s:text name="ab.building"/></td>
+		<td><%@include file="filters/buildings_filter.jsp" %></td>
+		<td class="filter"><s:text name="ab.apartment"/></td>
+		<td>
+		<select name="apartmentId" class="form-select">
+			<s:iterator value="apartments">
+				<option  value="<s:property value="%{id}"/>">
+					<s:property value="number"/>
+				</option>
+			</s:iterator>
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="filter">
+			Start date
+		</td>
+		<td>
+			<s:textfield name="beginDate" id="beginDate" value="%{beginDate}"/>
+			
+		</td>
+		<td class="filter">
+			End date
+		</td>
+		<td>
+			<s:textfield name="endDate" id="endDate" value="%{endDate}"/>
+			
+		</td>
+	</tr>
 
-		<tr>
-			<td class="th" width="1%">&nbsp;</td>
-			<td class="th" width="98%">
-				<s:text name="ab.apartment"/> 
-			</td>
-		</tr>
-		<s:iterator value="%{apartments}" status="status">
-			<tr valign="middle" class="cols_1">
-				<td class="col_1s" align="right">
-					<s:property	value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
-					&nbsp;
-				</td>
-				<td class="col">
-					<input type="radio" value="<s:property value="%{id}"/>" name="apartmentId"/>
-					<s:property	value="%{number}"/>
-				</td>
-			</tr>
-		</s:iterator>
-		<tr class="cols_1">
-			<td class="col" width="100%" colspan="3" align="center">
-				<%@ include file="filters/pager.jsp" %>
-			</td>
-		</tr>
+		
+		
 		<tr>
 			<td colspan="3">
 				<input type="submit" class="btn-exit"

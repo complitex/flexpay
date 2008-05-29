@@ -61,7 +61,7 @@ public class PersonRegistration extends DomainObject {
 	}
 	
 	public boolean isValid(Date date) {
-		return date.after(beginDate) && !date.after(endDate) ? true : false;
+		return !date.before(beginDate) && !date.after(endDate) ? true : false;
 	}
 
 }
