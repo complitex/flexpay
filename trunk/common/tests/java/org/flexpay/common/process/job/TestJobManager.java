@@ -10,23 +10,29 @@ import junit.framework.TestCase;
 import java.util.HashMap;
 import java.io.Serializable;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.After;
+
 public class TestJobManager extends TestCase {
 
     public static volatile boolean job_finished = false;
     public static volatile boolean job_waiting = true;
     public final static String TEST_STRING = "test string";
 
-
+    @Before
     public void setUp() throws Exception {
         job_finished = false;
         ProcessManager.unload();
         super.setUp();
     }
 
+    @After
     public void tearDown() throws Exception {
         super.tearDown();
     }
 
+    @Test
     public void testAddJob_Added() {
         try {
             new ProcessManagerConfiguration() {
@@ -49,11 +55,11 @@ public class TestJobManager extends TestCase {
                 }
             };
 
-            HashMap<Serializable, Serializable> parameters = new HashMap <Serializable, Serializable>();
+            HashMap<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
             JobManager jobManager = JobManager.getInstance();
             jobManager.addJob(1, 1, "MockJob", parameters);
             while (!job_finished) {
-                assertEquals(1,jobManager.getJobList().size());
+                assertEquals(1, jobManager.getJobList().size());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,7 +67,8 @@ public class TestJobManager extends TestCase {
         }
     }
 
-    public void testJobClassConfigurationNotFound(){
+    @Test
+    public void testJobClassConfigurationNotFound() {
         try {
             new ProcessManagerConfiguration() {
                 {
@@ -69,7 +76,7 @@ public class TestJobManager extends TestCase {
                 }
 
                 public String getJobClazzName(String jobName) throws JobConfigurationNotFoundException {
-                    throw new JobConfigurationNotFoundException("configuration for " + jobName+" not found" );
+                    throw new JobConfigurationNotFoundException("configuration for " + jobName + " not found");
 //                    return "org.flexpay.common.process.job." + jobName;
                 }
             };
@@ -85,7 +92,7 @@ public class TestJobManager extends TestCase {
             };
             JobManager jobManager = JobManager.getInstance();
             jobManager.addJob(1, 1, "--=No One Job has this long name=--", new HashMap<Serializable, Serializable>());
-        } catch(JobConfigurationNotFoundException e){
+        } catch (JobConfigurationNotFoundException e) {
             assertTrue(true);
         } catch (JobClassNotFoundException e) {
             fail();
@@ -94,7 +101,8 @@ public class TestJobManager extends TestCase {
         }
     }
 
-        public void testJobClassNotFound(){
+    @Test
+    public void testJobClassNotFound() {
         try {
             new ProcessManagerConfiguration() {
                 {
@@ -117,7 +125,7 @@ public class TestJobManager extends TestCase {
             };
             JobManager jobManager = JobManager.getInstance();
             jobManager.addJob(1, 1, "--=No One Job has this long name=--", new HashMap<Serializable, Serializable>());
-        } catch(JobConfigurationNotFoundException e){
+        } catch (JobConfigurationNotFoundException e) {
             fail();
         } catch (JobClassNotFoundException e) {
             assertTrue(true);
@@ -126,7 +134,8 @@ public class TestJobManager extends TestCase {
         }
     }
 
-     public void testJobInstantiation(){
+    @Test
+    public void testJobInstantiation() {
         try {
             new ProcessManagerConfiguration() {
                 {
@@ -149,7 +158,7 @@ public class TestJobManager extends TestCase {
             };
             JobManager jobManager = JobManager.getInstance();
             jobManager.addJob(1, 1, "MockFakeJob", new HashMap<Serializable, Serializable>());
-        } catch(JobConfigurationNotFoundException e){
+        } catch (JobConfigurationNotFoundException e) {
             fail();
         } catch (JobClassNotFoundException e) {
             fail();
