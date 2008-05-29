@@ -9,6 +9,7 @@
 		<id name="id" column="id">
 			<generator class="native"/>
 		</id>
+		<property name="status" not-null="true"/>
 		<many-to-one name="organisation" class="Organisation" foreign-key="FK_eirc_service_provider_organisation">
 			<column name="organisation_id" not-null="true">
 				<comment>Organisation reference</comment>
@@ -20,11 +21,10 @@
 				<comment>Data source description reference</comment>
 			</column>
 		</many-to-one>
-		<set name="descriptions" inverse="true">
+		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
 			<key column="service_provider_id" not-null="true"/>
 			<one-to-many class="ServiceProviderDescription"/>
 		</set>
-		<property name="providerNumber" not-null="true" column="provider_number" unique="true"/>
 	</class>
 
 	<class name="ServiceProviderDescription" table="eirc_service_provider_descriptions_tbl">
@@ -119,4 +119,36 @@
 		</properties>
 	</class>
 
+	<query name="ServiceProvider.readFull">
+		select distinct o
+		from ServiceProvider o
+		 	left join fetch o.descriptions
+		 	inner join fetch o.organisation org
+		 	left join fetch org.names
+		where o.id=?
+	</query>
+
+	<query name="ServiceProvider.findProviderlessOrgs">
+		select distinct o
+		from Organisation o
+		 	left join fetch o.names
+			left join fetch o.descriptions
+			left join fetch o.serviceProviders sp
+		where o.status=0
+	</query>
+
+	<query name="ServiceProvider.findProviders.count">
+		select count(*)
+		from ServiceProvider o
+		where o.status=0
+	</query>
+
+	<query name="ServiceProvider.findProviders">
+		select distinct o
+		from ServiceProvider o
+		 	left join fetch o.descriptions
+		 	inner join fetch o.organisation org
+		 	left join fetch org.names 
+		where o.status=0
+	</query>
 </hibernate-mapping>

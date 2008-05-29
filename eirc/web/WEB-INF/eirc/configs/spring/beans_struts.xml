@@ -98,6 +98,19 @@
 		  class="org.flexpay.eirc.actions.organisation.EditOrganisationAction"
 		  p:organisationService-ref="organisationService" />
 
+	<bean id="listServiceProvidersAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.serviceprovider.ListServiceProvidersAction"
+		  p:spService-ref="spService" />
+
+	<bean id="deleteServiceProvidersAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.serviceprovider.DeleteServiceProvidersAction"
+		  p:spService-ref="spService" />
+
+	<bean id="editServiceProviderAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.serviceprovider.EditServiceProviderAction"
+		  p:organisationService-ref="organisationService"
+		  p:spService-ref="spService" />
+
 	<bean id="selectCorrectionTypeAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.corrections.SelectTypeAction">
 		<property name="registryRecordService" ref="spRegistryRecordService" />

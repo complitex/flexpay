@@ -31,4 +31,13 @@ public class DomainObjectWithStatus extends DomainObject implements ObjectWithSt
 	public void setStatus(int status) {
 		this.status = status;
 	}
+
+	/**
+	 * Check if object is active
+	 *
+	 * @return <code>true</code> if object status is active, or <code>false</code> otherwise
+	 */
+	public boolean isActive() {
+		return status == STATUS_ACTIVE;
+	}
 }

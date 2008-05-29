@@ -40,4 +40,17 @@ public class DomainObject implements Serializable {
 	public int hashCode() {
 		return id == null ? 0 : id.hashCode();
 	}
+
+	/**
+	 * Check if object is new (not persistent instance)
+	 *
+	 * @return <code>true</code> if object id is null or equals to 0, or <code>false</code> otherwise
+	 */
+	public boolean isNew() {
+		return getId() == null || getId().equals(Long.valueOf(0));
+	}
+
+	public boolean isNotNew() {
+		return !isNew();
+	}
 }
