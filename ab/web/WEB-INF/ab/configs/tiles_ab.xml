@@ -221,5 +221,13 @@
 		<put-attribute name="title" value="ab.apartment.edit.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/apartment_edit.jsp" />
 	</definition>
+	<definition name="ab.apartment.registrations" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.apartment.registrations.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/apartment_registrations.jsp" />
+	</definition>
+	<definition name="ab.apartment.registrations_history" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.apartment.registrations_history.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/apartment_registrations_history.jsp" />
+	</definition>
 
 </tiles-definitions>

@@ -1,5 +1,6 @@
 package org.flexpay.ab.persistence;
 
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.util.DateIntervalUtil;
 
@@ -137,7 +138,29 @@ public class Person extends DomainObjectWithStatus {
 	}
 	
 	public void setApartment(Apartment apartment) {
-		// TODO realize it
+		setPersonRegistration(apartment, null, null);
+	}
+	
+	public void setPersonRegistration(Apartment apartment, Date beginDate, Date endDate) {
+		if(beginDate == null) {
+			beginDate = ApplicationConfig.getInstance().getPastInfinite();
+		}
+		if(endDate == null) {
+			endDate = ApplicationConfig.getInstance().getFutureInfinite();
+		}
+		
+		for(PersonRegistration reg : personRegistrations) {
+			if(reg.getEndDate().after(beginDate)) {
+				reg.setEndDate(beginDate);
+			}
+		}
+		
+		PersonRegistration reg = new PersonRegistration();
+		reg.setApartment(apartment);
+		reg.setPerson(this);
+		reg.setBeginDate(beginDate);
+		reg.setEndDate(endDate);
+		personRegistrations.add(reg);
 	}
 
 	/**

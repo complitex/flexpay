@@ -309,6 +309,12 @@
 			<result name="form" type="tiles">ab.apartment.edit</result>
 			<result name="list" type="redirect-action">list_apartments</result>
 		</action>
+		<action name="apartmentRegistrationsAction" class="apartmentRegistrationsAction">
+			<result name="success" type="tiles">ab.apartment.registrations</result>
+		</action>
+		<action name="apartmentRegistrationsHistoryAction" class="apartmentRegistrationsAction">
+			<result name="success" type="tiles">ab.apartment.registrations_history</result>
+		</action>
 	</package>
 
 </struts>

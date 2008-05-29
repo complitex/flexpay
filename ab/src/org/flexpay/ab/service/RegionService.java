@@ -11,5 +11,7 @@ import org.flexpay.common.service.ParentService;
 public interface RegionService extends
 		ParentService<RegionFilter>,
 		NameTimeDependentService<RegionName, RegionNameTemporal, Region, RegionNameTranslation> {
+	
+	Region readFull(Long id);
 
 }

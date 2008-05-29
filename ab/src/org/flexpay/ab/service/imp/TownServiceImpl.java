@@ -331,4 +331,8 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 
 		return object;
 	}
+	
+	public Town readFull(Long id) {
+		return townDao.readFull(id);
+	} 
 }

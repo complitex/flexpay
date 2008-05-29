@@ -39,4 +39,6 @@ public interface CountryService extends ParentService<CountryFilter> {
 	 */
 	CountryFilter initFilter(CountryFilter countryFilter, Locale locale)
 			throws FlexPayException;
+	
+	Country readFull(Long id);
 }

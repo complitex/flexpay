@@ -1,0 +1,76 @@
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+
+
+
+
+<table cellpadding="3" cellspacing="1" border="0" width="100%">
+  <tr>
+      <td colspan="5" width="100%">
+        <s:property value="%{getTranslation(country.countryNames).name}" />,
+		<s:property value="%{getTranslation(region.currentName.translations).name}" />,
+		<s:property value="%{getTranslation(town.currentName.translations).name}" />,
+		<s:property value="%{getTranslation(buildings.street.currentType.translations).shortName}" />.
+		<s:property value="%{getTranslation(buildings.street.currentName.translations).name}" />,
+		<s:property value="%{buildings.format(userPreferences.locale, true)}" />,
+		<s:text name="ab.apartment" />
+		<s:property value="%{apartment.number}" />
+      </td>
+  </tr>
+ 
+  <tr>
+      <td class="th" width="1%">
+        &nbsp;
+      </td>
+	  <td class="th">
+	    FIO
+	  </td>
+	  <td class="th">
+	    Birth date
+	  </td>
+	  <td class="th">
+	    Registration from date
+	  </td>
+	  <td class="th">
+	    Registration till date
+	  </td>
+  </tr>
+  <s:iterator value="apartment.validPersonRegistrations" status="status">
+	<tr valign="middle" class="cols_1">
+	  <td class="col_1s" align="right">
+		<s:property	value="%{#status.index + 1}"/>
+	  </td>
+	  <td class="col">
+	    <a href="<s:url action='view_person'><s:param name="person.id" value="%{person.id}" /></s:url>">
+	      	<s:property value="person.defaultIdentity.lastName" />
+	        <s:property value="person.defaultIdentity.firstName" />
+	        <s:property value="person.defaultIdentity.middleName" />
+		</a>
+	  </td>
+	  <td class="col">
+	    <s:property value="person.defaultIdentity.birthDate" />
+	  </td>
+	  <td class="col">
+	    <s:property value="beginDate" />
+	  </td>
+	  <td class="col">
+	    <s:property value="endDate" />
+	  </td>
+	</tr>
+  </s:iterator>
+  
+  <tr>
+      <td>
+        &nbsp;
+      </td>
+  </tr>
+  
+  <tr>
+      <td colspan="5" width="100%">
+        <input type="button" class="btn-exit"
+			  onclick="window.location='<s:url action='apartmentRegistrationsHistoryAction'><s:param name="apartment.id" value="%{apartment.id}"/><s:param name="buildings.id" value="%{buildings.id}"/></s:url>'"
+			   value="<s:text name="ab.apartment.registrations_history.title" />"/>
+      </td>
+  </tr>
+</table>
+
+
