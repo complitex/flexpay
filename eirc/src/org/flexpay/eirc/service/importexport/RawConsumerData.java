@@ -117,20 +117,14 @@ public class RawConsumerData extends RawData<Consumer> {
 
 	public String getApartmentId() {
 		return new StringBuilder()
-				.append(getAddressCity()).append('|')
-				.append(getAddressStreet()).append('|')
-				.append(getAddressStreetType()).append('|')
-				.append(getAddressHouse()).append('|')
-				.append(getAddressBulk()).append('|')
+				.append(getBuildingId())
 				.append(getAddressApartment()).append('|')
 				.toString();
 	}
 
 	public String getBuildingId() {
 		return new StringBuilder()
-				.append(getAddressCity()).append('|')
-				.append(getAddressStreet()).append('|')
-				.append(getAddressStreetType()).append('|')
+				.append(getStreetId())
 				.append(getAddressHouse()).append('|')
 				.append(getAddressBulk()).append('|')
 				.toString();
@@ -140,6 +134,7 @@ public class RawConsumerData extends RawData<Consumer> {
 		return new StringBuilder()
 				.append(getAddressCity()).append('|')
 				.append(getAddressStreet()).append('|')
+				.append(getAddressStreetType()).append('|')
 				.toString();
 	}
 }
