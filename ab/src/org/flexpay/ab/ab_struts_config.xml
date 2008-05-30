@@ -291,6 +291,14 @@
 				<param name="buildings.id">${redirectBuildingsId!=null ? redirectBuildingsId : buildings.id}</param>
 			</result>
 		</action>
+		
+		<action name="buildingAttributeTypeListAction" class="buildingAttributeTypeListAction">
+			<result name="list" type="tiles">ab.buildings.attribute_types.list</result>
+		</action>
+		<action name="buildingAttributeTypeCreateAction" class="buildingAttributeTypeCreateAction">
+			<result name="form" type="tiles">ab.buildings.attribute_types.create</result>
+			<result name="list" type="redirect-action">buildingAttributeTypeListAction</result>
+		</action>
 	</package>
 
 	<package name="apartments" namespace="/dicts" extends="common">

@@ -36,6 +36,7 @@ public class BuildingServiceImpl implements BuildingService {
 	private BuildingsDao buildingsDao;
 	private BuildingAttributeTypeDao buildingsTypeDao;
 	private BuildingsDaoExt buildingsDaoExt;
+	private BuildingAttributeTypeDao buildingAttributeTypeDao;
 
 	private ParentService<StreetFilter> parentService;
 	private ParentService<DistrictFilter> districtParentService;
@@ -437,5 +438,21 @@ public class BuildingServiceImpl implements BuildingService {
 
 	public Building readBuilding(Long id) {
 		return buildingDao.read(id);
+	}
+	
+	@Transactional(readOnly = false)
+	public BuildingAttributeType createBuildingAttributeType(BuildingAttributeType type) {
+		Long id = buildingAttributeTypeDao.create(type);
+		type.setId(id);
+		
+		return type;
+	}
+
+	/**
+	 * @param buildingAttributeTypeDao the buildingAttributeTypeDao to set
+	 */
+	public void setBuildingAttributeTypeDao(
+			BuildingAttributeTypeDao buildingAttributeTypeDao) {
+		this.buildingAttributeTypeDao = buildingAttributeTypeDao;
 	}
 }

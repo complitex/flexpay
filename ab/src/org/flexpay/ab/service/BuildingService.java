@@ -171,4 +171,6 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 			throws FlexPayException;
 
 	Building readBuilding(Long id);
+	
+	BuildingAttributeType createBuildingAttributeType(BuildingAttributeType type);
 }

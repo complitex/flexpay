@@ -131,6 +131,7 @@
 	</query>
 
 	<query name="BuildingAttributeType.findAttributeTypes">
+		SELECT DISTINCT type
 		FROM BuildingAttributeType type
 		LEFT JOIN FETCH type.translations typeTr
 		LEFT JOIN FETCH typeTr.lang langAttr
