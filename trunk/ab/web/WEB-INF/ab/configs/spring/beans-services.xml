@@ -54,6 +54,7 @@
 		<property name="buildingsDao" ref="buildingsDao" />
 		<property name="buildingsTypeDao" ref="buildingAttributeTypeDao" />
 		<property name="buildingsDaoExt" ref="buildingsDaoExt" />
+		<property name="buildingAttributeTypeDao" ref="buildingAttributeTypeDao" />
 		<property name="parentService" ref="streetService" />
         <property name="districtParentService" ref="districtService" />
     </bean>

@@ -168,6 +168,17 @@
 		  class="org.flexpay.ab.actions.buildings.BuildingsSetPrimaryStatusAction">
 		<property name="buildingService" ref="buildingService" />	  
 	</bean>
+	
+	<!-- BuildingAttributeTypes -->
+	<bean id="buildingAttributeTypeListAction" scope="prototype"
+		  class="org.flexpay.ab.actions.buildings.BuildingAttributeTypeListAction">
+		<property name="buildingService" ref="buildingService" />
+	</bean>
+	<bean id="buildingAttributeTypeCreateAction" scope="prototype"
+		  class="org.flexpay.ab.actions.buildings.BuildingAttributeTypeCreateAction">
+		<property name="buildingService" ref="buildingService" />
+		<property name="languageService" ref="languageService" />
+	</bean>
 
 	<!-- Apartments -->
 	<bean id="listApartments" scope="prototype"

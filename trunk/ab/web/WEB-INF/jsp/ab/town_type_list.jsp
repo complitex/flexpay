@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-<s:form action="street_type_delete">
+<s:form action="town_type_delete">
   <tr>
 	<td class="th">
 	  &nbsp;
@@ -15,9 +15,6 @@
 	<td class="th">
 	  &nbsp;
 	</td>
-	<td class="th">
-	  &nbsp;
-	</td>
   </tr>
   <s:iterator value="translationList" status="rowstatus">
     <tr valign="middle" class="cols_1">
@@ -25,7 +22,7 @@
 	    <s:property value="#rowstatus.index + 1" />
 	  </td>
 	  <td class="col">
-	    <s:checkbox name="idList" fieldValue="%{townType.id}" />
+	    <s:checkbox name="idList" fieldValue="%{translatable.id}" />
 	  </td>
 	  <td class="col">
 	    <a href="<s:url action='town_type_view'><s:param name="id" value="%{translatable.id}"/></s:url>">
@@ -35,11 +32,6 @@
 	  <td class="col">
 	    <a href="<s:url action='town_type_edit'><s:param name="id" value="%{translatable.id}"/></s:url>">
 	      <s:text name="ab.edit" />
-	    </a>
-	  </td>
-	  <td class="col">
-	    <a href="<s:url action='town_type_delete'><s:param name="idList" value="%{translatable.id}"/></s:url>">
-	      <s:text name="ab.delete" />
 	    </a>
 	  </td>
 	</tr>
@@ -52,13 +44,13 @@
   <tr>
     <td colspan="5">
       <s:submit name="submit" value="%{getText('ab.delete')}" cssClass="btn-exit" />
+      
+      <input type="button" class="btn-exit"
+					 onclick="window.location='<s:url action='town_type_create'/>'"
+                     value="<s:text name="common.new"/>"/>
     </td>
   </tr>
   
-  <tr>
-    <td colspan="5">
-      <a href="<s:url action='town_type_create'/>"><s:text name="ab.create" /></a>
-    </td>
-  </tr>
+
 </s:form>
 </table>
