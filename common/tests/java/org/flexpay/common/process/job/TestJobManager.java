@@ -58,8 +58,8 @@ public class TestJobManager extends TestCase {
             HashMap<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
             JobManager jobManager = JobManager.getInstance();
             jobManager.addJob(1, 1, "MockJob", parameters);
+            assertEquals(1, jobManager.getJobList().size());
             while (!job_finished) {
-                assertEquals(1, jobManager.getJobList().size());
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -60,44 +60,45 @@ public class ProcessManager implements Runnable {
 
     /**
      * Deploys process definition to jbpm by process definition name
-     * @param name name of process definition
+     *
+     * @param name    name of process definition
      * @param replace if true old process definition should be removed with new one
      * @return ID of process definition
      * @throws ProcessDefinitionException when can't deplot process definition to jbpm
-     * @throws ProcessManagerConfigurationException when misconfiguration present
+     * @throws ProcessManagerConfigurationException
+     *                                    when misconfiguration present
      */
-    public long deployProcessDefinition( String name, boolean replace)
-			throws ProcessDefinitionException, ProcessManagerConfigurationException {
-
-        //@todo get InputStream by process name
+    public long deployProcessDefinition(String name, boolean replace)
+            throws ProcessDefinitionException, ProcessManagerConfigurationException {
 
         InputStream inputStream = null;
         try {
-            inputStream = new FileInputStream("c:\\processDefinition.xml");
+            inputStream = ProcessManagerConfiguration.getProcessDefinitionOSByName(name); //new FileInputStream("c:\\processDefinition.xml");
         } catch (FileNotFoundException e) {
-            FPLogger.logMessage(FPLogger.ERROR,"ProcessManager: process definition for name "+name+"file not found!");
+            FPLogger.logMessage(FPLogger.ERROR, "ProcessManager: process definition for name " + name + "file not found!");
             throw new ProcessManagerConfigurationException(e);
         }
-        return deployProcessDefinition(inputStream,replace);
+        return deployProcessDefinition(inputStream, replace);
     }
 
     /**
      * Deploys process definition to jbpm from inputStream
-     * @param in input stream with process definition
+     *
+     * @param in      input stream with process definition
      * @param replace replace if true old process definition should be removed with new one
      * @return ID of process definition
      * @throws ProcessDefinitionException when can't deplot process definition to jbpm
      */
     public long deployProcessDefinition(InputStream in, boolean replace) throws ProcessDefinitionException {
         ProcessDefinition processDefinition = null;
-        try{
+        try {
             processDefinition = ProcessDefinition.parseXmlInputStream(in);
-            return deployProcessDefinition(processDefinition,replace);
-        } catch (Exception e){
+            return deployProcessDefinition(processDefinition, replace);
+        } catch (Exception e) {
             FPLogger.logMessage(FPLogger.ERROR, "deployProcessDefinition: ", e);
-            if (processDefinition == null){
+            if (processDefinition == null) {
                 throw new ProcessDefinitionException("ProcessManager: InputStream is not process definition file");
-            }else{
+            } else {
                 throw new ProcessDefinitionException("ProcessManager: Can't deploy processDefinition for " + processDefinition.getName());
             }
         }
@@ -105,8 +106,9 @@ public class ProcessManager implements Runnable {
 
     /**
      * Delpoys parsed process definition to jbpm
+     *
      * @param processDefinition parsed process definition
-     * @param replace replace replace if true old process definition should be removed with new one
+     * @param replace           replace replace if true old process definition should be removed with new one
      * @return ID of process definition
      */
     public long deployProcessDefinition(ProcessDefinition processDefinition, boolean replace) {
@@ -117,26 +119,26 @@ public class ProcessManager implements Runnable {
         GraphSession graphSession = jbpmContext.getGraphSession();
         ProcessDefinition latestProcessDefinition = graphSession.findLatestProcessDefinition(processDefinition.getName());
 
-        int newV;
+        int newVersion;
 
         if (replace || (latestProcessDefinition == null)) {
             if (latestProcessDefinition == null) {
                 FPLogger.logMessage(FPLogger.INFO, "Process definition not found. Deploying " + processDefinition.getName() + "...");
-                newV = 1;
-                processDefinition.setVersion(newV);
+                newVersion = 1;
+                processDefinition.setVersion(newVersion);
             } else {
-                int oldV = latestProcessDefinition.getVersion();
+                int oldVersion = latestProcessDefinition.getVersion();
                 FPLogger.logMessage(FPLogger.INFO, "Deploying new version of process definition " + processDefinition.getName() + "...");
-                newV = oldV + 1;
-                processDefinition.setVersion(newV);
-                FPLogger.logMessage(FPLogger.INFO, "Old version = " + oldV + " New version = " + newV);
+                newVersion = oldVersion + 1;
+                processDefinition.setVersion(newVersion);
+                FPLogger.logMessage(FPLogger.INFO, "Old version = " + oldVersion + " New version = " + newVersion);
             }
             graphSession.saveProcessDefinition(processDefinition);
             FPLogger.logMessage(FPLogger.INFO, "Deployed.");
         }
         //close JbpmContext and commit transaction
         jbpmContext.close();
-                return processDefinition.getId();
+        return processDefinition.getId();
     }
 
     /**
@@ -183,7 +185,6 @@ public class ProcessManager implements Runnable {
     }
 
     /**
-     *
      * @return true if ProcessManager id not running
      */
     public synchronized boolean isStop() {
@@ -192,13 +193,14 @@ public class ProcessManager implements Runnable {
 
     /**
      * Init process by process definition name
+     *
      * @param processDefinitionName name of process definition
      * @return ID of process definition
      * @throws ProcessDefinitionException when process definition has an error
-     * @throws ProcessInstanceException when jbpm can't instanciate process from process definition
+     * @throws ProcessInstanceException   when jbpm can't instanciate process from process definition
      */
     public synchronized Long initProcess(String processDefinitionName)
-            throws ProcessDefinitionException, ProcessInstanceException{
+            throws ProcessDefinitionException, ProcessInstanceException {
         ProcessDefinition processDefinition;
         Long processId;
         JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
@@ -232,6 +234,7 @@ public class ProcessManager implements Runnable {
 
     /**
      * Return process context parameters
+     *
      * @param processID process ID
      * @return HashMap with process context parameters
      * @throws ProcessInstanceException when can't get process parameters
@@ -256,6 +259,7 @@ public class ProcessManager implements Runnable {
 
     /**
      * Return all process definitions
+     *
      * @return List with process definition IDs
      * @throws ProcessInstanceException when runtime exception caught
      */
@@ -282,19 +286,39 @@ public class ProcessManager implements Runnable {
     /**
      *
      */
-    public synchronized void createProcess(){
-        Process process = new Process();
+    public synchronized void createProcess(String processDefinitionName, HashMap<Serializable, Serializable> parameters) throws ProcessInstanceException, ProcessDefinitionException {
+//        Process process = new Process(processDefinitionName);
+        long processInstanceID = initProcess(processDefinitionName);
+//        process.setId(processInstanceID);
+
+        //starting process
+        JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
+        GraphSession graphSession = jbpmContext.getGraphSession();
+        ProcessInstance processInstance = graphSession.loadProcessInstance(processInstanceID);
+
+        ContextInstance ci = processInstance.getContextInstance();
+        if (parameters == null) {
+            parameters = new HashMap<Serializable, Serializable>();
+        }
+        parameters.put(PROCESS_INSTANCE_ID, String.valueOf(processInstanceID));
+        ci.addVariables(parameters);
+        Token token = processInstance.getRootToken();
+        token.signal();
+        jbpmContext.close();
+        FPLogger.logMessage(FPLogger.INFO, "initProcess: Process Instance id = " + processInstanceID + " started.");
+
         //@TODO method body
-        waiting.put((long) 1,process);
+//        waiting.put((long) 1, process);
     }
 
     /**
      * Start task instance
-      * @param task taskInstance to start
+     *
+     * @param task taskInstance to start
      * @return true if task started
      */
-    @SuppressWarnings ({"unchecked"})
-	protected boolean startTask(TaskInstance task) {
+    @SuppressWarnings({"unchecked"})
+    protected boolean startTask(TaskInstance task) {
         // get ProcessInstance dictionary to pass it to Job
         ProcessInstance pi = task.getTaskMgmtInstance().getProcessInstance();
         ContextInstance ci = pi.getContextInstance();
@@ -310,7 +334,7 @@ public class ProcessManager implements Runnable {
         String pid = String.valueOf(pi.getId());
 
         if (startTaskCounter <= startTaskLimit) {
-            HashMap<Serializable,Serializable> params = (HashMap<Serializable,Serializable>) ci.getVariables();
+            HashMap<Serializable, Serializable> params = (HashMap<Serializable, Serializable>) ci.getVariables();
 
             FPLogger.logMessage(FPLogger.INFO, "Starting task \"" + task.getName() + "\" (" + ti + ", pid - " + pid + ")");
 
@@ -325,7 +349,7 @@ public class ProcessManager implements Runnable {
             pi.end();
             task.end();
             //set status to failed
-            ci.setVariable(Job.ERROR,ProcessState.COMPLITED_WITH_ERRORS);
+            ci.setVariable(Job.ERROR, ProcessState.COMPLITED_WITH_ERRORS);
             //remove from running tasks
             running.remove(ti);
             return false;
@@ -334,7 +358,8 @@ public class ProcessManager implements Runnable {
 
     /**
      * Called when process job was finished
-     * @param taskId Task ID
+     *
+     * @param taskId     Task ID
      * @param parameters Task context parameters
      * @param transition transition name
      */
@@ -361,7 +386,7 @@ public class ProcessManager implements Runnable {
                     ContextInstance ci = task.getTaskMgmtInstance().getProcessInstance().getContextInstance();
                     // save the variables in ProcessInstance dictionary
                     ci.addVariables(parameters);
-                    ci.setVariable("StartTaskCounter",0, task.getToken());
+                    ci.setVariable("StartTaskCounter", 0, task.getToken());
                     // mark task as ended with job result code as decision transition value
                     task.end(transition);
                 }
@@ -387,13 +412,14 @@ public class ProcessManager implements Runnable {
 
     /**
      * Start process by processID
-     * @param processID process ID
+     *
+     * @param processID  process ID
      * @param parameters process parameters
      * @throws ProcessInstanceException when can't start process
      */
-    public void startProcess(Long processID, HashMap<Serializable,Serializable> parameters)
-        throws ProcessInstanceException {
-         try {
+    public void startProcess(Long processID, HashMap<Serializable, Serializable> parameters)
+            throws ProcessInstanceException {
+        try {
             JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
             GraphSession graphSession = jbpmContext.getGraphSession();
             ProcessInstance processInstance = graphSession.loadProcessInstance(processID);
@@ -416,6 +442,7 @@ public class ProcessManager implements Runnable {
 
     /**
      * Remove proces from execution
+     *
      * @param processID process ID
      * @throws ProcessInstanceException when runtime exception
      */
@@ -447,19 +474,69 @@ public class ProcessManager implements Runnable {
 
     /**
      * Sets JbpmConfiguration
+     *
      * @param jbpmConfiguration - current jbpmConfiguration
      */
     public void setJbpmConfiguration(JbpmConfiguration jbpmConfiguration) {
-        this.jbpmConfiguration = jbpmConfiguration; 
+        this.jbpmConfiguration = jbpmConfiguration;
     }
 
     /**
      * Unload process manager and stop process manager thread
      */
     public static synchronized void unload() {
-        if (instance != null){
+        if (instance != null) {
             instance.stop();
             instance = null;
         }
     }
+
+    public List<Process> getProcessList(){
+        ArrayList<Process> processList = new ArrayList<Process>();
+        JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
+        GraphSession graphSession = jbpmContext.getGraphSession();
+        List<ProcessDefinition> processDefinitionList = graphSession.findAllProcessDefinitions();
+        for (ProcessDefinition processDefinition: processDefinitionList){
+            List<ProcessInstance> processInstanceList = graphSession.findProcessInstances(processDefinition.getId());
+            for (ProcessInstance processInstance: processInstanceList){
+                Process process = new Process();
+                process.setProcessDefinitionName(processInstance.getProcessDefinition().getName());
+                process.setProcess_end_date(processInstance.getEnd());
+                process.setProcess_start_date(processInstance.getStart());
+                process.setProcessDefenitionVersion(processInstance.getProcessDefinition().getVersion());
+                HashMap prameters = new HashMap();
+                prameters.putAll(processInstance.getContextInstance().getVariables());
+                process.setParameters(prameters);
+                processList.add(process);
+            }
+        }
+        jbpmContext.close();
+        return processList;
+    }
+    /**
+             List<WorkflowProcessInstanceInfo> li = new ArrayList<WorkflowProcessInstanceInfo> ();
+        //noinspection unchecked
+        List <ProcessDefinition> pdList = jbpmSession.getGraphSession().findAllProcessDefinitionVersions(processDefinitionName);
+        for (ProcessDefinition pd : pdList){
+            //noinspection unchecked
+            List <ProcessInstance> piList = jbpmSession.getGraphSession().findProcessInstances(pd.getId());
+            for (ProcessInstance process : piList){
+              ContextInstance contextInstance = process.getContextInstance();
+              String processType = (String) contextInstance.getVariable("PROCESS_TYPE");
+              if (processType !=null && processType.equals(PROCESS_TYPE_WORKFLOF)){
+                  WorkflowProcessInstanceInfo pInfo = new WorkflowProcessInstanceInfo(
+                          new ProcessState(process.getId(),
+                                  ProcessInfoHelper.getProcessState(process.getStart(), process.getEnd()),
+                                  process.getStart(),
+                                  process.getEnd()));
+                  pInfo.setWorkflowProcessdefinitionID(pd.getId());
+                  pInfo.setName(process.getProcessDefinition().getName());
+                  pInfo.setId(process.getId());
+                  pInfo.setDescription((String)process.getContextInstance().getVariable(WORKFLOW_PROCESS_DESCRIPTION));
+                  li.add(pInfo);
+              }
+            }
+        }
+        return li;
+     */
 }
