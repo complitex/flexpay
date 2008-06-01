@@ -3,6 +3,8 @@ package org.flexpay.common.process;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.exception.JobConfigurationNotFoundException;
 
+import java.io.*;
+
 public class ProcessManagerConfiguration {
 
     public static final String CONFIG_FILE = "process_manager.cfg.xml";
@@ -36,5 +38,9 @@ public class ProcessManagerConfiguration {
 
     public static String getConnectionPassword() {
         return connectionPassword;
+    }
+
+    public static InputStream getProcessDefinitionOSByName(String processDefinitionName) throws FileNotFoundException {
+        return new FileInputStream("c:\\processDefinition.xml");
     }
 }

@@ -87,6 +87,7 @@ public class JobManager {
 
     public synchronized final void addJob(Job job, HashMap<Serializable, Serializable> param) {
         if (runningJobs.size() < MAXIMUM_RUNNING_JOBS) {
+//            runningJobs.put(job.getId(),job);
             this.start(job, param);
         } else {
             waitingJobs.addLast(job);
