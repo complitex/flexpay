@@ -2,11 +2,13 @@ package org.flexpay.eirc.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.eirc.persistence.AccountRecordType;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
+import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
 
 import java.util.List;
 import java.util.Set;
@@ -82,4 +84,21 @@ public interface SPService {
 	 * @return filter
 	 */
 	OrganisationFilter initOrganisationFilter(OrganisationFilter organisationFilter, ServiceProvider sp);
+
+	/**
+	 * Initialize filter
+	 *
+	 * @param filter ServiceProviderFilter to initialize
+	 * @return ServiceProviderFilter back
+	 */
+	ServiceProviderFilter initServiceProvidersFilter(ServiceProviderFilter filter);
+
+	/**
+	 * List active services using filters and pager
+	 *
+	 * @param filters Set of filters to apply
+	 * @param pager Page
+	 * @return List of services
+	 */
+	List<Service> listServices(List<ObjectFilter> filters, Page<Service> pager);
 }

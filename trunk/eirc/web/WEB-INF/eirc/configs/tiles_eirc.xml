@@ -109,6 +109,13 @@
 	</definition>
 
 
+	<!-- Services -->
+	<definition name="eirc.services.list" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.services" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/services/list_services.jsp" />
+	</definition>
+
+
 	<!-- Registries -->
 	<definition name="eirc.registry.list" extends="eirc.import">
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/registry/list_registries.jsp" />

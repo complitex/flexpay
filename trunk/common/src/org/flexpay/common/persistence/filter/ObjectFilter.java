@@ -14,4 +14,13 @@ public class ObjectFilter {
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
 	}
+
+	/**
+	 * Check if filter should be applyed
+	 *
+	 * @return <code>true</code> if applying filter is valid, or <code>false</code> otherwise
+	 */
+	public boolean needFilter() {
+		return false;
+	}
 }

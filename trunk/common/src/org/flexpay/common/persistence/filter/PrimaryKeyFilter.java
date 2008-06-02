@@ -17,6 +17,12 @@ public class PrimaryKeyFilter extends ObjectFilter {
 		this.selectedId = selectedId;
 	}
 
+	@Override
+	public boolean needFilter() {
+		return selectedId != null && selectedId.longValue() > 0;
+	}
+
+	@SuppressWarnings({"unchecked"})
 	public void initFilter(Map session) {
 		String filterName = this.getClass().getName();
 		Long inSessionId = (Long) session.get(filterName);

@@ -50,6 +50,21 @@
 		<id name="id" column="id">
 			<generator class="native"/>
 		</id>
+		<property name="externalCode">
+			<column name="external_code" not-null="false" index="INDX_eirc_service_external_code">
+				<comment>Service providers internal service code</comment>
+			</column>
+		</property>
+		<property name="beginDate" type="date">
+			<column name="begin_date" not-null="true">
+				<comment>The Date service is valid from</comment>
+			</column>
+		</property>
+		<property name="endDate" type="date">
+			<column name="end_date" not-null="true">
+				<comment>The Date service is valid till</comment>
+			</column>
+		</property>
 		<many-to-one name="serviceProvider" foreign-key="FK_eirc_service_service_provider" class="ServiceProvider">
 			<column name="provider_id" not-null="true">
 				<comment>Service provider reference</comment>
