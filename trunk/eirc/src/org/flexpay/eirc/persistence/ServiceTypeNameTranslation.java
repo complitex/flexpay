@@ -1,6 +1,8 @@
 package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.Translation;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 public class ServiceTypeNameTranslation extends Translation {
 
@@ -18,5 +20,17 @@ public class ServiceTypeNameTranslation extends Translation {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("Name", getName())
+				.append("Description", description)
+				.append("Lang", getLang().getLangIsoCode())
+				.toString();
 	}
 }

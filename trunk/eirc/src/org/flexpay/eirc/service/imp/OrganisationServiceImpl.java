@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.ObjectWithStatus;
 import org.flexpay.eirc.dao.OrganisationDao;
 import org.flexpay.eirc.dao.OrganisationDaoExt;
 import org.flexpay.eirc.persistence.Organisation;
@@ -66,7 +65,7 @@ public class OrganisationServiceImpl implements OrganisationService {
 		for (Long id : objectIds) {
 			Organisation organisation = organisationDao.read(id);
 			if (organisation != null) {
-				organisation.setStatus(ObjectWithStatus.STATUS_DISABLED);
+				organisation.disable();
 				organisationDao.update(organisation);
 			}
 		}

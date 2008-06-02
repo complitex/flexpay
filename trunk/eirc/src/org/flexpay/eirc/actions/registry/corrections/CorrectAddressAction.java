@@ -18,6 +18,7 @@ import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.SpRegistryRecordService;
+import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 public class CorrectAddressAction extends ListApartments {
@@ -31,7 +32,7 @@ public class CorrectAddressAction extends ListApartments {
 	private RawConsumersDataSource consumersDataSource;
 	private CorrectionsService correctionsService;
 	private SpRegistryRecordService recordService;
-	private SPService spService;
+	private ServiceTypeService serviceTypeService;
 	private ClassToTypeRegistry typeRegistry;
 
 	public String execute() throws Exception {
@@ -59,7 +60,7 @@ public class CorrectAddressAction extends ListApartments {
 	}
 
 	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {
-		ServiceType type = spService.getServiceType(typeStub);
+		ServiceType type = serviceTypeService.getServiceType(typeStub);
 		ServiceTypeNameTranslation name = getTranslation(type.getTypeNames());
 		return name == null ? "Unknown" : name.getName();
 	}
@@ -149,8 +150,8 @@ public class CorrectAddressAction extends ListApartments {
 		this.recordService = recordService;
 	}
 
-	public void setSpService(SPService spService) {
-		this.spService = spService;
+	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
+		this.serviceTypeService = serviceTypeService;
 	}
 
 	public void setTypeRegistry(ClassToTypeRegistry typeRegistry) {

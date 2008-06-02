@@ -1,14 +1,16 @@
 package org.flexpay.eirc.persistence;
 
-import org.flexpay.common.persistence.DomainObject;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 public class ServiceType extends DomainObjectWithStatus {
 
 	private int code;
-	private Set<ServiceTypeNameTranslation> typeNames;
+	private Set<ServiceTypeNameTranslation> typeNames = Collections.emptySet();
 
 	/**
 	 * Constructs a new DomainObject.
@@ -54,5 +56,36 @@ public class ServiceType extends DomainObjectWithStatus {
 	 */
 	public void setCode(int code) {
 		this.code = code;
+	}
+
+	public void setTypeName(ServiceTypeNameTranslation nameTranslation) {
+		if (typeNames == Collections.EMPTY_SET) {
+			typeNames = new HashSet<ServiceTypeNameTranslation>();
+		}
+
+		ServiceTypeNameTranslation candidate = null;
+		for (ServiceTypeNameTranslation name : typeNames) {
+			if (name.getLang().getId().equals(nameTranslation.getLang().getId())) {
+				candidate = name;
+				break;
+			}
+		}
+
+		if (candidate != null) {
+			if (StringUtils.isBlank(nameTranslation.getName()) && StringUtils.isBlank(nameTranslation.getDescription())) {
+				typeNames.remove(candidate);
+				return;
+			}
+			candidate.setName(nameTranslation.getName());
+			candidate.setDescription(nameTranslation.getDescription());
+			return;
+		}
+
+		if (StringUtils.isBlank(nameTranslation.getName()) && StringUtils.isBlank(nameTranslation.getDescription())) {
+			return;
+		}
+
+		nameTranslation.setTranslatable(this);
+		typeNames.add(nameTranslation);
 	}
 }

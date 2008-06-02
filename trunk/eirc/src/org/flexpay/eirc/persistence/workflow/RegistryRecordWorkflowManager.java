@@ -1,15 +1,14 @@
 package org.flexpay.eirc.persistence.workflow;
 
+import org.apache.log4j.Logger;
 import org.flexpay.common.dao.ImportErrorDao;
 import org.flexpay.common.persistence.ImportError;
-import org.flexpay.common.persistence.ObjectWithStatus;
 import org.flexpay.eirc.dao.SpRegistryRecordDao;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.persistence.SpRegistryRecordStatus;
 import static org.flexpay.eirc.persistence.SpRegistryRecordStatus.*;
 import org.flexpay.eirc.service.SpRegistryRecordStatusService;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.log4j.Logger;
 
 import java.util.*;
 
@@ -168,7 +167,7 @@ public class RegistryRecordWorkflowManager {
 
 		// disable error
 		ImportError error = record.getImportError();
-		error.setStatus(ObjectWithStatus.STATUS_DISABLED);
+		error.disable();
 		errorDao.update(error);
 
 		// remove error and set status to FIXED

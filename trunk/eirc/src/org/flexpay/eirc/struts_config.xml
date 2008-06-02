@@ -172,5 +172,6 @@
 	</package>
 
 	<include file="org/flexpay/eirc/actions/serviceprovider/struts.xml" />
+	<include file="org/flexpay/eirc/actions/service/struts.xml" />
 
 </struts>

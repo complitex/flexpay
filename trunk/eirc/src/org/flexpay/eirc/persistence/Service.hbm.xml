@@ -151,4 +151,24 @@
 		 	left join fetch org.names 
 		where o.status=0
 	</query>
+
+	<query name="ServiceType.findServiceTypes.count">
+		select count(*)
+		from ServiceType
+		where status=0
+	</query>
+
+	<query name="ServiceType.findServiceTypes">
+		select distinct o
+		from ServiceType o
+			left join fetch o.typeNames
+		where o.status=0
+	</query>
+
+	<query name="ServiceType.readFull">
+		select distinct o
+		from ServiceType o
+			left join fetch o.typeNames
+		where o.id=?
+	</query>
 </hibernate-mapping>
