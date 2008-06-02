@@ -26,24 +26,6 @@ public interface SPService {
 	ServiceProvider getProvider(Long providerNumber) throws IllegalArgumentException;
 
 	/**
-	 * Find service type by its code
-	 *
-	 * @param code Service type code
-	 * @return Service type if found
-	 * @throws IllegalArgumentException if the <code>code</code> is invalid
-	 */
-	ServiceType getServiceType(int code) throws IllegalArgumentException;
-
-
-	/**
-	 * Read service type details
-	 *
-	 * @param typeStub Service type stub
-	 * @return Service type
-	 */
-	ServiceType getServiceType(ServiceType typeStub);
-
-	/**
 	 * Find service of specified <code>type</code> for provider
 	 *
 	 * @param provider ServiceProvider

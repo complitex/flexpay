@@ -57,6 +57,7 @@
 		<property name="spService" ref="spService" />
 		<property name="registryWorkflowManager" ref="registryWorkflowManager" />
 		<property name="recordWorkflowManager" ref="registryRecordWorkflowManager" />
+		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
 	<bean id="serviceOperationsFactory"
@@ -68,10 +69,8 @@
 		<property name="reportPeriodService" ref="reportPeriodService" />
 	</bean>
 
-	<bean id="consumerService" class="org.flexpay.eirc.service.imp.ConsumerServiceImpl">
-		<property name="consumerDao" ref="consumerDao" />
-		<property name="consumerDaoExt" ref="consumerDaoExt" />
-	</bean>
+	<bean id="consumerService" class="org.flexpay.eirc.service.imp.ConsumerServiceImpl"
+		p:consumerDaoExt-ref="consumerDaoExt" />
 
 	<bean id="accountRecordService" class="org.flexpay.eirc.service.imp.AccountRecordServiceImpl">
 		<property name="accountRecordDao" ref="accountRecordDao" />
@@ -81,6 +80,10 @@
 		<property name="organisationDao" ref="organisationDao" />
 		<property name="organisationDaoExt" ref="organisationDaoExt" />
 	</bean>
+
+	<bean id="serviceTypeService" class="org.flexpay.eirc.service.imp.ServiceTypeServiceImpl"
+			p:serviceDaoExt-ref="serviceDaoExt"
+			p:serviceTypeDao-ref="serviceTypeDao" />
 
 	<bean id="reportPeriodService" class="org.flexpay.eirc.service.imp.ReportPeriodServiceImpl" />
 

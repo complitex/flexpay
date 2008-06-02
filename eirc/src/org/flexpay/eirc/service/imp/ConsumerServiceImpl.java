@@ -1,18 +1,16 @@
 package org.flexpay.eirc.service.imp;
 
-import org.flexpay.eirc.service.ConsumerService;
-import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.eirc.dao.ConsumerDao;
-import org.flexpay.eirc.dao.ConsumerDaoExt;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.eirc.dao.ConsumerDaoExt;
+import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.service.ConsumerService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional(readOnly = true, rollbackFor = Exception.class)
 public class ConsumerServiceImpl implements ConsumerService {
 
-	private ConsumerDao consumerDao;
 	private ConsumerDaoExt consumerDaoExt;
 
 	/**
@@ -30,15 +28,6 @@ public class ConsumerServiceImpl implements ConsumerService {
 				example.getApartment().getId()
 		);
 		return consumers.isEmpty() ? null : consumers.get(0);
-	}
-
-	/**
-	 * Setter for property 'consumerDao'.
-	 *
-	 * @param consumerDao Value to set for property 'consumerDao'.
-	 */
-	public void setConsumerDao(ConsumerDao consumerDao) {
-		this.consumerDao = consumerDao;
 	}
 
 	public void setConsumerDaoExt(ConsumerDaoExt consumerDaoExt) {

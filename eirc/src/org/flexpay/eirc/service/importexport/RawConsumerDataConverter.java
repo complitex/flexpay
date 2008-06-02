@@ -8,10 +8,12 @@ import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.service.SPService;
+import org.flexpay.eirc.service.ServiceTypeService;
 
 public class RawConsumerDataConverter implements DataConverter<Consumer, RawConsumerData> {
 
 	private SPService spService;
+	private ServiceTypeService serviceTypeService;
 
 	/**
 	 * Convert raw data to domain object
@@ -32,7 +34,7 @@ public class RawConsumerDataConverter implements DataConverter<Consumer, RawCons
 
 		SpRegistry registry = rawData.getRegistry();
 		SpRegistryRecord record = rawData.getRegistryRecord();
-		ServiceType type = spService.getServiceType(record.getServiceCode().intValue());
+		ServiceType type = serviceTypeService.getServiceType(record.getServiceCode().intValue());
 		Service service = spService.getService(registry.getServiceProvider(), type);
 
 		Consumer consumer = new Consumer();
@@ -53,4 +55,7 @@ public class RawConsumerDataConverter implements DataConverter<Consumer, RawCons
 		this.spService = spService;
 	}
 
+	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
+		this.serviceTypeService = serviceTypeService;
+	}
 }

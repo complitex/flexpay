@@ -37,6 +37,7 @@ public class SpFileParser {
 	private RegistryRecordWorkflowManager recordWorkflowManager;
 
 	private OrganisationService organisationService;
+	private ServiceTypeService serviceTypeService;
 	private SPService spService;
 
 	private SpRegistry spRegistry;
@@ -223,7 +224,7 @@ public class SpFileParser {
 			}
 
 			// setup record service type
-			ServiceType serviceType = spService.getServiceType(record.getServiceCode().intValue());
+			ServiceType serviceType = serviceTypeService.getServiceType(record.getServiceCode().intValue());
 			record.setServiceType(serviceType);
 
 			// setup record status
@@ -301,5 +302,9 @@ public class SpFileParser {
 
 	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
 		this.recordWorkflowManager = recordWorkflowManager;
+	}
+
+	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
+		this.serviceTypeService = serviceTypeService;
 	}
 }

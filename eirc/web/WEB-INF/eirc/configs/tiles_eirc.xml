@@ -97,6 +97,18 @@
 	</definition>
 
 
+	<!-- Service Types -->
+	<definition name="eirc.service_types.list" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.service_types" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/service_types/list_service_types.jsp" />
+	</definition>
+
+	<definition name="eirc.service_type.edit" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.service_type" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/service_types/edit_service_type.jsp" />
+	</definition>
+
+
 	<!-- Registries -->
 	<definition name="eirc.registry.list" extends="eirc.import">
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/registry/list_registries.jsp" />

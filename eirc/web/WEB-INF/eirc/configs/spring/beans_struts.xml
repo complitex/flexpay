@@ -83,7 +83,7 @@
 		<property name="registryService" ref="spRegistryService" />
 		<property name="registryRecordService" ref="spRegistryRecordService" />
 		<property name="classToTypeRegistry" ref="typeRegistryEirc" />
-		<property name="spService" ref="spService" />
+		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
 	<bean id="listOrganisationsAction" scope="prototype"
@@ -111,6 +111,20 @@
 		  p:organisationService-ref="organisationService"
 		  p:spService-ref="spService" />
 
+
+	<bean id="listServiceTypesAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.service.ListServiceTypesAction"
+		  p:serviceTypeService-ref="serviceTypeService" />
+
+	<bean id="deleteServiceTypesAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.service.DeleteServiceTypesAction"
+		  p:serviceTypeService-ref="serviceTypeService" />
+
+	<bean id="editServiceTypeAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.service.EditServiceTypeAction"
+		  p:serviceTypeService-ref="serviceTypeService" />
+
+
 	<bean id="selectCorrectionTypeAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.corrections.SelectTypeAction">
 		<property name="registryRecordService" ref="spRegistryRecordService" />
@@ -122,7 +136,7 @@
 		<property name="consumersDataSource" ref="consumersDataSource" />
 		<property name="correctionsService" ref="correctionsServiceEirc" />
 		<property name="recordService" ref="spRegistryRecordService" />
-		<property name="spService" ref="spService" />
+		<property name="serviceTypeService" ref="serviceTypeService" />
 		<property name="typeRegistry" ref="typeRegistryEirc" />
 	</bean>
 
@@ -131,7 +145,7 @@
 		<property name="consumersDataSource" ref="consumersDataSource" />
 		<property name="correctionsService" ref="correctionsServiceEirc" />
 		<property name="recordService" ref="spRegistryRecordService" />
-		<property name="spService" ref="spService" />
+		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
 	<bean id="correctStreetAddressAction" scope="prototype" parent="listStreetsAction"
@@ -139,7 +153,7 @@
 		<property name="consumersDataSource" ref="consumersDataSource" />
 		<property name="correctionsService" ref="correctionsServiceEirc" />
 		<property name="recordService" ref="spRegistryRecordService" />
-		<property name="spService" ref="spService" />
+		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
 	<bean id="correctRecordPersonAction" scope="prototype"

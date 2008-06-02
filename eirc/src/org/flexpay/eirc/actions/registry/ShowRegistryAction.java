@@ -13,6 +13,7 @@ import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.SpRegistryService;
 import org.flexpay.eirc.service.SPService;
+import org.flexpay.eirc.service.ServiceTypeService;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 public class ShowRegistryAction extends FPActionSupport {
 
 	private SpRegistryService registryService;
-	private SPService spService;
+	private ServiceTypeService serviceTypeService;
 	private SpRegistryRecordService registryRecordService;
 	private ClassToTypeRegistry classToTypeRegistry;
 
@@ -49,7 +50,7 @@ public class ShowRegistryAction extends FPActionSupport {
 	}
 
 	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {
-		ServiceType type = spService.getServiceType(typeStub);
+		ServiceType type = serviceTypeService.getServiceType(typeStub);
 		ServiceTypeNameTranslation name = getTranslation(type.getTypeNames());
 		return name == null ? "Unknown" : name.getName();
 	}
@@ -106,7 +107,7 @@ public class ShowRegistryAction extends FPActionSupport {
 		this.classToTypeRegistry = classToTypeRegistry;
 	}
 
-	public void setSpService(SPService spService) {
-		this.spService = spService;
+	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
+		this.serviceTypeService = serviceTypeService;
 	}
 }

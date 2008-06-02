@@ -10,7 +10,7 @@ import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
-import org.flexpay.eirc.service.SPService;
+import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
@@ -23,7 +23,7 @@ public class CorrectStreetAction extends StreetsList {
 	private RawConsumersDataSource consumersDataSource;
 	private CorrectionsService correctionsService;
 	private SpRegistryRecordService recordService;
-	private SPService spService;
+	private ServiceTypeService serviceTypeService;
 
 	public String execute() throws Exception {
 
@@ -50,7 +50,7 @@ public class CorrectStreetAction extends StreetsList {
 	}
 
 	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {
-		ServiceType type = spService.getServiceType(typeStub);
+		ServiceType type = serviceTypeService.getServiceType(typeStub);
 		ServiceTypeNameTranslation name = getTranslation(type.getTypeNames());
 		return name == null ? "Unknown" : name.getName();
 	}
@@ -91,7 +91,7 @@ public class CorrectStreetAction extends StreetsList {
 		this.recordService = recordService;
 	}
 
-	public void setSpService(SPService spService) {
-		this.spService = spService;
+	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
+		this.serviceTypeService = serviceTypeService;
 	}
 }

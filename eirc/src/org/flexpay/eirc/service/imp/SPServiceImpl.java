@@ -2,11 +2,10 @@ package org.flexpay.eirc.service.imp;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.DataSourceDescriptionDao;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.ObjectWithStatus;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.eirc.dao.ServiceDaoExt;
 import org.flexpay.eirc.dao.ServiceProviderDao;
@@ -25,61 +24,6 @@ public class SPServiceImpl implements SPService {
 	private ServiceDaoExt serviceDaoExt;
 
 	private DataSourceDescriptionDao dataSourceDescriptionDao;
-
-	/**
-	 * Find service type by its code
-	 *
-	 * @param code Service type code
-	 * @return Service type if found
-	 * @throws IllegalArgumentException if the <code>code</code> is invalid
-	 */
-	public ServiceType getServiceType(int code) throws IllegalArgumentException {
-		if (code2TypeCache == null) {
-			initializeServiceTypesCache();
-		}
-		if (code2TypeCache.containsKey(code)) {
-			return code2TypeCache.get(code);
-		}
-
-		ServiceType type = serviceDaoExt.findByCode(code);
-		if (type == null) {
-			throw new IllegalArgumentException("Cannot find service type with code #" + code);
-		}
-
-		code2TypeCache.put(code, type);
-
-		return type;
-	}
-
-	/**
-	 * Read service type details
-	 *
-	 * @param typeStub Service type stub
-	 * @return Service type
-	 */
-	public ServiceType getServiceType(ServiceType typeStub) {
-		if (id2TypeCache == null) {
-			initializeServiceTypesCache();
-		}
-		if (id2TypeCache.containsKey(typeStub.getId())) {
-			return id2TypeCache.get(typeStub.getId());
-		}
-
-		throw new IllegalArgumentException("Cannot find service type with id " + typeStub.getId());
-	}
-
-	private Map<Integer, ServiceType> code2TypeCache;
-	private Map<Long, ServiceType> id2TypeCache;
-
-	private void initializeServiceTypesCache() {
-		code2TypeCache = new HashMap<Integer, ServiceType>();
-		id2TypeCache = new HashMap<Long, ServiceType>();
-		List<ServiceType> types = serviceDaoExt.getServiceTypes();
-		for (ServiceType type : types) {
-			code2TypeCache.put(type.getCode(), type);
-			id2TypeCache.put(type.getId(), type);
-		}
-	}
 
 	/**
 	 * Find service provider by its number
@@ -150,7 +94,7 @@ public class SPServiceImpl implements SPService {
 		for (Long id : objectIds) {
 			ServiceProvider provider = serviceProviderDao.read(id);
 			if (provider != null) {
-				provider.setStatus(ObjectWithStatus.STATUS_DISABLED);
+				provider.disable();
 				serviceProviderDao.update(provider);
 			}
 		}
@@ -187,7 +131,7 @@ public class SPServiceImpl implements SPService {
 			sd.setDescription(serviceProvider.getDefaultDescription());
 			dataSourceDescriptionDao.create(sd);
 			serviceProvider.setDataSourceDescription(sd);
-			
+
 			serviceProviderDao.create(serviceProvider);
 		} else {
 			serviceProviderDao.update(serviceProvider);

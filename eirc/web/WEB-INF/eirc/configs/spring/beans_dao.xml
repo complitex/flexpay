@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="serviceDaoExt" class="org.flexpay.eirc.dao.imp.ServiceDaoExtImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
@@ -18,6 +21,14 @@
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.eirc.persistence.ServiceProvider" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="serviceTypeDao" parent="abstractDao" p:proxyInterfaces="org.flexpay.eirc.dao.ServiceTypeDao">
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.eirc.persistence.ServiceType" />
 			</bean>
 		</property>
 	</bean>
@@ -103,7 +114,7 @@
 	<bean id="organisationDaoExt" class="org.flexpay.eirc.dao.imp.OrganisationDaoExtImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
-	
+
 	<bean id="accountRecordDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.AccountRecordDao" />
@@ -113,7 +124,7 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 	<bean id="serviceOrganisationDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.ServiceOrganisationDao" />
@@ -123,7 +134,7 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 	<bean id="ticketDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.TicketDao" />
@@ -133,7 +144,7 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 	<bean id="ticketServiceAmountDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.TicketServiceAmountDao" />
@@ -143,7 +154,7 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 	<bean id="spRegistryStatusDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.SpRegistryStatusDao" />
@@ -153,7 +164,7 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 	<bean id="spRegistryArchiveStatusDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.SpRegistryArchiveStatusDao" />

@@ -33,6 +33,13 @@ public class DomainObjectWithStatus extends DomainObject implements ObjectWithSt
 	}
 
 	/**
+	 * Set current object status to disabled
+	 */
+	public void disable() {
+		status = STATUS_DISABLED;
+	}
+
+	/**
 	 * Check if object is active
 	 *
 	 * @return <code>true</code> if object status is active, or <code>false</code> otherwise
