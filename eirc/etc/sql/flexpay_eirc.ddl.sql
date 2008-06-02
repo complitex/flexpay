@@ -1,4 +1,16 @@
 
+    alter table ab_person_registrations_tbl 
+        drop 
+        foreign key FK2BD18CD22797B84;
+
+    alter table ab_person_registrations_tbl 
+        drop 
+        foreign key FK2BD18CD7095AEAD;
+
+    alter table ab_person_registrations_tbl 
+        drop 
+        foreign key FK2BD18CDDEF75687;
+
     alter table apartment_numbers_tbl 
         drop 
         foreign key FKC790C2BCDEF75687;
@@ -291,10 +303,6 @@
         drop 
         foreign key FKE20EF8D61F37403;
 
-    alter table persons_tbl 
-        drop 
-        foreign key FKE7B2AFBDDEF75687;
-
     alter table region_name_translations_tbl 
         drop 
         foreign key FKBAC57A0AD605B436;
@@ -406,6 +414,8 @@
     alter table towns_tbl 
         drop 
         foreign key FK92E0DEA0458E164D;
+
+    drop table if exists ab_person_registrations_tbl;
 
     drop table if exists apartment_numbers_tbl;
 
@@ -542,6 +552,15 @@
     drop table if exists town_types_temporal_tbl;
 
     drop table if exists towns_tbl;
+
+    create table ab_person_registrations_tbl (
+        id bigint not null auto_increment,
+        begin_date date not null,
+        end_date date not null,
+        person_id bigint not null,
+        apartment_id bigint not null,
+        primary key (id)
+    );
 
     create table apartment_numbers_tbl (
         id bigint not null auto_increment,
@@ -740,6 +759,7 @@
 
     create table eirc_organisations_tbl (
         id bigint not null auto_increment,
+        version integer not null,
         status integer not null,
         individual_tax_number varchar(255) not null,
         kpp varchar(255) not null,
@@ -865,9 +885,9 @@
 
     create table eirc_service_providers_tbl (
         id bigint not null auto_increment,
+        status integer not null,
         organisation_id bigint not null comment 'Organisation reference',
         data_source_description_id bigint not null comment 'Data source description reference',
-        provider_number bigint not null unique,
         primary key (id)
     );
 
@@ -890,6 +910,9 @@
 
     create table eirc_services_tbl (
         id bigint not null auto_increment,
+        external_code varchar(255) comment 'Service providers internal service code',
+        begin_date date not null comment 'The Date service is valid from',
+        end_date date not null comment 'The Date service is valid till',
         provider_id bigint not null comment 'Service provider reference',
         type_id bigint not null comment 'Service type reference',
         primary key (id)
@@ -989,7 +1012,6 @@
     create table persons_tbl (
         id bigint not null auto_increment,
         status integer not null,
-        apartment_id bigint,
         primary key (id)
     );
 
@@ -1151,6 +1173,24 @@
         status integer not null,
         primary key (id)
     );
+
+    alter table ab_person_registrations_tbl 
+        add index FK2BD18CD22797B84 (person_id), 
+        add constraint FK2BD18CD22797B84 
+        foreign key (person_id) 
+        references apartments_tbl (id);
+
+    alter table ab_person_registrations_tbl 
+        add index FK2BD18CD7095AEAD (person_id), 
+        add constraint FK2BD18CD7095AEAD 
+        foreign key (person_id) 
+        references persons_tbl (id);
+
+    alter table ab_person_registrations_tbl 
+        add index FK2BD18CDDEF75687 (apartment_id), 
+        add constraint FK2BD18CDDEF75687 
+        foreign key (apartment_id) 
+        references apartments_tbl (id);
 
     alter table apartment_numbers_tbl 
         add index FKC790C2BCDEF75687 (apartment_id), 
@@ -1488,6 +1528,8 @@
         foreign key (language_id) 
         references languages_tbl (id);
 
+    create index INDX_eirc_service_external_code on eirc_services_tbl (external_code);
+
     alter table eirc_services_tbl 
         add index FK_eirc_service_service_provider (provider_id), 
         add constraint FK_eirc_service_service_provider 
@@ -1591,12 +1633,6 @@
         add constraint FKE20EF8D61F37403 
         foreign key (language_id) 
         references languages_tbl (id);
-
-    alter table persons_tbl 
-        add index FKE7B2AFBDDEF75687 (apartment_id), 
-        add constraint FKE7B2AFBDDEF75687 
-        foreign key (apartment_id) 
-        references apartments_tbl (id);
 
     alter table region_name_translations_tbl 
         add index FKBAC57A0AD605B436 (region_name_id), 

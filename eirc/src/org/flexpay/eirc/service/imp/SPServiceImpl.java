@@ -7,10 +7,12 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.eirc.dao.ServiceDaoExt;
 import org.flexpay.eirc.dao.ServiceProviderDao;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
+import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
 import org.flexpay.eirc.service.SPService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -202,6 +204,35 @@ public class SPServiceImpl implements SPService {
 		}
 
 		return organisationFilter;
+	}
+
+	/**
+	 * Initialize filter
+	 *
+	 * @param filter ServiceProviderFilter to initialize
+	 * @return ServiceProviderFilter back
+	 */
+	public ServiceProviderFilter initServiceProvidersFilter(ServiceProviderFilter filter) {
+
+		if (filter == null) {
+			filter = new ServiceProviderFilter();
+		}
+
+		List<ServiceProvider> providers = serviceProviderDao.findProviders(new Page<ServiceProvider>(10000, 1));
+		filter.setProviders(providers);
+
+		return filter;
+	}
+
+	/**
+	 * List active services using filters and pager
+	 *
+	 * @param filters Set of filters to apply
+	 * @param pager   Page
+	 * @return List of services
+	 */
+	public List<Service> listServices(List<ObjectFilter> filters, Page<Service> pager) {
+		return serviceDaoExt.findServices(filters, pager);
 	}
 
 	/**

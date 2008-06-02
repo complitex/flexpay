@@ -112,6 +112,7 @@
 		  p:spService-ref="spService" />
 
 
+	<!-- Services -->
 	<bean id="listServiceTypesAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.service.ListServiceTypesAction"
 		  p:serviceTypeService-ref="serviceTypeService" />
@@ -123,6 +124,10 @@
 	<bean id="editServiceTypeAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.service.EditServiceTypeAction"
 		  p:serviceTypeService-ref="serviceTypeService" />
+
+	<bean id="listServicesAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.service.ListServicesAction"
+		  p:spService-ref="spService" />
 
 
 	<bean id="selectCorrectionTypeAction" scope="prototype"

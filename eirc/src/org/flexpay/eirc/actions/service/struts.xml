@@ -22,6 +22,11 @@
 			</result>
 		</action>
 
+		<!-- Services -->
+		<action name="services_list" class="listServicesAction">
+			<result type="tiles">eirc.services.list</result>
+		</action>
+
 	</package>
 
 </struts>
