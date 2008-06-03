@@ -134,6 +134,7 @@ public class JobManager {
             job = (Job) clazz.newInstance();
             FPLogger.logMessage(FPLogger.INFO, "JobManager.addJob: New instance for Job " + jobName + " was created");
         } catch (InstantiationException e) {
+            e.printStackTrace();
             FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Instantiation exception when creating instance of " + jobClassName, e);
             throw new JobInstantiationException("Instantiation exception when creating instance of " + jobClassName);
         } catch (IllegalAccessException e) {
