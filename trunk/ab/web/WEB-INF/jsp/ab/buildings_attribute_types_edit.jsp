@@ -9,7 +9,7 @@
 	  <td class="th"><s:text name="ab.name"/></td>
 	  <td class="th"><s:text name="ab.short_name"/></td>
 	</tr>
-	<s:iterator value="translationMap.values" status="rowstatus">
+	<s:iterator value="buildingAttributeType.translations" status="rowstatus">
 	  <tr valign="middle" class="cols_1">
 	    <td class="col_1s">
 	      <s:property value="#rowstatus.index + 1" />
@@ -21,16 +21,10 @@
 	      </s:if>
 	    </td>
 	    <td class="col">
-	      <s:textfield name="translationMap[%{lang.id}].name" />
-	      <s:fielderror>
-            <s:param value="translationMap[%{lang.id}].name" />
-          </s:fielderror>
+	      <s:textfield name="translationMap[%{lang.id}].name" value="%{name}" />
 	    </td>
 	    <td class="col">
-	      <s:textfield name="translationMap[%{lang.id}].shortName" />
-	      <s:fielderror>
-            <s:param value="translationMap[%{lang.id}].shortName" />
-          </s:fielderror>
+	      <s:textfield name="translationMap[%{lang.id}].shortName" value="%{shortName}" />
 	    </td>
 	  </tr>
 	</s:iterator>
@@ -42,7 +36,8 @@
         type
       </td>
       <td colspan="2">
-	    <s:textfield name="typeField" value="%{typeField}" />
+	    <s:textfield name="type" value="%{type}" disabled="1" />
+	    <s:hidden name="type" value="%{type}" />
       </td>
     </tr>
 	<tr>
@@ -54,7 +49,7 @@
 	<tr>
 	  <td colspan="4">
 	    <s:text name="%{blancTypeFieldError}"/>
-	    <s:text name="%{typeAlredyExistError}"/>
+	    <s:text name="%{allTranslationBlancError}"/>
 	  </td>
 	</tr>
   </s:form>		
