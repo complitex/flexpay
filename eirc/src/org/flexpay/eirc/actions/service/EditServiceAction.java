@@ -56,8 +56,7 @@ public class EditServiceAction extends FPActionSupport {
 		}
 
 		Service parentService = new Service(parentServiceFilter.getSelectedId());
-		// todo remove false check
-		if (parentService.isNotNew() || true) {
+		if (parentService.isNotNew()) {
 			srvc.setParentService(parentService);
 		}
 		srvc.setBeginDate(beginDateFilter.getDate());
