@@ -3,9 +3,8 @@ package org.flexpay.common.process;
 import org.flexpay.common.logger.FPLogger;
 import org.flexpay.common.process.job.JobManager;
 import org.flexpay.common.process.job.Job;
-import org.flexpay.common.process.exception.ProcessDefinitionException;
-import org.flexpay.common.process.exception.ProcessManagerConfigurationException;
-import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.common.process.exception.*;
+import org.flexpay.common.exception.FlexPayException;
 import org.jbpm.db.*;
 import org.jbpm.JbpmConfiguration;
 import org.jbpm.JbpmContext;
@@ -30,7 +29,7 @@ public class ProcessManager implements Runnable {
     protected static ProcessManager instance;
     public static final String PROCESS_INSTANCE_ID = "ProcessInstanceID";
 
-    private boolean stop = true;
+    private volatile boolean stop = false;
     private HashMap<Long, Process> running = new HashMap<Long, Process>();
     private HashMap<Long, Process> waiting = new HashMap<Long, Process>();
     private final Object sleepSemaphore = new Object();
@@ -338,10 +337,17 @@ public class ProcessManager implements Runnable {
 
             FPLogger.logMessage(FPLogger.INFO, "Starting task \"" + task.getName() + "\" (" + ti + ", pid - " + pid + ")");
 
-            if (task.getStart() == null) {
+            if (null == task.getStart()) {
                 task.start();
             } else {
                 FPLogger.logMessage(FPLogger.INFO, "Task \"" + task.getName() + "\" (" + ti + ", pid - " + pid + ")" + " restarted. Recovering from failure.");
+            }
+
+            try {
+                JobManager.getInstance().addJob(pi.getId(), task.getId(), task.getName(), params);
+            } catch (FlexPayException e) {
+                FPLogger.logMessage(FPLogger.ERROR,"ProcessManager: startTask: can't start task with name "+task.getName(),e);
+                return false;
             }
             return true;
         } else {
