@@ -8,15 +8,20 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.filter.ObjectFilter;
+import org.flexpay.eirc.dao.ServiceDao;
 import org.flexpay.eirc.dao.ServiceDaoExt;
 import org.flexpay.eirc.dao.ServiceProviderDao;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
+import org.flexpay.eirc.persistence.filters.ParentServiceFilterMarker;
+import org.flexpay.eirc.persistence.filters.ServiceFilter;
 import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
 import org.flexpay.eirc.service.SPService;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class SPServiceImpl implements SPService {
 
@@ -24,6 +29,7 @@ public class SPServiceImpl implements SPService {
 
 	private ServiceProviderDao serviceProviderDao;
 	private ServiceDaoExt serviceDaoExt;
+	private ServiceDao serviceDao;
 
 	private DataSourceDescriptionDao dataSourceDescriptionDao;
 
@@ -236,6 +242,104 @@ public class SPServiceImpl implements SPService {
 	}
 
 	/**
+	 * Create or update service
+	 *
+	 * @param service Service to save
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Transactional(readOnly = false)
+	public void save(Service service) throws FlexPayExceptionContainer {
+		validate(service);
+		if (service.isNew()) {
+			service.setId(null);
+			serviceDao.create(service);
+		} else {
+			serviceDao.update(service);
+		}
+	}
+
+	private void validate(Service service) throws FlexPayExceptionContainer {
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
+
+		if (service.getServiceProvider().isNew()) {
+			container.addException(new FlexPayException("Connot set empty service provider",
+					"eirc.error.service.need_setup_service_provider"));
+		}
+
+		if (service.getServiceType().isNew()) {
+			container.addException(new FlexPayException("Connot set empty service type",
+					"eirc.error.service.need_setup_service_type"));
+		}
+
+		if (service.getParentService() != null && service.getParentService().isNew()) {
+			container.addException(new FlexPayException("Connot set new parent service",
+					"eirc.error.service.invalid_parent_service"));
+		}
+
+		if (!service.getChildServices().isEmpty() && service.isSubService()) {
+			container.addException(new FlexPayException("Connot set subservices of subservice",
+					"eirc.error.service.subservice_cannot_have_subservices"));
+		}
+
+		if (service.isSubService() && service.getServiceProvider().isNotNew() && service.getParentService().isNotNew()) {
+			Service parentStub = service.getParentService();
+			Service parent = serviceDao.read(parentStub.getId());
+			Long parentProviderId = parent.getServiceProvider().getId();
+			if (!parentProviderId.equals(service.getServiceProvider().getId())) {
+				container.addException(new FlexPayException("Subservice wrong provider",
+						"eirc.error.service.invalid_parent_service_provider"));
+			}
+		}
+
+		boolean defaultDescFound = false;
+		for (ServiceDescription description : service.getDescriptions()) {
+			if (description.getLang().isDefault() && StringUtils.isNotBlank(description.getName())) {
+				defaultDescFound = true;
+			}
+		}
+		if (!defaultDescFound) {
+			container.addException(new FlexPayException(
+					"No default lang desc", "eirc.error.service.no_default_lang_description"));
+		}
+
+		// todo: check if date intervals intersects with the service of the same type
+		// todo: check if external code covers existing service code
+
+		if (!container.isEmpty()) {
+			throw container;
+		}
+	}
+
+	/**
+	 * Read full service information
+	 *
+	 * @param stub Service stub
+	 * @return Service description
+	 */
+	public Service read(Service stub) {
+		if (stub.isNotNew()) {
+			return serviceDao.readFull(stub.getId());
+		}
+
+		return new Service(0L);
+	}
+
+	/**
+	 * Initalize service filter with a list of parent services
+	 *
+	 * @param parentServiceFilter Filter to initialize
+	 * @return Filter back
+	 */
+	public ServiceFilter initParentServicesFilter(ServiceFilter parentServiceFilter) {
+		List<ObjectFilter> filters = new ArrayList<ObjectFilter>();
+		filters.add(new ParentServiceFilterMarker());
+		List<Service> services = serviceDaoExt.findServices(filters, new Page<Service>(10000, 1));
+		parentServiceFilter.setServices(services);
+
+		return parentServiceFilter;
+	}
+
+	/**
 	 * Setter for property 'serviceTypeDaoExt'.
 	 *
 	 * @param serviceDaoExt Value to set for property 'serviceTypeDaoExt'.
@@ -250,5 +354,9 @@ public class SPServiceImpl implements SPService {
 
 	public void setDataSourceDescriptionDao(DataSourceDescriptionDao dataSourceDescriptionDao) {
 		this.dataSourceDescriptionDao = dataSourceDescriptionDao;
+	}
+
+	public void setServiceDao(ServiceDao serviceDao) {
+		this.serviceDao = serviceDao;
 	}
 }

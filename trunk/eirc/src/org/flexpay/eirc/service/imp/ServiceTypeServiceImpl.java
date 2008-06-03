@@ -9,6 +9,7 @@ import org.flexpay.eirc.dao.ServiceTypeDao;
 import org.flexpay.eirc.dao.ServiceDaoExt;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
+import org.flexpay.eirc.persistence.filters.ServiceTypeFilter;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -200,6 +201,18 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 			code2TypeCache.put(type.getCode(), type);
 			id2TypeCache.put(type.getId(), type);
 		}
+	}
+
+	/**
+	 * Initialize filter
+	 *
+	 * @param serviceTypeFilter Filter to initialize
+	 * @return Filter back
+	 */
+	public ServiceTypeFilter initFilter(ServiceTypeFilter serviceTypeFilter) {
+		serviceTypeFilter.setServiceTypes(listServiceTypes(new Page<ServiceType>(10000, 1)));
+
+		return serviceTypeFilter;
 	}
 
 	public void setServiceDaoExt(ServiceDaoExt serviceDaoExt) {

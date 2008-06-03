@@ -26,7 +26,9 @@
 						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/></td>
 				<td class="col" width="1%"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/>
 				</td>
-				<td class="col"><s:property value="getTranslation(serviceType.typeNames).name"/></td>
+				<td class="col" nowrap="nowrap">
+					<s:if test="%{isSubService()}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</s:if>
+					<s:property value="getTranslation(serviceType.typeNames).name"/></td>
 				<td class="col"><s:property value="getTranslation(descriptions).name"/></td>
 				<td class="col"><s:property value="getTranslation(serviceProvider.organisation.names).name"/></td>
 				<td class="col"><s:property value="serviceType.code"/></td>

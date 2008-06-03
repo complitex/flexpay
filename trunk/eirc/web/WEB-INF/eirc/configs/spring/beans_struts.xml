@@ -129,7 +129,13 @@
 		  class="org.flexpay.eirc.actions.service.ListServicesAction"
 		  p:spService-ref="spService" />
 
+	<bean id="editServiceAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.service.EditServiceAction"
+		  p:serviceTypeService-ref="serviceTypeService"
+		  p:spService-ref="spService" />
 
+
+	<!-- Corrections -->
 	<bean id="selectCorrectionTypeAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.corrections.SelectTypeAction">
 		<property name="registryRecordService" ref="spRegistryRecordService" />

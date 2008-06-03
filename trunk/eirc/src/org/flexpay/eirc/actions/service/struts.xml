@@ -22,9 +22,17 @@
 			</result>
 		</action>
 
+
 		<!-- Services -->
 		<action name="services_list" class="listServicesAction">
 			<result type="tiles">eirc.services.list</result>
+		</action>
+
+		<action name="service_edit" class="editServiceAction">
+			<result name="input" type="tiles">eirc.service.edit</result>
+			<result type="redirect-action">
+				<param name="actionName">services_list</param>
+			</result>
 		</action>
 
 	</package>

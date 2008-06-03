@@ -9,6 +9,7 @@ import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
+import org.flexpay.eirc.persistence.filters.ServiceFilter;
 
 import java.util.List;
 import java.util.Set;
@@ -101,4 +102,27 @@ public interface SPService {
 	 * @return List of services
 	 */
 	List<Service> listServices(List<ObjectFilter> filters, Page<Service> pager);
+
+	/**
+	 * Read full service information
+	 *
+	 * @param stub Service stub
+	 * @return Service description
+	 */
+	Service read(Service stub);
+
+	/**
+	 * Create or update service
+	 * @param service Service to save
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	void save(Service service) throws FlexPayExceptionContainer;
+
+	/**
+	 * Initalize service filter with a list of parent services
+	 *
+	 * @param parentServiceFilter Filter to initialize
+	 * @return Filter back
+	 */
+	ServiceFilter initParentServicesFilter(ServiceFilter parentServiceFilter);
 }

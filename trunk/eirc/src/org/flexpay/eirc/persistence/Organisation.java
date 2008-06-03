@@ -17,7 +17,6 @@ public class Organisation extends DomainObjectWithStatus {
 	private Set<OrganisationName> names = Collections.emptySet();
 	private Set<ServiceProvider> serviceProviders = Collections.emptySet();
 	private String uniqueId;
-	private Integer version;
 
 	/**
 	 * Constructs a new DomainObject.

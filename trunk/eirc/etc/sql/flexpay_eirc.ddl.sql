@@ -237,6 +237,10 @@
 
     alter table eirc_services_tbl 
         drop 
+        foreign key FK_eirc_service_parent_service_id;
+
+    alter table eirc_services_tbl 
+        drop 
         foreign key FK_eirc_service_service_provider;
 
     alter table eirc_services_tbl 
@@ -915,6 +919,7 @@
         end_date date not null comment 'The Date service is valid till',
         provider_id bigint not null comment 'Service provider reference',
         type_id bigint not null comment 'Service type reference',
+        parent_service_id bigint comment 'If parent service reference present service is a subservice',
         primary key (id)
     );
 
@@ -1529,6 +1534,12 @@
         references languages_tbl (id);
 
     create index INDX_eirc_service_external_code on eirc_services_tbl (external_code);
+
+    alter table eirc_services_tbl 
+        add index FK_eirc_service_parent_service_id (parent_service_id), 
+        add constraint FK_eirc_service_parent_service_id 
+        foreign key (parent_service_id) 
+        references eirc_services_tbl (id);
 
     alter table eirc_services_tbl 
         add index FK_eirc_service_service_provider (provider_id), 

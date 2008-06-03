@@ -1,11 +1,12 @@
 package org.flexpay.eirc.service;
 
-import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.eirc.persistence.ServiceType;
+import org.flexpay.eirc.persistence.filters.ServiceTypeFilter;
 
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 public interface ServiceTypeService {
 
@@ -34,7 +35,7 @@ public interface ServiceTypeService {
 
 	/**
 	 * Save ServiceType object
-	 * 
+	 *
 	 * @param type ServiceType
 	 * @throws FlexPayExceptionContainer if validation error occurs
 	 */
@@ -56,4 +57,12 @@ public interface ServiceTypeService {
 	 * @return Service type
 	 */
 	ServiceType getServiceType(ServiceType typeStub);
+
+	/**
+	 * Initialize filter
+	 *
+	 * @param serviceTypeFilter Filter to initialize
+	 * @return Filter back
+	 */
+	ServiceTypeFilter initFilter(ServiceTypeFilter serviceTypeFilter);
 }

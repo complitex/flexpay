@@ -1,10 +1,12 @@
 package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Set;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 
 public class Service extends DomainObject {
 
@@ -14,6 +16,8 @@ public class Service extends DomainObject {
 	private String externalCode;
 	private Date beginDate;
 	private Date endDate;
+	private Service parentService;
+	private Set<Service> childServices = Collections.emptySet();
 
 	/**
 	 * Constructs a new DomainObject.
@@ -71,5 +75,60 @@ public class Service extends DomainObject {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public void setDescription(ServiceDescription serviceDescription) {
+		if (descriptions == Collections.EMPTY_SET) {
+			descriptions = new HashSet<ServiceDescription>();
+		}
+
+		ServiceDescription candidate = null;
+		for (ServiceDescription description : descriptions) {
+			if (description.getLang().getId().equals(serviceDescription.getLang().getId())) {
+				candidate = description;
+				break;
+			}
+		}
+
+		if (candidate != null) {
+			if (StringUtils.isBlank(serviceDescription.getName())) {
+				descriptions.remove(candidate);
+				return;
+			}
+			candidate.setName(serviceDescription.getName());
+			return;
+		}
+
+		if (StringUtils.isBlank(serviceDescription.getName())) {
+			return;
+		}
+
+		serviceDescription.setTranslatable(this);
+		descriptions.add(serviceDescription);
+	}
+
+	public Service getParentService() {
+		return parentService;
+	}
+
+	public void setParentService(Service parentService) {
+		this.parentService = parentService;
+	}
+
+	/**
+	 * Check if this service is a subservice
+	 *
+	 * @return <code>true</code> if parent service is not <code>null</code>, or <code>false</code> otherwise
+	 */
+	public boolean isSubService() {
+		return parentService != null;
+	}
+
+	public Set<Service> getChildServices() {
+		return childServices;
+	}
+
+	public void setChildServices(Set<Service> childServices) {
+		this.childServices = childServices;
 	}
 }
