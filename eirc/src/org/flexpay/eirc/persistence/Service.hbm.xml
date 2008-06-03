@@ -33,12 +33,14 @@
 		</id>
 		<property name="name"/>
 		<properties name="lang_service_provider_pair" unique="true">
-			<many-to-one name="lang" foreign-key="FK_eirc_service_provider_description_language" class="org.flexpay.common.persistence.Language">
+			<many-to-one name="lang" foreign-key="FK_eirc_service_provider_description_language"
+						 class="org.flexpay.common.persistence.Language">
 				<column name="language_id" not-null="true">
 					<comment>Language reference</comment>
 				</column>
 			</many-to-one>
-			<many-to-one name="translatable" class="ServiceProvider" foreign-key="FK_eirc_service_provider_description_service_provider">
+			<many-to-one name="translatable" class="ServiceProvider"
+						 foreign-key="FK_eirc_service_provider_description_service_provider">
 				<column name="service_provider_id" not-null="true">
 					<comment>Service provider reference</comment>
 				</column>
@@ -79,6 +81,15 @@
 			<key column="service_id" not-null="true"/>
 			<one-to-many class="ServiceDescription"/>
 		</set>
+		<many-to-one name="parentService" foreign-key="FK_eirc_service_parent_service_id" class="Service">
+			<column name="parent_service_id" not-null="false">
+				<comment>If parent service reference present service is a subservice</comment>
+			</column>
+		</many-to-one>
+		<set name="childServices" inverse="true">
+			<key column="parent_service_id" not-null="true"/>
+			<one-to-many class="Service"/>
+		</set>
 	</class>
 
 	<class name="ServiceDescription" table="eirc_service_descriptions_tbl">
@@ -87,7 +98,8 @@
 		</id>
 		<property name="name"/>
 		<properties name="lang_service_pair" unique="true">
-			<many-to-one name="lang" foreign-key="FK_eirc_service_desciption_language" class="org.flexpay.common.persistence.Language">
+			<many-to-one name="lang" foreign-key="FK_eirc_service_desciption_language"
+						 class="org.flexpay.common.persistence.Language">
 				<column name="language_id" not-null="true">
 					<comment>Language reference</comment>
 				</column>
@@ -121,12 +133,14 @@
 		<property name="name" not-null="true"/>
 		<property name="description" not-null="true"/>
 		<properties name="lang_service_type_pair" unique="true">
-			<many-to-one name="lang" foreign-key="FK_eirc_service_type_name_translation_language" class="org.flexpay.common.persistence.Language">
+			<many-to-one name="lang" foreign-key="FK_eirc_service_type_name_translation_language"
+						 class="org.flexpay.common.persistence.Language">
 				<column not-null="true" name="language_id">
 					<comment>Language reference</comment>
 				</column>
 			</many-to-one>
-			<many-to-one name="translatable" foreign-key="FK_eirc_service_type_name_translation_service_type" class="ServiceType">
+			<many-to-one name="translatable" foreign-key="FK_eirc_service_type_name_translation_service_type"
+						 class="ServiceType">
 				<column name="service_type_id" not-null="true">
 					<comment>Service type reference</comment>
 				</column>
@@ -184,6 +198,16 @@
 		select distinct o
 		from ServiceType o
 			left join fetch o.typeNames
+		where o.id=?
+	</query>
+
+	<query name="Service.readFull">
+		select distinct o
+		from Service o
+			left join fetch o.descriptions
+			inner join fetch o.serviceType t
+			left join fetch t.typeNames
+			left join fetch o.childServices
 		where o.id=?
 	</query>
 </hibernate-mapping>

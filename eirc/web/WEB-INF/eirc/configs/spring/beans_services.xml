@@ -33,6 +33,7 @@
 
 	<bean id="spService" class="org.flexpay.eirc.service.imp.SPServiceImpl"
 			p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao"
+			p:serviceDao-ref="serviceDao"
 			p:serviceDaoExt-ref="serviceDaoExt"
 			p:serviceProviderDao-ref="serviceProviderDao" />
 

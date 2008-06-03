@@ -11,6 +11,7 @@ import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
+import org.flexpay.eirc.persistence.filters.ParentServiceFilterMarker;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -96,6 +97,7 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 	public List<Service> findServices(List<ObjectFilter> filters, final Page<Service> pager) {
 		final StringBuilder hql = new StringBuilder("select distinct o from Service o " +
 				"left join fetch o.descriptions " +
+				"left join fetch o.childServices c " +
 				"inner join fetch o.serviceType t left join fetch t.typeNames " +
 				"inner join fetch o.serviceProvider p " +
 				"inner join fetch p.organisation org left join fetch org.names " +
@@ -123,6 +125,9 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 				hql.append("and o.beginDate<=? ");
 				hqlCount.append("and o.beginDate<=? ");
 				params.add(dateFilter.getDate());
+			} else if (filter instanceof ParentServiceFilterMarker) {
+				hql.append("and o.parentService is null ");
+				hqlCount.append("and o.parentService is null ");
 			} else {
 				log.warn("Unexpected filter: " + filter);
 			}
