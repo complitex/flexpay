@@ -197,7 +197,7 @@ public class BuildingServiceImpl implements BuildingService {
 		return buildingFilter;
 	}
 
-	private List<BuildingAttributeType> cachedTypes = null;
+	//private List<BuildingAttributeType> cachedTypes = null;
 
 	/**
 	 * Get building attribute type
@@ -208,9 +208,7 @@ public class BuildingServiceImpl implements BuildingService {
 	 */
 	public BuildingAttributeType getAttributeType(int type)
 			throws FlexPayException {
-		if (cachedTypes == null) {
-			cachedTypes = buildingsTypeDao.findAttributeTypes();
-		}
+		List<BuildingAttributeType>	cachedTypes = buildingsTypeDao.findAttributeTypes();
 		for (BuildingAttributeType attributeType : cachedTypes) {
 			if (attributeType.getType() == type) {
 				return attributeType;
@@ -228,9 +226,7 @@ public class BuildingServiceImpl implements BuildingService {
 	 *          if failure occurs
 	 */
 	public List<BuildingAttributeType> getAttributeTypes() {
-		if (cachedTypes == null) {
-			cachedTypes = buildingsTypeDao.findAttributeTypes();
-		}
+		List<BuildingAttributeType>	cachedTypes = buildingsTypeDao.findAttributeTypes();
 		
 		return cachedTypes;
 	}
@@ -446,6 +442,11 @@ public class BuildingServiceImpl implements BuildingService {
 		type.setId(id);
 		
 		return type;
+	}
+	
+	@Transactional(readOnly = false)
+	public void updateBuildingAttributeType(BuildingAttributeType type) {
+		buildingAttributeTypeDao.update(type);
 	}
 
 	/**

@@ -179,6 +179,11 @@
 		<property name="buildingService" ref="buildingService" />
 		<property name="languageService" ref="languageService" />
 	</bean>
+	<bean id="buildingAttributeTypeEditAction" scope="prototype"
+		  class="org.flexpay.ab.actions.buildings.BuildingAttributeTypeEditAction">
+		<property name="buildingService" ref="buildingService" />
+		<property name="languageService" ref="languageService" />
+	</bean>
 
 	<!-- Apartments -->
 	<bean id="listApartments" scope="prototype"

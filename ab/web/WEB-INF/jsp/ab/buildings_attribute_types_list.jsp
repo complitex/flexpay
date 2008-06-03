@@ -29,7 +29,7 @@
 		<s:property	value="%{getTranslation(translations).name}"/>
 	  </td>
 	  <td class="col_1s" align="right">
-		<a href="<s:url action='buildingAttributeTypeEditAction'><s:param name="id" value="%{translatable.id}"/></s:url>">
+		<a href="<s:url action='buildingAttributeTypeEditAction'><s:param name="type" value="%{type}"/></s:url>">
 	      <s:text name="ab.edit" />
 	    </a>
 	  </td>

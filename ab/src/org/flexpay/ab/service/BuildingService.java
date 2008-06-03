@@ -173,4 +173,6 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	Building readBuilding(Long id);
 	
 	BuildingAttributeType createBuildingAttributeType(BuildingAttributeType type);
+	
+	void updateBuildingAttributeType(BuildingAttributeType type);
 }

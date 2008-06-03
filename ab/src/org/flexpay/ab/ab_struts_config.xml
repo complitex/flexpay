@@ -299,6 +299,10 @@
 			<result name="form" type="tiles">ab.buildings.attribute_types.create</result>
 			<result name="list" type="redirect-action">buildingAttributeTypeListAction</result>
 		</action>
+		<action name="buildingAttributeTypeEditAction" class="buildingAttributeTypeEditAction">
+			<result name="form" type="tiles">ab.buildings.attribute_types.edit</result>
+			<result name="list" type="redirect-action">buildingAttributeTypeListAction</result>
+		</action>
 	</package>
 
 	<package name="apartments" namespace="/dicts" extends="common">
