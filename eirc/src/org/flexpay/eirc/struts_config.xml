@@ -168,6 +168,13 @@
 				<param name="actionName">registries_list</param>
 			</result>
 		</action>
+		
+		<action name="processListAction" class="processListAction">
+			<result type="tiles">eirc.process.list</result>
+		</action>
+		<action name="processViewAction" class="processViewAction">
+			<result type="tiles">eirc.process.view</result>
+		</action>
 
 	</package>
 

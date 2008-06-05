@@ -170,5 +170,12 @@
 	<bean id="correctRecordPersonAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectPersonAction">
 	</bean>
+	
+	<bean id="processListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.ProcessListAction">
+	</bean>
+	<bean id="processViewAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.ProcessViewAction">
+	</bean>
 
 </beans>
