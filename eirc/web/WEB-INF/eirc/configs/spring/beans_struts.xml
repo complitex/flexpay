@@ -74,7 +74,6 @@
 	<bean id="processRegistryRecordsAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.ProcessRegistryRecordsAction">
 		<property name="providerFileProcessor" ref="serviceProviderFileProcessor" />
-		<property name="registryRecordService" ref="spRegistryRecordService" />
 		<property name="registryService" ref="spRegistryService" />
 	</bean>
 

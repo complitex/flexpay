@@ -96,9 +96,14 @@ public class RegistryRecordWorkflowManager {
 	 */
 	@Transactional(readOnly = false)
 	public void setNextErrorStatus(SpRegistryRecord record) throws TransitionNotAllowed {
+
+		if (code(record) == PROCESSED_WITH_ERROR) {
+			return;
+		}
+
 		List<Integer> allowedCodes = transitions.get(code(record));
 		if (allowedCodes.size() < 2) {
-			throw new TransitionNotAllowed("No error transition");
+			throw new TransitionNotAllowed("No error transition, current is: " + code(record));
 		}
 
 		markRegistryAsHavingError(record);

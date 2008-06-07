@@ -32,17 +32,19 @@
 	</bean>
 
 	<bean id="spService" class="org.flexpay.eirc.service.imp.SPServiceImpl"
-			p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao"
-			p:serviceDao-ref="serviceDao"
-			p:serviceDaoExt-ref="serviceDaoExt"
-			p:serviceProviderDao-ref="serviceProviderDao" />
+		  p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao"
+		  p:serviceDao-ref="serviceDao"
+		  p:serviceDaoExt-ref="serviceDaoExt"
+		  p:serviceProviderDao-ref="serviceProviderDao" />
 
 	<bean id="registryWorkflowManager" class="org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager">
 		<property name="registryDao" ref="spRegistryDao" />
+		<property name="registryDaoExt" ref="spRegistryDaoExt" />
 		<property name="statusService" ref="spRegistryStatusService" />
 	</bean>
 
-	<bean id="registryRecordWorkflowManager" class="org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager">
+	<bean id="registryRecordWorkflowManager"
+		  class="org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager">
 		<property name="errorDao" ref="importErrorDao" />
 		<property name="recordDao" ref="spRegistryRecordDao" />
 		<property name="statusService" ref="spRegistryRecordStatusService" />
@@ -61,17 +63,30 @@
 		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
+	<bean id="eircAccountService"
+		  class="org.flexpay.eirc.service.imp.EircAccountServiceImpl"
+		  p:sequenceService-ref="sequenceService"
+		  p:eircAccountDao-ref="eircAccountDao"
+		  p:eircAccountDaoExt-ref="eircAccountDaoExt" />
+
 	<bean id="serviceOperationsFactory"
-		  class="org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory">
-		<property name="spService" ref="spService" />
-		<property name="spFileService" ref="spFileService" />
-		<property name="accountRecordService" ref="accountRecordService" />
-		<property name="organisationService" ref="organisationService" />
-		<property name="reportPeriodService" ref="reportPeriodService" />
-	</bean>
+		  class="org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory"
+		  p:importErrorService-ref="importErrorServiceEirc"
+		  p:registry-ref="typeRegistryEirc"
+		  p:errorsSupport-ref="importErrorSupport"
+		  p:correctionsService-ref="correctionsServiceEirc"
+		  p:registryRecordDao-ref="spRegistryRecordDao"
+		  p:spService-ref="spService"
+		  p:spFileService-ref="spFileService"
+		  p:accountRecordService-ref="accountRecordService"
+		  p:organisationService-ref="organisationService"
+		  p:reportPeriodService-ref="reportPeriodService"
+		  p:consumerService-ref="consumerService"
+		  p:accountService-ref="eircAccountService" />
 
 	<bean id="consumerService" class="org.flexpay.eirc.service.imp.ConsumerServiceImpl"
-		p:consumerDaoExt-ref="consumerDaoExt" />
+		  p:consumerDao-ref="consumerDao"
+		  p:consumerDaoExt-ref="consumerDaoExt" />
 
 	<bean id="accountRecordService" class="org.flexpay.eirc.service.imp.AccountRecordServiceImpl">
 		<property name="accountRecordDao" ref="accountRecordDao" />
@@ -83,8 +98,8 @@
 	</bean>
 
 	<bean id="serviceTypeService" class="org.flexpay.eirc.service.imp.ServiceTypeServiceImpl"
-			p:serviceDaoExt-ref="serviceDaoExt"
-			p:serviceTypeDao-ref="serviceTypeDao" />
+		  p:serviceDaoExt-ref="serviceDaoExt"
+		  p:serviceTypeDao-ref="serviceTypeDao" />
 
 	<bean id="reportPeriodService" class="org.flexpay.eirc.service.imp.ReportPeriodServiceImpl" />
 
@@ -98,6 +113,7 @@
 		<property name="errorsSupport" ref="importErrorSupport" />
 		<property name="recordWorkflowManager" ref="registryRecordWorkflowManager" />
 		<property name="registryWorkflowManager" ref="registryWorkflowManager" />
+		<property name="registryRecordService" ref="spRegistryRecordService" />
 	</bean>
 
 	<bean id="serviceOrganisationService" class="org.flexpay.eirc.service.imp.ServiceOrganisationServiceImpl">

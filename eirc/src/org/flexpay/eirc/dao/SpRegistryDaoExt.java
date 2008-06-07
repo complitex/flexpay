@@ -33,4 +33,12 @@ public interface SpRegistryDaoExt {
 	 * @return collection of registries
 	 */
 	Collection<SpRegistry> findRegistries(Set<Long> objectIds);
+
+	/**
+	 * Check if registry has more records to process
+	 *
+	 * @param registryId Registry id
+	 * @return <code>true</code> if registry has records for processing, or <code>false</code> otherwise
+	 */
+	boolean hasMoreRecordsToProcess(Long registryId);
 }

@@ -2,11 +2,20 @@ package org.flexpay.eirc.persistence.exchange;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.service.importexport.CorrectionsService;
+import org.flexpay.common.service.importexport.ImportErrorService;
+import org.flexpay.common.service.importexport.ImportErrorsSupport;
+import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.eirc.dao.SpRegistryRecordDao;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.persistence.SpRegistryType;
 import org.flexpay.eirc.service.*;
+import org.flexpay.eirc.service.importexport.RawConsumerData;
+import org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +24,18 @@ public class ServiceOperationsFactory {
 
 	private SpFileService spFileService;
 	private SPService spService;
+	private EircAccountService accountService;
+	private ConsumerService consumerService;
 	private AccountRecordService accountRecordService;
 	private OrganisationService organisationService;
 	private ReportPeriodService reportPeriodService;
+	private CorrectionsService correctionsService;
+
+	private ClassToTypeRegistry registry;
+	private ImportErrorsSupport errorsSupport;
+	private ImportErrorService importErrorService;
+	private RawDataSource<RawConsumerData> dataSource;
+	private SpRegistryRecordDao registryRecordDao;
 
 	/**
 	 * Get instance of Operation for registry record
@@ -91,8 +109,8 @@ public class ServiceOperationsFactory {
 
 		Integer containerType = Integer.valueOf(datum.get(0));
 		switch (containerType) {
-//			case 1:
-//				return new OpenAccountOperation(datum);
+			case 1:
+				return new OpenAccountOperation(this, datum);
 //			case 2:
 //				return new CloseAccountOperation(datum);
 //			case 3:
@@ -116,7 +134,7 @@ public class ServiceOperationsFactory {
 //			case 12:
 //				return new SetPrivilegePersonsNumberOperation(datum);
 
-			// Payment
+				// Payment
 			case 50:
 				return new SimplePayment(this, datum);
 
@@ -126,7 +144,7 @@ public class ServiceOperationsFactory {
 		}
 
 		throw new InvalidContainerException("Unknown container type: " +
-											datum.get(0) + " in " + containerData);
+				datum.get(0) + " in " + containerData);
 	}
 
 	private List<String> parseContainersData(String containers)
@@ -145,6 +163,32 @@ public class ServiceOperationsFactory {
 	private List<String> splitEscapableData(String containers, char delimiter) {
 
 		return StringUtil.splitEscapable(containers, delimiter, Operation.ESCAPE_SIMBOL);
+	}
+
+	public ImportError addImportError(SpRegistry spRegistry, SpRegistryRecord record,
+									  Class<? extends DomainObject> clazz, String errorCode) {
+
+		ImportError error = new ImportError();
+		error.setSourceDescription(spRegistry.getServiceProvider().getDataSourceDescription());
+		error.setSourceObjectId(record.getId().toString());
+		error.setErrorId(errorCode);
+		error.setObjectType(registry.getType(clazz));
+		errorsSupport.setDataSourceBean(error, dataSource);
+
+		importErrorService.addError(error);
+
+		record.setImportError(error);
+		registryRecordDao.update(record);
+
+		return error;
+	}
+
+	public void setDataSource(RawDataSource<RawConsumerData> dataSource) {
+		this.dataSource = dataSource;
+	}
+
+	public RawDataSource<RawConsumerData> getDataSource() {
+		return dataSource;
 	}
 
 	public SpFileService getSpFileService() {
@@ -185,5 +229,49 @@ public class ServiceOperationsFactory {
 
 	public void setReportPeriodService(ReportPeriodService reportPeriodService) {
 		this.reportPeriodService = reportPeriodService;
+	}
+
+	public EircAccountService getAccountService() {
+		return accountService;
+	}
+
+	public void setAccountService(EircAccountService accountService) {
+		this.accountService = accountService;
+	}
+
+	public ConsumerService getConsumerService() {
+		return consumerService;
+	}
+
+	public void setConsumerService(ConsumerService consumerService) {
+		this.consumerService = consumerService;
+	}
+
+	public CorrectionsService getCorrectionsService() {
+		return correctionsService;
+	}
+
+	public void setCorrectionsService(CorrectionsService correctionsService) {
+		this.correctionsService = correctionsService;
+	}
+
+	public ImportErrorService getImportErrorService() {
+		return importErrorService;
+	}
+
+	public void setImportErrorService(ImportErrorService importErrorService) {
+		this.importErrorService = importErrorService;
+	}
+
+	public void setRegistry(ClassToTypeRegistry registry) {
+		this.registry = registry;
+	}
+
+	public void setErrorsSupport(ImportErrorsSupport errorsSupport) {
+		this.errorsSupport = errorsSupport;
+	}
+
+	public void setRegistryRecordDao(SpRegistryRecordDao registryRecordDao) {
+		this.registryRecordDao = registryRecordDao;
 	}
 }

@@ -60,6 +60,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase implement
 		// get next page
 		int nextPage = pager.getPageNumber() + 1;
 		pager.setPageNumber(nextPage);
+		registryRecordDaoExt.clearSession();
 		List<SpRegistryRecord> datum = registryRecordDaoExt.listRecordsForUpdate(registry.getId(), pager);
 		dataIterator = datum.iterator();
 		return dataIterator.hasNext();

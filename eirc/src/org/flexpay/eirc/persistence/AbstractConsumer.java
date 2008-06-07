@@ -3,11 +3,15 @@ package org.flexpay.eirc.persistence;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.ab.persistence.Person;
 
+import java.util.Date;
+
 public abstract class AbstractConsumer extends DomainObjectWithStatus {
 
 	private Service service;
 	private String externalAccountNumber;
 	private Person responsiblePerson;
+	private Date beginDate;
+	private Date endDate;
 
 	/**
 	 * Constructs a new DomainObject.
@@ -71,5 +75,21 @@ public abstract class AbstractConsumer extends DomainObjectWithStatus {
 	 */
 	public void setResponsiblePerson(Person responsiblePerson) {
 		this.responsiblePerson = responsiblePerson;
+	}
+
+	public Date getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(Date beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 }

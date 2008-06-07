@@ -5,10 +5,11 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-		org.flexpay.eirc.service.importexport.AllTests.class,
+//		org.flexpay.eirc.service.importexport.AllTests.class,
 		org.flexpay.eirc.service.exchange.AllTests.class,
-		org.flexpay.eirc.service.registry.AllTests.class,
-		TestBuildingService.class
+//		org.flexpay.eirc.service.registry.AllTests.class,
+//		TestBuildingService.class,
+		TestEircAccountService.class
 		})
 public class AllTests {
 

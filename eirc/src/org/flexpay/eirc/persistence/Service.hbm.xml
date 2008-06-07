@@ -148,6 +148,10 @@
 		</properties>
 	</class>
 
+	<query name="ServiceProvider.findByOrganisationId">
+		from ServiceProvider where organisation.uniqueId=?
+	</query>
+
 	<query name="ServiceProvider.readFull">
 		select distinct o
 		from ServiceProvider o

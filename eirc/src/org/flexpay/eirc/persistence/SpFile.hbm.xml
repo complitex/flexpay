@@ -104,6 +104,11 @@
 		<id name="id" column="id">
 			<generator class="native"/>
 		</id>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
 		<property name="serviceCode" column="service_code" not-null="true"/>
 		<property name="personalAccountExt" column="personal_account_ext"
 				  not-null="true"/>
@@ -148,6 +153,18 @@
 				<comment>Import error reference</comment>
 			</column>
 		</many-to-one>
+		<many-to-one name="person" foreign-key="FK_eirc_registry_record_person_id"
+					 class="org.flexpay.ab.persistence.Person">
+			<column name="person_id" not-null="false">
+				<comment>Person reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="apartment" foreign-key="FK_eirc_registry_record_apartment_id"
+					 class="org.flexpay.ab.persistence.Apartment">
+			<column name="apartment_id" not-null="false">
+				<comment>Apartment reference</comment>
+			</column>
+		</many-to-one>
 	</class>
 
 	<query name="SpFile.listSpFiles.count">
@@ -163,7 +180,12 @@
 	</query>
 
 	<query name="SpFile.listRegistries">
-		from SpRegistry r inner join fetch r.registryType where r.spFile.id=?
+		from SpRegistry r
+			inner join fetch r.registryType
+			inner join fetch r.registryStatus
+			inner join fetch r.serviceProvider p
+			inner join fetch p.dataSourceDescription
+		where r.spFile.id=?
 	</query>
 
 	<query name="SpFile.listRecordsForProcessing">
@@ -174,6 +196,12 @@
 		left join fetch rr.importError
 
 		where r.id=? and rrs.code NOT IN (2, 4)
+	</query>
+
+	<query name="SpRegistryType.countNotProcessedRecords">
+		select count(*)
+		from SpRegistryRecord r
+		where r.recordStatus.code != 4 and r.spRegistry.id=?
 	</query>
 
 	<query name="SpRegistryType.findAll">

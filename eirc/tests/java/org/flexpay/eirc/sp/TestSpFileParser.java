@@ -1,6 +1,7 @@
 package org.flexpay.eirc.sp;
 
 import static org.junit.Assert.assertEquals;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.text.DateFormat;
@@ -20,6 +21,7 @@ public class TestSpFileParser {
 			new GregorianCalendar(1111, 11, 11, 11, 12, 12)};
 
 	@Test
+	@Ignore
 	public void testDateFormat() throws Throwable {
 		dateFormat.setLenient(false);
 		Formatter[] formatters = {new Formatter(0, "1900/02/01 00:00:01"), new Formatter(1, "1111/12/11 11:12:12")};

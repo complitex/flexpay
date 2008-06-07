@@ -8,19 +8,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class SequenceServiceImpl implements SequenceService {
-	private static Logger log = Logger.getLogger(SequenceServiceImpl.class);
+
+	private Logger log = Logger.getLogger(getClass());
 
 	private SequenceDao sequenceDao;
 
 	/**
-	 * @param sequenceId
-	 *            id of Sequence
+	 * @param sequenceId id of Sequence
 	 * @return next counter value for Sequence
 	 */
 	@Transactional(readOnly = false)
 	public Long next(Long sequenceId) {
-		Sequence sequence = null;
-		Long next = null;
+		Sequence sequence;
+		Long next;
 		synchronized (sequenceId) {
 			sequence = sequenceDao.read(sequenceId);
 			next = sequence.getCounter() + 1;
@@ -37,5 +37,4 @@ public class SequenceServiceImpl implements SequenceService {
 	public void setSequenceDao(SequenceDao sequenceDao) {
 		this.sequenceDao = sequenceDao;
 	}
-
 }

@@ -13,6 +13,7 @@ import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
 import org.flexpay.eirc.service.ConsumerService;
@@ -21,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+@Transactional(readOnly = true)
 public class EircImportService extends ImportService {
 
 	private RawConsumerDataConverter consumerDataConverter;
@@ -30,7 +31,7 @@ public class EircImportService extends ImportService {
 
 	private RegistryRecordWorkflowManager recordWorkflowManager;
 
-	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	@Transactional(readOnly = false)
 	public void importConsumers(DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
 			throws FlexPayException {
 
@@ -52,10 +53,7 @@ public class EircImportService extends ImportService {
 		}
 
 		dataSource.initialize();
-		long now = System.currentTimeMillis();
 		while (dataSource.hasNext()) {
-
-			logTime(now, 0);
 
 			ImportOperationTypeHolder typeHolder = new ImportOperationTypeHolder();
 			RawConsumerData data = dataSource.next(typeHolder);
@@ -74,23 +72,26 @@ public class EircImportService extends ImportService {
 				continue;
 			}
 
-			logTime(now, 1);
-
 			try {
-				// Find object by correction
-				Consumer persistentObj = correctionsService.findCorrection(
-						data.getCorrectionId(), Consumer.class, sd);
+				if (data.isPersonalInfoEmpty()) {
+					Consumer persistentObj = correctionsService.findCorrection(
+							data.getShortConsumerId(), Consumer.class, sd);
 
-				logTime(now, 2);
-				if (persistentObj != null) {
-					log.info("Found existing consumer correction: #" + data.getExternalSourceId());
-					postSaveConsumer(data, persistentObj);
+					if (persistentObj != null) {
+						log.info("Found existing consumer correction: #" + data.getExternalSourceId());
+						postSaveConsumer(data, persistentObj);
+						continue;
+					}
+
+					log.info("Cannot find consumer by short info");
+					ImportError error = addImportError(sd, data.getExternalSourceId(), Consumer.class, dataSource);
+					error.setErrorId("error.eirc.import.consumer_not_found");
+					setConsumerError(data, error);
 					continue;
 				}
 
 				Consumer rawConsumer = consumerDataConverter.fromRawData(data, sd, correctionsService);
 
-				logTime(now, 3);
 				if (rawConsumer.getApartment() == null) {
 					// Find apartment
 					Apartment apartment = findApartment(nameObjsMap, nameTypeMap, sd, data, dataSource);
@@ -104,13 +105,12 @@ public class EircImportService extends ImportService {
 					addToStack(corr);
 					rawConsumer.setApartment(apartment);
 				}
+				data.getRegistryRecord().setApartment(rawConsumer.getApartment());
 				log.info("Found apartment: " + data.getApartmentId());
 
-				logTime(now, 4);
 				if (rawConsumer.getResponsiblePerson() == null) {
 					Person person = findPerson(data);
 					if (person == null) {
-						logTime(now, 51);
 						log.error("Person not found: " + data.getPersonCorrectionId());
 						ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
 						error.setErrorId("error.eirc.import.person_not_found");
@@ -123,41 +123,36 @@ public class EircImportService extends ImportService {
 					addToStack(corr);
 					rawConsumer.setResponsiblePerson(person);
 				}
+				data.getRegistryRecord().setPerson(rawConsumer.getResponsiblePerson());
 				log.info("Found responsible person: " + data.getPersonCorrectionId());
 
-				logTime(now, 5);
 				if (rawConsumer.getService() == null) {
 					log.error("Not found provider #" + data.getRegistry().getSenderCode() +
 							" service by code: " + data.getRegistryRecord().getServiceCode());
+					ImportError error = addImportError(sd, data.getExternalSourceId(), Service.class, dataSource);
+					error.setErrorId("error.eirc.import.service_not_found");
+					setConsumerError(data, error);
 					continue;
 				}
 				log.info("Found service");
 
-				logTime(now, 6);
 				Consumer persistent = consumerService.findConsumer(rawConsumer);
-				if (persistent == null) {
-					log.info("Creating new consumer: " + data.getCorrectionId());
-					addToStack(rawConsumer);
-					persistent = rawConsumer;
-				}
+				if (persistent != null) {
+					// Consumer found, add new correction
+					if (log.isInfoEnabled()) {
+						log.info("Creating new consumer corrections: " + data.getFullConsumerId());
+					}
 
-				// Consumer found/created, add new correction
-				if (log.isInfoEnabled()) {
-					log.info("Creating new consumer correction: " + data.getCorrectionId());
+					addToStack(correctionsService.getStub(data.getFullConsumerId(), persistent, sd));
+					addToStack(correctionsService.getStub(data.getShortConsumerId(), persistent, sd));
+				} else {
+					log.info("Consumer not found");
 				}
-				DataCorrection corr = correctionsService.getStub(
-						data.getCorrectionId(), persistent, sd);
-				addToStack(corr);
-
-				logTime(now, 7);
 
 				postSaveConsumer(data, persistent);
-				logTime(now, 8);
 			} catch (Exception e) {
 				log.error("Failed getting consumer: " + data.toString(), e);
 				throw new RuntimeException(e);
-			} finally {
-				now = System.currentTimeMillis();
 			}
 		}
 
@@ -171,12 +166,6 @@ public class EircImportService extends ImportService {
 
 	private void setConsumerError(RawConsumerData data, ImportError error) throws Exception {
 		recordWorkflowManager.setNextErrorStatus(data.getRegistryRecord(), error);
-	}
-
-	private void logTime(long start, int label) {
-		if (log.isInfoEnabled()) {
-			log.info("Time spent " + label + ": " + ((System.currentTimeMillis() - start) / 1000) + " ms. ");
-		}
 	}
 
 	private Person findPerson(RawConsumerData data) {

@@ -120,4 +120,16 @@ public class SpRegistryDaoExtImpl extends HibernateDaoSupport implements SpRegis
 			}
 		});
 	}
+
+	/**
+	 * Check if registry has more records to process
+	 *
+	 * @param registryId Registry id
+	 * @return <code>true</code> if registry has records for processing, or <code>false</code> otherwise
+	 */
+	public boolean hasMoreRecordsToProcess(Long registryId) {
+		List value = getHibernateTemplate().findByNamedQuery("SpRegistryType.countNotProcessedRecords", registryId);
+
+		return ((Number)value.get(0)).intValue() > 0 ? true : false;
+	}
 }
