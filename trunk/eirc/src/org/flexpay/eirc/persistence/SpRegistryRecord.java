@@ -2,6 +2,8 @@ package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.ImportError;
+import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Person;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -31,6 +33,8 @@ public class SpRegistryRecord extends DomainObject {
 	private AbstractConsumer consumer;
 	private ServiceType serviceType;
 	private ImportError importError;
+	private Apartment apartment;
+	private Person person;
 
 	/**
 	 * @return the spRegistry
@@ -302,6 +306,22 @@ public class SpRegistryRecord extends DomainObject {
 		this.importError = importError;
 	}
 
+	public Apartment getApartment() {
+		return apartment;
+	}
+
+	public void setApartment(Apartment apartment) {
+		this.apartment = apartment;
+	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("id", getId())
@@ -317,6 +337,8 @@ public class SpRegistryRecord extends DomainObject {
 				.append("bulk", getBuildingBulkNum())
 				.append("apartment", getApartmentNum())
 				.append("containers", getContainers())
+				.append("apartment-id", getApartment() == null ? 0 : getApartment().getId())
+				.append("person-id", getPerson() == null ? 0 : getPerson().getId())
 				.toString();
 	}
 }

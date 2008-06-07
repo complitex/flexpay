@@ -33,7 +33,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 */
 	@Transactional(readOnly = false)
 	public void disable(Set<Long> objectIds) {
-		log.info("Disabling service types");
+		log.debug("Disabling service types");
 		for (Long id : objectIds) {
 			ServiceType serviceType = serviceTypeDao.read(id);
 			if (serviceType != null) {
@@ -50,7 +50,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 * @return list of Service types for current page
 	 */
 	public List<ServiceType> listServiceTypes(Page<ServiceType> pager) {
-		log.info("Listing service types by paging");
+		log.debug("Listing service types by paging");
 
 		List<ServiceType> types = serviceTypeDao.findServiceTypes(pager);
 		updateCaches(types);
@@ -65,7 +65,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 * @return ServiceType
 	 */
 	public ServiceType read(ServiceType serviceType) {
-		log.info("Reading service type");
+		log.debug("Reading service type");
 		if (serviceType.isNotNew()) {
 			return serviceTypeDao.readFull(serviceType.getId());
 		}
@@ -82,7 +82,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 */
 	@Transactional(readOnly = false)
 	public void save(ServiceType type) throws FlexPayExceptionContainer {
-		log.info("Saving service types");
+		log.debug("Saving service types");
 		validate(type);
 		if (type.isNew()) {
 			type.setId(null);
@@ -145,7 +145,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 * @throws IllegalArgumentException if the <code>code</code> is invalid
 	 */
 	public ServiceType getServiceType(int code) throws IllegalArgumentException {
-		log.info("Getting service type by code");
+		log.debug("Getting service type by code");
 		if (code2TypeCache == null) {
 			initializeServiceTypesCache();
 		}
@@ -170,7 +170,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 * @return Service type
 	 */
 	public ServiceType getServiceType(ServiceType typeStub) {
-		log.info("Getting service type by stub");
+		log.debug("Getting service type by stub");
 		if (id2TypeCache == null) {
 			initializeServiceTypesCache();
 		}
@@ -185,13 +185,13 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	private Map<Long, ServiceType> id2TypeCache;
 
 	private void initializeServiceTypesCache() {
-		log.info("Initialising caches");
+		log.debug("Initialising caches");
 		List<ServiceType> types = serviceTypeDao.findServiceTypes(new Page<ServiceType>(10000, 1));
 		updateCaches(types);
 	}
 
 	private void updateCaches(List<ServiceType> types) {
-		log.info("Updating caches");
+		log.debug("Updating caches");
 		if (code2TypeCache == null) {
 			code2TypeCache = new HashMap<Integer, ServiceType>();
 			id2TypeCache = new HashMap<Long, ServiceType>();

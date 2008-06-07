@@ -24,6 +24,13 @@ public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements S
 	private Logger log = Logger.getLogger(getClass());
 
 	/**
+	 * Clear current session
+	 */
+	public void clearSession() {
+		getHibernateTemplate().clear();
+	}
+
+	/**
 	 * List registry records
 	 *
 	 * @param id	Registry id

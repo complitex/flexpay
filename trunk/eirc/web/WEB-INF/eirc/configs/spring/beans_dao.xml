@@ -111,6 +111,19 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
+	<bean id="eircAccountDaoExt" class="org.flexpay.eirc.dao.imp.EircAccountDaoExtImpl"
+		p:hibernateTemplate-ref="hibernateTemplate" />
+
+	<bean id="eircAccountDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.eirc.dao.EircAccountDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.eirc.persistence.EircAccount" />
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="organisationDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.OrganisationDao" />

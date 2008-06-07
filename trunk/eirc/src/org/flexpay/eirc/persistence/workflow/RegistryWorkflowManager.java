@@ -6,6 +6,7 @@ import org.flexpay.eirc.persistence.SpRegistryStatus;
 import static org.flexpay.eirc.persistence.SpRegistryStatus.*;
 import org.flexpay.eirc.service.SpRegistryStatusService;
 import org.flexpay.eirc.dao.SpRegistryDao;
+import org.flexpay.eirc.dao.SpRegistryDaoExt;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.log4j.Logger;
 
@@ -21,6 +22,7 @@ public class RegistryWorkflowManager {
 
 	private SpRegistryStatusService statusService;
 	private SpRegistryDao registryDao;
+	private SpRegistryDaoExt registryDaoExt;
 
 	// allowed transitions from source status code to target codes
 	// first status in lists is the successfull one, the second is transition with some processing error
@@ -51,6 +53,7 @@ public class RegistryWorkflowManager {
 
 		targets = new ArrayList<Integer>();
 		targets.add(ROLLBACKING);
+		targets.add(PROCESSED_WITH_ERROR); // allow set processed with errors if there are any not processed records
 		transitions.put(PROCESSED, targets);
 
 		targets = new ArrayList<Integer>();
@@ -111,6 +114,16 @@ public class RegistryWorkflowManager {
 		}
 
 		setNextSuccessStatus(registry);
+	}
+
+	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	public void endProcessing(SpRegistry registry) throws TransitionNotAllowed {
+		// all records processed
+		if (code(registry) == PROCESSED) {
+			if (registryDaoExt.hasMoreRecordsToProcess(registry.getId())) {
+				setNextStatus(registry, PROCESSED_WITH_ERROR);
+			}
+		}
 	}
 
 	/**
@@ -211,6 +224,10 @@ public class RegistryWorkflowManager {
 
 	public void setRegistryDao(SpRegistryDao registryDao) {
 		this.registryDao = registryDao;
+	}
+
+	public void setRegistryDaoExt(SpRegistryDaoExt registryDaoExt) {
+		this.registryDaoExt = registryDaoExt;
 	}
 
 	/**

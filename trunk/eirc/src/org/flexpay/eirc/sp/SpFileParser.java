@@ -64,7 +64,7 @@ public class SpFileParser {
 			if (spRegistry != null) {
 				registryWorkflowManager.setNextErrorStatus(spRegistry);
 			}
-			throw new Exception("Fialed parsing registry file", t);
+			throw new Exception("Failed parsing registry file", t);
 		} finally {
 			IOUtils.closeQuietly(is);
 		}

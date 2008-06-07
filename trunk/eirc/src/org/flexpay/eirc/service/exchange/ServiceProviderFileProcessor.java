@@ -15,12 +15,14 @@ import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
 import org.flexpay.eirc.service.SpFileService;
+import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.SpRegistryService;
 import org.flexpay.eirc.service.importexport.EircImportService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Processor of instructions specified by service provider, usually payments, balance
@@ -35,6 +37,7 @@ public class ServiceProviderFileProcessor {
 
 	private SpFileService spFileService;
 	private SpRegistryService spRegistryService;
+	private SpRegistryRecordService registryRecordService;
 
 	private EircImportService importService;
 
@@ -82,6 +85,8 @@ public class ServiceProviderFileProcessor {
 				if (log.isInfoEnabled()) {
 					log.info("Starting processing registry #" + registry.getId());
 				}
+
+				serviceOperationsFactory.setDataSource(rawConsumersDataSource);
 				processHeader(registry);
 
 				log.info("Starting importing consumers");
@@ -101,6 +106,7 @@ public class ServiceProviderFileProcessor {
 				// no error should go to PROCESSED, with errors should go to PROCESSED_WITH_ERROR
 				registry = spRegistryService.read(registry.getId());
 				registryWorkflowManager.setNextSuccessStatus(registry);
+				registryWorkflowManager.endProcessing(registry);
 			}
 		}
 
@@ -109,9 +115,11 @@ public class ServiceProviderFileProcessor {
 		}
 	}
 
-	public void processRecords(SpRegistry registry, Collection<SpRegistryRecord> records) throws Exception {
+	public void processRecords(SpRegistry registry, Set<Long> objectIds) throws Exception {
+		Collection<SpRegistryRecord> records = registryRecordService.findObjects(registry, objectIds);
 		RawDataSource<RawConsumerData> dataSource = new InMemoryRawConsumersDataSource(records);
 		errorsSupport.registerAlias(dataSource, rawConsumersDataSource);
+		serviceOperationsFactory.setDataSource(dataSource);
 
 		try {
 			// setup records registry to the same object
@@ -119,23 +127,26 @@ public class ServiceProviderFileProcessor {
 				if (record.getSpRegistry().getId().equals(registry.getId())) {
 					record.setSpRegistry(registry);
 				} else {
-					throw new FlexPayException("Only records of the same registry allowed for group proctssing");
+					throw new FlexPayException("Only records of the same registry allowed for group processing");
 				}
 			}
 
 			registryWorkflowManager.startProcessing(registry);
 			setupRecordsConsumer(registry, dataSource);
 
+			// refresh records
+			records = registryRecordService.findObjects(registry, objectIds);
 			for (SpRegistryRecord record : records) {
 				processRecord(registry, record);
 			}
 		} catch (Exception e) {
-			String errMsg = "Failed processing registry records: " + registry;
+			String errMsg = "Failed processing registry: " + registry;
 			log.error(errMsg, e);
 			throw new FlexPayException(errMsg, e);
 		} finally {
 			registry = spRegistryService.read(registry.getId());
 			registryWorkflowManager.setNextSuccessStatus(registry);
+			registryWorkflowManager.endProcessing(registry);
 			errorsSupport.unregisterAlias(dataSource);
 		}
 	}
@@ -189,12 +200,18 @@ public class ServiceProviderFileProcessor {
 	 */
 	private void processRecord(SpRegistry registry, SpRegistryRecord record) throws Exception {
 		try {
+			if (!recordWorkflowManager.hasSuccessTransition(record)) {
+				if (log.isDebugEnabled()) {
+					log.debug("Skipping record: " + record);
+				}
+				return;
+			}
 			Operation op = serviceOperationsFactory.getOperation(registry, record);
 			op.process(registry, record);
 			recordWorkflowManager.setNextSuccessStatus(record);
 		} catch (Exception e) {
-			recordWorkflowManager.setNextErrorStatus(record);
 			log.error("Failed processing registry record: " + record, e);
+			recordWorkflowManager.setNextErrorStatus(record);
 		}
 	}
 
@@ -228,5 +245,9 @@ public class ServiceProviderFileProcessor {
 
 	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
 		this.recordWorkflowManager = recordWorkflowManager;
+	}
+
+	public void setRegistryRecordService(SpRegistryRecordService registryRecordService) {
+		this.registryRecordService = registryRecordService;
 	}
 }

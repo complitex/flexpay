@@ -7,25 +7,27 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.util.CRCUtil;
 import org.flexpay.eirc.actions.TestSpFileAction;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.service.SPService;
+import org.flexpay.eirc.service.SpRegistryService;
 import org.flexpay.eirc.service.SpRegistryTypeService;
 import org.flexpay.eirc.sp.SpFileParser;
 import org.flexpay.eirc.sp.SpFileReader;
 import org.flexpay.eirc.test.RandomObjects;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.BeforeClass;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.NotTransactional;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 
 public class TestServiceProviderFileProcessor extends TestSpFileAction {
 
@@ -37,6 +39,8 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	private ExchangeHelper exchangeHelper;
 	@Autowired
 	private SPService spService;
+	@Autowired
+	private SpRegistryService registryService;
 
 	private RandomObjects randomObjects;
 
@@ -49,9 +53,6 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	@Ignore
 	@Test
 	public void testSpFileProcessing() throws Throwable {
-//		File generatedFile = generatePaymentsFile();
-//		SpFile file = uploadFile(generatedFile.getAbsolutePath());
-//		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/payments_100.bin");
 		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree.txt");
 
 		try {
@@ -59,6 +60,62 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		} finally {
 			deleteRecords(file);
 			deleteFile(file);
+		}
+	}
+
+	@Test
+	@Ignore
+	@NotTransactional
+	public void testProcessOpenAccountsRegistry() throws Throwable {
+		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open.txt");
+
+		try {
+			fileProcessor.processFile(file);
+		} catch (FlexPayExceptionContainer c) {
+			for (Exception e : c.getExceptions()) {
+				e.printStackTrace();
+			}
+			throw c;
+		} finally {
+			deleteRecords(file);
+			deleteFile(file);
+		}
+	}
+
+	@Test
+	@NotTransactional
+	public void testProcessOpenAccountsRegistry2() throws Throwable {
+		SpFile file = new SpFile(33L);
+
+		try {
+			fileProcessor.processFile(file);
+		} catch (FlexPayExceptionContainer c) {
+			for (Exception e : c.getExceptions()) {
+				e.printStackTrace();
+			}
+			throw c;
+		} finally {
+		}
+	}
+
+	@Test
+	@Ignore
+	@NotTransactional
+	public void testProcessOpenAccountsRegistryRecords() throws Throwable {
+
+		Set<Long> ids = new HashSet<Long>();
+		ids.add(29689L);
+		ids.add(29690L);
+		ids.add(29691L);
+
+		SpRegistry registry = registryService.read(24L);
+		try {
+			fileProcessor.processRecords(registry, ids);
+		} catch (FlexPayExceptionContainer c) {
+			for (Exception e : c.getExceptions()) {
+				e.printStackTrace();
+			}
+			throw c;
 		}
 	}
 

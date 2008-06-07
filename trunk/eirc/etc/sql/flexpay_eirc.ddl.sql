@@ -123,6 +123,14 @@
         drop 
         foreign key FK_eirc_consumer_service;
 
+    alter table eirc_eirc_accounts_tbl 
+        drop 
+        foreign key FK_eirc_eirc_accounts_person_id;
+
+    alter table eirc_eirc_accounts_tbl 
+        drop 
+        foreign key FK_eirc_eirc_accounts_apartment_id;
+
     alter table eirc_organisation_descriptions_tbl 
         drop 
         foreign key FK_eirc_organisation_description_organisation;
@@ -170,6 +178,14 @@
     alter table eirc_registry_records_tbl 
         drop 
         foreign key FK_eirc_registry_record_registry;
+
+    alter table eirc_registry_records_tbl 
+        drop 
+        foreign key FK_eirc_registry_record_person_id;
+
+    alter table eirc_registry_records_tbl 
+        drop 
+        foreign key FK_eirc_registry_record_apartment_id;
 
     alter table eirc_registry_records_tbl 
         drop 
@@ -463,6 +479,8 @@
 
     drop table if exists eirc_consumers_tbl;
 
+    drop table if exists eirc_eirc_accounts_tbl;
+
     drop table if exists eirc_organisation_descriptions_tbl;
 
     drop table if exists eirc_organisation_names_tbl;
@@ -740,8 +758,20 @@
         service_id bigint not null comment 'Service reference',
         person_id bigint not null comment 'Responsible person reference',
         apartment_id bigint not null comment 'Apartment reference',
+        begin_date datetime not null comment 'Consumer begin date',
+        end_date datetime not null comment 'Consumer end date',
         primary key (id)
     );
+
+    create table eirc_eirc_accounts_tbl (
+        id bigint not null auto_increment,
+        version integer not null comment 'Optimistic lock version',
+        status integer not null,
+        account_number varchar(255) not null comment 'EIRC account number',
+        apartment_id bigint not null comment 'Apartment reference',
+        person_id bigint not null comment 'Responsible person reference',
+        primary key (id)
+    ) comment='EIRC Personal accounts table';
 
     create table eirc_organisation_descriptions_tbl (
         id bigint not null auto_increment,
@@ -817,6 +847,7 @@
 
     create table eirc_registry_records_tbl (
         id bigint not null auto_increment,
+        version integer not null comment 'Optimistic lock version',
         service_code bigint not null,
         personal_account_ext varchar(255) not null,
         city varchar(255),
@@ -837,6 +868,8 @@
         record_status_id bigint comment 'Record status reference',
         service_type_id bigint comment 'Service type reference',
         import_error_id bigint comment 'Import error reference',
+        person_id bigint comment 'Person reference',
+        apartment_id bigint comment 'Apartment reference',
         primary key (id)
     );
 
@@ -1365,6 +1398,18 @@
         foreign key (service_id) 
         references eirc_services_tbl (id);
 
+    alter table eirc_eirc_accounts_tbl 
+        add index FK_eirc_eirc_accounts_person_id (person_id), 
+        add constraint FK_eirc_eirc_accounts_person_id 
+        foreign key (person_id) 
+        references persons_tbl (id);
+
+    alter table eirc_eirc_accounts_tbl 
+        add index FK_eirc_eirc_accounts_apartment_id (apartment_id), 
+        add constraint FK_eirc_eirc_accounts_apartment_id 
+        foreign key (apartment_id) 
+        references apartments_tbl (id);
+
     alter table eirc_organisation_descriptions_tbl 
         add index FK_eirc_organisation_description_organisation (organisation_id), 
         add constraint FK_eirc_organisation_description_organisation 
@@ -1436,6 +1481,18 @@
         add constraint FK_eirc_registry_record_registry 
         foreign key (registry_id) 
         references eirc_registries_tbl (id);
+
+    alter table eirc_registry_records_tbl 
+        add index FK_eirc_registry_record_person_id (person_id), 
+        add constraint FK_eirc_registry_record_person_id 
+        foreign key (person_id) 
+        references persons_tbl (id);
+
+    alter table eirc_registry_records_tbl 
+        add index FK_eirc_registry_record_apartment_id (apartment_id), 
+        add constraint FK_eirc_registry_record_apartment_id 
+        foreign key (apartment_id) 
+        references apartments_tbl (id);
 
     alter table eirc_registry_records_tbl 
         add index FK_eirc_registry_record_service_type (service_type_id), 

@@ -61,7 +61,7 @@ public class SpFile extends DomainObject {
 	 */
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("Id", getId())
 				.append("Request file name", requestFileName)
 				.append("Internal request file name", internalRequestFileName)

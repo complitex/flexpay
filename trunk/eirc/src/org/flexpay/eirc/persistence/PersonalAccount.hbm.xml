@@ -23,13 +23,22 @@
 				<comment>Responsible person reference</comment>
 			</column>
 		</many-to-one>
-
 		<many-to-one name="apartment" foreign-key="FK_eirc_consumer_apartment"
 					 class="org.flexpay.ab.persistence.Apartment">
 			<column name="apartment_id" not-null="true">
 				<comment>Apartment reference</comment>
 			</column>
 		</many-to-one>
+		<property name="beginDate">
+			<column name="begin_date" not-null="true">
+				<comment>Consumer begin date</comment>
+			</column>
+		</property>
+		<property name="endDate">
+			<column name="end_date" not-null="true">
+				<comment>Consumer end date</comment>
+			</column>
+		</property>
 	</class>
 
 	<class name="AccountRecordType" table="eirc_account_record_types_tbl"
@@ -67,6 +76,36 @@
 		<many-to-one name="sourceRegistryRecord" foreign-key="FK_eirc_account_record_registry_record" class="SpRegistryRecord">
 			<column name="source_registry_record_id" not-null="false">
 				<comment>Registry record reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<class name="EircAccount" table="eirc_eirc_accounts_tbl">
+		<comment>EIRC Personal accounts table</comment>
+		<id name="id" column="id">
+			<generator class="native"/>
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="status" column="status" not-null="true"/>
+		<property name="accountNumber">
+			<column name="account_number" not-null="true">
+				<comment>EIRC account number</comment>
+			</column>
+		</property>
+		<many-to-one name="apartment" foreign-key="FK_eirc_eirc_accounts_apartment_id"
+					 class="org.flexpay.ab.persistence.Apartment">
+			<column name="apartment_id" not-null="true">
+				<comment>Apartment reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="person" foreign-key="FK_eirc_eirc_accounts_person_id"
+					 class="org.flexpay.ab.persistence.Person">
+			<column name="person_id" not-null="true">
+				<comment>Responsible person reference</comment>
 			</column>
 		</many-to-one>
 	</class>
@@ -117,4 +156,7 @@
 		and apartment.id = ?
 	</query>
 
+	<query name="EircAccount.findByPersonAndApartment">
+		from EircAccount where person.id=? and apartment.id=? and status=0
+	</query>
 </hibernate-mapping>

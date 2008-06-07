@@ -6,11 +6,15 @@ import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 
-import java.util.List;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 public interface SpRegistryRecordDaoExt {
+
+	/**
+	 * Clear current session
+	 */
+	void clearSession();
 
 	/**
 	 * List registry records
@@ -24,10 +28,10 @@ public interface SpRegistryRecordDaoExt {
 	/**
 	 * Filter registry records
 	 *
-	 * @param registryId Registry key
+	 * @param registryId			Registry key
 	 * @param importErrorTypeFilter Error type filter
-	 * @param recordStatusFilter Records status filter
-	 * @param pager Page
+	 * @param recordStatusFilter	Records status filter
+	 * @param pager				 Page
 	 * @return list of registry records
 	 */
 	List<SpRegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter,
@@ -37,7 +41,7 @@ public interface SpRegistryRecordDaoExt {
 	 * Find registries by identifiers
 	 *
 	 * @param registryId Registr identifier
-	 * @param objectIds Set of registry identifiers
+	 * @param objectIds  Set of registry identifiers
 	 * @return collection of registries
 	 */
 	List<SpRegistryRecord> findRecords(Long registryId, Collection<Long> objectIds);

@@ -1,5 +1,7 @@
 package org.flexpay.eirc.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 
 import java.math.BigDecimal;
@@ -27,11 +29,27 @@ public class SpRegistry extends DomainObject {
 	private Organisation sender;
 	private Organisation recipient;
 	private ServiceProvider serviceProvider;
-	
+
 	private SpRegistryStatus registryStatus;
 	private SpRegistryArchiveStatus archiveStatus;
 
 	private transient int errorsNumber;
+
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("id", getId())
+				.append("registry number", registryNumber)
+				.append("records number", recordsNumber)
+				.append("created", creationDate)
+				.append("from", fromDate)
+				.append("till", tillDate)
+				.append("sender code", senderCode)
+				.append("recipient code", recipientCode)
+				.append("amount", amount)
+				.toString();
+	}
 
 	/**
 	 * Constructs a new DomainObject.
