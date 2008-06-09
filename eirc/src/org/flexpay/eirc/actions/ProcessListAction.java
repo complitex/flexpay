@@ -1,11 +1,11 @@
 package org.flexpay.eirc.actions;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 
 import org.flexpay.common.process.Process;
+import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.ProcessStateComparator;
 
 public class ProcessListAction {
 	
@@ -18,27 +18,9 @@ public class ProcessListAction {
 	}
 	
 	private List<Process> getProcessListMethod() {
-		//List<Process> processList = ProcessManager.getInstance().getProcessList();
-		List<Process> processList = new ArrayList<Process>();
-		Process process = new Process();
-        process.setProcessDefinitionName("def_name1");
-        process.setProcess_end_date(new Date());
-        process.setProcess_start_date(new Date());
-        process.setProcessDefenitionVersion(0);
-        HashMap parameters = new HashMap();
-        parameters.put("key1", "val1");
-        process.setParameters(parameters);
-        processList.add(process);
-        
-        process = new Process();
-        process.setProcessDefinitionName("def_name2");
-        process.setProcess_end_date(new Date());
-        process.setProcess_start_date(new Date());
-        process.setProcessDefenitionVersion(0);
-        parameters = new HashMap();
-        parameters.put("key2", "val2");
-        process.setParameters(parameters);
-        processList.add(process);
+		List<Process> processList = ProcessManager.getInstance().getProcessList();
+        Collections.sort(processList, new ProcessStateComparator());
+      
         
         return processList;
 	}
