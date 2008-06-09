@@ -14,9 +14,17 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.eirc.util.config.ApplicationConfig;
 
+import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Image;
+import com.lowagie.text.PageSize;
 import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.Barcode;
+import com.lowagie.text.pdf.Barcode128;
+import com.lowagie.text.pdf.BarcodePDF417;
+import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 
@@ -47,8 +55,23 @@ public class PdfTicketWriter {
 		PdfStamper stamper = new PdfStamper(new PdfReader(new FileInputStream(
 				kvitPatternFile)), os);
 		stamper.setFormFlattening(true);
+		
 		AcroFields form = stamper.getAcroFields();
-		fillForm(form, ticketInfo);
+		String[] barcodes = fillForm(form, ticketInfo);
+		
+		PdfContentByte cb = stamper.getUnderContent(1);
+		Image image = getBarcode1d(cb, barcodes[0]);
+		image.scalePercent(40, 100);
+		image.setAbsolutePosition(15, PageSize.A4.getHeight() / 2 - 180);
+		image.setRotationDegrees(90);
+		cb.addImage(image);
+		
+		image = getBarcode2d(barcodes[1]); 
+		image.setAbsolutePosition(PageSize.A4.getWidth() - 50, PageSize.A4.getHeight() / 2 - 220);
+		image.setRotationDegrees(90);
+		cb.addImage(image);
+		
+		
 		stamper.close();
 	}
 
@@ -67,8 +90,24 @@ public class PdfTicketWriter {
 		form.setField("name", title);
 		stamper.close();
 	}
+	
+	private Image getBarcode1d(PdfContentByte cb, String code) {
+		Barcode128 barcode = new Barcode128();
+		barcode.setCodeType(Barcode.CODE128_UCC);
+		barcode.setCode(code);
+		
+		return barcode.createImageWithBarcode(cb, null, null);
+	}
+	
+	private Image getBarcode2d(String code) throws BadElementException {
+		BarcodePDF417 barcode = new BarcodePDF417();
+		barcode.setText(code);
+		
+		return barcode.getImage();
+		
+	}
 
-	private void fillForm(AcroFields form, TicketInfo ticketInfo)
+	private String[] fillForm(AcroFields form, TicketInfo ticketInfo)
 			throws IOException, DocumentException {
 		form.setField("header", "КП “ЖИЛКОМСЕРВИС”");
 		form.setField("header_copy1", "КП “ЖИЛКОМСЕРВИС”");
@@ -86,10 +125,9 @@ public class PdfTicketWriter {
 		form.setField("creationDate", format.format(ticketInfo.creationDate));
 		form.setField("dateFrom", format.format(ticketInfo.dateFrom));
 		form.setField("dateTill", format.format(ticketInfo.dateTill));
-		String ticketNumberStr = StringUtil.fillLeadingZero(
-				ticketInfo.ticketNumber.toString(), 10);
-		form.setField("ticketNumber", ticketNumberStr);
-		form.setField("ticketNumber_copy1", ticketNumberStr);
+		
+		
+		
 		// form.setField("paySum", kvitForm.paySum);
 		form.setField("payer", ticketInfo.payer);
 		form.setField("payer_copy1", ticketInfo.payer);
@@ -167,6 +205,53 @@ public class PdfTicketWriter {
 		form.setField("paySum", dateTillSum.toString());
 		form.setField("sum_dateFrom_amount", dateFromSum.toString());
 		form.setField("sum_dateTill_amount", dateTillSum.toString());
+		
+		String[] barcodes = new String[2];
+		StringBuilder barcodeStr = new StringBuilder();
+		barcodeStr.append(ApplicationConfig.getInstance().getEircId());
+		barcodeStr.append(StringUtil.fillLeadingZero(
+				ticketInfo.ticketNumber.toString(), 8));
+		//barcodeStr.append("-");
+		//format = new SimpleDateFormat("MM/yyyy");
+		//barcodeStr.append(format.format(ticketInfo.dateFrom));
+		barcodeStr.append(";");
+		barcodeStr.append(dateTillSum);
+		
+		barcodes[0] = barcodeStr.toString();
+		
+		form.setField("ticketNumber", barcodes[0]);
+		form.setField("ticketNumber_copy1", barcodes[0]);
+		
+		StringBuilder barcode2d = new StringBuilder();
+		barcode2d.append(ApplicationConfig.getInstance().getEircId());
+		barcode2d.append(StringUtil.fillLeadingZero(
+				ticketInfo.ticketNumber.toString(), 8));
+		barcode2d.append(";");
+		barcode2d.append(ticketInfo.address);
+		barcode2d.append(";");
+		barcode2d.append(ticketInfo.payer);
+		barcode2d.append(";");
+		barcode2d.append(dateTillSum);
+		barcode2d.append("\n");
+		barcode2d.append("2");
+		barcode2d.append(";");
+		if (ticketInfo.serviceAmountInfoMap != null) {
+			ServiceAmountInfo serviceAmountInfo = null;
+			for (int i = 2; i <= 15; i++) {
+				serviceAmountInfo = ticketInfo.serviceAmountInfoMap.get(i);
+				if (serviceAmountInfo != null) {
+					barcode2d.append(i);
+					barcode2d.append(";");
+					barcode2d.append(serviceAmountInfo.name);
+					barcode2d.append(";");
+					barcode2d.append(serviceAmountInfo.dateTillAmount);
+					barcode2d.append("\n");
+				}
+			}
+		}
+		barcodes[1] = barcode2d.toString();
+		
+		return barcodes;
 	}
 
 	private String[] getStringArray(BigDecimal amount) {
@@ -242,7 +327,7 @@ public class PdfTicketWriter {
 		public BigDecimal getDateTillSum() {
 			return getServicesAmount(2, 15, false);
 		}
-
+		
 		private BigDecimal getServicesAmount(int ind1, int ind2, boolean flag) {
 			BigDecimal sum = BigDecimal.ZERO;
 			ServiceAmountInfo serviceAmountInfo = null;
