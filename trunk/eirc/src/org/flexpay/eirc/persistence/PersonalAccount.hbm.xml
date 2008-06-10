@@ -159,4 +159,13 @@
 	<query name="EircAccount.findByPersonAndApartment">
 		from EircAccount where person.id=? and apartment.id=? and status=0
 	</query>
+	
+	<query name="EircAccount.findObjects">
+		from EircAccount where status=0
+	</query>
+	<query name="EircAccount.findObjects.count">
+		select count(*) from EircAccount a where a.status=0
+	</query>
+	
+	
 </hibernate-mapping>

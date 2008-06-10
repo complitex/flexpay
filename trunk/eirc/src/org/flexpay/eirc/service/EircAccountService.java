@@ -1,7 +1,10 @@
 package org.flexpay.eirc.service;
 
+import java.util.List;
+
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.eirc.persistence.EircAccount;
 
@@ -30,4 +33,11 @@ public interface EircAccountService {
 	 * @return Account number
 	 */
 	String nextPersonalAccount();
+	
+	/**
+	 * Find all EircAccounts
+	 *
+	 * @return List of EircAccount
+	 */
+	List<EircAccount> findAll(Page<EircAccount> pager);
 }

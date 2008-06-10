@@ -1,7 +1,10 @@
 package org.flexpay.eirc.service.imp;
 
+import java.util.List;
+
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.service.SequenceService;
 import org.flexpay.common.util.StringUtil;
@@ -69,5 +72,15 @@ public class EircAccountServiceImpl implements EircAccountService {
 
 	public void setSequenceService(SequenceService sequenceService) {
 		this.sequenceService = sequenceService;
+	}
+	
+	/**
+	 * Find all EircAccounts
+	 *
+	 * @return List of EircAccount
+	 */
+	public List<EircAccount> findAll(Page<EircAccount> pager) {
+		return this.eircAccountDao.findObjects(pager);
+		
 	}
 }
