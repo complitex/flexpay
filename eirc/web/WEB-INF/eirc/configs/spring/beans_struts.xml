@@ -176,5 +176,10 @@
 	<bean id="processViewAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.ProcessViewAction">
 	</bean>
+	
+	<bean id="eircAccountListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.EircAccountListAction">
+		  <property name="eircAccountService" ref="eircAccountService" />
+	</bean>
 
 </beans>

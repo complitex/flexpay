@@ -175,6 +175,10 @@
 		<action name="processViewAction" class="processViewAction">
 			<result type="tiles">eirc.process.view</result>
 		</action>
+		
+		<action name="eircAccountListAction" class="eircAccountListAction">
+			<result type="tiles">eirc.eirc_account.list</result>
+		</action>
 
 	</package>
 
