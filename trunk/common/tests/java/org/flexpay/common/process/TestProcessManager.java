@@ -67,14 +67,19 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
             "\n" +
             "  <task-node name=\"MockJobLast\">\n" +
             "    <task swimlane=\"worker\" blocking=\"yes\">\n" +
-            "        <event type=\"task-end\">\n" +
-            "            <action class=\"org.flexpay.common.process.TestEvent\" name=\"TestEvent\">\n" +
-            "                <eventExecuted>EVENT EXECUTED</eventExecuted>\n" +
-            "            </action>\n" +
-            "          </event>\n" +
+//            "        <event type=\"task-end\">\n" +
+//            "            <action class=\"org.flexpay.common.process.TestEvent\" >\n" +
+//            "                <eventExecuted>EVENT EXECUTED</eventExecuted>\n" +
+//            "            </action>\n" +
+//            "          </event>\n" +
             "    </task>\n" +
             "    <transition name=\"next\" to=\"end\" />\n" +
             "    <transition name=\"error\" to=\"end\" />\n" +
+            "            <event type=\"node-leave\" >\n" +
+            "                <action class=\"org.flexpay.common.process.TestEvent\" name=\"TestEvent\">\n" +
+            "                    <eventExecuted>EVENT EXECUTED</eventExecuted>\n" +
+            "                </action>\n" +
+            "            </event>"+
             "  </task-node>"+
 //            "  <task-node name=\"MockJobLast\">\n" +
 //            "    <task swimlane=\"worker\" blocking=\"yes\">\n" +
@@ -102,6 +107,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
     public void setUp() {
         ProcessManager.getInstance().stop();
         ProcessManager.unload();
+        clearDB();
 //        ProcessManager.getInstance().setJbpmConfiguration(jbpmConfiguration);
 //        ProcessManager.getInstance().run();
 //        thread = new Thread(ProcessManager.getInstance(), "ProcessManagerThread");
@@ -118,6 +124,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 //            Thread.interrupted(); // clear interrupded flag
 //        }
         ProcessManager.unload();
+        clearDB();
 //        thread = null;
     }
 
@@ -165,7 +172,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 
             assertEquals(2, counter);
             //@TODO why event class was not executed?
-//            assertEquals(EVENT_EXECUTED,eventExecuted);
+            assertEquals(EVENT_EXECUTED,eventExecuted);
 
         } catch (ProcessInstanceException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -222,7 +229,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
     public static class MockJobFirst extends Job {
 
         public String execute(HashMap<Serializable, Serializable> parameters) throws FlexPayException {
-            counter++;
+//            counter++;
             return Job.NEXT;
         }
     }
@@ -230,13 +237,13 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
     public static class MockJobLast extends Job {
 
         public String execute(HashMap<Serializable, Serializable> parameters) throws FlexPayException {
-            counter++;
+//            counter++;
             return Job.NEXT;
         }
     }
 
-    @Test
-    public void testClearDB(){
+//    @Test
+    public void clearDB(){
         JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
         GraphSession graphSession = jbpmContext.getGraphSession();
 

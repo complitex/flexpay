@@ -22,7 +22,7 @@
   </task-node>
 
   <task-node name="MockJobLast">
-    <task swimlane="worker" blocking="yes">
+    <task name="zz" swimlane="worker" blocking="yes" >
         <event type="task-end" >
             <action class="org.flexpay.common.process.TestEvent" name="TestEvent">
                 <eventExecuted>EVENT EXECUTED</eventExecuted>
@@ -31,6 +31,11 @@
     </task>
     <transition name="next" to="end" />
     <transition name="error" to="end" />
+      <event type="node-leave" >
+          <action class="org.flexpay.common.process.TestEvent" name="TestEvent">
+              <eventExecuted>EVENT EXECUTED</eventExecuted>
+          </action>
+      </event>
   </task-node>
 
   <end-state name="end" />
