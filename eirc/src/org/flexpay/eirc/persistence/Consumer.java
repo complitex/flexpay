@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.Apartment;
 public class Consumer extends AbstractConsumer {
 
 	private Apartment apartment;
+	private EircAccount eircAccount;
 
 	/**
 	 * Constructs a new DomainObject.
@@ -32,5 +33,19 @@ public class Consumer extends AbstractConsumer {
 	 */
 	public void setApartment(Apartment apartment) {
 		this.apartment = apartment;
+	}
+
+	/**
+	 * @return the eircAccount
+	 */
+	public EircAccount getEircAccount() {
+		return eircAccount;
+	}
+
+	/**
+	 * @param eircAccount the eircAccount to set
+	 */
+	public void setEircAccount(EircAccount eircAccount) {
+		this.eircAccount = eircAccount;
 	}
 }

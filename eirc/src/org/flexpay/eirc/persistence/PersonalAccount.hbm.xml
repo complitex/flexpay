@@ -29,6 +29,12 @@
 				<comment>Apartment reference</comment>
 			</column>
 		</many-to-one>
+		<many-to-one name="eircAccount" foreign-key="FK_eirc_consumer_eirc_account"
+					 class="org.flexpay.eirc.persistence.EircAccount">
+			<column name="eirc_account_id" not-null="true">
+				<comment>EIRC account reference</comment>
+			</column>
+		</many-to-one>
 		<property name="beginDate">
 			<column name="begin_date" not-null="true">
 				<comment>Consumer begin date</comment>
@@ -108,6 +114,11 @@
 				<comment>Responsible person reference</comment>
 			</column>
 		</many-to-one>
+		<set name="consumers" inverse="true" cascade="all-delete-orphan">
+			<key column="eirc_account_id" not-null="true"/>
+			<one-to-many class="Consumer"/>
+		</set>
+		
 	</class>
 
 	<query name="AccountRecord.findRegisteredRecords.count">
