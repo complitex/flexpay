@@ -83,4 +83,13 @@ public class EircAccountServiceImpl implements EircAccountService {
 		return this.eircAccountDao.findObjects(pager);
 		
 	}
+	
+	public EircAccount findWithPerson(Long id) {
+		List<EircAccount> list = eircAccountDao.findWithPerson(id);
+		if(list.isEmpty()) {
+			return null;
+		}
+		
+		return list.iterator().next();
+	}
 }

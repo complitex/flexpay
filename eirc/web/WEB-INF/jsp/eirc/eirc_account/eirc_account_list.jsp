@@ -19,12 +19,14 @@
 					<input type="checkbox" disabled="1" value="<s:property value="%{id}"/>" name="objectIds"/>
 				</td>
 				<td class="col">
-					<s:property value="%{accountNumber}"/>
+					<a href="<s:url action='eircAccountViewAction'><s:param name="eircAccount.id" value="%{id}"/></s:url>">
+	      				<s:property value="%{accountNumber}"/>
+	    			</a>
 				</td>
 			</tr>
 		</s:iterator>
 		<tr>
-			<td colspan="4">
+			<td colspan="3">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" class="btn-exit" disabled="1"
 					   onclick="$('fobjects').action='<s:url action="delete_towns"/>';$('fobjects').submit()"

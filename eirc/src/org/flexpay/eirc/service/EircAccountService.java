@@ -40,4 +40,6 @@ public interface EircAccountService {
 	 * @return List of EircAccount
 	 */
 	List<EircAccount> findAll(Page<EircAccount> pager);
+	
+	EircAccount findWithPerson(Long id);
 }

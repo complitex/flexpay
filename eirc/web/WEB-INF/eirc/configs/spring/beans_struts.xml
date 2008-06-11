@@ -181,5 +181,9 @@
 		  class="org.flexpay.eirc.actions.EircAccountListAction">
 		  <property name="eircAccountService" ref="eircAccountService" />
 	</bean>
+	<bean id="eircAccountViewAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.EircAccountViewAction">
+		  <property name="eircAccountService" ref="eircAccountService" />
+	</bean>
 
 </beans>
