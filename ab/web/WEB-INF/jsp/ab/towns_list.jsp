@@ -28,8 +28,10 @@
 				</td>
 				<td class="col">
 					<a href="<s:url value="/dicts/view_town.action?object.id=%{object.id}"/>">
-						<img src="<s:url value="/resources/common/img/i_view.gif" />" alt="<s:text name="common.view"/>"
-						 title="<s:text name="common.view"/>" /></a></td>
+						<!-- <img src="<s:url value="/resources/common/img/i_view.gif" />" alt="<s:text name="common.view"/>"
+						 title="<s:text name="common.view"/>" /> -->
+						<s:text name="common.view"/> 
+					</a></td>
 			</tr>
 		</s:iterator>
 		<tr>

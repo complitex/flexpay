@@ -29,8 +29,9 @@
 						value="%{format(defaultIdentity.birthDate)}"/></td>
 				<td class="col">
 					<a href="<s:url value="/dicts/view_person.action?person.id=%{id}"/>">
-						<img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.set" />"
-						title="<s:text name="common.set" />" />
+						<!-- <img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.set" />"
+						title="<s:text name="common.set" />" /> -->
+						<s:text name="common.set" />
 					</a></td>
 			</tr>
 		</s:iterator>

@@ -33,8 +33,9 @@
 				</td>
 				<td class="col">
 					<a href="<s:url action='apartmentEditAction'><s:param name="apartment.id" value="%{id}"/><s:param name="buildings.id" value="%{buildingsFilter.selectedId}"/></s:url>">
-	      				<img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
-						 title="<s:text name="common.edit"/>" />
+	      				<!-- <img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
+						 title="<s:text name="common.edit"/>" /> -->
+						<s:text name="common.edit"/> 
 	    			</a>
 				</td>
 			</tr>
