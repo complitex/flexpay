@@ -43,9 +43,12 @@
 				<td class="col"><s:property value="%{containers}" /></td>
 				<td class="col"><s:text name="%{importError.errorId}" /></td>
 				<td class="col"><s:text name="%{recordStatus.i18nName}" /></td>
-				<td class="col"><a href="javascript: correspondenceScreen(<s:property value="%{id}" />)"><img
-						src="<s:url value="/resources/common/img/i_edit.gif" includeParams="none"/>" alt="<s:text name="common.set" />"
-						title="<s:text name="common.set" />" /></a></td>
+				<td class="col"><a href="javascript: correspondenceScreen(<s:property value="%{id}" />)">
+					<!-- <img src="<s:url value="/resources/common/img/i_edit.gif" includeParams="none"/>" alt="<s:text name="common.set" />"
+						title="<s:text name="common.set" />" /> -->
+					<s:text name="common.edit"/>	
+						</a>
+				</td>
 			</tr>
 		</s:iterator>
 		<tr>

@@ -44,8 +44,10 @@
 				<td class="col"><s:property value="recordsNumber"/></td>
 				<td class="col"><s:text name="%{registryStatus.i18nName}"/></td>
 				<td class="col"><a href="<s:url value="/eirc/registry_view.action?registry.id=%{id}"/>">
-					<img src="<s:url value="/resources/common/img/i_view.gif" />" alt="<s:text name="common.view"/>"
-						 title="<s:text name="common.view"/>"/></a></td>
+					<!-- <img src="<s:url value="/resources/common/img/i_view.gif" />" alt="<s:text name="common.view"/>"
+						 title="<s:text name="common.view"/>"/> -->
+					<s:text name="common.edit"/>	 
+						</a></td>
 			</tr>
 		</s:iterator>
 		<tr>
