@@ -18,9 +18,10 @@
         </td>
         <td class="th">
           <a href="<s:url value="/dicts/buildingsEditAction.action?buildings.id=%{id}"/>">
-				<img src="<s:url value="/resources/common/img/i_edit.gif" />"
+				<!-- <img src="<s:url value="/resources/common/img/i_edit.gif" />"
 				     alt="<s:text name="common.edit"/>"
-				     title="<s:text name="common.edit"/>" />
+				     title="<s:text name="common.edit"/>" /> -->
+				<s:text name="common.edit"/>     
 		  </a>
 		  &nbsp;
 		  <a href="<s:url action="buildingsDeleteAction" includeParams="none" />?objectIds=<s:property value="id" />&redirectBuildingsId=<s:property value="buildings.id" />">

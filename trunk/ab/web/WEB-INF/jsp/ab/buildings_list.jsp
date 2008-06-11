@@ -46,8 +46,9 @@
 				</td>
 				<td class="col">
 					<a href="<s:url value="/dicts/buildingsEditAction.action?buildings.id=%{id}"/>">
-						<img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
-						 title="<s:text name="common.edit"/>" />
+						<!-- <img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
+						 title="<s:text name="common.edit"/>" /> -->
+						<s:text name="common.edit"/> 
 					</a>
 				</td>
 			</tr>
