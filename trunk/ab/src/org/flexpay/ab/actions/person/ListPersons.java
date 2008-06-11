@@ -26,6 +26,7 @@ public class ListPersons extends FPActionSupport implements SessionAware {
 
 	private Map session;
 	private List<Person> persons = new ArrayList<Person>();
+	private String searchString;
 	private Page pager = new Page();
 
 	/**
@@ -133,5 +134,19 @@ public class ListPersons extends FPActionSupport implements SessionAware {
 	 */
 	public List<Person> getPersons() {
 		return persons;
+	}
+
+	/**
+	 * @return the searchString
+	 */
+	public String getSearchString() {
+		return searchString;
+	}
+
+	/**
+	 * @param searchString the searchString to set
+	 */
+	public void setSearchString(String searchString) {
+		this.searchString = searchString;
 	}
 }

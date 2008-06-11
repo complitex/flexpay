@@ -74,4 +74,10 @@ public class PersonServiceImpl implements PersonService {
 	public void update(Person person) {
 		personDao.update(person);
 	}
+	
+	public List<Person> findByFIO(Page pager, String searchString) {
+		
+		
+		return null;
+	}
 }

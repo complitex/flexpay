@@ -16,4 +16,6 @@ public interface PersonDao extends GenericDao<Person, Long>{
 	 * @return List of children
 	 */
 	List<Person> findObjects(Page pager, int status);
+	
+	List<Person> findByFIO(Page pager, String searchString);
 }
