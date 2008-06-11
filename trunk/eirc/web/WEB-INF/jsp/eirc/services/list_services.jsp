@@ -36,8 +36,10 @@
 				<td class="col"><s:date name="beginDate" format="yyyy/MM/dd"/></td>
 				<td class="col"><s:date name="endDate" format="yyyy/MM/dd"/></td>
 				<td class="col"><a href="<s:url action="service_edit"><s:param name="service.id" value="%{id}"/></s:url>">
-					<img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
-						 title="<s:text name="common.edit"/>"/></a></td>
+					<!-- <img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
+						 title="<s:text name="common.edit"/>"/> -->
+					<s:text name="common.edit"/>	 
+						</a></td>
 			</tr>
 		</s:iterator>
 		<tr>

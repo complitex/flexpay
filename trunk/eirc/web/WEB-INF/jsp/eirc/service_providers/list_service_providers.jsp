@@ -21,8 +21,10 @@
 				<td class="col"><s:property value="getTranslation(descriptions).name"/></td>
 				<td class="col"><s:property value="organisation.id"/></td>
 				<td class="col"><a href="<s:url action="service_provider_edit"><s:param name="provider.id" value="%{id}"/></s:url>">
-					<img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
-						 title="<s:text name="common.edit"/>"/></a></td>
+					<!-- <img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
+						 title="<s:text name="common.edit"/>"/> -->
+					<s:text name="common.edit"/>	 
+						 </a></td>
 			</tr>
 		</s:iterator>
 		<tr>
