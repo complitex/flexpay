@@ -177,5 +177,9 @@
 		<put-attribute name="title" value="eirc.eirc_account.list" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_list.jsp" />
 	</definition>
+	<definition name="eirc.eirc_account.view" extends="eirc.eirc_account.list">
+		<put-attribute name="title" value="eirc.eirc_account.view" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_view.jsp" />
+	</definition>
 
 </tiles-definitions>

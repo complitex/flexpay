@@ -179,6 +179,9 @@
 		<action name="eircAccountListAction" class="eircAccountListAction">
 			<result type="tiles">eirc.eirc_account.list</result>
 		</action>
+		<action name="eircAccountViewAction" class="eircAccountViewAction">
+			<result type="tiles">eirc.eirc_account.view</result>
+		</action>
 
 	</package>
 
