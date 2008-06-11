@@ -3,7 +3,22 @@
 <s:actionerror/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="fobjects" method="post" action="">
+
+	<form id="fobjects" method="post" action="<s:url value="/dicts/list_persons.action" includeParams="none" />">
+
+	<tr>
+	  <td colspan="7">
+	    <s:textfield name="searchString" value="%{searchString}"/>
+	    <input type="submit" class="btn-exit" value="<s:text name="menu1.search"/>"/>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    &nbsp;
+	  </td>
+	</tr>
+
+	
 
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
@@ -31,7 +46,7 @@
 					<a href="<s:url value="/dicts/view_person.action?person.id=%{id}"/>">
 						<!-- <img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.set" />"
 						title="<s:text name="common.set" />" /> -->
-						<s:text name="common.set" />
+						<s:text name="common.edit" />
 					</a></td>
 			</tr>
 		</s:iterator>
@@ -39,10 +54,12 @@
 			<td colspan="7">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="delete_persons"/>';$('fobjects').submit()"
+					   <%-- onclick="$('fobjects').action='<s:url action="delete_persons"/>';$('fobjects').submit()" --%>
+					   onclick="alert('<s:text name="error.not_implemented" />')"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="create_person"/>'"
+					   <%-- onclick="window.location='<s:url action="create_person"/>'" --%>
+					   onclick="alert('<s:text name="error.not_implemented" />')"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

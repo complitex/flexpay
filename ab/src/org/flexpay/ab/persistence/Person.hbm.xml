@@ -118,5 +118,28 @@
 			LEFT JOIN FETCH o.personRegistrations r
 		WHERE o.id=?
 	</query>
+	
+	<query name="Person.findByFIO">
+		SELECT DISTINCT o
+		FROM Person o
+			LEFT JOIN FETCH o.personAttributes pa
+			LEFT JOIN FETCH pa.lang pal
+			LEFT JOIN FETCH pal.translations tr
+			LEFT JOIN FETCH o.personIdentities pi
+			LEFT JOIN FETCH pi.identityType it
+			LEFT JOIN FETCH it.translations ittr
+			LEFT JOIN FETCH ittr.lang lang
+			LEFT JOIN FETCH lang.translations
+			LEFT JOIN FETCH o.personRegistrations r
+		WHERE o.id=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName  like ?
+	</query>
+	<query name="Person.findByFIO.count">
+		SELECT count(*)
+        FROM Person o
+			LEFT JOIN o.personIdentities pi
+		WHERE o.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName  like ?
+		
+	</query>
+	
 
 </hibernate-mapping>
