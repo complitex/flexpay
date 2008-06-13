@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.Apartment;
 public class Consumer extends AbstractConsumer {
 
 	private Apartment apartment;
+	private ConsumerInfo consumerInfo;
 	private EircAccount eircAccount;
 
 	/**
@@ -33,6 +34,14 @@ public class Consumer extends AbstractConsumer {
 	 */
 	public void setApartment(Apartment apartment) {
 		this.apartment = apartment;
+	}
+
+	public ConsumerInfo getConsumerInfo() {
+		return consumerInfo;
+	}
+
+	public void setConsumerInfo(ConsumerInfo consumerInfo) {
+		this.consumerInfo = consumerInfo;
 	}
 
 	/**

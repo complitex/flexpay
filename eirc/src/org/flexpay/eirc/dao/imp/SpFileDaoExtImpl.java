@@ -13,4 +13,11 @@ public class SpFileDaoExtImpl extends HibernateDaoSupport implements SpFileDaoEx
 		List types = getHibernateTemplate().find("from SpRegistryType where typeId=?", type);
 		return types.isEmpty() ? null : (SpRegistryType) types.get(0);
 	}
+
+	/**
+	 * Clear current session
+	 */
+	public void clearSession() {
+		getHibernateTemplate().clear();
+	}
 }

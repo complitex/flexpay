@@ -3,15 +3,14 @@ package org.flexpay.eirc.persistence.exchange;
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.persistence.DataCorrection;
+import org.flexpay.common.service.importexport.CorrectionsService;
+import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
-import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.util.config.ApplicationConfig;
-import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 
 import java.util.List;
 
@@ -39,10 +38,10 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	 */
 	public void process(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
 
-		if (! validate(registry, record)) {
+		if (!validate(registry, record)) {
 			return;
 		}
-		getEircAccount(record);
+		EircAccount account = getEircAccount(record);
 
 		Consumer consumer = new Consumer();
 		consumer.setApartment(record.getApartment());
@@ -51,7 +50,9 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		consumer.setBeginDate(changeApplyingDate);
 		consumer.setEndDate(ApplicationConfig.getInstance().getFutureInfinite());
 		consumer.setService(findService(registry, record));
+		consumer.setEircAccount(account);
 
+		saveConsumerInfo(record, consumer);
 		ConsumerService consumerService = factory.getConsumerService();
 		try {
 			consumerService.save(consumer);
@@ -63,6 +64,25 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		}
 
 		createCorrection(registry, record, consumer);
+		record.setConsumer(consumer);
+	}
+
+	private void saveConsumerInfo(SpRegistryRecord record, Consumer consumer) {
+		ConsumerInfo info = new ConsumerInfo();
+
+		info.setFirstName(record.getFirstName());
+		info.setMiddleName(record.getMiddleName());
+		info.setLastName(record.getLastName());
+
+		info.setCityName(record.getCity());
+		info.setStreetTypeName(record.getStreetType());
+		info.setStreetName(record.getStreetName());
+		info.setBuildingNumber(record.getBuildingNum());
+		info.setBuildingBulk(record.getBuildingBulkNum());
+		info.setApartmentNumber(record.getApartmentNum());
+
+		factory.getConsumerInfoService().save(info);
+		consumer.setConsumerInfo(info);
 	}
 
 	private void createCorrection(SpRegistry registry, SpRegistryRecord record, Consumer consumer) {
@@ -76,21 +96,17 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		correctionsService.save(corr);
 
 		// add full consumer correction
-		data = RawConsumersDataUtil.convert(registry, record);
 		corr = correctionsService.getStub(data.getFullConsumerId(), consumer,
 				registry.getServiceProvider().getDataSourceDescription());
 		correctionsService.save(corr);
-
-		// todo learn import service to use them
-
 	}
 
 	private Service findService(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
-		SPService spService = factory.getSpService();
-		Service service = spService.getService(registry.getServiceProvider(), record.getServiceType());
+		ConsumerService consumerService = factory.getConsumerService();
+		Service service = consumerService.findService(registry.getServiceProvider(), record.getServiceCode());
 		if (service == null) {
 			throw new FlexPayException("Cannot find service for provider " + registry.getServiceProvider() +
-					" and type: " + record.getServiceType());
+					" and code: " + record.getServiceCode());
 		}
 
 		return service;
@@ -131,7 +147,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	 * Validate registry record for processing, validation is not allowed if consumer already exists
 	 *
 	 * @param registry Registry
-	 * @param record Record
+	 * @param record   Record
 	 * @return <code>true</true> if processing allowed, or <code>false</code> otherwise
 	 * @throws FlexPayException if processing cannot be done at all
 	 */

@@ -6,25 +6,28 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.persistence.*;
-import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
+import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
+import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.sp.SpFileReader.Message;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpFileParser {
 
 	private static Logger log = Logger.getLogger(SpFileParser.class);
 
-	public static final String RECORD_DELIMITER = ";";
-	public static final String ADDRESS_DELIMITER = ",";
-	public static final String FIO_DELIMITER = ",";
+	private static final int MAX_CONTAINER_SIZE = 2048;
 
 	public static final DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
 
@@ -37,7 +40,6 @@ public class SpFileParser {
 	private RegistryRecordWorkflowManager recordWorkflowManager;
 
 	private OrganisationService organisationService;
-	private ServiceTypeService serviceTypeService;
 	private SPService spService;
 
 	private SpRegistry spRegistry;
@@ -78,7 +80,8 @@ public class SpFileParser {
 			return;
 		}
 
-		List<String> messageFieldList = StringUtil.tokenize(messageValue, RECORD_DELIMITER);
+		List<String> messageFieldList = StringUtil.splitEscapable(
+				messageValue, Operation.RECORD_DELIMITER, Operation.ESCAPE_SIMBOL);
 
 		if (messageType.equals(Message.MESSAGE_TYPE_HEADER)) {
 			processHeader(spFile, messageFieldList);
@@ -93,10 +96,8 @@ public class SpFileParser {
 		if (messageFieldList.size() < 11) {
 			throw new SpFileFormatException(
 					"Message header error, invalid number of fields: "
-							+ messageFieldList.size(), message.getPosition());
+							+ messageFieldList.size() + ", expected 11", message.getPosition());
 		}
-
-		finalizeRegistry();
 
 		registryRecordCounter = 0;
 		SpRegistry spRegistry = new SpRegistry();
@@ -121,7 +122,7 @@ public class SpFileParser {
 			if (StringUtils.isNotEmpty(amountStr)) {
 				spRegistry.setAmount(new BigDecimal(amountStr));
 			}
-			spRegistry.setContainers(messageFieldList.get(++n));
+			spRegistry.setContainers(parseContainers(spRegistry, messageFieldList.get(++n)));
 
 			if (log.isInfoEnabled()) {
 				log.info("Creating new registry: " + spRegistry);
@@ -168,14 +169,15 @@ public class SpFileParser {
 			}
 
 			int n = 1;
-			record.setServiceCode(Long.valueOf(messageFieldList.get(++n)));
+			record.setServiceCode(messageFieldList.get(++n));
 			record.setPersonalAccountExt(messageFieldList.get(++n));
 
 			// setup consumer address
 			String addressStr = messageFieldList.get(++n);
 			if (StringUtils.isNotEmpty(addressStr)) {
-				List<String> addressFieldList = StringUtil.tokenize(addressStr,
-						ADDRESS_DELIMITER);
+				List<String> addressFieldList = StringUtil.splitEscapable(
+						addressStr, Operation.ADDRESS_DELIMITER, Operation.ESCAPE_SIMBOL);
+
 				if (addressFieldList.size() != 6) {
 					throw new SpFileFormatException(
 							String.format("Address group '%s' has invalid number of fields %d",
@@ -193,7 +195,8 @@ public class SpFileParser {
 			// setup person first, middle, last names
 			String fioStr = messageFieldList.get(++n);
 			if (StringUtils.isNotEmpty(fioStr)) {
-				List<String> fioFieldList = StringUtil.tokenize(fioStr, FIO_DELIMITER);
+				List<String> fioFieldList = StringUtil.splitEscapable(
+						fioStr, Operation.FIO_DELIMITER, Operation.ESCAPE_SIMBOL);
 				if (fioFieldList.size() != 3) {
 					throw new SpFileFormatException("Group FIO has error", message.getPosition());
 				}
@@ -220,24 +223,71 @@ public class SpFileParser {
 			// setup containers
 			String containersStr = messageFieldList.get(++n);
 			if (StringUtils.isNotEmpty(containersStr)) {
-				record.setContainers(containersStr);
+				record.setContainers(parseContainers(record, containersStr));
 			}
-
-			// setup record service type
-			ServiceType serviceType = serviceTypeService.getServiceType(record.getServiceCode().intValue());
-			record.setServiceType(serviceType);
 
 			// setup record status
 			recordWorkflowManager.setInitialStatus(record);
 
 		} catch (NumberFormatException e) {
+			log.error("Record number parse error", e);
 			throw new SpFileFormatException("Record parse error", message.getPosition());
 		} catch (ParseException e) {
+			log.error("Record parse error", e);
 			throw new SpFileFormatException("Record parse error", message.getPosition());
 		}
 
 		spRegistryRecordService.create(record);
 	}
+
+	private List<RegistryRecordContainer> parseContainers(SpRegistryRecord record, String containersData)
+			throws SpFileFormatException {
+
+		List<String> containers = StringUtil.splitEscapable(
+				containersData, Operation.CONTAINER_DELIMITER, Operation.ESCAPE_SIMBOL);
+		List<RegistryRecordContainer> result = new ArrayList<RegistryRecordContainer>(containers.size());
+		int n = 0;
+		for (String data : containers) {
+			if (StringUtils.isBlank(data)) {
+				continue;
+			}
+			if (data.length() > MAX_CONTAINER_SIZE) {
+				throw new SpFileFormatException("Too long container found: " + data);
+			}
+			RegistryRecordContainer container = new RegistryRecordContainer();
+			container.setOrder(n++);
+			container.setRecord(record);
+			container.setData(data);
+			result.add(container);
+		}
+
+		return result;
+	}
+
+	private List<RegistryContainer> parseContainers(SpRegistry registry, String containersData)
+			throws SpFileFormatException {
+
+		List<String> containers = StringUtil.splitEscapable(
+				containersData, Operation.CONTAINER_DELIMITER, Operation.ESCAPE_SIMBOL);
+		List<RegistryContainer> result = new ArrayList<RegistryContainer>(containers.size());
+		int n = 0;
+		for (String data : containers) {
+			if (StringUtils.isBlank(data)) {
+				continue;
+			}
+			if (data.length() > MAX_CONTAINER_SIZE) {
+				throw new SpFileFormatException("Too long container found: " + data);
+			}
+			RegistryContainer container = new RegistryContainer();
+			container.setOrder(n++);
+			container.setRegistry(registry);
+			container.setData(data);
+			result.add(container);
+		}
+
+		return result;
+	}
+
 
 	private void processFooter(List<String> messageFieldList)
 			throws SpFileFormatException {
@@ -254,10 +304,12 @@ public class SpFileParser {
 		}
 
 		if (spRegistry.getRecordsNumber() != registryRecordCounter) {
-			throw new SpFileFormatException("Registry records amount error");
+			throw new SpFileFormatException("Registry records number error, expected: " +
+					spRegistry.getRecordsNumber() + ", found: " + registryRecordCounter);
 		}
 
 		registryWorkflowManager.setNextSuccessStatus(spRegistry);
+		spRegistry = null;
 	}
 
 	/**
@@ -302,9 +354,5 @@ public class SpFileParser {
 
 	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
 		this.recordWorkflowManager = recordWorkflowManager;
-	}
-
-	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
-		this.serviceTypeService = serviceTypeService;
 	}
 }

@@ -5,11 +5,11 @@
 
     alter table ab_person_registrations_tbl 
         drop 
-        foreign key FK2BD18CD7095AEAD;
+        foreign key FP_ab_person_registrations_person;
 
     alter table ab_person_registrations_tbl 
         drop 
-        foreign key FK2BD18CDDEF75687;
+        foreign key FP_ab_person_registrations_apartment;
 
     alter table apartment_numbers_tbl 
         drop 
@@ -113,11 +113,19 @@
 
     alter table eirc_consumers_tbl 
         drop 
+        foreign key FK_eirc_consumer_eirc_account;
+
+    alter table eirc_consumers_tbl 
+        drop 
         foreign key FK_eirc_consumer_responsible_person;
 
     alter table eirc_consumers_tbl 
         drop 
         foreign key FK_eirc_consumer_apartment;
+
+    alter table eirc_consumers_tbl 
+        drop 
+        foreign key FK_eirc_consumers_tbl_consumer_info_id;
 
     alter table eirc_consumers_tbl 
         drop 
@@ -175,6 +183,14 @@
         drop 
         foreign key FK_eirc_registry_file;
 
+    alter table eirc_registry_containers_tbl 
+        drop 
+        foreign key FK_eirc_registry_containers_tbl_registry_id;
+
+    alter table eirc_registry_record_containers_tbl 
+        drop 
+        foreign key FK_eirc_registry_record_containers_tbl_record_id;
+
     alter table eirc_registry_records_tbl 
         drop 
         foreign key FK_eirc_registry_record_registry;
@@ -186,10 +202,6 @@
     alter table eirc_registry_records_tbl 
         drop 
         foreign key FK_eirc_registry_record_apartment_id;
-
-    alter table eirc_registry_records_tbl 
-        drop 
-        foreign key FK_eirc_registry_record_service_type;
 
     alter table eirc_registry_records_tbl 
         drop 
@@ -477,6 +489,8 @@
 
     drop table if exists eirc_account_records_tbl;
 
+    drop table if exists eirc_consumer_infos_tbl;
+
     drop table if exists eirc_consumers_tbl;
 
     drop table if exists eirc_eirc_accounts_tbl;
@@ -491,7 +505,11 @@
 
     drop table if exists eirc_registry_archive_statuses_tbl;
 
+    drop table if exists eirc_registry_containers_tbl;
+
     drop table if exists eirc_registry_files_tbl;
+
+    drop table if exists eirc_registry_record_containers_tbl;
 
     drop table if exists eirc_registry_record_statuses_tbl;
 
@@ -579,8 +597,8 @@
         id bigint not null auto_increment,
         begin_date date not null,
         end_date date not null,
-        person_id bigint not null,
-        apartment_id bigint not null,
+        person_id bigint not null comment 'Registered person reference',
+        apartment_id bigint not null comment 'Registered to apartment reference',
         primary key (id)
     );
 
@@ -751,6 +769,21 @@
         primary key (id)
     );
 
+    create table eirc_consumer_infos_tbl (
+        id bigint not null auto_increment,
+        status integer not null comment 'ConsumerInfo status',
+        first_name varchar(255) comment 'Prividers consumer first name',
+        middle_name varchar(255) comment 'Prividers consumer middle name',
+        last_name varchar(255) comment 'Prividers consumer last name',
+        city_name varchar(255) comment 'Prividers consumer city name',
+        street_type_name varchar(255) comment 'Prividers consumer street type name',
+        street_name varchar(255) comment 'Prividers consumer street name',
+        building_number varchar(255) comment 'Prividers consumer building number',
+        building_bulk varchar(255) comment 'Prividers consumer building bulk',
+        apartment_number varchar(255) comment 'Prividers consumer apartment number',
+        primary key (id)
+    );
+
     create table eirc_consumers_tbl (
         id bigint not null auto_increment,
         status integer not null,
@@ -758,8 +791,10 @@
         service_id bigint not null comment 'Service reference',
         person_id bigint not null comment 'Responsible person reference',
         apartment_id bigint not null comment 'Apartment reference',
+        eirc_account_id bigint not null comment 'EIRC account reference',
         begin_date datetime not null comment 'Consumer begin date',
         end_date datetime not null comment 'Consumer end date',
+        consumer_info_id bigint comment 'Service providers consumer details',
         primary key (id)
     );
 
@@ -812,7 +847,6 @@
         sender_code bigint,
         recipient_code bigint,
         amount decimal(19,2),
-        containers varchar(255),
         registry_type_id bigint not null comment 'Registry type reference',
         sp_file_id bigint comment 'Registry file reference',
         service_provider_id bigint comment 'Service provider reference',
@@ -829,6 +863,14 @@
         primary key (id)
     );
 
+    create table eirc_registry_containers_tbl (
+        id bigint not null auto_increment,
+        data varchar(2048) not null comment 'Registry container data',
+        order_weight integer not null comment 'Order of the container in a registry',
+        registry_id bigint not null comment 'Registry reference',
+        primary key (id)
+    );
+
     create table eirc_registry_files_tbl (
         id bigint not null auto_increment,
         request_file_name varchar(255) not null,
@@ -836,6 +878,14 @@
         internal_response_file_name varchar(255),
         user_name varchar(255) not null,
         import_date datetime not null,
+        primary key (id)
+    );
+
+    create table eirc_registry_record_containers_tbl (
+        id bigint not null auto_increment,
+        data varchar(2048) not null comment 'Container data',
+        order_weight integer not null comment 'Order of the container in a registry record',
+        record_id bigint not null comment 'Registry record reference',
         primary key (id)
     );
 
@@ -848,7 +898,7 @@
     create table eirc_registry_records_tbl (
         id bigint not null auto_increment,
         version integer not null comment 'Optimistic lock version',
-        service_code bigint not null,
+        service_code varchar(255) not null,
         personal_account_ext varchar(255) not null,
         city varchar(255),
         street_type varchar(255),
@@ -862,11 +912,9 @@
         operation_date datetime not null,
         unique_operation_number bigint,
         amount decimal(19,2),
-        containers varchar(255),
         consumer_id bigint comment 'Consumer reference',
         registry_id bigint not null comment 'Registry reference',
         record_status_id bigint comment 'Record status reference',
-        service_type_id bigint comment 'Service type reference',
         import_error_id bigint comment 'Import error reference',
         person_id bigint comment 'Person reference',
         apartment_id bigint comment 'Apartment reference',
@@ -1219,14 +1267,14 @@
         references apartments_tbl (id);
 
     alter table ab_person_registrations_tbl 
-        add index FK2BD18CD7095AEAD (person_id), 
-        add constraint FK2BD18CD7095AEAD 
+        add index FP_ab_person_registrations_person (person_id), 
+        add constraint FP_ab_person_registrations_person 
         foreign key (person_id) 
         references persons_tbl (id);
 
     alter table ab_person_registrations_tbl 
-        add index FK2BD18CDDEF75687 (apartment_id), 
-        add constraint FK2BD18CDDEF75687 
+        add index FP_ab_person_registrations_apartment (apartment_id), 
+        add constraint FP_ab_person_registrations_apartment 
         foreign key (apartment_id) 
         references apartments_tbl (id);
 
@@ -1381,6 +1429,12 @@
         references eirc_registry_records_tbl (id);
 
     alter table eirc_consumers_tbl 
+        add index FK_eirc_consumer_eirc_account (eirc_account_id), 
+        add constraint FK_eirc_consumer_eirc_account 
+        foreign key (eirc_account_id) 
+        references eirc_eirc_accounts_tbl (id);
+
+    alter table eirc_consumers_tbl 
         add index FK_eirc_consumer_responsible_person (person_id), 
         add constraint FK_eirc_consumer_responsible_person 
         foreign key (person_id) 
@@ -1391,6 +1445,12 @@
         add constraint FK_eirc_consumer_apartment 
         foreign key (apartment_id) 
         references apartments_tbl (id);
+
+    alter table eirc_consumers_tbl 
+        add index FK_eirc_consumers_tbl_consumer_info_id (consumer_info_id), 
+        add constraint FK_eirc_consumers_tbl_consumer_info_id 
+        foreign key (consumer_info_id) 
+        references eirc_consumer_infos_tbl (id);
 
     alter table eirc_consumers_tbl 
         add index FK_eirc_consumer_service (service_id), 
@@ -1476,6 +1536,18 @@
         foreign key (sp_file_id) 
         references eirc_registry_files_tbl (id);
 
+    alter table eirc_registry_containers_tbl 
+        add index FK_eirc_registry_containers_tbl_registry_id (registry_id), 
+        add constraint FK_eirc_registry_containers_tbl_registry_id 
+        foreign key (registry_id) 
+        references eirc_registries_tbl (id);
+
+    alter table eirc_registry_record_containers_tbl 
+        add index FK_eirc_registry_record_containers_tbl_record_id (record_id), 
+        add constraint FK_eirc_registry_record_containers_tbl_record_id 
+        foreign key (record_id) 
+        references eirc_registry_records_tbl (id);
+
     alter table eirc_registry_records_tbl 
         add index FK_eirc_registry_record_registry (registry_id), 
         add constraint FK_eirc_registry_record_registry 
@@ -1493,12 +1565,6 @@
         add constraint FK_eirc_registry_record_apartment_id 
         foreign key (apartment_id) 
         references apartments_tbl (id);
-
-    alter table eirc_registry_records_tbl 
-        add index FK_eirc_registry_record_service_type (service_type_id), 
-        add constraint FK_eirc_registry_record_service_type 
-        foreign key (service_type_id) 
-        references eirc_service_types_tbl (id);
 
     alter table eirc_registry_records_tbl 
         add index FK_eirc_registry_record_consumer (consumer_id), 

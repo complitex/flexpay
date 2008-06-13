@@ -2,6 +2,7 @@ package org.flexpay.eirc.service.imp;
 
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.dao.SpFileDao;
 import org.flexpay.eirc.dao.SpFileDaoExt;
 import org.flexpay.eirc.persistence.SpFile;
@@ -87,13 +88,14 @@ public class SpFileServiceImpl implements SpFileService {
 	}
 
 	/**
-	 * Get registry records for the header
+	 * Get registry records for processing
 	 *
 	 * @param registry Registry header
+	 * @param pager Page
 	 * @return list of records
 	 */
-	public List<SpRegistryRecord> getRecordsForProcessing(SpRegistry registry) {
-		return spFileDao.listRecordsForProcessing(registry.getId());
+	public List<SpRegistryRecord> getRecordsForProcessing(SpRegistry registry, Page<SpRegistryRecord> pager) {
+		return spFileDao.listRecordsForProcessing(registry.getId(), pager);
 	}
 
 	/**
@@ -110,6 +112,13 @@ public class SpFileServiceImpl implements SpFileService {
 		}
 
 		return type;
+	}
+
+	/**
+	 * Clear current session
+	 */
+	public void clearSession() {
+		spFileDaoExt.clearSession();
 	}
 
 	public void setSpFileDao(SpFileDao spFileDao) {

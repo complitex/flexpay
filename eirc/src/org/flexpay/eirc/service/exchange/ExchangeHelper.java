@@ -5,7 +5,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.*;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.TranslationUtil;
-import org.flexpay.eirc.sp.SpFileParser;
+import org.flexpay.eirc.persistence.exchange.Operation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
@@ -18,7 +18,7 @@ public class ExchangeHelper {
 	private PersonService personService;
 
 	/**
-	 * Get address group delimited with {@link org.flexpay.eirc.sp.SpFileParser#ADDRESS_DELIMITER}
+	 * Get address group delimited with {@link Operation#ADDRESS_DELIMITER}
 	 *
 	 * @param apartment Apartment stub
 	 * @return Address group
@@ -58,11 +58,11 @@ public class ExchangeHelper {
 		String town = townNameTranslation.getName();
 
 		String[] arr = {town, streetType, streetName, buildingNumber, bulkNumber, apartmentNumber};
-		return StringUtils.join(arr, SpFileParser.ADDRESS_DELIMITER);
+		return StringUtils.join(arr, Operation.ADDRESS_DELIMITER);
 	}
 
 	/**
-	 * Get first, middle, last person names group delimited with {@link org.flexpay.eirc.sp.SpFileParser#FIO_DELIMITER}
+	 * Get first, middle, last person names group delimited with {@link Operation#FIO_DELIMITER}
 	 *
 	 * @param personStub Person stub
 	 * @return FIO group
@@ -75,7 +75,7 @@ public class ExchangeHelper {
 		String lastName = identity.getLastName();
 
 		String[] arr = {lastName, firstName, middleName};
-		return StringUtils.join(arr, SpFileParser.FIO_DELIMITER);
+		return StringUtils.join(arr, Operation.FIO_DELIMITER);
 	}
 
 	public void setApartmentService(ApartmentService apartmentService) {

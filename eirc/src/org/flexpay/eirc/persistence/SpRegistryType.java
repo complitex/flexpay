@@ -22,6 +22,7 @@ public class SpRegistryType extends DomainObject {
 	public static final int TYPE_CASHLESS_PAYMENTS = 8;
 	public static final int TYPE_REPAYMENT = 9;
 	public static final int TYPE_ERRORS = 10;
+	public static final int TYPE_QUITTANCE = 11;
 
 	static {
 		typeToName.put(TYPE_UNKNOWN, "eirc.registry_type.unknown");
@@ -35,6 +36,7 @@ public class SpRegistryType extends DomainObject {
 		typeToName.put(TYPE_CASHLESS_PAYMENTS, "eirc.registry_type.cashless_payment");
 		typeToName.put(TYPE_REPAYMENT, "eirc.registry_type.repayment");
 		typeToName.put(TYPE_ERRORS, "eirc.registry_type.errors");
+		typeToName.put(TYPE_QUITTANCE, "eirc.registry_type.quittance");
 	}
 
 	private int code;

@@ -214,4 +214,18 @@
 			left join fetch o.childServices
 		where o.id=?
 	</query>
+
+	<query name="Service.findServicesByTypeCode">
+		select distinct o
+		from Service o
+			inner join o.serviceProvider p
+		where p.id=? and o.id=?
+	</query>
+
+	<query name="Service.findServicesByProviderCode">
+		select distinct o
+		from Service o
+			inner join o.serviceProvider p
+		where p.id=? and o.externalCode=?
+	</query>
 </hibernate-mapping>

@@ -16,8 +16,7 @@
 	<!-- Data converters -->
 	<bean id="consumerDataConverter"
 		  class="org.flexpay.eirc.service.importexport.RawConsumerDataConverter"
-		  p:serviceTypeService-ref="serviceTypeService"
-		  p:spService-ref="spService" />
+		  p:consumerService-ref="consumerService" />
 
 	<bean id="typeRegistryEirc"
 		  class="org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistry" />

@@ -6,6 +6,8 @@ import org.flexpay.common.persistence.DomainObject;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Registry header for service providers exchange file
@@ -24,7 +26,7 @@ public class SpRegistry extends DomainObject {
 	private Long recipientCode;
 	private BigDecimal amount;
 
-	private String containers;
+	private List<RegistryContainer> containers = Collections.emptyList();
 
 	private Organisation sender;
 	private Organisation recipient;
@@ -176,14 +178,14 @@ public class SpRegistry extends DomainObject {
 	/**
 	 * @return the containers
 	 */
-	public String getContainers() {
+	public List<RegistryContainer> getContainers() {
 		return containers;
 	}
 
 	/**
 	 * @param containers the containers to set
 	 */
-	public void setContainers(String containers) {
+	public void setContainers(List<RegistryContainer> containers) {
 		this.containers = containers;
 	}
 

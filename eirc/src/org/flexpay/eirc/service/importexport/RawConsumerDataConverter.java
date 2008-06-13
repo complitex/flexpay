@@ -6,14 +6,14 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
-import org.flexpay.eirc.persistence.*;
-import org.flexpay.eirc.service.SPService;
-import org.flexpay.eirc.service.ServiceTypeService;
+import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.Service;
+import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.eirc.service.ConsumerService;
 
 public class RawConsumerDataConverter implements DataConverter<Consumer, RawConsumerData> {
 
-	private SPService spService;
-	private ServiceTypeService serviceTypeService;
+	private ConsumerService consumerService;
 
 	/**
 	 * Convert raw data to domain object
@@ -33,9 +33,7 @@ public class RawConsumerDataConverter implements DataConverter<Consumer, RawCons
 				rawData.getApartmentId(), Apartment.class, sd);
 
 		SpRegistry registry = rawData.getRegistry();
-		SpRegistryRecord record = rawData.getRegistryRecord();
-		ServiceType type = serviceTypeService.getServiceType(record.getServiceCode().intValue());
-		Service service = spService.getService(registry.getServiceProvider(), type);
+		Service service = consumerService.findService(registry.getServiceProvider(), rawData.getServiceCode());
 
 		Consumer consumer = new Consumer();
 		consumer.setExternalAccountNumber(rawData.getAccountNumber());
@@ -46,16 +44,7 @@ public class RawConsumerDataConverter implements DataConverter<Consumer, RawCons
 		return consumer;
 	}
 
-	/**
-	 * Setter for property 'spService'.
-	 *
-	 * @param spService Value to set for property 'spService'.
-	 */
-	public void setSpService(SPService spService) {
-		this.spService = spService;
-	}
-
-	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
-		this.serviceTypeService = serviceTypeService;
+	public void setConsumerService(ConsumerService consumerService) {
+		this.consumerService = consumerService;
 	}
 }

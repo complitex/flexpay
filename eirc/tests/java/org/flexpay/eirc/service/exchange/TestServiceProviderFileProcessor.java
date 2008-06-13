@@ -11,6 +11,7 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.util.CRCUtil;
 import org.flexpay.eirc.actions.TestSpFileAction;
 import org.flexpay.eirc.persistence.*;
+import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.SpRegistryService;
 import org.flexpay.eirc.service.SpRegistryTypeService;
@@ -21,7 +22,6 @@ import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.BeforeClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.NotTransactional;
 
@@ -45,8 +45,8 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	private RandomObjects randomObjects;
 
 
-	private static final char DELIMITER_RECORDS = SpFileParser.RECORD_DELIMITER.charAt(0);
-	private static final char DELIMITER_CONTAINER = ':';
+	private static final char RECORD_DELIMITER = Operation.RECORD_DELIMITER;
+	private static final char CONTAINER_DATA_DELIMITER = Operation.CONTAINER_DATA_DELIMITER;
 
 	private Random rand = new Random();
 
@@ -83,6 +83,47 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	}
 
 	@Test
+	@NotTransactional
+	public void testProcessOpenSubAccountsRegistry() throws Throwable {
+		System.out.println("ree_open_2 start");
+		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2.txt");
+
+		try {
+			fileProcessor.processFile(file);
+		} catch (FlexPayExceptionContainer c) {
+			for (Exception e : c.getExceptions()) {
+				e.printStackTrace();
+			}
+			throw c;
+		} finally {
+			deleteRecords(file);
+			deleteFile(file);
+			System.out.println("ree_open_2 end");
+		}
+	}
+
+	@Test
+	@NotTransactional
+	public void testProcessOpenSubAccountsRegistrySmall() throws Throwable {
+		System.out.println("ree_open_2_small start");
+		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
+
+		try {
+			fileProcessor.processFile(file);
+		} catch (FlexPayExceptionContainer c) {
+			for (Exception e : c.getExceptions()) {
+				e.printStackTrace();
+			}
+			throw c;
+		} finally {
+			deleteRecords(file);
+			deleteFile(file);
+			System.out.println("ree_open_2_small end");
+		}
+	}
+
+	@Test
+	@Ignore
 	@NotTransactional
 	public void testProcessOpenAccountsRegistry2() throws Throwable {
 		SpFile file = new SpFile(33L);
@@ -207,48 +248,48 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 				// message type
 				.append((char) SpFileReader.Message.MESSAGE_TYPE_RECORD)
 //				.append('\n')
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// registry number
 				.append(1)
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// service code
 				.append(service.getServiceType().getCode())
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// account number
 				.append(accountRecord.getConsumer().getExternalAccountNumber())
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// address
 				.append(exchangeHelper.getAddressGroup(apartment))
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// FIO
 				.append(exchangeHelper.getFIOGroup(person))
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// Operation date
 				.append(SpFileParser.dateFormat.format(operationDate))
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// Unique operation number
 				.append(accountRecord.getId())
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// Amount
 				.append(accountRecord.getAmount())
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// Simple payment container
 				.append(50)
-				.append(DELIMITER_CONTAINER)
+				.append(CONTAINER_DATA_DELIMITER)
 
 						// Organisation id TODO: uncomment
 //				.append(accountRecord.getOrganisation().getUniqueId())
 				.append(accountRecord.getOrganisation().getId())
-				.append(DELIMITER_RECORDS);
+				.append(RECORD_DELIMITER);
 
 		// CRC16
 		String str = buf.toString();
@@ -269,11 +310,11 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 				// message type
 				.append((char) SpFileReader.Message.MESSAGE_TYPE_FOOTER)
 //				.append('\n')
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// registry number
 				.append(1)
-				.append(DELIMITER_RECORDS);
+				.append(RECORD_DELIMITER);
 
 		// CRC16
 		String str = buf.toString();
@@ -296,49 +337,49 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		buf
 				// message type
 				.append((char) SpFileReader.Message.MESSAGE_TYPE_HEADER)
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// registry number
 				.append(1)
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// registry type
 				.append(SpRegistryTypeService.NALICHNIE_OPLATI.shortValue())
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// records number
 				.append(nRecords)
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// generation date
 				.append(SpFileParser.dateFormat.format(now))
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// begin date
 				.append(SpFileParser.dateFormat.format(begin))
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// begin date
 				.append(SpFileParser.dateFormat.format(end))
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// sender TODO: uncomment
 //				.append(ApplicationConfig.getInstance().getSelfOrganisation().getUniqueId())
 				.append(ApplicationConfig.getInstance().getSelfOrganisation().getId())
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// recipient TODO: uncomment
 //				.append(recipient.getUniqueId())
 				.append(recipient.getId())
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// registry amount
 				.append(amount)
-				.append(DELIMITER_RECORDS)
+				.append(RECORD_DELIMITER)
 
 						// containers
 				.append("")
-				.append(DELIMITER_RECORDS);
+				.append(RECORD_DELIMITER);
 
 		// CRC16
 		String str = buf.toString();

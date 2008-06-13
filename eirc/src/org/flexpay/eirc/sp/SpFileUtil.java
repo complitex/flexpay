@@ -1,12 +1,9 @@
 package org.flexpay.eirc.sp;
 
-import java.io.IOException;
-
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.service.*;
+import org.flexpay.eirc.service.SpRegistryService;
 
 public class SpFileUtil {
 	private static SpRegistryService spRegistryService;
@@ -29,8 +26,7 @@ public class SpFileUtil {
 	}
 
 	/**
-	 * @param spRegistryService
-	 *            the spRegistryService to set
+	 * @param spRegistryService the spRegistryService to set
 	 */
 	public void setSpRegistryService(SpRegistryService spRegistryService) {
 		SpFileUtil.spRegistryService = spRegistryService;
