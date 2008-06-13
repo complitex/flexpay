@@ -112,9 +112,11 @@ public class SpRegistryDaoExtImpl extends HibernateDaoSupport implements SpRegis
 	public Collection<SpRegistry> findRegistries(final Set<Long> objectIds) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				return session.createQuery("from SpRegistry r inner join fetch r.serviceProvider sp " +
+				return session.createQuery("select distinct r from SpRegistry r " +
+						"inner join fetch r.serviceProvider sp " +
 						"inner join fetch sp.dataSourceDescription inner join fetch r.registryType " +
 						"inner join fetch r.registryStatus " +
+						"left join fetch r.containers " +
 						"where r.id in (:ids)")
 						.setParameterList("ids", objectIds).list();
 			}
@@ -130,6 +132,6 @@ public class SpRegistryDaoExtImpl extends HibernateDaoSupport implements SpRegis
 	public boolean hasMoreRecordsToProcess(Long registryId) {
 		List value = getHibernateTemplate().findByNamedQuery("SpRegistryType.countNotProcessedRecords", registryId);
 
-		return ((Number)value.get(0)).intValue() > 0 ? true : false;
+		return ((Number) value.get(0)).intValue() > 0;
 	}
 }

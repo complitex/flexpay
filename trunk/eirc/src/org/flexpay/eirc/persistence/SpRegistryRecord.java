@@ -8,13 +8,13 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.util.*;
 
 public class SpRegistryRecord extends DomainObject {
 
 	private SpRegistry spRegistry;
 	private SpRegistryRecordStatus recordStatus;
-	private Long serviceCode;
+	private String serviceCode;
 	private String personalAccountExt;
 	private String city;
 	private String streetType;
@@ -28,10 +28,9 @@ public class SpRegistryRecord extends DomainObject {
 	private Date operationDate;
 	private Long uniqueOperationNumber;
 	private BigDecimal amount;
-	private String containers;
+	private List<RegistryRecordContainer> containers = Collections.emptyList();
 
 	private AbstractConsumer consumer;
-	private ServiceType serviceType;
 	private ImportError importError;
 	private Apartment apartment;
 	private Person person;
@@ -53,14 +52,14 @@ public class SpRegistryRecord extends DomainObject {
 	/**
 	 * @return the serviceCode
 	 */
-	public Long getServiceCode() {
+	public String getServiceCode() {
 		return serviceCode;
 	}
 
 	/**
 	 * @param serviceCode the serviceCode to set
 	 */
-	public void setServiceCode(Long serviceCode) {
+	public void setServiceCode(String serviceCode) {
 		this.serviceCode = serviceCode;
 	}
 
@@ -253,14 +252,14 @@ public class SpRegistryRecord extends DomainObject {
 	/**
 	 * @return the containers
 	 */
-	public String getContainers() {
+	public List<RegistryRecordContainer> getContainers() {
 		return containers;
 	}
 
 	/**
 	 * @param containers the containers to set
 	 */
-	public void setContainers(String containers) {
+	public void setContainers(List<RegistryRecordContainer> containers) {
 		this.containers = containers;
 	}
 
@@ -288,14 +287,6 @@ public class SpRegistryRecord extends DomainObject {
 
 	public void setRecordStatus(SpRegistryRecordStatus recordStatus) {
 		this.recordStatus = recordStatus;
-	}
-
-	public ServiceType getServiceType() {
-		return serviceType;
-	}
-
-	public void setServiceType(ServiceType serviceType) {
-		this.serviceType = serviceType;
 	}
 
 	public ImportError getImportError() {
@@ -336,7 +327,6 @@ public class SpRegistryRecord extends DomainObject {
 				.append("building", getBuildingNum())
 				.append("bulk", getBuildingBulkNum())
 				.append("apartment", getApartmentNum())
-				.append("containers", getContainers())
 				.append("apartment-id", getApartment() == null ? 0 : getApartment().getId())
 				.append("person-id", getPerson() == null ? 0 : getPerson().getId())
 				.toString();

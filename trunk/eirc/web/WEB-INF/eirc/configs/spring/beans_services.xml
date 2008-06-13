@@ -23,6 +23,7 @@
 		  class="org.flexpay.eirc.service.imp.SpRegistryRecordServiceImpl">
 		<property name="spRegistryRecordDao" ref="spRegistryRecordDao" />
 		<property name="spRegistryRecordDaoExt" ref="spRegistryRecordDaoExt" />
+		<property name="recordContainerDao" ref="registryRecordContainerDao" />
 		<property name="workflowManager" ref="registryRecordWorkflowManager" />
 	</bean>
 
@@ -60,7 +61,6 @@
 		<property name="spService" ref="spService" />
 		<property name="registryWorkflowManager" ref="registryWorkflowManager" />
 		<property name="recordWorkflowManager" ref="registryRecordWorkflowManager" />
-		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
 	<bean id="eircAccountService"
@@ -79,14 +79,20 @@
 		  p:spService-ref="spService"
 		  p:spFileService-ref="spFileService"
 		  p:accountRecordService-ref="accountRecordService"
+		  p:registryRecordService-ref="spRegistryRecordService"
 		  p:organisationService-ref="organisationService"
 		  p:reportPeriodService-ref="reportPeriodService"
 		  p:consumerService-ref="consumerService"
+		  p:consumerInfoService-ref="consumerInfoService"
 		  p:accountService-ref="eircAccountService" />
 
 	<bean id="consumerService" class="org.flexpay.eirc.service.imp.ConsumerServiceImpl"
+		  p:serviceDao-ref="serviceDao"
 		  p:consumerDao-ref="consumerDao"
 		  p:consumerDaoExt-ref="consumerDaoExt" />
+
+	<bean id="consumerInfoService" class="org.flexpay.eirc.service.imp.ConsumerInfoServiceImpl"
+		  p:consumerInfoDao-ref="consumerInfoDao" />
 
 	<bean id="accountRecordService" class="org.flexpay.eirc.service.imp.AccountRecordServiceImpl">
 		<property name="accountRecordDao" ref="accountRecordDao" />

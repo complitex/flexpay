@@ -31,9 +31,9 @@ public class StringUtil {
 	}
 
 	/**
-	 * TODO: find out the fuck for this method is
+	 * TODO: find out what's for this method
 	 *
-	 * @return
+	 * @return random string
 	 */
 	public static String getRandomString() {
 		return System.currentTimeMillis() + "-" + Math.random();
@@ -85,9 +85,7 @@ public class StringUtil {
 		if (escaped) {
 			throw new IllegalArgumentException("Not found final escaped simbol: " + str);
 		}
-		if (buf.length() > 0) {
-			datum.add(buf.toString());
-		}
+		datum.add(buf.toString());
 
 		return datum;
 	}

@@ -7,11 +7,11 @@
 
 	<class name="Consumer" table="eirc_consumers_tbl">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
-		<property name="status" column="status" not-null="true"/>
+		<property name="status" column="status" not-null="true" />
 		<property name="externalAccountNumber" not-null="true"
-				  column="external_account_number"/>
+				  column="external_account_number" />
 		<many-to-one name="service" foreign-key="FK_eirc_consumer_service" class="Service">
 			<column name="service_id" not-null="true">
 				<comment>Service reference</comment>
@@ -30,7 +30,7 @@
 			</column>
 		</many-to-one>
 		<many-to-one name="eircAccount" foreign-key="FK_eirc_consumer_eirc_account"
-					 class="org.flexpay.eirc.persistence.EircAccount">
+					 class="EircAccount">
 			<column name="eirc_account_id" not-null="true">
 				<comment>EIRC account reference</comment>
 			</column>
@@ -45,21 +45,88 @@
 				<comment>Consumer end date</comment>
 			</column>
 		</property>
+		<many-to-one name="consumerInfo" foreign-key="FK_eirc_consumers_tbl_consumer_info_id"
+					 class="ConsumerInfo">
+			<column name="consumer_info_id" not-null="false">
+				<comment>Service providers consumer details</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<class name="ConsumerInfo" table="eirc_consumer_infos_tbl"
+		   optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<set name="consumers" cascade="all" inverse="true">
+			<key column="consumer_info_id" not-null="false" />
+			<one-to-many class="Consumer" />
+		</set>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>ConsumerInfo status</comment>
+			</column>
+		</property>
+		<property name="firstName">
+			<column name="first_name" not-null="false">
+				<comment>Prividers consumer first name</comment>
+			</column>
+		</property>
+		<property name="middleName">
+			<column name="middle_name" not-null="false">
+				<comment>Prividers consumer middle name</comment>
+			</column>
+		</property>
+		<property name="lastName">
+			<column name="last_name" not-null="false">
+				<comment>Prividers consumer last name</comment>
+			</column>
+		</property>
+		<property name="cityName">
+			<column name="city_name" not-null="false">
+				<comment>Prividers consumer city name</comment>
+			</column>
+		</property>
+		<property name="streetTypeName">
+			<column name="street_type_name" not-null="false">
+				<comment>Prividers consumer street type name</comment>
+			</column>
+		</property>
+		<property name="streetName">
+			<column name="street_name" not-null="false">
+				<comment>Prividers consumer street name</comment>
+			</column>
+		</property>
+		<property name="buildingNumber">
+			<column name="building_number" not-null="false">
+				<comment>Prividers consumer building number</comment>
+			</column>
+		</property>
+		<property name="buildingBulk">
+			<column name="building_bulk" not-null="false">
+				<comment>Prividers consumer building bulk</comment>
+			</column>
+		</property>
+		<property name="apartmentNumber">
+			<column name="apartment_number" not-null="false">
+				<comment>Prividers consumer apartment number</comment>
+			</column>
+		</property>
 	</class>
 
 	<class name="AccountRecordType" table="eirc_account_record_types_tbl"
 		   optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
-		<property name="description" not-null="true"/>
-		<property name="typeId" not-null="true" column="type_enum_id"/>
+		<property name="description" not-null="true" />
+		<property name="typeId" not-null="true" column="type_enum_id" />
 	</class>
 
 	<class name="AccountRecord" table="eirc_account_records_tbl"
 		   optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
 		<many-to-one name="consumer" foreign-key="FK_eirc_account_record_consumer" class="Consumer">
 			<column name="consumer_id" not-null="true">
@@ -72,14 +139,15 @@
 			</column>
 		</many-to-one>
 		<property name="operationDate" column="operation_date" not-null="true"
-				  type="timestamp"/>
-		<property name="amount" type="big_decimal" not-null="true"/>
+				  type="timestamp" />
+		<property name="amount" type="big_decimal" not-null="true" />
 		<many-to-one name="recordType" foreign-key="FK_eirc_account_record_record_type" class="AccountRecordType">
 			<column name="record_type_id" not-null="true">
 				<comment>Account record type reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="sourceRegistryRecord" foreign-key="FK_eirc_account_record_registry_record" class="SpRegistryRecord">
+		<many-to-one name="sourceRegistryRecord" foreign-key="FK_eirc_account_record_registry_record"
+					 class="SpRegistryRecord">
 			<column name="source_registry_record_id" not-null="false">
 				<comment>Registry record reference</comment>
 			</column>
@@ -89,14 +157,14 @@
 	<class name="EircAccount" table="eirc_eirc_accounts_tbl">
 		<comment>EIRC Personal accounts table</comment>
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
 		<version name="version" access="field">
 			<column name="version">
 				<comment>Optimistic lock version</comment>
 			</column>
 		</version>
-		<property name="status" column="status" not-null="true"/>
+		<property name="status" column="status" not-null="true" />
 		<property name="accountNumber">
 			<column name="account_number" not-null="true">
 				<comment>EIRC account number</comment>
@@ -167,8 +235,25 @@
 		and apartment.id = ?
 	</query>
 
+	<!-- see Service.findServicesByTypeCode query -->
+	<query name="Consumer.findConsumersByServiceTypeCode">
+		from Consumer o
+			inner join o.service s
+			inner join s.serviceProvider p
+		where p.id=? and o.externalAccountNumber=? and o.id=?
+	</query>
+
+	<!-- see Service.findServicesByTypeCode query -->
+	<query name="Consumer.findConsumersByProviderServiceCode">
+		from Consumer o
+			inner join o.service s
+			inner join s.serviceProvider p
+		where p.id=? and o.externalAccountNumber=? and s.externalCode=?
+	</query>
+
 	<query name="EircAccount.findByPersonAndApartment">
-		from EircAccount where person.id=? and apartment.id=? and status=0
+		from EircAccount
+		where person.id=? and apartment.id=? and status=0
 	</query>
 	
 	<query name="EircAccount.findObjects">

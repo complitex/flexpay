@@ -7,30 +7,34 @@
 
 	<class name="SpFile" table="eirc_registry_files_tbl" optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
-		<property name="requestFileName" column="request_file_name" not-null="true"/>
+		<property name="requestFileName" column="request_file_name" not-null="true" />
 		<property name="internalRequestFileName" column="internal_request_file_name"
-				  not-null="true"/>
-		<property name="internalResponseFileName" column="internal_response_file_name"/>
-		<property name="userName" column="user_name" not-null="true"/>
-		<property name="importDate" column="import_date" not-null="true"/>
+				  not-null="true" />
+		<property name="internalResponseFileName" column="internal_response_file_name" />
+		<property name="userName" column="user_name" not-null="true" />
+		<property name="importDate" column="import_date" not-null="true" />
 	</class>
 
 	<class name="SpRegistry" table="eirc_registries_tbl" optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
-		<version name="version" column="version" access="field"/>
-		<property name="registryNumber" column="registry_number"/>
-		<property name="recordsNumber" column="records_number"/>
-		<property name="creationDate" column="creation_date" type="timestamp"/>
-		<property name="fromDate" column="from_date" type="timestamp"/>
-		<property name="tillDate" column="till_date" type="timestamp"/>
-		<property name="senderCode" column="sender_code"/>
-		<property name="recipientCode" column="recipient_code"/>
-		<property name="amount" column="amount" type="big_decimal"/>
-		<property name="containers" column="containers"/>
+		<version name="version" column="version" access="field" />
+		<property name="registryNumber" column="registry_number" />
+		<property name="recordsNumber" column="records_number" />
+		<property name="creationDate" column="creation_date" type="timestamp" />
+		<property name="fromDate" column="from_date" type="timestamp" />
+		<property name="tillDate" column="till_date" type="timestamp" />
+		<property name="senderCode" column="sender_code" />
+		<property name="recipientCode" column="recipient_code" />
+		<property name="amount" column="amount" type="big_decimal" />
+		<list name="containers" inverse="true" cascade="all-delete-orphan">
+			<key column="registry_id" not-null="true" />
+			<list-index column="order_weight" />
+			<one-to-many class="RegistryContainer" />
+		</list>
 		<many-to-one name="registryType" foreign-key="FK_eirc_registry_registry_type" class="SpRegistryType">
 			<column name="registry_type_id" not-null="true">
 				<comment>Registry type reference</comment>
@@ -69,63 +73,112 @@
 		</many-to-one>
 	</class>
 
+	<class name="RegistryContainer" table="eirc_registry_containers_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="data">
+			<column name="data" length="2048" not-null="true">
+				<comment>Registry container data</comment>
+			</column>
+		</property>
+		<property name="order">
+			<column name="order_weight" not-null="true">
+				<comment>Order of the container in a registry</comment>
+			</column>
+		</property>
+		<many-to-one name="registry" class="SpRegistry"
+					 foreign-key="FK_eirc_registry_containers_tbl_registry_id">
+			<column name="registry_id" not-null="true">
+				<comment>Registry reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<class name="RegistryRecordContainer" table="eirc_registry_record_containers_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="data">
+			<column name="data" length="2048" not-null="true">
+				<comment>Container data</comment>
+			</column>
+		</property>
+		<property name="order">
+			<column name="order_weight" not-null="true">
+				<comment>Order of the container in a registry record</comment>
+			</column>
+		</property>
+		<many-to-one name="record" class="SpRegistryRecord"
+					 foreign-key="FK_eirc_registry_record_containers_tbl_record_id">
+			<column name="record_id" not-null="true">
+				<comment>Registry record reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
 	<class name="SpRegistryType" table="eirc_registry_types_tbl"
 		   optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
-		<property name="code" column="code" not-null="true"/>
+		<property name="code" column="code" not-null="true" />
 	</class>
 
 	<class name="SpRegistryStatus" table="eirc_registry_statuses_tbl"
 		   optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
-		<property name="code" not-null="true" unique="true"/>
+		<property name="code" not-null="true" unique="true" />
 	</class>
 
 	<class name="SpRegistryRecordStatus" table="eirc_registry_record_statuses_tbl">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
-		<property name="code" not-null="true" unique="true"/>
+		<property name="code" not-null="true" unique="true" />
 	</class>
 
 	<class name="SpRegistryArchiveStatus" table="eirc_registry_archive_statuses_tbl"
 		   optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
-		<property name="code" not-null="true" unique="true"/>
+		<property name="code" not-null="true" unique="true" />
 	</class>
 
 	<class name="SpRegistryRecord" table="eirc_registry_records_tbl">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
 		<version name="version" access="field">
 			<column name="version" not-null="true">
 				<comment>Optimistic lock version</comment>
 			</column>
 		</version>
-		<property name="serviceCode" column="service_code" not-null="true"/>
+		<property name="serviceCode" column="service_code" not-null="true" />
 		<property name="personalAccountExt" column="personal_account_ext"
-				  not-null="true"/>
-		<property name="city" column="city"/>
-		<property name="streetType" column="street_type"/>
-		<property name="streetName" column="street_name"/>
-		<property name="buildingNum" column="building_number"/>
-		<property name="buildingBulkNum" column="bulk_number"/>
-		<property name="apartmentNum" column="apartment_number"/>
-		<property name="firstName" column="first_name"/>
-		<property name="middleName" column="middle_name"/>
-		<property name="lastName" column="last_name"/>
+				  not-null="true" />
+		<property name="city" column="city" />
+		<property name="streetType" column="street_type" />
+		<property name="streetName" column="street_name" />
+		<property name="buildingNum" column="building_number" />
+		<property name="buildingBulkNum" column="bulk_number" />
+		<property name="apartmentNum" column="apartment_number" />
+		<property name="firstName" column="first_name" />
+		<property name="middleName" column="middle_name" />
+		<property name="lastName" column="last_name" />
 		<property name="operationDate" column="operation_date" type="timestamp"
-				  not-null="true"/>
-		<property name="uniqueOperationNumber" column="unique_operation_number"/>
-		<property name="amount" column="amount" type="big_decimal"/>
-		<property name="containers" column="containers"/>
+				  not-null="true" />
+		<property name="uniqueOperationNumber" column="unique_operation_number" />
+		<property name="amount" column="amount" type="big_decimal" />
+
+		<list name="containers" cascade="all-delete-orphan" inverse="true">
+			<key column="record_id" not-null="true" />
+			<list-index column="order_weight" />
+			<one-to-many class="RegistryRecordContainer" />
+		</list>
 
 		<many-to-one name="consumer" foreign-key="FK_eirc_registry_record_consumer" class="Consumer">
 			<column name="consumer_id" not-null="false">
@@ -137,14 +190,10 @@
 				<comment>Registry reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="recordStatus" class="SpRegistryRecordStatus" foreign-key="FK_eirc_registry_record_record_status">
+		<many-to-one name="recordStatus" class="SpRegistryRecordStatus"
+					 foreign-key="FK_eirc_registry_record_record_status">
 			<column name="record_status_id" not-null="false">
 				<comment>Record status reference</comment>
-			</column>
-		</many-to-one>
-		<many-to-one name="serviceType" class="ServiceType" foreign-key="FK_eirc_registry_record_service_type">
-			<column name="service_type_id" not-null="false">
-				<comment>Service type reference</comment>
 			</column>
 		</many-to-one>
 		<many-to-one name="importError" foreign-key="FK_eirc_registry_record_import_error"
@@ -180,21 +229,31 @@
 	</query>
 
 	<query name="SpFile.listRegistries">
+		select distinct r
 		from SpRegistry r
 			inner join fetch r.registryType
 			inner join fetch r.registryStatus
 			inner join fetch r.serviceProvider p
 			inner join fetch p.dataSourceDescription
+			left join fetch r.containers
 		where r.spFile.id=?
 	</query>
 
-	<query name="SpFile.listRecordsForProcessing">
+	<query name="SpFile.listRecordsForProcessing.count">
+		select count(*)
 		from SpRegistryRecord rr
-		inner join fetch rr.spRegistry r
-		inner join fetch r.registryStatus rs
-		inner join fetch rr.recordStatus rrs
-		left join fetch rr.importError
+			inner join rr.spRegistry r
+			inner join rr.recordStatus rrs
+		where r.id=? and rrs.code NOT IN (2, 4)
+	</query>
 
+	<query name="SpFile.listRecordsForProcessing">
+		select distinct rr
+		from SpRegistryRecord rr
+			inner join fetch rr.spRegistry r
+			inner join fetch r.registryStatus rs
+			inner join fetch rr.recordStatus rrs
+			left join fetch rr.importError
 		where r.id=? and rrs.code NOT IN (2, 4)
 	</query>
 
@@ -211,16 +270,16 @@
 	<query name="SpRegistry.readFull">
 		select distinct r
 		from SpRegistry r
-		inner join fetch r.registryType
-		inner join fetch r.registryStatus
-		inner join fetch r.sender sender
-		left join fetch sender.names
-		left join fetch sender.descriptions 
-		inner join fetch r.recipient recipient
-		left join fetch recipient.names
-		left join fetch recipient.descriptions 
-		left join fetch r.serviceProvider sp
-		left join fetch sp.dataSourceDescription
+			inner join fetch r.registryType
+			inner join fetch r.registryStatus
+			inner join fetch r.sender sender
+			left join fetch sender.names
+			left join fetch sender.descriptions
+			inner join fetch r.recipient recipient
+			left join fetch recipient.names
+			left join fetch recipient.descriptions
+			left join fetch r.serviceProvider sp
+			left join fetch sp.dataSourceDescription
 		where r.id=?
 	</query>
 
@@ -232,6 +291,16 @@
 		delete from SpRegistryRecord where spRegistry.id=?
 	</query>
 
+	<query name="SpRegistry.deleteRecordContainers">
+		delete
+		from RegistryRecordContainer rc
+		where rc.record.id in (select id from SpRegistryRecord where spRegistry.id=?)
+	</query>
+
+	<query name="SpRegistry.deleteRegistryContainers">
+		delete from RegistryContainer where registry.id=?
+	</query>
+
 	<query name="SpRegistry.findObjects.count">
 		select count(*) from SpRegistry r where r.spFile.id=?
 	</query>
@@ -239,8 +308,8 @@
 	<query name="SpRegistryRecord.readFull">
 		select distinct r
 		from SpRegistryRecord r
-		 	inner join fetch r.recordStatus 
-			left join fetch r.importError
+		inner join fetch r.recordStatus
+		left join fetch r.importError
 		where r.id=?
 	</query>
 
@@ -266,6 +335,12 @@
 
 	<query name="SpRegistryArchiveStatus.findByCode">
 		from SpRegistryArchiveStatus s where s.code=?
+	</query>
+
+	<query name="RegistryRecordContainer.findRecordContainers">
+		from RegistryRecordContainer c
+		where c.record.id=?
+		order by c.order
 	</query>
 
 </hibernate-mapping>

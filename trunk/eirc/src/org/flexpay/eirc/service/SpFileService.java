@@ -1,6 +1,7 @@
 package org.flexpay.eirc.service;
 
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
@@ -62,9 +63,10 @@ public interface SpFileService {
 	 * Get registry records for processing
 	 *
 	 * @param registry Registry header
+	 * @param pager Page
 	 * @return list of records
 	 */
-	List<SpRegistryRecord> getRecordsForProcessing(SpRegistry registry);
+	List<SpRegistryRecord> getRecordsForProcessing(SpRegistry registry, Page<SpRegistryRecord> pager);
 
 	/**
 	 * Find registry type by id
@@ -74,4 +76,9 @@ public interface SpFileService {
 	 * @throws InvalidRegistryTypeException if registry type is not supported
 	 */
 	SpRegistryType getRegistryType(int type) throws InvalidRegistryTypeException;
+
+	/**
+	 * Clear current session
+	 */
+	void clearSession();
 }

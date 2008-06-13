@@ -11,4 +11,8 @@ public interface SpRegistryDao extends GenericDao<SpRegistry, Long> {
 	List<SpRegistry> findObjects(Page<SpRegistry> pager, Long spFileId);
 
 	void deleteRecords(Long registryId);
+
+	void deleteRegistryContainers(Long registryId);
+
+	void deleteRecordContainers(Long registryId);
 }

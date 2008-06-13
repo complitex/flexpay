@@ -72,6 +72,11 @@ public class EircImportService extends ImportService {
 				continue;
 			}
 
+			if (data.getRegistryRecord().getConsumer() != null) {
+				log.info("Record already has consumer set up");
+				continue;
+			}
+
 			try {
 				if (data.isPersonalInfoEmpty()) {
 					Consumer persistentObj = correctionsService.findCorrection(
@@ -79,7 +84,7 @@ public class EircImportService extends ImportService {
 
 					if (persistentObj != null) {
 						log.info("Found existing consumer correction: #" + data.getExternalSourceId());
-						postSaveConsumer(data, persistentObj);
+						postSaveConsumer(data, consumerService.read(persistentObj));
 						continue;
 					}
 

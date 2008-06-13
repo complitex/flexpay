@@ -1,6 +1,7 @@
 package org.flexpay.eirc.service.exchange;
 
 import org.apache.log4j.Logger;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.service.importexport.ImportErrorsSupport;
@@ -94,23 +95,28 @@ public class ServiceProviderFileProcessor {
 				setupRecordsConsumer(registry, rawConsumersDataSource);
 
 				log.info("Starting processing records");
-				List<SpRegistryRecord> records = spFileService.getRecordsForProcessing(registry);
-				for (SpRegistryRecord record : records) {
-					processRecord(registry, record);
-				}
+				Page<SpRegistryRecord> pager = new Page<SpRegistryRecord>(50, 1);
+				List<SpRegistryRecord> records;
+				do {
+					records = spFileService.getRecordsForProcessing(registry, pager);
+					for (SpRegistryRecord record : records) {
+						processRecord(registry, record);
+					}
+					pager.setPageNumber(pager.getPageNumber() + 1);
+					spFileService.clearSession();
+				} while (!records.isEmpty());
 			} catch (Exception e) {
 				String errMsg = "Failed processing registry: " + registry;
 				log.error(errMsg, e);
 				container.addException(new FlexPayException(errMsg, e));
 			} finally {
-				// no error should go to PROCESSED, with errors should go to PROCESSED_WITH_ERROR
 				registry = spRegistryService.read(registry.getId());
 				registryWorkflowManager.setNextSuccessStatus(registry);
 				registryWorkflowManager.endProcessing(registry);
 			}
 		}
 
-		if (!container.getExceptions().isEmpty()) {
+		if (!container.isEmpty()) {
 			throw container;
 		}
 	}

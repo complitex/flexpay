@@ -5,6 +5,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecordContainer;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 
@@ -90,4 +91,12 @@ public interface SpRegistryRecordService {
 	 * @return Records
 	 */
 	Collection<SpRegistryRecord> findObjects(SpRegistry registry, Set<Long> objectIds);
+
+	/**
+	 * Find containers associated with a registry record
+	 *
+	 * @param stub Registry record stub
+	 * @return List of containers
+	 */
+	List<RegistryRecordContainer> getRecordContainers(SpRegistryRecord stub);
 }

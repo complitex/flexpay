@@ -1,12 +1,11 @@
 package org.flexpay.eirc.persistence;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import org.flexpay.common.persistence.DomainObjectWithStatus;
-import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Person;
+import org.flexpay.common.persistence.DomainObjectWithStatus;
+
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * Internal EIRC tracker for personal accounts
@@ -16,7 +15,7 @@ public class EircAccount extends DomainObjectWithStatus {
 	private Person person;
 	private Apartment apartment;
 	private String accountNumber;
-	private Set<Consumer> consumers = Collections.emptySet();;
+	private Set<Consumer> consumers = Collections.emptySet();
 
 	/**
 	 * Constructs a new DomainObject.
@@ -65,6 +64,4 @@ public class EircAccount extends DomainObjectWithStatus {
 	public void setConsumers(Set<Consumer> consumers) {
 		this.consumers = consumers;
 	}
-
-	
 }

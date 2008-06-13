@@ -1,6 +1,5 @@
 package org.flexpay.eirc.persistence.exchange;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.ImportError;
@@ -10,9 +9,7 @@ import org.flexpay.common.service.importexport.ImportErrorsSupport;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.dao.SpRegistryRecordDao;
-import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
-import org.flexpay.eirc.persistence.SpRegistryType;
+import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistry;
@@ -24,8 +21,10 @@ public class ServiceOperationsFactory {
 
 	private SpFileService spFileService;
 	private SPService spService;
+	private SpRegistryRecordService registryRecordService;
 	private EircAccountService accountService;
 	private ConsumerService consumerService;
+	private ConsumerInfoService consumerInfoService;
 	private AccountRecordService accountRecordService;
 	private OrganisationService organisationService;
 	private ReportPeriodService reportPeriodService;
@@ -48,15 +47,16 @@ public class ServiceOperationsFactory {
 	 */
 	public Operation getOperation(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
 
-		if (StringUtils.isEmpty(record.getContainers())) {
+		List<RegistryRecordContainer> containers = registryRecordService.getRecordContainers(record);
+		if (containers.isEmpty()) {
 			return getOperation(registry);
 		}
 
-		List<String> containersData = parseContainersData(record.getContainers());
+		// get a list of operations
 		List<Operation> operations = new ArrayList<Operation>();
-		for (String containerData : containersData) {
-			Operation container = fromSingleContainerData(containerData);
-			operations.add(container);
+		for (RegistryRecordContainer container : containers) {
+			Operation operation = fromSingleContainerData(container.getData());
+			operations.add(operation);
 		}
 
 		// none containers found, should be defined by registry type
@@ -69,8 +69,11 @@ public class ServiceOperationsFactory {
 
 	private Operation getOperation(SpRegistry registry) throws FlexPayException {
 		int typeId = registry.getRegistryType().getCode();
-		if (typeId == SpRegistryType.TYPE_SALDO) {
-			return new BalanceOperation(this);
+		switch (typeId) {
+			case SpRegistryType.TYPE_SALDO:
+				return new BalanceOperation(this);
+			case SpRegistryType.TYPE_QUITTANCE:
+				return new QuittanceOperation(this);
 		}
 
 		throw new UnsupportedRegistryTypeException("Registry type: " + typeId + " is not supported");
@@ -86,14 +89,14 @@ public class ServiceOperationsFactory {
 	 */
 	public Operation getContainerOperation(SpRegistry registry) throws InvalidContainerException {
 
-		if (StringUtils.isEmpty(registry.getContainers())) {
+		if (registry.getContainers().isEmpty()) {
 			return new NoneOperation();
 		}
 
-		List<String> containersData = parseContainersData(registry.getContainers());
+		List<RegistryContainer> containers = registry.getContainers();
 		List<Operation> operations = new ArrayList<Operation>();
-		for (String containerData : containersData) {
-			Operation container = fromSingleContainerData(containerData);
+		for (RegistryContainer containerData : containers) {
+			Operation container = fromSingleContainerData(containerData.getData());
 			operations.add(container);
 		}
 
@@ -133,24 +136,20 @@ public class ServiceOperationsFactory {
 //				return new SetPrivilegeApprovalDocumentOperation(datum);
 //			case 12:
 //				return new SetPrivilegePersonsNumberOperation(datum);
+			case 14:
+				return new OpenSubserviceAccountOperation(this, datum);
 
 				// Payment
 			case 50:
 				return new SimplePayment(this, datum);
 
 				// General info
-//			case 100:
-//				return new SetOverallCheckInfoOperation();
+			case 100:
+				return new BaseContainerOperation(this, datum);
 		}
 
 		throw new InvalidContainerException("Unknown container type: " +
 				datum.get(0) + " in " + containerData);
-	}
-
-	private List<String> parseContainersData(String containers)
-			throws InvalidContainerException {
-
-		return splitEscapableData(containers, Operation.CONTAINER_DELIMITER);
 	}
 
 	/**
@@ -273,5 +272,17 @@ public class ServiceOperationsFactory {
 
 	public void setRegistryRecordDao(SpRegistryRecordDao registryRecordDao) {
 		this.registryRecordDao = registryRecordDao;
+	}
+
+	public ConsumerInfoService getConsumerInfoService() {
+		return consumerInfoService;
+	}
+
+	public void setConsumerInfoService(ConsumerInfoService consumerInfoService) {
+		this.consumerInfoService = consumerInfoService;
+	}
+
+	public void setRegistryRecordService(SpRegistryRecordService registryRecordService) {
+		this.registryRecordService = registryRecordService;
 	}
 }

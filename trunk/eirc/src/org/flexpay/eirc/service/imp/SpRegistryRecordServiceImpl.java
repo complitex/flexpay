@@ -6,8 +6,10 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.eirc.dao.SpRegistryRecordDao;
 import org.flexpay.eirc.dao.SpRegistryRecordDaoExt;
+import org.flexpay.eirc.dao.RegistryRecordContainerDao;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecordContainer;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
@@ -18,11 +20,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+@Transactional(readOnly = true)
 public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
-	private static Logger log = Logger
-			.getLogger(SpRegistryRecordServiceImpl.class);
+	private final Logger log = Logger.getLogger(getClass());
 
+	private RegistryRecordContainerDao recordContainerDao;
 	private SpRegistryRecordDao spRegistryRecordDao;
 	private SpRegistryRecordDaoExt spRegistryRecordDaoExt;
 
@@ -141,6 +143,16 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	}
 
 	/**
+	 * Find containers associated with a registry record
+	 *
+	 * @param stub Registry record stub
+	 * @return List of containers
+	 */
+	public List<RegistryRecordContainer> getRecordContainers(SpRegistryRecord stub) {
+		return recordContainerDao.findRecordContainers(stub.getId());
+	}
+
+	/**
 	 * @param spRegistryRecordDao the spRegistryRecordDao to set
 	 */
 	public void setSpRegistryRecordDao(SpRegistryRecordDao spRegistryRecordDao) {
@@ -153,5 +165,9 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 
 	public void setWorkflowManager(RegistryRecordWorkflowManager workflowManager) {
 		this.workflowManager = workflowManager;
+	}
+
+	public void setRecordContainerDao(RegistryRecordContainerDao recordContainerDao) {
+		this.recordContainerDao = recordContainerDao;
 	}
 }

@@ -28,8 +28,10 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 		deleteFile(newFile);
 	}
 
-	protected void deleteRecords(SpFile newFile) {
-		for (SpRegistry registry : fileService.getRegistries(newFile)) {
+	protected void deleteRecords(SpFile file) {
+		for (SpRegistry registry : fileService.getRegistries(file)) {
+			spRegistryDao.deleteRecordContainers(registry.getId());
+			spRegistryDao.deleteRegistryContainers(registry.getId());
 			spRegistryDao.deleteRecords(registry.getId());
 			spRegistryDao.delete(registry);
 		}
