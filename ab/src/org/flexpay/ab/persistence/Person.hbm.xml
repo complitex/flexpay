@@ -131,7 +131,7 @@
 			LEFT JOIN FETCH ittr.lang lang
 			LEFT JOIN FETCH lang.translations
 			LEFT JOIN FETCH o.personRegistrations r
-		WHERE o.id=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName  like ?
+		WHERE o.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName  like ?
 	</query>
 	<query name="Person.findByFIO.count">
 		SELECT count(*)

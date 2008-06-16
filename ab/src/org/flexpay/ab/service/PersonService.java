@@ -39,4 +39,6 @@ public interface PersonService {
 	 * @param person Person
 	 */
 	void update(Person person);
+	
+	List<Person> findByFIO(Page pager, String searchString);
 }
