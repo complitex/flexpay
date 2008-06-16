@@ -76,8 +76,6 @@ public class PersonServiceImpl implements PersonService {
 	}
 	
 	public List<Person> findByFIO(Page pager, String searchString) {
-		
-		
-		return null;
+		return personDao.findByFIO(pager, searchString);
 	}
 }

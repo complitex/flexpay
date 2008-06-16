@@ -1,6 +1,7 @@
 package org.flexpay.ab.actions.person;
 
 import org.apache.commons.collections.ArrayStack;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.ab.persistence.Person;
@@ -38,11 +39,16 @@ public class ListPersons extends FPActionSupport implements SessionAware {
 
 		long start = System.currentTimeMillis();
 		try {
-			ArrayStack filters = parentService == null ? null :
-								 parentService.initFilters(getFilters(), userPreferences.getLocale());
-			setFilters(filters);
+			if(StringUtils.isEmpty(searchString)) {
+				ArrayStack filters = parentService == null ? null :
+						parentService.initFilters(getFilters(), userPreferences.getLocale());
+				setFilters(filters);
 
-			persons = personService.findPersons(filters, pager);
+				persons = personService.findPersons(filters, pager);
+			} else {
+				persons = personService.findByFIO(pager, "%" + searchString + "%");
+			}
+			
 		} catch (FlexPayException e) {
 			addActionError(e);
 		}
