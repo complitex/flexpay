@@ -12,25 +12,25 @@
     &nbsp;
   </td>
   <td class="th">
-    id
+    <s:text name="eirc.processing.process.id" />
   </td>
   <td class="th">
-    name
+    <s:text name="eirc.processing.process.name" />
   </td>
   <td class="th">
-    start date
+    <s:text name="eirc.processing.process.start_date" />
   </td>
   <td class="th">
-    end date
+    <s:text name="eirc.processing.process.end_date" />
   </td>
   <td class="th">
-    user
+    <s:text name="eirc.processing.process.user" />
   </td>
   <td class="th">
-    state
+    <s:text name="eirc.processing.process.state" />
   </td>
   <td class="th">
-    pause
+    <s:text name="eirc.processing.process.pause" />
   </td>
 
 
