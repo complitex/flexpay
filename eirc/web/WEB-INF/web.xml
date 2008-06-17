@@ -90,7 +90,7 @@
 
 
     <security-role>
-        <role-name>developerRole</role-name>
+        <role-name>BASIC_ROLE</role-name>
     </security-role>
 
     <login-config>
