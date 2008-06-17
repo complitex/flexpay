@@ -4,9 +4,14 @@
         "http://www.sun.com/software/dtd/appserver/sun-web-app_2_5-0.dtd">
 <sun-web-app>
 
+	<security-role-mapping>
+        <role-name>BASIC_ROLE</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
+
     <security-role-mapping>
-        <role-name>developerRole</role-name>
-        <principal-name>vld</principal-name>
+        <role-name>BASIC_ROLE</role-name>
+        <group-name>VIEW_ONLY</group-name>
     </security-role-mapping>
 
 </sun-web-app>
