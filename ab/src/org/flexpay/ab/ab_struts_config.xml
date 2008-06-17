@@ -10,9 +10,10 @@
 	<package name="ab" namespace="/ab" extends="common">
 
 		<action name="main">
+			<!-- 
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">developerRole</param>
-			</interceptor-ref>
+			</interceptor-ref> -->
 			<result type="tiles">ab.main</result>
 		</action>
 
@@ -21,10 +22,16 @@
 	<package name="countries" namespace="/dicts" extends="common">
 
 		<action name="list_countries" class="listCountriesAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">COUNTRY_READ</param>
+			</interceptor-ref>
 			<result type="tiles">ab.country.list</result>
 		</action>
 
 		<action name="create_country" class="createCountryAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">COUNTRY_ADD</param>
+			</interceptor-ref>
 			<result type="redirect">list_countries.action</result>
 			<result type="tiles" name="input">ab.country.create</result>
 		</action>
@@ -34,10 +41,16 @@
 	<package name="regions" namespace="/dicts" extends="common">
 
 		<action name="list_regions" class="listRegionsAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">REGION_READ</param>
+			</interceptor-ref>
 			<result type="tiles">ab.regions.list</result>
 		</action>
 
 		<action name="create_region" class="createRegionAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">REGION_ADD</param>
+			</interceptor-ref>
 			<result type="redirect-action">
 				<param name="actionName">view_region</param>
 				<param name="parse">true</param>
@@ -47,11 +60,17 @@
 		</action>
 
 		<action name="view_region" class="viewRegionAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">REGION_READ</param>
+			</interceptor-ref>
 			<result type="tiles">ab.region.view</result>
 			<result type="redirect" name="error">list_regions.action</result>
 		</action>
 
 		<action name="edit_region" class="editRegionAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">REGION_CHANGE</param>
+			</interceptor-ref>
 			<result type="redirect-action">
 				<param name="actionName">view_region</param>
 				<param name="parse">true</param>
@@ -61,6 +80,9 @@
 		</action>
 
 		<action name="delete_regions" class="deleteRegionsAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">REGION_DELETE</param>
+			</interceptor-ref>
 			<result type="redirect">list_regions.action</result>
 		</action>
 
@@ -68,10 +90,16 @@
 
 	<package name="towns" namespace="/dicts" extends="common">
 		<action name="list_towns" class="listTownsAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">TOWN_READ</param>
+			</interceptor-ref>
 			<result type="tiles">ab.towns.list</result>
 		</action>
 
 		<action name="create_town" class="createTownAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">TOWN_ADD</param>
+			</interceptor-ref>
 			<result type="redirect-action">
 				<param name="actionName">view_town</param>
 				<param name="parse">true</param>
@@ -81,11 +109,17 @@
 		</action>
 
 		<action name="view_town" class="viewTownAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">TOWN_READ</param>
+			</interceptor-ref>
 			<result type="tiles">ab.town.view</result>
 			<result type="redirect" name="error">list_towns.action</result>
 		</action>
 
 		<action name="edit_town" class="editTownAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">TOWN_CHANGE</param>
+			</interceptor-ref>
 			<result type="redirect-action">
 				<param name="actionName">view_town</param>
 				<param name="parse">true</param>
@@ -95,36 +129,60 @@
 		</action>
 
 		<action name="delete_towns" class="deleteTownsAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">TOWN_DELETE</param>
+			</interceptor-ref>
 			<result type="redirect">list_towns.action</result>
 		</action>
 	</package>
 
 	<package name="town_types" namespace="/dicts" extends="common">
 		<action name="town_type_create" class="townTypeCreteAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">TOWN_TYPE_ADD</param>
+			</interceptor-ref>
 			<result name="form" type="tiles">ab.town_type.create</result>
 			<result name="afterSubmit" type="redirect">town_type_list.action</result>
 		</action>
 		<action name="town_type_view" class="townTypeViewAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">TOWN_TYPE_READ</param>
+			</interceptor-ref>
 			<result name="success" type="tiles">ab.town_type.view</result>
 		</action>
 		<action name="town_type_list" class="townTypeListAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">TOWN_TYPE_READ</param>
+			</interceptor-ref>
 			<result name="list" type="tiles">ab.town_type.list</result>
 		</action>
 		<action name="town_type_edit" class="townTypeEditAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">TOWN_TYPE_CHANGE</param>
+			</interceptor-ref>
 			<result name="form" type="tiles">ab.town_type.edit</result>
 			<result name="afterSubmit" type="redirect">town_type_list.action</result>
 		</action>
 		<action name="town_type_delete" class="townTypeDeleteAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">TOWN_TYPE_DELETE</param>
+			</interceptor-ref>
 			<result name="afterSubmit" type="redirect">town_type_list.action</result>
 		</action>
 	</package>
 
 	<package name="districts" namespace="/dicts" extends="common">
 		<action name="list_districts" class="listDistrictsAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">DISTRICT_READ</param>
+			</interceptor-ref>
 			<result type="tiles">ab.districts.list</result>
 		</action>
 
 		<action name="create_district" class="createDistrictAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">DISTRICT_ADD</param>
+			</interceptor-ref>
 			<result type="redirect-action">
 				<param name="actionName">view_district</param>
 				<param name="parse">true</param>
@@ -134,11 +192,17 @@
 		</action>
 
 		<action name="view_district" class="viewDistrictAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">DISTRICT_READ</param>
+			</interceptor-ref>
 			<result type="tiles">ab.district.view</result>
 			<result type="redirect" name="error">list_districts.action</result>
 		</action>
 
 		<action name="edit_district" class="editDistrictAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">DISTRICT_CHANGE</param>
+			</interceptor-ref>
 			<result type="redirect-action">
 				<param name="actionName">view_district</param>
 				<param name="parse">true</param>
@@ -148,16 +212,25 @@
 		</action>
 
 		<action name="delete_districts" class="deleteDistrictsAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">DISTRICT_DELETE</param>
+			</interceptor-ref>
 			<result type="redirect">list_districts.action</result>
 		</action>
 	</package>
 
 	<package name="streets" namespace="/dicts" extends="common">
 		<action name="list_streets" class="listStreetsAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_READ</param>
+			</interceptor-ref>
 			<result type="tiles">ab.streets.list</result>
 		</action>
 
 		<action name="create_street" class="createStreetAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_ADD</param>
+			</interceptor-ref>
 			<result type="redirect-action">
 				<param name="actionName">view_street</param>
 				<param name="parse">true</param>
@@ -167,11 +240,17 @@
 		</action>
 
 		<action name="view_street" class="viewStreetAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_READ</param>
+			</interceptor-ref>
 			<result type="tiles">ab.street.view</result>
 			<result type="redirect" name="error">list_streets.action</result>
 		</action>
 
 		<action name="edit_street" class="editStreetAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_CHANGE</param>
+			</interceptor-ref>
 			<result type="redirect-action">
 				<param name="actionName">view_street</param>
 				<param name="parse">true</param>
@@ -190,10 +269,16 @@
 		</action>
 
 		<action name="delete_streets" class="deleteStreetsAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_DELETE</param>
+			</interceptor-ref>
 			<result type="redirect">list_streets.action</result>
 		</action>
 
 		<action name="edit_street_districts" class="editStreetDistricts">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_CHANGE</param>
+			</interceptor-ref>
 			<result type="tiles" name="input">ab.street.edit.districts</result>
 			<result type="redirect-action">
 				<param name="actionName">view_street</param>
@@ -205,52 +290,91 @@
 
 	<package name="street_types" namespace="/dicts" extends="common">
 		<action name="street_type_create" class="streetTypeCreteAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_TYPE_ADD</param>
+			</interceptor-ref>
 			<result name="form" type="tiles">ab.street_type.create</result>
 			<result name="afterSubmit" type="redirect">street_type_list.action</result>
 		</action>
 		<action name="street_type_view" class="streetTypeViewAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_TYPE_READ</param>
+			</interceptor-ref>
 			<result name="success" type="tiles">ab.street_type.view</result>
 		</action>
 		<action name="street_type_list" class="streetTypeListAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_TYPE_READ</param>
+			</interceptor-ref>
 			<result name="list" type="tiles">ab.street_type.list</result>
 		</action>
 		<action name="street_type_edit" class="streetTypeEditAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_TYPE_CHANGE</param>
+			</interceptor-ref>
 			<result name="form" type="tiles">ab.street_type.edit</result>
 			<result name="afterSubmit" type="redirect">street_type_list.action</result>
 		</action>
 		<action name="street_type_delete" class="streetTypeDeleteAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_TYPE_DELETE</param>
+			</interceptor-ref>
 			<result name="afterSubmit" type="redirect">street_type_list.action</result>
 		</action>
 	</package>
 
 	<package name="identity_types" namespace="/dicts" extends="common">
 		<action name="identity_type_create" class="identityTypeCreteAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">IDENTITY_TYPE_ADD</param>
+			</interceptor-ref>
 			<result name="form" type="tiles">ab.identity_type.create</result>
 			<result name="afterSubmit" type="redirect">identity_type_list.action</result>
 		</action>
 		<action name="identity_type_view" class="identityTypeViewAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">IDENTITY_TYPE_READ</param>
+			</interceptor-ref>
 			<result name="success" type="tiles">ab.identity_type.view</result>
 		</action>
 		<action name="identity_type_list" class="identityTypeListAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">IDENTITY_TYPE_READ</param>
+			</interceptor-ref>
 			<result name="list" type="tiles">ab.identity_type.list</result>
 		</action>
 		<action name="identity_type_edit" class="identityTypeEditAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">IDENTITY_TYPE_CHANGE</param>
+			</interceptor-ref>
 			<result name="form" type="tiles">ab.identity_type.edit</result>
 			<result name="afterSubmit" type="redirect">identity_type_list.action</result>
 		</action>
 		<action name="identity_type_delete" class="identityTypeDeleteAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">IDENTITY_TYPE_DELETE</param>
+			</interceptor-ref>
 			<result name="afterSubmit" type="redirect">identity_type_list.action</result>
 		</action>
 	</package>
 
 	<package name="persons" namespace="/dicts" extends="common">
 		<action name="list_persons" class="listPersons">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">PERSON_READ</param>
+			</interceptor-ref>
 			<result type="tiles">ab.person.list</result>
 		</action>
 		<action name="view_person" class="viewPerson">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">PERSON_READ</param>
+			</interceptor-ref>
 			<result type="tiles">ab.person.view</result>
 		</action>
 		<action name="setRegistrationAction" class="setRegistrationAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">PERSON_CHANGE</param>
+			</interceptor-ref>
 			<result name="form" type="tiles">ab.person.set_registration_form</result>
 			<result name="person_view" type="redirect-action">
 				<param name="actionName">view_person</param>
@@ -262,9 +386,15 @@
 
 	<package name="buildings" namespace="/dicts" extends="common">
 		<action name="list_buildings" class="listBuildings">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">BUILDING_READ</param>
+			</interceptor-ref>
 			<result type="tiles">ab.building.list</result>
 		</action>
 		<action name="buildingsCreateAction" class="buildingsCreateAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">BUILDING_ADD</param>
+			</interceptor-ref>
 			<result name="form" type="tiles">ab.buildings.create</result>
 			<result name="list" type="redirect-action">list_buildings</result>
 			<result name="edit" type="redirect-action">
@@ -274,9 +404,15 @@
 			</result>
 		</action>
 		<action name="buildingsEditAction" class="buildingsEditAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">BUILDING_CHANGE</param>
+			</interceptor-ref>
 			<result name="form" type="tiles">ab.buildings.edit</result>
 		</action>
 		<action name="buildingsDeleteAction" class="buildingsDeleteAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">BUILDING_DELETE</param>
+			</interceptor-ref>
 			<result name="buildings_list" type="redirect-action">list_buildings</result>
 			<result name="edit" type="redirect-action">
 				<param name="actionName">buildingsEditAction</param>
@@ -285,6 +421,9 @@
 			</result>
 		</action>
 		<action name="buildingsSetPrimaryStatusAction" class="buildingsSetPrimaryStatusAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">BUILDING_CHANGE</param>
+			</interceptor-ref>
 			<result type="redirect-action">
 				<param name="actionName">buildingsEditAction</param>
 				<param name="parse">true</param>
@@ -293,13 +432,22 @@
 		</action>
 		
 		<action name="buildingAttributeTypeListAction" class="buildingAttributeTypeListAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">BUILDING_ATTRIBUTE_TYPE_READ</param>
+			</interceptor-ref>
 			<result name="list" type="tiles">ab.buildings.attribute_types.list</result>
 		</action>
 		<action name="buildingAttributeTypeCreateAction" class="buildingAttributeTypeCreateAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">BUILDING_ATTRIBUTE_TYPE_ADD</param>
+			</interceptor-ref>
 			<result name="form" type="tiles">ab.buildings.attribute_types.create</result>
 			<result name="list" type="redirect-action">buildingAttributeTypeListAction</result>
 		</action>
 		<action name="buildingAttributeTypeEditAction" class="buildingAttributeTypeEditAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">BUILDING_ATTRIBUTE_TYPE_CHANGE</param>
+			</interceptor-ref>
 			<result name="form" type="tiles">ab.buildings.attribute_types.edit</result>
 			<result name="list" type="redirect-action">buildingAttributeTypeListAction</result>
 		</action>
@@ -307,16 +455,28 @@
 
 	<package name="apartments" namespace="/dicts" extends="common">
 		<action name="list_apartments" class="listApartments">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">APARTMENT_READ</param>
+			</interceptor-ref>
 			<result type="tiles">ab.apartment.list</result>
 		</action>
 		<action name="apartmentEditAction" class="apartmentEditAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">APARTMENT_CHANGE</param>
+			</interceptor-ref>
 			<result name="form" type="tiles">ab.apartment.edit</result>
 			<result name="list" type="redirect-action">list_apartments</result>
 		</action>
 		<action name="apartmentRegistrationsAction" class="apartmentRegistrationsAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">APARTMENT_READ</param>
+			</interceptor-ref>
 			<result name="success" type="tiles">ab.apartment.registrations</result>
 		</action>
 		<action name="apartmentRegistrationsHistoryAction" class="apartmentRegistrationsAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">APARTMENT_READ</param>
+			</interceptor-ref>
 			<result name="success" type="tiles">ab.apartment.registrations_history</result>
 		</action>
 	</package>
