@@ -89,8 +89,177 @@
     </security-constraint>
 
 
+	<security-role>
+        <role-name>BASIC_ROLE</role-name>
+    </security-role>
+	<!-- Country roles -->
     <security-role>
-        <role-name>developerRole</role-name>
+        <role-name>COUNTRY_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>COUNTRY_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>COUNTRY_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>COUNTRY_DELETE</role-name>
+    </security-role>
+    <!-- Region roles -->
+    <security-role>
+        <role-name>REGION_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>REGION_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>REGION_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>REGION_DELETE</role-name>
+    </security-role>
+    <!-- Town roles -->
+    <security-role>
+        <role-name>TOWN_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>TOWN_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>TOWN_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>TOWN_DELETE</role-name>
+    </security-role>
+    <!-- Town type roles -->
+    <security-role>
+        <role-name>TOWN_TYPE_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>TOWN_TYPE_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>TOWN_TYPE_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>TOWN_TYPE_DELETE</role-name>
+    </security-role>
+    <!-- District roles -->
+    <security-role>
+        <role-name>DISTRICT_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>DISTRICT_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>DISTRICT_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>DISTRICT_DELETE</role-name>
+    </security-role>
+    <!-- Street roles -->
+    <security-role>
+        <role-name>STREET_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>STREET_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>STREET_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>STREET_DELETE</role-name>
+    </security-role>
+    <!-- Street type roles -->
+    <security-role>
+        <role-name>STREET_TYPE_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>STREET_TYPE_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>STREET_TYPE_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>STREET_TYPE_DELETE</role-name>
+    </security-role>
+    <!-- Building attribute type roles -->
+    <security-role>
+        <role-name>BUILDING_ATTRIBUTE_TYPE_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>BUILDING_ATTRIBUTE_TYPE_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>BUILDING_ATTRIBUTE_TYPE_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>BUILDING_ATTRIBUTE_TYPE_DELETE</role-name>
+    </security-role>
+    <!-- Building roles -->
+    <security-role>
+        <role-name>BUILDING_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>BUILDING_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>BUILDING_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>BUILDING_DELETE</role-name>
+    </security-role>
+    <!-- Apartment roles -->
+    <security-role>
+        <role-name>APARTMENT_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>APARTMENT_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>APARTMENT_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>APARTMENT_DELETE</role-name>
+    </security-role>
+    <!-- Identity type roles -->
+    <security-role>
+        <role-name>IDENTITY_TYPE_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>IDENTITY_TYPE_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>IDENTITY_TYPE_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>IDENTITY_TYPE_DELETE</role-name>
+    </security-role>
+    <!-- Identity roles -->
+    <security-role>
+        <role-name>IDENTITY_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>IDENTITY_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>IDENTITY_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>IDENTITY_DELETE</role-name>
+    </security-role>
+    <!-- Person roles -->
+    <security-role>
+        <role-name>PERSON_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>PERSON_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>PERSON_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>PERSON_DELETE</role-name>
     </security-role>
 
     <login-config>
