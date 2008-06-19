@@ -10,12 +10,6 @@
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<many-to-one name="subservice" class="org.flexpay.eirc.persistence.Service"
-					 foreign-key="FK_eirc_quittance_details_tbl_subservice_id">
-			<column name="subservice_id" not-null="false">
-				<comment>Subservice reference</comment>
-			</column>
-		</many-to-one>
 		<many-to-one name="consumer" class="org.flexpay.eirc.persistence.Consumer"
 					 foreign-key="FK_eirc_quittance_details_tbl_consumer_id">
 			<column name="consumer_id" not-null="true">
@@ -70,7 +64,7 @@
 		</property>
 		<property name="payment">
 			<column name="payment" not-null="false" scale="5">
-				<comment>Payments amount</comment>
+				<comment>Payments amount for previous period</comment>
 			</column>
 		</property>
 		<property name="month" type="timestamp">
