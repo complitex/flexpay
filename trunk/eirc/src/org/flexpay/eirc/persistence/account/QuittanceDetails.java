@@ -2,7 +2,6 @@ package org.flexpay.eirc.persistence.account;
 
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 
 import java.math.BigDecimal;
@@ -13,7 +12,6 @@ public class QuittanceDetails extends DomainObject {
 	private Consumer consumer;
 	private SpRegistryRecord registryRecord;
 
-	private Service subservice;
 	private BigDecimal incomingBalance;
 	private BigDecimal outgoingBalance;
 	private BigDecimal amount;
@@ -31,14 +29,6 @@ public class QuittanceDetails extends DomainObject {
 
 	public void setConsumer(Consumer consumer) {
 		this.consumer = consumer;
-	}
-
-	public Service getSubservice() {
-		return subservice;
-	}
-
-	public void setSubservice(Service subservice) {
-		this.subservice = subservice;
 	}
 
 	public BigDecimal getIncomingBalance() {
