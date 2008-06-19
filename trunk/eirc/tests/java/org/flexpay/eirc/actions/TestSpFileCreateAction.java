@@ -9,6 +9,7 @@ import org.junit.Ignore;
 import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.NotTransactional;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,10 +24,11 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 	@Autowired
 	private SpFileCreateAction fileCreateAction;
 
-	@Ignore
+//	@Ignore
 	@Test
+	@NotTransactional
 	public void testCreateSpFile() throws Throwable {
-		SpFile newFile = createSpFile("org/flexpay/eirc/actions/sp/payments_100.44268.bin");
+		SpFile newFile = createSpFile("org/flexpay/eirc/actions/sp/k0108.ree");
 		deleteFile(newFile);
 	}
 
@@ -63,5 +65,9 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 	protected void deleteFile(SpFile file) {
 		fileService.delete(file);
 		fileCreateAction.getUpload().delete();
+
+		if (file.getRequestFile() != null) {
+			file.getRequestFile().delete();
+		}
 	}
 }
