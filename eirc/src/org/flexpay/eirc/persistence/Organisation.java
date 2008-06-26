@@ -73,8 +73,6 @@ public class Organisation extends DomainObjectWithStatus {
 				.append("id", getId())
 				.append("KPP", kpp)
 				.append("INN", individualTaxNumber)
-				.append("names", getNames())
-				.append("descriptions", getDescriptions())
 				.toString();
 	}
 

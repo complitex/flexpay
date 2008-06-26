@@ -24,8 +24,8 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 	@Autowired
 	private SpFileCreateAction fileCreateAction;
 
-//	@Ignore
 	@Test
+	@Ignore
 	@NotTransactional
 	public void testCreateSpFile() throws Throwable {
 		SpFile newFile = createSpFile("org/flexpay/eirc/actions/sp/k0108.ree");
@@ -34,6 +34,7 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 
 	protected SpFile createSpFile(String spFile) throws Throwable {
 		File tmpDataFile = File.createTempFile("sp_sample", ".txt");
+		tmpDataFile.deleteOnExit();
 		OutputStream os = null;
 		InputStream is = null;
 		try {

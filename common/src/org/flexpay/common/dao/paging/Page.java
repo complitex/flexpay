@@ -192,4 +192,9 @@ public class Page<E> implements Serializable {
 	public void setPageNumber(int pageNumber) {
 		this.pageNumber = pageNumber - 1;
 	}
+
+	@Override
+	public String toString() {
+		return getThisPageFirstElementNumber() + " : " + (getThisPageFirstElementNumber() + pageSize);
+	}
 }

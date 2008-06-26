@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class DomainObject implements Serializable {
 
 	@SuppressWarnings({"UnusedDeclaration"})
-	private Integer version;
+	protected Integer version;
 	private Long id;
 
 	/**
@@ -49,7 +49,7 @@ public class DomainObject implements Serializable {
 	 * @return <code>true</code> if object id is null or equals to 0, or <code>false</code> otherwise
 	 */
 	public boolean isNew() {
-		return getId() == null || getId().longValue() <= 0;
+		return getId() == null || getId() <= 0;
 	}
 
 	public boolean isNotNew() {

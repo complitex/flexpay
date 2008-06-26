@@ -75,6 +75,7 @@ public class ServiceProviderFileProcessor {
 	 * @throws FlexPayExceptionContainer if registry processing failed
 	 * @throws Exception				 if failure occurs
 	 */
+	@SuppressWarnings({"ThrowableInstanceNeverThrown"})
 	public void processRegistries(Collection<SpRegistry> registries) throws Exception {
 
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
@@ -96,15 +97,17 @@ public class ServiceProviderFileProcessor {
 
 				log.info("Starting processing records");
 				Page<SpRegistryRecord> pager = new Page<SpRegistryRecord>(50, 1);
-				List<SpRegistryRecord> records;
+				boolean isEmpty;
 				do {
-					records = spFileService.getRecordsForProcessing(registry, pager);
+					log.info("Fetching for records: " + pager);
+					List<SpRegistryRecord> records = spFileService.getRecordsForProcessing(registry, pager);
+					isEmpty = records.isEmpty();
 					for (SpRegistryRecord record : records) {
 						processRecord(registry, record);
 					}
 					pager.setPageNumber(pager.getPageNumber() + 1);
-					spFileService.clearSession();
-				} while (!records.isEmpty());
+				} while (!isEmpty);
+				log.info("No more records to process");
 			} catch (Exception e) {
 				String errMsg = "Failed processing registry: " + registry;
 				log.error(errMsg, e);
@@ -212,6 +215,11 @@ public class ServiceProviderFileProcessor {
 				}
 				return;
 			}
+
+			if (log.isDebugEnabled()) {
+				log.debug("record to process: " + record);
+			}
+
 			Operation op = serviceOperationsFactory.getOperation(registry, record);
 			op.process(registry, record);
 			recordWorkflowManager.setNextSuccessStatus(record);

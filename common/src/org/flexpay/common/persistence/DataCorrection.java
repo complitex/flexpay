@@ -1,5 +1,8 @@
 package org.flexpay.common.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 public class DataCorrection extends DomainObject {
 
 	private String externalId;
@@ -83,5 +86,16 @@ public class DataCorrection extends DomainObject {
 	 */
 	public void setObjectType(int objectType) {
 		this.objectType = objectType;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("id", getId())
+				.append("externalId", externalId)
+				.append("internalObjectId", internalObjectId)
+				.append("objectType", objectType)
+				.append("dataSource", dataSourceDescription.getId())
+				.toString();
 	}
 }

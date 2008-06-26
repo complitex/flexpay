@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Transactional(readOnly = true)
 public class SPServiceImpl implements SPService {
 
 	private Logger log = Logger.getLogger(getClass());
@@ -146,6 +147,7 @@ public class SPServiceImpl implements SPService {
 		}
 	}
 
+	@SuppressWarnings({"ThrowableInstanceNeverThrown"})
 	private void validate(ServiceProvider sp) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
@@ -258,6 +260,7 @@ public class SPServiceImpl implements SPService {
 		}
 	}
 
+	@SuppressWarnings({"ThrowableInstanceNeverThrown"})
 	private void validate(Service service) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 

@@ -9,5 +9,6 @@
     <import resource="beans_logic.xml" />
     <import resource="data_export.xml" />
 
+	<import resource="beans_self_testing.xml" />
 	<import resource="stand-alone-tasks.xml" />
 </beans>

@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class OpenAccountOperation extends AbstractChangePersonalAccountOperation {
 
-	private static Logger log = Logger.getLogger(BalanceOperation.class);
+	private static Logger log = Logger.getLogger(OpenAccountOperation.class);
 
 	private ServiceOperationsFactory factory;
 
@@ -152,6 +152,10 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	 * @throws FlexPayException if processing cannot be done at all
 	 */
 	private boolean validate(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
+
+		if (log.isDebugEnabled()) {
+			log.debug("validating record: " + record);
+		}
 
 		if (registry.getRegistryType().getCode() != SpRegistryType.TYPE_INFO) {
 			throw new FlexPayException("Create consumer operation only allowed in Information registry type");

@@ -5,6 +5,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.dao.SpRegistryDao;
 import org.flexpay.eirc.dao.SpRegistryDaoExt;
+import org.flexpay.eirc.dao.OrganisationDao;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
@@ -23,6 +24,7 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 
 	private SpRegistryDao spRegistryDao;
 	private SpRegistryDaoExt spRegistryDaoExt;
+	private OrganisationDao organisationDao;
 
 	private SpRegistryRecordService spRegistryRecordService;
 
@@ -34,6 +36,8 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	 */
 	@Transactional(readOnly = false)
 	public SpRegistry create(SpRegistry spRegistry) throws FlexPayException {
+		spRegistry.setRecipient(organisationDao.read(spRegistry.getRecipient().getId()));
+		spRegistry.setSender(organisationDao.read(spRegistry.getSender().getId()));
 		spRegistryDao.create(spRegistry);
 
 		if (log.isDebugEnabled()) {
@@ -132,5 +136,9 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 
 	public void setSpRegistryRecordService(SpRegistryRecordService spRegistryRecordService) {
 		this.spRegistryRecordService = spRegistryRecordService;
+	}
+
+	public void setOrganisationDao(OrganisationDao organisationDao) {
+		this.organisationDao = organisationDao;
 	}
 }

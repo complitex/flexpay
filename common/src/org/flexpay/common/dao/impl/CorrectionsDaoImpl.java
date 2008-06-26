@@ -23,7 +23,7 @@ public class CorrectionsDaoImpl extends SimpleJdbcDaoSupport implements Correcti
 	 * @param correction DataCorrection
 	 */
 	public void save(DataCorrection correction) {
-		hibernateTemplate.saveOrUpdate(correction);
+		hibernateTemplate.merge(correction);
 	}
 
 	/**

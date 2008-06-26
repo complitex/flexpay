@@ -4,9 +4,9 @@ import org.flexpay.eirc.dao.SpRegistryDao;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.SpFileService;
-import org.junit.Test;
-import org.junit.Ignore;
 import static org.junit.Assert.assertEquals;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestSpFileAction extends TestSpFileCreateAction {
@@ -43,7 +43,13 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 		fileAction.setSpFileId(newFile.getId());
 		fileAction.setAction("loadToDb");
 
-		assertEquals("Invalid Struts action result", "success", fileAction.execute());
+		try {
+			assertEquals("Invalid Struts action result", "success", fileAction.execute());
+		} catch (Exception e) {
+			deleteRecords(newFile);
+			deleteFile(newFile);
+			throw e;
+		}
 		if (fileAction.getSpFileFormatException() != null) {
 			throw fileAction.getSpFileFormatException();
 		}
