@@ -19,15 +19,19 @@ import org.flexpay.eirc.sp.SpFileParser;
 import org.flexpay.eirc.sp.SpFileReader;
 import org.flexpay.eirc.test.RandomObjects;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.test.annotation.NotTransactional;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
 
 public class TestServiceProviderFileProcessor extends TestSpFileAction {
 
@@ -83,13 +87,15 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	}
 
 	@Test
+	@Ignore
 	@NotTransactional
 	public void testProcessOpenSubAccountsRegistry() throws Throwable {
-		System.out.println("ree_open_2 start");
 		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2.txt");
 
 		try {
 			fileProcessor.processFile(file);
+
+			checkOpenRegistryRecords(file);
 		} catch (FlexPayExceptionContainer c) {
 			for (Exception e : c.getExceptions()) {
 				e.printStackTrace();
@@ -98,18 +104,47 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		} finally {
 			deleteRecords(file);
 			deleteFile(file);
-			System.out.println("ree_open_2 end");
 		}
 	}
 
 	@Test
+//	@Ignore
+	@NotTransactional
+	public void testProcessOpenSubAccountsRegistryNoClear() throws Throwable {
+		SpFile file = new SpFile(265L);
+
+		try {
+			fileProcessor.processFile(file);
+
+			checkOpenRegistryRecords(file);
+		} catch (FlexPayExceptionContainer c) {
+			for (Exception e : c.getExceptions()) {
+				e.printStackTrace();
+			}
+			throw c;
+		}
+	}
+
+	private void checkOpenRegistryRecords(SpFile file) {
+		int nErrorLessRecords = DataAccessUtils.intResult(
+				hibernateTemplate.find("select count(*) from SpRegistryRecord rr " +
+						"where importError is null and rr.spRegistry.spFile.id=?", file.getId()));
+		int nConsumerLessRecords = DataAccessUtils.intResult(
+				hibernateTemplate.find("select count(*) from SpRegistryRecord rr " +
+						"where consumer is null and rr.spRegistry.spFile.id=?", file.getId()));
+		assertEquals("Invalid number of records without errors", nErrorLessRecords, nConsumerLessRecords);
+	}
+
+	@Test
+	@Ignore
 	@NotTransactional
 	public void testProcessOpenSubAccountsRegistrySmall() throws Throwable {
-		System.out.println("ree_open_2_small start");
 		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
 
 		try {
 			fileProcessor.processFile(file);
+
+			checkOpenRegistryRecords(file);
 		} catch (FlexPayExceptionContainer c) {
 			for (Exception e : c.getExceptions()) {
 				e.printStackTrace();
@@ -118,45 +153,6 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		} finally {
 			deleteRecords(file);
 			deleteFile(file);
-			System.out.println("ree_open_2_small end");
-		}
-	}
-
-	@Test
-	@Ignore
-	@NotTransactional
-	public void testProcessOpenAccountsRegistry2() throws Throwable {
-		SpFile file = new SpFile(33L);
-
-		try {
-			fileProcessor.processFile(file);
-		} catch (FlexPayExceptionContainer c) {
-			for (Exception e : c.getExceptions()) {
-				e.printStackTrace();
-			}
-			throw c;
-		} finally {
-		}
-	}
-
-	@Test
-	@Ignore
-	@NotTransactional
-	public void testProcessOpenAccountsRegistryRecords() throws Throwable {
-
-		Set<Long> ids = new HashSet<Long>();
-		ids.add(29689L);
-		ids.add(29690L);
-		ids.add(29691L);
-
-		SpRegistry registry = registryService.read(24L);
-		try {
-			fileProcessor.processRecords(registry, ids);
-		} catch (FlexPayExceptionContainer c) {
-			for (Exception e : c.getExceptions()) {
-				e.printStackTrace();
-			}
-			throw c;
 		}
 	}
 

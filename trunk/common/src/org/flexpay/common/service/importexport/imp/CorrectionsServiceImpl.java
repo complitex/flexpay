@@ -7,9 +7,12 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.log4j.Logger;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class CorrectionsServiceImpl implements CorrectionsService {
+
+	private Logger log = Logger.getLogger(getClass());
 
 	private ClassToTypeRegistry typeRegistry;
 	private CorrectionsDao correctionsDao;
@@ -21,6 +24,17 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 */
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void save(DataCorrection correction) {
+		DataCorrection corr = correctionsDao.findCorrection(
+				correction.getExternalId(), correction.getObjectType(), correction.getDataSourceDescription());
+		if (corr != null) {
+			if (corr.getInternalObjectId().equals(correction.getInternalObjectId())) {
+				log.debug("Existing correction references to the same object");
+				return;
+			}
+
+			corr.setInternalObjectId(correction.getInternalObjectId());
+			correction = corr;
+		}
 		correctionsDao.save(correction);
 	}
 

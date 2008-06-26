@@ -316,6 +316,10 @@ public class SpRegistryRecord extends DomainObject {
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("id", getId())
+				.append("version", version)
+				.append("status", getRecordStatus() == null ? "-" : getRecordStatus().getI18nName())
+				.append("status-id", getRecordStatus() == null ? 0 : getRecordStatus().getId())
+				.append("registry-id", getSpRegistry() == null ? 0 : getSpRegistry().getId())
 				.append("code", getServiceCode())
 				.append("amount", getAmount())
 				.append("firstName", getFirstName())
@@ -329,6 +333,7 @@ public class SpRegistryRecord extends DomainObject {
 				.append("apartment", getApartmentNum())
 				.append("apartment-id", getApartment() == null ? 0 : getApartment().getId())
 				.append("person-id", getPerson() == null ? 0 : getPerson().getId())
+				.append("consumer-id", getConsumer() == null ? 0 : getConsumer().getId())
 				.toString();
 	}
 }

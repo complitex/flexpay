@@ -8,7 +8,6 @@ import org.flexpay.ab.service.importexport.ImportService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-@Transactional(readOnly = true)
 public class EircImportService extends ImportService {
 
 	private RawConsumerDataConverter consumerDataConverter;
@@ -64,6 +62,7 @@ public class EircImportService extends ImportService {
 			}
 
 			try {
+				log.info("Marking record for starting processing");
 				recordWorkflowManager.startProcessing(data.getRegistryRecord());
 			} catch (TransitionNotAllowed e) {
 				if (log.isInfoEnabled()) {
@@ -334,11 +333,6 @@ public class EircImportService extends ImportService {
 		}
 
 		return stub;
-	}
-
-	protected void addToStack(DomainObject object) {
-		super.addToStack(object);
-		flushStack();
 	}
 
 	public void setConsumerDataConverter(RawConsumerDataConverter consumerDataConverter) {

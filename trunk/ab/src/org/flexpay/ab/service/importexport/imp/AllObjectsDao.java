@@ -1,12 +1,14 @@
 package org.flexpay.ab.service.importexport.imp;
 
+import org.apache.log4j.Logger;
 import org.flexpay.common.persistence.DomainObject;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 
 public class AllObjectsDao {
 
+	private Logger log = Logger.getLogger(getClass());
 	private HibernateTemplate hibernateTemplate;
 
 	private Session session = null;
@@ -16,14 +18,20 @@ public class AllObjectsDao {
 	private long counter = 0;
 
 	public void saveOrUpdate(DomainObject domainObject) {
-		session.saveOrUpdate(domainObject);
+		// remove object from hibernate session managed by hibernateTemplate
+		hibernateTemplate.evict(domainObject);
+
+		if (domainObject.isNew()) {
+			session.save(domainObject);
+		} else {
+			session.saveOrUpdate(domainObject);
+		}
 //		hibernateTemplate.save(domainObject);
 		++counter;
 		if (counter == 15) {
 //			hibernateTemplate.flush();
 //			hibernateTemplate.clear();
 			session.flush();
-			session.clear();
 			counter = 0;
 		}
 	}

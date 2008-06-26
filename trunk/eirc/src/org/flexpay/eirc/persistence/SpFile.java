@@ -38,8 +38,8 @@ public class SpFile extends DomainObject {
 			throw new IllegalArgumentException("File " + source + " not exists");
 		}
 
-		this.setInternalRequestFileName(StringUtil.getRandomString());
-		File requestFile = this.getRequestFile();
+		setInternalRequestFileName(StringUtil.getRandomString());
+		File requestFile = getRequestFile();
 		FileUtils.copyFile(source, requestFile);
 
 		return requestFile;

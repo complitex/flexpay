@@ -32,9 +32,7 @@ public class OrganisationServiceImpl implements OrganisationService {
 	 * @return Organisation if found, or <code>null</code> otherwise
 	 */
 	public Organisation getOrganisation(String organisationId) {
-		List<Organisation> organisations = organisationDao.findOrganisationsById(
-				organisationId);
-		return organisations.isEmpty() ? null : organisations.get(0);
+		return organisationDaoExt.getOrganisationStub(organisationId);
 	}
 
 	/**
@@ -101,6 +99,7 @@ public class OrganisationServiceImpl implements OrganisationService {
 		}
 	}
 
+	@SuppressWarnings({"ThrowableInstanceNeverThrown"})
 	public void validate(Organisation organisation) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 		if (StringUtils.isBlank(organisation.getUniqueId())) {

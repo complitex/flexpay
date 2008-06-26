@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class ImportService {
 
 	protected Logger log = Logger.getLogger(getClass());
@@ -74,7 +74,7 @@ public class ImportService {
 	/**
 	 * Run flush objects operation
 	 */
-	@Transactional(readOnly = false, rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	protected void flushStack() {
 
 		if (log.isDebugEnabled()) {
@@ -86,6 +86,7 @@ public class ImportService {
 
 			DomainObject prevObj = null;
 			for (DomainObject object : objectsStack) {
+				// get previous object id for correction (may be null for new objects)
 				if (object instanceof DataCorrection) {
 					DataCorrection corr = (DataCorrection) object;
 					if (corr.getInternalObjectId() == null) {
@@ -120,11 +121,10 @@ public class ImportService {
 	}
 
 	protected void addToStack(DomainObject object) {
-		if (objectsStack.size() >= STACK_SIZE && objectsStack.get(objectsStack.size() - 1) instanceof DataCorrection) {
+		if (objectsStack.size() >= STACK_SIZE) {
 			flushStack();
 		}
 		objectsStack.add(object);
-//		allObjectsDao.save(object);
 	}
 
 	@Transactional(readOnly = false)

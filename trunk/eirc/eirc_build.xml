@@ -161,6 +161,10 @@
 	</target>
 
 	<target name="eirc.runtests" depends="eirc.build.test.jar,eirc.prepare.war">
+		<antcall target="eirc.runtests.nobuild" />
+	</target>
+
+	<target name="eirc.runtests.nobuild">
 		<antcall target="template.run.tests">
 			<param name="test_name" value="org.flexpay.eirc.AllTests" />
 			<reference refid="eirc.runtests.classpath" torefid="classpath" />

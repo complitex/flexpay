@@ -19,4 +19,8 @@
 		<property name="languageDao" ref="languageDAO" />
 	</bean>
 
+	<bean class="org.flexpay.common.service.internal.SessionFlasher" id="sessionFlasher" >
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+
 </beans>

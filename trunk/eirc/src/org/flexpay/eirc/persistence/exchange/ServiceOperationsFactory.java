@@ -24,6 +24,7 @@ public class ServiceOperationsFactory {
 	private SpRegistryRecordService registryRecordService;
 	private EircAccountService accountService;
 	private ConsumerService consumerService;
+	private QuittanceService quittanceService;
 	private ConsumerInfoService consumerInfoService;
 	private AccountRecordService accountRecordService;
 	private OrganisationService organisationService;
@@ -284,5 +285,13 @@ public class ServiceOperationsFactory {
 
 	public void setRegistryRecordService(SpRegistryRecordService registryRecordService) {
 		this.registryRecordService = registryRecordService;
+	}
+
+	public QuittanceService getQuittanceService() {
+		return quittanceService;
+	}
+
+	public void setQuittanceService(QuittanceService quittanceService) {
+		this.quittanceService = quittanceService;
 	}
 }

@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean class="org.flexpay.common.util.standalone.StandaloneTasksHolder">
 		<property name="standaloneTasks">
 			<list>
 				<!-- run sp file processing -->
-				<bean class="org.flexpay.eirc.util.standalone.RunSpFileProcessing">
-					<property name="fileProcessor" ref="serviceProviderFileProcessor" />
-				</bean>
+				<bean class="org.flexpay.eirc.util.standalone.RunSpFileProcessing"
+					  p:fileAction-ref="spFileAction"
+					  p:fileCreateAction-ref="spFileCreateAction"
+					  p:fileService-ref="spFileService"
+					  p:hibernateTemplate-ref="hibernateTemplate"
+					  p:spRegistryDao-ref="spRegistryDao"
+					  p:fileProcessor-ref="serviceProviderFileProcessor" />
 			</list>
 		</property>
-
 	</bean>
 
 </beans>

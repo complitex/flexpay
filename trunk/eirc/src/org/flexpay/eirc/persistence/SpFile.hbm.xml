@@ -174,7 +174,7 @@
 		<property name="uniqueOperationNumber" column="unique_operation_number" />
 		<property name="amount" column="amount" type="big_decimal" />
 
-		<list name="containers" cascade="all-delete-orphan" inverse="true">
+		<list name="containers" cascade="all" inverse="true">
 			<key column="record_id" not-null="true" />
 			<list-index column="order_weight" />
 			<one-to-many class="RegistryRecordContainer" />
@@ -251,6 +251,7 @@
 		select distinct rr
 		from SpRegistryRecord rr
 			inner join fetch rr.spRegistry r
+			left join fetch rr.consumer c
 			inner join fetch r.registryStatus rs
 			inner join fetch rr.recordStatus rrs
 			left join fetch rr.importError
@@ -318,11 +319,18 @@
 	</query>
 
 	<query name="SpRegistryRecord.listRecords">
-		select distinct r from SpRegistryRecord r where r.spRegistry.id=? and r.consumer is null
+		select distinct rr
+		from SpRegistryRecord rr
+			inner join fetch rr.recordStatus
+			left join fetch rr.importError
+		where rr.spRegistry.id=? and rr.consumer is null
+		order by rr.id
 	</query>
 
 	<query name="SpRegistryRecord.listRecords.count">
-		select count(*) from SpRegistryRecord where spRegistry.id=? and consumer is null
+		select count(*)
+		from SpRegistryRecord rr
+		where rr.spRegistry.id=? and rr.consumer is null
 	</query>
 
 	<query name="SpRegistryStatus.findAll">

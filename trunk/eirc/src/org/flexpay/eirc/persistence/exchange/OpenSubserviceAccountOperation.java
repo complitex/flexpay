@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class OpenSubserviceAccountOperation extends ContainerOperation {
 
-	private static Logger log = Logger.getLogger(BalanceOperation.class);
+	private static Logger log = Logger.getLogger(OpenSubserviceAccountOperation.class);
 
 	private ServiceOperationsFactory factory;
 
@@ -151,11 +151,11 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		}
 
 		Consumer consumer = (Consumer) record.getConsumer();
-		if (record.getApartment() == null || consumer == null || consumer.getApartment() == null) {
+		if (record.getApartment() == null || consumer == null || consumer.getApartment().getId() == null) {
 			throw new FlexPayException("Cannot create sub consumer without apartment set");
 		}
 
-		if (record.getPerson() == null || consumer.getResponsiblePerson() == null) {
+		if (record.getPerson() == null || consumer.getResponsiblePerson().getId() == null) {
 			throw new FlexPayException("Cannot create sub consumer without person set");
 		}
 
@@ -166,7 +166,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		Consumer persistent = factory.getCorrectionsService().findCorrection(
 				id, Consumer.class, registry.getServiceProvider().getDataSourceDescription());
 		if (persistent != null) {
-			log.info("Already existing consumer");
+			log.info("Already existing subconsumer");
 			return false;
 		}
 

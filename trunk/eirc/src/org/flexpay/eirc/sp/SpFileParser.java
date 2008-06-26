@@ -5,12 +5,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.service.internal.SessionFlasher;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.sp.SpFileReader.Message;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional(readOnly = true)
 public class SpFileParser {
 
 	private static Logger log = Logger.getLogger(SpFileParser.class);
@@ -35,6 +38,7 @@ public class SpFileParser {
 	private SpRegistryRecordService spRegistryRecordService;
 	private SpRegistryTypeService spRegistryTypeService;
 	private SpRegistryArchiveStatusService spRegistryArchiveStatusService;
+	private SessionFlasher sessionFlasher;
 
 	private RegistryWorkflowManager registryWorkflowManager;
 	private RegistryRecordWorkflowManager recordWorkflowManager;
@@ -46,6 +50,7 @@ public class SpFileParser {
 	private long registryRecordCounter;
 	private Message message;
 
+	@Transactional(readOnly = false)
 	public void parse(SpFile spFile) throws Exception {
 		File file = spFile.getRequestFile();
 		if (file == null) {
@@ -66,6 +71,7 @@ public class SpFileParser {
 			if (spRegistry != null) {
 				registryWorkflowManager.setNextErrorStatus(spRegistry);
 			}
+			log.error("Failed parsing registry file", t);
 			throw new Exception("Failed parsing registry file", t);
 		} finally {
 			IOUtils.closeQuietly(is);
@@ -128,8 +134,21 @@ public class SpFileParser {
 				log.info("Creating new registry: " + spRegistry);
 			}
 
-			spRegistry.setRecipient(organisationService.getOrganisation(String.valueOf(spRegistry.getRecipientCode())));
-			spRegistry.setSender(organisationService.getOrganisation(String.valueOf(spRegistry.getSenderCode())));
+			Organisation recipient = organisationService.getOrganisation(String.valueOf(spRegistry.getRecipientCode()));
+			spRegistry.setRecipient(recipient);
+			if (recipient == null) {
+				log.error("Failed processing registry header, recipient not found: #" + spRegistry.getRecipientCode());
+				throw new FlexPayException("Cannot find recipient organisation " + spRegistry.getRecipientCode());
+			}
+			Organisation sender = organisationService.getOrganisation(String.valueOf(spRegistry.getSenderCode()));
+			spRegistry.setSender(sender);
+			if (sender == null) {
+				log.error("Failed processing registry header, sender not found: #" + spRegistry.getSenderCode());
+				throw new FlexPayException("Cannot find sender organisation " + spRegistry.getSenderCode());
+			}
+			if (log.isInfoEnabled()) {
+				log.info("Recipient: " + recipient + "\n sender: " + sender);
+			}
 
 			ServiceProvider provider = spService.getProvider(spRegistry.getSenderCode());
 			if (provider == null) {
@@ -228,7 +247,6 @@ public class SpFileParser {
 
 			// setup record status
 			recordWorkflowManager.setInitialStatus(record);
-
 		} catch (NumberFormatException e) {
 			log.error("Record number parse error", e);
 			throw new SpFileFormatException("Record parse error", message.getPosition());
@@ -295,7 +313,6 @@ public class SpFileParser {
 			throw new SpFileFormatException(
 					"Message footer error, invalid number of fields", message.getPosition());
 		}
-		// do nothing
 	}
 
 	private void finalizeRegistry() throws Exception {
@@ -354,5 +371,9 @@ public class SpFileParser {
 
 	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
 		this.recordWorkflowManager = recordWorkflowManager;
+	}
+
+	public void setSessionFlasher(SessionFlasher sessionFlasher) {
+		this.sessionFlasher = sessionFlasher;
 	}
 }

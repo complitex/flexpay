@@ -1,15 +1,15 @@
 package org.flexpay.eirc.persistence.exchange;
 
-import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.apache.log4j.Logger;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.AccountRecord;
 import org.flexpay.eirc.persistence.AccountRecordType;
-import org.flexpay.eirc.service.ReportPeriodService;
+import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.service.AccountRecordService;
+import org.flexpay.eirc.service.ReportPeriodService;
 import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
-import org.flexpay.common.exception.FlexPayException;
-import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 
