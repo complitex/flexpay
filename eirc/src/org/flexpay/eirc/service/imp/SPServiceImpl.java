@@ -305,8 +305,26 @@ public class SPServiceImpl implements SPService {
 					"No default lang desc", "eirc.error.service.no_default_lang_description"));
 		}
 
-		// todo: check if date intervals intersects with the service of the same type
-		// todo: check if external code covers existing service code
+		if (StringUtils.isNotBlank(service.getExternalCode())) {
+			List<Service> services = serviceDao.findServicesByProviderCode(
+					service.getServiceProvider().getId(), service.getExternalCode());
+			boolean hasDuplicateCode = services.size() == 1 && !services.get(0).getId().equals(service.getId());
+			hasDuplicateCode = hasDuplicateCode || services.size() >= 2;
+			if (hasDuplicateCode) {
+				container.addException(new FlexPayException(
+						"Duplicate code", "eirc.error.service.duplicate_code"));
+			}
+		}
+
+		List<Service> sameTypeSrvcs = serviceDaoExt.findIntersectingServices(
+				service.getServiceProvider().getId(), service.getServiceType().getId(),
+				service.getBeginDate(), service.getEndDate());
+		boolean intersects = sameTypeSrvcs.size() == 1 && !sameTypeSrvcs.get(0).getId().equals(service.getId());
+		intersects = intersects || sameTypeSrvcs.size() >= 2;
+		if (intersects) {
+			container.addException(new FlexPayException(
+					"Duplicate service type", "eirc.error.service.duplicate_service_type"));
+		}
 
 		if (!container.isEmpty()) {
 			throw container;

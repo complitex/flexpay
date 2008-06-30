@@ -228,4 +228,12 @@
 			inner join o.serviceProvider p
 		where p.id=? and o.externalCode=?
 	</query>
+
+	<query name="Service.findIntersectingServices">
+		select distinct o
+		from Service o
+			inner join o.serviceProvider p
+			inner join o.serviceType st
+		where p.id=? and st.id=? and ((o.beginDate between ? and ?) or (o.endDate between ? and ?))
+	</query>
 </hibernate-mapping>

@@ -10,7 +10,8 @@ import org.junit.runners.Suite;
 //		org.flexpay.eirc.service.registry.AllTests.class,
 		TestBuildingService.class,
 		TestEircAccountService.class,
-		TestSpFileService.class
+		TestSpFileService.class,
+		TestServiceDao.class
 		})
 public class AllTests {
 

@@ -4,6 +4,7 @@ import org.flexpay.common.dao.GenericDao;
 import org.flexpay.eirc.persistence.Service;
 
 import java.util.List;
+import java.util.Date;
 
 public interface ServiceDao extends GenericDao<Service, Long> {
 

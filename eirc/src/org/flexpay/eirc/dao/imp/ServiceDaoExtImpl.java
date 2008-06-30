@@ -21,6 +21,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDaoExt {
 
@@ -29,7 +30,8 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 
 	@SuppressWarnings({"unchecked"})
 	public List<ServiceType> getServiceTypes() {
-		return getHibernateTemplate().find("select distinct t from ServiceType t left join fetch t.typeNames n left join fetch n.lang where t.status=0");
+		return getHibernateTemplate().find("select distinct t from ServiceType t " +
+				"left join fetch t.typeNames n left join fetch n.lang where t.status=0");
 	}
 
 	/**
@@ -152,6 +154,21 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 			query.setParameter(i, params.get(i));
 		}
 		return query;
+	}
+
+	/**
+	 * Find provider services of the specified type for date interval
+	 *
+	 * @param providerId Service provider identifier
+	 * @param typeId	 Service type identifier
+	 * @param beginDate  Interval begin date
+	 * @param endDate	interval end date
+	 * @return List of services
+	 */
+	@SuppressWarnings({"unchecked"})
+	public List<Service> findIntersectingServices(Long providerId, Long typeId, Date beginDate, Date endDate) {
+		Object[] params = { providerId, typeId, beginDate, endDate, beginDate, endDate};
+		return getHibernateTemplate().findByNamedQuery("Service.findIntersectingServices", params);
 	}
 
 	public void setServiceDaoJDBC(ServiceDaoJDBC serviceDaoJDBC) {

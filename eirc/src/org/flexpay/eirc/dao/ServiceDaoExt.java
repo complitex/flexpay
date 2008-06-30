@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.dao.paging.Page;
 
 import java.util.List;
+import java.util.Date;
 
 public interface ServiceDaoExt {
 
@@ -54,4 +55,15 @@ public interface ServiceDaoExt {
 	 * @return List of services
 	 */
 	List<Service> findServices(List<ObjectFilter> filters, Page<Service> pager);
+
+
+	/**
+	 * Find provider services of the specified type for date interval
+	 * @param providerId Service provider identifier
+	 * @param typeId Service type identifier
+	 * @param beginDate Interval begin date
+	 * @param endDate interval end date
+	 * @return List of services
+	 */
+	List<Service> findIntersectingServices(Long providerId, Long typeId, Date beginDate, Date endDate);
 }
