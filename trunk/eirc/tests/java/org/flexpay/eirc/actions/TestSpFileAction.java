@@ -30,6 +30,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 
 	protected void deleteRecords(SpFile file) {
 		for (SpRegistry registry : fileService.getRegistries(file)) {
+			spRegistryDao.deleteQuittances(registry.getId());
 			spRegistryDao.deleteRecordContainers(registry.getId());
 			spRegistryDao.deleteRegistryContainers(registry.getId());
 			spRegistryDao.deleteRecords(registry.getId());

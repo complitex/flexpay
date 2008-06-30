@@ -67,6 +67,8 @@ public class SpFileParser {
 				processMessage(spFile);
 			}
 			finalizeRegistry();
+			sessionFlasher.flush();
+			sessionFlasher.clear();
 		} catch (Throwable t) {
 			if (spRegistry != null) {
 				registryWorkflowManager.setNextErrorStatus(spRegistry);
@@ -116,8 +118,12 @@ public class SpFileParser {
 		try {
 			int n = 0;
 			spRegistry.setRegistryNumber(Long.valueOf(messageFieldList.get(++n)));
-			SpRegistryType spRegistryType = spRegistryTypeService.read(Long.valueOf(messageFieldList.get(++n)));
-			spRegistry.setRegistryType(spRegistryType);
+			String value = messageFieldList.get(++n);
+			SpRegistryType registryType = spRegistryTypeService.read(Long.valueOf(value));
+			if (registryType == null) {
+				throw new FlexPayException("Unknown registry type field: " + value);
+			}
+			spRegistry.setRegistryType(registryType);
 			spRegistry.setRecordsNumber(Long.valueOf(messageFieldList.get(++n)));
 			spRegistry.setCreationDate(dateFormat.parse(messageFieldList.get(++n)));
 			spRegistry.setFromDate(dateFormat.parse(messageFieldList.get(++n)));

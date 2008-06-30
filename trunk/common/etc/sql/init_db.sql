@@ -4043,16 +4043,17 @@ INSERT INTO eirc_account_record_types_tbl (type_enum_id, description)
 	VALUES (3, 'Сальдо');
 
 -- Init service providers registry types
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (1, 1);
-INSERT INTO eirc_egistry_types_tbl (id, code) VALUES (2, 2);
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (3, 3);
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (4, 4);
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (5, 5);
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (6, 6);
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (7, 7);
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (8, 8);
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (9, 9);
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (10, 10);
+INSERT INTO eirc_registry_types_tbl (code) VALUES (1);
+INSERT INTO eirc_registry_types_tbl (code) VALUES (2);
+INSERT INTO eirc_registry_types_tbl (code) VALUES (3);
+INSERT INTO eirc_registry_types_tbl (code) VALUES (4);
+INSERT INTO eirc_registry_types_tbl (code) VALUES (5);
+INSERT INTO eirc_registry_types_tbl (code) VALUES (6);
+INSERT INTO eirc_registry_types_tbl (code) VALUES (7);
+INSERT INTO eirc_registry_types_tbl (code) VALUES (8);
+INSERT INTO eirc_registry_types_tbl (code) VALUES (9);
+INSERT INTO eirc_registry_types_tbl (code) VALUES (10);
+INSERT INTO eirc_registry_types_tbl (code) VALUES (11);
 
 -- Init organisations
 INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, unique_id)
@@ -4214,6 +4215,26 @@ INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 160);
 SELECT @service_elevators_energy:=last_insert_id();
 INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Энергоснабжение для лифтов', '', @ru_id, @service_elevators_energy);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 170);
+SELECT @service_staircases_cleaning:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Уборка лестничных клеток', '', @ru_id, @service_staircases_cleaning);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 170);
+SELECT @service_staircases_cleaning:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Уборка лестничных клеток', '', @ru_id, @service_staircases_cleaning);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 180);
+SELECT @service_:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Дератизация и дезинфекция', '', @ru_id, @service_);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 190);
+SELECT @service_:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('ТО бытовых электроплит', '', @ru_id, @service_);
 
 -- Init services
 INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date)

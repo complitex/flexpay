@@ -106,10 +106,11 @@ public class RawConsumerData extends RawData<Consumer> {
 	}
 
 	public String getPersonCorrectionId() {
-		String[] parts = {
-				getFirstName(), getMiddleName(), getLastName(), getAccountNumber(),
-		};
-		return StringUtils.join(parts, '|');
+		return new StringBuilder()
+				.append(getFirstName()).append('|')
+				.append(getMiddleName()).append('|')
+				.append(getLastName()).append('|')
+				.toString();
 	}
 
 	/**
@@ -158,7 +159,7 @@ public class RawConsumerData extends RawData<Consumer> {
 	public String getShortConsumerId() {
 		return new StringBuilder()
 				.append(getAccountNumber()).append('|')
-				.append(getServiceCode()).append('|')
+				.append(getServiceCode())
 				.toString();
 	}
 
@@ -170,6 +171,7 @@ public class RawConsumerData extends RawData<Consumer> {
 	public String getFullConsumerId() {
 		return new StringBuilder()
 				.append(getApartmentId()).append('|')
+				.append(getPersonCorrectionId()).append('|')
 				.append(getAccountNumber()).append('|')
 				.append(getServiceCode())
 				.toString();

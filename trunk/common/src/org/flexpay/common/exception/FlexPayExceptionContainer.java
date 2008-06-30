@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Container for a FlexPayExceptions
+ * Container for a FlexPayExceptions, followed to the first 10 exceptions are thrown away 
  */
 public class FlexPayExceptionContainer extends Exception {
 
@@ -22,7 +22,9 @@ public class FlexPayExceptionContainer extends Exception {
 	 * @param e new FlexPayException
 	 */
 	public void addException(FlexPayException e) {
-		exceptions.add(e);
+		if (exceptions.size() < 10) {
+			exceptions.add(e);
+		}
 	}
 
 	/**

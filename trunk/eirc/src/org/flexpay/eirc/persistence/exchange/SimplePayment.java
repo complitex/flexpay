@@ -1,12 +1,11 @@
 package org.flexpay.eirc.persistence.exchange;
 
+import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.service.AccountRecordService;
 import org.flexpay.eirc.service.OrganisationService;
 import org.flexpay.eirc.service.SPService;
-import org.flexpay.eirc.service.SpRegistryTypeService;
-import org.apache.log4j.Logger;
 
 import java.util.List;
 
@@ -65,7 +64,7 @@ public class SimplePayment extends ContainerOperation {
 		accountRecord.setAmount(record.getAmount());
 
 		int registryTypeID = registry.getRegistryType().getCode();
-		if (registryTypeID != SpRegistryTypeService.NALICHNIE_OPLATI) {
+		if (registryTypeID != SpRegistryType.TYPE_CASH_PAYMENTS) {
 			throw new IllegalOperationStateException(
 					"Illegal registry type #" + registryTypeID + " for simple payment operation");
 		}

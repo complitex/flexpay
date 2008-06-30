@@ -15,4 +15,6 @@ public interface SpRegistryDao extends GenericDao<SpRegistry, Long> {
 	void deleteRegistryContainers(Long registryId);
 
 	void deleteRecordContainers(Long registryId);
+
+	void deleteQuittances(Long registryId);
 }

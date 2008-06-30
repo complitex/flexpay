@@ -62,7 +62,9 @@ public class EircImportService extends ImportService {
 			}
 
 			try {
-				log.info("Marking record for starting processing");
+				if (log.isDebugEnabled()) {
+					log.info("Starting record processing: " + data.getRegistryRecord());
+				}
 				recordWorkflowManager.startProcessing(data.getRegistryRecord());
 			} catch (TransitionNotAllowed e) {
 				if (log.isInfoEnabled()) {
@@ -77,16 +79,16 @@ public class EircImportService extends ImportService {
 			}
 
 			try {
+				Consumer persistentObj = correctionsService.findCorrection(
+						data.getShortConsumerId(), Consumer.class, sd);
+
+				if (persistentObj != null) {
+					log.info("Found existing consumer correction: #" + data.getExternalSourceId());
+					postSaveConsumer(data, consumerService.read(persistentObj));
+					continue;
+				}
+
 				if (data.isPersonalInfoEmpty()) {
-					Consumer persistentObj = correctionsService.findCorrection(
-							data.getShortConsumerId(), Consumer.class, sd);
-
-					if (persistentObj != null) {
-						log.info("Found existing consumer correction: #" + data.getExternalSourceId());
-						postSaveConsumer(data, consumerService.read(persistentObj));
-						continue;
-					}
-
 					log.info("Cannot find consumer by short info");
 					ImportError error = addImportError(sd, data.getExternalSourceId(), Consumer.class, dataSource);
 					error.setErrorId("error.eirc.import.consumer_not_found");
@@ -144,7 +146,7 @@ public class EircImportService extends ImportService {
 				if (persistent != null) {
 					// Consumer found, add new correction
 					if (log.isInfoEnabled()) {
-						log.info("Creating new consumer corrections: " + data.getFullConsumerId());
+						log.info("Creating new consumer correction: " + data.getFullConsumerId());
 					}
 
 					addToStack(correctionsService.getStub(data.getFullConsumerId(), persistent, sd));

@@ -166,7 +166,9 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		Consumer persistent = factory.getCorrectionsService().findCorrection(
 				id, Consumer.class, registry.getServiceProvider().getDataSourceDescription());
 		if (persistent != null) {
-			log.info("Already existing subconsumer");
+			if (log.isInfoEnabled()) {
+				log.info("Already existing subconsumer: " + id);
+			}
 			return false;
 		}
 
