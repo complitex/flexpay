@@ -29,7 +29,7 @@
 	</bean>
 
 	<bean id="spRegistryTypeService"
-		  class="org.flexpay.eirc.service.imp.SpRegistryTypeServiceImpl">
+		  class="org.flexpay.eirc.service.imp.RegistryTypeServiceImpl">
 		<property name="spRegistryTypeDao" ref="spRegistryTypeDao" />
 	</bean>
 

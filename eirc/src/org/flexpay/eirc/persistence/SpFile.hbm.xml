@@ -117,27 +117,47 @@
 		</many-to-one>
 	</class>
 
-	<class name="SpRegistryType" table="eirc_registry_types_tbl"
-		   optimistic-lock="version">
+	<class name="SpRegistryType" table="eirc_registry_types_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<property name="code" column="code" not-null="true" />
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic locking version</comment>
+			</column>
+		</version>
+		<property name="code">
+			<column name="code" not-null="true" unique="true">
+				<comment>Registry type code</comment>
+			</column>
+		</property>
 	</class>
 
-	<class name="SpRegistryStatus" table="eirc_registry_statuses_tbl"
-		   optimistic-lock="version">
+	<class name="SpRegistryStatus" table="eirc_registry_statuses_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<property name="code" not-null="true" unique="true" />
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic locking version</comment>
+			</column>
+		</version>
+		<property name="code">
+			<column name="code" not-null="true" unique="true">
+				<comment>Registry status code</comment>
+			</column>
+		</property>
 	</class>
 
 	<class name="SpRegistryRecordStatus" table="eirc_registry_record_statuses_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<property name="code" not-null="true" unique="true" />
+		<property name="code">
+			<column name="code" not-null="true" unique="true">
+				<comment>Registry record status code</comment>
+			</column>
+		</property>
 	</class>
 
 	<class name="SpRegistryArchiveStatus" table="eirc_registry_archive_statuses_tbl"
@@ -296,6 +316,12 @@
 		delete
 		from RegistryRecordContainer rc
 		where rc.record.id in (select id from SpRegistryRecord where spRegistry.id=?)
+	</query>
+
+	<query name="SpRegistry.deleteQuittances">
+		delete
+		from QuittanceDetails q
+		where q.registryRecord.id in (select id from SpRegistryRecord where spRegistry.id=?)
 	</query>
 
 	<query name="SpRegistry.deleteRegistryContainers">

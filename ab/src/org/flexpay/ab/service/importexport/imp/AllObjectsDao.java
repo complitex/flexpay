@@ -1,14 +1,12 @@
 package org.flexpay.ab.service.importexport.imp;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.persistence.DomainObject;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 public class AllObjectsDao {
 
-	private Logger log = Logger.getLogger(getClass());
 	private HibernateTemplate hibernateTemplate;
 
 	private Session session = null;
@@ -21,17 +19,17 @@ public class AllObjectsDao {
 		// remove object from hibernate session managed by hibernateTemplate
 		hibernateTemplate.evict(domainObject);
 
-		if (domainObject.isNew()) {
-			session.save(domainObject);
-		} else {
-			session.saveOrUpdate(domainObject);
-		}
-//		hibernateTemplate.save(domainObject);
+//		if (domainObject.isNew()) {
+//			session.save(domainObject);
+//		} else {
+//			session.saveOrUpdate(domainObject);
+//		}
+		hibernateTemplate.saveOrUpdate(domainObject);
+
 		++counter;
 		if (counter == 15) {
-//			hibernateTemplate.flush();
-//			hibernateTemplate.clear();
-			session.flush();
+			hibernateTemplate.flush();
+//			session.flush();
 			counter = 0;
 		}
 	}
@@ -41,8 +39,8 @@ public class AllObjectsDao {
 	}
 
 	public void openSession() {
-		session = hibernateTemplate.getSessionFactory().openSession();
-		tx = session.beginTransaction();
+//		session = hibernateTemplate.getSessionFactory().openSession();
+//		tx = session.beginTransaction();
 	}
 
 	public void setRollbackOnly() {
@@ -50,17 +48,21 @@ public class AllObjectsDao {
 	}
 
 	public void closeSession() {
-		if (tx != null) {
-			if (rollbackOnly) {
-				tx.rollback();
-			} else {
-				tx.commit();
-			}
-			tx = null;
-		}
-		if (session != null) {
-			session.close();
-			session = null;
-		}
+//		if (tx != null) {
+//			if (rollbackOnly) {
+//				tx.rollback();
+//			} else {
+//				tx.commit();
+//			}
+//			tx = null;
+//		}
+//		if (session != null) {
+//			session.flush();
+//			session.close();
+//			session = null;
+//		}
+
+		hibernateTemplate.flush();
+		hibernateTemplate.clear();
 	}
 }

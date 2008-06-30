@@ -88,7 +88,8 @@ public class BaseContainerOperation extends ContainerOperation {
 			consumer = consumerService.findConsumer(
 					registry.getServiceProvider(), record.getPersonalAccountExt(), serviceId);
 			if (consumer == null) {
-				throw new FlexPayException("Unnown service code: " + serviceId + ", cannot find consumer");
+				throw new FlexPayException("Cannot find consumer: SP-id=" + registry.getServiceProvider().getId() +
+						", account=" + record.getPersonalAccountExt() + ", code=" + serviceId);
 			}
 		} else {
 			consumer = (Consumer) record.getConsumer();
@@ -131,6 +132,8 @@ public class BaseContainerOperation extends ContainerOperation {
 		details.setSubsidy(subsidy);
 		details.setPayment(payment);
 		details.setMonth(DateUtils.truncate(registry.getFromDate(), Calendar.MONTH));
+
+		// TODO: check if there is a quittance for this account for this month
 
 		try {
 			quittanceService.save(details);

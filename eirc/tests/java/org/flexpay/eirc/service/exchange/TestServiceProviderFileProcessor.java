@@ -14,7 +14,6 @@ import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.SpRegistryService;
-import org.flexpay.eirc.service.SpRegistryTypeService;
 import org.flexpay.eirc.sp.SpFileParser;
 import org.flexpay.eirc.sp.SpFileReader;
 import org.flexpay.eirc.test.RandomObjects;
@@ -56,6 +55,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 
 	@Ignore
 	@Test
+	@NotTransactional
 	public void testSpFileProcessing() throws Throwable {
 		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree.txt");
 
@@ -89,13 +89,11 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	@Test
 	@Ignore
 	@NotTransactional
-	public void testProcessOpenSubAccountsRegistry() throws Throwable {
-		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2.txt");
+	public void testProcessOpenSubAccountsRegistrySmall() throws Throwable {
+		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
 
 		try {
 			fileProcessor.processFile(file);
-
-			checkOpenRegistryRecords(file);
 		} catch (FlexPayExceptionContainer c) {
 			for (Exception e : c.getExceptions()) {
 				e.printStackTrace();
@@ -108,7 +106,64 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	}
 
 	@Test
-//	@Ignore
+	@Ignore
+	@NotTransactional
+	public void testProcessOpenSubAccountsRegistry() throws Throwable {
+		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2.txt");
+
+		try {
+			fileProcessor.processFile(file);
+		} catch (FlexPayExceptionContainer c) {
+			for (Exception e : c.getExceptions()) {
+				e.printStackTrace();
+			}
+			throw c;
+		} finally {
+			deleteRecords(file);
+			deleteFile(file);
+		}
+	}
+
+	@Test
+	@Ignore
+	@NotTransactional
+	public void testProcessQuittancesSmallRegistry() throws Throwable {
+		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_quittances_small.txt");
+
+		try {
+			fileProcessor.processFile(file);
+		} catch (FlexPayExceptionContainer c) {
+			for (Exception e : c.getExceptions()) {
+				e.printStackTrace();
+			}
+			throw c;
+		} finally {
+			deleteRecords(file);
+			deleteFile(file);
+		}
+	}
+
+	@Test
+	@Ignore
+	@NotTransactional
+	public void testProcessQuittancesRegistry() throws Throwable {
+		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_quittances.txt");
+
+		try {
+			fileProcessor.processFile(file);
+		} catch (FlexPayExceptionContainer c) {
+			for (Exception e : c.getExceptions()) {
+				e.printStackTrace();
+			}
+			throw c;
+		} finally {
+			deleteRecords(file);
+			deleteFile(file);
+		}
+	}
+
+	@Test
+	@Ignore
 	@NotTransactional
 	public void testProcessOpenSubAccountsRegistryNoClear() throws Throwable {
 		SpFile file = new SpFile(265L);
@@ -133,27 +188,6 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 				hibernateTemplate.find("select count(*) from SpRegistryRecord rr " +
 						"where consumer is null and rr.spRegistry.spFile.id=?", file.getId()));
 		assertEquals("Invalid number of records without errors", nErrorLessRecords, nConsumerLessRecords);
-	}
-
-	@Test
-	@Ignore
-	@NotTransactional
-	public void testProcessOpenSubAccountsRegistrySmall() throws Throwable {
-		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
-
-		try {
-			fileProcessor.processFile(file);
-
-			checkOpenRegistryRecords(file);
-		} catch (FlexPayExceptionContainer c) {
-			for (Exception e : c.getExceptions()) {
-				e.printStackTrace();
-			}
-			throw c;
-		} finally {
-			deleteRecords(file);
-			deleteFile(file);
-		}
 	}
 
 	private File generatePaymentsFile() throws Throwable {
@@ -340,7 +374,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 				.append(RECORD_DELIMITER)
 
 						// registry type
-				.append(SpRegistryTypeService.NALICHNIE_OPLATI.shortValue())
+				.append(SpRegistryType.TYPE_CASH_PAYMENTS)
 				.append(RECORD_DELIMITER)
 
 						// records number

@@ -9,17 +9,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
-public class SpRegistryTypeServiceImpl implements SpRegistryTypeService {
-	private static Logger log = Logger.getLogger(SpRegistryServiceImpl.class);
+@Transactional(readOnly = true)
+public class RegistryTypeServiceImpl implements SpRegistryTypeService {
+
+	private Logger log = Logger.getLogger(getClass());
 
 	private SpRegistryTypeDao spRegistryTypeDao;
 
 	/**
 	 * Read SpRegistryType object by its unique id
-	 * 
-	 * @param id
-	 *            SpRegistryType key
+	 *
+	 * @param id SpRegistryType key
 	 * @return SpRegistryType object, or <code>null</code> if object not found
 	 */
 	public SpRegistryType read(Long id) {
@@ -41,8 +41,7 @@ public class SpRegistryTypeServiceImpl implements SpRegistryTypeService {
 	}
 
 	/**
-	 * @param spRegistryTypeDao
-	 *            the spRegistryTypeDao to set
+	 * @param spRegistryTypeDao the spRegistryTypeDao to set
 	 */
 	public void setSpRegistryTypeDao(SpRegistryTypeDao spRegistryTypeDao) {
 		this.spRegistryTypeDao = spRegistryTypeDao;
