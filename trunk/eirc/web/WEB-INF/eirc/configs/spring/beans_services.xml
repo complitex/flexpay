@@ -37,6 +37,7 @@
 		  p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao"
 		  p:serviceDao-ref="serviceDao"
 		  p:serviceDaoExt-ref="serviceDaoExt"
+		  p:sessionUtils-ref="sessionUtils"
 		  p:serviceProviderDao-ref="serviceProviderDao" />
 
 	<bean id="registryWorkflowManager" class="org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager">
@@ -62,7 +63,7 @@
 		<property name="spService" ref="spService" />
 		<property name="registryWorkflowManager" ref="registryWorkflowManager" />
 		<property name="recordWorkflowManager" ref="registryRecordWorkflowManager" />
-		<property name="sessionFlasher" ref="sessionFlasher" />
+		<property name="sessionUtils" ref="sessionUtils" />
 	</bean>
 
 	<bean id="eircAccountService"
