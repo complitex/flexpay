@@ -8,6 +8,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.filter.ObjectFilter;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.eirc.dao.ServiceDao;
 import org.flexpay.eirc.dao.ServiceDaoExt;
 import org.flexpay.eirc.dao.ServiceProviderDao;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.Collection;
 
 @Transactional(readOnly = true)
 public class SPServiceImpl implements SPService {
@@ -32,6 +34,7 @@ public class SPServiceImpl implements SPService {
 	private ServiceDaoExt serviceDaoExt;
 	private ServiceDao serviceDao;
 
+	private SessionUtils sessionUtils;
 	private DataSourceDescriptionDao dataSourceDescriptionDao;
 
 	/**
@@ -314,6 +317,7 @@ public class SPServiceImpl implements SPService {
 				container.addException(new FlexPayException(
 						"Duplicate code", "eirc.error.service.duplicate_code"));
 			}
+			sessionUtils.evict(services);
 		}
 
 		List<Service> sameTypeSrvcs = serviceDaoExt.findIntersectingServices(
@@ -325,6 +329,7 @@ public class SPServiceImpl implements SPService {
 			container.addException(new FlexPayException(
 					"Duplicate service type", "eirc.error.service.duplicate_service_type"));
 		}
+		sessionUtils.evict(sameTypeSrvcs);
 
 		if (!container.isEmpty()) {
 			throw container;
@@ -379,5 +384,9 @@ public class SPServiceImpl implements SPService {
 
 	public void setServiceDao(ServiceDao serviceDao) {
 		this.serviceDao = serviceDao;
+	}
+
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
 	}
 }

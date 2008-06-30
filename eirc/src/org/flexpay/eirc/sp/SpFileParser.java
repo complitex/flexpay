@@ -5,7 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.common.service.internal.SessionFlasher;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
@@ -38,7 +38,7 @@ public class SpFileParser {
 	private SpRegistryRecordService spRegistryRecordService;
 	private SpRegistryTypeService spRegistryTypeService;
 	private SpRegistryArchiveStatusService spRegistryArchiveStatusService;
-	private SessionFlasher sessionFlasher;
+	private SessionUtils sessionUtils;
 
 	private RegistryWorkflowManager registryWorkflowManager;
 	private RegistryRecordWorkflowManager recordWorkflowManager;
@@ -67,8 +67,8 @@ public class SpFileParser {
 				processMessage(spFile);
 			}
 			finalizeRegistry();
-			sessionFlasher.flush();
-			sessionFlasher.clear();
+			sessionUtils.flush();
+			sessionUtils.clear();
 		} catch (Throwable t) {
 			if (spRegistry != null) {
 				registryWorkflowManager.setNextErrorStatus(spRegistry);
@@ -379,7 +379,7 @@ public class SpFileParser {
 		this.recordWorkflowManager = recordWorkflowManager;
 	}
 
-	public void setSessionFlasher(SessionFlasher sessionFlasher) {
-		this.sessionFlasher = sessionFlasher;
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
 	}
 }
