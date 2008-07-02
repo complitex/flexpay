@@ -75,6 +75,12 @@
 		</fileset>
 	</path>
 
+	<path id="jasperreports.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="jasperreports/*.jar" />
+		</fileset>
+	</path>
+
 	<path id="quartz.lib">
 		<fileset dir="${common.dir}/lib">
 			<include name="quartz/*.jar" />
@@ -92,6 +98,7 @@
 		<path refid="jbpm_jpdl.lib" />
 		<path refid="ajax.lib" />
 		<path refid="itext.lib" />
+		<path refid="jasperreports.lib" />
 		<path refid="quartz.lib" />
 	</path>
 
@@ -118,8 +125,7 @@
 		<path refid="common.test.classpath" />
 		<path location="${build.dir}/web" />
 		<path location="common/src" />
-		<path location="common/tests/data" />
-		<path location="common/tests/data/org/flexpay/common" />
+		<path location="${common.dir}/tests/data" />
 	</path>
 
 	<target name="common.clean.build">
@@ -218,7 +224,7 @@
 
 	<target name="template.compile.test" depends="init.build,clean.build">
 		<javac srcdir="${sources.dir}" includes="**/*.java" destdir="${build.dir}/classes"
-			   debug="on" deprecation="on" source="1.5" target="1.5"
+			   debug="on" deprecation="on" source="1.5" target="1.5" encoding="utf8"
 			   classpathref="classpath" />
 	</target>
 

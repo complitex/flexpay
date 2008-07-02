@@ -15,6 +15,12 @@
 		</antcall>
 	</target>
 
+	<target name="eirc.deploy.sjsas" depends="eirc.war.production.glassfish_mysql5">
+		<antcall target="template.deploy.sjsas">
+			<param name="application_archive" value="${distr.dir}/${eirc.war.name}" />
+		</antcall>
+	</target>
+
 	<taskdef name="sun-appserv-deploy"
 			 classname="org.apache.tools.ant.taskdefs.optional.sun.appserv.DeployTask"
 			 classpath="${sjsas.root}/lib/sun-appserv-ant.jar" />

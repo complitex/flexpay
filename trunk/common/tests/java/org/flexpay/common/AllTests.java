@@ -13,7 +13,8 @@ import org.junit.runners.Suite;
 		org.flexpay.common.service.AllTests.class,
 		org.flexpay.common.dao.AllTests.class,
 		org.flexpay.common.locking.AllTests.class,
-		org.flexpay.common.actions.AllTests.class
+		org.flexpay.common.actions.AllTests.class,
+		org.flexpay.common.reporting.AllTests.class
 		})
 public class AllTests extends TestCase {
 
@@ -26,7 +27,7 @@ public class AllTests extends TestCase {
 	}
 
 	public void runTest() throws Throwable {
-		String spFile = "org/flexpay/common/test.txt";
-		assertNotNull("Test resource search failed", getClass().getClassLoader().getResource(spFile));
+		String path = "org/flexpay/common/test.txt";
+		assertNotNull("Test resource search failed", getClass().getClassLoader().getResource(path));
 	}
 }
