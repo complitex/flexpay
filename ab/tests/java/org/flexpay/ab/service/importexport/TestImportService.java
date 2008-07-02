@@ -3,21 +3,27 @@ package org.flexpay.ab.service.importexport;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.support.DataAccessUtils;
 import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.BeforeClass;
 import static org.junit.Assert.assertNotNull;
 
 public class TestImportService extends SpringBeanAwareTestCase {
 
-	protected ImportService service;
+	protected ImportService importService;
 	protected JdbcTemplate template;
+
+	private DataSourceDescription sourceDescription;
+	private Town town;
 
 	@Autowired
 	public void setService(@Qualifier("importServiceAb") ImportService service) {
-		this.service = service;
+		this.importService = service;
 	}
 
 	@Autowired
@@ -35,42 +41,46 @@ public class TestImportService extends SpringBeanAwareTestCase {
 	@Test
 	@Ignore
 	public void testImportDistricts() throws Throwable {
-		getImportService().importDistricts(new Town(1L), new DataSourceDescription(1L));
+		importService.importDistricts(town, sourceDescription);
 	}
 
 	@Test
 	@Ignore
 	public void testImportStreetTypes() {
-		getImportService().importStreetTypes(new DataSourceDescription(1L));
+		importService.importStreetTypes(sourceDescription);
 	}
 
 	@Test
 	@Ignore
 	public void testImportStreets() throws Throwable {
-		getImportService().importStreets(new Town(1L), new DataSourceDescription(1L));
+		importService.importStreets(town, sourceDescription);
 	}
 
 	@Test
 	@Ignore
 	public void testImportBuildings() throws Throwable {
-		getImportService().importBuildings(new DataSourceDescription(1L));
+		importService.importBuildings(sourceDescription);
 	}
 
 	@Test
 	@Ignore
 	public void testImportApartments() throws Throwable {
-		getImportService().importApartments(new DataSourceDescription(1L));
+		importService.importApartments(sourceDescription);
 	}
 
 	@Test
 	@Ignore
 	public void testImportPersons() throws Throwable {
-		getImportService().importPersons(new DataSourceDescription(1L));
+		importService.importPersons(sourceDescription);
 	}
 
-	protected ImportService getImportService() {
-		ImportService service = (ImportService) applicationContext.getBean("importServiceAb");
-		assertNotNull("ImportService is null", service);
-		return service;
+	@BeforeClass
+	public void beforeClass() throws Exception {
+		// find data source description for CN
+		// see init_db for 'magic' description
+		sourceDescription = (DataSourceDescription) DataAccessUtils.uniqueResult(hibernateTemplate.find(
+				"from DataSourceDescription where description='Источник - Тестовые данные ПУ из ЦН'"));
+
+		town = ApplicationConfig.getInstance().getDefaultTown();
 	}
 }
