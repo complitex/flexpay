@@ -40,7 +40,7 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 		try {
 			os = new FileOutputStream(tmpDataFile);
 
-			is = getClass().getClassLoader().getResourceAsStream(spFile);
+			is = getFileStream(spFile);
 			if (is == null) {
 				fail("Cannot find source file");
 			}

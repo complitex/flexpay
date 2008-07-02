@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN"
+		"http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport name="sample_report_sql" columnCount="1" printOrder="Vertical" orientation="Portrait"
+			  pageWidth="595" pageHeight="842" columnWidth="555" columnSpacing="0"
+			  leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30"
+			  whenNoDataType="NoPages" isTitleNewPage="false" isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="dataSourceId" class="java.lang.Long" />
+	<parameter name="dataSourceDescr" class="java.lang.String" />
+
+	<queryString>
+		<![CDATA[
+		select external_object_id as externalId, internal_object_id as internalObjectId, object_type as objectType
+		from common_data_corrections_tbl
+		where data_source_description_id= $P{dataSourceId}
+		order by object_type
+		limit 5000
+		]]>
+	</queryString>
+
+	<field name="externalId" class="java.lang.String" />
+	<field name="internalObjectId" class="java.lang.Long" />
+	<field name="objectType" class="java.lang.Integer" />
+
+	<title>
+		<band height="30">
+			<textField>
+				<reportElement width="555" height="30" x="0" y="0" />
+				<textFieldExpression>
+					<![CDATA["Corrections for data source: " + $P{dataSourceDescr}]]>
+				</textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="30">
+			<staticText>
+				<reportElement width="100" height="30" x="0" y="0" />
+				<text>
+					<![CDATA[External id]]>
+				</text>
+			</staticText>
+			<staticText>
+				<reportElement width="100" height="30" x="100" y="0" />
+				<text>
+					<![CDATA[Internal id]]>
+				</text>
+			</staticText>
+			<staticText>
+				<reportElement width="100" height="30" x="200" y="0" />
+				<text>
+					<![CDATA[Type]]>
+				</text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="30">
+			<textField>
+				<reportElement width="100" height="30" x="0" y="0" />
+				<textFieldExpression>
+					<![CDATA[$F{externalId}]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement width="100" height="30" x="100" y="0" />
+				<textFieldExpression>
+					<![CDATA["" + $F{internalObjectId}]]>
+				</textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement width="100" height="30" x="200" y="0" />
+				<textFieldExpression>
+					<![CDATA["" + $F{objectType}]]>
+				</textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

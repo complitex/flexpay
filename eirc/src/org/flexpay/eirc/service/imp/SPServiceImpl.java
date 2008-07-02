@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.Collection;
 
 @Transactional(readOnly = true)
 public class SPServiceImpl implements SPService {

@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import javax.sql.DataSource;
+import java.io.InputStream;
 
 /**
  * Base class for all SpringFramework initialised beans aware tests
@@ -27,5 +28,9 @@ public abstract class SpringBeanAwareTestCase extends AbstractTransactionalJUnit
 	@Autowired
 	public void setHibernateTemplate(@Qualifier("hibernateTemplate")HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
+	}
+
+	protected InputStream getFileStream(String relativePath) {
+		return getClass().getClassLoader().getResourceAsStream(relativePath);
 	}
 }
