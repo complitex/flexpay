@@ -11,7 +11,7 @@ import org.flexpay.ab.persistence.filters.CountryFilter;
 public class RegionCreate extends CreateAction<
 		RegionName, RegionNameTemporal, Region, RegionNameTranslation> {
 
-	private CountryFilter countryFilter;
+	private CountryFilter countryFilter = new CountryFilter();
 
 	/**
 	 * Get initial set of filters for action
