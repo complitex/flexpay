@@ -2,44 +2,48 @@ package org.flexpay.ab.actions.street;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.service.StreetTypeService;
+import org.apache.log4j.Logger;
 
 public class StreetTypeDeleteAction {
+
+	private Logger log = Logger.getLogger(getClass());
+
 	private StreetTypeService streetTypeService;
-	private List<Long> idList;
+	private Set<Long> idList = new HashSet<Long>();
 
 	public String execute() throws Exception {
-		List<StreetType> streetTypeToDelete = new ArrayList<StreetType>(idList.size());
+
+		if (log.isDebugEnabled()) {
+			log.debug("Ids of street types to disable: " + idList);
+		}
+
+		List<StreetType> streetTypeToDelete = new ArrayList<StreetType>();
 		for (Long id : idList) {
 			streetTypeToDelete.add(streetTypeService.read(id));
 		}
 		try {
 			streetTypeService.disable(streetTypeToDelete);
 		} catch (RuntimeException e) {
-			// TODO
+			log.error("Failed disabling street types", e);
 		}
 
 		return "afterSubmit";
 	}
 
-	/**
-	 * Setter for property 'streetTypeService'.
-	 * 
-	 * @param streetTypeService
-	 *            Value to set for property 'streetTypeService'.
-	 */
-	public void setStreetTypeService(StreetTypeService streetTypeService) {
-		this.streetTypeService = streetTypeService;
-	}
-
-	public List<Long> getIdList() {
+	public Set<Long> getIdList() {
 		return idList;
 	}
 
-	public void setIdList(List<Long> idList) {
+	public void setIdList(Set<Long> idList) {
 		this.idList = idList;
 	}
 
+	public void setStreetTypeService(StreetTypeService streetTypeService) {
+		this.streetTypeService = streetTypeService;
+	}
 }
