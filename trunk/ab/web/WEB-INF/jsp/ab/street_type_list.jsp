@@ -3,21 +3,10 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 <s:form action="street_type_delete">
   <tr>
-	<td class="th">
-	  &nbsp;
-	</td>
-	<td class="th">
-	  <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'idList')">
-    </td>
-	<td class="th">
-	  <s:text name="ab.street_type"/>
-	</td>
-	<td class="th">
-	  &nbsp;
-	</td>
-	<td class="th">
-	  &nbsp;
-	</td>
+	<td class="th" width="1%">&nbsp;</td>
+	<td class="th" width="1%"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'idList')"></td>
+	<td class="th" width="63%"><s:text name="ab.street_type"/></td>
+	<td class="th" width="35%">&nbsp;</td>
   </tr>
   <s:iterator value="translationList" status="rowstatus">
     <tr valign="middle" class="cols_1">
@@ -35,11 +24,6 @@
 	  <td class="col">
 	    <a href="<s:url action='street_type_edit'><s:param name="id" value="%{translatable.id}"/></s:url>">
 	      <s:text name="ab.edit" />
-	    </a>
-	  </td>
-	  <td class="col">
-	    <a href="<s:url action='street_type_delete'><s:param name="idList" value="%{translatable.id}"/></s:url>">
-	      <s:text name="ab.delete" />
 	    </a>
 	  </td>
 	</tr>
