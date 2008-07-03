@@ -31,7 +31,6 @@
 
 		<tr>
 			<td colspan="5">
-				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
 					   onclick="$('fobjects').action='<s:url action="street_type_delete"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
