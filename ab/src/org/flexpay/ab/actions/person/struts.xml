@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="persons" namespace="/dicts" extends="common">
+
+		<action name="list_persons" class="listPersons">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">PERSON_READ</param>
+			</interceptor-ref>
+			<result type="tiles">ab.person.list</result>
+		</action>
+
+		<action name="view_person" class="viewPerson">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">PERSON_READ</param>
+			</interceptor-ref>
+			<result type="tiles">ab.person.view</result>
+		</action>
+
+		<action name="edit_person" class="editPersonAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">PERSON_CHANGE</param>
+			</interceptor-ref>
+			<result name="input" type="tiles">ab.person.edit</result>
+			<result type="redirect-action">
+				<param name="actionName">view_person</param>
+				<param name="parse">true</param>
+				<param name="person.id">${person.id}</param>
+			</result>
+		</action>
+
+		<action name="setRegistrationAction" class="setRegistrationAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">PERSON_CHANGE</param>
+			</interceptor-ref>
+			<result name="form" type="tiles">ab.person.set_registration_form</result>
+			<result name="person_view" type="redirect-action">
+				<param name="actionName">view_person</param>
+				<param name="parse">true</param>
+				<param name="person.id">${person.id}</param>
+			</result>
+		</action>
+
+	</package>
+
+</struts>

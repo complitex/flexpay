@@ -1,18 +1,18 @@
 
 -- Init Languages table
-INSERT INTO languages_tbl (is_default, status, lang_iso_code) values (1, 0, 'ru');
+INSERT INTO common_languages_tbl (is_default, status, lang_iso_code) values (1, 0, 'ru');
 SELECT @ru_id:=last_insert_id();
 
-INSERT INTO languages_tbl (is_default, status, lang_iso_code) values (0, 0, 'en');
+INSERT INTO common_languages_tbl (is_default, status, lang_iso_code) values (0, 0, 'en');
 SELECT @en_id:=last_insert_id();
 
-INSERT INTO language_names_tbl (translation, translation_from_language_id, language_id)
+INSERT INTO common_language_names_tbl (translation, translation_from_language_id, language_id)
  	VALUES ('Русский', @ru_id, @ru_id);
-INSERT INTO language_names_tbl (translation, translation_from_language_id, language_id)
+INSERT INTO common_language_names_tbl (translation, translation_from_language_id, language_id)
  	VALUES ('Английский', @ru_id, @en_id);
-INSERT INTO language_names_tbl (translation, translation_from_language_id, language_id)
+INSERT INTO common_language_names_tbl (translation, translation_from_language_id, language_id)
  	VALUES ('Russia', @en_id, @ru_id);
-INSERT INTO language_names_tbl (translation, translation_from_language_id, language_id)
+INSERT INTO common_language_names_tbl (translation, translation_from_language_id, language_id)
  	VALUES ('English', @en_id, @en_id);
 
 -- Init Countries table
@@ -1714,30 +1714,37 @@ INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_kr
 INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_krasniy, @district_id_nsk_zaelcovskiy);
 
 -- Init Identity types
-INSERT INTO identity_types_tbl (status, type_enum) VALUES (0, 1);
+INSERT INTO ab_identity_types_tbl (status, type_enum) VALUES (0, 1);
+SELECT @identity_type_fio_id:=last_insert_id();
+INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_id)
+	VALUES ('Фамилия Имя отчество', @ru_id, @identity_type_fio_id);
+INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_id)
+	VALUES ('FIO', @en_id, @identity_type_fio_id);
+
+INSERT INTO ab_identity_types_tbl (status, type_enum) VALUES (0, 2);
 SELECT @identity_type_passport_id:=last_insert_id();
-INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
+INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_id)
 	VALUES ('Паспорт', @ru_id, @identity_type_passport_id);
-INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
+INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_id)
 	VALUES ('Passport', @en_id, @identity_type_passport_id);
 
-INSERT INTO identity_types_tbl (status, type_enum) VALUES (0, 2);
+INSERT INTO ab_identity_types_tbl (status, type_enum) VALUES (0, 3);
 SELECT @identity_type_foreign_passport_id:=last_insert_id();
-INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
+INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_id)
 	VALUES ('Заграничный паспорт', @ru_id, @identity_type_foreign_passport_id);
-INSERT INTO identity_type_translations_tbl (name, language_id, identity_type_id)
+INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_id)
 	VALUES ('ForeignPassport', @en_id, @identity_type_foreign_passport_id);
 
 -- Init Persons
-INSERT INTO persons_tbl (status) VALUES (0);
+INSERT INTO ab_persons_tbl (status) VALUES (0);
 SELECT @person_id:=last_insert_id();
-INSERT INTO person_identities_tbl (begin_date, end_date, birth_date, serial_number,
+INSERT INTO ab_person_identities_tbl (begin_date, end_date, birth_date, serial_number,
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
 	VALUES ('2003-06-09', '2100-12-31', '1983-01-25', 5003,
 	1231231, 'Михаил', 'Анатольевич', 'Федько', 'ОВД Советского района города Новосибирска',
 	1, @identity_type_passport_id, @person_id);
-INSERT INTO person_identities_tbl (begin_date, end_date, birth_date, serial_number,
+INSERT INTO ab_person_identities_tbl (begin_date, end_date, birth_date, serial_number,
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
 	VALUES ('2004-10-22', '2009-10-22', '1983-01-25', 60,

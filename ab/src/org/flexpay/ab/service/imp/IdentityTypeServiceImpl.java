@@ -1,12 +1,5 @@
 package org.flexpay.ab.service.imp;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.IdentityTypeDao;
@@ -21,6 +14,8 @@ import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.*;
+
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class IdentityTypeServiceImpl implements IdentityTypeService {
 
@@ -33,9 +28,8 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 
 	/**
 	 * Create IdentityType
-	 * 
-	 * @param translations
-	 *            IdentityType names translations
+	 *
+	 * @param translations IdentityType names translations
 	 * @return created StreetType object
 	 */
 	@Transactional(readOnly = false)
@@ -75,12 +69,11 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	/**
 	 * Get IdentityType translations for specified locale, if translation is not
 	 * found check for translation in default locale
-	 * 
-	 * @param locale
-	 *            Locale to get translations for
+	 *
+	 * @param locale Locale to get translations for
 	 * @return List of IdentityTypes
 	 * @throws org.flexpay.common.exception.FlexPayException
-	 *             if failure occurs
+	 *          if failure occurs
 	 */
 	public List<IdentityTypeTranslation> getTranslations(Locale locale)
 			throws FlexPayException {
@@ -115,7 +108,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	}
 
 	private IdentityTypeTranslation getTypeTranslation(IdentityType identityType,
-			Language lang, Language defaultLang) {
+													   Language lang, Language defaultLang) {
 		IdentityTypeTranslation defaultTranslation = null;
 
 		Collection<IdentityTypeTranslation> names = identityType
@@ -140,9 +133,8 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 
 	/**
 	 * Read IdentityType object by its unique id
-	 * 
-	 * @param id
-	 *            IdentityType key
+	 *
+	 * @param id IdentityType key
 	 * @return IdentityType object, or <code>null</code> if object not found
 	 */
 	public IdentityType read(Long id) {
@@ -151,16 +143,14 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 
 	/**
 	 * Update identity type translations
-	 * 
-	 * @param identityType
-	 *            Identity Type to update trnaslations for
-	 * @param translations
-	 *            Translations set
+	 *
+	 * @param identityType Identity Type to update trnaslations for
+	 * @param translations Translations set
 	 * @return Updated IdentityType object
 	 */
 	@Transactional(readOnly = false)
 	public IdentityType update(IdentityType identityType,
-			Collection<IdentityTypeTranslation> translations) {
+							   Collection<IdentityTypeTranslation> translations) {
 		Set<IdentityTypeTranslation> translationList = new HashSet<IdentityTypeTranslation>(
 				translations.size());
 		List<IdentityTypeTranslation> translationsToDelete = new ArrayList<IdentityTypeTranslation>(
@@ -202,10 +192,9 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 
 	/**
 	 * Disable IdentityTypes
-	 * TODO: check if there are any streets with specified type and reject operation
-	 * 
-	 * @param identityTypes
-	 *            IdentityTypes to disable
+	 * TODO: check if there are any documents with specified type and reject operation
+	 *
+	 * @param identityTypes IdentityTypes to disable
 	 */
 	@Transactional(readOnly = false)
 	public void disable(Collection<IdentityType> identityTypes) {
@@ -227,9 +216,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @return IdentityType if found, or <code>null</code> otherwise
 	 */
 	public IdentityType getType(int typeId) {
-		if (identityTypes == null) {
-			identityTypes = getEntities();
-		}
+		initTypesCache();
 		for (IdentityType type : identityTypes) {
 			if (type.getTypeId() == typeId) {
 				return type;
@@ -237,6 +224,12 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 		}
 
 		return null;
+	}
+
+	private void initTypesCache() {
+		if (identityTypes == null) {
+			identityTypes = getEntities();
+		}
 	}
 
 	/**
@@ -256,8 +249,18 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	}
 
 	/**
+	 * Get available identity types
+	 *
+	 * @return Identity types
+	 */
+	public Collection<IdentityType> getIdentityTypes() {
+		initTypesCache();
+		return identityTypes;
+	}
+
+	/**
 	 * Get a list of available identity types
-	 * 
+	 *
 	 * @return List of IdentityType
 	 */
 	public List<IdentityType> getEntities() {

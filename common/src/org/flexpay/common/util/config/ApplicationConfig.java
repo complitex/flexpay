@@ -27,11 +27,11 @@ public class ApplicationConfig {
 
 	private String testProp;
 
-	public Date getPastInfinite() {
+	public static Date getPastInfinite() {
 		return DATE_PAST_INFINITE;
 	}
 
-	public Date getFutureInfinite() {
+	public static Date getFutureInfinite() {
 		return DATE_FUTURE_INFINITE;
 	}
 

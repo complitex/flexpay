@@ -5,11 +5,11 @@
 
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
-	<class name="Person" table="persons_tbl">
+	<class name="Person" table="ab_persons_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<property name="status" not-null="true"/>
+		<property name="status" not-null="true" />
 		<set name="personAttributes" inverse="true" cascade="all">
 			<key column="person_id" not-null="true" />
 			<one-to-many class="PersonAttribute" />
@@ -24,7 +24,7 @@
 		</set>
 	</class>
 
-	<class name="PersonAttribute" table="person_attributes_tbl">
+	<class name="PersonAttribute" table="ab_person_attributes_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -38,10 +38,11 @@
 		</properties>
 	</class>
 
-	<class name="PersonIdentity" table="person_identities_tbl">
+	<class name="PersonIdentity" table="ab_person_identities_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
+		<property name="status" not-null="true" />
 		<property name="beginDate" column="begin_date" type="date" not-null="true" />
 		<property name="endDate" column="end_date" type="date" not-null="true" />
 		<property name="birthDate" column="birth_date" type="date" not-null="true" />
@@ -50,7 +51,7 @@
 		<property name="firstName" column="first_name" length="255" not-null="true" index="data_index" />
 		<property name="middleName" column="middle_name" length="255" not-null="true" index="data_index" />
 		<property name="lastName" column="last_name" length="255" not-null="true" index="data_index" />
-		<property name="organization" length="4000" not-null="true"/>
+		<property name="organization" length="4000" not-null="true" />
 		<property name="default" column="is_default" type="boolean" not-null="true" />
 		<many-to-one name="identityType" column="identity_type_id" not-null="true"
 					 class="IdentityType" />
@@ -61,7 +62,7 @@
 		</set>
 	</class>
 
-	<class name="PersonIdentityAttribute" table="person_identity_attributes_tbl">
+	<class name="PersonIdentityAttribute" table="ab_person_identity_attributes_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -74,7 +75,7 @@
 						 column="person_identity_id" not-null="true" />
 		</properties>
 	</class>
-	
+
 	<class name="PersonRegistration" table="ab_person_registrations_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
@@ -92,8 +93,6 @@
 			</column>
 		</many-to-one>
 	</class>
-	
-	
 
 	<query name="Person.findObjects">
 		FROM Person o
@@ -107,39 +106,39 @@
 	<query name="Person.readFull">
 		SELECT DISTINCT o
 		FROM Person o
-			LEFT JOIN FETCH o.personAttributes pa
-			LEFT JOIN FETCH pa.lang pal
-			LEFT JOIN FETCH pal.translations tr
-			LEFT JOIN FETCH o.personIdentities pi
-			LEFT JOIN FETCH pi.identityType it
-			LEFT JOIN FETCH it.translations ittr
-			LEFT JOIN FETCH ittr.lang lang
-			LEFT JOIN FETCH lang.translations
-			LEFT JOIN FETCH o.personRegistrations r
+		LEFT JOIN FETCH o.personAttributes pa
+		LEFT JOIN FETCH pa.lang pal
+		LEFT JOIN FETCH pal.translations tr
+		LEFT JOIN FETCH o.personIdentities pi
+		LEFT JOIN FETCH pi.identityType it
+		LEFT JOIN FETCH it.translations ittr
+		LEFT JOIN FETCH ittr.lang lang
+		LEFT JOIN FETCH lang.translations
+		LEFT JOIN FETCH o.personRegistrations r
 		WHERE o.id=?
 	</query>
-	
+
 	<query name="Person.findByFIO">
 		SELECT DISTINCT o
 		FROM Person o
-			LEFT JOIN FETCH o.personAttributes pa
-			LEFT JOIN FETCH pa.lang pal
-			LEFT JOIN FETCH pal.translations tr
-			LEFT JOIN FETCH o.personIdentities pi
-			LEFT JOIN FETCH pi.identityType it
-			LEFT JOIN FETCH it.translations ittr
-			LEFT JOIN FETCH ittr.lang lang
-			LEFT JOIN FETCH lang.translations
-			LEFT JOIN FETCH o.personRegistrations r
-		WHERE o.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName  like ?
+		LEFT JOIN FETCH o.personAttributes pa
+		LEFT JOIN FETCH pa.lang pal
+		LEFT JOIN FETCH pal.translations tr
+		LEFT JOIN FETCH o.personIdentities pi
+		LEFT JOIN FETCH pi.identityType it
+		LEFT JOIN FETCH it.translations ittr
+		LEFT JOIN FETCH ittr.lang lang
+		LEFT JOIN FETCH lang.translations
+		LEFT JOIN FETCH o.personRegistrations r
+		WHERE o.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName like ?
 	</query>
 	<query name="Person.findByFIO.count">
 		SELECT count(*)
-        FROM Person o
-			LEFT JOIN o.personIdentities pi
-		WHERE o.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName  like ?
-		
+		FROM Person o
+		LEFT JOIN o.personIdentities pi
+		WHERE o.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName like ?
+
 	</query>
-	
+
 
 </hibernate-mapping>

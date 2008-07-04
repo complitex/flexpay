@@ -18,9 +18,11 @@ public class ViewPerson extends FPActionSupport {
 
 	@Override
 	public String execute() throws Exception {
-		log.info("Object: " + person);
+		if (log.isDebugEnabled()) {
+			log.debug("Object: " + person);
+		}
 		if (person.getId() != null) {
-			person = personService.read(person.getId());
+			person = personService.read(person);
 			if (person.getApartment() != null) {
 				address = apartmentService.getAddress(person.getApartment());
 			}

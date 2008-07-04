@@ -39,9 +39,9 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 		PersonIdentity identity = new PersonIdentity();
 		identity.setIdentityType(identityTypeService.getType(IdentityType.TYPE_NAME_PASSPORT));
 		identity.setDefault(true);
-		identity.setBirthDate(ApplicationConfig.getInstance().getPastInfinite());
-		identity.setBeginDate(ApplicationConfig.getInstance().getPastInfinite());
-		identity.setEndDate(ApplicationConfig.getInstance().getFutureInfinite());
+		identity.setBirthDate(ApplicationConfig.getPastInfinite());
+		identity.setBeginDate(ApplicationConfig.getPastInfinite());
+		identity.setEndDate(ApplicationConfig.getFutureInfinite());
 		identity.setSerialNumber("");
 		identity.setDocumentNumber("");
 		identity.setOrganization("");

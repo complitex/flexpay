@@ -14,10 +14,12 @@ import java.util.Collections;
 public class IdentityType extends DomainObjectWithStatus {
 
 	public static int TYPE_UNKNOWN = 0;
-	public static int TYPE_PASSPORT = 1;
-	public static int TYPE_FOREIGN_PASSPORT = 2;
+	public static int TYPE_FIO = 1;
+	public static int TYPE_PASSPORT = 2;
+	public static int TYPE_FOREIGN_PASSPORT = 3;
 
 	public static String TYPE_NAME_UNKNOWN = "unknown";
+	public static String TYPE_NAME_FIO = "fio";
 	public static String TYPE_NAME_PASSPORT = "passport";
 	public static String TYPE_NAME_FOREIGN_PASSPORT = "foreignPassport";
 

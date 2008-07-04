@@ -92,12 +92,12 @@ public class HarkovCenterNachisleniyDataSource extends SimpleJdbcDaoSupport {
 				data.addNameValuePair(RawPersonData.FIELD_FIRST_NAME, rs.getString("Name"));
 				data.addNameValuePair(RawPersonData.FIELD_MIDDLE_NAME, rs.getString("MiddleName"));
 				data.addNameValuePair(RawPersonData.FIELD_LAST_NAME, rs.getString("SureName"));
-				data.addNameValuePair(RawPersonData.FIELD_BIRTH_DATE, ApplicationConfig.getInstance().getPastInfinite());
+				data.addNameValuePair(RawPersonData.FIELD_BIRTH_DATE, ApplicationConfig.getPastInfinite());
 				data.addNameValuePair(RawPersonData.FIELD_DOCUMENT_TYPE, "");
 				data.addNameValuePair(RawPersonData.FIELD_DOCUMENT_SERIA, "");
 				data.addNameValuePair(RawPersonData.FIELD_DOCUMENT_NUMBER, "");
-				data.addNameValuePair(RawPersonData.FIELD_DOCUMENT_FROM_DATE, ApplicationConfig.getInstance().getPastInfinite());
-				data.addNameValuePair(RawPersonData.FIELD_DOCUMENT_EXPIRE_DATE, ApplicationConfig.getInstance().getFutureInfinite());
+				data.addNameValuePair(RawPersonData.FIELD_DOCUMENT_FROM_DATE, ApplicationConfig.getPastInfinite());
+				data.addNameValuePair(RawPersonData.FIELD_DOCUMENT_EXPIRE_DATE, ApplicationConfig.getFutureInfinite());
 				data.addNameValuePair(RawPersonData.FIELD_DOCUMENT_ORGANIZATION, "");
 
 				String[] idParts = {data.getFirstName(), data.getMiddleName(), data.getLastName()};
