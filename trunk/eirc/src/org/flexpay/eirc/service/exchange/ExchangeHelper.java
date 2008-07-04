@@ -68,7 +68,7 @@ public class ExchangeHelper {
 	 * @return FIO group
 	 */
 	public String getFIOGroup(Person personStub) {
-		Person persistent = personService.read(personStub.getId());
+		Person persistent = personService.read(personStub);
 		PersonIdentity identity = persistent.getDefaultIdentity();
 		String firstName = identity.getFirstName();
 		String middleName = identity.getMiddleName();

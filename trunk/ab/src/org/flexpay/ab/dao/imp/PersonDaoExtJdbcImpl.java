@@ -21,7 +21,7 @@ public class PersonDaoExtJdbcImpl extends SimpleJdbcDaoSupport implements Person
 	public Person findPersonStub(Person person) {
 		final PersonIdentity identity = person.getDefaultIdentity();
 		List<Person> persons = getSimpleJdbcTemplate().query(
-				"select distinct person_id from person_identities_tbl where first_name=? and middle_name=? and last_name=?",
+				"select distinct person_id from ab_person_identities_tbl where first_name=? and middle_name=? and last_name=?",
 				new ParameterizedRowMapper<Person>() {
 					public Person mapRow(ResultSet rs, int i) throws SQLException {
 						return new Person(rs.getLong("person_id"));

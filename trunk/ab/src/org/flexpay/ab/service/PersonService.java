@@ -3,8 +3,8 @@ package org.flexpay.ab.service;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface PersonService {
@@ -21,10 +21,10 @@ public interface PersonService {
 	/**
 	 * Read person information
 	 *
-	 * @param id Person id
+	 * @param stub Person stub
 	 * @return Person instance, or <code>null</code> if not found
 	 */
-	Person read(Long id);
+	Person read(Person stub);
 
 	/**
 	 * Find persistent person by identity
@@ -33,12 +33,21 @@ public interface PersonService {
 	 * @return Person stub if persitent person matches specified identity
 	 */
 	Person findPersonStub(Person person);
-	
+
 	/**
 	 * Update person
+	 *
 	 * @param person Person
 	 */
 	void update(Person person);
-	
+
 	List<Person> findByFIO(Page pager, String searchString);
+
+	/**
+	 * Create or update person
+	 *
+	 * @param person Person to save
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	void save(Person person) throws FlexPayExceptionContainer;
 }

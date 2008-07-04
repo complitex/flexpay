@@ -4,14 +4,10 @@ import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
-import org.flexpay.common.util.DateUtil;
 
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * Person
@@ -114,62 +110,92 @@ public class Person extends DomainObjectWithStatus {
 		}
 	}
 
+	public void setIdentity(PersonIdentity personIdentity) {
+		if (personIdentities == Collections.EMPTY_SET) {
+			personIdentities = CollectionUtils.set();
+		}
+
+		PersonIdentity candidate = null;
+		for (PersonIdentity identity : personIdentities) {
+			if (identity.getId().equals(personIdentity.getId())) {
+				candidate = identity;
+				break;
+			}
+		}
+
+		if (candidate != null) {
+			if (personIdentity.isBlank()) {
+				personIdentities.remove(candidate);
+				return;
+			}
+			candidate.copy(personIdentity);
+			return;
+		}
+
+		if (personIdentity.isBlank()) {
+			return;
+		}
+
+		personIdentity.setPerson(this);
+		personIdentities.add(personIdentity);
+	}
+
 	public void addIdentity(PersonIdentity identity) {
 		if (personIdentities == Collections.EMPTY_SET) {
-			personIdentities = new HashSet<PersonIdentity>();
+			personIdentities = CollectionUtils.set();
 		}
 
 		personIdentities.add(identity);
 	}
-	
+
 	public Apartment getApartment() {
 		return getApartment(DateIntervalUtil.now());
 	}
-	
+
 	public Apartment getApartment(Date date) {
-		if(personRegistrations.isEmpty()) {
+		if (personRegistrations.isEmpty()) {
 			return null;
 		}
-		
-		for(PersonRegistration reg : personRegistrations) {
-			if(reg.isValid(date)) {
+
+		for (PersonRegistration reg : personRegistrations) {
+			if (reg.isValid(date)) {
 				return reg.getApartment();
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public void setApartment(Apartment apartment) throws FlexPayException {
 		setPersonRegistration(apartment, null, null);
 	}
-	
+
 	public void setPersonRegistration(Apartment apartment, Date beginDate, Date endDate) throws FlexPayException {
-		if(beginDate == null || beginDate.before(ApplicationConfig.getInstance().getPastInfinite())) {
-			beginDate = ApplicationConfig.getInstance().getPastInfinite();
+		if (beginDate == null || beginDate.before(ApplicationConfig.getPastInfinite())) {
+			beginDate = ApplicationConfig.getPastInfinite();
 		}
-		if(endDate == null || endDate.after(ApplicationConfig.getInstance().getFutureInfinite())) {
-			endDate = ApplicationConfig.getInstance().getFutureInfinite();
+		if (endDate == null || endDate.after(ApplicationConfig.getFutureInfinite())) {
+			endDate = ApplicationConfig.getFutureInfinite();
 		}
-		
+
 		beginDate = DateUtils.truncate(beginDate, Calendar.DAY_OF_MONTH);
 		endDate = DateUtils.truncate(endDate, Calendar.DAY_OF_MONTH);
-		
-		if(beginDate.after(endDate)) {
+
+		if (beginDate.after(endDate)) {
 			throw new FlexPayException("beginDate can not be after endDate", "ab.person.registration.error.begin_after_end");
 		}
-		
+
 		Date[] dateInterval = getBeginValidInterval();
-		if(beginDate.before(dateInterval[0]) || beginDate.after(dateInterval[1])) {
+		if (beginDate.before(dateInterval[0]) || beginDate.after(dateInterval[1])) {
 			throw new FlexPayException("beginDate valid interval error", "ab.person.registration.error.begin_date_interval_error");
 		}
-		
-		for(PersonRegistration reg : personRegistrations) {
-			if(reg.getEndDate().after(beginDate)) {
+
+		for (PersonRegistration reg : personRegistrations) {
+			if (reg.getEndDate().after(beginDate)) {
 				reg.setEndDate(beginDate);
 			}
 		}
-		
+
 		PersonRegistration reg = new PersonRegistration();
 		reg.setApartment(apartment);
 		reg.setPerson(this);
@@ -177,23 +203,23 @@ public class Person extends DomainObjectWithStatus {
 		reg.setEndDate(endDate);
 		personRegistrations.add(reg);
 	}
-	
+
 	public Date[] getBeginValidInterval() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(DateIntervalUtil.now());
 		cal.add(Calendar.MONTH, -3);
 		Date date1 = cal.getTime();
-		
+
 		cal.add(Calendar.MONTH, 4);
 		Date date2 = cal.getTime();
-		
-		for(PersonRegistration reg : personRegistrations) {
-			if(reg.getBeginDate().after(date1)) {
+
+		for (PersonRegistration reg : personRegistrations) {
+			if (reg.getBeginDate().after(date1)) {
 				date1 = reg.getBeginDate();
 			}
 		}
-		
-		return new Date[] {date1, date2};
+
+		return new Date[]{date1, date2};
 	}
 
 	/**
@@ -209,6 +235,4 @@ public class Person extends DomainObjectWithStatus {
 	public void setPersonRegistrations(Set<PersonRegistration> personRegistrations) {
 		this.personRegistrations = personRegistrations;
 	}
-	
-	
 }

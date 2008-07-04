@@ -26,7 +26,7 @@ public class ApartmentEditAction extends FiltersBaseAction {
 				}
 			}
 		}
-		
+
 		getCountryFilter().setReadOnly(true);
 		getRegionFilter().setReadOnly(true);
 		getTownFilter().setReadOnly(true);
@@ -35,21 +35,12 @@ public class ApartmentEditAction extends FiltersBaseAction {
 		initFilters();
 
 		apartment = apartmentService.readWithPersons(apartment.getId());
-		
-		
-		
-		
-		
-		
-		
+
 		return "form";
 	}
-	
-	
 
 	/**
-	 * @param apartmentService
-	 *            the apartmentService to set
+	 * @param apartmentService the apartmentService to set
 	 */
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
@@ -63,8 +54,7 @@ public class ApartmentEditAction extends FiltersBaseAction {
 	}
 
 	/**
-	 * @param apartment
-	 *            the apartment to set
+	 * @param apartment the apartment to set
 	 */
 	public void setApartment(Apartment apartment) {
 		this.apartment = apartment;
@@ -84,13 +74,10 @@ public class ApartmentEditAction extends FiltersBaseAction {
 		this.apartmentNumber = apartmentNumber;
 	}
 
-
-
 	/**
 	 * @return the apartmentService
 	 */
 	public ApartmentService getApartmentService() {
 		return apartmentService;
 	}
-
 }

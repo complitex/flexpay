@@ -50,7 +50,8 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 
 	@NotTransactional
 	@Test
-	public void testDeleteAttributeNotTx() throws Throwable {
+    @Ignore
+    public void testDeleteAttributeNotTx() throws Throwable {
 
 		Building building = newBuilding();
 		Buildings buildings = newBuildings(building);
@@ -77,7 +78,8 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 
 	@Transactional
 	@Test
-	public void testDeleteAttributeTx() throws Throwable {
+    @Ignore
+    public void testDeleteAttributeTx() throws Throwable {
 
 		Building building = newBuilding();
 		Buildings buildings = newBuildings(building);

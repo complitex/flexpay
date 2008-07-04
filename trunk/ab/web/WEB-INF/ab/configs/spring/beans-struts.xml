@@ -281,6 +281,11 @@
 		<property name="personService" ref="personService" />
 		<property name="apartmentService" ref="apartmentService" />
 	</bean>
+	<bean id="editPersonAction" scope="prototype"
+		  class="org.flexpay.ab.actions.person.EditPersonAction">
+		<property name="personService" ref="personService" />
+		<property name="identityTypeService" ref="identityTypeService" />
+	</bean>
 	<bean id="setRegistrationAction" scope="prototype"
 		  class="org.flexpay.ab.actions.person.SetRegistrationAction">
 		<property name="parentService" ref="buildingService" /> 

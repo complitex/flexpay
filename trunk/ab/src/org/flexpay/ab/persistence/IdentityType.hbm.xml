@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
-	<class name="IdentityType" table="identity_types_tbl">
+	<class name="IdentityType" table="ab_identity_types_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -17,7 +17,7 @@
 		</set>
 	</class>
 
-	<class name="IdentityTypeTranslation" table="identity_type_translations_tbl">
+	<class name="IdentityTypeTranslation" table="ab_identity_type_translations_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>

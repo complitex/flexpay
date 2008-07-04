@@ -1,4 +1,48 @@
 
+    alter table ab_identity_type_translations_tbl 
+        drop 
+        foreign key FK2195EF63D8765DAA;
+
+    alter table ab_identity_type_translations_tbl 
+        drop 
+        foreign key FK2195EF6361F37403;
+
+    alter table ab_person_attributes_tbl 
+        drop 
+        foreign key FK634A41627095AEAD;
+
+    alter table ab_person_attributes_tbl 
+        drop 
+        foreign key FK634A416261F37403;
+
+    alter table ab_person_identities_tbl 
+        drop 
+        foreign key FKA24DD767D8765DAA;
+
+    alter table ab_person_identities_tbl 
+        drop 
+        foreign key FKA24DD7677095AEAD;
+
+    alter table ab_person_identity_attributes_tbl 
+        drop 
+        foreign key FKA1B9EF6B1F110398;
+
+    alter table ab_person_identity_attributes_tbl 
+        drop 
+        foreign key FKA1B9EF6B61F37403;
+
+    alter table ab_person_registrations_tbl 
+        drop 
+        foreign key FK2BD18CD22797B84;
+
+    alter table ab_person_registrations_tbl 
+        drop 
+        foreign key FP_ab_person_registrations_person;
+
+    alter table ab_person_registrations_tbl 
+        drop 
+        foreign key FP_ab_person_registrations_apartment;
+
     alter table apartment_numbers_tbl 
         drop 
         foreign key FKC790C2BCDEF75687;
@@ -47,6 +91,14 @@
         drop 
         foreign key FKBAEED8705355D490;
 
+    alter table common_language_names_tbl 
+        drop 
+        foreign key FK85F168F48626C2BC;
+
+    alter table common_language_names_tbl 
+        drop 
+        foreign key FK85F168F461F37403;
+
     alter table country_name_translations_tbl 
         drop 
         foreign key FK5673A52C9E89EB47;
@@ -78,50 +130,6 @@
     alter table districts_tbl 
         drop 
         foreign key FKCA605324712C324D;
-
-    alter table identity_type_translations_tbl 
-        drop 
-        foreign key FK8DFCEF85D8765DAA;
-
-    alter table identity_type_translations_tbl 
-        drop 
-        foreign key FK8DFCEF8561F37403;
-
-    alter table language_names_tbl 
-        drop 
-        foreign key FKF47122208626C2BC;
-
-    alter table language_names_tbl 
-        drop 
-        foreign key FKF471222061F37403;
-
-    alter table person_attributes_tbl 
-        drop 
-        foreign key FK941633007095AEAD;
-
-    alter table person_attributes_tbl 
-        drop 
-        foreign key FK9416330061F37403;
-
-    alter table person_identities_tbl 
-        drop 
-        foreign key FKD319C905D8765DAA;
-
-    alter table person_identities_tbl 
-        drop 
-        foreign key FKD319C9057095AEAD;
-
-    alter table person_identity_attributes_tbl 
-        drop 
-        foreign key FKE20EF8D1F110398;
-
-    alter table person_identity_attributes_tbl 
-        drop 
-        foreign key FKE20EF8D61F37403;
-
-    alter table persons_tbl 
-        drop 
-        foreign key FKE7B2AFBDDEF75687;
 
     alter table region_name_translations_tbl 
         drop 
@@ -177,11 +185,11 @@
 
     alter table street_types_temporal_tbl 
         drop 
-        foreign key FK9EECCCE3311847ED;
+        foreign key FK_street;
 
     alter table street_types_temporal_tbl 
         drop 
-        foreign key FK9EECCCE33E877574;
+        foreign key FK_street_type;
 
     alter table streets_districts_tbl 
         drop 
@@ -235,6 +243,20 @@
         drop 
         foreign key FK92E0DEA0458E164D;
 
+    drop table if exists ab_identity_type_translations_tbl;
+
+    drop table if exists ab_identity_types_tbl;
+
+    drop table if exists ab_person_attributes_tbl;
+
+    drop table if exists ab_person_identities_tbl;
+
+    drop table if exists ab_person_identity_attributes_tbl;
+
+    drop table if exists ab_person_registrations_tbl;
+
+    drop table if exists ab_persons_tbl;
+
     drop table if exists apartment_numbers_tbl;
 
     drop table if exists apartments_tbl;
@@ -257,6 +279,10 @@
 
     drop table if exists common_import_errors_tbl;
 
+    drop table if exists common_language_names_tbl;
+
+    drop table if exists common_languages_tbl;
+
     drop table if exists common_sequences_tbl;
 
     drop table if exists countries_tbl;
@@ -270,22 +296,6 @@
     drop table if exists district_names_temporal_tbl;
 
     drop table if exists districts_tbl;
-
-    drop table if exists identity_type_translations_tbl;
-
-    drop table if exists identity_types_tbl;
-
-    drop table if exists language_names_tbl;
-
-    drop table if exists languages_tbl;
-
-    drop table if exists person_attributes_tbl;
-
-    drop table if exists person_identities_tbl;
-
-    drop table if exists person_identity_attributes_tbl;
-
-    drop table if exists persons_tbl;
 
     drop table if exists region_name_translations_tbl;
 
@@ -324,6 +334,75 @@
     drop table if exists town_types_temporal_tbl;
 
     drop table if exists towns_tbl;
+
+    create table ab_identity_type_translations_tbl (
+        id bigint not null auto_increment,
+        name varchar(255),
+        language_id bigint not null,
+        identity_type_id bigint not null,
+        primary key (id),
+        unique (language_id, identity_type_id)
+    );
+
+    create table ab_identity_types_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        type_enum integer not null,
+        primary key (id)
+    );
+
+    create table ab_person_attributes_tbl (
+        id bigint not null auto_increment,
+        name varchar(255),
+        value varchar(255),
+        language_id bigint not null,
+        person_id bigint not null,
+        primary key (id),
+        unique (language_id, person_id)
+    );
+
+    create table ab_person_identities_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        begin_date date not null,
+        end_date date not null,
+        birth_date date not null,
+        serial_number varchar(10) not null,
+        document_number varchar(20) not null,
+        first_name varchar(255) not null,
+        middle_name varchar(255) not null,
+        last_name varchar(255) not null,
+        organization varchar(4000) not null,
+        is_default bit not null,
+        identity_type_id bigint not null,
+        person_id bigint not null,
+        primary key (id)
+    );
+
+    create table ab_person_identity_attributes_tbl (
+        id bigint not null auto_increment,
+        name varchar(255),
+        value varchar(255),
+        language_id bigint not null,
+        person_identity_id bigint not null,
+        primary key (id),
+        unique (language_id, person_identity_id)
+    );
+
+    create table ab_person_registrations_tbl (
+        id bigint not null auto_increment,
+        begin_date date not null,
+        end_date date not null,
+        person_id bigint not null comment 'Registered person reference',
+        apartment_id bigint not null comment 'Registered to apartment reference',
+        primary key (id)
+    );
+
+    create table ab_persons_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        primary key (id)
+    );
 
     create table apartment_numbers_tbl (
         id bigint not null auto_increment,
@@ -376,6 +455,7 @@
 
     create table buildings_tbl (
         id bigint not null auto_increment,
+        building_type varchar(255) not null,
         district_id bigint not null,
         primary key (id)
     );
@@ -385,6 +465,7 @@
         status integer not null,
         street_id bigint not null,
         building_id bigint not null,
+        primary_status bit,
         primary key (id)
     );
 
@@ -411,6 +492,24 @@
         object_type integer not null,
         ext_object_id varchar(255) not null,
         handler_object_name varchar(255) not null,
+        error_key varchar(255),
+        primary key (id)
+    );
+
+    create table common_language_names_tbl (
+        id bigint not null auto_increment,
+        translation varchar(255),
+        language_id bigint not null,
+        translation_from_language_id bigint not null,
+        primary key (id),
+        unique (language_id, translation_from_language_id)
+    );
+
+    create table common_languages_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        is_default bit,
+        lang_iso_code varchar(3) not null unique,
         primary key (id)
     );
 
@@ -467,83 +566,6 @@
         id bigint not null auto_increment,
         town_id bigint not null,
         status integer not null,
-        primary key (id)
-    );
-
-    create table identity_type_translations_tbl (
-        id bigint not null auto_increment,
-        name varchar(255),
-        language_id bigint not null,
-        identity_type_id bigint not null,
-        primary key (id),
-        unique (language_id, identity_type_id)
-    );
-
-    create table identity_types_tbl (
-        id bigint not null auto_increment,
-        status integer not null,
-        type_enum integer not null,
-        primary key (id)
-    );
-
-    create table language_names_tbl (
-        id bigint not null auto_increment,
-        translation varchar(255),
-        language_id bigint not null,
-        translation_from_language_id bigint not null,
-        primary key (id),
-        unique (language_id, translation_from_language_id)
-    );
-
-    create table languages_tbl (
-        id bigint not null auto_increment,
-        status integer not null,
-        is_default bit,
-        lang_iso_code varchar(3) not null unique,
-        primary key (id)
-    );
-
-    create table person_attributes_tbl (
-        id bigint not null auto_increment,
-        name varchar(255),
-        value varchar(255),
-        language_id bigint not null,
-        person_id bigint not null,
-        primary key (id),
-        unique (language_id, person_id)
-    );
-
-    create table person_identities_tbl (
-        id bigint not null auto_increment,
-        begin_date date not null,
-        end_date date not null,
-        birth_date date not null,
-        serial_number varchar(10) not null,
-        document_number varchar(20) not null,
-        first_name varchar(255) not null,
-        middle_name varchar(255) not null,
-        last_name varchar(255) not null,
-        organization varchar(4000) not null,
-        is_default bit not null,
-        identity_type_id bigint not null,
-        person_id bigint not null,
-        primary key (id)
-    );
-
-    create table person_identity_attributes_tbl (
-        id bigint not null auto_increment,
-        name varchar(255),
-        value varchar(255),
-        language_id bigint not null,
-        person_identity_id bigint not null,
-        primary key (id),
-        unique (language_id, person_identity_id)
-    );
-
-    create table persons_tbl (
-        id bigint not null auto_increment,
-        status integer not null,
-        apartment_id bigint,
         primary key (id)
     );
 
@@ -609,6 +631,7 @@
     create table street_type_translations_tbl (
         id bigint not null auto_increment,
         name varchar(255),
+        short_name varchar(255),
         language_id bigint not null,
         street_type_id bigint not null,
         primary key (id),
@@ -628,7 +651,7 @@
         create_date date not null,
         invalid_date date not null,
         street_id bigint not null,
-        street_type_id bigint,
+        street_type_id bigint comment 'Street type reference',
         primary key (id)
     );
 
@@ -674,6 +697,7 @@
     create table town_type_translations_tbl (
         ID bigint not null auto_increment,
         name varchar(255),
+        short_name varchar(255),
         language_id bigint,
         town_type_id bigint,
         primary key (ID),
@@ -704,6 +728,74 @@
         primary key (id)
     );
 
+    alter table ab_identity_type_translations_tbl 
+        add index FK2195EF63D8765DAA (identity_type_id), 
+        add constraint FK2195EF63D8765DAA 
+        foreign key (identity_type_id) 
+        references ab_identity_types_tbl (id);
+
+    alter table ab_identity_type_translations_tbl 
+        add index FK2195EF6361F37403 (language_id), 
+        add constraint FK2195EF6361F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table ab_person_attributes_tbl 
+        add index FK634A41627095AEAD (person_id), 
+        add constraint FK634A41627095AEAD 
+        foreign key (person_id) 
+        references ab_persons_tbl (id);
+
+    alter table ab_person_attributes_tbl 
+        add index FK634A416261F37403 (language_id), 
+        add constraint FK634A416261F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    create index data_index on ab_person_identities_tbl (first_name, middle_name, last_name);
+
+    alter table ab_person_identities_tbl 
+        add index FKA24DD767D8765DAA (identity_type_id), 
+        add constraint FKA24DD767D8765DAA 
+        foreign key (identity_type_id) 
+        references ab_identity_types_tbl (id);
+
+    alter table ab_person_identities_tbl 
+        add index FKA24DD7677095AEAD (person_id), 
+        add constraint FKA24DD7677095AEAD 
+        foreign key (person_id) 
+        references ab_persons_tbl (id);
+
+    alter table ab_person_identity_attributes_tbl 
+        add index FKA1B9EF6B1F110398 (person_identity_id), 
+        add constraint FKA1B9EF6B1F110398 
+        foreign key (person_identity_id) 
+        references ab_person_identities_tbl (id);
+
+    alter table ab_person_identity_attributes_tbl 
+        add index FKA1B9EF6B61F37403 (language_id), 
+        add constraint FKA1B9EF6B61F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table ab_person_registrations_tbl 
+        add index FK2BD18CD22797B84 (person_id), 
+        add constraint FK2BD18CD22797B84 
+        foreign key (person_id) 
+        references apartments_tbl (id);
+
+    alter table ab_person_registrations_tbl 
+        add index FP_ab_person_registrations_person (person_id), 
+        add constraint FP_ab_person_registrations_person 
+        foreign key (person_id) 
+        references ab_persons_tbl (id);
+
+    alter table ab_person_registrations_tbl 
+        add index FP_ab_person_registrations_apartment (apartment_id), 
+        add constraint FP_ab_person_registrations_apartment 
+        foreign key (apartment_id) 
+        references apartments_tbl (id);
+
     alter table apartment_numbers_tbl 
         add index FKC790C2BCDEF75687 (apartment_id), 
         add constraint FKC790C2BCDEF75687 
@@ -726,7 +818,7 @@
         add index FKEB48455861F37403 (language_id), 
         add constraint FKEB48455861F37403 
         foreign key (language_id) 
-        references languages_tbl (id);
+        references common_languages_tbl (id);
 
     alter table building_attributes_tbl 
         add index FKAC431C1ECDA1F67 (buildings_id), 
@@ -776,6 +868,18 @@
         foreign key (source_description_id) 
         references common_data_source_descriptions_tbl (id);
 
+    alter table common_language_names_tbl 
+        add index FK85F168F48626C2BC (translation_from_language_id), 
+        add constraint FK85F168F48626C2BC 
+        foreign key (translation_from_language_id) 
+        references common_languages_tbl (id);
+
+    alter table common_language_names_tbl 
+        add index FK85F168F461F37403 (language_id), 
+        add constraint FK85F168F461F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
     alter table country_name_translations_tbl 
         add index FK5673A52C9E89EB47 (country_id), 
         add constraint FK5673A52C9E89EB47 
@@ -786,7 +890,7 @@
         add index FK5673A52C61F37403 (language_id), 
         add constraint FK5673A52C61F37403 
         foreign key (language_id) 
-        references languages_tbl (id);
+        references common_languages_tbl (id);
 
     alter table district_name_translations_tbl 
         add index FK3DFBB724398B1DAA (district_name_id), 
@@ -798,7 +902,7 @@
         add index FK3DFBB72461F37403 (language_id), 
         add constraint FK3DFBB72461F37403 
         foreign key (language_id) 
-        references languages_tbl (id);
+        references common_languages_tbl (id);
 
     alter table district_names_tbl 
         add index FKB64D76D61AE9F4D (district_id), 
@@ -824,72 +928,6 @@
         foreign key (town_id) 
         references towns_tbl (id);
 
-    alter table identity_type_translations_tbl 
-        add index FK8DFCEF85D8765DAA (identity_type_id), 
-        add constraint FK8DFCEF85D8765DAA 
-        foreign key (identity_type_id) 
-        references identity_types_tbl (id);
-
-    alter table identity_type_translations_tbl 
-        add index FK8DFCEF8561F37403 (language_id), 
-        add constraint FK8DFCEF8561F37403 
-        foreign key (language_id) 
-        references languages_tbl (id);
-
-    alter table language_names_tbl 
-        add index FKF47122208626C2BC (translation_from_language_id), 
-        add constraint FKF47122208626C2BC 
-        foreign key (translation_from_language_id) 
-        references languages_tbl (id);
-
-    alter table language_names_tbl 
-        add index FKF471222061F37403 (language_id), 
-        add constraint FKF471222061F37403 
-        foreign key (language_id) 
-        references languages_tbl (id);
-
-    alter table person_attributes_tbl 
-        add index FK941633007095AEAD (person_id), 
-        add constraint FK941633007095AEAD 
-        foreign key (person_id) 
-        references persons_tbl (id);
-
-    alter table person_attributes_tbl 
-        add index FK9416330061F37403 (language_id), 
-        add constraint FK9416330061F37403 
-        foreign key (language_id) 
-        references languages_tbl (id);
-
-    alter table person_identities_tbl 
-        add index FKD319C905D8765DAA (identity_type_id), 
-        add constraint FKD319C905D8765DAA 
-        foreign key (identity_type_id) 
-        references identity_types_tbl (id);
-
-    alter table person_identities_tbl 
-        add index FKD319C9057095AEAD (person_id), 
-        add constraint FKD319C9057095AEAD 
-        foreign key (person_id) 
-        references persons_tbl (id);
-
-    alter table person_identity_attributes_tbl 
-        add index FKE20EF8D1F110398 (person_identity_id), 
-        add constraint FKE20EF8D1F110398 
-        foreign key (person_identity_id) 
-        references person_identities_tbl (id);
-
-    alter table person_identity_attributes_tbl 
-        add index FKE20EF8D61F37403 (language_id), 
-        add constraint FKE20EF8D61F37403 
-        foreign key (language_id) 
-        references languages_tbl (id);
-
-    alter table persons_tbl 
-        add index FKE7B2AFBDDEF75687 (apartment_id), 
-        add constraint FKE7B2AFBDDEF75687 
-        foreign key (apartment_id) 
-        references apartments_tbl (id);
-
     alter table region_name_translations_tbl 
         add index FKBAC57A0AD605B436 (region_name_id), 
         add constraint FKBAC57A0AD605B436 
@@ -900,7 +938,7 @@
         add index FKBAC57A0A61F37403 (language_id), 
         add constraint FKBAC57A0A61F37403 
         foreign key (language_id) 
-        references languages_tbl (id);
+        references common_languages_tbl (id);
 
     alter table region_names_tbl 
         add index FKDCA7E2BC458E164D (region_id), 
@@ -936,7 +974,7 @@
         add index FKF005DDD961F37403 (language_id), 
         add constraint FKF005DDD961F37403 
         foreign key (language_id) 
-        references languages_tbl (id);
+        references common_languages_tbl (id);
 
     alter table street_names_tbl 
         add index FK2CFC450B311847ED (street_id), 
@@ -966,17 +1004,17 @@
         add index FK5BC6DD0A61F37403 (language_id), 
         add constraint FK5BC6DD0A61F37403 
         foreign key (language_id) 
-        references languages_tbl (id);
+        references common_languages_tbl (id);
 
     alter table street_types_temporal_tbl 
-        add index FK9EECCCE3311847ED (street_id), 
-        add constraint FK9EECCCE3311847ED 
+        add index FK_street (street_id), 
+        add constraint FK_street 
         foreign key (street_id) 
         references streets_tbl (id);
 
     alter table street_types_temporal_tbl 
-        add index FK9EECCCE33E877574 (street_type_id), 
-        add constraint FK9EECCCE33E877574 
+        add index FK_street_type (street_type_id), 
+        add constraint FK_street_type 
         foreign key (street_type_id) 
         references street_types_tbl (id);
 
@@ -1008,7 +1046,7 @@
         add index FKF1EC132861F37403 (language_id), 
         add constraint FKF1EC132861F37403 
         foreign key (language_id) 
-        references languages_tbl (id);
+        references common_languages_tbl (id);
 
     alter table town_names_tbl 
         add index FK4304B8DA712C324D (town_id), 
@@ -1038,7 +1076,7 @@
         add index FK5DAD125961F37403 (language_id), 
         add constraint FK5DAD125961F37403 
         foreign key (language_id) 
-        references languages_tbl (id);
+        references common_languages_tbl (id);
 
     alter table town_types_temporal_tbl 
         add index FK571831F41CEA94D2 (town_type_id), 

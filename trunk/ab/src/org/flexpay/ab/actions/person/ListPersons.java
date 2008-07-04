@@ -105,10 +105,8 @@ public class ListPersons extends FPActionSupport implements SessionAware {
 	}
 
 	private ArrayStack getFilters() {
-		ArrayStack filters = new ArrayStack();
-		filters.push(null);
 
-		return filters;
+        return new ArrayStack();
 	}
 
 	private void setFilters(ArrayStack filters) {

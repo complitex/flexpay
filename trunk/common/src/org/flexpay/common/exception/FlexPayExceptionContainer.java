@@ -28,6 +28,17 @@ public class FlexPayExceptionContainer extends Exception {
 	}
 
 	/**
+	 * Add container FlexPayExceptions to the queue
+	 *
+	 * @param container FlexPayExceptionContainer
+	 */
+	public void addExceptions(FlexPayExceptionContainer container) {
+		for (FlexPayException exception : container.getExceptions()) {
+			addException(exception);
+		}
+	}
+
+	/**
 	 * Setter for property 'exceptions'.
 	 *
 	 * @param exceptions Value to set for property 'exceptions'.
@@ -46,11 +57,20 @@ public class FlexPayExceptionContainer extends Exception {
 	}
 
 	/**
+	 * Check if container has no exceptions set
+	 *
+	 * @return <code>true</code> if there is no exceptions in container
+	 */
+	public boolean isEmpty() {
+		return exceptions.isEmpty();
+	}
+
+	/**
 	 * Check if container has any exceptions set
 	 *
 	 * @return <code>true</code> if there is at least one exception in container
 	 */
-	public boolean isEmpty() {
-		return exceptions.isEmpty();
+	public boolean isNotEmpty() {
+		return !exceptions.isEmpty();
 	}
 }

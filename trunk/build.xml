@@ -32,7 +32,7 @@
 		<antcall target="ab.runtests" />
 		<antcall target="bti.runtests" />
 		<antcall target="eirc.runtests" />
-		<antcall target="sz.runtests" />
+		<!--<antcall target="sz.runtests" />-->
 	</target>
 
 	<!-- Build docs -->
