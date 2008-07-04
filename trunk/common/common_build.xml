@@ -301,6 +301,7 @@
 			<lib dir="${common.dir}/lib/ajax" />
 			<lib dir="${common.dir}/lib/itext" />
 			<lib dir="${common.dir}/lib/quartz" />
+			<lib dir="${common.dir}/lib/jasperreports" />
 			<lib dir="${build.dir}/lib" />
 		</war>
 	</target>
