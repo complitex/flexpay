@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
-	<class name="Building" table="buildings_tbl" discriminator-value="ab">
+	<class name="Building" table="ab_buildings_tbl" discriminator-value="ab">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>

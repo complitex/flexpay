@@ -6,7 +6,7 @@
 <!-- Map all class hierarchy to single table -->
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
-	<class name="Building" table="buildings_tbl" discriminator-value="eirc">
+	<class name="Building" table="ab_buildings_tbl" discriminator-value="eirc">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>

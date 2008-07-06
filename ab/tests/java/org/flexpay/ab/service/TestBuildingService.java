@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.test.annotation.NotTransactional;
 
-@Transactional
 public class TestBuildingService extends SpringBeanAwareTestCase {
 
 	@Autowired

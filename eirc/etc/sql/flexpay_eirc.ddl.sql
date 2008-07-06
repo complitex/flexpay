@@ -1,4 +1,48 @@
 
+    alter table ab_apartment_numbers_tbl 
+        drop 
+        foreign key FK_ab_apartment_numbers_tbl_apartment_id;
+
+    alter table ab_apartments_tbl 
+        drop 
+        foreign key FKBEC651DEF71F858D;
+
+    alter table ab_building_attribute_type_translations_tbl 
+        drop 
+        foreign key FKCD4187B651C7D5CC;
+
+    alter table ab_building_attribute_type_translations_tbl 
+        drop 
+        foreign key FKCD4187B661F37403;
+
+    alter table ab_building_attributes_tbl 
+        drop 
+        foreign key FKDD2E2FA3ECDA1F67;
+
+    alter table ab_building_attributes_tbl 
+        drop 
+        foreign key FKDD2E2FA351C7D5CC;
+
+    alter table ab_building_statuses_tbl 
+        drop 
+        foreign key FK68EDF12CF71F858D;
+
+    alter table ab_buildings_tbl 
+        drop 
+        foreign key FK99FC8C201AE9F4D;
+
+    alter table ab_buildings_tbl 
+        drop 
+        foreign key FK_eirc_building_service_organisation;
+
+    alter table ab_buildingses_tbl 
+        drop 
+        foreign key FK1737CD8E311847ED;
+
+    alter table ab_buildingses_tbl 
+        drop 
+        foreign key FK1737CD8EF71F858D;
+
     alter table ab_identity_type_translations_tbl 
         drop 
         foreign key FK2195EF63D8765DAA;
@@ -42,50 +86,6 @@
     alter table ab_person_registrations_tbl 
         drop 
         foreign key FP_ab_person_registrations_apartment;
-
-    alter table apartment_numbers_tbl 
-        drop 
-        foreign key FKC790C2BCDEF75687;
-
-    alter table apartments_tbl 
-        drop 
-        foreign key FK7C25D600F71F858D;
-
-    alter table building_attribute_type_translations_tbl 
-        drop 
-        foreign key FKEB48455851C7D5CC;
-
-    alter table building_attribute_type_translations_tbl 
-        drop 
-        foreign key FKEB48455861F37403;
-
-    alter table building_attributes_tbl 
-        drop 
-        foreign key FKAC431C1ECDA1F67;
-
-    alter table building_attributes_tbl 
-        drop 
-        foreign key FKAC431C151C7D5CC;
-
-    alter table building_statuses_tbl 
-        drop 
-        foreign key FK99B9E2CAF71F858D;
-
-    alter table buildings_tbl 
-        drop 
-        foreign key FKEA6AFBBE1AE9F4D;
-
-    alter table buildings_tbl 
-        drop 
-        foreign key FK_eirc_building_service_organisation;
-
-    alter table buildingses_tbl 
-        drop 
-        foreign key FK5C8CDAC311847ED;
-
-    alter table buildingses_tbl 
-        drop 
-        foreign key FK5C8CDACF71F858D;
 
     alter table common_data_corrections_tbl 
         drop 
@@ -455,6 +455,22 @@
         drop 
         foreign key FK92E0DEA0458E164D;
 
+    drop table if exists ab_apartment_numbers_tbl;
+
+    drop table if exists ab_apartments_tbl;
+
+    drop table if exists ab_building_attribute_type_translations_tbl;
+
+    drop table if exists ab_building_attribute_types_tbl;
+
+    drop table if exists ab_building_attributes_tbl;
+
+    drop table if exists ab_building_statuses_tbl;
+
+    drop table if exists ab_buildings_tbl;
+
+    drop table if exists ab_buildingses_tbl;
+
     drop table if exists ab_identity_type_translations_tbl;
 
     drop table if exists ab_identity_types_tbl;
@@ -468,22 +484,6 @@
     drop table if exists ab_person_registrations_tbl;
 
     drop table if exists ab_persons_tbl;
-
-    drop table if exists apartment_numbers_tbl;
-
-    drop table if exists apartments_tbl;
-
-    drop table if exists building_attribute_type_translations_tbl;
-
-    drop table if exists building_attribute_types_tbl;
-
-    drop table if exists building_attributes_tbl;
-
-    drop table if exists building_statuses_tbl;
-
-    drop table if exists buildings_tbl;
-
-    drop table if exists buildingses_tbl;
 
     drop table if exists common_data_corrections_tbl;
 
@@ -603,6 +603,72 @@
 
     drop table if exists towns_tbl;
 
+    create table ab_apartment_numbers_tbl (
+        id bigint not null auto_increment,
+        begin_date date not null,
+        end_date date not null,
+        value varchar(255) not null comment 'Apartment number value',
+        apartment_id bigint not null comment 'Apartment reference',
+        primary key (id)
+    );
+
+    create table ab_apartments_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        building_id bigint not null,
+        primary key (id)
+    );
+
+    create table ab_building_attribute_type_translations_tbl (
+        id bigint not null auto_increment,
+        name varchar(255) not null,
+        short_name varchar(255),
+        attribute_type_id bigint not null,
+        language_id bigint not null,
+        primary key (id),
+        unique (attribute_type_id, language_id)
+    );
+
+    create table ab_building_attribute_types_tbl (
+        id bigint not null auto_increment,
+        type integer,
+        primary key (id)
+    );
+
+    create table ab_building_attributes_tbl (
+        id bigint not null auto_increment,
+        value varchar(255) not null comment 'Building attribute value',
+        attribute_type_id bigint not null,
+        buildings_id bigint not null,
+        primary key (id)
+    );
+
+    create table ab_building_statuses_tbl (
+        id bigint not null auto_increment,
+        begin_date date not null,
+        end_date date not null,
+        value varchar(255) not null,
+        building_id bigint not null,
+        primary key (id)
+    );
+
+    create table ab_buildings_tbl (
+        id bigint not null auto_increment,
+        building_type varchar(255) not null,
+        district_id bigint not null,
+        eirc_service_organisation_id bigint comment 'Service organisation reference',
+        primary key (id)
+    );
+
+    create table ab_buildingses_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        street_id bigint not null,
+        building_id bigint not null,
+        primary_status bit,
+        primary key (id)
+    );
+
     create table ab_identity_type_translations_tbl (
         id bigint not null auto_increment,
         name varchar(255),
@@ -669,72 +735,6 @@
     create table ab_persons_tbl (
         id bigint not null auto_increment,
         status integer not null,
-        primary key (id)
-    );
-
-    create table apartment_numbers_tbl (
-        id bigint not null auto_increment,
-        begin_date date not null,
-        end_date date not null,
-        value varchar(255) not null,
-        apartment_id bigint,
-        primary key (id)
-    );
-
-    create table apartments_tbl (
-        id bigint not null auto_increment,
-        status integer not null,
-        building_id bigint not null,
-        primary key (id)
-    );
-
-    create table building_attribute_type_translations_tbl (
-        id bigint not null auto_increment,
-        name varchar(255) not null,
-        short_name varchar(255),
-        attribute_type_id bigint not null,
-        language_id bigint not null,
-        primary key (id),
-        unique (attribute_type_id, language_id)
-    );
-
-    create table building_attribute_types_tbl (
-        id bigint not null auto_increment,
-        type integer,
-        primary key (id)
-    );
-
-    create table building_attributes_tbl (
-        id bigint not null auto_increment,
-        value varchar(255) not null,
-        attribute_type_id bigint not null,
-        buildings_id bigint not null,
-        primary key (id)
-    );
-
-    create table building_statuses_tbl (
-        id bigint not null auto_increment,
-        begin_date date not null,
-        end_date date not null,
-        value varchar(255) not null,
-        building_id bigint not null,
-        primary key (id)
-    );
-
-    create table buildings_tbl (
-        id bigint not null auto_increment,
-        building_type varchar(255) not null,
-        district_id bigint not null,
-        eirc_service_organisation_id bigint comment 'Service organisation reference',
-        primary key (id)
-    );
-
-    create table buildingses_tbl (
-        id bigint not null auto_increment,
-        status integer not null,
-        street_id bigint not null,
-        building_id bigint not null,
-        primary_status bit,
         primary key (id)
     );
 
@@ -1290,6 +1290,76 @@
         primary key (id)
     );
 
+    create index indx_value on ab_apartment_numbers_tbl (value);
+
+    alter table ab_apartment_numbers_tbl 
+        add index FK_ab_apartment_numbers_tbl_apartment_id (apartment_id), 
+        add constraint FK_ab_apartment_numbers_tbl_apartment_id 
+        foreign key (apartment_id) 
+        references ab_apartments_tbl (id);
+
+    alter table ab_apartments_tbl 
+        add index FKBEC651DEF71F858D (building_id), 
+        add constraint FKBEC651DEF71F858D 
+        foreign key (building_id) 
+        references ab_buildings_tbl (id);
+
+    alter table ab_building_attribute_type_translations_tbl 
+        add index FKCD4187B651C7D5CC (attribute_type_id), 
+        add constraint FKCD4187B651C7D5CC 
+        foreign key (attribute_type_id) 
+        references ab_building_attribute_types_tbl (id);
+
+    alter table ab_building_attribute_type_translations_tbl 
+        add index FKCD4187B661F37403 (language_id), 
+        add constraint FKCD4187B661F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    create index indx_value on ab_building_attributes_tbl (value);
+
+    alter table ab_building_attributes_tbl 
+        add index FKDD2E2FA3ECDA1F67 (buildings_id), 
+        add constraint FKDD2E2FA3ECDA1F67 
+        foreign key (buildings_id) 
+        references ab_buildingses_tbl (id);
+
+    alter table ab_building_attributes_tbl 
+        add index FKDD2E2FA351C7D5CC (attribute_type_id), 
+        add constraint FKDD2E2FA351C7D5CC 
+        foreign key (attribute_type_id) 
+        references ab_building_attribute_types_tbl (id);
+
+    alter table ab_building_statuses_tbl 
+        add index FK68EDF12CF71F858D (building_id), 
+        add constraint FK68EDF12CF71F858D 
+        foreign key (building_id) 
+        references ab_buildings_tbl (id);
+
+    alter table ab_buildings_tbl 
+        add index FK99FC8C201AE9F4D (district_id), 
+        add constraint FK99FC8C201AE9F4D 
+        foreign key (district_id) 
+        references districts_tbl (id);
+
+    alter table ab_buildings_tbl 
+        add index FK_eirc_building_service_organisation (eirc_service_organisation_id), 
+        add constraint FK_eirc_building_service_organisation 
+        foreign key (eirc_service_organisation_id) 
+        references eirc_service_organisations_tbl (id);
+
+    alter table ab_buildingses_tbl 
+        add index FK1737CD8E311847ED (street_id), 
+        add constraint FK1737CD8E311847ED 
+        foreign key (street_id) 
+        references streets_tbl (id);
+
+    alter table ab_buildingses_tbl 
+        add index FK1737CD8EF71F858D (building_id), 
+        add constraint FK1737CD8EF71F858D 
+        foreign key (building_id) 
+        references ab_buildings_tbl (id);
+
     alter table ab_identity_type_translations_tbl 
         add index FK2195EF63D8765DAA (identity_type_id), 
         add constraint FK2195EF63D8765DAA 
@@ -1344,7 +1414,7 @@
         add index FK2BD18CD22797B84 (person_id), 
         add constraint FK2BD18CD22797B84 
         foreign key (person_id) 
-        references apartments_tbl (id);
+        references ab_apartments_tbl (id);
 
     alter table ab_person_registrations_tbl 
         add index FP_ab_person_registrations_person (person_id), 
@@ -1356,73 +1426,7 @@
         add index FP_ab_person_registrations_apartment (apartment_id), 
         add constraint FP_ab_person_registrations_apartment 
         foreign key (apartment_id) 
-        references apartments_tbl (id);
-
-    alter table apartment_numbers_tbl 
-        add index FKC790C2BCDEF75687 (apartment_id), 
-        add constraint FKC790C2BCDEF75687 
-        foreign key (apartment_id) 
-        references apartments_tbl (id);
-
-    alter table apartments_tbl 
-        add index FK7C25D600F71F858D (building_id), 
-        add constraint FK7C25D600F71F858D 
-        foreign key (building_id) 
-        references buildings_tbl (id);
-
-    alter table building_attribute_type_translations_tbl 
-        add index FKEB48455851C7D5CC (attribute_type_id), 
-        add constraint FKEB48455851C7D5CC 
-        foreign key (attribute_type_id) 
-        references building_attribute_types_tbl (id);
-
-    alter table building_attribute_type_translations_tbl 
-        add index FKEB48455861F37403 (language_id), 
-        add constraint FKEB48455861F37403 
-        foreign key (language_id) 
-        references common_languages_tbl (id);
-
-    alter table building_attributes_tbl 
-        add index FKAC431C1ECDA1F67 (buildings_id), 
-        add constraint FKAC431C1ECDA1F67 
-        foreign key (buildings_id) 
-        references buildingses_tbl (id);
-
-    alter table building_attributes_tbl 
-        add index FKAC431C151C7D5CC (attribute_type_id), 
-        add constraint FKAC431C151C7D5CC 
-        foreign key (attribute_type_id) 
-        references building_attribute_types_tbl (id);
-
-    alter table building_statuses_tbl 
-        add index FK99B9E2CAF71F858D (building_id), 
-        add constraint FK99B9E2CAF71F858D 
-        foreign key (building_id) 
-        references buildings_tbl (id);
-
-    alter table buildings_tbl 
-        add index FKEA6AFBBE1AE9F4D (district_id), 
-        add constraint FKEA6AFBBE1AE9F4D 
-        foreign key (district_id) 
-        references districts_tbl (id);
-
-    alter table buildings_tbl 
-        add index FK_eirc_building_service_organisation (eirc_service_organisation_id), 
-        add constraint FK_eirc_building_service_organisation 
-        foreign key (eirc_service_organisation_id) 
-        references eirc_service_organisations_tbl (id);
-
-    alter table buildingses_tbl 
-        add index FK5C8CDAC311847ED (street_id), 
-        add constraint FK5C8CDAC311847ED 
-        foreign key (street_id) 
-        references streets_tbl (id);
-
-    alter table buildingses_tbl 
-        add index FK5C8CDACF71F858D (building_id), 
-        add constraint FK5C8CDACF71F858D 
-        foreign key (building_id) 
-        references buildings_tbl (id);
+        references ab_apartments_tbl (id);
 
     alter table common_data_corrections_tbl 
         add index FKF86BDC935BA789BB (data_source_description_id), 
@@ -1536,7 +1540,7 @@
         add index FK_eirc_consumer_apartment (apartment_id), 
         add constraint FK_eirc_consumer_apartment 
         foreign key (apartment_id) 
-        references apartments_tbl (id);
+        references ab_apartments_tbl (id);
 
     alter table eirc_consumers_tbl 
         add index FK_eirc_consumers_tbl_consumer_info_id (consumer_info_id), 
@@ -1560,7 +1564,7 @@
         add index FK_eirc_eirc_accounts_apartment_id (apartment_id), 
         add constraint FK_eirc_eirc_accounts_apartment_id 
         foreign key (apartment_id) 
-        references apartments_tbl (id);
+        references ab_apartments_tbl (id);
 
     alter table eirc_organisation_descriptions_tbl 
         add index FK_eirc_organisation_description_organisation (organisation_id), 
@@ -1668,7 +1672,7 @@
         add index FK_eirc_registry_record_apartment_id (apartment_id), 
         add constraint FK_eirc_registry_record_apartment_id 
         foreign key (apartment_id) 
-        references apartments_tbl (id);
+        references ab_apartments_tbl (id);
 
     alter table eirc_registry_records_tbl 
         add index FK_eirc_registry_record_consumer (consumer_id), 
@@ -1808,7 +1812,7 @@
         add index FK_eirc_ticket_apartment (apartment_id), 
         add constraint FK_eirc_ticket_apartment 
         foreign key (apartment_id) 
-        references apartments_tbl (id);
+        references ab_apartments_tbl (id);
 
     alter table region_name_translations_tbl 
         add index FKBAC57A0AD605B436 (region_name_id), 

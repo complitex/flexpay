@@ -2,9 +2,9 @@ package org.flexpay.ab.service;
 
 import org.flexpay.ab.dao.DistrictDao;
 import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,7 +19,7 @@ public class TestDistrictService extends SpringBeanAwareTestCase {
 	@Test
 	public void testCreateDistrict() throws Throwable {
 
-		Town town = new Town(1L);
+		Town town = ApplicationConfig.getDefaultTown();
 
 		District district = new District();
 		district.setParent(town);

@@ -31,7 +31,6 @@ public class TestBuildingsActionsBase extends SpringBeanAwareTestCase {
 		Buildings buildings = buildingService.readFull(194L);
 		String number = base.getBuildingNumber(buildings.getBuildingAttributes());
 
-		System.out.println("Number: " + number);
 		assertNotNull("Number is not defined", number);
 	}
 

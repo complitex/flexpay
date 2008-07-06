@@ -52,7 +52,7 @@ public class RawApartmentDataConverter implements DataConverter<Apartment, RawAp
 		number.setApartment(apartment);
 		number.setValue(rawData.getNumber());
 		number.setBegin(DateIntervalUtil.now());
-		number.setEnd(ApplicationConfig.getInstance().getFutureInfinite());
+		number.setEnd(ApplicationConfig.getFutureInfinite());
 
 		Set<ApartmentNumber> numbers = new HashSet<ApartmentNumber>();
 		numbers.add(number);
