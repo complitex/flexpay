@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
-	<class name="Town" table="towns_tbl" optimistic-lock="version">
+	<class name="Town" table="ab_towns_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -28,7 +28,7 @@
 		</set>
 	</class>
 
-	<class name="TownNameTemporal" table="town_names_temporal_tbl">
+	<class name="TownNameTemporal" table="ab_town_names_temporal_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -40,7 +40,7 @@
 		<many-to-one name="value" class="TownName" column="town_name_id" cascade="all"/>
 	</class>
 
-	<class name="TownName" table="town_names_tbl">
+	<class name="TownName" table="ab_town_names_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -52,7 +52,7 @@
 		</set>
 	</class>
 
-	<class name="TownNameTranslation" table="town_name_translations_tbl">
+	<class name="TownNameTranslation" table="ab_town_name_translations_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
