@@ -89,7 +89,7 @@ public class DateIntervalUtil {
 	 */
 	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
 	boolean isValid(TimeLine<T, DI> tl) {
-		Date date = ApplicationConfig.getInstance().getPastInfinite();
+		Date date = ApplicationConfig.getPastInfinite();
 		for (DI di : tl.getIntervals()) {
 			if (!isValid(di)) {
 				return false;
@@ -100,7 +100,7 @@ public class DateIntervalUtil {
 			date = next(di.getEnd());
 		}
 
-		return date.equals(ApplicationConfig.getInstance().getFutureInfinite());
+		return date.equals(ApplicationConfig.getFutureInfinite());
 	}
 
 	/**
@@ -112,8 +112,8 @@ public class DateIntervalUtil {
 	 *         or <code>false</code> otherwise
 	 */
 	public static boolean coversTimeLine(DateInterval di) {
-		return di.getBegin().equals(ApplicationConfig.getInstance().getPastInfinite()) &&
-			   di.getEnd().equals(ApplicationConfig.getInstance().getFutureInfinite());
+		return di.getBegin().equals(ApplicationConfig.getPastInfinite()) &&
+			   di.getEnd().equals(ApplicationConfig.getFutureInfinite());
 	}
 
 	/**
@@ -395,8 +395,8 @@ public class DateIntervalUtil {
 	 */
 	public static String format(Date date) {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-		return date.equals(ApplicationConfig.getInstance().getPastInfinite()) ||
-			   date.equals(ApplicationConfig.getInstance().getFutureInfinite())
+		return date.equals(ApplicationConfig.getPastInfinite()) ||
+			   date.equals(ApplicationConfig.getFutureInfinite())
 			   ? "-" : df.format(date);
 	}
 
@@ -442,8 +442,8 @@ public class DateIntervalUtil {
 	 */
 	public static Date next(Date date) {
 		Date dayAfter = DateUtils.addDays(date, 1);
-		if (dayAfter.compareTo(ApplicationConfig.getInstance().getFutureInfinite()) > 0) {
-			dayAfter = ApplicationConfig.getInstance().getFutureInfinite();
+		if (dayAfter.compareTo(ApplicationConfig.getFutureInfinite()) > 0) {
+			dayAfter = ApplicationConfig.getFutureInfinite();
 		}
 
 		return dayAfter;
@@ -457,8 +457,8 @@ public class DateIntervalUtil {
 	 */
 	public static Date previous(Date date) {
 		Date dayBefore = DateUtils.addDays(date, -1);
-		if (dayBefore.compareTo(ApplicationConfig.getInstance().getPastInfinite()) < 0) {
-			dayBefore = ApplicationConfig.getInstance().getPastInfinite();
+		if (dayBefore.compareTo(ApplicationConfig.getPastInfinite()) < 0) {
+			dayBefore = ApplicationConfig.getPastInfinite();
 		}
 
 		return dayBefore;

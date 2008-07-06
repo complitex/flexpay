@@ -18,7 +18,8 @@ import java.util.*;
 public class Street extends NameTimeDependentChild<StreetName, StreetNameTemporal> {
 
 	private static Logger log = Logger.getLogger(Street.class);
-	private static final SortedSet<StreetTypeTemporal> EMPTY_SORTED_SET = Collections.unmodifiableSortedSet(new TreeSet<StreetTypeTemporal>());
+	private static final SortedSet<StreetTypeTemporal> EMPTY_SORTED_SET =
+			Collections.unmodifiableSortedSet(new TreeSet<StreetTypeTemporal>());
 
 	private Set<District> districts = Collections.emptySet();
 	private TimeLine<StreetType, StreetTypeTemporal> typesTimeLine;

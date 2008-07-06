@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
-	<class name="Street" table="streets_tbl" optimistic-lock="version">
+	<class name="Street" table="ab_streets_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -22,7 +22,7 @@
 			<key column="street_id" not-null="true" foreign-key="FK_street"/>
 			<one-to-many class="StreetTypeTemporal" />
 		</set>
-		<set name="districts" table="streets_districts_tbl">
+		<set name="districts" table="ab_streets_districts_tbl">
 			<key column="street_id" />
 			<many-to-many class="District" column="district_id" />
 		</set>
@@ -32,7 +32,7 @@
 		</set>
 	</class>
 
-	<class name="StreetTypeTemporal" table="street_types_temporal_tbl">
+	<class name="StreetTypeTemporal" table="ab_street_types_temporal_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -48,7 +48,7 @@
 		</many-to-one>
 	</class>
 
-	<class name="StreetNameTemporal" table="street_names_temporal_tbl">
+	<class name="StreetNameTemporal" table="ab_street_names_temporal_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -60,7 +60,7 @@
 		<many-to-one name="value" class="StreetName" cascade="all" column="street_name_id" />
 	</class>
 
-	<class name="StreetName" table="street_names_tbl" optimistic-lock="version">
+	<class name="StreetName" table="ab_street_names_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -72,7 +72,7 @@
 		</set>
 	</class>
 
-	<class name="StreetNameTranslation" table="street_name_translations_tbl"
+	<class name="StreetNameTranslation" table="ab_street_name_translations_tbl"
 		   optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />

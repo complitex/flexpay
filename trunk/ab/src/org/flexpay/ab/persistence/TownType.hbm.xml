@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
-	<class name="TownType" table="town_types_tbl">
+	<class name="TownType" table="ab_town_types_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -16,7 +16,7 @@
 		</set>
 	</class>
 
-	<class name="TownTypeTranslation" table="town_type_translations_tbl">
+	<class name="TownTypeTranslation" table="ab_town_type_translations_tbl">
 		<id name="id" column="ID">
 			<generator class="native" />
 		</id>
@@ -29,7 +29,7 @@
 		</properties>
 	</class>
 
-	<class name="TownTypeTemporal" table="town_types_temporal_tbl">
+	<class name="TownTypeTemporal" table="ab_town_types_temporal_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
