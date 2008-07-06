@@ -127,7 +127,7 @@ public class BuildingsDaoExtImpl extends SimpleJdbcDaoSupport implements Buildin
 			return cachedBuilding;
 		}
 		Object[] params = {buildings.getId()};
-		List result = getJdbcTemplate().query("select building_id from buildingses_tbl where id=?",
+		List result = getJdbcTemplate().query("select building_id from ab_buildingses_tbl where id=?",
 				params, new SingleColumnRowMapper(Long.class));
 		Building building = result.isEmpty() ? null : new Building((Long) result.get(0));
 
@@ -139,19 +139,19 @@ public class BuildingsDaoExtImpl extends SimpleJdbcDaoSupport implements Buildin
 		return building;
 	}
 
-	String sql1 = "select * from buildingses_tbl bs where bs.street_id=? and exists ( " +
-				  "select a.id from building_attributes_tbl a, building_attribute_types_tbl at " +
-				  "where a.attribute_type_id=at.id and a.buildings_id=bs.id and at.type=1 and a.value=? " +
+	String sql1 = "select * from ab_buildingses_tbl bs where bs.street_id=? and exists ( " +
+				  "select a.id from ab_building_attributes_tbl a, ab_building_attribute_types_tbl att " +
+				  "where a.attribute_type_id=att.id and a.buildings_id=bs.id and att.type=1 and a.value=? " +
 				  ") and not exists (" +
-				  "select a.id from building_attributes_tbl a, building_attribute_types_tbl at " +
-				  "where a.attribute_type_id=at.id and a.buildings_id=bs.id and at.type=2 " +
+				  "select a.id from ab_building_attributes_tbl a, ab_building_attribute_types_tbl att " +
+				  "where a.attribute_type_id=att.id and a.buildings_id=bs.id and att.type=2 " +
 				  ")";
-	String sql2 = "select * from buildingses_tbl bs where bs.street_id=? and exists ( " +
-				  "select a.id from building_attributes_tbl a, building_attribute_types_tbl at " +
-				  "where a.attribute_type_id=at.id and a.buildings_id=bs.id and at.type=1 and a.value=? " +
+	String sql2 = "select * from ab_buildingses_tbl bs where bs.street_id=? and exists ( " +
+				  "select a.id from ab_building_attributes_tbl a, ab_building_attribute_types_tbl att " +
+				  "where a.attribute_type_id=att.id and a.buildings_id=bs.id and att.type=1 and a.value=? " +
 				  ") and exists (" +
-				  "select a.id from building_attributes_tbl a, building_attribute_types_tbl at " +
-				  "where a.attribute_type_id=at.id and a.buildings_id=bs.id and at.type=2 and a.value=? " +
+				  "select a.id from ab_building_attributes_tbl a, ab_building_attribute_types_tbl att " +
+				  "where a.attribute_type_id=att.id and a.buildings_id=bs.id and att.type=2 and a.value=? " +
 				  ")";
 
 	private Buildings doFindBuildings(Street street, String number, String bulk) {

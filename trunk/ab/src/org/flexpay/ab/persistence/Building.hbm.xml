@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
-	<class name="Buildings" table="buildingses_tbl">
+	<class name="Buildings" table="ab_buildingses_tbl">
 		<id name="id" column="id">
 			<generator class="native"/>
 		</id>
@@ -22,17 +22,21 @@
 		<property name="primaryStatus" column="primary_status"/>
 	</class>
 
-	<class name="BuildingAttribute" table="building_attributes_tbl">
+	<class name="BuildingAttribute" table="ab_building_attributes_tbl">
 		<id name="id" column="id">
 			<generator class="native"/>
 		</id>
 
-		<property name="value" not-null="true"/>
+		<property name="value">
+			<column name="value" index="indx_value" not-null="true">
+				<comment>Building attribute value</comment>
+			</column>
+		</property>
 		<many-to-one name="buildingAttributeType" column="attribute_type_id" not-null="true"/>
 		<many-to-one name="buildings" column="buildings_id" not-null="true"/>
 	</class>
 
-	<class name="BuildingAttributeType" table="building_attribute_types_tbl">
+	<class name="BuildingAttributeType" table="ab_building_attribute_types_tbl">
 		<id name="id" column="id">
 			<generator class="native"/>
 		</id>
@@ -44,7 +48,7 @@
 	</class>
 
 	<class name="BuildingAttributeTypeTranslation"
-		   table="building_attribute_type_translations_tbl">
+		   table="ab_building_attribute_type_translations_tbl">
 		<id name="id" column="id">
 			<generator class="native"/>
 		</id>
@@ -57,7 +61,7 @@
 		</properties>
 	</class>
 
-	<class name="BuildingStatus" table="building_statuses_tbl">
+	<class name="BuildingStatus" table="ab_building_statuses_tbl">
 		<id name="id" column="id">
 			<generator class="native"/>
 		</id>

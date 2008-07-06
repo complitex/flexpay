@@ -10,16 +10,16 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 	private Region defaultRegion;
 	private Town defaultTown;
 
-	public Town getDefaultTown() {
-		return defaultTown;
+	public static Town getDefaultTown() {
+		return getInstance().defaultTown;
 	}
 
-	public Country getDefaultCountry() {
-		return defaultCountry;
+	public static Country getDefaultCountry() {
+		return getInstance().defaultCountry;
 	}
 
-	public Region getDefaultRegion() {
-		return defaultRegion;
+	public static Region getDefaultRegion() {
+		return getInstance().defaultRegion;
 	}
 
 	/**

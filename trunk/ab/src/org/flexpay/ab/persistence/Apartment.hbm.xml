@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
-	<class name="Apartment" table="apartments_tbl">
+	<class name="Apartment" table="ab_apartments_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -23,14 +23,23 @@
 		</set>
 	</class>
 
-	<class name="ApartmentNumber" table="apartment_numbers_tbl">
+	<class name="ApartmentNumber" table="ab_apartment_numbers_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
 		<property name="begin" not-null="true" type="date" column="begin_date" />
 		<property name="end" not-null="true" type="date" column="end_date" />
-		<property name="value" not-null="true" />
-		<many-to-one name="apartment" class="Apartment" column="apartment_id" />
+		<property name="value" index="indx_value">
+			<column name="value" not-null="true">
+				<comment>Apartment number value</comment>
+			</column>
+		</property>
+		<many-to-one name="apartment" class="Apartment"
+					 foreign-key="FK_ab_apartment_numbers_tbl_apartment_id">
+			<column name="apartment_id" not-null="true">
+				<comment>Apartment reference</comment>
+			</column>
+		</many-to-one>
 	</class>
 
 	<query name="Apartment.findObjects">
