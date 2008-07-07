@@ -43,10 +43,8 @@
 				<td class="col"><s:date name="spFile.importDate" format="yyyy/MM/dd HH:mm:ss"/></td>
 				<td class="col"><s:property value="recordsNumber"/></td>
 				<td class="col"><s:text name="%{registryStatus.i18nName}"/></td>
-				<td class="col"><a href="<s:url value="/eirc/registry_view.action?registry.id=%{id}"/>">
-					<!-- <img src="<s:url value="/resources/common/img/i_view.gif" />" alt="<s:text name="common.view"/>"
-						 title="<s:text name="common.view"/>"/> -->
-					<s:text name="common.edit"/>	 
+				<td class="col"><a href="<s:url action="registry_view"><s:param name="registry.id" value="%{id}"/></s:url>">
+					<s:text name="common.view"/>	 
 						</a></td>
 			</tr>
 		</s:iterator>

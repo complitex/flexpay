@@ -40,6 +40,8 @@
 				<s:hidden name="record.id" value="%{record.id}"/>
 				<input type="submit" onclick="$('setupType').value = 'apartment'" class="btn-exit"
 					   value="<s:text name="common.set"/>"/>
+				<input type="button" value="<s:text name="common.close" />" class="btn-exit"
+					   onclick="parent.Windows.closeAll();" />
 			</td>
 		</tr>
 	</table>

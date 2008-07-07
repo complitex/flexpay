@@ -55,7 +55,7 @@
 			<td colspan="12">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" value="<s:text name="eirc.process_selected" />" class="btn-exit"
-					   onclick="$('frecords').action='<s:url value="process_registry_records.action" includeParams="none"/>';" />
+					   onclick="$('frecords').action='<s:url action="process_registry_records" includeParams="none"/>';" />
 			</td>
 		</tr>
 	</table>
@@ -67,6 +67,8 @@
 		var win = new Window(
 			{className: "spread", title: "Corrections", top:70, left:100, width:800, height:600,
 				url: '<s:url action="select_correction_type" includeParams="none"/>' + "?record.id=" + recordId})
-		win.show();
+
+		// show window in center
+		win.showCenter(/*Modal*/ true, /*Top*/ 50, /*left*/ 200);
 	}
 </script>
