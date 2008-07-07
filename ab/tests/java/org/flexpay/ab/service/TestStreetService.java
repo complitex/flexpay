@@ -7,6 +7,7 @@ import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.NotTransactional;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
@@ -59,12 +60,13 @@ public class TestStreetService extends SpringBeanAwareTestCase {
 	}
 
 	@Test
+	@NotTransactional
 	public void testRetriveStreetTypes() throws Throwable {
 
 		Street street = streetDao.readFull(6L);
 
 		if (street == null) {
-			assertNotNull("Street retrival failed :(", street);
+			assertNotNull("Street retrival failed", street);
 		}
 
 		for (StreetTypeTemporal temporal : street.getTypeTemporals()) {

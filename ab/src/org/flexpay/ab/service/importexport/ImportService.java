@@ -500,7 +500,7 @@ public class ImportService {
 		}
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, propagation = Propagation.NOT_SUPPORTED)
 	public void importApartments(DataSourceDescription sourceDescription) throws Exception {
 		apartmentDataSource.initialize();
 
@@ -566,7 +566,7 @@ public class ImportService {
 		}
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, propagation = Propagation.NOT_SUPPORTED)
 	public void importPersons(DataSourceDescription sourceDescription) throws Exception {
 		personDataSource.initialize();
 
@@ -641,92 +641,42 @@ public class ImportService {
 		}
 	}
 
-	/**
-	 * Setter for property 'districtDataConverter'.
-	 *
-	 * @param districtDataConverter Value to set for property 'districtDataConverter'.
-	 */
 	public void setDistrictDataConverter(RawDistrictDataConverter districtDataConverter) {
 		this.districtDataConverter = districtDataConverter;
 	}
 
-	/**
-	 * Setter for property 'streetDataConverter'.
-	 *
-	 * @param streetDataConverter Value to set for property 'streetDataConverter'.
-	 */
 	public void setStreetDataConverter(DataConverter streetDataConverter) {
 		this.streetDataConverter = streetDataConverter;
 	}
 
-	/**
-	 * Setter for property 'personDataConverter'.
-	 *
-	 * @param personDataConverter Value to set for property 'personDataConverter'.
-	 */
 	public void setPersonDataConverter(RawPersonDataConverter personDataConverter) {
 		this.personDataConverter = personDataConverter;
 	}
 
-	/**
-	 * Setter for property 'districtDataSource'.
-	 *
-	 * @param districtDataSource Value to set for property 'districtDataSource'.
-	 */
 	public void setDistrictDataSource(DistrictJdbcDataSource districtDataSource) {
 		this.districtDataSource = districtDataSource;
 	}
 
-	/**
-	 * Setter for property 'streetDataSource'.
-	 *
-	 * @param streetDataSource Value to set for property 'streetDataSource'.
-	 */
 	public void setStreetDataSource(RawDataSource<? extends RawData<Street>> streetDataSource) {
 		this.streetDataSource = streetDataSource;
 	}
 
-	/**
-	 * Setter for property 'streetService'.
-	 *
-	 * @param streetService Value to set for property 'streetService'.
-	 */
 	public void setStreetService(StreetService streetService) {
 		this.streetService = streetService;
 	}
 
-	/**
-	 * Setter for property 'correctionsService'.
-	 *
-	 * @param correctionsService Value to set for property 'correctionsService'.
-	 */
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
 	}
 
-	/**
-	 * Setter for property 'districtService'.
-	 *
-	 * @param districtService Value to set for property 'districtService'.
-	 */
 	public void setDistrictService(DistrictService districtService) {
 		this.districtService = districtService;
 	}
 
-	/**
-	 * Setter for property 'streetTypeDataConverter'.
-	 *
-	 * @param streetTypeDataConverter Value to set for property 'streetTypeDataConverter'.
-	 */
 	public void setStreetTypeDataConverter(RawStreetTypeDataConverter streetTypeDataConverter) {
 		this.streetTypeDataConverter = streetTypeDataConverter;
 	}
 
-	/**
-	 * Setter for property 'streetTypeDataSource'.
-	 *
-	 * @param streetTypeDataSource Value to set for property 'streetTypeDataSource'.
-	 */
 	public void setStreetTypeDataSource(StreetTypeJdbcDataSource streetTypeDataSource) {
 		this.streetTypeDataSource = streetTypeDataSource;
 	}
@@ -739,29 +689,14 @@ public class ImportService {
 		this.apartmentDataSource = apartmentDataSource;
 	}
 
-	/**
-	 * Setter for property 'personDataSource'.
-	 *
-	 * @param personDataSource Value to set for property 'personDataSource'.
-	 */
 	public void setPersonDataSource(PersonJdbcDataSource personDataSource) {
 		this.personDataSource = personDataSource;
 	}
 
-	/**
-	 * Setter for property 'personService'.
-	 *
-	 * @param personService Value to set for property 'personService'.
-	 */
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
 	}
 
-	/**
-	 * Setter for property 'streetTypeService'.
-	 *
-	 * @param streetTypeService Value to set for property 'streetTypeService'.
-	 */
 	public void setStreetTypeService(StreetTypeService streetTypeService) {
 		this.streetTypeService = streetTypeService;
 	}
@@ -786,29 +721,14 @@ public class ImportService {
 		this.allObjectsDao = allObjectsDao;
 	}
 
-	/**
-	 * Setter for property 'importErrorService'.
-	 *
-	 * @param importErrorService Value to set for property 'importErrorService'.
-	 */
 	public void setImportErrorService(ImportErrorService importErrorService) {
 		this.importErrorService = importErrorService;
 	}
 
-	/**
-	 * Setter for property 'errorsSupport'.
-	 *
-	 * @param errorsSupport Value to set for property 'errorsSupport'.
-	 */
 	public void setErrorsSupport(ImportErrorsSupport errorsSupport) {
 		this.errorsSupport = errorsSupport;
 	}
 
-	/**
-	 * Setter for property 'registry'.
-	 *
-	 * @param registry Value to set for property 'registry'.
-	 */
 	public void setRegistry(ClassToTypeRegistry registry) {
 		this.registry = registry;
 	}

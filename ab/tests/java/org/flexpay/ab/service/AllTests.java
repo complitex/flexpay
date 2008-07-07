@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
 		TestStreetTypeService.class,
 		TestDistrictService.class,
 		TestStreetService.class,
-		TestPersonDao.class
+		TestPersonDao.class,
+		TestI18nQuery.class
 		})
 public class AllTests {
 
