@@ -29,8 +29,8 @@ public class TestApartmentService extends SpringBeanAwareTestCase {
 		ApartmentNumber number = new ApartmentNumber();
 		number.setApartment(apartment);
 		number.setValue("Test apartment number #24");
-		number.setBegin(ApplicationConfig.getInstance().getPastInfinite());
-		number.setEnd(ApplicationConfig.getInstance().getFutureInfinite());
+		number.setBegin(ApplicationConfig.getPastInfinite());
+		number.setEnd(ApplicationConfig.getFutureInfinite());
 
 		Set<ApartmentNumber> numbers = new HashSet<ApartmentNumber>();
 		numbers.add(number);

@@ -37,7 +37,7 @@ public class EircImportService extends ImportService {
 			log.info("Starting importing consumers for data source: " + sd.getId());
 		}
 
-		Town defaultTown = ApplicationConfig.getInstance().getDefaultTown();
+		Town defaultTown = ApplicationConfig.getDefaultTown();
 		ArrayStack filters = new ArrayStack();
 		filters.push(new TownFilter(defaultTown.getId()));
 		List<Street> townStreets = streetService.find(filters);

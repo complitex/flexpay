@@ -111,6 +111,10 @@
 		<property name="sessionFactory" ref="flexpaySessionFactory" />
 	</bean>
 
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="dataSource" />
+	</bean>
+
 	<!--  Dao Layer generic config-->
 	<bean id="namingStrategy"
 		  class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">

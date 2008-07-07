@@ -32,44 +32,44 @@ public class TestImportService extends SpringBeanAwareTestCase {
 	}
 
 	@Test
-	@Ignore
 	@NotTransactional
 	public void testImportDistricts() throws Throwable {
+		System.out.println("1");
 		importService.importDistricts(town, sourceDescription);
 	}
 
 	@Test
-	@Ignore
 	@NotTransactional
 	public void testImportStreetTypes() {
+		System.out.println("2");
 		importService.importStreetTypes(sourceDescription);
 	}
 
 	@Test
-	@Ignore
 	@NotTransactional
 	public void testImportStreets() throws Throwable {
+		System.out.println("3");
 		importService.importStreets(town, sourceDescription);
 	}
 
 	@Test
-	@Ignore
 	@NotTransactional
 	public void testImportBuildings() throws Throwable {
+		System.out.println("4");
 		importService.importBuildings(sourceDescription);
 	}
 
 	@Test
-	@Ignore
 	@NotTransactional
 	public void testImportApartments() throws Throwable {
+		System.out.println("5");
 		importService.importApartments(sourceDescription);
 	}
 
 	@Test
-	@Ignore
 	@NotTransactional
 	public void testImportPersons() throws Throwable {
+		System.out.println("6");
 		importService.importPersons(sourceDescription);
 	}
 
