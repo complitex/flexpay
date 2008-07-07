@@ -4,4 +4,8 @@
 
 	<s:text name="eirc.address_setup_completed" />
 
+	<br /><br />
+	<input type="button" value="<s:text name="common.close" />" class="btn-exit"
+		   onclick="parent.Windows.closeAll();" />
+
 </div>
