@@ -357,7 +357,7 @@ public class ProcessManager implements Runnable {
             //set status to failed
             ci.setVariable(Job.ERROR, ProcessState.COMPLITED_WITH_ERRORS);
             //remove from running tasks
-            running.remove(ti);
+            running.remove(Long.valueOf(pi.getId()));
             return false;
         }
     }
