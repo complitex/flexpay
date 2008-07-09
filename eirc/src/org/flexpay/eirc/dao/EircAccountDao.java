@@ -11,5 +11,7 @@ public interface EircAccountDao extends GenericDao<EircAccount, Long> {
 	List<EircAccount> findObjects(Page<EircAccount> pager);
 	
 	List<EircAccount> findWithPerson(Long id);
+	
+	List<EircAccount> findByApartment(Long id);
 
 }

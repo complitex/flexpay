@@ -112,7 +112,10 @@
 		  p:serviceTypeDao-ref="serviceTypeDao" />
 
 	<bean id="quittanceService" class="org.flexpay.eirc.service.imp.QuittanceServiceImpl"
-		  p:quittanceDetailsDao-ref="quittanceDetailsDao" />
+		  p:serviceOrganisationService-ref="serviceOrganisationService"
+		  p:eircAccountService-ref="eircAccountService"
+		  p:quittanceDetailsDao-ref="quittanceDetailsDao"
+		  p:quittanceDao-ref="quittanceDao" />
 
 	<bean id="reportPeriodService" class="org.flexpay.eirc.service.imp.ReportPeriodServiceImpl" />
 

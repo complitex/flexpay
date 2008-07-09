@@ -39,13 +39,14 @@
 	<bean id="generateTicketsAction" class="org.flexpay.eirc.actions.GenerateTicketAction"
 		  scope="prototype">
 		<property name="serviceOrganisationService" ref="serviceOrganisationService" />
-		<property name="tickerService" ref="ticketService" />
+		<property name="quittanceService" ref="quittanceService" />
 	</bean>
 
 	<bean id="printTicketsAction" class="org.flexpay.eirc.actions.PrintTicketAction"
 		  scope="prototype">
 		<property name="serviceOrganisationService" ref="serviceOrganisationService" />
-		<property name="ticketService" ref="ticketService" />
+		<property name="quittanceService" ref="quittanceService" />
+		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
 	<bean id="ticketPayFormAction" class="org.flexpay.eirc.actions.TicketPayFormAction"
@@ -183,6 +184,19 @@
 	</bean>
 	<bean id="eircAccountViewAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.EircAccountViewAction">
+		  <property name="eircAccountService" ref="eircAccountService" />
+	</bean>
+	<bean id="eircAccountCreateForm1Action" scope="prototype"
+		  class="org.flexpay.eirc.actions.eirc_account.EircAccountCreateForm1Action">
+		  <property name="parentService" ref="buildingService" /> 
+		  <property name="apartmentService" ref="apartmentService" />
+	</bean>
+	<bean id="eircAccountCreateForm2Action" scope="prototype"
+		  class="org.flexpay.eirc.actions.eirc_account.EircAccountCreateForm2Action">
+		  <property name="personService" ref="personService" />
+	</bean>
+	<bean id="eircAccountCreateAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.eirc_account.EircAccountCreateAction">
 		  <property name="eircAccountService" ref="eircAccountService" />
 	</bean>
 

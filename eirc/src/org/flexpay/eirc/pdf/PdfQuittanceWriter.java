@@ -9,11 +9,14 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.persistence.account.QuittanceDetails;
+import org.flexpay.eirc.service.QuittanceService;
+import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 
 import com.lowagie.text.BadElementException;
@@ -28,50 +31,53 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 
-public class PdfTicketWriter {
+public class PdfQuittanceWriter {
+
 	private static final Locale LOCALE_RU = new Locale("ru");
 
-	// private PdfReader kvitPattern;
+	private QuittanceService quittanceService;
+	private ServiceTypeService serviceTypeService;
+
 	private File kvitPatternFile;
 	private PdfReader titlePattern;
 	private ByteArrayOutputStream baos;
 
-	public PdfTicketWriter(File kvitPatternFile, InputStream titlePattern)
+	public PdfQuittanceWriter(File kvitPatternFile, InputStream titlePattern)
 			throws IOException {
 		baos = new ByteArrayOutputStream();
 		this.kvitPatternFile = kvitPatternFile;
 		this.titlePattern = new PdfReader(titlePattern);
 	}
 
-	public byte[] writeGetByteArray(TicketInfo ticketInfo)
-			throws DocumentException, IOException {
+	public byte[] writeGetByteArray(Quittance quittance)
+			throws DocumentException, IOException, FlexPayException {
 		baos.reset();
-		write(baos, ticketInfo);
+		write(baos, quittance);
 		return baos.toByteArray();
 	}
 
-	public void write(OutputStream os, TicketInfo ticketInfo)
-			throws DocumentException, IOException {
+	public void write(OutputStream os, Quittance quittance)
+			throws DocumentException, IOException, FlexPayException {
 		PdfStamper stamper = new PdfStamper(new PdfReader(new FileInputStream(
 				kvitPatternFile)), os);
 		stamper.setFormFlattening(true);
-		
+
 		AcroFields form = stamper.getAcroFields();
-		String[] barcodes = fillForm(form, ticketInfo);
-		
+		String[] barcodes = fillForm(form, quittance);
+
 		PdfContentByte cb = stamper.getUnderContent(1);
 		Image image = getBarcode1d(cb, barcodes[0]);
 		image.scalePercent(40, 100);
 		image.setAbsolutePosition(15, PageSize.A4.getHeight() / 2 - 180);
 		image.setRotationDegrees(90);
 		cb.addImage(image);
-		
-		image = getBarcode2d(barcodes[1]); 
-		image.setAbsolutePosition(PageSize.A4.getWidth() - 50, PageSize.A4.getHeight() / 2 - 220);
+
+		image = getBarcode2d(barcodes[1]);
+		image.setAbsolutePosition(PageSize.A4.getWidth() - 50, PageSize.A4
+				.getHeight() / 2 - 220);
 		image.setRotationDegrees(90);
 		cb.addImage(image);
-		
-		
+
 		stamper.close();
 	}
 
@@ -90,25 +96,25 @@ public class PdfTicketWriter {
 		form.setField("name", title);
 		stamper.close();
 	}
-	
+
 	private Image getBarcode1d(PdfContentByte cb, String code) {
 		Barcode128 barcode = new Barcode128();
 		barcode.setCodeType(Barcode.CODE128_UCC);
 		barcode.setCode(code);
-		
+
 		return barcode.createImageWithBarcode(cb, null, null);
 	}
-	
+
 	private Image getBarcode2d(String code) throws BadElementException {
 		BarcodePDF417 barcode = new BarcodePDF417();
 		barcode.setText(code);
-		
+
 		return barcode.getImage();
-		
+
 	}
 
-	private String[] fillForm(AcroFields form, TicketInfo ticketInfo)
-			throws IOException, DocumentException {
+	private String[] fillForm(AcroFields form, Quittance quittance)
+			throws IOException, DocumentException, FlexPayException {
 		form.setField("header", "КП “ЖИЛКОМСЕРВИС”");
 		form.setField("header_copy1", "КП “ЖИЛКОМСЕРВИС”");
 		form.setField("lsZks", "1000300660");
@@ -119,28 +125,39 @@ public class PdfTicketWriter {
 		form.setField("footer", "Киевский филиал");
 
 		DateFormat format = new SimpleDateFormat("MMMM yyyy", LOCALE_RU);
-		form.setField("date", format.format(ticketInfo.dateFrom));
-		form.setField("date_copy1", format.format(ticketInfo.dateFrom));
+		form.setField("date", format.format(quittance.getDateFrom()));
+		form.setField("date_copy1", format.format(quittance.getDateFrom()));
 		format = new SimpleDateFormat("dd.MM.yyyy");
-		form.setField("creationDate", format.format(ticketInfo.creationDate));
-		form.setField("dateFrom", format.format(ticketInfo.dateFrom));
-		form.setField("dateTill", format.format(ticketInfo.dateTill));
-		
-		
-		
+		form.setField("creationDate", format
+				.format(quittance.getCreationDate()));
+		form.setField("dateFrom", format.format(quittance.getDateFrom()));
+		form.setField("dateTill", format.format(quittance.getDateTill()));
+
 		// form.setField("paySum", kvitForm.paySum);
-		form.setField("payer", ticketInfo.payer);
-		form.setField("payer_copy1", ticketInfo.payer);
-		form.setField("address", ticketInfo.address);
-		form.setField("address_copy1", ticketInfo.address);
+		String payer = quittanceService.getPayer(quittance);
+		form.setField("payer", payer);
+		form.setField("payer_copy1", payer);
+		String address = quittanceService.getAddressStr(quittance, true);
+		form.setField("address", address);
+		form.setField("address_copy1", address);
+		
+		BigDecimal dateFromSum = new BigDecimal(0);
+		BigDecimal dateTillSum = new BigDecimal(0);
+		
 
 		// Services 2-5
-		if (ticketInfo.serviceAmountInfoMap != null) {
-			ServiceAmountInfo serviceAmountInfo = null;
-			for (int i = 2; i <= 5; i++) {
-				serviceAmountInfo = ticketInfo.serviceAmountInfoMap.get(i);
-				if (serviceAmountInfo != null) {
-					String[] amountDigitArray = getStringArray(serviceAmountInfo.dateTillAmount);
+		for (int i = 2; i <= 5; i++) {
+			QuittanceDetails quittanceDetails = quittanceService
+					.calculateTotalQuittanceDetails(quittance,
+							serviceTypeService.getServiceType(i));
+			if (quittanceDetails != null) {
+				BigDecimal outgoingBalance = quittanceDetails
+						.getOutgoingBalance();
+				BigDecimal incomingBalance = quittanceDetails
+						.getIncomingBalance();
+				if (outgoingBalance != null) {
+					dateTillSum = dateTillSum.add(outgoingBalance);
+					String[] amountDigitArray = getStringArray(outgoingBalance);
 					form.setField("service" + i + "_amount_digit0",
 							amountDigitArray[0]);
 					form.setField("service" + i + "_amount_digit1",
@@ -153,48 +170,51 @@ public class PdfTicketWriter {
 							amountDigitArray[4]);
 					form.setField("service" + i + "_amount_digit5",
 							amountDigitArray[5]);
-					form.setField("service" + i + "_amount",
-							serviceAmountInfo.dateTillAmount.toString());
-					form.setField("service" + i + "_dateFrom_amount",
-							serviceAmountInfo.dateFromAmount.toString());
+					form.setField("service" + i + "_amount", outgoingBalance
+							.toString());
 					form.setField("service" + i + "_dateTill_amount",
-							serviceAmountInfo.dateTillAmount.toString());
+							outgoingBalance.toString());
+				}
+				if (incomingBalance != null) {
+					dateFromSum = dateFromSum.add(incomingBalance);
+					form.setField("service" + i + "_dateFrom_amount",
+							quittanceDetails.getIncomingBalance().toString());
 				}
 			}
 		}
 
 		// Kvartplata services
-		BigDecimal dateFromSum = ticketInfo.getKvartplataDateFromSum();
-		BigDecimal dateTillSum = ticketInfo.getKvartplataDateTillSum();
-		String[] amountDigitArray = getStringArray(dateTillSum);
-		form.setField("kvartpl_amount_digit0", amountDigitArray[0]);
-		form.setField("kvartpl_amount_digit1", amountDigitArray[1]);
-		form.setField("kvartpl_amount_digit2", amountDigitArray[2]);
-		form.setField("kvartpl_amount_digit3", amountDigitArray[3]);
-		form.setField("kvartpl_amount_digit4", amountDigitArray[4]);
-		form.setField("kvartpl_amount_digit5", amountDigitArray[5]);
-		form.setField("kvartpl_amount", dateTillSum.toString());
-		form.setField("kvartpl_dateFrom_amount", dateFromSum.toString());
-		form.setField("kvartpl_dateTill_amount", dateTillSum.toString());
-
-		// Waterin services
-		dateFromSum = ticketInfo.getWaterinDateFromSum();
-		dateTillSum = ticketInfo.getWaterinDateTillSum();
-		amountDigitArray = getStringArray(dateTillSum);
-		form.setField("waterin_amount_digit0", amountDigitArray[0]);
-		form.setField("waterin_amount_digit1", amountDigitArray[1]);
-		form.setField("waterin_amount_digit2", amountDigitArray[2]);
-		form.setField("waterin_amount_digit3", amountDigitArray[3]);
-		form.setField("waterin_amount_digit4", amountDigitArray[4]);
-		form.setField("waterin_amount_digit5", amountDigitArray[5]);
-		form.setField("waterin_amount", dateTillSum.toString());
-		form.setField("waterin_dateFrom_amount", dateFromSum.toString());
-		form.setField("waterin_dateTill_amount", dateTillSum.toString());
+		QuittanceDetails quittanceDetails = quittanceService
+				.calculateTotalQuittanceDetails(quittance, serviceTypeService
+						.getServiceType(1));
+		if (quittanceDetails != null) {
+			BigDecimal outgoingBalance = quittanceDetails
+					.getOutgoingBalance();
+			BigDecimal incomingBalance = quittanceDetails
+					.getIncomingBalance();
+			if (outgoingBalance != null) {
+				dateTillSum = dateTillSum.add(outgoingBalance);
+				String[] amountDigitArray = getStringArray(outgoingBalance);
+				form.setField("kvartpl_amount_digit0", amountDigitArray[0]);
+				form.setField("kvartpl_amount_digit1", amountDigitArray[1]);
+				form.setField("kvartpl_amount_digit2", amountDigitArray[2]);
+				form.setField("kvartpl_amount_digit3", amountDigitArray[3]);
+				form.setField("kvartpl_amount_digit4", amountDigitArray[4]);
+				form.setField("kvartpl_amount_digit5", amountDigitArray[5]);
+				form.setField("kvartpl_amount", outgoingBalance.toString());
+				form.setField("kvartpl_dateTill_amount", outgoingBalance.toString());
+				
+			}
+			if (incomingBalance != null) {
+				dateFromSum = dateFromSum.add(incomingBalance);
+				form.setField("kvartpl_dateFrom_amount", incomingBalance.toString());
+			}
+		}
+		
+		
 
 		// Services sum
-		dateFromSum = ticketInfo.getDateFromSum();
-		dateTillSum = ticketInfo.getDateTillSum();
-		amountDigitArray = getStringArray(dateTillSum);
+		String[] amountDigitArray = getStringArray(dateTillSum);
 		form.setField("sum_amount_digit0", amountDigitArray[0]);
 		form.setField("sum_amount_digit1", amountDigitArray[1]);
 		form.setField("sum_amount_digit2", amountDigitArray[2]);
@@ -205,37 +225,37 @@ public class PdfTicketWriter {
 		form.setField("paySum", dateTillSum.toString());
 		form.setField("sum_dateFrom_amount", dateFromSum.toString());
 		form.setField("sum_dateTill_amount", dateTillSum.toString());
-		
+
 		String[] barcodes = new String[2];
 		StringBuilder barcodeStr = new StringBuilder();
 		barcodeStr.append(ApplicationConfig.getInstance().getEircId());
-		barcodeStr.append(StringUtil.fillLeadingZero(
-				ticketInfo.ticketNumber.toString(), 8)); // TODO ticketNumber replace by ticketId
-		//barcodeStr.append("-");
-		//format = new SimpleDateFormat("MM/yyyy");
-		//barcodeStr.append(format.format(ticketInfo.dateFrom));
+		barcodeStr.append(StringUtil.fillLeadingZero(quittance.getId()
+				.toString(), 8)); // TODO ticketNumber replace by ticketId
+		// barcodeStr.append("-");
+		// format = new SimpleDateFormat("MM/yyyy");
+		// barcodeStr.append(format.format(ticketInfo.dateFrom));
 		barcodeStr.append(";");
 		barcodeStr.append(dateTillSum);
-		
+
 		barcodes[0] = barcodeStr.toString();
-		
+
 		form.setField("ticketNumber", barcodes[0]);
 		form.setField("ticketNumber_copy1", barcodes[0]);
-		
+
 		StringBuilder barcode2d = new StringBuilder();
 		barcode2d.append(ApplicationConfig.getInstance().getEircId());
-		barcode2d.append(StringUtil.fillLeadingZero(
-				ticketInfo.ticketNumber.toString(), 8));
+		barcode2d.append(StringUtil.fillLeadingZero(quittance.getId()
+				.toString(), 8));
 		barcode2d.append(";");
-		barcode2d.append(ticketInfo.address);
+		barcode2d.append(address);
 		barcode2d.append(";");
-		barcode2d.append(ticketInfo.payer);
+		barcode2d.append(payer);
 		barcode2d.append(";");
 		barcode2d.append(dateTillSum);
 		barcode2d.append("\n");
 		barcode2d.append("2");
 		barcode2d.append(";");
-		if (ticketInfo.serviceAmountInfoMap != null) {
+		/*if (ticketInfo.serviceAmountInfoMap != null) {
 			ServiceAmountInfo serviceAmountInfo = null;
 			for (int i = 2; i <= 15; i++) {
 				serviceAmountInfo = ticketInfo.serviceAmountInfoMap.get(i);
@@ -248,9 +268,9 @@ public class PdfTicketWriter {
 					barcode2d.append("\n");
 				}
 			}
-		}
+		}*/
 		barcodes[1] = barcode2d.toString();
-		
+
 		return barcodes;
 	}
 
@@ -295,119 +315,20 @@ public class PdfTicketWriter {
 		return result;
 	}
 
-	public static class TicketInfo {
-		public Date creationDate;
-		public Date dateFrom;
-		public Date dateTill;
-		public Long ticketNumber;
-		public String payer;
-		public String address;
-		public Map<Integer, ServiceAmountInfo> serviceAmountInfoMap;
-
-		public BigDecimal getKvartplataDateFromSum() {
-			return getServicesAmount(8, 15, true);
-		}
-
-		public BigDecimal getKvartplataDateTillSum() {
-			return getServicesAmount(8, 15, false);
-		}
-
-		public BigDecimal getWaterinDateFromSum() {
-			return getServicesAmount(6, 7, true);
-		}
-
-		public BigDecimal getWaterinDateTillSum() {
-			return getServicesAmount(6, 7, false);
-		}
-
-		public BigDecimal getDateFromSum() {
-			return getServicesAmount(2, 15, true);
-		}
-
-		public BigDecimal getDateTillSum() {
-			return getServicesAmount(2, 15, false);
-		}
-		
-		private BigDecimal getServicesAmount(int ind1, int ind2, boolean flag) {
-			BigDecimal sum = BigDecimal.ZERO;
-			ServiceAmountInfo serviceAmountInfo = null;
-			if (serviceAmountInfoMap != null) {
-				for (int i = ind1; i <= ind2; i++) {
-					serviceAmountInfo = serviceAmountInfoMap.get(i);
-					if (serviceAmountInfo != null) {
-						if (flag) {
-							if (serviceAmountInfo.dateFromAmount != null) {
-								sum = sum.add(serviceAmountInfo.dateFromAmount);
-							}
-						} else {
-							if (serviceAmountInfo.dateTillAmount != null) {
-								sum = sum.add(serviceAmountInfo.dateTillAmount);
-							}
-						}
-					}
-				}
-			}
-
-			return sum;
-		}
-
+	/**
+	 * @param quittanceService
+	 *            the quittanceService to set
+	 */
+	public void setQuittanceService(QuittanceService quittanceService) {
+		this.quittanceService = quittanceService;
 	}
 
-	public static class ServiceAmountInfo {
-		public String name;
-		public Integer code;
-		public BigDecimal dateFromAmount;
-		public BigDecimal dateTillAmount;
-		
-		
-		/**
-		 * @return the name
-		 */
-		public String getName() {
-			return name;
-		}
-		/**
-		 * @param name the name to set
-		 */
-		public void setName(String name) {
-			this.name = name;
-		}
-		/**
-		 * @return the code
-		 */
-		public Integer getCode() {
-			return code;
-		}
-		/**
-		 * @param code the code to set
-		 */
-		public void setCode(Integer code) {
-			this.code = code;
-		}
-		/**
-		 * @return the dateFromAmount
-		 */
-		public BigDecimal getDateFromAmount() {
-			return dateFromAmount;
-		}
-		/**
-		 * @param dateFromAmount the dateFromAmount to set
-		 */
-		public void setDateFromAmount(BigDecimal dateFromAmount) {
-			this.dateFromAmount = dateFromAmount;
-		}
-		/**
-		 * @return the dateTillAmount
-		 */
-		public BigDecimal getDateTillAmount() {
-			return dateTillAmount;
-		}
-		/**
-		 * @param dateTillAmount the dateTillAmount to set
-		 */
-		public void setDateTillAmount(BigDecimal dateTillAmount) {
-			this.dateTillAmount = dateTillAmount;
-		}
+	/**
+	 * @param serviceTypeService
+	 *            the serviceTypeService to set
+	 */
+	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
+		this.serviceTypeService = serviceTypeService;
 	}
 
 }

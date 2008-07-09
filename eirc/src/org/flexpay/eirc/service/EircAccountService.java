@@ -42,4 +42,6 @@ public interface EircAccountService {
 	List<EircAccount> findAll(Page<EircAccount> pager);
 	
 	EircAccount findWithPerson(Long id);
+	
+	List<EircAccount> findByApartment(Long id);
 }

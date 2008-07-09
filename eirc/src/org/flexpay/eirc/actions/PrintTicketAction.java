@@ -15,20 +15,21 @@ import java.util.List;
 import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.pdf.PdfA3Writer;
-import org.flexpay.eirc.pdf.PdfTicketWriter;
-import org.flexpay.eirc.pdf.PdfTicketWriter.TicketInfo;
+import org.flexpay.eirc.pdf.PdfQuittanceWriter;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
-import org.flexpay.eirc.persistence.Ticket;
+import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.ServiceOrganisationService;
-import org.flexpay.eirc.service.TicketService;
+import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 
 import com.lowagie.text.DocumentException;
 
 public class PrintTicketAction extends CommonAction {
 
-	private TicketService ticketService;
 	private ServiceOrganisationService serviceOrganisationService;
+	private QuittanceService quittanceService;
+	private ServiceTypeService serviceTypeService;
 
 	private Integer year;
 	private Integer month;
@@ -71,9 +72,8 @@ public class PrintTicketAction extends CommonAction {
 	private String print(Long serviceOrganisationId, Date dateFrom,
 			Date dateTill) throws IOException, DocumentException,
 			FlexPayException {
-		List<Object> ticketsWithDelimiters = ticketService
-				.getTicketsWithDelimiters(serviceOrganisationId, dateFrom,
-						dateTill);
+		List<Object> ticketsWithDelimiters = quittanceService
+				.getQuittanceListWithDelimiters(serviceOrganisationId, dateFrom, dateTill);
 		if (ticketsWithDelimiters.isEmpty()) {
 			return null;
 		}
@@ -96,8 +96,12 @@ public class PrintTicketAction extends CommonAction {
 		File titlePatternFile = new File(ApplicationConfig.getInstance()
 				.getWebAppRoot(), "/resources/eirc/pdf/titlePattern.pdf");
 		InputStream titlePattern = new FileInputStream(titlePatternFile);
-		PdfTicketWriter ticketWriter = new PdfTicketWriter(ticketPatternFile,
+		/*PdfTicketWriter ticketWriter = new PdfTicketWriter(ticketPatternFile,
+				titlePattern);*/
+		PdfQuittanceWriter quittanceWriter = new PdfQuittanceWriter(ticketPatternFile,
 				titlePattern);
+		quittanceWriter.setQuittanceService(quittanceService);
+		quittanceWriter.setServiceTypeService(serviceTypeService);
 		DateFormat format = new SimpleDateFormat("MM.yyyy");
 		File outputA3File = new File(ApplicationConfig.getInstance()
 				.getEircDataRoot(), serviceOrganisationId + "_"
@@ -108,13 +112,11 @@ public class PrintTicketAction extends CommonAction {
 		for (Object element : finalArray) {
 			byte[] byteArray = null;
 			if (element instanceof String) {
-				byteArray = ticketWriter
+				byteArray = quittanceWriter
 						.writeTitleGetByteArray((String) element);
 			} else {
-				Ticket ticket = (Ticket) element;
-				TicketInfo ticketInfo = ticketService.getTicketInfo(ticket
-						.getId());
-				byteArray = ticketWriter.writeGetByteArray(ticketInfo);
+				Quittance quittance = (Quittance) element;
+				byteArray = quittanceWriter.writeGetByteArray(quittance);
 			}
 			a3Writer.write(byteArray);
 		}
@@ -122,14 +124,6 @@ public class PrintTicketAction extends CommonAction {
 		a3Writer.close();
 
 		return outputA3File.getAbsolutePath();
-	}
-
-	/**
-	 * @param tickerService
-	 *            the tickerService to set
-	 */
-	public void setTicketService(TicketService ticketService) {
-		this.ticketService = ticketService;
 	}
 
 	/**
@@ -191,6 +185,20 @@ public class PrintTicketAction extends CommonAction {
 	 */
 	public String getResultFile() {
 		return resultFile;
+	}
+
+	/**
+	 * @param quittanceService the quittanceService to set
+	 */
+	public void setQuittanceService(QuittanceService quittanceService) {
+		this.quittanceService = quittanceService;
+	}
+
+	/**
+	 * @param serviceTypeService the serviceTypeService to set
+	 */
+	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
+		this.serviceTypeService = serviceTypeService;
 	}
 
 }

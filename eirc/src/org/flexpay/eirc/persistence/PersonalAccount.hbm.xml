@@ -258,6 +258,11 @@
 		where person.id=? and apartment.id=? and status=0
 	</query>
 	
+	<query name="EircAccount.findByApartment">
+		from EircAccount
+		where apartment.id=? and status=0
+	</query>
+	
 	<query name="EircAccount.findObjects">
 		from EircAccount where status=0
 	</query>

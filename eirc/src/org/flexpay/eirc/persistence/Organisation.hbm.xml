@@ -167,6 +167,8 @@
 		SELECT DISTINCT so
 		FROM ServiceOrganisation so
 		INNER JOIN FETCH so.organisation o
+		LEFT JOIN FETCH o.names n
+		LEFT JOIN FETCH n.lang l
 	</query>
 
 
