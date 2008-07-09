@@ -235,6 +235,26 @@ public class Person extends DomainObjectWithStatus {
 	public void setPersonRegistrations(Set<PersonRegistration> personRegistrations) {
 		this.personRegistrations = personRegistrations;
 	}
+	
+	public PersonIdentity getPassportIdentity() {
+		for (PersonIdentity personIdentity : personIdentities) {
+			if (personIdentity.getIdentityType().getTypeId() == IdentityType.TYPE_PASSPORT) {
+				return personIdentity;
+			}
+		}	
+
+		return null;
+	}
+	
+	public PersonIdentity getForeignPassportIdentity() {
+		for (PersonIdentity personIdentity : personIdentities) {
+			if (personIdentity.getIdentityType().getTypeId() == IdentityType.TYPE_FOREIGN_PASSPORT) {
+				return personIdentity;
+			}
+		}	
+
+		return null;
+	}
 
 	/**
 	 * Get current FIO identity
