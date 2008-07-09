@@ -8,7 +8,8 @@ import org.junit.runners.Suite;
 		org.flexpay.common.util.config.AllTests.class,
 		TestDateIntervalUtil.class,
 		TestStringUtil.class,
-		TestCRCUtil.class
+		TestCRCUtil.class,
+		TestNotNull.class
 		})
 public class AllTests {
 

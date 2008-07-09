@@ -17,8 +17,6 @@ import java.util.List;
 
 public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoExt {
 
-	private PersonDaoExtJdbcImpl personDaoExtJdbc;
-
 	/**
 	 * Find persistent person by identity
 	 *
@@ -27,10 +25,6 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 	 */
 	public Person findPersonStub(final Person person) {
 
-//		if (true) {
-//			return personDaoExtJdbc.findPersonStub(person);
-//		}
-//
 		final PersonIdentity identity = person.getDefaultIdentity();
 		List identities = getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
@@ -75,9 +69,5 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 
 		PersonIdentity res = (PersonIdentity) identities.get(0);
 		return res.getPerson();
-	}
-
-	public void setPersonDaoExtJdbc(PersonDaoExtJdbcImpl personDaoExtJdbc) {
-		this.personDaoExtJdbc = personDaoExtJdbc;
 	}
 }

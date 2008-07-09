@@ -14,6 +14,7 @@ import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.jetbrains.annotations.NotNull;
 
 public interface ApartmentService {
 
@@ -85,5 +86,5 @@ public interface ApartmentService {
 	 */
 	Apartment readWithPersons(Long id);
 	
-	void fillFilterIds(Apartment apartment, CountryFilter countryFilter, RegionFilter regionFilter, TownFilter townFilter, StreetFilter streetFilter, BuildingsFilter buildingsFilter);
+	void fillFilterIds(@NotNull Apartment apartment, CountryFilter countryFilter, RegionFilter regionFilter, TownFilter townFilter, StreetFilter streetFilter, BuildingsFilter buildingsFilter);
 }

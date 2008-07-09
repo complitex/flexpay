@@ -1,61 +1,46 @@
 package org.flexpay.ab.actions.apartment;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-
-import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.persistence.Country;
-import org.flexpay.ab.persistence.PersonRegistration;
-import org.flexpay.ab.persistence.Region;
-import org.flexpay.ab.persistence.Town;
-import org.flexpay.ab.service.ApartmentService;
-import org.flexpay.ab.service.BuildingService;
-import org.flexpay.ab.service.CountryService;
-import org.flexpay.ab.service.RegionService;
-import org.flexpay.ab.service.TownService;
+import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.service.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 
+import java.util.*;
+
 public class ApartmentRegistrationsAction extends FPActionSupport {
-	
+
 	private ApartmentService apartmentService;
 	private BuildingService buildingService;
 	private TownService townService;
 	private RegionService regionService;
 	private CountryService countryService;
-	
+
 	private Apartment apartment;
 	private Buildings buildings;
 	private Town town;
 	private Region region;
 	private Country country;
-	
-	public String execute() throws FlexPayException {
+
+	public String doExecute() throws FlexPayException {
 		apartment = apartmentService.readWithPersons(apartment.getId());
 		buildings = buildingService.readFull(buildings.getId());
 		town = townService.readFull(buildings.getStreet().getParent().getId());
 		region = regionService.readFull(town.getParent().getId());
 		country = countryService.readFull(region.getParent().getId());
-		
-		
-		return "success";
+
+
+		return SUCCESS;
 	}
-	
+
 	public List<PersonRegistration> sortPersonRegistrations(Set<PersonRegistration> registrations) {
 		List<PersonRegistration> result = new ArrayList<PersonRegistration>(registrations);
-		
-		Collections.sort(result, new Comparator () {
-	        public int compare(Object o1, Object o2) {
-	        	PersonRegistration pr1 = (PersonRegistration)o1;
-	        	PersonRegistration pr2 = (PersonRegistration)o2;
-	            return pr1.getBeginDate().compareTo(pr2.getBeginDate());
-	        }
-	    });
-		
+
+		Collections.sort(result, new Comparator<PersonRegistration>() {
+			public int compare(PersonRegistration o1, PersonRegistration o2) {
+				return o1.getBeginDate().compareTo(o2.getBeginDate());
+			}
+		});
+
 		return result;
 	}
 

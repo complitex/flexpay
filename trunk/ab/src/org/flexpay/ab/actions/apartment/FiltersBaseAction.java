@@ -1,7 +1,6 @@
 package org.flexpay.ab.actions.apartment;
 
 import org.apache.commons.collections.ArrayStack;
-import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.ab.persistence.BuildingAttribute;
 import org.flexpay.ab.persistence.BuildingAttributeTypeTranslation;
 import org.flexpay.ab.persistence.filters.*;
@@ -12,8 +11,7 @@ import org.flexpay.common.service.ParentService;
 
 import java.util.Collection;
 
-public class FiltersBaseAction extends FPActionSupport implements
-		SessionAware {
+public class FiltersBaseAction extends FPActionSupport {
 
 	private ParentService<BuildingsFilter> parentService;
 
@@ -31,8 +29,7 @@ public class FiltersBaseAction extends FPActionSupport implements
 			for (Object filter : filterArrayStack) {
 				((PrimaryKeyFilter) filter).initFilter(session);
 			}
-			ArrayStack filters = parentService.initFilters(filterArrayStack,
-					userPreferences.getLocale());
+			ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
 			setFilters(filters);
 		} catch (FlexPayException e) {
 			filtersError = e.getErrorKey();
@@ -189,5 +186,4 @@ public class FiltersBaseAction extends FPActionSupport implements
 	public String getFiltersError() {
 		return filtersError;
 	}
-
 }

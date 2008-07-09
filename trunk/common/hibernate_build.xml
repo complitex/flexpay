@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="flexpay_db" basedir="..">
 
-	<import file="common_build.xml" />
-
-	<path id="hibernate.tool.lib">
-		<path refid="hibernate.lib" />
-	</path>
-
+	<import file="templates.xml" />
 
 	<taskdef name="hibernatetool"
 			 classname="org.hibernate.tool.ant.HibernateToolTask"
-			 classpath="${common.dir}/tests/data/org/flexpay/common"
-			 classpathref="hibernate.tool.lib" />
+			 classpathref="hibernate.lib" />
 
 	<target name="reveng.hbmxml"
 			description="Produces XML mapping files in src directory">
