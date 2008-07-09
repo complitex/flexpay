@@ -14,7 +14,7 @@ import java.io.*;
 
 public class SzFileDownloadServlet extends HttpServlet {
 
-	private static Logger log = Logger.getLogger(SzFileDownloadServlet.class);
+	private Logger log = Logger.getLogger(getClass());
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {

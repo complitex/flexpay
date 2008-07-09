@@ -43,6 +43,38 @@
         drop 
         foreign key FK1737CD8EF71F858D;
 
+    alter table ab_country_name_translations_tbl 
+        drop 
+        foreign key FK31EC318E9E89EB47;
+
+    alter table ab_country_name_translations_tbl 
+        drop 
+        foreign key FK31EC318E61F37403;
+
+    alter table ab_district_name_translations_tbl 
+        drop 
+        foreign key FKD194B702398B1DAA;
+
+    alter table ab_district_name_translations_tbl 
+        drop 
+        foreign key FKD194B70261F37403;
+
+    alter table ab_district_names_tbl 
+        drop 
+        foreign key FK7A70D3B41AE9F4D;
+
+    alter table ab_district_names_temporal_tbl 
+        drop 
+        foreign key FK6525F5EB1AE9F4D;
+
+    alter table ab_district_names_temporal_tbl 
+        drop 
+        foreign key FK6525F5EB398B1DAA;
+
+    alter table ab_districts_tbl 
+        drop 
+        foreign key FK79F1E386712C324D;
+
     alter table ab_identity_type_translations_tbl 
         drop 
         foreign key FK2195EF63D8765DAA;
@@ -87,6 +119,118 @@
         drop 
         foreign key FP_ab_person_registrations_apartment;
 
+    alter table ab_region_name_translations_tbl 
+        drop 
+        foreign key FK3DB8D968D605B436;
+
+    alter table ab_region_name_translations_tbl 
+        drop 
+        foreign key FK3DB8D96861F37403;
+
+    alter table ab_region_names_tbl 
+        drop 
+        foreign key FKF918DF1A458E164D;
+
+    alter table ab_region_names_temporal_tbl 
+        drop 
+        foreign key FK609D5D45D605B436;
+
+    alter table ab_region_names_temporal_tbl 
+        drop 
+        foreign key FK609D5D45458E164D;
+
+    alter table ab_regions_tbl 
+        drop 
+        foreign key FK61DDD0609E89EB47;
+
+    alter table ab_street_name_translations_tbl 
+        drop 
+        foreign key FK72F93D37D80067D4;
+
+    alter table ab_street_name_translations_tbl 
+        drop 
+        foreign key FK72F93D3761F37403;
+
+    alter table ab_street_names_tbl 
+        drop 
+        foreign key FK496D4169311847ED;
+
+    alter table ab_street_names_temporal_tbl 
+        drop 
+        foreign key FKAEC123D6311847ED;
+
+    alter table ab_street_names_temporal_tbl 
+        drop 
+        foreign key FKAEC123D6D80067D4;
+
+    alter table ab_street_type_translations_tbl 
+        drop 
+        foreign key FKDEBA3C683E877574;
+
+    alter table ab_street_type_translations_tbl 
+        drop 
+        foreign key FKDEBA3C6861F37403;
+
+    alter table ab_street_types_temporal_tbl 
+        drop 
+        foreign key FK_street;
+
+    alter table ab_street_types_temporal_tbl 
+        drop 
+        foreign key FK_street_type;
+
+    alter table ab_streets_districts_tbl 
+        drop 
+        foreign key FK93093857311847ED;
+
+    alter table ab_streets_districts_tbl 
+        drop 
+        foreign key FK930938571AE9F4D;
+
+    alter table ab_streets_tbl 
+        drop 
+        foreign key FKFFBAF8B1712C324D;
+
+    alter table ab_town_name_translations_tbl 
+        drop 
+        foreign key FKE4BB206B6638732;
+
+    alter table ab_town_name_translations_tbl 
+        drop 
+        foreign key FKE4BB20661F37403;
+
+    alter table ab_town_names_tbl 
+        drop 
+        foreign key FK85A534B8712C324D;
+
+    alter table ab_town_names_temporal_tbl 
+        drop 
+        foreign key FK59747967B6638732;
+
+    alter table ab_town_names_temporal_tbl 
+        drop 
+        foreign key FK59747967712C324D;
+
+    alter table ab_town_type_translations_tbl 
+        drop 
+        foreign key FK7A0CB1371CEA94D2;
+
+    alter table ab_town_type_translations_tbl 
+        drop 
+        foreign key FK7A0CB13761F37403;
+
+    alter table ab_town_types_temporal_tbl 
+        drop 
+        foreign key FK29822FD61CEA94D2;
+
+    alter table ab_town_types_temporal_tbl 
+        drop 
+        foreign key FK29822FD6712C324D;
+
+    alter table ab_towns_tbl 
+        drop 
+        foreign key FK23FDF002458E164D;
+
     alter table common_data_corrections_tbl 
         drop 
         foreign key FKF86BDC935BA789BB;
@@ -102,38 +246,6 @@
     alter table common_language_names_tbl 
         drop 
         foreign key FK85F168F461F37403;
-
-    alter table country_name_translations_tbl 
-        drop 
-        foreign key FK5673A52C9E89EB47;
-
-    alter table country_name_translations_tbl 
-        drop 
-        foreign key FK5673A52C61F37403;
-
-    alter table district_name_translations_tbl 
-        drop 
-        foreign key FK3DFBB724398B1DAA;
-
-    alter table district_name_translations_tbl 
-        drop 
-        foreign key FK3DFBB72461F37403;
-
-    alter table district_names_tbl 
-        drop 
-        foreign key FKB64D76D61AE9F4D;
-
-    alter table district_names_temporal_tbl 
-        drop 
-        foreign key FKF591B9091AE9F4D;
-
-    alter table district_names_temporal_tbl 
-        drop 
-        foreign key FKF591B909398B1DAA;
-
-    alter table districts_tbl 
-        drop 
-        foreign key FKCA605324712C324D;
 
     alter table eirc_account_records_tbl 
         drop 
@@ -343,118 +455,6 @@
         drop 
         foreign key FK_eirc_ticket_apartment;
 
-    alter table region_name_translations_tbl 
-        drop 
-        foreign key FKBAC57A0AD605B436;
-
-    alter table region_name_translations_tbl 
-        drop 
-        foreign key FKBAC57A0A61F37403;
-
-    alter table region_names_tbl 
-        drop 
-        foreign key FKDCA7E2BC458E164D;
-
-    alter table region_names_temporal_tbl 
-        drop 
-        foreign key FK80BB4FE3D605B436;
-
-    alter table region_names_temporal_tbl 
-        drop 
-        foreign key FK80BB4FE3458E164D;
-
-    alter table regions_tbl 
-        drop 
-        foreign key FKA3BF8F7E9E89EB47;
-
-    alter table street_name_translations_tbl 
-        drop 
-        foreign key FKF005DDD9D80067D4;
-
-    alter table street_name_translations_tbl 
-        drop 
-        foreign key FKF005DDD961F37403;
-
-    alter table street_names_tbl 
-        drop 
-        foreign key FK2CFC450B311847ED;
-
-    alter table street_names_temporal_tbl 
-        drop 
-        foreign key FKCEDF1674311847ED;
-
-    alter table street_names_temporal_tbl 
-        drop 
-        foreign key FKCEDF1674D80067D4;
-
-    alter table street_type_translations_tbl 
-        drop 
-        foreign key FK5BC6DD0A3E877574;
-
-    alter table street_type_translations_tbl 
-        drop 
-        foreign key FK5BC6DD0A61F37403;
-
-    alter table street_types_temporal_tbl 
-        drop 
-        foreign key FK_street;
-
-    alter table street_types_temporal_tbl 
-        drop 
-        foreign key FK_street_type;
-
-    alter table streets_districts_tbl 
-        drop 
-        foreign key FKC3D529F5311847ED;
-
-    alter table streets_districts_tbl 
-        drop 
-        foreign key FKC3D529F51AE9F4D;
-
-    alter table streets_tbl 
-        drop 
-        foreign key FK419CB7CF712C324D;
-
-    alter table town_name_translations_tbl 
-        drop 
-        foreign key FKF1EC1328B6638732;
-
-    alter table town_name_translations_tbl 
-        drop 
-        foreign key FKF1EC132861F37403;
-
-    alter table town_names_tbl 
-        drop 
-        foreign key FK4304B8DA712C324D;
-
-    alter table town_names_temporal_tbl 
-        drop 
-        foreign key FK870A7B85B6638732;
-
-    alter table town_names_temporal_tbl 
-        drop 
-        foreign key FK870A7B85712C324D;
-
-    alter table town_type_translations_tbl 
-        drop 
-        foreign key FK5DAD12591CEA94D2;
-
-    alter table town_type_translations_tbl 
-        drop 
-        foreign key FK5DAD125961F37403;
-
-    alter table town_types_temporal_tbl 
-        drop 
-        foreign key FK571831F41CEA94D2;
-
-    alter table town_types_temporal_tbl 
-        drop 
-        foreign key FK571831F4712C324D;
-
-    alter table towns_tbl 
-        drop 
-        foreign key FK92E0DEA0458E164D;
-
     drop table if exists ab_apartment_numbers_tbl;
 
     drop table if exists ab_apartments_tbl;
@@ -471,6 +471,18 @@
 
     drop table if exists ab_buildingses_tbl;
 
+    drop table if exists ab_countries_tbl;
+
+    drop table if exists ab_country_name_translations_tbl;
+
+    drop table if exists ab_district_name_translations_tbl;
+
+    drop table if exists ab_district_names_tbl;
+
+    drop table if exists ab_district_names_temporal_tbl;
+
+    drop table if exists ab_districts_tbl;
+
     drop table if exists ab_identity_type_translations_tbl;
 
     drop table if exists ab_identity_types_tbl;
@@ -485,6 +497,44 @@
 
     drop table if exists ab_persons_tbl;
 
+    drop table if exists ab_region_name_translations_tbl;
+
+    drop table if exists ab_region_names_tbl;
+
+    drop table if exists ab_region_names_temporal_tbl;
+
+    drop table if exists ab_regions_tbl;
+
+    drop table if exists ab_street_name_translations_tbl;
+
+    drop table if exists ab_street_names_tbl;
+
+    drop table if exists ab_street_names_temporal_tbl;
+
+    drop table if exists ab_street_type_translations_tbl;
+
+    drop table if exists ab_street_types_tbl;
+
+    drop table if exists ab_street_types_temporal_tbl;
+
+    drop table if exists ab_streets_districts_tbl;
+
+    drop table if exists ab_streets_tbl;
+
+    drop table if exists ab_town_name_translations_tbl;
+
+    drop table if exists ab_town_names_tbl;
+
+    drop table if exists ab_town_names_temporal_tbl;
+
+    drop table if exists ab_town_type_translations_tbl;
+
+    drop table if exists ab_town_types_tbl;
+
+    drop table if exists ab_town_types_temporal_tbl;
+
+    drop table if exists ab_towns_tbl;
+
     drop table if exists common_data_corrections_tbl;
 
     drop table if exists common_data_source_descriptions_tbl;
@@ -496,18 +546,6 @@
     drop table if exists common_languages_tbl;
 
     drop table if exists common_sequences_tbl;
-
-    drop table if exists countries_tbl;
-
-    drop table if exists country_name_translations_tbl;
-
-    drop table if exists district_name_translations_tbl;
-
-    drop table if exists district_names_tbl;
-
-    drop table if exists district_names_temporal_tbl;
-
-    drop table if exists districts_tbl;
 
     drop table if exists eirc_account_record_types_tbl;
 
@@ -564,44 +602,6 @@
     drop table if exists eirc_ticket_service_amounts_tbl;
 
     drop table if exists eirc_tickets_tbl;
-
-    drop table if exists region_name_translations_tbl;
-
-    drop table if exists region_names_tbl;
-
-    drop table if exists region_names_temporal_tbl;
-
-    drop table if exists regions_tbl;
-
-    drop table if exists street_name_translations_tbl;
-
-    drop table if exists street_names_tbl;
-
-    drop table if exists street_names_temporal_tbl;
-
-    drop table if exists street_type_translations_tbl;
-
-    drop table if exists street_types_tbl;
-
-    drop table if exists street_types_temporal_tbl;
-
-    drop table if exists streets_districts_tbl;
-
-    drop table if exists streets_tbl;
-
-    drop table if exists town_name_translations_tbl;
-
-    drop table if exists town_names_tbl;
-
-    drop table if exists town_names_temporal_tbl;
-
-    drop table if exists town_type_translations_tbl;
-
-    drop table if exists town_types_tbl;
-
-    drop table if exists town_types_temporal_tbl;
-
-    drop table if exists towns_tbl;
 
     create table ab_apartment_numbers_tbl (
         id bigint not null auto_increment,
@@ -669,6 +669,55 @@
         primary key (id)
     );
 
+    create table ab_countries_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        primary key (id)
+    );
+
+    create table ab_country_name_translations_tbl (
+        id bigint not null auto_increment,
+        name varchar(255),
+        short_name varchar(5),
+        country_id bigint not null,
+        language_id bigint not null,
+        primary key (id),
+        unique (country_id, language_id)
+    );
+
+    create table ab_district_name_translations_tbl (
+        id bigint not null auto_increment,
+        name varchar(255),
+        district_name_id bigint not null,
+        language_id bigint not null,
+        primary key (id),
+        unique (district_name_id, language_id)
+    );
+
+    create table ab_district_names_tbl (
+        id bigint not null auto_increment,
+        district_id bigint not null,
+        primary key (id)
+    );
+
+    create table ab_district_names_temporal_tbl (
+        id bigint not null auto_increment,
+        begin_date date not null,
+        end_date date not null,
+        create_date date not null,
+        invalid_date date not null,
+        district_id bigint not null,
+        district_name_id bigint,
+        primary key (id)
+    );
+
+    create table ab_districts_tbl (
+        id bigint not null auto_increment,
+        town_id bigint not null,
+        status integer not null,
+        primary key (id)
+    );
+
     create table ab_identity_type_translations_tbl (
         id bigint not null auto_increment,
         name varchar(255),
@@ -708,6 +757,7 @@
         last_name varchar(255) not null,
         organization varchar(4000) not null,
         is_default bit not null,
+        sex smallint not null comment 'Person sex type',
         identity_type_id bigint not null,
         person_id bigint not null,
         primary key (id)
@@ -734,6 +784,165 @@
 
     create table ab_persons_tbl (
         id bigint not null auto_increment,
+        status integer not null,
+        primary key (id)
+    );
+
+    create table ab_region_name_translations_tbl (
+        id bigint not null auto_increment,
+        name varchar(255),
+        region_name_id bigint not null,
+        language_id bigint not null,
+        primary key (id),
+        unique (region_name_id, language_id)
+    );
+
+    create table ab_region_names_tbl (
+        id bigint not null auto_increment,
+        region_id bigint not null,
+        primary key (id)
+    );
+
+    create table ab_region_names_temporal_tbl (
+        id bigint not null auto_increment,
+        begin_date date not null,
+        end_date date not null,
+        create_date date not null,
+        invalid_date date not null,
+        region_id bigint not null,
+        region_name_id bigint,
+        primary key (id)
+    );
+
+    create table ab_regions_tbl (
+        id bigint not null auto_increment,
+        country_id bigint not null,
+        status integer not null,
+        primary key (id)
+    );
+
+    create table ab_street_name_translations_tbl (
+        id bigint not null auto_increment,
+        name varchar(255),
+        street_name_id bigint not null,
+        language_id bigint not null,
+        primary key (id),
+        unique (street_name_id, language_id)
+    );
+
+    create table ab_street_names_tbl (
+        id bigint not null auto_increment,
+        street_id bigint not null,
+        primary key (id)
+    );
+
+    create table ab_street_names_temporal_tbl (
+        id bigint not null auto_increment,
+        begin_date date not null,
+        end_date date not null,
+        create_date date not null,
+        invalid_date date not null,
+        street_id bigint not null,
+        street_name_id bigint,
+        primary key (id)
+    );
+
+    create table ab_street_type_translations_tbl (
+        id bigint not null auto_increment,
+        name varchar(255),
+        short_name varchar(255),
+        language_id bigint not null,
+        street_type_id bigint not null,
+        primary key (id),
+        unique (language_id, street_type_id)
+    );
+
+    create table ab_street_types_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        primary key (id)
+    );
+
+    create table ab_street_types_temporal_tbl (
+        id bigint not null auto_increment,
+        begin_date date not null,
+        end_date date not null,
+        create_date date not null,
+        invalid_date date not null,
+        street_id bigint not null,
+        street_type_id bigint comment 'Street type reference',
+        primary key (id)
+    );
+
+    create table ab_streets_districts_tbl (
+        district_id bigint not null,
+        street_id bigint not null,
+        primary key (street_id, district_id)
+    );
+
+    create table ab_streets_tbl (
+        id bigint not null auto_increment,
+        town_id bigint not null,
+        status integer not null,
+        primary key (id)
+    );
+
+    create table ab_town_name_translations_tbl (
+        id bigint not null auto_increment,
+        name varchar(255),
+        town_name_id bigint not null,
+        language_id bigint not null,
+        primary key (id),
+        unique (town_name_id, language_id)
+    );
+
+    create table ab_town_names_tbl (
+        id bigint not null auto_increment,
+        town_id bigint not null,
+        primary key (id)
+    );
+
+    create table ab_town_names_temporal_tbl (
+        id bigint not null auto_increment,
+        begin_date date not null,
+        end_date date not null,
+        create_date date not null,
+        invalid_date date not null,
+        town_id bigint not null,
+        town_name_id bigint,
+        primary key (id)
+    );
+
+    create table ab_town_type_translations_tbl (
+        ID bigint not null auto_increment,
+        name varchar(255),
+        short_name varchar(255),
+        language_id bigint,
+        town_type_id bigint,
+        primary key (ID),
+        unique (language_id, town_type_id)
+    );
+
+    create table ab_town_types_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        primary key (id)
+    );
+
+    create table ab_town_types_temporal_tbl (
+        id bigint not null auto_increment,
+        begin_date date not null,
+        end_date date not null,
+        create_date date not null,
+        invalid_date date not null,
+        town_id bigint not null,
+        town_type_id bigint,
+        primary key (id)
+    );
+
+    create table ab_towns_tbl (
+        id bigint not null auto_increment,
+        region_id bigint not null,
         status integer not null,
         primary key (id)
     );
@@ -786,55 +995,6 @@
         id bigint not null auto_increment,
         counter bigint not null,
         description varchar(255),
-        primary key (id)
-    );
-
-    create table countries_tbl (
-        id bigint not null auto_increment,
-        status integer not null,
-        primary key (id)
-    );
-
-    create table country_name_translations_tbl (
-        id bigint not null auto_increment,
-        name varchar(255),
-        short_name varchar(5),
-        country_id bigint not null,
-        language_id bigint not null,
-        primary key (id),
-        unique (country_id, language_id)
-    );
-
-    create table district_name_translations_tbl (
-        id bigint not null auto_increment,
-        name varchar(255),
-        district_name_id bigint not null,
-        language_id bigint not null,
-        primary key (id),
-        unique (district_name_id, language_id)
-    );
-
-    create table district_names_tbl (
-        id bigint not null auto_increment,
-        district_id bigint not null,
-        primary key (id)
-    );
-
-    create table district_names_temporal_tbl (
-        id bigint not null auto_increment,
-        begin_date date not null,
-        end_date date not null,
-        create_date date not null,
-        invalid_date date not null,
-        district_id bigint not null,
-        district_name_id bigint,
-        primary key (id)
-    );
-
-    create table districts_tbl (
-        id bigint not null auto_increment,
-        town_id bigint not null,
-        status integer not null,
         primary key (id)
     );
 
@@ -1131,165 +1291,6 @@
         primary key (id)
     );
 
-    create table region_name_translations_tbl (
-        id bigint not null auto_increment,
-        name varchar(255),
-        region_name_id bigint not null,
-        language_id bigint not null,
-        primary key (id),
-        unique (region_name_id, language_id)
-    );
-
-    create table region_names_tbl (
-        id bigint not null auto_increment,
-        region_id bigint not null,
-        primary key (id)
-    );
-
-    create table region_names_temporal_tbl (
-        id bigint not null auto_increment,
-        begin_date date not null,
-        end_date date not null,
-        create_date date not null,
-        invalid_date date not null,
-        region_id bigint not null,
-        region_name_id bigint,
-        primary key (id)
-    );
-
-    create table regions_tbl (
-        id bigint not null auto_increment,
-        country_id bigint not null,
-        status integer not null,
-        primary key (id)
-    );
-
-    create table street_name_translations_tbl (
-        id bigint not null auto_increment,
-        name varchar(255),
-        street_name_id bigint not null,
-        language_id bigint not null,
-        primary key (id),
-        unique (street_name_id, language_id)
-    );
-
-    create table street_names_tbl (
-        id bigint not null auto_increment,
-        street_id bigint not null,
-        primary key (id)
-    );
-
-    create table street_names_temporal_tbl (
-        id bigint not null auto_increment,
-        begin_date date not null,
-        end_date date not null,
-        create_date date not null,
-        invalid_date date not null,
-        street_id bigint not null,
-        street_name_id bigint,
-        primary key (id)
-    );
-
-    create table street_type_translations_tbl (
-        id bigint not null auto_increment,
-        name varchar(255),
-        short_name varchar(255),
-        language_id bigint not null,
-        street_type_id bigint not null,
-        primary key (id),
-        unique (language_id, street_type_id)
-    );
-
-    create table street_types_tbl (
-        id bigint not null auto_increment,
-        status integer not null,
-        primary key (id)
-    );
-
-    create table street_types_temporal_tbl (
-        id bigint not null auto_increment,
-        begin_date date not null,
-        end_date date not null,
-        create_date date not null,
-        invalid_date date not null,
-        street_id bigint not null,
-        street_type_id bigint comment 'Street type reference',
-        primary key (id)
-    );
-
-    create table streets_districts_tbl (
-        district_id bigint not null,
-        street_id bigint not null,
-        primary key (street_id, district_id)
-    );
-
-    create table streets_tbl (
-        id bigint not null auto_increment,
-        town_id bigint not null,
-        status integer not null,
-        primary key (id)
-    );
-
-    create table town_name_translations_tbl (
-        id bigint not null auto_increment,
-        name varchar(255),
-        town_name_id bigint not null,
-        language_id bigint not null,
-        primary key (id),
-        unique (town_name_id, language_id)
-    );
-
-    create table town_names_tbl (
-        id bigint not null auto_increment,
-        town_id bigint not null,
-        primary key (id)
-    );
-
-    create table town_names_temporal_tbl (
-        id bigint not null auto_increment,
-        begin_date date not null,
-        end_date date not null,
-        create_date date not null,
-        invalid_date date not null,
-        town_id bigint not null,
-        town_name_id bigint,
-        primary key (id)
-    );
-
-    create table town_type_translations_tbl (
-        ID bigint not null auto_increment,
-        name varchar(255),
-        short_name varchar(255),
-        language_id bigint,
-        town_type_id bigint,
-        primary key (ID),
-        unique (language_id, town_type_id)
-    );
-
-    create table town_types_tbl (
-        id bigint not null auto_increment,
-        status integer not null,
-        primary key (id)
-    );
-
-    create table town_types_temporal_tbl (
-        id bigint not null auto_increment,
-        begin_date date not null,
-        end_date date not null,
-        create_date date not null,
-        invalid_date date not null,
-        town_id bigint not null,
-        town_type_id bigint,
-        primary key (id)
-    );
-
-    create table towns_tbl (
-        id bigint not null auto_increment,
-        region_id bigint not null,
-        status integer not null,
-        primary key (id)
-    );
-
     create index indx_value on ab_apartment_numbers_tbl (value);
 
     alter table ab_apartment_numbers_tbl 
@@ -1340,7 +1341,7 @@
         add index FK99FC8C201AE9F4D (district_id), 
         add constraint FK99FC8C201AE9F4D 
         foreign key (district_id) 
-        references districts_tbl (id);
+        references ab_districts_tbl (id);
 
     alter table ab_buildings_tbl 
         add index FK_eirc_building_service_organisation (eirc_service_organisation_id), 
@@ -1352,13 +1353,61 @@
         add index FK1737CD8E311847ED (street_id), 
         add constraint FK1737CD8E311847ED 
         foreign key (street_id) 
-        references streets_tbl (id);
+        references ab_streets_tbl (id);
 
     alter table ab_buildingses_tbl 
         add index FK1737CD8EF71F858D (building_id), 
         add constraint FK1737CD8EF71F858D 
         foreign key (building_id) 
         references ab_buildings_tbl (id);
+
+    alter table ab_country_name_translations_tbl 
+        add index FK31EC318E9E89EB47 (country_id), 
+        add constraint FK31EC318E9E89EB47 
+        foreign key (country_id) 
+        references ab_countries_tbl (id);
+
+    alter table ab_country_name_translations_tbl 
+        add index FK31EC318E61F37403 (language_id), 
+        add constraint FK31EC318E61F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table ab_district_name_translations_tbl 
+        add index FKD194B702398B1DAA (district_name_id), 
+        add constraint FKD194B702398B1DAA 
+        foreign key (district_name_id) 
+        references ab_district_names_tbl (id);
+
+    alter table ab_district_name_translations_tbl 
+        add index FKD194B70261F37403 (language_id), 
+        add constraint FKD194B70261F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table ab_district_names_tbl 
+        add index FK7A70D3B41AE9F4D (district_id), 
+        add constraint FK7A70D3B41AE9F4D 
+        foreign key (district_id) 
+        references ab_districts_tbl (id);
+
+    alter table ab_district_names_temporal_tbl 
+        add index FK6525F5EB1AE9F4D (district_id), 
+        add constraint FK6525F5EB1AE9F4D 
+        foreign key (district_id) 
+        references ab_districts_tbl (id);
+
+    alter table ab_district_names_temporal_tbl 
+        add index FK6525F5EB398B1DAA (district_name_id), 
+        add constraint FK6525F5EB398B1DAA 
+        foreign key (district_name_id) 
+        references ab_district_names_tbl (id);
+
+    alter table ab_districts_tbl 
+        add index FK79F1E386712C324D (town_id), 
+        add constraint FK79F1E386712C324D 
+        foreign key (town_id) 
+        references ab_towns_tbl (id);
 
     alter table ab_identity_type_translations_tbl 
         add index FK2195EF63D8765DAA (identity_type_id), 
@@ -1428,6 +1477,174 @@
         foreign key (apartment_id) 
         references ab_apartments_tbl (id);
 
+    alter table ab_region_name_translations_tbl 
+        add index FK3DB8D968D605B436 (region_name_id), 
+        add constraint FK3DB8D968D605B436 
+        foreign key (region_name_id) 
+        references ab_region_names_tbl (id);
+
+    alter table ab_region_name_translations_tbl 
+        add index FK3DB8D96861F37403 (language_id), 
+        add constraint FK3DB8D96861F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table ab_region_names_tbl 
+        add index FKF918DF1A458E164D (region_id), 
+        add constraint FKF918DF1A458E164D 
+        foreign key (region_id) 
+        references ab_regions_tbl (id);
+
+    alter table ab_region_names_temporal_tbl 
+        add index FK609D5D45D605B436 (region_name_id), 
+        add constraint FK609D5D45D605B436 
+        foreign key (region_name_id) 
+        references ab_region_names_tbl (id);
+
+    alter table ab_region_names_temporal_tbl 
+        add index FK609D5D45458E164D (region_id), 
+        add constraint FK609D5D45458E164D 
+        foreign key (region_id) 
+        references ab_regions_tbl (id);
+
+    alter table ab_regions_tbl 
+        add index FK61DDD0609E89EB47 (country_id), 
+        add constraint FK61DDD0609E89EB47 
+        foreign key (country_id) 
+        references ab_countries_tbl (id);
+
+    alter table ab_street_name_translations_tbl 
+        add index FK72F93D37D80067D4 (street_name_id), 
+        add constraint FK72F93D37D80067D4 
+        foreign key (street_name_id) 
+        references ab_street_names_tbl (id);
+
+    alter table ab_street_name_translations_tbl 
+        add index FK72F93D3761F37403 (language_id), 
+        add constraint FK72F93D3761F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table ab_street_names_tbl 
+        add index FK496D4169311847ED (street_id), 
+        add constraint FK496D4169311847ED 
+        foreign key (street_id) 
+        references ab_streets_tbl (id);
+
+    alter table ab_street_names_temporal_tbl 
+        add index FKAEC123D6311847ED (street_id), 
+        add constraint FKAEC123D6311847ED 
+        foreign key (street_id) 
+        references ab_streets_tbl (id);
+
+    alter table ab_street_names_temporal_tbl 
+        add index FKAEC123D6D80067D4 (street_name_id), 
+        add constraint FKAEC123D6D80067D4 
+        foreign key (street_name_id) 
+        references ab_street_names_tbl (id);
+
+    alter table ab_street_type_translations_tbl 
+        add index FKDEBA3C683E877574 (street_type_id), 
+        add constraint FKDEBA3C683E877574 
+        foreign key (street_type_id) 
+        references ab_street_types_tbl (id);
+
+    alter table ab_street_type_translations_tbl 
+        add index FKDEBA3C6861F37403 (language_id), 
+        add constraint FKDEBA3C6861F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table ab_street_types_temporal_tbl 
+        add index FK_street (street_id), 
+        add constraint FK_street 
+        foreign key (street_id) 
+        references ab_streets_tbl (id);
+
+    alter table ab_street_types_temporal_tbl 
+        add index FK_street_type (street_type_id), 
+        add constraint FK_street_type 
+        foreign key (street_type_id) 
+        references ab_street_types_tbl (id);
+
+    alter table ab_streets_districts_tbl 
+        add index FK93093857311847ED (street_id), 
+        add constraint FK93093857311847ED 
+        foreign key (street_id) 
+        references ab_streets_tbl (id);
+
+    alter table ab_streets_districts_tbl 
+        add index FK930938571AE9F4D (district_id), 
+        add constraint FK930938571AE9F4D 
+        foreign key (district_id) 
+        references ab_districts_tbl (id);
+
+    alter table ab_streets_tbl 
+        add index FKFFBAF8B1712C324D (town_id), 
+        add constraint FKFFBAF8B1712C324D 
+        foreign key (town_id) 
+        references ab_towns_tbl (id);
+
+    alter table ab_town_name_translations_tbl 
+        add index FKE4BB206B6638732 (town_name_id), 
+        add constraint FKE4BB206B6638732 
+        foreign key (town_name_id) 
+        references ab_town_names_tbl (id);
+
+    alter table ab_town_name_translations_tbl 
+        add index FKE4BB20661F37403 (language_id), 
+        add constraint FKE4BB20661F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table ab_town_names_tbl 
+        add index FK85A534B8712C324D (town_id), 
+        add constraint FK85A534B8712C324D 
+        foreign key (town_id) 
+        references ab_towns_tbl (id);
+
+    alter table ab_town_names_temporal_tbl 
+        add index FK59747967B6638732 (town_name_id), 
+        add constraint FK59747967B6638732 
+        foreign key (town_name_id) 
+        references ab_town_names_tbl (id);
+
+    alter table ab_town_names_temporal_tbl 
+        add index FK59747967712C324D (town_id), 
+        add constraint FK59747967712C324D 
+        foreign key (town_id) 
+        references ab_towns_tbl (id);
+
+    alter table ab_town_type_translations_tbl 
+        add index FK7A0CB1371CEA94D2 (town_type_id), 
+        add constraint FK7A0CB1371CEA94D2 
+        foreign key (town_type_id) 
+        references ab_town_types_tbl (id);
+
+    alter table ab_town_type_translations_tbl 
+        add index FK7A0CB13761F37403 (language_id), 
+        add constraint FK7A0CB13761F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table ab_town_types_temporal_tbl 
+        add index FK29822FD61CEA94D2 (town_type_id), 
+        add constraint FK29822FD61CEA94D2 
+        foreign key (town_type_id) 
+        references ab_town_types_tbl (id);
+
+    alter table ab_town_types_temporal_tbl 
+        add index FK29822FD6712C324D (town_id), 
+        add constraint FK29822FD6712C324D 
+        foreign key (town_id) 
+        references ab_towns_tbl (id);
+
+    alter table ab_towns_tbl 
+        add index FK23FDF002458E164D (region_id), 
+        add constraint FK23FDF002458E164D 
+        foreign key (region_id) 
+        references ab_regions_tbl (id);
+
     alter table common_data_corrections_tbl 
         add index FKF86BDC935BA789BB (data_source_description_id), 
         add constraint FKF86BDC935BA789BB 
@@ -1451,54 +1668,6 @@
         add constraint FK85F168F461F37403 
         foreign key (language_id) 
         references common_languages_tbl (id);
-
-    alter table country_name_translations_tbl 
-        add index FK5673A52C9E89EB47 (country_id), 
-        add constraint FK5673A52C9E89EB47 
-        foreign key (country_id) 
-        references countries_tbl (id);
-
-    alter table country_name_translations_tbl 
-        add index FK5673A52C61F37403 (language_id), 
-        add constraint FK5673A52C61F37403 
-        foreign key (language_id) 
-        references common_languages_tbl (id);
-
-    alter table district_name_translations_tbl 
-        add index FK3DFBB724398B1DAA (district_name_id), 
-        add constraint FK3DFBB724398B1DAA 
-        foreign key (district_name_id) 
-        references district_names_tbl (id);
-
-    alter table district_name_translations_tbl 
-        add index FK3DFBB72461F37403 (language_id), 
-        add constraint FK3DFBB72461F37403 
-        foreign key (language_id) 
-        references common_languages_tbl (id);
-
-    alter table district_names_tbl 
-        add index FKB64D76D61AE9F4D (district_id), 
-        add constraint FKB64D76D61AE9F4D 
-        foreign key (district_id) 
-        references districts_tbl (id);
-
-    alter table district_names_temporal_tbl 
-        add index FKF591B9091AE9F4D (district_id), 
-        add constraint FKF591B9091AE9F4D 
-        foreign key (district_id) 
-        references districts_tbl (id);
-
-    alter table district_names_temporal_tbl 
-        add index FKF591B909398B1DAA (district_name_id), 
-        add constraint FKF591B909398B1DAA 
-        foreign key (district_name_id) 
-        references district_names_tbl (id);
-
-    alter table districts_tbl 
-        add index FKCA605324712C324D (town_id), 
-        add constraint FKCA605324712C324D 
-        foreign key (town_id) 
-        references towns_tbl (id);
 
     alter table eirc_account_records_tbl 
         add index FK_eirc_account_record_consumer (consumer_id), 
@@ -1720,7 +1889,7 @@
         add index FK_eirc_service_organisation_district (district_id), 
         add constraint FK_eirc_service_organisation_district 
         foreign key (district_id) 
-        references districts_tbl (id);
+        references ab_districts_tbl (id);
 
     alter table eirc_service_organisations_tbl 
         add index FK_eirc_service_organisation_organisation (organisation_id), 
@@ -1813,171 +1982,3 @@
         add constraint FK_eirc_ticket_apartment 
         foreign key (apartment_id) 
         references ab_apartments_tbl (id);
-
-    alter table region_name_translations_tbl 
-        add index FKBAC57A0AD605B436 (region_name_id), 
-        add constraint FKBAC57A0AD605B436 
-        foreign key (region_name_id) 
-        references region_names_tbl (id);
-
-    alter table region_name_translations_tbl 
-        add index FKBAC57A0A61F37403 (language_id), 
-        add constraint FKBAC57A0A61F37403 
-        foreign key (language_id) 
-        references common_languages_tbl (id);
-
-    alter table region_names_tbl 
-        add index FKDCA7E2BC458E164D (region_id), 
-        add constraint FKDCA7E2BC458E164D 
-        foreign key (region_id) 
-        references regions_tbl (id);
-
-    alter table region_names_temporal_tbl 
-        add index FK80BB4FE3D605B436 (region_name_id), 
-        add constraint FK80BB4FE3D605B436 
-        foreign key (region_name_id) 
-        references region_names_tbl (id);
-
-    alter table region_names_temporal_tbl 
-        add index FK80BB4FE3458E164D (region_id), 
-        add constraint FK80BB4FE3458E164D 
-        foreign key (region_id) 
-        references regions_tbl (id);
-
-    alter table regions_tbl 
-        add index FKA3BF8F7E9E89EB47 (country_id), 
-        add constraint FKA3BF8F7E9E89EB47 
-        foreign key (country_id) 
-        references countries_tbl (id);
-
-    alter table street_name_translations_tbl 
-        add index FKF005DDD9D80067D4 (street_name_id), 
-        add constraint FKF005DDD9D80067D4 
-        foreign key (street_name_id) 
-        references street_names_tbl (id);
-
-    alter table street_name_translations_tbl 
-        add index FKF005DDD961F37403 (language_id), 
-        add constraint FKF005DDD961F37403 
-        foreign key (language_id) 
-        references common_languages_tbl (id);
-
-    alter table street_names_tbl 
-        add index FK2CFC450B311847ED (street_id), 
-        add constraint FK2CFC450B311847ED 
-        foreign key (street_id) 
-        references streets_tbl (id);
-
-    alter table street_names_temporal_tbl 
-        add index FKCEDF1674311847ED (street_id), 
-        add constraint FKCEDF1674311847ED 
-        foreign key (street_id) 
-        references streets_tbl (id);
-
-    alter table street_names_temporal_tbl 
-        add index FKCEDF1674D80067D4 (street_name_id), 
-        add constraint FKCEDF1674D80067D4 
-        foreign key (street_name_id) 
-        references street_names_tbl (id);
-
-    alter table street_type_translations_tbl 
-        add index FK5BC6DD0A3E877574 (street_type_id), 
-        add constraint FK5BC6DD0A3E877574 
-        foreign key (street_type_id) 
-        references street_types_tbl (id);
-
-    alter table street_type_translations_tbl 
-        add index FK5BC6DD0A61F37403 (language_id), 
-        add constraint FK5BC6DD0A61F37403 
-        foreign key (language_id) 
-        references common_languages_tbl (id);
-
-    alter table street_types_temporal_tbl 
-        add index FK_street (street_id), 
-        add constraint FK_street 
-        foreign key (street_id) 
-        references streets_tbl (id);
-
-    alter table street_types_temporal_tbl 
-        add index FK_street_type (street_type_id), 
-        add constraint FK_street_type 
-        foreign key (street_type_id) 
-        references street_types_tbl (id);
-
-    alter table streets_districts_tbl 
-        add index FKC3D529F5311847ED (street_id), 
-        add constraint FKC3D529F5311847ED 
-        foreign key (street_id) 
-        references streets_tbl (id);
-
-    alter table streets_districts_tbl 
-        add index FKC3D529F51AE9F4D (district_id), 
-        add constraint FKC3D529F51AE9F4D 
-        foreign key (district_id) 
-        references districts_tbl (id);
-
-    alter table streets_tbl 
-        add index FK419CB7CF712C324D (town_id), 
-        add constraint FK419CB7CF712C324D 
-        foreign key (town_id) 
-        references towns_tbl (id);
-
-    alter table town_name_translations_tbl 
-        add index FKF1EC1328B6638732 (town_name_id), 
-        add constraint FKF1EC1328B6638732 
-        foreign key (town_name_id) 
-        references town_names_tbl (id);
-
-    alter table town_name_translations_tbl 
-        add index FKF1EC132861F37403 (language_id), 
-        add constraint FKF1EC132861F37403 
-        foreign key (language_id) 
-        references common_languages_tbl (id);
-
-    alter table town_names_tbl 
-        add index FK4304B8DA712C324D (town_id), 
-        add constraint FK4304B8DA712C324D 
-        foreign key (town_id) 
-        references towns_tbl (id);
-
-    alter table town_names_temporal_tbl 
-        add index FK870A7B85B6638732 (town_name_id), 
-        add constraint FK870A7B85B6638732 
-        foreign key (town_name_id) 
-        references town_names_tbl (id);
-
-    alter table town_names_temporal_tbl 
-        add index FK870A7B85712C324D (town_id), 
-        add constraint FK870A7B85712C324D 
-        foreign key (town_id) 
-        references towns_tbl (id);
-
-    alter table town_type_translations_tbl 
-        add index FK5DAD12591CEA94D2 (town_type_id), 
-        add constraint FK5DAD12591CEA94D2 
-        foreign key (town_type_id) 
-        references town_types_tbl (id);
-
-    alter table town_type_translations_tbl 
-        add index FK5DAD125961F37403 (language_id), 
-        add constraint FK5DAD125961F37403 
-        foreign key (language_id) 
-        references common_languages_tbl (id);
-
-    alter table town_types_temporal_tbl 
-        add index FK571831F41CEA94D2 (town_type_id), 
-        add constraint FK571831F41CEA94D2 
-        foreign key (town_type_id) 
-        references town_types_tbl (id);
-
-    alter table town_types_temporal_tbl 
-        add index FK571831F4712C324D (town_id), 
-        add constraint FK571831F4712C324D 
-        foreign key (town_id) 
-        references towns_tbl (id);
-
-    alter table towns_tbl 
-        add index FK92E0DEA0458E164D (region_id), 
-        add constraint FK92E0DEA0458E164D 
-        foreign key (region_id) 
-        references regions_tbl (id);

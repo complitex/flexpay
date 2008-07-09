@@ -34,7 +34,7 @@ import java.util.Random;
 
 public class TestServiceProviderFileProcessor extends TestSpFileAction {
 
-	private static Logger log = Logger.getLogger(TestServiceProviderFileProcessor.class);
+	private Logger log = Logger.getLogger(getClass());
 
 	@Autowired
 	private ServiceProviderFileProcessor fileProcessor;
@@ -206,7 +206,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 			os.write(header.getBytes(SpFileReader.DEFAULT_CHARSET));
 
 			ServiceProvider provider = randomObjects.getRandomServiceProvider();
-			Town town = ApplicationConfig.getInstance().getDefaultTown();
+			Town town = ApplicationConfig.getDefaultTown();
 
 			long start = System.currentTimeMillis();
 			for (int n = 0; n < nRecords; ++n) {

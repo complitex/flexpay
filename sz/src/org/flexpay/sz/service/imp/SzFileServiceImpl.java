@@ -11,7 +11,8 @@ import java.util.List;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class SzFileServiceImpl implements SzFileService {
-	private static Logger log = Logger.getLogger(SzFileServiceImpl.class);
+
+	private Logger log = Logger.getLogger(getClass());
 
 	private SzFileDao szFileDao;
 

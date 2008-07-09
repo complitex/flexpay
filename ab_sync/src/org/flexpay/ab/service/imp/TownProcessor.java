@@ -1,7 +1,6 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.TownDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.util.config.ApplicationConfig;
@@ -19,8 +18,6 @@ import java.util.Set;
 
 public class TownProcessor extends AbstractProcessor<Town> {
 
-	private static Logger log = Logger.getLogger(TownProcessor.class);
-
 	private TownDao townDao;
 
 	public TownProcessor() {
@@ -37,7 +34,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 			throws Exception {
 
 		Town town = new Town();
-		town.setParent(ApplicationConfig.getInstance().getDefaultRegion());
+		town.setParent(ApplicationConfig.getDefaultRegion());
 
 		return town;
 	}
@@ -74,7 +71,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 		if (timeLine != null) {
 			timeLine = DateIntervalUtil.addInterval(timeLine, nameTemporal);
 		} else {
-			nameTemporal.setBegin(ApplicationConfig.getInstance().getPastInfinite());
+			nameTemporal.setBegin(ApplicationConfig.getPastInfinite());
 			timeLine = new TimeLine<TownName, TownNameTemporal>(nameTemporal);
 		}
 

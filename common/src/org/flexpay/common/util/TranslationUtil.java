@@ -1,6 +1,5 @@
 package org.flexpay.common.util;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
@@ -11,15 +10,12 @@ import java.util.Locale;
 
 public class TranslationUtil {
 
-	private static Logger log = Logger.getLogger(TranslationUtil.class);
-
 	/**
 	 * Find translation object in collection for specified <code>locale</locale>
 	 *
 	 * @param translations Collection of object translations
 	 * @param locale	   Locale to get translation in
-	 * @return Translation in specified locale if found, or in defualt locale, or
-	 *         <code>null</code>
+	 * @return Translation in specified locale if found, or in defualt locale, or <code>null</code>
 	 * @throws FlexPayException if languages configuration is invalid
 	 */
 	public static <T extends Translation> T getTranslation(
@@ -47,9 +43,8 @@ public class TranslationUtil {
 	 * Find translation object in collection for specified <code>language</locale>
 	 *
 	 * @param translations Collection of object translations
-	 * @param language	   Language to get translation in
-	 * @return Translation in specified locale if found, or in defualt locale, or
-	 *         <code>null</code>
+	 * @param language	 Language to get translation in
+	 * @return Translation in specified locale if found, or in defualt locale, or <code>null</code>
 	 * @throws FlexPayException if languages configuration is invalid
 	 */
 	public static <T extends Translation> T getTranslation(
@@ -62,21 +57,11 @@ public class TranslationUtil {
 		for (T translation : translations) {
 			// Check if translation language is the same as required
 			if (language.equals(translation.getLang())) {
-				if (log.isDebugEnabled()) {
-					log.debug("Found translation: " + translation);
-				}
 				return translation;
 			}
 			// Check if translation language is the same as default and save it for a while
 			if (defaultLang.equals(translation.getLang())) {
-				if (log.isDebugEnabled()) {
-					log.debug("Found default translation: " + translation);
-				}
 				defaultTranslation = translation;
-			}
-
-			if (log.isDebugEnabled()) {
-				log.debug("Translation is invalid: " + translation);
 			}
 		}
 

@@ -30,6 +30,25 @@
 				<param name="parse">true</param>
 				<param name="person.id">${person.id}</param>
 			</result>
+			<result name="redirectError" type="redirect-action">
+				<param name="actionName">list_persons</param>
+			</result>
+		</action>
+
+		<action name="edit_person_fio" class="savePersonFIOAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">PERSON_CHANGE</param>
+			</interceptor-ref>
+			<result name="redirectError" type="redirect-action">
+				<param name="actionName">edit_person</param>
+				<param name="parse">true</param>
+				<param name="person.id">${person.id}</param>
+			</result>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">edit_person</param>
+				<param name="parse">true</param>
+				<param name="person.id">${person.id}</param>
+			</result>
 		</action>
 
 		<action name="setRegistrationAction" class="setRegistrationAction">

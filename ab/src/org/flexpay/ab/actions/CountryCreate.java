@@ -18,7 +18,7 @@ import java.util.List;
 
 public class CountryCreate implements ServletRequestAware {
 
-	private static Logger log = Logger.getLogger(CountryCreate.class);
+	private Logger log = Logger.getLogger(getClass());
 
 	private CountryService countryService;
 	private HttpServletRequest request;

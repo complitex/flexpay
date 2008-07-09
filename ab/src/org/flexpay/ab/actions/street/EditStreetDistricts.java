@@ -1,7 +1,6 @@
 package org.flexpay.ab.actions.street;
 
 import org.apache.commons.collections.ArrayStack;
-import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.DistrictName;
 import org.flexpay.ab.persistence.Street;
@@ -18,8 +17,6 @@ import java.util.Set;
 
 public class EditStreetDistricts extends FPActionSupport {
 
-	private static Logger log = Logger.getLogger(EditStreetDistricts.class);
-
 	private Street street = new Street();
 	private Set<Long> objectIds = new HashSet<Long>();
 	private List<DistrictName> districtNames = new ArrayList<DistrictName>();
@@ -28,7 +25,7 @@ public class EditStreetDistricts extends FPActionSupport {
 	private DistrictService districtService;
 
 	@Override
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
 		if (street.getId() == null) {
 			addActionError(getText("error.no_id"));
@@ -65,6 +62,18 @@ public class EditStreetDistricts extends FPActionSupport {
 			log.info("Found " + districtNames);
 		}
 
+		return INPUT;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
 		return INPUT;
 	}
 

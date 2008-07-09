@@ -29,7 +29,7 @@ import java.util.List;
 public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		implements GenericDao<T, PK>, FinderExecutor, MethodExecutor {
 
-	private static Logger log = Logger.getLogger(GenericDaoHibernateImpl.class);
+	private Logger log = Logger.getLogger(getClass());
 
 	protected HibernateTemplate hibernateTemplate;
 

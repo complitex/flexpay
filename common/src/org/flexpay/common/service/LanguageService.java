@@ -10,7 +10,7 @@ import java.util.List;
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class LanguageService {
 
-	private static Logger log = Logger.getLogger(LanguageService.class);
+	private Logger log = Logger.getLogger(getClass());
 
 	private LanguageDao languageDao;
 

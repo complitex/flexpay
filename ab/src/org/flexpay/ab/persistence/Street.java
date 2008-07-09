@@ -3,7 +3,6 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TimeLine;
@@ -17,7 +16,6 @@ import java.util.*;
  */
 public class Street extends NameTimeDependentChild<StreetName, StreetNameTemporal> {
 
-	private static Logger log = Logger.getLogger(Street.class);
 	private static final SortedSet<StreetTypeTemporal> EMPTY_SORTED_SET =
 			Collections.unmodifiableSortedSet(new TreeSet<StreetTypeTemporal>());
 
@@ -79,10 +77,8 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 
 	public Street addTypeTemporal(StreetTypeTemporal temporal) {
 		if (typesTimeLine == null) {
-			log.debug("Creating new street types timeline");
 			typesTimeLine = new TimeLine<StreetType, StreetTypeTemporal>(temporal);
 		} else {
-			log.debug("Adding  new street type interval");
 			typesTimeLine = DateIntervalUtil.addInterval(typesTimeLine, temporal);
 		}
 
@@ -123,8 +119,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 * Find value for date
 	 *
 	 * @param dt Date to get value for
-	 * @return Value which interval includes specified date, or <code>null</code> if not
-	 *         found
+	 * @return Value which interval includes specified date, or <code>null</code> if not found
 	 */
 	public StreetType getTypeForDate(Date dt) {
 		if (typesTimeLine == null) {
@@ -143,8 +138,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	/**
 	 * Find value for current date
 	 *
-	 * @return Value which interval includes specified date, or <code>null</code> if not
-	 *         found
+	 * @return Value which interval includes specified date, or <code>null</code> if not found
 	 */
 	public StreetType getCurrentType() {
 		return getTypeForDate(DateIntervalUtil.now());
@@ -177,13 +171,13 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 				.append("Type", getCurrentType())
 				.toString();
 	}
-	
+
 	public String format(Locale locale, boolean shortMode) throws FlexPayException {
 		StreetTypeTranslation typeTanslation = TranslationUtil.getTranslation(getCurrentType().getTranslations(), locale);
 		StreetNameTranslation nameTanslation = TranslationUtil.getTranslation(getCurrentName().getTranslations(), locale);
 		String typeStr = typeTanslation == null ? "" : (shortMode ? typeTanslation.getShortName() + "." : typeTanslation.getName());
 		String nameStr = nameTanslation == null ? "" : nameTanslation.getName();
-		
+
 		return typeStr + " " + nameStr;
 	}
 }

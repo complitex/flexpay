@@ -17,8 +17,6 @@ import java.util.Calendar;
 
 public class BaseContainerOperation extends ContainerOperation {
 
-	private static Logger log = Logger.getLogger(BaseContainerOperation.class);
-
 	private ServiceOperationsFactory factory;
 
 	private String serviceId;

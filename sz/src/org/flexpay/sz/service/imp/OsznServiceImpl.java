@@ -8,7 +8,6 @@ import org.flexpay.sz.persistence.Oszn;
 import org.flexpay.sz.service.OsznService;
 
 public class OsznServiceImpl implements OsznService {
-	private static Logger log = Logger.getLogger(OsznServiceImpl.class);
 
 	private OsznDao osznDao;
 

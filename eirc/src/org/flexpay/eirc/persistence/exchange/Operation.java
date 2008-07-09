@@ -3,8 +3,11 @@ package org.flexpay.eirc.persistence.exchange;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.apache.log4j.Logger;
 
 public abstract class Operation {
+
+	protected Logger log = Logger.getLogger(getClass());
 
 	/**
 	 * Simbol used escape special simbols

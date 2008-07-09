@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class TownTypeServiceImpl implements TownTypeService {
 
-	private static Logger log = Logger.getLogger(TownTypeServiceImpl.class);
+	private Logger log = Logger.getLogger(getClass());
 
 	private TownTypeDao townTypeDao;
 	private TownTypeTranslationDao townTypeTranslationDao;

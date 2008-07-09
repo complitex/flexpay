@@ -2,14 +2,11 @@ package org.flexpay.sz.dbf;
 
 import com.linuxense.javadbf.DBFException;
 import org.flexpay.sz.persistence.ServiceTypeRecord;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
 public class ServiceTypeRecordDBFInfo extends DBFInfo<ServiceTypeRecord> {
-
-	private static Logger log = Logger.getLogger(ServiceTypeRecordDBFInfo.class);
 
 	public ServiceTypeRecordDBFInfo(File originalFile) {
 		super(originalFile);
@@ -72,7 +69,7 @@ public class ServiceTypeRecordDBFInfo extends DBFInfo<ServiceTypeRecord> {
 	/**
 	 * Convert dbf value to integer, initial dbf values is a (N.precision) number
 	 *
-	 * @param d	  DBF value
+	 * @param d		 DBF value
 	 * @param precigion necessary precision
 	 * @return Integer value
 	 */
@@ -80,42 +77,36 @@ public class ServiceTypeRecordDBFInfo extends DBFInfo<ServiceTypeRecord> {
 
 		double d1 = d + (0.5 / FACTORS[precigion]);
 		d1 *= FACTORS[precigion];
-		int i = (int) Math.floor(d1);
-
-		if (log.isDebugEnabled()) {
-			log.debug("Getting integer " + d + ", got: " + i);
-		}
-
-		return i;
+		return (int) Math.floor(d1);
 	}
 
 	Object[] getRowData(ServiceTypeRecord element)
 			throws DBFException, FileNotFoundException {
 
 		Object[] row = new Object[getDBFFields().length];
-		row[getInd("cod")] = (double)element.getExtDistrictCode().intValue();
-		row[getInd("cdpr")] = (double)element.getExtOrganizationCode().intValue();
-		row[getInd("ncard")] = (double)element.getDwellingOwnerId().intValue();
+		row[getInd("cod")] = (double) element.getExtDistrictCode().intValue();
+		row[getInd("cdpr")] = (double) element.getExtOrganizationCode().intValue();
+		row[getInd("ncard")] = (double) element.getDwellingOwnerId().intValue();
 		row[getInd("idcode")] = element.getDwellingOwnerTaxNumber();
 		row[getInd("pasp")] = element.getDwellingOwnerName();
 		row[getInd("fio")] = element.getDwellingOwnerName();
 		row[getInd("idpil")] = element.getDeadheadTaxNumber();
 		row[getInd("pasppil")] = element.getDeadheadPassport();
 		row[getInd("fiopil")] = element.getDeadheadName();
-		row[getInd("index")] = (double)element.getPostalCode().intValue();
-		row[getInd("cdul")] = (double)element.getExtStreetCode().intValue();
+		row[getInd("index")] = (double) element.getPostalCode().intValue();
+		row[getInd("cdul")] = (double) element.getExtStreetCode().intValue();
 		row[getInd("house")] = element.getBuildingNumber();
 		row[getInd("build")] = element.getBulkNumber();
 		row[getInd("apt")] = element.getApartmentNumber();
-		row[getInd("kat")] = (double)element.getDeadheadCategory().intValue();
-		row[getInd("lgcode")] = (double)element.getPrivilegeCode().intValue();
-		row[getInd("yearin")] = (double)element.getPrivilegeStartYear().intValue();
-		row[getInd("monthin")] = (double)element.getPrivilegeStartMonth().intValue();
-		row[getInd("yearout")] = (double)element.getPrivilegeEndYear().intValue();
-		row[getInd("monthout")] = (double)element.getPrivilegeEndMonth().intValue();
+		row[getInd("kat")] = (double) element.getDeadheadCategory().intValue();
+		row[getInd("lgcode")] = (double) element.getPrivilegeCode().intValue();
+		row[getInd("yearin")] = (double) element.getPrivilegeStartYear().intValue();
+		row[getInd("monthin")] = (double) element.getPrivilegeStartMonth().intValue();
+		row[getInd("yearout")] = (double) element.getPrivilegeEndYear().intValue();
+		row[getInd("monthout")] = (double) element.getPrivilegeEndMonth().intValue();
 		row[getInd("rah")] = element.getPersonalAccountNumber();
-		row[getInd("rizn")] = (double)element.getServiceType().intValue();
-		row[getInd("tarif")] = (double)element.getTarifCode().intValue();
+		row[getInd("rizn")] = (double) element.getServiceType().intValue();
+		row[getInd("tarif")] = (double) element.getTarifCode().intValue();
 
 		return row;
 	}

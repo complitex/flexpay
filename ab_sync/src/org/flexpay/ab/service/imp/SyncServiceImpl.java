@@ -16,7 +16,7 @@ import java.util.List;
 
 public class SyncServiceImpl implements SyncService {
 
-	private static Logger log = Logger.getLogger(SyncServiceImpl.class);
+	private Logger log = Logger.getLogger(getClass());
 
 	private HistoryDao historyDao;
 	private CorrectionsService correctionsService;

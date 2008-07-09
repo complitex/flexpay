@@ -19,7 +19,7 @@ import java.util.*;
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class IdentityTypeServiceImpl implements IdentityTypeService {
 
-	private static Logger log = Logger.getLogger(IdentityTypeServiceImpl.class);
+	private Logger log = Logger.getLogger(getClass());
 
 	private IdentityTypeDao identityTypeDao;
 	private IdentityTypeTranslationDao identityTypeTranslationDao;

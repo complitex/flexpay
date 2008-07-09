@@ -33,7 +33,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	protected District doCreateObject() throws Exception {
 
 		District district = new District();
-		district.setParent(ApplicationConfig.getInstance().getDefaultTown());
+		district.setParent(ApplicationConfig.getDefaultTown());
 
 		return district;
 	}
@@ -70,7 +70,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 		if (timeLine != null) {
 			timeLine = DateIntervalUtil.addInterval(timeLine, nameTemporal);
 		} else {
-			nameTemporal.setBegin(ApplicationConfig.getInstance().getPastInfinite());
+			nameTemporal.setBegin(ApplicationConfig.getPastInfinite());
 			timeLine = new TimeLine<DistrictName, DistrictNameTemporal>(nameTemporal);
 		}
 

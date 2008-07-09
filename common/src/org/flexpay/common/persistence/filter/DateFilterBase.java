@@ -1,10 +1,8 @@
 package org.flexpay.common.persistence.filter;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public abstract class DateFilterBase extends ObjectFilter {
@@ -25,15 +23,7 @@ public abstract class DateFilterBase extends ObjectFilter {
 	}
 
 	public void setStringDate(String date) {
-		if (StringUtils.isBlank(date)) {
-			setDate(getEmptyDate());
-		}
-
-		try {
-			setDate(new SimpleDateFormat("yyyy/MM/dd").parse(date));
-		} catch (ParseException e) {
-			setDate(getEmptyDate());
-		}
+		setDate(DateUtil.parseDate(date, getEmptyDate()));
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package org.flexpay.common.persistence;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
@@ -10,8 +9,6 @@ import java.util.*;
  * Storage for a sorted list of intervals covering time line
  */
 public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> {
-
-	private static Logger log = Logger.getLogger(TimeLine.class);
 
 	// a set of intervals is fully covering time line,
 	// probably single interval with infinite bounds
@@ -25,28 +22,21 @@ public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI
 	 */
 	public TimeLine(DI di) {
 		intervals = new ArrayList<DI>(3);
-		if (!di.getBegin().equals(ApplicationConfig.getInstance().getPastInfinite())) {
+		if (!di.getBegin().equals(ApplicationConfig.getPastInfinite())) {
 			DI copy = di.getEmpty();
-			copy.setBegin(ApplicationConfig.getInstance().getPastInfinite());
+			copy.setBegin(ApplicationConfig.getPastInfinite());
 			copy.setEnd(DateIntervalUtil.previous(di.getBegin()));
 			intervals.add(copy);
-
-			log.debug("Added empty begin");
 		}
 		intervals.add(di);
-		log.debug("Added interval");
-		if (!di.getEnd().equals(ApplicationConfig.getInstance().getFutureInfinite())) {
+
+		if (!di.getEnd().equals(ApplicationConfig.getFutureInfinite())) {
 			DI copy = di.getEmpty();
 			copy.setBegin(DateIntervalUtil.next(di.getEnd()));
-			copy.setEnd(ApplicationConfig.getInstance().getFutureInfinite());
+			copy.setEnd(ApplicationConfig.getFutureInfinite());
 			intervals.add(copy);
-			log.debug("Added empty end");
 		}
 		intervalsChecked = true;
-
-		if (log.isDebugEnabled()) {
-			log.debug("Well done: " + intervals);
-		}
 	}
 
 	/**

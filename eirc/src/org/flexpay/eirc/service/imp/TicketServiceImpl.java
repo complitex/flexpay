@@ -1,27 +1,6 @@
 package org.flexpay.eirc.service.imp;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.persistence.IdentityType;
-import org.flexpay.ab.persistence.Person;
-import org.flexpay.ab.persistence.PersonIdentity;
-import org.flexpay.ab.persistence.Street;
-import org.flexpay.ab.persistence.StreetName;
-import org.flexpay.ab.persistence.StreetNameTranslation;
-import org.flexpay.ab.persistence.StreetType;
-import org.flexpay.ab.persistence.StreetTypeTranslation;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Translation;
@@ -29,32 +8,27 @@ import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.eirc.dao.TicketDao;
 import org.flexpay.eirc.pdf.PdfTicketWriter.ServiceAmountInfo;
 import org.flexpay.eirc.pdf.PdfTicketWriter.TicketInfo;
-import org.flexpay.eirc.persistence.AccountRecord;
-import org.flexpay.eirc.persistence.AccountRecordType;
-import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.eirc.persistence.ServedBuilding;
-import org.flexpay.eirc.persistence.ServiceOrganisation;
-import org.flexpay.eirc.persistence.ServiceType;
-import org.flexpay.eirc.persistence.Ticket;
-import org.flexpay.eirc.persistence.TicketServiceAmount;
+import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.service.AccountRecordService;
 import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.flexpay.eirc.service.TicketService;
 import org.flexpay.eirc.service.TicketServiceAmountService;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+import java.math.BigDecimal;
+import java.util.*;
+
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class TicketServiceImpl implements TicketService {
-	private static Logger log = Logger.getLogger(TicketServiceImpl.class);
 
 	private TicketDao ticketDao;
 	private ServiceOrganisationService serviceOrganisationService;
 	private AccountRecordService accountRecordService;
 	private TicketServiceAmountService ticketServiceAmountService;
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void generateForServiceOrganisation(Long serviceOrganisationId,
-			Date dateFrom, Date dateTill) {
+											   Date dateFrom, Date dateTill) {
 		ServiceOrganisation serviceOrganisation = serviceOrganisationService
 				.read(serviceOrganisationId);
 		Set<ServedBuilding> buildingSet = serviceOrganisation.getBuildings();
@@ -65,10 +39,12 @@ public class TicketServiceImpl implements TicketService {
 
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	private void generateForBuilding(ServiceOrganisation serviceOrganisation,
-			Building building, Date dateFrom, Date dateTill) {
+									 Building building, Date dateFrom, Date dateTill) {
 		Object[] streetAndBuildingsNumber = getTargetBuildingNumberAndStreet(building);
+
+		// what's a fuck for???
 		Street street = null;
 		String buildingsNumber = null;
 		if (streetAndBuildingsNumber != null) {
@@ -85,9 +61,9 @@ public class TicketServiceImpl implements TicketService {
 		}
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	private void generateForApartment(ServiceOrganisation serviceOrganisation,
-			Apartment apartment, Date dateFrom, Date dateTill) {
+									  Apartment apartment, Date dateFrom, Date dateTill) {
 		Set<Person> personSet = apartment.getPersons();
 		for (Person person : personSet) {
 			generateForPerson(serviceOrganisation, person, apartment, dateFrom,
@@ -95,9 +71,9 @@ public class TicketServiceImpl implements TicketService {
 		}
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	private void generateForPerson(ServiceOrganisation serviceOrganisation,
-			Person person, Apartment apartment, Date dateFrom, Date dateTill) {
+								   Person person, Apartment apartment, Date dateFrom, Date dateTill) {
 		Ticket ticket = new Ticket();
 		ticket.setCreationDate(new Date());
 		ticket.setServiceOrganisation(serviceOrganisation);
@@ -156,7 +132,7 @@ public class TicketServiceImpl implements TicketService {
 			String buildingsNumber = buildings.getNumber();
 			Street street = buildings.getStreet();
 			if (buildingsNumber != null && street != null) {
-				return new Object[] { street, buildingsNumber };
+				return new Object[]{street, buildingsNumber};
 			}
 		}
 		return null;
@@ -173,8 +149,8 @@ public class TicketServiceImpl implements TicketService {
 				.getPerson());
 		if (personIdentity != null) {
 			ticketInfo.payer = personIdentity.getFirstName() + " "
-					+ personIdentity.getMiddleName() + " "
-					+ personIdentity.getLastName();
+							   + personIdentity.getMiddleName() + " "
+							   + personIdentity.getLastName();
 		}
 		String addressStr = getAddressStr(ticket, true);
 		if (addressStr != null) {
@@ -245,11 +221,11 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	public List<Object> getTicketsWithDelimiters(Long serviceOrganisationId,
-			Date dateFrom, Date dateTill) throws FlexPayException {
+												 Date dateFrom, Date dateTill) throws FlexPayException {
 		List<Ticket> ticketList = ticketDao.findByOrganisationAndInterval(
 				serviceOrganisationId, dateFrom, dateTill);
 		if (ticketList.isEmpty()) {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 		List<Object> result = new ArrayList<Object>();
 		Iterator<Ticket> it = ticketList.iterator();
@@ -259,9 +235,9 @@ public class TicketServiceImpl implements TicketService {
 		while (it.hasNext()) {
 			Ticket ticket = it.next();
 			if (lastTicket.getPerson().getId() == ticket.getPerson().getId()
-					&& lastTicket.getDateTill().equals(ticket.getDateTill())
-					&& lastTicket.getApartment().getId() == ticket
-							.getApartment().getId()) {
+				&& lastTicket.getDateTill().equals(ticket.getDateTill())
+				&& lastTicket.getApartment().getId() == ticket
+					.getApartment().getId()) {
 				continue;
 			}
 
@@ -293,15 +269,15 @@ public class TicketServiceImpl implements TicketService {
 				.getTranslation(streetType.getTranslations());
 
 		return streetTypeTranslation.getName()
-				+ " "
-				+ streetNameTranslation.getName()
-				+ ", д."
-				+ buildings.getNumber()
-				+ (withApartmentNumber ? ", кв."
-						+ ticket.getApartment().getNumber() : "");
+			   + " "
+			   + streetNameTranslation.getName()
+			   + ", д."
+			   + buildings.getNumber()
+			   + (withApartmentNumber ? ", кв."
+										+ ticket.getApartment().getNumber() : "");
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void payTicket(Long ticketId) {
 		Ticket ticket = ticketDao.read(ticketId);
 		Set<TicketServiceAmount> ticketServiceAmountSet = ticket
@@ -322,8 +298,7 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	/**
-	 * @param serviceOrganisationService
-	 *            the serviceOrganisationService to set
+	 * @param serviceOrganisationService the serviceOrganisationService to set
 	 */
 	public void setServiceOrganisationService(
 			ServiceOrganisationService serviceOrganisationService) {
@@ -331,8 +306,7 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	/**
-	 * @param accountRecordService
-	 *            the accountRecordService to set
+	 * @param accountRecordService the accountRecordService to set
 	 */
 	public void setAccountRecordService(
 			AccountRecordService accountRecordService) {
@@ -341,9 +315,8 @@ public class TicketServiceImpl implements TicketService {
 
 	/**
 	 * Create new Ticket
-	 * 
-	 * @param ticket
-	 *            Ticket
+	 *
+	 * @param ticket Ticket
 	 * @return persisted Ticket
 	 */
 	public Ticket create(Ticket ticket) {
@@ -353,16 +326,14 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	/**
-	 * @param ticketDao
-	 *            the ticketDao to set
+	 * @param ticketDao the ticketDao to set
 	 */
 	public void setTicketDao(TicketDao ticketDao) {
 		this.ticketDao = ticketDao;
 	}
 
 	/**
-	 * @param ticketServiceAmountService
-	 *            the ticketServiceAmountService to set
+	 * @param ticketServiceAmountService the ticketServiceAmountService to set
 	 */
 	public void setTicketServiceAmountService(
 			TicketServiceAmountService ticketServiceAmountService) {

@@ -1,21 +1,22 @@
 package org.flexpay.common.locking;
 
 import org.apache.log4j.Logger;
+import org.flexpay.common.util.CollectionUtils;
 import org.hibernate.*;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LockManager {
 
-	private static Logger log = Logger.getLogger(LockManager.class);
+	private Logger log = Logger.getLogger(getClass().getName());
 
 	private static LockManager instance = new LockManager();
 	private HibernateTemplate hibernateTemplate;
-	private HashMap<String, StatelessSession> lockedSessions = new HashMap<String, StatelessSession>();
+	private Map<String, StatelessSession> lockedSessions = CollectionUtils.map();
 
 	public static LockManager getInstance() {
 		return instance;
@@ -103,12 +104,12 @@ public class LockManager {
 		Collection<StatelessSession> sessions = lockedSessions.values();
 		for (StatelessSession session : sessions) {
 //            if (session.getTransaction().isActive()){
-                session.getTransaction().commit();
-			    session.close();
+			session.getTransaction().commit();
+			session.close();
 //            }else{
 //
 //            }
-        }
+		}
 	}
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {

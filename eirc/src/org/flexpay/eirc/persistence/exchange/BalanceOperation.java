@@ -15,8 +15,6 @@ import java.math.BigDecimal;
 
 public class BalanceOperation extends Operation {
 
-	private static Logger log = Logger.getLogger(BalanceOperation.class);
-
 	private ServiceOperationsFactory factory;
 
 	public BalanceOperation(ServiceOperationsFactory factory) {

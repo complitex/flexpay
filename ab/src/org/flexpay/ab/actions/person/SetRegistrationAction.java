@@ -64,7 +64,7 @@ public class SetRegistrationAction extends ApartmentEditAction {
 			beginDate = DateIntervalUtil.now();
 		}
 		if (endDate == null) {
-			endDate = ApplicationConfig.getInstance().getFutureInfinite();
+			endDate = ApplicationConfig.getFutureInfinite();
 		}
 
 
@@ -77,8 +77,7 @@ public class SetRegistrationAction extends ApartmentEditAction {
 
 		initFilters();
 		if (getFiltersError() == null) {
-			Page pager = new Page();
-			pager.setPageSize(10000);
+			Page pager = new Page(10000, 1);
 			apartments = getApartmentService().getApartments(getFilters(), pager);
 		}
 

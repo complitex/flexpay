@@ -1,6 +1,5 @@
 package org.flexpay.eirc.persistence.exchange;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.service.AccountRecordService;
@@ -10,8 +9,6 @@ import org.flexpay.eirc.service.SPService;
 import java.util.List;
 
 public class SimplePayment extends ContainerOperation {
-
-	private static Logger log = Logger.getLogger(SimplePayment.class);
 
 	private ServiceOperationsFactory factory;
 	private String organisationId;

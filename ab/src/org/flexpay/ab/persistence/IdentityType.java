@@ -76,4 +76,8 @@ public class IdentityType extends DomainObjectWithStatus {
 				.append("Translations", translations.toArray())
 				.toString();
 	}
+
+	public boolean isFIO() {
+		return typeId == TYPE_FIO;
+	}
 }

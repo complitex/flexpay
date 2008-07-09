@@ -1,6 +1,5 @@
 package org.flexpay.eirc.persistence.exchange;
 
-import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.exception.FlexPayException;
@@ -24,8 +23,6 @@ import java.util.List;
  * Container type #14
  */
 public class OpenSubserviceAccountOperation extends ContainerOperation {
-
-	private static Logger log = Logger.getLogger(OpenSubserviceAccountOperation.class);
 
 	private ServiceOperationsFactory factory;
 
@@ -78,7 +75,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		consumer.setResponsiblePerson(person);
 		consumer.setExternalAccountNumber(record.getPersonalAccountExt());
 		consumer.setBeginDate(changeApplyingDate);
-		consumer.setEndDate(ApplicationConfig.getInstance().getFutureInfinite());
+		consumer.setEndDate(ApplicationConfig.getFutureInfinite());
 		consumer.setService(findService(registry));
 		Consumer base = (Consumer) record.getConsumer();
 		consumer.setEircAccount(base.getEircAccount());
@@ -99,10 +96,10 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 
 	private void saveConsumerInfo(SpRegistryRecord record, Consumer consumer) {
 		ConsumerInfo info = ((Consumer) record.getConsumer()).getConsumerInfo();
-		
+
 		consumer.setConsumerInfo(info);
 	}
-	
+
 
 	private void createCorrection(SpRegistry registry, SpRegistryRecord record, Consumer consumer) {
 
@@ -130,7 +127,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		Service service = consumerService.findService(registry.getServiceProvider(), subserviceId);
 		if (service == null) {
 			throw new FlexPayException("Cannot find subservice for provider " + registry.getServiceProvider() +
-					" code: " + subserviceId);
+									   " code: " + subserviceId);
 		}
 
 		return service;

@@ -1,8 +1,10 @@
 package org.flexpay.common.util;
 
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.apache.commons.lang.StringUtils;
 
 import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -28,9 +30,9 @@ public class DateUtil {
 		MONTHS.put(11, "12");
 
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(ApplicationConfig.getInstance().getPastInfinite());
+		cal.setTime(ApplicationConfig.getPastInfinite());
 		int yearFrom = cal.get(Calendar.YEAR);
-		cal.setTime(ApplicationConfig.getInstance().getFutureInfinite());
+		cal.setTime(ApplicationConfig.getFutureInfinite());
 		int yearTill = cal.get(Calendar.YEAR);
 		YEARS = new Integer[yearTill - yearFrom + 1];
 		for (int i = 0; i <= yearTill - yearFrom; i++) {
@@ -49,7 +51,46 @@ public class DateUtil {
 	 * @return <code>true</code> if the date is in application configured past and future infinities
 	 */
 	public static boolean isValid(Date date) {
-		return ApplicationConfig.getInstance().getPastInfinite().compareTo(date) <= 0 &&
-			   date.compareTo(ApplicationConfig.getInstance().getFutureInfinite()) <= 0;
+		return ApplicationConfig.getPastInfinite().compareTo(date) <= 0 &&
+			   date.compareTo(ApplicationConfig.getFutureInfinite()) <= 0;
+	}
+
+	/**
+	 * Parse date in yyyy/MM/dd farmat, if parse fails - return past infinite date
+	 *
+	 * @param date String in yyyy/MM/dd format, possibly empty
+	 * @return Date
+	 */
+	public static Date parseBeginDate(String date) {
+		return parseDate(date, ApplicationConfig.getPastInfinite());
+	}
+
+	/**
+	 * Parse date in yyyy/MM/dd farmat, if parse fails - return future infinite date
+	 *
+	 * @param date String in yyyy/MM/dd format, possibly empty
+	 * @return Date
+	 */
+	public static Date parseEndDate(String date) {
+		return parseDate(date, ApplicationConfig.getFutureInfinite());
+	}
+
+	/**
+	 * Parse date in yyyy/MM/dd farmat, if parse fails - return default date
+	 *
+	 * @param date String in yyyy/MM/dd format, possibly empty
+	 * @param defaultDate Default value to return
+	 * @return Date
+	 */
+	public static Date parseDate(String date, Date defaultDate) {
+		if (StringUtils.isBlank(date)) {
+			return defaultDate;
+		}
+
+		try {
+			return new SimpleDateFormat("yyyy/MM/dd").parse(date);
+		} catch (ParseException e) {
+			return defaultDate;
+		}
 	}
 }
