@@ -103,11 +103,8 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport implements 
 	}
 	
 	private boolean isBlancTranslation(BuildingAttributeTypeTranslation t) {
-		if(StringUtils.isEmpty(t.getName()) && StringUtils.isEmpty(t.getShortName())) {
-			return true;
-		} else {
-			return false;
-		}
+
+		return StringUtils.isEmpty(t.getName()) && StringUtils.isEmpty(t.getShortName());
 	}
 
 

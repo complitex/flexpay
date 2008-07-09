@@ -44,8 +44,7 @@ public class BuildingAttributeTypeCreateAction extends FPActionSupport
 			boolean blancDefaultTranslation = true;
 			BuildingAttributeType type = new BuildingAttributeType();
 			Set<BuildingAttributeTypeTranslation> translationSet = new HashSet<BuildingAttributeTypeTranslation>();
-			for (BuildingAttributeTypeTranslation translation : translationMap
-					.values()) {
+			for (BuildingAttributeTypeTranslation translation : translationMap.values()) {
 				translation.setTranslatable(type);
 				translationSet.add(translation);
 				if (translation.getLang().isDefault()
@@ -57,9 +56,8 @@ public class BuildingAttributeTypeCreateAction extends FPActionSupport
 			if (typeField == null) {
 				blancTypeFieldError = "ab.buildings.attribute_type.blanc_type_field";
 			} else {
-				for (BuildingAttributeType attrType : buildingService
-						.getAttributeTypes()) {
-					if (typeField.intValue() == attrType.getType()) {
+				for (BuildingAttributeType attrType : buildingService.getAttributeTypes()) {
+					if (typeField == attrType.getType()) {
 						typeAlredyExistError = "ab.buildings.attribute_type.type_field_elredy_exist";
 						break;
 					}

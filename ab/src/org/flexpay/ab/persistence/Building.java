@@ -3,6 +3,8 @@ package org.flexpay.ab.persistence;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Set;
@@ -25,39 +27,43 @@ public class Building extends DomainObjectWithStatus {
 		super(id);
 	}
 
+	@Nullable
 	public District getDistrict() {
 		return this.district;
 	}
 
-	public void setDistrict(District district) {
+	public void setDistrict(@Nullable District district) {
 		this.district = district;
 	}
 
+	@NotNull
 	public Set<BuildingStatus> getBuildingStatuses() {
 		return this.buildingStatuses;
 	}
 
-	public void setBuildingStatuses(Set<BuildingStatus> buildingStatuses) {
+	public void setBuildingStatuses(@NotNull Set<BuildingStatus> buildingStatuses) {
 		this.buildingStatuses = buildingStatuses;
 	}
 
+	@NotNull
 	public Set<Buildings> getBuildingses() {
 		return this.buildingses;
 	}
 
-	public void setBuildingses(Set<Buildings> buildingses) {
+	public void setBuildingses(@NotNull Set<Buildings> buildingses) {
 		this.buildingses = buildingses;
 	}
 
+	@NotNull
 	public Set<Apartment> getApartments() {
 		return this.apartments;
 	}
 
-	public void setApartments(Set<Apartment> apartments) {
+	public void setApartments(@NotNull Set<Apartment> apartments) {
 		this.apartments = apartments;
 	}
 
-	public void addBuildings(Buildings buildings) {
+	public void addBuildings(@NotNull Buildings buildings) {
 		if (buildingses == Collections.EMPTY_SET) {
 			buildingses = new HashSet<Buildings>();
 		}
@@ -65,10 +71,11 @@ public class Building extends DomainObjectWithStatus {
 		buildings.setBuilding(this);
 		buildingses.add(buildings);
 	}
-	
+
+	@Nullable
 	public Buildings getDefaultBuildings() {
 		for(Buildings buildings : buildingses) {
-			if(buildings.getPrimaryStatus() != null && buildings.getPrimaryStatus().booleanValue() == true) {
+			if(buildings.getPrimaryStatus() != null && buildings.getPrimaryStatus()) {
 				return buildings;
 			}
 		}
@@ -81,6 +88,7 @@ public class Building extends DomainObjectWithStatus {
 	 *
 	 * @return a string representation of the object.
 	 */
+	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("id", getId())

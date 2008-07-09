@@ -67,7 +67,6 @@ public class SetRegistrationAction extends ApartmentEditAction {
 			endDate = ApplicationConfig.getFutureInfinite();
 		}
 
-
 		if (getCountryFilter().getSelectedId() == null) {
 			person = personService.read(person);
 			getApartmentService().fillFilterIds(person.getApartment(),

@@ -116,11 +116,12 @@ public class BuildingAttribute extends DomainObject {
 				.toString();
 	}
 
-	public String format(Locale locale, boolean shortMode)
-			throws FlexPayException {
+	public String format(Locale locale, boolean shortMode) throws FlexPayException {
+
 		StringBuilder result = new StringBuilder();
 		BuildingAttributeTypeTranslation typeTranslation = TranslationUtil
 				.getTranslation(buildingAttributeType.getTranslations(), locale);
+
 		result.append(typeTranslation == null ? ""
 				: (shortMode ? typeTranslation.getShortName() + ". "
 				: typeTranslation.getName() + " "));
