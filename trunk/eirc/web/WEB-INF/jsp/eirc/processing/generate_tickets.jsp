@@ -9,7 +9,7 @@
     <s:text name="eirc.organisation" />
   </td>
   <td>
-    <s:select name="serviceOrganisationId" list="serviceOrganizationList" listKey="id" listValue="organisation.name" required="true" />
+    <s:select name="serviceOrganisationId" list="serviceOrganizationList" listKey="id" listValue="getTranslation(organisation.names).name" required="true" />
   </td>
 </tr>
 

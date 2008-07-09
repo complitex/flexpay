@@ -181,5 +181,12 @@
 		<put-attribute name="title" value="eirc.eirc_account.view" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_view.jsp" />
 	</definition>
+	<definition name="eirc.eirc_account.create.form1" extends="eirc.eirc_account.list">
+		<put-attribute name="title" value="eirc.eirc_account.create" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_create_form1.jsp" />
+	</definition>
+	<definition name="eirc.eirc_account.create.form2" extends="eirc.eirc_account.create.form1">
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_create_form2.jsp" />
+	</definition>
 
 </tiles-definitions>

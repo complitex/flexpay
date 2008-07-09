@@ -31,6 +31,9 @@
 				<input type="submit" class="btn-exit" disabled="1"
 					   onclick="$('fobjects').action='<s:url action="delete_towns"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
+				<input type="button" class="btn-exit"
+					   onclick="window.location='<s:url action="eircAccountCreateForm1Action"/>'"
+					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
 	</form>

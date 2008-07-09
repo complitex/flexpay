@@ -182,6 +182,30 @@
 		<action name="eircAccountViewAction" class="eircAccountViewAction">
 			<result type="tiles">eirc.eirc_account.view</result>
 		</action>
+		<action name="eircAccountCreateForm1Action" class="eircAccountCreateForm1Action">
+			<result type="tiles">eirc.eirc_account.create.form1</result>
+		</action>
+		<action name="eircAccountCreateForm2Action" class="eircAccountCreateForm2Action">
+			<result name="form2" type="tiles">eirc.eirc_account.create.form2</result>
+			<result name="form1" type="redirect-action">
+				<param name="actionName">eircAccountCreateForm1Action</param>
+			</result>
+		</action>
+		<action name="eircAccountCreateAction" class="eircAccountCreateAction">
+			<result name="form1" type="redirect-action">
+				<param name="actionName">eircAccountCreateForm1Action</param>
+			</result>
+			<result name="form2" type="redirect-action">
+				<param name="actionName">eircAccountCreateForm2Action</param>
+				<param name="parse">true</param>
+				<param name="apartmentId">${apartmentId}</param>
+			</result>
+			<result name="view" type="redirect-action">
+				<param name="actionName">eircAccountViewAction</param>
+				<param name="parse">true</param>
+				<param name="eircAccount.id">${eircAccount.id}</param>
+			</result>
+		</action>
 
 	</package>
 

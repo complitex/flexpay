@@ -45,7 +45,8 @@ public class EircAccountServiceImpl implements EircAccountService {
 		if (account.isNew()) {
 			account.setId(null);
 			account.setAccountNumber(nextPersonalAccount());
-			eircAccountDao.create(account);
+			Long id = eircAccountDao.create(account);
+			account.setId(id);
 		} else {
 			eircAccountDao.update(account);
 		}
@@ -82,6 +83,10 @@ public class EircAccountServiceImpl implements EircAccountService {
 	public List<EircAccount> findAll(Page<EircAccount> pager) {
 		return this.eircAccountDao.findObjects(pager);
 		
+	}
+	
+	public List<EircAccount> findByApartment(Long id) {
+		return eircAccountDao.findByApartment(id);
 	}
 	
 	public EircAccount findWithPerson(Long id) {

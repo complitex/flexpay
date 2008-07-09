@@ -14,13 +14,15 @@ import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
+import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.flexpay.eirc.service.TicketService;
 
 public class GenerateTicketAction extends CommonAction {
 
 	private ServiceOrganisationService serviceOrganisationService;
-	private TicketService tickerService;
+	//private TicketService tickerService;
+	private QuittanceService quittanceService;
 
 	private List<ServiceOrganisation> serviceOrganizationList;
 	
@@ -42,8 +44,7 @@ public class GenerateTicketAction extends CommonAction {
 			cal.add(Calendar.MONTH, 1);
 			Date dateTill = cal.getTime();
 			
-			tickerService.generateForServiceOrganisation(serviceOrganisationId, dateFrom, dateTill);
-			
+			quittanceService.generateForServiceOrganisation(serviceOrganisationId, dateFrom, dateTill);
 		}
 		
 		initDefaultDate();
@@ -109,11 +110,14 @@ public class GenerateTicketAction extends CommonAction {
 		this.serviceOrganisationId = serviceOrganisationId;
 	}
 
+
 	/**
-	 * @param tickerService the tickerService to set
+	 * @param quittanceService the quittanceService to set
 	 */
-	public void setTickerService(TicketService tickerService) {
-		this.tickerService = tickerService;
+	public void setQuittanceService(QuittanceService quittanceService) {
+		this.quittanceService = quittanceService;
 	}
+
+	
 
 }

@@ -73,5 +73,90 @@
 			</column>
 		</property>
 	</class>
+	
+	<class name="Quittance" table="eirc_quittances_tbl">
+		<comment>Quittance</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<set name="quittanceDetailsQuittances" inverse="true" lazy="false" cascade="all">
+			<key column="quittance_id" not-null="true" />
+			<one-to-many class="QuittanceDetailsQuittance" />
+		</set>
+		<many-to-one name="serviceOrganisation" foreign-key="FK_eirc_quittances_service_organisation" class="org.flexpay.eirc.persistence.ServiceOrganisation">
+			<column name="service_organisation_id" not-null="true">
+				<comment>Service organisation reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="eircAccount" foreign-key="FK_eirc_quittance_services_eirc_account" class="org.flexpay.eirc.persistence.EircAccount">
+			<column name="eirc_account_id" not-null="true">
+				<comment>Eirc account reference</comment>
+			</column>
+		</many-to-one>
+		<property name="orderNumber">
+			<column name="order_number" not-null="true">
+				<comment>quittance order number for date till</comment>
+			</column>
+		</property>
+		<property name="dateFrom" type="timestamp">
+			<column name="date_from" not-null="true">
+				<comment>Quittance date from</comment>
+			</column>
+		</property>
+		<property name="dateTill" type="timestamp">
+			<column name="date_till" not-null="true">
+				<comment>Quittance date till</comment>
+			</column>
+		</property>
+		<property name="creationDate" type="timestamp">
+			<column name="creation_date" not-null="true">
+				<comment>Quittance creation date</comment>
+			</column>
+		</property>
+	</class>
+	
+	<class name="QuittanceDetailsQuittance" table="eirc_quittance_details_quittances_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="quittanceDetails" foreign-key="FP_eirc_quittance_details_quittances_quittance_details" class="QuittanceDetails">
+			<column name="quittance_details_id" not-null="true">
+				<comment>QuittanceDetails reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="quittance" foreign-key="FP_eirc_quittance_details_quittances_quittance" class="Quittance">
+			<column name="quittance_id" not-null="true">
+				<comment>Quittance reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+	
+	
+	<query name="QuittanceDetails.findByEircAccountAndDateTill">
+		<![CDATA[
+		SELECT DISTINCT d
+		FROM QuittanceDetails d
+			LEFT JOIN d.consumer c
+			LEFT JOIN c.eircAccount ea
+		WHERE ea.id=? and d.month >= ? and d.month < ?
+		]]>
+	</query>
+	
+	<query name="Quittance.findObjectsByEircAccountAndDateTill">
+		FROM Quittance q
+		WHERE q.eircAccount.id=? and q.dateTill=?
+	</query>
+	<query name="Quittance.findObjectsByEircAccountAndDateTill.count">
+		select count(*) from Quittance q where q.eircAccount.id=? AND q.dateTill=?
+	</query>
+	
+	<query name="Quittance.findByServiceOrganisationAndDate">
+		<![CDATA[
+		FROM Quittance q
+		WHERE q.serviceOrganisation.id=? AND
+		      q.dateTill=?
+		ORDER BY q.eircAccount.apartment.building.id, q.eircAccount.id, q.orderNumber desc
+		]]>
+	</query>
 
 </hibernate-mapping>
