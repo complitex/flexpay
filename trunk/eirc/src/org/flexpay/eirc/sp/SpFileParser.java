@@ -28,7 +28,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class SpFileParser {
 
-	private static Logger log = Logger.getLogger(SpFileParser.class);
+	private Logger log = Logger.getLogger(getClass());
 
 	private static final int MAX_CONTAINER_SIZE = 2048;
 

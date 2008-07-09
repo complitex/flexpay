@@ -16,7 +16,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends NameDateInterval<TV, DI>, NTD extends NameTimeDependentChild<TV, DI>, T extends Translation>
 		extends ActionBase<TV, DI, NTD, T> implements Preparable, SessionAware {
@@ -24,16 +23,6 @@ public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends Nam
 	private List<T> nameTranslations = new ArrayList<T>();
 	private Date date;
 	private NTD object;
-
-	private Map session;
-
-	/**
-	 * @param session
-	 *            the session to set
-	 */
-	public void setSession(Map session) {
-		this.session = session;
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -46,7 +35,7 @@ public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends Nam
 					.getEmptyNameTranslation();
 			nameTranslation.setLang(lang);
 			nameTranslation.setName(request.getParameter("translation."
-					+ lang.getId()));
+														 + lang.getId()));
 			nameTranslations.add(nameTranslation);
 		}
 	}
@@ -79,7 +68,7 @@ public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends Nam
 
 	/**
 	 * Getter for property 'nameTranslations'.
-	 * 
+	 *
 	 * @return Value for property 'nameTranslations'.
 	 */
 	public List<T> getNameTranslations() {
@@ -88,7 +77,7 @@ public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends Nam
 
 	/**
 	 * Getter for property 'date'.
-	 * 
+	 *
 	 * @return Value for property 'date'.
 	 */
 	public String getDate() {
@@ -98,21 +87,20 @@ public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends Nam
 
 	/**
 	 * Setter for property 'date'.
-	 * 
-	 * @param dt
-	 *            Value to set for property 'date'.
+	 *
+	 * @param dt Value to set for property 'date'.
 	 */
 	public void setDate(String dt) {
 		try {
 			date = DateIntervalUtil.parse(dt);
 		} catch (ParseException e) {
-			date = ApplicationConfig.getInstance().getPastInfinite();
+			date = ApplicationConfig.getPastInfinite();
 		}
 	}
 
 	/**
 	 * Getter for property 'region'.
-	 * 
+	 *
 	 * @return Value for property 'region'.
 	 */
 	public NTD getObject() {

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- Define struts actions beans -->
 
@@ -271,6 +274,7 @@
 		<property name="identityTypeService" ref="identityTypeService" />
 	</bean>
 
+
 	<!-- Persons -->
 	<bean id="listPersons" scope="prototype"
 		  class="org.flexpay.ab.actions.person.ListPersons">
@@ -284,8 +288,12 @@
 	<bean id="editPersonAction" scope="prototype"
 		  class="org.flexpay.ab.actions.person.EditPersonAction">
 		<property name="personService" ref="personService" />
-		<property name="identityTypeService" ref="identityTypeService" />
 	</bean>
+
+	<bean id="savePersonFIOAction" scope="prototype" class="org.flexpay.ab.actions.person.SavePersonFIOAction"
+			p:personService-ref="personService"
+			p:identityTypeService-ref="identityTypeService" />
+
 	<bean id="setRegistrationAction" scope="prototype"
 		  class="org.flexpay.ab.actions.person.SetRegistrationAction">
 		<property name="parentService" ref="buildingService" /> 

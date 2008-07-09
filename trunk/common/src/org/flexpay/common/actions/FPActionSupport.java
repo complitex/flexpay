@@ -4,6 +4,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.common.actions.interceptor.UserPreferencesAware;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -12,27 +13,117 @@ import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Helper ActionSupport extension, able to set
  */
-public class FPActionSupport extends ActionSupport implements UserPreferencesAware {
+public class FPActionSupport extends ActionSupport implements UserPreferencesAware, SessionAware {
 
 	protected Logger log = Logger.getLogger(getClass());
 
+	private static final String ERRORS_SESSION_ATTRIBUTE = FPActionSupport.class.getName() + ".ERRORS";
+	protected static final String PREFIX_REDIRECT = "redirect";
+
+	protected static final String REDIRECT_ERROR = "redirectError";
+	protected static final String REDIRECT_SUCCESS = "redirectSuccess";
+
+
+
 	protected UserPreferences userPreferences;
+	protected Map session;
 	private String submit;
-	
+
 	public boolean isSubmitted() {
 		return submit != null;
+	}
+
+	/**
+	 * @return Execution result
+	 * @throws Exception if failure occurs
+	 * @deprecated override {@link #doExecute()} instead
+	 */
+	public String execute() throws Exception {
+		String result;
+		try {
+			result = doExecute();
+		} catch (FlexPayException e) {
+			addActionError(e);
+			result = getErrorResult();
+		} catch (FlexPayExceptionContainer e) {
+			addActionErrors(e);
+			result = getErrorResult();
+		}
+
+		if (log.isDebugEnabled()) {
+			log.debug("Current errors: " + getActionErrors());
+		}
+
+		// extract this domain session errors
+		String damainName = getDomainName();
+
+		//noinspection unchecked
+		Map<String, Collection> domainNamesToErrors = (Map) session.remove(ERRORS_SESSION_ATTRIBUTE);
+		if (domainNamesToErrors != null && domainNamesToErrors.containsKey(damainName)) {
+			Collection errors = domainNamesToErrors.remove(damainName);
+			//noinspection unchecked
+			addActionErrors(errors);
+
+			if (log.isDebugEnabled()) {
+				log.debug("Added errors: " + errors);
+			}
+		}
+
+		// put all errors to session if redirecting
+		if (result.startsWith(PREFIX_REDIRECT)) {
+			Collection errors = getActionErrors();
+			if (domainNamesToErrors == null) {
+				domainNamesToErrors = CollectionUtils.map();
+			}
+			domainNamesToErrors.put(getDomainName(), errors);
+		}
+		//noinspection unchecked
+		session.put(ERRORS_SESSION_ATTRIBUTE, domainNamesToErrors);
+
+		return result;
+	}
+
+	/**
+	 * Perform action execution.
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return execution result code
+	 * @throws Exception if failure occurs
+	 */
+	protected String doExecute() throws Exception {
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return ERROR;
+	}
+
+	/**
+	 * Get domain name for error messages store, the default implementation returns an action package name
+	 *
+	 * @return Domain name
+	 */
+	protected String getDomainName() {
+		return getClass().getPackage().getName();
 	}
 
 	/**
@@ -40,11 +131,16 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 	 *
 	 * @param errorMessages Collection of error messages
 	 */
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings ({"unchecked"})
 	public void addActionErrors(Collection<String> errorMessages) {
-		Collection<String> actionErrors = getActionErrors();
-		actionErrors.addAll(errorMessages);
-		setActionErrors(actionErrors);
+
+		if (errorMessages == null || errorMessages.isEmpty()) {
+			return;
+		}
+
+		for (String msg : errorMessages) {
+			addActionError(msg);
+		}
 	}
 
 	/**
@@ -53,7 +149,11 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 	 * @param e FlexPayException
 	 */
 	public void addActionError(FlexPayException e) {
-		addActionError(getText(e.getErrorKey(), e.getParams()));
+		if (StringUtils.isNotEmpty(e.getErrorKey())) {
+			addActionError(getText(e.getErrorKey(), e.getParams()));
+		} else {
+			addActionError(e.getMessage());
+		}
 	}
 
 	/**
@@ -88,11 +188,11 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 	public void setUserPreferences(UserPreferences userPreferences) {
 		this.userPreferences = userPreferences;
 	}
-	
+
 	public UserPreferences getUserPreferences() {
 		return userPreferences;
 	}
-	
+
 	public void setSubmit(String submit) {
 		this.submit = submit;
 	}
@@ -123,5 +223,14 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 	public String format(Date date) {
 		String dt = DateIntervalUtil.format(date);
 		return "-".equals(dt) ? "" : dt;
+	}
+
+	/**
+	 * Sets the Map of session attributes in the implementing class.
+	 *
+	 * @param session a Map of HTTP session attribute name/value pairs.
+	 */
+	public void setSession(Map session) {
+		this.session = session;
 	}
 }

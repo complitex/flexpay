@@ -1,5 +1,8 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
+<a href="<s:url action="edit_person"><s:param name="person.id" value="person.id" /></s:url>"><s:text name="common.edit" /></a>
+<br />
+
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<s:iterator value="person.personIdentities" status="rowstatus">
 		<tr class="cols_1">

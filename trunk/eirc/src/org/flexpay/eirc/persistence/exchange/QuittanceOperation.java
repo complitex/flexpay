@@ -1,6 +1,5 @@
 package org.flexpay.eirc.persistence.exchange;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.AccountRecord;
 import org.flexpay.eirc.persistence.AccountRecordType;
@@ -14,8 +13,6 @@ import org.flexpay.eirc.util.config.ApplicationConfig;
 import java.math.BigDecimal;
 
 public class QuittanceOperation extends Operation {
-
-	private static Logger log = Logger.getLogger(BalanceOperation.class);
 
 	private ServiceOperationsFactory factory;
 

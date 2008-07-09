@@ -1,63 +1,45 @@
 package org.flexpay.ab.actions.person;
 
-import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
-import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.util.CollectionUtils;
-
-import java.util.Collection;
-import java.util.Map;
 
 public class EditPersonAction extends FPActionSupport {
 
 	private PersonService personService;
-	private IdentityTypeService identityTypeService;
 
-	private Map<Long, PersonIdentity> identities = CollectionUtils.map();
 	private Person person = new Person();
 
-	public String execute() {
+	public String doExecute() throws Exception {
 
-		Person persistent = personService.read(person);
-		if (persistent == null) {
-			persistent = person;
+		if (person.getId() == null) {
+			log.info("No person id specified");
+			addActionError(getText("error.ab.person.id_not_specified"));
+			return REDIRECT_ERROR;
 		}
-		if (isSubmitted()) {
-			for (PersonIdentity identity : identities.values()) {
-				persistent.setIdentity(identity);
-			}
 
-			try {
-				personService.save(persistent);
-				return SUCCESS;
-			} catch (FlexPayExceptionContainer container) {
-				addActionErrors(container);
+		if (person.isNotNew()) {
+			person = personService.read(person);
+			if (person == null) {
+				addActionError(getText("error.ab.person.invalid_id"));
+				return REDIRECT_ERROR;
 			}
-		} else {
-			person = persistent;
-			initIdentities();
 		}
 
 		return INPUT;
 	}
 
-	private void initIdentities() {
-		for (PersonIdentity identity : person.getPersonIdentities()) {
-			identities.put(identity.getIdentityType().getId(), identity);
-		}
-
-		Collection<IdentityType> types = identityTypeService.getIdentityTypes();
-		for (IdentityType type : types) {
-			if (!identities.containsKey(type.getId())) {
-				PersonIdentity identity = new PersonIdentity();
-				identity.setIdentityType(type);
-				identities.put(type.getId(), identity);
-			}
-		}
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return INPUT;
 	}
 
 	public Person getPerson() {
@@ -68,19 +50,17 @@ public class EditPersonAction extends FPActionSupport {
 		this.person = person;
 	}
 
-	public Map<Long, PersonIdentity> getIdentities() {
-		return identities;
-	}
+	public PersonIdentity getFIOIdentity() {
+		PersonIdentity fio = person.getFIOIdentity();
 
-	public void setIdentities(Map<Long, PersonIdentity> identities) {
-		this.identities = identities;
+		if (log.isDebugEnabled()) {
+			log.debug("Person FIO: " + fio);
+		}
+
+		return fio != null ? fio : new PersonIdentity();
 	}
 
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
-	}
-
-	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
-		this.identityTypeService = identityTypeService;
 	}
 }

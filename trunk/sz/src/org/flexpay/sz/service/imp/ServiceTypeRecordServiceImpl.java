@@ -12,7 +12,7 @@ import java.util.List;
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class ServiceTypeRecordServiceImpl implements RecordService<ServiceTypeRecord> {
 
-	private static Logger log = Logger.getLogger(ServiceTypeRecordServiceImpl.class);
+	private Logger log = Logger.getLogger(getClass());
 
 	private ServiceTypeRecordDao serviceTypeRecordDao;
 

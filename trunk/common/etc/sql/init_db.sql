@@ -1741,6 +1741,12 @@ SELECT @person_id:=last_insert_id();
 INSERT INTO ab_person_identities_tbl (begin_date, end_date, birth_date, serial_number,
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
+	VALUES ('1983-01-25', '2100-12-31', '1983-01-25', 0,
+	0, 'Михаил', 'Анатольевич', 'Федько', '',
+	0, @identity_type_fio_id, @person_id);
+INSERT INTO ab_person_identities_tbl (begin_date, end_date, birth_date, serial_number,
+	document_number, first_name, middle_name, last_name, organization,
+	is_default, identity_type_id, person_id)
 	VALUES ('2003-06-09', '2100-12-31', '1983-01-25', 5003,
 	1231231, 'Михаил', 'Анатольевич', 'Федько', 'ОВД Советского района города Новосибирска',
 	1, @identity_type_passport_id, @person_id);

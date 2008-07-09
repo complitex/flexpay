@@ -1,6 +1,5 @@
 package org.flexpay.ab.service.importexport;
 
-import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.common.service.importexport.RawData;
 

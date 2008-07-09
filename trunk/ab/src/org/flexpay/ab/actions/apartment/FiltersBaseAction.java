@@ -1,21 +1,16 @@
 package org.flexpay.ab.actions.apartment;
 
-import java.util.Collection;
-import java.util.Map;
-
 import org.apache.commons.collections.ArrayStack;
 import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.ab.persistence.BuildingAttribute;
 import org.flexpay.ab.persistence.BuildingAttributeTypeTranslation;
-import org.flexpay.ab.persistence.filters.BuildingsFilter;
-import org.flexpay.ab.persistence.filters.CountryFilter;
-import org.flexpay.ab.persistence.filters.RegionFilter;
-import org.flexpay.ab.persistence.filters.StreetFilter;
-import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
+
+import java.util.Collection;
 
 public class FiltersBaseAction extends FPActionSupport implements
 		SessionAware {
@@ -27,8 +22,6 @@ public class FiltersBaseAction extends FPActionSupport implements
 	private TownFilter townFilter = new TownFilter();
 	private StreetFilter streetFilter = new StreetFilter();
 	private BuildingsFilter buildingsFilter = new BuildingsFilter();
-
-	private Map session;
 
 	String filtersError;
 
@@ -49,7 +42,7 @@ public class FiltersBaseAction extends FPActionSupport implements
 
 	/**
 	 * Getter for property 'filters'.
-	 * 
+	 *
 	 * @return Value for property 'filters'.
 	 */
 	public ArrayStack getFilters() {
@@ -63,7 +56,7 @@ public class FiltersBaseAction extends FPActionSupport implements
 
 		return filters;
 	}
-	
+
 	public String getBuildingNumber(Collection<BuildingAttribute> attributes) {
 
 		try {
@@ -79,7 +72,7 @@ public class FiltersBaseAction extends FPActionSupport implements
 				BuildingAttributeTypeTranslation attributeTypeTranslation =
 						getTranslation(attribute.getBuildingAttributeType().getTranslations());
 				if (attributeTypeTranslation.getShortName() != null) {
-					number.append(attributeTypeTranslation.getShortName() + ' ');
+					number.append(attributeTypeTranslation.getShortName()).append(' ');
 				} else {
 					number.append(attributeTypeTranslation.getName()).append(' ');
 				}
@@ -100,9 +93,8 @@ public class FiltersBaseAction extends FPActionSupport implements
 
 	/**
 	 * Setter for property 'filters'.
-	 * 
-	 * @param filters
-	 *            Value to set for property 'filters'.
+	 *
+	 * @param filters Value to set for property 'filters'.
 	 */
 	public void setFilters(ArrayStack filters) {
 		countryFilter = (CountryFilter) filters.peek(4);
@@ -120,8 +112,7 @@ public class FiltersBaseAction extends FPActionSupport implements
 	}
 
 	/**
-	 * @param countryFilter
-	 *            the countryFilter to set
+	 * @param countryFilter the countryFilter to set
 	 */
 	public void setCountryFilter(CountryFilter countryFilter) {
 		this.countryFilter = countryFilter;
@@ -135,8 +126,7 @@ public class FiltersBaseAction extends FPActionSupport implements
 	}
 
 	/**
-	 * @param regionFilter
-	 *            the regionFilter to set
+	 * @param regionFilter the regionFilter to set
 	 */
 	public void setRegionFilter(RegionFilter regionFilter) {
 		this.regionFilter = regionFilter;
@@ -150,8 +140,7 @@ public class FiltersBaseAction extends FPActionSupport implements
 	}
 
 	/**
-	 * @param townFilter
-	 *            the townFilter to set
+	 * @param townFilter the townFilter to set
 	 */
 	public void setTownFilter(TownFilter townFilter) {
 		this.townFilter = townFilter;
@@ -165,8 +154,7 @@ public class FiltersBaseAction extends FPActionSupport implements
 	}
 
 	/**
-	 * @param streetFilter
-	 *            the streetFilter to set
+	 * @param streetFilter the streetFilter to set
 	 */
 	public void setStreetFilter(StreetFilter streetFilter) {
 		this.streetFilter = streetFilter;
@@ -180,26 +168,16 @@ public class FiltersBaseAction extends FPActionSupport implements
 	}
 
 	/**
-	 * @param buildingsFilter
-	 *            the buildingsFilter to set
+	 * @param buildingsFilter the buildingsFilter to set
 	 */
 	public void setBuildingsFilter(BuildingsFilter buildingsFilter) {
 		this.buildingsFilter = buildingsFilter;
 	}
 
 	/**
-	 * @param session
-	 *            the session to set
-	 */
-	public void setSession(Map session) {
-		this.session = session;
-	}
-
-	/**
 	 * Setter for property 'parentService'.
-	 * 
-	 * @param parentService
-	 *            Value to set for property 'parentService'.
+	 *
+	 * @param parentService Value to set for property 'parentService'.
 	 */
 	public void setParentService(ParentService<BuildingsFilter> parentService) {
 		this.parentService = parentService;

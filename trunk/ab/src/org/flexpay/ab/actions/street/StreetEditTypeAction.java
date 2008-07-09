@@ -1,6 +1,5 @@
 package org.flexpay.ab.actions.street;
 
-import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTemporal;
@@ -15,8 +14,6 @@ import java.text.ParseException;
 
 public class StreetEditTypeAction extends FPActionSupport {
 
-	private static Logger log = Logger.getLogger(StreetEditTypeAction.class);
-
 	private Street object = new Street();
 	private StreetTypeTemporal temporal = new StreetTypeTemporal();
 	private StreetTypeFilter streetTypeFilter = new StreetTypeFilter();
@@ -24,7 +21,7 @@ public class StreetEditTypeAction extends FPActionSupport {
 	private StreetService streetService;
 	private StreetTypeService streetTypeService;
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 		object = streetService.read(object.getId());
 		temporal.setObject(object);
 
@@ -117,7 +114,7 @@ public class StreetEditTypeAction extends FPActionSupport {
 		try {
 			temporal.setBegin(DateIntervalUtil.parse(dt));
 		} catch (ParseException e) {
-			temporal.setBegin(ApplicationConfig.getInstance().getPastInfinite());
+			temporal.setBegin(ApplicationConfig.getPastInfinite());
 		}
 	}
 }

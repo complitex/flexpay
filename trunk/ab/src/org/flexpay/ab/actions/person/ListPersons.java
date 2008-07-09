@@ -2,88 +2,39 @@ package org.flexpay.ab.actions.person;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.service.ParentService;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public class ListPersons extends FPActionSupport implements SessionAware {
-
-	private static Logger log = Logger.getLogger(ListPersons.class);
-
-	private static final String ATTRIBUTE_ACTION_ERRORS = ListPersons.class.getName() + ".ACTION_ERRORS";
 
 	private ParentService parentService;
 	private PersonService personService;
 
-	private Map session;
 	private List<Person> persons = new ArrayList<Person>();
 	private String searchString;
 	private Page pager = new Page();
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	@SuppressWarnings ({"unchecked"})
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
-		long start = System.currentTimeMillis();
-		try {
-			if(StringUtils.isEmpty(searchString)) {
-				ArrayStack filters = parentService == null ? null :
-						parentService.initFilters(getFilters(), userPreferences.getLocale());
-				setFilters(filters);
+		if (StringUtils.isEmpty(searchString)) {
+			ArrayStack filters = parentService == null ? null :
+								 parentService.initFilters(getFilters(), userPreferences.getLocale());
+			setFilters(filters);
 
-				persons = personService.findPersons(filters, pager);
-			} else {
-				persons = personService.findByFIO(pager, "%" + searchString + "%");
-			}
-			
-		} catch (FlexPayException e) {
-			addActionError(e);
+			persons = personService.findPersons(filters, pager);
+		} else {
+			persons = personService.findByFIO(pager, "%" + searchString + "%");
 		}
 
-		// Retrieve action errors from session if any
-		if (log.isDebugEnabled()) {
-			log.debug("Getting actionErrors: " + session.get(ATTRIBUTE_ACTION_ERRORS));
-		}
-		Collection errors = (Collection) session.remove(ATTRIBUTE_ACTION_ERRORS);
-		if (errors != null && !errors.isEmpty()) {
-			Collection actionErrors = getActionErrors();
-			actionErrors.addAll(errors);
-			setActionErrors(actionErrors);
-		}
-
-		if (log.isInfoEnabled()) {
-			log.info("Listing persons" + (System.currentTimeMillis() - start) + " ms");
-		}
 		return SUCCESS;
-	}
-
-	public static void setActionErrors(Map<String, Object> session, Collection actionErrors) {
-		if (log.isDebugEnabled()) {
-			log.debug("Setting actionErrors: " + actionErrors);
-		}
-		session.put(ATTRIBUTE_ACTION_ERRORS, actionErrors);
-	}
-
-	/**
-	 * Sets the Map of session attributes in the implementing class.
-	 *
-	 * @param session a Map of HTTP session attribute name/value pairs.
-	 */
-	public void setSession(Map session) {
-		this.session = session;
 	}
 
 	/**
@@ -106,7 +57,7 @@ public class ListPersons extends FPActionSupport implements SessionAware {
 
 	private ArrayStack getFilters() {
 
-        return new ArrayStack();
+		return new ArrayStack();
 	}
 
 	private void setFilters(ArrayStack filters) {

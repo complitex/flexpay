@@ -1,6 +1,5 @@
 package org.flexpay.eirc.persistence.exchange;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataCorrection;
@@ -18,8 +17,6 @@ import java.util.List;
  * Open new service provider personal account
  */
 public class OpenAccountOperation extends AbstractChangePersonalAccountOperation {
-
-	private static Logger log = Logger.getLogger(OpenAccountOperation.class);
 
 	private ServiceOperationsFactory factory;
 
@@ -48,7 +45,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		consumer.setResponsiblePerson(record.getPerson());
 		consumer.setExternalAccountNumber(record.getPersonalAccountExt());
 		consumer.setBeginDate(changeApplyingDate);
-		consumer.setEndDate(ApplicationConfig.getInstance().getFutureInfinite());
+		consumer.setEndDate(ApplicationConfig.getFutureInfinite());
 		consumer.setService(findService(registry, record));
 		consumer.setEircAccount(account);
 
@@ -106,7 +103,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		Service service = consumerService.findService(registry.getServiceProvider(), record.getServiceCode());
 		if (service == null) {
 			throw new FlexPayException("Cannot find service for provider " + registry.getServiceProvider() +
-					" and code: " + record.getServiceCode());
+									   " and code: " + record.getServiceCode());
 		}
 
 		return service;

@@ -16,8 +16,6 @@ import java.util.List;
 
 public class SzFileUtil {
 
-	private static Logger log = Logger.getLogger(SzFileUtil.class);
-
 	private static RecordService<CharacteristicRecord> characteristicRecordService;
 	private static RecordService<SubsidyRecord> subsidyRecordService;
 	private static RecordService<ServiceTypeRecord> serviceTypeRecordService;
@@ -155,7 +153,6 @@ public class SzFileUtil {
 				oldInternalResponseFile.delete();
 			}
 		} catch (Throwable t) {
-			log.error("Failed loading file from db: " + szFile, t);
 			szFile.setInternalResponseFileName(null);
 			targetFile.delete();
 			throw t;

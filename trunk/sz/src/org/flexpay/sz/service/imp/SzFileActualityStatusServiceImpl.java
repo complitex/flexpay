@@ -9,8 +9,8 @@ import org.flexpay.sz.persistence.SzFileActualityStatus;
 import org.flexpay.sz.service.SzFileActualityStatusService;
 
 public class SzFileActualityStatusServiceImpl implements SzFileActualityStatusService {
-	private static Logger log = Logger
-			.getLogger(SzFileActualityStatusServiceImpl.class);
+
+	private Logger log = Logger.getLogger(getClass());
 
 	Map<Long, SzFileActualityStatus> cashe = new HashMap<Long, SzFileActualityStatus>();
 

@@ -20,7 +20,7 @@ import java.util.Set;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class SpRegistryServiceImpl implements SpRegistryService {
-	private static Logger log = Logger.getLogger(SpRegistryServiceImpl.class);
+	private Logger log = Logger.getLogger(getClass());
 
 	private SpRegistryDao spRegistryDao;
 	private SpRegistryDaoExt spRegistryDaoExt;

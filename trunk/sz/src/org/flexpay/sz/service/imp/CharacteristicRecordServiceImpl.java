@@ -12,8 +12,8 @@ import java.util.List;
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class CharacteristicRecordServiceImpl implements
 		RecordService<CharacteristicRecord> {
-	private static Logger log = Logger
-			.getLogger(CharacteristicRecordServiceImpl.class);
+
+	private Logger log = Logger.getLogger(getClass());
 
 	private CharacteristicRecordDao characteristicRecordDao;
 

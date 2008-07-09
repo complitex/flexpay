@@ -28,7 +28,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		TownNameTranslation, TownName, TownNameTemporal, Town, Region>
 		implements TownService {
 
-	private static Logger log = Logger.getLogger(TownServiceImpl.class);
+	private Logger log = Logger.getLogger(getClass());
 
 	private TownDao townDao;
 	private TownNameDao townNameDao;

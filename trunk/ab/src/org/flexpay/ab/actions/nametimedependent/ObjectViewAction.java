@@ -3,7 +3,6 @@ package org.flexpay.ab.actions.nametimedependent;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.Preparable;
 import org.apache.commons.collections.ArrayStack;
-import org.apache.log4j.Logger;
 import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TemporaryValue;
@@ -18,8 +17,6 @@ public abstract class ObjectViewAction<
 		T extends Translation> extends ActionBase<TV, DI, NTD, T> implements Preparable {
 
 	public static final String ATTRIBUTE_OBJECT = ObjectViewAction.class.getName() + ".OBJECT";
-
-	public static Logger log = Logger.getLogger(ObjectViewAction.class);
 
 	private NTD object;
 
@@ -43,7 +40,9 @@ public abstract class ObjectViewAction<
 	/**
 	 * {@inheritDoc}
 	 */
-	public String execute() {
+	@Override
+	public String doExecute() {
+
 		log.info("Object: " + object);
 		if (object.getId() != null) {
 			object = nameTimeDependentService.read(object.getId());

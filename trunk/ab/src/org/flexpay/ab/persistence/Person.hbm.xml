@@ -53,6 +53,11 @@
 		<property name="lastName" column="last_name" length="255" not-null="true" index="data_index" />
 		<property name="organization" length="4000" not-null="true" />
 		<property name="default" column="is_default" type="boolean" not-null="true" />
+		<property name="sex">
+			<column name="sex" not-null="true">
+				<comment>Person sex type</comment>
+			</column>
+		</property>
 		<many-to-one name="identityType" column="identity_type_id" not-null="true"
 					 class="IdentityType" />
 		<many-to-one name="person" column="person_id" not-null="true" class="Person" />

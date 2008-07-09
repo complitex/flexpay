@@ -182,7 +182,7 @@ public class Person extends DomainObjectWithStatus {
 		endDate = DateUtils.truncate(endDate, Calendar.DAY_OF_MONTH);
 
 		if (beginDate.after(endDate)) {
-			throw new FlexPayException("beginDate can not be after endDate", "ab.person.registration.error.begin_after_end");
+			throw new FlexPayException("beginDate after endDate", "ab.person.registration.error.begin_after_end");
 		}
 
 		Date[] dateInterval = getBeginValidInterval();
@@ -234,5 +234,62 @@ public class Person extends DomainObjectWithStatus {
 	 */
 	public void setPersonRegistrations(Set<PersonRegistration> personRegistrations) {
 		this.personRegistrations = personRegistrations;
+	}
+
+	/**
+	 * Get current FIO identity
+	 *
+	 * @return PersonIdentity with First-Middle-Last names if available, or <code>null</code> otherwise
+	 */
+	public PersonIdentity getFIOIdentity() {
+		return getFIOIdentity(DateIntervalUtil.now());
+	}
+
+	/**
+	 * Get FIO identity for date
+	 *
+	 * @param date Date to get identity for
+	 * @return PersonIdentity with First-Middle-Last names if available, or <code>null</code> otherwise
+	 */
+	public PersonIdentity getFIOIdentity(Date date) {
+		for (PersonIdentity candidate : personIdentities) {
+			IdentityType type = candidate.getIdentityType();
+			if (type.isFIO() && isValidForDate(candidate, date)) {
+				return candidate;
+			}
+		}
+
+		return null;
+	}
+
+	private boolean isValidForDate(PersonIdentity id, Date dt) {
+		return id.getBeginDate().compareTo(dt) <= 0 && dt.compareTo(id.getEndDate()) <= 0;
+	}
+
+	/**
+	 * Set current FIO identity
+	 *
+	 * @param identity PersonIdentity to set
+	 * @return <code>true</code> if identity was updated, or <code>false</code> otherwise
+	 */
+	public boolean setFIOIdentity(PersonIdentity identity) {
+		PersonIdentity current = getFIOIdentity();
+		if (current != null && current.isSameFIO(identity)) {
+			return false;
+		}
+
+		// need to update identity
+		if (current != null) {
+			current.disable();
+			current.setEndDate(identity.getBeginDate());
+		}
+
+		if (personIdentities == Collections.EMPTY_SET) {
+			personIdentities = CollectionUtils.set();
+		}
+
+		personIdentities.add(identity);
+		identity.setPerson(this);
+		return true;
 	}
 }

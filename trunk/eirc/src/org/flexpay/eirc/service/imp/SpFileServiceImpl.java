@@ -17,7 +17,8 @@ import java.util.List;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class SpFileServiceImpl implements SpFileService {
-	private static Logger log = Logger.getLogger(SpFileServiceImpl.class);
+
+	private Logger log = Logger.getLogger(getClass());
 
 	private SpFileDao spFileDao;
 	private SpFileDaoExt spFileDaoExt;

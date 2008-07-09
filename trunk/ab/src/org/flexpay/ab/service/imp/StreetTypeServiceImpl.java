@@ -20,7 +20,7 @@ import java.util.*;
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class StreetTypeServiceImpl implements StreetTypeService {
 
-	private static Logger log = Logger.getLogger(StreetTypeServiceImpl.class);
+	private Logger log = Logger.getLogger(getClass());
 
 	private StreetTypeDao streetTypeDao;
 	private StreetTypeTranslationDao streetTypeTranslationDao;

@@ -29,7 +29,7 @@ public abstract class NameTimeDependentServiceImpl<
 		Parent extends DomainObject
 		> implements NameTimeDependentService<TV, DI, NTD, T> {
 
-	private static Logger log = Logger.getLogger(NameTimeDependentServiceImpl.class);
+	protected Logger log = Logger.getLogger(getClass());
 
 	/**
 	 * Get DAO implementation working with Name time-dependent objects

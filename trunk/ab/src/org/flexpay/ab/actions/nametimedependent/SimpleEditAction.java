@@ -3,9 +3,7 @@ package org.flexpay.ab.actions.nametimedependent;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.Preparable;
 import org.apache.commons.collections.ArrayStack;
-import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.*;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -25,8 +23,6 @@ public abstract class SimpleEditAction<
 		DI extends NameDateInterval<TV, DI>,
 		NTD extends NameTimeDependentChild<TV, DI>,
 		T extends Translation> extends ActionBase<TV, DI, NTD, T> implements Preparable {
-
-	private static Logger log = Logger.getLogger(SimpleEditAction.class);
 
 	private Date date;
 	private NTD object;
@@ -68,18 +64,28 @@ public abstract class SimpleEditAction<
 	}
 
 	@SuppressWarnings ({"unchecked"})
-	public String execute() {
-		try {
-			if (isPost()) {
-				object = nameTimeDependentService.updateNameTranslations(object, temporalId, nameTranslations, date);
-				Map session = ActionContext.getContext().getSession();
-				session.put(ObjectViewAction.ATTRIBUTE_OBJECT, object);
+	public String doExecute() throws Exception {
 
-				return SUCCESS;
-			}
-		} catch (FlexPayExceptionContainer container) {
-			addActionErrors(container);
+		if (isPost()) {
+			object = nameTimeDependentService.updateNameTranslations(object, temporalId, nameTranslations, date);
+			Map session = ActionContext.getContext().getSession();
+			session.put(ObjectViewAction.ATTRIBUTE_OBJECT, object);
+
+			return SUCCESS;
 		}
+
+		return INPUT;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
 		return INPUT;
 	}
 
@@ -95,7 +101,7 @@ public abstract class SimpleEditAction<
 		try {
 			date = DateIntervalUtil.parse(dt);
 		} catch (ParseException e) {
-			date = ApplicationConfig.getInstance().getPastInfinite();
+			date = ApplicationConfig.getPastInfinite();
 		}
 	}
 

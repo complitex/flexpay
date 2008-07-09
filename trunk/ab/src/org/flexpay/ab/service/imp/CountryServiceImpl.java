@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class CountryServiceImpl implements CountryService {
 
-	private static Logger log = Logger.getLogger(CountryServiceImpl.class);
+	private Logger log = Logger.getLogger(getClass());
 
 	private CountryDao countryDao;
 	private CountryNameDao countryNameDao;

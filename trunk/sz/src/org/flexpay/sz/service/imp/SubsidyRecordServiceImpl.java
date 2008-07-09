@@ -11,8 +11,8 @@ import java.util.List;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class SubsidyRecordServiceImpl implements RecordService<SubsidyRecord> {
-	private static Logger log = Logger
-			.getLogger(SubsidyRecordServiceImpl.class);
+
+	private Logger log = Logger.getLogger(getClass());
 
 	private SubsidyRecordDao subsidyRecordDao;
 
