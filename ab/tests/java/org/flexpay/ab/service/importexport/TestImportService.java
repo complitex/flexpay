@@ -32,7 +32,6 @@ public class TestImportService extends SpringBeanAwareTestCase {
 	}
 
 	@Test
-	@Ignore
 	@NotTransactional
 	public void testImportDistricts() throws Throwable {
 		importService.importDistricts(town, sourceDescription);

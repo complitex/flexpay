@@ -8,6 +8,8 @@ import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -108,6 +110,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 *
 	 * @return Value for property 'typesTimeLine'.
 	 */
+	@NotNull
 	public SortedSet<StreetTypeTemporal> getTypeTemporals() {
 		if (typesTimeLine == null) {
 			return EMPTY_SORTED_SET;
@@ -121,6 +124,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 * @param dt Date to get value for
 	 * @return Value which interval includes specified date, or <code>null</code> if not found
 	 */
+	@Nullable
 	public StreetType getTypeForDate(Date dt) {
 		if (typesTimeLine == null) {
 			return null;
@@ -140,6 +144,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 *
 	 * @return Value which interval includes specified date, or <code>null</code> if not found
 	 */
+	@Nullable
 	public StreetType getCurrentType() {
 		return getTypeForDate(DateIntervalUtil.now());
 	}
@@ -172,12 +177,44 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 				.toString();
 	}
 
+	@NotNull
 	public String format(Locale locale, boolean shortMode) throws FlexPayException {
-		StreetTypeTranslation typeTanslation = TranslationUtil.getTranslation(getCurrentType().getTranslations(), locale);
-		StreetNameTranslation nameTanslation = TranslationUtil.getTranslation(getCurrentName().getTranslations(), locale);
-		String typeStr = typeTanslation == null ? "" : (shortMode ? typeTanslation.getShortName() + "." : typeTanslation.getName());
-		String nameStr = nameTanslation == null ? "" : nameTanslation.getName();
+		StringBuilder formatted = new StringBuilder();
 
-		return typeStr + " " + nameStr;
+		StreetTypeTranslation typeTanslation = getTypeTranslation(locale);
+		if (typeTanslation != null) {
+			if (shortMode) {
+				formatted.append(typeTanslation.getShortName()).append(".");
+			} else {
+				formatted.append(typeTanslation.getName());
+			}
+		}
+
+		StreetNameTranslation nameTranslation = getNameTranslation(locale);
+		if (nameTranslation != null) {
+			formatted.append(" ").append(nameTranslation.getName());
+		}
+
+		return formatted.toString();
+	}
+
+	@Nullable
+	private StreetNameTranslation getNameTranslation(Locale locale) throws FlexPayException {
+		StreetName name = getCurrentName();
+		StreetNameTranslation nameTranslation = null;
+		if (name != null) {
+			nameTranslation = TranslationUtil.getTranslation(name.getTranslations(), locale);
+		}
+		return nameTranslation;
+	}
+
+	@Nullable
+	private StreetTypeTranslation getTypeTranslation(Locale locale) throws FlexPayException {
+		StreetType type = getCurrentType();
+		StreetTypeTranslation typeTanslation = null;
+		if (type != null) {
+			typeTanslation = TranslationUtil.getTranslation(type.getTranslations(), locale);
+		}
+		return typeTanslation;
 	}
 }

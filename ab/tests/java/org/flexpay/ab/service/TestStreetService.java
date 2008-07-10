@@ -5,18 +5,13 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.NotTransactional;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class TestStreetService extends SpringBeanAwareTestCase {
-
-	private Logger log = Logger.getLogger(getClass());
 
 	@Autowired
 	protected StreetDao streetDao;
@@ -57,20 +52,5 @@ public class TestStreetService extends SpringBeanAwareTestCase {
 
 		streetDao.create(street);
 		streetDao.delete(street);
-	}
-
-	@Test
-	@NotTransactional
-	public void testRetriveStreetTypes() throws Throwable {
-
-		Street street = streetDao.readFull(6L);
-
-		if (street == null) {
-			assertNotNull("Street retrival failed", street);
-		}
-
-		for (StreetTypeTemporal temporal : street.getTypeTemporals()) {
-			log.info("testRetriveStreetTypes(): " + temporal);
-		}
 	}
 }
