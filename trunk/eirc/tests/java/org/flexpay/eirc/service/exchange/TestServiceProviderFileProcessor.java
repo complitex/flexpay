@@ -8,6 +8,7 @@ import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CRCUtil;
 import org.flexpay.eirc.actions.TestSpFileAction;
 import org.flexpay.eirc.persistence.*;
@@ -183,10 +184,10 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	private void checkOpenRegistryRecords(SpFile file) {
 		int nErrorLessRecords = DataAccessUtils.intResult(
 				hibernateTemplate.find("select count(*) from SpRegistryRecord rr " +
-						"where importError is null and rr.spRegistry.spFile.id=?", file.getId()));
+									   "where importError is null and rr.spRegistry.spFile.id=?", file.getId()));
 		int nConsumerLessRecords = DataAccessUtils.intResult(
 				hibernateTemplate.find("select count(*) from SpRegistryRecord rr " +
-						"where consumer is null and rr.spRegistry.spFile.id=?", file.getId()));
+									   "where consumer is null and rr.spRegistry.spFile.id=?", file.getId()));
 		assertEquals("Invalid number of records without errors", nErrorLessRecords, nConsumerLessRecords);
 	}
 
@@ -297,7 +298,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 				.append(RECORD_DELIMITER)
 
 						// FIO
-				.append(exchangeHelper.getFIOGroup(person))
+				.append(exchangeHelper.getFIOGroup(stub(person)))
 				.append(RECORD_DELIMITER)
 
 						// Operation date

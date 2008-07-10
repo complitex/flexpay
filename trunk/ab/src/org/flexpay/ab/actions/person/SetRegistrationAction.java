@@ -8,6 +8,7 @@ import org.flexpay.ab.service.PersonService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateIntervalUtil;
 
 import java.text.DateFormat;
@@ -43,7 +44,7 @@ public class SetRegistrationAction extends ApartmentEditAction {
 
 
 			if (apartmentError == null) {
-				person = personService.read(person);
+				person = personService.read(stub(person));
 				try {
 					person.setPersonRegistration(getApartment(), beginDate, endDate);
 					personService.save(person);
@@ -68,7 +69,7 @@ public class SetRegistrationAction extends ApartmentEditAction {
 		}
 
 		if (getCountryFilter().getSelectedId() == null) {
-			person = personService.read(person);
+			person = personService.read(stub(person));
 			getApartmentService().fillFilterIds(person.getApartment(),
 					getCountryFilter(), getRegionFilter(), getTownFilter(),
 					getStreetFilter(), getBuildingsFilter());
@@ -109,7 +110,7 @@ public class SetRegistrationAction extends ApartmentEditAction {
 
 	/**
 	 * @param beginDate the beginDate to set
-	 * @throws ParseException if parse error occurs 
+	 * @throws ParseException if parse error occurs
 	 */
 	public void setBeginDate(String beginDate) throws ParseException {
 		DateFormat format = new SimpleDateFormat(DATE_FORMAT);

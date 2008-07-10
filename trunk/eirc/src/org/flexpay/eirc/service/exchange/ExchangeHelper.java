@@ -4,11 +4,12 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.*;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class ExchangeHelper {
 
 	private ApartmentService apartmentService;
@@ -67,7 +68,7 @@ public class ExchangeHelper {
 	 * @param personStub Person stub
 	 * @return FIO group
 	 */
-	public String getFIOGroup(Person personStub) {
+	public String getFIOGroup(Stub<Person> personStub) {
 		Person persistent = personService.read(personStub);
 		PersonIdentity identity = persistent.getDefaultIdentity();
 		String firstName = identity.getFirstName();

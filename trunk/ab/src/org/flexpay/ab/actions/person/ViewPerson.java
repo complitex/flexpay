@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class ViewPerson extends FPActionSupport {
 
@@ -19,7 +20,13 @@ public class ViewPerson extends FPActionSupport {
 			log.debug("Object: " + person);
 		}
 		if (person.isNotNew()) {
-			person = personService.read(person);
+			person = personService.read(stub(person));
+			if (person == null) {
+				addActionError(getText("error.invalid_id"));
+				return ERROR;
+			}
+
+			// get address
 			if (person.getApartment() != null) {
 				address = apartmentService.getAddress(person.getApartment());
 			}

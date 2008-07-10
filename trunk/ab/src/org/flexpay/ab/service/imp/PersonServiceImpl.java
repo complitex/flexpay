@@ -6,20 +6,23 @@ import org.flexpay.ab.dao.PersonAttributeDao;
 import org.flexpay.ab.dao.PersonDao;
 import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.ab.dao.PersonRegistrationDao;
+import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
+import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class PersonServiceImpl implements PersonService {
 
 	private PersonDao personDao;
@@ -27,20 +30,12 @@ public class PersonServiceImpl implements PersonService {
 	private PersonAttributeDao personAttributeDao;
 	private PersonRegistrationDao personRegistrationDao;
 
-	/**
-	 * Setter for property 'personDao'.
-	 *
-	 * @param personDao Value to set for property 'personDao'.
-	 */
+	private IdentityTypeService identityTypeService;
+
 	public void setPersonDao(PersonDao personDao) {
 		this.personDao = personDao;
 	}
 
-	/**
-	 * Setter for property 'personDaoExt'.
-	 *
-	 * @param personDaoExt Value to set for property 'personDaoExt'.
-	 */
 	public void setPersonDaoExt(PersonDaoExt personDaoExt) {
 		this.personDaoExt = personDaoExt;
 	}
@@ -51,6 +46,10 @@ public class PersonServiceImpl implements PersonService {
 
 	public void setPersonRegistrationDao(PersonRegistrationDao personRegistrationDao) {
 		this.personRegistrationDao = personRegistrationDao;
+	}
+
+	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
+		this.identityTypeService = identityTypeService;
 	}
 
 	/**
@@ -71,18 +70,21 @@ public class PersonServiceImpl implements PersonService {
 	 * @return Person instance, or <code>null</code> if not found
 	 */
 	@Nullable
-	public Person read(@NotNull Person stub) {
-		if (stub.isNotNew()) {
-			Person persistent = personDao.readFull(stub.getId());
-			if (persistent != null) {
-				persistent.setPersonAttributes(personAttributeDao.listAttributes(stub.getId()));
-				persistent.setPersonRegistrations(personRegistrationDao.listRegistrations(stub.getId()));
-			}
+	public Person read(@NotNull Stub<Person> stub) {
 
-			return persistent;
+		Person persistent = personDao.readFull(stub.getId());
+		if (persistent != null) {
+			persistent.setPersonAttributes(personAttributeDao.listAttributes(stub.getId()));
+			persistent.setPersonRegistrations(personRegistrationDao.listRegistrations(stub.getId()));
+
+			// setup identity types
+			for (PersonIdentity identity : persistent.getPersonIdentities()) {
+				IdentityType type = identityTypeService.read(identity.getIdentityType().getId());
+				identity.setIdentityType(type);
+			}
 		}
 
-		return null;
+		return persistent;
 	}
 
 	/**
