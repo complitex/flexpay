@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.support.DataAccessUtils;
@@ -31,36 +32,42 @@ public class TestImportService extends SpringBeanAwareTestCase {
 	}
 
 	@Test
+	@Ignore
 	@NotTransactional
 	public void testImportDistricts() throws Throwable {
 		importService.importDistricts(town, sourceDescription);
 	}
 
 	@Test
+	@Ignore
 	@NotTransactional
 	public void testImportStreetTypes() {
 		importService.importStreetTypes(sourceDescription);
 	}
 
 	@Test
+	@Ignore
 	@NotTransactional
 	public void testImportStreets() throws Throwable {
 		importService.importStreets(town, sourceDescription);
 	}
 
 	@Test
+	@Ignore
 	@NotTransactional
 	public void testImportBuildings() throws Throwable {
 		importService.importBuildings(sourceDescription);
 	}
 
 	@Test
+	@Ignore
 	@NotTransactional
 	public void testImportApartments() throws Throwable {
 		importService.importApartments(sourceDescription);
 	}
 
 	@Test
+	@Ignore
 	@NotTransactional
 	public void testImportPersons() throws Throwable {
 		importService.importPersons(sourceDescription);
