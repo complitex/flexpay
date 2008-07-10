@@ -15,6 +15,8 @@ import org.hibernate.Session;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -46,15 +48,18 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		this.type = type;
 	}
 
-	public PK create(T o) {
+	@NotNull
+	public PK create(@NotNull T o) {
 		return (PK) hibernateTemplate.save(o);
 	}
 
-	public T read(PK id) {
+	@Nullable
+	public T read(@NotNull PK id) {
 		return (T) hibernateTemplate.get(type, id);
 	}
 
-	public T readFull(final PK id) {
+	@Nullable
+	public T readFull(@NotNull final PK id) {
 		final String queryName = type.getSimpleName() + ".readFull";
 		return (T) hibernateTemplate.execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
@@ -65,11 +70,11 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		});
 	}
 
-	public void update(T o) {
+	public void update(@NotNull T o) {
 		hibernateTemplate.update(o);
 	}
 
-	public void delete(T o) {
+	public void delete(@NotNull T o) {
 		hibernateTemplate.delete(o);
 	}
 

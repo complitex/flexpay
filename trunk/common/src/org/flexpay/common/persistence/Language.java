@@ -3,6 +3,7 @@ package org.flexpay.common.persistence;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.springframework.beans.propertyeditors.LocaleEditor;
 
 import java.util.Collections;
@@ -112,7 +113,9 @@ public class Language extends DomainObjectWithStatus {
 	}
 
 	public int hashCode() {
-		return langIsoCode.hashCode();
+		return new HashCodeBuilder()
+				.append(langIsoCode)
+				.toHashCode();
 	}
 
 	public String getName() {

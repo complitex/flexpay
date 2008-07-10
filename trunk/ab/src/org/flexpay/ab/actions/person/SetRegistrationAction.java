@@ -34,7 +34,7 @@ public class SetRegistrationAction extends ApartmentEditAction {
 	private String beginAfterEndError;
 	private String beginIntervalError;
 
-	public String execute() throws FlexPayException {
+	public String doExecute() throws Exception {
 
 		if ("save".equals(action)) {
 			if (getApartment() == null) {
@@ -46,7 +46,7 @@ public class SetRegistrationAction extends ApartmentEditAction {
 				person = personService.read(person);
 				try {
 					person.setPersonRegistration(getApartment(), beginDate, endDate);
-					personService.update(person);
+					personService.save(person);
 					return "person_view";
 				} catch (FlexPayException e) {
 					if ("ab.person.registration.error.begin_after_end".equals(e.getErrorKey())) {

@@ -1,15 +1,24 @@
 package org.flexpay.common.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 public class CollectionUtils {
 
+	@NotNull
 	public static <T> T[] ar(T... ts) {
 		return ts;
 	}
 
+	@NotNull
 	public static <T> Set<T> set(T... ts) {
 		return new HashSet<T>(Arrays.asList(ts));
+	}
+
+	@NotNull
+	public static <T> Set<T> set(List<T> ts) {
+		return new HashSet<T>(ts);
 	}
 
 	/**
@@ -19,11 +28,13 @@ public class CollectionUtils {
 	 * @param <V> value type
 	 * @return Map
 	 */
+	@NotNull
 	public static <K, V> Map<K, V> map() {
 		return new HashMap<K,V>();
 	}
 
-	public static <K, V> Map<K, V> map(K[] keys, V[] values) {
+	@NotNull
+	public static <K, V> Map<K, V> map(@NotNull K[] keys, @NotNull V[] values) {
 		Map<K, V> map = map();
 		int n = 0;
 		for (K k : keys) {

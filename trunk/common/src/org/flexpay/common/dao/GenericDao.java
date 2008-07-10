@@ -1,5 +1,8 @@
 package org.flexpay.common.dao;
 
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -12,7 +15,14 @@ import java.io.Serializable;
  */
 public interface GenericDao<T, PK extends Serializable> {
 
-	PK create(T newInstance);
+	/**
+	 * Create a new persistent object
+	 *
+	 * @param newInstance Object to save in DB
+	 * @return New object primary key
+	 */
+	@NotNull
+	PK create(@NotNull T newInstance);
 
 	/**
 	 * Read persistent object
@@ -20,7 +30,8 @@ public interface GenericDao<T, PK extends Serializable> {
 	 * @param id Object identifier
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
-	T read(PK id);
+	@Nullable
+	T read(@NotNull PK id);
 
 	/**
 	 * Read full persistent object info
@@ -28,9 +39,10 @@ public interface GenericDao<T, PK extends Serializable> {
 	 * @param id Object identifier
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
-	T readFull(PK id);
+	@Nullable
+	T readFull(@NotNull PK id);
 
-	void update(T transientObject);
+	void update(@NotNull T transientObject);
 
-	void delete(T persistentObject);
+	void delete(@NotNull T persistentObject);
 }

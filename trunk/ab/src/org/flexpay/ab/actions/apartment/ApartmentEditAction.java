@@ -3,7 +3,6 @@ package org.flexpay.ab.actions.apartment;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ObjectAlreadyExistException;
 import org.flexpay.ab.service.ApartmentService;
-import org.flexpay.common.exception.FlexPayException;
 
 public class ApartmentEditAction extends FiltersBaseAction {
 	private ApartmentService apartmentService;
@@ -12,7 +11,7 @@ public class ApartmentEditAction extends FiltersBaseAction {
 	private String apartmentNumber;
 	private String numberError;
 
-	public String execute() throws FlexPayException {
+	public String doExecute() throws Exception {
 		if (isSubmitted()) {
 			if (apartmentNumber == null || apartmentNumber.equals("")) {
 				//status = STATUS_BLANC_NUMBER;

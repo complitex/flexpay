@@ -419,4 +419,13 @@
 		</property>
 	</bean>
 
+	<bean id="personRegistrationDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.ab.dao.PersonRegistrationDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.ab.persistence.PersonRegistration" />
+			</bean>
+		</property>
+	</bean>
+
 </beans>

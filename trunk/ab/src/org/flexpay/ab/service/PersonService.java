@@ -34,13 +34,6 @@ public interface PersonService {
 	 */
 	Person findPersonStub(Person person);
 
-	/**
-	 * Update person
-	 *
-	 * @param person Person
-	 */
-	void update(Person person);
-
 	List<Person> findByFIO(Page pager, String searchString);
 
 	/**

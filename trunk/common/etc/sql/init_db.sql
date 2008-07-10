@@ -1717,7 +1717,7 @@ INSERT INTO streets_districts_tbl (street_id, district_id) VALUES (@street_id_kr
 INSERT INTO ab_identity_types_tbl (status, type_enum) VALUES (0, 1);
 SELECT @identity_type_fio_id:=last_insert_id();
 INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_id)
-	VALUES ('Фамилия Имя отчество', @ru_id, @identity_type_fio_id);
+	VALUES ('ФИО', @ru_id, @identity_type_fio_id);
 INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_id)
 	VALUES ('FIO', @en_id, @identity_type_fio_id);
 
@@ -1738,12 +1738,22 @@ INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_
 -- Init Persons
 INSERT INTO ab_persons_tbl (status) VALUES (0);
 SELECT @person_id:=last_insert_id();
+
+INSERT INTO ab_person_attributes_tbl (name, value, language_id, person_id)
+	VALUES('Кол-во детей', '12', @ru_id, @person_id);
+INSERT INTO ab_person_attributes_tbl (name, value, language_id, person_id)
+	VALUES('Аттрибут', 'значение', @ru_id, @person_id);
+INSERT INTO ab_person_attributes_tbl (name, value, language_id, person_id)
+	VALUES('Children number', '13', @en_id, @person_id);
+
 INSERT INTO ab_person_identities_tbl (begin_date, end_date, birth_date, serial_number,
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
 	VALUES ('1983-01-25', '2100-12-31', '1983-01-25', 0,
 	0, 'Михаил', 'Анатольевич', 'Федько', '',
 	0, @identity_type_fio_id, @person_id);
+SELECT @person_identity_id:=last_insert_id();
+
 INSERT INTO ab_person_identities_tbl (begin_date, end_date, birth_date, serial_number,
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
@@ -1756,6 +1766,15 @@ INSERT INTO ab_person_identities_tbl (begin_date, end_date, birth_date, serial_n
 	VALUES ('2004-10-22', '2009-10-22', '1983-01-25', 60,
 	123123123, 'Mikhail', '', 'Fedko', 'ГУВД 316',
 	0, @identity_type_foreign_passport_id, @person_id);
+
+INSERT INTO ab_person_identity_attributes_tbl (name, value, language_id, person_identity_id)
+	VALUES ('ИНН', 'НЕТ', @ru_id, @person_identity_id);
+
+INSERT INTO ab_person_identity_attributes_tbl (name, value, language_id, person_identity_id)
+	VALUES ('INN', 'NONE', @en_id, @person_identity_id);
+
+INSERT INTO ab_person_identity_attributes_tbl (name, value, language_id, person_identity_id)
+	VALUES ('Аттрибут', 'Значение', @ru_id, @person_identity_id);
 
 -- Init Buildings attribute types
 INSERT INTO ab_building_attribute_types_tbl (type) VALUES (1);
