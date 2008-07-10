@@ -1,5 +1,7 @@
 package org.flexpay.common.persistence;
 
+import org.jetbrains.annotations.NotNull;
+
 public class DomainObjectWithStatus extends DomainObject implements ObjectWithStatus {
 
 	private int status = ObjectWithStatus.STATUS_ACTIVE;
@@ -10,7 +12,7 @@ public class DomainObjectWithStatus extends DomainObject implements ObjectWithSt
 	public DomainObjectWithStatus() {
 	}
 
-	public DomainObjectWithStatus(Long id) {
+	public DomainObjectWithStatus(@NotNull Long id) {
 		super(id);
 	}
 

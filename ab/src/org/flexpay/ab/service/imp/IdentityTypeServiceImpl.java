@@ -13,6 +13,8 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -111,21 +113,14 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 													   Language lang, Language defaultLang) {
 		IdentityTypeTranslation defaultTranslation = null;
 
-		Collection<IdentityTypeTranslation> names = identityType
-				.getTranslations();
-		log.debug("Gettting translation: " + lang.getLangIsoCode() + " : "
-				+ names);
+		Collection<IdentityTypeTranslation> names = identityType.getTranslations();
 		for (IdentityTypeTranslation translation : names) {
 			if (lang.equals(translation.getLang())) {
-				log.debug("Found translation: " + translation);
 				return translation;
 			}
 			if (defaultLang.equals(translation.getLang())) {
-				log.debug("Found default translation: " + translation);
 				defaultTranslation = translation;
 			}
-
-			log.debug("Translation is invalid: " + translation);
 		}
 
 		return defaultTranslation;
@@ -137,7 +132,15 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @param id IdentityType key
 	 * @return IdentityType object, or <code>null</code> if object not found
 	 */
-	public IdentityType read(Long id) {
+	@Nullable
+	public IdentityType read(@NotNull Long id) {
+		if (identityTypes != null) {
+			for (IdentityType type : identityTypes) {
+				if (id.equals(type.getId())) {
+					return type;
+				}
+			}
+		}
 		return identityTypeDao.readFull(id);
 	}
 
@@ -264,7 +267,8 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @return List of IdentityType
 	 */
 	public List<IdentityType> getEntities() {
-		return identityTypeDao.listIdentityTypes(IdentityType.STATUS_ACTIVE);
+		identityTypes = identityTypeDao.listIdentityTypes(IdentityType.STATUS_ACTIVE);
+		return identityTypes;
 	}
 
 	public void setIdentityTypeDao(IdentityTypeDao identityTypeDao) {

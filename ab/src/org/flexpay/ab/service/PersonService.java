@@ -4,6 +4,9 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -24,7 +27,8 @@ public interface PersonService {
 	 * @param stub Person stub
 	 * @return Person instance, or <code>null</code> if not found
 	 */
-	Person read(Person stub);
+	@Nullable
+	Person read(@NotNull Stub<Person> stub);
 
 	/**
 	 * Find persistent person by identity

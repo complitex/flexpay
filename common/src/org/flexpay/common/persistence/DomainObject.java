@@ -1,5 +1,8 @@
 package org.flexpay.common.persistence;
 
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -17,7 +20,7 @@ public class DomainObject implements Serializable {
 	public DomainObject() {
 	}
 
-	public DomainObject(Long id) {
+	public DomainObject(@NotNull Long id) {
 		this.id = id;
 	}
 
@@ -26,6 +29,7 @@ public class DomainObject implements Serializable {
 	 *
 	 * @return Value for property 'id'.
 	 */
+	@Nullable
 	public Long getId() {
 		return id;
 	}
@@ -35,7 +39,7 @@ public class DomainObject implements Serializable {
 	 *
 	 * @param id Value to set for property 'id'.
 	 */
-	public void setId(Long id) {
+	public void setId(@Nullable Long id) {
 		this.id = id;
 	}
 
@@ -49,7 +53,7 @@ public class DomainObject implements Serializable {
 	 * @return <code>true</code> if object id is null or equals to 0, or <code>false</code> otherwise
 	 */
 	public boolean isNew() {
-		return getId() == null || getId() <= 0;
+		return id == null || id <= 0;
 	}
 
 	public boolean isNotNew() {

@@ -1,6 +1,7 @@
 package org.flexpay.ab.actions.person;
 
 import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.persistence.IdentityType;
@@ -23,7 +24,7 @@ public class SavePersonFIOAction extends FPActionSupport {
 		}
 
 		if (person.isNotNew()) {
-			person = personService.read(person);
+			person = personService.read(stub(person));
 		}
 
 		if (log.isDebugEnabled()) {
