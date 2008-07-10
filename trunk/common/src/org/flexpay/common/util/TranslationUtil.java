@@ -4,6 +4,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -18,6 +19,7 @@ public class TranslationUtil {
 	 * @return Translation in specified locale if found, or in defualt locale, or <code>null</code>
 	 * @throws FlexPayException if languages configuration is invalid
 	 */
+	@Nullable
 	public static <T extends Translation> T getTranslation(
 			Collection<T> translations, Locale locale)
 			throws FlexPayException {
@@ -33,6 +35,7 @@ public class TranslationUtil {
 	 * @return Translation in defualt language, or <code>null</code>
 	 * @throws FlexPayException if languages configuration is invalid
 	 */
+	@Nullable
 	public static <T extends Translation> T getTranslation(Collection<T> translations)
 			throws FlexPayException {
 
@@ -47,6 +50,7 @@ public class TranslationUtil {
 	 * @return Translation in specified locale if found, or in defualt locale, or <code>null</code>
 	 * @throws FlexPayException if languages configuration is invalid
 	 */
+	@Nullable
 	public static <T extends Translation> T getTranslation(
 			Collection<T> translations, Language language)
 			throws FlexPayException {

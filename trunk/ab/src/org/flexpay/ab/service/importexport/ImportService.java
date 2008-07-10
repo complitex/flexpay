@@ -300,6 +300,10 @@ public class ImportService {
 			throws FlexPayException {
 
 		TemporaryName newName = (TemporaryName) newObj.getCurrentName();
+		if (newName == null) {
+			log.error("No current name for object: " + newObj);
+			return null;
+		}
 		Translation newTranslation = getDefaultLangTranslation(newName.getTranslations());
 		String newObjName = newTranslation.getName().toLowerCase();
 
@@ -331,6 +335,10 @@ public class ImportService {
 		Map<String, List<NTD>> stringNTDMap = new HashMap<String, List<NTD>>(ntds.size());
 		for (NTD object : ntds) {
 			TemporaryName tmpName = (TemporaryName) object.getCurrentName();
+			if (tmpName == null) {
+				log.error("No current name for object: " + object);
+				continue;
+			}
 			Translation defTranslation = getDefaultLangTranslation(tmpName.getTranslations());
 			String name = defTranslation.getName().toLowerCase();
 			List<NTD> val = stringNTDMap.containsKey(name) ?
