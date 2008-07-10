@@ -12,10 +12,10 @@ where type_enum=1;
 
 INSERT INTO ab_person_identities_tbl (begin_date, end_date, birth_date, serial_number,
 	document_number, first_name, middle_name, last_name, organization,
-	is_default, identity_type_id, person_id)
+	is_default, identity_type_id, person_id, status)
 	VALUES ('1983-01-25', '2100-12-31', '1983-01-25', 0,
 	0, 'Михаил', 'Анатольевич', 'Федько', '',
-	0, @identity_type_fio_id, @person_id);
+	0, @identity_type_fio_id, @person_id, 0);
 
 
 update common_version_tbl set last_modified_date='2008-07-08', date_version=0;
