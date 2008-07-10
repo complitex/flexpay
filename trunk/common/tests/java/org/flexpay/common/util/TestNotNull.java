@@ -10,7 +10,7 @@ public class TestNotNull {
 		getNullInt();
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testCheckNotNullParameter() {
 		//noinspection ConstantConditions
 		callNotNullInt(null);
