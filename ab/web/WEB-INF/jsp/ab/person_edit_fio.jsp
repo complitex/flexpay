@@ -18,20 +18,17 @@
 			<td class="col_1"><s:textfield name="identity.middleName" value="%{#fio.middleName}"/></td>
 			<td class="col_1"><s:text name="ab.person.sex"/></td>
 			<td class="col_1">
-				<%-- See PersonIdentity#SEX_MAN and PersonIdentity#SEX_WOMAN constants,
-				 	Todo: replace with proper ognl expression
-				 --%>
 				<input type="radio" name="identity.sex"
 					   <s:if test="%{#fio.isMan()}">checked="checked"</s:if>
-					   value="<s:property value="1" />"/>
+					   value="<s:property value="@org.flexpay.ab.persistence.PersonIdentity@SEX_MAN" />"/>
 				&nbsp;
-				<s:text name="ab.person.sex.man"/>
+				<s:text name="ab.person.sex.man.short"/>
 				<br/>
 				<input type="radio" name="identity.sex"
 					   <s:if test="%{#fio.isWoman()}">checked="checked"</s:if>
-					   value="<s:property value="2" />"/>
+					   value="<s:property value="@org.flexpay.ab.persistence.PersonIdentity@SEX_WOMAN" />"/>
 				&nbsp;
-				<s:text name="ab.person.sex.woman"/>
+				<s:text name="ab.person.sex.woman.short"/>
 			</td>
 		</tr>
 		<tr class="cols_1">

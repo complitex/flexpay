@@ -2,8 +2,10 @@ package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
 import static org.apache.commons.lang.StringUtils.isBlank;
+import org.flexpay.ab.dao.PersonAttributeDao;
 import org.flexpay.ab.dao.PersonDao;
 import org.flexpay.ab.dao.PersonDaoExt;
+import org.flexpay.ab.dao.PersonRegistrationDao;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.service.PersonService;
@@ -11,15 +13,19 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class PersonServiceImpl implements PersonService {
 
 	private PersonDao personDao;
 	private PersonDaoExt personDaoExt;
+	private PersonAttributeDao personAttributeDao;
+	private PersonRegistrationDao personRegistrationDao;
 
 	/**
 	 * Setter for property 'personDao'.
@@ -39,6 +45,14 @@ public class PersonServiceImpl implements PersonService {
 		this.personDaoExt = personDaoExt;
 	}
 
+	public void setPersonAttributeDao(PersonAttributeDao personAttributeDao) {
+		this.personAttributeDao = personAttributeDao;
+	}
+
+	public void setPersonRegistrationDao(PersonRegistrationDao personRegistrationDao) {
+		this.personRegistrationDao = personRegistrationDao;
+	}
+
 	/**
 	 * List persons
 	 *
@@ -56,9 +70,16 @@ public class PersonServiceImpl implements PersonService {
 	 * @param stub Person stub
 	 * @return Person instance, or <code>null</code> if not found
 	 */
-	public Person read(Person stub) {
+	@Nullable
+	public Person read(@NotNull Person stub) {
 		if (stub.isNotNew()) {
-			return personDao.readFull(stub.getId());
+			Person persistent = personDao.readFull(stub.getId());
+			if (persistent != null) {
+				persistent.setPersonAttributes(personAttributeDao.listAttributes(stub.getId()));
+				persistent.setPersonRegistrations(personRegistrationDao.listRegistrations(stub.getId()));
+			}
+
+			return persistent;
 		}
 
 		return null;
@@ -74,16 +95,6 @@ public class PersonServiceImpl implements PersonService {
 		return personDaoExt.findPersonStub(person);
 	}
 
-	/**
-	 * Update person
-	 *
-	 * @param person Person
-	 */
-	@Transactional(readOnly = false)
-	public void update(Person person) {
-		personDao.update(person);
-	}
-
 	public List<Person> findByFIO(Page pager, String searchString) {
 		return personDao.findByFIO(pager, searchString);
 	}
@@ -95,7 +106,7 @@ public class PersonServiceImpl implements PersonService {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void save(Person person) throws FlexPayExceptionContainer {
 		validate(person);
 		if (person.isNew()) {
@@ -106,7 +117,7 @@ public class PersonServiceImpl implements PersonService {
 		}
 	}
 
-	@SuppressWarnings({"ThrowableInstanceNeverThrown"})
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(Person person) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
@@ -128,7 +139,7 @@ public class PersonServiceImpl implements PersonService {
 		}
 	}
 
-	@SuppressWarnings({"ThrowableInstanceNeverThrown"})
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(PersonIdentity identity) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 

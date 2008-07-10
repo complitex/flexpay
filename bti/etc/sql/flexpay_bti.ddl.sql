@@ -73,35 +73,35 @@
 
     alter table ab_identity_type_translations_tbl 
         drop 
-        foreign key FK2195EF63D8765DAA;
+        foreign key ab_identity_type_translations_tbl_identity_type_id;
 
     alter table ab_identity_type_translations_tbl 
         drop 
-        foreign key FK2195EF6361F37403;
+        foreign key ab_identity_type_translations_tbl_language_id;
 
     alter table ab_person_attributes_tbl 
         drop 
-        foreign key FK634A41627095AEAD;
+        foreign key ab_person_attributes_tbl_person_id;
 
     alter table ab_person_attributes_tbl 
         drop 
-        foreign key FK634A416261F37403;
+        foreign key ab_person_attributes_tbl_language_id;
 
     alter table ab_person_identities_tbl 
         drop 
-        foreign key FKA24DD767D8765DAA;
+        foreign key ab_person_identities_tbl_identity_type_id;
 
     alter table ab_person_identities_tbl 
         drop 
-        foreign key FKA24DD7677095AEAD;
+        foreign key ab_person_identities_tbl_person_id;
 
     alter table ab_person_identity_attributes_tbl 
         drop 
-        foreign key FKA1B9EF6B1F110398;
+        foreign key ab_person_identity_attributes_tbl_person_identity_id;
 
     alter table ab_person_identity_attributes_tbl 
         drop 
-        foreign key FKA1B9EF6B61F37403;
+        foreign key ab_person_identity_attributes_tbl_language_id;
 
     alter table ab_person_registrations_tbl 
         drop 
@@ -451,73 +451,71 @@
 
     create table ab_identity_type_translations_tbl (
         id bigint not null auto_increment,
-        name varchar(255),
-        language_id bigint not null,
-        identity_type_id bigint not null,
+        name varchar(150) not null comment 'Identity type translation',
+        language_id bigint not null comment 'Language reference',
+        identity_type_id bigint not null comment 'Identity type reference',
         primary key (id),
         unique (language_id, identity_type_id)
-    );
+    ) comment='Person documents type translation';
 
     create table ab_identity_types_tbl (
         id bigint not null auto_increment,
-        status integer not null,
-        type_enum integer not null,
+        status integer not null comment 'Enabled-disabled status',
+        type_enum integer not null comment 'Identity type code',
         primary key (id)
-    );
+    ) comment='Person documents type';
 
     create table ab_person_attributes_tbl (
         id bigint not null auto_increment,
-        name varchar(255),
-        value varchar(255),
-        language_id bigint not null,
-        person_id bigint not null,
-        primary key (id),
-        unique (language_id, person_id)
-    );
+        name varchar(50) not null comment 'Attribute name',
+        value varchar(255) comment 'Attribute value',
+        language_id bigint not null comment 'Language reference',
+        person_id bigint not null comment 'Person reference',
+        primary key (id)
+    ) comment='Person attributes';
 
     create table ab_person_identities_tbl (
         id bigint not null auto_increment,
-        status integer not null,
-        begin_date date not null,
-        end_date date not null,
-        birth_date date not null,
-        serial_number varchar(10) not null,
-        document_number varchar(20) not null,
-        first_name varchar(255) not null,
-        middle_name varchar(255) not null,
-        last_name varchar(255) not null,
-        organization varchar(4000) not null,
-        is_default bit not null,
+        status integer not null comment 'Enabled-Disabled status',
+        begin_date date not null comment 'Begin of document valid interval',
+        end_date date not null comment 'End of document valid interval',
+        birth_date datetime not null comment 'Person birth date',
+        serial_number varchar(10) not null comment 'Document serial number',
+        document_number varchar(20) not null comment 'Document number',
+        first_name varchar(255) not null comment 'Person first name',
+        middle_name varchar(255) not null comment 'Person middle name',
+        last_name varchar(255) not null comment 'Person last name',
+        organisation varchar(4000) not null comment 'Organisation gave document',
+        is_default bit not null comment 'Default document flag',
         sex smallint not null comment 'Person sex type',
-        identity_type_id bigint not null,
-        person_id bigint not null,
+        identity_type_id bigint not null comment 'Identity document type reference',
+        person_id bigint not null comment 'Person reference',
         primary key (id)
-    );
+    ) comment='Person documents';
 
     create table ab_person_identity_attributes_tbl (
         id bigint not null auto_increment,
-        name varchar(255),
-        value varchar(255),
-        language_id bigint not null,
-        person_identity_id bigint not null,
-        primary key (id),
-        unique (language_id, person_identity_id)
-    );
+        name varchar(50) not null comment 'Attribute name',
+        value varchar(255) comment 'Attribute value',
+        language_id bigint not null comment 'Language reference',
+        person_identity_id bigint not null comment 'Person identity reference',
+        primary key (id)
+    ) comment='Person document additional attributes';
 
     create table ab_person_registrations_tbl (
         id bigint not null auto_increment,
-        begin_date date not null,
-        end_date date not null,
+        begin_date date not null comment 'Registration begin date',
+        end_date date not null comment 'Registration end date',
         person_id bigint not null comment 'Registered person reference',
         apartment_id bigint not null comment 'Registered to apartment reference',
         primary key (id)
-    );
+    ) comment='Person registrations';
 
     create table ab_persons_tbl (
         id bigint not null auto_increment,
-        status integer not null,
+        status integer not null comment 'Enabled-Disabled status',
         primary key (id)
-    );
+    ) comment='Natural persons';
 
     create table ab_region_name_translations_tbl (
         id bigint not null auto_increment,
@@ -842,52 +840,52 @@
         references ab_towns_tbl (id);
 
     alter table ab_identity_type_translations_tbl 
-        add index FK2195EF63D8765DAA (identity_type_id), 
-        add constraint FK2195EF63D8765DAA 
+        add index ab_identity_type_translations_tbl_identity_type_id (identity_type_id), 
+        add constraint ab_identity_type_translations_tbl_identity_type_id 
         foreign key (identity_type_id) 
         references ab_identity_types_tbl (id);
 
     alter table ab_identity_type_translations_tbl 
-        add index FK2195EF6361F37403 (language_id), 
-        add constraint FK2195EF6361F37403 
+        add index ab_identity_type_translations_tbl_language_id (language_id), 
+        add constraint ab_identity_type_translations_tbl_language_id 
         foreign key (language_id) 
         references common_languages_tbl (id);
 
     alter table ab_person_attributes_tbl 
-        add index FK634A41627095AEAD (person_id), 
-        add constraint FK634A41627095AEAD 
+        add index ab_person_attributes_tbl_person_id (person_id), 
+        add constraint ab_person_attributes_tbl_person_id 
         foreign key (person_id) 
         references ab_persons_tbl (id);
 
     alter table ab_person_attributes_tbl 
-        add index FK634A416261F37403 (language_id), 
-        add constraint FK634A416261F37403 
+        add index ab_person_attributes_tbl_language_id (language_id), 
+        add constraint ab_person_attributes_tbl_language_id 
         foreign key (language_id) 
         references common_languages_tbl (id);
 
     create index data_index on ab_person_identities_tbl (first_name, middle_name, last_name);
 
     alter table ab_person_identities_tbl 
-        add index FKA24DD767D8765DAA (identity_type_id), 
-        add constraint FKA24DD767D8765DAA 
+        add index ab_person_identities_tbl_identity_type_id (identity_type_id), 
+        add constraint ab_person_identities_tbl_identity_type_id 
         foreign key (identity_type_id) 
         references ab_identity_types_tbl (id);
 
     alter table ab_person_identities_tbl 
-        add index FKA24DD7677095AEAD (person_id), 
-        add constraint FKA24DD7677095AEAD 
+        add index ab_person_identities_tbl_person_id (person_id), 
+        add constraint ab_person_identities_tbl_person_id 
         foreign key (person_id) 
         references ab_persons_tbl (id);
 
     alter table ab_person_identity_attributes_tbl 
-        add index FKA1B9EF6B1F110398 (person_identity_id), 
-        add constraint FKA1B9EF6B1F110398 
+        add index ab_person_identity_attributes_tbl_person_identity_id (person_identity_id), 
+        add constraint ab_person_identity_attributes_tbl_person_identity_id 
         foreign key (person_identity_id) 
         references ab_person_identities_tbl (id);
 
     alter table ab_person_identity_attributes_tbl 
-        add index FKA1B9EF6B61F37403 (language_id), 
-        add constraint FKA1B9EF6B61F37403 
+        add index ab_person_identity_attributes_tbl_language_id (language_id), 
+        add constraint ab_person_identity_attributes_tbl_language_id 
         foreign key (language_id) 
         references common_languages_tbl (id);
 

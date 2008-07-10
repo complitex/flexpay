@@ -1,11 +1,15 @@
 package org.flexpay.ab.persistence;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.DateIntervalUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -33,6 +37,7 @@ public class Person extends DomainObjectWithStatus {
 	 *
 	 * @return Value for property 'personAttributes'.
 	 */
+	@NotNull
 	public Set<PersonAttribute> getPersonAttributes() {
 		return personAttributes;
 	}
@@ -42,7 +47,7 @@ public class Person extends DomainObjectWithStatus {
 	 *
 	 * @param personAttributes Value to set for property 'personAttributes'.
 	 */
-	public void setPersonAttributes(Set<PersonAttribute> personAttributes) {
+	public void setPersonAttributes(@NotNull Set<PersonAttribute> personAttributes) {
 		this.personAttributes = personAttributes;
 	}
 
@@ -51,6 +56,7 @@ public class Person extends DomainObjectWithStatus {
 	 *
 	 * @return Value for property 'personIdentities'.
 	 */
+	@NotNull
 	public Set<PersonIdentity> getPersonIdentities() {
 		return personIdentities;
 	}
@@ -60,8 +66,13 @@ public class Person extends DomainObjectWithStatus {
 	 *
 	 * @param personIdentities Value to set for property 'personIdentities'.
 	 */
-	public void setPersonIdentities(Set<PersonIdentity> personIdentities) {
+	public void setPersonIdentities(@NotNull Set<PersonIdentity> personIdentities) {
 		this.personIdentities = personIdentities;
+	}
+
+
+	public void setPersonAttributes(@NotNull List<PersonAttribute> personAttributes) {
+		this.personAttributes = set(personAttributes);
 	}
 
 	/**
@@ -69,6 +80,7 @@ public class Person extends DomainObjectWithStatus {
 	 *
 	 * @return PersonIdentity
 	 */
+	@Nullable
 	public PersonIdentity getDefaultIdentity() {
 		for (PersonIdentity identity : getPersonIdentities()) {
 			if (identity.isDefault()) {
@@ -84,12 +96,12 @@ public class Person extends DomainObjectWithStatus {
 	 *
 	 * @param attribute PersonAttribute to set up
 	 */
-	public void setAttribute(PersonAttribute attribute) {
+	public void setAttribute(@NotNull PersonAttribute attribute) {
 		boolean needRemove = false;
 		for (PersonAttribute attr : personAttributes) {
 			if (attr.getName().equals(attribute.getName()) && attr.getLang().equals(attribute.getLang())) {
-				// new value is null, need to remove it
-				if (attribute.getValue() == null) {
+				// new value is empty, need to remove it
+				if (StringUtils.isEmpty(attribute.getValue())) {
 					needRemove = true;
 					attribute = attr;
 					break;
@@ -103,7 +115,7 @@ public class Person extends DomainObjectWithStatus {
 			personAttributes.remove(attribute);
 		} else {
 			if (personAttributes == Collections.EMPTY_SET) {
-				personAttributes = new HashSet<PersonAttribute>();
+				personAttributes = set();
 			}
 
 			personAttributes.add(attribute);
@@ -112,7 +124,7 @@ public class Person extends DomainObjectWithStatus {
 
 	public void setIdentity(PersonIdentity personIdentity) {
 		if (personIdentities == Collections.EMPTY_SET) {
-			personIdentities = CollectionUtils.set();
+			personIdentities = set();
 		}
 
 		PersonIdentity candidate = null;
@@ -235,23 +247,27 @@ public class Person extends DomainObjectWithStatus {
 	public void setPersonRegistrations(Set<PersonRegistration> personRegistrations) {
 		this.personRegistrations = personRegistrations;
 	}
-	
+
+	public void setPersonRegistrations(@NotNull List<PersonRegistration> personRegistrations) {
+		this.personRegistrations = set(personRegistrations);
+	}
+
 	public PersonIdentity getPassportIdentity() {
 		for (PersonIdentity personIdentity : personIdentities) {
 			if (personIdentity.getIdentityType().getTypeId() == IdentityType.TYPE_PASSPORT) {
 				return personIdentity;
 			}
-		}	
+		}
 
 		return null;
 	}
-	
+
 	public PersonIdentity getForeignPassportIdentity() {
 		for (PersonIdentity personIdentity : personIdentities) {
 			if (personIdentity.getIdentityType().getTypeId() == IdentityType.TYPE_FOREIGN_PASSPORT) {
 				return personIdentity;
 			}
-		}	
+		}
 
 		return null;
 	}

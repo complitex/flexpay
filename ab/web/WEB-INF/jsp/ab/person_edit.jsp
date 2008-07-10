@@ -4,5 +4,8 @@
 
 <%@include file="person_edit_fio.jsp"%>
 
-<%--<%@include file="person_list_identities.jsp"%>--%>
+<br />
+<%@include file="set_registration_form.jsp"%>
 
+<%--<br />--%>
+<%--<%@include file="person_view_identities.jsp"%>--%>

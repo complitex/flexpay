@@ -2,6 +2,7 @@ package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.jetbrains.annotations.NotNull;
 
 public class AttributeTranslation extends Translation {
 
@@ -13,7 +14,7 @@ public class AttributeTranslation extends Translation {
 	public AttributeTranslation() {
 	}
 
-	public AttributeTranslation(String name, Language lang, String value) {
+	public AttributeTranslation(@NotNull String name, @NotNull  Language lang, @NotNull  String value) {
 		super(name, lang);
 		this.value = value;
 	}
@@ -23,6 +24,7 @@ public class AttributeTranslation extends Translation {
 	 *
 	 * @return Value for property 'value'.
 	 */
+	@NotNull
 	public String getValue() {
 		return value;
 	}
@@ -32,7 +34,7 @@ public class AttributeTranslation extends Translation {
 	 *
 	 * @param value Value to set for property 'value'.
 	 */
-	public void setValue(String value) {
+	public void setValue(@NotNull String value) {
 		this.value = value;
 	}
 
@@ -59,5 +61,16 @@ public class AttributeTranslation extends Translation {
 				.append(value, that.getValue())
 				.appendSuper(super.equals(o))
 				.isEquals();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(value)
+				.appendSuper(super.hashCode())
+				.hashCode();
 	}
 }

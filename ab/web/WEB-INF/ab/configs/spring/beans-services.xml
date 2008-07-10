@@ -86,6 +86,8 @@
 	<bean id="personService" class="org.flexpay.ab.service.imp.PersonServiceImpl">
 		<property name="personDao" ref="personDao" />
 		<property name="personDaoExt" ref="personDaoExt" />
+		<property name="personAttributeDao" ref="personAttributeDao" />
+		<property name="personRegistrationDao" ref="personRegistrationDao" />
 	</bean>
 
 </beans>

@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.jetbrains.annotations.NotNull;
 
 public class Translation extends DomainObject {
 	private String name;
@@ -16,7 +17,7 @@ public class Translation extends DomainObject {
 	public Translation() {
 	}
 
-	public Translation(String name, Language lang) {
+	public Translation(@NotNull String name, @NotNull Language lang) {
 		this.name = name;
 		this.lang = lang;
 	}
@@ -26,6 +27,7 @@ public class Translation extends DomainObject {
 	 *
 	 * @return Value for property 'name'.
 	 */
+	@NotNull
 	public String getName() {
 		return name != null ? name : "";
 	}
@@ -35,6 +37,7 @@ public class Translation extends DomainObject {
 	 *
 	 * @return Value for property 'lang'.
 	 */
+	@NotNull
 	public Language getLang() {
 		return lang;
 	}
@@ -44,7 +47,7 @@ public class Translation extends DomainObject {
 	 *
 	 * @param name Value to set for property 'name'.
 	 */
-	public void setName(String name) {
+	public void setName(@NotNull String name) {
 		this.name = name;
 	}
 
@@ -53,6 +56,7 @@ public class Translation extends DomainObject {
 	 *
 	 * @return Value for property 'translatable'.
 	 */
+	@NotNull 
 	public DomainObject getTranslatable() {
 		return translatable;
 	}
@@ -62,7 +66,7 @@ public class Translation extends DomainObject {
 	 *
 	 * @param translatable Value to set for property 'translatable'.
 	 */
-	public void setTranslatable(DomainObject translatable) {
+	public void setTranslatable(@NotNull DomainObject translatable) {
 		this.translatable = translatable;
 	}
 
@@ -71,7 +75,7 @@ public class Translation extends DomainObject {
 	 *
 	 * @param lang Value to set for property 'lang'.
 	 */
-	public void setLang(Language lang) {
+	public void setLang(@NotNull Language lang) {
 		this.lang = lang;
 	}
 
@@ -90,7 +94,10 @@ public class Translation extends DomainObject {
 	 */
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(lang).append(name).toHashCode();
+		return new HashCodeBuilder()
+				.append(lang)
+				.append(name)
+				.toHashCode();
 	}
 
 	/**
@@ -105,7 +112,9 @@ public class Translation extends DomainObject {
 		}
 		final Translation that = (Translation) o;
 
-		return new EqualsBuilder().append(lang, that.getLang()).append(name,
-				that.getName()).isEquals();
+		return new EqualsBuilder()
+				.append(lang, that.getLang())
+				.append(name, that.getName())
+				.isEquals();
 	}
 }
