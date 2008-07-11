@@ -26,9 +26,12 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.jetbrains.annotations.Nls;
 
 import com.opensymphony.xwork2.Preparable;
 
@@ -79,6 +82,7 @@ public class BuildingsCreateAction extends CommonAction implements
 		buildings.setBuildingAttributes(buildingAttributeSet);
 	}
 
+	@Nls
 	public String execute() throws FlexPayException {
 		if ("create".equals(action)) {
 
@@ -105,14 +109,14 @@ public class BuildingsCreateAction extends CommonAction implements
 
 				try {
 					if (buildingId == null) {
-						buildings = buildingService.createBuildings(new Street(
-								streetFilter.getSelectedId()), new District(
-								districtId), buildings.getBuildingAttributes());
+						buildings = buildingService.createStreetDistrictBuildings(
+								streetFilter.getSelectedStub(),
+								new Stub<District>(districtId),
+								buildings.getBuildingAttributes());
 						return "list";
 					} else {
-						buildings = buildingService.createBuildings(
-								new Building(buildingId), new Street(
-										streetFilter.getSelectedId()),
+						buildings = buildingService.createStreetBuildings(
+								new Stub<Building>(buildingId), streetFilter.getSelectedStub(),
 								buildings.getBuildingAttributes());
 						return "edit";
 					}

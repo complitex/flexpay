@@ -52,11 +52,11 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 				if (StringUtils.isNotEmpty(identity.getDocumentNumber())) {
 					crit.add(Restrictions.eq("documentNumber", identity.getDocumentNumber()));
 				}
-				if (person.getApartment() != null) {
+				if (person.getRegistrationApartment() != null) {
 					crit
 							.createAlias("person", "p")
 							.createAlias("p.apartment", "a")
-							.add(Restrictions.eq("a.id", person.getApartment().getId()));
+							.add(Restrictions.eq("a.id", person.getRegistrationApartment().getId()));
 				}
 
 				return crit.list();

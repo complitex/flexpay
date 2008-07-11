@@ -13,6 +13,8 @@ import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.Pair;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.flexpay.common.util.DateIntervalUtil;
@@ -184,8 +186,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	/**
-	 * return base for name time-dependent objects in i18n files, like 'region', 'town',
-	 * etc.
+	 * return base for name time-dependent objects in i18n files, like 'region', 'town', etc.
 	 *
 	 * @return Localization key base
 	 */
@@ -293,7 +294,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 			log.debug("Types to save: " + object.getTypeTemporals());
 		}
 
-		streetDaoExt.invalidateTypeTemporals(object.getId(), ApplicationConfig.getInstance().getFutureInfinite(), DateIntervalUtil.now());
+		streetDaoExt.invalidateTypeTemporals(object.getId(), ApplicationConfig.getFutureInfinite(), DateIntervalUtil.now());
 
 		for (StreetTypeTemporal temporal : object.getTypeTemporals()) {
 			if (temporal.getId() != null) {
@@ -303,9 +304,19 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 			}
 		}
 	}
-	
+
 	public String format(Street street, Locale locale, boolean shortMode) throws FlexPayException {
 		street = streetDao.read(street.getId());
 		return street.format(locale, shortMode);
+	}
+
+	/**
+	 * Get street and name pair
+	 *
+	 * @param stub Street stub
+	 * @return Street and street name pair
+	 */
+	public Pair<Street, String> getFullStreetName(Stub<Street> stub) {
+		return null;
 	}
 }

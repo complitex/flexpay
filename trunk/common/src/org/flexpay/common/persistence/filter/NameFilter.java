@@ -1,13 +1,15 @@
 package org.flexpay.common.persistence.filter;
 
 import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.persistence.DomainObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
 
-public class NameFilter<T extends Translation> extends PrimaryKeyFilter {
+public class NameFilter<T extends DomainObject, Tr extends Translation> extends PrimaryKeyFilter<T> {
 
-	private Collection<T> translations = Collections.emptyList();
+	private Collection<Tr> translations = Collections.emptyList();
 
 	public NameFilter() {
 	}
@@ -21,7 +23,8 @@ public class NameFilter<T extends Translation> extends PrimaryKeyFilter {
 	 *
 	 * @return Value for property 'names'.
 	 */
-	public Collection<T> getNames() {
+	@NotNull
+	public Collection<Tr> getNames() {
 		return translations;
 	}
 
@@ -30,7 +33,7 @@ public class NameFilter<T extends Translation> extends PrimaryKeyFilter {
 	 *
 	 * @param names Value to set for property 'names'.
 	 */
-	public void setNames(Collection<T> names) {
+	public void setNames(@NotNull Collection<Tr> names) {
 		this.translations = names;
 	}
 }

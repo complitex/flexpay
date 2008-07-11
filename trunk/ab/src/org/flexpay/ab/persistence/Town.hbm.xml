@@ -26,6 +26,10 @@
 			<key column="town_id" not-null="true" />
 			<one-to-many class="District" />
 		</set>
+		<set name="streets" inverse="true">
+			<key column="town_id" not-null="true" />
+			<one-to-many class="Street" />
+		</set>
 	</class>
 
 	<class name="TownNameTemporal" table="ab_town_names_temporal_tbl">

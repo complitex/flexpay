@@ -8,6 +8,8 @@ import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.service.ParentService;
+import org.flexpay.common.persistence.Pair;
+import org.flexpay.common.persistence.Stub;
 
 import java.util.List;
 import java.util.Locale;
@@ -41,4 +43,12 @@ public interface StreetService
 
 	String format(Street street, Locale locale, boolean shortMode)
 			throws FlexPayException;
+
+	/**
+	 * Get street and name pair
+	 *
+	 * @param stub Street stub
+	 * @return Street and street name pair
+	 */
+	Pair<Street, String> getFullStreetName(Stub<Street> stub);
 }

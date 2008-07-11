@@ -6,20 +6,24 @@ import org.flexpay.ab.dao.ApartmentDaoExt;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.service.StreetService;
+import static org.flexpay.ab.util.TranslationUtil.getNameTranslation;
+import static org.flexpay.ab.util.TranslationUtil.getTypeTranslation;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.TranslationUtil;
-import org.springframework.transaction.annotation.Transactional;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class ApartmentServiceImpl implements ApartmentService {
 
 	private ApartmentDao apartmentDao;
 	private ApartmentDaoExt apartmentDaoExt;
+
+	private StreetService streetService;
 
 	/**
 	 * Setter for property 'apartmentDao'.
@@ -39,35 +43,24 @@ public class ApartmentServiceImpl implements ApartmentService {
 		return apartmentDao.findObjects(filter.getSelectedId(), pager);
 	}
 
-	public String getAddress(Apartment apartment) throws FlexPayException {
-		apartment = apartmentDao.read(apartment.getId());
-		Set<Buildings> buildingsSet = apartment.getBuilding().getBuildingses();
-		if (buildingsSet.isEmpty()) {
-			return "";
+	@NotNull
+	public String getAddress(@NotNull Stub<Apartment> stub) throws FlexPayException {
+		Apartment apartment = apartmentDao.read(stub.getId());
+		if (apartment == null) {
+			throw new FlexPayException("Invalid apartment id: " + stub.getId());
 		}
-		Buildings buildings = buildingsSet.iterator().next();
+
+		Building building = apartment.getBuilding();
+		Buildings buildings = building.getDefaultBuildings();
+		if (buildings == null) {
+			throw new FlexPayException("No building attributes",
+					"error.ab.building.no_attributes", String.valueOf(apartment.getBuilding().getId()));
+		}
 		Street street = buildings.getStreet();
-		String streetNameStr = "";
-		if (street.getCurrentName() != null) {
-			StreetNameTranslation streetNameTranslation = TranslationUtil
-					.getTranslation(street.getCurrentName().getTranslations());
-			if (streetNameTranslation != null
-				&& streetNameTranslation.getName() != null) {
-				streetNameStr = streetNameTranslation.getName();
-			}
-		}
-		String streetTypeStr = "";
-		if (street.getCurrentType() != null) {
-			StreetTypeTranslation streetTypeTranslation = TranslationUtil
-					.getTranslation(street.getCurrentType().getTranslations());
-			if (streetTypeTranslation != null) {
-				if (streetTypeTranslation.getShortName() != null) {
-					streetTypeStr = streetTypeTranslation.getShortName();
-				} else if (streetTypeTranslation.getName() != null) {
-					streetTypeStr = streetTypeTranslation.getName();
-				}
-			}
-		}
+		String streetNameStr = getNameTranslation(street);
+		String streetTypeStr = getTypeTranslation(street);
+
+//		Pair<Street, String> nameStreetpair = streetService.getFullStreetName(stub(street));
 
 		return streetTypeStr + " " + streetNameStr + ", д."
 			   + buildings.getNumber() + ", кв." + apartment.getNumber();

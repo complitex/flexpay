@@ -1,16 +1,18 @@
 package org.flexpay.ab.actions.person;
 
 import org.flexpay.ab.persistence.Person;
+import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.exception.FlexPayException;
+import org.apache.commons.lang.StringUtils;
 
 public class ViewPerson extends FPActionSupport {
 
 	private PersonService personService;
 	private ApartmentService apartmentService;
-	String address = "";
 
 	private Person person = new Person();
 
@@ -26,10 +28,6 @@ public class ViewPerson extends FPActionSupport {
 				return ERROR;
 			}
 
-			// get address
-			if (person.getApartment() != null) {
-				address = apartmentService.getAddress(person.getApartment());
-			}
 			return SUCCESS;
 		} else {
 			addActionError(getText("error.no_id"));
@@ -75,6 +73,19 @@ public class ViewPerson extends FPActionSupport {
 	 * @return the address
 	 */
 	public String getAddress() {
-		return address;
+		try {
+			Apartment registration = person.getRegistrationApartment();
+			if (registration != null) {
+				return apartmentService.getAddress(stub(registration));
+			}
+
+			return "";
+		} catch (FlexPayException e) {
+			if (StringUtils.isNotBlank(e.getErrorKey())) {
+				return getText(e.getErrorKey(), e.getParams());
+			} else {
+				return e.getMessage();
+			}
+		}
 	}
 }

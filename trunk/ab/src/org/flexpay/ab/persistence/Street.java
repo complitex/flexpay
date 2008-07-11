@@ -6,6 +6,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TimeLine;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
@@ -30,6 +31,10 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 
 	public Street(Long id) {
 		super(id);
+	}
+
+	public Street(Stub<Street> stub) {
+		super(stub.getId());
 	}
 
 	/**

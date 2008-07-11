@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TimeLine;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Set;
@@ -18,8 +19,7 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	private TimeLine<TownType, TownTypeTemporal> typesTimeLine;
 
 	private Set<District> districts = Collections.emptySet();
-//	private Set<Street> streets = new HashSet<Street>(0);
-//	private Set<Building> buildings = new HashSet<Building>(0);
+	private Set<Street> streets = Collections.emptySet();
 
 	/**
 	 * Constructs a new Town.
@@ -52,6 +52,15 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	 */
 	public void setDistricts(Set<District> districts) {
 		this.districts = districts;
+	}
+
+	@NotNull
+	public Set<Street> getStreets() {
+		return streets;
+	}
+
+	public void setStreets(Set<Street> streets) {
+		this.streets = streets;
 	}
 
 	/**

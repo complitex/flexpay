@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -430,6 +431,7 @@ public class DateIntervalUtil {
 	 *
 	 * @return Date with hours, minutes, seconds set to 0
 	 */
+	@NotNull
 	public static Date now() {
 		return DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
 	}
@@ -440,7 +442,8 @@ public class DateIntervalUtil {
 	 * @param date Date to get the next for
 	 * @return Next day date
 	 */
-	public static Date next(Date date) {
+	@NotNull
+	public static Date next(@NotNull Date date) {
 		Date dayAfter = DateUtils.addDays(date, 1);
 		if (dayAfter.compareTo(ApplicationConfig.getFutureInfinite()) > 0) {
 			dayAfter = ApplicationConfig.getFutureInfinite();
@@ -455,7 +458,8 @@ public class DateIntervalUtil {
 	 * @param date Date to get the next for
 	 * @return Next day date
 	 */
-	public static Date previous(Date date) {
+	@NotNull
+	public static Date previous(@NotNull Date date) {
 		Date dayBefore = DateUtils.addDays(date, -1);
 		if (dayBefore.compareTo(ApplicationConfig.getPastInfinite()) < 0) {
 			dayBefore = ApplicationConfig.getPastInfinite();
