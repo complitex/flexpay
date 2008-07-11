@@ -1,5 +1,8 @@
 package org.flexpay.common.exception;
 
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.Nls;
+
 /**
  * Common (parent) exception of FlexPay system, contains localisable error key
  */
@@ -13,7 +16,7 @@ public class FlexPayException extends Exception {
 	 *
 	 * @param message the detail message
 	 */
-	public FlexPayException(String message) {
+	public FlexPayException(@NonNls String message) {
 		super(message);
 	}
 
@@ -25,7 +28,7 @@ public class FlexPayException extends Exception {
 	 * @param errorKey localization error message key
 	 * @param params optional localization error message parameters
 	 */
-	public FlexPayException(String message, String errorKey, String... params) {
+	public FlexPayException(@NonNls String message, @Nls String errorKey, String... params) {
 		super(message);
 		this.errorKey = errorKey;
 		this.params = params;
@@ -55,6 +58,7 @@ public class FlexPayException extends Exception {
 	 *
 	 * @return Value for property 'errorKey'.
 	 */
+	@Nls
 	public String getErrorKey() {
 		return errorKey;
 	}
@@ -64,7 +68,7 @@ public class FlexPayException extends Exception {
 	 *
 	 * @param errorKey Value to set for property 'errorKey'.
 	 */
-	public void setErrorKey(String errorKey) {
+	public void setErrorKey(@Nls String errorKey) {
 		this.errorKey = errorKey;
 	}
 

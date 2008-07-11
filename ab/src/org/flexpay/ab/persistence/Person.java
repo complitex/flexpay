@@ -160,11 +160,13 @@ public class Person extends DomainObjectWithStatus {
 		personIdentities.add(identity);
 	}
 
-	public Apartment getApartment() {
-		return getApartment(DateIntervalUtil.now());
+	@Nullable
+	public Apartment getRegistrationApartment() {
+		return getRegistrationApartment(DateIntervalUtil.now());
 	}
 
-	public Apartment getApartment(Date date) {
+	@Nullable
+	public Apartment getRegistrationApartment(@NotNull Date date) {
 		if (personRegistrations.isEmpty()) {
 			return null;
 		}
@@ -178,7 +180,7 @@ public class Person extends DomainObjectWithStatus {
 		return null;
 	}
 
-	public void setApartment(Apartment apartment) throws FlexPayException {
+	public void setRegistrationApartment(Apartment apartment) throws FlexPayException {
 		setPersonRegistration(apartment, null, null);
 	}
 

@@ -1,15 +1,16 @@
 package org.flexpay.ab.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.util.DateIntervalUtil;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Date;
 
 /**
  * Apartment
@@ -29,11 +30,12 @@ public class Apartment extends DomainObjectWithStatus {
 		super(id);
 	}
 
+	@NotNull
 	public Building getBuilding() {
-		return this.building;
+		return building;
 	}
 
-	public void setBuilding(Building building) {
+	public void setBuilding(@NotNull Building building) {
 		this.building = building;
 	}
 
@@ -47,9 +49,8 @@ public class Apartment extends DomainObjectWithStatus {
 
 	/**
 	 * Get apartment number for particular date
-	 * 
-	 * @param dt
-	 *            Date to get apartment number for
+	 *
+	 * @param dt Date to get apartment number for
 	 * @return apartment number
 	 */
 	public String getNumberForDate(Date dt) {
@@ -66,7 +67,7 @@ public class Apartment extends DomainObjectWithStatus {
 
 	/**
 	 * Get current apartment number
-	 * 
+	 *
 	 * @return apartment number
 	 */
 	public String getNumber() {
@@ -76,7 +77,7 @@ public class Apartment extends DomainObjectWithStatus {
 	public void setNumber(String number) throws ObjectAlreadyExistException {
 		Date nowDate = DateIntervalUtil.now();
 		if (number == null || number.equals("")
-				|| number.equals(getNumberForDate(nowDate))) {
+			|| number.equals(getNumberForDate(nowDate))) {
 			// nothing to do
 			return;
 		}
@@ -112,35 +113,35 @@ public class Apartment extends DomainObjectWithStatus {
 		// Add number to apartment numbers set
 		getApartmentNumbers().add(apartmentNumber);
 	}
-	
-	
+
+
 	public Set<Person> getPersons() {
 		return getPersons(DateIntervalUtil.now());
 	}
-	
+
 	public Set<Person> getPersons(Date date) {
 		Set<Person> persons = new HashSet<Person>();
-		for(PersonRegistration reg : personRegistrations) {
-			if(reg.isValid(date)) {
+		for (PersonRegistration reg : personRegistrations) {
+			if (reg.isValid(date)) {
 				persons.add(reg.getPerson());
 			}
 		}
-		
+
 		return persons;
 	}
-	
+
 	public Set<PersonRegistration> getValidPersonRegistrations() {
 		return getValidPersonRegistrations(DateIntervalUtil.now());
 	}
-	
+
 	public Set<PersonRegistration> getValidPersonRegistrations(Date date) {
 		Set<PersonRegistration> result = new HashSet<PersonRegistration>();
-		for(PersonRegistration reg : personRegistrations) {
-			if(reg.isValid(date)) {
+		for (PersonRegistration reg : personRegistrations) {
+			if (reg.isValid(date)) {
 				result.add(reg);
 			}
 		}
-		
+
 		return result;
 	}
 

@@ -218,7 +218,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 			return;
 		}
 
-		person.setApartment(stub);
+		person.setRegistrationApartment(stub);
 	}
 
 	/**

@@ -70,7 +70,7 @@ public class SetRegistrationAction extends ApartmentEditAction {
 
 		if (getCountryFilter().getSelectedId() == null) {
 			person = personService.read(stub(person));
-			getApartmentService().fillFilterIds(person.getApartment(),
+			getApartmentService().fillFilterIds(person.getRegistrationApartment(),
 					getCountryFilter(), getRegionFilter(), getTownFilter(),
 					getStreetFilter(), getBuildingsFilter());
 		}

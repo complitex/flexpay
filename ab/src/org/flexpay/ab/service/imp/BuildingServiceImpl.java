@@ -15,8 +15,11 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.ParentService;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Locale;
@@ -112,8 +115,11 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 	private boolean isFilterValid(BuildingsFilter filter) {
+		if (!filter.needFilter()) {
+			return true;
+		}
 		for (Buildings buildings : filter.getBuildingses()) {
-			if (buildings.getId().equals(filter.getSelectedId())) {
+			if (filter.getSelectedStub().getId().equals(buildings.getId())) {
 				return true;
 			}
 		}
@@ -282,21 +288,24 @@ public class BuildingServiceImpl implements BuildingService {
 	/**
 	 * Create a new Buildings
 	 *
-	 * @param street	  Street
-	 * @param district	District
+	 * @param street	  Street stub
+	 * @param district	District stub
 	 * @param numberValue Buildings number
 	 * @param bulkValue   Buildings bulk
 	 * @return new Buildings object created
+	 * @throws FlexPayException if failure occurs
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
-	public Buildings createBuildings(Street street, District district,
-									 String numberValue, String bulkValue) throws FlexPayException {
+	@NotNull
+	public Buildings createStreetDistrictBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district,
+											@NotNull String numberValue, @NotNull String bulkValue)
+			throws FlexPayException {
 		Building building = new Building();
-		building.setDistrict(district);
+		building.setDistrict(new District(district.getId()));
 
 		Buildings buildings = new Buildings();
 		buildings.setPrimaryStatus(true);
-		buildings.setStreet(street);
+		buildings.setStreet(new Street(street.getId()));
 		building.addBuildings(buildings);
 
 		buildings.setBuildingAttribute(numberValue, getAttributeType(BuildingAttributeType.TYPE_NUMBER));
@@ -310,48 +319,25 @@ public class BuildingServiceImpl implements BuildingService {
 		return buildings;
 	}
 
-	/**
-	 * Create a new Buildings
-	 *
-	 * @param building	Building
-	 * @param street	  Street
-	 * @param numberValue Buildings number
-	 * @param bulkValue   Buildings bulk
-	 * @return new Buildings object created
-	 */
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
-	public Buildings createBuildings(Building building, Street street,
-									 String numberValue, String bulkValue) throws FlexPayException {
+	private Buildings createBuildings(@Nullable Stub<Building> buildingStub, @Nullable Stub<District> district, @NotNull Stub<Street> street,
+									  @NotNull Set<BuildingAttribute> attrs)
+			throws FlexPayException {
 
-		Buildings buildings = new Buildings();
-		buildings.setStreet(street);
-		building.addBuildings(buildings);
-
-		buildings.setBuildingAttribute(numberValue, getAttributeType(BuildingAttributeType.TYPE_NUMBER));
-
-		if (StringUtils.isNotBlank(bulkValue)) {
-			buildings.setBuildingAttribute(numberValue, getAttributeType(BuildingAttributeType.TYPE_BULK));
-		}
-
-		buildingsDao.create(buildings);
-
-		return buildings;
-	}
-
-	private Buildings createBuildings(Building building, District district, Street street, Set<BuildingAttribute> attrs) throws FlexPayException {
-		if (buildingsDaoExt.findBuildings(street, attrs) != null) {
-			throw new FlexPayException("Address with given street and building attributes alredy exist", "ab.adress_alredy_exist");
+		if (buildingsDaoExt.findBuildings(street.getId(), attrs) != null) {
+			throw new FlexPayException(
+					"Address with given street and building attributes alredy exist", "error.ab.adress_alredy_exist");
 		}
 
 		Buildings buildings = new Buildings();
-		buildings.setStreet(street);
+		buildings.setStreet(new Street(street));
 		for (BuildingAttribute attr : attrs) {
 			buildings.setBuildingAttribute(attr.getValue(), attr.getBuildingAttributeType());
 		}
 
+		Building building = buildingStub == null ? null : buildingDao.readFull(buildingStub.getId());
 		if (building == null) {
 			building = new Building();
-			building.setDistrict(district);
+			building.setDistrict(new District(district));
 			buildings.setPrimaryStatus(true);
 			building.addBuildings(buildings);
 			buildingDao.create(building);
@@ -371,9 +357,11 @@ public class BuildingServiceImpl implements BuildingService {
 	 * @param attrs	Buildings attributes
 	 * @return new Buildings object created
 	 */
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
-	public Buildings createBuildings(Building building, Street street,
-									 Set<BuildingAttribute> attrs) throws FlexPayException {
+	@Transactional (readOnly = false)
+	@NotNull
+	public Buildings createStreetBuildings(@NotNull Stub<Building> building, @NotNull Stub<Street> street,
+									@NotNull Set<BuildingAttribute> attrs)
+			throws FlexPayException {
 		return createBuildings(building, null, street, attrs);
 	}
 
@@ -385,9 +373,11 @@ public class BuildingServiceImpl implements BuildingService {
 	 * @param attrs	Buildings attributes
 	 * @return new Buildings object created
 	 */
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
-	public Buildings createBuildings(Street street, District district,
-									 Set<BuildingAttribute> attrs) throws FlexPayException {
+	@Transactional (readOnly = false)
+	@NotNull
+	public Buildings createStreetDistrictBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district,
+							  @NotNull Set<BuildingAttribute> attrs)
+			throws FlexPayException {
 		return createBuildings(null, district, street, attrs);
 	}
 
@@ -402,13 +392,6 @@ public class BuildingServiceImpl implements BuildingService {
 	 */
 	@Transactional (readOnly = false)
 	public void update(Buildings buildings) {
-		/*
-		 * Buildings persistence = buildingsDao.read(buildings.getId()); if
-		 * (buildings.getNumberAttribute() == null) {
-		 * buildingAttributeDao.delete(persistence.getNumberAttribute()); } if
-		 * (buildings.getBulkAttribute() == null) {
-		 * buildingAttributeDao.delete(persistence.getBulkAttribute()); }
-		 */
 		buildingsDao.update(buildings);
 	}
 

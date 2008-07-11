@@ -2,21 +2,28 @@ package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.NonNls;
 
 /**
  * Stub is a simple holder of DomainObject ids
  */
 public class Stub<T extends DomainObject> {
 
+	@NonNls
+	private static final String INVALID_STUB_ID = "Invalid stub id";
+
 	// object id
 	private Long id;
 
-	public Stub(T o) {
-		Validate.notNull(o.getId(), "Nulls are not accepted");
+	public Stub(@NotNull T o) {
 		//noinspection ConstantConditions
-		Validate.isTrue(o.getId() > 0, "Stub id should be > 0");
+		this(o.getId());
+	}
 
-		this.id = o.getId();
+	public Stub(@NotNull Long id) {
+		Validate.isTrue(id > 0, INVALID_STUB_ID);
+
+		this.id = id;
 	}
 
 	@NotNull
@@ -24,7 +31,11 @@ public class Stub<T extends DomainObject> {
 		return id;
 	}
 
-	public static <T extends DomainObject> Stub<T> stub(T o) {
+	public static <T extends DomainObject> Stub<T> stub(@NotNull T o) {
 		return new Stub<T>(o);
+	}
+
+	public static <T extends DomainObject> Stub<T> stub(@NotNull Long id) {
+		return new Stub<T>(id);
 	}
 }

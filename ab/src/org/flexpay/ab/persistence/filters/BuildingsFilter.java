@@ -6,7 +6,7 @@ import org.flexpay.ab.persistence.Buildings;
 import java.util.List;
 import java.util.Collections;
 
-public class BuildingsFilter extends PrimaryKeyFilter {
+public class BuildingsFilter extends PrimaryKeyFilter<Buildings> {
 
 	private List<Buildings> buildingses = Collections.emptyList();
 

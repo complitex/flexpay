@@ -16,6 +16,8 @@ import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.NonNls;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -28,10 +30,14 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 
 	protected Logger log = Logger.getLogger(getClass());
 
+	@NonNls
 	private static final String ERRORS_SESSION_ATTRIBUTE = FPActionSupport.class.getName() + ".ERRORS";
+	@NonNls
 	protected static final String PREFIX_REDIRECT = "redirect";
 
+	@NonNls
 	protected static final String REDIRECT_ERROR = "redirectError";
+	@NonNls
 	protected static final String REDIRECT_SUCCESS = "redirectSuccess";
 
 
@@ -148,11 +154,16 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 	 *
 	 * @param e FlexPayException
 	 */
-	public void addActionError(FlexPayException e) {
+	public void addActionError(@NotNull FlexPayException e) {
+		addActionError(getErrorMessage(e));
+	}
+
+	@NotNull
+	public String getErrorMessage(@NotNull FlexPayException e) {
 		if (StringUtils.isNotEmpty(e.getErrorKey())) {
-			addActionError(getText(e.getErrorKey(), e.getParams()));
+			return getText(e.getErrorKey(), e.getParams());
 		} else {
-			addActionError(e.getMessage());
+			return e.getMessage();
 		}
 	}
 
@@ -197,9 +208,9 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 		this.submit = submit;
 	}
 
-	public Language getLang(Long id) {
+	public Language getLang(@NotNull Long id) {
 		for (Language lang : ApplicationConfig.getInstance().getLanguages()) {
-			if (lang.getId().equals(id)) {
+			if (id.equals(lang.getId())) {
 				return lang;
 			}
 		}

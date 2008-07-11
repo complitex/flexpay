@@ -23,6 +23,7 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.jetbrains.annotations.NotNull;
 
 public class BuildingsDaoExtImpl extends SimpleJdbcDaoSupport implements BuildingsDaoExt {
 
@@ -185,17 +186,17 @@ public class BuildingsDaoExtImpl extends SimpleJdbcDaoSupport implements Buildin
 	/**
 	 * Find building by street and attributes
 	 *
-	 * @param street Building street
+	 * @param streetId Building street key
 	 * @param buildingAttributes Building attributes
 	 * @return Buildings instance, or <code>null</null> if not found
 	 */
-	public Buildings findBuildings(Street street, Set<BuildingAttribute> buildingAttributes) {
+	public Buildings findBuildings(@NotNull Long streetId, @NotNull Set<BuildingAttribute> buildingAttributes) {
 		final StringBuilder hql = new StringBuilder("from Buildings b" +
 		" inner join fetch b.buildingAttributes a" +
 		" inner join fetch a.buildingAttributeType t" +
 		" where b.status=0 and b.street.id=?");
 		final List<Object> params = new ArrayList<Object>();
-		params.add(street.getId());
+		params.add(streetId);
 		
 		for(BuildingAttribute attr : buildingAttributes) {
 			if(!StringUtils.isEmpty(attr.getValue())) {

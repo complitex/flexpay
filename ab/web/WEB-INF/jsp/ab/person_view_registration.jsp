@@ -3,6 +3,9 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
 	<tr class="cols_1">
-		<td class="col_1s" colspan="4"><b><s:text name="ab.person.registration_address"/></b></td>
+		<td class="col_1s"><b><s:text name="ab.person.registration_address"/></b></td>
+	</tr>
+	<tr class="cols">
+		<td class="col"><b><s:property value="%{address}"/></b></td>
 	</tr>
 </table>

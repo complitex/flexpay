@@ -4,8 +4,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.DomainObject;
+import org.jetbrains.annotations.NotNull;
 
-public class PrimaryKeyFilter extends ObjectFilter {
+public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 
 	private Long selectedId;
 	private Long defaultId;
@@ -19,7 +22,7 @@ public class PrimaryKeyFilter extends ObjectFilter {
 
 	@Override
 	public boolean needFilter() {
-		return selectedId != null && selectedId.longValue() > 0;
+		return selectedId != null && selectedId > 0;
 	}
 
 	@SuppressWarnings({"unchecked"})
@@ -44,6 +47,11 @@ public class PrimaryKeyFilter extends ObjectFilter {
 	 */
 	public Long getSelectedId() {
 		return selectedId;
+	}
+
+	@NotNull
+	public Stub<T> getSelectedStub() {
+		return new Stub<T>(selectedId);
 	}
 
 	/**

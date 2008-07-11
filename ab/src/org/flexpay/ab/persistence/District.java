@@ -3,6 +3,7 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.NameTimeDependentChild;
+import org.flexpay.common.persistence.Stub;
 
 import java.util.Set;
 import java.util.Collections;
@@ -19,6 +20,10 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 
 	public District(Long id) {
 		super(id);
+	}
+
+	public District(Stub<District> district) {
+		super(district.getId());
 	}
 
 	/**

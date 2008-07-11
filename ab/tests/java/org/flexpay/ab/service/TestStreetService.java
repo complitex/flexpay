@@ -2,9 +2,9 @@ package org.flexpay.ab.service;
 
 import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,6 +15,10 @@ public class TestStreetService extends SpringBeanAwareTestCase {
 
 	@Autowired
 	protected StreetDao streetDao;
+	@Autowired
+	protected StreetService streetService;
+	@Autowired
+	protected TownService townService;
 
 	@Test
 	public void testCreateStreet() throws Throwable {
@@ -52,5 +56,12 @@ public class TestStreetService extends SpringBeanAwareTestCase {
 
 		streetDao.create(street);
 		streetDao.delete(street);
+	}
+
+	@Test
+	public void testGetStreetName() throws Throwable {
+		Town town = townService.read(ApplicationConfig.getDefaultTown().getId());
+		Street street = town.getStreets().iterator().next();
+		streetService.format(street, null, true);
 	}
 }
