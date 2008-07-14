@@ -3,6 +3,7 @@ package org.flexpay.common.persistence;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import static org.flexpay.common.persistence.Stub.stub;
 
 import java.util.Collections;
 import java.util.Set;
@@ -26,6 +27,10 @@ public abstract class TemporaryName<TV extends TemporaryValue, T extends Transla
 	 */
 	public DomainObject getObject() {
 		return object;
+	}
+
+	public Stub<DomainObject> getStub() {
+		return stub(object);
 	}
 
 	/**

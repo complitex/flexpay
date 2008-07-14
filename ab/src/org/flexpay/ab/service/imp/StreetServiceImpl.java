@@ -251,7 +251,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	private boolean isFilterValid(StreetFilter filter) {
 		for (StreetNameTranslation nameTranslation : filter.getNames()) {
 			StreetName name = (StreetName) nameTranslation.getTranslatable();
-			if (name.getObject().getId().equals(filter.getSelectedId())) {
+			if (name.getStub().getId().equals(filter.getSelectedId())) {
 				return true;
 			}
 		}
@@ -306,8 +306,11 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		}
 	}
 
-	public String format(@NotNull Street street, @NotNull Locale locale, boolean shortMode) throws FlexPayException {
-		street = streetDao.read(street.getId());
+	public String format(@NotNull Stub<Street> stub, @NotNull Locale locale, boolean shortMode) throws FlexPayException {
+		Street street = streetDao.read(stub.getId());
+		if (street == null) {
+			throw new FlexPayException("Invalid id", "error.invalid_id");
+		}
 		return street.format(locale, shortMode);
 	}
 
