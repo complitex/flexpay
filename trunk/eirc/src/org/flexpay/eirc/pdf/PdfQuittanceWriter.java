@@ -67,9 +67,9 @@ public class PdfQuittanceWriter {
 
 		PdfContentByte cb = stamper.getUnderContent(1);
 		Image image = getBarcode1d(cb, barcodes[0]);
-		image.scalePercent(40, 100);
-		image.setAbsolutePosition(15, PageSize.A4.getHeight() / 2 - 180);
-		image.setRotationDegrees(90);
+		image.scalePercent(80, 60);
+		image.setAbsolutePosition(15, PageSize.A4.getHeight() / 2 - 115);
+		//image.setRotationDegrees(90);
 		cb.addImage(image);
 
 		image = getBarcode2d(barcodes[1]);
