@@ -3,10 +3,10 @@ package org.flexpay.common.util;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.LangNameTranslation;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -21,8 +21,8 @@ public class LanguageUtil {
 	 */
 	public static List<LangNameTranslation> getLanguageNames(Locale locale)
 			throws FlexPayException {
-		List<Language> langs = ApplicationConfig.getInstance().getLanguages();
-		List<LangNameTranslation> translations = new ArrayList<LangNameTranslation>(langs.size());
+		List<Language> langs = ApplicationConfig.getLanguages();
+		List<LangNameTranslation> translations = list();
 		for (Language lang : langs) {
 			translations.add(getLanguageName(lang, locale));
 		}
@@ -58,13 +58,13 @@ public class LanguageUtil {
 	 * @throws FlexPayException if Languages configuration is invalid
 	 */
 	public static Language getLanguage(@NotNull Locale locale) throws FlexPayException {
-		for (Language language : ApplicationConfig.getInstance().getLanguages()) {
+		for (Language language : ApplicationConfig.getLanguages()) {
 			if (equals(language, locale)) {
 				return language;
 			}
 		}
 
-		return ApplicationConfig.getInstance().getDefaultLanguage();
+		return ApplicationConfig.getDefaultLanguage();
 	}
 
 	/**
@@ -72,8 +72,7 @@ public class LanguageUtil {
 	 *
 	 * @param l1 First locale
 	 * @param l2 Second locale
-	 * @return <code>true</code> if locales considered equals, or <code>false</code>
-	 *         otherwise
+	 * @return <code>true</code> if locales considered equals, or <code>false</code> otherwise
 	 */
 	public static boolean equals(@NotNull Language l1, @NotNull Locale l2) {
 		return l2.getLanguage().equals(new Locale(l1.getLangIsoCode(), "", "").getLanguage());

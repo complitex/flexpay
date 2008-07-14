@@ -12,12 +12,22 @@ public class CollectionUtils {
 	}
 
 	@NotNull
+	public static <T> List<T> list(@NotNull T... ts) {
+		return new ArrayList<T>(ts.length);
+	}
+
+	@NotNull
+	public static <T> List<T> list(@NotNull Collection<T> ts) {
+		return new ArrayList<T>(ts);
+	}
+
+	@NotNull
 	public static <T> Set<T> set(T... ts) {
 		return new HashSet<T>(Arrays.asList(ts));
 	}
 
 	@NotNull
-	public static <T> Set<T> set(List<T> ts) {
+	public static <T> Set<T> set(Collection<T> ts) {
 		return new HashSet<T>(ts);
 	}
 

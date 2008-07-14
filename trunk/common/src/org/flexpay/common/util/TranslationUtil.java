@@ -40,7 +40,7 @@ public class TranslationUtil {
 	public static <T extends Translation> T getTranslation(@NotNull Collection<T> translations)
 			throws FlexPayException {
 
-		return getTranslation(translations, ApplicationConfig.getInstance().getDefaultLanguage());
+		return getTranslation(translations, ApplicationConfig.getDefaultLanguage());
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class TranslationUtil {
 			@NotNull Collection<T> translations, @NotNull Language language)
 			throws FlexPayException {
 
-		Language defaultLang = ApplicationConfig.getInstance().getDefaultLanguage();
+		Language defaultLang = ApplicationConfig.getDefaultLanguage();
 		T defaultTranslation = null;
 
 		for (T translation : translations) {

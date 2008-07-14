@@ -42,7 +42,7 @@ public interface StreetService
 	 */
 	void saveTypes(Street object);
 
-	String format(@NotNull Street street, @NotNull Locale locale, boolean shortMode)
+	String format(@NotNull Stub<Street> stub, @NotNull Locale locale, boolean shortMode)
 			throws FlexPayException;
 
 	/**
