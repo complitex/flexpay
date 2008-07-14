@@ -183,7 +183,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	}
 
 	@NotNull
-	public String format(Locale locale, boolean shortMode) throws FlexPayException {
+	public String format(@NotNull Locale locale, boolean shortMode) throws FlexPayException {
 		StringBuilder formatted = new StringBuilder();
 
 		StreetTypeTranslation typeTanslation = getTypeTranslation(locale);
@@ -204,7 +204,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	}
 
 	@Nullable
-	private StreetNameTranslation getNameTranslation(Locale locale) throws FlexPayException {
+	private StreetNameTranslation getNameTranslation(@NotNull Locale locale) throws FlexPayException {
 		StreetName name = getCurrentName();
 		StreetNameTranslation nameTranslation = null;
 		if (name != null) {
@@ -214,7 +214,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	}
 
 	@Nullable
-	private StreetTypeTranslation getTypeTranslation(Locale locale) throws FlexPayException {
+	private StreetTypeTranslation getTypeTranslation(@NotNull Locale locale) throws FlexPayException {
 		StreetType type = getCurrentType();
 		StreetTypeTranslation typeTanslation = null;
 		if (type != null) {

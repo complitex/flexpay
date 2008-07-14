@@ -10,6 +10,7 @@ import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.Stub;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Locale;
@@ -41,7 +42,7 @@ public interface StreetService
 	 */
 	void saveTypes(Street object);
 
-	String format(Street street, Locale locale, boolean shortMode)
+	String format(@NotNull Street street, @NotNull Locale locale, boolean shortMode)
 			throws FlexPayException;
 
 	/**

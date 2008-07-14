@@ -19,6 +19,7 @@ import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -305,7 +306,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		}
 	}
 
-	public String format(Street street, Locale locale, boolean shortMode) throws FlexPayException {
+	public String format(@NotNull Street street, @NotNull Locale locale, boolean shortMode) throws FlexPayException {
 		street = streetDao.read(street.getId());
 		return street.format(locale, shortMode);
 	}

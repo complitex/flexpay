@@ -4,6 +4,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.LangNameTranslation;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public class LanguageUtil {
 	 * @return Language with this locale, or default one
 	 * @throws FlexPayException if Languages configuration is invalid
 	 */
-	public static Language getLanguage(Locale locale) throws FlexPayException {
+	public static Language getLanguage(@NotNull Locale locale) throws FlexPayException {
 		for (Language language : ApplicationConfig.getInstance().getLanguages()) {
 			if (equals(language, locale)) {
 				return language;
@@ -74,7 +75,7 @@ public class LanguageUtil {
 	 * @return <code>true</code> if locales considered equals, or <code>false</code>
 	 *         otherwise
 	 */
-	public static boolean equals(Language l1, Locale l2) {
+	public static boolean equals(@NotNull Language l1, @NotNull Locale l2) {
 		return l2.getLanguage().equals(new Locale(l1.getLangIsoCode(), "", "").getLanguage());
 	}
 }
