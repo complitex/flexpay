@@ -1,5 +1,6 @@
 package org.flexpay.eirc.persistence.account;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -7,13 +8,16 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.flexpay.ab.persistence.PersonRegistration;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
+import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.ServiceType;
 
 public class Quittance extends DomainObject {
@@ -42,21 +46,68 @@ public class Quittance extends DomainObject {
 			return null;
 		}
 		
-		// sort by dateTill
-		Collections.sort(list, new Comparator () {
-	        public int compare(Object o1, Object o2) {
-	        	QuittanceDetails q1 = (QuittanceDetails)o1;
-	        	QuittanceDetails q2 = (QuittanceDetails)o2;
-	            return q1.getMonth().compareTo(q2.getMonth());
-	        }
-	    });
-		
-		QuittanceDetails last = list.get(list.size() - 1);
-		for(int i = 0; i < list.size() - 1; i++) {
-			last.add(list.get(i));
+		Map<ServiceProvider, List<QuittanceDetails>> map = groupByServiceProvider(list);
+		Map<ServiceProvider, QuittanceDetails> calculatedQuittanceDetails = new HashMap<ServiceProvider, QuittanceDetails>();
+		for(Map.Entry<ServiceProvider, List<QuittanceDetails>> entry : map.entrySet()) {
+			ServiceProvider serviceProvider = entry.getKey();
+			List<QuittanceDetails> quittanceDetailsList = entry.getValue();
+			// sort by dateTill
+			Collections.sort(quittanceDetailsList, new Comparator () {
+		        public int compare(Object o1, Object o2) {
+		        	QuittanceDetails q1 = (QuittanceDetails)o1;
+		        	QuittanceDetails q2 = (QuittanceDetails)o2;
+		            return q1.getMonth().compareTo(q2.getMonth());
+		        }
+		    });
+			
+			if(quittanceDetailsList.size() == 1) {
+				calculatedQuittanceDetails.put(serviceProvider, quittanceDetailsList.get(0));
+			} else {
+				QuittanceDetails first = quittanceDetailsList.get(0);
+				QuittanceDetails last = quittanceDetailsList.get(list.size() - 1);
+				last.setIncomingBalance(first.getOutgoingBalance());
+				for(int i = 0; i < list.size() - 1; i++) {
+					last.add(list.get(i));
+				}
+				calculatedQuittanceDetails.put(serviceProvider, last);
+			}
 		}
 		
-		return list.get(list.size() - 1);
+		Iterator<QuittanceDetails> it = calculatedQuittanceDetails.values().iterator();
+		QuittanceDetails result = it.next();
+		while(it.hasNext()) {
+			QuittanceDetails quittanceDetails = it.next(); 
+			result.setIncomingBalance(sumBalance(result.getIncomingBalance(), quittanceDetails.getIncomingBalance()));
+			result.setOutgoingBalance(sumBalance(result.getOutgoingBalance(), quittanceDetails.getOutgoingBalance()));
+			result.add(quittanceDetails);
+		}
+		
+		return result;
+	}
+	
+	private BigDecimal sumBalance(BigDecimal bal1, BigDecimal bal2) {
+		if(bal1 == null || bal1.compareTo(BigDecimal.ZERO) < 0) {
+			bal1 = BigDecimal.ZERO;
+		}
+		if(bal2 == null || bal2.compareTo(BigDecimal.ZERO) < 0) {
+			bal2 = BigDecimal.ZERO;
+		}
+		
+		return bal1.add(bal2);
+	}
+	
+	private Map<ServiceProvider, List<QuittanceDetails>> groupByServiceProvider(List<QuittanceDetails> list) {
+		Map<ServiceProvider, List<QuittanceDetails>> result = new HashMap<ServiceProvider, List<QuittanceDetails>>();
+		for(QuittanceDetails quittanceDetails : list) {
+			ServiceProvider serviceProvider = quittanceDetails.getConsumer().getService().getServiceProvider();
+			List<QuittanceDetails> quittanceDetailsList = result.get(serviceProvider);
+			if(quittanceDetailsList == null) {
+				result.put(serviceProvider, new ArrayList<QuittanceDetails>());
+			}
+			result.get(serviceProvider).add(quittanceDetails);
+		}
+		
+		return result;
 	}
 	
 	
