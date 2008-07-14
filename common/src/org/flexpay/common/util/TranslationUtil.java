@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -21,7 +22,7 @@ public class TranslationUtil {
 	 */
 	@Nullable
 	public static <T extends Translation> T getTranslation(
-			Collection<T> translations, Locale locale)
+			@NotNull Collection<T> translations, @NotNull Locale locale)
 			throws FlexPayException {
 
 		Language language = LanguageUtil.getLanguage(locale);
@@ -36,7 +37,7 @@ public class TranslationUtil {
 	 * @throws FlexPayException if languages configuration is invalid
 	 */
 	@Nullable
-	public static <T extends Translation> T getTranslation(Collection<T> translations)
+	public static <T extends Translation> T getTranslation(@NotNull Collection<T> translations)
 			throws FlexPayException {
 
 		return getTranslation(translations, ApplicationConfig.getInstance().getDefaultLanguage());
@@ -52,7 +53,7 @@ public class TranslationUtil {
 	 */
 	@Nullable
 	public static <T extends Translation> T getTranslation(
-			Collection<T> translations, Language language)
+			@NotNull Collection<T> translations, @NotNull Language language)
 			throws FlexPayException {
 
 		Language defaultLang = ApplicationConfig.getInstance().getDefaultLanguage();

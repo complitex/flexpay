@@ -4,6 +4,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
 import java.util.*;
@@ -13,6 +15,7 @@ public class ApplicationConfig {
 	private static ApplicationConfig instance;
 
 	private List<Language> languages = new ArrayList<Language>(3);
+	@NonNls
 	public static final String USER_PREFERENCES_SESSION_ATTRIBUTE = "FLEXPAY_USER_PREFERENCES_SESSION_ATTRIBUTE";
 
 	private static final Date DATE_PAST_INFINITE = new GregorianCalendar(1900, 0, 1).getTime();
@@ -58,8 +61,9 @@ public class ApplicationConfig {
 	 *
 	 * @return Value for property 'languages'.
 	 */
-	public List<Language> getLanguages() {
-		return Collections.unmodifiableList(languages);
+	@NotNull
+	public static List<Language> getLanguages() {
+		return Collections.unmodifiableList(getInstance().languages);
 	}
 
 	public void addLanguage(Language language) {
@@ -81,13 +85,25 @@ public class ApplicationConfig {
 	 * @return Language
 	 * @throws FlexPayException if Default language is not configured
 	 */
-	public Language getDefaultLanguage() throws FlexPayException {
-		for (Language language : languages) {
+	@NotNull
+	public static Language getDefaultLanguage() throws FlexPayException {
+		for (Language language : getInstance().languages) {
 			if (language.isDefault()) {
 				return language;
 			}
 		}
 		throw new FlexPayException("No default language defined");
+	}
+
+	/**
+	 * Get Default Locale
+	 *
+	 * @return Locale
+	 * @throws FlexPayException if Default language is not configured
+	 */
+	@NotNull
+	public static Locale getDefaultLocale() throws FlexPayException {
+		return getDefaultLanguage().getLocale();
 	}
 
 	/**
@@ -103,7 +119,7 @@ public class ApplicationConfig {
 	 * {@inheritDoc}
 	 */
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("languages", languages.toArray()).toString();
 	}
 

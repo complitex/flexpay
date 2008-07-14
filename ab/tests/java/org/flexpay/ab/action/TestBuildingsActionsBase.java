@@ -37,7 +37,7 @@ public class TestBuildingsActionsBase extends SpringBeanAwareTestCase {
 	@Before
 	public void prepareBase() throws FlexPayException {
 		UserPreferences prefs = new UserPreferences();
-		prefs.setLocale(ApplicationConfig.getInstance().getDefaultLanguage().getLocale());
+		prefs.setLocale(ApplicationConfig.getDefaultLocale());
 		base.setUserPreferences(prefs);
 	}
 }

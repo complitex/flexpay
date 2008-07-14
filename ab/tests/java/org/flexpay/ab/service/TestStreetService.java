@@ -34,7 +34,7 @@ public class TestStreetService extends SpringBeanAwareTestCase {
 		StreetNameTranslation translation = new StreetNameTranslation();
 		translation.setName("Test street");
 		translation.setTranslatable(name);
-		translation.setLang(ApplicationConfig.getInstance().getDefaultLanguage());
+		translation.setLang(ApplicationConfig.getDefaultLanguage());
 		Set<StreetNameTranslation> translations = new HashSet<StreetNameTranslation>();
 		translations.add(translation);
 		name.setTranslations(translations);
@@ -62,6 +62,6 @@ public class TestStreetService extends SpringBeanAwareTestCase {
 	public void testGetStreetName() throws Throwable {
 		Town town = townService.read(ApplicationConfig.getDefaultTown().getId());
 		Street street = town.getStreets().iterator().next();
-		streetService.format(street, null, true);
+		streetService.format(street, ApplicationConfig.getDefaultLocale(), true);
 	}
 }
