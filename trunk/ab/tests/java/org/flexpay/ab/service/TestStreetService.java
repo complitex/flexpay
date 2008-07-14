@@ -3,7 +3,7 @@ package org.flexpay.ab.service;
 import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.util.config.ApplicationConfig;
-import org.flexpay.common.persistence.TimeLine;
+import org.flexpay.common.persistence.TimeLine;import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +62,6 @@ public class TestStreetService extends SpringBeanAwareTestCase {
 	public void testGetStreetName() throws Throwable {
 		Town town = townService.read(ApplicationConfig.getDefaultTown().getId());
 		Street street = town.getStreets().iterator().next();
-		streetService.format(street, ApplicationConfig.getDefaultLocale(), true);
+		streetService.format(stub(street), ApplicationConfig.getDefaultLocale(), true);
 	}
 }

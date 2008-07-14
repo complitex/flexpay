@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.NonNls;
 
 public class Translation extends DomainObject {
 	private String name;
@@ -47,7 +48,7 @@ public class Translation extends DomainObject {
 	 *
 	 * @param name Value to set for property 'name'.
 	 */
-	public void setName(@NotNull String name) {
+	public void setName(@NotNull @NonNls String name) {
 		this.name = name;
 	}
 
