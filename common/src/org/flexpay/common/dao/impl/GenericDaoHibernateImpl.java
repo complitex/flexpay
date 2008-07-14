@@ -17,6 +17,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NonNls;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -60,6 +61,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 
 	@Nullable
 	public T readFull(@NotNull final PK id) {
+		@NonNls
 		final String queryName = type.getSimpleName() + ".readFull";
 		return (T) hibernateTemplate.execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
@@ -99,7 +101,8 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	private List findByNamedQuery(final String queryName, final Object[] values) throws DataAccessException {
 		return hibernateTemplate.executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
-				Query queryObject = session.getNamedQuery(queryName);
+				Query queryObject = session.getNamedQuery(queryName)
+						.setCacheable(true).setCacheRegion(queryName);
 				Query queryCount = getCountQuery(session, queryName);
 				Page pageParam = null;
 				if (values != null) {
@@ -138,10 +141,15 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 
 	private Query getCountQuery(Session session, String queryName) {
 		try {
-			return session.getNamedQuery(queryName + ".count");
+			return session.getNamedQuery(getCountQueryName(queryName));
 		} catch (HibernateException e) {
 			return null;
 		}
+	}
+
+	@NonNls
+	private String getCountQueryName(String queryName) {
+		return queryName + ".count";
 	}
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
