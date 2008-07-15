@@ -1,13 +1,13 @@
 package org.flexpay.ab.actions.buildings;
 
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.service.BuildingService;
+import org.flexpay.common.actions.FPActionSupport;
+
 import java.util.Collections;
 import java.util.List;
 
-import org.flexpay.ab.actions.CommonAction;
-import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.service.BuildingService;
-
-public class BuildingsDeleteAction extends CommonAction {
+public class BuildingsDeleteAction extends FPActionSupport {
 	private BuildingService buildingService;
 
 	private List<Long> objectIds = Collections.emptyList();
@@ -20,20 +20,18 @@ public class BuildingsDeleteAction extends CommonAction {
 			buildingService.update(buildings);
 		}
 
-		return redirectBuildingsId == null ? "buildings_list" : "edit";
+		return redirectBuildingsId == null ? "buildings_list" : INPUT;
 	}
 
 	/**
-	 * @param buildingService
-	 *            the buildingService to set
+	 * @param buildingService the buildingService to set
 	 */
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
 
 	/**
-	 * @param objectIds
-	 *            the objectIds to set
+	 * @param objectIds the objectIds to set
 	 */
 	public void setObjectIds(List<Long> objectIds) {
 		this.objectIds = objectIds;

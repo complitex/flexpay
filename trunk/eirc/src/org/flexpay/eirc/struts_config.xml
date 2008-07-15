@@ -14,7 +14,7 @@
 		</action>
 
 		<action name="spFileCreate" class="spFileCreateAction">
-			<result name="form" type="tiles">eirc.import.file.upload.form</result>
+			<result name="input" type="tiles">eirc.import.file.upload.form</result>
 		</action>
 
 		<action name="spFileList" class="spFileListAction">
@@ -68,8 +68,8 @@
 		</action>
 
 		<action name="ticketPayForm" class="ticketPayFormAction">
-			<result name="form" type="tiles">eirc.tickets.ticket_find</result>
-			<result name="pay" type="tiles">eirc.tickets.ticket_pay_form</result>
+			<result name="input" type="tiles">eirc.tickets.ticket_find</result>
+			<result name="success" type="tiles">eirc.tickets.ticket_pay_form</result>
 		</action>
 
 		<action name="ticketPay" class="ticketPayAction">

@@ -1,18 +1,18 @@
 package org.flexpay.sz.actions;
 
-import org.flexpay.ab.actions.CommonAction;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 
-public class LoadToDbAction extends CommonAction {
+public class LoadToDbAction extends FPActionSupport {
 
 	private Long szFileId;
 	private String action;
 
 	private SzFileService szFileService;
 
-	public String execute() throws Throwable {
+	public String doExecute() throws Exception {
 		SzFile szFile = szFileService.readFull(szFileId);
 		if ("loadToDb".equals(action)) {
 			SzFileUtil.loadToDb(szFile);
@@ -24,7 +24,19 @@ public class LoadToDbAction extends CommonAction {
 			SzFileUtil.delete(szFile);
 		}
 
-		return "success";
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return SUCCESS;
 	}
 
 	public void setSzFileId(Long szFileId) {

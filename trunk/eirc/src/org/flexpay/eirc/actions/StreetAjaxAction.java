@@ -1,21 +1,27 @@
 package org.flexpay.eirc.actions;
 
+import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.service.StreetService;
+import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.eirc.util.config.ApplicationConfig;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.flexpay.ab.actions.CommonAction;
-import org.flexpay.ab.persistence.Street;
-import org.flexpay.ab.service.StreetService;
-import org.flexpay.common.exception.FlexPayException;
-
-public class StreetAjaxAction extends CommonAction {
+/**
+ * TODO rename to a more meaningfull name or delete
+ *
+ * @deprecated
+ */
+public class StreetAjaxAction extends FPActionSupport {
 
 	private StreetService streetService;
 	private List<StreetVis> streetVisList;
 	private String streetVar;
 
 	public String execute() throws FlexPayException {
-		List<Street> streetList = streetService.findByTownAndName(27L, streetVar + "%");
+		List<Street> streetList = streetService.findByTownAndName(ApplicationConfig.getDefaultTownStub(), streetVar + "%");
 
 		streetVisList = new ArrayList<StreetVis>();
 		for (Street street : streetList) {
@@ -28,20 +34,18 @@ public class StreetAjaxAction extends CommonAction {
 			streetVisList.add(streetVis);
 		}
 
-		return "success";
+		return SUCCESS;
 	}
 
 	/**
-	 * @param streetVar
-	 *            the streetVar to set
+	 * @param streetVar the streetVar to set
 	 */
 	public void setStreetVar(String streetVar) {
 		this.streetVar = streetVar;
 	}
 
 	/**
-	 * @param streetService
-	 *            the streetService to set
+	 * @param streetService the streetService to set
 	 */
 	public void setStreetService(StreetService streetService) {
 		this.streetService = streetService;
@@ -60,8 +64,7 @@ public class StreetAjaxAction extends CommonAction {
 		}
 
 		/**
-		 * @param id
-		 *            the id to set
+		 * @param id the id to set
 		 */
 		public void setId(Long id) {
 			this.id = id;
@@ -75,8 +78,7 @@ public class StreetAjaxAction extends CommonAction {
 		}
 
 		/**
-		 * @param name
-		 *            the name to set
+		 * @param name the name to set
 		 */
 		public void setName(String name) {
 			this.name = name;
@@ -90,8 +92,7 @@ public class StreetAjaxAction extends CommonAction {
 		}
 
 		/**
-		 * @param type
-		 *            the type to set
+		 * @param type the type to set
 		 */
 		public void setType(String type) {
 			this.type = type;
