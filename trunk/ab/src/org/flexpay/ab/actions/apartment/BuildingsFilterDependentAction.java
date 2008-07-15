@@ -55,10 +55,6 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 
 	public String getBuildingNumber(Collection<BuildingAttribute> attributes) throws Exception {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Getting building number, attributes: " + attributes);
-		}
-
 		StringBuilder number = new StringBuilder();
 		for (BuildingAttribute attribute : attributes) {
 
@@ -71,10 +67,6 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 			}
 
 			number.append(attribute.getValue()).append(' ');
-		}
-
-		if (log.isDebugEnabled()) {
-			log.debug("Building number: " + number);
 		}
 
 		return number.toString().trim();

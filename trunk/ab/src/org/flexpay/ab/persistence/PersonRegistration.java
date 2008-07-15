@@ -70,6 +70,6 @@ public class PersonRegistration extends DomainObject {
 	}
 
 	public boolean isValid(@NotNull Date date) {
-		return beginDate.before(date) && date.before(endDate);
+		return beginDate.compareTo(date) <= 0 && date.compareTo(endDate) <= 0;
 	}
 }

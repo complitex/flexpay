@@ -12,6 +12,7 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 
 	private Long selectedId;
 	private Long defaultId;
+	private boolean needAutoChange;
 
 	public PrimaryKeyFilter() {
 	}
@@ -84,7 +85,20 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 	 */
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("Selected id", selectedId).toString();
+	}
+
+	public void setNeedAutoChange(boolean needAutoChange) {
+		this.needAutoChange = needAutoChange;
+	}
+
+	/**
+	 * Check if automatic dependent elements changes is allowed for filter
+	 *
+	 * @return <code>true</code> if auto change allowed, or <code>false</code> otherwise
+	 */
+	public boolean isNeedAutoChange() {
+		return needAutoChange;
 	}
 }

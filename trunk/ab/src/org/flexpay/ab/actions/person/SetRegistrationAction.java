@@ -7,14 +7,10 @@ import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
-import org.jetbrains.annotations.NonNls;
 
 import java.util.Date;
 
 public class SetRegistrationAction extends ApartmentFilterDependentAction {
-
-	@NonNls
-	public static final String DATE_FORMAT = "dd/MM/yyyy";
 
 	private PersonService personService;
 
@@ -24,16 +20,16 @@ public class SetRegistrationAction extends ApartmentFilterDependentAction {
 
 	public String doExecute() throws Exception {
 
-		if (isSubmitted()) {
+		if (isSubmit()) {
 			if (!apartmentFilter.needFilter()) {
 				throw new FlexPayException("No apartment", "ab.person.apartment_absent");
 			}
 
 			person = personService.read(stub(person));
 			person.setPersonRegistration(new Apartment(apartmentFilter.getSelectedId()), beginDate, endDate);
-//			personService.save(person);
+			personService.save(person);
 		}
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	/**
@@ -45,7 +41,7 @@ public class SetRegistrationAction extends ApartmentFilterDependentAction {
 	 */
 	@Override
 	protected String getErrorResult() {
-		return REDIRECT_ERROR;
+		return ERROR;
 	}
 
 	/**
@@ -78,6 +74,13 @@ public class SetRegistrationAction extends ApartmentFilterDependentAction {
 		this.beginDate = DateUtil.parseBeginDate(beginDate);
 	}
 
+	public void setBeginDate(Date beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 
 	/**
 	 * @return the endDate

@@ -40,7 +40,7 @@ public class BuildingAttributeTypeCreateAction extends FPActionSupport
 	}
 
 	public String execute() {
-		if (isSubmitted()) {
+		if (isSubmit()) {
 			boolean blancDefaultTranslation = true;
 			BuildingAttributeType type = new BuildingAttributeType();
 			Set<BuildingAttributeTypeTranslation> translationSet = new HashSet<BuildingAttributeTypeTranslation>();

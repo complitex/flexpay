@@ -3,20 +3,10 @@ package org.flexpay.eirc.actions;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
-import org.flexpay.ab.actions.CommonAction;
-import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.ApartmentNumber;
-import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.persistence.Person;
-import org.flexpay.ab.persistence.PersonIdentity;
-import org.flexpay.ab.persistence.Street;
-import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.ServiceOrganisationService;
-import org.flexpay.eirc.service.TicketService;
 import org.flexpay.common.actions.FPActionSupport;
 
 public class GenerateTicketAction extends FPActionSupport {
@@ -32,7 +22,7 @@ public class GenerateTicketAction extends FPActionSupport {
 	private Long serviceOrganisationId;
 
 	public String execute() {
-		if(isSubmitted()) {
+		if(isSubmit()) {
 			Calendar cal = Calendar.getInstance();
 			cal.set(Calendar.YEAR, year);
 			cal.set(Calendar.MONTH, month);

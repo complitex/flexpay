@@ -46,7 +46,7 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 			}
 		}
 
-		if (isSubmitted()) {
+		if (isSubmit()) {
 			for (BuildingAttribute attr : attributeMap.values()) {
 				buildings.setBuildingAttribute(attr.getValue(), attr.getBuildingAttributeType());
 			}
