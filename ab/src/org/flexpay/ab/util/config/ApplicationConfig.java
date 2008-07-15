@@ -3,6 +3,8 @@ package org.flexpay.ab.util.config;
 import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.Town;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class ApplicationConfig extends org.flexpay.common.util.config.ApplicationConfig {
 
@@ -12,6 +14,10 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 
 	public static Town getDefaultTown() {
 		return getInstance().defaultTown;
+	}
+
+	public static Stub<Town> getDefaultTownStub() {
+		return stub(getInstance().defaultTown);
 	}
 
 	public static Country getDefaultCountry() {

@@ -1,30 +1,23 @@
 package org.flexpay.sz.actions;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.apache.commons.io.FileUtils;
-import org.flexpay.ab.actions.CommonAction;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.persistence.Oszn;
+import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.persistence.SzFileType;
-import org.flexpay.sz.service.SzFileService;
-import org.flexpay.sz.service.OsznService;
-import org.flexpay.sz.service.SzFileActualityStatusService;
-import org.flexpay.sz.service.SzFileStatusService;
-import org.flexpay.sz.service.SzFileTypeService;
+import org.flexpay.sz.service.*;
 
-public class ImportFileAction extends CommonAction {
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+
+public class ImportFileAction extends FPActionSupport {
 
 	private static Map<Integer, String> months;
 	private static Integer[] years;
+
 	static {
 		months = new TreeMap<Integer, String>();
 		months.put(0, "01");
@@ -41,15 +34,16 @@ public class ImportFileAction extends CommonAction {
 		months.put(11, "12");
 
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(ApplicationConfig.getInstance().getPastInfinite());
+		cal.setTime(ApplicationConfig.getPastInfinite());
 		int yearFrom = cal.get(Calendar.YEAR);
-		cal.setTime(ApplicationConfig.getInstance().getFutureInfinite());
+		cal.setTime(ApplicationConfig.getFutureInfinite());
 		int yearTill = cal.get(Calendar.YEAR);
 		years = new Integer[yearTill - yearFrom + 1];
 		for (int i = 0; i <= yearTill - yearFrom; i++) {
 			years[i] = yearFrom + i;
 		}
 	}
+
 	private File upload;
 	private String uploadFileName;
 	private String contentType;
@@ -65,7 +59,7 @@ public class ImportFileAction extends CommonAction {
 	private SzFileActualityStatusService szFileActualityStatusService;
 
 	public String execute() throws FlexPayException {
-		if (isSubmitted()) {
+		if (isSubmit()) {
 			SzFileType szFileType = szFileTypeService
 					.getByFileName(uploadFileName);
 			if (szFileType != null) {
@@ -95,7 +89,7 @@ public class ImportFileAction extends CommonAction {
 					szFileService.create(szFile);
 				} catch (FlexPayException e) {
 					file.delete();
-					// TODO write error to page
+					addActionError(e);
 				}
 			} else {
 				// TODO write message - wrong file name
@@ -108,7 +102,7 @@ public class ImportFileAction extends CommonAction {
 		}
 
 		osznList = osznService.getEntities();
-		if(osznList.isEmpty()) {
+		if (osznList.isEmpty()) {
 			return "oszn_absent";
 		}
 

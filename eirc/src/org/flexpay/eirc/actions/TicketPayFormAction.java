@@ -1,25 +1,37 @@
 package org.flexpay.eirc.actions;
 
-import org.flexpay.ab.actions.CommonAction;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.pdf.PdfTicketWriter.TicketInfo;
 import org.flexpay.eirc.service.TicketService;
 
-public class TicketPayFormAction extends CommonAction {
-	
+public class TicketPayFormAction extends FPActionSupport {
+
 	private TicketService ticketService;
-	
+
 	private Long ticketId;
 	private TicketInfo ticketInfo;
-	
-	
-	public String execute() throws FlexPayException {
-		if (isSubmitted()) {
+
+
+	public String doExecute() throws FlexPayException {
+		if (isSubmit()) {
 			ticketInfo = ticketService.getTicketInfo(ticketId);
-			return "pay";
+			return SUCCESS;
 		}
-		
-		return "form";
+
+		return INPUT;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return SUCCESS;
 	}
 
 	/**

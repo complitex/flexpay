@@ -1,9 +1,6 @@
 package org.flexpay.ab.service;
 
-import org.flexpay.ab.persistence.Street;
-import org.flexpay.ab.persistence.StreetName;
-import org.flexpay.ab.persistence.StreetNameTemporal;
-import org.flexpay.ab.persistence.StreetNameTranslation;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.service.NameTimeDependentService;
@@ -32,7 +29,7 @@ public interface StreetService
 	 */
 	Street saveDistricts(Street street, Set<Long> objectIds);
 
-	List<Street> findByTownAndName(Long townId, String name);
+	List<Street> findByTownAndName(@NotNull Stub<Town> stub, @NotNull String name);
 
 	/**
 	 * Save Street types timeline

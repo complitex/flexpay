@@ -1,16 +1,15 @@
 package org.flexpay.eirc.actions;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Date;
-
-import org.flexpay.ab.actions.CommonAction;
+import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.service.SpFileService;
-import org.apache.commons.lang.StringUtils;
 
-public class SpFileCreateAction extends CommonAction {
+import java.io.File;
+import java.util.Date;
+
+public class SpFileCreateAction extends FPActionSupport {
 	private File upload;
 	private String uploadFileName;
 	private String contentType;
@@ -18,8 +17,8 @@ public class SpFileCreateAction extends CommonAction {
 	private SpFileService spFileService;
 	private boolean isUploaded = false;
 
-	public String execute() throws IOException, FlexPayException {
-		if (isSubmitted()) {
+	public String doExecute() throws Exception {
+		if (isSubmit()) {
 			if (StringUtils.isNotEmpty(uploadFileName)) {
 				SpFile spFile = new SpFile();
 				spFile.saveToFileSystem(upload);
@@ -38,7 +37,19 @@ public class SpFileCreateAction extends CommonAction {
 			}
 		}
 
-		return "form";
+		return INPUT;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return INPUT;
 	}
 
 	public void setUpload(File upload) {

@@ -1,20 +1,18 @@
 package org.flexpay.ab.actions.identity;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.opensymphony.xwork2.Preparable;
 import org.apache.struts2.ServletActionContext;
-import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.IdentityTypeTranslation;
 import org.flexpay.ab.service.IdentityTypeService;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 
-import com.opensymphony.xwork2.Preparable;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
-public class IdentityTypeEditAction extends CommonAction implements Preparable {
+public class IdentityTypeEditAction extends FPActionSupport implements Preparable {
 	private IdentityTypeService identityTypeService;
 	private IdentityType identityType;
 	private Map<String, IdentityTypeTranslation> translationMap;
@@ -25,32 +23,37 @@ public class IdentityTypeEditAction extends CommonAction implements Preparable {
 		identityType = identityTypeService.read(Long.valueOf(id));
 
 		translationMap = new HashMap<String, IdentityTypeTranslation>();
-		for (IdentityTypeTranslation translation : identityType
-				.getTranslations()) {
+		for (IdentityTypeTranslation translation : identityType.getTranslations()) {
 			translationMap.put(translation.getId().toString(), translation);
 		}
 	}
 
-	public String execute() throws Exception {
-		if (isSubmitted()) {
-			try {
-				identityTypeService.update(identityType, identityType
-						.getTranslations());
-			} catch (RuntimeException e) {
-				// TODO
-			}
+	public String doExecute() throws Exception {
+		if (isSubmit()) {
+			identityTypeService.update(identityType, identityType.getTranslations());
 
-			return "afterSubmit";
+			return REDIRECT_SUCCESS;
 		}
 
-		return "form";
+		return INPUT;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return REDIRECT_SUCCESS;
 	}
 
 	/**
 	 * Setter for property 'identityTypeService'.
-	 * 
-	 * @param identityTypeService
-	 *            Value to set for property 'identityTypeService'.
+	 *
+	 * @param identityTypeService Value to set for property 'identityTypeService'.
 	 */
 	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
 		this.identityTypeService = identityTypeService;

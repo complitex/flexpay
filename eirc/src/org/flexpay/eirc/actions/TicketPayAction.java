@@ -1,18 +1,30 @@
 package org.flexpay.eirc.actions;
 
-import org.flexpay.ab.actions.CommonAction;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.eirc.service.TicketService;
 
-public class TicketPayAction extends CommonAction {
-	
+public class TicketPayAction extends FPActionSupport {
+
 	private TicketService ticketService;
-	
+
 	private Long ticketId;
-	
-	public String execute() {
+
+	public String doExecute() {
 		ticketService.payTicket(ticketId);
-		
-		return "success";
+
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return SUCCESS;
 	}
 
 	/**
@@ -28,6 +40,5 @@ public class TicketPayAction extends CommonAction {
 	public void setTicketService(TicketService ticketService) {
 		this.ticketService = ticketService;
 	}
-	
 
 }

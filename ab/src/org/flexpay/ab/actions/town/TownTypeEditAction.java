@@ -1,54 +1,61 @@
 package org.flexpay.ab.actions.town;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.opensymphony.xwork2.Preparable;
 import org.apache.struts2.ServletActionContext;
-import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.service.TownTypeService;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
+import static org.flexpay.common.util.CollectionUtils.map;
 
-import com.opensymphony.xwork2.Preparable;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
-public class TownTypeEditAction extends CommonAction implements Preparable {
+public class TownTypeEditAction extends FPActionSupport implements Preparable {
 	private TownTypeService townTypeService;
 	private TownType townType;
 	private Map<String, TownTypeTranslation> translationMap;
 
 	public void prepare() throws FlexPayException {
+		// todo remove reference to request
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String id = request.getParameter("id");
 		townType = townTypeService.read(Long.valueOf(id));
 
-		translationMap = new HashMap<String, TownTypeTranslation>();
+		translationMap = map();
 		for (TownTypeTranslation translation : townType.getTranslations()) {
 			translationMap.put(translation.getId().toString(), translation);
 		}
 	}
 
-	public String execute() throws Exception {
-		if (isSubmitted()) {
-			try {
-				townTypeService.update(townType, townType.getTranslations());
-			} catch (RuntimeException e) {
-				// TODO
-			}
+	public String doExecute() throws Exception {
 
-			return "afterSubmit";
+		if (isSubmit()) {
+			townTypeService.update(townType, townType.getTranslations());
+			return REDIRECT_SUCCESS;
 		}
 
-		return "form";
+		return INPUT;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return REDIRECT_SUCCESS;
 	}
 
 	/**
 	 * Setter for property 'townTypeService'.
-	 * 
-	 * @param townTypeService
-	 *            Value to set for property 'townTypeService'.
+	 *
+	 * @param townTypeService Value to set for property 'townTypeService'.
 	 */
 	public void setTownTypeService(TownTypeService townTypeService) {
 		this.townTypeService = townTypeService;

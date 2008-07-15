@@ -278,9 +278,9 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return filters;
 	}
 
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
-	public List<Street> findByTownAndName(Long townId, String name) {
-		return streetDao.findByTownAndName(townId, name);
+	@Transactional (readOnly = true)
+	public List<Street> findByTownAndName(@NotNull Stub<Town> stub, @NotNull String name) {
+		return streetDao.findByTownAndName(stub.getId(), name);
 	}
 
 	/**

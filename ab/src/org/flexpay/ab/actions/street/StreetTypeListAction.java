@@ -1,20 +1,32 @@
 package org.flexpay.ab.actions.street;
 
-import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.StreetTypeService;
+import org.flexpay.common.actions.FPActionSupport;
 
 import java.util.List;
 
-public class StreetTypeListAction extends CommonAction {
+public class StreetTypeListAction extends FPActionSupport {
 
 	private StreetTypeService streetTypeService;
 	private List<StreetTypeTranslation> translationList;
 
-	public String execute() throws Exception {
-		translationList = streetTypeService.getTranslations(getUserPreferences().getLocale());
+	public String doExecute() throws Exception {
+		translationList = streetTypeService.getTranslations(userPreferences.getLocale());
 
-		return "list";
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return SUCCESS;
 	}
 
 	/**

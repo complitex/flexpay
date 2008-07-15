@@ -154,14 +154,14 @@
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">TOWN_TYPE_READ</param>
 			</interceptor-ref>
-			<result name="list" type="tiles">ab.town_type.list</result>
+			<result name="success" type="tiles">ab.town_type.list</result>
 		</action>
 		<action name="town_type_edit" class="townTypeEditAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">TOWN_TYPE_CHANGE</param>
 			</interceptor-ref>
-			<result name="form" type="tiles">ab.town_type.edit</result>
-			<result name="afterSubmit" type="redirect">town_type_list.action</result>
+			<result name="input" type="tiles">ab.town_type.edit</result>
+			<result name="redirectSuccess" type="redirect">town_type_list.action</result>
 		</action>
 		<action name="town_type_delete" class="townTypeDeleteAction">
 			<interceptor-ref name="commonDefaultStack">
@@ -306,14 +306,14 @@
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">STREET_TYPE_READ</param>
 			</interceptor-ref>
-			<result name="list" type="tiles">ab.street_type.list</result>
+			<result name="success" type="tiles">ab.street_type.list</result>
 		</action>
 		<action name="street_type_edit" class="streetTypeEditAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">STREET_TYPE_CHANGE</param>
 			</interceptor-ref>
-			<result name="form" type="tiles">ab.street_type.edit</result>
-			<result name="afterSubmit" type="redirect">street_type_list.action</result>
+			<result name="input" type="tiles">ab.street_type.edit</result>
+			<result name="redirectSuccess" type="redirect">street_type_list.action</result>
 		</action>
 		<action name="street_type_delete" class="streetTypeDeleteAction">
 			<interceptor-ref name="commonDefaultStack">
@@ -347,8 +347,8 @@
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">IDENTITY_TYPE_CHANGE</param>
 			</interceptor-ref>
-			<result name="form" type="tiles">ab.identity_type.edit</result>
-			<result name="afterSubmit" type="redirect">identity_type_list.action</result>
+			<result name="input" type="tiles">ab.identity_type.edit</result>
+			<result name="redirectSuccess" type="redirect">identity_type_list.action</result>
 		</action>
 		<action name="identity_type_delete" class="identityTypeDeleteAction">
 			<interceptor-ref name="commonDefaultStack">
@@ -388,7 +388,7 @@
 				<param name="flexpayRoles.allowedRoles">BUILDING_DELETE</param>
 			</interceptor-ref>
 			<result name="buildings_list" type="redirect-action">list_buildings</result>
-			<result name="edit" type="redirect-action">
+			<result name="input" type="redirect-action">
 				<param name="actionName">buildingsEditAction</param>
 				<param name="parse">true</param>
 				<param name="buildings.id">${redirectBuildingsId}</param>

@@ -1,11 +1,6 @@
 package org.flexpay.sz.actions;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.flexpay.ab.actions.CommonAction;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.sz.convert.NotSupportedOperationException;
@@ -13,13 +8,18 @@ import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 
-public class ImportFileListAction extends CommonAction {
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ImportFileListAction extends FPActionSupport {
 
 	private SzFileService szFileService;
 
 	private List<SzFileWrapper> szFileWrapperList;
 
-	public String execute() throws FlexPayException {
+	public String doExecute() throws FlexPayException {
 
 		List<SzFile> szFileList = szFileService.getEntities();
 		szFileWrapperList = new ArrayList<SzFileWrapper>();
@@ -34,7 +34,19 @@ public class ImportFileListAction extends CommonAction {
 			szFileWrapperList.add(wrapper);
 		}
 
-		return "success";
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return SUCCESS;
 	}
 
 	public void setSzFileService(SzFileService szFileService) {
