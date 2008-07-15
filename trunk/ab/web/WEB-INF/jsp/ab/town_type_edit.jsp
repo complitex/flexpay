@@ -40,7 +40,7 @@
 		<tr>
 		  <td colspan="4">
 		    <s:hidden name="id" value="%{townType.id}" />
-		    <s:submit name="submit" value="%{getText('ab.update')}" cssClass="btn-exit" />
+		    <s:submit name="submitted" value="%{getText('ab.update')}" cssClass="btn-exit" />
 		  </td>
 		</tr>
 </table>

@@ -43,7 +43,7 @@
   
   <tr>
     <td colspan="5">
-      <s:submit name="submit" value="%{getText('ab.delete')}" cssClass="btn-exit" />
+      <s:submit name="submitted" value="%{getText('ab.delete')}" cssClass="btn-exit" />
       
       <input type="button" class="btn-exit"
 					 onclick="window.location='<s:url action='town_type_create'/>'"

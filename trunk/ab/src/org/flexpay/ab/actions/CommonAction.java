@@ -10,12 +10,15 @@ import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.UserPreferences;
 
+/**
+ * @deprecated use {@link org.flexpay.common.actions.FPActionSupport} insted
+ */
 public class CommonAction implements UserPreferencesAware {
 	private UserPreferences userPreferences;
-	private String submit;
+	private String submitted;
 
 	public boolean isSubmitted() {
-		return submit != null;
+		return submitted != null;
 	}
 
 	public String getLangName(Language lang) throws FlexPayException {
@@ -27,8 +30,8 @@ public class CommonAction implements UserPreferencesAware {
 		this.userPreferences = userPreferences;
 	}
 
-	public void setSubmit(String submit) {
-		this.submit = submit;
+	public void setSubmitted(String submitted) {
+		this.submitted = submitted;
 	}
 	
 	public Translation getTranslation(Set<? extends Translation> translations) throws FlexPayException

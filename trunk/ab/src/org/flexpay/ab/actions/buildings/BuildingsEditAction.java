@@ -1,45 +1,37 @@
 package org.flexpay.ab.actions.buildings;
 
+import com.opensymphony.xwork2.Preparable;
+import org.apache.struts2.ServletActionContext;
+import org.flexpay.ab.persistence.BuildingAttribute;
+import org.flexpay.ab.persistence.BuildingAttributeType;
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.service.BuildingService;
+import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.exception.FlexPayException;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts2.ServletActionContext;
-import org.flexpay.ab.actions.CommonAction;
-import org.flexpay.ab.persistence.BuildingAttribute;
-import org.flexpay.ab.persistence.BuildingAttributeType;
-import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.service.BuildingService;
-import org.flexpay.common.exception.FlexPayException;
-
-import com.opensymphony.xwork2.Preparable;
-
-public class BuildingsEditAction extends CommonAction implements Preparable {
+public class BuildingsEditAction extends FPActionSupport implements Preparable {
 
 	private BuildingService buildingService;
-	
+
 	private Buildings buildings;
 	private List<Buildings> alternateBuildingsList = new ArrayList<Buildings>();
 	private Map<String, BuildingAttribute> attributeMap;
-	
-	//private BuildingAttributeType typeNumber;
-	//private BuildingAttributeType typeBulk;
-	
-	//private String numberVal;
-	//private String bulkVal;
-	
+
 	public void prepare() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String id = request.getParameter("buildings.id");
 		buildings = buildingService.readFull(Long.valueOf(id));
-		
+
 		attributeMap = new HashMap<String, BuildingAttribute>();
 		for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
 			BuildingAttribute attr = buildings.getAttribute(type);
-			if(attr == null) {
+			if (attr == null) {
 				attr = new BuildingAttribute();
 				attr.setBuildingAttributeType(type);
 			}
@@ -48,17 +40,17 @@ public class BuildingsEditAction extends CommonAction implements Preparable {
 	}
 
 	public String execute() throws FlexPayException {
-		for(Buildings current : buildingService.getBuildingBuildings(buildings.getBuilding())) {
-			if(buildings.getId().longValue() != current.getId().longValue()) {
+		for (Buildings current : buildingService.getBuildingBuildings(buildings.getBuilding())) {
+			if (buildings.getId().longValue() != current.getId().longValue()) {
 				alternateBuildingsList.add(buildingService.readFull(current.getId()));
 			}
 		}
-		
-		if(isSubmitted()) {
-			for(BuildingAttribute attr : attributeMap.values()) {
+
+		if (isSubmitted()) {
+			for (BuildingAttribute attr : attributeMap.values()) {
 				buildings.setBuildingAttribute(attr.getValue(), attr.getBuildingAttributeType());
 			}
-			
+
 			buildingService.update(buildings);
 		}
 
@@ -66,8 +58,7 @@ public class BuildingsEditAction extends CommonAction implements Preparable {
 	}
 
 	/**
-	 * @param buildingService
-	 *            the buildingService to set
+	 * @param buildingService the buildingService to set
 	 */
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
@@ -81,8 +72,7 @@ public class BuildingsEditAction extends CommonAction implements Preparable {
 	}
 
 	/**
-	 * @param buildings
-	 *            the buildings to set
+	 * @param buildings the buildings to set
 	 */
 	public void setBuildings(Buildings buildings) {
 		this.buildings = buildings;

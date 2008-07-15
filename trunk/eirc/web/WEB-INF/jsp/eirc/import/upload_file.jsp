@@ -22,7 +22,7 @@
 
 <tr>
   <td colspan="2">
-    <s:submit name="submit" value="%{getText('common.upload')}" cssClass="btn-exit" onclick='startUpload();' />
+    <s:submit name="submitted" value="%{getText('common.upload')}" cssClass="btn-exit" onclick='startUpload();' />
     <font color="red" id="ajaxResponse"></font>
   </td>
 </tr>

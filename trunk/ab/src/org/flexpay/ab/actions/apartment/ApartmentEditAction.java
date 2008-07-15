@@ -2,9 +2,9 @@ package org.flexpay.ab.actions.apartment;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ObjectAlreadyExistException;
-import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.service.ApartmentService;import static org.flexpay.common.persistence.Stub.stub;
 
-public class ApartmentEditAction extends FiltersBaseAction {
+public class ApartmentEditAction extends BuildingsFilterDependentAction {
 	private ApartmentService apartmentService;
 
 	private Apartment apartment;
@@ -17,8 +17,7 @@ public class ApartmentEditAction extends FiltersBaseAction {
 				//status = STATUS_BLANC_NUMBER;
 			} else {
 				try {
-					apartmentService.setApartmentNumber(apartment,
-							apartmentNumber);
+					apartmentService.setApartmentNumber(stub(apartment), apartmentNumber);
 					return "list";
 				} catch (ObjectAlreadyExistException e) {
 					//status = STATUS_NUMBER_ALREDY_EXIST;

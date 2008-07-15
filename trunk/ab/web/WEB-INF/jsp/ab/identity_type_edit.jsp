@@ -33,7 +33,7 @@
 		<tr>
 		  <td colspan="3">
 		    <s:hidden name="id" value="%{identityType.id}" />
-		    <s:submit name="submit" value="%{getText('ab.update')}" cssClass="btn-exit" />
+		    <s:submit name="submitted" value="%{getText('ab.update')}" cssClass="btn-exit" />
 		  </td>
 		</tr>
 </table>

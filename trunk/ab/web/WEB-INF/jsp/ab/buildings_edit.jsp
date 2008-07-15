@@ -93,7 +93,7 @@
  
   <tr>
 	<td colspan="2">
-      <s:submit name="submit"
+      <s:submit name="submitted"
                 value="%{getText('common.save')}"
                 cssClass="btn-exit" />
 	  <input type="button"

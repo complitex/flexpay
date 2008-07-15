@@ -32,6 +32,7 @@ import java.util.List;
 public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		implements GenericDao<T, PK>, FinderExecutor, MethodExecutor {
 
+	@NonNls
 	private Logger log = Logger.getLogger(getClass());
 
 	protected HibernateTemplate hibernateTemplate;
@@ -101,8 +102,8 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	private List findByNamedQuery(final String queryName, final Object[] values) throws DataAccessException {
 		return hibernateTemplate.executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
-				Query queryObject = session.getNamedQuery(queryName)
-						.setCacheable(true).setCacheRegion(queryName);
+				Query queryObject = session.getNamedQuery(queryName);
+//						.setCacheable(true).setCacheRegion(queryName);
 				Query queryCount = getCountQuery(session, queryName);
 				Page pageParam = null;
 				if (values != null) {

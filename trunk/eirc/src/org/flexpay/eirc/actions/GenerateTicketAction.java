@@ -17,8 +17,9 @@ import org.flexpay.eirc.persistence.ServiceOrganisation;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.flexpay.eirc.service.TicketService;
+import org.flexpay.common.actions.FPActionSupport;
 
-public class GenerateTicketAction extends CommonAction {
+public class GenerateTicketAction extends FPActionSupport {
 
 	private ServiceOrganisationService serviceOrganisationService;
 	//private TicketService tickerService;

@@ -47,7 +47,7 @@
     </tr>
 	<tr>
 	  <td colspan="4">
-	    <input type="submit" class="btn-exit" name="submit"
+	    <input type="submit" class="btn-exit" name="submitted"
 					 value="<s:text name="common.save"/>"/>
 	  </td>
 	</tr>

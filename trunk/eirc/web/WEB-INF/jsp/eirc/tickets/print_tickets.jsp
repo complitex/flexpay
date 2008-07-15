@@ -39,7 +39,7 @@
 
 <tr>
   <td colspan="2" align="center">
-    <s:submit name="submit" value="%{getText('common.upload')}" cssClass="btn-exit" />
+    <s:submit name="submitted" value="%{getText('common.upload')}" cssClass="btn-exit" />
   </td>
 </tr>  
 

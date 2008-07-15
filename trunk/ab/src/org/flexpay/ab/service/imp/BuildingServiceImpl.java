@@ -20,6 +20,7 @@ import org.flexpay.common.service.ParentService;
 import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NonNls;
 
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +29,7 @@ import java.util.Set;
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class BuildingServiceImpl implements BuildingService {
 
+	@NonNls
 	private Logger log = Logger.getLogger(getClass());
 
 	private BuildingDao buildingDao;

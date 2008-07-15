@@ -33,7 +33,7 @@
     </tr>
 	<tr>
 	  <td colspan="3">
-	    <s:submit name="submit" value="%{getText('ab.create')}" cssClass="btn-exit" />
+	    <s:submit name="submitted" value="%{getText('ab.create')}" cssClass="btn-exit" />
 	  </td>
 	</tr>
   </s:form>		

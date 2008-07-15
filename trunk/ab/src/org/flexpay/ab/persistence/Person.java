@@ -167,13 +167,28 @@ public class Person extends DomainObjectWithStatus {
 
 	@Nullable
 	public Apartment getRegistrationApartment(@NotNull Date date) {
+		PersonRegistration registration = getRegistrationForDate(date);
+		if (registration != null) {
+			return registration.getApartment();
+		}
+
+		return null;
+	}
+
+	@Nullable
+	public PersonRegistration getCurrentRegistration() {
+		return getRegistrationForDate(DateIntervalUtil.now());
+	}
+
+	@Nullable
+	public PersonRegistration getRegistrationForDate(@NotNull Date date) {
 		if (personRegistrations.isEmpty()) {
 			return null;
 		}
 
 		for (PersonRegistration reg : personRegistrations) {
 			if (reg.isValid(date)) {
-				return reg.getApartment();
+				return reg;
 			}
 		}
 
@@ -201,7 +216,8 @@ public class Person extends DomainObjectWithStatus {
 
 		Date[] dateInterval = getBeginValidInterval();
 		if (beginDate.before(dateInterval[0]) || beginDate.after(dateInterval[1])) {
-			throw new FlexPayException("beginDate valid interval error", "ab.person.registration.error.begin_date_interval_error");
+			throw new FlexPayException("beginDate valid interval error",
+					"ab.person.registration.error.begin_date_interval_error", dateInterval[0], dateInterval[1]);
 		}
 
 		for (PersonRegistration reg : personRegistrations) {

@@ -12,6 +12,7 @@ import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.SpFileService;
 import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,9 +22,11 @@ import java.util.List;
 
 public class RunSpFileProcessing implements StandaloneTask {
 
+	@NonNls
 	private Logger log = Logger.getLogger(getClass());
 
 	private ServiceProviderFileProcessor fileProcessor;
+	@NonNls
 	private HibernateTemplate hibernateTemplate;
 	private SpFileCreateAction fileCreateAction;
 	private SpFileAction fileAction;
