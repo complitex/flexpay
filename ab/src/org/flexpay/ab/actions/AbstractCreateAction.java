@@ -32,7 +32,7 @@ public abstract class AbstractCreateAction<Entity, T extends Translation>
 
 	public String doExecute() throws Exception {
 
-		if (isSubmitted()) {
+		if (isSubmit()) {
 			getEntityService().create(translationList);
 			return "afterSubmit";
 		}

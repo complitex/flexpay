@@ -31,7 +31,7 @@ public class FlexPayException extends Exception {
 	 * @param errorKey localization error message key
 	 * @param params optional localization error message parameters
 	 */
-	public FlexPayException(@NonNls String message, @Nls String errorKey, Object... params) {
+	public FlexPayException(@NonNls String message, String errorKey, Object... params) {
 		super(message);
 		this.errorKey = errorKey;
 		this.params = convert(params);

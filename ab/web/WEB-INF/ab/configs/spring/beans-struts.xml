@@ -290,7 +290,8 @@
 		  class="org.flexpay.ab.actions.person.EditPersonAction"
 		  p:parentService-ref="apartmentService"
 		  p:personService-ref="personService"
-		  p:apartmentService-ref="apartmentService" />
+		  p:apartmentService-ref="apartmentService"
+		  p:setRegistrationAction-ref="setRegistrationAction" />
 
 	<bean id="savePersonFIOAction" scope="prototype" class="org.flexpay.ab.actions.person.SavePersonFIOAction"
 		  p:personService-ref="personService"

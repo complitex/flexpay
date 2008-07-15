@@ -2,6 +2,8 @@ package org.flexpay.common.persistence;
 
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.io.Serializable;
 
@@ -45,6 +47,14 @@ public class DomainObject implements Serializable {
 
 	public int hashCode() {
 		return id == null ? 0 : id.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("id", id)
+				.append("version", version)
+				.toString();
 	}
 
 	/**

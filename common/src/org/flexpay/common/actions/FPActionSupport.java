@@ -45,9 +45,9 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 
 	protected UserPreferences userPreferences;
 	protected Map session;
-	private String submitted;
+	protected String submitted;
 
-	public boolean isSubmitted() {
+	public boolean isSubmit() {
 		return submitted != null;
 	}
 

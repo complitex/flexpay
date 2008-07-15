@@ -79,13 +79,10 @@ public class ViewPerson extends FPActionSupport {
 				return apartmentService.getAddress(stub(registration));
 			}
 
+			log.warn("No registration for person: " + person);
 			return "";
 		} catch (FlexPayException e) {
-			if (StringUtils.isNotBlank(e.getErrorKey())) {
-				return getText(e.getErrorKey(), e.getParams());
-			} else {
-				return e.getMessage();
-			}
+			return getErrorMessage(e);
 		}
 	}
 }

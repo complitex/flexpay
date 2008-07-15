@@ -44,7 +44,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport implements 
 	public String execute() throws FlexPayException {
 		buildingAttributeType = buildingService.getAttributeType(type);
 		
-		if(isSubmitted()) {
+		if(isSubmit()) {
 			for(BuildingAttributeTypeTranslation translation : translationMap.values()) {
 				BuildingAttributeTypeTranslation persistentTranslation = getTranslationByLang(buildingAttributeType, translation.getLang());
 				if(isBlancTranslation(translation)) {

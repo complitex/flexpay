@@ -12,7 +12,7 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 	private String numberError;
 
 	public String doExecute() throws Exception {
-		if (isSubmitted()) {
+		if (isSubmit()) {
 			if (apartmentNumber == null || apartmentNumber.equals("")) {
 				//status = STATUS_BLANC_NUMBER;
 			} else {

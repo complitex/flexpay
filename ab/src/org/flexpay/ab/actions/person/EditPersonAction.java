@@ -9,6 +9,8 @@ import org.flexpay.ab.service.PersonService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
+import org.jetbrains.annotations.NonNls;
 
 import java.util.Date;
 
@@ -17,11 +19,19 @@ public class EditPersonAction extends ApartmentFilterDependentAction {
 	private PersonService personService;
 	private ApartmentService apartmentService;
 
+	private SetRegistrationAction setRegistrationAction;
+
 	private Person person = new Person();
 	private Date beginDate = DateIntervalUtil.now();
 	private Date endDate = ApplicationConfig.getFutureInfinite();
+	@NonNls
+	private String editType;
 
 	public String doExecute() throws Exception {
+
+		if (isSubmit()) {
+			processSubmit();
+		}
 
 		if (person.getId() == null) {
 			log.info("No person id specified");
@@ -41,16 +51,49 @@ public class EditPersonAction extends ApartmentFilterDependentAction {
 			PersonRegistration registration = person.getCurrentRegistration();
 			if (registration != null) {
 				apartmentService.fillFilterIds(stub(registration.getApartment()), getFilters());
+				beginDate = registration.getBeginDate();
+				endDate = registration.getEndDate();
 			}
 		}
 
 		initFilters();
+		apartmentFilter.setNeedAutoChange(false);
 
 		if (log.isDebugEnabled()) {
 			log.debug("Buildings: " + buildingsFilter.getBuildingses());
 		}
 
 		return INPUT;
+	}
+
+	@SuppressWarnings ({"unchecked"})
+	private void processSubmit() throws Exception {
+		if ("registration".equals(editType)) {
+			initSetRegistrationAction();
+			// ignore set registration result
+			try {
+				setRegistrationAction.execute();
+				beginDate = DateIntervalUtil.now();
+				endDate = ApplicationConfig.getFutureInfinite();
+			} finally {
+				addActionErrors(setRegistrationAction.getActionErrors());
+			}
+		}
+	}
+
+	private void initSetRegistrationAction() {
+		setRegistrationAction.setPerson(person);
+		setRegistrationAction.setBeginDate(beginDate);
+		setRegistrationAction.setEndDate(endDate);
+		setRegistrationAction.setCountryFilter(countryFilter);
+		setRegistrationAction.setRegionFilter(regionFilter);
+		setRegistrationAction.setTownFilter(townFilter);
+		setRegistrationAction.setStreetFilter(streetFilter);
+		setRegistrationAction.setBuildingsFilter(buildingsFilter);
+		setRegistrationAction.setApartmentFilter(apartmentFilter);
+		setRegistrationAction.setSubmitted(submitted);
+		setRegistrationAction.setSession(session);
+		setRegistrationAction.setUserPreferences(userPreferences);
 	}
 
 	/**
@@ -91,6 +134,10 @@ public class EditPersonAction extends ApartmentFilterDependentAction {
 		this.beginDate = beginDate;
 	}
 
+	public void setBeginDateStr(String date) {
+		this.beginDate = DateUtil.parseBeginDate(date);
+	}
+
 	public Date getEndDate() {
 		return endDate;
 	}
@@ -99,11 +146,24 @@ public class EditPersonAction extends ApartmentFilterDependentAction {
 		this.endDate = endDate;
 	}
 
+	public void setEndDateStr(String date) {
+		endDate = DateUtil.parseEndDate(date);
+	}
+
+	public void setEditType(String editType) {
+		this.editType = editType;
+	}
+
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
 	}
 
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
+	}
+
+	public void setSetRegistrationAction(SetRegistrationAction setRegistrationAction) {
+		log.debug("Setting setRegistrationAction");
+		this.setRegistrationAction = setRegistrationAction;
 	}
 }

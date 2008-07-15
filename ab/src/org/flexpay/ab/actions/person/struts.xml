@@ -59,9 +59,15 @@
 				<param name="actionName">edit_person</param>
 				<param name="parse">true</param>
 				<param name="person.id">${person.id}</param>
+				<param name="countryFilter.selectedId">${countryFilter.selectedId}</param>
+				<param name="regionFilter.selectedId">${regionFilter.selectedId}</param>
+				<param name="townFilter.selectedId">${townFilter.selectedId}</param>
+				<param name="streetFilter.selectedId">${streetFilter.selectedId}</param>
+				<param name="buildingsFilter.selectedId">${buildingsFilter.selectedId}</param>
+				<param name="apartmentFilter.selectedId">${apartmentFilter.selectedId}</param>
 			</result>
 			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">view_person</param>
+				<param name="actionName">edit_person</param>
 				<param name="parse">true</param>
 				<param name="person.id">${person.id}</param>
 			</result>

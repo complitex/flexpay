@@ -3,8 +3,10 @@
 <s:actionerror/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="srform" method="post" action="<s:url action="setPersonRegistration" includeParams="none" />">
+	<!-- form action depends on  -->
+	<form id="srform" method="post" action="<s:url includeParams="none" />">
 		<s:hidden name="person.id" value="%{person.id}"/>
+		<s:hidden name="editType" value="registration" />
 
 		<tr class="cols_1">
 			<td class="col_1s" colspan="4"><b><s:text name="ab.person.registration_address"/></b></td>
@@ -44,7 +46,7 @@
 				<s:text name="ab.person.registration.begin_date"/>
 			</td>
 			<td>
-				<input type="text" name="beginDate" id="beginDate"
+				<input type="text" name="beginDateStr" id="beginDate"
 						value="<s:property value="format(beginDate)"/>" />
 				<img src="<s:url value="/resources/common/js/jscalendar/img.gif" includeParams="none"/>" alt=""
 					 id="trigger.beginDate"
@@ -65,7 +67,7 @@
 				<s:text name="ab.person.registration.end_date"/>
 			</td>
 			<td>
-				<input type="text" name="endDate" id="endDate"
+				<input type="text" name="endDateStr" id="endDate"
 						value="<s:property value="format(endDate)"/>" />
 				<img src="<s:url value="/resources/common/js/jscalendar/img.gif" includeParams="none"/>" alt=""
 					 id="trigger.endDate"
