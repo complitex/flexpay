@@ -52,7 +52,7 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 
 		fileCreateAction.setUpload(tmpDataFile);
 		fileCreateAction.setUploadFileName("sp.txt");
-		fileCreateAction.setSubmit("submit");
+		fileCreateAction.setSubmitted("submitted");
 
 		assertEquals("Invalid Struts action result", "form", fileCreateAction.execute());
 		return getLastFile();

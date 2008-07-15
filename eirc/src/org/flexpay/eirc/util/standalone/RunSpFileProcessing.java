@@ -143,7 +143,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 
 		fileCreateAction.setUpload(tmpDataFile);
 		fileCreateAction.setUploadFileName("sp.txt");
-		fileCreateAction.setSubmit("submit");
+		fileCreateAction.setSubmitted("submit");
 
 		fileCreateAction.execute();
 		return getLastFile();
