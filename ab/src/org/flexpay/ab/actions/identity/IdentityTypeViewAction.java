@@ -1,19 +1,31 @@
 package org.flexpay.ab.actions.identity;
 
-import org.flexpay.ab.actions.CommonAction;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.service.IdentityTypeService;
+import org.flexpay.common.actions.FPActionSupport;
 
-public class IdentityTypeViewAction extends CommonAction {
+public class IdentityTypeViewAction extends FPActionSupport {
 
 	private Long id;
 	private IdentityTypeService identityTypeService;
 	private IdentityType identityType;
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 		identityType = identityTypeService.read(id);
 
-		return "success";
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return SUCCESS;
 	}
 
 	public void setId(Long id) {

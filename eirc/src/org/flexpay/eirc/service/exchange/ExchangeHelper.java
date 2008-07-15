@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.*;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,12 +27,7 @@ public class ExchangeHelper {
 	 * @throws FlexPayException if failure occurs
 	 */
 	public String getAddressGroup(Apartment apartment) throws FlexPayException {
-		String apartmentNumber = apartmentService.getApartmentNumber(apartment);
-
-		if (apartment.getBuilding() == null) {
-			Building building = apartmentService.getBuilding(apartment);
-			apartment.setBuilding(building);
-		}
+		String apartmentNumber = apartmentService.getApartmentNumber(stub(apartment));
 
 		Buildings buildings = buildingService.getFirstBuildings(apartment.getBuilding());
 		String buildingNumber = buildings.getNumber();

@@ -21,7 +21,7 @@
 
 <tr>
   <td colspan="2" align="center">
-    <s:submit name="submit" value="%{getText('common.view')}" cssClass="btn-exit" />
+    <s:submit name="submitted" value="%{getText('common.view')}" cssClass="btn-exit" />
   </td>
 </tr>  
 

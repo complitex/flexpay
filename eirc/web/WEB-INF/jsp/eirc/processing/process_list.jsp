@@ -79,7 +79,7 @@
 
 <tr>
   <td colspan="2" align="center">
-    <s:submit name="submit" value="%{getText('ab.delete')}" cssClass="btn-exit" />
+    <s:submit name="submitted" value="%{getText('ab.delete')}" cssClass="btn-exit" />
   </td>
 </tr>  
 

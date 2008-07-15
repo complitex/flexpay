@@ -1,16 +1,25 @@
 package org.flexpay.ab.actions.person;
 
+import org.flexpay.ab.actions.apartment.ApartmentFilterDependentAction;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
+import org.flexpay.ab.persistence.PersonRegistration;
+import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.PersonService;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.util.DateIntervalUtil;
 
-public class EditPersonAction extends FPActionSupport {
+import java.util.Date;
+
+public class EditPersonAction extends ApartmentFilterDependentAction {
 
 	private PersonService personService;
+	private ApartmentService apartmentService;
 
 	private Person person = new Person();
+	private Date beginDate = DateIntervalUtil.now();
+	private Date endDate = ApplicationConfig.getFutureInfinite();
 
 	public String doExecute() throws Exception {
 
@@ -26,6 +35,19 @@ public class EditPersonAction extends FPActionSupport {
 				addActionError(getText("error.ab.person.invalid_id"));
 				return REDIRECT_ERROR;
 			}
+		}
+
+		if (getCountryFilter().getSelectedId() == null) {
+			PersonRegistration registration = person.getCurrentRegistration();
+			if (registration != null) {
+				apartmentService.fillFilterIds(stub(registration.getApartment()), getFilters());
+			}
+		}
+
+		initFilters();
+
+		if (log.isDebugEnabled()) {
+			log.debug("Buildings: " + buildingsFilter.getBuildingses());
 		}
 
 		return INPUT;
@@ -61,7 +83,27 @@ public class EditPersonAction extends FPActionSupport {
 		return fio != null ? fio : new PersonIdentity();
 	}
 
+	public Date getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(Date beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
+	}
+
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
 	}
 }

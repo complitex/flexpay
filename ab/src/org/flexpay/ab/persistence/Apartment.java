@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.util.DateIntervalUtil;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -17,6 +18,7 @@ import java.util.Set;
  */
 public class Apartment extends DomainObjectWithStatus {
 
+	@NonNls
 	public static final String NUMBER_UNKNOWN = "unknown";
 
 	private Building building;
@@ -105,8 +107,7 @@ public class Apartment extends DomainObjectWithStatus {
 		// Create a new apartment number and setup its properties
 		ApartmentNumber apartmentNumber = new ApartmentNumber();
 		apartmentNumber.setBegin(nowDate);
-		apartmentNumber.setEnd(ApplicationConfig.getInstance()
-				.getFutureInfinite());
+		apartmentNumber.setEnd(ApplicationConfig.getFutureInfinite());
 		apartmentNumber.setValue(number);
 		apartmentNumber.setApartment(this);
 
@@ -146,8 +147,9 @@ public class Apartment extends DomainObjectWithStatus {
 	}
 
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).append(
-				"id", getId()).append("numbers", apartmentNumbers.toArray())
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("id", getId())
+				.append("numbers", apartmentNumbers.toArray())
 				.toString();
 	}
 
@@ -163,5 +165,71 @@ public class Apartment extends DomainObjectWithStatus {
 	 */
 	public void setPersonRegistrations(Set<PersonRegistration> personRegistrations) {
 		this.personRegistrations = personRegistrations;
+	}
+
+	/**
+	 * Get default address buildings
+	 * <p/>
+	 * Transaction aware
+	 *
+	 * @return Buildings
+	 */
+	public Buildings getDefaultBuildings() {
+		return building.getDefaultBuildings();
+	}
+
+	/**
+	 * Get default address street
+	 * <p/>
+	 * Transaction aware
+	 *
+	 * @return Street
+	 */
+	public Street getDefaultStreet() {
+		return getDefaultBuildings().getStreet();
+	}
+
+	/**
+	 * Get District
+	 * <p/>
+	 * Transaction aware
+	 *
+	 * @return District
+	 */
+	public District getDistrict() {
+		return building.getDistrict();
+	}
+
+	/**
+	 * Get Town
+	 * <p/>
+	 * Transaction aware
+	 *
+	 * @return Town
+	 */
+	public Town getTown() {
+		return (Town) getDistrict().getParent();
+	}
+
+	/**
+	 * Get Region
+	 * <p/>
+	 * Transaction aware
+	 *
+	 * @return Region
+	 */
+	public Region getRegion() {
+		return (Region) getTown().getParent();
+	}
+
+	/**
+	 * Get country
+	 * <p/>
+	 * Transaction aware
+	 *
+	 * @return Country
+	 */
+	public Country getCountry() {
+		return (Country) getRegion().getParent();
 	}
 }

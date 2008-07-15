@@ -51,12 +51,16 @@
 			</result>
 		</action>
 
-		<action name="setRegistrationAction" class="setRegistrationAction">
+		<action name="setPersonRegistration" class="setRegistrationAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">PERSON_CHANGE</param>
 			</interceptor-ref>
-			<result name="form" type="tiles">ab.person.set_registration_form</result>
-			<result name="person_view" type="redirect-action">
+			<result name="redirectError" type="redirect-action">
+				<param name="actionName">edit_person</param>
+				<param name="parse">true</param>
+				<param name="person.id">${person.id}</param>
+			</result>
+			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">view_person</param>
 				<param name="parse">true</param>
 				<param name="person.id">${person.id}</param>

@@ -21,7 +21,7 @@
 			</td>
 			<td colspan="4">
 		      <s:hidden name="apartment.id" value="%{apartment.id}" />
-		      <s:submit name="submit" value="%{getText('common.save')}" cssClass="btn-exit" />
+		      <s:submit name="submitted" value="%{getText('common.save')}" cssClass="btn-exit" />
 		    </td>
 		</tr>
 		<tr>

@@ -1,87 +1,51 @@
 package org.flexpay.ab.actions.person;
 
-import org.flexpay.ab.actions.apartment.ApartmentEditAction;
+import org.flexpay.ab.actions.apartment.ApartmentFilterDependentAction;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
-import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.PersonService;
-import org.flexpay.ab.util.config.ApplicationConfig;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
+import org.jetbrains.annotations.NonNls;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-public class SetRegistrationAction extends ApartmentEditAction {
+public class SetRegistrationAction extends ApartmentFilterDependentAction {
 
+	@NonNls
 	public static final String DATE_FORMAT = "dd/MM/yyyy";
 
-	PersonService personService;
-	BuildingService buildingService;
+	private PersonService personService;
 
-	private List<Apartment> apartments = new ArrayList<Apartment>();
-	private Person person;
+	private Person person = new Person();
 	private Date beginDate;
 	private Date endDate;
 
-	private String action;
-	private String apartmentError;
-	private String beginAfterEndError;
-	private String beginIntervalError;
-
 	public String doExecute() throws Exception {
 
-		if ("save".equals(action)) {
-			if (getApartment() == null) {
-				apartmentError = "ab.person.apartment_absent";
+		if (isSubmitted()) {
+			if (!apartmentFilter.needFilter()) {
+				throw new FlexPayException("No apartment", "ab.person.apartment_absent");
 			}
 
-
-			if (apartmentError == null) {
-				person = personService.read(stub(person));
-				try {
-					person.setPersonRegistration(getApartment(), beginDate, endDate);
-					personService.save(person);
-					return "person_view";
-				} catch (FlexPayException e) {
-					if ("ab.person.registration.error.begin_after_end".equals(e.getErrorKey())) {
-						beginAfterEndError = e.getErrorKey();
-					} else if ("ab.person.registration.error.begin_date_interval_error".equals(e.getErrorKey())) {
-						beginIntervalError = e.getErrorKey();
-					} else {
-						throw e;
-					}
-				}
-			}
-		}
-
-		if (beginDate == null) {
-			beginDate = DateIntervalUtil.now();
-		}
-		if (endDate == null) {
-			endDate = ApplicationConfig.getFutureInfinite();
-		}
-
-		if (getCountryFilter().getSelectedId() == null) {
 			person = personService.read(stub(person));
-			getApartmentService().fillFilterIds(person.getRegistrationApartment(),
-					getCountryFilter(), getRegionFilter(), getTownFilter(),
-					getStreetFilter(), getBuildingsFilter());
+			person.setPersonRegistration(new Apartment(apartmentFilter.getSelectedId()), beginDate, endDate);
+//			personService.save(person);
 		}
+		return REDIRECT_SUCCESS;
+	}
 
-		initFilters();
-		if (getFiltersError() == null) {
-			Page pager = new Page(10000, 1);
-			apartments = getApartmentService().getApartments(getFilters(), pager);
-		}
-
-		return "form";
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return REDIRECT_ERROR;
 	}
 
 	/**
@@ -103,18 +67,15 @@ public class SetRegistrationAction extends ApartmentEditAction {
 	 * @return the beginDate
 	 */
 	public String getBeginDate() {
-		DateFormat format = new SimpleDateFormat(DATE_FORMAT);
-		return format.format(beginDate);
+		return format(beginDate);
 	}
 
 
 	/**
 	 * @param beginDate the beginDate to set
-	 * @throws ParseException if parse error occurs
 	 */
-	public void setBeginDate(String beginDate) throws ParseException {
-		DateFormat format = new SimpleDateFormat(DATE_FORMAT);
-		this.beginDate = format.parse(beginDate);
+	public void setBeginDate(String beginDate) {
+		this.beginDate = DateUtil.parseBeginDate(beginDate);
 	}
 
 
@@ -122,18 +83,15 @@ public class SetRegistrationAction extends ApartmentEditAction {
 	 * @return the endDate
 	 */
 	public String getEndDate() {
-		DateFormat format = new SimpleDateFormat(DATE_FORMAT);
-		return format.format(endDate);
+		return format(endDate);
 	}
 
 
 	/**
 	 * @param endDate the endDate to set
-	 * @throws ParseException if parse error occurs
 	 */
-	public void setEndDate(String endDate) throws ParseException {
-		DateFormat format = new SimpleDateFormat(DATE_FORMAT);
-		this.endDate = format.parse(endDate);
+	public void setEndDate(String endDate) {
+		this.endDate = DateUtil.parseEndDate(endDate);
 	}
 
 	/**
@@ -142,47 +100,4 @@ public class SetRegistrationAction extends ApartmentEditAction {
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
 	}
-
-	/**
-	 * @param buildingService the buildingService to set
-	 */
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
-	}
-
-	/**
-	 * @return the apartments
-	 */
-	public List<Apartment> getApartments() {
-		return apartments;
-	}
-
-	/**
-	 * @param action the action to set
-	 */
-	public void setAction(String action) {
-		this.action = action;
-	}
-
-	/**
-	 * @return the apartmentError
-	 */
-	public String getApartmentError() {
-		return apartmentError;
-	}
-
-	/**
-	 * @return the beginAfterEndError
-	 */
-	public String getBeginAfterEndError() {
-		return beginAfterEndError;
-	}
-
-	/**
-	 * @return the beginIntervalError
-	 */
-	public String getBeginIntervalError() {
-		return beginIntervalError;
-	}
-
 }

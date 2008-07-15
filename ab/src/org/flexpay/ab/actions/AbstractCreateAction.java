@@ -6,12 +6,13 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.actions.FPActionSupport;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractCreateAction<Entity, T extends Translation>
-		extends CommonAction implements Preparable {
+		extends FPActionSupport implements Preparable {
 
 	private List<T> translationList;
 
@@ -20,8 +21,7 @@ public abstract class AbstractCreateAction<Entity, T extends Translation>
 	protected abstract MultilangEntityService<Entity, T> getEntityService();
 
 	public void prepare() throws FlexPayException {
-		List<Language> languageList = ApplicationConfig.getInstance()
-				.getLanguages();
+		List<Language> languageList = ApplicationConfig.getLanguages();
 		translationList = new ArrayList<T>(languageList.size());
 		for (Language lang : languageList) {
 			T translation = createTranslation();
@@ -30,18 +30,28 @@ public abstract class AbstractCreateAction<Entity, T extends Translation>
 		}
 	}
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
 		if (isSubmitted()) {
-			try {
-				getEntityService().create(translationList);
-			} catch (FlexPayException e) {
-				// TODO
-			}
+			getEntityService().create(translationList);
 			return "afterSubmit";
 		}
 
 		return "form";
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * TODO: introduce constant
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return "afterSubmit";
 	}
 
 	public List<T> getTranslationList() {

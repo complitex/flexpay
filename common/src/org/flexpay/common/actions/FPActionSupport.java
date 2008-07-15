@@ -19,8 +19,6 @@ import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.NonNls;
 
-import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -28,6 +26,7 @@ import java.util.*;
  */
 public class FPActionSupport extends ActionSupport implements UserPreferencesAware, SessionAware {
 
+	@NonNls
 	protected Logger log = Logger.getLogger(getClass());
 
 	@NonNls
@@ -40,14 +39,16 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 	@NonNls
 	protected static final String REDIRECT_SUCCESS = "redirectSuccess";
 
+	@NonNls
+	private static final String METHOD_POST = "post";
 
 
 	protected UserPreferences userPreferences;
 	protected Map session;
-	private String submit;
+	private String submitted;
 
 	public boolean isSubmitted() {
-		return submit != null;
+		return submitted != null;
 	}
 
 	/**
@@ -65,6 +66,9 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 		} catch (FlexPayExceptionContainer e) {
 			addActionErrors(e);
 			result = getErrorResult();
+		} catch (Exception e) {
+			log.error("Unknown error", e);
+			throw e;
 		}
 
 		if (log.isDebugEnabled()) {
@@ -178,24 +182,6 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 		}
 	}
 
-	public static Date getDateParam(HttpServletRequest request, String name)
-			throws FlexPayException {
-
-		String param = null;
-		try {
-			SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-			param = request.getParameter(name);
-
-			return df.parse(param);
-		} catch (Exception e) {
-			if (StringUtils.isNotBlank(param)) {
-				throw new FlexPayException("Invalid date", "error.invalid_date", param);
-			}
-
-			return null;
-		}
-	}
-
 	public void setUserPreferences(UserPreferences userPreferences) {
 		this.userPreferences = userPreferences;
 	}
@@ -204,12 +190,12 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 		return userPreferences;
 	}
 
-	public void setSubmit(String submit) {
-		this.submit = submit;
+	public void setSubmitted(String submitted) {
+		this.submitted = submitted;
 	}
 
 	public Language getLang(@NotNull Long id) {
-		for (Language lang : ApplicationConfig.getInstance().getLanguages()) {
+		for (Language lang : ApplicationConfig.getLanguages()) {
 			if (id.equals(lang.getId())) {
 				return lang;
 			}
@@ -227,8 +213,13 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 		return TranslationUtil.getTranslation(translations, userPreferences.getLocale());
 	}
 
+	/**
+	 * Check if request method was POST
+	 *
+	 * @return <code>true</code> if method was POST, or <code>false</code> otherwise
+	 */
 	public boolean isPost() {
-		return "post".equalsIgnoreCase(ServletActionContext.getRequest().getMethod());
+		return METHOD_POST.equalsIgnoreCase(ServletActionContext.getRequest().getMethod());
 	}
 
 	public String format(Date date) {

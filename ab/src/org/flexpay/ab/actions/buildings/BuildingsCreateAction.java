@@ -1,42 +1,25 @@
 package org.flexpay.ab.actions.buildings;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.opensymphony.xwork2.Preparable;
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.interceptor.SessionAware;
-import org.flexpay.ab.actions.CommonAction;
-import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.BuildingAttribute;
-import org.flexpay.ab.persistence.BuildingAttributeType;
-import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.persistence.District;
-import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.DistrictService;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.Nls;
 
-import com.opensymphony.xwork2.Preparable;
+import java.util.*;
 
-public class BuildingsCreateAction extends CommonAction implements
-		SessionAware, Preparable {
+public class BuildingsCreateAction extends FPActionSupport implements Preparable {
 
 	private ParentService parentService;
 	private BuildingService buildingService;
@@ -72,7 +55,7 @@ public class BuildingsCreateAction extends CommonAction implements
 		Set<BuildingAttribute> buildingAttributeSet = new HashSet<BuildingAttribute>();
 		attributeMap = new HashMap<String, BuildingAttribute>();
 		for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
-			if(attributeMap.get("" + type.getType()) == null) {
+			if (attributeMap.get("" + type.getType()) == null) {
 				BuildingAttribute attr = new BuildingAttribute();
 				attr.setBuildingAttributeType(type);
 				buildingAttributeSet.add(attr);
@@ -105,7 +88,7 @@ public class BuildingsCreateAction extends CommonAction implements
 			}
 
 			if (streetFilter.getSelectedId() != null && districtId != null
-					&& !isAttrEmpty) {
+				&& !isAttrEmpty) {
 
 				try {
 					if (buildingId == null) {
@@ -162,8 +145,7 @@ public class BuildingsCreateAction extends CommonAction implements
 	}
 
 	/**
-	 * @param action
-	 *            the action to set
+	 * @param action the action to set
 	 */
 	public void setAction(String action) {
 		this.action = action;
@@ -171,7 +153,7 @@ public class BuildingsCreateAction extends CommonAction implements
 
 	/**
 	 * Getter for property 'filters'.
-	 * 
+	 *
 	 * @return Value for property 'filters'.
 	 */
 	public ArrayStack getFilters() {
@@ -187,9 +169,8 @@ public class BuildingsCreateAction extends CommonAction implements
 
 	/**
 	 * Setter for property 'filters'.
-	 * 
-	 * @param filters
-	 *            Value to set for property 'filters'.
+	 *
+	 * @param filters Value to set for property 'filters'.
 	 */
 	public void setFilters(ArrayStack filters) {
 		countryFilter = (CountryFilter) filters.peek(3);
@@ -200,7 +181,7 @@ public class BuildingsCreateAction extends CommonAction implements
 
 	/**
 	 * Getter for property 'countryFilter'.
-	 * 
+	 *
 	 * @return Value for property 'countryFilter'.
 	 */
 	public CountryFilter getCountryFilter() {
@@ -209,9 +190,8 @@ public class BuildingsCreateAction extends CommonAction implements
 
 	/**
 	 * Setter for property 'countryFilter'.
-	 * 
-	 * @param countryFilter
-	 *            Value to set for property 'countryFilter'.
+	 *
+	 * @param countryFilter Value to set for property 'countryFilter'.
 	 */
 	public void setCountryFilter(CountryFilter countryFilter) {
 		this.countryFilter = countryFilter;
@@ -219,7 +199,7 @@ public class BuildingsCreateAction extends CommonAction implements
 
 	/**
 	 * Getter for property 'regionFilter'.
-	 * 
+	 *
 	 * @return Value for property 'regionFilter'.
 	 */
 	public RegionFilter getRegionFilter() {
@@ -228,9 +208,8 @@ public class BuildingsCreateAction extends CommonAction implements
 
 	/**
 	 * Setter for property 'regionFilter'.
-	 * 
-	 * @param regionFilter
-	 *            Value to set for property 'regionFilter'.
+	 *
+	 * @param regionFilter Value to set for property 'regionFilter'.
 	 */
 	public void setRegionFilter(RegionFilter regionFilter) {
 		this.regionFilter = regionFilter;
@@ -238,7 +217,7 @@ public class BuildingsCreateAction extends CommonAction implements
 
 	/**
 	 * Getter for property 'townFilter'.
-	 * 
+	 *
 	 * @return Value for property 'townFilter'.
 	 */
 	public TownFilter getTownFilter() {
@@ -247,9 +226,8 @@ public class BuildingsCreateAction extends CommonAction implements
 
 	/**
 	 * Setter for property 'townFilter'.
-	 * 
-	 * @param townFilter
-	 *            Value to set for property 'townFilter'.
+	 *
+	 * @param townFilter Value to set for property 'townFilter'.
 	 */
 	public void setTownFilter(TownFilter townFilter) {
 		this.townFilter = townFilter;
@@ -257,7 +235,7 @@ public class BuildingsCreateAction extends CommonAction implements
 
 	/**
 	 * Getter for property 'streetFilter'.
-	 * 
+	 *
 	 * @return Value for property 'streetFilter'.
 	 */
 	public StreetFilter getStreetFilter() {
@@ -266,9 +244,8 @@ public class BuildingsCreateAction extends CommonAction implements
 
 	/**
 	 * Setter for property 'streetFilter'.
-	 * 
-	 * @param streetFilter
-	 *            Value to set for property 'streetFilter'.
+	 *
+	 * @param streetFilter Value to set for property 'streetFilter'.
 	 */
 	public void setStreetFilter(StreetFilter streetFilter) {
 		this.streetFilter = streetFilter;
@@ -276,25 +253,22 @@ public class BuildingsCreateAction extends CommonAction implements
 
 	/**
 	 * Sets the Map of session attributes in the implementing class.
-	 * 
-	 * @param session
-	 *            a Map of HTTP session attribute name/value pairs.
+	 *
+	 * @param session a Map of HTTP session attribute name/value pairs.
 	 */
 	public void setSession(Map session) {
 		this.session = session;
 	}
 
 	/**
-	 * @param parentService
-	 *            the parentService to set
+	 * @param parentService the parentService to set
 	 */
 	public void setParentService(ParentService parentService) {
 		this.parentService = parentService;
 	}
 
 	/**
-	 * @param buildingService
-	 *            the buildingService to set
+	 * @param buildingService the buildingService to set
 	 */
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
@@ -307,8 +281,8 @@ public class BuildingsCreateAction extends CommonAction implements
 	 * public BuildingAttributeType getTypeNumber() { return typeNumber; }
 	 * 
 	 *//**
-		 * @return the typeBulk
-		 */
+ * @return the typeBulk
+ */
 	/*
 	 * public BuildingAttributeType getTypeBulk() { return typeBulk; }
 	 */
@@ -321,8 +295,7 @@ public class BuildingsCreateAction extends CommonAction implements
 	}
 
 	/**
-	 * @param districtService
-	 *            the districtService to set
+	 * @param districtService the districtService to set
 	 */
 	public void setDistrictService(DistrictService districtService) {
 		this.districtService = districtService;
@@ -336,8 +309,7 @@ public class BuildingsCreateAction extends CommonAction implements
 	}
 
 	/**
-	 * @param districtId
-	 *            the districtId to set
+	 * @param districtId the districtId to set
 	 */
 	public void setDistrictId(Long districtId) {
 		this.districtId = districtId;
@@ -365,8 +337,7 @@ public class BuildingsCreateAction extends CommonAction implements
 	}
 
 	/**
-	 * @param buildingId
-	 *            the buildingId to set
+	 * @param buildingId the buildingId to set
 	 */
 	public void setBuildingId(Long buildingId) {
 		this.buildingId = buildingId;
@@ -415,8 +386,7 @@ public class BuildingsCreateAction extends CommonAction implements
 	}
 
 	/**
-	 * @param attributeMap
-	 *            the attributeMap to set
+	 * @param attributeMap the attributeMap to set
 	 */
 	public void setAttributeMap(Map<String, BuildingAttribute> attributeMap) {
 		this.attributeMap = attributeMap;

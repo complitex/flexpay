@@ -2,6 +2,7 @@ package org.flexpay.common.util.standalone;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.jetbrains.annotations.NonNls;
 
 import java.util.Collection;
 
@@ -9,7 +10,7 @@ public class ApplicationRunner {
 
 	public static void main(String[] argv) {
 
-		ApplicationContext context = new FileSystemXmlApplicationContext(
+		@NonNls ApplicationContext context = new FileSystemXmlApplicationContext(
 				"WEB-INF/applicationContext.xml");
 
 		Collection tasksHolders = context

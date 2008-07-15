@@ -3,12 +3,12 @@ package org.flexpay.eirc.actions.eirc_account;
 import java.util.Collections;
 import java.util.List;
 
-import org.flexpay.ab.actions.apartment.FiltersBaseAction;
+import org.flexpay.ab.actions.apartment.BuildingsFilterDependentAction;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.dao.paging.Page;
 
-public class EircAccountCreateForm1Action  extends FiltersBaseAction {
+public class EircAccountCreateForm1Action  extends BuildingsFilterDependentAction {
 
 	private ApartmentService apartmentService;
 	

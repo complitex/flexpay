@@ -5,7 +5,7 @@
 <%@include file="person_edit_fio.jsp"%>
 
 <br />
-<%@include file="set_registration_form.jsp"%>
+<%@include file="person_set_registration_form.jsp"%>
 
-<%--<br />--%>
-<%--<%@include file="person_view_identities.jsp"%>--%>
+<br />
+<%@include file="person_view_identities.jsp"%>

@@ -2,6 +2,9 @@ package org.flexpay.common.exception;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nls;
+import org.flexpay.common.util.DateIntervalUtil;
+
+import java.util.Date;
 
 /**
  * Common (parent) exception of FlexPay system, contains localisable error key
@@ -28,10 +31,10 @@ public class FlexPayException extends Exception {
 	 * @param errorKey localization error message key
 	 * @param params optional localization error message parameters
 	 */
-	public FlexPayException(@NonNls String message, @Nls String errorKey, String... params) {
+	public FlexPayException(@NonNls String message, @Nls String errorKey, Object... params) {
 		super(message);
 		this.errorKey = errorKey;
-		this.params = params;
+		this.params = convert(params);
 	}
 
 	/**
@@ -88,5 +91,17 @@ public class FlexPayException extends Exception {
 	 */
 	public void setParams(String[] params) {
 		this.params = params;
+	}
+
+	private String[] convert(Object[] ... objects) {
+		String[] res = new String[objects.length];
+		int n = 0;
+		for (Object obj : objects) {
+
+			res[n] = obj instanceof Date ? DateIntervalUtil.format((Date) obj) : String.valueOf(obj);
+			n++;
+		}
+
+		return res;
 	}
 }
