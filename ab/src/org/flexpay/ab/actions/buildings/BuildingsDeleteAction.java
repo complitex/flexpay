@@ -3,6 +3,8 @@ package org.flexpay.ab.actions.buildings;
 import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.Stub;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +17,7 @@ public class BuildingsDeleteAction extends FPActionSupport {
 
 	public String execute() {
 		for (Long id : objectIds) {
-			Buildings buildings = buildingService.readFull(id);
+			Buildings buildings = buildingService.readFull(new Stub<Buildings>(id));
 			buildings.setStatus(Buildings.STATUS_DISABLED);
 			buildingService.update(buildings);
 		}

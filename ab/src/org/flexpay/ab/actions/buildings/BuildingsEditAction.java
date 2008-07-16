@@ -8,6 +8,8 @@ import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.Stub;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 	public void prepare() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String id = request.getParameter("buildings.id");
-		buildings = buildingService.readFull(Long.valueOf(id));
+		buildings = buildingService.readFull(new Stub<Buildings>(Long.valueOf(id)));
 
 		attributeMap = new HashMap<String, BuildingAttribute>();
 		for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
@@ -42,7 +44,7 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 	public String execute() throws FlexPayException {
 		for (Buildings current : buildingService.getBuildingBuildings(buildings.getBuilding())) {
 			if (buildings.getId().longValue() != current.getId().longValue()) {
-				alternateBuildingsList.add(buildingService.readFull(current.getId()));
+				alternateBuildingsList.add(buildingService.readFull(stub(current)));
 			}
 		}
 
