@@ -11,6 +11,7 @@ import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NonNls;
 
 import java.io.*;
 import java.text.DateFormat;
@@ -91,23 +92,18 @@ public class PrintTicketAction extends FPActionSupport {
 		for (int i = 0; i < pageNumber; i++) {
 			for (int j = 0; (j < 4) && ((a2Ind = i * 4 + j) < length); j++) {
 				a1Ind = j * pageNumber + i;
-				finalArray[a2Ind] = (a1Ind < length) ? ticketsWithDelimiters
-						.get(a1Ind) : null;
+				finalArray[a2Ind] = (a1Ind < length) ? ticketsWithDelimiters.get(a1Ind) : null;
 			}
 		}
 
-		File ticketPatternFile = new File(ApplicationConfig.getInstance()
-				.getWebAppRoot(), "/resources/eirc/pdf/ticketPattern.pdf");
-		File titlePatternFile = new File(ApplicationConfig.getInstance()
-				.getWebAppRoot(), "/resources/eirc/pdf/titlePattern.pdf");
-		InputStream titlePattern = new FileInputStream(titlePatternFile);
+		InputStream ticketPattern = ApplicationConfig.getResourceAsStream("/resources/eirc/pdf/ticketPattern.pdf");
+		InputStream titlePattern = ApplicationConfig.getResourceAsStream("/resources/eirc/pdf/titlePattern.pdf");
 		/*PdfTicketWriter ticketWriter = new PdfTicketWriter(ticketPatternFile,
 				titlePattern);*/
-		PdfQuittanceWriter quittanceWriter = new PdfQuittanceWriter(ticketPatternFile,
-				titlePattern);
+		PdfQuittanceWriter quittanceWriter = new PdfQuittanceWriter(ticketPattern, titlePattern);
 		quittanceWriter.setQuittanceService(quittanceService);
 		quittanceWriter.setServiceTypeService(serviceTypeService);
-		DateFormat format = new SimpleDateFormat("MM.yyyy");
+		@NonNls DateFormat format = new SimpleDateFormat("MM.yyyy");
 		File outputA3File = new File(ApplicationConfig.getInstance()
 				.getEircDataRoot(), serviceOrganisationId + "_"
 									+ format.format(dateFrom) + ".pdf");
@@ -115,10 +111,9 @@ public class PrintTicketAction extends FPActionSupport {
 		PdfA3Writer a3Writer = new PdfA3Writer(os);
 
 		for (Object element : finalArray) {
-			byte[] byteArray = null;
+			byte[] byteArray;
 			if (element instanceof String) {
-				byteArray = quittanceWriter
-						.writeTitleGetByteArray((String) element);
+				byteArray = quittanceWriter.writeTitleGetByteArray((String) element);
 			} else {
 				Quittance quittance = (Quittance) element;
 				byteArray = quittanceWriter.writeGetByteArray(quittance);

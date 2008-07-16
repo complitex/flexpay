@@ -9,4 +9,7 @@
 	<defaultRegion id="1">Харьковская область</defaultRegion>
 	<defaultTown id="1">Харьков</defaultTown>
 
+	<buildingAttributeTypeNumber id="1" />
+	<buildingAttributeTypeBulk id="2" />
+
 </flexpay>

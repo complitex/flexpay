@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.jetbrains.annotations.NonNls;
 
 public class TestSpFileAction extends TestSpFileCreateAction {
 
@@ -38,7 +39,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 		}
 	}
 
-	protected SpFile uploadFile(String fileName) throws Throwable {
+	protected SpFile uploadFile(@NonNls String fileName) throws Throwable {
 		SpFile newFile = createSpFile(fileName);
 
 		fileAction.setSpFileId(newFile.getId());

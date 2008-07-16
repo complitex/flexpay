@@ -10,6 +10,8 @@ import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.NotTransactional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,7 +34,7 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 		deleteFile(newFile);
 	}
 
-	protected SpFile createSpFile(String spFile) throws Throwable {
+	protected SpFile createSpFile(@NotNull @NonNls String spFile) throws Throwable {
 		File tmpDataFile = File.createTempFile("sp_sample", ".txt");
 		tmpDataFile.deleteOnExit();
 		OutputStream os = null;

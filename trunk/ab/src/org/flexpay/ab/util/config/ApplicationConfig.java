@@ -3,6 +3,7 @@ package org.flexpay.ab.util.config;
 import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.Town;
+import org.flexpay.ab.persistence.BuildingAttributeType;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 
@@ -11,6 +12,9 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 	private Country defaultCountry;
 	private Region defaultRegion;
 	private Town defaultTown;
+
+	private BuildingAttributeType buildingAttributeTypeNumber;
+	private BuildingAttributeType buildingAttributeTypeBulk;
 
 	public static Town getDefaultTown() {
 		return getInstance().defaultTown;
@@ -26,6 +30,14 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 
 	public static Region getDefaultRegion() {
 		return getInstance().defaultRegion;
+	}
+
+	public static BuildingAttributeType getBuildingAttributeTypeNumber() {
+		return getInstance().buildingAttributeTypeNumber;
+	}
+
+	public static BuildingAttributeType getBuildingAttributeTypeBulk() {
+		return getInstance().buildingAttributeTypeBulk;
 	}
 
 	/**
@@ -53,6 +65,14 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 	 */
 	public void setDefaultCountryId(String countryId) {
 		defaultCountry = new Country(Long.valueOf(countryId));
+	}
+
+	public void setBuildingAttributeTypeNumberId(String numberTypeId) {
+		buildingAttributeTypeNumber = new BuildingAttributeType(Long.valueOf(numberTypeId));
+	}
+
+	public void setBuildingAttributeTypeBulkId(String bulkTypeId) {
+		buildingAttributeTypeBulk = new BuildingAttributeType(Long.valueOf(bulkTypeId));
 	}
 
 	public static ApplicationConfig getInstance() {
