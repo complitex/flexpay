@@ -8,6 +8,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Set;
@@ -73,7 +74,14 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	Buildings getFirstBuildings(Building building) throws FlexPayException;
 
-	Buildings readFull(Long buildingsId);
+	/**
+	 * Read full buildings info
+	 *
+	 * @param stub Buildins stub
+	 * @return Buildings if found, or <code>null</code> othrwise
+	 */
+	@Nullable
+	Buildings readFull(@NotNull Stub<Buildings> stub);
 
 	/**
 	 * Update buildings

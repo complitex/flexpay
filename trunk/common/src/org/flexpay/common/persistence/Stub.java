@@ -34,8 +34,4 @@ public class Stub<T extends DomainObject> {
 	public static <T extends DomainObject> Stub<T> stub(@NotNull T o) {
 		return new Stub<T>(o);
 	}
-
-	public static <T extends DomainObject> Stub<T> stub(@NotNull Long id) {
-		return new Stub<T>(id);
-	}
 }

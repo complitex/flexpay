@@ -383,8 +383,9 @@ public class BuildingServiceImpl implements BuildingService {
 		return createBuildings(null, district, street, attrs);
 	}
 
-	public Buildings readFull(Long buildingsId) {
-		return buildingsDao.readFull(buildingsId);
+	@Nullable
+	public Buildings readFull(@NotNull Stub<Buildings> stub) {
+		return buildingsDao.readFull(stub.getId());
 	}
 
 	/**

@@ -7,7 +7,8 @@ import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.exception.FlexPayException;
-import static org.junit.Assert.assertNotNull;
+import org.flexpay.common.persistence.Stub;
+import static org.junit.Assert.assertNotNull;import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,12 @@ public class TestBuildingsActionsBase extends SpringBeanAwareTestCase {
 	@Test
 	public void testGetBuildingNumber() throws Exception {
 
-		Buildings buildings = buildingService.readFull(194L);
+		Buildings buildings = buildingService.readFull(new Stub<Buildings>(1L));
+		if (buildings == null) {
+			fail("No building found with id=1");
+			return;
+		}
+
 		String number = base.getBuildingNumber(buildings.getBuildingAttributes());
 
 		assertNotNull("Number is not defined", number);

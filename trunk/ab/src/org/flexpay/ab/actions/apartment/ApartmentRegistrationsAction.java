@@ -3,7 +3,7 @@ package org.flexpay.ab.actions.apartment;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.*;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayException;import static org.flexpay.common.persistence.Stub.stub;
 
 import java.util.*;
 
@@ -23,7 +23,7 @@ public class ApartmentRegistrationsAction extends FPActionSupport {
 
 	public String doExecute() throws FlexPayException {
 		apartment = apartmentService.readWithPersons(apartment.getId());
-		buildings = buildingService.readFull(buildings.getId());
+		buildings = buildingService.readFull(stub(buildings));
 		town = townService.readFull(buildings.getStreet().getParent().getId());
 		region = regionService.readFull(town.getParent().getId());
 		country = countryService.readFull(region.getParent().getId());

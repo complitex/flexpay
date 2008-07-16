@@ -3,8 +3,10 @@ package org.flexpay.ab.actions.buildings;
 import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.exception.FlexPayException;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.actions.FPActionSupport;
 
-public class BuildingsSetPrimaryStatusAction {
+public class BuildingsSetPrimaryStatusAction extends FPActionSupport {
 
 	private BuildingService buildingService;
 
@@ -12,15 +14,13 @@ public class BuildingsSetPrimaryStatusAction {
 	private Long redirectBuildingsId;
 
 	public String execute() throws FlexPayException {
-		buildings = buildingService.readFull(buildings.getId());
-		for (Buildings current : buildingService.getBuildingBuildings(buildings
-				.getBuilding())) {
-			current.setPrimaryStatus(buildings.getId().longValue() == current
-					.getId().longValue() ? true : false);
+		buildings = buildingService.readFull(stub(buildings));
+		for (Buildings current : buildingService.getBuildingBuildings(buildings.getBuilding())) {
+			current.setPrimaryStatus(buildings.getId().longValue() == current.getId().longValue());
 			buildingService.update(current);
 		}
 
-		return "success";
+		return SUCCESS;
 	}
 
 	/**
