@@ -1,8 +1,8 @@
 package org.flexpay.eirc.util.config;
 
-import org.flexpay.common.util.config.CommonConfigLoader;
-import org.flexpay.ab.util.config.AbConfigLoader;
 import org.apache.commons.digester.Digester;
+import org.flexpay.ab.util.config.AbConfigLoader;
+import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
 
@@ -17,6 +17,7 @@ public class EircConfigLoader extends AbConfigLoader {
 	 *
 	 * @return ApplicationConfig
 	 */
+	@NotNull
 	protected ApplicationConfig getNewConfig() {
 		return new ApplicationConfig();
 	}
@@ -30,7 +31,7 @@ public class EircConfigLoader extends AbConfigLoader {
 		super.addRules(d);
 
 		d.addSetProperties("flexpay/organisation", "id", "selfOrganisationId");
-		
+
 		d.addCallMethod("flexpay/eircDataRoot", "setEircDataRoot", 0);
 		d.addCallMethod("flexpay/eircId", "setEircId", 0);
 	}

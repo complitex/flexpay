@@ -22,6 +22,10 @@ public class BuildingAttributeType extends DomainObject {
 	public BuildingAttributeType() {
 	}
 
+	public BuildingAttributeType(Long id) {
+		super(id);
+	}
+
 	public int getType() {
 		return type;
 	}

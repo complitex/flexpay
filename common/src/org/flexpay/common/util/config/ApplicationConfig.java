@@ -4,10 +4,12 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.*;
 
 public class ApplicationConfig {
@@ -20,8 +22,6 @@ public class ApplicationConfig {
 
 	private static final Date DATE_PAST_INFINITE = new GregorianCalendar(1900, 0, 1).getTime();
 	private static final Date DATE_FUTURE_INFINITE = new GregorianCalendar(2100, 11, 31).getTime();
-	
-	private File webAppRoot;
 
 	private File dataRoot;
 
@@ -153,7 +153,6 @@ public class ApplicationConfig {
 		this.szDefaultDbfFileEncoding = szDefaultDbfFileEncoding;
 	}
 
-	
 
 	public String getTestProp() {
 		return testProp;
@@ -164,16 +163,14 @@ public class ApplicationConfig {
 	}
 
 	/**
-	 * @return the webAppRoot
+	 * Get resource stream by name. Caller is responsible for stream closing.
+	 *
+	 * @param name Resource name
+	 * @return resource stream or <code>null</code> if not found
+	 * @see java.lang.Class#getResourceAsStream(String)
 	 */
-	public File getWebAppRoot() {
-		return webAppRoot;
-	}
-
-	/**
-	 * @param webAppRoot the webAppRoot to set
-	 */
-	public void setWebAppRoot(File webAppRoot) {
-		this.webAppRoot = webAppRoot;
+	@Nullable
+	public static InputStream getResourceAsStream(@NotNull @NonNls String name) {
+		return getInstance().getClass().getResourceAsStream(name);
 	}
 }

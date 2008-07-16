@@ -5,29 +5,20 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.LangNameTranslation;
-import org.flexpay.common.persistence.Language;
 import org.flexpay.common.service.LanguageService;
-import org.flexpay.common.util.LanguageUtil;
-import org.springframework.web.context.ServletContextAware;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
-import javax.servlet.ServletContext;
-
-import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Application configuration loader
  */
-public class CommonConfigLoader implements ServletContextAware {
+public class CommonConfigLoader {
 
+	@NonNls
 	private Log log = LogFactory.getLog(getClass());
-
-	private ServletContext context;
 
 	// Configuration file URL
 	private URL[] configFiles;
@@ -50,12 +41,10 @@ public class CommonConfigLoader implements ServletContextAware {
 	 */
 	public void loadConfig() throws Exception {
 		ApplicationConfig config = getNewConfig();
-		if (context != null) {
-			config.setWebAppRoot(new File(context.getRealPath("/")));
-		}
+
 		log.info("Starting loading configs");
 		for (URL url : configFiles) {
-			InputStreamReader is = null;
+			@NonNls InputStreamReader is = null;
 			try {
 				Digester digester = new Digester();
 				digester.push(config);
@@ -84,6 +73,7 @@ public class CommonConfigLoader implements ServletContextAware {
 	 *
 	 * @return ApplicationConfig
 	 */
+	@NotNull
 	protected ApplicationConfig getNewConfig() {
 		return new ApplicationConfig();
 	}
@@ -94,32 +84,7 @@ public class CommonConfigLoader implements ServletContextAware {
 	 * @throws FlexPayException if configuration is invalid
 	 */
 	protected void setApplicationProperties() throws FlexPayException {
-		ApplicationConfig config = ApplicationConfig.getInstance();
-		setupLanguageNames(config);
-	}
-
-	/**
-	 * Set up language names in their language
-	 *
-	 * @param config ApplicationConfig
-	 * @throws FlexPayException if languages configuration is invalid
-	 */
-	private void setupLanguageNames(ApplicationConfig config) throws FlexPayException {
-		if (context != null && config != null) {
-			Collection<Language> langs = config.getLanguages();
-			List<LangNameTranslation> translations = new ArrayList<LangNameTranslation>(langs.size());
-			for (Language lang : langs) {
-				LangNameTranslation translation = LanguageUtil.getLanguageName(lang, lang.getLocale());
-				if (lang.isDefault()) {
-					translations.add(0, translation);
-				} else {
-					translations.add(translation);
-				}
-			}
-			context.setAttribute("languages", translations);
-		} else {
-			log.debug("ServletContext or ApplicationConfig was not set up");
-		}
+		// nothing to do here
 	}
 
 	/**
@@ -127,28 +92,13 @@ public class CommonConfigLoader implements ServletContextAware {
 	 *
 	 * @param d Digester
 	 */
-	protected void addRules(Digester d) {
+	protected void addRules(@NonNls Digester d) {
 
 		d.addCallMethod("flexpay/dataRoot", "setDataRoot", 0);
 		d.addCallMethod("flexpay/szDataRoot", "setSzDataRoot", 0);
 		d.addCallMethod("flexpay/szDefaultDbfFileEncoding", "setSzDefaultDbfFileEncoding", 0);
 
 		d.addCallMethod("flexpay/testprop", "setTestProp", 0);
-	}
-
-	/**
-	 * Set the ServletContext that this object runs in. <p>Invoked after population of normal
-	 * bean properties but before an init callback like InitializingBean's
-	 * <code>afterPropertiesSet</code> or a custom init-method. Invoked after
-	 * ApplicationContextAware's <code>setApplicationContext</code>.
-	 *
-	 * @param servletContext ServletContext object to be used by this object
-	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet
-	 * @see org.springframework.context.ApplicationContextAware#setApplicationContext
-	 */
-	public void setServletContext(ServletContext servletContext) {
-		log.debug("Setting ServletConfig");
-		this.context = servletContext;
 	}
 
 	/**

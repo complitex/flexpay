@@ -4,16 +4,19 @@ import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.service.SpFileService;
 import org.flexpay.eirc.sp.SpFileFormatException;
 import org.flexpay.eirc.sp.SpFileUtil;
+import org.flexpay.common.actions.FPActionSupport;
+import org.jetbrains.annotations.NonNls;
 
-public class SpFileAction {
+public class SpFileAction extends FPActionSupport {
 
 	private Long spFileId;
+	@NonNls
 	private String action;
 	private SpFileFormatException spFileFormatException;
 
 	private SpFileService spFileService;
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 		SpFile spFile = spFileService.read(spFileId);
 		if ("loadToDb".equals(action)) {
 			try {
@@ -29,7 +32,19 @@ public class SpFileAction {
 			// SzFileUtil.delete(szFile);
 		}
 
-		return "success";
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return SUCCESS;
 	}
 
 	/**
@@ -42,7 +57,7 @@ public class SpFileAction {
 	/**
 	 * @param action the action to set
 	 */
-	public void setAction(String action) {
+	public void setAction(@NonNls String action) {
 		this.action = action;
 	}
 

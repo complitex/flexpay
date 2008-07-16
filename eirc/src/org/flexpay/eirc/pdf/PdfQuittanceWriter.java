@@ -1,8 +1,20 @@
 package org.flexpay.eirc.pdf;
 
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Image;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.pdf.*;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.util.StringUtil;
+import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.persistence.account.QuittanceDetails;
+import org.flexpay.eirc.service.QuittanceService;
+import org.flexpay.eirc.service.ServiceTypeService;
+import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NonNls;
+
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,26 +23,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.StringUtil;
-import org.flexpay.eirc.persistence.account.Quittance;
-import org.flexpay.eirc.persistence.account.QuittanceDetails;
-import org.flexpay.eirc.service.QuittanceService;
-import org.flexpay.eirc.service.ServiceTypeService;
-import org.flexpay.eirc.util.config.ApplicationConfig;
-
-import com.lowagie.text.BadElementException;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Image;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.pdf.AcroFields;
-import com.lowagie.text.pdf.Barcode;
-import com.lowagie.text.pdf.Barcode128;
-import com.lowagie.text.pdf.BarcodePDF417;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfStamper;
-
 public class PdfQuittanceWriter {
 
 	private static final Locale LOCALE_RU = new Locale("ru");
@@ -38,14 +30,14 @@ public class PdfQuittanceWriter {
 	private QuittanceService quittanceService;
 	private ServiceTypeService serviceTypeService;
 
-	private File kvitPatternFile;
+	private InputStream kvitPattern;
 	private PdfReader titlePattern;
 	private ByteArrayOutputStream baos;
 
-	public PdfQuittanceWriter(File kvitPatternFile, InputStream titlePattern)
+	public PdfQuittanceWriter(InputStream kvitPattern, InputStream titlePattern)
 			throws IOException {
 		baos = new ByteArrayOutputStream();
-		this.kvitPatternFile = kvitPatternFile;
+		this.kvitPattern = kvitPattern;
 		this.titlePattern = new PdfReader(titlePattern);
 	}
 
@@ -58,8 +50,7 @@ public class PdfQuittanceWriter {
 
 	public void write(OutputStream os, Quittance quittance)
 			throws DocumentException, IOException, FlexPayException {
-		PdfStamper stamper = new PdfStamper(new PdfReader(new FileInputStream(
-				kvitPatternFile)), os);
+		PdfStamper stamper = new PdfStamper(new PdfReader(kvitPattern), os);
 		stamper.setFormFlattening(true);
 
 		AcroFields form = stamper.getAcroFields();
@@ -92,7 +83,7 @@ public class PdfQuittanceWriter {
 			throws DocumentException, IOException {
 		PdfStamper stamper = new PdfStamper(titlePattern, os);
 		stamper.setFormFlattening(true);
-		AcroFields form = stamper.getAcroFields();
+		@NonNls AcroFields form = stamper.getAcroFields();
 		form.setField("name", title);
 		stamper.close();
 	}
@@ -113,7 +104,7 @@ public class PdfQuittanceWriter {
 
 	}
 
-	private String[] fillForm(AcroFields form, Quittance quittance)
+	private String[] fillForm(@NonNls AcroFields form, Quittance quittance)
 			throws IOException, DocumentException, FlexPayException {
 		form.setField("header", "КП “ЖИЛКОМСЕРВИС”");
 		form.setField("header_copy1", "КП “ЖИЛКОМСЕРВИС”");
@@ -124,7 +115,7 @@ public class PdfQuittanceWriter {
 						"р/сч 260005593 в ОАО “МЕГАБАНК” МФО 351629, КОД ОКПО 34467793");
 		form.setField("footer", "Киевский филиал");
 
-		DateFormat format = new SimpleDateFormat("MMMM yyyy", LOCALE_RU);
+		@NonNls DateFormat format = new SimpleDateFormat("MMMM yyyy", LOCALE_RU);
 		form.setField("date", format.format(quittance.getDateFrom()));
 		form.setField("date_copy1", format.format(quittance.getDateFrom()));
 		format = new SimpleDateFormat("dd.MM.yyyy");
@@ -140,10 +131,9 @@ public class PdfQuittanceWriter {
 		String address = quittanceService.getAddressStr(quittance, true);
 		form.setField("address", address);
 		form.setField("address_copy1", address);
-		
+
 		BigDecimal dateFromSum = new BigDecimal(0);
 		BigDecimal dateTillSum = new BigDecimal(0);
-		
 
 		// Services 2-5
 		for (int i = 2; i <= 5; i++) {
@@ -203,15 +193,13 @@ public class PdfQuittanceWriter {
 				form.setField("kvartpl_amount_digit5", amountDigitArray[5]);
 				form.setField("kvartpl_amount", outgoingBalance.toString());
 				form.setField("kvartpl_dateTill_amount", outgoingBalance.toString());
-				
+
 			}
 			if (incomingBalance != null) {
 				dateFromSum = dateFromSum.add(incomingBalance);
 				form.setField("kvartpl_dateFrom_amount", incomingBalance.toString());
 			}
 		}
-		
-		
 
 		// Services sum
 		String[] amountDigitArray = getStringArray(dateTillSum);
@@ -229,8 +217,8 @@ public class PdfQuittanceWriter {
 		String[] barcodes = new String[2];
 		StringBuilder barcodeStr = new StringBuilder();
 		barcodeStr.append(ApplicationConfig.getInstance().getEircId());
-		barcodeStr.append(StringUtil.fillLeadingZero(quittance.getId()
-				.toString(), 8)); // TODO ticketNumber replace by ticketId
+		// TODO ticketNumber replace by ticketId
+		barcodeStr.append(StringUtil.fillLeadingZero(String.valueOf(quittance.getId()), 8));
 		// barcodeStr.append("-");
 		// format = new SimpleDateFormat("MM/yyyy");
 		// barcodeStr.append(format.format(ticketInfo.dateFrom));
@@ -244,8 +232,7 @@ public class PdfQuittanceWriter {
 
 		StringBuilder barcode2d = new StringBuilder();
 		barcode2d.append(ApplicationConfig.getInstance().getEircId());
-		barcode2d.append(StringUtil.fillLeadingZero(quittance.getId()
-				.toString(), 8));
+		barcode2d.append(StringUtil.fillLeadingZero(String.valueOf(quittance.getId()), 8));
 		barcode2d.append(";");
 		barcode2d.append(address);
 		barcode2d.append(";");
@@ -275,7 +262,7 @@ public class PdfQuittanceWriter {
 	}
 
 	private String[] getStringArray(BigDecimal amount) {
-		String[] result = new String[] { "", "", "", "", "", "" };
+		String[] result = new String[]{"", "", "", "", "", ""};
 		String amountStr = amount.toString();
 		int amountStrLength = amountStr.length();
 		int dotInd = amountStr.indexOf(".");
@@ -316,16 +303,14 @@ public class PdfQuittanceWriter {
 	}
 
 	/**
-	 * @param quittanceService
-	 *            the quittanceService to set
+	 * @param quittanceService the quittanceService to set
 	 */
 	public void setQuittanceService(QuittanceService quittanceService) {
 		this.quittanceService = quittanceService;
 	}
 
 	/**
-	 * @param serviceTypeService
-	 *            the serviceTypeService to set
+	 * @param serviceTypeService the serviceTypeService to set
 	 */
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
 		this.serviceTypeService = serviceTypeService;
