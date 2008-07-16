@@ -182,7 +182,7 @@ public class Quittance extends DomainObject {
 	}
 	
 	/**
-	 * @param quittanceDetails the quittanceDetails to set
+	 * @param quittanceDetailsCol the quittanceDetails to set
 	 */
 	public void setQuittanceDetails(Collection<QuittanceDetails> quittanceDetailsCol) {
 		if(quittanceDetailsCol.isEmpty()) {

@@ -53,7 +53,7 @@ public class TicketServiceAmount extends DomainObject {
 	}
 
 	/**
-	 * @param dateFromAmaunt the dateFromAmaunt to set
+	 * @param dateFromAmount the dateFromAmaunt to set
 	 */
 	public void setDateFromAmount(BigDecimal dateFromAmount) {
 		this.dateFromAmount = dateFromAmount;
@@ -67,7 +67,7 @@ public class TicketServiceAmount extends DomainObject {
 	}
 
 	/**
-	 * @param dateTillAmaunt the dateTillAmaunt to set
+	 * @param dateTillAmount the dateTillAmaunt to set
 	 */
 	public void setDateTillAmount(BigDecimal dateTillAmount) {
 		this.dateTillAmount = dateTillAmount;

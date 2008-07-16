@@ -12,7 +12,6 @@ public interface ServiceOrganisationDao extends GenericDao<ServiceOrganisation, 
 	/**
 	 * Find organisation by id
 	 *
-	 * @param id Organisation id
 	 * @return List if organisations
 	 */
 	List<ServiceOrganisation> listServiceOrganisation();

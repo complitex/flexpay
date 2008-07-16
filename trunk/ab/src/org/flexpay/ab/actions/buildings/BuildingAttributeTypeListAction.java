@@ -19,7 +19,7 @@ public class BuildingAttributeTypeListAction extends FPActionSupport {
 	}
 
 	/**
-	 * @param biuldingService the biuldingService to set
+	 * @param buildingService the biuldingService to set
 	 */
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
