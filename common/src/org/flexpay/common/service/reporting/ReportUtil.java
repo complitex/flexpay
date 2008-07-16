@@ -12,6 +12,7 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.jboss.util.file.FilePrefixFilter;
+import org.jetbrains.annotations.NonNls;
 
 import javax.sql.DataSource;
 import java.io.*;
@@ -20,18 +21,28 @@ import java.util.*;
 
 public class ReportUtil {
 
+	@NonNls
 	private Logger log = Logger.getLogger(getClass());
 
+	@NonNls
 	private static final String EXTENSION_TEMPLATE = ".jrxml";
+	@NonNls
 	private static final String EXTENSION_COMPILED_TEMPLATE = ".jasper";
+	@NonNls
 	private static final String EXTENSION_REPORT = ".jprint";
 
+	@NonNls
 	private static final String EXTENSION_PDF = ".pdf";
+	@NonNls
 	private static final String EXTENSION_TXT = ".txt";
+	@NonNls
 	private static final String EXTENSION_XML = ".xml";
+	@NonNls
 	private static final String EXTENSION_HTML = ".html";
+	@NonNls
 	private static final String EXTENSION_CSV = ".csv";
 
+	@NonNls
 	private static final String RESOURCE_CONNECTION = ReportUtil.class.getName() + "_CONNECTION";
 
 	private SessionFactory sessionFactory;
