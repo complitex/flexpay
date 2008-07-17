@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.builder.EqualsBuilder;
 
 import java.io.Serializable;
 
@@ -45,8 +46,24 @@ public class DomainObject implements Serializable {
 		this.id = id;
 	}
 
+	@Override
 	public int hashCode() {
 		return id == null ? 0 : id.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return false;
+		}
+		if (!(obj instanceof DomainObject)) {
+			return false;
+		}
+
+		DomainObject that = (DomainObject) obj;
+		return new EqualsBuilder()
+				.append(id, that.getId())
+				.isEquals();
 	}
 
 	@Override

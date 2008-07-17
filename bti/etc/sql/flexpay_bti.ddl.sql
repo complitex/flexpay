@@ -363,9 +363,8 @@
 
     create table ab_building_attribute_types_tbl (
         id bigint not null auto_increment,
-        type integer,
         primary key (id)
-    );
+    ) comment='Building attribute type (number, bulk, etc.)';
 
     create table ab_building_attributes_tbl (
         id bigint not null auto_increment,

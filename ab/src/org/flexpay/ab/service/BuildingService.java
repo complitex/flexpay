@@ -20,16 +20,6 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	public List<Buildings> getBuildings(Long streetId, Page pager);
 
 	/**
-	 * Get building attribute type
-	 *
-	 * @param type Attribute type
-	 * @return BuildingAttributeType
-	 * @throws FlexPayException if failure occurs
-	 */
-	public BuildingAttributeType getAttributeType(int type)
-			throws FlexPayException;
-
-	/**
 	 * Get building attribute types
 	 *
 	 * @return BuildingAttributeType list
@@ -37,33 +27,57 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	public List<BuildingAttributeType> getAttributeTypes();
 
 	/**
-	 * Find building by number
+	 * Find buildings by attributes
 	 *
-	 * @param street   Building street
-	 * @param district Building district
-	 * @param number   Building number
-	 * @param bulk	 Building bulk number
+	 * @param street	 Building street stub
+	 * @param district   Building district stub
+	 * @param attributes Building attributes
 	 * @return Buildings instance, or <code>null</null> if not found
+	 * @throws FlexPayException if failure occurs
 	 */
-	Buildings findBuildings(Street street, District district, String number, String bulk);
+	@Nullable
+	Buildings findBuildings(@NotNull Stub<Street> street, @Nullable Stub<District> district,
+							@NotNull Set<BuildingAttribute> attributes)
+			throws FlexPayException;
 
 	/**
 	 * Find building by number
 	 *
-	 * @param street Building street
-	 * @param number Building number
-	 * @param bulk   Building bulk number
+	 * @param street   Building street stub
+	 * @param district Building district stub
+	 * @param number   Building number
+	 * @param bulk	 Building bulk number
 	 * @return Buildings instance, or <code>null</null> if not found
+	 * @throws FlexPayException if failure occurs
+	 * @deprecated use {@link #findBuildings(org.flexpay.common.persistence.Stub, org.flexpay.common.persistence.Stub,
+	 *			 java.util.Set)}
 	 */
-	Buildings findBuildings(Street street, String number, String bulk);
+	@Nullable
+	Buildings findBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district,
+							String number, String bulk) throws FlexPayException;
+
+	/**
+	 * Find building by number
+	 *
+	 * @param streetStub Street stub
+	 * @param number	 Building number
+	 * @param bulk	   Building bulk number
+	 * @return Buildings instance, or <code>null</null> if not found
+	 * @throws FlexPayException if failure occurs
+	 * @deprecated use {@link #findBuildings(org.flexpay.common.persistence.Stub, org.flexpay.common.persistence.Stub,
+	 *			 java.util.Set)}
+	 */
+	@Nullable
+	Buildings findBuildings(@NotNull Stub<Street> streetStub, String number, String bulk) throws FlexPayException;
 
 	/**
 	 * Find building by buildings stub
 	 *
-	 * @param buildingsStub object with id only
-	 * @return Building instance
+	 * @param stub Buildings stub
+	 * @return Building instance if buildings found, or <code>null</code> otherwise
 	 */
-	Building findBuilding(Buildings buildingsStub);
+	@Nullable
+	Building findBuilding(@NotNull Stub<Buildings> stub);
 
 	/**
 	 * Find single Building relation for building stub
@@ -101,7 +115,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	@NotNull
 	Buildings createStreetDistrictBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district,
-							  @NotNull Set<BuildingAttribute> attrs)
+											@NotNull Set<BuildingAttribute> attrs)
 			throws FlexPayException;
 
 	/**
@@ -133,4 +147,13 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	BuildingAttributeType createBuildingAttributeType(BuildingAttributeType type);
 
 	void updateBuildingAttributeType(BuildingAttributeType type);
+
+	/**
+	 * Get building attribute type
+	 *
+	 * @param stub BuildingAttributeType stub
+	 * @return Attribute type if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	BuildingAttributeType getAttributeType(@NotNull Stub<BuildingAttributeType> stub);
 }

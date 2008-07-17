@@ -6,6 +6,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.jetbrains.annotations.NonNls;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ import java.io.InputStream;
 @TransactionConfiguration(transactionManager="transactionManager")
 public abstract class SpringBeanAwareTestCase extends AbstractTransactionalJUnit4SpringContextTests {
 
+	@NonNls
 	protected HibernateTemplate hibernateTemplate;
 
 	@Override

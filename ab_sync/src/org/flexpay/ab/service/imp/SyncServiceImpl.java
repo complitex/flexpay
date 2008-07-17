@@ -10,12 +10,14 @@ import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import org.jetbrains.annotations.NonNls;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SyncServiceImpl implements SyncService {
 
+	@NonNls
 	private Logger log = Logger.getLogger(getClass());
 
 	private HistoryDao historyDao;
@@ -58,15 +60,15 @@ public class SyncServiceImpl implements SyncService {
 			int count = 0;
 
 			while (true) {
-				log.debug("Starting sync for next records");
-				List<HistoryRecord> records = historyDao.getRecords(new Page(100, 1));
-				if (records.isEmpty() || recordBuffer.containsAll(records)) {
-					saveObject();
-					log.debug("No more records.");
-					break;
-				}
-
 				try {
+					log.debug("Starting sync for next records");
+					List<HistoryRecord> records = historyDao.getRecords(new Page(100, 1));
+					if (records.isEmpty() || recordBuffer.containsAll(records)) {
+						saveObject();
+						log.debug("No more records.");
+						break;
+					}
+
 					for (HistoryRecord record : records) {
 						if (!prevId.equals(record.getObjectId()) || prevType != record.getObjectType()) {
 							saveObject();
@@ -93,7 +95,7 @@ public class SyncServiceImpl implements SyncService {
 		}
 	}
 
-	private void saveObject() {
+	private void saveObject() throws Exception {
 		if (prevObj != null) {
 			processor.saveObject(prevObj, String.valueOf(prevId), sd, correctionsService);
 		}

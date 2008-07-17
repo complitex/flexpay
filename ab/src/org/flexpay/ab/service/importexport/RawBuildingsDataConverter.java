@@ -1,8 +1,10 @@
 package org.flexpay.ab.service.importexport;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.service.importexport.CorrectionsService;
@@ -10,8 +12,6 @@ import org.flexpay.common.service.importexport.DataConverter;
 
 public class RawBuildingsDataConverter implements
 		DataConverter<Buildings, RawBuildingsData> {
-
-	private BuildingService buildingService;
 
 	/**
 	 * Convert raw data to domain object
@@ -45,18 +45,12 @@ public class RawBuildingsDataConverter implements
 		buildings.setStreet(street);
 		building.addBuildings(buildings);
 
-		buildings.setBuildingAttribute(rawData.getNumber(), buildingService
-				.getAttributeType(BuildingAttributeType.TYPE_NUMBER));
+		buildings.setBuildingAttribute(Buildings.numberAttribute(rawData.getNumber()));
 
 		if (StringUtils.isNotBlank(rawData.getBulkNumber())) {
-			buildings.setBuildingAttribute(rawData.getBulkNumber(), buildingService
-					.getAttributeType(BuildingAttributeType.TYPE_BULK));
+			buildings.setBuildingAttribute(Buildings.bulkAttribute(rawData.getBulkNumber()));
 		}
 
 		return buildings;
-	}
-
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
 	}
 }

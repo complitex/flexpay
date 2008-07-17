@@ -37,10 +37,10 @@
 	</class>
 
 	<class name="BuildingAttributeType" table="ab_building_attribute_types_tbl">
+		<comment>Building attribute type (number, bulk, etc.)</comment>
 		<id name="id" column="id">
 			<generator class="native"/>
 		</id>
-		<property name="type"/>
 		<set name="translations" inverse="true" cascade="all-delete-orphan">
 			<key column="attribute_type_id" not-null="true"/>
 			<one-to-many class="BuildingAttributeTypeTranslation"/>
@@ -105,90 +105,72 @@
 	<query name="Buildings.findBuildings">
 		SELECT DISTINCT o
 		FROM Buildings o
-		LEFT JOIN FETCH o.street street
-		LEFT JOIN FETCH street.nameTemporals temporals
-		LEFT JOIN FETCH temporals.value streetName
-		LEFT JOIN FETCH streetName.translations nameTranslations
-		LEFT JOIN FETCH nameTranslations.lang langStreet
-		LEFT JOIN FETCH langStreet.translations
 		LEFT JOIN FETCH o.buildingAttributes attrs
 		LEFT JOIN FETCH attrs.buildingAttributeType attrType
 		LEFT JOIN FETCH attrType.translations attrTypeTr
 		LEFT JOIN FETCH attrTypeTr.lang langAttr
 		LEFT JOIN FETCH langAttr.translations
-		WHERE o.status = 0 AND temporals.invalidDate = '2100-12-31' AND street.id = ?
+		WHERE o.status = 0 AND o.street.id = ?
+	</query>
+
+	<query name="Buildings.findBuilding">
+		select o.building
+		from Buildings o
+		where o.id=?
 	</query>
 
 	<query name="Buildings.findStreetDistrictBuildings.count">
-		select count(*) from Buildings o where o.status=0 and o.street.id=? and o.building.district.id=?
+		select count(*)
+		from Buildings o
+		where o.status=0 and o.street.id=? and o.building.district.id=?
 	</query>
 
 	<query name="Buildings.findStreetDistrictBuildings">
-		SELECT DISTINCT o
-		FROM Buildings o
-		LEFT JOIN FETCH o.buildingAttributes attrs
-		LEFT JOIN FETCH attrs.buildingAttributeType attrType
-		LEFT JOIN FETCH attrType.translations attrTypeTr
-		LEFT JOIN FETCH attrTypeTr.lang langAttr
-		LEFT JOIN FETCH langAttr.translations
-		WHERE o.status = 0 AND o.street.id=? AND o.building.district.id=?
+		select distinct o
+		from Buildings o
+		left join fetch o.buildingAttributes attrs
+		inner join fetch attrs.buildingAttributeType attrType
+		left join fetch attrType.translations
+		WHERE o.status = 0 and o.street.id=? and o.building.district.id=?
+	</query>
+
+	<query name="BuildingAttributeType.readFull">
+		select distinct type
+		from BuildingAttributeType type
+		left join fetch type.translations typeTr
+		where type.id=?
 	</query>
 
 	<query name="BuildingAttributeType.findAttributeTypes">
-		SELECT DISTINCT type
-		FROM BuildingAttributeType type
-		LEFT JOIN FETCH type.translations typeTr
-		LEFT JOIN FETCH typeTr.lang langAttr
+		select distinct type
+		from BuildingAttributeType type
+		left join fetch type.translations typeTr
 	</query>
 
 	<query name="Buildings.findByNumberWithDistrict">
+		select distinct b
 		from Buildings b
 		inner join fetch b.buildingAttributes a
 		inner join fetch a.buildingAttributeType t
 		where b.building.district.id=? and b.street.id=?
 		and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
-		ba.buildingAttributeType.type=? and ba.value=?)
-		and not exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
-		ba.buildingAttributeType.type=?)
-	</query>
-
-	<query name="Buildings.findByBulkNumberWithDistrict">
-		from Buildings b
-		inner join fetch b.buildingAttributes a
-		inner join fetch a.buildingAttributeType t
-		where b.building.district.id=? and b.street.id=?
-		and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
-		ba.buildingAttributeType.type=? and ba.value=?)
-		and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
-		ba.buildingAttributeType.type=? and ba.value=?)
+		ba.buildingAttributeType.id=? and ba.value=?)
 	</query>
 
 	<query name="Buildings.findByNumber">
+		select distinct b
 		from Buildings b
 		inner join fetch b.buildingAttributes a
 		inner join fetch a.buildingAttributeType t
 		where b.street.id=?
 		and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
-		ba.buildingAttributeType.type=? and ba.value=?)
-		and not exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
-		ba.buildingAttributeType.type=?)
-	</query>
-
-	<query name="Buildings.findByBulkNumber">
-		from Buildings b
-		inner join fetch b.buildingAttributes a
-		inner join fetch a.buildingAttributeType t
-		where b.street.id=?
-		and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
-		ba.buildingAttributeType.type=? and ba.value=?)
-		and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
-		ba.buildingAttributeType.type=? and ba.value=?)
+		ba.buildingAttributeType.id=? and ba.value=?)
 	</query>
 
 	<query name="Buildings.findBuildingBuildings">
 		select distinct b
 		from Buildings b
-		inner join fetch b.buildingAttributes a
+		left join fetch b.buildingAttributes a
 		inner join fetch a.buildingAttributeType t
 		where b.building.id=? and b.status=0
 	</query>

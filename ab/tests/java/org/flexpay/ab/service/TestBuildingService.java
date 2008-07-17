@@ -5,7 +5,10 @@ import org.flexpay.ab.dao.BuildingAttributeDao;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -104,7 +107,7 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	}
 
 	@Test
-	@Ignore
+	@NotTransactional
 	public void testCreateBuilding() throws Throwable {
 
 		Building building = newBuilding();
@@ -127,11 +130,13 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	}
 
 	@Test
-	@Ignore
+	@NotTransactional
 	public void testFindBulkBuildings() throws Throwable {
 
 		// See init_db script
-		Buildings buildings = buildingService.findBuildings(street, district, "31", "2");
+		BuildingAttribute number = Buildings.numberAttribute("31");
+		BuildingAttribute bulk = Buildings.bulkAttribute("2");
+		Buildings buildings = buildingService.findBuildings(stub(street), stub(district), set(number, bulk));
 
 		assertNotNull("Building find with bulk number faild", buildings);
 		assertEquals("Invalid number", "31", buildings.getNumber());
@@ -139,20 +144,29 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	}
 
 	@Test
-	@Ignore
+	@NotTransactional
 	public void testFindBuildings() throws Throwable {
 
 		// See init_db script
-		Buildings buildings = buildingService.findBuildings(new Street(2L), new District(9L), "31", "");
+		BuildingAttribute number = Buildings.numberAttribute("31");
+		Buildings buildings = buildingService.findBuildings(stub(street), stub(district), set(number));
 
 		assertNotNull("Building find faild", buildings);
 		assertEquals("Invalid building number", "31", buildings.getNumber());
 		assertTrue("Not empty bulk number", StringUtils.isEmpty(buildings.getBulk()));
 	}
 
+	@Test
+	public void testFindBuildingAttributeTypes() {
+		assertNotNull("Number attribute type not found",
+				stub(ApplicationConfig.getBuildingAttributeTypeNumber()));
+		assertNotNull("Bulk attribute type not found",
+				stub(ApplicationConfig.getBuildingAttributeTypeBulk()));
+	}
+
 	@Before
 	public void prepare() throws Exception {
-		numberType = buildingService.getAttributeType(BuildingAttributeType.TYPE_NUMBER);
-		bulkType = buildingService.getAttributeType(BuildingAttributeType.TYPE_BULK);
+		numberType = ApplicationConfig.getBuildingAttributeTypeNumber();
+		bulkType = ApplicationConfig.getBuildingAttributeTypeBulk();
 	}
 }

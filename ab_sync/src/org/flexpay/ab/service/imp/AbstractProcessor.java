@@ -7,10 +7,11 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import org.jetbrains.annotations.NonNls;
 
 public abstract class AbstractProcessor<T extends DomainObject> {
 
-	// Logger
+	@NonNls
 	protected final Logger log = Logger.getLogger(getClass());
 
 	private Class<T> type;
@@ -131,8 +132,10 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @param externalId External object id
 	 * @param sd		 DataSourceDescription
 	 * @param cs		 CorrectionsService
+	 * @throws Exception if failure occurs
 	 */
-	public void saveObject(DomainObject object, String externalId, DataSourceDescription sd, CorrectionsService cs) {
+	public void saveObject(DomainObject object, String externalId, DataSourceDescription sd, CorrectionsService cs)
+		throws Exception {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Saving object: " + object.getId() + ", externalID: " + externalId);
@@ -185,8 +188,10 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @param sd DataSourceDescription
 	 * @param cs CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
+	 * @throws Exception if failure occurs
 	 */
-	protected abstract T findPersistentObject(T object, DataSourceDescription sd, CorrectionsService cs);
+	protected abstract T findPersistentObject(T object, DataSourceDescription sd, CorrectionsService cs)
+			throws Exception;
 
 	/**
 	 * Save DomainObject
