@@ -1,7 +1,6 @@
 package org.flexpay.ab.actions.buildings;
 
 import com.opensymphony.xwork2.Preparable;
-import org.apache.struts2.ServletActionContext;
 import org.flexpay.ab.persistence.BuildingAttribute;
 import org.flexpay.ab.persistence.BuildingAttributeType;
 import org.flexpay.ab.persistence.Buildings;
@@ -9,9 +8,7 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.Stub;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,14 +18,12 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 
 	private BuildingService buildingService;
 
-	private Buildings buildings;
+	private Buildings buildings = new Buildings();
 	private List<Buildings> alternateBuildingsList = new ArrayList<Buildings>();
 	private Map<String, BuildingAttribute> attributeMap;
 
 	public void prepare() {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		String id = request.getParameter("buildings.id");
-		buildings = buildingService.readFull(new Stub<Buildings>(Long.valueOf(id)));
+		buildings = buildingService.readFull(stub(buildings));
 
 		attributeMap = new HashMap<String, BuildingAttribute>();
 		for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
@@ -37,7 +32,7 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 				attr = new BuildingAttribute();
 				attr.setBuildingAttributeType(type);
 			}
-			attributeMap.put("" + attr.getBuildingAttributeType().getType(), attr);
+			attributeMap.put("" + attr.getBuildingAttributeType().getId(), attr);
 		}
 	}
 
@@ -56,7 +51,7 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 			buildingService.update(buildings);
 		}
 
-		return "form";
+		return INPUT;
 	}
 
 	/**
@@ -100,5 +95,4 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 	public void setAttributeMap(Map<String, BuildingAttribute> attributeMap) {
 		this.attributeMap = attributeMap;
 	}
-
 }

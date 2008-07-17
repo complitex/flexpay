@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.util.CollectionUtils;
 import org.hibernate.*;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.jetbrains.annotations.NonNls;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 public class LockManager {
 
+	@NonNls
 	private Logger log = Logger.getLogger(getClass().getName());
 
 	private static LockManager instance = new LockManager();
@@ -31,7 +33,7 @@ public class LockManager {
 	 * @param semaphoreID String for semaphore ID
 	 * @return true if semaphore lock obtained, false if semaphore already locked
 	 */
-	public synchronized boolean lock(String semaphoreID) {
+	public synchronized boolean lock(@NonNls String semaphoreID) {
 		StatelessSession session = lockedSessions.get(semaphoreID);
 		if (session != null) {
 			return false;
@@ -70,8 +72,8 @@ public class LockManager {
 
 	}
 
-	private List acquireLock(StatelessSession session, String semaphoreID) {
-		SQLQuery sqlQuery = session.createSQLQuery(
+	private List acquireLock(@NonNls StatelessSession session, String semaphoreID) {
+		@NonNls SQLQuery sqlQuery = session.createSQLQuery(
 				"select semaphoreID from common_semaphores_tbl where semaphoreID=:semaphoreID for update");
 		sqlQuery.addScalar("semaphoreID", Hibernate.STRING).setString("semaphoreID", semaphoreID);
 		List list;
@@ -89,7 +91,7 @@ public class LockManager {
 	 *
 	 * @param semaphoreID Semaphore for release
 	 */
-	public synchronized void releaseLock(String semaphoreID) {
+	public synchronized void releaseLock(@NonNls String semaphoreID) {
 		StatelessSession session = lockedSessions.remove(semaphoreID);
 		if (session != null) {
 			session.getTransaction().commit();

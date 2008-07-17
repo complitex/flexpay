@@ -41,8 +41,8 @@ public class TestDateIntervalUtil {
 	private Date date_2005_01_01;
 	private Date date_2005_12_31;
 	private Date date_2006_01_01;
-	private Date datePastInfinite = ApplicationConfig.getInstance().getPastInfinite();
-	private Date dateFutureInfinite = ApplicationConfig.getInstance().getFutureInfinite();
+	private Date datePastInfinite = ApplicationConfig.getPastInfinite();
+	private Date dateFutureInfinite = ApplicationConfig.getFutureInfinite();
 	private Price price15 = new Price(15);
 	private Price priceNull = new Price();
 
@@ -55,29 +55,6 @@ public class TestDateIntervalUtil {
 		date_2005_12_31 = DateIntervalUtil.parse("2005/12/31");
 		date_2006_01_01 = DateIntervalUtil.next(date_2005_12_31);
 	}
-
-	/**
-	 * Test if intervals with intersections are invalid for time line creation
-	 * TODO: fix time lines creation and uncomment test
-	 */
-//	@Test (expected = IllegalArgumentException.class)
-//	public void testTimeLineCreateFailure1() {
-//		List<DI> dis = new ArrayList<DI>(2);
-//		dis.add(new DI(datePastInfinite, date_2006_01_01, price15));
-//		dis.add(new DI(date_2005_01_01, dateFutureInfinite, price15));
-//		new TimeLine<Price, DI>(dis);
-//	}
-
-	/**
-	 * Test if intervals not covering whole time line is not enough for time line creation
-	 * TODO: fix time lines creation and uncomment test
-	 */
-//	@Test (expected = IllegalArgumentException.class)
-//	public void testTimeLineCreateFailure2() {
-//		List<DI> dis = new ArrayList<DI>(2);
-//		dis.add(new DI(date_2005_01_01, dateFutureInfinite, price15));
-//		new TimeLine<Price, DI>(dis);
-//	}
 
 	/**
 	 * Test intervals joining
@@ -244,6 +221,24 @@ class Price extends TemporaryValue<Price> {
 	/** {@inheritDoc} */
 	public String toString() {
 		return String.valueOf(value);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Price)) {
+			return false;
+		}
+
+		Price price = (Price) o;
+		return value == price.value;
+	}
+
+	@Override
+	public int hashCode() {
+		return value;
 	}
 }
 

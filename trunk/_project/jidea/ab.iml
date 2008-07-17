@@ -6,10 +6,10 @@
   <component name="FacetManager">
     <facet type="hibernate" name="Hibernate">
       <configuration>
-        <setting name="validation-enabled" value="true" />
+        <setting name="validation-enabled" value="false" />
         <datasource-map>
           <unit-entry name="flexpay" />
-          <unit-entry name="flexpaySessionFactory" value="dataSource" />
+          <unit-entry name="flexpaySessionFactory" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
       </configuration>
@@ -62,6 +62,10 @@
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
+          <containerElement type="library" name="Jetbrains" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
           <containerElement type="library" name="Quartz" level="project">
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
@@ -71,6 +75,10 @@
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="hibernate3" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" name="jasper" level="project">
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>

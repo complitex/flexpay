@@ -29,10 +29,6 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 	private RegionFilter regionFilter = new RegionFilter();
 	private TownFilter townFilter = new TownFilter();
 	private StreetFilter streetFilter = new StreetFilter();
-	private Map session;
-
-	private BuildingAttributeType typeNumber;
-	private BuildingAttributeType typeBulk;
 
 	private List<District> districtList = Collections.emptyList();
 	private District district;
@@ -55,11 +51,11 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 		Set<BuildingAttribute> buildingAttributeSet = new HashSet<BuildingAttribute>();
 		attributeMap = new HashMap<String, BuildingAttribute>();
 		for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
-			if (attributeMap.get("" + type.getType()) == null) {
+			if (attributeMap.get("" + type.getId()) == null) {
 				BuildingAttribute attr = new BuildingAttribute();
 				attr.setBuildingAttributeType(type);
 				buildingAttributeSet.add(attr);
-				attributeMap.put("" + type.getType(), attr);
+				attributeMap.put("" + type.getId(), attr);
 			}
 		}
 		buildings.setBuildingAttributes(buildingAttributeSet);
@@ -130,11 +126,6 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 		}
 
 		return "form";
-	}
-
-	public BuildingAttribute getAttribute(int attrType) throws FlexPayException {
-		return buildings.getAttribute(buildingService
-				.getAttributeType(attrType));
 	}
 
 	/**
@@ -351,20 +342,6 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 	}
 
 	/**
-	 * @return the typeNumber
-	 */
-	public BuildingAttributeType getTypeNumber() {
-		return typeNumber;
-	}
-
-	/**
-	 * @return the typeBulk
-	 */
-	public BuildingAttributeType getTypeBulk() {
-		return typeBulk;
-	}
-
-	/**
 	 * @return the buildingId
 	 */
 	public Long getBuildingId() {
@@ -398,5 +375,4 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 	public String getCreatingError() {
 		return creatingError;
 	}
-
 }

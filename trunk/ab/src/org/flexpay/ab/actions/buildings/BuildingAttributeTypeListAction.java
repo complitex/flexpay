@@ -12,10 +12,22 @@ public class BuildingAttributeTypeListAction extends FPActionSupport {
 	
 	private List<BuildingAttributeType> types;
 	
-	public String execute() {
+	public String doExecute() {
 		types = buildingService.getAttributeTypes();
 		
-		return "list";
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return SUCCESS;
 	}
 
 	/**
@@ -31,5 +43,4 @@ public class BuildingAttributeTypeListAction extends FPActionSupport {
 	public List<BuildingAttributeType> getTypes() {
 		return types;
 	}
-
 }

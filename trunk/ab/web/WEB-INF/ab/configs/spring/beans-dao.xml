@@ -309,7 +309,6 @@
 
 	<bean id="buildingsDaoExt" class="org.flexpay.ab.dao.imp.BuildingsDaoExtImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
-		<property name="dataSource" ref="dataSource" />
 	</bean>
 
 	<bean id="apartmentDaoExt" class="org.flexpay.ab.dao.imp.ApartmentDaoExtImpl">

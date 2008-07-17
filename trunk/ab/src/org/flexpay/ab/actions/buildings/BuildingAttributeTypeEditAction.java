@@ -1,6 +1,5 @@
 package org.flexpay.ab.actions.buildings;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,11 +7,14 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.BuildingAttributeType;
 import org.flexpay.ab.persistence.BuildingAttributeTypeTranslation;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.LanguageService;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 import com.opensymphony.xwork2.Preparable;
 
@@ -23,16 +25,14 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport implements 
 
 	private BuildingService buildingService;
 	
-	private Integer type;
-	private BuildingAttributeType buildingAttributeType;
+	private BuildingAttributeType buildingAttributeType = new BuildingAttributeType();
 	
-	private Map<Long, BuildingAttributeTypeTranslation> translationMap;
+	private Map<Long, BuildingAttributeTypeTranslation> translationMap = map();
 	
 	private String allTranslationBlancError;
 	
 	public void prepare() {
-		List<Language> languages = languageService.getLanguages();
-		translationMap = new HashMap<Long, BuildingAttributeTypeTranslation>();
+		List<Language> languages = ApplicationConfig.getLanguages();
 		for (Language language : languages) {
 			BuildingAttributeTypeTranslation translation = new BuildingAttributeTypeTranslation();
 			translation.setLang(language);
@@ -41,13 +41,13 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport implements 
 	}
 	
 
-	public String execute() throws FlexPayException {
-		buildingAttributeType = buildingService.getAttributeType(type);
+	public String doExecute() throws FlexPayException {
+		buildingAttributeType = buildingService.getAttributeType(stub(buildingAttributeType));
 		
 		if(isSubmit()) {
 			for(BuildingAttributeTypeTranslation translation : translationMap.values()) {
 				BuildingAttributeTypeTranslation persistentTranslation = getTranslationByLang(buildingAttributeType, translation.getLang());
-				if(isBlancTranslation(translation)) {
+				if(isBlanc(translation)) {
 					if(persistentTranslation != null) {
 					    buildingAttributeType.getTranslations().remove(persistentTranslation);
 					}
@@ -66,12 +66,12 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport implements 
 				allTranslationBlancError = "";
 			} else {
 			    buildingService.updateBuildingAttributeType(buildingAttributeType);
-			    return "list";
+			    return REDIRECT_SUCCESS;
 			}
 		}
 		
 		
-		for(Language lang : languageService.getLanguages()) {
+		for(Language lang : ApplicationConfig.getLanguages()) {
 			boolean exist = false;
 			for(Translation t : buildingAttributeType.getTranslations()) {
 				if(t.getLang().equals(lang)) {
@@ -86,10 +86,8 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport implements 
 				buildingAttributeType.getTranslations().add(t);
 			}
 		}
-		
-		
-		
-		return "form";
+
+		return INPUT;
 	}
 	
 	private BuildingAttributeTypeTranslation getTranslationByLang(BuildingAttributeType attrType, Language lang) {
@@ -102,7 +100,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport implements 
 		return null;
 	}
 	
-	private boolean isBlancTranslation(BuildingAttributeTypeTranslation t) {
+	private boolean isBlanc(BuildingAttributeTypeTranslation t) {
 
 		return StringUtils.isEmpty(t.getName()) && StringUtils.isEmpty(t.getShortName());
 	}
@@ -138,23 +136,6 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport implements 
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
-
-
-	/**
-	 * @return the type
-	 */
-	public Integer getType() {
-		return type;
-	}
-
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(Integer type) {
-		this.type = type;
-	}
-
 
 	/**
 	 * @return the buildingAttributeType

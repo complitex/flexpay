@@ -4,15 +4,15 @@ import org.flexpay.common.test.SpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
 import org.junit.Ignore;
 import org.junit.Test;
+import static org.springframework.dao.support.DataAccessUtils.intResult;
 
 public class TestBuildingService extends SpringBeanAwareTestCase {
 
 	@Test
-	@Ignore
 	public void testAllBuildingsAreValid() throws Throwable {
-		Number nBuildings = (Number) hibernateTemplate.find("select count(*) from Building").get(0);
-		Number nBtiBuildings = (Number) hibernateTemplate.find("select count(*) from ServedBuilding").get(0);
+		Number nBuildings = intResult(hibernateTemplate.find("select count(*) from Building"));
+		Number nEircBuildings = intResult(hibernateTemplate.find("select count(*) from ServedBuilding"));
 
-		assertEquals("Buildings setup is invalid", nBuildings.longValue(), nBtiBuildings.longValue());
+		assertEquals("All buildings should be the ServedBuilding's", nBuildings.longValue(), nEircBuildings.longValue());
 	}
 }

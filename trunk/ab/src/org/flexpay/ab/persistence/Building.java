@@ -27,7 +27,7 @@ public class Building extends DomainObjectWithStatus {
 		super(id);
 	}
 
-	@Nullable
+	@NotNull
 	public District getDistrict() {
 		return this.district;
 	}

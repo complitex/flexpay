@@ -112,7 +112,7 @@ public class BuildingAttribute extends DomainObject {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("id", getId())
 				.append("value", value)
-				.append("type", buildingAttributeType.getType())
+				.append("type", buildingAttributeType)
 				.toString();
 	}
 

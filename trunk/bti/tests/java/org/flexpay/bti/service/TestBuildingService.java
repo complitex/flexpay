@@ -2,14 +2,16 @@ package org.flexpay.bti.service;
 
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.junit.Test;
-import org.junit.Ignore;
+import org.junit.Ignore;import static org.junit.Assert.assertEquals;
+import org.springframework.dao.support.DataAccessUtils;
+import static org.springframework.dao.support.DataAccessUtils.intResult;
 
 public class TestBuildingService extends SpringBeanAwareTestCase {
 
 	@Test
-	@Ignore
 	public void testAllBuildingsAreValid() throws Throwable {
-		Number nBuildings = (Number) hibernateTemplate.find("select count(*) from Building").get(0);
-		Number nBtiBuildings = (Number) hibernateTemplate.find("select count(*) from Building").get(0);
+		int nBuildings = intResult(hibernateTemplate.find("select count(*) from Building"));
+		int nBtiBuildings = intResult(hibernateTemplate.find("select count(*) from Building"));
+		assertEquals("All building should be of the same type", nBuildings, nBtiBuildings);
 	}
 }

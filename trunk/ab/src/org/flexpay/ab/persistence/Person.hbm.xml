@@ -209,8 +209,8 @@
 		from Person o
 		left join fetch o.personIdentities pi
 		inner join fetch pi.identityType it
-		LEFT join fetch pi.personIdentityAttributes 
-		WHERE o.id=? and pi.status=0
+		left join fetch pi.personIdentityAttributes
+		where o.id=? and pi.status=0
 	</query>
 
 	<query name="Person.findByFIO">
@@ -219,8 +219,6 @@
 		LEFT JOIN FETCH o.personIdentities pi
 		LEFT JOIN FETCH pi.identityType it
 		LEFT JOIN FETCH it.translations ittr
-		LEFT JOIN FETCH ittr.lang lang
-		LEFT JOIN FETCH lang.translations
 		LEFT JOIN FETCH o.personRegistrations r
 		WHERE o.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName like ?
 	</query>
@@ -246,6 +244,5 @@
 		FROM PersonRegistration o
 		WHERE o.person.id=?
 	</query>
-
 
 </hibernate-mapping>

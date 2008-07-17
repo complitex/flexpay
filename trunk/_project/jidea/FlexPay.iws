@@ -42,11 +42,59 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/dao/TestCorrectionsDao.java" afterPath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/dao/TestCorrectionsDao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab_sync/src/org/flexpay/ab/service/imp/AbstractProcessor.java" afterPath="$PROJECT_DIR$/../../ab_sync/src/org/flexpay/ab/service/imp/AbstractProcessor.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sz.iml" afterPath="$PROJECT_DIR$/sz.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/dao/BuildingsDaoExt.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/dao/BuildingsDaoExt.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings_attribute_types_edit.jsp" afterPath="$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings_attribute_types_edit.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingAttributeTypeEditAction.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingAttributeTypeEditAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab_sync/src/org/flexpay/ab/service/imp/SyncServiceImpl.java" afterPath="$PROJECT_DIR$/../../ab_sync/src/org/flexpay/ab/service/imp/SyncServiceImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FlexPay.ipr" afterPath="$PROJECT_DIR$/FlexPay.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/CorrectionsDao.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/CorrectionsDao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bti.iml" afterPath="$PROJECT_DIR$/bti.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/importexport/EircImportService.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/importexport/EircImportService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../sz/etc/sql/flexpay_sz.ddl.sql" afterPath="$PROJECT_DIR$/../../sz/etc/sql/flexpay_sz.ddl.sql" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/importexport/RawBuildingsDataConverter.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/importexport/RawBuildingsDataConverter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/ab_struts_config.xml" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/ab_struts_config.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../ab/etc/sql/update/2008_07_17.sql" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingAttributeTypeListAction.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingAttributeTypeListAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab_sync/src/org/flexpay/ab/service/imp/BuildingProcessor.java" afterPath="$PROJECT_DIR$/../../ab_sync/src/org/flexpay/ab/service/imp/BuildingProcessor.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Buildings.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Buildings.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/tests/java/org/flexpay/ab/service/TestBuildingService.java" afterPath="$PROJECT_DIR$/../../ab/tests/java/org/flexpay/ab/service/TestBuildingService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eirc.iml" afterPath="$PROJECT_DIR$/eirc.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/etc/sql/create_db.sql" afterPath="$PROJECT_DIR$/../../common/etc/sql/create_db.sql" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/importexport/ImportService.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/importexport/ImportService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/web/WEB-INF/ab/configs/spring/data_export.xml" afterPath="$PROJECT_DIR$/../../ab/web/WEB-INF/ab/configs/spring/data_export.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ab_sync.iml" afterPath="$PROJECT_DIR$/ab_sync.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingsEditAction.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingsEditAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/importexport/CorrectionsService.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/service/importexport/CorrectionsService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/locking/LockManager.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/locking/LockManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/test/SpringBeanAwareTestCase.java" afterPath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/test/SpringBeanAwareTestCase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/BuildingAttribute.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/BuildingAttribute.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/BuildingService.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/BuildingService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings_attribute_types_list.jsp" afterPath="$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings_attribute_types_list.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Building.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Building.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ab.iml" afterPath="$PROJECT_DIR$/ab.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/BuildingAttributeType.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/BuildingAttributeType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/etc/sql/flexpay_ab.ddl.sql" afterPath="$PROJECT_DIR$/../../ab/etc/sql/flexpay_ab.ddl.sql" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/util/TestDateIntervalUtil.java" afterPath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/util/TestDateIntervalUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/imp/BuildingServiceImpl.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/imp/BuildingServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/tests/java/org/flexpay/bti/service/TestBuildingService.java" afterPath="$PROJECT_DIR$/../../bti/tests/java/org/flexpay/bti/service/TestBuildingService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/etc/sql/flexpay_bti.ddl.sql" afterPath="$PROJECT_DIR$/../../bti/etc/sql/flexpay_bti.ddl.sql" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/DomainObject.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/DomainObject.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/dao/imp/BuildingsDaoExtImpl.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/dao/imp/BuildingsDaoExtImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FlexPay.iws" afterPath="$PROJECT_DIR$/FlexPay.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/impl/CorrectionsDaoImpl.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/impl/CorrectionsDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/i18n/messages.properties" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/i18n/messages.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingAttributeTypeCreateAction.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingAttributeTypeCreateAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/i18n/messages_ru.properties" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/i18n/messages_ru.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Building.hbm.xml" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Building.hbm.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingsCreateAction.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingsCreateAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Person.hbm.xml" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Person.hbm.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/etc/sql/flexpay_eirc.ddl.sql" afterPath="$PROJECT_DIR$/../../eirc/etc/sql/flexpay_eirc.ddl.sql" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/common.iml" afterPath="$PROJECT_DIR$/common.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-dao.xml" afterPath="$PROJECT_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-dao.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/tests/java/org/flexpay/eirc/service/TestBuildingService.java" afterPath="$PROJECT_DIR$/../../eirc/tests/java/org/flexpay/eirc/service/TestBuildingService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/importexport/RawApartmentDataConverter.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/importexport/RawApartmentDataConverter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/templates.xml" afterPath="$PROJECT_DIR$/../../common/templates.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings_attribute_types_create.jsp" afterPath="$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings_attribute_types_create.jsp" />
     </list>
     <list name="Platform-Dependent" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/common_build.properties" afterPath="$PROJECT_DIR$/../../common/common_build.properties" />
@@ -108,17 +156,7 @@
     <favorites_list name="FlexPay" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="TestCorrectionsDao.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/dao/TestCorrectionsDao.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="23" selection-start="570" selection-end="570" vertical-scroll-proportion="0.23186682">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -265,17 +303,12 @@
     </profile-state>
     <profile-state profile-name="FlexPay">
       <state>
-        <expanded_node name="Hibernate Issues" />
-        <expanded_node name="Spring Model" />
-        <expanded_node name="JavaBeans issues" />
-        <expanded_node name="TestNG" />
+        <expanded_node name="Java EE issues" />
+        <expanded_node name="Language Injection" />
         <expanded_node name="Struts Assistant Inspections" />
-        <expanded_node name="Java language level issues" />
-        <expanded_node name="Initialization issues" />
-        <expanded_node name="Threading issues" />
-        <expanded_node name="Struts 2" />
+        <expanded_node name="Struts Assistant" />
         <expanded_node name="Inspections" />
-        <selected_node name="AbstractMethodCallInConstructor" />
+        <selected_node name="StrutsTilesInspection" />
       </state>
     </profile-state>
   </component>
@@ -337,15 +370,7 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="tests" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="java" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="etc" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -363,19 +388,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="tests" />
+          <option name="myItemId" value="etc" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="java" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="dao" />
+          <option name="myItemId" value="sql" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -385,15 +402,21 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="tests" />
+          <option name="myItemId" value="ab" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -403,11 +426,81 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="ab" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="web" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="WEB-INF" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="web" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="WEB-INF" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="configs" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="web" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -415,7 +508,7 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="ab" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -425,11 +518,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="ab" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="ab" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -437,11 +530,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="ab" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="dao" />
+          <option name="myItemId" value="i18n" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -451,11 +544,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="ab" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="ab" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -463,15 +556,63 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="ab" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="dao" />
+          <option name="myItemId" value="i18n" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="impl" />
+          <option name="myItemId" value="Resource Bundle 'messages'" />
+          <option name="myItemType" value="com.intellij.lang.properties.projectView.ResourceBundleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="etc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="sql" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="etc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="sql" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="update" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -1021,7 +1162,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.47031963" order="12" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="2" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.329859" order="3" />
-      <window_info id="Ant Build" active="false" anchor="left" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.25137952" order="4" />
+      <window_info id="Ant Build" active="false" anchor="left" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.2512255" order="4" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26598173" order="1" x="24" y="342" width="1631" height="317" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" order="3" />
       <window_info id="TeamCity" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.939951" order="14" />
@@ -1069,7 +1210,7 @@
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="code cleanup.&#10;new inspections profile added." />
+    <option name="LAST_COMMIT_MESSAGE" value="FP-136&#10;Building attribute type code replaced with id." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
@@ -1080,8 +1221,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="FP-111 FP-112&#10;Correspondence setup dialog fixed&#10;" />
-    <MESSAGE value="tests cleanup" />
     <MESSAGE value="FP-132&#10;Persons create-edit actions implemented&#10;&#10;Static loggers removed.&#10;" />
     <MESSAGE value="@NotNull annotations added.&#10;&#10;Some code cleanup done. &#10;" />
     <MESSAGE value="missed status column added" />
@@ -1105,6 +1244,8 @@
     <MESSAGE value="some code cleanup" />
     <MESSAGE value="code cleanup and tests fixed" />
     <MESSAGE value="code cleanup.&#10;new inspections profile added." />
+    <MESSAGE value="FP-136&#10;Building attribute type code replaced with id" />
+    <MESSAGE value="FP-136&#10;Building attribute type code replaced with id." />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
@@ -1771,114 +1912,129 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../ab_sync/src/org/flexpay/ab/service/imp/ApartmentProcessor.java">
+    <entry file="file://$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/util/TestDateIntervalUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="39" selection-start="1075" selection-end="1075" vertical-scroll-proportion="0.01783591">
+        <state line="36" column="5" selection-start="1242" selection-end="1242" vertical-scroll-proportion="0.17954816">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingAttributeTypeListAction.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Building.hbm.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="13" selection-start="236" selection-end="236" vertical-scroll-proportion="0.07134364">
+        <state line="138" column="23" selection-start="4688" selection-end="4688" vertical-scroll-proportion="0.3448276">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/imp/BuildingServiceImpl.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings_attribute_types_edit.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="389" column="0" selection-start="12176" selection-end="12176" vertical-scroll-proportion="0.40428063">
+        <state line="42" column="0" selection-start="1299" selection-end="1299" vertical-scroll-proportion="0.79545456">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="J2eePreview">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings_attribute_types_create.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="36" selection-start="181" selection-end="181" vertical-scroll-proportion="0.11363637">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="J2eePreview">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/actions/FPActionSupport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="193" column="35" selection-start="5251" selection-end="5251" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/Stub.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings_attribute_types_list.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="0" selection-start="708" selection-end="708" vertical-scroll-proportion="0.82529116">
+        <state line="11" column="29" selection-start="387" selection-end="387" vertical-scroll-proportion="-2.5">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="J2eePreview">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingAttributeTypeEditAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="34" selection-start="987" selection-end="1008" vertical-scroll-proportion="0.196195">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/tests/java/org/flexpay/ab/service/TestStreetService.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/etc/sql/update/2008_07_08.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="19" selection-start="2143" selection-end="2143" vertical-scroll-proportion="0.7859691">
+        <state line="20" column="0" selection-start="752" selection-end="831" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/tests/java/org/flexpay/ab/action/TestBuildingsActionsBase.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/etc/sql/update/2008_07_10.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="47" selection-start="1091" selection-end="1091" vertical-scroll-proportion="0.3388823">
+        <state line="38" column="0" selection-start="901" selection-end="1238" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/apartment/ApartmentRegistrationsAction.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/etc/sql/flexpay_ab.ddl.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="0" selection-start="562" selection-end="562" vertical-scroll-proportion="0.27454242">
+        <state line="365" column="24" selection-start="9657" selection-end="9657" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingsDeleteAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="78" selection-start="664" selection-end="664" vertical-scroll-proportion="0.29950082">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingsEditAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="36" selection-start="1149" selection-end="1149" vertical-scroll-proportion="0.3327787">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/BuildingsSetPrimaryStatusAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="22" selection-start="826" selection-end="826" vertical-scroll-proportion="0.44925123">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/BuildingService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="18" selection-start="2343" selection-end="2343" vertical-scroll-proportion="0.45778835">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/imp/ApartmentServiceImpl.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/etc/sql/update/2008_07_11.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/ApartmentService.java">
+    <entry file="file://$PROJECT_DIR$/../../common/etc/sql/create_db.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="0" selection-start="2065" selection-end="2065" vertical-scroll-proportion="0.55410224">
+        <state line="16" column="85" selection-start="618" selection-end="618" vertical-scroll-proportion="0.28537455">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/impl/CorrectionsDaoImpl.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/etc/sql/update/2008_07_17.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="109" column="0" selection-start="3621" selection-end="3621" vertical-scroll-proportion="1.7300832">
+        <state line="4" column="77" selection-start="200" selection-end="200" vertical-scroll-proportion="0.07134364">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/dao/CorrectionsDao.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/i18n/messages_ru.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="0" selection-start="790" selection-end="790" vertical-scroll-proportion="0.0">
+        <state line="134" column="9" selection-start="4901" selection-end="4901" vertical-scroll-proportion="0.33415535">
           <folding />
         </state>
       </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/dao/TestCorrectionsDao.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/i18n/messages.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="23" selection-start="570" selection-end="570" vertical-scroll-proportion="0.23186682">
+        <state line="133" column="30" selection-start="4890" selection-end="4890" vertical-scroll-proportion="-6.382979">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/ab/configs/tiles_ab.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="223" column="43" selection-start="10606" selection-end="10606" vertical-scroll-proportion="0.39357907">
           <folding />
         </state>
       </provider>

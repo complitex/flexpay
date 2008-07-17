@@ -381,7 +381,7 @@
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">BUILDING_CHANGE</param>
 			</interceptor-ref>
-			<result name="form" type="tiles">ab.buildings.edit</result>
+			<result name="input" type="tiles">ab.buildings.edit</result>
 		</action>
 		<action name="buildingsDeleteAction" class="buildingsDeleteAction">
 			<interceptor-ref name="commonDefaultStack">
@@ -409,21 +409,21 @@
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">BUILDING_ATTRIBUTE_TYPE_READ</param>
 			</interceptor-ref>
-			<result name="list" type="tiles">ab.buildings.attribute_types.list</result>
+			<result name="success" type="tiles">ab.buildings.attribute_types.list</result>
 		</action>
 		<action name="buildingAttributeTypeCreateAction" class="buildingAttributeTypeCreateAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">BUILDING_ATTRIBUTE_TYPE_ADD</param>
 			</interceptor-ref>
-			<result name="form" type="tiles">ab.buildings.attribute_types.create</result>
-			<result name="list" type="redirect-action">buildingAttributeTypeListAction</result>
+			<result name="input" type="tiles">ab.buildings.attribute_types.create</result>
+			<result name="redirectSuccess" type="redirect-action">buildingAttributeTypeListAction</result>
 		</action>
 		<action name="buildingAttributeTypeEditAction" class="buildingAttributeTypeEditAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">BUILDING_ATTRIBUTE_TYPE_CHANGE</param>
 			</interceptor-ref>
-			<result name="form" type="tiles">ab.buildings.attribute_types.edit</result>
-			<result name="list" type="redirect-action">buildingAttributeTypeListAction</result>
+			<result name="input" type="tiles">ab.buildings.attribute_types.edit</result>
+			<result name="redirectSuccess" type="redirect-action">buildingAttributeTypeListAction</result>
 		</action>
 	</package>
 

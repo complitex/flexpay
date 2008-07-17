@@ -6,7 +6,7 @@
   <component name="FacetManager">
     <facet type="hibernate" name="Hibernate">
       <configuration>
-        <setting name="validation-enabled" value="true" />
+        <setting name="validation-enabled" value="false" />
         <datasource-map>
           <unit-entry name="flexpay" />
           <unit-entry name="flexpaySessionFactory" value="dataSource" />

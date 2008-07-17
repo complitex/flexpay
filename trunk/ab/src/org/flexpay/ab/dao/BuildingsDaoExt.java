@@ -1,41 +1,34 @@
 package org.flexpay.ab.dao;
 
-import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.Buildings;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Set;
+import java.util.List;
 
 public interface BuildingsDaoExt {
 
 	/**
 	 * Find building by number
 	 *
-	 * @param street   Building street
-	 * @param district Building district
-	 * @param number   Building number
-	 * @param bulk	 Building bulk number
-	 * @return Buildings instance, or <code>null</null> if not found
+	 * @param streetId   Street key
+	 * @param districtId District key
+	 * @param number	 Building number
+	 * @return Buildingses list
 	 */
-	Buildings findBuildings(Street street, District district, String number, String bulk);
+	@NotNull
+	List<Buildings> findBuildings(@NotNull Long streetId, @NotNull Long districtId, @NotNull String number);
 
 	/**
 	 * Find building by number
 	 *
-	 * @param street Building street
-	 * @param number Building number
-	 * @param bulk   Building bulk number
-	 * @return Buildings instance, or <code>null</null> if not found
+	 * @param streetId Street key
+	 * @param number   Building number
+	 * @return Buildingses list
 	 */
-	Buildings findBuildings(Street street, String number, String bulk);
-
-	/**
-	 * Find building by street and attributes
-	 *
-	 * @param streetId		   Building street key
-	 * @param buildingAttributes Building attributes
-	 * @return Buildings instance, or <code>null</null> if not found
-	 */
-	public Buildings findBuildings(@NotNull Long streetId, @NotNull Set<BuildingAttribute> buildingAttributes);
+	@NotNull
+	List<Buildings> findBuildings(@NotNull Long streetId, @NotNull String number);
 
 	/**
 	 * Find Building stub by Buildings stub (i.e. object that does not have reference to its building)
@@ -43,5 +36,6 @@ public interface BuildingsDaoExt {
 	 * @param buildings Buildings stub
 	 * @return Building if found, or <code>null</code> otherwise
 	 */
-	Building findBuilding(Buildings buildings);
+	@Nullable
+	Building findBuilding(@NotNull Long buildings);
 }

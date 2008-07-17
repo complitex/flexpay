@@ -13,12 +13,14 @@ import org.flexpay.common.service.importexport.*;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.NonNls;
 
 import java.util.*;
 
 @Transactional (readOnly = true)
 public class ImportService {
 
+	@NonNls
 	protected Logger log = Logger.getLogger(getClass());
 
 	private RawDistrictDataConverter districtDataConverter;
@@ -369,7 +371,7 @@ public class ImportService {
 	private Translation getDefaultLangTranslation(Collection<? extends Translation> translations)
 			throws FlexPayException {
 
-		Long defaultLangId = ApplicationConfig.getInstance().getDefaultLanguage().getId();
+		Long defaultLangId = ApplicationConfig.getDefaultLanguage().getId();
 		for (Translation translation : translations) {
 			if (translation.getLang().getId().equals(defaultLangId)) {
 				return translation;
@@ -471,8 +473,8 @@ public class ImportService {
 							data, sourceDescription, correctionsService);
 
 					Buildings persistent = buildingService.findBuildings(
-							buildings.getStreet(), buildings.getBuilding().getDistrict(),
-							buildings.getNumber(), buildings.getBulk());
+							buildings.getStreetStub(), buildings.getDistrictStub(),
+							buildings.getBuildingAttributes());
 					if (persistent == null) {
 						// TODO: return back
 						addToStack(buildings);

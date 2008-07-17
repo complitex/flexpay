@@ -193,7 +193,7 @@
 	</target>
 
 	<target name="template.run.tests">
-		<junit printsummary="yes" haltonfailure="yes" fork="yes" dir="${build.dir}/web">
+		<junit printsummary="yes" haltonfailure="yes" fork="yes" forkmode="once" dir="${build.dir}/web">
 			<classpath>
 				<path refid="classpath" />
 			</classpath>

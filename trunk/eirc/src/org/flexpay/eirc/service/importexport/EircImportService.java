@@ -9,6 +9,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.persistence.Consumer;
@@ -299,7 +300,7 @@ public class EircImportService extends ImportService {
 
 	private Apartment findApartment(RawConsumerData data, Street street, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
 			throws Exception {
-		Buildings buildings = buildingService.findBuildings(street, data.getAddressHouse(), data.getAddressBulk());
+		Buildings buildings = buildingService.findBuildings(stub(street), data.getAddressHouse(), data.getAddressBulk());
 		if (buildings == null) {
 			log.warn(String.format("Failed getting building for consumer, Street(%d, %s), Building(%s, %s) ",
 					street.getId(), data.getAddressStreet(), data.getAddressHouse(), data.getAddressBulk()));
@@ -316,7 +317,7 @@ public class EircImportService extends ImportService {
 			throws Exception {
 		Building building = buildings.getBuilding();
 		if (building == null) {
-			building = buildingService.findBuilding(buildings);
+			building = buildingService.findBuilding(stub(buildings));
 			if (building == null) {
 				log.warn("Failed getting building for buildings #" + buildings.getId());
 				ImportError error = addImportError(sd, data.getExternalSourceId(), Buildings.class, dataSource);

@@ -341,6 +341,26 @@
         </inspection_tool>
         <inspection_tool class="AbstractMethodCallInConstructor" level="WARNING" enabled="true" />
         <inspection_tool class="HibernateMappingDatasourceDomInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="StrutsTilesInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="ChannelResource" level="WARNING" enabled="true" />
+        <inspection_tool class="HibernateResource" level="WARNING" enabled="true" />
+        <inspection_tool class="IOResource" level="WARNING" enabled="true" />
+        <inspection_tool class="JDBCResource" level="WARNING" enabled="true" />
+        <inspection_tool class="JNDIResource" level="WARNING" enabled="true" />
+        <inspection_tool class="SocketResource" level="WARNING" enabled="true" />
+        <inspection_tool class="DriverManagerGetConnection" level="WARNING" enabled="true" />
+        <inspection_tool class="ClassWithMultipleLoggers" level="WARNING" enabled="true">
+          <option name="loggerClassName" value="java.util.logging.Logger" />
+        </inspection_tool>
+        <inspection_tool class="LogStatementGuardedByLogCondition" level="WARNING" enabled="true">
+          <option name="loggerClassName" value="java.util.logging.Logger" />
+          <option name="loggerMethodAndconditionMethodNames" value="fine,isLoggable(java.util.logging.Level.FINE),finer,isLoggable(java.util.logging.Level.FINER),finest,isLoggable(java.util.logging.Level.FINEST)" />
+        </inspection_tool>
+        <inspection_tool class="LoggerInitializedWithForeignClass" level="WARNING" enabled="true">
+          <option name="loggerClassName" value="org.apache.log4j.Logger" />
+          <option name="loggerFactoryMethodName" value="getLogger" />
+        </inspection_tool>
+        <inspection_tool class="LoggingConditionDisagreesWithLogStatement" level="WARNING" enabled="true" />
       </profile>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Project Default" />
