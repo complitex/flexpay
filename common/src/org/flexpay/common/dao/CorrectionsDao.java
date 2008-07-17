@@ -3,6 +3,7 @@ package org.flexpay.common.dao;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
+import org.jetbrains.annotations.NonNls;
 
 public interface CorrectionsDao {
 
@@ -29,7 +30,7 @@ public interface CorrectionsDao {
 	 * @param sourceDescription Data source description
 	 * @return DomainObject
 	 */
-	<T extends DomainObject> T findCorrection(String externalId, int type, Class<T> cls, DataSourceDescription sourceDescription);
+	<T extends DomainObject> T findCorrection(@NonNls String externalId, int type, Class<T> cls, DataSourceDescription sourceDescription);
 
 	/**
 	 * Get correction internal object id
