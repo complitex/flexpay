@@ -5,13 +5,13 @@ import java.util.List;
 import org.flexpay.sz.persistence.SzFileType;
 
 public interface SzFileTypeService {
-	Long TARIF = new Long(1);
-	Long CHARACTERISTIC = new Long(2);
-	Long SRV_TYPES = new Long(3);
-	Long FORM2 = new Long(4);
-	Long CHARACTERISTIC_RESPONSE = new Long(5);
-	Long SRV_TYPES_RESPONSE = new Long(6);
-	Long SUBSIDY = new Long(7);
+	Long TARIF = (long) 1;
+	Long CHARACTERISTIC = (long) 2;
+	Long SRV_TYPES = (long) 3;
+	Long FORM2 = (long) 4;
+	Long CHARACTERISTIC_RESPONSE = (long) 5;
+	Long SRV_TYPES_RESPONSE = (long) 6;
+	Long SUBSIDY = (long) 7;
 	
 	/**
 	 * Read SzFileType object by its unique id
