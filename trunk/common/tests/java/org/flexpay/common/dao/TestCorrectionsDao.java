@@ -15,10 +15,8 @@ public class TestCorrectionsDao extends SpringBeanAwareTestCase {
 	@Test
 	public void testGetLanguage() {
 
-		DataSourceDescription dsd = new DataSourceDescription();
-		dsd.setId(-4L);
-		Language language = (Language) correctionsDao.findCorrection(
-				"hbz", 10, Language.class, dsd);
+		DataSourceDescription dsd = new DataSourceDescription(-4L);
+		Language language = correctionsDao.findCorrection("hbz", 10, Language.class, dsd);
 
 		assertNull("Found not existing object", language);
 	}

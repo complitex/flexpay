@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.jetbrains.annotations.NonNls;
 
 import java.util.List;
 import java.sql.ResultSet;
@@ -44,7 +45,7 @@ public class CorrectionsDaoImpl extends SimpleJdbcDaoSupport implements Correcti
 	 * @param sourceDescription Data source description
 	 * @return DomainObject
 	 */
-	public <T extends DomainObject> T findCorrection(String externalId, int type,
+	public <T extends DomainObject> T findCorrection(@NonNls String externalId, int type,
 													 final Class<T> cls, DataSourceDescription sourceDescription) {
 
 		Long id = sourceDescription != null ?
