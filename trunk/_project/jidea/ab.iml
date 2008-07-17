@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module relativePaths="true" type="JAVA_MODULE" version="4">
+  <component name="DBNavigator.Module.ConnectionManager">
+    <connections />
+  </component>
+  <component name="FacetManager">
+    <facet type="hibernate" name="Hibernate">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <datasource-map>
+          <unit-entry name="flexpay" />
+          <unit-entry name="flexpaySessionFactory" value="dataSource" />
+        </datasource-map>
+        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
+      </configuration>
+    </facet>
+    <facet type="web" name="Web">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/web.xml" optional="false" version="2.5" />
+        </descriptors>
+        <webroots>
+          <root url="file://$MODULE_DIR$/../../ab/web" relative="/" />
+        </webroots>
+        <building>
+          <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/out/exploded/abWeb" />
+          <setting name="EXPLODED_ENABLED" value="false" />
+          <setting name="JAR_URL" value="file://$MODULE_DIR$/../../_distr/ab.war" />
+          <setting name="JAR_ENABLED" value="false" />
+          <setting name="BUILD_MODULE_ON_FRAME_DEACTIVATION" value="false" />
+          <setting name="BUILD_EXTERNAL_DEPENDENCIES" value="false" />
+          <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
+          <setting name="RUN_JASPER_VALIDATION" value="false" />
+          <setting name="BUILD_ONLY_WEB_RESOURCES" value="false" />
+        </building>
+        <packaging>
+          <containerElement type="facet" facetId="common/web/Web">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="&lt;N/A&gt;" />
+          </containerElement>
+          <containerElement type="module" name="ab">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="&lt;N/A&gt;" />
+          </containerElement>
+          <containerElement type="module" name="common">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/classes" />
+          </containerElement>
+          <containerElement type="library" name="AJax" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" name="Commons" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" name="JBPM" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" name="JUnit" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" name="Quartz" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" name="Struts2" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" name="hibernate3" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" name="logging" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" name="spring2" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" level="module">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+            <url>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/</url>
+          </containerElement>
+          <containerElement type="library" level="module">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="&lt;N/A&gt;" />
+            <url>jar://$APPLICATION_HOME_DIR$/lib/javaee.jar!/</url>
+          </containerElement>
+          <containerElement type="library" level="module">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+            <url>jar://$MODULE_DIR$/../../common/lib/ajax/json-lib-2.0-jdk15.jar!/</url>
+          </containerElement>
+          <containerElement type="library" name="j2ee" level="application">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+        </packaging>
+      </configuration>
+      <facet type="Struts2" name="Struts 2">
+        <configuration>
+          <fileset id="s2fileset1" name="My Fileset" removed="false">
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/ab_struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/person/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/common_struts_config.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-tiles-plugin-2.0.11.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-spring-plugin-2.0.11.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-core-2.0.11.jar!/struts-default.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/struts-plugin.xml</file>
+          </fileset>
+          <validation>
+            <errors_as_warnings>false</errors_as_warnings>
+            <validate_struts>true</validate_struts>
+            <validate_validation>true</validate_validation>
+          </validation>
+        </configuration>
+      </facet>
+    </facet>
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="web: application context" name="MVC application context" removed="false">
+          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/applicationContext.xml</file>
+        </fileset>
+        <options>
+          <option name="enableValidation" value="true" />
+          <option name="reportErrorsAsWarnings" value="true" />
+        </options>
+        <customNs />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../../_build/classes" />
+    <output-test url="file://$MODULE_DIR$/../../_build/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../ab">
+      <sourceFolder url="file://$MODULE_DIR$/../../ab/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../ab/tests/java" isTestSource="true" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/javaee.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="file://$MODULE_DIR$/../Java/_libs/j2ee/docs/api" />
+        </JAVADOC>
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="hibernate3" level="project" />
+    <orderEntry type="library" name="spring2" level="project" />
+    <orderEntry type="library" name="Struts2" level="project" />
+    <orderEntry type="library" name="JUnit" level="project" />
+    <orderEntry type="module" module-name="common" />
+    <orderEntry type="library" name="logging" level="project" />
+    <orderEntry type="library" name="Commons" level="project" />
+    <orderEntry type="library" name="AJax" level="project" />
+    <orderEntry type="library" name="JBPM" level="project" />
+    <orderEntry type="library" name="Quartz" level="project" />
+    <orderEntry type="library" name="Jetbrains" level="project" />
+    <orderEntry type="library" name="jasper" level="project" />
+    <orderEntryProperties />
+  </component>
+</module>
+
