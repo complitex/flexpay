@@ -111,10 +111,9 @@ public class TicketServiceImpl implements TicketService {
 				map.put(amount.getConsumer().getId(), amount);
 			}
 		}
-		for (Iterator<TicketServiceAmount> it = map.values().iterator(); it
-				.hasNext();) {
-			ticketServiceAmountService.create(it.next());
-		}
+        for (TicketServiceAmount ticketServiceAmount : map.values()) {
+            ticketServiceAmountService.create(ticketServiceAmount);
+        }
 	}
 
 	private Integer getTicketNumber(Person person, Date dateTill) {
@@ -292,7 +291,7 @@ public class TicketServiceImpl implements TicketService {
 			record.setAmount(amount.abs());
 			record.setConsumer(ticketServiceAmount.getConsumer());
 			record.setOperationDate(operationDate);
-			record.setRecordType(new AccountRecordType(Long.valueOf(AccountRecordType.TYPE_PAYMENT)));
+			record.setRecordType(new AccountRecordType((long) AccountRecordType.TYPE_PAYMENT));
 			accountRecordService.create(record);
 		}
 	}
