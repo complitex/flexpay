@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="fregions" method="post" action="<s:url value="/dicts/list_regions.action" includeParams="none" />">
+	<form id="fregions" method="post" action="<s:url value="/dicts/regionList.action" includeParams="none" />">
 
 		<tr>
 			<td colspan="4">
@@ -23,12 +23,12 @@
 						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/></td>
 				<td class="col"><input type="checkbox" value="<s:property value="%{object.id}"/>" name="objectIds"/></td>
 				<td class="col">
-					<a href="<s:url value="/dicts/list_towns.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{object.id}"/>">
+					<a href="<s:url value="/dicts/townList.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{object.id}"/>">
 						<s:property value="%{getTranslation(translations).name}"/>
 					</a>
 				</td>
 				<td class="col">
-					<a href="<s:url value="/dicts/view_region.action?object.id=%{object.id}"/>">
+					<a href="<s:url value="/dicts/regionView.action?object.id=%{object.id}"/>">
 						<!-- <img src="<s:url value="/resources/common/img/i_view.gif"/>" alt="<s:text name="common.view"/>"/> -->
 						<s:text name="common.view"/>
 					</a></td>
@@ -38,10 +38,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fregions').action='<s:url action="delete_regions"/>';$('fregions').submit()"
+					   onclick="$('fregions').action='<s:url action="regionsDelete"/>';$('fregions').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="create_region"/>'"
+					   onclick="window.location='<s:url action="regionCreate"/>'"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

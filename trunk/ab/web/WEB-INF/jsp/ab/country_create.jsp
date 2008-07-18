@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form action="<c:url value='/dicts/create_country.action'/>" method="post">
+	<form action="<c:url value='/dicts/countryCreate.action'/>" method="post">
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="33%"><s:text name="ab.language"/></td>
