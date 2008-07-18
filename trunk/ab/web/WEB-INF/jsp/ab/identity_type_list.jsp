@@ -1,5 +1,7 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
+<s:actionerror />
+
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<form id="fobjects" method="post" action="<s:url value="/dicts/identity_type_list.action" includeParams="none" />">
 		<tr>
@@ -18,7 +20,7 @@
 					</a>
 				</td>
 				<td class="col">
-					<a href="<s:url action='identity_type_edit'><s:param name="id" value="%{translatable.id}"/></s:url>">
+					<a href="<s:url action='identity_type_edit'><s:param name="identityType.id" value="%{translatable.id}"/></s:url>">
 						<s:text name="ab.edit"/>
 					</a>
 				</td>

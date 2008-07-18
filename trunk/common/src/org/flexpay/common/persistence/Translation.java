@@ -81,6 +81,16 @@ public class Translation extends DomainObject {
 	}
 
 	/**
+	 * Check if another translation has the same language
+	 *
+	 * @param translation Translation to check
+	 * @return <code>true</code> if translation uses the same language, or <code>false</code> otherwise
+	 */
+	public boolean isSameLanguage(@NotNull Translation translation) {
+		return getLang().equals(translation.getLang());
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public String toString() {

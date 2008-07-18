@@ -9,10 +9,12 @@ import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -65,8 +67,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	}
 
 	/**
-	 * Get StreetType translations for specified locale, if translation is not found check
-	 * for translation in default locale
+	 * Get StreetType translations for specified locale, if translation is not found check for translation in default locale
 	 *
 	 * @param locale Locale to get translations for
 	 * @return List of StreetTypes
@@ -189,8 +190,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	}
 
 	/**
-	 * Disable StreetTypes TODO: check if there are any streets with specified type and
-	 * reject operation
+	 * Disable StreetTypes TODO: check if there are any streets with specified type and reject operation
 	 *
 	 * @param streetTypes StreetTypes to disable
 	 */
@@ -226,13 +226,54 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 * Initialize street type filter
 	 *
 	 * @param streetTypeFilter Filter to init
-	 * @param locale Locale to get filter translations in
+	 * @param locale		   Locale to get filter translations in
 	 * @throws FlexPayException if failure occurs
 	 */
 	public void initFilter(StreetTypeFilter streetTypeFilter, Locale locale)
-		throws FlexPayException {
+			throws FlexPayException {
 		List<StreetTypeTranslation> translations = getTranslations(locale);
 		streetTypeFilter.setNames(translations);
+	}
+
+	/**
+	 * Update or create Entity
+	 *
+	 * @param streetType Entity to save
+	 * @return Saved instance
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	public StreetType save(@NotNull StreetType streetType) throws FlexPayExceptionContainer {
+		validate(streetType);
+		if (streetType.isNew()) {
+			streetType.setId(null);
+			streetTypeDao.create(streetType);
+		} else {
+			streetTypeDao.update(streetType);
+		}
+
+		return streetType;
+	}
+
+	private void validate(StreetType type) throws FlexPayExceptionContainer {
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
+
+		boolean defaultLangTranslationFound = false;
+		for (StreetTypeTranslation translation : type.getTranslations()) {
+			if (translation.getLang().isDefault() && StringUtils.isNotEmpty(translation.getName())) {
+				defaultLangTranslationFound = true;
+			}
+		}
+
+		if (!defaultLangTranslationFound) {
+			container.addException(new FlexPayException(
+					"No default lang translation", "error.no_default_translation"));
+		}
+
+		// todo check if there is already a type with a specified name
+
+		if (container.isNotEmpty()) {
+			throw container;
+		}
 	}
 
 	/**

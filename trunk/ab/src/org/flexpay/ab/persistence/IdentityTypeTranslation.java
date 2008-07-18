@@ -37,4 +37,3 @@ public class IdentityTypeTranslation extends Translation {
 		return o instanceof IdentityTypeTranslation && super.equals(o);
 	}
 }
-
