@@ -21,18 +21,18 @@
 
 	<package name="countries" namespace="/dicts" extends="common">
 
-		<action name="list_countries" class="listCountriesAction">
+		<action name="countryList" class="listCountriesAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">COUNTRY_READ</param>
 			</interceptor-ref>
 			<result type="tiles">ab.country.list</result>
 		</action>
 
-		<action name="create_country" class="createCountryAction">
+		<action name="countryCreate" class="createCountryAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">COUNTRY_ADD</param>
 			</interceptor-ref>
-			<result type="redirect">list_countries.action</result>
+			<result type="redirect">countryList.action</result>
 			<result type="tiles" name="input">ab.country.create</result>
 		</action>
 
@@ -40,99 +40,99 @@
 
 	<package name="regions" namespace="/dicts" extends="common">
 
-		<action name="list_regions" class="listRegionsAction">
+		<action name="regionList" class="listRegionsAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">REGION_READ</param>
 			</interceptor-ref>
 			<result type="tiles">ab.regions.list</result>
 		</action>
 
-		<action name="create_region" class="createRegionAction">
+		<action name="regionCreate" class="createRegionAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">REGION_ADD</param>
 			</interceptor-ref>
 			<result type="redirect-action">
-				<param name="actionName">view_region</param>
+				<param name="actionName">regionView</param>
 				<param name="parse">true</param>
 				<param name="object.id">${object.id}</param>
 			</result>
 			<result type="tiles" name="input">ab.region.create</result>
 		</action>
 
-		<action name="view_region" class="viewRegionAction">
+		<action name="regionView" class="viewRegionAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">REGION_READ</param>
 			</interceptor-ref>
 			<result type="tiles">ab.region.view</result>
-			<result type="redirect" name="error">list_regions.action</result>
+			<result type="redirect" name="error">regionList.action</result>
 		</action>
 
-		<action name="edit_region" class="editRegionAction">
+		<action name="regionEdit" class="editRegionAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">REGION_CHANGE</param>
 			</interceptor-ref>
 			<result type="redirect-action">
-				<param name="actionName">view_region</param>
+				<param name="actionName">regionView</param>
 				<param name="parse">true</param>
 				<param name="object.id">${object.id}</param>
 			</result>
 			<result type="tiles" name="input">ab.region.edit</result>
 		</action>
 
-		<action name="delete_regions" class="deleteRegionsAction">
+		<action name="regionsDelete" class="deleteRegionsAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">REGION_DELETE</param>
 			</interceptor-ref>
-			<result type="redirect">list_regions.action</result>
+			<result type="redirect">regionList.action</result>
 		</action>
 
 	</package>
 
 	<package name="towns" namespace="/dicts" extends="common">
-		<action name="list_towns" class="listTownsAction">
+		<action name="townList" class="listTownsAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">TOWN_READ</param>
 			</interceptor-ref>
 			<result type="tiles">ab.towns.list</result>
 		</action>
 
-		<action name="create_town" class="createTownAction">
+		<action name="townCreate" class="createTownAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">TOWN_ADD</param>
 			</interceptor-ref>
 			<result type="redirect-action">
-				<param name="actionName">view_town</param>
+				<param name="actionName">townView</param>
 				<param name="parse">true</param>
 				<param name="object.id">${object.id}</param>
 			</result>
 			<result type="tiles" name="input">ab.town.create</result>
 		</action>
 
-		<action name="view_town" class="viewTownAction">
+		<action name="townView" class="viewTownAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">TOWN_READ</param>
 			</interceptor-ref>
 			<result type="tiles">ab.town.view</result>
-			<result type="redirect" name="error">list_towns.action</result>
+			<result type="redirect" name="error">townList.action</result>
 		</action>
 
-		<action name="edit_town" class="editTownAction">
+		<action name="townEdit" class="editTownAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">TOWN_CHANGE</param>
 			</interceptor-ref>
 			<result type="redirect-action">
-				<param name="actionName">view_town</param>
+				<param name="actionName">townView</param>
 				<param name="parse">true</param>
 				<param name="object.id">${object.id}</param>
 			</result>
 			<result type="tiles" name="input">ab.town.edit</result>
 		</action>
 
-		<action name="delete_towns" class="deleteTownsAction">
+		<action name="townsDelete" class="deleteTownsAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">TOWN_DELETE</param>
 			</interceptor-ref>
-			<result type="redirect">list_towns.action</result>
+			<result type="redirect">townList.action</result>
 		</action>
 	</package>
 

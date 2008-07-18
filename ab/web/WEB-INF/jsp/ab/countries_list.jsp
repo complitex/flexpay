@@ -15,7 +15,7 @@
 				<input type="checkbox" name="objectIds">
 			</td>
 			<td class="col"> 
-				<a href="<s:url action='list_regions.action'><s:param name="countryFilter.selectedId" value="%{translatable.id}"/></s:url>">
+				<a href="<s:url action='regionList.action'><s:param name="countryFilter.selectedId" value="%{translatable.id}"/></s:url>">
 	            	<s:property value="name" />
 	            </a>
 			</td>
@@ -29,7 +29,7 @@
 	<tr>
 		<td colspan="4">
 			<input type="submit" class="btn-exit"
-				   onclick="window.location='<s:url value="/dicts/create_country.action"/>'"
+				   onclick="window.location='<s:url value="/dicts/countryCreate.action"/>'"
 				   value="<s:text name="common.new"/>"/>
 		</td>
 	</tr>

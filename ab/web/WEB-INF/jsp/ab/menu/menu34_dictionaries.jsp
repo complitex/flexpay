@@ -4,13 +4,13 @@
 	<li class="open"><b><s:text name="menu2.adress_dictionaries"/></b>
 		<ul class="docs">
 			<li>
-				<a href="<s:url namespace="/dicts" action='list_countries' includeParams="none" />"><s:text
+				<a href="<s:url namespace="/dicts" action='countryList' includeParams="none" />"><s:text
 						name="menu34.dictionaries.countries"/></a></li>
 			<li>
-				<a href="<s:url namespace="/dicts" action='list_regions' includeParams="none" />"><s:text
+				<a href="<s:url namespace="/dicts" action='regionList' includeParams="none" />"><s:text
 						name="menu34.dictionaries.regions"/></a></li>
 			<li>
-				<a href="<s:url namespace="/dicts" action='list_towns' includeParams="none" />"><s:text
+				<a href="<s:url namespace="/dicts" action='townList' includeParams="none" />"><s:text
 						name="menu34.dictionaries.towns"/></a></li>
 			<li>
 				<a href="<s:url namespace="/dicts" action='list_districts' includeParams="none" />"><s:text

@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="fobjects" method="post" action="<s:url value="/dicts/list_towns.action" includeParams="none" />">
+	<form id="fobjects" method="post" action="<s:url value="/dicts/townList.action" includeParams="none" />">
 
 		<tr>
 			<td colspan="4">
@@ -27,7 +27,7 @@
 					</a>
 				</td>
 				<td class="col">
-					<a href="<s:url value="/dicts/view_town.action?object.id=%{object.id}"/>">
+					<a href="<s:url value="/dicts/townView.action?object.id=%{object.id}"/>">
 						<!-- <img src="<s:url value="/resources/common/img/i_view.gif" />" alt="<s:text name="common.view"/>"
 						 title="<s:text name="common.view"/>" /> -->
 						<s:text name="common.view"/> 
@@ -38,10 +38,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="delete_towns"/>';$('fobjects').submit()"
+					   onclick="$('fobjects').action='<s:url action="townsDelete"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="create_town"/>'"
+					   onclick="window.location='<s:url action="townCreate"/>'"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
