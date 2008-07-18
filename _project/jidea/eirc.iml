@@ -9,7 +9,7 @@
         <setting name="validation-enabled" value="false" />
         <datasource-map>
           <unit-entry name="flexpay" />
-          <unit-entry name="flexpaySessionFactory" />
+          <unit-entry name="flexpaySessionFactory" value="dataSource" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../eirc/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
       </configuration>

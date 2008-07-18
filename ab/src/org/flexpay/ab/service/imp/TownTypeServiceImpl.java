@@ -16,12 +16,16 @@ import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.util.TranslationUtil;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class TownTypeServiceImpl implements TownTypeService {
 
+	@NonNls
 	private Logger log = Logger.getLogger(getClass());
 
 	private TownTypeDao townTypeDao;
@@ -83,7 +87,6 @@ public class TownTypeServiceImpl implements TownTypeService {
 			throws FlexPayException {
 
 		log.debug("Getting list of TownTypes");
-
 		List<TownType> townTypes = townTypeDao
 				.listTownTypes(TownType.STATUS_ACTIVE);
 		List<TownTypeTranslation> translations = new ArrayList<TownTypeTranslation>(
@@ -104,6 +107,48 @@ public class TownTypeServiceImpl implements TownTypeService {
 		}
 
 		return translations;
+	}
+
+	/**
+	 * Update or create Entity
+	 *
+	 * @param type Entity to save
+	 * @return Saved instance
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	public TownType save(@NotNull TownType type) throws FlexPayExceptionContainer {
+		validate(type);
+		if (type.isNew()) {
+			type.setId(null);
+			townTypeDao.create(type);
+		} else {
+			townTypeDao.update(type);
+		}
+
+		return type;
+
+	}
+
+	private void validate(TownType type) throws FlexPayExceptionContainer {
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
+
+		boolean defaultLangTranslationFound = false;
+		for (TownTypeTranslation translation : type.getTranslations()) {
+			if (translation.getLang().isDefault() && StringUtils.isNotEmpty(translation.getName())) {
+				defaultLangTranslationFound = true;
+			}
+		}
+
+		if (!defaultLangTranslationFound) {
+			container.addException(new FlexPayException(
+					"No default lang translation", "error.no_default_translation"));
+		}
+
+		// todo check if there is already a type with a specified name
+
+		if (container.isNotEmpty()) {
+			throw container;
+		}
 	}
 
 	/**

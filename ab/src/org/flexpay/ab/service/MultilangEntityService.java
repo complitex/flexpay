@@ -1,7 +1,9 @@
 package org.flexpay.ab.service;
 
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Translation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,6 +20,7 @@ public interface MultilangEntityService<Entity, T extends Translation> {
 	 * @param translations Entity names translations
 	 * @return created Entity object
 	 * @throws FlexPayException if failure occurs
+	 * @deprecated use {@link #save} instead
 	 */
 	public Entity create(Collection<T> translations) throws FlexPayException;
 
@@ -52,8 +55,10 @@ public interface MultilangEntityService<Entity, T extends Translation> {
 	 * @param entity	   Entity to update trnaslations for
 	 * @param translations Translations set
 	 * @return Updated Entity object
+	 * @throws FlexPayException if failure occurs
+	 * @deprecated use {@link #save} instead
 	 */
-	Entity update(Entity entity, Collection<T> translations);
+	Entity update(Entity entity, Collection<T> translations) throws FlexPayException;
 
 	/**
 	 * Disable Entity
@@ -62,4 +67,12 @@ public interface MultilangEntityService<Entity, T extends Translation> {
 	 */
 	void disable(Collection<Entity> entity);
 
+	/**
+	 * Update or create Entity
+	 *
+	 * @param entity Entity to save
+	 * @return Saved instance
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	Entity save(@NotNull Entity entity) throws FlexPayExceptionContainer;
 }

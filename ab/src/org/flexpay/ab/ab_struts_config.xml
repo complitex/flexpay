@@ -341,7 +341,7 @@
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">IDENTITY_TYPE_READ</param>
 			</interceptor-ref>
-			<result name="list" type="tiles">ab.identity_type.list</result>
+			<result name="success" type="tiles">ab.identity_type.list</result>
 		</action>
 		<action name="identity_type_edit" class="identityTypeEditAction">
 			<interceptor-ref name="commonDefaultStack">

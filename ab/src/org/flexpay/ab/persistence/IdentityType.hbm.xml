@@ -20,7 +20,7 @@
 				<comment>Identity type code</comment>
 			</column>
 		</property>
-		<set name="translations" inverse="true">
+		<set name="translations" inverse="true" cascade="all-delete-orphan">
 			<key column="identity_type_id" not-null="true" />
 			<one-to-many class="IdentityTypeTranslation" />
 		</set>
