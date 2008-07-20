@@ -12,7 +12,7 @@ import org.flexpay.common.service.ParentService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListPersons extends FPActionSupport implements SessionAware {
+public class ListPersons extends FPActionSupport {
 
 	private ParentService parentService;
 	private PersonService personService;
@@ -27,13 +27,23 @@ public class ListPersons extends FPActionSupport implements SessionAware {
 		if (StringUtils.isEmpty(searchString)) {
 			ArrayStack filters = parentService == null ? null :
 								 parentService.initFilters(getFilters(), userPreferences.getLocale());
-			setFilters(filters);
 
 			persons = personService.findPersons(filters, pager);
 		} else {
 			persons = personService.findByFIO(pager, "%" + searchString + "%");
 		}
 
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
 		return SUCCESS;
 	}
 
@@ -58,10 +68,6 @@ public class ListPersons extends FPActionSupport implements SessionAware {
 	private ArrayStack getFilters() {
 
 		return new ArrayStack();
-	}
-
-	private void setFilters(ArrayStack filters) {
-
 	}
 
 	/**

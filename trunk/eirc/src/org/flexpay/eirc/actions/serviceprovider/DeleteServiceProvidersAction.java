@@ -1,9 +1,7 @@
 package org.flexpay.eirc.actions.serviceprovider;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.eirc.service.OrganisationService;
 import org.flexpay.eirc.service.SPService;
-import org.flexpay.eirc.service.imp.OrganisationServiceImpl;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,9 +12,20 @@ public class DeleteServiceProvidersAction extends FPActionSupport {
 
 	private Set<Long> objectIds = new HashSet<Long>();
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 		spService.disable(objectIds);
 
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
 		return SUCCESS;
 	}
 

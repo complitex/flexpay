@@ -1,17 +1,20 @@
 package org.flexpay.common.service.importexport.imp;
 
+import org.apache.log4j.Logger;
 import org.flexpay.common.dao.CorrectionsDao;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import org.jetbrains.annotations.NonNls;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.log4j.Logger;
 
 @Transactional (readOnly = true)
 public class CorrectionsServiceImpl implements CorrectionsService {
 
+	@NonNls
 	private Logger log = Logger.getLogger(getClass());
 
 	private ClassToTypeRegistry typeRegistry;
@@ -22,7 +25,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 *
 	 * @param correction DataCorrection
 	 */
-	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public void save(DataCorrection correction) {
 		DataCorrection corr = correctionsDao.findCorrection(
 				correction.getExternalId(), correction.getObjectType(), correction.getDataSourceDescription());
@@ -41,34 +44,34 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	/**
 	 * Find domain object by its external data source id
 	 *
-	 * @param externalId		External id
-	 * @param cls			   Object class to find
-	 * @param sourceDescription External data source description
+	 * @param externalId External id
+	 * @param cls		Object class to find
+	 * @param sd		 External data source description
 	 * @return DomainObject
 	 */
-	public <T extends DomainObject> T findCorrection(String externalId, Class<T> cls, DataSourceDescription sourceDescription) {
+	public <T extends DomainObject> Stub<T> findCorrection(String externalId, Class<T> cls, DataSourceDescription sd) {
 		int type = typeRegistry.getType(cls);
-		return correctionsDao.findCorrection(externalId, type, cls, sourceDescription);
+		return correctionsDao.findCorrection(externalId, type, cls, sd);
 	}
 
 	/**
 	 * Check if correction exists
 	 *
-	 * @param externalId		External id
-	 * @param cls			   Object class to find
-	 * @param sourceDescription External data source description
+	 * @param externalId External id
+	 * @param cls		Object class to find
+	 * @param sd		 External data source description
 	 * @return DomainObject
 	 */
-	public boolean existsCorrection(String externalId, Class<? extends DomainObject> cls, DataSourceDescription sourceDescription) {
+	public boolean existsCorrection(String externalId, Class<? extends DomainObject> cls, DataSourceDescription sd) {
 		int type = typeRegistry.getType(cls);
-		return correctionsDao.existsCorrection(externalId, type, sourceDescription);
+		return correctionsDao.existsCorrection(externalId, type, sd);
 	}
 
 	/**
 	 * Create stub for new data correction
 	 *
-	 * @param externalId External object id
-	 * @param obj DomainObject
+	 * @param externalId		External object id
+	 * @param obj			   DomainObject
 	 * @param sourceDescription Data source description
 	 * @return stub for a new DataCorrection
 	 */

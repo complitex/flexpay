@@ -33,7 +33,7 @@ public class TestStreetTypeService extends SpringBeanAwareTestCase {
 
 		StreetType streetType = new StreetType();
 		StreetTypeTranslation typeTranslation = new StreetTypeTranslation();
-		typeTranslation.setLang(ApplicationConfig.getInstance().getDefaultLanguage());
+		typeTranslation.setLang(ApplicationConfig.getDefaultLanguage());
 		typeTranslation.setName("Test Street type");
 		typeTranslation.setTranslatable(streetType);
 		Set<StreetTypeTranslation> translations = new HashSet<StreetTypeTranslation>();

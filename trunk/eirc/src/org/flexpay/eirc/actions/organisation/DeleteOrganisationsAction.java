@@ -2,7 +2,6 @@ package org.flexpay.eirc.actions.organisation;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.eirc.service.OrganisationService;
-import org.flexpay.eirc.service.imp.OrganisationServiceImpl;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,9 +12,20 @@ public class DeleteOrganisationsAction extends FPActionSupport {
 
 	private Set<Long> objectIds = new HashSet<Long>();
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 		organisationService.disable(objectIds);
 
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
 		return SUCCESS;
 	}
 

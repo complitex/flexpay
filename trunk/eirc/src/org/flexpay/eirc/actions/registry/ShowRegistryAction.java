@@ -2,18 +2,17 @@ package org.flexpay.eirc.actions.registry;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
+import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
+import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.SpRegistryService;
-import org.flexpay.eirc.service.SPService;
-import org.flexpay.eirc.service.ServiceTypeService;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +31,7 @@ public class ShowRegistryAction extends FPActionSupport {
 	private ImportErrorTypeFilter importErrorTypeFilter = new ImportErrorTypeFilter();
 	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 		if (registry.getId() == null) {
 			addActionError("No registryId specified, give up.");
 			return ERROR;
@@ -47,6 +46,17 @@ public class ShowRegistryAction extends FPActionSupport {
 		}
 
 		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return ERROR;
 	}
 
 	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {

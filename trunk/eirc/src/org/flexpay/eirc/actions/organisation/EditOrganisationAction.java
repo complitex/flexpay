@@ -1,15 +1,14 @@
 package org.flexpay.eirc.actions.organisation;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.eirc.persistence.Organisation;
 import org.flexpay.eirc.persistence.OrganisationDescription;
 import org.flexpay.eirc.persistence.OrganisationName;
 import org.flexpay.eirc.service.OrganisationService;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class EditOrganisationAction extends FPActionSupport {
@@ -17,15 +16,15 @@ public class EditOrganisationAction extends FPActionSupport {
 	private OrganisationService organisationService;
 
 	private Organisation organisation = new Organisation();
-	private Map<Long, String> names = new HashMap<Long, String>();
-	private Map<Long, String> descriptions = new HashMap<Long, String>();
+	private Map<Long, String> names = map();
+	private Map<Long, String> descriptions = map();
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
 		if (organisation.getId() == null) {
 			// todo: notify that no object was selected
 			addActionError("No object was selected");
-			return SUCCESS;
+			return REDIRECT_SUCCESS;
 		}
 
 		Organisation org = organisationService.read(organisation);
@@ -64,14 +63,20 @@ public class EditOrganisationAction extends FPActionSupport {
 			org.setDescription(organisationDescription);
 		}
 
-		try {
-			organisationService.save(org);
-		} catch (FlexPayExceptionContainer container) {
-			addActionErrors(container);
-			return INPUT;
-		}
+		organisationService.save(org);
 
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return INPUT;
 	}
 
 	private void initNames() {
@@ -79,7 +84,7 @@ public class EditOrganisationAction extends FPActionSupport {
 			names.put(name.getLang().getId(), name.getName());
 		}
 
-		for (Language lang : ApplicationConfig.getInstance().getLanguages()) {
+		for (Language lang : ApplicationConfig.getLanguages()) {
 			if (names.containsKey(lang.getId())) {
 				continue;
 			}
@@ -92,7 +97,7 @@ public class EditOrganisationAction extends FPActionSupport {
 			descriptions.put(description.getLang().getId(), description.getName());
 		}
 
-		for (Language lang : ApplicationConfig.getInstance().getLanguages()) {
+		for (Language lang : ApplicationConfig.getLanguages()) {
 			if (descriptions.containsKey(lang.getId())) {
 				continue;
 			}

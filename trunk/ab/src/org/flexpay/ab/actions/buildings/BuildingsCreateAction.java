@@ -15,7 +15,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
-import org.jetbrains.annotations.Nls;
 
 import java.util.*;
 
@@ -61,8 +60,7 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 		buildings.setBuildingAttributes(buildingAttributeSet);
 	}
 
-	@Nls
-	public String execute() throws FlexPayException {
+	public String doExecute() throws FlexPayException {
 		if ("create".equals(action)) {
 
 			if (districtId == null) {
@@ -126,6 +124,17 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 		}
 
 		return "form";
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return "list";
 	}
 
 	/**

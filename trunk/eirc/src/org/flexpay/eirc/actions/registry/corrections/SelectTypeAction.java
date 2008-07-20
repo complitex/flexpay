@@ -16,7 +16,7 @@ public class SelectTypeAction extends FPActionSupport {
 
 	private SpRegistryRecord record = new SpRegistryRecord();
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 		if (record.getId() == null) {
 			addActionError(getText("error.registry.record.not_specified"));
 			return ERROR;
@@ -51,6 +51,17 @@ public class SelectTypeAction extends FPActionSupport {
 		}
 
 		return INPUT;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return ERROR;
 	}
 
 	public SpRegistryRecord getRecord() {

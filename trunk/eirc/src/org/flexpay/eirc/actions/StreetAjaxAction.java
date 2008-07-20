@@ -20,7 +20,7 @@ public class StreetAjaxAction extends FPActionSupport {
 	private List<StreetVis> streetVisList;
 	private String streetVar;
 
-	public String execute() throws FlexPayException {
+	public String doExecute() throws FlexPayException {
 		List<Street> streetList = streetService.findByTownAndName(ApplicationConfig.getDefaultTownStub(), streetVar + "%");
 
 		streetVisList = new ArrayList<StreetVis>();
@@ -34,6 +34,17 @@ public class StreetAjaxAction extends FPActionSupport {
 			streetVisList.add(streetVis);
 		}
 
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
 		return SUCCESS;
 	}
 

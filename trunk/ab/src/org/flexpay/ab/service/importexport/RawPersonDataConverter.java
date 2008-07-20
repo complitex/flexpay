@@ -1,5 +1,6 @@
 package org.flexpay.ab.service.importexport;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
@@ -8,12 +9,9 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.apache.commons.lang.StringUtils;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class RawPersonDataConverter implements DataConverter<Person, RawPersonData> {
 
@@ -48,11 +46,11 @@ public class RawPersonDataConverter implements DataConverter<Person, RawPersonDa
 		identity.setBeginDate(
 				DateUtil.isValid(rawData.getDocumentFromDate()) ?
 				rawData.getDocumentFromDate() :
-				ApplicationConfig.getInstance().getPastInfinite());
+				ApplicationConfig.getPastInfinite());
 		identity.setEndDate(
 				DateUtil.isValid(rawData.getDocumentExpireDate()) ?
 				rawData.getDocumentExpireDate() :
-				ApplicationConfig.getInstance().getFutureInfinite());
+				ApplicationConfig.getFutureInfinite());
 		identity.setSerialNumber(rawData.getDocumentSeria());
 		identity.setDocumentNumber(rawData.getDocumentNumber());
 		identity.setOrganization(rawData.getDocumentOrganization());
@@ -60,13 +58,11 @@ public class RawPersonDataConverter implements DataConverter<Person, RawPersonDa
 		identity.setBirthDate(
 				DateUtil.isValid(rawData.getBirthDate()) ?
 				rawData.getBirthDate() :
-				ApplicationConfig.getInstance().getPastInfinite());
+				ApplicationConfig.getPastInfinite());
 		identity.setPerson(person);
 		identity.setIdentityType(type);
 
-		Set<PersonIdentity> identities = new HashSet<PersonIdentity>();
-		identities.add(identity);
-		person.setPersonIdentities(identities);
+		person.setPersonIdentities(set(identity));
 
 		return person;
 	}

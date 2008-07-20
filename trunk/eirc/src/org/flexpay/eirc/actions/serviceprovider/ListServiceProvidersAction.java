@@ -15,10 +15,22 @@ public class ListServiceProvidersAction extends FPActionSupport {
 	private Page<ServiceProvider> pager = new Page<ServiceProvider>();
 	private List<ServiceProvider> providers = Collections.emptyList();
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
 		providers = spService.listProviders(pager);
 
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
 		return SUCCESS;
 	}
 

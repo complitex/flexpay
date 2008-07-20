@@ -43,7 +43,7 @@ public class ApplicationConfig {
 	 *
 	 * @return Value for property 'instance'.
 	 */
-	public static ApplicationConfig getInstance() {
+	protected static ApplicationConfig getInstance() {
 		if (instance == null) {
 			return new ApplicationConfig();
 		}
@@ -123,8 +123,8 @@ public class ApplicationConfig {
 				.append("languages", languages.toArray()).toString();
 	}
 
-	public File getDataRoot() {
-		return dataRoot;
+	public static File getDataRoot() {
+		return getInstance().dataRoot;
 	}
 
 	public void setDataRoot(String dataRoot) {
@@ -134,8 +134,8 @@ public class ApplicationConfig {
 		}
 	}
 
-	public File getSzDataRoot() {
-		return szDataRoot;
+	public static File getSzDataRoot() {
+		return getInstance().szDataRoot;
 	}
 
 	public void setSzDataRoot(String szDataRoot) {
@@ -145,8 +145,8 @@ public class ApplicationConfig {
 		}
 	}
 
-	public String getSzDefaultDbfFileEncoding() {
-		return szDefaultDbfFileEncoding;
+	public static String getSzDefaultDbfFileEncoding() {
+		return getInstance().szDefaultDbfFileEncoding;
 	}
 
 	public void setSzDefaultDbfFileEncoding(String szDefaultDbfFileEncoding) {
@@ -154,8 +154,8 @@ public class ApplicationConfig {
 	}
 
 
-	public String getTestProp() {
-		return testProp;
+	public static String getTestProp() {
+		return getInstance().testProp;
 	}
 
 	public void setTestProp(String prop) {

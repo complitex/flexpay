@@ -1,10 +1,10 @@
 package org.flexpay.eirc.actions.service;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
+import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.ServiceDescription;
@@ -16,7 +16,6 @@ import org.flexpay.eirc.persistence.filters.ServiceTypeFilter;
 import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.ServiceTypeService;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class EditServiceAction extends FPActionSupport {
@@ -32,15 +31,13 @@ public class EditServiceAction extends FPActionSupport {
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();
 
-	private Map<Long, String> descriptions = new HashMap<Long, String>();
+	private Map<Long, String> descriptions = map();
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
 		if (service.getId() == null) {
-			// todo: notify that no object was selected
 			addActionError("No object was selected");
-			log.warn("No id specified");
-			return SUCCESS;
+			return REDIRECT_SUCCESS;
 		}
 
 		Service srvc = spService.read(service);
@@ -77,15 +74,21 @@ public class EditServiceAction extends FPActionSupport {
 			srvc.setDescription(description);
 		}
 
-		try {
-			spService.save(srvc);
-		} catch (FlexPayExceptionContainer container) {
-			addActionErrors(container);
-			return INPUT;
-		}
+		spService.save(srvc);
 
-		log.warn("Saved!");
-		return SUCCESS;
+		log.debug("Service saved!");
+		return REDIRECT_SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return INPUT;
 	}
 
 	private void init() {
@@ -93,7 +96,7 @@ public class EditServiceAction extends FPActionSupport {
 			descriptions.put(description.getLang().getId(), description.getName());
 		}
 
-		for (Language lang : ApplicationConfig.getInstance().getLanguages()) {
+		for (Language lang : ApplicationConfig.getLanguages()) {
 			if (descriptions.containsKey(lang.getId())) {
 				continue;
 			}

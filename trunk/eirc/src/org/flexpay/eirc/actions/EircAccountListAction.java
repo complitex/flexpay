@@ -12,14 +12,25 @@ public class EircAccountListAction extends FPActionSupport {
 	private EircAccountService eircAccountService;
 	
 	private List<EircAccount> eircAccountList;
-	private Page pager = new Page();
+	private Page<EircAccount> pager = new Page<EircAccount>();
 	
-	public String execute() {
+	public String doExecute() {
 		
 		eircAccountList = eircAccountService.findAll(pager);
 		
 		
-		return "success";
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return SUCCESS;
 	}
 
 	/**
@@ -32,14 +43,14 @@ public class EircAccountListAction extends FPActionSupport {
 	/**
 	 * @return the pager
 	 */
-	public Page getPager() {
+	public Page<EircAccount> getPager() {
 		return pager;
 	}
 
 	/**
 	 * @param pager the pager to set
 	 */
-	public void setPager(Page pager) {
+	public void setPager(Page<EircAccount> pager) {
 		this.pager = pager;
 	}
 

@@ -15,10 +15,21 @@ public class ListServiceTypesAction extends FPActionSupport {
 	private Page<ServiceType> pager = new Page<ServiceType>();
 	private List<ServiceType> serviceTypes = Collections.emptyList();
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
 		serviceTypes = serviceTypeService.listServiceTypes(pager);
 
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
 		return SUCCESS;
 	}
 

@@ -75,21 +75,6 @@
             <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/classes" />
           </containerElement>
-          <containerElement type="library" level="module">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="&lt;N/A&gt;" />
-            <url>jar://$APPLICATION_HOME_DIR$/lib/javaee.jar!/</url>
-          </containerElement>
-          <containerElement type="library" level="module">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-            <url>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/</url>
-          </containerElement>
-          <containerElement type="library" level="module">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-            <url>jar://$MODULE_DIR$/../../common/lib/ajax/json-lib-2.0-jdk15.jar!/</url>
-          </containerElement>
           <containerElement type="library" name="AJax" level="project">
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
@@ -106,11 +91,27 @@
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
+          <containerElement type="library" name="Jetbrains" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" name="Quartz" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
           <containerElement type="library" name="Struts2" level="project">
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="hibernate3" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" name="iText" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" name="jasper" level="project">
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
@@ -126,12 +127,49 @@
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
+          <containerElement type="library" level="module">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+            <url>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/</url>
+          </containerElement>
+          <containerElement type="library" level="module">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="&lt;N/A&gt;" />
+            <url>jar://$APPLICATION_HOME_DIR$/lib/javaee.jar!/</url>
+          </containerElement>
+          <containerElement type="library" level="module">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+            <url>jar://$MODULE_DIR$/../../common/lib/ajax/json-lib-2.0-jdk15.jar!/</url>
+          </containerElement>
           <containerElement type="library" name="j2ee" level="application">
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/classes" />
           </containerElement>
         </packaging>
       </configuration>
+      <facet type="Struts2" name="Struts 2">
+        <configuration>
+          <fileset id="s2fileset1" name="My Fileset" removed="false">
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/ab_struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/person/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/service/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/serviceprovider/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/common_struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../sz/src/org/flexpay/sz/struts_config.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-core-2.0.11.jar!/struts-default.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jfreechart-plugin-2.0.11.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-spring-plugin-2.0.11.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-tiles-plugin-2.0.11.jar!/struts-plugin.xml</file>
+          </fileset>
+          <validation>
+            <errors_as_warnings>false</errors_as_warnings>
+            <validate_struts>true</validate_struts>
+            <validate_validation>true</validate_validation>
+          </validation>
+        </configuration>
+      </facet>
     </facet>
     <facet type="hibernate" name="Hibernate">
       <configuration>

@@ -318,10 +318,6 @@
           <option name="m_ignoreInvisibleFields" value="true" />
           <option name="m_ignoreStaticMethods" value="true" />
         </inspection_tool>
-        <inspection_tool class="AccessToNonThreadSafeStaticFieldFromInstance" level="WARNING" enabled="true">
-          <option name="nonThreadSafeTypes" value="java.text.DateFormat,java.util.Calendar" />
-        </inspection_tool>
-        <inspection_tool class="ArithmeticOnVolatileField" level="WARNING" enabled="true" />
         <inspection_tool class="NonThreadSafeLazyInitialization" level="WARNING" enabled="true" />
         <inspection_tool class="StaticVariableInitialization" level="WARNING" enabled="true">
           <option name="m_ignorePrimitives" value="false" />
@@ -358,6 +354,97 @@
           <option name="loggerFactoryMethodName" value="getLogger" />
         </inspection_tool>
         <inspection_tool class="LoggingConditionDisagreesWithLogStatement" level="WARNING" enabled="true" />
+        <inspection_tool class="AccessToNonThreadSafeStaticFieldFromInstance" level="WARNING" enabled="true">
+          <option name="nonThreadSafeTypes" value="java.text.DateFormat,java.util.Calendar" />
+        </inspection_tool>
+        <inspection_tool class="AccessToStaticFieldLockedOnInstance" level="WARNING" enabled="true" />
+        <inspection_tool class="ArithmeticOnVolatileField" level="WARNING" enabled="true" />
+        <inspection_tool class="AwaitNotInLoop" level="WARNING" enabled="true" />
+        <inspection_tool class="AwaitWithoutCorrespondingSignal" level="WARNING" enabled="true" />
+        <inspection_tool class="BusyWait" level="WARNING" enabled="true" />
+        <inspection_tool class="ObjectNotify" level="WARNING" enabled="true" />
+        <inspection_tool class="ConditionSignal" level="WARNING" enabled="true" />
+        <inspection_tool class="SystemRunFinalizersOnExit" level="WARNING" enabled="true" />
+        <inspection_tool class="ThreadRun" level="WARNING" enabled="true" />
+        <inspection_tool class="ThreadPriority" level="WARNING" enabled="true" />
+        <inspection_tool class="SleepWhileHoldingLock" level="WARNING" enabled="true" />
+        <inspection_tool class="ThreadStartInConstruction" level="WARNING" enabled="true" />
+        <inspection_tool class="ThreadStopSuspendResume" level="WARNING" enabled="true" />
+        <inspection_tool class="ThreadYield" level="WARNING" enabled="true" />
+        <inspection_tool class="CallToNativeMethodWhileLocked" level="WARNING" enabled="true" />
+        <inspection_tool class="ExtendsThread" level="WARNING" enabled="true" />
+        <inspection_tool class="DoubleCheckedLocking" level="WARNING" enabled="true">
+          <option name="ignoreOnVolatileVariables" value="false" />
+        </inspection_tool>
+        <inspection_tool class="EmptySynchronizedStatement" level="WARNING" enabled="true" />
+        <inspection_tool class="FieldAccessedSynchronizedAndUnsynchronized" level="WARNING" enabled="true">
+          <option name="countGettersAndSetters" value="false" />
+        </inspection_tool>
+        <inspection_tool class="ThreadWithDefaultRunMethod" level="WARNING" enabled="true" />
+        <inspection_tool class="SafeLock" level="WARNING" enabled="true" />
+        <inspection_tool class="MethodMayBeSynchronized" level="WARNING" enabled="true" />
+        <inspection_tool class="NestedSynchronizedStatement" level="WARNING" enabled="true" />
+        <inspection_tool class="PublicFieldAccessedInSynchronizedContext" level="WARNING" enabled="true" />
+        <inspection_tool class="NonSynchronizedMethodOverridesSynchronizedMethod" level="WARNING" enabled="true" />
+        <inspection_tool class="NotifyCalledOnCondition" level="WARNING" enabled="true" />
+        <inspection_tool class="NotifyNotInSynchronizedContext" level="WARNING" enabled="true" />
+        <inspection_tool class="NakedNotify" level="WARNING" enabled="true" />
+        <inspection_tool class="NotifyWithoutCorrespondingWait" level="WARNING" enabled="true" />
+        <inspection_tool class="SignalWithoutCorrespondingAwait" level="WARNING" enabled="true" />
+        <inspection_tool class="SynchronizeOnThis" level="WARNING" enabled="true" />
+        <inspection_tool class="SynchronizeOnLock" level="WARNING" enabled="true" />
+        <inspection_tool class="SynchronizedOnLiteralObject" level="WARNING" enabled="true" />
+        <inspection_tool class="SynchronizedMethod" level="WARNING" enabled="true">
+          <option name="m_includeNativeMethods" value="true" />
+        </inspection_tool>
+        <inspection_tool class="UnconditionalWait" level="WARNING" enabled="true" />
+        <inspection_tool class="VolatileArrayField" level="WARNING" enabled="true" />
+        <inspection_tool class="VolatileLongOrDoubleField" level="WARNING" enabled="true" />
+        <inspection_tool class="WaitCalledOnCondition" level="WARNING" enabled="true" />
+        <inspection_tool class="WaitNotInLoop" level="WARNING" enabled="true" />
+        <inspection_tool class="WaitOrAwaitWithoutTimeout" level="WARNING" enabled="true" />
+        <inspection_tool class="WaitWhileHoldingTwoLocks" level="WARNING" enabled="true" />
+        <inspection_tool class="WaitNotInSynchronizedContext" level="WARNING" enabled="true" />
+        <inspection_tool class="WaitWithoutCorrespondingNotify" level="WARNING" enabled="true" />
+        <inspection_tool class="WhileLoopSpinsOnField" level="WARNING" enabled="true">
+          <option name="ignoreNonEmtpyLoops" value="false" />
+        </inspection_tool>
+        <inspection_tool class="ClassHasNoToStringMethod" level="WARNING" enabled="true">
+          <option name="excludeClassNames" value="" />
+          <option name="excludeException" value="true" />
+          <option name="excludeDeprecated" value="true" />
+          <option name="excludeEnum" value="false" />
+          <option name="excludeAbstract" value="false" />
+        </inspection_tool>
+        <inspection_tool class="ComparatorNotSerializable" level="WARNING" enabled="true" />
+        <inspection_tool class="ExternalizableWithSerializationMethods" level="WARNING" enabled="true" />
+        <inspection_tool class="NonSerializableWithSerializationMethods" level="WARNING" enabled="true" />
+        <inspection_tool class="ReadObjectInitialization" level="WARNING" enabled="true" />
+        <inspection_tool class="NonSerializableWithSerialVersionUIDField" level="WARNING" enabled="true" />
+        <inspection_tool class="NonSerializableFieldInSerializableClass" level="WARNING" enabled="true">
+          <option name="superClassString" value="java.awt.Component" />
+        </inspection_tool>
+        <inspection_tool class="NonSerializableObjectBoundToHttpSession" level="WARNING" enabled="true" />
+        <inspection_tool class="NonSerializableObjectPassedToObjectStream" level="WARNING" enabled="true" />
+        <inspection_tool class="ReadObjectAndWriteObjectPrivate" level="WARNING" enabled="true" />
+        <inspection_tool class="ReadResolveAndWriteReplaceProtected" level="WARNING" enabled="true" />
+        <inspection_tool class="SerializableWithUnconstructableAncestor" level="WARNING" enabled="true" />
+        <inspection_tool class="SerializableHasSerializationMethods" level="WARNING" enabled="true">
+          <option name="superClassString" value="java.awt.Component" />
+        </inspection_tool>
+        <inspection_tool class="SerializableHasSerialVersionUIDField" level="WARNING" enabled="true">
+          <option name="superClassString" value="java.awt.Component" />
+        </inspection_tool>
+        <inspection_tool class="SerializableInnerClassWithNonSerializableOuterClass" level="WARNING" enabled="true">
+          <option name="superClassString" value="java.awt.Component" />
+        </inspection_tool>
+        <inspection_tool class="SerialPersistentFieldsWithWrongSignature" level="WARNING" enabled="true" />
+        <inspection_tool class="SerialVersionUIDNotStaticFinal" level="WARNING" enabled="true" />
+        <inspection_tool class="TransientFieldInNonSerializableClass" level="WARNING" enabled="true" />
+        <inspection_tool class="TransientFieldNotInitialized" level="WARNING" enabled="true" />
+        <inspection_tool class="SerializableInnerClassHasSerialVersionUIDField" level="WARNING" enabled="true">
+          <option name="superClassString" value="java.awt.Component" />
+        </inspection_tool>
       </profile>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Project Default" />

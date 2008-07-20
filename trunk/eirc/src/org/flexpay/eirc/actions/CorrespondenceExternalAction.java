@@ -23,19 +23,30 @@ public class CorrespondenceExternalAction extends FPActionSupport {
 	private TownFilter townFilter = new TownFilter();
 
 	public CorrespondenceExternalAction() {
-		townFilter.setSelectedId(ApplicationConfig.getInstance().getDefaultTown().getId());
-		regionFilter.setSelectedId(ApplicationConfig.getInstance().getDefaultRegion().getId());
-		countryFilter.setSelectedId(ApplicationConfig.getInstance().getDefaultCountry().getId());
+		townFilter.setSelectedId(ApplicationConfig.getDefaultTown().getId());
+		regionFilter.setSelectedId(ApplicationConfig.getDefaultRegion().getId());
+		countryFilter.setSelectedId(ApplicationConfig.getDefaultCountry().getId());
 	}
 
-	public String execute() throws FlexPayException {
+	public String doExecute() throws FlexPayException {
 
 		ArrayStack filters = parentService.initFilters(getFilters(), userPreferences.getLocale());
 		setFilters(filters);
 
 		elementList = retrieveElementList();
 
-		return "success";
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return SUCCESS;
 	}
 
 	private List<String> retrieveElementList() {

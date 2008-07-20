@@ -3,7 +3,6 @@ package org.flexpay.ab.actions.buildings;
 import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.Stub;
 
 import java.util.Collections;
@@ -15,14 +14,28 @@ public class BuildingsDeleteAction extends FPActionSupport {
 	private List<Long> objectIds = Collections.emptyList();
 	private Long redirectBuildingsId;
 
-	public String execute() {
+	public String doExecute() {
 		for (Long id : objectIds) {
 			Buildings buildings = buildingService.readFull(new Stub<Buildings>(id));
+			if (buildings == null) {
+				continue;
+			}
 			buildings.setStatus(Buildings.STATUS_DISABLED);
 			buildingService.update(buildings);
 		}
 
-		return redirectBuildingsId == null ? "buildings_list" : INPUT;
+		return redirectBuildingsId == null ? SUCCESS : INPUT;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return SUCCESS;
 	}
 
 	/**

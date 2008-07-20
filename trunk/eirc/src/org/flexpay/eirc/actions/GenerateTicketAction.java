@@ -1,13 +1,13 @@
 package org.flexpay.eirc.actions;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.ServiceOrganisationService;
-import org.flexpay.common.actions.FPActionSupport;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class GenerateTicketAction extends FPActionSupport {
 
@@ -16,13 +16,13 @@ public class GenerateTicketAction extends FPActionSupport {
 	private QuittanceService quittanceService;
 
 	private List<ServiceOrganisation> serviceOrganizationList;
-	
+
 	private Integer year;
 	private Integer month;
 	private Long serviceOrganisationId;
 
-	public String execute() {
-		if(isSubmit()) {
+	public String doExecute() {
+		if (isSubmit()) {
 			Calendar cal = Calendar.getInstance();
 			cal.set(Calendar.YEAR, year);
 			cal.set(Calendar.MONTH, month);
@@ -34,17 +34,27 @@ public class GenerateTicketAction extends FPActionSupport {
 			Date dateFrom = cal.getTime();
 			cal.add(Calendar.MONTH, 1);
 			Date dateTill = cal.getTime();
-			
+
 			quittanceService.generateForServiceOrganisation(serviceOrganisationId, dateFrom, dateTill);
 		}
-		
+
 		initDefaultDate();
 		serviceOrganizationList = serviceOrganisationService.listServiceOrganisation();
 
-		return "success";
+		return SUCCESS;
 	}
-	
-	
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return SUCCESS;
+	}
+
 	private void initDefaultDate() {
 		Calendar cal = Calendar.getInstance();
 		year = cal.get(Calendar.YEAR);
@@ -108,7 +118,5 @@ public class GenerateTicketAction extends FPActionSupport {
 	public void setQuittanceService(QuittanceService quittanceService) {
 		this.quittanceService = quittanceService;
 	}
-
-	
 
 }

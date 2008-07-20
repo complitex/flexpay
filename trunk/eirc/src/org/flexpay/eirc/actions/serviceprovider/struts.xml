@@ -17,7 +17,7 @@
 
 		<action name="service_provider_edit" class="editServiceProviderAction">
 			<result name="input" type="tiles">eirc.service_provider.edit</result>
-			<result type="redirect-action">
+			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">service_providers_list</param>
 			</result>
 		</action>

@@ -2,6 +2,7 @@ package org.flexpay.common.dao;
 
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import static org.junit.Assert.assertNull;
 import org.junit.Test;
@@ -16,7 +17,7 @@ public class TestCorrectionsDao extends SpringBeanAwareTestCase {
 	public void testGetLanguage() {
 
 		DataSourceDescription dsd = new DataSourceDescription(-4L);
-		Language language = correctionsDao.findCorrection("hbz", 10, Language.class, dsd);
+		Stub<Language> language = correctionsDao.findCorrection("hbz", 10, Language.class, dsd);
 
 		assertNull("Found not existing object", language);
 	}

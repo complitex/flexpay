@@ -2,23 +2,21 @@ package org.flexpay.ab.service.importexport;
 
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.service.importexport.RawData;
+import static org.flexpay.common.util.CollectionUtils.set;
+import org.jetbrains.annotations.NonNls;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 public class RawStreetData extends RawData<Street> {
 
-	private static Collection<String> possibleNames = new HashSet<String>();
-
+	@NonNls
 	public static final String FIELD_TYPE_ID = "type";
+	@NonNls
 	public static final String FIELD_NAME = "name";
+	@NonNls
 	public static final String FIELD_ID = "id";
 
-	static {
-		possibleNames.add(FIELD_ID);
-		possibleNames.add(FIELD_NAME);
-		possibleNames.add(FIELD_TYPE_ID);
-	}
+	private static Collection<String> possibleNames = set(FIELD_ID, FIELD_NAME, FIELD_TYPE_ID);
 
 	/**
 	 * Get set of valid attribute names

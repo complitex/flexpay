@@ -16,7 +16,7 @@ public class ProcessRegistriesAction extends FPActionSupport {
 	private SpRegistryService registryService;
 	private ServiceProviderFileProcessor providerFileProcessor;
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
 		if (objectIds.isEmpty()) {
 			// just redirect, no registries to process
@@ -27,6 +27,17 @@ public class ProcessRegistriesAction extends FPActionSupport {
 
 		Collection<SpRegistry> registries = registryService.findObjects(objectIds);
 		providerFileProcessor.processRegistries(registries);
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
 		return SUCCESS;
 	}
 

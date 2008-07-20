@@ -16,8 +16,7 @@ import java.util.Map;
 public abstract class DBFInfo<E> {
 
 	private File originalFile;
-	private String dbfFileEncoding = ApplicationConfig.getInstance()
-			.getSzDefaultDbfFileEncoding();
+	private String dbfFileEncoding = ApplicationConfig.getSzDefaultDbfFileEncoding();
 	private DBFField[] dbfFields;
 	private Map<String, Integer> indMap;
 

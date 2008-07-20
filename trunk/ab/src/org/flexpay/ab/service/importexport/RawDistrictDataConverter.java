@@ -9,10 +9,8 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.config.ApplicationConfig;
-
-import java.util.Set;
-import java.util.HashSet;
 
 public class RawDistrictDataConverter implements DataConverter<District, RawDistrictData> {
 
@@ -35,13 +33,11 @@ public class RawDistrictDataConverter implements DataConverter<District, RawDist
 		districtName.setObject(district);
 
 		DistrictNameTranslation nameTranslation = new DistrictNameTranslation();
-		nameTranslation.setLang(ApplicationConfig.getInstance().getDefaultLanguage());
+		nameTranslation.setLang(ApplicationConfig.getDefaultLanguage());
 		nameTranslation.setTranslatable(districtName);
 		nameTranslation.setName(rawDistrictData.getName());
 
-		Set<DistrictNameTranslation> translations = new HashSet<DistrictNameTranslation>();
-		translations.add(nameTranslation);
-		districtName.setTranslations(translations);
+		districtName.setTranslations(set(nameTranslation));
 
 		DistrictNameTemporal nameTemporal = new DistrictNameTemporal();
 		nameTemporal.setObject(district);

@@ -20,6 +20,6 @@ public class BeginDateFilter extends DateFilterBase {
 	}
 
 	protected Date getEmptyDate() {
-		return ApplicationConfig.getInstance().getPastInfinite();
+		return ApplicationConfig.getPastInfinite();
 	}
 }

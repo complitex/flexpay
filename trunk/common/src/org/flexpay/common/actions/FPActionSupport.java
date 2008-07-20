@@ -21,7 +21,7 @@ import java.util.*;
 /**
  * Helper ActionSupport extension, able to set
  */
-public class FPActionSupport extends ActionSupport implements UserPreferencesAware, SessionAware {
+public abstract class FPActionSupport extends ActionSupport implements UserPreferencesAware, SessionAware {
 
 	@NonNls
 	protected Logger log = Logger.getLogger(getClass());
@@ -51,9 +51,9 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 	/**
 	 * @return Execution result
 	 * @throws Exception if failure occurs
-	 * @deprecated override {@link #doExecute()} instead
+	 * @deprecated 
 	 */
-	public String execute() throws Exception {
+	public final String execute() throws Exception {
 		String result;
 		try {
 			result = doExecute();
@@ -109,9 +109,7 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 	 * @return execution result code
 	 * @throws Exception if failure occurs
 	 */
-	protected String doExecute() throws Exception {
-		return SUCCESS;
-	}
+	protected abstract String doExecute() throws Exception;
 
 	/**
 	 * Get default error execution result
@@ -120,9 +118,7 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 	 *
 	 * @return {@link #ERROR} by default
 	 */
-	protected String getErrorResult() {
-		return ERROR;
-	}
+	protected abstract String getErrorResult();
 
 	/**
 	 * Get domain name for error messages store, the default implementation returns an action package name
