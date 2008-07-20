@@ -229,11 +229,12 @@
 		where p.id=? and o.externalCode=?
 	</query>
 
-	<query name="Service.findIntersectingServices">
+	<query name="Service.findIntersectingServices"><![CDATA[
 		select distinct o
 		from Service o
 			inner join o.serviceProvider p
 			inner join o.serviceType st
-		where p.id=? and st.id=? and ((o.beginDate between ? and ?) or (o.endDate between ? and ?))
-	</query>
+		where p.id=? and st.id=? and
+			((? <= o.beginDate  and o.beginDate <= ?) or (? <= o.endDate and o.endDate <= ?))
+	]]></query>
 </hibernate-mapping>

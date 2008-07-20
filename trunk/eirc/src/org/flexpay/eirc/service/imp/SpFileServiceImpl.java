@@ -102,14 +102,14 @@ public class SpFileServiceImpl implements SpFileService {
 	/**
 	 * Find registry type by id
 	 *
-	 * @param typeId SpRegistryType enum id
+	 * @param code SpRegistryType enum id
 	 * @return SpRegistryType if found
 	 * @throws InvalidRegistryTypeException if registry type is not supported
 	 */
-	public SpRegistryType getRegistryType(int typeId) throws InvalidRegistryTypeException {
-		SpRegistryType type = spFileDaoExt.getRegistryType(typeId);
+	public SpRegistryType getRegistryType(int code) throws InvalidRegistryTypeException {
+		SpRegistryType type = spFileDaoExt.getRegistryType(code);
 		if (type == null) {
-			throw new InvalidRegistryTypeException(typeId);
+			throw new InvalidRegistryTypeException(code);
 		}
 
 		return type;

@@ -42,12 +42,12 @@
 		</many-to-one>
 	</class>
 
-	<query name="Apartment.findObjects">
+	<query name="Apartment.findObjects"><![CDATA[
 		FROM Apartment o
 			LEFT JOIN FETCH o.apartmentNumbers n
-		WHERE o.status=0 and o.building.id=?
-		ORDER BY cast(n.value, int)
-	</query>
+		WHERE o.status=0 and o.building.id=? and n.begin <= current_date() and current_date <= n.end
+		ORDER BY cast(n.value as integer)
+	]]></query>
 
 	<query name="Apartment.readFull">
 		SELECT DISTINCT a

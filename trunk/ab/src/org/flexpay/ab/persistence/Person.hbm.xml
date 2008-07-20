@@ -237,7 +237,7 @@
 
 	<query name="PersonRegistration.listRegistrations"><![CDATA[
 		FROM PersonRegistration o
-		WHERE o.person.id=? and o.beginDate <= NOW() and o.endDate > NOW()
+		WHERE o.person.id=? and o.beginDate <= current_date() and current_date() < o.endDate 
 	]]></query>
 
 	<query name="PersonRegistration.listRegistrationHistory">

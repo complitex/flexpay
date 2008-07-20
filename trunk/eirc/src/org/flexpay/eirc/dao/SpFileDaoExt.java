@@ -4,7 +4,7 @@ import org.flexpay.eirc.persistence.SpRegistryType;
 
 public interface SpFileDaoExt {
 
-	SpRegistryType getRegistryType(int type);
+	SpRegistryType getRegistryType(int code);
 
 	/**
 	 * Clear current session
