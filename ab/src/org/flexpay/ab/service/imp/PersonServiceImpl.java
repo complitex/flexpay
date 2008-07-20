@@ -93,7 +93,8 @@ public class PersonServiceImpl implements PersonService {
 	 * @param person Identity data
 	 * @return Person stub if persitent person matches specified identity
 	 */
-	public Person findPersonStub(Person person) {
+	@Nullable
+	public Stub<Person> findPersonStub(Person person) {
 		return personDaoExt.findPersonStub(person);
 	}
 

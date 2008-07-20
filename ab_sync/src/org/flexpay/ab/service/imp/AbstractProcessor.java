@@ -2,10 +2,7 @@ package org.flexpay.ab.service.imp;
 
 import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.HistoryRecord;
-import org.flexpay.common.persistence.DataCorrection;
-import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.*;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.jetbrains.annotations.NonNls;
 
@@ -33,7 +30,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	public T createObject(DomainObject obj, String extId, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 		if (obj == null) {
-			T stub = cs.findCorrection(extId, type, sd);
+			Stub<T> stub = cs.findCorrection(extId, type, sd);
 			if (stub != null) {
 				log.debug("External object already exists: " + extId);
 				return readObject(stub);
@@ -74,10 +71,10 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	/**
 	 * Read full object info
 	 *
-	 * @param stub Object id container
+	 * @param stub Object stub
 	 * @return DomainObject instance
 	 */
-	protected abstract T readObject(T stub);
+	protected abstract T readObject(Stub<T> stub);
 
 	/**
 	 * Create new DomainObject from HistoryRecord
@@ -92,7 +89,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	public T findObject(DomainObject obj, String extId, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 		if (obj == null) {
-			T stub = cs.findCorrection(extId, type, sd);
+			Stub<T> stub = cs.findCorrection(extId, type, sd);
 			if (stub != null) {
 				if (log.isDebugEnabled()) {
 					log.debug("External object already exists: " + extId);
@@ -154,7 +151,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 			}
 		}
 
-		T stub = findPersistentObject(obj, sd, cs);
+		Stub<T> stub = findPersistentObject(obj, sd, cs);
 		if (stub != null) {
 			log.info("Found similar object, need to add correction only");
 			if (cs.existsCorrection(externalId, type, sd)) {
@@ -190,7 +187,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 * @throws Exception if failure occurs
 	 */
-	protected abstract T findPersistentObject(T object, DataSourceDescription sd, CorrectionsService cs)
+	protected abstract Stub<T> findPersistentObject(T object, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception;
 
 	/**

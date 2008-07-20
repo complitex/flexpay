@@ -2,6 +2,7 @@ package org.flexpay.eirc.service.imp;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.dao.ConsumerDao;
 import org.flexpay.eirc.dao.ConsumerDaoExt;
 import org.flexpay.eirc.dao.ServiceDao;
@@ -11,6 +12,8 @@ import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.service.ConsumerService;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -89,7 +92,8 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * @param stub Consumer stub
 	 * @return Consumer instance
 	 */
-	public Consumer read(Consumer stub) {
+	@Nullable
+	public Consumer read(@NotNull Stub<Consumer> stub) {
 		return consumerDao.read(stub.getId());
 	}
 

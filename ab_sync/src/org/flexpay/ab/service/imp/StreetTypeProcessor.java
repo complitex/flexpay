@@ -10,6 +10,8 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.TranslationUtil;
 
@@ -44,7 +46,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected StreetType readObject(StreetType stub) {
+	protected StreetType readObject(Stub<StreetType> stub) {
 		return streetTypeDao.readFull(stub.getId());
 	}
 
@@ -85,7 +87,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 				setName(streetType, record.getCurrentValue());
 				break;
 			default:
-				if (log.isInfoEnabled()) {
+				if (log.isDebugEnabled()) {
 					log.debug("Unknown street type field: " + record.getFieldType());
 				}
 		}
@@ -93,7 +95,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 
 	private void setName(StreetType streetType, String name) throws Exception {
 		StreetTypeTranslation translation = new StreetTypeTranslation();
-		translation.setLang(ApplicationConfig.getInstance().getDefaultLanguage());
+		translation.setLang(ApplicationConfig.getDefaultLanguage());
 		translation.setName(name);
 		translation.setTranslatable(streetType);
 
@@ -110,7 +112,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
-	protected StreetType findPersistentObject(StreetType object, DataSourceDescription sd, CorrectionsService cs) {
+	protected Stub<StreetType> findPersistentObject(StreetType object, DataSourceDescription sd, CorrectionsService cs) {
 
 		if (object.getTranslations().isEmpty()) {
 			return null;
@@ -123,12 +125,13 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 			}
 
 			// Try to find general correction by type name
-			StreetType generalCorrection = cs.findCorrection(translation.getName(), StreetType.class, null);
+			Stub<StreetType> generalCorrection = cs.findCorrection(translation.getName(), StreetType.class, null);
 			if (generalCorrection != null) {
 				return generalCorrection;
 			}
 
-			return streetTypeService.findTypeByName(translation.getName());
+			StreetType type = streetTypeService.findTypeByName(translation.getName());
+			return type != null ? stub(type) : null;
 
 		} catch (FlexPayException e) {
 			log.info("Cannot find persistent street type by example: ", e);

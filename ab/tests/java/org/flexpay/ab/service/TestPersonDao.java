@@ -1,6 +1,7 @@
 package org.flexpay.ab.service;
 
 import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.persistence.IdentityType;
@@ -34,7 +35,7 @@ public class TestPersonDao extends SpringBeanAwareTestCase {
 		identitySet.add(identity);
 		person.setPersonIdentities(identitySet);
 
-		Person stub = personDaoExt.findPersonStub(person);
+		Stub<Person> stub = personDaoExt.findPersonStub(person);
 
 		assertNull("Unknown identity found", stub);
 	}

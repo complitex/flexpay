@@ -11,6 +11,7 @@ import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 
@@ -52,7 +53,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected Buildings readObject(Buildings stub) {
+	protected Buildings readObject(Stub<Buildings> stub) {
 		Buildings buildings = buildingsDao.readFull(stub.getId());
 		Set<Buildings> buildingses = new HashSet<Buildings>();
 		buildingses.add(buildings);
@@ -229,7 +230,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 
 	private void setDistrictId(Building building, HistoryRecord record,
 							   DataSourceDescription sd, CorrectionsService cs) {
-		District stub = cs.findCorrection(record.getCurrentValue(),
+		Stub<District> stub = cs.findCorrection(record.getCurrentValue(),
 				District.class, sd);
 		if (stub == null) {
 			log.error(String.format(
@@ -250,13 +251,12 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 			return;
 		}
 
-		building.setDistrict(stub);
+		building.setDistrict(new District(stub));
 	}
 
 	private void setStreetId(Buildings building, HistoryRecord record,
 							 DataSourceDescription sd, CorrectionsService cs) {
-		Street stub = cs.findCorrection(record.getCurrentValue(), Street.class,
-				sd);
+		Stub<Street> stub = cs.findCorrection(record.getCurrentValue(), Street.class, sd);
 		if (stub == null) {
 			log.error(String.format(
 					"No correction for street #%s DataSourceDescription %d, "
@@ -273,7 +273,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 			return;
 		}
 
-		building.setStreet(stub);
+		building.setStreet(new Street(stub));
 	}
 
 	/**
@@ -284,15 +284,16 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
-	protected Buildings findPersistentObject(Buildings object,
+	protected Stub<Buildings> findPersistentObject(Buildings object,
 											 DataSourceDescription sd, CorrectionsService cs) throws FlexPayException {
 		String number = object.getNumber();
 		String bulk = object.getBulk();
-		if (object.getStreet() == null || number == null) {
+		if (number == null) {
 			return null;
 		}
 
-		return buildingService.findBuildings(stub(object.getStreet()), number, bulk);
+		Buildings buildings = buildingService.findBuildings(stub(object.getStreet()), number, bulk);
+		return buildings != null ? stub(buildings) : null;
 	}
 
 	public void setBuildingDao(BuildingDao buildingDao) {

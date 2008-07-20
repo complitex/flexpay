@@ -14,6 +14,7 @@ import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -246,6 +247,9 @@ public abstract class NameTimeDependentServiceImpl<
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 		DomainObject parent = getParent(filters, container);
 		Set<T> names = getTranslations(nameTranslations, container);
+		if (container.isNotEmpty()) {
+			throw container;
+		}
 
 		NTD namable = object == null ? getNewNameTimeDependent() : object;
 		namable.setStatus(ObjectWithStatus.STATUS_ACTIVE);
@@ -299,6 +303,7 @@ public abstract class NameTimeDependentServiceImpl<
 	 * @param container Exception container
 	 * @return Country if found or <code>null</code> otherwise
 	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private DomainObject getParent(
 			ArrayStack filters, FlexPayExceptionContainer container) {
 
@@ -363,6 +368,9 @@ public abstract class NameTimeDependentServiceImpl<
 									  Date date) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 		Set<T> names = getTranslations(nameTranslations, container);
+		if (container.isNotEmpty()) {
+			throw container;
+		}
 		DI temporal = getNameTemporalDao().readFull(temporalId);
 		TV objectName = getEmptyName();
 		objectName.setTranslations(names);
@@ -427,6 +435,7 @@ public abstract class NameTimeDependentServiceImpl<
 	 * @return Set of not empty translations
 	 * @throws FlexPayExceptionContainer if translations specified have invalid values
 	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private Set<T> getTranslations(List<T> nameTranslations, FlexPayExceptionContainer container)
 			throws FlexPayExceptionContainer {
 
@@ -477,6 +486,7 @@ public abstract class NameTimeDependentServiceImpl<
 	 * @param filter Parent object filter
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
+	@Nullable
 	public NTD findByName(String name, PrimaryKeyFilter filter) {
 		List<NTD> objs = getNameTimeDependentDao().findObjects(
 				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());

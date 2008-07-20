@@ -24,7 +24,7 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	 * @param number   Apartment number
 	 * @return Apartment if found, or <code>null</code> otherwise
 	 */
-	Apartment findApartmentStub(Building building, String number);
+	Stub<Apartment> findApartmentStub(Building building, String number);
 
 	/**
 	 * Get apartment number

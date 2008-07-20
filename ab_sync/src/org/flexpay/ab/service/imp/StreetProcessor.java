@@ -9,6 +9,8 @@ import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.TimeLine;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
@@ -33,7 +35,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	protected Street doCreateObject() throws Exception {
 
 		Street street = new Street();
-		street.setParent(ApplicationConfig.getInstance().getDefaultTown());
+		street.setParent(ApplicationConfig.getDefaultTown());
 
 		return street;
 	}
@@ -44,7 +46,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected Street readObject(Street stub) {
+	protected Street readObject(Stub<Street> stub) {
 		return streetDao.readFull(stub.getId());
 	}
 
@@ -52,7 +54,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 		StreetName streetName = new StreetName();
 
 		StreetNameTranslation translation = new StreetNameTranslation();
-		translation.setLang(ApplicationConfig.getInstance().getDefaultLanguage());
+		translation.setLang(ApplicationConfig.getDefaultLanguage());
 		translation.setName(name);
 		translation.setTranslatable(streetName);
 		Set<StreetNameTranslation> translations = new HashSet<StreetNameTranslation>();
@@ -70,7 +72,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 		if (timeLine != null) {
 			timeLine = DateIntervalUtil.addInterval(timeLine, nameTemporal);
 		} else {
-			nameTemporal.setBegin(ApplicationConfig.getInstance().getPastInfinite());
+			nameTemporal.setBegin(ApplicationConfig.getPastInfinite());
 			timeLine = new TimeLine<StreetName, StreetNameTemporal>(nameTemporal);
 		}
 
@@ -78,7 +80,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	}
 
 	private void setStreetTypeId(Street street, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs) {
-		StreetType stub = cs.findCorrection(record.getCurrentValue(), StreetType.class, sd);
+		Stub<StreetType> stub = cs.findCorrection(record.getCurrentValue(), StreetType.class, sd);
 		if (stub == null) {
 			log.error(String.format("No correction for street type #%s DataSourceDescription %d, " +
 					"cannot set up reference for street", record.getCurrentValue(), sd.getId()));
@@ -93,12 +95,12 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 
 		StreetTypeTemporal temporal = new StreetTypeTemporal();
 		temporal.setBegin(record.getRecordDate());
-		temporal.setValue(stub);
+		temporal.setValue(new StreetType(stub));
 		temporal.setObject(street);
 
 		TimeLine<StreetType, StreetTypeTemporal> timeLine = street.getTypesTimeLine();
 		if (timeLine == null) {
-			temporal.setBegin(ApplicationConfig.getInstance().getPastInfinite());
+			temporal.setBegin(ApplicationConfig.getPastInfinite());
 			timeLine = new TimeLine<StreetType, StreetTypeTemporal>(temporal);
 		} else {
 			timeLine = DateIntervalUtil.addInterval(timeLine, temporal);
@@ -147,13 +149,14 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
-	protected Street findPersistentObject(Street object, DataSourceDescription sd, CorrectionsService cs) {
+	protected Stub<Street> findPersistentObject(Street object, DataSourceDescription sd, CorrectionsService cs) {
 		StreetName name = object.getCurrentName();
 		if (name == null || name.getTranslations().isEmpty()) {
 			return null;
 		}
 		String nameStr = name.getTranslations().iterator().next().getName();
-		return streetService.findByName(nameStr.toLowerCase(), new TownFilter(object.getParent().getId()));
+		Street street = streetService.findByName(nameStr.toLowerCase(), new TownFilter(object.getParent().getId()));
+		return street != null ? stub(street) : null;
 	}
 
 	/**

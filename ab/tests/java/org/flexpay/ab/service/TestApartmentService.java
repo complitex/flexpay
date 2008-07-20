@@ -6,6 +6,7 @@ import org.flexpay.ab.persistence.ApartmentNumber;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.persistence.Stub;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class TestApartmentService extends SpringBeanAwareTestCase {
 	public void testFindApartment() throws Throwable {
 
 		// See init_db script
-		Apartment apartment = apartmentService.findApartmentStub(new Building(26L), "31");
+		Stub<Apartment> apartment = apartmentService.findApartmentStub(new Building(26L), "31");
 
 		assertNotNull("Apartment find faild", apartment);
 	}

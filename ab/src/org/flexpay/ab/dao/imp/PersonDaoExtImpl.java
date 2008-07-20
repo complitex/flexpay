@@ -5,6 +5,8 @@ import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -23,7 +25,7 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 	 * @param person Identity data
 	 * @return Person stub if persistent person matches specified identity
 	 */
-	public Person findPersonStub(final Person person) {
+	public Stub<Person> findPersonStub(final Person person) {
 
 		final PersonIdentity identity = person.getDefaultIdentity();
 		List identities = getHibernateTemplate().executeFind(new HibernateCallback() {
@@ -68,6 +70,6 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 		}
 
 		PersonIdentity res = (PersonIdentity) identities.get(0);
-		return res.getPerson();
+		return stub(res.getPerson());
 	}
 }
