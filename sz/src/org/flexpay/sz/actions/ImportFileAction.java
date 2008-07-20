@@ -58,7 +58,7 @@ public class ImportFileAction extends FPActionSupport {
 	private SzFileStatusService szFileStatusService;
 	private SzFileActualityStatusService szFileActualityStatusService;
 
-	public String execute() throws FlexPayException {
+	public String doExecute() throws Exception {
 		if (isSubmit()) {
 			SzFileType szFileType = szFileTypeService
 					.getByFileName(uploadFileName);
@@ -67,13 +67,8 @@ public class ImportFileAction extends FPActionSupport {
 				szFile.setInternalRequestFileName(SzFile.getRandomString());
 				szFile.setFileYear(year);
 				szFile.setFileMonth(month);
-				File file = szFile.getRequestFile(ApplicationConfig.getInstance()
-						.getSzDataRoot());
-				try {
-					FileUtils.copyFile(upload, file);
-				} catch (IOException e) {
-					// TODO write error to page
-				}
+				File file = szFile.getRequestFile(ApplicationConfig.getSzDataRoot());
+				FileUtils.copyFile(upload, file);
 
 				Oszn oszn = osznService.read(osznId);
 				szFile.setOszn(oszn);
@@ -87,12 +82,11 @@ public class ImportFileAction extends FPActionSupport {
 						.read(SzFileActualityStatusService.IS_ACTUAL));
 				try {
 					szFileService.create(szFile);
-				} catch (FlexPayException e) {
+				} finally {
 					file.delete();
-					addActionError(e);
 				}
 			} else {
-				// TODO write message - wrong file name
+				addActionError("Invalid file name");
 			}
 		} else {
 			Calendar cal = Calendar.getInstance();
@@ -106,7 +100,18 @@ public class ImportFileAction extends FPActionSupport {
 			return "oszn_absent";
 		}
 
-		return "form";
+		return INPUT;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return osznList.isEmpty() ? "oszn_absent" : INPUT;
 	}
 
 	public void setUpload(File upload) {

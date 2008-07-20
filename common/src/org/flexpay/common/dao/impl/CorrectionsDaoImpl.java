@@ -4,6 +4,7 @@ import org.flexpay.common.dao.CorrectionsDao;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
@@ -42,23 +43,17 @@ public class CorrectionsDaoImpl extends SimpleJdbcDaoSupport implements Correcti
 	 * @param externalId		DataSource internal object id
 	 * @param type			  DomainObject type
 	 * @param cls			   DomainObject class to retrive
-	 * @param sourceDescription Data source description
+	 * @param sd Data source description
 	 * @return DomainObject
 	 */
-	public <T extends DomainObject> T findCorrection(@NonNls String externalId, int type,
-													 final Class<T> cls, DataSourceDescription sourceDescription) {
+	public <T extends DomainObject> Stub<T> findCorrection(@NonNls String externalId, int type,
+													 final Class<T> cls, DataSourceDescription sd) {
 
-		Long id = sourceDescription != null ?
-				  getInternalId(externalId, type, sourceDescription) :
+		Long id = sd != null ?
+				  getInternalId(externalId, type, sd) :
 				  getInternalCommonId(externalId, type);
 		if (id != null) {
-			try {
-				T object = cls.newInstance();
-				object.setId(id);
-				return object;
-			} catch (Exception e) {
-				throw new RuntimeException("Cannot instantiate reference: " + cls.getName(), e);
-			}
+			return new Stub<T>(id);
 		}
 		return null;
 	}

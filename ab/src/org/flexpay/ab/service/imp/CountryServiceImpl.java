@@ -22,10 +22,12 @@ import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.NonNls;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class CountryServiceImpl implements CountryService {
 
+	@NonNls
 	private Logger log = Logger.getLogger(getClass());
 
 	private CountryDao countryDao;
@@ -67,7 +69,7 @@ public class CountryServiceImpl implements CountryService {
 
 	public List<CountryNameTranslation> getCountries(Locale locale) throws FlexPayException {
 		Language language = LanguageUtil.getLanguage(locale);
-		Language defaultLang = ApplicationConfig.getInstance().getDefaultLanguage();
+		Language defaultLang = ApplicationConfig.getDefaultLanguage();
 		List<Country> countries = countryDao.listCountries();
 
 		log.info("Found " + countries.size() + " countries");

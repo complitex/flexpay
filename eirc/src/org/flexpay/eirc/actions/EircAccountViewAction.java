@@ -10,11 +10,22 @@ public class EircAccountViewAction extends FPActionSupport {
 	
 	private EircAccount eircAccount;
 	
-	public String execute() {
+	public String doExecute() {
 		
 		eircAccount = eircAccountService.findWithPerson(eircAccount.getId());
 		
-		return "success";
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return SUCCESS;
 	}
 
 	/**

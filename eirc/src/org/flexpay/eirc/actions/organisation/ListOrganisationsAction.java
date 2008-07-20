@@ -15,10 +15,21 @@ public class ListOrganisationsAction extends FPActionSupport {
 	private Page<Organisation> pager = new Page<Organisation>();
 	private List<Organisation> organisations = Collections.emptyList();
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
 		organisations = organisationService.listOrganisations(pager);
 
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
 		return SUCCESS;
 	}
 

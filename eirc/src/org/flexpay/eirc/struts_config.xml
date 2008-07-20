@@ -89,7 +89,7 @@
 
 		<action name="organisation_edit" class="editOrganisationAction">
 			<result name="input" type="tiles">eirc.organisation.edit</result>
-			<result type="redirect-action">
+			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">organisations_list</param>
 				<param name="parse">true</param>
 			</result>

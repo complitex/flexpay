@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.TimeLine;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -32,7 +33,7 @@ public class RawStreetDataConverter implements DataConverter<Street, RawStreetDa
 		streetName.setObject(street);
 
 		StreetNameTranslation nameTranslation = new StreetNameTranslation();
-		nameTranslation.setLang(ApplicationConfig.getInstance().getDefaultLanguage());
+		nameTranslation.setLang(ApplicationConfig.getDefaultLanguage());
 		nameTranslation.setTranslatable(streetName);
 		nameTranslation.setName(streetRawData.getName());
 
@@ -45,14 +46,14 @@ public class RawStreetDataConverter implements DataConverter<Street, RawStreetDa
 		nameTemporal.setValue(streetName);
 		street.setNamesTimeLine(new TimeLine<StreetName, StreetNameTemporal>(nameTemporal));
 
-		StreetType streetType = correctionsService.findCorrection(
+		Stub<StreetType> streetType = correctionsService.findCorrection(
 				streetRawData.getTypeId(), StreetType.class, dataSourceDescription);
 		if (streetType == null) {
 			throw new FlexPayException("Cannot find street type correction: " + streetRawData.getTypeId());
 		}
 		StreetTypeTemporal temporal = new StreetTypeTemporal();
 		temporal.setObject(street);
-		temporal.setValue(streetType);
+		temporal.setValue(new StreetType(streetType));
 		TimeLine<StreetType, StreetTypeTemporal> typeTimeLine =
 				new TimeLine<StreetType, StreetTypeTemporal>(temporal);
 		street.setTypesTimeLine(typeTimeLine);

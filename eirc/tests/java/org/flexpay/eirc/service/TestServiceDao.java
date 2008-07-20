@@ -16,11 +16,11 @@ import java.util.List;
 public class TestServiceDao extends SpringBeanAwareTestCase {
 
 	@Autowired
-	private ServiceDaoExt serviceDaoExt;
+	protected ServiceDaoExt serviceDaoExt;
 	@Autowired
-	private SPService spService;
+	protected SPService spService;
 	@Autowired
-	private ServiceTypeService serviceTypeService;
+	protected ServiceTypeService serviceTypeService;
 
 	@Test
 	public void testGetIntersectionServices() {
@@ -34,8 +34,8 @@ public class TestServiceDao extends SpringBeanAwareTestCase {
 		assertNotNull("Cannot find service type", type);
 
 		List<Service> services = serviceDaoExt.findIntersectingServices(provider.getId(), type.getId(),
-				ApplicationConfig.getInstance().getPastInfinite(),
-				ApplicationConfig.getInstance().getFutureInfinite());
+				ApplicationConfig.getPastInfinite(),
+				ApplicationConfig.getFutureInfinite());
 		assertEquals("Invalid number of services found", 1, services.size());
 	}
 }

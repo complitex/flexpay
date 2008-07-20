@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataCorrection;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.*;
@@ -160,7 +161,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		RawConsumerData data = RawConsumersDataUtil.convert(registry, record);
 		data.addNameValuePair(RawConsumerData.FIELD_SERVICE_CODE, subserviceId);
 		String id = data.getShortConsumerId();
-		Consumer persistent = factory.getCorrectionsService().findCorrection(
+		Stub<Consumer> persistent = factory.getCorrectionsService().findCorrection(
 				id, Consumer.class, registry.getServiceProvider().getDataSourceDescription());
 		if (persistent != null) {
 			if (log.isInfoEnabled()) {

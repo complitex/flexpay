@@ -3,6 +3,7 @@ package org.flexpay.common.service.importexport;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
 
 public interface CorrectionsService {
 
@@ -16,15 +17,12 @@ public interface CorrectionsService {
 	/**
 	 * Find domain object by its external data source id
 	 *
-	 * TODO: refactor to return Stub<T> instead
-	 *
 	 * @param externalId		External id
 	 * @param cls			  Object class to find
 	 * @param sourceDescription External data source description
 	 * @return DomainObject
-	 * @deprecated see TODO
 	 */
-	<T extends DomainObject> T findCorrection(String externalId, Class<T> cls, DataSourceDescription sourceDescription);
+	<T extends DomainObject> Stub<T> findCorrection(String externalId, Class<T> cls, DataSourceDescription sourceDescription);
 
 	/**
 	 * Check if correction exists 

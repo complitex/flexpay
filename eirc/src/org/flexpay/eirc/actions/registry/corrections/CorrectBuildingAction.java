@@ -25,7 +25,7 @@ public class CorrectBuildingAction extends ListBuildings {
 	private SpRegistryRecordService recordService;
 	private ServiceTypeService serviceTypeService;
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
 		record = recordService.read(record.getId());
 
@@ -34,7 +34,7 @@ public class CorrectBuildingAction extends ListBuildings {
 			DataSourceDescription sd = recordService.getDataSourceDescription(record);
 			if (sd == null) {
 				addActionError(getText("error.eirc.data_source_not_found"));
-				return super.execute();
+				return super.doExecute();
 			}
 
 			RawConsumerData data = consumersDataSource.getById(String.valueOf(record.getId()));
@@ -46,7 +46,19 @@ public class CorrectBuildingAction extends ListBuildings {
 			record = recordService.removeError(record);
 			return "complete";
 		}
-		return super.execute();
+		return super.doExecute();
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return "building".equals(setupType) ? "complete" : super.getErrorResult();
 	}
 
 	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {

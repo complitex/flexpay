@@ -13,13 +13,24 @@ public class BuildingsSetPrimaryStatusAction extends FPActionSupport {
 	private Buildings buildings;
 	private Long redirectBuildingsId;
 
-	public String execute() throws FlexPayException {
+	public String doExecute() throws FlexPayException {
 		buildings = buildingService.readFull(stub(buildings));
 		for (Buildings current : buildingService.getBuildingBuildings(buildings.getBuilding())) {
 			current.setPrimaryStatus(buildings.getId().longValue() == current.getId().longValue());
 			buildingService.update(current);
 		}
 
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
 		return SUCCESS;
 	}
 

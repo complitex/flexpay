@@ -21,6 +21,6 @@ public class EndDateFilter extends DateFilterBase {
 	}
 
 	protected Date getEmptyDate() {
-		return ApplicationConfig.getInstance().getFutureInfinite();
+		return ApplicationConfig.getFutureInfinite();
 	}
 }

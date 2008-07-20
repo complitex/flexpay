@@ -31,9 +31,9 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	 * @param value Temporary values assigned to this interval
 	 */
 	public DateInterval(T value) {
-		begin = ApplicationConfig.getInstance().getPastInfinite();
-		end = ApplicationConfig.getInstance().getFutureInfinite();
-		invalidDate = ApplicationConfig.getInstance().getFutureInfinite();
+		begin = ApplicationConfig.getPastInfinite();
+		end = ApplicationConfig.getFutureInfinite();
+		invalidDate = ApplicationConfig.getFutureInfinite();
 		createDate = DateUtil.now();
 		this.value = value;
 	}
@@ -48,7 +48,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	public DateInterval(Date begin, Date end, T value) {
 		setBegin(begin);
 		setEnd(end);
-		invalidDate = ApplicationConfig.getInstance().getFutureInfinite();
+		invalidDate = ApplicationConfig.getFutureInfinite();
 		createDate = DateUtil.now();
 		this.value = value;
 
@@ -72,7 +72,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	 * @param begin Value to set for property 'begin'.
 	 */
 	public void setBegin(Date begin) {
-		Date pastInfinite = ApplicationConfig.getInstance().getPastInfinite();
+		Date pastInfinite = ApplicationConfig.getPastInfinite();
 		if (begin == null || begin.compareTo(pastInfinite) < 0) {
 			this.begin = pastInfinite;
 		} else {
@@ -95,7 +95,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	 * @param end Value to set for property 'end'.
 	 */
 	public void setEnd(Date end) {
-		Date futureInfinite = ApplicationConfig.getInstance().getFutureInfinite();
+		Date futureInfinite = ApplicationConfig.getFutureInfinite();
 		if (end == null || end.compareTo(futureInfinite) > 0) {
 			this.end = futureInfinite;
 		} else {

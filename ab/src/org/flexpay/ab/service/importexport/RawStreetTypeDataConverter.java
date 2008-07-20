@@ -6,10 +6,10 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.util.Set;
-import java.util.HashSet;
 
 public class RawStreetTypeDataConverter implements DataConverter<StreetType, RawStreetTypeData> {
 
@@ -32,10 +32,10 @@ public class RawStreetTypeDataConverter implements DataConverter<StreetType, Raw
 
 		StreetTypeTranslation typeTranslation = new StreetTypeTranslation();
 		typeTranslation.setTranslatable(streetType);
-		typeTranslation.setLang(ApplicationConfig.getInstance().getDefaultLanguage());
+		typeTranslation.setLang(ApplicationConfig.getDefaultLanguage());
 		typeTranslation.setName(rawStreetTypeData.getName());
 
-		Set<StreetTypeTranslation> translations = new HashSet<StreetTypeTranslation>();
+		Set<StreetTypeTranslation> translations = set();
 		translations.add(typeTranslation);
 		streetType.setTranslations(translations);
 

@@ -54,8 +54,7 @@ public class ImportFileListAction extends FPActionSupport {
 	}
 
 	public String getSzDataRoot() throws IOException {
-		return ApplicationConfig.getInstance().getSzDataRoot()
-				.getCanonicalPath();
+		return ApplicationConfig.getSzDataRoot().getCanonicalPath();
 	}
 
 	public String getSeparator() {

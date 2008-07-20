@@ -8,9 +8,9 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,12 +20,11 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 
 	private Buildings buildings = new Buildings();
 	private List<Buildings> alternateBuildingsList = new ArrayList<Buildings>();
-	private Map<String, BuildingAttribute> attributeMap;
+	private Map<String, BuildingAttribute> attributeMap = map();
 
 	public void prepare() {
 		buildings = buildingService.readFull(stub(buildings));
 
-		attributeMap = new HashMap<String, BuildingAttribute>();
 		for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
 			BuildingAttribute attr = buildings.getAttribute(type);
 			if (attr == null) {
@@ -36,7 +35,7 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 		}
 	}
 
-	public String execute() throws FlexPayException {
+	public String doExecute() throws FlexPayException {
 		for (Buildings current : buildingService.getBuildingBuildings(buildings.getBuilding())) {
 			if (buildings.getId().longValue() != current.getId().longValue()) {
 				alternateBuildingsList.add(buildingService.readFull(stub(current)));
@@ -51,6 +50,17 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 			buildingService.update(buildings);
 		}
 
+		return INPUT;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
 		return INPUT;
 	}
 

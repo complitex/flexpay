@@ -16,7 +16,7 @@ public class ProcessRegistryRecordsAction extends FPActionSupport {
 	private SpRegistryService registryService;
 	private ServiceProviderFileProcessor providerFileProcessor;
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
 		log.debug("About to execute ProcessRegistryRecordsAction");
 
@@ -30,13 +30,20 @@ public class ProcessRegistryRecordsAction extends FPActionSupport {
 			return SUCCESS;
 		}
 
-		try {
-			providerFileProcessor.processRecords(registry, objectIds);
-		} catch (Exception e) {
-			addActionError(e.getMessage());
-		}
+		providerFileProcessor.processRecords(registry, objectIds);
 
 		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return ERROR;
 	}
 
 	public Set<Long> getObjectIds() {

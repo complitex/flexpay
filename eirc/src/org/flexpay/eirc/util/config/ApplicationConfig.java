@@ -22,8 +22,7 @@ public class ApplicationConfig extends
 	}
 
 	public static ApplicationConfig getInstance() {
-		return (ApplicationConfig) org.flexpay.common.util.config.ApplicationConfig
-				.getInstance();
+		return (ApplicationConfig) org.flexpay.common.util.config.ApplicationConfig.getInstance();
 	}
 
 	public Organisation getSelfOrganisation() {

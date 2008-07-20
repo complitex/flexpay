@@ -7,6 +7,7 @@ import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
 
@@ -26,23 +27,23 @@ public class RawBuildingsDataConverter implements
 								 DataSourceDescription dataSourceDescription,
 								 CorrectionsService correctionsService) throws FlexPayException {
 
-		Street street = correctionsService.findCorrection(
+		Stub<Street> street = correctionsService.findCorrection(
 				rawData.getStreetId(), Street.class, dataSourceDescription);
 		if (street == null) {
 			throw new FlexPayException("Cannot find street");
 		}
 
-		District district = correctionsService.findCorrection(rawData
+		Stub<District> district = correctionsService.findCorrection(rawData
 				.getDistrictId(), District.class, dataSourceDescription);
 		if (district == null) {
 			throw new FlexPayException("Cannot find district");
 		}
 
 		Building building = new Building();
-		building.setDistrict(district);
+		building.setDistrict(new District(district));
 
 		Buildings buildings = new Buildings();
-		buildings.setStreet(street);
+		buildings.setStreet(new Street(street));
 		building.addBuildings(buildings);
 
 		buildings.setBuildingAttribute(Buildings.numberAttribute(rawData.getNumber()));

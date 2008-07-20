@@ -12,12 +12,12 @@
 		</action>
 
 		<action name="service_types_delete" class="deleteServiceTypesAction">
-			<result type="redirect-action">service_types_list</result>
+			<result name="redirectSuccess" type="redirect-action">service_types_list</result>
 		</action>
 
 		<action name="service_type_edit" class="editServiceTypeAction">
 			<result name="input" type="tiles">eirc.service_type.edit</result>
-			<result type="redirect-action">
+			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">service_types_list</param>
 			</result>
 		</action>
@@ -30,7 +30,7 @@
 
 		<action name="service_edit" class="editServiceAction">
 			<result name="input" type="tiles">eirc.service.edit</result>
-			<result type="redirect-action">
+			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">services_list</param>
 			</result>
 		</action>

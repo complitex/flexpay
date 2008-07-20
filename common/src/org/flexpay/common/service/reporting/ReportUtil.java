@@ -269,8 +269,7 @@ public class ReportUtil {
 	}
 
 	private File getReportsDir() {
-		ApplicationConfig config = ApplicationConfig.getInstance();
-		return new File(config.getDataRoot(), "reports");
+		return new File(ApplicationConfig.getDataRoot(), "reports");
 	}
 
 	private File getReportTemplatesDir() {

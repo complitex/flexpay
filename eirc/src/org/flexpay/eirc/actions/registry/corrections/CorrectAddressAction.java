@@ -16,9 +16,8 @@ import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
-import org.flexpay.eirc.service.SPService;
-import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.ServiceTypeService;
+import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 public class CorrectAddressAction extends ListApartments {
@@ -35,7 +34,7 @@ public class CorrectAddressAction extends ListApartments {
 	private ServiceTypeService serviceTypeService;
 	private ClassToTypeRegistry typeRegistry;
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
 		record = recordService.read(record.getId());
 
@@ -44,7 +43,7 @@ public class CorrectAddressAction extends ListApartments {
 			DataSourceDescription sd = recordService.getDataSourceDescription(record);
 			if (sd == null) {
 				addActionError(getText("error.eirc.data_source_not_found"));
-				return super.execute();
+				return super.doExecute();
 			}
 
 			RawConsumerData data = consumersDataSource.getById(String.valueOf(record.getId()));
@@ -56,7 +55,19 @@ public class CorrectAddressAction extends ListApartments {
 			record = recordService.removeError(record);
 			return "complete";
 		}
-		return super.execute();
+		return super.doExecute();
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
+		return "apartment".equals(setupType) ? "complete" : super.getErrorResult();
 	}
 
 	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {
@@ -122,8 +133,8 @@ public class CorrectAddressAction extends ListApartments {
 	public boolean getCanCreateApartment() {
 		ImportError error = record.getImportError();
 		return error != null &&
-				(typeRegistry.getType(Apartment.class) == error.getObjectType() ||
-						typeRegistry.getType(org.flexpay.bti.persistence.Apartment.class) == error.getObjectType());
+			   (typeRegistry.getType(Apartment.class) == error.getObjectType() ||
+				typeRegistry.getType(org.flexpay.bti.persistence.Apartment.class) == error.getObjectType());
 
 	}
 

@@ -23,7 +23,7 @@ public class ListServicesAction extends FPActionSupport {
 
 	private List<Service> services;
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
 		serviceProviderFilter = spService.initServiceProvidersFilter(serviceProviderFilter);
 
@@ -34,6 +34,17 @@ public class ListServicesAction extends FPActionSupport {
 
 		services = spService.listServices(filters, pager);
 
+		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
 		return SUCCESS;
 	}
 

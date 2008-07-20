@@ -2,6 +2,7 @@ package org.flexpay.common.util.config;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
+import org.jetbrains.annotations.NonNls;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,9 @@ import java.util.Locale;
 public class UserPreferences {
 	private String userName;
 	private Locale locale;
+
+	@NonNls
+	private static final String WW_TRANS_I18_N_LOCALE = "WW_TRANS_I18N_LOCALE";
 
 	/**
 	 * Get current user session preferences
@@ -26,11 +30,11 @@ public class UserPreferences {
 		// Not found in session, create default one
 		if (prefs == null) {
 			prefs = new UserPreferences();
-			Language lang = ApplicationConfig.getInstance().getDefaultLanguage();
+			Language lang = ApplicationConfig.getDefaultLanguage();
 			prefs.setLocale(lang.getLocale());
 		}
 
-		Locale locale = (Locale) WebUtils.getSessionAttribute(request, "WW_TRANS_I18N_LOCALE");
+		Locale locale = (Locale) WebUtils.getSessionAttribute(request, WW_TRANS_I18_N_LOCALE);
 		if (locale != null) {
 			prefs.setLocale(locale);
 		}
@@ -41,7 +45,7 @@ public class UserPreferences {
 	/**
 	 * Save user preferences
 	 *
-	 * @param request Http request
+	 * @param request	 Http request
 	 * @param preferences User preferences
 	 */
 	public static void setPreferences(HttpServletRequest request, UserPreferences preferences) {

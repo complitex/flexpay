@@ -15,6 +15,7 @@ import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.NonNls;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -22,6 +23,7 @@ import java.util.*;
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class StreetTypeServiceImpl implements StreetTypeService {
 
+	@NonNls
 	private Logger log = Logger.getLogger(getClass());
 
 	private StreetTypeDao streetTypeDao;
@@ -80,8 +82,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		log.debug("Getting list of StreetTypes");
 
 		Language language = LanguageUtil.getLanguage(locale);
-		Language defaultLang = ApplicationConfig.getInstance()
-				.getDefaultLanguage();
+		Language defaultLang = ApplicationConfig.getDefaultLanguage();
 		List<StreetType> streetTypes = streetTypeDao
 				.listStreetTypes(StreetType.STATUS_ACTIVE);
 		List<StreetTypeTranslation> translations = new ArrayList<StreetTypeTranslation>(

@@ -1,33 +1,29 @@
 package org.flexpay.eirc.actions.service;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
 import org.flexpay.eirc.service.ServiceTypeService;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class EditServiceTypeAction extends FPActionSupport {
 
-	private Logger log = Logger.getLogger(getClass());
-
 	private ServiceTypeService serviceTypeService;
 
 	private ServiceType serviceType = new ServiceType();
-	private Map<Long, String> names = new HashMap<Long, String>();
-	private Map<Long, String> descriptions = new HashMap<Long, String>();
+	private Map<Long, String> names = map();
+	private Map<Long, String> descriptions = map();
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
 		if (serviceType.getId() == null) {
 			// todo: notify that no object was selected
 			addActionError("No object was selected");
-			return SUCCESS;
+			return REDIRECT_SUCCESS;
 		}
 
 		ServiceType type = serviceTypeService.read(serviceType);
@@ -55,14 +51,20 @@ public class EditServiceTypeAction extends FPActionSupport {
 			type.setTypeName(nameTranslation);
 		}
 
-		try {
-			serviceTypeService.save(type);
-		} catch (FlexPayExceptionContainer container) {
-			addActionErrors(container);
-			return INPUT;
-		}
+		serviceTypeService.save(type);
 
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return REDIRECT_SUCCESS;
 	}
 
 	private void initNames() {
@@ -71,7 +73,7 @@ public class EditServiceTypeAction extends FPActionSupport {
 			descriptions.put(name.getLang().getId(), name.getDescription());
 		}
 
-		for (Language lang : ApplicationConfig.getInstance().getLanguages()) {
+		for (Language lang : ApplicationConfig.getLanguages()) {
 			if (names.containsKey(lang.getId())) {
 				continue;
 			}

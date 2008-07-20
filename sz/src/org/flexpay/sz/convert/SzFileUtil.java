@@ -159,13 +159,11 @@ public class SzFileUtil {
 	}
 
 	private static String getDbfEncoding() {
-		return ApplicationConfig
-				.getInstance()
-				.getSzDefaultDbfFileEncoding();
+		return ApplicationConfig.getSzDefaultDbfFileEncoding();
 	}
 
 	private static File getSzDataRoot() {
-		return ApplicationConfig.getInstance().getSzDataRoot();
+		return ApplicationConfig.getSzDataRoot();
 	}
 
 	public static Integer getNumberOfRecord(SzFile szFile)

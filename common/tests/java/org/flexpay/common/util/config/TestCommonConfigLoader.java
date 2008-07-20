@@ -17,7 +17,7 @@ public class TestCommonConfigLoader extends SpringBeanAwareTestCase {
 		ApplicationConfig config = ApplicationConfig.getInstance();
 		assertNotNull("Configuration load failed", config);
 
-		assertNotNull("Test data root setup failed", config.getDataRoot());
-		assertEquals("Test prop setup failed", "123", config.getTestProp());
+		assertNotNull("Test data root setup failed", ApplicationConfig.getDataRoot());
+		assertEquals("Test prop setup failed", "123", ApplicationConfig.getTestProp());
 	}
 }

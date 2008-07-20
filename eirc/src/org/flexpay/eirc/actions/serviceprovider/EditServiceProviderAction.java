@@ -1,15 +1,14 @@
 package org.flexpay.eirc.actions.serviceprovider;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.eirc.persistence.Organisation;
 import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.ServiceProviderDescription;
-import org.flexpay.eirc.persistence.Organisation;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
-import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.OrganisationService;
+import org.flexpay.eirc.service.SPService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,11 +22,11 @@ public class EditServiceProviderAction extends FPActionSupport {
 	private ServiceProvider provider = new ServiceProvider();
 	private Map<Long, String> descriptions = new HashMap<Long, String>();
 
-	public String execute() throws Exception {
+	public String doExecute() throws Exception {
 
 		if (provider.getId() == null) {
 			addActionError("No object was selected");
-			return SUCCESS;
+			return REDIRECT_SUCCESS;
 		}
 
 		ServiceProvider serviceProvider = spService.read(provider);
@@ -63,16 +62,22 @@ public class EditServiceProviderAction extends FPActionSupport {
 			log.info("New Service provider descriptions: " + serviceProvider.getDescriptions());
 		}
 
-		try {
-			Organisation organisation = organisationService.read(new Organisation(organisationFilter.getSelectedId()));
-			serviceProvider.setOrganisation(organisation);
-			spService.save(serviceProvider);
-		} catch (FlexPayExceptionContainer container) {
-			addActionErrors(container);
-			return INPUT;
-		}
+		Organisation organisation = organisationService.read(new Organisation(organisationFilter.getSelectedId()));
+		serviceProvider.setOrganisation(organisation);
+		spService.save(serviceProvider);
 
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return INPUT;
 	}
 
 	private void initDescriptions() {
@@ -80,7 +85,7 @@ public class EditServiceProviderAction extends FPActionSupport {
 			descriptions.put(description.getLang().getId(), description.getName());
 		}
 
-		for (Language lang : ApplicationConfig.getInstance().getLanguages()) {
+		for (Language lang : ApplicationConfig.getLanguages()) {
 			if (descriptions.containsKey(lang.getId())) {
 				continue;
 			}
