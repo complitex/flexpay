@@ -2,7 +2,7 @@ package org.flexpay.common.exception;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nls;
-import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 
 import java.util.Date;
 
@@ -98,7 +98,7 @@ public class FlexPayException extends Exception {
 		int n = 0;
 		for (Object obj : objects) {
 
-			res[n] = obj instanceof Date ? DateIntervalUtil.format((Date) obj) : String.valueOf(obj);
+			res[n] = obj instanceof Date ? DateUtil.format((Date) obj) : String.valueOf(obj);
 			n++;
 		}
 

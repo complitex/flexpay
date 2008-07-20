@@ -4,7 +4,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
-import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -73,11 +73,11 @@ public class Apartment extends DomainObjectWithStatus {
 	 * @return apartment number
 	 */
 	public String getNumber() {
-		return getNumberForDate(DateIntervalUtil.now());
+		return getNumberForDate(DateUtil.now());
 	}
 
 	public void setNumber(String number) throws ObjectAlreadyExistException {
-		Date nowDate = DateIntervalUtil.now();
+		Date nowDate = DateUtil.now();
 		if (number == null || number.equals("")
 			|| number.equals(getNumberForDate(nowDate))) {
 			// nothing to do
@@ -117,7 +117,7 @@ public class Apartment extends DomainObjectWithStatus {
 
 
 	public Set<Person> getPersons() {
-		return getPersons(DateIntervalUtil.now());
+		return getPersons(DateUtil.now());
 	}
 
 	public Set<Person> getPersons(Date date) {
@@ -132,7 +132,7 @@ public class Apartment extends DomainObjectWithStatus {
 	}
 
 	public Set<PersonRegistration> getValidPersonRegistrations() {
-		return getValidPersonRegistrations(DateIntervalUtil.now());
+		return getValidPersonRegistrations(DateUtil.now());
 	}
 
 	public Set<PersonRegistration> getValidPersonRegistrations(Date date) {

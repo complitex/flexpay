@@ -1,7 +1,7 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -56,8 +56,8 @@ public class ApartmentNumber extends DomainObject {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("id", getId())
 				.append("number", value)
-				.append("begin", DateIntervalUtil.format(begin))
-				.append("end", DateIntervalUtil.format(end))
+				.append("begin", DateUtil.format(begin))
+				.append("end", DateUtil.format(end))
 				.toString();
 	}
 }

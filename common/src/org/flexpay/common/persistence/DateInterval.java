@@ -6,6 +6,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.util.Date;
@@ -33,7 +34,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 		begin = ApplicationConfig.getInstance().getPastInfinite();
 		end = ApplicationConfig.getInstance().getFutureInfinite();
 		invalidDate = ApplicationConfig.getInstance().getFutureInfinite();
-		createDate = DateIntervalUtil.now();
+		createDate = DateUtil.now();
 		this.value = value;
 	}
 
@@ -48,7 +49,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 		setBegin(begin);
 		setEnd(end);
 		invalidDate = ApplicationConfig.getInstance().getFutureInfinite();
-		createDate = DateIntervalUtil.now();
+		createDate = DateUtil.now();
 		this.value = value;
 
 		if (!DateIntervalUtil.isValid(this)) {
@@ -139,7 +140,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	}
 
 	public void invalidate() {
-		this.invalidDate = DateIntervalUtil.now();
+		this.invalidDate = DateUtil.now();
 	}
 
 	/**
@@ -150,10 +151,10 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-				.append("Begin", DateIntervalUtil.format(begin))
-				.append("End", DateIntervalUtil.format(end))
-				.append("Created", DateIntervalUtil.format(createDate))
-				.append("Invalid", DateIntervalUtil.format(invalidDate))
+				.append("Begin", DateUtil.format(begin))
+				.append("End", DateUtil.format(end))
+				.append("Created", DateUtil.format(createDate))
+				.append("Invalid", DateUtil.format(invalidDate))
 				.append("Value", value)
 				.toString();
 	}

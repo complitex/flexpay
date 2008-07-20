@@ -7,7 +7,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.set;
-import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -162,7 +162,7 @@ public class Person extends DomainObjectWithStatus {
 
 	@Nullable
 	public Apartment getRegistrationApartment() {
-		return getRegistrationApartment(DateIntervalUtil.now());
+		return getRegistrationApartment(DateUtil.now());
 	}
 
 	@Nullable
@@ -177,7 +177,7 @@ public class Person extends DomainObjectWithStatus {
 
 	@Nullable
 	public PersonRegistration getCurrentRegistration() {
-		return getRegistrationForDate(DateIntervalUtil.now());
+		return getRegistrationForDate(DateUtil.now());
 	}
 
 	@Nullable
@@ -236,7 +236,7 @@ public class Person extends DomainObjectWithStatus {
 
 	public Date[] getBeginValidInterval() {
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(DateIntervalUtil.now());
+		cal.setTime(DateUtil.now());
 		cal.add(Calendar.MONTH, -3);
 		Date date1 = cal.getTime();
 
@@ -296,7 +296,7 @@ public class Person extends DomainObjectWithStatus {
 	 * @return PersonIdentity with First-Middle-Last names if available, or <code>null</code> otherwise
 	 */
 	public PersonIdentity getFIOIdentity() {
-		return getFIOIdentity(DateIntervalUtil.now());
+		return getFIOIdentity(DateUtil.now());
 	}
 
 	/**

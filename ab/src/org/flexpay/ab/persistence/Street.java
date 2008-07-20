@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -151,7 +152,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 */
 	@Nullable
 	public StreetType getCurrentType() {
-		return getTypeForDate(DateIntervalUtil.now());
+		return getTypeForDate(DateUtil.now());
 	}
 
 	/**

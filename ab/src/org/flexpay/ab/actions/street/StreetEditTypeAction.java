@@ -7,10 +7,7 @@ import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.util.DateIntervalUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
-
-import java.text.ParseException;
+import org.flexpay.common.util.DateUtil;
 
 public class StreetEditTypeAction extends FPActionSupport {
 
@@ -37,7 +34,7 @@ public class StreetEditTypeAction extends FPActionSupport {
 					}
 				}
 			} else {
-				temporal.setBegin(DateIntervalUtil.now());
+				temporal.setBegin(DateUtil.now());
 			}
 		} else {
 			// for new temporals remove id before save
@@ -106,15 +103,11 @@ public class StreetEditTypeAction extends FPActionSupport {
 		if (temporal.getBegin() == null) {
 			return "";
 		}
-		String dt = DateIntervalUtil.format(temporal.getBegin());
+		String dt = DateUtil.format(temporal.getBegin());
 		return "-".equals(dt) ? "" : dt;
 	}
 
 	public void setDate(String dt) {
-		try {
-			temporal.setBegin(DateIntervalUtil.parse(dt));
-		} catch (ParseException e) {
-			temporal.setBegin(ApplicationConfig.getPastInfinite());
-		}
+		temporal.setBegin(DateUtil.parseBeginDate(dt));
 	}
 }

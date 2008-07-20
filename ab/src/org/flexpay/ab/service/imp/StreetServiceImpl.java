@@ -17,7 +17,7 @@ import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
-import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.NotNull;
 
@@ -295,7 +295,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 			log.debug("Types to save: " + object.getTypeTemporals());
 		}
 
-		streetDaoExt.invalidateTypeTemporals(object.getId(), ApplicationConfig.getFutureInfinite(), DateIntervalUtil.now());
+		streetDaoExt.invalidateTypeTemporals(object.getId(), ApplicationConfig.getFutureInfinite(), DateUtil.now());
 
 		for (StreetTypeTemporal temporal : object.getTypeTemporals()) {
 			if (temporal.getId() != null) {

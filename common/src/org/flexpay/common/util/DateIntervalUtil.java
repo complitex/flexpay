@@ -1,6 +1,5 @@
 package org.flexpay.common.util;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.persistence.DateInterval;
 import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.TemporaryValue;
@@ -8,8 +7,6 @@ import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class DateIntervalUtil {
@@ -19,8 +16,7 @@ public class DateIntervalUtil {
 	 *
 	 * @param di1 the first Date interval
 	 * @param di2 the second date interval
-	 * @return <code>true</code> if intervals are intersecting, or <code>false</code>
-	 *         otherwise
+	 * @return <code>true</code> if intervals are intersecting, or <code>false</code> otherwise
 	 */
 	public static boolean areIntersecting(DateInterval di1, DateInterval di2) {
 		return !(di1.getEnd().compareTo(di2.getBegin()) < 0
@@ -32,8 +28,7 @@ public class DateIntervalUtil {
 	 *
 	 * @param di1 the first interval
 	 * @param di2 the second interval
-	 * @return <code>true</code> if the first lays in second one, or <code>false</code>
-	 *         otherwise
+	 * @return <code>true</code> if the first lays in second one, or <code>false</code> otherwise
 	 */
 	public static boolean isInside(DateInterval di1, DateInterval di2) {
 		return di1.getBegin().compareTo(di2.getBegin()) >= 0
@@ -45,8 +40,7 @@ public class DateIntervalUtil {
 	 *
 	 * @param intervals	Collection of interval candidates
 	 * @param dateInterval Interval to find candidate in
-	 * @return DateInterval from collection that lays inside the specified one, or
-	 *         <code>null</code> if not found
+	 * @return DateInterval from collection that lays inside the specified one, or <code>null</code> if not found
 	 */
 	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
 	DI getInterval(Collection<DI> intervals, DI dateInterval) {
@@ -82,8 +76,7 @@ public class DateIntervalUtil {
 	}
 
 	/**
-	 * Check if time line is consistent: <ol> <li>All time line is covered</li> <li>No gaps
-	 * in intervals</li> </ol>
+	 * Check if time line is consistent: <ol> <li>All time line is covered</li> <li>No gaps in intervals</li> </ol>
 	 *
 	 * @param tl TimeLine to check
 	 * @return <code>true</code> if time line is consistent, or <code>false</code> otherwise
@@ -98,7 +91,7 @@ public class DateIntervalUtil {
 			if (!date.equals(di.getBegin())) {
 				return false;
 			}
-			date = next(di.getEnd());
+			date = DateUtil.next(di.getEnd());
 		}
 
 		return date.equals(ApplicationConfig.getFutureInfinite());
@@ -109,8 +102,8 @@ public class DateIntervalUtil {
 	 *
 	 * @param di Date interval
 	 * @return <code>true</code> if interval begin equals {@link org.flexpay.common.util.config.ApplicationConfig#getPastInfinite()}
-	 *         and end equals {@link org.flexpay.common.util.config.ApplicationConfig#getFutureInfinite()},
-	 *         or <code>false</code> otherwise
+	 *         and end equals {@link org.flexpay.common.util.config.ApplicationConfig#getFutureInfinite()}, or <code>false</code>
+	 *         otherwise
 	 */
 	public static boolean coversTimeLine(DateInterval di) {
 		return di.getBegin().equals(ApplicationConfig.getPastInfinite()) &&
@@ -165,7 +158,7 @@ public class DateIntervalUtil {
 			// new interval begin is inside the old one, add shorter copy of the old interval
 			if (diOld.getEnd().compareTo(diNew.getBegin()) > 0) {
 				// set old interval end is a day before a new starts
-				di.setEnd(previous(diNew.getBegin()));
+				di.setEnd(DateUtil.previous(diNew.getBegin()));
 				add(dis, di);
 				di = copy(diNew);
 			}
@@ -180,7 +173,7 @@ public class DateIntervalUtil {
 			add(dis, di);
 			di = copy(diOld);
 			// old interval part begin is a next day
-			di.setBegin(next(diNew.getEnd()));
+			di.setBegin(DateUtil.next(diNew.getEnd()));
 		}
 
 		// set current interval end date to the old's end
@@ -229,8 +222,7 @@ public class DateIntervalUtil {
 	/**
 	 * Create new TimeLine with new added interval.
 	 * <p/>
-	 * If begin or end bound of <code>di</code> is inside of some interval in time line the
-	 * old interval should be shorthanded
+	 * If begin or end bound of <code>di</code> is inside of some interval in time line the old interval should be shorthanded
 	 *
 	 * @param tl TimeLine
 	 * @param di DateInterval to add
@@ -244,7 +236,7 @@ public class DateIntervalUtil {
 		}
 
 		if (tlNew.isEmpty()) {
-			return new TimeLine<T,DI>(di);
+			return new TimeLine<T, DI>(di);
 		}
 
 		// join equal data intervals
@@ -317,7 +309,7 @@ public class DateIntervalUtil {
 			if (cmp < 0) {
 				DI tmp = copy(diNewC);
 				tmp.setEnd(diOldC.getEnd());
-				diNewC.setBegin(next(diOldC.getEnd()));
+				diNewC.setBegin(DateUtil.next(diOldC.getEnd()));
 				// add pair of intervals
 				add(disOld, diOldC);
 				add(disNew, tmp);
@@ -326,7 +318,7 @@ public class DateIntervalUtil {
 			} else if (cmp > 0) {
 				DI tmp = copy(diOldC);
 				tmp.setEnd(diNewC.getEnd());
-				diOldC.setBegin(next(diNewC.getEnd()));
+				diOldC.setBegin(DateUtil.next(diNewC.getEnd()));
 				// add pair of intervals
 				add(disOld, tmp);
 				add(disNew, diNewC);
@@ -389,82 +381,13 @@ public class DateIntervalUtil {
 	}
 
 	/**
-	 * Format Date
-	 *
-	 * @param date Date to format
-	 * @return tring date representation
-	 */
-	public static String format(Date date) {
-		SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-		return date.equals(ApplicationConfig.getPastInfinite()) ||
-			   date.equals(ApplicationConfig.getFutureInfinite())
-			   ? "-" : df.format(date);
-	}
-
-	/**
 	 * Format DateInterval begin and end date values
 	 *
 	 * @param di DateInterval
 	 * @return Array of two strings date representations
 	 */
-	public static String[] format(DateInterval di) {
-		if (di == null) {
-			return new String[] {"xxx", "xxx"};
-		}
-		return new String[]{format(di.getBegin()), format(di.getEnd())};
-	}
-
-	/**
-	 * Parse date from string
-	 *
-	 * @param dt String in YYYY/MM/DD format
-	 * @return parsed date
-	 * @throws ParseException if parse fails
-	 */
-	public static Date parse(String dt) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-		return sdf.parse(dt);
-	}
-
-	/**
-	 * Return current date
-	 *
-	 * @return Date with hours, minutes, seconds set to 0
-	 */
 	@NotNull
-	public static Date now() {
-		return DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
-	}
-
-	/**
-	 * Get date following the specified <code>date</code>
-	 *
-	 * @param date Date to get the next for
-	 * @return Next day date
-	 */
-	@NotNull
-	public static Date next(@NotNull Date date) {
-		Date dayAfter = DateUtils.addDays(date, 1);
-		if (dayAfter.compareTo(ApplicationConfig.getFutureInfinite()) > 0) {
-			dayAfter = ApplicationConfig.getFutureInfinite();
-		}
-
-		return dayAfter;
-	}
-
-	/**
-	 * Get date following the specified <code>date</code>
-	 *
-	 * @param date Date to get the next for
-	 * @return Next day date
-	 */
-	@NotNull
-	public static Date previous(@NotNull Date date) {
-		Date dayBefore = DateUtils.addDays(date, -1);
-		if (dayBefore.compareTo(ApplicationConfig.getPastInfinite()) < 0) {
-			dayBefore = ApplicationConfig.getPastInfinite();
-		}
-
-		return dayBefore;
+	public static String[] format(@NotNull DateInterval di) {
+		return new String[]{DateUtil.format(di.getBegin()), DateUtil.format(di.getEnd())};
 	}
 }

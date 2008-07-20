@@ -1,6 +1,7 @@
 package org.flexpay.common.persistence;
 
 import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.util.*;
@@ -25,14 +26,14 @@ public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI
 		if (!di.getBegin().equals(ApplicationConfig.getPastInfinite())) {
 			DI copy = di.getEmpty();
 			copy.setBegin(ApplicationConfig.getPastInfinite());
-			copy.setEnd(DateIntervalUtil.previous(di.getBegin()));
+			copy.setEnd(DateUtil.previous(di.getBegin()));
 			intervals.add(copy);
 		}
 		intervals.add(di);
 
 		if (!di.getEnd().equals(ApplicationConfig.getFutureInfinite())) {
 			DI copy = di.getEmpty();
-			copy.setBegin(DateIntervalUtil.next(di.getEnd()));
+			copy.setBegin(DateUtil.next(di.getEnd()));
 			copy.setEnd(ApplicationConfig.getFutureInfinite());
 			intervals.add(copy);
 		}
@@ -111,8 +112,8 @@ public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI
 		builder.append(" {\n");
 		for (DateInterval di : getIntervals()) {
 			String[] dates = DateIntervalUtil.format(di);
-			builder.append(dates[0]).append(" : ").append(dates[1]).
-					append(", Value: ").append(di == null ? "null" : di.getValue()).append("\n");
+			builder.append(dates[0]).append(" : ").append(dates[1])
+					.append(", ").append(di.getValue()).append("\n");
 		}
 		builder.append("}");
 

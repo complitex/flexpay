@@ -44,10 +44,6 @@
 		</property>
 	</bean>
 
-	<bean id="spFileDaoExt" class="org.flexpay.eirc.dao.imp.SpFileDaoExtImpl">
-		<property name="hibernateTemplate" ref="hibernateTemplate" />
-	</bean>
-
 	<bean id="spRegistryDaoExt" class="org.flexpay.eirc.dao.imp.SpRegistryDaoExtImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
