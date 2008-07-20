@@ -19,8 +19,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class ApartmentServiceImpl implements ApartmentService {
@@ -242,7 +241,14 @@ public class ApartmentServiceImpl implements ApartmentService {
 
 	public List<Apartment> getApartments(ArrayStack filters, Page pager) {
 		BuildingsFilter filter = (BuildingsFilter) filters.peek();
-		return apartmentDao.findObjects(filter.getSelectedId(), pager);
+		List<Apartment> apartments = apartmentDao.findObjects(filter.getSelectedId(), pager);
+		Collections.sort(apartments, new Comparator<Apartment>() {
+			public int compare(Apartment a1, Apartment a2) {
+				return a1.getNumber().compareTo(a2.getNumber());
+			}
+		});
+
+		return apartments;
 	}
 
 	public void setApartmentDao(ApartmentDao apartmentDao) {

@@ -20,6 +20,7 @@
 				<value>/WEB-INF/common/configs/spring/data_source.properties</value>
 				<value>/WEB-INF/common/configs/spring/hibernate.properties</value>
 				<value>/WEB-INF/common/configs/spring/app_server.properties</value>
+				<value>/WEB-INF/common/module.properties</value>
 			</list>
 		</property>
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
@@ -91,7 +92,7 @@
 	<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
 		<property name="beans">
 			<map>
-				<entry key="bean:name=hibernateStatistics" value-ref="hibernateStatistics" />
+				<entry key="bean:name=hibernateStatistics${flexpay.module.name}" value-ref="hibernateStatistics" />
 			</map>
 		</property>
 		<property name="assembler">

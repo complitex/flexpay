@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.config.ApplicationConfig;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.sz.persistence.Oszn;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.persistence.SzFileType;
@@ -15,11 +16,10 @@ import java.util.*;
 
 public class ImportFileAction extends FPActionSupport {
 
-	private static Map<Integer, String> months;
+	private static final Map<Integer, String> months = treeMap();
 	private static Integer[] years;
 
 	static {
-		months = new TreeMap<Integer, String>();
 		months.put(0, "01");
 		months.put(1, "02");
 		months.put(2, "03");
@@ -117,6 +117,10 @@ public class ImportFileAction extends FPActionSupport {
 		this.uploadFileName = uploadFileName;
 	}
 
+	/**
+	 * @deprecated
+	 * @return years
+	 */
 	public static Integer[] getYears() {
 		return years;
 	}
