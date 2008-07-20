@@ -49,8 +49,19 @@ public abstract class ObjectViewAction<
 			return SUCCESS;
 		} else {
 			addActionError(getText("error.no_id"));
-			return ERROR;
+			return REDIRECT_ERROR;
 		}
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return REDIRECT_ERROR;
 	}
 
 	/**
