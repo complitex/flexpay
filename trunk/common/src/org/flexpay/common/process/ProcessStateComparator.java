@@ -1,20 +1,16 @@
 package org.flexpay.common.process;
 
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.CollectionUtils.ar;
+
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ProcessStateComparator implements Comparator<Process> {
 	
-	private static Map<ProcessState, Integer> priorityMap;
-	
-	static {
-		priorityMap = new HashMap<ProcessState, Integer>(4);
-		priorityMap.put(ProcessState.RUNING, 10);
-		priorityMap.put(ProcessState.WAITING, 20);
-		priorityMap.put(ProcessState.COMPLITED, 30);
-		priorityMap.put(ProcessState.COMPLITED_WITH_ERRORS, 40);
-	}
+	private static final Map<ProcessState, Integer> priorityMap = map(
+			ar(ProcessState.RUNING, ProcessState.WAITING, ProcessState.COMPLITED, ProcessState.COMPLITED_WITH_ERRORS),
+			ar(10, 20, 30, 40));
 	
 	public int compare(Process obj1, Process obj2) {
 		Integer obj1Priority = priorityMap.get(obj1.getProcessState());

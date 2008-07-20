@@ -32,7 +32,7 @@ public abstract class SpringBeanAwareTestCase extends AbstractTransactionalJUnit
 		this.hibernateTemplate = hibernateTemplate;
 	}
 
-	protected InputStream getFileStream(String relativePath) {
+	protected InputStream getFileStream(@NonNls String relativePath) {
 		return getClass().getClassLoader().getResourceAsStream(relativePath);
 	}
 }

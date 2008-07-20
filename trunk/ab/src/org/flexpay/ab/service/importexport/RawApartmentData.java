@@ -2,16 +2,20 @@ package org.flexpay.ab.service.importexport;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.common.service.importexport.RawData;
+import org.jetbrains.annotations.NonNls;
 
 import java.util.Collection;
 import java.util.HashSet;
 
 public class RawApartmentData extends RawData<Apartment> {
 
-	private static Collection<String> possibleNames = new HashSet<String>();
+	private static final Collection<String> possibleNames = new HashSet<String>();
 
+	@NonNls
 	public static final String FIELD_NUMBER = "apartmentNumber";
+	@NonNls
 	public static final String FIELD_BUILDING = "buildingId";
+	@NonNls
 	public static final String FIELD_ID = "id";
 
 	static {

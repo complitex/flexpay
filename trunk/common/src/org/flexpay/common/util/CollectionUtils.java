@@ -1,18 +1,19 @@
 package org.flexpay.common.util;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.NonNls;
 
 import java.util.*;
 
 public class CollectionUtils {
 
 	@NotNull
-	public static <T> T[] ar(T... ts) {
+	public static <T> T[] ar(@NonNls T... ts) {
 		return ts;
 	}
 
 	@NotNull
-	public static <T> List<T> list(@NotNull T... ts) {
+	public static <T> List<T> list(@NonNls @NotNull T... ts) {
 		return new ArrayList<T>(ts.length);
 	}
 
@@ -22,7 +23,7 @@ public class CollectionUtils {
 	}
 
 	@NotNull
-	public static <T> Set<T> set(T... ts) {
+	public static <T> Set<T> set(@NonNls T... ts) {
 		return new HashSet<T>(Arrays.asList(ts));
 	}
 
