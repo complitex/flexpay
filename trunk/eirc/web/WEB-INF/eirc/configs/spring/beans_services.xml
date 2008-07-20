@@ -9,7 +9,6 @@
 	<bean id="spFileService"
 		  class="org.flexpay.eirc.service.imp.SpFileServiceImpl">
 		<property name="spFileDao" ref="spFileDao" />
-		<property name="spFileDaoExt" ref="spFileDaoExt" />
 	</bean>
 
 	<bean id="spRegistryService"

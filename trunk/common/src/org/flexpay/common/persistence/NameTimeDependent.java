@@ -3,6 +3,7 @@ package org.flexpay.common.persistence;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -88,7 +89,7 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	 */
 	@Nullable
 	public T getCurrentName() {
-		return getNameForDate(DateIntervalUtil.now());
+		return getNameForDate(DateUtil.now());
 	}
 
 	/**

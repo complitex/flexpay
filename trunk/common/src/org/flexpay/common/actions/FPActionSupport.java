@@ -10,10 +10,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
-import org.flexpay.common.util.DateIntervalUtil;
-import org.flexpay.common.util.LanguageUtil;
-import org.flexpay.common.util.TranslationUtil;
-import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.*;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NotNull;
@@ -223,7 +220,7 @@ public class FPActionSupport extends ActionSupport implements UserPreferencesAwa
 	}
 
 	public String format(Date date) {
-		String dt = DateIntervalUtil.format(date);
+		String dt = DateUtil.format(date);
 		return "-".equals(dt) ? "" : dt;
 	}
 

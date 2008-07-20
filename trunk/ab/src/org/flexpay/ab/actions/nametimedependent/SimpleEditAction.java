@@ -5,11 +5,11 @@ import com.opensymphony.xwork2.Preparable;
 import org.apache.commons.collections.ArrayStack;
 import org.apache.struts2.ServletActionContext;
 import org.flexpay.common.persistence.*;
-import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NonNls;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +30,7 @@ public abstract class SimpleEditAction<
 	private List<T> nameTranslations = new ArrayList<T>();
 
 	public void prepare() {
+		@NonNls
 		HttpServletRequest request = ServletActionContext.getRequest();
 		temporalId = Long.parseLong(request.getParameter("temporalId"));
 
@@ -46,7 +47,7 @@ public abstract class SimpleEditAction<
 			log.info("Translations map: " + langToTranslationMap);
 		}
 
-		List<Language> langs = ApplicationConfig.getInstance().getLanguages();
+		List<Language> langs = ApplicationConfig.getLanguages();
 		for (Language lang : langs) {
 			T nameTranslation = langToTranslationMap.get(lang.getId());
 			if (nameTranslation == null) {
@@ -93,16 +94,12 @@ public abstract class SimpleEditAction<
 		if (date == null) {
 			return "";
 		}
-		String dt = DateIntervalUtil.format(date);
+		String dt = DateUtil.format(date);
 		return "-".equals(dt) ? "" : dt;
 	}
 
 	public void setDate(String dt) {
-		try {
-			date = DateIntervalUtil.parse(dt);
-		} catch (ParseException e) {
-			date = ApplicationConfig.getPastInfinite();
-		}
+		date = DateUtil.parseDate(dt, ApplicationConfig.getPastInfinite());
 	}
 
 	/**

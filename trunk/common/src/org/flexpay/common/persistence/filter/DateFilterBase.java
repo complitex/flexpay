@@ -1,6 +1,5 @@
 package org.flexpay.common.persistence.filter;
 
-import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
 
 import java.util.Date;
@@ -18,7 +17,7 @@ public abstract class DateFilterBase extends ObjectFilter {
 	protected abstract Date getEmptyDate();
 
 	public String getStringDate() {
-		String dt = DateIntervalUtil.format(getDate());
+		String dt = DateUtil.format(getDate());
 		return "-".equals(dt) ? "" : dt;
 	}
 

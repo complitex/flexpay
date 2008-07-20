@@ -8,7 +8,6 @@ import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NonNls;
 
@@ -22,7 +21,7 @@ public class EditPersonAction extends ApartmentFilterDependentAction {
 	private SetRegistrationAction setRegistrationAction;
 
 	private Person person = new Person();
-	private Date beginDate = DateIntervalUtil.now();
+	private Date beginDate = DateUtil.now();
 	private Date endDate = ApplicationConfig.getFutureInfinite();
 	@NonNls
 	private String editType;
@@ -73,7 +72,7 @@ public class EditPersonAction extends ApartmentFilterDependentAction {
 			// ignore set registration result
 			try {
 				setRegistrationAction.execute();
-				beginDate = DateIntervalUtil.now();
+				beginDate = DateUtil.now();
 				endDate = ApplicationConfig.getFutureInfinite();
 			} finally {
 				addActionErrors(setRegistrationAction.getActionErrors());

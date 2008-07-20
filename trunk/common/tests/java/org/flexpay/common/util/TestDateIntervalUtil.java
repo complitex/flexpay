@@ -18,7 +18,7 @@ public class TestDateIntervalUtil {
 
 	@Test
 	public void testDateFormat() throws ParseException {
-		Date dt = DateIntervalUtil.parse("2007/11/10");
+		Date dt = DateUtil.parseBeginDate("2007/11/10");
 		GregorianCalendar calendar = new GregorianCalendar();
 		calendar.setTime(dt);
 
@@ -29,8 +29,8 @@ public class TestDateIntervalUtil {
 
 	@Test (expected = IllegalArgumentException.class)
 	public void testDateIntervalCreateFailure() {
-		Date now = DateIntervalUtil.now();
-		Date yesterday = DateIntervalUtil.previous(now);
+		Date now = DateUtil.now();
+		Date yesterday = DateUtil.previous(now);
 
 		// should fail, interval is invalid
 		new DI(now, yesterday, new Price());
@@ -50,10 +50,10 @@ public class TestDateIntervalUtil {
 	public void initTest() throws Exception {
 		simple = new ArrayList<DI>();
 		simple.add(new DI(priceNull));
-		date_2004_12_31 = DateIntervalUtil.parse("2004/12/31");
-		date_2005_01_01 = DateIntervalUtil.next(date_2004_12_31);
-		date_2005_12_31 = DateIntervalUtil.parse("2005/12/31");
-		date_2006_01_01 = DateIntervalUtil.next(date_2005_12_31);
+		date_2004_12_31 = DateUtil.parseBeginDate("2004/12/31");
+		date_2005_01_01 = DateUtil.next(date_2004_12_31);
+		date_2005_12_31 = DateUtil.parseBeginDate("2005/12/31");
+		date_2006_01_01 = DateUtil.next(date_2005_12_31);
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class TestDateIntervalUtil {
 	 */
 	@Test
 	public void testIntervalJoin() {
-		List<DI> dis = new ArrayList<DI>(2);
+		List<DI> dis = new ArrayList<DI>();
 		dis.add(new DI(datePastInfinite, date_2004_12_31, price15));
 		dis.add(new DI(date_2005_01_01, date_2005_12_31, price15));
 		dis.add(new DI(date_2006_01_01, dateFutureInfinite, price15));

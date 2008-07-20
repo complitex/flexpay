@@ -12,6 +12,7 @@ import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
 import org.flexpay.eirc.persistence.filters.ServiceTypeFilter;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.NonNls;
 
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 @Transactional(readOnly = true)
 public class ServiceTypeServiceImpl implements ServiceTypeService {
 
+	@NonNls
 	private Logger log = Logger.getLogger(getClass());
 
 	private ServiceTypeDao serviceTypeDao;

@@ -10,7 +10,7 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
-import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.util.HashSet;
@@ -52,7 +52,7 @@ public class RawApartmentDataConverter implements DataConverter<Apartment, RawAp
 		ApartmentNumber number = new ApartmentNumber();
 		number.setApartment(apartment);
 		number.setValue(rawData.getNumber());
-		number.setBegin(DateIntervalUtil.now());
+		number.setBegin(DateUtil.now());
 		number.setEnd(ApplicationConfig.getFutureInfinite());
 
 		Set<ApartmentNumber> numbers = new HashSet<ApartmentNumber>();

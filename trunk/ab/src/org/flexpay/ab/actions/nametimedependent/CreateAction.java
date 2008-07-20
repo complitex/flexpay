@@ -3,22 +3,19 @@ package org.flexpay.ab.actions.nametimedependent;
 import com.opensymphony.xwork2.Preparable;
 import org.apache.commons.collections.ArrayStack;
 import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.interceptor.SessionAware;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.*;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NonNls;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends NameDateInterval<TV, DI>, NTD extends NameTimeDependentChild<TV, DI>, T extends Translation>
-		extends ActionBase<TV, DI, NTD, T> implements Preparable, SessionAware {
+		extends ActionBase<TV, DI, NTD, T> implements Preparable {
 
 	private List<T> nameTranslations = new ArrayList<T>();
 	private Date date;
@@ -28,14 +25,14 @@ public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends Nam
 	 * {@inheritDoc}
 	 */
 	public void prepare() {
+		@NonNls
 		HttpServletRequest request = ServletActionContext.getRequest();
-		List<Language> langs = ApplicationConfig.getInstance().getLanguages();
+		List<Language> langs = ApplicationConfig.getLanguages();
 		for (Language lang : langs) {
 			T nameTranslation = nameTimeDependentService
 					.getEmptyNameTranslation();
 			nameTranslation.setLang(lang);
-			nameTranslation.setName(request.getParameter("translation."
-														 + lang.getId()));
+			nameTranslation.setName(request.getParameter("translation." + lang.getId()));
 			nameTranslations.add(nameTranslation);
 		}
 	}
@@ -43,26 +40,32 @@ public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends Nam
 	/**
 	 * {@inheritDoc}
 	 */
-	public String execute() {
-		try {
-			ArrayStack filterArrayStack = getFilters();
-			for (Object filter : filterArrayStack) {
-				((PrimaryKeyFilter) filter).initFilter(session);
-			}
-			ArrayStack filters = parentService.initFilters(filterArrayStack,
-					userPreferences.getLocale());
-			setFilters(filters);
-			if (isPost()) {
-				object = nameTimeDependentService.create(null,
-						nameTranslations, filters, date);
-
-				return SUCCESS;
-			}
-		} catch (FlexPayException e) {
-			addActionError(e);
-		} catch (FlexPayExceptionContainer container) {
-			addActionErrors(container);
+	public String doExecute() throws Exception {
+		ArrayStack filterArrayStack = getFilters();
+		for (Object filter : filterArrayStack) {
+			((PrimaryKeyFilter) filter).initFilter(session);
 		}
+		ArrayStack filters = parentService.initFilters(filterArrayStack,
+				userPreferences.getLocale());
+		setFilters(filters);
+		if (isPost()) {
+			object = nameTimeDependentService.create(null,
+					nameTranslations, filters, date);
+
+			return SUCCESS;
+		}
+		return INPUT;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@Override
+	protected String getErrorResult() {
 		return INPUT;
 	}
 
@@ -81,7 +84,7 @@ public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends Nam
 	 * @return Value for property 'date'.
 	 */
 	public String getDate() {
-		String dt = DateIntervalUtil.format(date);
+		String dt = DateUtil.format(date);
 		return "-".equals(dt) ? "" : dt;
 	}
 
@@ -91,11 +94,7 @@ public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends Nam
 	 * @param dt Value to set for property 'date'.
 	 */
 	public void setDate(String dt) {
-		try {
-			date = DateIntervalUtil.parse(dt);
-		} catch (ParseException e) {
-			date = ApplicationConfig.getPastInfinite();
-		}
+		date = DateUtil.parseDate(dt, ApplicationConfig.getPastInfinite());
 	}
 
 	/**

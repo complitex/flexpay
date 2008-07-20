@@ -4,24 +4,22 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.dao.SpFileDao;
-import org.flexpay.eirc.dao.SpFileDaoExt;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
-import org.flexpay.eirc.persistence.SpRegistryType;
-import org.flexpay.eirc.service.InvalidRegistryTypeException;
 import org.flexpay.eirc.service.SpFileService;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.NonNls;
 
 import java.util.List;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class SpFileServiceImpl implements SpFileService {
 
+	@NonNls
 	private Logger log = Logger.getLogger(getClass());
 
 	private SpFileDao spFileDao;
-	private SpFileDaoExt spFileDaoExt;
 
 	/**
 	 * Create SpFile
@@ -99,34 +97,7 @@ public class SpFileServiceImpl implements SpFileService {
 		return spFileDao.listRecordsForProcessing(registry.getId(), pager);
 	}
 
-	/**
-	 * Find registry type by id
-	 *
-	 * @param code SpRegistryType enum id
-	 * @return SpRegistryType if found
-	 * @throws InvalidRegistryTypeException if registry type is not supported
-	 */
-	public SpRegistryType getRegistryType(int code) throws InvalidRegistryTypeException {
-		SpRegistryType type = spFileDaoExt.getRegistryType(code);
-		if (type == null) {
-			throw new InvalidRegistryTypeException(code);
-		}
-
-		return type;
-	}
-
-	/**
-	 * Clear current session
-	 */
-	public void clearSession() {
-		spFileDaoExt.clearSession();
-	}
-
 	public void setSpFileDao(SpFileDao spFileDao) {
 		this.spFileDao = spFileDao;
-	}
-
-	public void setSpFileDaoExt(SpFileDaoExt spFileDaoExt) {
-		this.spFileDaoExt = spFileDaoExt;
 	}
 }
