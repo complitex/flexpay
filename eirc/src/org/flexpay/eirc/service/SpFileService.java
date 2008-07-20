@@ -71,11 +71,11 @@ public interface SpFileService {
 	/**
 	 * Find registry type by id
 	 *
-	 * @param type SpRegistryType enum id
+	 * @param code SpRegistryType enum id
 	 * @return SpRegistryType if found
 	 * @throws InvalidRegistryTypeException if registry type is not supported
 	 */
-	SpRegistryType getRegistryType(int type) throws InvalidRegistryTypeException;
+	SpRegistryType getRegistryType(int code) throws InvalidRegistryTypeException;
 
 	/**
 	 * Clear current session

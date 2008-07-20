@@ -120,7 +120,7 @@
 		 	left join fetch o.names
 		 	left join fetch o.descriptions 
 		where o.status=0
-		order by cast(o.uniqueId, int)
+		order by cast(o.uniqueId as integer)
 	</query>
 
 	<query name="Organisation.readFull">
@@ -143,7 +143,7 @@
 		 	left join fetch o.names
 		 	left join fetch o.descriptions
 		where o.status=0
-		order by cast(o.uniqueId, int)
+		order by cast(o.uniqueId as integer)
 	</query>
 
 
