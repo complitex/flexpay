@@ -294,8 +294,8 @@
   </component>
   <component name="IdProvider" IDEtalkID="A5B67355FC435C7031E2DD9D051E8BE9" />
   <component name="InspectionProjectProfileManager">
-    <option name="PROJECT_PROFILE" value="Project Default" />
-    <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
+    <option name="PROJECT_PROFILE" value="FlexPay" />
+    <option name="USE_PROJECT_LEVEL_SETTINGS" value="true" />
     <scopes />
     <profiles>
       <profile version="1.0" is_locked="false">

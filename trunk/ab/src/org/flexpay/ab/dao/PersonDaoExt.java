@@ -1,6 +1,7 @@
 package org.flexpay.ab.dao;
 
 import org.flexpay.ab.persistence.Person;
+import org.flexpay.common.persistence.Stub;
 
 public interface PersonDaoExt {
 
@@ -10,5 +11,5 @@ public interface PersonDaoExt {
 	 * @param person Identity data
 	 * @return Person stub if persitent person matches specified identity
 	 */
-	Person findPersonStub(Person person);
+	Stub<Person> findPersonStub(Person person);
 }

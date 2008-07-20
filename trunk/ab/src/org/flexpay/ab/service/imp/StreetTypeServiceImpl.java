@@ -16,6 +16,7 @@ import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -206,7 +207,8 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	}
 
 	@Transactional (readOnly = true)
-	public StreetType findTypeByName(String typeName) throws FlexPayException {
+	@Nullable
+	public StreetType findTypeByName(@NotNull String typeName) throws FlexPayException {
 		for (StreetType type : getEntities()) {
 			for (Translation ourType : type.getTranslations()) {
 				if (log.isDebugEnabled()) {
@@ -220,7 +222,6 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		}
 
 		return null;
-
 	}
 
 	/**

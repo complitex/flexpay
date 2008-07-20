@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -30,6 +31,10 @@ public class Apartment extends DomainObjectWithStatus {
 
 	public Apartment(Long id) {
 		super(id);
+	}
+
+	public Apartment(Stub<Apartment> stub) {
+		super(stub.getId());
 	}
 
 	@NotNull

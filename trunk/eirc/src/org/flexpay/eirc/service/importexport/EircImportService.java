@@ -9,6 +9,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
@@ -19,6 +20,8 @@ import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -64,7 +67,7 @@ public class EircImportService extends ImportService {
 
 			try {
 				if (log.isDebugEnabled()) {
-					log.info("Starting record processing: " + data.getRegistryRecord());
+					log.debug("Starting record processing: " + data.getRegistryRecord());
 				}
 				recordWorkflowManager.startProcessing(data.getRegistryRecord());
 			} catch (TransitionNotAllowed e) {
@@ -80,7 +83,7 @@ public class EircImportService extends ImportService {
 			}
 
 			try {
-				Consumer persistentObj = correctionsService.findCorrection(
+				Stub<Consumer> persistentObj = correctionsService.findCorrection(
 						data.getShortConsumerId(), Consumer.class, sd);
 
 				if (persistentObj != null) {
@@ -175,7 +178,8 @@ public class EircImportService extends ImportService {
 		recordWorkflowManager.setNextErrorStatus(data.getRegistryRecord(), error);
 	}
 
-	private Person findPerson(RawConsumerData data) {
+	@Nullable
+	private Person findPerson(@NotNull RawConsumerData data) {
 
 		PersonIdentity identity = new PersonIdentity();
 		identity.setFirstName(data.getFirstName());
@@ -189,7 +193,8 @@ public class EircImportService extends ImportService {
 		identities.add(identity);
 		example.setPersonIdentities(identities);
 
-		return personService.findPersonStub(example);
+		Stub<Person> stub = personService.findPersonStub(example);
+		return stub != null ? new Person(stub) : null;
 	}
 
 	private Map<String, StreetType> initializeTypeNamesToObjectsMap() {
@@ -210,25 +215,25 @@ public class EircImportService extends ImportService {
 
 		// try to find by apartment correction
 		log.info("Checking for apartment correction: " + data.getApartmentId());
-		Apartment apartmentById = correctionsService.findCorrection(
+		Stub<Apartment> apartmentById = correctionsService.findCorrection(
 				data.getApartmentId(), Apartment.class, sd);
 		if (apartmentById != null) {
 			log.info("Found apartment correction");
-			return apartmentById;
+			return new Apartment(apartmentById);
 		}
 
-		Buildings buildingsById = correctionsService.findCorrection(
+		Stub<Buildings> buildingsById = correctionsService.findCorrection(
 				data.getBuildingId(), Buildings.class, sd);
 		if (buildingsById != null) {
 			log.info("Found buildings correction");
-			return findApartment(data, buildingsById, sd, dataSource);
+			return findApartment(data, new Buildings(buildingsById), sd, dataSource);
 		}
 
-		Street streetById = correctionsService.findCorrection(
+		Stub<Street> streetById = correctionsService.findCorrection(
 				data.getStreetId(), Street.class, sd);
 		if (streetById != null) {
 			log.info("Found street correction");
-			return findApartment(data, streetById, sd, dataSource);
+			return findApartment(data, new Street(streetById), sd, dataSource);
 		}
 
 		Street streetByName = findStreet(nameObjsMap, nameTypeMap, data, sd, dataSource);
@@ -289,10 +294,10 @@ public class EircImportService extends ImportService {
 
 	private StreetType findStreetType(Map<String, StreetType> nameTypeMap, RawConsumerData data) {
 
-		StreetType typeById = correctionsService.findCorrection(
+		Stub<StreetType> typeById = correctionsService.findCorrection(
 				data.getAddressStreetType(), StreetType.class, null);
 		if (typeById != null) {
-			return typeById;
+			return new StreetType(typeById);
 		}
 
 		return nameTypeMap.get(data.getAddressStreetType().toLowerCase());
@@ -316,18 +321,8 @@ public class EircImportService extends ImportService {
 	private Apartment findApartment(RawConsumerData data, Buildings buildings, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
 			throws Exception {
 		Building building = buildings.getBuilding();
-		if (building == null) {
-			building = buildingService.findBuilding(stub(buildings));
-			if (building == null) {
-				log.warn("Failed getting building for buildings #" + buildings.getId());
-				ImportError error = addImportError(sd, data.getExternalSourceId(), Buildings.class, dataSource);
-				error.setErrorId("error.eirc.import.building_not_found");
-				setConsumerError(data, error);
-				return null;
-			}
-		}
 
-		Apartment stub = apartmentService.findApartmentStub(building, data.getAddressApartment());
+		Stub<Apartment> stub = apartmentService.findApartmentStub(building, data.getAddressApartment());
 		if (stub == null) {
 			ImportError error = addImportError(sd, data.getExternalSourceId(), Apartment.class, dataSource);
 			error.setErrorId("error.eirc.import.apartment_not_found");
@@ -335,7 +330,7 @@ public class EircImportService extends ImportService {
 			return null;
 		}
 
-		return stub;
+		return new Apartment(stub);
 	}
 
 	public void setConsumerDataConverter(RawConsumerDataConverter consumerDataConverter) {

@@ -36,7 +36,8 @@ public interface PersonService {
 	 * @param person Identity data
 	 * @return Person stub if persitent person matches specified identity
 	 */
-	Person findPersonStub(Person person);
+	@Nullable
+	Stub<Person> findPersonStub(Person person);
 
 	List<Person> findByFIO(Page pager, String searchString);
 

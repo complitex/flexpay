@@ -7,6 +7,7 @@ import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.TimeLine;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
@@ -45,7 +46,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected Town readObject(Town stub) {
+	protected Town readObject(Stub<Town> stub) {
 		return townDao.readFull(stub.getId());
 	}
 
@@ -53,7 +54,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 		TownName townName = new TownName();
 
 		TownNameTranslation translation = new TownNameTranslation();
-		translation.setLang(ApplicationConfig.getInstance().getDefaultLanguage());
+		translation.setLang(ApplicationConfig.getDefaultLanguage());
 		translation.setName(name);
 		translation.setTranslatable(townName);
 		Set<TownNameTranslation> translations = new HashSet<TownNameTranslation>();
@@ -115,7 +116,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
-	protected Town findPersistentObject(Town object, DataSourceDescription sd, CorrectionsService cs) {
+	protected Stub<Town> findPersistentObject(Town object, DataSourceDescription sd, CorrectionsService cs) {
 		return null;
 	}
 

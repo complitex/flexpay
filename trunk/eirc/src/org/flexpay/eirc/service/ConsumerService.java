@@ -4,6 +4,9 @@ import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 public interface ConsumerService {
 
@@ -48,5 +51,6 @@ public interface ConsumerService {
 	 * @param stub Consumer stub
 	 * @return Consumer instance
 	 */
-	Consumer read(Consumer stub);
+	@Nullable
+	Consumer read(@NotNull Stub<Consumer> stub);
 }

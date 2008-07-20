@@ -9,6 +9,8 @@ import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.TimeLine;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
@@ -44,7 +46,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected District readObject(District stub) {
+	protected District readObject(Stub<District> stub) {
 		return districtDao.readFull(stub.getId());
 	}
 
@@ -52,7 +54,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 		DistrictName districtName = new DistrictName();
 
 		DistrictNameTranslation translation = new DistrictNameTranslation();
-		translation.setLang(ApplicationConfig.getInstance().getDefaultLanguage());
+		translation.setLang(ApplicationConfig.getDefaultLanguage());
 		translation.setName(name);
 		translation.setTranslatable(districtName);
 		Set<DistrictNameTranslation> translations = new HashSet<DistrictNameTranslation>();
@@ -113,13 +115,14 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
-	protected District findPersistentObject(District object, DataSourceDescription sd, CorrectionsService cs) {
+	protected Stub<District> findPersistentObject(District object, DataSourceDescription sd, CorrectionsService cs) {
 		DistrictName name = object.getCurrentName();
 		if (name == null || name.getTranslations().isEmpty()) {
 			return null;
 		}
 		String nameStr = name.getTranslations().iterator().next().getName();
-		return districtService.findByName(nameStr.toLowerCase(), new TownFilter(object.getParent().getId()));
+		District district = districtService.findByName(nameStr.toLowerCase(), new TownFilter(object.getParent().getId()));
+		return district != null ? stub(district) : null;
 	}
 
 	/**

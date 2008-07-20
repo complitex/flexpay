@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Date;
@@ -129,5 +130,6 @@ public interface NameTimeDependentService<
 	 * @param filter Parent object filter
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
+	@Nullable
 	NTD findByName(String name, PrimaryKeyFilter filter);
 }

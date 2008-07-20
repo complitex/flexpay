@@ -1,12 +1,14 @@
 package org.flexpay.common.service.importexport;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
+import static org.flexpay.common.util.CollectionUtils.map;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * Raw import data for DomainObject
@@ -14,7 +16,15 @@ import java.io.Serializable;
 public abstract class RawData<Obj extends DomainObject> implements Serializable {
 
 	private String externalSourceId;
-	private Map<String, Object> nameToValuesMap = new HashMap<String, Object>();
+	private Map<String, Serializable> nameToValuesMap = map();
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("externalId", externalSourceId)
+				.append("values", nameToValuesMap)
+				.toString();
+	}
 
 	/**
 	 * Getter for property 'externalSourceId'.
@@ -39,7 +49,7 @@ public abstract class RawData<Obj extends DomainObject> implements Serializable 
 	 *
 	 * @return Value for property 'nameToValuesMap'.
 	 */
-	public Map<String, Object> getNameToValuesMap() {
+	public Map<String, Serializable> getNameToValuesMap() {
 		return nameToValuesMap;
 	}
 
@@ -48,17 +58,17 @@ public abstract class RawData<Obj extends DomainObject> implements Serializable 
 	 *
 	 * @param nameToValuesMap Value to set for property 'nameToValuesMap'.
 	 */
-	public void setNameToValuesMap(Map<String, Object> nameToValuesMap) {
+	public void setNameToValuesMap(Map<String, Serializable> nameToValuesMap) {
 		this.nameToValuesMap = nameToValuesMap;
 	}
 
 	/**
 	 * Add name value attribute pair
-	 * 
-	 * @param name attribute name
+	 *
+	 * @param name  attribute name
 	 * @param value attribute value
 	 */
-	public void addNameValuePair(String name, Object value) {
+	public void addNameValuePair(String name, Serializable value) {
 		nameToValuesMap.put(name, value);
 	}
 
@@ -71,7 +81,7 @@ public abstract class RawData<Obj extends DomainObject> implements Serializable 
 
 	protected Date getDateParam(String param) {
 		Object obj = getNameToValuesMap().get(param);
-		return obj == null ? null : (Date)obj;
+		return obj == null ? null : (Date) obj;
 	}
 
 	protected String getParam(String param) {

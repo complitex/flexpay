@@ -9,6 +9,7 @@ import org.flexpay.ab.service.*;
 import org.flexpay.ab.service.importexport.imp.AllObjectsDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.*;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.*;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Propagation;
@@ -546,18 +547,18 @@ public class ImportService {
 				Apartment apartment = apartmentDataConverter.fromRawData(
 						data, sourceDescription, correctionsService);
 
-				Apartment persistent = apartmentService.findApartmentStub(
+				Stub<Apartment> persistent = apartmentService.findApartmentStub(
 						apartment.getBuilding(), apartment.getNumber());
 				if (persistent == null) {
 					addToStack(apartment);
-					persistent = apartment;
+					persistent = stub(apartment);
 					if (log.isDebugEnabled()) {
 						log.debug("Creating new apartment: " + apartment.getNumber());
 					}
 				}
 
 				DataCorrection corr = correctionsService.getStub(
-						data.getExternalSourceId(), persistent, sourceDescription);
+						data.getExternalSourceId(), new Apartment(persistent), sourceDescription);
 				addToStack(corr);
 
 				log.debug("Creating new apartment correction");
@@ -615,11 +616,11 @@ public class ImportService {
 				Person person = personDataConverter.fromRawData(
 						data, sourceDescription, correctionsService);
 
-				Person persistent = personService.findPersonStub(person);
+				Stub<Person> persistent = personService.findPersonStub(person);
 				if (persistent == null) {
 					if (personDataSource.trusted()) {
 						addToStack(person);
-						persistent = person;
+						persistent = stub(person);
 						if (log.isInfoEnabled()) {
 							log.info("Creating new person: " + person);
 						}
@@ -632,7 +633,7 @@ public class ImportService {
 
 				// persistent person found, set up correction
 				DataCorrection corr = correctionsService.getStub(
-						data.getExternalSourceId(), persistent, sourceDescription);
+						data.getExternalSourceId(), new Person(persistent), sourceDescription);
 				addToStack(corr);
 
 				log.info("Creating new person correction");

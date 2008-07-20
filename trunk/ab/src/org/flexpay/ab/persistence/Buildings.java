@@ -33,6 +33,10 @@ public class Buildings extends DomainObjectWithStatus {
 		super(id);
 	}
 
+	public Buildings(Stub<Buildings> stub) {
+		super(stub.getId());
+	}
+
 	@NotNull
 	public Street getStreet() {
 		return this.street;

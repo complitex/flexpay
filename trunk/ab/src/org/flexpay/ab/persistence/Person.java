@@ -5,6 +5,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.DateUtil;
@@ -30,6 +31,10 @@ public class Person extends DomainObjectWithStatus {
 
 	public Person(Long id) {
 		super(id);
+	}
+
+	public Person(@NotNull Stub<Person> stub) {
+		super(stub.getId());
 	}
 
 	/**

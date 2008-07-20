@@ -8,6 +8,7 @@ import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.apache.commons.lang.StringUtils;
 
@@ -60,7 +61,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected Person readObject(Person stub) {
+	protected Person readObject(Stub<Person> stub) {
 		return personDao.readFull(stub.getId());
 	}
 
@@ -199,7 +200,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 
 	private void setINN(Person person, String value) throws FlexPayException {
 		PersonAttribute inn = new PersonAttribute();
-		inn.setLang(ApplicationConfig.getInstance().getDefaultLanguage());
+		inn.setLang(ApplicationConfig.getDefaultLanguage());
 		inn.setValue(value);
 		inn.setName("ab.person.attribute.inn");
 		inn.setTranslatable(person);
@@ -212,13 +213,13 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	}
 
 	private void setResidenceApartment(Person person, String apartmentId, DataSourceDescription sd, CorrectionsService cs) throws FlexPayException {
-		Apartment stub = cs.findCorrection(apartmentId, Apartment.class, sd);
+		Stub<Apartment> stub = cs.findCorrection(apartmentId, Apartment.class, sd);
 		if (stub == null) {
 			log.error("Cannot set residence apartment for person, correction not found: " + apartmentId);
 			return;
 		}
 
-		person.setRegistrationApartment(stub);
+		person.setRegistrationApartment(new Apartment(stub));
 	}
 
 	/**
@@ -229,7 +230,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
-	protected Person findPersistentObject(Person object, DataSourceDescription sd, CorrectionsService cs) {
+	protected Stub<Person> findPersistentObject(Person object, DataSourceDescription sd, CorrectionsService cs) {
 		return personService.findPersonStub(object);
 	}
 

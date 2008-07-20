@@ -7,6 +7,7 @@ import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 
 import java.util.HashSet;
@@ -38,7 +39,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected Apartment readObject(Apartment stub) {
+	protected Apartment readObject(Stub<Apartment> stub) {
 		return apartmentDao.readFull(stub.getId());
 	}
 
@@ -69,7 +70,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	private void setBuildingId(Apartment apartment, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 
-		Buildings stub = cs.findCorrection(record.getCurrentValue(), Buildings.class, sd);
+		Stub<Buildings> stub = cs.findCorrection(record.getCurrentValue(), Buildings.class, sd);
 		if (stub == null) {
 			log.error(String.format("No correction for buildings #%s DataSourceDescription %d, " +
 					"cannot set up building reference for apartment", record.getCurrentValue(), sd.getId()));
@@ -110,7 +111,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 		// Create a new apartment number and setup its properties
 		ApartmentNumber number = new ApartmentNumber();
 		number.setBegin(record.getRecordDate());
-		number.setEnd(ApplicationConfig.getInstance().getFutureInfinite());
+		number.setEnd(ApplicationConfig.getFutureInfinite());
 		number.setValue(record.getCurrentValue());
 		number.setApartment(apartment);
 
@@ -143,8 +144,8 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
-	protected Apartment findPersistentObject(Apartment object, DataSourceDescription sd, CorrectionsService cs) {
-		if (object.getBuilding() == null || object.getApartmentNumbers().isEmpty()) {
+	protected Stub<Apartment> findPersistentObject(Apartment object, DataSourceDescription sd, CorrectionsService cs) {
+		if (object.getApartmentNumbers().isEmpty()) {
 			return null;
 		}
 
@@ -152,9 +153,9 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 			log.debug("Checking if apartment exists: " + object + "(number: " + object.getNumber() + ")");
 		}
 
-		Apartment stub = apartmentService.findApartmentStub(object.getBuilding(), object.getNumber());
+		Stub<Apartment> stub = apartmentService.findApartmentStub(object.getBuilding(), object.getNumber());
 		if (stub != null && log.isDebugEnabled()) {
-			log.debug("Found apartment stub: " + stub);
+			log.debug("Found apartment stub: " + stub.getId());
 		}
 
 		return stub;
