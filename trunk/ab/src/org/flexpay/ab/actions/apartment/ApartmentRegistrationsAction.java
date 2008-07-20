@@ -32,6 +32,17 @@ public class ApartmentRegistrationsAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return SUCCESS;
+	}
+
 	public List<PersonRegistration> sortPersonRegistrations(Set<PersonRegistration> registrations) {
 		List<PersonRegistration> result = new ArrayList<PersonRegistration>(registrations);
 

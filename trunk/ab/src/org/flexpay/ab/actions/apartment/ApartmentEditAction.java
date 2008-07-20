@@ -1,27 +1,22 @@
 package org.flexpay.ab.actions.apartment;
 
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.ObjectAlreadyExistException;
-import org.flexpay.ab.service.ApartmentService;import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.ab.service.ApartmentService;
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class ApartmentEditAction extends BuildingsFilterDependentAction {
 	private ApartmentService apartmentService;
 
 	private Apartment apartment;
 	private String apartmentNumber;
-	private String numberError;
 
 	public String doExecute() throws Exception {
 		if (isSubmit()) {
 			if (apartmentNumber == null || apartmentNumber.equals("")) {
 				//status = STATUS_BLANC_NUMBER;
 			} else {
-				try {
-					apartmentService.setApartmentNumber(stub(apartment), apartmentNumber);
-					return "list";
-				} catch (ObjectAlreadyExistException e) {
-					//status = STATUS_NUMBER_ALREDY_EXIST;
-				}
+				apartmentService.setApartmentNumber(stub(apartment), apartmentNumber);
+				return "list";
 			}
 		}
 
@@ -34,6 +29,17 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 
 		apartment = apartmentService.readWithPersons(apartment.getId());
 
+		return "form";
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
 		return "form";
 	}
 
@@ -56,13 +62,6 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 	 */
 	public void setApartment(Apartment apartment) {
 		this.apartment = apartment;
-	}
-
-	/**
-	 * @return the numberError
-	 */
-	public String getNumberError() {
-		return numberError;
 	}
 
 	/**

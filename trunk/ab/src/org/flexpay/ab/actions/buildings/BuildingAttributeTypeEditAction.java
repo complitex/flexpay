@@ -89,7 +89,18 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport implements 
 
 		return INPUT;
 	}
-	
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return REDIRECT_SUCCESS;
+	}
+
 	private BuildingAttributeTypeTranslation getTranslationByLang(BuildingAttributeType attrType, Language lang) {
 		for(BuildingAttributeTypeTranslation t : attrType.getTranslations()) {
 			if(t.getLang().equals(lang)) {

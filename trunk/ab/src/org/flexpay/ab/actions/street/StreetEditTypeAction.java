@@ -67,6 +67,17 @@ public class StreetEditTypeAction extends FPActionSupport {
 		return INPUT;
 	}
 
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	protected String getErrorResult() {
+		return SUCCESS;
+	}
+
 	public void setStreetService(StreetService streetService) {
 		this.streetService = streetService;
 	}

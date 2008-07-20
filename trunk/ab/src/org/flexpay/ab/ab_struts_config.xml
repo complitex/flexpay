@@ -64,7 +64,7 @@
 				<param name="flexpayRoles.allowedRoles">REGION_READ</param>
 			</interceptor-ref>
 			<result type="tiles">ab.region.view</result>
-			<result type="redirect" name="error">regionList.action</result>
+			<result type="redirect-action" name="redirectError">regionList</result>
 		</action>
 
 		<action name="regionEdit" class="editRegionAction">
@@ -113,7 +113,7 @@
 				<param name="flexpayRoles.allowedRoles">TOWN_READ</param>
 			</interceptor-ref>
 			<result type="tiles">ab.town.view</result>
-			<result type="redirect" name="error">townList.action</result>
+			<result type="redirect" name="redirectError">townList.action</result>
 		</action>
 
 		<action name="townEdit" class="editTownAction">
@@ -196,7 +196,7 @@
 				<param name="flexpayRoles.allowedRoles">DISTRICT_READ</param>
 			</interceptor-ref>
 			<result type="tiles">ab.district.view</result>
-			<result type="redirect" name="error">list_districts.action</result>
+			<result type="redirect-action" name="redirectError">list_districts</result>
 		</action>
 
 		<action name="edit_district" class="editDistrictAction">
@@ -244,7 +244,7 @@
 				<param name="flexpayRoles.allowedRoles">STREET_READ</param>
 			</interceptor-ref>
 			<result type="tiles">ab.street.view</result>
-			<result type="redirect" name="error">list_streets.action</result>
+			<result type="redirect" name="redirectError">list_streets.action</result>
 		</action>
 
 		<action name="edit_street" class="editStreetAction">
