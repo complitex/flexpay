@@ -42,36 +42,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/SpFileService.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/SpFileService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Street.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Street.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/util/DateIntervalUtil.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/util/DateIntervalUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/actions/FPActionSupport.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/actions/FPActionSupport.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/imp/ServiceTypeServiceImpl.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/imp/ServiceTypeServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/actions/registry/ListRegistriesAction.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/actions/registry/ListRegistriesAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/TimeLine.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/TimeLine.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/ApartmentNumber.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/ApartmentNumber.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/beans_dao.xml" afterPath="$PROJECT_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/beans_dao.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/dao/SpFileDaoExt.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/dao/SpFileDaoExt.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/exception/FlexPayException.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/exception/FlexPayException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/beans_services.xml" afterPath="$PROJECT_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/beans_services.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/util/DateUtil.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/util/DateUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/util/TestDateIntervalUtil.java" afterPath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/util/TestDateIntervalUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Apartment.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Apartment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/nametimedependent/SimpleEditAction.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/nametimedependent/SimpleEditAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/person/EditPersonAction.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/person/EditPersonAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/nametimedependent/CreateAction.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/nametimedependent/CreateAction.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/dao/imp/SpFileDaoExtImpl.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/filter/DateFilterBase.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/filter/DateFilterBase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/reporting/TestReportUtil.java" afterPath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/reporting/TestReportUtil.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/dao/SpFileDaoExt.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/InvalidRegistryTypeException.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FlexPay.ipr" afterPath="$PROJECT_DIR$/FlexPay.ipr" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/lib/jasperreports/LICENSE.jdt-compiler.html" afterPath="$PROJECT_DIR$/../../common/lib/jasperreports/LICENSE.jdt-compiler.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/util/CollectionUtils.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/util/CollectionUtils.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FlexPay.iws" afterPath="$PROJECT_DIR$/FlexPay.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/CountryCreate.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/CountryCreate.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/DateInterval.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/DateInterval.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/dao/imp/ApartmentDaoExtImpl.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/dao/imp/ApartmentDaoExtImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/imp/StreetServiceImpl.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/imp/StreetServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Person.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Person.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/street/StreetEditTypeAction.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/street/StreetEditTypeAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/NameTimeDependent.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/NameTimeDependent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/imp/SpFileServiceImpl.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/imp/SpFileServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/importexport/RawApartmentDataConverter.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/importexport/RawApartmentDataConverter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/test/SpringBeanAwareTestCase.java" afterPath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/test/SpringBeanAwareTestCase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/ProcessStateComparator.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/ProcessStateComparator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/importexport/RawApartmentData.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/importexport/RawApartmentData.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/util/TestDateIntervalUtil.java" afterPath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/util/TestDateIntervalUtil.java" />
     </list>
     <list name="Platform-Dependent" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/common_build.properties" afterPath="$PROJECT_DIR$/../../common/common_build.properties" />
@@ -150,12 +131,13 @@
   </component>
   <component name="JspContextManager">
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/buildings_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/pager.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/regions_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/service_providers/edit_service_provider.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/date_interval_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/regions_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/town_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/town_create.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/service_provider_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/group/begin_end_dates_service_provider.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/street_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/street_edit_type.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/group/begin_end_dates_service_provider.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/services/list_services.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_edit_fio.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_edit.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/layouts/language_switch.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/ab/menu/menu1.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street_building.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/apartment_edit.jsp" />
@@ -163,7 +145,7 @@
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/street_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/registry_record_status_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/view_registry.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/recipient_organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_registration.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_identities.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/sender_organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/country_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/region_create.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/import_error_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/view_registry.jsp" />
@@ -171,9 +153,8 @@
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/towns_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/registry_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/registry_info.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/view_registry.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/group/begin_end_dates_service_provider.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/services/list_services.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_set_registration_form.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_edit.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/street_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/street_edit_type.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/regions_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address_building.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/date_interval_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
@@ -181,14 +162,14 @@
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_atributes.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_list_identities.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_edit.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_fio.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/buildings_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/header.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/footer.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/parent_service_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/services/edit_service.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/service_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/services/edit_service.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/taglibs.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/welcome.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/apartment_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_set_registration_form.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_identities.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_registration.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/district_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address_street.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/registry_record_info.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
@@ -265,22 +246,19 @@
       <state>
         <expanded_node name="Probable bugs" />
         <expanded_node name="Resource management issues" />
-        <expanded_node name="Threading issues" />
-        <expanded_node name="Visibility issues" />
         <expanded_node name="Initialization issues" />
+        <expanded_node name="Visibility issues" />
+        <expanded_node name="Threading issues" />
         <expanded_node name="Struts 2" />
         <expanded_node name="Security issues" />
-        <expanded_node name="Properties Files" />
         <expanded_node name="Inspections" />
+        <expanded_node name="Properties Files" />
         <selected_node name="UnusedProperty" />
       </state>
     </profile-state>
     <profile-state profile-name="FlexPay">
       <state>
-        <expanded_node name="Java EE issues" />
-        <expanded_node name="Language Injection" />
-        <expanded_node name="Struts Assistant Inspections" />
-        <expanded_node name="Struts Assistant" />
+        <expanded_node name="Initialization issues" />
         <expanded_node name="Inspections" />
         <selected_node name="StrutsTilesInspection" />
       </state>
@@ -306,6 +284,334 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
       </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="dao" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="actions" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="eirc" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="actions" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="registry" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="process" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="importexport" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
     </subPane>
   </component>
   <component name="ProjectReloadState">
@@ -327,11 +633,11 @@
   </component>
   <component name="PropertiesComponent">
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="100" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="71" />
     <property name="project.structure.last.edited" value="Modules" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="71" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="31" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="96" />
     <property name="project.structure.proportion" value="0.15" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="96" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
     <property name="RunManagerConfig.showSettingsBeforeRunnig" value="false" />
@@ -354,8 +660,8 @@
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder4" value="4" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder1" value="1" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder2" value="2" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder2" value="2" />
     <property name="TEMP_MODULE_EXPLODED_DIR_FOR_eirc/web/Web" value="/tmp/webExplodedDir41318tmp" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder0" value="0" />
     <property name="MemberChooser.copyJavadoc" value="false" />
@@ -369,11 +675,11 @@
       <recent name="org.flexpay.ab.dao.imp" />
       <recent name="org.flexpay.eirc.dao" />
     </key>
-    <key name="MoveMembersDialog.RECENTS_KEY">
-      <recent name="org.flexpay.common.util.DateUtil" />
-    </key>
     <key name="IntroduceConstantDialog.RECENTS_KEY">
       <recent name="" />
+    </key>
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="org.flexpay.common.util.DateUtil" />
     </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.flexpay.ab.actions.apartment" />
@@ -842,7 +1148,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-5" width="1688" height="1012" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.47031963" order="12" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="2" />
@@ -861,7 +1167,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3998195" order="0" />
       <window_info id="Maven projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32965687" order="4" />
       <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="6" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2947304" order="0" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2947304" order="0" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="14" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3561644" order="5" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="1" />
@@ -878,8 +1184,8 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="0" />
       <window_info id="Library Finder" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" order="9" />
       <window_info id="IRC Favorites" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32942238" order="5" />
-      <window_info id="IntellIRC" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.44052288" order="8" />
       <window_info id="Sudoku" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.82096875" order="12" />
+      <window_info id="IntellIRC" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.44052288" order="8" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="3" />
       <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="4" />
       <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
@@ -895,7 +1201,7 @@
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="FP-146&#10;code cleanup&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="FP-146&#10;code cleanup, Instance cariable initialisation inspection removed&#10;" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
@@ -906,7 +1212,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="version updated, file renamed due to the same name in ab" />
     <MESSAGE value="tests fixed" />
     <MESSAGE value="import tests ignored" />
     <MESSAGE value="Tests cleanup, some @NotNull annotations added." />
@@ -931,6 +1236,7 @@
     <MESSAGE value="FP-141&#10;Identity type edit fixed" />
     <MESSAGE value="FP-146&#10;several HQL isseses fixes" />
     <MESSAGE value="FP-146&#10;code cleanup&#10;" />
+    <MESSAGE value="FP-146&#10;code cleanup, Instance cariable initialisation inspection removed&#10;" />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
@@ -1597,137 +1903,125 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/CountryCreate.java">
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/util/LanguageUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Apartment.hbm.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="0" selection-start="1739" selection-end="1739" vertical-scroll-proportion="0.33293697">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/beans_dao.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="0" selection-start="1755" selection-end="1755" vertical-scroll-proportion="0.33194155">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/SpFileService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="0" selection-start="1561" selection-end="1561" vertical-scroll-proportion="0.79371315">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/beans_services.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="11" selection-start="676" selection-end="676" vertical-scroll-proportion="0.26030368">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/imp/SpFileServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="28" selection-start="235" selection-end="235" vertical-scroll-proportion="0.17681728">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/dao/SpFileDaoExt.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="84" selection-end="84" vertical-scroll-proportion="0.07134364">
+        <state line="51" column="0" selection-start="1531" selection-end="1531" vertical-scroll-proportion="0.7669441">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/util/TestDateIntervalUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="41" selection-start="657" selection-end="657" vertical-scroll-proportion="-0.17681728">
+        <state line="49" column="27" selection-start="1637" selection-end="1637" vertical-scroll-proportion="0.41141498">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/street/StreetEditTypeAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="0" selection-start="842" selection-end="842" vertical-scroll-proportion="0.029469548">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/nametimedependent/SimpleEditAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="49" selection-start="1553" selection-end="1553" vertical-scroll-proportion="0.5284872">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/actions/registry/ListRegistriesAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="0" selection-start="515" selection-end="515" vertical-scroll-proportion="0.35363457">
+        <state line="94" column="0" selection-start="2900" selection-end="2900" vertical-scroll-proportion="0.62425685">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/TimeLine.java">
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/actions/FPActionSupport.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="188" selection-end="188" vertical-scroll-proportion="0.1453831">
+        <state line="221" column="18" selection-start="5901" selection-end="5901" vertical-scroll-proportion="1.5529132">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/nametimedependent/CreateAction.java">
+    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/struts_config.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="72" selection-start="1334" selection-end="1334" vertical-scroll-proportion="0.39951575">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/actions/StreetAjaxAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="0" selection-start="413" selection-end="413" vertical-scroll-proportion="0.16052319">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../ab/ab_build.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="0" selection-start="31" selection-end="31" vertical-scroll-proportion="0.01783591">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/actions/interceptor/FlexpayRolesInterceptor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="25" selection-start="1498" selection-end="1498" vertical-scroll-proportion="0.527845">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/i18n/messages.properties">
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="0" selection-start="1" selection-end="1" vertical-scroll-proportion="0.018495684">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/service/reporting/ReportUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="403" column="9" selection-start="11313" selection-end="11313" vertical-scroll-proportion="0.66111773">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/test/SpringBeanAwareTestCase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="48" selection-start="1283" selection-end="1283" vertical-scroll-proportion="0.44589773">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/reporting/TestReportUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="39" selection-start="1066" selection-end="1066" vertical-scroll-proportion="0.24970274">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/util/DateIntervalUtil.java">
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/util/CollectionUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="390" column="40" selection-start="11538" selection-end="11538" vertical-scroll-proportion="0.79371315">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/util/DateUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="109" column="0" selection-start="2895" selection-end="2895" vertical-scroll-proportion="0.12604043">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/util/LanguageUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="0" selection-start="1531" selection-end="1531" vertical-scroll-proportion="0.7669441">
+        <state line="12" column="5" selection-start="241" selection-end="241" vertical-scroll-proportion="0.16052319">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../common/lib/jasperreports/LICENSE.jdt-compiler.html">
+      <provider editor-type-id="HtmlPreview">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="33" selection-start="2520" selection-end="2520" vertical-scroll-proportion="0.81439394">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/importexport/RawApartmentData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="0" selection-start="45" selection-end="45" vertical-scroll-proportion="0.01783591">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/process/ProcessStateComparator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="21" selection-start="205" selection-end="205" vertical-scroll-proportion="0.10701546">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

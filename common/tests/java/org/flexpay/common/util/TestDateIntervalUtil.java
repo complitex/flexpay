@@ -47,7 +47,7 @@ public class TestDateIntervalUtil {
 	private Price priceNull = new Price();
 
 	@Before
-	public void initTest() throws Exception {
+	public void initTest() {
 		simple = new ArrayList<DI>();
 		simple.add(new DI(priceNull));
 		date_2004_12_31 = DateUtil.parseBeginDate("2004/12/31");
