@@ -7,7 +7,7 @@
     <!--ab-->
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>FlexPay Sync</param-value>
+		<param-value>FlexPay AB Sync module</param-value>
 	</context-param>
 
 	<context-param>
