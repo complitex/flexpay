@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class EditOrganisationAction extends FPActionSupport {
 
-	private OrganisationService organisationService;
+	private transient OrganisationService organisationService;
 
 	private Organisation organisation = new Organisation();
 	private Map<Long, String> names = map();
@@ -43,7 +43,6 @@ public class EditOrganisationAction extends FPActionSupport {
 
 		org.setKpp(organisation.getKpp());
 		org.setIndividualTaxNumber(organisation.getIndividualTaxNumber());
-		org.setUniqueId(organisation.getUniqueId());
 
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();

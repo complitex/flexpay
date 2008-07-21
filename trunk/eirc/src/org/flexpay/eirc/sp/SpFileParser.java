@@ -59,10 +59,12 @@ public class SpFileParser {
 					+ spFile.getInternalRequestFileName());
 		}
 
-		InputStream is = new FileInputStream(file);
-		SpFileReader reader = new SpFileReader(is);
+		InputStream is = null;
 
 		try {
+			is = new FileInputStream(file);
+			SpFileReader reader = new SpFileReader(is);
+
 			while ((message = reader.readMessage()) != null) {
 				processMessage(spFile);
 			}
@@ -108,62 +110,62 @@ public class SpFileParser {
 		}
 
 		registryRecordCounter = 0;
-		SpRegistry spRegistry = new SpRegistry();
-		spRegistry.setArchiveStatus(spRegistryArchiveStatusService.findByCode(SpRegistryArchiveStatus.NONE));
-		registryWorkflowManager.setInitialStatus(spRegistry);
-		spRegistry.setSpFile(spFile);
+		SpRegistry newRegistry = new SpRegistry();
+		newRegistry.setArchiveStatus(spRegistryArchiveStatusService.findByCode(SpRegistryArchiveStatus.NONE));
+		registryWorkflowManager.setInitialStatus(newRegistry);
+		newRegistry.setSpFile(spFile);
 		if (log.isInfoEnabled()) {
 			log.info("adding header: " + messageFieldList);
 		}
 		try {
 			int n = 0;
-			spRegistry.setRegistryNumber(Long.valueOf(messageFieldList.get(++n)));
+			newRegistry.setRegistryNumber(Long.valueOf(messageFieldList.get(++n)));
 			String value = messageFieldList.get(++n);
 			SpRegistryType registryType = spRegistryTypeService.read(Long.valueOf(value));
 			if (registryType == null) {
 				throw new FlexPayException("Unknown registry type field: " + value);
 			}
-			spRegistry.setRegistryType(registryType);
-			spRegistry.setRecordsNumber(Long.valueOf(messageFieldList.get(++n)));
-			spRegistry.setCreationDate(dateFormat.parse(messageFieldList.get(++n)));
-			spRegistry.setFromDate(dateFormat.parse(messageFieldList.get(++n)));
-			spRegistry.setTillDate(dateFormat.parse(messageFieldList.get(++n)));
-			spRegistry.setSenderCode(Long.valueOf(messageFieldList.get(++n)));
-			spRegistry.setRecipientCode(Long.valueOf(messageFieldList.get(++n)));
+			newRegistry.setRegistryType(registryType);
+			newRegistry.setRecordsNumber(Long.valueOf(messageFieldList.get(++n)));
+			newRegistry.setCreationDate(dateFormat.parse(messageFieldList.get(++n)));
+			newRegistry.setFromDate(dateFormat.parse(messageFieldList.get(++n)));
+			newRegistry.setTillDate(dateFormat.parse(messageFieldList.get(++n)));
+			newRegistry.setSenderCode(Long.valueOf(messageFieldList.get(++n)));
+			newRegistry.setRecipientCode(Long.valueOf(messageFieldList.get(++n)));
 			String amountStr = messageFieldList.get(++n);
 			if (StringUtils.isNotEmpty(amountStr)) {
-				spRegistry.setAmount(new BigDecimal(amountStr));
+				newRegistry.setAmount(new BigDecimal(amountStr));
 			}
-			spRegistry.setContainers(parseContainers(spRegistry, messageFieldList.get(++n)));
+			newRegistry.setContainers(parseContainers(newRegistry, messageFieldList.get(++n)));
 
 			if (log.isInfoEnabled()) {
-				log.info("Creating new registry: " + spRegistry);
+				log.info("Creating new registry: " + newRegistry);
 			}
 
-			Organisation recipient = organisationService.getOrganisation(String.valueOf(spRegistry.getRecipientCode()));
-			spRegistry.setRecipient(recipient);
+			Organisation recipient = organisationService.getOrganisation(newRegistry.getRecipientStub());
+			newRegistry.setRecipient(recipient);
 			if (recipient == null) {
-				log.error("Failed processing registry header, recipient not found: #" + spRegistry.getRecipientCode());
-				throw new FlexPayException("Cannot find recipient organisation " + spRegistry.getRecipientCode());
+				log.error("Failed processing registry header, recipient not found: #" + newRegistry.getRecipientCode());
+				throw new FlexPayException("Cannot find recipient organisation " + newRegistry.getRecipientCode());
 			}
-			Organisation sender = organisationService.getOrganisation(String.valueOf(spRegistry.getSenderCode()));
-			spRegistry.setSender(sender);
+			Organisation sender = organisationService.getOrganisation(newRegistry.getSenderStub());
+			newRegistry.setSender(sender);
 			if (sender == null) {
-				log.error("Failed processing registry header, sender not found: #" + spRegistry.getSenderCode());
-				throw new FlexPayException("Cannot find sender organisation " + spRegistry.getSenderCode());
+				log.error("Failed processing registry header, sender not found: #" + newRegistry.getSenderCode());
+				throw new FlexPayException("Cannot find sender organisation " + newRegistry.getSenderCode());
 			}
 			if (log.isInfoEnabled()) {
 				log.info("Recipient: " + recipient + "\n sender: " + sender);
 			}
 
-			ServiceProvider provider = spService.getProvider(spRegistry.getSenderCode());
+			ServiceProvider provider = spService.getProvider(newRegistry.getSenderCode());
 			if (provider == null) {
-				log.error("Failed processing registry header, provider not found: #" + spRegistry.getSenderCode());
-				throw new FlexPayException("Cannot find service provider " + spRegistry.getSenderCode());
+				log.error("Failed processing registry header, provider not found: #" + newRegistry.getSenderCode());
+				throw new FlexPayException("Cannot find service provider " + newRegistry.getSenderCode());
 			}
-			spRegistry.setServiceProvider(provider);
+			newRegistry.setServiceProvider(provider);
 
-			this.spRegistry = spRegistryService.create(spRegistry);
+			spRegistry = spRegistryService.create(newRegistry);
 		} catch (NumberFormatException e) {
 			log.error("Header parse error", e);
 			throw new SpFileFormatException("Header parse error", message.getPosition());

@@ -2,6 +2,7 @@ package org.flexpay.eirc.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.Organisation;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 
@@ -13,10 +14,10 @@ public interface OrganisationService {
 	/**
 	 * Find organisation by its id
 	 *
-	 * @param organisationId Organisation id
+	 * @param stub
 	 * @return Organisation if found, or <code>null</code> otherwise
 	 */
-	Organisation getOrganisation(String organisationId);
+	Organisation getOrganisation(Stub<Organisation> stub);
 
 	/**
 	 * Initialize organisations filter

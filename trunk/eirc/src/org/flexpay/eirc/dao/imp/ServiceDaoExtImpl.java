@@ -10,28 +10,30 @@ import org.flexpay.eirc.persistence.AccountRecordType;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.ServiceType;
-import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
 import org.flexpay.eirc.persistence.filters.ParentServiceFilterMarker;
+import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.jetbrains.annotations.NonNls;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDaoExt {
 
+	@NonNls
 	private Logger log = Logger.getLogger(getClass());
 	private ServiceDaoJDBC serviceDaoJDBC;
 
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings ({"unchecked"})
 	public List<ServiceType> getServiceTypes() {
 		return getHibernateTemplate().find("select distinct t from ServiceType t " +
-				"left join fetch t.typeNames n left join fetch n.lang where t.status=0");
+										   "left join fetch t.typeNames n left join fetch n.lang where t.status=0");
 	}
 
 	/**
@@ -50,11 +52,11 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 		}
 	}
 
-	public ServiceProvider findByNumber(Long number) {
+	public ServiceProvider findByNumber(Long id) {
 		try {
 			getHibernateTemplate().setMaxResults(1);
 			List objects = getHibernateTemplate()
-					.findByNamedQuery("ServiceProvider.findByOrganisationId", String.valueOf(number));
+					.findByNamedQuery("ServiceProvider.findByOrganisationId", id);
 			return objects.isEmpty() ? null : (ServiceProvider) objects.get(0);
 		} finally {
 			getHibernateTemplate().setMaxResults(0);
@@ -96,17 +98,17 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 	 * @param pager   Page
 	 * @return List of services
 	 */
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings ({"unchecked"})
 	public List<Service> findServices(List<ObjectFilter> filters, final Page<Service> pager) {
 		final StringBuilder hql = new StringBuilder("select distinct o from Service o " +
-				"left join fetch o.descriptions " +
-				"left join fetch o.childServices c " +
-				"inner join fetch o.serviceType t left join fetch t.typeNames " +
-				"inner join fetch o.serviceProvider p " +
-				"inner join fetch p.organisation org left join fetch org.names " +
-				"where 1=1 ");
+													"left join fetch o.descriptions " +
+													"left join fetch o.childServices c " +
+													"inner join fetch o.serviceType t left join fetch t.typeNames " +
+													"inner join fetch o.serviceProvider p " +
+													"inner join fetch p.organisation org left join fetch org.names " +
+													"where 1=1 ");
 		final StringBuilder hqlCount = new StringBuilder("select count(*) from Service o " +
-				"inner join o.serviceType t inner join o.serviceProvider p where 1=1 ");
+														 "inner join o.serviceType t inner join o.serviceProvider p where 1=1 ");
 		final List<Object> params = new ArrayList<Object>();
 
 		for (ObjectFilter filter : filters) {
@@ -165,9 +167,9 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 	 * @param endDate	interval end date
 	 * @return List of services
 	 */
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings ({"unchecked"})
 	public List<Service> findIntersectingServices(Long providerId, Long typeId, Date beginDate, Date endDate) {
-		Object[] params = { providerId, typeId, beginDate, endDate, beginDate, endDate};
+		Object[] params = {providerId, typeId, beginDate, endDate, beginDate, endDate};
 		return getHibernateTemplate().findByNamedQuery("Service.findIntersectingServices", params);
 	}
 
