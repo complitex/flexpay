@@ -16,7 +16,6 @@ public class Organisation extends DomainObjectWithStatus {
 	private Set<OrganisationDescription> descriptions = Collections.emptySet();
 	private Set<OrganisationName> names = Collections.emptySet();
 	private Set<ServiceProvider> serviceProviders = Collections.emptySet();
-	private String uniqueId;
 
 	private String juridicalAddress;
 	private String postalAddress;
@@ -65,14 +64,6 @@ public class Organisation extends DomainObjectWithStatus {
 
 	public void setNames(Set<OrganisationName> names) {
 		this.names = names;
-	}
-
-	public String getUniqueId() {
-		return uniqueId;
-	}
-
-	public void setUniqueId(String uniqueId) {
-		this.uniqueId = uniqueId;
 	}
 
 	public String getJuridicalAddress() {

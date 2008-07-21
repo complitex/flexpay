@@ -23,12 +23,12 @@ public interface ServiceDaoExt {
 	ServiceType findByCode(int code);
 
 	/**
-	 * Find Service Provider by its unique number
+	 * Find Service Provider by Organisation id
 	 *
-	 * @param number service provider number
+	 * @param organisationId Organisation key
 	 * @return ServiceProvider instance
 	 */
-	ServiceProvider findByNumber(Long number);
+	ServiceProvider findByNumber(Long organisationId);
 
 	/**
 	 * Find Service by provider and type ids

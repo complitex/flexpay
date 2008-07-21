@@ -1,6 +1,7 @@
 package org.flexpay.eirc.persistence.exchange;
 
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.service.AccountRecordService;
 import org.flexpay.eirc.service.OrganisationService;
@@ -11,12 +12,12 @@ import java.util.List;
 public class SimplePayment extends ContainerOperation {
 
 	private ServiceOperationsFactory factory;
-	private String organisationId;
+	private Long organisationId;
 
 	public SimplePayment(ServiceOperationsFactory factory, List<String> datum) {
 		super(Integer.parseInt(datum.get(0)));
 
-		this.organisationId = datum.get(1);
+		this.organisationId = Long.parseLong(datum.get(1));
 
 		this.factory = factory;
 	}
@@ -76,7 +77,7 @@ public class SimplePayment extends ContainerOperation {
 
 		// setup organisation
 		OrganisationService organisationService = factory.getOrganisationService();
-		Organisation organisation = organisationService.getOrganisation(organisationId);
+		Organisation organisation = organisationService.getOrganisation(new Stub<Organisation>(organisationId));
 		if (organisation == null) {
 			throw new FlexPayException("Organisation id is invalid: " + organisationId);
 		}

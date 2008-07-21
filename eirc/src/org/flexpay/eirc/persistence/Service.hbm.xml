@@ -149,7 +149,7 @@
 	</class>
 
 	<query name="ServiceProvider.findByOrganisationId">
-		from ServiceProvider where organisation.uniqueId=?
+		from ServiceProvider where organisation.id=?
 	</query>
 
 	<query name="ServiceProvider.readFull">

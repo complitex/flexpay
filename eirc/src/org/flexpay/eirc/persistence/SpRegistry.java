@@ -3,6 +3,7 @@ package org.flexpay.eirc.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -155,6 +156,13 @@ public class SpRegistry extends DomainObject {
 	}
 
 	/**
+	 * @return the recipient stub
+	 */
+	public Stub<Organisation> getSenderStub() {
+		return new Stub<Organisation>(senderCode);
+	}
+
+	/**
 	 * @param senderCode the sender to set
 	 */
 	public void setSenderCode(Long senderCode) {
@@ -166,6 +174,13 @@ public class SpRegistry extends DomainObject {
 	 */
 	public Long getRecipientCode() {
 		return recipientCode;
+	}
+
+	/**
+	 * @return the recipient stub
+	 */
+	public Stub<Organisation> getRecipientStub() {
+		return new Stub<Organisation>(recipientCode);
 	}
 
 	/**
