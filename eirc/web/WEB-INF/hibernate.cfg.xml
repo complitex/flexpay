@@ -53,6 +53,8 @@
 		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
 
 		<mapping resource="org/flexpay/eirc/persistence/Organisation.hbm.xml" />
+		<mapping resource="org/flexpay/eirc/persistence/Subdivision.hbm.xml" />
+		<mapping resource="org/flexpay/eirc/persistence/Bank.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/Service.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/PersonalAccount.hbm.xml" />
 		

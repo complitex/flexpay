@@ -429,22 +429,16 @@
         <inspection_tool class="ReadObjectAndWriteObjectPrivate" level="WARNING" enabled="true" />
         <inspection_tool class="ReadResolveAndWriteReplaceProtected" level="WARNING" enabled="true" />
         <inspection_tool class="SerializableWithUnconstructableAncestor" level="WARNING" enabled="true" />
-        <inspection_tool class="SerializableHasSerializationMethods" level="WARNING" enabled="true">
-          <option name="superClassString" value="java.awt.Component" />
-        </inspection_tool>
-        <inspection_tool class="SerializableHasSerialVersionUIDField" level="WARNING" enabled="true">
-          <option name="superClassString" value="java.awt.Component" />
-        </inspection_tool>
         <inspection_tool class="SerializableInnerClassWithNonSerializableOuterClass" level="WARNING" enabled="true">
           <option name="superClassString" value="java.awt.Component" />
         </inspection_tool>
         <inspection_tool class="SerialPersistentFieldsWithWrongSignature" level="WARNING" enabled="true" />
-        <inspection_tool class="SerialVersionUIDNotStaticFinal" level="WARNING" enabled="true" />
         <inspection_tool class="TransientFieldInNonSerializableClass" level="WARNING" enabled="true" />
         <inspection_tool class="TransientFieldNotInitialized" level="WARNING" enabled="true" />
         <inspection_tool class="SerializableInnerClassHasSerialVersionUIDField" level="WARNING" enabled="true">
           <option name="superClassString" value="java.awt.Component" />
         </inspection_tool>
+        <inspection_tool class="SerialVersionUIDNotStaticFinal" level="WARNING" enabled="true" />
       </profile>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Project Default" />
@@ -799,6 +793,34 @@
               <option name="branchUrls">
                 <list>
                   <option value="https://flexpay.googlecode.com/svn/439" />
+                  <option value="https://flexpay.googlecode.com/svn/branches" />
+                  <option value="https://flexpay.googlecode.com/svn/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://flexpay.googlecode.com/svn/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../common">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://flexpay.googlecode.com/svn/489" />
                   <option value="https://flexpay.googlecode.com/svn/branches" />
                   <option value="https://flexpay.googlecode.com/svn/tags" />
                 </list>

@@ -7,39 +7,60 @@
 
 	<class name="Organisation" table="eirc_organisations_tbl" optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
 		<version name="version" column="version" access="field" />
-		<property name="status" not-null="true"/>
-		<property name="individualTaxNumber" column="individual_tax_number" not-null="true"/>
-		<property name="kpp" not-null="true"/>
-		<property name="uniqueId" not-null="true" column="unique_id" unique="true"/>
+		<property name="status" not-null="true" />
+		<property name="individualTaxNumber" column="individual_tax_number" not-null="true" />
+		<property name="kpp" not-null="true" />
+		<property name="uniqueId" not-null="true" column="unique_id" unique="true" />
 		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
-			<key column="organisation_id" not-null="true"/>
-			<one-to-many class="OrganisationDescription"/>
+			<key column="organisation_id" not-null="true" />
+			<one-to-many class="OrganisationDescription" />
 		</set>
 		<set name="names" inverse="true" cascade="all-delete-orphan">
-			<key column="organisation_id" not-null="true"/>
-			<one-to-many class="OrganisationName"/>
+			<key column="organisation_id" not-null="true" />
+			<one-to-many class="OrganisationName" />
 		</set>
 		<set name="serviceProviders" inverse="true">
-			<key column="organisation_id" not-null="true"/>
-			<one-to-many class="ServiceProvider"/>
+			<key column="organisation_id" not-null="true" />
+			<one-to-many class="ServiceProvider" />
 		</set>
+		<set name="subdivisions" inverse="true">
+			<key column="organisation_id" not-null="true" />
+			<one-to-many class="Subdivision" />
+		</set>
+		<property name="juridicalAddress">
+			<column name="juridical_address" not-null="true">
+				<comment>Juridical address</comment>
+			</column>
+		</property>
+		<property name="postalAddress">
+			<column name="postal_address" not-null="true">
+				<comment>Postal address</comment>
+			</column>
+		</property>
+		<property name="realAddress">
+			<column name="real_address" not-null="true">
+				<comment>Real address</comment>
+			</column>
+		</property>
 	</class>
 
 	<class name="OrganisationDescription" table="eirc_organisation_descriptions_tbl">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
-		<property name="name"/>
+		<property name="name" />
 		<properties name="lang_organisation_pair" unique="true">
-			<many-to-one name="lang" foreign-key="FK_eirc_organisation_description_language" class="org.flexpay.common.persistence.Language">
+			<many-to-one name="lang" foreign-key="FK_eirc_organisation_description_language"
+						 class="org.flexpay.common.persistence.Language">
 				<column name="language_id" not-null="true">
 					<comment>Language reference</comment>
 				</column>
 			</many-to-one>
-			<many-to-one name="translatable" class="Organisation" foreign-key="FK_eirc_organisation_description_organisation">
+			<many-to-one name="translatable" class="Organisation"
+						 foreign-key="FK_eirc_organisation_description_organisation">
 				<column name="organisation_id" not-null="true">
 					<comment>Organisation reference</comment>
 				</column>
@@ -49,16 +70,18 @@
 
 	<class name="OrganisationName" table="eirc_organisation_names_tbl">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
-		<property name="name"/>
+		<property name="name" />
 		<properties name="lang_organisation_pair" unique="true">
-			<many-to-one name="lang" foreign-key="FK_eirc_organisation_name_language" class="org.flexpay.common.persistence.Language">
+			<many-to-one name="lang" foreign-key="FK_eirc_organisation_name_language"
+						 class="org.flexpay.common.persistence.Language">
 				<column name="language_id" not-null="true">
 					<comment>Language reference</comment>
 				</column>
 			</many-to-one>
-			<many-to-one name="translatable" class="Organisation" foreign-key="FK_eirc_organisation_name_organisation">
+			<many-to-one name="translatable" class="Organisation"
+						 foreign-key="FK_eirc_organisation_name_organisation">
 				<column name="organisation_id" not-null="true">
 					<comment>Organisation reference</comment>
 				</column>
@@ -68,41 +91,45 @@
 
 	<class name="ServiceOrganisation" table="eirc_service_organisations_tbl" optimistic-lock="version">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
-		<property name="status" not-null="true"/>
-		<many-to-one name="organisation" foreign-key="FK_eirc_service_organisation_organisation" class="Organisation">
+		<property name="status" not-null="true" />
+		<many-to-one name="organisation" foreign-key="FK_eirc_service_organisation_organisation"
+					 class="Organisation">
 			<column name="organisation_id" not-null="true">
 				<comment>Organisation reference</comment>
 			</column>
 		</many-to-one>
 		<set name="buildings" inverse="true">
-			<key column="eirc_service_organisation_id"/>
-			<one-to-many class="ServedBuilding"/>
+			<key column="eirc_service_organisation_id" />
+			<one-to-many class="ServedBuilding" />
 		</set>
-		<many-to-one name="district" foreign-key="FK_eirc_service_organisation_district" class="org.flexpay.ab.persistence.District">
+		<many-to-one name="district" foreign-key="FK_eirc_service_organisation_district"
+					 class="org.flexpay.ab.persistence.District">
 			<column name="district_id" not-null="true">
 				<comment>District reference organisation is servicing</comment>
 			</column>
 		</many-to-one>
 		<set name="descriptions" inverse="true">
-			<key column="service_organisation_id"/>
-			<one-to-many class="ServiceOrganisationDescription"/>
+			<key column="service_organisation_id" />
+			<one-to-many class="ServiceOrganisationDescription" />
 		</set>
 	</class>
 
 	<class name="ServiceOrganisationDescription" table="eirc_service_organisation_descriptions_tbl">
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
-		<property name="name"/>
+		<property name="name" />
 		<properties name="lang_service_organisation_pair" unique="true">
-			<many-to-one name="lang" foreign-key="FK_eirc_service_organisation_description_language" class="org.flexpay.common.persistence.Language">
+			<many-to-one name="lang" foreign-key="FK_eirc_service_organisation_description_language"
+						 class="org.flexpay.common.persistence.Language">
 				<column name="language_id" not-null="true">
 					<comment>Language reference</comment>
 				</column>
 			</many-to-one>
-			<many-to-one name="translatable" class="ServiceOrganisation" foreign-key="FK_eirc_service_organisation_description_service_organisation">
+			<many-to-one name="translatable" class="ServiceOrganisation"
+						 foreign-key="FK_eirc_service_organisation_description_service_organisation">
 				<column name="service_organisation_id" not-null="true">
 					<comment>Organisation reference</comment>
 				</column>
@@ -117,8 +144,8 @@
 	<query name="Organisation.findAllOrganisations">
 		select distinct o
 		from Organisation o
-		 	left join fetch o.names
-		 	left join fetch o.descriptions 
+		left join fetch o.names
+		left join fetch o.descriptions
 		where o.status=0
 		order by cast(o.uniqueId as integer)
 	</query>
@@ -126,8 +153,8 @@
 	<query name="Organisation.readFull">
 		select distinct o
 		from Organisation o
-		 	left join fetch o.names
-		 	left join fetch o.descriptions
+		left join fetch o.names
+		left join fetch o.descriptions
 		where o.id=?
 	</query>
 
@@ -140,8 +167,8 @@
 	<query name="Organisation.findOrganisations">
 		select distinct o
 		from Organisation o
-		 	left join fetch o.names
-		 	left join fetch o.descriptions
+		left join fetch o.names
+		left join fetch o.descriptions
 		where o.status=0
 		order by cast(o.uniqueId as integer)
 	</query>

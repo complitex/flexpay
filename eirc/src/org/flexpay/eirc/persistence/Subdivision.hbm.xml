@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.eirc.persistence">
+
+	<class name="Subdivision" table="eirc_subdivisions_tbl" optimistic-lock="version">
+		<comment>Organisation subdivisions</comment>
+		<id name="id" column="id">
+			<generator class="native"/>
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optiomistic lock version</comment>
+			</column>
+		</version>
+		<property name="status" not-null="true">
+			<column name="status" not-null="true">
+				<comment>Enabled/Disabled status</comment>
+			</column>
+		</property>
+		<property name="realAddress">
+			<column name="real_address" not-null="true">
+				<comment>Subdivision real address</comment>
+			</column>
+		</property>
+		<many-to-one name="parentSubdivision" class="Subdivision"
+					 foreign-key="FK_eirc_subdivisions_tbl_parent_subdivision_id">
+			<column name="parent_subdivision_id" not-null="false">
+				<comment>Parent subdivision reference if any</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="headOrganisation" class="Organisation"
+					 foreign-key="FK_eirc_subdivisions_tbl_head_organisation_id">
+			<column name="head_organisation_id" not-null="true">
+				<comment>Head organisation reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="juridicalPerson" class="Organisation"
+					 foreign-key="FK_eirc_subdivisions_tbl_juridical_person_id">
+			<column name="juridical_person_id" not-null="false">
+				<comment>Juridical person (organisation) reference if any</comment>
+			</column>
+		</many-to-one>
+		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
+			<key column="subdivision_id" not-null="true"/>
+			<one-to-many class="SubdivisionDescription"/>
+		</set>
+		<set name="names" inverse="true" cascade="all-delete-orphan">
+			<key column="subdivision_id" not-null="true"/>
+			<one-to-many class="SubdivisionName"/>
+		</set>
+		<set name="childSubdivisions" inverse="true">
+			<key column="parent_subdivision_id" not-null="false"/>
+			<one-to-many class="Subdivision"/>
+		</set>
+	</class>
+
+	<class name="SubdivisionDescription" table="eirc_subdivision_descriptions_tbl">
+		<id name="id" column="id">
+			<generator class="native"/>
+		</id>
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Description value</comment>
+			</column>
+		</property>
+		<properties name="lang_subdivision_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_eirc_subdivision_descriptions_tbl_language_id"
+						 class="org.flexpay.common.persistence.Language">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" class="Subdivision"
+						 foreign-key="FK_eirc_subdivision_descriptions_tbl_subdivision_id">
+				<column name="subdivision_id" not-null="true">
+					<comment>Subdivision reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<class name="SubdivisionName" table="eirc_subdivision_names_tbl">
+		<id name="id" column="id">
+			<generator class="native"/>
+		</id>
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Name value</comment>
+			</column>
+		</property>
+		<properties name="lang_subdivision_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_eirc_subdivision_names_tbl_language_id"
+						 class="org.flexpay.common.persistence.Language">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" class="Subdivision"
+						 foreign-key="FK_eirc_subdivision_names_tbl_subdivision_id">
+				<column name="subdivision_id" not-null="true">
+					<comment>Subdivision reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+</hibernate-mapping>

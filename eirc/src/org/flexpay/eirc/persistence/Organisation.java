@@ -18,6 +18,13 @@ public class Organisation extends DomainObjectWithStatus {
 	private Set<ServiceProvider> serviceProviders = Collections.emptySet();
 	private String uniqueId;
 
+	private String juridicalAddress;
+	private String postalAddress;
+	private String realAddress;
+
+	private Set<BankAccount> accounts = Collections.emptySet();
+	private Set<Subdivision> subdivisions = Collections.emptySet();
+
 	/**
 	 * Constructs a new DomainObject.
 	 */
@@ -68,6 +75,46 @@ public class Organisation extends DomainObjectWithStatus {
 		this.uniqueId = uniqueId;
 	}
 
+	public String getJuridicalAddress() {
+		return juridicalAddress;
+	}
+
+	public void setJuridicalAddress(String juridicalAddress) {
+		this.juridicalAddress = juridicalAddress;
+	}
+
+	public String getPostalAddress() {
+		return postalAddress;
+	}
+
+	public void setPostalAddress(String postalAddress) {
+		this.postalAddress = postalAddress;
+	}
+
+	public String getRealAddress() {
+		return realAddress;
+	}
+
+	public void setRealAddress(String realAddress) {
+		this.realAddress = realAddress;
+	}
+
+	public Set<BankAccount> getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(Set<BankAccount> accounts) {
+		this.accounts = accounts;
+	}
+
+	public Set<Subdivision> getSubdivisions() {
+		return subdivisions;
+	}
+
+	public void setSubdivisions(Set<Subdivision> subdivisions) {
+		this.subdivisions = subdivisions;
+	}
+
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("id", getId())
@@ -83,7 +130,7 @@ public class Organisation extends DomainObjectWithStatus {
 
 		OrganisationName candidate = null;
 		for (OrganisationName name : names) {
-			if (name.getLang().getId().equals(organisationName.getLang().getId())) {
+			if (name.isSameLanguage(organisationName)) {
 				candidate = name;
 				break;
 			}
@@ -113,7 +160,7 @@ public class Organisation extends DomainObjectWithStatus {
 
 		OrganisationDescription candidate = null;
 		for (OrganisationDescription description : descriptions) {
-			if (description.getLang().getId().equals(organisationDescription.getLang().getId())) {
+			if (description.isSameLanguage(organisationDescription)) {
 				candidate = description;
 				break;
 			}
