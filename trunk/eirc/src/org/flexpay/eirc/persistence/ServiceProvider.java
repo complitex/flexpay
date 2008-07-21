@@ -67,7 +67,7 @@ public class ServiceProvider extends DomainObjectWithStatus {
 
 		ServiceProviderDescription candidate = null;
 		for (ServiceProviderDescription descr : descriptions) {
-			if (descr.getLang().getId().equals(description.getLang().getId())) {
+			if (descr.isSameLanguage(description)) {
 				candidate = descr;
 				break;
 			}

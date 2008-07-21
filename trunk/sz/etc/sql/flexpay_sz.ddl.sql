@@ -271,6 +271,26 @@
         drop 
         foreign key FK_eirc_account_record_registry_record;
 
+    alter table eirc_bank_accounts_tbl 
+        drop 
+        foreign key FK_eirc_bank_accounts_tbl_bank_id;
+
+    alter table eirc_bank_accounts_tbl 
+        drop 
+        foreign key FK_eirc_bank_accounts_tbl_organisation_id;
+
+    alter table eirc_bank_descriptions_tbl 
+        drop 
+        foreign key FK_eirc_bank_descriptions_tbl_bank_id;
+
+    alter table eirc_bank_descriptions_tbl 
+        drop 
+        foreign key FK_eirc_bank_descriptions_tbl_language_id;
+
+    alter table eirc_banks_tbl 
+        drop 
+        foreign key FK_eirc_banks_tbl_organisation_id;
+
     alter table eirc_consumers_tbl 
         drop 
         foreign key FK_eirc_consumer_eirc_account;
@@ -459,6 +479,38 @@
         drop 
         foreign key FK_eirc_service_service_type;
 
+    alter table eirc_subdivision_descriptions_tbl 
+        drop 
+        foreign key FK_eirc_subdivision_descriptions_tbl_subdivision_id;
+
+    alter table eirc_subdivision_descriptions_tbl 
+        drop 
+        foreign key FK_eirc_subdivision_descriptions_tbl_language_id;
+
+    alter table eirc_subdivision_names_tbl 
+        drop 
+        foreign key FK_eirc_subdivision_names_tbl_subdivision_id;
+
+    alter table eirc_subdivision_names_tbl 
+        drop 
+        foreign key FK_eirc_subdivision_names_tbl_language_id;
+
+    alter table eirc_subdivisions_tbl 
+        drop 
+        foreign key FK_eirc_subdivisions_tbl_parent_subdivision_id;
+
+    alter table eirc_subdivisions_tbl 
+        drop 
+        foreign key FK_eirc_subdivisions_tbl_head_organisation_id;
+
+    alter table eirc_subdivisions_tbl 
+        drop 
+        foreign key FK_eirc_subdivisions_tbl_juridical_person_id;
+
+    alter table eirc_subdivisions_tbl 
+        drop 
+        foreign key FK6E7B404F7F30FD59;
+
     alter table eirc_ticket_service_amounts_tbl 
         drop 
         foreign key FK_eirc_ticket_service_amount_ticket;
@@ -639,6 +691,12 @@
 
     drop table if exists eirc_account_records_tbl;
 
+    drop table if exists eirc_bank_accounts_tbl;
+
+    drop table if exists eirc_bank_descriptions_tbl;
+
+    drop table if exists eirc_banks_tbl;
+
     drop table if exists eirc_consumer_infos_tbl;
 
     drop table if exists eirc_consumers_tbl;
@@ -690,6 +748,12 @@
     drop table if exists eirc_service_types_tbl;
 
     drop table if exists eirc_services_tbl;
+
+    drop table if exists eirc_subdivision_descriptions_tbl;
+
+    drop table if exists eirc_subdivision_names_tbl;
+
+    drop table if exists eirc_subdivisions_tbl;
 
     drop table if exists eirc_ticket_service_amounts_tbl;
 
@@ -1195,6 +1259,34 @@
         primary key (id)
     );
 
+    create table eirc_bank_accounts_tbl (
+        id bigint not null auto_increment,
+        version integer not null comment 'Optiomistic lock version',
+        status integer not null comment 'Enabled/Disabled status',
+        account_number varchar(255) not null comment 'Bank account number',
+        is_default bit not null comment 'Juridical person default account flag',
+        bank_id bigint not null comment 'Bank reference',
+        organisation_id bigint not null comment 'Juridical person (organisation) reference',
+        primary key (id)
+    ) comment='Bank accounts';
+
+    create table eirc_bank_descriptions_tbl (
+        id bigint not null auto_increment,
+        name varchar(255) not null comment 'Description value',
+        language_id bigint not null comment 'Language reference',
+        bank_id bigint not null comment 'Bank reference',
+        primary key (id),
+        unique (language_id, bank_id)
+    ) comment='Bank desriptions';
+
+    create table eirc_banks_tbl (
+        id bigint not null auto_increment,
+        version integer not null comment 'Optiomistic lock version',
+        status integer not null comment 'Enabled/Disabled status',
+        organisation_id bigint not null comment 'Organisation reference',
+        primary key (id)
+    ) comment='Banks';
+
     create table eirc_consumer_infos_tbl (
         id bigint not null auto_increment,
         status integer not null comment 'ConsumerInfo status',
@@ -1259,6 +1351,9 @@
         individual_tax_number varchar(255) not null,
         kpp varchar(255) not null,
         unique_id varchar(255) not null unique,
+        juridical_address varchar(255) not null comment 'Juridical address',
+        postal_address varchar(255) not null comment 'Postal address',
+        real_address varchar(255) not null comment 'Real address',
         primary key (id)
     );
 
@@ -1466,6 +1561,36 @@
         parent_service_id bigint comment 'If parent service reference present service is a subservice',
         primary key (id)
     );
+
+    create table eirc_subdivision_descriptions_tbl (
+        id bigint not null auto_increment,
+        name varchar(255) not null comment 'Description value',
+        language_id bigint not null comment 'Language reference',
+        subdivision_id bigint not null comment 'Subdivision reference',
+        primary key (id),
+        unique (language_id, subdivision_id)
+    );
+
+    create table eirc_subdivision_names_tbl (
+        id bigint not null auto_increment,
+        name varchar(255) not null comment 'Name value',
+        language_id bigint not null comment 'Language reference',
+        subdivision_id bigint not null comment 'Subdivision reference',
+        primary key (id),
+        unique (language_id, subdivision_id)
+    );
+
+    create table eirc_subdivisions_tbl (
+        id bigint not null auto_increment,
+        version integer not null comment 'Optiomistic lock version',
+        status integer not null comment 'Enabled/Disabled status',
+        real_address varchar(255) not null comment 'Subdivision real address',
+        parent_subdivision_id bigint comment 'Parent subdivision reference if any',
+        head_organisation_id bigint not null comment 'Head organisation reference',
+        juridical_person_id bigint comment 'Juridical person (organisation) reference if any',
+        organisation_id bigint not null,
+        primary key (id)
+    ) comment='Organisation subdivisions';
 
     create table eirc_ticket_service_amounts_tbl (
         id bigint not null auto_increment,
@@ -2007,6 +2132,36 @@
         foreign key (source_registry_record_id) 
         references eirc_registry_records_tbl (id);
 
+    alter table eirc_bank_accounts_tbl 
+        add index FK_eirc_bank_accounts_tbl_bank_id (bank_id), 
+        add constraint FK_eirc_bank_accounts_tbl_bank_id 
+        foreign key (bank_id) 
+        references eirc_banks_tbl (id);
+
+    alter table eirc_bank_accounts_tbl 
+        add index FK_eirc_bank_accounts_tbl_organisation_id (organisation_id), 
+        add constraint FK_eirc_bank_accounts_tbl_organisation_id 
+        foreign key (organisation_id) 
+        references eirc_organisations_tbl (id);
+
+    alter table eirc_bank_descriptions_tbl 
+        add index FK_eirc_bank_descriptions_tbl_bank_id (bank_id), 
+        add constraint FK_eirc_bank_descriptions_tbl_bank_id 
+        foreign key (bank_id) 
+        references eirc_banks_tbl (id);
+
+    alter table eirc_bank_descriptions_tbl 
+        add index FK_eirc_bank_descriptions_tbl_language_id (language_id), 
+        add constraint FK_eirc_bank_descriptions_tbl_language_id 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table eirc_banks_tbl 
+        add index FK_eirc_banks_tbl_organisation_id (organisation_id), 
+        add constraint FK_eirc_banks_tbl_organisation_id 
+        foreign key (organisation_id) 
+        references eirc_organisations_tbl (id);
+
     alter table eirc_consumers_tbl 
         add index FK_eirc_consumer_eirc_account (eirc_account_id), 
         add constraint FK_eirc_consumer_eirc_account 
@@ -2290,6 +2445,54 @@
         add constraint FK_eirc_service_service_type 
         foreign key (type_id) 
         references eirc_service_types_tbl (id);
+
+    alter table eirc_subdivision_descriptions_tbl 
+        add index FK_eirc_subdivision_descriptions_tbl_subdivision_id (subdivision_id), 
+        add constraint FK_eirc_subdivision_descriptions_tbl_subdivision_id 
+        foreign key (subdivision_id) 
+        references eirc_subdivisions_tbl (id);
+
+    alter table eirc_subdivision_descriptions_tbl 
+        add index FK_eirc_subdivision_descriptions_tbl_language_id (language_id), 
+        add constraint FK_eirc_subdivision_descriptions_tbl_language_id 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table eirc_subdivision_names_tbl 
+        add index FK_eirc_subdivision_names_tbl_subdivision_id (subdivision_id), 
+        add constraint FK_eirc_subdivision_names_tbl_subdivision_id 
+        foreign key (subdivision_id) 
+        references eirc_subdivisions_tbl (id);
+
+    alter table eirc_subdivision_names_tbl 
+        add index FK_eirc_subdivision_names_tbl_language_id (language_id), 
+        add constraint FK_eirc_subdivision_names_tbl_language_id 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table eirc_subdivisions_tbl 
+        add index FK_eirc_subdivisions_tbl_parent_subdivision_id (parent_subdivision_id), 
+        add constraint FK_eirc_subdivisions_tbl_parent_subdivision_id 
+        foreign key (parent_subdivision_id) 
+        references eirc_subdivisions_tbl (id);
+
+    alter table eirc_subdivisions_tbl 
+        add index FK_eirc_subdivisions_tbl_head_organisation_id (head_organisation_id), 
+        add constraint FK_eirc_subdivisions_tbl_head_organisation_id 
+        foreign key (head_organisation_id) 
+        references eirc_organisations_tbl (id);
+
+    alter table eirc_subdivisions_tbl 
+        add index FK_eirc_subdivisions_tbl_juridical_person_id (juridical_person_id), 
+        add constraint FK_eirc_subdivisions_tbl_juridical_person_id 
+        foreign key (juridical_person_id) 
+        references eirc_organisations_tbl (id);
+
+    alter table eirc_subdivisions_tbl 
+        add index FK6E7B404F7F30FD59 (organisation_id), 
+        add constraint FK6E7B404F7F30FD59 
+        foreign key (organisation_id) 
+        references eirc_organisations_tbl (id);
 
     alter table eirc_ticket_service_amounts_tbl 
         add index FK_eirc_ticket_service_amount_ticket (ticket_id), 

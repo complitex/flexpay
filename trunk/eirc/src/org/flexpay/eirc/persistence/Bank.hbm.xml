@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.eirc.persistence">
+
+	<class name="Bank" table="eirc_banks_tbl" optimistic-lock="version">
+		<comment>Banks</comment>
+		<id name="id" column="id">
+			<generator class="native"/>
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optiomistic lock version</comment>
+			</column>
+		</version>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled/Disabled status</comment>
+			</column>
+		</property>
+		<many-to-one name="organisation" class="Organisation" foreign-key="FK_eirc_banks_tbl_organisation_id">
+			<column name="organisation_id" not-null="true">
+				<comment>Organisation reference</comment>
+			</column>
+		</many-to-one>
+		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
+			<key column="bank_id" not-null="true"/>
+			<one-to-many class="BankDescription"/>
+		</set>
+		<set name="accounts" inverse="true">
+			<key column="bank_id" not-null="true"/>
+			<one-to-many class="BankAccount"/>
+		</set>
+	</class>
+
+	<class name="BankDescription" table="eirc_bank_descriptions_tbl">
+		<comment>Bank desriptions</comment>
+		<id name="id" column="id">
+			<generator class="native"/>
+		</id>
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Description value</comment>
+			</column>
+		</property>
+		<properties name="lang_service_provider_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_eirc_bank_descriptions_tbl_language_id"
+						 class="org.flexpay.common.persistence.Language">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" class="Bank"
+						 foreign-key="FK_eirc_bank_descriptions_tbl_bank_id">
+				<column name="bank_id" not-null="true">
+					<comment>Bank reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<class name="BankAccount" table="eirc_bank_accounts_tbl" optimistic-lock="version">
+		<comment>Bank accounts</comment>
+		<id name="id" column="id">
+			<generator class="native"/>
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optiomistic lock version</comment>
+			</column>
+		</version>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled/Disabled status</comment>
+			</column>
+		</property>
+		<property name="accountNumber">
+			<column name="account_number" not-null="true">
+				<comment>Bank account number</comment>
+			</column>
+		</property>
+		<property name="default">
+			<column name="is_default" not-null="true">
+				<comment>Juridical person default account flag</comment>
+			</column>
+		</property>
+		<many-to-one name="bank" class="Bank" foreign-key="FK_eirc_bank_accounts_tbl_bank_id">
+			<column name="bank_id" not-null="true">
+				<comment>Bank reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="juridicalPerson" class="Organisation" foreign-key="FK_eirc_bank_accounts_tbl_organisation_id">
+			<column name="organisation_id" not-null="true">
+				<comment>Juridical person (organisation) reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+</hibernate-mapping>
