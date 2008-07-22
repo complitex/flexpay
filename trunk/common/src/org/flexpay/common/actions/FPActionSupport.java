@@ -21,6 +21,7 @@ import java.util.*;
 /**
  * Helper ActionSupport extension, able to set
  */
+@SuppressWarnings ({"UnusedDeclaration"})
 public abstract class FPActionSupport extends ActionSupport implements UserPreferencesAware, SessionAware {
 
 	@NonNls
