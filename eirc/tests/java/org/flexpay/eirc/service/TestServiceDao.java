@@ -26,7 +26,7 @@ public class TestServiceDao extends SpringBeanAwareTestCase {
 	public void testGetIntersectionServices() {
 
 		// Find CN service provider
-		ServiceProvider provider = spService.getProvider(10L);
+		ServiceProvider provider = spService.getProvider(4L);
 		assertNotNull("Cannot find service provider", provider);
 
 		// Find service type by code
