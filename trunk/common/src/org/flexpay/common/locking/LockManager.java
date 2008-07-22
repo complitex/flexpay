@@ -18,7 +18,7 @@ public class LockManager {
 
 	private static LockManager instance = new LockManager();
 	private HibernateTemplate hibernateTemplate;
-	private Map<String, StatelessSession> lockedSessions = CollectionUtils.map();
+	private volatile Map<String, StatelessSession> lockedSessions = CollectionUtils.map();
 
 	public static LockManager getInstance() {
 		return instance;
