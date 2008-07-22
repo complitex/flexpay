@@ -4,8 +4,8 @@ public class ServiceHolder {
 
 	private static SzFileService szFileService;
 
-	public void setSzFileService(SzFileService szFileService) {
-		this.szFileService = szFileService;
+	public static void setSzFileService(SzFileService szFService) {
+		szFileService = szFService;
 	}
 
 	public static SzFileService getSzFileService() {
