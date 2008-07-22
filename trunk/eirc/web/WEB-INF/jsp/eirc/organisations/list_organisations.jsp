@@ -19,7 +19,7 @@
 						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/></td>
 				<td class="col" width="1%"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/>
 				</td>
-                <td class="col"><s:property value="uniqueId"/></td>
+                <td class="col"><s:property value="id"/></td>
                 <td class="col"><s:property value="getTranslation(names).name"/></td>
 				<%--<td class="col"><s:property value="getTranslation(descriptions).name"/></td>--%>
 				<td class="col"><s:property value="kpp"/></td>

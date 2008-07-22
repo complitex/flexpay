@@ -5,6 +5,7 @@ import org.flexpay.common.test.SpringBeanAwareTestCase;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.test.annotation.Repeat;
 
 public class TestLockManager extends SpringBeanAwareTestCase {
 
@@ -17,6 +18,7 @@ public class TestLockManager extends SpringBeanAwareTestCase {
 	}
 
 	@Test
+	@Repeat(50)
 	public void testLock() {
 		LockManager lockManager = LockManager.getInstance();
 		assertTrue("lock string", lockManager.lock(lockString));

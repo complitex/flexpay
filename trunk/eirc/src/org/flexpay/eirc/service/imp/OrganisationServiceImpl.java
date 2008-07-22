@@ -124,6 +124,21 @@ public class OrganisationServiceImpl implements OrganisationService {
 					"No default lang desc", "eirc.error.organisation.no_default_lang_description"));
 		}
 
+		if (StringUtils.isBlank(organisation.getJuridicalAddress())) {
+			container.addException(new FlexPayException(
+					"No juridical address", "eirc.error.organisation.no_juridical_address"));
+		}
+
+		if (StringUtils.isBlank(organisation.getPostalAddress())) {
+			container.addException(new FlexPayException(
+					"No postal address", "eirc.error.organisation.no_postal_address"));
+		}
+
+		if (StringUtils.isBlank(organisation.getRealAddress())) {
+			container.addException(new FlexPayException(
+					"No real address", "eirc.error.organisation.no_real_address"));
+		}
+
 		if (!container.isEmpty()) {
 			throw container;
 		}

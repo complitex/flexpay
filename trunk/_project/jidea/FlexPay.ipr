@@ -394,9 +394,6 @@
         <inspection_tool class="SynchronizeOnThis" level="WARNING" enabled="true" />
         <inspection_tool class="SynchronizeOnLock" level="WARNING" enabled="true" />
         <inspection_tool class="SynchronizedOnLiteralObject" level="WARNING" enabled="true" />
-        <inspection_tool class="SynchronizedMethod" level="WARNING" enabled="true">
-          <option name="m_includeNativeMethods" value="true" />
-        </inspection_tool>
         <inspection_tool class="UnconditionalWait" level="WARNING" enabled="true" />
         <inspection_tool class="VolatileArrayField" level="WARNING" enabled="true" />
         <inspection_tool class="VolatileLongOrDoubleField" level="WARNING" enabled="true" />
@@ -421,9 +418,6 @@
         <inspection_tool class="NonSerializableWithSerializationMethods" level="WARNING" enabled="true" />
         <inspection_tool class="ReadObjectInitialization" level="WARNING" enabled="true" />
         <inspection_tool class="NonSerializableWithSerialVersionUIDField" level="WARNING" enabled="true" />
-        <inspection_tool class="NonSerializableFieldInSerializableClass" level="WARNING" enabled="true">
-          <option name="superClassString" value="java.awt.Component" />
-        </inspection_tool>
         <inspection_tool class="NonSerializableObjectBoundToHttpSession" level="WARNING" enabled="true" />
         <inspection_tool class="NonSerializableObjectPassedToObjectStream" level="WARNING" enabled="true" />
         <inspection_tool class="ReadObjectAndWriteObjectPrivate" level="WARNING" enabled="true" />
@@ -434,7 +428,6 @@
         </inspection_tool>
         <inspection_tool class="SerialPersistentFieldsWithWrongSignature" level="WARNING" enabled="true" />
         <inspection_tool class="TransientFieldInNonSerializableClass" level="WARNING" enabled="true" />
-        <inspection_tool class="TransientFieldNotInitialized" level="WARNING" enabled="true" />
         <inspection_tool class="SerializableInnerClassHasSerialVersionUIDField" level="WARNING" enabled="true">
           <option name="superClassString" value="java.awt.Component" />
         </inspection_tool>

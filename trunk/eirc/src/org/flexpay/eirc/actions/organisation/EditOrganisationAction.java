@@ -29,7 +29,7 @@ public class EditOrganisationAction extends FPActionSupport {
 
 		Organisation org = organisationService.read(organisation);
 
-		if (!isPost()) {
+		if (!isSubmit()) {
 			organisation = org;
 			initNames();
 			initDescriptions();
@@ -43,6 +43,9 @@ public class EditOrganisationAction extends FPActionSupport {
 
 		org.setKpp(organisation.getKpp());
 		org.setIndividualTaxNumber(organisation.getIndividualTaxNumber());
+		org.setJuridicalAddress(organisation.getJuridicalAddress());
+		org.setPostalAddress(organisation.getPostalAddress());
+		org.setRealAddress(organisation.getRealAddress());
 
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
