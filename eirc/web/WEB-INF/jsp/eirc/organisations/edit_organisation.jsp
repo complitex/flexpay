@@ -45,7 +45,7 @@
 			<td class="col"><s:text name="eirc.organisation.real_address"/>:</td>
 			<td class="col"><s:textfield name="organisation.realAddress" /></td>
 		</tr>
-		<tr valign="middle" class="cols_1">
+		<tr valign="middle">
 			<td colspan="2"><input type="submit" class="btn-exit" name="submitted"
 								   value="<s:text name="common.save"/>"/></td>
 		</tr>

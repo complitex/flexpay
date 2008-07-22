@@ -81,6 +81,10 @@
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
+          <containerElement type="library" name="Jetbrains" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
           <containerElement type="library" name="Quartz" level="project">
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
@@ -94,6 +98,10 @@
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="iText" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" name="jasper" level="project">
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
@@ -141,6 +149,7 @@
             <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-core-2.0.11.jar!/struts-default.xml</file>
             <file>jar://$MODULE_DIR$/../../common/lib/struts2/xwork-2.0.4.jar!/xwork-default.xml</file>
             <file>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/struts-plugin.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/organisation/struts.xml</file>
           </fileset>
           <validation>
             <errors_as_warnings>false</errors_as_warnings>

@@ -1,70 +1,77 @@
-package org.flexpay.eirc.actions.serviceprovider;
+package org.flexpay.eirc.actions.organisation;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.eirc.persistence.Bank;
+import org.flexpay.eirc.persistence.BankDescription;
 import org.flexpay.eirc.persistence.Organisation;
-import org.flexpay.eirc.persistence.ServiceProvider;
-import org.flexpay.eirc.persistence.ServiceProviderDescription;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
+import org.flexpay.eirc.service.BankService;
 import org.flexpay.eirc.service.OrganisationService;
-import org.flexpay.eirc.service.SPService;
 
 import java.util.Map;
 
-public class EditServiceProviderAction extends FPActionSupport {
+public class EditBankAction extends FPActionSupport {
 
-	private SPService spService;
+	private BankService bankService;
 	private OrganisationService organisationService;
 
+	private Bank bank = new Bank();
 	private OrganisationFilter organisationFilter = new OrganisationFilter();
-	private ServiceProvider provider = new ServiceProvider();
 	private Map<Long, String> descriptions = map();
 
 	public String doExecute() throws Exception {
 
-		if (provider.getId() == null) {
-			addActionError("No object was selected");
+		if (bank.getId() == null) {
+			addActionError(getText("error.no_id"));
 			return REDIRECT_SUCCESS;
 		}
 
-		ServiceProvider serviceProvider = spService.read(provider);
-		organisationFilter = spService.initOrganisationFilter(organisationFilter, serviceProvider);
-		if (organisationFilter.getOrganisations().isEmpty()) {
-			addActionError(getText("eirc.error.service_provider.no_providerless_organisation"));
-			return INPUT;
+		Bank oldBank = bankService.read(bank);
+		if (oldBank == null) {
+			addActionError(getText("error.invalid_id"));
+			return REDIRECT_SUCCESS;
 		}
 
-		if (!isPost()) {
-			provider = serviceProvider;
+		bankService.initBanklessFilter(organisationFilter, oldBank);
+
+		// prepare initial setup
+		if (!isSubmit()) {
+			if (oldBank.isNotNew()) {
+				organisationFilter.setSelectedId(oldBank.getOrganisation().getId());
+			}
+			bank = oldBank;
 			initDescriptions();
 			return INPUT;
 		}
 
-		if (log.isInfoEnabled()) {
-			log.info("Service provider descriptions: " + descriptions);
+		if (!organisationFilter.needFilter()) {
+			addActionError(getText("eirc.error.bank.no_organisation_selected"));
+			return INPUT;
 		}
+
+		if (log.isDebugEnabled()) {
+			log.debug("Bank descriptions: " + descriptions);
+		}
+
+		Organisation juridicalPerson = organisationService.read(
+				new Organisation(organisationFilter.getSelectedId()));
+		oldBank.setOrganisation(juridicalPerson);
+		oldBank.setBankIdentifierCode(bank.getBankIdentifierCode());
+		oldBank.setCorrespondingAccount(bank.getCorrespondingAccount());
 
 		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			ServiceProviderDescription description = new ServiceProviderDescription();
+			BankDescription description = new BankDescription();
 			description.setLang(lang);
 			description.setName(value);
-			if (log.isInfoEnabled()) {
-				log.info("Setting description: " + description);
-			}
-			serviceProvider.setDescription(description);
+			oldBank.setDescription(description);
 		}
 
-		if (log.isInfoEnabled()) {
-			log.info("New Service provider descriptions: " + serviceProvider.getDescriptions());
-		}
-
-		Organisation organisation = organisationService.read(new Organisation(organisationFilter.getSelectedId()));
-		serviceProvider.setOrganisation(organisation);
-		spService.save(serviceProvider);
+		bankService.save(oldBank);
 
 		return REDIRECT_SUCCESS;
 	}
@@ -81,7 +88,7 @@ public class EditServiceProviderAction extends FPActionSupport {
 	}
 
 	private void initDescriptions() {
-		for (ServiceProviderDescription description : provider.getDescriptions()) {
+		for (BankDescription description : bank.getDescriptions()) {
 			descriptions.put(description.getLang().getId(), description.getName());
 		}
 
@@ -93,12 +100,12 @@ public class EditServiceProviderAction extends FPActionSupport {
 		}
 	}
 
-	public ServiceProvider getProvider() {
-		return provider;
+	public Bank getBank() {
+		return bank;
 	}
 
-	public void setProvider(ServiceProvider provider) {
-		this.provider = provider;
+	public void setBank(Bank bank) {
+		this.bank = bank;
 	}
 
 	public Map<Long, String> getDescriptions() {
@@ -117,8 +124,8 @@ public class EditServiceProviderAction extends FPActionSupport {
 		this.organisationFilter = organisationFilter;
 	}
 
-	public void setSpService(SPService spService) {
-		this.spService = spService;
+	public void setBankService(BankService bankService) {
+		this.bankService = bankService;
 	}
 
 	public void setOrganisationService(OrganisationService organisationService) {

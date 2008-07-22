@@ -1121,6 +1121,8 @@
         id bigint not null auto_increment,
         version integer not null comment 'Optiomistic lock version',
         status integer not null comment 'Enabled/Disabled status',
+        bank_identifier_code varchar(255) not null comment 'Bank identifier code (BIK)',
+        corresponding_account varchar(255) not null comment 'Corresponding Central Bank account',
         organisation_id bigint not null comment 'Organisation reference',
         primary key (id)
     ) comment='Banks';
@@ -1188,7 +1190,6 @@
         status integer not null,
         individual_tax_number varchar(255) not null,
         kpp varchar(255) not null,
-        unique_id varchar(255) not null unique,
         juridical_address varchar(255) not null comment 'Juridical address',
         postal_address varchar(255) not null comment 'Postal address',
         real_address varchar(255) not null comment 'Real address',
