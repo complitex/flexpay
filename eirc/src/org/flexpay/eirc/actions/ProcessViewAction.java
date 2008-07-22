@@ -19,21 +19,21 @@ public class ProcessViewAction {
 	
 	private Process getProcess(Long id) {
 		// TODO get real process
-		Process process = new Process();
-		process.setId(id);
-		process.setLogFileName("logFileName");
-		process.setProcess_end_date(new Date());
-		process.setProcess_start_date(new Date());
-		process.setProcessDefenitionVersion(1);
-		process.setProcessDefinitionName("processDefinitionName");
-		process.setProcessInstaceId(1);
+		Process processStub = new Process();
+		processStub.setId(id);
+		processStub.setLogFileName("logFileName");
+		processStub.setProcess_end_date(new Date());
+		processStub.setProcess_start_date(new Date());
+		processStub.setProcessDefenitionVersion(1);
+		processStub.setProcessDefinitionName("processDefinitionName");
+		processStub.setProcessInstaceId(1);
 		HashMap parameters = new HashMap();
         parameters.put("key1", "val1");
         parameters.put("key2", "val2");
         parameters.put("key3", "val3");
-        process.setParameters(parameters);
+        processStub.setParameters(parameters);
 		
-		return process;
+		return processStub;
 	}
 
 

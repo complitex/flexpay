@@ -89,8 +89,8 @@ public class Apartment extends DomainObjectWithStatus {
 			return;
 		}
 
-		Building building = getBuilding();
-		Set<Apartment> apartmentSet = building.getApartments();
+		Building aBuilding = getBuilding();
+		Set<Apartment> apartmentSet = aBuilding.getApartments();
 		for (Apartment a : apartmentSet) {
 			if (number.equals(a.getNumber())) {
 				throw new ObjectAlreadyExistException();

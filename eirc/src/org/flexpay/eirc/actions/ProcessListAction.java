@@ -18,11 +18,11 @@ public class ProcessListAction {
 	}
 	
 	private List<Process> getProcessListMethod() {
-		List<Process> processList = ProcessManager.getInstance().getProcessList();
-        Collections.sort(processList, new ProcessStateComparator());
+		List<Process> processes = ProcessManager.getInstance().getProcessList();
+        Collections.sort(processes, new ProcessStateComparator());
       
         
-        return processList;
+        return processes;
 	}
 
 	/**

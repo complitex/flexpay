@@ -1,7 +1,6 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
-import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.RegionFilter;
@@ -27,8 +26,6 @@ import java.util.Locale;
 public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		TownNameTranslation, TownName, TownNameTemporal, Town, Region>
 		implements TownService {
-
-	private Logger log = Logger.getLogger(getClass());
 
 	private TownDao townDao;
 	private TownNameDao townNameDao;
@@ -113,8 +110,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	/**
-	 * return base for name time-dependent objects in i18n files, like 'region', 'town',
-	 * etc.
+	 * return base for name time-dependent objects in i18n files, like 'region', 'town', etc.
 	 *
 	 * @return Localization key base
 	 */
@@ -291,7 +287,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 * {@inheritDoc}
 	 */
 	@Override
-	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public Town create(Town object, List<TownNameTranslation> nameTranslations, ArrayStack filters, Date date) throws FlexPayExceptionContainer {
 
 		TownTypeFilter filter = (TownTypeFilter) filters.pop();
@@ -319,7 +315,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 * @throws FlexPayExceptionContainer if failure occurs
 	 */
 	@Override
-	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public Town postCreate(Town object) throws FlexPayExceptionContainer {
 		for (TownTypeTemporal typeTemporal : object.getTypeTemporals()) {
 			TownType empty = getEmptyType();
@@ -331,8 +327,8 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 
 		return object;
 	}
-	
+
 	public Town readFull(Long id) {
 		return townDao.readFull(id);
-	} 
+	}
 }

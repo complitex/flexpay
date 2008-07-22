@@ -1,14 +1,11 @@
 package org.flexpay.ab.actions.nametimedependent;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.Preparable;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.Translation;
-
-import java.util.Map;
 
 public abstract class ObjectViewAction<
 		TV extends TemporaryValue<TV>,
@@ -29,7 +26,6 @@ public abstract class ObjectViewAction<
 	public void prepare() throws Exception {
 		log.info("Object: " + object);
 		if (object.getId() == null) {
-			Map session = ActionContext.getContext().getSession();
 			NTD reg = (NTD) session.remove(ATTRIBUTE_OBJECT);
 			if (reg != null) {
 				object = reg;

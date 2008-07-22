@@ -1,7 +1,6 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
-import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.StreetFilter;
@@ -12,14 +11,14 @@ import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.flexpay.common.util.DateUtil;
-import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -27,8 +26,6 @@ import java.util.*;
 public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		StreetNameTranslation, StreetName, StreetNameTemporal, Street, Town>
 		implements StreetService {
-
-	private final Logger log = Logger.getLogger(getClass());
 
 	private StreetDao streetDao;
 	private StreetDaoExt streetDaoExt;

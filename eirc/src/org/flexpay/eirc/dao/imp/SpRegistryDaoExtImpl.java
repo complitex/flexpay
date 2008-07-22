@@ -83,7 +83,7 @@ public class SpRegistryDaoExtImpl extends HibernateDaoSupport implements SpRegis
 		pager.setTotalElements(count.intValue());
 
 		// retrive elements
-		List registries = getHibernateTemplate().executeFind(new HibernateCallback() {
+		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				Query qCount = session.createQuery(hqlCount.toString());
 				Query query = session.createQuery(hql.toString());
@@ -92,15 +92,13 @@ public class SpRegistryDaoExtImpl extends HibernateDaoSupport implements SpRegis
 					query.setParameter(n, params.get(n));
 				}
 
-				Number count = (Number) qCount.uniqueResult();
-				pager.setTotalElements(count.intValue());
+				Number objectsCount = (Number) qCount.uniqueResult();
+				pager.setTotalElements(objectsCount.intValue());
 
 				return query.setFirstResult(pager.getThisPageFirstElementNumber())
 						.setMaxResults(pager.getPageSize()).list();
 			}
 		});
-
-		return registries;
 	}
 
 	/**
