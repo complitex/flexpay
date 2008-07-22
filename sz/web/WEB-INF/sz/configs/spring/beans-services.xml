@@ -42,8 +42,4 @@
         <property name="streetCorrectionDao" ref="streetCorrectionDao" />
     </bean>
 
-    <bean id="serviceHolder" class="org.flexpay.sz.service.ServiceHolder">
-		<property name="szFileService" ref="szFileService" />
-	</bean>
-	
 </beans>	
