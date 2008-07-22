@@ -33,6 +33,11 @@ public class SessionUtils {
 		hibernateTemplate.clear();
 	}
 
+	/**
+	 * Evict objects from session
+	 *
+	 * @param o Object to be evicted
+	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void evict(Object o) {
 
@@ -41,6 +46,11 @@ public class SessionUtils {
 		hibernateTemplate.evict(o);
 	}
 
+	/**
+	 * Evict all objects from a collection
+	 *
+	 * @param c Collection that elements should be evicted
+	 */
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void evict(Collection c) {
 

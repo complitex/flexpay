@@ -95,6 +95,18 @@
 	</definition>
 
 
+	<!-- Banks -->
+	<definition name="eirc.organisation.banks.list" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.banks" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/organisations/list_banks.jsp" />
+	</definition>
+
+	<definition name="eirc.organisation.bank.edit" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.bank" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/organisations/edit_bank.jsp" />
+	</definition>
+
+
 	<!-- Service Providers -->
 	<definition name="eirc.service_providers.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.service_providers" />

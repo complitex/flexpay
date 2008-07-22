@@ -4,9 +4,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 public class Organisation extends DomainObjectWithStatus {
@@ -16,6 +16,7 @@ public class Organisation extends DomainObjectWithStatus {
 	private Set<OrganisationDescription> descriptions = Collections.emptySet();
 	private Set<OrganisationName> names = Collections.emptySet();
 	private Set<ServiceProvider> serviceProviders = Collections.emptySet();
+	private Set<Bank> banks = Collections.emptySet();
 
 	private String juridicalAddress;
 	private String postalAddress;
@@ -116,7 +117,7 @@ public class Organisation extends DomainObjectWithStatus {
 
 	public void setName(OrganisationName organisationName) {
 		if (names == Collections.EMPTY_SET) {
-			names = new HashSet<OrganisationName>();
+			names = set();
 		}
 
 		OrganisationName candidate = null;
@@ -146,7 +147,7 @@ public class Organisation extends DomainObjectWithStatus {
 
 	public void setDescription(OrganisationDescription organisationDescription) {
 		if (descriptions == Collections.EMPTY_SET) {
-			descriptions = new HashSet<OrganisationDescription>();
+			descriptions = set();
 		}
 
 		OrganisationDescription candidate = null;
@@ -180,5 +181,13 @@ public class Organisation extends DomainObjectWithStatus {
 
 	public void setServiceProviders(Set<ServiceProvider> serviceProviders) {
 		this.serviceProviders = serviceProviders;
+	}
+
+	public Set<Bank> getBanks() {
+		return banks;
+	}
+
+	public void setBanks(Set<Bank> banks) {
+		this.banks = banks;
 	}
 }

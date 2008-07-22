@@ -105,6 +105,10 @@
 		<property name="organisationDao" ref="organisationDao" />
 	</bean>
 
+	<bean id="bankService" class="org.flexpay.eirc.service.imp.BankServiceImpl"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:bankDao-ref="bankDao" />
+
 	<bean id="serviceTypeService" class="org.flexpay.eirc.service.imp.ServiceTypeServiceImpl"
 		  p:serviceDaoExt-ref="serviceDaoExt"
 		  p:serviceTypeDao-ref="serviceTypeDao" />

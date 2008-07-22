@@ -98,6 +98,21 @@
 		  class="org.flexpay.eirc.actions.organisation.EditOrganisationAction"
 		  p:organisationService-ref="organisationService" />
 
+	<!-- Bank actions -->
+	<bean id="listBanksAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.ListBanksAction"
+		  p:bankService-ref="bankService" />
+
+	<bean id="deleteBanksAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.DeleteBanksAction"
+		  p:bankService-ref="bankService" />
+
+	<bean id="editBankAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.EditBankAction"
+		  p:organisationService-ref="organisationService"
+		  p:bankService-ref="bankService" />
+
+	<!-- Service provider actions -->
 	<bean id="listServiceProvidersAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.serviceprovider.ListServiceProvidersAction"
 		  p:spService-ref="spService" />
@@ -170,34 +185,34 @@
 	<bean id="correctRecordPersonAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectPersonAction">
 	</bean>
-	
+
 	<bean id="processListAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.ProcessListAction">
 	</bean>
 	<bean id="processViewAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.ProcessViewAction">
 	</bean>
-	
+
 	<bean id="eircAccountListAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.EircAccountListAction">
-		  <property name="eircAccountService" ref="eircAccountService" />
+		<property name="eircAccountService" ref="eircAccountService" />
 	</bean>
 	<bean id="eircAccountViewAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.EircAccountViewAction">
-		  <property name="eircAccountService" ref="eircAccountService" />
+		<property name="eircAccountService" ref="eircAccountService" />
 	</bean>
 	<bean id="eircAccountCreateForm1Action" scope="prototype"
 		  class="org.flexpay.eirc.actions.eirc_account.EircAccountCreateForm1Action">
-		  <property name="parentService" ref="buildingService" /> 
-		  <property name="apartmentService" ref="apartmentService" />
+		<property name="parentService" ref="buildingService" />
+		<property name="apartmentService" ref="apartmentService" />
 	</bean>
 	<bean id="eircAccountCreateForm2Action" scope="prototype"
 		  class="org.flexpay.eirc.actions.eirc_account.EircAccountCreateForm2Action">
-		  <property name="personService" ref="personService" />
+		<property name="personService" ref="personService" />
 	</bean>
 	<bean id="eircAccountCreateAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.eirc_account.EircAccountCreateAction">
-		  <property name="eircAccountService" ref="eircAccountService" />
+		<property name="eircAccountService" ref="eircAccountService" />
 	</bean>
 
 </beans>

@@ -14,7 +14,7 @@ public interface OrganisationService {
 	/**
 	 * Find organisation by its id
 	 *
-	 * @param stub
+	 * @param stub Organisation stub
 	 * @return Organisation if found, or <code>null</code> otherwise
 	 */
 	Organisation getOrganisation(Stub<Organisation> stub);

@@ -25,6 +25,10 @@
 			<key column="organisation_id" not-null="true" />
 			<one-to-many class="ServiceProvider" />
 		</set>
+		<set name="banks" inverse="true">
+			<key column="organisation_id" not-null="true" />
+			<one-to-many class="Bank" />
+		</set>
 		<set name="subdivisions" inverse="true">
 			<key column="organisation_id" not-null="true" />
 			<one-to-many class="Subdivision" />

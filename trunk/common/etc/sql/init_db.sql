@@ -4124,6 +4124,23 @@ INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_
 INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
 	VALUES ('ЦН', @ru_id, @organisation_cn);
 
+-- Init banks
+INSERT INTO eirc_banks_tbl (status, organisation_id, bank_identifier_code, corresponding_account)
+	VALUES (0, @organisation_cn, '044525957', '30101810600000000957');
+SELECT @bank_cn:=last_insert_id();
+INSERT INTO eirc_bank_descriptions_tbl (name, language_id, bank_id)
+	VALUES ('Мега Банк', @ru_id, @bank_cn);
+INSERT INTO eirc_bank_descriptions_tbl (name, language_id, bank_id)
+	VALUES ('Mega Bank', @en_id, @bank_cn);
+INSERT INTO eirc_banks_tbl (status, organisation_id, bank_identifier_code, corresponding_account)
+	VALUES (0, @organisation_eirc, '1233455', '30101810600000000455');
+SELECT @bank_eirc:=last_insert_id();
+INSERT INTO eirc_bank_descriptions_tbl (name, language_id, bank_id)
+	VALUES ('ЕИРЦ Банк', @ru_id, @bank_eirc);
+INSERT INTO eirc_bank_descriptions_tbl (name, language_id, bank_id)
+	VALUES ('EIRC Bank', @en_id, @bank_eirc);
+
+
 -- Init service providers
 INSERT INTO common_data_source_descriptions_tbl (description) VALUES ('Источник - Тестовые данные ПУ из ЦН');
 SELECT @source_description_id:=last_insert_id();
