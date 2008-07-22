@@ -97,6 +97,10 @@
 	</target>
 
 	<target name="common.runtests" depends="common.build.test.jar,common.prepare.war">
+		<antcall target="common.runtests.nobuild" />
+	</target>
+
+	<target name="common.runtests.nobuild">
 		<antcall target="template.run.tests">
 			<param name="test_name" value="org.flexpay.common.AllTests" />
 			<reference refid="common.runtests.classpath" torefid="classpath" />

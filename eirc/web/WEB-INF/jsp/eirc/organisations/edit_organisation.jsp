@@ -14,8 +14,7 @@
         <tr valign="middle" class="cols_1">
             <td class="col"><s:text name="eirc.organisation.id"/>:</td>
             <td class="col">
-                <s:if test="organisation.id > 0"><s:hidden name="organisation.uniqueId" /><s:property value="organisation.uniqueId" /></s:if>
-                <s:else><s:textfield name="organisation.uniqueId" /></s:else>
+                <s:if test="organisation.notNew"><s:property value="organisation.id" /></s:if>
             </td>
         </tr>
 		<tr valign="middle" class="cols_1">
@@ -35,7 +34,20 @@
 			</td>
 		</tr>
 		<tr valign="middle" class="cols_1">
-			<td colspan="2"><input type="submit" class="btn-exit" value="<s:text name="common.save"/>"/></td>
+			<td class="col"><s:text name="eirc.organisation.juridical_address"/>:</td>
+			<td class="col"><s:textfield name="organisation.juridicalAddress" /></td>
+		</tr>
+		<tr valign="middle" class="cols_1">
+			<td class="col"><s:text name="eirc.organisation.postal_address"/>:</td>
+			<td class="col"><s:textfield name="organisation.postalAddress" /></td>
+		</tr>
+		<tr valign="middle" class="cols_1">
+			<td class="col"><s:text name="eirc.organisation.real_address"/>:</td>
+			<td class="col"><s:textfield name="organisation.realAddress" /></td>
+		</tr>
+		<tr valign="middle" class="cols_1">
+			<td colspan="2"><input type="submit" class="btn-exit" name="submitted"
+								   value="<s:text name="common.save"/>"/></td>
 		</tr>
 	</table>
 </s:form>
