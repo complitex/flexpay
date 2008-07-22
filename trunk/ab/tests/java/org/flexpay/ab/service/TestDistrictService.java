@@ -30,7 +30,7 @@ public class TestDistrictService extends SpringBeanAwareTestCase {
 		DistrictNameTranslation translation = new DistrictNameTranslation();
 		translation.setName("Test district");
 		translation.setTranslatable(name);
-		translation.setLang(ApplicationConfig.getInstance().getDefaultLanguage());
+		translation.setLang(ApplicationConfig.getDefaultLanguage());
 		Set<DistrictNameTranslation> translations = new HashSet<DistrictNameTranslation>();
 		translations.add(translation);
 		name.setTranslations(translations);
