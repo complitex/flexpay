@@ -5,8 +5,9 @@ import static org.flexpay.common.util.CollectionUtils.ar;
 
 import java.util.Comparator;
 import java.util.Map;
+import java.io.Serializable;
 
-public class ProcessStateComparator implements Comparator<Process> {
+public class ProcessStateComparator implements Comparator<Process>, Serializable {
 	
 	private static final Map<ProcessState, Integer> priorityMap = map(
 			ar(ProcessState.RUNING, ProcessState.WAITING, ProcessState.COMPLITED, ProcessState.COMPLITED_WITH_ERRORS),

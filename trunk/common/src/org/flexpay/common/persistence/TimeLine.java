@@ -14,7 +14,7 @@ public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI
 	// a set of intervals is fully covering time line,
 	// probably single interval with infinite bounds
 	private Collection<DI> intervals;
-	private transient boolean intervalsChecked = false;
+	private boolean intervalsChecked = false;
 
 	/**
 	 * Create time line from single date interval

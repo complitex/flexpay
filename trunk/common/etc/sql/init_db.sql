@@ -4095,29 +4095,31 @@ INSERT INTO eirc_registry_types_tbl (code) VALUES (10);
 INSERT INTO eirc_registry_types_tbl (code) VALUES (11);
 
 -- Init organisations
-INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, unique_id)
-	VALUES (0, '-------', '123', '0');
+-- EIRC is the first one, ID=1
+-- CN is the fourth one, ID=4
+INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp, unique_id)
+	VALUES (1, 0, '-------', '123', '0');
 SELECT @organisation_eirc:=last_insert_id();
 INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
 	VALUES ('Eirc itself', @ru_id, @organisation_eirc);
 INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
 	VALUES ('EIRC', @ru_id, @organisation_eirc);
-INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, unique_id)
-	VALUES (0, '123123123', '123', '2');
+INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp, unique_id)
+	VALUES (2, 0, '123123123', '123', '2');
 SELECT @organisation_zhko:=last_insert_id();
 INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
 	VALUES ('Test organisation', @ru_id, @organisation_zhko);
 INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
 	VALUES ('ЖКО', @ru_id, @organisation_zhko);
-INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, unique_id)
-	VALUES (0, '456456456', '56', '3');
+INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp, unique_id)
+	VALUES (3, 0, '456456456', '56', '3');
 SELECT @organisation_tszh:=last_insert_id();
 INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
 	VALUES ('Test organisation 2', @ru_id, @organisation_tszh);
 INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
 	VALUES ('ТСЖ', @ru_id, @organisation_tszh);
-INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, unique_id)
-	VALUES (0, '1111111', '56', '10');
+INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp, unique_id)
+	VALUES (4, 0, '1111111', '56', '10');
 SELECT @organisation_cn:=last_insert_id();
 INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
 	VALUES ('Calculation center', @ru_id, @organisation_cn);
