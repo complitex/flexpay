@@ -4,9 +4,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.sz.persistence.SzFile;
-import org.flexpay.sz.service.ServiceHolder;
 import org.flexpay.sz.service.SzFileService;
 import org.jetbrains.annotations.NonNls;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,7 @@ public class SzFileDownloadServlet extends HttpServlet {
 			throws IOException {
 		String szFileIdParam = request.getParameter("szFileId");
 		Long szFileId = new Long(szFileIdParam);
-		SzFileService szFileService = ServiceHolder.getSzFileService();
+		SzFileService szFileService = getSzFileService();
 
 		SzFile szFile = szFileService.readFull(szFileId);
 		File szDataRoot = ApplicationConfig.getSzDataRoot();
@@ -53,5 +54,10 @@ public class SzFileDownloadServlet extends HttpServlet {
 			IOUtils.closeQuietly(is);
 			IOUtils.closeQuietly(os);
 		}
+	}
+
+	private SzFileService getSzFileService() {
+		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+		return (SzFileService) context.getBean("szFileService");
 	}
 }
