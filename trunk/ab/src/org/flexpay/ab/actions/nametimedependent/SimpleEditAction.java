@@ -1,6 +1,5 @@
 package org.flexpay.ab.actions.nametimedependent;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.Preparable;
 import org.apache.commons.collections.ArrayStack;
 import org.apache.struts2.ServletActionContext;
@@ -69,7 +68,6 @@ public abstract class SimpleEditAction<
 
 		if (isPost()) {
 			object = nameTimeDependentService.updateNameTranslations(object, temporalId, nameTranslations, date);
-			Map session = ActionContext.getContext().getSession();
 			session.put(ObjectViewAction.ATTRIBUTE_OBJECT, object);
 
 			return SUCCESS;

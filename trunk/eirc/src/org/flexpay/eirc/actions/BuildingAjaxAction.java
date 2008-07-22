@@ -22,12 +22,12 @@ public class BuildingAjaxAction {
 
 	List<Buildings> getBuildingListByStreetId(Long streetId) {
 		Page pager = new Page(200, 1);
-		List<Buildings> buildingsList = null;
+		List<Buildings> buildingses = null;
 		while (true) {
-			if (buildingsList == null) {
-				buildingsList = buildingService.getBuildings(streetId, pager);
+			if (buildingses == null) {
+				buildingses = buildingService.getBuildings(streetId, pager);
 			} else {
-				buildingsList.addAll(buildingService.getBuildings(streetId,
+				buildingses.addAll(buildingService.getBuildings(streetId,
 						pager));
 			}
 			if (pager.hasNextPage()) {
@@ -37,7 +37,7 @@ public class BuildingAjaxAction {
 			}
 		}
 
-		return buildingsList;
+		return buildingses;
 	}
 
 	/**

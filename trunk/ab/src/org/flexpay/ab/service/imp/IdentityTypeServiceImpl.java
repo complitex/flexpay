@@ -89,14 +89,14 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 
 		Language language = LanguageUtil.getLanguage(locale);
 		Language defaultLang = ApplicationConfig.getDefaultLanguage();
-		List<IdentityType> identityTypes = identityTypeDao.listIdentityTypes(IdentityType.STATUS_ACTIVE);
+		List<IdentityType> types = identityTypeDao.listIdentityTypes(IdentityType.STATUS_ACTIVE);
 		List<IdentityTypeTranslation> translations = list();
 
 		if (log.isDebugEnabled()) {
-			log.debug("IdentityTypes: " + identityTypes);
+			log.debug("IdentityTypes: " + types);
 		}
 
-		for (IdentityType identityType : identityTypes) {
+		for (IdentityType identityType : types) {
 			IdentityTypeTranslation translation = getTypeTranslation(identityType, language, defaultLang);
 			if (translation == null) {
 				log.error("No name for identity type: "
@@ -230,6 +230,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 		return identityType;
 	}
 
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(IdentityType type) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 

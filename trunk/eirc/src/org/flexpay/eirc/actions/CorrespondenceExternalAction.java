@@ -52,15 +52,15 @@ public class CorrespondenceExternalAction extends FPActionSupport {
 	private List<String> retrieveElementList() {
 
 		// TODO It's just stub
-		List<String> elementList = new ArrayList<String>();
-		elementList.add("record1");
-		elementList.add("record2");
-		elementList.add("record3");
-		elementList.add("record4");
-		elementList.add("record5");
-		elementList.add("record6");
+		List<String> strings = new ArrayList<String>();
+		strings.add("record1");
+		strings.add("record2");
+		strings.add("record3");
+		strings.add("record4");
+		strings.add("record5");
+		strings.add("record6");
 
-		return elementList;
+		return strings;
 	}
 
 	/**
