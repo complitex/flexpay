@@ -22,4 +22,4 @@ create table ab_sync_changes_tbl (
 	order_weight INTEGER NOT NULL DEFAULT 0
 );
 
-ALTER TABLE ab_sync_changes_tbl ADD INDEX Index_weight_id_date (order_weight, record_id, record_date);
+ALTER TABLE ab_sync_changes_tbl ADD INDEX Index_processed_weight_id_date (processed, order_weight, record_id, record_date);
