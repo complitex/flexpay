@@ -6,6 +6,8 @@ import org.flexpay.ab.persistence.Building;
 import org.flexpay.common.util.DateUtil;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -18,7 +20,8 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 	 * @param number   Building number
 	 * @return Apartment instance, or <code>null</null> if not found
 	 */
-	public Apartment findApartmentStub(final Building building, final String number) {
+	@Nullable
+	public Apartment findApartmentStub(@NotNull Building building, final String number) {
 		String sql = "SELECT id FROM ab_apartments_tbl a WHERE a.building_id=? AND EXISTS " +
 					 "(SELECT 1 FROM ab_apartment_numbers_tbl n WHERE n.apartment_id=a.id AND n.value=? AND n.end_date>?)";
 

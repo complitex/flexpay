@@ -18,6 +18,7 @@ import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -50,8 +51,6 @@ public class ApartmentServiceImpl implements ApartmentService {
 		String streetNameStr = getNameTranslation(street);
 		String streetTypeStr = getTypeTranslation(street);
 
-//		Pair<Street, String> nameStreetpair = streetService.getFullStreetName(stub(street));
-
 		return streetTypeStr + " " + streetNameStr + ", д."
 			   + buildings.getNumber() + ", кв." + apartment.getNumber();
 	}
@@ -63,13 +62,18 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 * @param number   Apartment number
 	 * @return Apartment if found, or <code>null</code> otherwise
 	 */
+	@Nullable
 	public Stub<Apartment> findApartmentStub(Building building, String number) {
-		return stub(apartmentDaoExt.findApartmentStub(building, number));
+		Apartment apartment = apartmentDaoExt.findApartmentStub(building, number);
+		return apartment != null ? stub(apartment) : null;
 	}
 
 	public String getApartmentNumber(Stub<Apartment> apartment) throws FlexPayException {
 
 		Apartment persistent = apartmentDao.readFull(apartment.getId());
+		if (persistent == null) {
+			throw new FlexPayException("error.invalid_id");
+		}
 		return persistent.getNumber();
 	}
 
@@ -92,8 +96,11 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 * @throws ObjectAlreadyExistException
 	 */
 	@Transactional (readOnly = false)
-	public void setApartmentNumber(@NotNull Stub<Apartment> stub, String number) throws ObjectAlreadyExistException {
+	public void setApartmentNumber(@NotNull Stub<Apartment> stub, String number) throws ObjectAlreadyExistException, FlexPayException {
 		Apartment apartment = apartmentDao.read(stub.getId());
+		if (apartment == null) {
+			throw new FlexPayException("Invalid id", "error.invalid_id");
+		}
 		apartment.setNumber(number);
 		apartmentDao.update(apartment);
 	}
@@ -104,8 +111,12 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 * @param apartment Apartment stub
 	 * @return Building stub
 	 */
-	public Building getBuilding(@NotNull Stub<Apartment> apartment) {
+	@NotNull
+	public Building getBuilding(@NotNull Stub<Apartment> apartment) throws FlexPayException {
 		Apartment persistent = apartmentDao.read(apartment.getId());
+		if (persistent == null) {
+			throw new FlexPayException("Invalid id", "error.invalid_id");
+		}
 		return persistent.getBuilding();
 	}
 

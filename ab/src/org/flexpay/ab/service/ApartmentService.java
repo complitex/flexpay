@@ -10,6 +10,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	 * @param number   Apartment number
 	 * @return Apartment if found, or <code>null</code> otherwise
 	 */
+	@Nullable
 	Stub<Apartment> findApartmentStub(Building building, String number);
 
 	/**
@@ -41,7 +43,8 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	 * @param apartment Apartment stub
 	 * @return Building stub
 	 */
-	Building getBuilding(Stub<Apartment> apartment);
+	@NotNull
+	Building getBuilding(Stub<Apartment> apartment) throws FlexPayException;
 
 	/**
 	 * Read full apartment information
@@ -59,7 +62,7 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	 * @param number	apartment number
 	 * @throws ObjectAlreadyExistException if given number alredy exists in a building.
 	 */
-	void setApartmentNumber(Stub<Apartment> apartment, String number) throws ObjectAlreadyExistException;
+	void setApartmentNumber(Stub<Apartment> apartment, String number) throws ObjectAlreadyExistException, FlexPayException;
 
 	/**
 	 * Get apartment display address
