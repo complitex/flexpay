@@ -7,7 +7,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -77,7 +76,7 @@ public class Person extends DomainObjectWithStatus {
 
 
 	public void setPersonAttributes(@NotNull List<PersonAttribute> personAttributes) {
-		this.personAttributes = set(personAttributes);
+		this.personAttributes = CollectionUtils.set(personAttributes);
 	}
 
 	/**
@@ -120,7 +119,7 @@ public class Person extends DomainObjectWithStatus {
 			personAttributes.remove(attribute);
 		} else {
 			if (personAttributes == Collections.EMPTY_SET) {
-				personAttributes = set();
+				personAttributes = CollectionUtils.set();
 			}
 
 			personAttributes.add(attribute);
@@ -129,7 +128,7 @@ public class Person extends DomainObjectWithStatus {
 
 	public void setIdentity(PersonIdentity personIdentity) {
 		if (personIdentities == Collections.EMPTY_SET) {
-			personIdentities = set();
+			personIdentities = CollectionUtils.set();
 		}
 
 		PersonIdentity candidate = null;
@@ -233,7 +232,7 @@ public class Person extends DomainObjectWithStatus {
 		}
 
 		if (personRegistrations == Collections.EMPTY_SET) {
-			personRegistrations = set();
+			personRegistrations = CollectionUtils.set();
 		}
 
 		PersonRegistration reg = new PersonRegistration();
@@ -277,7 +276,7 @@ public class Person extends DomainObjectWithStatus {
 	}
 
 	public void setPersonRegistrations(@NotNull List<PersonRegistration> personRegistrations) {
-		this.personRegistrations = set(personRegistrations);
+		this.personRegistrations = CollectionUtils.set(personRegistrations);
 	}
 
 	public PersonIdentity getPassportIdentity() {
