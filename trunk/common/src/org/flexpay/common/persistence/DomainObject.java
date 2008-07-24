@@ -54,7 +54,7 @@ public class DomainObject implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
-			return false;
+			return true;
 		}
 		if (!(obj instanceof DomainObject)) {
 			return false;

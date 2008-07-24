@@ -1,4 +1,8 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+
+<a href="<s:url action="subdivisionsList"><s:param name="organisation.id" value="organisation.id"/></s:url>"><s:text name="eirc.subdivisions"/></a> 
+<br />
+
 <s:actionerror />
 <s:form method="post">
 	<s:hidden name="organisation.id" />
@@ -40,10 +44,6 @@
 		<tr valign="middle" class="cols_1">
 			<td class="col"><s:text name="eirc.organisation.postal_address"/>:</td>
 			<td class="col"><s:textfield name="organisation.postalAddress" /></td>
-		</tr>
-		<tr valign="middle" class="cols_1">
-			<td class="col"><s:text name="eirc.organisation.real_address"/>:</td>
-			<td class="col"><s:textfield name="organisation.realAddress" /></td>
 		</tr>
 		<tr valign="middle">
 			<td colspan="2"><input type="submit" class="btn-exit" name="submitted"

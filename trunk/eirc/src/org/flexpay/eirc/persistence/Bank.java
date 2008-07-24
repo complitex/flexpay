@@ -1,9 +1,8 @@
 package org.flexpay.eirc.persistence;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.util.CollectionUtils.set;
+import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -74,34 +73,8 @@ public class Bank extends DomainObjectWithStatus {
 		this.descriptions = descriptions;
 	}
 
-	public void setDescription(BankDescription bankDescription) {
-		if (descriptions == Collections.EMPTY_SET) {
-			descriptions = set();
-		}
-
-		BankDescription candidate = null;
-		for (BankDescription description : descriptions) {
-			if (description.isSameLanguage(bankDescription)) {
-				candidate = description;
-				break;
-			}
-		}
-
-		if (candidate != null) {
-			if (StringUtils.isBlank(bankDescription.getName())) {
-				descriptions.remove(candidate);
-				return;
-			}
-			candidate.setName(bankDescription.getName());
-			return;
-		}
-
-		if (StringUtils.isBlank(bankDescription.getName())) {
-			return;
-		}
-
-		bankDescription.setTranslatable(this);
-		descriptions.add(bankDescription);
+	public void setDescription(BankDescription description) {
+		descriptions = TranslationUtil.setTranslation(descriptions, this, description);
 	}
 
 }

@@ -29,8 +29,12 @@
 			<key column="organisation_id" not-null="true" />
 			<one-to-many class="Bank" />
 		</set>
-		<set name="subdivisions" inverse="true">
-			<key column="organisation_id" not-null="true" />
+		<set name="childSubdivisions" inverse="true">
+			<key column="head_organisation_id" not-null="true" />
+			<one-to-many class="Subdivision" />
+		</set>
+		<set name="dependentSubdivisions" inverse="true">
+			<key column="juridical_person_id" not-null="true" />
 			<one-to-many class="Subdivision" />
 		</set>
 		<property name="juridicalAddress">
@@ -41,11 +45,6 @@
 		<property name="postalAddress">
 			<column name="postal_address" not-null="true">
 				<comment>Postal address</comment>
-			</column>
-		</property>
-		<property name="realAddress">
-			<column name="real_address" not-null="true">
-				<comment>Real address</comment>
 			</column>
 		</property>
 	</class>

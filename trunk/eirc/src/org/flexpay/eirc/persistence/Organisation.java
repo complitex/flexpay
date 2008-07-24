@@ -1,10 +1,11 @@
 package org.flexpay.eirc.persistence;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
-import static org.flexpay.common.util.CollectionUtils.set;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.TranslationUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Set;
@@ -20,10 +21,10 @@ public class Organisation extends DomainObjectWithStatus {
 
 	private String juridicalAddress;
 	private String postalAddress;
-	private String realAddress;
 
 	private Set<BankAccount> accounts = Collections.emptySet();
-	private Set<Subdivision> subdivisions = Collections.emptySet();
+	private Set<Subdivision> childSubdivisions = Collections.emptySet();
+	private Set<Subdivision> dependentSubdivisions = Collections.emptySet();
 
 	/**
 	 * Constructs a new DomainObject.
@@ -31,8 +32,12 @@ public class Organisation extends DomainObjectWithStatus {
 	public Organisation() {
 	}
 
-	public Organisation(Long id) {
+	public Organisation(@NotNull Long id) {
 		super(id);
+	}
+
+	public Organisation(@NotNull Stub<Organisation> stub) {
+		super(stub.getId());
 	}
 
 	public String getIndividualTaxNumber() {
@@ -83,14 +88,6 @@ public class Organisation extends DomainObjectWithStatus {
 		this.postalAddress = postalAddress;
 	}
 
-	public String getRealAddress() {
-		return realAddress;
-	}
-
-	public void setRealAddress(String realAddress) {
-		this.realAddress = realAddress;
-	}
-
 	public Set<BankAccount> getAccounts() {
 		return accounts;
 	}
@@ -99,12 +96,20 @@ public class Organisation extends DomainObjectWithStatus {
 		this.accounts = accounts;
 	}
 
-	public Set<Subdivision> getSubdivisions() {
-		return subdivisions;
+	public Set<Subdivision> getChildSubdivisions() {
+		return childSubdivisions;
 	}
 
-	public void setSubdivisions(Set<Subdivision> subdivisions) {
-		this.subdivisions = subdivisions;
+	public void setChildSubdivisions(Set<Subdivision> childSubdivisions) {
+		this.childSubdivisions = childSubdivisions;
+	}
+
+	public Set<Subdivision> getDependentSubdivisions() {
+		return dependentSubdivisions;
+	}
+
+	public void setDependentSubdivisions(Set<Subdivision> dependentSubdivisions) {
+		this.dependentSubdivisions = dependentSubdivisions;
 	}
 
 	public String toString() {
@@ -115,64 +120,12 @@ public class Organisation extends DomainObjectWithStatus {
 				.toString();
 	}
 
-	public void setName(OrganisationName organisationName) {
-		if (names == Collections.EMPTY_SET) {
-			names = set();
-		}
-
-		OrganisationName candidate = null;
-		for (OrganisationName name : names) {
-			if (name.isSameLanguage(organisationName)) {
-				candidate = name;
-				break;
-			}
-		}
-
-		if (candidate != null) {
-			if (StringUtils.isBlank(organisationName.getName())) {
-				names.remove(candidate);
-				return;
-			}
-			candidate.setName(organisationName.getName());
-			return;
-		}
-
-		if (StringUtils.isBlank(organisationName.getName())) {
-			return;
-		}
-
-		organisationName.setTranslatable(this);
-		names.add(organisationName);
+	public void setName(OrganisationName name) {
+		names = TranslationUtil.setTranslation(names, this, name);
 	}
 
-	public void setDescription(OrganisationDescription organisationDescription) {
-		if (descriptions == Collections.EMPTY_SET) {
-			descriptions = set();
-		}
-
-		OrganisationDescription candidate = null;
-		for (OrganisationDescription description : descriptions) {
-			if (description.isSameLanguage(organisationDescription)) {
-				candidate = description;
-				break;
-			}
-		}
-
-		if (candidate != null) {
-			if (StringUtils.isBlank(organisationDescription.getName())) {
-				descriptions.remove(candidate);
-				return;
-			}
-			candidate.setName(organisationDescription.getName());
-			return;
-		}
-
-		if (StringUtils.isBlank(organisationDescription.getName())) {
-			return;
-		}
-
-		organisationDescription.setTranslatable(this);
-		descriptions.add(organisationDescription);
+	public void setDescription(OrganisationDescription description) {
+		descriptions = TranslationUtil.setTranslation(descriptions, this, description);
 	}
 
 	public Set<ServiceProvider> getServiceProviders() {

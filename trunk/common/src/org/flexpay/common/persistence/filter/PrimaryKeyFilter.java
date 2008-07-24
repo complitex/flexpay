@@ -13,6 +13,7 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 	private Long selectedId;
 	private Long defaultId;
 	private boolean needAutoChange;
+	private boolean allowEmpty = true;
 
 	public PrimaryKeyFilter() {
 	}
@@ -100,5 +101,13 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 	 */
 	public boolean isNeedAutoChange() {
 		return needAutoChange;
+	}
+
+	public boolean isAllowEmpty() {
+		return allowEmpty;
+	}
+
+	public void setAllowEmpty(boolean allowEmpty) {
+		this.allowEmpty = allowEmpty;
 	}
 }

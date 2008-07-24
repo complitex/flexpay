@@ -97,13 +97,16 @@
 	<bean id="consumerInfoService" class="org.flexpay.eirc.service.imp.ConsumerInfoServiceImpl"
 		  p:consumerInfoDao-ref="consumerInfoDao" />
 
-	<bean id="accountRecordService" class="org.flexpay.eirc.service.imp.AccountRecordServiceImpl">
-		<property name="accountRecordDao" ref="accountRecordDao" />
-	</bean>
+	<bean id="accountRecordService" class="org.flexpay.eirc.service.imp.AccountRecordServiceImpl"
+			p:accountRecordDao-ref="accountRecordDao" />
 
-	<bean id="organisationService" class="org.flexpay.eirc.service.imp.OrganisationServiceImpl">
-		<property name="organisationDao" ref="organisationDao" />
-	</bean>
+	<bean id="organisationService" class="org.flexpay.eirc.service.imp.OrganisationServiceImpl"
+		  p:organisationDao-ref="organisationDao" />
+
+	<bean id="subdivisionService" class="org.flexpay.eirc.service.imp.SubdivisionServiceImpl"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:subdivisionDao-ref="subdivisionDao"
+		  p:organisationService-ref="organisationService" />
 
 	<bean id="bankService" class="org.flexpay.eirc.service.imp.BankServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"

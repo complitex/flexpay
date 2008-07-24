@@ -25,6 +25,11 @@
 				<comment>Subdivision real address</comment>
 			</column>
 		</property>
+		<property name="treePath" index="INDX_tree_path">
+			<column name="tree_path" not-null="true">
+				<comment>Subdivisions tree branch path</comment>
+			</column>
+		</property>
 		<many-to-one name="parentSubdivision" class="Subdivision"
 					 foreign-key="FK_eirc_subdivisions_tbl_parent_subdivision_id">
 			<column name="parent_subdivision_id" not-null="false">
@@ -106,5 +111,26 @@
 			</many-to-one>
 		</properties>
 	</class>
+
+	<query name="Subdivision.readFull">
+		select distinct o
+		from Subdivision o
+		left outer join fetch o.names 
+		left outer join fetch o.descriptions
+		inner join fetch o.headOrganisation
+		left join fetch o.juridicalPerson 
+		where o.id=?
+	</query>
+
+	<query name="Subdivision.findSubdivisions">
+		select distinct o
+		from Subdivision o
+		left outer join fetch o.names
+		left outer join fetch o.descriptions
+		inner join fetch o.headOrganisation h
+		left join fetch o.juridicalPerson j
+		where o.status=0 and h.status=0 and h.id=? or j.id=?
+		order by o.treePath 
+	</query>
 
 </hibernate-mapping>

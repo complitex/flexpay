@@ -188,6 +188,8 @@ ul.docs
 	{ float: left; width:50%; border: 1px solid #b3b9c3; height: 20px; background: #fff; font-size: 0.8em; font-family: tahoma, sans-serif; color: #000; }
 .form-textarea
 	{ border: 1px solid #b3b9c3; width:99%; height: 150px; background: #fff; font-size: 0.8em; font-family: tahoma, sans-serif; color: #000; }
+.form-textarea-no-size
+	{ border: 1px solid #b3b9c3; background: #fff; font-size: 0.8em; font-family: tahoma, sans-serif; color: #000; }
 .form-input-txt
 	{ border: 1px solid #b3b9c3; width:99%; height: 20px; background: #fff; font-size: 0.8em; font-family: tahoma, sans-serif; color: #000; }
 .form-input-txt-numb

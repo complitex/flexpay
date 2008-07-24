@@ -5,6 +5,7 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.Organisation;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Set;
@@ -17,6 +18,7 @@ public interface OrganisationService {
 	 * @param stub Organisation stub
 	 * @return Organisation if found, or <code>null</code> otherwise
 	 */
+	@Nullable
 	Organisation getOrganisation(Stub<Organisation> stub);
 
 	/**
