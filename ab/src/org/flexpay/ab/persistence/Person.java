@@ -232,6 +232,10 @@ public class Person extends DomainObjectWithStatus {
 			}
 		}
 
+		if (personRegistrations == Collections.EMPTY_SET) {
+			personRegistrations = set();
+		}
+
 		PersonRegistration reg = new PersonRegistration();
 		reg.setApartment(apartment);
 		reg.setPerson(this);
