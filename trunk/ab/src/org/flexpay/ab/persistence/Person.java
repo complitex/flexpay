@@ -219,11 +219,12 @@ public class Person extends DomainObjectWithStatus {
 			throw new FlexPayException("beginDate after endDate", "ab.person.registration.error.begin_after_end");
 		}
 
-		Date[] dateInterval = getBeginValidInterval();
-		if (beginDate.before(dateInterval[0]) || beginDate.after(dateInterval[1])) {
-			throw new FlexPayException("beginDate valid interval error",
-					"ab.person.registration.error.begin_date_interval_error", dateInterval[0], dateInterval[1]);
-		}
+		//todo move it to registration action instead
+//		Date[] dateInterval = getBeginValidInterval();
+//		if (beginDate.before(dateInterval[0]) || beginDate.after(dateInterval[1])) {
+//			throw new FlexPayException("beginDate valid interval error",
+//					"ab.person.registration.error.begin_date_interval_error", dateInterval[0], dateInterval[1]);
+//		}
 
 		for (PersonRegistration reg : personRegistrations) {
 			if (reg.getEndDate().after(beginDate)) {
@@ -239,7 +240,7 @@ public class Person extends DomainObjectWithStatus {
 		personRegistrations.add(reg);
 	}
 
-	public Date[] getBeginValidInterval() {
+	private Date[] getBeginValidInterval() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(DateUtil.now());
 		cal.add(Calendar.MONTH, -3);
