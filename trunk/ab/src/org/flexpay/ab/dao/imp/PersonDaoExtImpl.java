@@ -5,6 +5,7 @@ import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
+import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.hibernate.Criteria;
@@ -54,11 +55,13 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 				if (StringUtils.isNotEmpty(identity.getDocumentNumber())) {
 					crit.add(Restrictions.eq("documentNumber", identity.getDocumentNumber()));
 				}
-				if (person.getRegistrationApartment() != null) {
+				Apartment registrationApartment = person.getRegistrationApartment();
+				if (registrationApartment != null) {
 					crit
 							.createAlias("person", "p")
-							.createAlias("p.apartment", "a")
-							.add(Restrictions.eq("a.id", person.getRegistrationApartment().getId()));
+							.createAlias("p.personRegistrations", "r")
+							.createAlias("r.apartment", "a")
+							.add(Restrictions.eq("a.id", registrationApartment.getId()));
 				}
 
 				return crit.list();
