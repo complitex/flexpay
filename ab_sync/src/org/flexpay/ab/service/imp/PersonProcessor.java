@@ -100,6 +100,9 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 
 	private void setFirstName(Person person, HistoryRecord record) {
 		PersonIdentity identity = person.getDefaultIdentity();
+		if (log.isDebugEnabled()) {
+			log.debug("Setting name, person: " + person);
+		}
 		boolean newIsBlank = StringUtils.isBlank(record.getCurrentValue());
 		boolean oldIsBlank = StringUtils.isBlank(identity.getFirstName());
 		if (newIsBlank && oldIsBlank) {
@@ -134,6 +137,9 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 
 	private void setMiddleName(Person person, HistoryRecord record) {
 		PersonIdentity identity = person.getDefaultIdentity();
+		if (log.isDebugEnabled()) {
+			log.debug("Setting name, person: " + person);
+		}
 		boolean newIsBlank = StringUtils.isBlank(record.getCurrentValue());
 		boolean oldIsBlank = StringUtils.isBlank(identity.getMiddleName());
 		if (newIsBlank && oldIsBlank) {
@@ -168,6 +174,9 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 
 	private void setLastName(Person person, HistoryRecord record) {
 		PersonIdentity identity = person.getDefaultIdentity();
+		if (log.isDebugEnabled()) {
+			log.debug("Setting name, person: " + person);
+		}
 		boolean newIsBlank = StringUtils.isBlank(record.getCurrentValue());
 		boolean oldIsBlank = StringUtils.isBlank(identity.getLastName());
 		if (newIsBlank && oldIsBlank) {
