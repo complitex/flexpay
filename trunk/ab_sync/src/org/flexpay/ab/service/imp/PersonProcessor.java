@@ -131,6 +131,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 			identity.setDefault(false);
 
 			identity = newIdentity(person);
+			identity.setDefault(true);
 
 			log.debug("Person first name changed, creating a new identity");
 		}

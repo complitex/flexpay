@@ -1,10 +1,9 @@
 package org.flexpay.common.persistence;
 
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.NotNull;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.lang.builder.EqualsBuilder;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 
@@ -13,7 +12,7 @@ import java.io.Serializable;
  */
 public class DomainObject implements Serializable {
 
-	@SuppressWarnings({"UnusedDeclaration"})
+	@SuppressWarnings ({"UnusedDeclaration"})
 	protected Integer version;
 	private Long id;
 
@@ -61,9 +60,10 @@ public class DomainObject implements Serializable {
 		}
 
 		DomainObject that = (DomainObject) obj;
-		return new EqualsBuilder()
-				.append(id, that.getId())
-				.isEquals();
+		if (id == null || that.id == null) {
+			return false;
+		}
+		return id.equals(that.id);
 	}
 
 	@Override

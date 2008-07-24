@@ -1,33 +1,29 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
+<s:actionerror />
 
 <s:form>
-<table cellpadding="3" cellspacing="1" border="0" width="100%">
-
-<tr>
-	<td colspan="4">
-		<%@ include file="filters/groups/country_region_town_street_building.jsp" %>
-	</td>
-</tr>
-
-
+	<s:hidden name="apartment.id" value="%{apartment.id}"/>
+	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
 		<tr>
-			<td class="col">
-				<s:text name="ab.apartment.number" />
+			<td colspan="2">
+				<%@ include file="filters/groups/country_region_town_street_building.jsp" %>
 			</td>
+		</tr>
+
+		<tr>
+			<td class="col"><s:text name="ab.apartment.number"/></td>
 			<td class="col">
-				<s:textfield name="apartmentNumber" value="%{apartment.number}" />
+				<s:textfield name="apartmentNumber" value="%{apartmentNumber}"/>
 			</td>
-			<td colspan="4">
-		      <s:hidden name="apartment.id" value="%{apartment.id}" />
-		      <s:submit name="submitted" value="%{getText('common.save')}" cssClass="btn-exit" />
-		    </td>
 		</tr>
 		<tr>
-			<td colspan="4" height="3" bgcolor="#4a4f4f"/>
+			<td colspan="2">
+				<input type="submit" class="btn-exit" name="submitted"
+					   value="<s:text name="common.save"/>"/>
+			</td>
 		</tr>
-			
-</table>
+
+	</table>
 </s:form>
-

@@ -297,4 +297,25 @@ public class PersonIdentity extends DomainObjectWithStatus {
 				.append("documentNumber", documentNumber)
 				.toString();
 	}
+
+	public static PersonIdentity newCopy(PersonIdentity oldIdentity) {
+		PersonIdentity identity = new PersonIdentity();
+		identity.setIdentityType(oldIdentity.getIdentityType());
+		identity.setDefault(oldIdentity.isDefault());
+		identity.setBirthDate(oldIdentity.getBirthDate());
+		identity.setBeginDate(oldIdentity.getBeginDate());
+		identity.setEndDate(oldIdentity.getEndDate());
+		identity.setSerialNumber(oldIdentity.getSerialNumber());
+		identity.setDocumentNumber(oldIdentity.getDocumentNumber());
+		identity.setOrganization(oldIdentity.getFirstName());
+		identity.setFirstName(oldIdentity.getFirstName());
+		identity.setMiddleName(oldIdentity.getMiddleName());
+		identity.setLastName(oldIdentity.getLastName());
+
+		Person person = oldIdentity.getPerson();
+		identity.setPerson(person);
+
+		person.addIdentity(identity);
+		return identity;
+	}
 }

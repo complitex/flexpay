@@ -87,7 +87,11 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("Selected id", selectedId).toString();
+				.append("readOnly", isReadOnly())
+				.append("selectedId", selectedId)
+				.append("needAutoChange", needAutoChange)
+				.append("allowEmpty", allowEmpty)
+				.toString();
 	}
 
 	public void setNeedAutoChange(boolean needAutoChange) {

@@ -4,15 +4,18 @@ import org.apache.commons.collections.ArrayStack;
 import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.ApartmentDaoExt;
-import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.service.ApartmentService;
 import static org.flexpay.ab.util.TranslationUtil.getNameTranslation;
 import static org.flexpay.ab.util.TranslationUtil.getTypeTranslation;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
@@ -63,9 +66,8 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 * @return Apartment if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	public Stub<Apartment> findApartmentStub(Building building, String number) {
-		Apartment apartment = apartmentDaoExt.findApartmentStub(building, number);
-		return apartment != null ? stub(apartment) : null;
+	public Stub<Apartment> findApartmentStub(@NotNull Building building, String number) {
+		return apartmentDaoExt.findApartmentStub(building, number);
 	}
 
 	public String getApartmentNumber(Stub<Apartment> apartment) throws FlexPayException {
@@ -78,31 +80,64 @@ public class ApartmentServiceImpl implements ApartmentService {
 	}
 
 	/**
-	 * Read full apartment information
+	 * Disable apartments
 	 *
-	 * @param id Apartment id
-	 * @return Apartment instance, or <code>null</code> if not found
+	 * @param objectIds Apartments identifiers
 	 */
-	public Apartment readFull(Long id) {
-		return apartmentDao.readFull(id);
+	public void disable(@NotNull Set<Long> objectIds) {
+		for (Long id : objectIds) {
+			Apartment apartment = apartmentDao.read(id);
+			if (apartment != null) {
+				apartment.disable();
+				apartmentDao.update(apartment);
+			}
+		}
 	}
 
 	/**
-	 * Validate that given number not alredy exist in given apartment's building. If not exist then set new number for given
-	 * apartment.
+	 * Create or update apartment
 	 *
-	 * @param stub   Apartment stub
-	 * @param number apartment number
-	 * @throws ObjectAlreadyExistException
+	 * @param apartment Apartment to save
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
-	public void setApartmentNumber(@NotNull Stub<Apartment> stub, String number) throws ObjectAlreadyExistException, FlexPayException {
-		Apartment apartment = apartmentDao.read(stub.getId());
-		if (apartment == null) {
-			throw new FlexPayException("Invalid id", "error.invalid_id");
+	public void save(@NotNull Apartment apartment) throws FlexPayExceptionContainer {
+		validate(apartment);
+		if (apartment.isNew()) {
+			apartment.setId(null);
+			apartmentDao.create(apartment);
+		} else {
+			apartmentDao.update(apartment);
 		}
-		apartment.setNumber(number);
-		apartmentDao.update(apartment);
+	}
+
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(@NotNull Apartment apartment) throws FlexPayExceptionContainer {
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
+
+		if (apartment.hasNoBuilding()) {
+			container.addException(new FlexPayException(
+					"No building", "ab.error.apartment.no_building"));
+		}
+
+		if (apartment.hasNoNumber()) {
+			container.addException(new FlexPayException(
+					"No number", "ab.error.apartment.no_number"));
+		}
+
+		// check if this number already exists
+		if (apartment.hasBuilding() && apartment.hasNumber()) {
+			Stub<Apartment> stub = apartmentDaoExt.findApartmentStub(
+					apartment.getBuilding(), apartment.getNumber());
+			if (stub != null && !stub.getId().equals(apartment.getId())) {
+				container.addException(new FlexPayException(
+						"Number duplicate", "ab.error.apartment.number_duplicate"));
+			}
+		}
+
+		if (container.isNotEmpty()) {
+			throw container;
+		}
 	}
 
 	/**
@@ -120,19 +155,15 @@ public class ApartmentServiceImpl implements ApartmentService {
 		return persistent.getBuilding();
 	}
 
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
-	public void create(Apartment apartment) {
-		apartmentDao.create(apartment);
-	}
-
 	/**
 	 * Read apartment with registered persons
 	 *
-	 * @param id Object identifier
+	 * @param stub Apartment stub
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
-	public Apartment readWithPersons(Long id) {
-		List<Apartment> apartments = apartmentDao.findWithPersonsFull(id);
+	@Nullable
+	public Apartment readWithPersons(@NotNull Stub<Apartment> stub) {
+		List<Apartment> apartments = apartmentDao.findWithPersonsFull(stub.getId());
 		return apartments.isEmpty() ? null : apartments.get(0);
 	}
 
@@ -166,7 +197,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 				countryFilter.setSelectedId(apartment.getCountry().getId());
 			} else {
 				if (log.isDebugEnabled()) {
-					log.info("Unsupported filter: " + filter);
+					log.debug("Unsupported filter: " + filter);
 				}
 			}
 		}
@@ -256,7 +287,18 @@ public class ApartmentServiceImpl implements ApartmentService {
 		List<Apartment> apartments = apartmentDao.findObjects(filter.getSelectedId(), pager);
 		Collections.sort(apartments, new Comparator<Apartment>() {
 			public int compare(Apartment a1, Apartment a2) {
-				return a1.getNumber().compareTo(a2.getNumber());
+				String n1 = a1.getNumber();
+				String n2 = a2.getNumber();
+				if (n1 == null && n2 == null) {
+					return 0;
+				}
+				if (n1 == null) {
+					return -1;
+				}
+				if (n2 == null) {
+					return 1;
+				}
+				return n1.compareTo(n2);
 			}
 		});
 

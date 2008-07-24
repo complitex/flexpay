@@ -1,21 +1,20 @@
-package org.flexpay.eirc.actions.organisation;
+package org.flexpay.ab.actions.apartment;
 
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
-import org.flexpay.eirc.service.OrganisationService;
+import org.flexpay.ab.service.ApartmentService;
 
 import java.util.Set;
 
-public class DeleteOrganisationsAction extends FPActionSupport {
+public class ApartmentsDeleteAction extends FPActionSupport {
 
-	private OrganisationService organisationService;
-
+	private ApartmentService apartmentService;
 	private Set<Long> objectIds = set();
 
 	public String doExecute() throws Exception {
-		organisationService.disable(objectIds);
+		apartmentService.disable(objectIds);
 
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	/**
@@ -26,7 +25,7 @@ public class DeleteOrganisationsAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	protected String getErrorResult() {
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	public Set<Long> getObjectIds() {
@@ -37,7 +36,7 @@ public class DeleteOrganisationsAction extends FPActionSupport {
 		this.objectIds = objectIds;
 	}
 
-	public void setOrganisationService(OrganisationService organisationService) {
-		this.organisationService = organisationService;
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
 	}
 }

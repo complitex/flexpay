@@ -5,19 +5,22 @@ import org.flexpay.ab.service.ApartmentService;
 import static org.flexpay.common.persistence.Stub.stub;
 
 public class ApartmentEditAction extends BuildingsFilterDependentAction {
+
 	private ApartmentService apartmentService;
 
-	private Apartment apartment;
+	private Apartment apartment = new Apartment();
 	private String apartmentNumber;
 
 	public String doExecute() throws Exception {
+
+		if (apartment.isNotNew()) {
+			apartment = apartmentService.readWithPersons(stub(apartment));
+		}
+
 		if (isSubmit()) {
-			if (apartmentNumber == null || apartmentNumber.equals("")) {
-				//status = STATUS_BLANC_NUMBER;
-			} else {
-				apartmentService.setApartmentNumber(stub(apartment), apartmentNumber);
-				return "list";
-			}
+			apartment.setNumber(apartmentNumber);
+			apartmentService.save(apartment);
+			return REDIRECT_SUCCESS;
 		}
 
 		getCountryFilter().setReadOnly(true);
@@ -27,9 +30,8 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 		getBuildingsFilter().setReadOnly(true);
 		initFilters();
 
-		apartment = apartmentService.readWithPersons(apartment.getId());
-
-		return "form";
+		apartmentNumber = apartment.getNumber();
+		return INPUT;
 	}
 
 	/**
@@ -40,14 +42,7 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 	 * @return {@link #ERROR} by default
 	 */
 	protected String getErrorResult() {
-		return "form";
-	}
-
-	/**
-	 * @param apartmentService the apartmentService to set
-	 */
-	public void setApartmentService(ApartmentService apartmentService) {
-		this.apartmentService = apartmentService;
+		return INPUT;
 	}
 
 	/**
@@ -71,10 +66,14 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 		this.apartmentNumber = apartmentNumber;
 	}
 
+	public String getApartmentNumber() {
+		return apartmentNumber;
+	}
+
 	/**
-	 * @return the apartmentService
+	 * @param apartmentService the apartmentService to set
 	 */
-	public ApartmentService getApartmentService() {
-		return apartmentService;
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
 	}
 }

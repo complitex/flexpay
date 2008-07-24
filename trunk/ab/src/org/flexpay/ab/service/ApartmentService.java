@@ -3,16 +3,17 @@ package org.flexpay.ab.service;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.ObjectAlreadyExistException;
-import org.flexpay.ab.persistence.filters.*;
+import org.flexpay.ab.persistence.filters.ApartmentFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ApartmentService extends ParentService<ApartmentFilter> {
 
@@ -26,7 +27,7 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	 * @return Apartment if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	Stub<Apartment> findApartmentStub(Building building, String number);
+	Stub<Apartment> findApartmentStub(@NotNull Building building, String number);
 
 	/**
 	 * Get apartment number
@@ -48,23 +49,12 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	Building getBuilding(Stub<Apartment> apartment) throws FlexPayException;
 
 	/**
-	 * Read full apartment information
+	 * Create or update apartment
 	 *
-	 * @param id Apartment id
-	 * @return Apartment instance, or <code>null</code> if not found
+	 * @param apartment Apartment to save
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	Apartment readFull(Long id);
-
-
-	/**
-	 * Validate that given number not alredy exist in given apartment's building. If not exist then set new number.
-	 *
-	 * @param apartment Apartment stub
-	 * @param number	apartment number
-	 * @throws ObjectAlreadyExistException if given number alredy exists in a building.
-	 * @throws FlexPayException if stub references invalid object
-	 */
-	void setApartmentNumber(Stub<Apartment> apartment, String number) throws ObjectAlreadyExistException, FlexPayException;
+	void save(Apartment apartment) throws FlexPayExceptionContainer;
 
 	/**
 	 * Get apartment display address
@@ -77,19 +67,20 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	public String getAddress(@NotNull Stub<Apartment> stub) throws FlexPayException;
 
 	/**
-	 * Create a new apartment
-	 *
-	 * @param apartment Apartment object
-	 */
-	void create(Apartment apartment);
-
-	/**
 	 * Read apartment with registered persons
 	 *
-	 * @param id Object identifier
+	 * @param stub Apartment stub
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
-	Apartment readWithPersons(Long id);
+	@Nullable
+	Apartment readWithPersons(@NotNull Stub<Apartment> stub);
 
 	void fillFilterIds(@NotNull Stub<Apartment> stub, ArrayStack filters) throws FlexPayException;
+
+	/**
+	 * Disable apartments
+	 *
+	 * @param objectIds Apartments identifiers
+	 */
+	void disable(@NotNull Set<Long> objectIds);
 }

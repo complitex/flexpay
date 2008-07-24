@@ -6,8 +6,9 @@ import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
-import org.jetbrains.annotations.NonNls;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Date;
@@ -19,9 +20,6 @@ import java.util.Set;
  */
 public class Apartment extends DomainObjectWithStatus {
 
-	@NonNls
-	public static final String NUMBER_UNKNOWN = "unknown";
-
 	private Building building;
 	private Set<ApartmentNumber> apartmentNumbers = Collections.emptySet();
 	private Set<PersonRegistration> personRegistrations = Collections.emptySet();
@@ -29,11 +27,11 @@ public class Apartment extends DomainObjectWithStatus {
 	public Apartment() {
 	}
 
-	public Apartment(Long id) {
+	public Apartment(@NotNull Long id) {
 		super(id);
 	}
 
-	public Apartment(Stub<Apartment> stub) {
+	public Apartment(@NotNull Stub<Apartment> stub) {
 		super(stub.getId());
 	}
 
@@ -46,6 +44,7 @@ public class Apartment extends DomainObjectWithStatus {
 		this.building = building;
 	}
 
+	@NotNull
 	public Set<ApartmentNumber> getApartmentNumbers() {
 		return this.apartmentNumbers;
 	}
@@ -60,7 +59,8 @@ public class Apartment extends DomainObjectWithStatus {
 	 * @param dt Date to get apartment number for
 	 * @return apartment number
 	 */
-	public String getNumberForDate(Date dt) {
+	@Nullable
+	public String getNumberForDate(@NotNull Date dt) {
 		for (ApartmentNumber number : apartmentNumbers) {
 			Date begin = number.getBegin();
 			Date end = number.getEnd();
@@ -69,7 +69,7 @@ public class Apartment extends DomainObjectWithStatus {
 			}
 		}
 
-		return NUMBER_UNKNOWN;
+		return null;
 	}
 
 	/**
@@ -77,36 +77,35 @@ public class Apartment extends DomainObjectWithStatus {
 	 *
 	 * @return apartment number
 	 */
+	@Nullable
 	public String getNumber() {
 		return getNumberForDate(DateUtil.now());
 	}
 
-	public void setNumber(String number) throws ObjectAlreadyExistException {
-		Date nowDate = DateUtil.now();
-		if (number == null || number.equals("")
-			|| number.equals(getNumberForDate(nowDate))) {
-			// nothing to do
+	public void setNumber(@Nullable String number) {
+
+		if (number == null && getNumber() == null) {
+			return;
+		}
+		if (number != null && number.equals(getNumber())) {
 			return;
 		}
 
-		Building aBuilding = getBuilding();
-		Set<Apartment> apartmentSet = aBuilding.getApartments();
-		for (Apartment a : apartmentSet) {
-			if (number.equals(a.getNumber())) {
-				throw new ObjectAlreadyExistException();
-			}
-		}
-
 		// Check if apartment numbers is not empty (Collections.EMPTY_SET)
-		if (getApartmentNumbers().isEmpty()) {
-			setApartmentNumbers(new HashSet<ApartmentNumber>());
+		if (apartmentNumbers == Collections.EMPTY_SET) {
+			apartmentNumbers = set();
 		}
 
+		Date nowDate = DateUtil.now();
 		// set up previous numbers to end at the record's operation date
 		for (ApartmentNumber apartmentNumber : getApartmentNumbers()) {
 			if (apartmentNumber.getEnd().after(nowDate)) {
 				apartmentNumber.setEnd(nowDate);
 			}
+		}
+
+		if (number == null) {
+			return;
 		}
 
 		// Create a new apartment number and setup its properties
@@ -117,7 +116,7 @@ public class Apartment extends DomainObjectWithStatus {
 		apartmentNumber.setApartment(this);
 
 		// Add number to apartment numbers set
-		getApartmentNumbers().add(apartmentNumber);
+		apartmentNumbers.add(apartmentNumber);
 	}
 
 
@@ -238,7 +237,19 @@ public class Apartment extends DomainObjectWithStatus {
 		return (Country) getRegion().getParent();
 	}
 
+	public boolean hasBuilding() {
+		return building != null;
+	}
+
 	public boolean hasNoBuilding() {
-		return building == null;
+		return !hasBuilding();
+	}
+
+	public boolean hasNumber() {
+		return getNumber() != null;
+	}
+
+	public boolean hasNoNumber() {
+		return !hasNumber();
 	}
 }

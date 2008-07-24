@@ -57,6 +57,19 @@ public class CollectionUtils {
 	}
 
 	@NotNull
+	public static <K, V> Map<K, V> treeMap(@NotNull K[] keys, @NotNull V[] values) {
+		Map<K, V> map = treeMap();
+		int n = 0;
+		for (K k : keys) {
+			V v = n < values.length ? values[n] : null;
+			map.put(k, v);
+			++n;
+		}
+
+		return map;
+	}
+
+	@NotNull
 	public static <K, V> Map<K, V> map(@NotNull K[] keys, @NotNull V[] values) {
 		Map<K, V> map = map();
 		int n = 0;

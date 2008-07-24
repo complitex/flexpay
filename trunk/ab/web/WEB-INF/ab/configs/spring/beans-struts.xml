@@ -194,11 +194,17 @@
 		<property name="apartmentService" ref="apartmentService" />
 		<property name="parentService" ref="buildingService" />
 	</bean>
+
 	<bean id="apartmentEditAction" scope="prototype"
 		  class="org.flexpay.ab.actions.apartment.ApartmentEditAction">
 		<property name="parentService" ref="buildingService" />
 		<property name="apartmentService" ref="apartmentService" />
 	</bean>
+
+	<bean id="apartmentsDeleteAction" scope="prototype"
+		  class="org.flexpay.ab.actions.apartment.ApartmentsDeleteAction"
+		  p:apartmentService-ref="apartmentService" />
+
 	<bean id="apartmentRegistrationsAction" scope="prototype"
 		  class="org.flexpay.ab.actions.apartment.ApartmentRegistrationsAction">
 		<property name="apartmentService" ref="apartmentService" />
