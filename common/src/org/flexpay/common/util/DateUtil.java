@@ -2,38 +2,25 @@ package org.flexpay.common.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import static org.flexpay.common.util.CollectionUtils.ar;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.Calendar;
 
 public class DateUtil {
 
 	@NonNls
 	private static final String FLEXPAY_DATE_FORMAT = "yyyy/MM/dd";
-	public static Map<Integer, String> MONTHS;
-
-	static {
-		MONTHS = new TreeMap<Integer, String>();
-		MONTHS.put(0, "01");
-		MONTHS.put(1, "02");
-		MONTHS.put(2, "03");
-		MONTHS.put(3, "04");
-		MONTHS.put(4, "05");
-		MONTHS.put(5, "06");
-		MONTHS.put(6, "07");
-		MONTHS.put(7, "08");
-		MONTHS.put(8, "09");
-		MONTHS.put(9, "10");
-		MONTHS.put(10, "11");
-		MONTHS.put(11, "12");
-	}
+	public static final Map<Integer, String> MONTHS = treeMap(
+			ar(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
+			ar("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"));
 
 	/**
 	 * Check if the date is valid for application
@@ -41,7 +28,7 @@ public class DateUtil {
 	 * @param date Date to check
 	 * @return <code>true</code> if the date is in application configured past and future infinities
 	 */
-	public static boolean isValid(Date date) {
+	public static boolean isValid(@NotNull Date date) {
 		return ApplicationConfig.getPastInfinite().compareTo(date) <= 0 &&
 			   date.compareTo(ApplicationConfig.getFutureInfinite()) <= 0;
 	}
@@ -52,6 +39,7 @@ public class DateUtil {
 	 * @param date String in yyyy/MM/dd format, possibly empty
 	 * @return Date
 	 */
+	@NotNull
 	public static Date parseBeginDate(String date) {
 		return parseDate(date, ApplicationConfig.getPastInfinite());
 	}
@@ -62,6 +50,7 @@ public class DateUtil {
 	 * @param date String in yyyy/MM/dd format, possibly empty
 	 * @return Date
 	 */
+	@NotNull
 	public static Date parseEndDate(String date) {
 		return parseDate(date, ApplicationConfig.getFutureInfinite());
 	}
@@ -73,7 +62,8 @@ public class DateUtil {
 	 * @param defaultDate Default value to return
 	 * @return Date
 	 */
-	public static Date parseDate(String date, Date defaultDate) {
+	@NotNull
+	public static Date parseDate(String date, @NotNull Date defaultDate) {
 		if (StringUtils.isBlank(date)) {
 			return defaultDate;
 		}
@@ -91,7 +81,7 @@ public class DateUtil {
 	 * @param date Date to format
 	 * @return tring date representation
 	 */
-	public static String format(Date date) {
+	public static String format(@NotNull Date date) {
 		SimpleDateFormat df = new SimpleDateFormat(FLEXPAY_DATE_FORMAT);
 		return date.equals(ApplicationConfig.getPastInfinite()) ||
 			   date.equals(ApplicationConfig.getFutureInfinite())

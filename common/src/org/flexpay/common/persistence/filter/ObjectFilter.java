@@ -1,5 +1,8 @@
 package org.flexpay.common.persistence.filter;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 /**
  * Base class for all filters
  */
@@ -22,5 +25,12 @@ public class ObjectFilter {
 	 */
 	public boolean needFilter() {
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("readOnly", readOnly)
+				.toString();
 	}
 }

@@ -22,7 +22,7 @@ public class ApartmentRegistrationsAction extends FPActionSupport {
 	private Country country;
 
 	public String doExecute() throws FlexPayException {
-		apartment = apartmentService.readWithPersons(apartment.getId());
+		apartment = apartmentService.readWithPersons(stub(apartment));
 		buildings = buildingService.readFull(stub(buildings));
 		town = townService.readFull(buildings.getStreet().getParent().getId());
 		region = regionService.readFull(town.getParent().getId());

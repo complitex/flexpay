@@ -32,10 +32,8 @@
 	    			</a>
 				</td>
 				<td class="col">
-					<a href="<s:url action='apartmentEditAction'><s:param name="apartment.id" value="%{id}"/><s:param name="buildings.id" value="%{buildingsFilter.selectedId}"/></s:url>">
-	      				<!-- <img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
-						 title="<s:text name="common.edit"/>" /> -->
-						<s:text name="common.edit"/> 
+					<a href="<s:url action='apartmentEdit'><s:param name="apartment.id" value="%{id}"/><s:param name="buildings.id" value="%{buildingsFilter.selectedId}"/></s:url>">
+						<s:text name="common.edit"/>
 	    			</a>
 				</td>
 			</tr>
@@ -44,12 +42,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-				<%--onclick="$('fobjects').action='<s:url action="delete_apartments"/>';$('fobjects').submit()"--%>
-					   onclick="alert('<s:text name="error.not_implemented" />')"
+						onclick="$('fobjects').action='<s:url action="delete_apartments"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-				<%--onclick="window.location='<s:url action="create_apartment"/>'"--%>
-					   onclick="alert('<s:text name="error.not_implemented" />')"
+				onclick="window.location='<s:url action='apartmentEdit'><s:param name="apartment.id" value="0"/><s:param name="buildings.id" value="%{buildingsFilter.selectedId}"/></s:url>'"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
