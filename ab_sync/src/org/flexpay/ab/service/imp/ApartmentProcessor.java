@@ -125,7 +125,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param object Object to save
 	 */
 	public void doSaveObject(Apartment object) {
-		if (object.getBuilding() == null) {
+		if (object.hasNoBuilding()) {
 			log.warn("Invalid sync data, no building specified");
 			return;
 		}
@@ -151,6 +151,11 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Checking if apartment exists: " + object + "(number: " + object.getNumber() + ")");
+		}
+
+		if (object.hasNoBuilding()) {
+			log.warn("Do not have a building reference");
+			return null;
 		}
 
 		Stub<Apartment> stub = apartmentService.findApartmentStub(object.getBuilding(), object.getNumber());
