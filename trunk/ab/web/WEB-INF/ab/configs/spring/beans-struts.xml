@@ -199,6 +199,7 @@
 		  class="org.flexpay.ab.actions.apartment.ApartmentEditAction">
 		<property name="parentService" ref="buildingService" />
 		<property name="apartmentService" ref="apartmentService" />
+		<property name="buildingService" ref="buildingService" />
 	</bean>
 
 	<bean id="apartmentsDeleteAction" scope="prototype"
