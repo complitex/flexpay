@@ -11,6 +11,8 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 public class PersonProcessor extends AbstractProcessor<Person> {
 
@@ -198,10 +200,10 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 		log.debug("Setting person last name");
 	}
 
-	private void setINN(Person person, String value) throws FlexPayException {
+	private void setINN(@NotNull Person person, @Nullable String value) throws FlexPayException {
 		PersonAttribute inn = new PersonAttribute();
 		inn.setLang(ApplicationConfig.getDefaultLanguage());
-		inn.setValue(value);
+		inn.setValue(value == null ? "" : value);
 		inn.setName("ab.person.attribute.inn");
 		inn.setTranslatable(person);
 
