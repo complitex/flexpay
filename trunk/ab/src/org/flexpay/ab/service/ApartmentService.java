@@ -42,6 +42,7 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	 *
 	 * @param apartment Apartment stub
 	 * @return Building stub
+	 * @throws FlexPayException if stub references invalid object
 	 */
 	@NotNull
 	Building getBuilding(Stub<Apartment> apartment) throws FlexPayException;
@@ -61,6 +62,7 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	 * @param apartment Apartment stub
 	 * @param number	apartment number
 	 * @throws ObjectAlreadyExistException if given number alredy exists in a building.
+	 * @throws FlexPayException if stub references invalid object
 	 */
 	void setApartmentNumber(Stub<Apartment> apartment, String number) throws ObjectAlreadyExistException, FlexPayException;
 

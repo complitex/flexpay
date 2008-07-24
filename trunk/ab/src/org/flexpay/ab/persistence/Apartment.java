@@ -237,4 +237,8 @@ public class Apartment extends DomainObjectWithStatus {
 	public Country getCountry() {
 		return (Country) getRegion().getParent();
 	}
+
+	public boolean hasNoBuilding() {
+		return building == null;
+	}
 }
