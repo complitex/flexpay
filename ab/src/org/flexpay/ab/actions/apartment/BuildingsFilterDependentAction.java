@@ -3,11 +3,13 @@ package org.flexpay.ab.actions.apartment;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.BuildingAttribute;
 import org.flexpay.ab.persistence.BuildingAttributeTypeTranslation;
+import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -51,6 +53,14 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 		filters.push(buildingsFilter);
 
 		return filters;
+	}
+
+	public String getBuildingNumber(@Nullable Buildings buildings) throws Exception {
+		if (buildings != null) {
+			return getBuildingNumber(buildings.getBuildingAttributes());
+		}
+
+		return null;
 	}
 
 	public String getBuildingNumber(Collection<BuildingAttribute> attributes) throws Exception {

@@ -52,7 +52,6 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 
 	@NotTransactional
 	@Test
-    @Ignore
     public void testDeleteAttributeNotTx() throws Throwable {
 
 		Building building = newBuilding();
@@ -66,8 +65,8 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 		try {
 			BuildingAttribute bulk = buildings.setBuildingAttribute(null, bulkType);
 			assertNotNull("Bulk is NULL!", bulk);
-			buildingsDao.update(buildings);
-//			buildingAttributeDao.delete(bulk);
+//			buildingsDao.update(buildings);
+			buildingAttributeDao.delete(bulk);
 
 			buildings = buildingsDao.readFull(buildings.getId());
 			assertEquals("Buildings attribute delete method failed", 1, buildings.getBuildingAttributes().size());
@@ -93,9 +92,7 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 
 		try {
 			BuildingAttribute bulk = buildings.setBuildingAttribute(null, bulkType);
-//			buildingsDao.update(buildings);
-			buildingAttributeDao.delete(bulk);
-			hibernateTemplate.flush();
+			buildingsDao.update(buildings);
 
 			buildings = buildingsDao.readFull(buildings.getId());
 			assertEquals("Buildings attribute delete method failed", 1, buildings.getBuildingAttributes().size());

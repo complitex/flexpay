@@ -3,18 +3,19 @@ package org.flexpay.ab.actions.buildings;
 import org.flexpay.ab.persistence.BuildingAttribute;
 import org.flexpay.ab.persistence.BuildingAttributeTypeTranslation;
 import org.flexpay.common.actions.FPActionSupport;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
 public abstract class BuildingsActionsBase extends FPActionSupport {
 
-	public String getBuildingNumber(Collection<BuildingAttribute> attributes) {
+	public String getBuildingNumber(@Nullable Collection<BuildingAttribute> attributes) {
+
+		if (attributes == null) {
+			return null;
+		}
 
 		try {
-			if (log.isDebugEnabled()) {
-				log.debug("Getting building number, attributes: " + attributes);
-			}
-
 			StringBuilder number = new StringBuilder();
 			for (BuildingAttribute attribute : attributes) {
 				if (attribute == null) {
@@ -29,10 +30,6 @@ public abstract class BuildingsActionsBase extends FPActionSupport {
 				}
 
 				number.append(attribute.getValue()).append(' ');
-			}
-
-			if (log.isDebugEnabled()) {
-				log.debug("Building: " + number);
 			}
 
 			return number.toString().trim();

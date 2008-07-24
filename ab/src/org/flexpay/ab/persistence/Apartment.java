@@ -2,6 +2,7 @@ package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
@@ -246,7 +247,7 @@ public class Apartment extends DomainObjectWithStatus {
 	}
 
 	public boolean hasNumber() {
-		return getNumber() != null;
+		return StringUtils.isNotBlank(getNumber());
 	}
 
 	public boolean hasNoNumber() {
