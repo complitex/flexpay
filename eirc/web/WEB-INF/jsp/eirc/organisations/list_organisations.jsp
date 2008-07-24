@@ -20,7 +20,10 @@
 				<td class="col" width="1%"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/>
 				</td>
                 <td class="col"><s:property value="id"/></td>
-                <td class="col"><s:property value="getTranslation(names).name"/></td>
+                <td class="col">
+					<a href='<s:url action="subdivisionsList"><s:param name="organisation.id" value="%{id}"/></s:url>'>
+					<s:property value="getTranslation(names).name"/></a>
+				</td>
 				<td class="col"><s:property value="kpp"/></td>
 				<td class="col"><s:property value="individualTaxNumber"/></td>
 				<td class="col"><a href="<s:url value="/eirc/organisation_edit.action?organisation.id=%{id}"/>">

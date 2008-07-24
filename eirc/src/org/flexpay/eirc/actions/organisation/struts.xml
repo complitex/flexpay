@@ -25,6 +25,34 @@
 			</result>
 		</action>
 
+		<!-- Subdivisions -->
+		<action name="subdivisionsList" class="listSubdivisionsAction">
+			<result type="tiles">eirc.organisation.subdivisions.list</result>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">listOrganisationsAction</param>
+			</result>
+		</action>
+
+		<action name="subdivisionsDelete" class="deleteSubdivisionsAction">
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">subdivisionsList</param>
+				<param name="parse">true</param>
+				<param name="organisation.id">${organisation.id}</param>
+			</result>
+			<result name="redirectError" type="redirect-action">
+				<param name="actionName">organisations_list</param>
+			</result>
+		</action>
+
+		<action name="subdivisionEdit" class="editSubdivisionAction">
+			<result name="input" type="tiles">eirc.organisation.subdivision.edit</result>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">subdivisionsList</param>
+				<param name="parse">true</param>
+				<param name="organisation.id">${headOrganisation.id}</param>
+			</result>
+		</action>
+
 		<!-- Banks -->
 		<action name="banksList" class="listBanksAction">
 			<result type="tiles">eirc.organisation.banks.list</result>

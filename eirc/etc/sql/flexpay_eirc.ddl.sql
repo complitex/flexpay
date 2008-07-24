@@ -499,10 +499,6 @@
         drop 
         foreign key FK_eirc_subdivisions_tbl_juridical_person_id;
 
-    alter table eirc_subdivisions_tbl 
-        drop 
-        foreign key FK6E7B404F7F30FD59;
-
     alter table eirc_ticket_service_amounts_tbl 
         drop 
         foreign key FK_eirc_ticket_service_amount_ticket;
@@ -1192,7 +1188,6 @@
         kpp varchar(255) not null,
         juridical_address varchar(255) not null comment 'Juridical address',
         postal_address varchar(255) not null comment 'Postal address',
-        real_address varchar(255) not null comment 'Real address',
         primary key (id)
     );
 
@@ -1424,10 +1419,10 @@
         version integer not null comment 'Optiomistic lock version',
         status integer not null comment 'Enabled/Disabled status',
         real_address varchar(255) not null comment 'Subdivision real address',
+        tree_path varchar(255) not null comment 'Subdivisions tree branch path',
         parent_subdivision_id bigint comment 'Parent subdivision reference if any',
         head_organisation_id bigint not null comment 'Head organisation reference',
         juridical_person_id bigint comment 'Juridical person (organisation) reference if any',
-        organisation_id bigint not null,
         primary key (id)
     ) comment='Organisation subdivisions';
 
@@ -2192,6 +2187,8 @@
         foreign key (language_id) 
         references common_languages_tbl (id);
 
+    create index INDX_tree_path on eirc_subdivisions_tbl (tree_path);
+
     alter table eirc_subdivisions_tbl 
         add index FK_eirc_subdivisions_tbl_parent_subdivision_id (parent_subdivision_id), 
         add constraint FK_eirc_subdivisions_tbl_parent_subdivision_id 
@@ -2208,12 +2205,6 @@
         add index FK_eirc_subdivisions_tbl_juridical_person_id (juridical_person_id), 
         add constraint FK_eirc_subdivisions_tbl_juridical_person_id 
         foreign key (juridical_person_id) 
-        references eirc_organisations_tbl (id);
-
-    alter table eirc_subdivisions_tbl 
-        add index FK6E7B404F7F30FD59 (organisation_id), 
-        add constraint FK6E7B404F7F30FD59 
-        foreign key (organisation_id) 
         references eirc_organisations_tbl (id);
 
     alter table eirc_ticket_service_amounts_tbl 

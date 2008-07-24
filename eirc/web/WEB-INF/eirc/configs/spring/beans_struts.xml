@@ -112,6 +112,21 @@
 		  p:organisationService-ref="organisationService"
 		  p:bankService-ref="bankService" />
 
+	<!-- Subdivision actions -->
+	<bean id="listSubdivisionsAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.ListSubdivisionsAction"
+		  p:organisationService-ref="organisationService"
+		  p:subdivisionService-ref="subdivisionService" />
+
+	<bean id="deleteSubdivisionsAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.DeleteSubdivisionsAction"
+		  p:subdivisionService-ref="subdivisionService" />
+
+	<bean id="editSubdivisionAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.EditSubdivisionAction"
+		  p:organisationService-ref="organisationService"
+		  p:subdivisionService-ref="subdivisionService" />
+
 	<!-- Service provider actions -->
 	<bean id="listServiceProvidersAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.serviceprovider.ListServiceProvidersAction"

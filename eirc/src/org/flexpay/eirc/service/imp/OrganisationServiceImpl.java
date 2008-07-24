@@ -134,11 +134,6 @@ public class OrganisationServiceImpl implements OrganisationService {
 					"No postal address", "eirc.error.organisation.no_postal_address"));
 		}
 
-		if (StringUtils.isBlank(organisation.getRealAddress())) {
-			container.addException(new FlexPayException(
-					"No real address", "eirc.error.organisation.no_real_address"));
-		}
-
 		if (!container.isEmpty()) {
 			throw container;
 		}

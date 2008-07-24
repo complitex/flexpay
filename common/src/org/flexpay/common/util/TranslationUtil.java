@@ -1,14 +1,19 @@
 package org.flexpay.common.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Locale;
+import java.util.Set;
 
 public class TranslationUtil {
 
@@ -72,5 +77,47 @@ public class TranslationUtil {
 
 		// Translation was not found, return in default language if any
 		return defaultTranslation;
+	}
+
+	/**
+	 * Set object translation value
+	 *
+	 * @param translations <code>translatable</code> translations
+	 * @param translatable Translatable object to set translation for
+	 * @param translation  Translation
+	 * @param <T>          Translation type
+	 * @return translations
+	 */
+	@NotNull
+	public static <T extends Translation> Set<T> setTranslation(
+			@NotNull Set<T> translations, @NotNull DomainObject translatable, @NotNull T translation) {
+		if (translations == Collections.EMPTY_SET) {
+			translations = set();
+		}
+
+		T candidate = null;
+		for (T t : translations) {
+			if (t.isSameLanguage(translation)) {
+				candidate = t;
+				break;
+			}
+		}
+
+		if (candidate != null) {
+			if (StringUtils.isBlank(translation.getName())) {
+				translations.remove(candidate);
+				return translations;
+			}
+			candidate.setName(translation.getName());
+			return translations;
+		}
+
+		if (StringUtils.isBlank(translation.getName())) {
+			return translations;
+		}
+
+		translation.setTranslatable(translatable);
+		translations.add(translation);
+		return translations;
 	}
 }

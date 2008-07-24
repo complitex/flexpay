@@ -4126,6 +4126,52 @@ INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_
 INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
 	VALUES ('ЦН', @ru_id, @organisation_cn);
 
+-- Init subdivisions
+INSERT INTO eirc_subdivisions_tbl (status, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
+	VALUES (0, '3-я серверная стойка', null, @organisation_eirc, @organisation_eirc);
+SELECT @subdivision_eirc_it:=last_insert_id();
+INSERT INTO eirc_subdivision_names_tbl (name, language_id, subdivision_id)
+	VALUES ('АйТи', @ru_id, @subdivision_eirc_it);
+INSERT INTO eirc_subdivision_names_tbl (name, language_id, subdivision_id)
+	VALUES ('IT', @en_id, @subdivision_eirc_it);
+INSERT INTO eirc_subdivision_descriptions_tbl (name, language_id, subdivision_id)
+	VALUES ('Отдел информационных технологий', @ru_id, @subdivision_eirc_it);
+INSERT INTO eirc_subdivision_descriptions_tbl (name, language_id, subdivision_id)
+	VALUES ('Informational technoligies department', @en_id, @subdivision_eirc_it);
+
+INSERT INTO eirc_subdivisions_tbl (status, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
+	VALUES (0, '1-я серверная стойка', @subdivision_eirc_it, @organisation_eirc, null);
+SELECT @subdivision_eirc_it_java:=last_insert_id();
+INSERT INTO eirc_subdivision_names_tbl (name, language_id, subdivision_id)
+	VALUES ('Java', @ru_id, @subdivision_eirc_it_java);
+INSERT INTO eirc_subdivision_descriptions_tbl (name, language_id, subdivision_id)
+	VALUES ('Жабный сектор', @ru_id, @subdivision_eirc_it_java);
+
+INSERT INTO eirc_subdivisions_tbl (status, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
+	VALUES (0, '2-я серверная стойка', @subdivision_eirc_it, @organisation_eirc, null);
+SELECT @subdivision_eirc_it_web:=last_insert_id();
+INSERT INTO eirc_subdivision_names_tbl (name, language_id, subdivision_id)
+	VALUES ('Web', @ru_id, @subdivision_eirc_it_web);
+INSERT INTO eirc_subdivision_descriptions_tbl (name, language_id, subdivision_id)
+	VALUES ('Вэббизнес', @ru_id, @subdivision_eirc_it_web);
+
+INSERT INTO eirc_subdivisions_tbl (status, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
+	VALUES (0, 'Кабинет направо', null, @organisation_eirc, @organisation_eirc);
+SELECT @subdivision_eirc_buch:=last_insert_id();
+INSERT INTO eirc_subdivision_names_tbl (name, language_id, subdivision_id)
+	VALUES ('Бухгалтерия', @ru_id, @subdivision_eirc_buch);
+INSERT INTO eirc_subdivision_descriptions_tbl (name, language_id, subdivision_id)
+	VALUES ('Бухгалтерский отдел', @ru_id, @subdivision_eirc_buch);
+
+INSERT INTO eirc_subdivisions_tbl (status, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
+	VALUES (0, 'Центр клининг-услуг', null, @organisation_eirc, @organisation_cn);
+SELECT @subdivision_eirc_cleaning:=last_insert_id();
+INSERT INTO eirc_subdivision_names_tbl (name, language_id, subdivision_id)
+	VALUES ('Уборщики', @ru_id, @subdivision_eirc_cleaning);
+INSERT INTO eirc_subdivision_descriptions_tbl (name, language_id, subdivision_id)
+	VALUES ('сектор Очистки помещений', @ru_id, @subdivision_eirc_cleaning);
+
+
 -- Init banks
 INSERT INTO eirc_banks_tbl (status, organisation_id, bank_identifier_code, corresponding_account)
 	VALUES (0, @organisation_cn, '044525957', '30101810600000000957');
