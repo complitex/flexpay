@@ -87,7 +87,7 @@ public class Person extends DomainObjectWithStatus {
 	 */
 	@Nullable
 	public PersonIdentity getDefaultIdentity() {
-		for (PersonIdentity identity : getPersonIdentities()) {
+		for (PersonIdentity identity : personIdentities) {
 			if (identity.isDefault()) {
 				return identity;
 			}
