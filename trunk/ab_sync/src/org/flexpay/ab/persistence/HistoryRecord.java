@@ -3,6 +3,7 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
@@ -42,11 +43,12 @@ public class HistoryRecord {
 		this.oldValue = oldValue;
 	}
 
+	@Nullable
 	public String getCurrentValue() {
 		return currentValue;
 	}
 
-	public void setCurrentValue(String currentValue) {
+	public void setCurrentValue(@Nullable String currentValue) {
 		this.currentValue = currentValue;
 	}
 
