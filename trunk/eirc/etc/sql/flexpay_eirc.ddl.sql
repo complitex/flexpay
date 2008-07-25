@@ -109,10 +109,6 @@
 
     alter table ab_person_registrations_tbl 
         drop 
-        foreign key FK2BD18CD22797B84;
-
-    alter table ab_person_registrations_tbl 
-        drop 
         foreign key FP_ab_person_registrations_person;
 
     alter table ab_person_registrations_tbl 
@@ -1614,12 +1610,6 @@
         add constraint ab_person_identity_attributes_tbl_language_id 
         foreign key (language_id) 
         references common_languages_tbl (id);
-
-    alter table ab_person_registrations_tbl 
-        add index FK2BD18CD22797B84 (person_id), 
-        add constraint FK2BD18CD22797B84 
-        foreign key (person_id) 
-        references ab_apartments_tbl (id);
 
     alter table ab_person_registrations_tbl 
         add index FP_ab_person_registrations_person (person_id), 
