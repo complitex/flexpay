@@ -18,7 +18,7 @@
 			<one-to-many class="ApartmentNumber" />
 		</set>
 		<set name="personRegistrations" inverse="true" lazy="false" cascade="all">
-			<key column="person_id" not-null="true" />
+			<key column="apartment_id" not-null="true" />
 			<one-to-many class="PersonRegistration" />
 		</set>
 	</class>

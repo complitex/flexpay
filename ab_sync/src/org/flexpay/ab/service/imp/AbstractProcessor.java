@@ -5,6 +5,8 @@ import org.flexpay.ab.persistence.HistoryRecord;
 import org.flexpay.common.persistence.*;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractProcessor<T extends DomainObject> {
 
@@ -53,6 +55,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @return DomainObject
 	 * @throws Exception if failure occurs
 	 */
+	@NotNull
 	protected abstract T doCreateObject() throws Exception;
 
 	/**
@@ -74,7 +77,8 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @param stub Object stub
 	 * @return DomainObject instance
 	 */
-	protected abstract T readObject(Stub<T> stub);
+	@Nullable
+	protected abstract T readObject(@NotNull Stub<T> stub);
 
 	/**
 	 * Create new DomainObject from HistoryRecord
@@ -86,6 +90,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @return DomainObject
 	 * @throws Exception if failure occurs
 	 */
+	@NotNull
 	public T findObject(DomainObject obj, String extId, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 		if (obj == null) {
@@ -94,7 +99,11 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 				if (log.isDebugEnabled()) {
 					log.debug("External object already exists: " + extId);
 				}
-				return readObject(stub);
+				T object = readObject(stub);
+				if (object == null) {
+					throw new IllegalStateException("Invalid correction present, no object: " + extId + ", type: " + type);
+				}
+				return object;
 			}
 
 			if (log.isDebugEnabled()) {
@@ -119,7 +128,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public abstract void setProperty(DomainObject object, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	public abstract void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception;
 
 	/**

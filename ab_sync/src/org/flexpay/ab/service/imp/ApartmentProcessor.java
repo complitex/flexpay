@@ -9,6 +9,9 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +32,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @return DomainObject
 	 * @throws Exception if failure occurs
 	 */
+	@NotNull
 	protected Apartment doCreateObject() throws Exception {
 		return new Apartment();
 	}
@@ -39,7 +43,8 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected Apartment readObject(Stub<Apartment> stub) {
+	@Nullable
+	protected Apartment readObject(@NotNull Stub<Apartment> stub) {
 		return apartmentDao.readFull(stub.getId());
 	}
 
@@ -52,9 +57,9 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(DomainObject object, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
-		Apartment apartment = (Apartment) object;
+		@NotNull Apartment apartment = (Apartment) object;
 		switch (record.getFieldType()) {
 			case Apartment:
 				setNumber(apartment, record);
@@ -67,7 +72,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 		}
 	}
 
-	private void setBuildingId(Apartment apartment, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	private void setBuildingId(@NotNull Apartment apartment, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 
 		Stub<Buildings> stub = cs.findCorrection(record.getCurrentValue(), Buildings.class, sd);
@@ -87,10 +92,11 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 		apartment.setBuilding(buildings.getBuilding());
 	}
 
-	private void setNumber(Apartment apartment, HistoryRecord record) {
+	private void setNumber(@NotNull Apartment apartment, @NotNull HistoryRecord record) {
 
+		String newNumber = record.getCurrentValue();
 		String numberStr = apartment.getNumberForDate(record.getRecordDate());
-		if (numberStr.equals(record.getCurrentValue())) {
+		if (numberStr != null && numberStr.equals(newNumber)) {
 			// nothing to do
 			return;
 		}
@@ -108,11 +114,15 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 			}
 		}
 
+		if (newNumber == null || StringUtils.isBlank(newNumber)) {
+			return;
+		}
+
 		// Create a new apartment number and setup its properties
 		ApartmentNumber number = new ApartmentNumber();
 		number.setBegin(record.getRecordDate());
 		number.setEnd(ApplicationConfig.getFutureInfinite());
-		number.setValue(record.getCurrentValue());
+		number.setValue(newNumber);
 		number.setApartment(apartment);
 
 		// Add number to apartment numbers set

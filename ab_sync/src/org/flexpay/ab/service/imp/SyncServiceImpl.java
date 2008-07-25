@@ -62,7 +62,9 @@ public class SyncServiceImpl implements SyncService {
 			while (true) {
 				try {
 					log.debug("Starting sync for next records");
-					List<HistoryRecord> records = historyDao.getRecords(new Page(100, 1));
+					long time = System.currentTimeMillis();
+					List<HistoryRecord> records = historyDao.getRecords(new Page(50000, 1));
+					log.error("time spent for fetch: " + (System.currentTimeMillis() - time));
 					if (records.isEmpty() || recordBuffer.containsAll(records)) {
 						saveObject();
 						log.debug("No more records.");
