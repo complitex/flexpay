@@ -35,8 +35,8 @@
 		<property name="buildingsDao" ref="buildingsDao" />
 		<property name="apartmentService" ref="apartmentService" />
 	</bean>
+
 	<bean id="personProcessor" class="org.flexpay.ab.service.imp.PersonProcessor">
-		<property name="personDao" ref="personDao" />
 		<property name="personService" ref="personService" />
 		<property name="identityTypeService" ref="identityTypeService" />
 	</bean>

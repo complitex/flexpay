@@ -1,6 +1,6 @@
 package org.flexpay.ab.service.imp;
 
-import org.flexpay.ab.dao.PersonDao;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.service.PersonService;
@@ -10,13 +10,11 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class PersonProcessor extends AbstractProcessor<Person> {
 
-	private PersonDao personDao;
 	private PersonService personService;
 	private IdentityTypeService identityTypeService;
 
@@ -30,6 +28,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @return DomainObject
 	 * @throws Exception if failure occurs
 	 */
+	@NotNull
 	protected Person doCreateObject() throws Exception {
 
 		Person person = new Person();
@@ -68,8 +67,9 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected Person readObject(Stub<Person> stub) {
-		return personDao.readFull(stub.getId());
+	@Nullable
+	protected Person readObject(@NotNull Stub<Person> stub) {
+		return personService.read(stub);
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(DomainObject object, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 		Person person = (Person) object;
 		switch (record.getFieldType()) {
@@ -120,7 +120,8 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 			identity.setEndDate(record.getRecordDate());
 			identity.setDefault(false);
 
-			newIdentity(person);
+			identity = PersonIdentity.newCopy(identity);
+			identity.setDefault(true);
 
 			log.debug("New first name is blank");
 			return;
@@ -130,7 +131,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 			identity.setEndDate(record.getRecordDate());
 			identity.setDefault(false);
 
-			identity = newIdentity(person);
+			identity = PersonIdentity.newCopy(identity);
 			identity.setDefault(true);
 
 			log.debug("Person first name changed, creating a new identity");
@@ -158,7 +159,8 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 			identity.setEndDate(record.getRecordDate());
 			identity.setDefault(false);
 
-			newIdentity(person);
+			identity = PersonIdentity.newCopy(identity);
+			identity.setDefault(true);
 
 			log.debug("New middle name is blank");
 			return;
@@ -168,7 +170,8 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 			identity.setEndDate(record.getRecordDate());
 			identity.setDefault(false);
 
-			identity = newIdentity(person);
+			identity = PersonIdentity.newCopy(identity);
+			identity.setDefault(true);
 
 			log.debug("Person middle name changed, creating a new identity");
 		}
@@ -195,7 +198,8 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 			identity.setEndDate(record.getRecordDate());
 			identity.setDefault(false);
 
-			newIdentity(person);
+			identity = PersonIdentity.newCopy(identity);
+			identity.setDefault(true);
 
 			log.debug("New last name is blank");
 			return;
@@ -205,7 +209,8 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 			identity.setEndDate(record.getRecordDate());
 			identity.setDefault(false);
 
-			identity = newIdentity(person);
+			identity = PersonIdentity.newCopy(identity);
+			identity.setDefault(true);
 
 			log.debug("Person last name changed, creating a new identity");
 		}
@@ -256,16 +261,8 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 *
 	 * @param object Object to save
 	 */
-	protected void doSaveObject(Person object) {
-		if (object.getId() == null) {
-			personDao.create(object);
-		} else {
-			personDao.update(object);
-		}
-	}
-
-	public void setPersonDao(PersonDao personDao) {
-		this.personDao = personDao;
+	protected void doSaveObject(Person object) throws Exception {
+		personService.save(object);
 	}
 
 	public void setPersonService(PersonService personService) {

@@ -11,6 +11,7 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class SyncServiceImpl implements SyncService {
 
 	private Long prevId = -1L;
 	private ObjectType prevType = ObjectType.Unknown;
+	@Nullable
 	private DomainObject prevObj = null;
 	private AbstractProcessor processor = null;
 	private List<HistoryRecord> recordBuffer = new ArrayList<HistoryRecord>();

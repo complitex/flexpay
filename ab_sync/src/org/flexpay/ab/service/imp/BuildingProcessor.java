@@ -14,6 +14,7 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,6 +34,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	/**
 	 * Create new DomainObject from HistoryRecord
 	 */
+	@NotNull
 	protected Buildings doCreateObject() throws Exception {
 
 		Building building = new Building();
@@ -53,7 +55,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected Buildings readObject(Stub<Buildings> stub) {
+	protected Buildings readObject(@NotNull Stub<Buildings> stub) {
 		Buildings buildings = buildingsDao.readFull(stub.getId());
 		Set<Buildings> buildingses = new HashSet<Buildings>();
 		buildingses.add(buildings);
@@ -97,7 +99,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(DomainObject object, HistoryRecord record,
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record,
 							DataSourceDescription sd, CorrectionsService cs) throws Exception {
 		Buildings buildings = (Buildings) object;
 		switch (record.getFieldType()) {

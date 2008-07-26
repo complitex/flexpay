@@ -14,6 +14,7 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.TranslationUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -36,6 +37,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @return DomainObject
 	 * @throws Exception if failure occurs
 	 */
+	@NotNull
 	protected StreetType doCreateObject() throws Exception {
 		return new StreetType();
 	}
@@ -46,7 +48,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected StreetType readObject(Stub<StreetType> stub) {
+	protected StreetType readObject(@NotNull Stub<StreetType> stub) {
 		return streetTypeDao.readFull(stub.getId());
 	}
 
@@ -59,7 +61,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(DomainObject object, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 		if (log.isDebugEnabled()) {
 			log.debug("About to set property: " + record.getFieldType());
