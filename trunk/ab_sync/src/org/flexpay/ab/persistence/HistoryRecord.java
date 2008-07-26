@@ -99,11 +99,12 @@ public class HistoryRecord {
 	 */
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("RecordId", recordId)
 				.append("Date", recordDate)
 				.append("Old", oldValue)
 				.append("Current", currentValue)
 				.append("Type", objectType)
-				.append("Id", objectId)
+				.append("ObjectId", objectId)
 				.append("Field", fieldType)
 				.append("Action", syncAction)
 				.append("Processed", processed)

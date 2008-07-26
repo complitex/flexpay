@@ -14,6 +14,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -32,6 +33,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	/**
 	 * Create new DomainObject from HistoryRecord
 	 */
+	@NotNull
 	protected Street doCreateObject() throws Exception {
 
 		Street street = new Street();
@@ -46,7 +48,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected Street readObject(Stub<Street> stub) {
+	protected Street readObject(@NotNull Stub<Street> stub) {
 		return streetDao.readFull(stub.getId());
 	}
 
@@ -115,7 +117,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	 * @param sd	 DataSourceDescription
 	 * @param cs	 CorrectionsService
 	 */
-	public void setProperty(DomainObject object, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 
 		Street street = (Street) object;

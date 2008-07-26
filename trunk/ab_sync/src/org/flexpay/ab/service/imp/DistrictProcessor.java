@@ -14,6 +14,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -32,6 +33,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	/**
 	 * Create new DomainObject
 	 */
+	@NotNull
 	protected District doCreateObject() throws Exception {
 
 		District district = new District();
@@ -46,7 +48,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected District readObject(Stub<District> stub) {
+	protected District readObject(@NotNull Stub<District> stub) {
 		return districtDao.readFull(stub.getId());
 	}
 
@@ -86,7 +88,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	 * @param sd	 DataSourceDescription
 	 * @param cs	 CorrectionsService
 	 */
-	public void setProperty(DomainObject object, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 
 		District district = (District) object;

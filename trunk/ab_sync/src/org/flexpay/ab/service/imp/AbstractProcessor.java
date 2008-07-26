@@ -29,13 +29,18 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @return DomainObject
 	 * @throws Exception if failure occurs
 	 */
-	public T createObject(DomainObject obj, String extId, DataSourceDescription sd, CorrectionsService cs)
+	@NotNull
+	public T createObject(@Nullable DomainObject obj, String extId, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 		if (obj == null) {
 			Stub<T> stub = cs.findCorrection(extId, type, sd);
 			if (stub != null) {
 				log.debug("External object already exists: " + extId);
-				return readObject(stub);
+				T t = readObject(stub);
+				if (t == null) {
+					throw new IllegalStateException("Invalid correction present, no object: " + extId + ", type: " + type);
+				}
+				return t;
 			}
 
 			return doCreateObject();
@@ -91,7 +96,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
-	public T findObject(DomainObject obj, String extId, DataSourceDescription sd, CorrectionsService cs)
+	public T findObject(@Nullable DomainObject obj, String extId, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 		if (obj == null) {
 			Stub<T> stub = cs.findCorrection(extId, type, sd);
@@ -196,6 +201,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 * @throws Exception if failure occurs
 	 */
+	@Nullable
 	protected abstract Stub<T> findPersistentObject(T object, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception;
 
@@ -203,6 +209,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * Save DomainObject
 	 *
 	 * @param object Object to save
+	 * @throws Exception if failure occurs
 	 */
-	protected abstract void doSaveObject(T object);
+	protected abstract void doSaveObject(T object) throws Exception;
 }

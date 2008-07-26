@@ -11,6 +11,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -31,6 +32,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 	 * @return DomainObject
 	 * @throws Exception if failure occurs
 	 */
+	@NotNull
 	protected Town doCreateObject()
 			throws Exception {
 
@@ -46,7 +48,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected Town readObject(Stub<Town> stub) {
+	protected Town readObject(@NotNull Stub<Town> stub) {
 		return townDao.readFull(stub.getId());
 	}
 
@@ -87,7 +89,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(DomainObject object, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 		Town town = (Town) object;
 		switch (record.getFieldType()) {
