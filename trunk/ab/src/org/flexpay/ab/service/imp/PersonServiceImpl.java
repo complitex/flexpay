@@ -150,9 +150,9 @@ public class PersonServiceImpl implements PersonService {
 			container.addException(new FlexPayException("No type", "error.ab.person.identity.no_type"));
 		}
 
-		if (isBlank(identity.getFirstName())) {
-			container.addException(new FlexPayException("No first name", "error.ab.person.identity.no_first_name"));
-		}
+//		if (isBlank(identity.getFirstName())) {
+//			container.addException(new FlexPayException("No first name", "error.ab.person.identity.no_first_name"));
+//		}
 		if (isBlank(identity.getLastName())) {
 			container.addException(new FlexPayException("No last name", "error.ab.person.identity.no_last_name"));
 		}
