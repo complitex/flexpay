@@ -75,7 +75,7 @@ public class ImportService {
 	}
 
 	/**
-	 * Run flush objects operation
+	 * Run flush objects operation, also flushes and clear current session
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	protected void flushStack() {
@@ -85,8 +85,6 @@ public class ImportService {
 		}
 
 		try {
-			allObjectsDao.openSession();
-
 			DomainObject prevObj = null;
 			for (DomainObject object : objectsStack) {
 				// get previous object id for correction (may be null for new objects)
@@ -115,10 +113,9 @@ public class ImportService {
 				prevObj = object;
 			}
 		} catch (Exception e) {
-			allObjectsDao.setRollbackOnly();
 			throw new RuntimeException("Failed saving objects", e);
 		} finally {
-			allObjectsDao.closeSession();
+			allObjectsDao.flushAndClear();
 		}
 		objectsStack.clear();
 	}

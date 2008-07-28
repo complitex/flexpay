@@ -12,7 +12,6 @@ import java.util.Date;
 public class SpFileCreateAction extends FPActionSupport {
 	private File upload;
 	private String uploadFileName;
-	private String contentType;
 
 	private SpFileService spFileService;
 	private boolean isUploaded = false;
@@ -62,10 +61,6 @@ public class SpFileCreateAction extends FPActionSupport {
 
 	public void setUploadFileName(String uploadFileName) {
 		this.uploadFileName = uploadFileName;
-	}
-
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
 	}
 
 	public void setSpFileService(SpFileService spFileService) {

@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional (readOnly = true)
@@ -49,6 +50,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 * @param sd		 External data source description
 	 * @return DomainObject
 	 */
+	@Nullable
 	public <T extends DomainObject> Stub<T> findCorrection(String externalId, Class<T> cls, DataSourceDescription sd) {
 		int type = typeRegistry.getType(cls);
 		return correctionsDao.findCorrection(externalId, type, cls, sd);

@@ -38,11 +38,19 @@ public class RawConsumerDataConverter implements DataConverter<Consumer, RawCons
 
 		Consumer consumer = new Consumer();
 		consumer.setExternalAccountNumber(rawData.getAccountNumber());
-		consumer.setApartment(new Apartment(apartmentStub));
-		consumer.setResponsiblePerson(new Person(personStub));
+		consumer.setApartment(getApartment(apartmentStub));
+		consumer.setResponsiblePerson(getPerson(personStub));
 		consumer.setService(service);
 
 		return consumer;
+	}
+
+	private Apartment getApartment(Stub<Apartment> stub) {
+		return stub != null ? new Apartment(stub) : null;
+	}
+
+	private Person getPerson(Stub<Person> stub) {
+		return stub != null ? new Person(stub) : null;
 	}
 
 	public void setConsumerService(ConsumerService consumerService) {

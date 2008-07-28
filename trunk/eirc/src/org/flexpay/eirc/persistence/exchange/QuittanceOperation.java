@@ -55,7 +55,7 @@ public class QuittanceOperation extends Operation {
 			AccountRecord newRecord = new AccountRecord();
 			newRecord.setAmount(balanceCorrection);
 			newRecord.setConsumer(record.getConsumer());
-			newRecord.setOrganisation(ApplicationConfig.getInstance().getSelfOrganisation());
+			newRecord.setOrganisation(ApplicationConfig.getSelfOrganisation());
 			newRecord.setOperationDate(record.getOperationDate());
 			newRecord.setSourceRegistryRecord(record);
 

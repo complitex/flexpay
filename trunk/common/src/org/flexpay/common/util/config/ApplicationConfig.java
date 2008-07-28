@@ -23,9 +23,9 @@ public class ApplicationConfig {
 	private static final Date DATE_PAST_INFINITE = new GregorianCalendar(1900, 0, 1).getTime();
 	private static final Date DATE_FUTURE_INFINITE = new GregorianCalendar(2100, 11, 31).getTime();
 
-	private File dataRoot;
+	private String dataRoot;
 
-	private File szDataRoot;
+	private String szDataRoot;
 	private String szDefaultDbfFileEncoding;
 
 	private String testProp;
@@ -124,24 +124,38 @@ public class ApplicationConfig {
 	}
 
 	public static File getDataRoot() {
-		return getInstance().dataRoot;
+		return getInstance().getDataRootInternal();
+	}
+
+	protected File getDataRootInternal() {
+		return new File(tmpDir(), dataRoot);
+	}
+
+	private static File tmpDir() {
+		return new File(System.getProperty("java.io.tmpdir"));
 	}
 
 	public void setDataRoot(String dataRoot) {
-		this.dataRoot = new File(dataRoot);
-		if (!this.dataRoot.exists()) {
-			this.dataRoot.mkdirs();
+		this.dataRoot = dataRoot;
+		File root = getDataRootInternal();
+		if (!root.exists()) {
+			root.mkdirs();
 		}
 	}
 
 	public static File getSzDataRoot() {
-		return getInstance().szDataRoot;
+		return getInstance().getSzDataRootInternal();
+	}
+
+	private File getSzDataRootInternal() {
+		return new File(getDataRootInternal(), szDataRoot);
 	}
 
 	public void setSzDataRoot(String szDataRoot) {
-		this.szDataRoot = new File(dataRoot, szDataRoot);
-		if (!this.szDataRoot.exists()) {
-			this.szDataRoot.mkdirs();
+		this.szDataRoot = szDataRoot;
+		File szRoot = getSzDataRootInternal();
+		if (!szRoot.exists()) {
+			szRoot.mkdirs();
 		}
 	}
 

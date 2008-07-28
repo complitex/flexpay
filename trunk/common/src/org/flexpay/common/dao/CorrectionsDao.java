@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.Nullable;
 
 public interface CorrectionsDao {
 
@@ -31,18 +32,8 @@ public interface CorrectionsDao {
 	 * @param sd Data source description
 	 * @return DomainObject
 	 */
+	@Nullable
 	<T extends DomainObject> Stub<T> findCorrection(@NonNls String externalId, int type, Class<T> cls, DataSourceDescription sd);
-
-	/**
-	 * Get correction internal object id
-	 *
-	 * @param externalId		DataSource internal object id
-	 * @param type			  DomainObject type
-	 * @param sourceDescription Data source description
-	 * @return DomainObject
-	 */
-	public Long getInternalId(final String externalId, final int type,
-									final DataSourceDescription sourceDescription);
 
 	/**
 	 * Check if correction exists

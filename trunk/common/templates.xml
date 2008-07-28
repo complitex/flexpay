@@ -212,12 +212,14 @@
 			  classname="org.flexpay.common.util.standalone.ApplicationRunner"
 			  dir="${build.dir}/web" fork="yes">
 			<jvmarg value="-Xmx350m" />
+			<sysproperty key="log4j.configuration" value="WEB-INF/common/configs/log4j.xml" />
+			<sysproperty key="java.naming.factory.initial"
+						 value="org.flexpay.common.test.MockInitialContextFactory" />
 		</java>
 	</target>
 
 	<target name="template.profile.standalone">
-		<fail unless="netbeans.home">This target can only run inside the NetBeans IDE.
-		</fail>
+		<fail unless="netbeans.home">This target can only run inside the NetBeans IDE.</fail>
 
 		<nbprofiledirect>
 			<classpath refid="classpath" />
@@ -228,6 +230,9 @@
 			  dir="${build.dir}/web" fork="yes">
 			<jvmarg value="${profiler.info.jvmargs.agent}" />
 			<jvmarg value="-Xmx150m" />
+			<sysproperty key="log4j.configuration" value="WEB-INF/common/configs/log4j.xml" />
+			<sysproperty key="java.naming.factory.initial"
+						 value="org.flexpay.common.test.MockInitialContextFactory" />
 		</java>
 	</target>
 

@@ -54,7 +54,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 
 	@Transactional(readOnly = false)
 	public String nextPersonalAccount() {
-		String eircId = ApplicationConfig.getInstance().getEircId();
+		String eircId = ApplicationConfig.getEircId();
 		String result = sequenceService.next(
 				SequenceService.PERSONAL_ACCOUNT_SEQUENCE_ID).toString();
 		result = StringUtil.fillLeadingZero(result, 7);
