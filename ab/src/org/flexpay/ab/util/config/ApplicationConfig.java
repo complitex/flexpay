@@ -75,7 +75,7 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 		buildingAttributeTypeBulk = new BuildingAttributeType(Long.valueOf(bulkTypeId));
 	}
 
-	public static ApplicationConfig getInstance() {
+	protected static ApplicationConfig getInstance() {
 		return (ApplicationConfig) org.flexpay.common.util.config.ApplicationConfig.getInstance();
 	}
 }

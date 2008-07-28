@@ -136,7 +136,7 @@ public class PdfTicketWriter {
 
 		// Services 2-5
 		if (ticketInfo.serviceAmountInfoMap != null) {
-			ServiceAmountInfo serviceAmountInfo = null;
+			ServiceAmountInfo serviceAmountInfo;
 			for (int i = 2; i <= 5; i++) {
 				serviceAmountInfo = ticketInfo.serviceAmountInfoMap.get(i);
 				if (serviceAmountInfo != null) {
@@ -208,7 +208,7 @@ public class PdfTicketWriter {
 		
 		String[] barcodes = new String[2];
 		StringBuilder barcodeStr = new StringBuilder();
-		barcodeStr.append(ApplicationConfig.getInstance().getEircId());
+		barcodeStr.append(ApplicationConfig.getEircId());
 		barcodeStr.append(StringUtil.fillLeadingZero(
 				ticketInfo.ticketNumber.toString(), 8)); // TODO ticketNumber replace by ticketId
 		//barcodeStr.append("-");
@@ -223,7 +223,7 @@ public class PdfTicketWriter {
 		form.setField("ticketNumber_copy1", barcodes[0]);
 		
 		StringBuilder barcode2d = new StringBuilder();
-		barcode2d.append(ApplicationConfig.getInstance().getEircId());
+		barcode2d.append(ApplicationConfig.getEircId());
 		barcode2d.append(StringUtil.fillLeadingZero(
 				ticketInfo.ticketNumber.toString(), 8));
 		barcode2d.append(";");
@@ -236,7 +236,7 @@ public class PdfTicketWriter {
 		barcode2d.append("2");
 		barcode2d.append(";");
 		if (ticketInfo.serviceAmountInfoMap != null) {
-			ServiceAmountInfo serviceAmountInfo = null;
+			ServiceAmountInfo serviceAmountInfo;
 			for (int i = 2; i <= 15; i++) {
 				serviceAmountInfo = ticketInfo.serviceAmountInfoMap.get(i);
 				if (serviceAmountInfo != null) {
@@ -330,7 +330,7 @@ public class PdfTicketWriter {
 		
 		private BigDecimal getServicesAmount(int ind1, int ind2, boolean flag) {
 			BigDecimal sum = BigDecimal.ZERO;
-			ServiceAmountInfo serviceAmountInfo = null;
+			ServiceAmountInfo serviceAmountInfo;
 			if (serviceAmountInfoMap != null) {
 				for (int i = ind1; i <= ind2; i++) {
 					serviceAmountInfo = serviceAmountInfoMap.get(i);

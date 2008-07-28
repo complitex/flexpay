@@ -307,6 +307,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 *
 	 * @return List of IdentityType
 	 */
+	@NotNull
 	public List<IdentityType> getEntities() {
 		identityTypes = identityTypeDao.listIdentityTypes(IdentityType.STATUS_ACTIVE);
 		return identityTypes;

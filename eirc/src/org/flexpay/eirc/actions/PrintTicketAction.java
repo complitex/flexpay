@@ -104,8 +104,7 @@ public class PrintTicketAction extends FPActionSupport {
 		quittanceWriter.setQuittanceService(quittanceService);
 		quittanceWriter.setServiceTypeService(serviceTypeService);
 		@NonNls DateFormat format = new SimpleDateFormat("MM.yyyy");
-		File outputA3File = new File(ApplicationConfig.getInstance()
-				.getEircDataRoot(), serviceOrganisationId + "_"
+		File outputA3File = new File(ApplicationConfig.getEircDataRoot(), serviceOrganisationId + "_"
 									+ format.format(dateFrom) + ".pdf");
 		OutputStream os = new FileOutputStream(outputA3File);
 		PdfA3Writer a3Writer = new PdfA3Writer(os);

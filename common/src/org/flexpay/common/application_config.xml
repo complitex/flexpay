@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <flexpay>
 
-	<dataRoot>c://flexpay_data_root</dataRoot>
+	<dataRoot>flexpay_data</dataRoot>
 	
 	<szDataRoot>/sz</szDataRoot> <!-- задаётся относительно dataRoot -->
 	<szDefaultDbfFileEncoding>Cp866</szDefaultDbfFileEncoding>

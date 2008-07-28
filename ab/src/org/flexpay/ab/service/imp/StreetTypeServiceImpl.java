@@ -256,6 +256,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		return streetType;
 	}
 
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(StreetType type) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
@@ -283,6 +284,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 *
 	 * @return List of StreetType
 	 */
+	@NotNull
 	public List<StreetType> getEntities() {
 		return streetTypeDao.listStreetTypes(StreetType.STATUS_ACTIVE);
 	}

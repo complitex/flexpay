@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NonNls;
 public class Stub<T extends DomainObject> {
 
 	@NonNls
-	private static final String INVALID_STUB_ID = "Invalid stub id";
+	private static final String INVALID_STUB_ID = "Invalid stub id: ";
 
 	// object id
 	private Long id;
@@ -21,7 +21,7 @@ public class Stub<T extends DomainObject> {
 	}
 
 	public Stub(@NotNull Long id) {
-		Validate.isTrue(id > 0, INVALID_STUB_ID);
+		Validate.isTrue(id > 0, INVALID_STUB_ID + id);
 
 		this.id = id;
 	}

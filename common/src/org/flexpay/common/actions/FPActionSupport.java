@@ -42,7 +42,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 
 
 	protected UserPreferences userPreferences;
-	protected Map session;
+	protected Map session = CollectionUtils.map();
 	protected String submitted;
 
 	public boolean isSubmit() {

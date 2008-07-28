@@ -47,6 +47,7 @@ public interface MultilangEntityService<Entity, T extends Translation> {
 	 *
 	 * @return List of Entity
 	 */
+	@NotNull
 	List<Entity> getEntities();
 
 	/**

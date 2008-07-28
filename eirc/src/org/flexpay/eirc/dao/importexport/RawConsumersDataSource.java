@@ -45,9 +45,8 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 	}
 
 	/**
-	 * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns
-	 * <tt>true</tt> if <tt>next</tt> would return an element rather than throwing an
-	 * exception.)
+	 * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns <tt>true</tt> if <tt>next</tt> would return
+	 * an element rather than throwing an exception.)
 	 *
 	 * @return <tt>true</tt> if the iterator has more elements.
 	 */
@@ -59,7 +58,6 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 		// get next page
 		int nextPage = pager.getPageNumber() + 1;
 		pager.setPageNumber(nextPage);
-		registryRecordDaoExt.clearSession();
 		List<SpRegistryRecord> datum = registryRecordDaoExt.listRecordsForUpdate(registry.getId(), pager);
 		dataIterator = datum.iterator();
 		return dataIterator.hasNext();
@@ -79,20 +77,10 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 		return RawConsumersDataUtil.convert(record);
 	}
 
-	/**
-	 * Setter for property 'registryRecordDao'.
-	 *
-	 * @param registryRecordDao Value to set for property 'registryRecordDao'.
-	 */
 	public void setRegistryRecordDao(SpRegistryRecordDao registryRecordDao) {
 		this.registryRecordDao = registryRecordDao;
 	}
 
-	/**
-	 * Setter for property 'registryRecordDaoExt'.
-	 *
-	 * @param registryRecordDaoExt Value to set for property 'registryRecordDaoExt'.
-	 */
 	public void setRegistryRecordDaoExt(SpRegistryRecordDaoExt registryRecordDaoExt) {
 		this.registryRecordDaoExt = registryRecordDaoExt;
 	}

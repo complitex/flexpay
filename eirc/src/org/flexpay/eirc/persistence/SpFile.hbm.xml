@@ -194,7 +194,7 @@
 		<property name="uniqueOperationNumber" column="unique_operation_number" />
 		<property name="amount" column="amount" type="big_decimal" />
 
-		<list name="containers" cascade="all" inverse="true">
+		<list name="containers" cascade="all-delete-orphan" inverse="true">
 			<key column="record_id" not-null="true" />
 			<list-index column="order_weight" />
 			<one-to-many class="RegistryRecordContainer" />

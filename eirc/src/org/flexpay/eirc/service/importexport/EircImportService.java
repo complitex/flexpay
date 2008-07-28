@@ -19,12 +19,13 @@ import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
-import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+@Transactional (readOnly = true)
 public class EircImportService extends ImportService {
 
 	private RawConsumerDataConverter consumerDataConverter;
@@ -33,7 +34,7 @@ public class EircImportService extends ImportService {
 
 	private RegistryRecordWorkflowManager recordWorkflowManager;
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void importConsumers(DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
 			throws FlexPayException {
 
@@ -54,8 +55,14 @@ public class EircImportService extends ImportService {
 			log.info("Street types: " + nameTypeMap.keySet());
 		}
 
+		long recordsCounter = 0;
 		dataSource.initialize();
 		while (dataSource.hasNext()) {
+
+			++recordsCounter;
+			if (recordsCounter % 100 == 0) {
+				flushStack();
+			}
 
 			ImportOperationTypeHolder typeHolder = new ImportOperationTypeHolder();
 			RawConsumerData data = dataSource.next(typeHolder);
@@ -138,7 +145,7 @@ public class EircImportService extends ImportService {
 
 				if (rawConsumer.getService() == null) {
 					log.error("Not found provider #" + data.getRegistry().getSenderCode() +
-							" service by code: " + data.getRegistryRecord().getServiceCode());
+							  " service by code: " + data.getRegistryRecord().getServiceCode());
 					ImportError error = addImportError(sd, data.getExternalSourceId(), Service.class, dataSource);
 					error.setErrorId("error.eirc.import.service_not_found");
 					setConsumerError(data, error);
@@ -193,6 +200,8 @@ public class EircImportService extends ImportService {
 		identities.add(identity);
 		example.setPersonIdentities(identities);
 
+		// todo add correction
+
 		Stub<Person> stub = personService.findPersonStub(example);
 		return stub != null ? new Person(stub) : null;
 	}
@@ -241,6 +250,12 @@ public class EircImportService extends ImportService {
 			log.warn("Failed getting street for account #" + data.getExternalSourceId());
 			return null;
 		}
+
+		DataCorrection corr = correctionsService.getStub(
+				data.getStreetId(), streetByName, sd);
+		log.info("Adding street correction: " + data.getStreetId());
+		addToStack(corr);
+
 		return findApartment(data, streetByName, sd, dataSource);
 	}
 
@@ -260,7 +275,7 @@ public class EircImportService extends ImportService {
 		StreetType streetType = findStreetType(nameTypeMap, data);
 		if (streetType == null) {
 			log.warn("Found several streets, but no type was found: " + data.getAddressStreetType() +
-					", " + data.getAddressStreet());
+					 ", " + data.getAddressStreet());
 			ImportError error = addImportError(sd, data.getExternalSourceId(), StreetType.class, dataSource);
 			error.setErrorId("error.eirc.import.street_type_not_found");
 			setConsumerError(data, error);
@@ -274,7 +289,7 @@ public class EircImportService extends ImportService {
 		}
 
 		log.warn("Cannot find street candidate, even by type: " + data.getAddressStreetType() +
-				", " + data.getAddressStreet());
+				 ", " + data.getAddressStreet());
 		ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
 		error.setErrorId("error.eirc.import.street_too_many_variants");
 		setConsumerError(data, error);
@@ -315,6 +330,11 @@ public class EircImportService extends ImportService {
 			return null;
 		}
 
+		DataCorrection corr = correctionsService.getStub(data.getBuildingId(), buildings, sd);
+		log.info("Adding buildings correction: " + data.getBuildingId());
+		addToStack(corr);
+
+
 		return findApartment(data, buildings, sd, dataSource);
 	}
 
@@ -329,6 +349,10 @@ public class EircImportService extends ImportService {
 			setConsumerError(data, error);
 			return null;
 		}
+
+		DataCorrection corr = correctionsService.getStub(data.getApartmentId(), buildings, sd);
+		log.info("Adding apartment correction: " + data.getApartmentId());
+		addToStack(corr);
 
 		return new Apartment(stub);
 	}

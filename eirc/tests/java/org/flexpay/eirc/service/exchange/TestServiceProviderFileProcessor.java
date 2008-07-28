@@ -198,7 +198,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 
 		BigDecimal totalAmount = new BigDecimal("32198000000");
 
-		Organisation recipient = ApplicationConfig.getInstance().getSelfOrganisation();
+		Organisation recipient = ApplicationConfig.getSelfOrganisation();
 		OutputStream os = null;
 		try {
 			os = new BufferedOutputStream(new FileOutputStream(tmpFile));
@@ -260,7 +260,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 
 		record.setId(Math.abs(rand.nextLong()));
 		record.setRecordType(spService.getRecordType(AccountRecordType.TYPE_PAYMENT));
-		record.setOrganisation(ApplicationConfig.getInstance().getSelfOrganisation());
+		record.setOrganisation(ApplicationConfig.getSelfOrganisation());
 		record.setAmount(amount);
 
 		logTime(start, 4);
@@ -394,13 +394,9 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 				.append(SpFileParser.dateFormat.format(end))
 				.append(RECORD_DELIMITER)
 
-						// sender TODO: uncomment
-//				.append(ApplicationConfig.getInstance().getSelfOrganisation().getUniqueId())
-				.append(ApplicationConfig.getInstance().getSelfOrganisation().getId())
+				.append(ApplicationConfig.getSelfOrganisation().getId())
 				.append(RECORD_DELIMITER)
 
-						// recipient TODO: uncomment
-//				.append(recipient.getUniqueId())
 				.append(recipient.getId())
 				.append(RECORD_DELIMITER)
 

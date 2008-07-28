@@ -4,6 +4,7 @@ import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
+import org.jetbrains.annotations.Nullable;
 
 public interface CorrectionsService {
 
@@ -22,6 +23,7 @@ public interface CorrectionsService {
 	 * @param sourceDescription External data source description
 	 * @return DomainObject
 	 */
+	@Nullable
 	<T extends DomainObject> Stub<T> findCorrection(String externalId, Class<T> cls, DataSourceDescription sourceDescription);
 
 	/**

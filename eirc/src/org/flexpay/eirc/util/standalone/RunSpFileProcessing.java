@@ -11,7 +11,6 @@ import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.SpFileService;
 import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
@@ -26,8 +25,6 @@ public class RunSpFileProcessing implements StandaloneTask {
 	private Logger log = Logger.getLogger(getClass());
 
 	private ServiceProviderFileProcessor fileProcessor;
-	@NonNls
-	private HibernateTemplate hibernateTemplate;
 	private SpFileCreateAction fileCreateAction;
 	private SpFileAction fileAction;
 	private SpFileService fileService;
@@ -35,10 +32,6 @@ public class RunSpFileProcessing implements StandaloneTask {
 
 	public void setFileProcessor(ServiceProviderFileProcessor fileProcessor) {
 		this.fileProcessor = fileProcessor;
-	}
-
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
 	}
 
 	public void setFileCreateAction(SpFileCreateAction fileCreateAction) {
@@ -63,25 +56,26 @@ public class RunSpFileProcessing implements StandaloneTask {
 	public void execute() {
 
 		try {
-			testProcessOpenSubAccountsRegistrySmall();
+			openAccountsBig();
+//			openAccountsSmall();
 		} catch (Throwable e) {
 			log.error("Failed processing registry file", e);
 		}
 	}
 
-	private void sqlLogMarker() {
-		hibernateTemplate.bulkUpdate("delete SpFile where internalRequestFileName=" +
-				"'\n==============================================================\n'");
+	public void openAccountsBig() throws Throwable {
+		processOpenSubAccountsRegistry("org/flexpay/eirc/actions/sp/ree_open_2.txt");
 	}
 
-	public void testProcessOpenSubAccountsRegistrySmall() throws Throwable {
-		System.out.println("ree_open_2_small start");
-		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
+	public void openAccountsSmall() throws Throwable {
+		processOpenSubAccountsRegistry("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
+	}
+
+	private void processOpenSubAccountsRegistry(String path) throws Throwable {
+		SpFile file = uploadFile(path);
 
 		try {
-			sqlLogMarker();
 			fileProcessor.processFile(file);
-			sqlLogMarker();
 		} catch (FlexPayExceptionContainer c) {
 			for (Exception e : c.getExceptions()) {
 				e.printStackTrace();
@@ -90,11 +84,10 @@ public class RunSpFileProcessing implements StandaloneTask {
 		} finally {
 			deleteRecords(file);
 			deleteFile(file);
-			System.out.println("ree_open_2_small end");
 		}
 	}
 
-	protected void deleteRecords(SpFile file) {
+	private void deleteRecords(SpFile file) {
 		for (SpRegistry registry : fileService.getRegistries(file)) {
 			spRegistryDao.deleteRecordContainers(registry.getId());
 			spRegistryDao.deleteRegistryContainers(registry.getId());
@@ -103,8 +96,8 @@ public class RunSpFileProcessing implements StandaloneTask {
 		}
 	}
 
-	@SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})
-	protected SpFile uploadFile(String fileName) throws Throwable {
+	@SuppressWarnings ({"ThrowableResultOfMethodCallIgnored"})
+	private SpFile uploadFile(String fileName) throws Throwable {
 		SpFile newFile = createSpFile(fileName);
 
 		fileAction.setSpFileId(newFile.getId());
@@ -123,12 +116,13 @@ public class RunSpFileProcessing implements StandaloneTask {
 		return newFile;
 	}
 
-	protected SpFile createSpFile(String spFile) throws Throwable {
+	private SpFile createSpFile(String spFile) throws Throwable {
 		File tmpDataFile = File.createTempFile("sp_sample", ".txt");
 		tmpDataFile.deleteOnExit();
 		OutputStream os = null;
 		InputStream is = null;
 		try {
+			//noinspection IOResourceOpenedButNotSafelyClosed
 			os = new FileOutputStream(tmpDataFile);
 
 			is = getClass().getClassLoader().getResourceAsStream(spFile);
@@ -139,6 +133,10 @@ public class RunSpFileProcessing implements StandaloneTask {
 		} finally {
 			IOUtils.closeQuietly(is);
 			IOUtils.closeQuietly(os);
+		}
+
+		if (log.isDebugEnabled()) {
+			log.debug("Upload file: " + tmpDataFile);
 		}
 
 		fileCreateAction.setUpload(tmpDataFile);
@@ -154,7 +152,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 		return spFiles.get(spFiles.size() - 1);
 	}
 
-	protected void deleteFile(SpFile file) {
+	private void deleteFile(SpFile file) {
 		fileService.delete(file);
 		fileCreateAction.getUpload().delete();
 

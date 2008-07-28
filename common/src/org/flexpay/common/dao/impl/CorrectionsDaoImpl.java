@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.sql.ResultSet;
@@ -46,6 +47,7 @@ public class CorrectionsDaoImpl extends SimpleJdbcDaoSupport implements Correcti
 	 * @param sd Data source description
 	 * @return DomainObject
 	 */
+	@Nullable
 	public <T extends DomainObject> Stub<T> findCorrection(@NonNls String externalId, int type,
 													 final Class<T> cls, DataSourceDescription sd) {
 
@@ -100,6 +102,7 @@ public class CorrectionsDaoImpl extends SimpleJdbcDaoSupport implements Correcti
 	 * @param sourceDescription Data source description
 	 * @return DomainObject id if found, or <code>null</null> otherwise
 	 */
+	@Nullable
 	public Long getInternalId(final String externalId, final int type,
 							  final DataSourceDescription sourceDescription) {
 

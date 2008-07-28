@@ -216,7 +216,7 @@ public class PdfQuittanceWriter {
 
 		String[] barcodes = new String[2];
 		StringBuilder barcodeStr = new StringBuilder();
-		barcodeStr.append(ApplicationConfig.getInstance().getEircId());
+		barcodeStr.append(ApplicationConfig.getEircId());
 		// TODO ticketNumber replace by ticketId
 		barcodeStr.append(StringUtil.fillLeadingZero(String.valueOf(quittance.getId()), 8));
 		// barcodeStr.append("-");
@@ -231,7 +231,7 @@ public class PdfQuittanceWriter {
 		form.setField("ticketNumber_copy1", barcodes[0]);
 
 		StringBuilder barcode2d = new StringBuilder();
-		barcode2d.append(ApplicationConfig.getInstance().getEircId());
+		barcode2d.append(ApplicationConfig.getEircId());
 		barcode2d.append(StringUtil.fillLeadingZero(String.valueOf(quittance.getId()), 8));
 		barcode2d.append(";");
 		barcode2d.append(address);

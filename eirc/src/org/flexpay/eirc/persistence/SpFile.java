@@ -50,8 +50,7 @@ public class SpFile extends DomainObject {
 			return null;
 		}
 
-		return new File(ApplicationConfig.getInstance().getEircDataRoot(),
-				internalRequestFileName);
+		return new File(ApplicationConfig.getEircDataRoot(), internalRequestFileName);
 	}
 	
 	/**

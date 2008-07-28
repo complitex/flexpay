@@ -6,7 +6,8 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean class="org.flexpay.common.util.standalone.StandaloneTasksHolder">
+	<bean class="org.flexpay.common.util.standalone.StandaloneTasksHolder"
+		  factory-method="getInstance">
 		<property name="standaloneTasks">
 			<list>
 				<!-- run sp file processing -->
@@ -14,7 +15,6 @@
 					  p:fileAction-ref="spFileAction"
 					  p:fileCreateAction-ref="spFileCreateAction"
 					  p:fileService-ref="spFileService"
-					  p:hibernateTemplate-ref="hibernateTemplate"
 					  p:spRegistryDao-ref="spRegistryDao"
 					  p:fileProcessor-ref="serviceProviderFileProcessor" />
 			</list>

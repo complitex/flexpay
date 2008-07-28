@@ -12,11 +12,6 @@ import java.util.List;
 public interface SpRegistryRecordDaoExt {
 
 	/**
-	 * Clear current session
-	 */
-	void clearSession();
-
-	/**
 	 * List registry records
 	 *
 	 * @param id	Registry id
