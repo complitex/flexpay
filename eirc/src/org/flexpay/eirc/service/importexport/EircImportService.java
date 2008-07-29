@@ -56,6 +56,8 @@ public class EircImportService extends ImportService {
 		}
 
 		long recordsCounter = 0;
+		long skipped = 0;
+
 		dataSource.initialize();
 		while (dataSource.hasNext()) {
 
@@ -69,6 +71,7 @@ public class EircImportService extends ImportService {
 
 			if (data == null) {
 				log.info("Empty data read");
+				++skipped;
 				continue;
 			}
 
@@ -171,6 +174,10 @@ public class EircImportService extends ImportService {
 				log.error("Failed getting consumer: " + data.toString(), e);
 				throw new RuntimeException(e);
 			}
+		}
+
+		if (log.isDebugEnabled()) {
+			log.debug("Imported " + recordsCounter + " records. Skipped: " + skipped);
 		}
 
 		flushStack();

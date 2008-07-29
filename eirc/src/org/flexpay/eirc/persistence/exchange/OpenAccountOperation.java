@@ -171,6 +171,10 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 			throw new FlexPayException("Cannot create consumer without person set");
 		}
 
+		if (log.isDebugEnabled()) {
+			log.debug("Creating consumer: " + record);
+		}
+
 		return true;
 	}
 }
