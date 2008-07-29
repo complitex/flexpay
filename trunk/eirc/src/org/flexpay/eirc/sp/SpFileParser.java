@@ -71,6 +71,10 @@ public class SpFileParser {
 			finalizeRegistry();
 			sessionUtils.flush();
 			sessionUtils.clear();
+
+			if (log.isDebugEnabled()) {
+				log.debug("Parsed " + registryRecordCounter + " records");
+			}
 		} catch (Throwable t) {
 			if (spRegistry != null) {
 				registryWorkflowManager.setNextErrorStatus(spRegistry);
@@ -186,6 +190,10 @@ public class SpFileParser {
 							+ messageFieldList.size(), message.getPosition());
 		}
 		registryRecordCounter++;
+		if (registryRecordCounter % 100 == 0) {
+			sessionUtils.flush();
+			sessionUtils.clear();
+		}
 
 		SpRegistryRecord record = new SpRegistryRecord();
 		record.setSpRegistry(spRegistry);
