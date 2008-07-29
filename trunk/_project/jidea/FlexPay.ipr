@@ -867,6 +867,9 @@
         <root url="file://$PROJECT_DIR$/../Java/_libs/hibernate-3.2/src" />
         <root url="file://$PROJECT_DIR$/../Java/_libs/hibernate-entitymanager-3.3.1.GA/src" />
         <root url="file://$PROJECT_DIR$/../Java/_libs/hibernate-annotations-3.3.0.GA/src" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/hibernate-annotations-3.3.0.GA/src" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/hibernate-entitymanager-3.3.1.GA/src" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/hibernate-3.2/src" />
       </SOURCES>
     </library>
     <library name="spring2">
@@ -874,13 +877,13 @@
         <root url="jar://$PROJECT_DIR$/../../common/lib/spring2/spring.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="file://$PROJECT_DIR$/../Java/_libs/spring-framework-2.0.7/docs/api" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/spring-framework-2.0.7/tiger/mock" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/spring-framework-2.5.4/docs/api" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/spring-framework-2.5.4/tiger/mock" />
       </JAVADOC>
       <SOURCES>
         <root url="file://$PROJECT_DIR$/../Java/_libs/spring-framework-2.0.7/src" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/spring-framework-2.0.7/mock" />
         <root url="file://$PROJECT_DIR$/../Java/_libs/spring-framework-2.0.7/tiger/src" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/spring-framework-2.5.4/mock" />
       </SOURCES>
     </library>
     <library name="Struts2">

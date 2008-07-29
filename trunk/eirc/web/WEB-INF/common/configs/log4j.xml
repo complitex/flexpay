@@ -7,7 +7,7 @@
 		<param name="MaxFileSize" value="50MB" />
 		<param name="MaxBackupIndex" value="3" />
 		<param name="Append" value="false" />
-		<param name="File" value="${java.io.tmpdir}/logs/flexpay_log_common.txt" />
+		<param name="File" value="${java.io.tmpdir}/logs/flexpay_log_eirc.txt" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
 				   value="%d %5p [%t] (%c %F:%L) - %m%n" />
