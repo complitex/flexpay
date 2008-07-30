@@ -52,9 +52,6 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 			deleteFile(newFile);
 			throw e;
 		}
-		if (fileAction.getSpFileFormatException() != null) {
-			throw fileAction.getSpFileFormatException();
-		}
 		return newFile;
 	}
 }

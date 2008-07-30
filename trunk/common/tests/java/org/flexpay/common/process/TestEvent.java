@@ -10,6 +10,7 @@ public class TestEvent implements ActionHandler {
     public void execute(ExecutionContext executionContext) throws Exception {
        TestProcessManager.setEventExecuted(eventExecuted);
         System.out.println(eventExecuted);
+        executionContext.getVariable("eventExecuted");
     }
 
     public String getEventExecuted() {

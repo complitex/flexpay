@@ -285,7 +285,7 @@ public class ProcessManager implements Runnable {
     /**
      *
      */
-    public synchronized void createProcess(String processDefinitionName, HashMap<Serializable, Serializable> parameters) throws ProcessInstanceException, ProcessDefinitionException {
+    public synchronized void createProcess(String processDefinitionName, Map<Serializable, Serializable> parameters) throws ProcessInstanceException, ProcessDefinitionException {
 //        Process process = new Process(processDefinitionName);
         long processInstanceID = initProcess(processDefinitionName);
 //        process.setId(processInstanceID);
