@@ -22,9 +22,9 @@ import java.util.List;
 public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 
 	@Autowired
-	private SpFileService fileService;
+	protected SpFileService fileService;
 	@Autowired
-	private SpFileCreateAction fileCreateAction;
+	protected SpFileCreateAction fileCreateAction;
 
 	@Test
 	@Ignore
@@ -56,7 +56,7 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 		fileCreateAction.setUploadFileName("sp.txt");
 		fileCreateAction.setSubmitted("submitted");
 
-		assertEquals("Invalid Struts action result", "form", fileCreateAction.execute());
+		assertEquals("Invalid Struts action result", SpFileCreateAction.INPUT, fileCreateAction.execute());
 		return getLastFile();
 	}
 
