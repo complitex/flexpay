@@ -56,7 +56,9 @@ public class RunSpFileProcessing implements StandaloneTask {
 	public void execute() {
 
 		try {
-			openAccountsBig();
+			loadRegistryBig();
+//			loadRegistrySmall();
+//			openAccountsBig();
 //			openAccountsSmall();
 		} catch (Throwable e) {
 			log.error("Failed processing registry file", e);
@@ -65,6 +67,18 @@ public class RunSpFileProcessing implements StandaloneTask {
 
 	public void openAccountsBig() throws Throwable {
 		processOpenSubAccountsRegistry("org/flexpay/eirc/actions/sp/ree_open_2.txt");
+	}
+
+	public void loadRegistryBig() throws Throwable {
+		processLoadRegistry("org/flexpay/eirc/actions/sp/ree_open.txt");
+	}
+
+	public void loadRegistrySmall() throws Throwable {
+		processLoadRegistry("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
+	}
+
+	public void processRegistryBig() throws Throwable {
+		processRegistry(new SpFile(19L));
 	}
 
 	public void openAccountsSmall() throws Throwable {
@@ -84,6 +98,32 @@ public class RunSpFileProcessing implements StandaloneTask {
 		} finally {
 			deleteRecords(file);
 			deleteFile(file);
+		}
+	}
+
+	private void processLoadRegistry(String path) throws Throwable {
+		long time = System.currentTimeMillis();
+		uploadFile(path);
+
+		if (log.isDebugEnabled()) {
+			log.debug("Upload took " + (System.currentTimeMillis() - time) + "ms");
+		}
+//		deleteRecords(file);
+	}
+
+	private void processRegistry(SpFile file) throws Throwable {
+		long time = System.currentTimeMillis();
+		try {
+			fileProcessor.processFile(file);
+		} catch (FlexPayExceptionContainer c) {
+			for (Exception e : c.getExceptions()) {
+				e.printStackTrace();
+			}
+			throw c;
+		}
+
+		if (log.isDebugEnabled()) {
+			log.debug("Processing took " + (System.currentTimeMillis() - time) + "ms");
 		}
 	}
 

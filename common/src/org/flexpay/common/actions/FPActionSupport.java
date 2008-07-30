@@ -52,7 +52,6 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	/**
 	 * @return Execution result
 	 * @throws Exception if failure occurs
-	 * @deprecated 
 	 */
 	public final String execute() throws Exception {
 		String result;

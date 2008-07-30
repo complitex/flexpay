@@ -38,13 +38,13 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	private Logger log = Logger.getLogger(getClass());
 
 	@Autowired
-	private ServiceProviderFileProcessor fileProcessor;
+	protected ServiceProviderFileProcessor fileProcessor;
 	@Autowired
-	private ExchangeHelper exchangeHelper;
+	protected ExchangeHelper exchangeHelper;
 	@Autowired
-	private SPService spService;
+	protected SPService spService;
 	@Autowired
-	private SpRegistryService registryService;
+	protected SpRegistryService registryService;
 
 	private RandomObjects randomObjects;
 
