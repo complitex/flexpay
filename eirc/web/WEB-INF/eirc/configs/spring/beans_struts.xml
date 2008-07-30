@@ -18,8 +18,8 @@
 
 	<bean id="spFileAction" class="org.flexpay.eirc.actions.SpFileAction"
 		  scope="prototype">
-		<property name="spFileService" ref="spFileService" />
-	</bean>
+        <property name="processManager" ref="processManager"/>
+    </bean>
 
 	<bean id="correspondenceExternalAction" class="org.flexpay.eirc.actions.CorrespondenceExternalAction"
 		  scope="prototype">

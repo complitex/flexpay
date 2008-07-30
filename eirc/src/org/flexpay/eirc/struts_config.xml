@@ -146,7 +146,7 @@
 				<param name="registry.id">${registry.id}</param>
 			</result>
 			<result name="error" type="redirect-action">
-				<param name="actionName">registries_list</param>
+				<param name="actionName" >registries_list</param>
 			</result>
 		</action>
 		

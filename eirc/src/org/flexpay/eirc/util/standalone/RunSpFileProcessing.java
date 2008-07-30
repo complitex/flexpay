@@ -150,9 +150,6 @@ public class RunSpFileProcessing implements StandaloneTask {
 			deleteFile(newFile);
 			throw e;
 		}
-		if (fileAction.getSpFileFormatException() != null) {
-			throw fileAction.getSpFileFormatException();
-		}
 		return newFile;
 	}
 

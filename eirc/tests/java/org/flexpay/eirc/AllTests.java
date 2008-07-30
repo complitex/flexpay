@@ -14,8 +14,9 @@ import org.junit.runners.Suite;
 		org.flexpay.eirc.service.AllTests.class,
 		org.flexpay.eirc.util.config.AllTests.class,
 		org.flexpay.eirc.sp.AllTests.class,
-		TestBigDecimal.class
-		})
+		TestBigDecimal.class,
+        TestProcess.class
+        })
 public class AllTests extends TestCase {
 
 	public static Test suite() {
