@@ -22,8 +22,8 @@ public class ProcessViewAction {
 		Process processStub = new Process();
 		processStub.setId(id);
 		processStub.setLogFileName("logFileName");
-		processStub.setProcess_end_date(new Date());
-		processStub.setProcess_start_date(new Date());
+		processStub.setProcessEndDate(new Date());
+		processStub.setProcessStartDate(new Date());
 		processStub.setProcessDefenitionVersion(1);
 		processStub.setProcessDefinitionName("processDefinitionName");
 		processStub.setProcessInstaceId(1);

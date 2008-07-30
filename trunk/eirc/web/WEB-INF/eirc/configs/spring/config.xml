@@ -6,7 +6,6 @@
     <import resource="beans_dao.xml" />
     <import resource="beans_services.xml" />
     <import resource="beans_struts.xml" />
-    <import resource="beans_logic.xml" />
     <import resource="data_export.xml" />
 
 	<import resource="beans_self_testing.xml" />

@@ -32,6 +32,8 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class TestServiceProviderFileProcessor extends TestSpFileAction {
 
@@ -191,6 +193,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		assertEquals("Invalid number of records without errors", nErrorLessRecords, nConsumerLessRecords);
 	}
 
+	@SuppressWarnings ({"UnusedDeclaration"})
 	private File generatePaymentsFile() throws Throwable {
 
 		int nRecords = 250000;
@@ -201,6 +204,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		Organisation recipient = ApplicationConfig.getSelfOrganisation();
 		OutputStream os = null;
 		try {
+			//noinspection IOResourceOpenedButNotSafelyClosed
 			os = new BufferedOutputStream(new FileOutputStream(tmpFile));
 
 			String header = getHeader(nRecords, totalAmount, recipient);
@@ -275,6 +279,8 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		Service service = accountRecord.getConsumer().getService();
 		Date operationDate = accountRecord.getOperationDate();
 
+		DateFormat dateFormat = new SimpleDateFormat(SpFileParser.DATE_FORMAT);
+
 		buf
 				// message type
 				.append((char) SpFileReader.Message.MESSAGE_TYPE_RECORD)
@@ -302,7 +308,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 				.append(RECORD_DELIMITER)
 
 						// Operation date
-				.append(SpFileParser.dateFormat.format(operationDate))
+				.append(dateFormat.format(operationDate))
 				.append(RECORD_DELIMITER)
 
 						// Unique operation number
@@ -362,6 +368,8 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	private String getHeader(int nRecords, BigDecimal amount, Organisation recipient) throws IOException {
 		StringBuilder buf = new StringBuilder();
 
+		DateFormat dateFormat = new SimpleDateFormat(SpFileParser.DATE_FORMAT);
+
 		Date now = DateUtils.truncate(new Date(), Calendar.DATE);
 		Date begin = DateUtils.truncate(now, Calendar.MONTH);
 		Date end = DateUtils.add(begin, Calendar.MONTH, 1);
@@ -383,15 +391,15 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 				.append(RECORD_DELIMITER)
 
 						// generation date
-				.append(SpFileParser.dateFormat.format(now))
+				.append(dateFormat.format(now))
 				.append(RECORD_DELIMITER)
 
 						// begin date
-				.append(SpFileParser.dateFormat.format(begin))
+				.append(dateFormat.format(begin))
 				.append(RECORD_DELIMITER)
 
 						// begin date
-				.append(SpFileParser.dateFormat.format(end))
+				.append(dateFormat.format(end))
 				.append(RECORD_DELIMITER)
 
 				.append(ApplicationConfig.getSelfOrganisation().getId())

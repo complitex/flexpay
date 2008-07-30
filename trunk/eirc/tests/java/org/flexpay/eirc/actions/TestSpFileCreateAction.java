@@ -2,16 +2,17 @@ package org.flexpay.eirc.actions;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.service.SpFileService;
-import org.junit.Test;
-import org.junit.Ignore;
-import static org.junit.Assert.fail;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.NotTransactional;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,16 +36,19 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 	}
 
 	protected SpFile createSpFile(@NotNull @NonNls String spFile) throws Throwable {
-		File tmpDataFile = File.createTempFile("sp_sample", ".txt");
+		String name = StringUtil.getFileName(spFile);
+		String extension = StringUtil.getFileExtension(name);
+		File tmpDataFile = File.createTempFile(name, extension);
 		tmpDataFile.deleteOnExit();
 		OutputStream os = null;
 		InputStream is = null;
 		try {
+			//noinspection IOResourceOpenedButNotSafelyClosed
 			os = new FileOutputStream(tmpDataFile);
 
 			is = getFileStream(spFile);
 			if (is == null) {
-				fail("Cannot find source file");
+				fail("Cannot find source file " + spFile);
 			}
 			IOUtils.copy(is, os);
 		} finally {
@@ -53,7 +57,7 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 		}
 
 		fileCreateAction.setUpload(tmpDataFile);
-		fileCreateAction.setUploadFileName("sp.txt");
+		fileCreateAction.setUploadFileName(name);
 		fileCreateAction.setSubmitted("submitted");
 
 		assertEquals("Invalid Struts action result", SpFileCreateAction.INPUT, fileCreateAction.execute());

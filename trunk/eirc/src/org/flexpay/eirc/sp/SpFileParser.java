@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.service.internal.SessionUtils;
+import org.flexpay.common.util.FileSource;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.persistence.exchange.Operation;
@@ -13,11 +14,10 @@ import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.sp.SpFileReader.Message;
 import org.flexpay.eirc.util.config.ApplicationConfig;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -32,9 +32,9 @@ public class SpFileParser {
 
 	private Logger log = Logger.getLogger(getClass());
 
-	private static final int MAX_CONTAINER_SIZE = 2048;
+	public static final String DATE_FORMAT = "ddMMyyyyHHmmss";
 
-	public static final DateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
+	private static final int MAX_CONTAINER_SIZE = 2048;
 
 	private SpRegistryService spRegistryService;
 	private SpRegistryRecordService spRegistryRecordService;
@@ -48,48 +48,53 @@ public class SpFileParser {
 	private OrganisationService organisationService;
 	private SPService spService;
 
-	private SpRegistry spRegistry;
-	private long registryRecordCounter;
-
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
 	public void parse(SpFile spFile) throws Exception {
 
+		FileSource fileSource = null;
 		InputStream is = null;
 
+		SpRegistry registry = null;
 		try {
-			is = openRegistryFile(spFile);
+			fileSource = openRegistryFile(spFile);
+			is = fileSource.openStream();
 			SpFileReader reader = new SpFileReader(is);
+
+			Long[] recordCounter = {0L};
 
 			Message message;
 			while ((message = reader.readMessage()) != null) {
-				processMessage(message, spFile);
+				registry = processMessage(message, spFile, registry, recordCounter);
 			}
-			finalizeRegistry();
+			finalizeRegistry(registry, recordCounter);
 			sessionUtils.flush();
 			sessionUtils.clear();
 
 			if (log.isDebugEnabled()) {
-				log.debug("Parsed " + registryRecordCounter + " records");
+				log.debug("Parsed " + recordCounter[0] + " records");
 			}
 		} catch (Throwable t) {
-			if (spRegistry != null) {
-				registryWorkflowManager.setNextErrorStatus(spRegistry);
+			if (registry != null) {
+				registryWorkflowManager.setNextErrorStatus(registry);
 			}
 			log.error("Failed parsing registry file", t);
 			throw new Exception("Failed parsing registry file", t);
 		} finally {
 			IOUtils.closeQuietly(is);
+			if (fileSource != null) {
+				fileSource.close();
+			}
 		}
 	}
 
 	/**
-	 * TODO add ZIP files support
+	 * Open source registry file
 	 *
 	 * @param spFile Registry file
-	 * @return InputStream
+	 * @return FileSource
 	 * @throws Exception if failure occurs
 	 */
-	private InputStream openRegistryFile(SpFile spFile) throws Exception {
+	private FileSource openRegistryFile(SpFile spFile) throws Exception {
 		File file = spFile.getRequestFile();
 		if (file == null) {
 			throw new FileNotFoundException("For SpFile(id=" + spFile.getId()
@@ -97,16 +102,26 @@ public class SpFileParser {
 											+ spFile.getInternalRequestFileName());
 		}
 
-		return new FileInputStream(file);
+		log.debug("Opening registry file: " + spFile);
+
+		String type = "";
+		if (spFile.getRequestFileName().endsWith(".zip")) {
+			log.debug("zip file");
+			type = "zip";
+		} else if (spFile.getRequestFileName().endsWith(".gz")) {
+			log.debug("gzip file");
+			type = "gzip";
+		}
+		return new FileSource(file, type);
 	}
 
-	@Transactional(propagation = Propagation.NOT_SUPPORTED)
-	private void processMessage(Message message, SpFile spFile) throws Exception {
+	@Transactional (propagation = Propagation.NOT_SUPPORTED)
+	private SpRegistry processMessage(Message message, SpFile spFile, SpRegistry registry, Long[] recordCounter) throws Exception {
 
 		String messageValue = message.getBody();
 		Integer messageType = message.getType();
 		if (StringUtils.isEmpty(messageValue)) {
-			return;
+			return registry;
 		}
 
 		List<String> messageFieldList = StringUtil.splitEscapable(
@@ -117,29 +132,36 @@ public class SpFileParser {
 		}
 
 		if (messageType.equals(Message.MESSAGE_TYPE_HEADER)) {
-			processHeader(spFile, messageFieldList);
+			if (registry != null) {
+				throw new SpFileFormatException("Not unique registry header present");
+			}
+			registry = processHeader(spFile, messageFieldList);
 		} else if (messageType.equals(Message.MESSAGE_TYPE_RECORD)) {
-			processRecord(messageFieldList);
+			processRecord(messageFieldList, registry, recordCounter);
 		} else if (messageType.equals(Message.MESSAGE_TYPE_FOOTER)) {
 			processFooter(messageFieldList);
 		}
+
+		return registry;
 	}
 
-	private void processHeader(SpFile spFile, List<String> messageFieldList) throws Exception {
+	@Transactional (readOnly = true, propagation = Propagation.REQUIRED)
+	private SpRegistry processHeader(SpFile spFile, List<String> messageFieldList) throws Exception {
 		if (messageFieldList.size() < 11) {
 			throw new SpFileFormatException(
 					"Message header error, invalid number of fields: "
 					+ messageFieldList.size() + ", expected 11");
 		}
 
-		registryRecordCounter = 0;
+		if (log.isInfoEnabled()) {
+			log.info("adding header: " + messageFieldList);
+		}
+		DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+
 		SpRegistry newRegistry = new SpRegistry();
 		newRegistry.setArchiveStatus(spRegistryArchiveStatusService.findByCode(SpRegistryArchiveStatus.NONE));
 		registryWorkflowManager.setInitialStatus(newRegistry);
 		newRegistry.setSpFile(spFile);
-		if (log.isInfoEnabled()) {
-			log.info("adding header: " + messageFieldList);
-		}
 		try {
 			int n = 0;
 			newRegistry.setRegistryNumber(Long.valueOf(messageFieldList.get(++n)));
@@ -195,7 +217,7 @@ public class SpFileParser {
 			}
 			newRegistry.setServiceProvider(provider);
 
-			spRegistry = spRegistryService.create(newRegistry);
+			return spRegistryService.create(newRegistry);
 		} catch (NumberFormatException e) {
 			log.error("Header parse error", e);
 			throw new SpFileFormatException("Header parse error");
@@ -205,9 +227,9 @@ public class SpFileParser {
 		}
 	}
 
-	@Transactional(readOnly = false)
-	private void processRecord(List<String> messageFieldList) throws Exception {
-		if (spRegistry == null) {
+	@Transactional (readOnly = true, propagation = Propagation.REQUIRED)
+	private void processRecord(List<String> messageFieldList, SpRegistry registry, Long[] recordCounter) throws Exception {
+		if (registry == null) {
 			throw new SpFileFormatException("Error - registry must start before record");
 		}
 
@@ -216,14 +238,15 @@ public class SpFileParser {
 					"Message record error, invalid number of fields: "
 					+ messageFieldList.size());
 		}
-		registryRecordCounter++;
-		if (registryRecordCounter % 100 == 0) {
+
+		recordCounter[0] = recordCounter[0] + 1;
+		if (recordCounter[0] % 100 == 0) {
 			sessionUtils.flush();
 			sessionUtils.clear();
 		}
 
 		SpRegistryRecord record = new SpRegistryRecord();
-		record.setSpRegistry(spRegistry);
+		record.setSpRegistry(registry);
 		try {
 			if (log.isInfoEnabled()) {
 				log.info("adding record: |"
@@ -260,7 +283,7 @@ public class SpFileParser {
 						fioStr, Operation.FIO_DELIMITER, Operation.ESCAPE_SIMBOL);
 				if (fioFieldList.size() != 3) {
 					throw new SpFileFormatException(
-					String.format("FIO group '%s' has invalid number of fields %d",
+							String.format("FIO group '%s' has invalid number of fields %d",
 									fioStr, fioFieldList.size()));
 				}
 				record.setLastName(fioFieldList.get(0));
@@ -269,6 +292,7 @@ public class SpFileParser {
 			}
 
 			// setup operation date
+			DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 			record.setOperationDate(dateFormat.parse(messageFieldList.get(++n)));
 
 			// setup unique operation number
@@ -350,27 +374,24 @@ public class SpFileParser {
 		return result;
 	}
 
-
 	private void processFooter(List<String> messageFieldList)
 			throws SpFileFormatException {
 		if (messageFieldList.size() < 2) {
-			throw new SpFileFormatException(
-					"Message footer error, invalid number of fields");
+			throw new SpFileFormatException("Message footer error, invalid number of fields");
 		}
 	}
 
-	private void finalizeRegistry() throws Exception {
-		if (spRegistry == null) {
+	private void finalizeRegistry(SpRegistry registry, Long[] recordCounter) throws Exception {
+		if (registry == null) {
 			return;
 		}
 
-		if (spRegistry.getRecordsNumber() != registryRecordCounter) {
+		if (!registry.getRecordsNumber().equals(recordCounter[0])) {
 			throw new SpFileFormatException("Registry records number error, expected: " +
-											spRegistry.getRecordsNumber() + ", found: " + registryRecordCounter);
+											registry.getRecordsNumber() + ", found: " + recordCounter[0]);
 		}
 
-		registryWorkflowManager.setNextSuccessStatus(spRegistry);
-		spRegistry = null;
+		registryWorkflowManager.setNextSuccessStatus(registry);
 	}
 
 	/**
