@@ -70,5 +70,4 @@ public class SpFileCreateAction extends FPActionSupport {
 	public boolean isUploaded() {
 		return isUploaded;
 	}
-
 }

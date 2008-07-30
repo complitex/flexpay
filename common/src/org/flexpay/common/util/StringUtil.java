@@ -1,10 +1,11 @@
 package org.flexpay.common.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 public class StringUtil {
 
@@ -80,5 +81,35 @@ public class StringUtil {
 
 	public static String fillLeadingZero(String source, int targetLength) {
 		return StringUtils.leftPad(source, targetLength, '0');
+	}
+
+	/**
+	 * Get file name from its path
+	 * <p/>
+	 * For example <code>boo/bar.txt</code> path has <code>bar.txt</code> name
+	 *
+	 * @param path File path
+	 * @return File name
+	 */
+	public static String getFileName(@NotNull String path) {
+		int slashPos = path.lastIndexOf('/') + 1;
+		return path.substring(slashPos);
+	}
+
+	/**
+	 * Get file extension from its name
+	 * <p/>
+	 * For example <code>boo/bar.txt</code> path has <code>.txt</code> extension
+	 *
+	 * @param path File path
+	 * @return File extension if available, or empty string
+	 */
+	@NotNull
+	public static String getFileExtension(@NotNull String path) {
+		int slashPos = getFileName(path).lastIndexOf('.');
+		if (slashPos == -1) {
+			return "";
+		}
+		return path.substring(slashPos);
 	}
 }

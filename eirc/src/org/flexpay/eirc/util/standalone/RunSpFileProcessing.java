@@ -56,8 +56,8 @@ public class RunSpFileProcessing implements StandaloneTask {
 	public void execute() {
 
 		try {
-			loadRegistryBig();
-//			loadRegistrySmall();
+//			loadRegistryBig();
+			loadRegistrySmall();
 //			openAccountsBig();
 //			openAccountsSmall();
 		} catch (Throwable e) {

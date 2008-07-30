@@ -3,26 +3,47 @@ package org.flexpay.eirc.actions;
 import org.flexpay.eirc.dao.SpRegistryDao;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.service.SpFileService;
-import static org.junit.Assert.assertEquals;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.flexpay.common.process.ProcessManager;
 import org.jetbrains.annotations.NonNls;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import org.junit.Ignore;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.NotTransactional;
 
 public class TestSpFileAction extends TestSpFileCreateAction {
 
 	@Autowired
-	private SpFileAction fileAction;
+	protected SpFileAction fileAction;
 	@Autowired
-	private SpFileService fileService;
+	protected SpRegistryDao spRegistryDao;
 	@Autowired
-	private SpRegistryDao spRegistryDao;
+	protected ProcessManager processManager;
 
-	@Ignore
 	@Test
+	@NotTransactional
 	public void testUploadFile() throws Throwable {
 		SpFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.txt");
+
+		// do clean up
+		deleteRecords(newFile);
+		deleteFile(newFile);
+	}
+
+	@Test
+	@NotTransactional
+	public void testUploadZipFile() throws Throwable {
+		SpFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.zip");
+
+		// do clean up
+		deleteRecords(newFile);
+		deleteFile(newFile);
+	}
+
+	@Test
+	@NotTransactional
+	public void testUploadGZipFile() throws Throwable {
+		SpFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.txt.gz");
 
 		// do clean up
 		deleteRecords(newFile);
