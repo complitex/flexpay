@@ -5,6 +5,7 @@ import org.flexpay.common.process.job.JobManager;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.exception.*;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.util.CollectionUtils;
 import org.jbpm.db.*;
 import org.jbpm.JbpmConfiguration;
 import org.jbpm.JbpmContext;
@@ -17,7 +18,6 @@ import org.jbpm.graph.def.ProcessDefinition;
 import java.util.*;
 import java.io.Serializable;
 import java.io.InputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.lang.*;
 
@@ -507,12 +507,18 @@ public class ProcessManager implements Runnable {
             for (ProcessInstance processInstance: processInstanceList){
                 Process process = new Process();
                 process.setProcessDefinitionName(processInstance.getProcessDefinition().getName());
-                process.setProcess_end_date(processInstance.getEnd());
-                process.setProcess_start_date(processInstance.getStart());
+                process.setProcessEndDate(processInstance.getEnd());
+                process.setProcessStartDate(processInstance.getStart());
                 process.setProcessDefenitionVersion(processInstance.getProcessDefinition().getVersion());
-                HashMap prameters = new HashMap();
-                prameters.putAll(processInstance.getContextInstance().getVariables());
-                process.setParameters(prameters);
+//                HashMap prameters = new HashMap();
+//                prameters.putAll(processInstance.getContextInstance().getVariables());
+//                process.setParameters(prameters);
+                Map parameters = processInstance.getContextInstance().getVariables();
+                if (parameters == null){
+                    process.setParameters(new HashMap <Serializable,Serializable>());
+                } else{
+                    process.setParameters(parameters);
+                }
                 processList.add(process);
             }
         }
