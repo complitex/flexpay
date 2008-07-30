@@ -2,28 +2,29 @@ package org.flexpay.common.process;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.io.Serializable;
 
 public class Process {
 
     private long id;
     private String logFileName;
-    private Date process_start_date;
-    private Date process_end_date;
+    private Date processStartDate;
+    private Date processEndDate;
     private ProcessState processState;
     private String processDefinitionName;
     private long processInstaceId;
     private long processDefenitionVersion;
 
 //    private ProcessStatus processStatus = new ProcessStatus();
-    private HashMap <Serializable,Serializable> parameters = new HashMap<Serializable,Serializable>() ;
+    private Map<Serializable,Serializable> parameters = new HashMap<Serializable,Serializable>() ;
 
 //    public process (long id){
     public Process (){
 //        processStatus.setStart(new Date());
 //        processStatus.setId(id);
 //        processStatus.setState(ProcessState.WAITING);
-//        this.process_start_date = new Date();
+//        this.processStartDate = new Date();
 //        this.processState = ProcessState.WAITING;
 //        this.processDefinitionName = processDefinitionName;
     }
@@ -52,20 +53,20 @@ public class Process {
         this.logFileName = logFileName;
     }
 
-    public Date getProcess_start_date() {
-        return process_start_date;
+    public Date getProcessStartDate() {
+        return processStartDate;
     }
 
-    public void setProcess_start_date(Date process_start_date) {
-        this.process_start_date = process_start_date;
+    public void setProcessStartDate(Date processStartDate) {
+        this.processStartDate = processStartDate;
     }
 
-    public Date getProcess_end_date() {
-        return process_end_date;
+    public Date getProcessEndDate() {
+        return processEndDate;
     }
 
-    public void setProcess_end_date(Date process_end_date) {
-        this.process_end_date = process_end_date;
+    public void setProcessEndDate(Date processEndDate) {
+        this.processEndDate = processEndDate;
     }
 
     public long getId() {
@@ -84,19 +85,19 @@ public class Process {
         this.processDefinitionName = processDefinitionName;
     }
 
-    public HashMap<Serializable, Serializable> getParameters() {
+    public Map<Serializable, Serializable> getParameters() {
         return parameters;
     }
 
-    public void setParameters(HashMap<Serializable, Serializable> parameters) {
+    public void setParameters(Map<Serializable, Serializable> parameters) {
         this.parameters = parameters;
     }
 
     public ProcessState getProcessState() {
         if (processState == null){
-            if (process_start_date == null){
+            if (processStartDate == null){
                 return ProcessState.WAITING;
-            }else if (process_end_date == null){
+            }else if (processEndDate == null){
                 return ProcessState.RUNING;
             }else {
                 return ProcessState.COMPLITED;

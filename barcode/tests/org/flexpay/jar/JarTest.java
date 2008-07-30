@@ -125,7 +125,8 @@ public class JarTest implements Runnable, SerialPortEventListener {
       // first thing in the thread, we initialize the write operation
       initwritetoport();
       try {
-         while (true) {
+          //noinspection InfiniteLoopStatement
+          while (true) {
             // write string to port, the serialEvent will read it
 //            writetoport();
             Thread.sleep(1000);

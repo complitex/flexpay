@@ -55,11 +55,18 @@
 
         <unjar src="${barcode.dir}/lib/rxtx/RXTXcomm.jar" dest="${build.dir}/classes"/>
 
-        <jar destfile="${build.dir}/lib/${barcode.jar.name}" manifest="${barcode.dir}/resources/META-INF/manifest.mf">
+        <jar destfile="${build.dir}/lib/${barcode.jar.name}" >
             <fileset dir="${build.dir}/classes" />
             <fileset dir="${barcode.dir}/resources" id="barcode_applet_resources" >
                 <include name="**/*.*"/>
             </fileset>
+            <!--<fileset dir="${barcode.dir}/lib/rxtx/" id="rxtxlib">-->
+                <!--<include name="**/*.*"/>-->
+            <!--</fileset>-->
+            <manifest>
+                <!--<attribute name="Class-Path" value="RXTXcomm.jar"/>-->
+                <attribute name="Main-Class" value="org.flexpay.barcode.BarcodeReaderApplet"/>
+            </manifest>
         </jar>
 
         <signjar jar="${build.dir}/lib/${barcode.jar.name}"
