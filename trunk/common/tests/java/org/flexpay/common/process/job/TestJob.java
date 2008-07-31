@@ -62,7 +62,7 @@ public class TestJob extends TestCase {
             }
             public synchronized void jobFinished(Long taskId, HashMap<Serializable, Serializable> parameters, String transition) {
                 is_job_finished = true;
-                assertEquals(Job.ERROR, transition);
+                assertEquals(Job.RESULT_ERROR, transition);
             }
         };
 
@@ -88,7 +88,7 @@ public class TestJob extends TestCase {
         public String execute(HashMap param) {
             assertTrue(true);
             assertEquals((String) param.get(TEST_STRING), TEST_STRING);
-            return Job.NEXT;
+            return Job.RESULT_NEXT;
         }
     }
 

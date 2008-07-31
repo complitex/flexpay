@@ -1,19 +1,21 @@
 package org.flexpay.common.process.job;
 
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.ProcessManagerConfiguration;
 import org.flexpay.common.process.exception.*;
-import org.flexpay.common.logger.FPLogger;
-import org.flexpay.common.exception.FlexPayException;
+import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.BeansException;
+import org.apache.log4j.Logger;
 
 import java.util.*;
 import java.io.Serializable;
 
 
-public class JobManager {
+public class JobManager implements BeanFactoryAware {
 
     volatile protected static JobManager instance = null;
-
+    private volatile BeanFactory beanFactory;
+    Logger log = Logger.getLogger(JobManager.class);
     private Map<String,Job> runningJobs = new Hashtable<String, Job>();
     private Map<String,Job> sleepingJobs = new Hashtable<String, Job>();
     private LinkedList<Job> waitingJobs = new LinkedList<Job>();
@@ -45,6 +47,10 @@ public class JobManager {
         runningJobs = new Hashtable<String, Job>();
         sleepingJobs = new Hashtable<String, Job>();
         waitingJobs = new LinkedList<Job>();
+    }
+
+    public synchronized static void unpoad(){
+        instance = null;
     }
 
     private synchronized String start(Job job, HashMap <Serializable, Serializable> parameters) {
@@ -95,61 +101,83 @@ public class JobManager {
         jobParameters.put(job.getId(), param);
     }
 
-    /**
-     * Add job to queue
-     *
-     * @param processId - current process id
-     * @param taskId - current task id
-     * @param jobName job name
-     * @param parameters  job parameters
-     * @return true if success
-     * @throws org.flexpay.common.exception.FlexPayException if one of exception accured
-     */
     public synchronized boolean addJob(long processId, long taskId, String jobName, HashMap<Serializable, Serializable> parameters)
         throws JobInstantiationException, JobClassNotFoundException, JobConfigurationNotFoundException{
-    
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        String jobClassName;
-        try {
-            jobClassName = ProcessManagerConfiguration.getInstance().getJobClazzName(jobName);
-        } catch (JobConfigurationNotFoundException e) {
-            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Configuration fault", e);
-            throw new JobConfigurationNotFoundException(e);
-        }
-        Job job;
-        if ((jobClassName == null) || (jobClassName.equals(""))) {
-            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Missing configuration for job: " + jobName);
-            throw new JobConfigurationNotFoundException("Missing configuration for job: " + jobName);
-        }
-        try {
-            Class<?> clazz;
+
+        if (beanFactory.containsBean(jobName)){
             try {
-                clazz = classLoader.loadClass(jobClassName);
-                FPLogger.logMessage(FPLogger.INFO, "JobManager.addJob: Job Class for job " + jobName + " successfully loaded");
+                Job job = (Job) beanFactory.getBean(jobName);
+                job.setTaskId(taskId);
+                job.setProcessId(processId);
+                addJob(job, parameters);
+                log.info("JobManager.addJob: Job " + jobName + " was added. Id=" + job.getId());
+            } catch (ClassCastException e){
+                log.fatal("JobManager.addJob: Illegal exception when creating instance of " + jobName, e);
+                throw new JobInstantiationException("Illegal exception when creating instance of " + jobName);
+            } catch (BeansException e){
+                log.fatal("JobManager.addJob: Illegal exception when creating instance of " + jobName, e);
+                throw new JobInstantiationException("Illegal exception when creating instance of " + jobName);
             }
-            catch (ClassNotFoundException e) {
-                FPLogger.logMessage(FPLogger.ERROR, "JobManager.addJob: Job class " + jobClassName + " for job name " + jobName + " was not found");
-                throw new JobClassNotFoundException("Job class " + jobClassName + " for job name " + jobName + " was not found");
-            }
-            job = (Job) clazz.newInstance();
-            FPLogger.logMessage(FPLogger.INFO, "JobManager.addJob: New instance for Job " + jobName + " was created");
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Instantiation exception when creating instance of " + jobClassName, e);
-            throw new JobInstantiationException("Instantiation exception when creating instance of " + jobClassName);
-        } catch (IllegalAccessException e) {
-            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Illegal exception when creating instance of " + jobClassName, e);
-            throw new JobInstantiationException("Illegal exception when creating instance of " + jobClassName);
-        } catch (ClassCastException e){
-            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Illegal exception when creating instance of " + jobClassName, e);
-            throw new JobInstantiationException("Illegal exception when creating instance of " + jobClassName);
+        }   else {
+            throw new JobConfigurationNotFoundException("Job bean is not configured");
         }
-        job.setTaskId(taskId);
-        job.setProcessId(processId);
-        addJob(job, parameters);
-        FPLogger.logMessage(FPLogger.INFO, "JobManager.addJob: Job " + jobName + " was added. Id=" + job.getId());
         return true;
     }
+
+//    /**
+//     * Add job to queue
+//     *
+//     * @return true if success
+//     * @throws org.flexpay.common.process.exception.JobClassNotFoundException when job class not found
+//     * @throws org.flexpay.common.process.exception.JobConfigurationNotFoundException when job configuration not found
+//     * @throws org.flexpay.common.process.exception.JobInstantiationException when can't instantiate job class
+//     */
+
+//    public synchronized boolean addJob(long processId, long taskId, String jobName, HashMap<Serializable, Serializable> parameters)
+//        throws JobInstantiationException, JobClassNotFoundException, JobConfigurationNotFoundException{
+//
+//        ClassLoader classLoader = this.getClass().getClassLoader();
+//        String jobClassName;
+//        try {
+//            jobClassName = ProcessManagerConfiguration.getInstance().getJobClazzName(jobName);
+//        } catch (JobConfigurationNotFoundException e) {
+//            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Configuration fault", e);
+//            throw new JobConfigurationNotFoundException(e);
+//        }
+//        Job job;
+//        if ((jobClassName == null) || (jobClassName.equals(""))) {
+//            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Missing configuration for job: " + jobName);
+//            throw new JobConfigurationNotFoundException("Missing configuration for job: " + jobName);
+//        }
+//        try {
+//            Class<?> clazz;
+//            try {
+//                clazz = classLoader.loadClass(jobClassName);
+//                FPLogger.logMessage(FPLogger.INFO, "JobManager.addJob: Job Class for job " + jobName + " successfully loaded");
+//            }
+//            catch (ClassNotFoundException e) {
+//                FPLogger.logMessage(FPLogger.ERROR, "JobManager.addJob: Job class " + jobClassName + " for job name " + jobName + " was not found");
+//                throw new JobClassNotFoundException("Job class " + jobClassName + " for job name " + jobName + " was not found");
+//            }
+//            job = (Job) clazz.newInstance();
+//            FPLogger.logMessage(FPLogger.INFO, "JobManager.addJob: New instance for Job " + jobName + " was created");
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Instantiation exception when creating instance of " + jobClassName, e);
+//            throw new JobInstantiationException("Instantiation exception when creating instance of " + jobClassName);
+//        } catch (IllegalAccessException e) {
+//            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Illegal exception when creating instance of " + jobClassName, e);
+//            throw new JobInstantiationException("Illegal exception when creating instance of " + jobClassName);
+//        } catch (ClassCastException e){
+//            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Illegal exception when creating instance of " + jobClassName, e);
+//            throw new JobInstantiationException("Illegal exception when creating instance of " + jobClassName);
+//        }
+//        job.setTaskId(taskId);
+//        job.setProcessId(processId);
+//        addJob(job, parameters);
+//        FPLogger.logMessage(FPLogger.INFO, "JobManager.addJob: Job " + jobName + " was added. Id=" + job.getId());
+//        return true;
+//    }
 
     public synchronized void setSleepStateOn(String jobId) {
         Job job = runningJobs.get(jobId);
@@ -175,5 +203,10 @@ public class JobManager {
           }
         }
         return false;
-    }    
+    }
+
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
+        log.debug("BeanFactory autowired!");
+    }
 }

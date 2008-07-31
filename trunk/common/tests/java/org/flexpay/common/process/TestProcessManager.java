@@ -105,7 +105,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
     //    private ProcessManager processManagerInstance;
     @Before
     public void setUp() {
-        ProcessManager.getInstance().stop();
+        ProcessManager.getInstance().stopProcessManager();
         ProcessManager.unload();
         clearDB();
 //        ProcessManager.getInstance().setJbpmConfiguration(jbpmConfiguration);
@@ -116,7 +116,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 
     @After
     public void tearDown() {
-        ProcessManager.getInstance().stop();
+        ProcessManager.getInstance().stopProcessManager();
 //        try {
 //            thread.join();
 //        }
@@ -150,7 +150,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
             public synchronized void jobFinished(Long taskId, HashMap<Serializable, Serializable> parameters, String transition) {
                 super.jobFinished(taskId, parameters, transition);
                 if (++counter >= 2) {
-                    stop();
+                    stopProcessManager();
                     instance = null;
                 }
             }
@@ -230,7 +230,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 
         public String execute(HashMap<Serializable, Serializable> parameters) throws FlexPayException {
 //            counter++;
-            return Job.NEXT;
+            return Job.RESULT_NEXT;
         }
     }
 
@@ -238,7 +238,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 
         public String execute(HashMap<Serializable, Serializable> parameters) throws FlexPayException {
 //            counter++;
-            return Job.NEXT;
+            return Job.RESULT_NEXT;
         }
     }
 

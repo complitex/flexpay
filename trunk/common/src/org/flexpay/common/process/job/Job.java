@@ -10,8 +10,8 @@ import java.io.Serializable;
 
 public abstract class Job implements Runnable{
 
-    public final static String NEXT = "next";
-    public final static String ERROR = "error";
+    public final static String RESULT_NEXT = "next";
+    public final static String RESULT_ERROR = "error";
     public final static String STATUS_ERROR = "ERROR_STATUS";
     private Thread jobThread = null;
     private String id;
@@ -39,7 +39,7 @@ public abstract class Job implements Runnable{
         try {
             String transition = this.execute(parameters);
             FPLogger.logMessage(FPLogger.INFO, "Job with id = " + getId() + " completed with status: " + transition);
-            if (transition.equals(ERROR)) {
+            if (transition.equals(RESULT_ERROR)) {
                 parameters.put(STATUS_ERROR, Boolean.TRUE);
             }
             jobMgr.jobFinished(id, transition);
@@ -47,14 +47,14 @@ public abstract class Job implements Runnable{
             FPLogger.logMessage(FPLogger.ERROR, "Job with id = " + getId() + " completed with exception", e);
             parameters.put(STATUS_ERROR, Boolean.TRUE);
             setEnd(new Date());
-            jobMgr.jobFinished(getId(), ERROR);
+            jobMgr.jobFinished(getId(), RESULT_ERROR);
         }
         setEnd(new Date());
     }
 
     public Thread startThread(HashMap<Serializable, Serializable> parameters){
         this.parameters.putAll(parameters);
-        jobThread = new Thread(this);
+        jobThread = new Thread(this, "JobThread-" +id);
         jobThread.start();
         return jobThread;
     }

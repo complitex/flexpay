@@ -9,8 +9,8 @@ public class AllTests extends TestCase {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
-        suite.addTest(new JUnit4TestAdapter(TestJob.class));
-        suite.addTest(new JUnit4TestAdapter(TestJobManager.class));
+//        suite.addTest(new JUnit4TestAdapter(TestJob.class));
+//        suite.addTest(new JUnit4TestAdapter(TestJobManager.class));
 		return suite;
 	}
 }
