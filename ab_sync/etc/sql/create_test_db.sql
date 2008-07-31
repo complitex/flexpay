@@ -5,7 +5,7 @@ grant all privileges on flexpay_sync_db.* to flexpay_user;
 flush privileges;
 
 create table vw_cn_changes (
-	id BIGINT NOT NULL,
+	id BIGINT NOT NULL AUTO_INCREMENT,
 	record_date DATETIME NOT NULL,
 	old_value VARCHAR(2000),
 	current_value VARCHAR(2000),
