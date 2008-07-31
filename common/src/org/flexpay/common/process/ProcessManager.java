@@ -11,12 +11,12 @@ import org.jbpm.JbpmConfiguration;
 import org.jbpm.JbpmContext;
 import org.jbpm.context.exe.ContextInstance;
 import org.jbpm.db.GraphSession;
-import org.jbpm.db.LoggingSession;
 import org.jbpm.db.TaskMgmtSession;
 import org.jbpm.graph.def.ProcessDefinition;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.graph.exe.Token;
 import org.jbpm.taskmgmt.exe.TaskInstance;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -28,21 +28,26 @@ public class ProcessManager implements Runnable {
 	/**
 	 * singleton instance
 	 */
-	protected static ProcessManager instance;
-	public static final String PROCESS_INSTANCE_ID = "ProcessInstanceID";
+	protected volatile static ProcessManager instance;
+    private volatile static Thread localThread;
+    private volatile boolean stop = false;
+    private volatile Object sleepSemaphore = new Object();
+    
 
-	private volatile boolean stop = false;
 	private HashMap<Long, Process> running = new HashMap<Long, Process>();
-	private HashMap<Long, Process> waiting = new HashMap<Long, Process>();
-	private final Object sleepSemaphore = new Object();
+//	private HashMap<Long, Process> waiting = new HashMap<Long, Process>();
+
 	public static final int RESCAN_FREQ = 10000; //@todo into global
-	public int MAXIMUM_PROCESS_THREADS = 10; //@todo into global
+	public static final int MAXIMUM_PROCESS_THREADS = 10; //@todo into global
+    public static final String PROCESS_INSTANCE_ID = "ProcessInstanceID";
+    private static final int startTaskLimit = 10; //@todo into global
 
-	private JbpmConfiguration jbpmConfiguration = null;
-	protected LoggingSession loggingSession = null;
-	private int startTaskLimit = 10; //@todo into global
+    private JbpmConfiguration jbpmConfiguration = null;
+//	protected LoggingSession loggingSession = null;
 
-	/**
+
+
+    /**
 	 * protected constructor
 	 */
 	protected ProcessManager() {
@@ -59,7 +64,17 @@ public class ProcessManager implements Runnable {
 		return instance;
 	}
 
-	/**
+    public static ProcessManager startProcessManager(){
+        if (localThread == null || !localThread.isAlive()){
+            ProcessManager pmInstance = getInstance();
+            localThread = new Thread (pmInstance, "ProcessManager Thread");
+            localThread.start();
+            return pmInstance;
+        }else{
+            return getInstance();
+        }
+    }
+    /**
 	 * Deploys process definition to jbpm by process definition name
 	 *
 	 * @param name	name of process definition
@@ -72,7 +87,7 @@ public class ProcessManager implements Runnable {
 	public long deployProcessDefinition(String name, boolean replace)
 			throws ProcessDefinitionException, ProcessManagerConfigurationException {
 
-		InputStream inputStream = null;
+		InputStream inputStream;
 		try {
 			inputStream = ProcessManagerConfiguration.getProcessDefinitionOSByName(name); //new FileInputStream("c:\\processDefinition.xml");
 		} catch (FileNotFoundException e) {
@@ -166,7 +181,8 @@ public class ProcessManager implements Runnable {
 				synchronized (sleepSemaphore) {
 					try {
 						sleepSemaphore.wait(RESCAN_FREQ);
-					} catch (InterruptedException e) {
+                        sleepSemaphore.notify();
+                    } catch (InterruptedException e) {
 						FPLogger.logMessage(FPLogger.ERROR, "ProcessManager.run: Somebody interrupts me.", e);
 						Thread.interrupted(); // clear "interrupted" state of thread
 					}
@@ -284,10 +300,14 @@ public class ProcessManager implements Runnable {
 		return result;
 	}
 
-	/**
-	 *
-	 */
-	public synchronized void createProcess(String processDefinitionName, Map<Serializable, Serializable> parameters) throws ProcessInstanceException, ProcessDefinitionException {
+    /**
+     * Create process for process definition name
+     * @param processDefinitionName process definitiona name
+     * @param parameters initial context variables
+     * @throws ProcessInstanceException when can't instantiate process instance
+     * @throws ProcessDefinitionException when process definition not found
+     */
+    public synchronized void createProcess(String processDefinitionName, Map<Serializable, Serializable> parameters) throws ProcessInstanceException, ProcessDefinitionException {
 //        Process process = new Process(processDefinitionName);
 		long processInstanceID = initProcess(processDefinitionName);
 //        process.setId(processInstanceID);
@@ -508,7 +528,8 @@ public class ProcessManager implements Runnable {
 			List<ProcessInstance> processInstanceList = graphSession.findProcessInstances(processDefinition.getId());
 			for (ProcessInstance processInstance : processInstanceList) {
 				Process process = new Process();
-				process.setProcessDefinitionName(processInstance.getProcessDefinition().getName());
+                process.setId(processInstance.getId());
+                process.setProcessDefinitionName(processInstance.getProcessDefinition().getName());
 				process.setProcessEndDate(processInstance.getEnd());
 				process.setProcessStartDate(processInstance.getStart());
 				process.setProcessDefenitionVersion(processInstance.getProcessDefinition().getVersion());
@@ -524,4 +545,25 @@ public class ProcessManager implements Runnable {
 		jbpmContext.close();
 		return processList;
 	}
+
+    @NotNull
+    public Process getProcessInastanceInfo(@NotNull Long processId) {
+        JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
+        Process process = new Process();
+        ProcessInstance processInstance = jbpmContext.getProcessInstance(processId);
+        if (processInstance != null) {
+            process.setId(processInstance.getId());
+            process.setProcessDefinitionName(processInstance.getProcessDefinition().getName());
+            process.setProcessEndDate(processInstance.getEnd());
+            process.setProcessStartDate(processInstance.getStart());
+            process.setProcessDefenitionVersion(processInstance.getProcessDefinition().getVersion());
+            Map parameters = processInstance.getContextInstance().getVariables();
+            if (parameters == null) {
+                process.setParameters(new HashMap<Serializable, Serializable>());
+            } else {
+                process.setParameters(parameters);
+            }
+        }
+        return process;
+    }
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import org.flexpay.common.process.Process;
+import org.flexpay.common.process.ProcessManager;
 
 public class ProcessViewAction {
 	
@@ -11,32 +12,10 @@ public class ProcessViewAction {
 	
 	
 	public String execute() {
-		process = getProcess(process.getId());
-		
-		
+		process = ProcessManager.getInstance().getProcessInastanceInfo(process.getId());
 		return "success";
 	}
 	
-	private Process getProcess(Long id) {
-		// TODO get real process
-		Process processStub = new Process();
-		processStub.setId(id);
-		processStub.setLogFileName("logFileName");
-		processStub.setProcessEndDate(new Date());
-		processStub.setProcessStartDate(new Date());
-		processStub.setProcessDefenitionVersion(1);
-		processStub.setProcessDefinitionName("processDefinitionName");
-		processStub.setProcessInstaceId(1);
-		HashMap parameters = new HashMap();
-        parameters.put("key1", "val1");
-        parameters.put("key2", "val2");
-        parameters.put("key3", "val3");
-        processStub.setParameters(parameters);
-		
-		return processStub;
-	}
-
-
 	/**
 	 * @return the process
 	 */
