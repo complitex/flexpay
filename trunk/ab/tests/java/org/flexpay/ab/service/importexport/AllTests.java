@@ -8,7 +8,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-		TestImportService.class
+//		TestImportService.class
 		})
 public class AllTests {
 
