@@ -6,6 +6,6 @@ import java.util.HashMap;
 
 public class MockJob extends Job{
     public String execute(HashMap parameters) throws FlexPayException {
-        return Job.NEXT;
+        return Job.RESULT_NEXT;
     }
 }
