@@ -11,21 +11,13 @@
 
 
     <start-state name="start">
-        <transition to="ParseFile"/>
+        <transition to="fileParserEvent"/>
     </start-state>
 
-    <task-node name="ParseFile">
-        <task swimlane="worker" blocking="yes">
-        </task>
-        <transition name="next" to="end"/>
+    <task-node name="fileParserEvent" >
+        <task swimlane="worker" blocking="yes"/>
+        <transition name="next" to="end" />
         <transition name="error" to="end"/>
-        <event type="node-enter">
-            <action name="FileParserEvent" config-type="bean" 
-                  class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
-                <targetBean>fileParserEvent</targetBean>
-                <factoryKey>jbpmConfiguration</factoryKey>
-               </action>
-        </event>
     </task-node>
 
 
