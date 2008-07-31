@@ -1,7 +1,7 @@
 package org.flexpay.common.process;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.logger.FPLogger;
+//import org.flexpay.common.logger.FPLogger;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.process.exception.ProcessManagerConfigurationException;
@@ -17,6 +17,7 @@ import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.graph.exe.Token;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jetbrains.annotations.NotNull;
+import org.apache.log4j.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -32,9 +33,10 @@ public class ProcessManager implements Runnable {
     private volatile static Thread localThread;
     private volatile boolean stop = false;
     private volatile Object sleepSemaphore = new Object();
-    
+    private static final Logger log  = Logger.getLogger(ProcessManager.class);
 
-	private HashMap<Long, Process> running = new HashMap<Long, Process>();
+
+    private HashMap<Long, Process> running = new HashMap<Long, Process>();
 //	private HashMap<Long, Process> waiting = new HashMap<Long, Process>();
 
 	public static final int RESCAN_FREQ = 10000; //@todo into global
@@ -50,9 +52,10 @@ public class ProcessManager implements Runnable {
     /**
 	 * protected constructor
 	 */
-	protected ProcessManager() {
+	protected  ProcessManager() {
 //        this.jbpmConfiguration = JbpmConfiguration.getInstance();
-	}
+        log.debug("ProcessManager constructor called ");
+    }
 
 	/**
 	 * @return ProcessManager instance
@@ -64,16 +67,43 @@ public class ProcessManager implements Runnable {
 		return instance;
 	}
 
-    public static ProcessManager startProcessManager(){
+    /**
+     * Start ProcessManager Thread
+      * @return ProcessManager
+     */
+    public static synchronized void startProcessManager(){
+        log.debug( "Starting ProcessManager thread");
         if (localThread == null || !localThread.isAlive()){
             ProcessManager pmInstance = getInstance();
             localThread = new Thread (pmInstance, "ProcessManager Thread");
             localThread.start();
-            return pmInstance;
-        }else{
-            return getInstance();
+            log.debug( "ProcessManager thread started");
+//            return pmInstance;
+//        }else{
+//            return getInstance();
+        } else {
+            log.debug( "ProcessManager thread already started");
         }
     }
+
+    /**
+     * Unload process manager and stop process manager thread
+     */
+    public static synchronized void unload() {
+        log.debug( "Stoping ProcessManager thread");
+        if (instance != null && localThread != null) {
+            instance.stopProcessManager();
+            try {
+                localThread.join();
+            } catch (InterruptedException e) {
+                log.debug( "can't stop ProcessManager thread");
+            }
+            instance = null;
+            localThread = null;
+        }
+        log.debug( "ProcessManager thread stoped ");
+    }
+
     /**
 	 * Deploys process definition to jbpm by process definition name
 	 *
@@ -91,7 +121,7 @@ public class ProcessManager implements Runnable {
 		try {
 			inputStream = ProcessManagerConfiguration.getProcessDefinitionOSByName(name); //new FileInputStream("c:\\processDefinition.xml");
 		} catch (FileNotFoundException e) {
-			FPLogger.logMessage(FPLogger.ERROR, "ProcessManager: process definition for name " + name + "file not found!");
+			log.error("ProcessManager: process definition for name " + name + "file not found!");
 			throw new ProcessManagerConfigurationException(e);
 		}
 		return deployProcessDefinition(inputStream, replace);
@@ -111,7 +141,7 @@ public class ProcessManager implements Runnable {
 			processDefinition = ProcessDefinition.parseXmlInputStream(in);
 			return deployProcessDefinition(processDefinition, replace);
 		} catch (Exception e) {
-			FPLogger.logMessage(FPLogger.ERROR, "deployProcessDefinition: ", e);
+			log.error("deployProcessDefinition: ", e);
 			if (processDefinition == null) {
 				throw new ProcessDefinitionException("ProcessManager: InputStream is not process definition file");
 			} else {
@@ -139,18 +169,18 @@ public class ProcessManager implements Runnable {
 
 		if (replace || (latestProcessDefinition == null)) {
 			if (latestProcessDefinition == null) {
-				FPLogger.logMessage(FPLogger.INFO, "Process definition not found. Deploying " + processDefinition.getName() + "...");
+				log.info("Process definition not found. Deploying " + processDefinition.getName() + "...");
 				newVersion = 1;
 				processDefinition.setVersion(newVersion);
 			} else {
 				int oldVersion = latestProcessDefinition.getVersion();
-				FPLogger.logMessage(FPLogger.INFO, "Deploying new version of process definition " + processDefinition.getName() + "...");
+				log.info("Deploying new version of process definition " + processDefinition.getName() + "...");
 				newVersion = oldVersion + 1;
 				processDefinition.setVersion(newVersion);
-				FPLogger.logMessage(FPLogger.INFO, "Old version = " + oldVersion + " New version = " + newVersion);
+				log.info("Old version = " + oldVersion + " New version = " + newVersion);
 			}
 			graphSession.saveProcessDefinition(processDefinition);
-			FPLogger.logMessage(FPLogger.INFO, "Deployed.");
+			log.info("Deployed.");
 		}
 		//close JbpmContext and commit transaction
 		jbpmContext.close();
@@ -161,11 +191,11 @@ public class ProcessManager implements Runnable {
 	 * main loop
 	 */
 	public void run() {
-		FPLogger.logMessage(FPLogger.DEBUG, "Starting process manager...");
+		log.debug("Starting process manager...");
 		while (!isStop()) {
 			try {
 				//write tick-tack message
-				FPLogger.logMessage(FPLogger.DEBUG, "tick...");
+				log.debug("Collecting task instances to run.");
 				//find not running task instances and run
 				JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
 				for (Object o : jbpmContext.getTaskMgmtSession().findTaskInstances(JobManagerAssignmentHandler.JOB_MANAGER_ACTOR_NAME)) {
@@ -183,21 +213,21 @@ public class ProcessManager implements Runnable {
 						sleepSemaphore.wait(RESCAN_FREQ);
                         sleepSemaphore.notify();
                     } catch (InterruptedException e) {
-						FPLogger.logMessage(FPLogger.ERROR, "ProcessManager.run: Somebody interrupts me.", e);
+						log.debug("ProcessManager.run: Somebody interrupts me.", e);
 						Thread.interrupted(); // clear "interrupted" state of thread
 					}
 				}
 			} catch (Throwable e) {
-				FPLogger.logMessage(FPLogger.ERROR, "ProcessManager mainLoop : ", e);
+				log.debug("ProcessManager mainLoop : ", e);
 			}
 		}
-		FPLogger.logMessage(FPLogger.DEBUG, "process manager stoped...");
+		log.debug( "process manager stoped...");
 	}
 
 	/**
 	 * Stops ProcessManager execution
 	 */
-	public synchronized void stop() {
+	public synchronized void stopProcessManager() {
 		stop = true;
 	}
 
@@ -226,23 +256,23 @@ public class ProcessManager implements Runnable {
 			processDefinition = graphSession.findLatestProcessDefinition(processDefinitionName);
 		} catch (RuntimeException e) {
 			jbpmContext.close();
-			FPLogger.logMessage(FPLogger.ERROR, "initProcess: findLatestProcessDefinition", e);
+			log.error("initProcess: findLatestProcessDefinition", e);
 			throw new ProcessDefinitionException("Can't access ProcessDefinition for " + processDefinitionName);
 
 		}
 		if (processDefinition == null) {
-			FPLogger.logMessage(FPLogger.ERROR, "initProcess: Can't find process definition for name: " + processDefinitionName);
+			log.error("initProcess: Can't find process definition for name: " + processDefinitionName);
 			throw new ProcessDefinitionException("initProcess: Can't find process definition for name: " + processDefinitionName);
 		}
 
-		FPLogger.logMessage(FPLogger.INFO, "initProcess: Initializing  process. Process Definition id = " + processDefinition.getId() + " name = " + processDefinition.getName() + " version = " + processDefinition.getVersion());
+		log.error("initProcess: Initializing  process. Process Definition id = " + processDefinition.getId() + " name = " + processDefinition.getName() + " version = " + processDefinition.getVersion());
 
 		try {
 			ProcessInstance processInstance = new ProcessInstance(processDefinition);
 			processId = processInstance.getId();
 		} catch (RuntimeException e) {
 			jbpmContext.close();
-			FPLogger.logMessage(FPLogger.ERROR, "initProcess: ProcessInstanceCreation", e);
+			log.error("initProcess: ProcessInstanceCreation", e);
 			throw new ProcessInstanceException("Can't create ProcessInstance for " + processDefinitionName);
 		}
 		jbpmContext.close();
@@ -268,7 +298,7 @@ public class ProcessManager implements Runnable {
 				}
 			}
 		} catch (RuntimeException e) {
-			FPLogger.logMessage(FPLogger.ERROR, "ProcessManager: getProcessParameters: ", e);
+			log.error("ProcessManager: getProcessParameters: ", e);
 			throw new ProcessInstanceException("ProcessManager: Can't get Process Dictionary for " + processID);
 		}
 		return result;
@@ -294,7 +324,7 @@ public class ProcessManager implements Runnable {
 				}
 			}
 		} catch (RuntimeException e) {
-			FPLogger.logMessage(FPLogger.ERROR, "ProcessManager: getProcessIDList: ", e);
+			log.error("ProcessManager: getProcessIDList: ", e);
 			throw new ProcessInstanceException("Can't get Process List");
 		}
 		return result;
@@ -308,10 +338,7 @@ public class ProcessManager implements Runnable {
      * @throws ProcessDefinitionException when process definition not found
      */
     public synchronized void createProcess(String processDefinitionName, Map<Serializable, Serializable> parameters) throws ProcessInstanceException, ProcessDefinitionException {
-//        Process process = new Process(processDefinitionName);
 		long processInstanceID = initProcess(processDefinitionName);
-//        process.setId(processInstanceID);
-
 		//starting process
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
 		GraphSession graphSession = jbpmContext.getGraphSession();
@@ -324,11 +351,10 @@ public class ProcessManager implements Runnable {
 		parameters.put(PROCESS_INSTANCE_ID, String.valueOf(processInstanceID));
 		ci.addVariables(parameters);
 		Token token = processInstance.getRootToken();
-		token.signal();
+        token.signal();
 		jbpmContext.close();
-		FPLogger.logMessage(FPLogger.INFO, "initProcess: Process Instance id = " + processInstanceID + " started.");
+		log.info("initProcess: Process Instance id = " + processInstanceID + " started.");
 
-		//@TODO method body
 //        waiting.put((long) 1, process);
 	}
 
@@ -357,27 +383,27 @@ public class ProcessManager implements Runnable {
 		if (startTaskCounter <= startTaskLimit) {
 			HashMap<Serializable, Serializable> params = (HashMap<Serializable, Serializable>) ci.getVariables();
 
-			FPLogger.logMessage(FPLogger.INFO, "Starting task \"" + task.getName() + "\" (" + ti + ", pid - " + pid + ")");
+			log.info("Starting task \"" + task.getName() + "\" (" + ti + ", pid - " + pid + ")");
 
 			if (null == task.getStart()) {
 				task.start();
 			} else {
-				FPLogger.logMessage(FPLogger.INFO, "Task \"" + task.getName() + "\" (" + ti + ", pid - " + pid + ")" + " restarted. Recovering from failure.");
+				log.info("Task \"" + task.getName() + "\" (" + ti + ", pid - " + pid + ")" + " restarted. Recovering from failure.");
 			}
 
 			try {
 				JobManager.getInstance().addJob(pi.getId(), task.getId(), task.getName(), params);
 			} catch (FlexPayException e) {
-				FPLogger.logMessage(FPLogger.ERROR, "ProcessManager: startTask: can't start task with name " + task.getName(), e);
+				log.error("ProcessManager: startTask: can't start task with name " + task.getName(), e);
 				return false;
 			}
 			return true;
 		} else {
-			FPLogger.logMessage(FPLogger.INFO, "Exceded limit (" + startTaskLimit + ") of starting task \"" + task.getName() + "\" (" + ti + ", pid - " + pid + "). Process ended.");
+			log.info("Exceded limit (" + startTaskLimit + ") of starting task \"" + task.getName() + "\" (" + ti + ", pid - " + pid + "). Process ended.");
 			pi.end();
-			task.end();
+			task.end(Job.RESULT_ERROR);
 			//set status to failed
-			ci.setVariable(Job.ERROR, ProcessState.COMPLITED_WITH_ERRORS);
+			ci.setVariable(Job.RESULT_ERROR, ProcessState.COMPLITED_WITH_ERRORS);
 			//remove from running tasks
 			running.remove(Long.valueOf(pi.getId()));
 			return false;
@@ -393,7 +419,7 @@ public class ProcessManager implements Runnable {
 	 */
 	public synchronized void jobFinished(Long taskId, HashMap<Serializable, Serializable> parameters, String transition) {
 		// this method called by Job to report finish
-		FPLogger.logMessage(FPLogger.DEBUG, "ProcessManager: jobFinished: taskId: " + taskId);
+		log.debug("ProcessManager: jobFinished: taskId: " + taskId);
 
 		boolean proceed = false;
 		JbpmContext jbpmContext;
@@ -408,9 +434,9 @@ public class ProcessManager implements Runnable {
 				task = taskMgmtSession.loadTaskInstance(taskId);
 
 				if (task == null) {
-					FPLogger.logMessage(FPLogger.ERROR, "ProcessManager: jobFinished: Can't find Task Instance, id: " + taskId);
+					log.error("ProcessManager: jobFinished: Can't find Task Instance, id: " + taskId);
 				} else {
-					FPLogger.logMessage(FPLogger.INFO, "ProcessManager: jobFinished: Finishing Task Instance, id: " + taskId);
+					log.info("ProcessManager: jobFinished: Finishing Task Instance, id: " + taskId);
 					ContextInstance ci = task.getTaskMgmtInstance().getProcessInstance().getContextInstance();
 					// save the variables in ProcessInstance dictionary
 					ci.addVariables(parameters);
@@ -422,17 +448,17 @@ public class ProcessManager implements Runnable {
 				proceed = true;
 				synchronized (sleepSemaphore) {
 					Object removed = running.remove(taskId);
-					FPLogger.logMessage(FPLogger.DEBUG, "ProcessManager: jobFinished: Task removed from list of running tasks: " + removed);
-					FPLogger.logMessage(FPLogger.DEBUG, "ProcessManager: jobFinished: Number of running tasks: " + running.size());
+					log.debug("ProcessManager: jobFinished: Task removed from list of running tasks: " + removed);
+					log.debug("ProcessManager: jobFinished: Number of running tasks: " + running.size());
 					sleepSemaphore.notify();
 				}
 			} catch (RuntimeException e) {
-				FPLogger.logMessage(FPLogger.ERROR, "ProcessManager: jobFinished: Failed to finish task: " + taskId, e);
-				FPLogger.logMessage(FPLogger.ERROR, "ProcessManager: jobFinished: Sleeping 30 sec and try again to finish task: " + taskId);
+				log.error("ProcessManager: jobFinished: Failed to finish task: " + taskId, e);
+				log.error("ProcessManager: jobFinished: Sleeping 30 sec and try again to finish task: " + taskId);
 				try {
 					Thread.sleep(30000);
 				} catch (InterruptedException ie) {
-					FPLogger.logMessage(FPLogger.FATAL, "ProcessManager: jobFinished: System failure when finishing task: " + taskId, e);
+					log.fatal("ProcessManager: jobFinished: System failure when finishing task: " + taskId, e);
 				}
 			}
 		}
@@ -460,10 +486,10 @@ public class ProcessManager implements Runnable {
 			ci.addVariables(parameters);
 			Token token = processInstance.getRootToken();
 			token.signal();
-			FPLogger.logMessage(FPLogger.INFO, "initProcess: Process Instance id = " + processID.toString() + " started.");
+			log.info( "initProcess: Process Instance id = " + processID.toString() + " started.");
 			jbpmContext.close();
 		} catch (RuntimeException e) {
-			FPLogger.logMessage(FPLogger.ERROR, "initProcess: ProcessInstanceCreation", e);
+			log.error("initProcess: ProcessInstanceCreation", e);
 			throw new ProcessInstanceException("Can't start ProcessInstance pid - " + processID.toString());
 		}
 	}
@@ -489,12 +515,12 @@ public class ProcessManager implements Runnable {
 					if (processInstances.size() == 0) {
 						graphSession.deleteProcessDefinition(processDefinitionID);
 					}
-					FPLogger.logMessage(FPLogger.DEBUG, "ProcessManager.removeProcess: removeProcess: removed process definition " + processDefinitionID);
+					log.debug("ProcessManager.removeProcess: removeProcess: removed process definition " + processDefinitionID);
 				}
 			}
 			jbpmContext.close();
 		} catch (RuntimeException e) {
-			FPLogger.logMessage(FPLogger.ERROR, "ProcessManager.removeProcess: ", e);
+			log.error("ProcessManager.removeProcess: ", e);
 			throw new ProcessInstanceException("Can't remove ProcessInstance for " + processID.toString());
 		}
 
@@ -507,16 +533,6 @@ public class ProcessManager implements Runnable {
 	 */
 	public void setJbpmConfiguration(JbpmConfiguration jbpmConfiguration) {
 		this.jbpmConfiguration = jbpmConfiguration;
-	}
-
-	/**
-	 * Unload process manager and stop process manager thread
-	 */
-	public static synchronized void unload() {
-		if (instance != null) {
-			instance.stop();
-			instance = null;
-		}
 	}
 
 	public List<Process> getProcessList() {
