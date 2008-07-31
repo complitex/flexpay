@@ -29,7 +29,7 @@
       startDate
     </td>
     <td class="col">
-      <s:property value="process.process_start_date"/>
+      <s:property value="process.processStartDate"/>
     </td>
   </tr>
   <tr valign="middle" class="cols_1">
@@ -37,7 +37,7 @@
       endDate
     </td>
     <td class="col">
-      <s:property value="process.process_end_date"/>
+      <s:property value="process.processEndEate"/>
     </td>
   </tr>
   <tr valign="middle" class="cols_1">
