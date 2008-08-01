@@ -37,7 +37,7 @@
       endDate
     </td>
     <td class="col">
-      <s:property value="process.processEndEate"/>
+      <s:property value="process.processEndDate"/>
     </td>
   </tr>
   <tr valign="middle" class="cols_1">
