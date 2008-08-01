@@ -91,23 +91,9 @@ public class ServiceProviderFileProcessor {
 				serviceOperationsFactory.setDataSource(rawConsumersDataSource);
 				processHeader(registry);
 
-				log.info("Starting importing consumers");
-				rawConsumersDataSource.setRegistry(registry);
-				setupRecordsConsumer(registry, rawConsumersDataSource);
+				setupRecordsConsumers(registry);
 
-				log.info("Starting processing records");
-				Page<SpRegistryRecord> pager = new Page<SpRegistryRecord>(50, 1);
-				boolean isEmpty;
-				do {
-					log.info("Fetching for records: " + pager);
-					List<SpRegistryRecord> records = spFileService.getRecordsForProcessing(registry, pager);
-					isEmpty = records.isEmpty();
-					for (SpRegistryRecord record : records) {
-						processRecord(registry, record);
-					}
-					pager.setPageNumber(pager.getPageNumber() + 1);
-				} while (!isEmpty);
-				log.info("No more records to process");
+				processRegistry(registry);
 			} catch (Exception e) {
 				String errMsg = "Failed processing registry: " + registry;
 				log.error(errMsg, e);
@@ -124,8 +110,49 @@ public class ServiceProviderFileProcessor {
 		}
 	}
 
+	public void processRegistry(SpRegistry registry) throws Exception {
+		log.info("Starting processing records");
+		Page<SpRegistryRecord> pager = new Page<SpRegistryRecord>(50, 1);
+		boolean isEmpty;
+		do {
+			log.info("Fetching for records: " + pager);
+			List<SpRegistryRecord> records = spFileService.getRecordsForProcessing(registry, pager);
+			isEmpty = records.isEmpty();
+			for (SpRegistryRecord record : records) {
+				processRecord(registry, record);
+			}
+			pager.setPageNumber(pager.getPageNumber() + 1);
+		} while (!isEmpty);
+		log.info("No more records to process");
+	}
+
+	public void setupRecordsConsumers(SpRegistry registry) {
+
+		log.info("Starting importing consumers");
+		rawConsumersDataSource.setRegistry(registry);
+		setupRecordsConsumer(registry, rawConsumersDataSource);
+	}
+
 	public void processRecords(SpRegistry registry, Set<Long> objectIds) throws Exception {
-		Collection<SpRegistryRecord> records = registryRecordService.findObjects(registry, objectIds);
+
+		setupRecordsConsumers(registry, objectIds);
+
+		try {
+			// refresh records
+			Collection<SpRegistryRecord> records  = registryRecordService.findObjects(registry, objectIds);
+			for (SpRegistryRecord record : records) {
+				processRecord(registry, record);
+			}
+		} catch (Exception e) {
+			String errMsg = "Failed processing registry: " + registry;
+			log.error(errMsg, e);
+			throw new FlexPayException(errMsg, e);
+		}
+	}
+
+	public void setupRecordsConsumers(SpRegistry registry, Set<Long> recordIds) throws Exception {
+
+		Collection<SpRegistryRecord> records = registryRecordService.findObjects(registry, recordIds);
 		RawDataSource<RawConsumerData> dataSource = new InMemoryRawConsumersDataSource(records);
 		errorsSupport.registerAlias(dataSource, rawConsumersDataSource);
 		serviceOperationsFactory.setDataSource(dataSource);
@@ -142,16 +169,6 @@ public class ServiceProviderFileProcessor {
 
 			registryWorkflowManager.startProcessing(registry);
 			setupRecordsConsumer(registry, dataSource);
-
-			// refresh records
-			records = registryRecordService.findObjects(registry, objectIds);
-			for (SpRegistryRecord record : records) {
-				processRecord(registry, record);
-			}
-		} catch (Exception e) {
-			String errMsg = "Failed processing registry: " + registry;
-			log.error(errMsg, e);
-			throw new FlexPayException(errMsg, e);
 		} finally {
 			registry = spRegistryService.read(registry.getId());
 			registryWorkflowManager.setNextSuccessStatus(registry);

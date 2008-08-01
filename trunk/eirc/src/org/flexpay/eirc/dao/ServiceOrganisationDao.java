@@ -23,5 +23,4 @@ public interface ServiceOrganisationDao extends GenericDao<ServiceOrganisation, 
 	 * @return Set of ServedBuilding
 	 */
 	Set<ServedBuilding> findServedBuildings(Long id);
-	
 }

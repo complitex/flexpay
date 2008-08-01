@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -108,7 +109,7 @@ public class SpRegistryDaoExtImpl extends HibernateDaoSupport implements SpRegis
 	 * @return collection of registries
 	 */
 	@SuppressWarnings({"unchecked"})
-	public Collection<SpRegistry> findRegistries(final Set<Long> objectIds) {
+	public Collection<SpRegistry> findRegistries(@NotNull final Set<Long> objectIds) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(@NonNls Session session) throws HibernateException, SQLException {
 				return session.createQuery("select distinct r from SpRegistry r " +

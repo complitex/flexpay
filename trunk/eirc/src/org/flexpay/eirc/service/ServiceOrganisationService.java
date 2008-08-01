@@ -5,15 +5,17 @@ import java.util.Set;
 
 import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
+import org.jetbrains.annotations.NotNull;
 
 public interface ServiceOrganisationService {
 	
 	/**
-	 * Get a list of available ServiceOrganisation
+	 * Get a list of available ServiceOrganisations
 	 *
-	 * @return List of ServiceOrganisation
+	 * @return List of ServiceOrganisations
 	 */
-	List<ServiceOrganisation> listServiceOrganisation();
+	@NotNull
+	List<ServiceOrganisation> listServiceOrganisations();
 	
 	/**
 	 * Read ServiceOrganisation object by its unique id
