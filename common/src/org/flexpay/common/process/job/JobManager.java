@@ -93,7 +93,6 @@ public class JobManager implements BeanFactoryAware {
 
     public synchronized final void addJob(Job job, Map<Serializable, Serializable> param) {
         if (runningJobs.size() < MAXIMUM_RUNNING_JOBS) {
-//            runningJobs.put(job.getId(),job);
             this.start(job, param);
         } else {
             waitingJobs.addLast(job);
@@ -124,61 +123,6 @@ public class JobManager implements BeanFactoryAware {
         return true;
     }
 
-//    /**
-//     * Add job to queue
-//     *
-//     * @return true if success
-//     * @throws org.flexpay.common.process.exception.JobClassNotFoundException when job class not found
-//     * @throws org.flexpay.common.process.exception.JobConfigurationNotFoundException when job configuration not found
-//     * @throws org.flexpay.common.process.exception.JobInstantiationException when can't instantiate job class
-//     */
-
-//    public synchronized boolean addJob(long processId, long taskId, String jobName, HashMap<Serializable, Serializable> parameters)
-//        throws JobInstantiationException, JobClassNotFoundException, JobConfigurationNotFoundException{
-//
-//        ClassLoader classLoader = this.getClass().getClassLoader();
-//        String jobClassName;
-//        try {
-//            jobClassName = ProcessManagerConfiguration.getInstance().getJobClazzName(jobName);
-//        } catch (JobConfigurationNotFoundException e) {
-//            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Configuration fault", e);
-//            throw new JobConfigurationNotFoundException(e);
-//        }
-//        Job job;
-//        if ((jobClassName == null) || (jobClassName.equals(""))) {
-//            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Missing configuration for job: " + jobName);
-//            throw new JobConfigurationNotFoundException("Missing configuration for job: " + jobName);
-//        }
-//        try {
-//            Class<?> clazz;
-//            try {
-//                clazz = classLoader.loadClass(jobClassName);
-//                FPLogger.logMessage(FPLogger.INFO, "JobManager.addJob: Job Class for job " + jobName + " successfully loaded");
-//            }
-//            catch (ClassNotFoundException e) {
-//                FPLogger.logMessage(FPLogger.ERROR, "JobManager.addJob: Job class " + jobClassName + " for job name " + jobName + " was not found");
-//                throw new JobClassNotFoundException("Job class " + jobClassName + " for job name " + jobName + " was not found");
-//            }
-//            job = (Job) clazz.newInstance();
-//            FPLogger.logMessage(FPLogger.INFO, "JobManager.addJob: New instance for Job " + jobName + " was created");
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Instantiation exception when creating instance of " + jobClassName, e);
-//            throw new JobInstantiationException("Instantiation exception when creating instance of " + jobClassName);
-//        } catch (IllegalAccessException e) {
-//            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Illegal exception when creating instance of " + jobClassName, e);
-//            throw new JobInstantiationException("Illegal exception when creating instance of " + jobClassName);
-//        } catch (ClassCastException e){
-//            FPLogger.logMessage(FPLogger.FATAL, "JobManager.addJob: Illegal exception when creating instance of " + jobClassName, e);
-//            throw new JobInstantiationException("Illegal exception when creating instance of " + jobClassName);
-//        }
-//        job.setTaskId(taskId);
-//        job.setProcessId(processId);
-//        addJob(job, parameters);
-//        FPLogger.logMessage(FPLogger.INFO, "JobManager.addJob: Job " + jobName + " was added. Id=" + job.getId());
-//        return true;
-//    }
-
     public synchronized void setSleepStateOn(String jobId) {
         Job job = runningJobs.get(jobId);
         if (job != null) {
@@ -207,6 +151,5 @@ public class JobManager implements BeanFactoryAware {
 
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;
-        log.debug("BeanFactory autowired!");
     }
 }
