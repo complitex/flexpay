@@ -18,9 +18,8 @@ public class ProcessListAction {
     public String execute() {
         if (objectIds != null && objectIds.size() >0){
             ProcessManager.getInstance().deleteProcessInstanceList(objectIds);
-        }else{
-            processList = getProcessListMethod();
         }
+        processList = getProcessListMethod();
 		return "success";
 	}
 	
