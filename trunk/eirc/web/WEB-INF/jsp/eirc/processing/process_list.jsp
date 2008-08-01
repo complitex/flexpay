@@ -9,7 +9,7 @@
     &nbsp;
   </td>
   <td class="th">
-    &nbsp;
+    <input type="checkbox" disabled="1" onchange="FP.setCheckboxes(this.checked, 'objectIds')">
   </td>
   <td class="th">
     <s:text name="eirc.processing.process.id" />
