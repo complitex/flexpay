@@ -6,6 +6,7 @@ import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
 
 import java.io.*;
+import java.util.List;
 
 /**
  * Sample RawStreedData data source, reads a file of ' Street Name | Type ' formatted
@@ -101,5 +102,14 @@ public class RawStreetDataSource implements RawDataSource<RawStreetData> {
 		} catch (IOException e) {
 			throw new RuntimeException("Cannot read line", e);
 		}
+	}
+
+	/**
+	 * return next batch of data
+	 *
+	 * @return List of raw data, when the list is empty hasNext() should return <code>false</code>
+	 */
+	public List<RawStreetData> nextPage() {
+		throw new RuntimeException("Not implemented");
 	}
 }

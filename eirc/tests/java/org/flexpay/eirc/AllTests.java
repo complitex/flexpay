@@ -10,12 +10,12 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+		TestProcess.class,
 		org.flexpay.eirc.actions.AllTests.class,
 		org.flexpay.eirc.service.AllTests.class,
 		org.flexpay.eirc.util.config.AllTests.class,
 		org.flexpay.eirc.sp.AllTests.class,
-		TestBigDecimal.class,
-        TestProcess.class
+		TestBigDecimal.class
         })
 public class AllTests extends TestCase {
 

@@ -417,7 +417,7 @@ public class ProcessManager implements Runnable {
 	 * @param parameters Task context parameters
 	 * @param transition transition name
 	 */
-	public synchronized void jobFinished(Long taskId, HashMap<Serializable, Serializable> parameters, String transition) {
+	public synchronized void jobFinished(Long taskId, Map<Serializable, Serializable> parameters, String transition) {
 		// this method called by Job to report finish
 		log.debug("ProcessManager: jobFinished: taskId: " + taskId);
 

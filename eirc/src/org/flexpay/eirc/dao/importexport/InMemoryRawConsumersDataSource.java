@@ -1,9 +1,13 @@
 package org.flexpay.eirc.dao.importexport;
 
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 import java.util.Collection;
+import java.util.List;
 
 public class InMemoryRawConsumersDataSource extends RawConsumersDataSourceBase {
 
@@ -34,7 +38,7 @@ public class InMemoryRawConsumersDataSource extends RawConsumersDataSourceBase {
 	public RawConsumerData getById(String objId) {
 		Long id = Long.valueOf(objId);
 		for (SpRegistryRecord record : records) {
-			if (record.getId().equals(id)) {
+			if (stub(record).getId().equals(id)) {
 				return convert(record);
 			}
 		}
@@ -56,13 +60,21 @@ public class InMemoryRawConsumersDataSource extends RawConsumersDataSourceBase {
 	}
 
 	/**
-	 * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns
-	 * <tt>true</tt> if <tt>next</tt> would return an element rather than throwing an
-	 * exception.)
+	 * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns <tt>true</tt> if <tt>next</tt> would return
+	 * an element rather than throwing an exception.)
 	 *
 	 * @return <tt>true</tt> if the iterator has more elements.
 	 */
 	public boolean hasNext() {
 		return dataIterator.hasNext();
+	}
+
+	public List<RawConsumerData> nextPage() {
+
+		List<RawConsumerData> result = CollectionUtils.list();
+		while (hasNext()) {
+			result.add(next(new ImportOperationTypeHolder()));
+		}
+		return result;
 	}
 }

@@ -251,7 +251,7 @@ public class RegistryWorkflowManager {
 			setNextErrorStatus(spRegistry);
 		} else {
 			if (log.isDebugEnabled()) {
-				log.info("Not updating registry status, current is " + code);
+				log.debug("Not updating registry status, current is " + code);
 			}
 		}
 	}

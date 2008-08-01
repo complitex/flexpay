@@ -1,12 +1,15 @@
 package org.flexpay.eirc.dao.importexport;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.eirc.dao.SpRegistryRecordDao;
 import org.flexpay.eirc.dao.SpRegistryRecordDaoExt;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RawConsumersDataSource extends RawConsumersDataSourceBase {
@@ -61,6 +64,20 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 		List<SpRegistryRecord> datum = registryRecordDaoExt.listRecordsForUpdate(registry.getId(), pager);
 		dataIterator = datum.iterator();
 		return dataIterator.hasNext();
+	}
+
+	public List<RawConsumerData> nextPage() {
+
+		if (!dataIterator.hasNext() && !hasNext()) {
+			return Collections.emptyList();
+		}
+
+		List<RawConsumerData> datum = new ArrayList<RawConsumerData>();
+		while (dataIterator.hasNext()) {
+			datum.add(next(new ImportOperationTypeHolder()));
+		}
+
+		return datum;
 	}
 
 	/**

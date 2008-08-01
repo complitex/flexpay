@@ -30,7 +30,7 @@
 		<property name="senderCode" column="sender_code" />
 		<property name="recipientCode" column="recipient_code" />
 		<property name="amount" column="amount" type="big_decimal" />
-		<list name="containers" inverse="true" cascade="all-delete-orphan">
+		<list name="containers" inverse="true">
 			<key column="registry_id" not-null="true" />
 			<list-index column="order_weight" />
 			<one-to-many class="RegistryContainer" />
@@ -194,7 +194,7 @@
 		<property name="uniqueOperationNumber" column="unique_operation_number" />
 		<property name="amount" column="amount" type="big_decimal" />
 
-		<list name="containers" cascade="all-delete-orphan" inverse="true">
+		<list name="containers" inverse="true">
 			<key column="record_id" not-null="true" />
 			<list-index column="order_weight" />
 			<one-to-many class="RegistryRecordContainer" />
@@ -278,10 +278,23 @@
 		where r.id=? and rrs.code NOT IN (2, 4)
 	</query>
 
-	<query name="SpRegistryType.countNotProcessedRecords">
+	<query name="SpRegistryType.countNotProcessedRecords"><![CDATA[
 		select count(*)
 		from SpRegistryRecord r
-		where r.recordStatus.code != 4 and r.spRegistry.id=?
+			inner join r.recordStatus s
+		where s.code<4 and r.spRegistry.id=?
+		]]>
+	</query>
+
+	<query name="SpRegistryType.haveNotProcessedRecords"><![CDATA[
+		select 1 from Dual
+		where exists (
+			select 1
+			from SpRegistryRecord r
+				inner join r.recordStatus s
+			where s.code<4 and r.spRegistry.id=?
+		)
+		]]>
 	</query>
 
 	<query name="SpRegistryType.findAll">
@@ -341,22 +354,23 @@
 	</query>
 
 	<query name="SpRegistryRecord.findDataSourceDescription">
-		select r.spRegistry.serviceProvider.dataSourceDescription from SpRegistryRecord r where r.id=?
+		select r.spRegistry.serviceProvider.dataSourceDescription
+		from SpRegistryRecord r
+		where r.id=?
 	</query>
 
 	<query name="SpRegistryRecord.listRecords">
-		select distinct rr
+		select rr
 		from SpRegistryRecord rr
 			inner join fetch rr.recordStatus
 			left join fetch rr.importError
-		where rr.spRegistry.id=? and rr.consumer is null
-		order by rr.id
+		where rr.spRegistry.id=?
 	</query>
 
 	<query name="SpRegistryRecord.listRecords.count">
 		select count(*)
 		from SpRegistryRecord rr
-		where rr.spRegistry.id=? and rr.consumer is null
+		where rr.spRegistry.id=?
 	</query>
 
 	<query name="SpRegistryStatus.findAll">

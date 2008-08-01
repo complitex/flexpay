@@ -3,6 +3,7 @@ package org.flexpay.eirc.persistence.workflow;
 import org.apache.log4j.Logger;
 import org.flexpay.common.dao.ImportErrorDao;
 import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.dao.SpRegistryRecordDao;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.persistence.SpRegistryRecordStatus;
@@ -15,7 +16,7 @@ import java.util.*;
 /**
  * Helper class for registry records workflow
  */
-@Transactional(readOnly = true)
+@Transactional (readOnly = true)
 public class RegistryRecordWorkflowManager {
 
 	private Logger log = Logger.getLogger(getClass());
@@ -25,7 +26,7 @@ public class RegistryRecordWorkflowManager {
 	private SpRegistryRecordDao recordDao;
 	private ImportErrorDao errorDao;
 
-	private Map<Integer, List<Integer>> transitions = new HashMap<Integer, List<Integer>>();
+	private Map<Integer, List<Integer>> transitions = CollectionUtils.map();
 
 	{
 		List<Integer> targets = new ArrayList<Integer>();
@@ -67,7 +68,7 @@ public class RegistryRecordWorkflowManager {
 	 * @param record Registry record to start
 	 * @throws TransitionNotAllowed if record processing is not possible
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void startProcessing(SpRegistryRecord record) throws TransitionNotAllowed {
 		if (!hasSuccessTransition(record)) {
 			throw new TransitionNotAllowed("Registry processing not allowed");
@@ -94,7 +95,7 @@ public class RegistryRecordWorkflowManager {
 	 * @param record Registry record to update
 	 * @throws TransitionNotAllowed if error transition is not allowed
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void setNextErrorStatus(SpRegistryRecord record) throws TransitionNotAllowed {
 
 		if (code(record) == PROCESSED_WITH_ERROR) {
@@ -117,7 +118,7 @@ public class RegistryRecordWorkflowManager {
 	 * @param error  ImportError
 	 * @throws TransitionNotAllowed if error transition is not allowed
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void setNextErrorStatus(SpRegistryRecord record, ImportError error) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(record));
 		if (allowedCodes.size() < 2) {
@@ -144,7 +145,7 @@ public class RegistryRecordWorkflowManager {
 	 * @param record Registry record to update
 	 * @throws TransitionNotAllowed if success transition is not allowed
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void setNextSuccessStatus(SpRegistryRecord record) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(record));
 		if (allowedCodes.size() < 1) {
@@ -164,7 +165,7 @@ public class RegistryRecordWorkflowManager {
 	 * @param record Registry record
 	 * @return updated record
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public SpRegistryRecord removeError(SpRegistryRecord record) {
 		if (record.getImportError() == null) {
 			return record;
@@ -188,7 +189,7 @@ public class RegistryRecordWorkflowManager {
 	 * @return SpRegistryRecord back
 	 * @throws TransitionNotAllowed if registry already has a status
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public SpRegistryRecord setInitialStatus(SpRegistryRecord record) throws TransitionNotAllowed {
 		if (record.getRecordStatus() != null) {
 			if (code(record) != LOADED) {
@@ -221,7 +222,7 @@ public class RegistryRecordWorkflowManager {
 	 * @param status Next status to set
 	 * @throws TransitionNotAllowed if transition from old to a new status is not allowed
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void setNextStatus(SpRegistryRecord record, SpRegistryRecordStatus status) throws TransitionNotAllowed {
 		if (!canTransit(record, status)) {
 			throw new TransitionNotAllowed("Invalid transition request, was " + record.getRecordStatus() + ", requested " + status);

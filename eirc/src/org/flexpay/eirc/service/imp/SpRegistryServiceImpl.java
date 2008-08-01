@@ -6,7 +6,9 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.dao.SpRegistryDao;
 import org.flexpay.eirc.dao.SpRegistryDaoExt;
 import org.flexpay.eirc.dao.OrganisationDao;
+import org.flexpay.eirc.dao.RegistryContainerDao;
 import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.eirc.persistence.RegistryContainer;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.flexpay.eirc.service.SpRegistryRecordService;
@@ -18,12 +20,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+@Transactional(readOnly = true)
 public class SpRegistryServiceImpl implements SpRegistryService {
 	private Logger log = Logger.getLogger(getClass());
 
 	private SpRegistryDao spRegistryDao;
 	private SpRegistryDaoExt spRegistryDaoExt;
+	private RegistryContainerDao registryContainerDao;
 	private OrganisationDao organisationDao;
 
 	private SpRegistryRecordService spRegistryRecordService;
@@ -31,20 +34,24 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	/**
 	 * Create SpRegistry
 	 *
-	 * @param spRegistry SpRegistry object
+	 * @param registry SpRegistry object
 	 * @return created SpRegistry object
 	 */
 	@Transactional(readOnly = false)
-	public SpRegistry create(SpRegistry spRegistry) throws FlexPayException {
-		spRegistry.setRecipient(organisationDao.read(spRegistry.getRecipient().getId()));
-		spRegistry.setSender(organisationDao.read(spRegistry.getSender().getId()));
-		spRegistryDao.create(spRegistry);
+	public SpRegistry create(SpRegistry registry) throws FlexPayException {
+		registry.setRecipient(organisationDao.read(registry.getRecipient().getId()));
+		registry.setSender(organisationDao.read(registry.getSender().getId()));
+		spRegistryDao.create(registry);
 
-		if (log.isDebugEnabled()) {
-			log.debug("Created SpRegistry: " + spRegistry);
+		for (RegistryContainer container : registry.getContainers()) {
+			registryContainerDao.create(container);
 		}
 
-		return spRegistry;
+		if (log.isDebugEnabled()) {
+			log.debug("Created SpRegistry: " + registry);
+		}
+
+		return registry;
 	}
 
 	/**
@@ -140,5 +147,9 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 
 	public void setOrganisationDao(OrganisationDao organisationDao) {
 		this.organisationDao = organisationDao;
+	}
+
+	public void setRegistryContainerDao(RegistryContainerDao registryContainerDao) {
+		this.registryContainerDao = registryContainerDao;
 	}
 }

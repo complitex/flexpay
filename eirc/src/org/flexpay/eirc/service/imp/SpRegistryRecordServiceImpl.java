@@ -33,18 +33,22 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	/**
 	 * Create SpRegistryRecord
 	 *
-	 * @param spRegistryRecord SpRegistryRecord object
+	 * @param record SpRegistryRecord object
 	 * @return created SpRegistryRecord object
 	 */
 	@Transactional(readOnly = false)
-	public SpRegistryRecord create(SpRegistryRecord spRegistryRecord) throws FlexPayException {
-		spRegistryRecordDao.create(spRegistryRecord);
+	public SpRegistryRecord create(SpRegistryRecord record) throws FlexPayException {
+		spRegistryRecordDao.create(record);
 
-		if (log.isDebugEnabled()) {
-			log.debug("Created SpRegistryRecord: " + spRegistryRecord);
+		for (RegistryRecordContainer container : record.getContainers()) {
+			recordContainerDao.create(container);
 		}
 
-		return spRegistryRecord;
+		if (log.isDebugEnabled()) {
+			log.debug("Created SpRegistryRecord: " + record);
+		}
+
+		return record;
 	}
 
 	/**

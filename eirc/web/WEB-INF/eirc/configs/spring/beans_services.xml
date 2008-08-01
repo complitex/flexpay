@@ -17,6 +17,7 @@
 		<property name="spRegistryDaoExt" ref="spRegistryDaoExt" />
 		<property name="spRegistryRecordService" ref="spRegistryRecordService" />
 		<property name="organisationDao" ref="organisationDao" />
+		<property name="registryContainerDao" ref="registryContainerDao" />
 	</bean>
 
 	<bean id="spRegistryRecordService"

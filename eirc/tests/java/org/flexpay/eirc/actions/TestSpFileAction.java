@@ -4,10 +4,10 @@ import org.flexpay.eirc.dao.SpRegistryDao;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.common.process.ProcessManager;
+import static org.flexpay.common.util.CollectionUtils.ar;
 import org.jetbrains.annotations.NonNls;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.NotTransactional;
 
@@ -52,12 +52,32 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 
 	protected void deleteRecords(SpFile file) {
 		for (SpRegistry registry : fileService.getRegistries(file)) {
-			spRegistryDao.deleteQuittances(registry.getId());
-			spRegistryDao.deleteRecordContainers(registry.getId());
+//			spRegistryDao.deleteQuittances(registry.getId());
+//			spRegistryDao.deleteRecordContainers(registry.getId());
+			deleteQuittances(registry.getId());
+			deleteContainers(registry.getId());
 			spRegistryDao.deleteRegistryContainers(registry.getId());
 			spRegistryDao.deleteRecords(registry.getId());
 			spRegistryDao.delete(registry);
 		}
+	}
+
+	private void deleteQuittances(Long registryId) {
+		String sql = "delete q " +
+					 "from eirc_registries_tbl r " +
+					 "left join eirc_registry_records_tbl rr on r.id=rr.registry_id " +
+					 "left join eirc_quittance_details_tbl q on rr.id=q.registry_record_id " +
+					 "where r.id=?";
+		jdbcTemplate.update(sql, ar(registryId));
+	}
+
+	private void deleteContainers(Long registryId) {
+		String sql = "delete c " +
+					 "from eirc_registries_tbl r " +
+					 "left join eirc_registry_records_tbl rr on r.id=rr.registry_id " +
+					 "left join eirc_registry_record_containers_tbl c on rr.id=c.record_id " +
+					 "where r.id=?";
+		jdbcTemplate.update(sql, ar(registryId));
 	}
 
 	protected SpFile uploadFile(@NonNls String fileName) throws Throwable {

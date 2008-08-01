@@ -11,13 +11,20 @@ import org.jbpm.graph.def.ProcessDefinition;
 public class TestProcess extends SpringBeanAwareTestCase {
 
     @Autowired
-    private ProcessManager processManager;
+    protected ProcessManager processManager;
 
     @Test
 	@NotTransactional
 	public void testLoad() {
-        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("WEB-INF/eirc/process/ParseRegistryProcess.xml");
+
+		ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("WEB-INF/eirc/process/ParseRegistryProcess.xml");
         processManager.deployProcessDefinition(processDefinition, true);
     }
 
+    @Test
+	@NotTransactional
+	public void testLoadProcessRegistryWorkflow() {
+        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("WEB-INF/eirc/process/ProcessRegistryWorkflow.xml");
+        processManager.deployProcessDefinition(processDefinition, true);
+    }
 }

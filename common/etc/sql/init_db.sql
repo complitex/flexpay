@@ -15,6 +15,8 @@ INSERT INTO common_language_names_tbl (translation, translation_from_language_id
 INSERT INTO common_language_names_tbl (translation, translation_from_language_id, language_id)
  	VALUES ('English', @en_id, @en_id);
 
+INSERT INTO common_dual_tbl (id) VALUES (1);
+
 -- Init Countries table
 INSERT INTO ab_countries_tbl (status) values (0);
 SELECT @russia_id:=last_insert_id();

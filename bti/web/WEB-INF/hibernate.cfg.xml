@@ -52,6 +52,9 @@
 
 		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
 
+		<!-- Dual virtual table -->
+		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
+
 	</session-factory>
 
 </hibernate-configuration>

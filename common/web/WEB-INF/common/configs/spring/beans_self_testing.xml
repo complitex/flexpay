@@ -6,13 +6,8 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="fileParserEvent" class="org.flexpay.eirc.process.registry.FileParserEvent">
-		<property name="parser" ref="spFileParser" />
-		<property name="spFileService" ref="spFileService" />
-	</bean>
-
-	<bean name="registryProcessEvent" class="org.flexpay.eirc.process.registry.RegistryProcessEvent"
-		  p:providerFileProcessor-ref="serviceProviderFileProcessor"
-		  p:registryService-ref="spRegistryService" />
+	<bean class="org.flexpay.common.util.selftest.TestDual"
+		  init-method="doSelfTesting"
+		  p:hibernateTemplate-ref="hibernateTemplate" />
 
 </beans>

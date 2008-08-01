@@ -47,9 +47,8 @@ public class PersonJdbcDataSource implements RawDataSource<RawPersonData> {
 	}
 
 	/**
-	 * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns
-	 * <tt>true</tt> if <tt>next</tt> would return an element rather than throwing an
-	 * exception.)
+	 * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns <tt>true</tt> if <tt>next</tt> would return
+	 * an element rather than throwing an exception.)
 	 *
 	 * @return <tt>true</tt> if the iterator has more elements.
 	 */
@@ -81,6 +80,15 @@ public class PersonJdbcDataSource implements RawDataSource<RawPersonData> {
 		}
 
 		return data;
+	}
+
+	/**
+	 * return next batch of data
+	 *
+	 * @return List of raw data, when the list is empty hasNext() should return <code>false</code>
+	 */
+	public List<RawPersonData> nextPage() {
+		throw new RuntimeException("Not implemented");
 	}
 
 	/**
