@@ -14,6 +14,7 @@ import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.SpRegistryService;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Date;
@@ -126,7 +127,7 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	 * @param objectIds Set of registry identifiers
 	 * @return collection of registries
 	 */
-	public Collection<SpRegistry> findObjects(Set<Long> objectIds) {
+	public Collection<SpRegistry> findObjects(@NotNull Set<Long> objectIds) {
 		return spRegistryDaoExt.findRegistries(objectIds);
 	}
 

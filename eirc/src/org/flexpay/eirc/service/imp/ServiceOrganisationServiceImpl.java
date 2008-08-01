@@ -8,6 +8,7 @@ import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
 import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.NotNull;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class ServiceOrganisationServiceImpl implements
@@ -35,7 +36,8 @@ public class ServiceOrganisationServiceImpl implements
 	 * 
 	 * @return List of ServiceOrganisation
 	 */
-	public List<ServiceOrganisation> listServiceOrganisation() {
+	@NotNull
+	public List<ServiceOrganisation> listServiceOrganisations() {
 		return serviceOrganisationDao.listServiceOrganisation();
 	}
 	

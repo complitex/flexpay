@@ -46,7 +46,7 @@ public class PrintTicketAction extends FPActionSupport {
 		}
 		initDefaultDate();
 		serviceOrganizationList = serviceOrganisationService
-				.listServiceOrganisation();
+				.listServiceOrganisations();
 
 		return SUCCESS;
 	}

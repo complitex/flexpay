@@ -3,6 +3,7 @@ package org.flexpay.eirc.util.standalone;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.standalone.StandaloneTask;
 import org.flexpay.eirc.actions.SpFileAction;
 import org.flexpay.eirc.actions.SpFileCreateAction;
@@ -18,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Set;
 
 public class RunSpFileProcessing implements StandaloneTask {
 
@@ -56,85 +58,90 @@ public class RunSpFileProcessing implements StandaloneTask {
 	public void execute() {
 
 		try {
-			openAccountsBig();
+			importRecords();
+//			importOpenAccounts();
+//			processOpenAccounts();
 //			importQuittancesBig();
-//			loadRegistryBig();
-//			loadRegistryQuittancesBig();
-//			loadRegistrySmall();
-//			openAccountsBig();
-//			openAccountsSmall();
+//			processQuittancesBig();
 		} catch (Throwable e) {
 			log.error("Failed processing registry file", e);
 		}
 	}
 
 	public void loadRegistryBig() throws Throwable {
-		processLoadRegistry("org/flexpay/eirc/actions/sp/ree_open.txt");
+		uploadRegistry("org/flexpay/eirc/actions/sp/ree_open.txt");
 	}
 
 	public void loadRegistryQuittancesBig() throws Throwable {
-		processLoadRegistry("org/flexpay/eirc/actions/sp/ree_quittances.2008.06.txt");
+		uploadRegistry("org/flexpay/eirc/actions/sp/ree_quittances.2008.06.txt");
 	}
 
-	public void loadRegistrySmall() throws Throwable {
-		processLoadRegistry("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
+	private void importOpenAccounts() throws Throwable {
+		importRegistry(3L);
 	}
 
-	public void processRegistryBig() throws Throwable {
-		processRegistry(new SpFile(19L));
+	private void importRecords() throws Throwable {
+		importRegistryRecords(3L, set(808862L, 808863L));
 	}
 
-	public void openAccountsSmall() throws Throwable {
-		processOpenSubAccountsRegistry("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
+	private void processOpenAccounts() throws Throwable {
+		importRegistry(3L);
 	}
 
-	public void openAccountsBig() throws Throwable {
-		processRegistry(new SpFile(3L));
+	private void importQuittancesBig() throws Throwable {
+		importRegistry(12L);
 	}
 
-	public void importQuittancesBig() throws Throwable {
-		processRegistry(new SpFile(12L));
+	private void processQuittancesBig() throws Throwable {
+		processRegistry(12L);
 	}
 
-	private void processOpenSubAccountsRegistry(String path) throws Throwable {
-		SpFile file = uploadFile(path);
+	private void processRegistry(Long registryId) throws Throwable {
+		SpRegistry registry = spRegistryDao.readFull(registryId);
 
 		try {
-			fileProcessor.processFile(file);
+			long time = System.currentTimeMillis();
+			fileProcessor.processRegistry(registry);
+
+			if (log.isDebugEnabled()) {
+				log.debug("Processing took " + (System.currentTimeMillis() - time) + "ms");
+			}
 		} catch (FlexPayExceptionContainer c) {
 			for (Exception e : c.getExceptions()) {
-				e.printStackTrace();
+				log.error("Exception cought", e);
 			}
 			throw c;
-		} finally {
-			deleteRecords(file);
-			deleteFile(file);
 		}
 	}
 
-	private void processLoadRegistry(String path) throws Throwable {
+	private void importRegistry(Long registryId) throws Throwable {
+		SpRegistry registry = spRegistryDao.readFull(registryId);
+
+		long time = System.currentTimeMillis();
+		fileProcessor.setupRecordsConsumers(registry);
+
+		if (log.isDebugEnabled()) {
+			log.debug("Import took " + (System.currentTimeMillis() - time) + "ms");
+		}
+	}
+
+	private void importRegistryRecords(Long registryId, Set<Long> recordIds) throws Throwable {
+		SpRegistry registry = spRegistryDao.readFull(registryId);
+
+		long time = System.currentTimeMillis();
+		fileProcessor.setupRecordsConsumers(registry, recordIds);
+
+		if (log.isDebugEnabled()) {
+			log.debug("Import took " + (System.currentTimeMillis() - time) + "ms");
+		}
+	}
+
+	private void uploadRegistry(String path) throws Throwable {
 		long time = System.currentTimeMillis();
 		uploadFile(path);
 
 		if (log.isDebugEnabled()) {
 			log.debug("Upload took " + (System.currentTimeMillis() - time) + "ms");
-		}
-//		deleteRecords(file);
-	}
-
-	private void processRegistry(SpFile file) throws Throwable {
-		long time = System.currentTimeMillis();
-		try {
-			fileProcessor.processFile(file);
-		} catch (FlexPayExceptionContainer c) {
-			for (Exception e : c.getExceptions()) {
-				e.printStackTrace();
-			}
-			throw c;
-		}
-
-		if (log.isDebugEnabled()) {
-			log.debug("Processing took " + (System.currentTimeMillis() - time) + "ms");
 		}
 	}
 

@@ -5,6 +5,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 import java.util.List;
@@ -70,5 +71,5 @@ public interface SpRegistryService {
 	 * @param objectIds Set of registry identifiers
 	 * @return collection of registries
 	 */
-	Collection<SpRegistry> findObjects(Set<Long> objectIds);
+	Collection<SpRegistry> findObjects(@NotNull Set<Long> objectIds);
 }

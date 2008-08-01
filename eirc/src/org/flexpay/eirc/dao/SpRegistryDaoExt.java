@@ -4,6 +4,7 @@ import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.common.dao.paging.Page;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 import java.util.List;
@@ -32,7 +33,7 @@ public interface SpRegistryDaoExt {
 	 * @param objectIds Set of registry identifiers
 	 * @return collection of registries
 	 */
-	Collection<SpRegistry> findRegistries(Set<Long> objectIds);
+	Collection<SpRegistry> findRegistries(@NotNull Set<Long> objectIds);
 
 	/**
 	 * Check if registry has more records to process

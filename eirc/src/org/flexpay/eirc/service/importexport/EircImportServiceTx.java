@@ -224,6 +224,7 @@ public class EircImportServiceTx extends ImportService {
 			return new Apartment(apartmentById);
 		}
 
+		// try to find building and later apartment in it
 		Stub<Buildings> buildingsById = correctionsService.findCorrection(
 				data.getBuildingId(), Buildings.class, sd);
 		if (buildingsById != null) {
@@ -232,6 +233,7 @@ public class EircImportServiceTx extends ImportService {
 			return findApartment(data, buildings, sd, dataSource);
 		}
 
+		// try to find street by correction
 		Stub<Street> streetById = correctionsService.findCorrection(
 				data.getStreetId(), Street.class, sd);
 		if (streetById != null) {
@@ -266,6 +268,10 @@ public class EircImportServiceTx extends ImportService {
 			return null;
 		}
 
+		if (log.isDebugEnabled()) {
+			log.debug("Street candidates: " + streets);
+		}
+
 		StreetType streetType = findStreetType(nameTypeMap, data);
 		if (streetType == null) {
 			log.warn("Found several streets, but no type was found: " + data.getAddressStreetType() +
@@ -277,6 +283,15 @@ public class EircImportServiceTx extends ImportService {
 		}
 
 		List<Street> filteredStreets = filterStreetsbyType(streets, streetType);
+		if (filteredStreets.isEmpty()) {
+			log.warn("Cannot find street by type: " + data.getAddressStreetType() +
+					 ", " + data.getAddressStreet());
+			ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
+			error.setErrorId("error.eirc.import.street_type_invalid");
+			setConsumerError(data, error);
+			return null;
+		}
+
 		if (filteredStreets.size() == 1) {
 			log.info("Street filtered by type: " + data.getAddressStreet());
 			return filteredStreets.get(0);

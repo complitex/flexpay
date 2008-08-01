@@ -34,7 +34,7 @@ public class GenerateTicketAction extends FPActionSupport {
 		}
 
 		initDefaultDate();
-		serviceOrganizationList = serviceOrganisationService.listServiceOrganisation();
+		serviceOrganizationList = serviceOrganisationService.listServiceOrganisations();
 
 		return SUCCESS;
 	}
