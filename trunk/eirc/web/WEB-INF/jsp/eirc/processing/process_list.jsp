@@ -51,10 +51,10 @@
 	  </a>
 	</td>
 	<td class="col">
-	  <s:date name="process_start_date" format="yyyy/MM/dd"/>
+	  <s:date name="processStartDate" format="yyyy/MM/dd"/>
 	</td>
 	<td class="col">
-	  <s:date name="process_end_date" format="yyyy/MM/dd"/>
+	  <s:date name="processEndDate" format="yyyy/MM/dd"/>
 	</td>
 	<td class="col">
 	  &nbsp;
