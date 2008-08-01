@@ -18,8 +18,8 @@
 
 	<bean id="spFileAction" class="org.flexpay.eirc.actions.SpFileAction"
 		  scope="prototype">
-        <property name="processManager" ref="processManager"/>
-    </bean>
+		<property name="processManager" ref="processManager" />
+	</bean>
 
 	<bean id="correspondenceExternalAction" class="org.flexpay.eirc.actions.CorrespondenceExternalAction"
 		  scope="prototype">
@@ -67,10 +67,8 @@
 	</bean>
 
 	<bean id="processRegistriesAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.ProcessRegistriesAction">
-		<property name="providerFileProcessor" ref="serviceProviderFileProcessor" />
-		<property name="registryService" ref="spRegistryService" />
-	</bean>
+		  class="org.flexpay.eirc.actions.registry.ProcessRegistriesAction"
+		  p:processManager-ref="processManager" />
 
 	<bean id="processRegistryRecordsAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.ProcessRegistryRecordsAction">

@@ -20,7 +20,7 @@ public class JobManager implements BeanFactoryAware {
     private Map<String,Job> sleepingJobs = new Hashtable<String, Job>();
     private LinkedList<Job> waitingJobs = new LinkedList<Job>();
 
-    private Hashtable<String, HashMap<Serializable, Serializable>> jobParameters = new Hashtable<String, HashMap<Serializable, Serializable>>();
+    private Hashtable<String, Map<Serializable, Serializable>> jobParameters = new Hashtable<String, Map<Serializable, Serializable>>();
 
     private int MAXIMUM_RUNNING_JOBS = 10;
 
@@ -53,7 +53,7 @@ public class JobManager implements BeanFactoryAware {
         instance = null;
     }
 
-    private synchronized String start(Job job, HashMap <Serializable, Serializable> parameters) {
+    private synchronized String start(Job job, Map <Serializable, Serializable> parameters) {
         if (runningJobs.containsKey(job.getId())) {
             job.getJobThread().start();
         }
@@ -91,7 +91,7 @@ public class JobManager implements BeanFactoryAware {
     }
 
 
-    public synchronized final void addJob(Job job, HashMap<Serializable, Serializable> param) {
+    public synchronized final void addJob(Job job, Map<Serializable, Serializable> param) {
         if (runningJobs.size() < MAXIMUM_RUNNING_JOBS) {
 //            runningJobs.put(job.getId(),job);
             this.start(job, param);

@@ -31,8 +31,8 @@
 	</bean>
 
 	<!-- Import-Export services -->
-	<bean id="importServiceEirc" parent="importServiceAb"
-		  class="org.flexpay.eirc.service.importexport.EircImportService">
+	<bean id="importServiceEircTx" parent="importServiceAb"
+		  class="org.flexpay.eirc.service.importexport.EircImportServiceTx">
 		<property name="correctionsService" ref="correctionsServiceEirc" />
 		<property name="registry" ref="typeRegistryEirc" />
 		<property name="typeService" ref="identityTypeService" />
@@ -40,6 +40,12 @@
 		<property name="consumerService" ref="consumerService" />
 		<property name="recordWorkflowManager" ref="registryRecordWorkflowManager" />
 	</bean>
+
+	<bean id="importServiceEirc"
+		  class="org.flexpay.eirc.service.importexport.EircImportService"
+		  p:eircImportServiceTx-ref="importServiceEircTx"
+		  p:streetService-ref="streetService"
+		  p:streetTypeService-ref="streetTypeService" />
 
 	<bean id="spFilesExchangeHelper"
 		  class="org.flexpay.eirc.service.exchange.ExchangeHelper">

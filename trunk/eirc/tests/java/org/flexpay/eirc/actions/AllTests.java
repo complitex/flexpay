@@ -6,7 +6,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 		TestSpFileCreateAction.class,
-		TestSpFileAction.class,
+//		TestSpFileAction.class,
 		TestPrintTicketAction.class
 		})
 public class AllTests {

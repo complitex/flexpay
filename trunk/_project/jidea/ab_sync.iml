@@ -142,7 +142,6 @@
     <orderEntry type="library" name="spring2" level="project" />
     <orderEntry type="library" name="Jetbrains" level="project" />
     <orderEntry type="library" name="jasper" level="project" />
-    <orderEntryProperties />
   </component>
 </module>
 

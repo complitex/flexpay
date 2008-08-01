@@ -90,7 +90,6 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	}
 
 	@Test
-	@Ignore
 	@NotTransactional
 	public void testProcessOpenSubAccountsRegistrySmall() throws Throwable {
 		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");

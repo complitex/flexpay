@@ -75,26 +75,12 @@
 	</class>
 
 	<query name="Buildings.readFull">
-		SELECT DISTINCT o
+		select distinct o
 		FROM Buildings o
-		LEFT JOIN FETCH o.street street
-		LEFT JOIN FETCH street.nameTemporals temporals
-		LEFT JOIN FETCH temporals.value streetName
-		LEFT JOIN FETCH streetName.translations nameTranslations
-		LEFT JOIN FETCH nameTranslations.lang langStreet
-		LEFT JOIN FETCH langStreet.translations
-
-		LEFT JOIN FETCH street.typeTemporals typeTemporals
-		LEFT JOIN FETCH typeTemporals.value streetType
-		LEFT JOIN FETCH streetType.translations typeTranslations
-		LEFT JOIN FETCH typeTranslations.lang typeTransLang
-		LEFT JOIN FETCH typeTransLang.translations
-
+		inner join fetch o.street street
 		LEFT JOIN FETCH o.buildingAttributes attrs
 		LEFT JOIN FETCH attrs.buildingAttributeType attrType
 		LEFT JOIN FETCH attrType.translations attrTypeTr
-		LEFT JOIN FETCH attrTypeTr.lang langAttr
-		LEFT JOIN FETCH langAttr.translations
 		WHERE o.id=? and o.status=0
 	</query>
 

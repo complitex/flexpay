@@ -63,6 +63,7 @@
 					${hibernate.c3p0.testConnectionOnCheckout}
 				</prop>
 				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<prop key="hibernate.jdbc.batch_size">20</prop>
 
 				<prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop>
 				<prop key="hibernate.cache.use_query_cache">true</prop>

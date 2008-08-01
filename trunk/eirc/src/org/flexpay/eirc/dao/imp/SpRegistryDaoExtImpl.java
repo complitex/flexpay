@@ -129,8 +129,8 @@ public class SpRegistryDaoExtImpl extends HibernateDaoSupport implements SpRegis
 	 * @return <code>true</code> if registry has records for processing, or <code>false</code> otherwise
 	 */
 	public boolean hasMoreRecordsToProcess(Long registryId) {
-		List value = getHibernateTemplate().findByNamedQuery("SpRegistryType.countNotProcessedRecords", registryId);
+		List value = getHibernateTemplate().findByNamedQuery("SpRegistryType.haveNotProcessedRecords", registryId);
 
-		return ((Number) value.get(0)).intValue() > 0;
+		return !value.isEmpty();
 	}
 }

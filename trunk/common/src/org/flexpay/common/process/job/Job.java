@@ -2,10 +2,12 @@ package org.flexpay.common.process.job;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.logger.FPLogger;
+import org.flexpay.common.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Map;
 import java.io.Serializable;
 
 public abstract class Job implements Runnable{
@@ -17,7 +19,7 @@ public abstract class Job implements Runnable{
     private String id;
     private Date start;
     private Date end;
-    private HashMap <Serializable, Serializable> parameters = new HashMap<Serializable, Serializable> ();
+    private Map <Serializable, Serializable> parameters = CollectionUtils.map();
     private Long taskId;
     private Long processId;
     /**
@@ -52,14 +54,14 @@ public abstract class Job implements Runnable{
         setEnd(new Date());
     }
 
-    public Thread startThread(HashMap<Serializable, Serializable> parameters){
+    public Thread startThread(Map<Serializable, Serializable> parameters){
         this.parameters.putAll(parameters);
         jobThread = new Thread(this, "JobThread-" +id);
         jobThread.start();
         return jobThread;
     }
 
-    public abstract String execute(HashMap<Serializable, Serializable> parameters) throws FlexPayException;
+    public abstract String execute(Map<Serializable, Serializable> parameters) throws FlexPayException;
 
     public Thread getJobThread() {
         return jobThread;
@@ -93,7 +95,7 @@ public abstract class Job implements Runnable{
         this.end = end;
     }
 
-    public HashMap<Serializable, Serializable> getParameters() {
+    public Map<Serializable, Serializable> getParameters() {
         return parameters;
     }
 

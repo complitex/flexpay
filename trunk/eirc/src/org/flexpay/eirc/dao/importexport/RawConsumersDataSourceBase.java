@@ -1,10 +1,10 @@
 package org.flexpay.eirc.dao.importexport;
 
-import org.flexpay.eirc.service.importexport.RawConsumerData;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.apache.log4j.Logger;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
-import org.apache.log4j.Logger;
+import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 import java.util.Iterator;
 

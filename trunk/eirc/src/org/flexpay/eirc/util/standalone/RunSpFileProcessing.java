@@ -56,8 +56,11 @@ public class RunSpFileProcessing implements StandaloneTask {
 	public void execute() {
 
 		try {
+			openAccountsBig();
+//			importQuittancesBig();
 //			loadRegistryBig();
-			loadRegistrySmall();
+//			loadRegistryQuittancesBig();
+//			loadRegistrySmall();
 //			openAccountsBig();
 //			openAccountsSmall();
 		} catch (Throwable e) {
@@ -65,12 +68,12 @@ public class RunSpFileProcessing implements StandaloneTask {
 		}
 	}
 
-	public void openAccountsBig() throws Throwable {
-		processOpenSubAccountsRegistry("org/flexpay/eirc/actions/sp/ree_open_2.txt");
-	}
-
 	public void loadRegistryBig() throws Throwable {
 		processLoadRegistry("org/flexpay/eirc/actions/sp/ree_open.txt");
+	}
+
+	public void loadRegistryQuittancesBig() throws Throwable {
+		processLoadRegistry("org/flexpay/eirc/actions/sp/ree_quittances.2008.06.txt");
 	}
 
 	public void loadRegistrySmall() throws Throwable {
@@ -83,6 +86,14 @@ public class RunSpFileProcessing implements StandaloneTask {
 
 	public void openAccountsSmall() throws Throwable {
 		processOpenSubAccountsRegistry("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
+	}
+
+	public void openAccountsBig() throws Throwable {
+		processRegistry(new SpFile(3L));
+	}
+
+	public void importQuittancesBig() throws Throwable {
+		processRegistry(new SpFile(12L));
 	}
 
 	private void processOpenSubAccountsRegistry(String path) throws Throwable {

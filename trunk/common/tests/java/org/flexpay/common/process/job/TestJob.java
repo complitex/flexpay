@@ -3,9 +3,11 @@ package org.flexpay.common.process.job;
 import junit.framework.TestCase;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.io.Serializable;
 
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.util.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
@@ -69,7 +71,7 @@ public class TestJob extends TestCase {
         Job testJob = new MockJobException();
         testJob.setId("1");
         JobManager jobManager = JobManager.getInstance();
-        HashMap<Serializable,Serializable> parameters = new HashMap<Serializable, Serializable>();
+        Map<Serializable,Serializable> parameters = CollectionUtils.map();
         parameters.put(TEST_STRING, TEST_STRING);
         jobManager.addJob(testJob, parameters);
         while (!is_job_finished) {
@@ -85,7 +87,7 @@ public class TestJob extends TestCase {
      * Mock job for Normal job execution
      */
     public static class MockJobNext extends Job {
-        public String execute(HashMap param) {
+        public String execute(Map param) {
             assertTrue(true);
             assertEquals((String) param.get(TEST_STRING), TEST_STRING);
             return Job.RESULT_NEXT;
@@ -96,7 +98,7 @@ public class TestJob extends TestCase {
      * Mock job for Job execution with exception
      */
     public static class MockJobException extends Job {
-        public String execute(HashMap param) {
+        public String execute(Map param) {
             assertTrue(true);
             throw new RuntimeException();
         }

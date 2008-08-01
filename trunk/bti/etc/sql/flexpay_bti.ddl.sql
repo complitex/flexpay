@@ -323,6 +323,8 @@
 
     drop table if exists common_data_source_descriptions_tbl;
 
+    drop table if exists common_dual_tbl;
+
     drop table if exists common_import_errors_tbl;
 
     drop table if exists common_language_names_tbl;
@@ -684,6 +686,11 @@
     create table common_data_source_descriptions_tbl (
         id bigint not null auto_increment,
         description varchar(255) not null,
+        primary key (id)
+    );
+
+    create table common_dual_tbl (
+        id bigint not null auto_increment,
         primary key (id)
     );
 

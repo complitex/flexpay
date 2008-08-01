@@ -34,9 +34,13 @@ public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements S
 	public List<SpRegistryRecord> listRecordsForUpdate(final Long id, final Page pager) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				Long count = (Long) session.getNamedQuery("SpRegistryRecord.listRecords.count")
-						.setLong(0, id).uniqueResult();
-				pager.setTotalElements(count.intValue());
+
+				// read cached total elements
+				if (pager.getTotalNumberOfElements() <= 0) {
+					Long count = (Long) session.getNamedQuery("SpRegistryRecord.listRecords.count")
+							.setLong(0, id).uniqueResult();
+					pager.setTotalElements(count.intValue());
+				}
 
 				return session.getNamedQuery("SpRegistryRecord.listRecords")
 						.setFirstResult(pager.getThisPageFirstElementNumber())

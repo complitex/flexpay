@@ -71,6 +71,15 @@ public class ApartmentJdbcDataSource implements RawDataSource<RawApartmentData> 
 	}
 
 	/**
+	 * return next batch of data
+	 *
+	 * @return List of raw data, when the list is empty hasNext() should return <code>false</code>
+	 */
+	public List<RawApartmentData> nextPage() {
+		throw new RuntimeException("Not implemented");
+	}
+
+	/**
 	 * Setter for property 'source'.
 	 *
 	 * @param source Value to set for property 'source'.

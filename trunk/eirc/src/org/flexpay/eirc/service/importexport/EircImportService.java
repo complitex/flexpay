@@ -1,40 +1,33 @@
 package org.flexpay.eirc.service.importexport;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.persistence.*;
+import org.apache.log4j.Logger;
+import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.persistence.StreetType;
+import org.flexpay.ab.persistence.StreetTypeTranslation;
+import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.filters.TownFilter;
-import org.flexpay.ab.service.IdentityTypeService;
-import org.flexpay.ab.service.importexport.ImportService;
+import org.flexpay.ab.service.StreetService;
+import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.common.persistence.ImportError;
-import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.NameTimeDependentChild;
+import org.flexpay.common.persistence.TemporaryName;
+import org.flexpay.common.persistence.Translation;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
-import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
-import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
-import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-@Transactional (readOnly = true)
-public class EircImportService extends ImportService {
+public class EircImportService {
 
-	private RawConsumerDataConverter consumerDataConverter;
-	private ConsumerService consumerService;
-	private IdentityTypeService typeService;
+	private Logger log = Logger.getLogger(getClass());
 
-	private RegistryRecordWorkflowManager recordWorkflowManager;
+	private StreetService streetService;
+	private StreetTypeService streetTypeService;
+	private EircImportServiceTx eircImportServiceTx;
 
-	@Transactional (readOnly = false)
 	public void importConsumers(DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
 			throws FlexPayException {
 
@@ -55,162 +48,21 @@ public class EircImportService extends ImportService {
 			log.info("Street types: " + nameTypeMap.keySet());
 		}
 
-		long recordsCounter = 0;
-		long skipped = 0;
+		// records count + skipped data read
+		long[] counters = {0, 0};
 
-		dataSource.initialize();
-		while (dataSource.hasNext()) {
-
-			++recordsCounter;
-			if (recordsCounter % 100 == 0) {
-				flushStack();
-			}
-
-			ImportOperationTypeHolder typeHolder = new ImportOperationTypeHolder();
-			RawConsumerData data = dataSource.next(typeHolder);
-
-			if (data == null) {
-				log.info("Empty data read");
-				++skipped;
-				continue;
-			}
-
-			try {
-				if (log.isDebugEnabled()) {
-					log.debug("Starting record processing: " + data.getRegistryRecord());
-				}
-				recordWorkflowManager.startProcessing(data.getRegistryRecord());
-			} catch (TransitionNotAllowed e) {
-				if (log.isInfoEnabled()) {
-					log.info("Skipping record, processing not allowed: " + data.getExternalSourceId());
-				}
-				continue;
-			}
-
-			if (data.getRegistryRecord().getConsumer() != null) {
-				log.info("Record already has consumer set up");
-				continue;
-			}
-
-			try {
-				Stub<Consumer> persistentObj = correctionsService.findCorrection(
-						data.getShortConsumerId(), Consumer.class, sd);
-
-				if (persistentObj != null) {
-					log.info("Found existing consumer correction: #" + data.getExternalSourceId());
-					postSaveConsumer(data, consumerService.read(persistentObj));
-					continue;
-				}
-
-				if (data.isPersonalInfoEmpty()) {
-					log.info("Cannot find consumer by short info");
-					ImportError error = addImportError(sd, data.getExternalSourceId(), Consumer.class, dataSource);
-					error.setErrorId("error.eirc.import.consumer_not_found");
-					setConsumerError(data, error);
-					continue;
-				}
-
-				Consumer rawConsumer = consumerDataConverter.fromRawData(data, sd, correctionsService);
-
-				if (rawConsumer.getApartment() == null) {
-					// Find apartment
-					Apartment apartment = findApartment(nameObjsMap, nameTypeMap, sd, data, dataSource);
-					if (apartment == null) {
-						addImportError(sd, data.getExternalSourceId(), Apartment.class, dataSource);
-						continue;
-					}
-					DataCorrection corr = correctionsService.getStub(
-							data.getApartmentId(), apartment, sd);
-					log.info("Adding apartment correction: " + data.getApartmentId());
-					addToStack(corr);
-					rawConsumer.setApartment(apartment);
-				}
-				data.getRegistryRecord().setApartment(rawConsumer.getApartment());
-				log.info("Found apartment: " + data.getApartmentId());
-
-				if (rawConsumer.getResponsiblePerson() == null) {
-					Person person = findPerson(data);
-					if (person == null) {
-						log.error("Person not found: " + data.getPersonCorrectionId());
-						ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
-						error.setErrorId("error.eirc.import.person_not_found");
-						setConsumerError(data, error);
-						continue;
-					}
-					// found person by name
-					DataCorrection corr = correctionsService.getStub(
-							data.getPersonCorrectionId(), person, sd);
-					addToStack(corr);
-					rawConsumer.setResponsiblePerson(person);
-				}
-				data.getRegistryRecord().setPerson(rawConsumer.getResponsiblePerson());
-				log.info("Found responsible person: " + data.getPersonCorrectionId());
-
-				if (rawConsumer.getService() == null) {
-					log.error("Not found provider #" + data.getRegistry().getSenderCode() +
-							  " service by code: " + data.getRegistryRecord().getServiceCode());
-					ImportError error = addImportError(sd, data.getExternalSourceId(), Service.class, dataSource);
-					error.setErrorId("error.eirc.import.service_not_found");
-					setConsumerError(data, error);
-					continue;
-				}
-				log.info("Found service");
-
-				Consumer persistent = consumerService.findConsumer(rawConsumer);
-				if (persistent != null) {
-					// Consumer found, add new correction
-					if (log.isInfoEnabled()) {
-						log.info("Creating new consumer correction: " + data.getFullConsumerId());
-					}
-
-					addToStack(correctionsService.getStub(data.getFullConsumerId(), persistent, sd));
-					addToStack(correctionsService.getStub(data.getShortConsumerId(), persistent, sd));
-				} else {
-					log.info("Consumer not found");
-				}
-
-				postSaveConsumer(data, persistent);
-			} catch (Exception e) {
-				log.error("Failed getting consumer: " + data.toString(), e);
-				throw new RuntimeException(e);
-			}
-		}
+		boolean hasMoreData;
+		boolean inited = false;
+		do {
+			log.debug("Start fetching for next batch");
+			hasMoreData = eircImportServiceTx.processBatch(
+					counters, inited, sd, dataSource, nameObjsMap, nameTypeMap);
+			inited = true;
+		} while (hasMoreData);
 
 		if (log.isDebugEnabled()) {
-			log.debug("Imported " + recordsCounter + " records. Skipped: " + skipped);
+			log.debug("Imported " + counters[0] + " records. Skipped: " + counters[1]);
 		}
-
-		flushStack();
-	}
-
-	private void postSaveConsumer(RawConsumerData data, Consumer consumer) {
-		data.getRegistryRecord().setConsumer(consumer);
-		addToStack(data.getRegistryRecord());
-	}
-
-	private void setConsumerError(RawConsumerData data, ImportError error) throws Exception {
-		recordWorkflowManager.setNextErrorStatus(data.getRegistryRecord(), error);
-	}
-
-	@Nullable
-	private Person findPerson(@NotNull RawConsumerData data) {
-
-		PersonIdentity identity = new PersonIdentity();
-		identity.setFirstName(data.getFirstName());
-		identity.setMiddleName(data.getMiddleName());
-		identity.setLastName(data.getLastName());
-		identity.setDefault(true);
-		identity.setIdentityType(typeService.getType(IdentityType.TYPE_NAME_PASSPORT));
-
-		Person example = new Person();
-		Set<PersonIdentity> identities = new HashSet<PersonIdentity>();
-		identities.add(identity);
-		example.setPersonIdentities(identities);
-
-		// todo add correction
-
-		Stub<Person> stub = personService.findPersonStub(example);
-		return stub != null ? new Person(stub) : null;
 	}
 
 	private Map<String, StreetType> initializeTypeNamesToObjectsMap() {
@@ -224,159 +76,57 @@ public class EircImportService extends ImportService {
 		return nameTypeMap;
 	}
 
-	private Apartment findApartment(Map<String, List<Street>> nameObjsMap,
-									Map<String, StreetType> nameTypeMap,
-									DataSourceDescription sd, RawConsumerData data,
-									RawDataSource<RawConsumerData> dataSource) throws Exception {
+	/**
+	 * Build mapping from object names to objects themself
+	 *
+	 * @param ntds List of objects
+	 * @return mapping
+	 * @throws FlexPayException if language configuration is invalid
+	 */
+	@SuppressWarnings ({"unchecked"})
+	protected <NTD extends NameTimeDependentChild> Map<String, List<NTD>> initializeNamesToObjectsMap(List<NTD> ntds)
+			throws FlexPayException {
 
-		// try to find by apartment correction
-		log.info("Checking for apartment correction: " + data.getApartmentId());
-		Stub<Apartment> apartmentById = correctionsService.findCorrection(
-				data.getApartmentId(), Apartment.class, sd);
-		if (apartmentById != null) {
-			log.info("Found apartment correction");
-			return new Apartment(apartmentById);
+		Map<String, List<NTD>> stringNTDMap = new HashMap<String, List<NTD>>(ntds.size());
+		for (NTD object : ntds) {
+			TemporaryName tmpName = (TemporaryName) object.getCurrentName();
+			if (tmpName == null) {
+				log.error("No current name for object: " + object);
+				continue;
+			}
+			Translation defTranslation = getDefaultLangTranslation(tmpName.getTranslations());
+			String name = defTranslation.getName().toLowerCase();
+			List<NTD> val = stringNTDMap.containsKey(name) ?
+							stringNTDMap.get(name) : new ArrayList<NTD>();
+			val.add(object);
+			stringNTDMap.put(name, val);
 		}
 
-		Stub<Buildings> buildingsById = correctionsService.findCorrection(
-				data.getBuildingId(), Buildings.class, sd);
-		if (buildingsById != null) {
-			log.info("Found buildings correction");
-			return findApartment(data, new Buildings(buildingsById), sd, dataSource);
-		}
-
-		Stub<Street> streetById = correctionsService.findCorrection(
-				data.getStreetId(), Street.class, sd);
-		if (streetById != null) {
-			log.info("Found street correction");
-			return findApartment(data, new Street(streetById), sd, dataSource);
-		}
-
-		Street streetByName = findStreet(nameObjsMap, nameTypeMap, data, sd, dataSource);
-		if (streetByName == null) {
-			log.warn("Failed getting street for account #" + data.getExternalSourceId());
-			return null;
-		}
-
-		DataCorrection corr = correctionsService.getStub(
-				data.getStreetId(), streetByName, sd);
-		log.info("Adding street correction: " + data.getStreetId());
-		addToStack(corr);
-
-		return findApartment(data, streetByName, sd, dataSource);
+		return stringNTDMap;
 	}
 
-	private Street findStreet(Map<String, List<Street>> nameObjsMap,
-							  Map<String, StreetType> nameTypeMap, RawConsumerData data,
-							  DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource) throws Exception {
-		List<Street> streets = nameObjsMap.get(data.getAddressStreet().toLowerCase());
-		// no candidates
-		if (streets == null) {
-			log.info("No candidates for street: " + data.getAddressStreet());
-			ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
-			error.setErrorId("error.eirc.import.street_not_found");
-			setConsumerError(data, error);
-			return null;
-		}
+	private Translation getDefaultLangTranslation(Collection<? extends Translation> translations)
+			throws FlexPayException {
 
-		StreetType streetType = findStreetType(nameTypeMap, data);
-		if (streetType == null) {
-			log.warn("Found several streets, but no type was found: " + data.getAddressStreetType() +
-					 ", " + data.getAddressStreet());
-			ImportError error = addImportError(sd, data.getExternalSourceId(), StreetType.class, dataSource);
-			error.setErrorId("error.eirc.import.street_type_not_found");
-			setConsumerError(data, error);
-			return null;
-		}
-
-		List<Street> filteredStreets = filterStreetsbyType(streets, streetType);
-		if (filteredStreets.size() == 1) {
-			log.info("Street filtered by type: " + data.getAddressStreet());
-			return filteredStreets.get(0);
-		}
-
-		log.warn("Cannot find street candidate, even by type: " + data.getAddressStreetType() +
-				 ", " + data.getAddressStreet());
-		ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
-		error.setErrorId("error.eirc.import.street_too_many_variants");
-		setConsumerError(data, error);
-		return null;
-	}
-
-	private List<Street> filterStreetsbyType(List<Street> streets, StreetType type) {
-		List<Street> filteredStreets = new ArrayList<Street>();
-		for (Street street : streets) {
-			if (street.getCurrentType().getId().equals(type.getId())) {
-				filteredStreets.add(street);
+		Long defaultLangId = org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage().getId();
+		for (Translation translation : translations) {
+			if (stub(translation.getLang()).getId().equals(defaultLangId)) {
+				return translation;
 			}
 		}
 
-		return filteredStreets;
+		throw new IllegalArgumentException("No default lang translation found");
 	}
 
-	private StreetType findStreetType(Map<String, StreetType> nameTypeMap, RawConsumerData data) {
-
-		Stub<StreetType> typeById = correctionsService.findCorrection(
-				data.getAddressStreetType(), StreetType.class, null);
-		if (typeById != null) {
-			return new StreetType(typeById);
-		}
-
-		return nameTypeMap.get(data.getAddressStreetType().toLowerCase());
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
 	}
 
-	private Apartment findApartment(RawConsumerData data, Street street, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
-			throws Exception {
-		Buildings buildings = buildingService.findBuildings(stub(street), data.getAddressHouse(), data.getAddressBulk());
-		if (buildings == null) {
-			log.warn(String.format("Failed getting building for consumer, Street(%d, %s), Building(%s, %s) ",
-					street.getId(), data.getAddressStreet(), data.getAddressHouse(), data.getAddressBulk()));
-			ImportError error = addImportError(sd, data.getExternalSourceId(), Buildings.class, dataSource);
-			error.setErrorId("error.eirc.import.building_not_found");
-			setConsumerError(data, error);
-			return null;
-		}
-
-		DataCorrection corr = correctionsService.getStub(data.getBuildingId(), buildings, sd);
-		log.info("Adding buildings correction: " + data.getBuildingId());
-		addToStack(corr);
-
-
-		return findApartment(data, buildings, sd, dataSource);
+	public void setStreetTypeService(StreetTypeService streetTypeService) {
+		this.streetTypeService = streetTypeService;
 	}
 
-	private Apartment findApartment(RawConsumerData data, Buildings buildings, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
-			throws Exception {
-		Building building = buildings.getBuilding();
-
-		Stub<Apartment> stub = apartmentService.findApartmentStub(building, data.getAddressApartment());
-		if (stub == null) {
-			ImportError error = addImportError(sd, data.getExternalSourceId(), Apartment.class, dataSource);
-			error.setErrorId("error.eirc.import.apartment_not_found");
-			setConsumerError(data, error);
-			return null;
-		}
-
-		DataCorrection corr = correctionsService.getStub(data.getApartmentId(), buildings, sd);
-		log.info("Adding apartment correction: " + data.getApartmentId());
-		addToStack(corr);
-
-		return new Apartment(stub);
-	}
-
-	public void setConsumerDataConverter(RawConsumerDataConverter consumerDataConverter) {
-		this.consumerDataConverter = consumerDataConverter;
-	}
-
-	public void setConsumerService(ConsumerService consumerService) {
-		this.consumerService = consumerService;
-	}
-
-	public void setTypeService(IdentityTypeService typeService) {
-		this.typeService = typeService;
-	}
-
-	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
-		this.recordWorkflowManager = recordWorkflowManager;
+	public void setEircImportServiceTx(EircImportServiceTx eircImportServiceTx) {
+		this.eircImportServiceTx = eircImportServiceTx;
 	}
 }

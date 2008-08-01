@@ -1,20 +1,19 @@
 package org.flexpay.eirc.actions.registry;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.service.SpRegistryService;
-import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
+import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.util.CollectionUtils;
 
-import java.util.Set;
+import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 public class ProcessRegistriesAction extends FPActionSupport {
 
 	private Set<Long> objectIds = new HashSet<Long>();
 
-	private SpRegistryService registryService;
-	private ServiceProviderFileProcessor providerFileProcessor;
+	private ProcessManager processManager;
 
 	public String doExecute() throws Exception {
 
@@ -25,8 +24,11 @@ public class ProcessRegistriesAction extends FPActionSupport {
 
 		log.debug("About to execute ProcessRegistriesAction");
 
-		Collection<SpRegistry> registries = registryService.findObjects(objectIds);
-		providerFileProcessor.processRegistries(registries);
+		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+		contextVariables.put("FileId", (Serializable) objectIds);
+
+		processManager.createProcess("ProcessRegistryWorkflow", contextVariables);
+
 		return SUCCESS;
 	}
 
@@ -49,11 +51,7 @@ public class ProcessRegistriesAction extends FPActionSupport {
 		this.objectIds = objectIds;
 	}
 
-	public void setRegistryService(SpRegistryService registryService) {
-		this.registryService = registryService;
-	}
-
-	public void setProviderFileProcessor(ServiceProviderFileProcessor providerFileProcessor) {
-		this.providerFileProcessor = providerFileProcessor;
+	public void setProcessManager(ProcessManager processManager) {
+		this.processManager = processManager;
 	}
 }

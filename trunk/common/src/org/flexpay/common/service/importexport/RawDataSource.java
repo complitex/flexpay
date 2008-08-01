@@ -1,5 +1,7 @@
 package org.flexpay.common.service.importexport;
 
+import java.util.List;
+
 public interface RawDataSource<T extends RawData> {
 
 	/**
@@ -45,4 +47,10 @@ public interface RawDataSource<T extends RawData> {
 	 *          iteration has no more elements.
 	 */
 	T next(ImportOperationTypeHolder holder);
+
+	/**
+	 * return next batch of data
+	 * @return List of raw data, when the list is empty hasNext() should return <code>false</code> 
+	 */
+	List<T> nextPage();
 }
