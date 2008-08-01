@@ -3,6 +3,7 @@ package org.flexpay.common.process.job;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.logger.FPLogger;
 import org.flexpay.common.util.CollectionUtils;
+import org.apache.log4j.Logger;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ public abstract class Job implements Runnable{
     private Map <Serializable, Serializable> parameters = CollectionUtils.map();
     private Long taskId;
     private Long processId;
+    private Logger log = Logger.getLogger(Job.class);
     /**
      * object for generate random string of transaction id (job id)
      */
@@ -55,9 +57,13 @@ public abstract class Job implements Runnable{
     }
 
     public Thread startThread(Map<Serializable, Serializable> parameters){
-        this.parameters.putAll(parameters);
-        jobThread = new Thread(this, "JobThread-" +id);
-        jobThread.start();
+        if (this.jobThread == null){
+            this.parameters.putAll(parameters);
+            jobThread = new Thread(this, "JobThread-" +id);
+            jobThread.start();
+        }else{
+            log.fatal(" Job thread already started! Check Job Bean configuration. Scope must be prototype!");
+        }
         return jobThread;
     }
 

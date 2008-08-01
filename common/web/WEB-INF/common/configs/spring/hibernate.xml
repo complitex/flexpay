@@ -183,7 +183,7 @@
 	</bean>
 
 	<bean name="jobManager" class="org.flexpay.common.process.job.JobManager"
-            factory-method="getInstance" destroy-method="unpoad">
+            factory-method="getInstance" destroy-method="unload">
     </bean>
     
     <bean name="processManager" class="org.flexpay.common.process.ProcessManager"

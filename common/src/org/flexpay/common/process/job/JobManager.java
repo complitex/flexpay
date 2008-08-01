@@ -49,7 +49,7 @@ public class JobManager implements BeanFactoryAware {
         waitingJobs = new LinkedList<Job>();
     }
 
-    public synchronized static void unpoad(){
+    public synchronized static void unload(){
         instance = null;
     }
 
@@ -112,10 +112,10 @@ public class JobManager implements BeanFactoryAware {
                 log.info("JobManager.addJob: Job " + jobName + " was added. Id=" + job.getId());
             } catch (ClassCastException e){
                 log.fatal("JobManager.addJob: Illegal exception when creating instance of " + jobName, e);
-                throw new JobInstantiationException("Illegal exception when creating instance of " + jobName);
+                throw new JobInstantiationException("Illegal exception when creating instance of " + jobName,e);
             } catch (BeansException e){
                 log.fatal("JobManager.addJob: Illegal exception when creating instance of " + jobName, e);
-                throw new JobInstantiationException("Illegal exception when creating instance of " + jobName);
+                throw new JobInstantiationException("Illegal exception when creating instance of " + jobName,e);
             }
         }   else {
             throw new JobConfigurationNotFoundException("Job bean is not configured");
