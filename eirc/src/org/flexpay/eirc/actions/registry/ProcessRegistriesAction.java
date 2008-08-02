@@ -25,7 +25,7 @@ public class ProcessRegistriesAction extends FPActionSupport {
 		log.debug("About to execute ProcessRegistriesAction");
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
-		contextVariables.put("FileId", (Serializable) objectIds);
+		contextVariables.put("registryIds", (Serializable) objectIds);
 
 		processManager.createProcess("ProcessRegistryWorkflow", contextVariables);
 
