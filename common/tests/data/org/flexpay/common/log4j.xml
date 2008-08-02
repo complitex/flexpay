@@ -24,10 +24,10 @@
 		<!--<appender-ref ref="flexpay" />-->
 	<!--</category>-->
 
-	<category name="org.springframework.orm.hibernate3" additivity="false">
-		<priority value="debug" />
-		<appender-ref ref="flexpay" />
-	</category>
+	<!--<category name="org.springframework.orm.hibernate3" additivity="false">-->
+		<!--<priority value="debug" />-->
+		<!--<appender-ref ref="flexpay" />-->
+	<!--</category>-->
 
 	<root>
 		<priority value="warn" />

@@ -263,7 +263,14 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @param object Object to save
 	 */
 	protected void doSaveObject(Person object) throws Exception {
-		personService.save(object);
+		PersonIdentity identity = object.getDefaultIdentity();
+		if (identity != null) {
+			if (StringUtils.isBlank(identity.getLastName())) {
+				log.error("Do not saving person, empty last name: " + object);
+				return;
+			}
+			personService.save(object);
+		}
 	}
 
 	public void setPersonService(PersonService personService) {
