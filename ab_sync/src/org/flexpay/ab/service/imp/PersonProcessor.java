@@ -253,7 +253,8 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
 	protected Stub<Person> findPersistentObject(Person object, DataSourceDescription sd, CorrectionsService cs) {
-		return personService.findPersonStub(object);
+		// there is not enough info to identify each person, will create new each time
+		return null;
 	}
 
 	/**
