@@ -14,12 +14,10 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class StreetProcessor extends AbstractProcessor<Street> {
 
@@ -153,12 +151,41 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	 */
 	protected Stub<Street> findPersistentObject(Street object, DataSourceDescription sd, CorrectionsService cs) {
 		StreetName name = object.getCurrentName();
-		if (name == null || name.getTranslations().isEmpty()) {
+		StreetType type = object.getCurrentType();
+		if (name == null || name.getTranslations().isEmpty() || type == null) {
 			return null;
 		}
 		String nameStr = name.getTranslations().iterator().next().getName();
-		Street street = streetService.findByName(nameStr.toLowerCase(), new TownFilter(object.getParent().getId()));
-		return street != null ? stub(street) : null;
+		List<Street> streets = streetService.findByName(nameStr.toLowerCase(), new TownFilter(object.getParent().getId()));
+		streets = filterStreetsByType(streets, type);
+
+		if (streets.isEmpty()) {
+			return null;
+		}
+
+		if (streets.size() > 1) {
+			log.warn("Found similar streets: " + streets);
+		}
+
+		return stub(streets.get(0));
+	}
+
+	@NotNull
+	private List<Street> filterStreetsByType(@NotNull List<Street> streets, @NotNull StreetType type) {
+		List<Street> result = CollectionUtils.list();
+		for (Street street : streets) {
+			StreetType currentType = street.getCurrentType();
+			if (currentType == null) {
+				log.warn("No type for street: " + street);
+				continue;
+			}
+
+			if (currentType.equals(type)) {
+				result.add(street);
+			}
+		}
+
+		return result;
 	}
 
 	/**

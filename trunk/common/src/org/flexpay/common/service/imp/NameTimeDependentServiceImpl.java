@@ -11,10 +11,12 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.*;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.NameTimeDependentService;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
-import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -98,8 +100,7 @@ public abstract class NameTimeDependentServiceImpl<
 	protected abstract boolean canDisable(NTD ntd, FlexPayExceptionContainer container);
 
 	/**
-	 * return base for name time-dependent objects in i18n files, like 'region', 'town',
-	 * etc.
+	 * return base for name time-dependent objects in i18n files, like 'region', 'town', etc.
 	 *
 	 * @return Localization key base
 	 */
@@ -412,8 +413,12 @@ public abstract class NameTimeDependentServiceImpl<
 		return object;
 	}
 
+	@Nullable
 	private TimeLine<TV, DI> getTimeLine(Long objectId) {
 		NTD object = getNameTimeDependentDao().readFull(objectId);
+		if (object == null) {
+			return null;
+		}
 		return object.getNamesTimeLine();
 	}
 
@@ -482,14 +487,15 @@ public abstract class NameTimeDependentServiceImpl<
 	/**
 	 * Find existing object by name
 	 *
-	 * @param name	 Object name to search
+	 * @param name   Object name to search
 	 * @param filter Parent object filter
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
-	@Nullable
-	public NTD findByName(String name, PrimaryKeyFilter filter) {
+	@NotNull
+	public List<NTD> findByName(String name, PrimaryKeyFilter filter) {
 		List<NTD> objs = getNameTimeDependentDao().findObjects(
 				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
+		List<NTD> result = CollectionUtils.list();
 		for (NTD obj : objs) {
 			TV nameObj = obj.getCurrentName();
 			if (nameObj == null) {
@@ -497,11 +503,11 @@ public abstract class NameTimeDependentServiceImpl<
 			}
 			for (T translation : nameObj.getTranslations()) {
 				if (translation.getName().equalsIgnoreCase(name)) {
-					return obj;
+					result.add(obj);
 				}
 			}
 		}
 
-		return null;
+		return result;
 	}
 }

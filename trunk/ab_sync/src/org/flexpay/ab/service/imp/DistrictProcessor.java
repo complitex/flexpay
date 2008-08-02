@@ -16,10 +16,7 @@ import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class DistrictProcessor extends AbstractProcessor<District> {
 
@@ -123,8 +120,14 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 			return null;
 		}
 		String nameStr = name.getTranslations().iterator().next().getName();
-		District district = districtService.findByName(nameStr.toLowerCase(), new TownFilter(object.getParent().getId()));
-		return district != null ? stub(district) : null;
+		List<District> districts = districtService.findByName(nameStr.toLowerCase(), new TownFilter(object.getParent().getId()));
+		if (districts.isEmpty()) {
+			return null;
+		}
+		if (districts.size() > 1) {
+			log.error("More than 1 district found by name: " + districts);
+		}
+		return stub(districts.get(0));
 	}
 
 	/**
