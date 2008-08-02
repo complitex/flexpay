@@ -1779,15 +1779,15 @@ INSERT INTO ab_person_identity_attributes_tbl (name, value, language_id, person_
 	VALUES ('Аттрибут', 'Значение', @ru_id, @person_identity_id);
 
 -- Init Buildings attribute types
-INSERT INTO ab_building_attribute_types_tbl (type) VALUES (1);
-SELECT @attr_type_home_number_id:=last_insert_id();
+INSERT INTO ab_building_attribute_types_tbl (id) VALUES (1);
+SELECT @attr_type_home_number_id:=1;
 INSERT INTO ab_building_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
 	VALUES ('Номер дома', 'д', @attr_type_home_number_id, @ru_id);
 INSERT INTO ab_building_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
 	VALUES ('Home number', '', @attr_type_home_number_id, @en_id);
 
-INSERT INTO ab_building_attribute_types_tbl (type) VALUES (2);
-SELECT @attr_type_bulk_id:=last_insert_id();
+INSERT INTO ab_building_attribute_types_tbl (id) VALUES (2);
+SELECT @attr_type_bulk_id:=2;
 INSERT INTO ab_building_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
 	VALUES ('Корпус', 'к', @attr_type_bulk_id, @ru_id);
 INSERT INTO ab_building_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
@@ -4099,30 +4099,30 @@ INSERT INTO eirc_registry_types_tbl (code) VALUES (11);
 -- Init organisations
 -- EIRC is the first one, ID=1
 -- CN is the fourth one, ID=4
-INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp, unique_id)
-	VALUES (1, 0, '-------', '123', '0');
-SELECT @organisation_eirc:=last_insert_id();
+INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp)
+	VALUES (1, 0, '-------', '123');
+SELECT @organisation_eirc:=1;
 INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
 	VALUES ('Eirc itself', @ru_id, @organisation_eirc);
 INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
 	VALUES ('EIRC', @ru_id, @organisation_eirc);
-INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp, unique_id)
-	VALUES (2, 0, '123123123', '123', '2');
-SELECT @organisation_zhko:=last_insert_id();
+INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp)
+	VALUES (2, 0, '123123123', '123');
+SELECT @organisation_zhko:=2;
 INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
 	VALUES ('Test organisation', @ru_id, @organisation_zhko);
 INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
 	VALUES ('ЖКО', @ru_id, @organisation_zhko);
-INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp, unique_id)
-	VALUES (3, 0, '456456456', '56', '3');
-SELECT @organisation_tszh:=last_insert_id();
+INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp)
+	VALUES (3, 0, '456456456', '56');
+SELECT @organisation_tszh:=3;
 INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
 	VALUES ('Test organisation 2', @ru_id, @organisation_tszh);
 INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
 	VALUES ('ТСЖ', @ru_id, @organisation_tszh);
-INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp, unique_id)
-	VALUES (4, 0, '1111111', '56', '10');
-SELECT @organisation_cn:=last_insert_id();
+INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp)
+	VALUES (4, 0, '1111111', '56');
+SELECT @organisation_cn:=4;
 INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
 	VALUES ('Calculation center', @ru_id, @organisation_cn);
 INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
