@@ -52,6 +52,8 @@ public class SyncServiceImpl implements SyncService {
 			return;
 		}
 
+		long timeStart = System.currentTimeMillis();
+
 		try {
 			prevId = -1L;
 			prevType = ObjectType.Unknown;
@@ -92,7 +94,10 @@ public class SyncServiceImpl implements SyncService {
 				}
 			}
 
-			log.info("Processed history records: " + count);
+			if (log.isInfoEnabled()) {
+				log.info("Processed history records: " + count);
+				log.info("History processing took " + (System.currentTimeMillis() - timeStart) + "ms");
+			}
 
 		} finally {
 			lockManager.releaseLock("sync_ab_lock");
