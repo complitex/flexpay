@@ -1,37 +1,42 @@
 package org.flexpay.eirc.actions;
 
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
-import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.apache.commons.lang.time.DateUtils;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.GregorianCalendar;
+import java.util.*;
+import java.io.Serializable;
 
-public class GenerateTicketAction extends FPActionSupport {
+public class GenerateQuitancesAction extends FPActionSupport {
 
 	private ServiceOrganisationService serviceOrganisationService;
-	//private TicketService tickerService;
-	private QuittanceService quittanceService;
 
 	private List<ServiceOrganisation> serviceOrganizationList;
 
-	private Integer year;
+    private ProcessManager processManager;
+
+    private Integer year;
 	private Integer month;
 	private Long serviceOrganisationId;
 
-	public String doExecute() {
+	public String doExecute() throws Exception {
 		if (isSubmit()) {
 
             Calendar calendar = new GregorianCalendar(year, month, 1);
             Date dateFrom = calendar.getTime();
 			Date dateTill = DateUtils.addMonths(dateFrom, 1);
 
-			quittanceService.generateForServiceOrganisation(serviceOrganisationId, dateFrom, dateTill);
-		}
+            Map<Serializable,Serializable> contextVariables = CollectionUtils.map();
+
+            contextVariables.put("serviceOrganisationId", serviceOrganisationId);
+            contextVariables.put("dateFrom", dateFrom);
+            contextVariables.put("dateTill", dateTill);
+
+            processManager.createProcess("GenerateQuitances",contextVariables);
+        }
 
 		initDefaultDate();
 		serviceOrganizationList = serviceOrganisationService.listServiceOrganisations();
@@ -106,12 +111,11 @@ public class GenerateTicketAction extends FPActionSupport {
 		this.serviceOrganisationId = serviceOrganisationId;
 	}
 
-
-	/**
-	 * @param quittanceService the quittanceService to set
-	 */
-	public void setQuittanceService(QuittanceService quittanceService) {
-		this.quittanceService = quittanceService;
-	}
-
+    /**
+     *
+     * @param processManager the process manager to set
+     */
+    public void setProcessManager(ProcessManager processManager) {
+        this.processManager = processManager;
+    }
 }

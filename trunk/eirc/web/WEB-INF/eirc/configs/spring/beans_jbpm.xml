@@ -6,13 +6,20 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="fileParserEvent" class="org.flexpay.eirc.process.registry.FileParserEvent" scope="prototype">
-		<property name="parser" ref="spFileParser" />
-		<property name="spFileService" ref="spFileService" />
-	</bean>
+	<bean name="fileParserEvent" class="org.flexpay.eirc.process.registry.FileParserEvent" scope="prototype"
+            p:parser-ref="spFileParser"
+            p:spFileService-ref="spFileService"
+            />
 
 	<bean name="registryProcessEvent" class="org.flexpay.eirc.process.registry.RegistryProcessEvent" scope="prototype"
 		  p:providerFileProcessor-ref="serviceProviderFileProcessor"
 		  p:registryService-ref="spRegistryService" />
 
+    <bean name="generateQuitancePDFEvent" class="org.flexpay.eirc.process.quittance.GenerateQuittancePDFEvent" scope="prototype"
+            p:quittanceService-ref="quittanceService"
+            p:serviceTypeService-ref="serviceTypeService"
+          />
+
+    <bean name="generateQuitancesEvent" class="org.flexpay.eirc.process.quittance.GenerateQuittanceEvent" scope="prototype"
+            p:quittanceService="quittanceService"/>
 </beans>
