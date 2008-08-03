@@ -234,7 +234,9 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 		person.setAttribute(inn);
 	}
 
-	private void setResidenceApartment(Person person, String apartmentId, DataSourceDescription sd, CorrectionsService cs) throws FlexPayException {
+	private void setResidenceApartment(Person person, String apartmentId, DataSourceDescription sd, CorrectionsService cs)
+			throws FlexPayException {
+
 		Stub<Apartment> stub = cs.findCorrection(apartmentId, Apartment.class, sd);
 		if (stub == null) {
 			log.error("Cannot set residence apartment for person, correction not found: " + apartmentId);

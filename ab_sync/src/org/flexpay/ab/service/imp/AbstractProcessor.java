@@ -159,7 +159,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 			if (obj instanceof DomainObjectWithStatus) {
 				DomainObjectWithStatus withStatus = (DomainObjectWithStatus) obj;
 				if (withStatus.getStatus() == DomainObjectWithStatus.STATUS_DISABLED) {
-					log.warn("Deleting unknown object nothing to do");
+					log.warn("Deleting unknown object nothing to do: " + externalId);
 					return;
 				}
 			}
