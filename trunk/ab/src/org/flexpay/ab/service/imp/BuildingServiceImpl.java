@@ -295,7 +295,7 @@ public class BuildingServiceImpl implements BuildingService {
 
 		if (StringUtils.isNotEmpty(bulk)) {
 			BuildingAttribute bulkAttr = new BuildingAttribute();
-			bulkAttr.setValue(number);
+			bulkAttr.setValue(bulk);
 			bulkAttr.setBuildingAttributeType(ApplicationConfig.getBuildingAttributeTypeBulk());
 			result.add(bulkAttr);
 		}

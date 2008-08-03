@@ -1,6 +1,5 @@
 package org.flexpay.ab.service.imp;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.dao.DistrictDao;
@@ -82,8 +81,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 			buildingDao.create(building);
 
 			if (log.isDebugEnabled()) {
-				log.debug(String.format("Created building: %s", building
-						.toString()));
+				log.debug(String.format("Created building: %s", building.toString()));
 			}
 		} else {
 			buildingDao.update(building);
@@ -117,9 +115,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 				break;
 			default:
 				if (log.isDebugEnabled()) {
-					log
-							.debug("Unknown building property: "
-								   + record.getFieldType());
+					log.debug("Unknown building property: " + record.getFieldType());
 				}
 		}
 	}
@@ -134,50 +130,12 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 			log.warn("Building renumber, history loss");
 		}
 
-		Set<BuildingAttribute> attributes = buildings.getBuildingAttributes();
-		if (attributes.isEmpty()) {
-			// will save attributes at the end of the method
-			attributes = new HashSet<BuildingAttribute>();
-		}
-
-		// Check if number already exists
-		BuildingAttribute numberAttribute = null;
-		for (BuildingAttribute attribute : attributes) {
-			if (attribute == null) {
-				continue;
-			}
-			if (attribute.getBuildingAttributeType().isBuildingNumber()) {
-				numberAttribute = attribute;
-				break;
-			}
-		}
-
-		if (StringUtils.isEmpty(record.getCurrentValue())) {
-			if (numberAttribute != null) {
-				attributes.remove(numberAttribute);
-				buildings.setBuildingAttributes(attributes);
-			}
-			return;
-		}
-
-		// Create a new attribute
-		if (numberAttribute == null) {
-			BuildingAttributeType type = ApplicationConfig.getBuildingAttributeTypeNumber();
-			BuildingAttribute attribute = new BuildingAttribute();
-			attribute.setBuildings(buildings);
-			attribute.setBuildingAttributeType(type);
-			numberAttribute = attribute;
-		}
-
-		numberAttribute.setValue(record.getCurrentValue());
-		attributes.add(numberAttribute);
-
-		buildings.setBuildingAttributes(attributes);
+		buildings.setBuildingAttribute(record.getCurrentValue(), ApplicationConfig.getBuildingAttributeTypeNumber());
 
 		if (log.isInfoEnabled()) {
 			log.info(String.format(
 					"Building number to set: %s, actual number: %s", record
-					.getCurrentValue(), buildings.getNumber()));
+							.getCurrentValue(), buildings.getNumber()));
 		}
 	}
 
@@ -186,48 +144,16 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 
 		String value = buildings.getBulk();
 		if (value != null && !value.equals(record.getCurrentValue())) {
-			log.warn("Building bulk renumber, history loss");
+			log.warn("Building bulk renumber, history loss. Object id: " + record.getObjectId());
 		}
 
-		Set<BuildingAttribute> attributes = buildings.getBuildingAttributes();
-		if (attributes.isEmpty()) {
-			// will save attributes at the end of the method
-			attributes = new HashSet<BuildingAttribute>();
+		buildings.setBuildingAttribute(record.getCurrentValue(), ApplicationConfig.getBuildingAttributeTypeBulk());
+
+		if (log.isInfoEnabled()) {
+			log.info(String.format(
+					"Building bulk to set: %s, actual value: %s", record
+							.getCurrentValue(), buildings.getBulk()));
 		}
-
-		// Check if bulk already exists
-		BuildingAttribute numberAttribute = null;
-		for (BuildingAttribute attribute : attributes) {
-			if (attribute == null) {
-				continue;
-			}
-			if (attribute.getBuildingAttributeType().isBulkNumber()) {
-				numberAttribute = attribute;
-				break;
-			}
-		}
-
-		if (StringUtils.isEmpty(record.getCurrentValue())) {
-			if (numberAttribute != null) {
-				attributes.remove(numberAttribute);
-				buildings.setBuildingAttributes(attributes);
-			}
-			return;
-		}
-
-		// Create a new attribute
-		if (numberAttribute == null) {
-			BuildingAttributeType type = ApplicationConfig.getBuildingAttributeTypeBulk();
-			BuildingAttribute attribute = new BuildingAttribute();
-			attribute.setBuildings(buildings);
-			attribute.setBuildingAttributeType(type);
-			numberAttribute = attribute;
-		}
-
-		numberAttribute.setValue(record.getCurrentValue());
-		attributes.add(numberAttribute);
-
-		buildings.setBuildingAttributes(attributes);
 	}
 
 	private void setDistrictId(Building building, HistoryRecord record,
@@ -237,19 +163,17 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 		if (stub == null) {
 			log.error(String.format(
 					"No correction for district #%s DataSourceDescription %d, "
-					+ "cannot set up reference for building", record
-					.getCurrentValue(), sd.getId()));
+					+ "cannot set up reference for building",
+					record.getCurrentValue(), sd.getId()));
 			return;
 		}
 
 		if (districtDao.read(stub.getId()) == null) {
-			log
-					.error(String
-							.format(
-							"Correction for district #%s DataSourceDescription %d is invalid, "
-							+ "no district with id %d, cannot set up reference for building",
-							record.getCurrentValue(), sd.getId(), stub
-							.getId()));
+			log.error(String
+					.format(
+					"Correction for district #%s DataSourceDescription %d is invalid, "
+					+ "no district with id %d, cannot set up reference for building",
+					record.getCurrentValue(), sd.getId(), stub.getId()));
 			return;
 		}
 
@@ -263,7 +187,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 			log.error(String.format(
 					"No correction for street #%s DataSourceDescription %d, "
 					+ "cannot set up reference for building", record
-					.getCurrentValue(), sd.getId()));
+							.getCurrentValue(), sd.getId()));
 			return;
 		}
 
@@ -287,7 +211,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
 	protected Stub<Buildings> findPersistentObject(Buildings object,
-											 DataSourceDescription sd, CorrectionsService cs) throws FlexPayException {
+												   DataSourceDescription sd, CorrectionsService cs) throws FlexPayException {
 		String number = object.getNumber();
 		String bulk = object.getBulk();
 		if (number == null) {
