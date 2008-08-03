@@ -27,4 +27,18 @@ public class TestProcess extends SpringBeanAwareTestCase {
         ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("WEB-INF/eirc/process/ProcessRegistryWorkflow.xml");
         processManager.deployProcessDefinition(processDefinition, true);
     }
+
+    @Test
+	@NotTransactional
+	public void testLoadGenerateQuitancesWorkflow() {
+        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("WEB-INF/eirc/process/GenerateQuitances.xml");
+        processManager.deployProcessDefinition(processDefinition, true);
+    }
+    
+    @Test
+	@NotTransactional
+	public void testLoadGenerateQuitancePDFWorkflow() {
+        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("WEB-INF/eirc/process/GenerateQuitancePDF.xml");
+        processManager.deployProcessDefinition(processDefinition, true);
+    }
 }
