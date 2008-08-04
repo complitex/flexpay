@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class RegistryProcessEvent extends Job {
+public class RegistryProcessJob extends Job {
 
 	private Logger log = Logger.getLogger(getClass());
 

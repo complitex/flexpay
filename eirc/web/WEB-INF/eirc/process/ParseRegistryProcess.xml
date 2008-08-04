@@ -11,10 +11,10 @@
 
 
 	<start-state name="start">
-		<transition to="fileParserEvent" />
+		<transition to="fileParserJob" />
 	</start-state>
 
-	<task-node name="fileParserEvent">
+	<task-node name="fileParserJob">
 		<task swimlane="worker" blocking="yes" />
 		<transition name="next" to="end" />
 		<transition name="error" to="end" />

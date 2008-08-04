@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
-public class GenerateQuittanceEvent extends Job {
+public class GenerateQuittanceJob extends Job {
 
     private QuittanceService quittanceService;
     private Logger log = Logger.getLogger(getClass());

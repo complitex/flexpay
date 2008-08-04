@@ -11,10 +11,10 @@
 
 
 	<start-state name="start">
-		<transition to="generateQuitancePDFEvent" />
+		<transition to="generateQuitancePDFJob" />
 	</start-state>
 
-	<task-node name="generateQuitancePDFEvent">
+	<task-node name="generateQuitancePDFJob">
 		<task swimlane="worker" blocking="yes" />
 		<transition name="next" to="end" />
 		<transition name="error" to="end" />

@@ -65,8 +65,7 @@ public class QuittanceServiceImpl implements QuittanceService {
 	}
 
 	@Transactional(readOnly = false)
-	public void generateForServiceOrganisation(Long serviceOrganisationId,
-			Date dateFrom, Date dateTill) {
+	public void generateForServiceOrganisation(Long serviceOrganisationId, Date dateFrom, Date dateTill) {
 		ServiceOrganisation serviceOrganisation = serviceOrganisationService
 				.read(serviceOrganisationId);
 		Set<ServedBuilding> buildingSet = serviceOrganisation.getBuildings();

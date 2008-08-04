@@ -11,10 +11,10 @@
 
 
 	<start-state name="start">
-		<transition to="generateQuitancesEvent" />
+		<transition to="generateQuitancesJob" />
 	</start-state>
 
-	<task-node name="generateQuitancesEvent">
+	<task-node name="generateQuitancesJob">
 		<task swimlane="worker" blocking="yes" />
 		<transition name="next" to="end" />
 		<transition name="error" to="end" />

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class GenerateQuittancePDFEvent extends Job {
+public class GenerateQuittancePDFJob extends Job {
 
     private QuittanceService quittanceService;
     private ServiceTypeService serviceTypeService;

@@ -6,20 +6,18 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="fileParserEvent" class="org.flexpay.eirc.process.registry.FileParserEvent" scope="prototype"
-            p:parser-ref="spFileParser"
-            p:spFileService-ref="spFileService"
-            />
+	<bean name="fileParserJob" class="org.flexpay.eirc.process.registry.FileParserJob" scope="prototype"
+		  p:parser-ref="spFileParser"
+		  p:spFileService-ref="spFileService" />
 
-	<bean name="registryProcessEvent" class="org.flexpay.eirc.process.registry.RegistryProcessEvent" scope="prototype"
+	<bean name="registryProcessJob" class="org.flexpay.eirc.process.registry.RegistryProcessJob" scope="prototype"
 		  p:providerFileProcessor-ref="serviceProviderFileProcessor"
 		  p:registryService-ref="spRegistryService" />
 
-    <bean name="generateQuitancePDFEvent" class="org.flexpay.eirc.process.quittance.GenerateQuittancePDFEvent" scope="prototype"
-            p:quittanceService-ref="quittanceService"
-            p:serviceTypeService-ref="serviceTypeService"
-          />
+	<bean name="generateQuitancePDFJob" class="org.flexpay.eirc.process.quittance.GenerateQuittancePDFJob" scope="prototype"
+		  p:quittanceService-ref="quittanceService"
+		  p:serviceTypeService-ref="serviceTypeService" />
 
-    <bean name="generateQuitancesEvent" class="org.flexpay.eirc.process.quittance.GenerateQuittanceEvent" scope="prototype"
-            p:quittanceService="quittanceService"/>
+	<bean name="generateQuitancesJob" class="org.flexpay.eirc.process.quittance.GenerateQuittanceJob" scope="prototype"
+		  p:quittanceService="quittanceService" />
 </beans>
