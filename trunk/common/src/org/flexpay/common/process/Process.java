@@ -16,34 +16,10 @@ public class Process {
     private long processInstaceId;
     private long processDefenitionVersion;
 
-//    private ProcessStatus processStatus = new ProcessStatus();
     private Map<Serializable,Serializable> parameters = new HashMap<Serializable,Serializable>() ;
 
-//    public process (long id){
     public Process (){
-//        processStatus.setStart(new Date());
-//        processStatus.setId(id);
-//        processStatus.setState(ProcessState.WAITING);
-//        this.processStartDate = new Date();
-//        this.processState = ProcessState.WAITING;
-//        this.processDefinitionName = processDefinitionName;
     }
-
-//    public synchronized void setParameter(String name, String value){
-//        parameters.put(name,value);
-//    }
-//
-//    public synchronized String getParameter(String name){
-//        return parameters.get(name);
-//    }
-
-//    public ProcessStatus getProcessStatus() {
-//        return processStatus;
-//    }
-//
-//    public void setProcessStatus(ProcessStatus processStatus) {
-//        this.processStatus = processStatus;
-//    }
 
     public String getLogFileName() {
         return logFileName;
