@@ -31,14 +31,14 @@ public class TestProcess extends SpringBeanAwareTestCase {
     @Test
 	@NotTransactional
 	public void testLoadGenerateQuitancesWorkflow() {
-        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("WEB-INF/eirc/process/GenerateQuitances.xml");
+        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("WEB-INF/eirc/process/GenerateQuittances.xml");
         processManager.deployProcessDefinition(processDefinition, true);
     }
     
     @Test
 	@NotTransactional
 	public void testLoadGenerateQuitancePDFWorkflow() {
-        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("WEB-INF/eirc/process/GenerateQuitancePDF.xml");
+        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("WEB-INF/eirc/process/GenerateQuittancePDF.xml");
         processManager.deployProcessDefinition(processDefinition, true);
     }
 }
