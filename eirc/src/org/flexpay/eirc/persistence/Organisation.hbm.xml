@@ -106,12 +106,6 @@
 			<key column="eirc_service_organisation_id" />
 			<one-to-many class="ServedBuilding" />
 		</set>
-		<many-to-one name="district" foreign-key="FK_eirc_service_organisation_district"
-					 class="org.flexpay.ab.persistence.District">
-			<column name="district_id" not-null="true">
-				<comment>District reference organisation is servicing</comment>
-			</column>
-		</many-to-one>
 		<set name="descriptions" inverse="true">
 			<key column="service_organisation_id" />
 			<one-to-many class="ServiceOrganisationDescription" />
