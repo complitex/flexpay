@@ -5,6 +5,7 @@ import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class StreetAjaxAction extends FPActionSupport {
 	private List<StreetVis> streetVisList;
 	private String streetVar;
 
+	@NotNull
 	public String doExecute() throws FlexPayException {
 		List<Street> streetList = streetService.findByTownAndName(ApplicationConfig.getDefaultTownStub(), streetVar + "%");
 
@@ -44,6 +46,7 @@ public class StreetAjaxAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

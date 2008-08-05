@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +15,7 @@ public class BuildingsDeleteAction extends FPActionSupport {
 	private List<Long> objectIds = Collections.emptyList();
 	private Long redirectBuildingsId;
 
+	@NotNull
 	public String doExecute() {
 		for (Long id : objectIds) {
 			Buildings buildings = buildingService.readFull(new Stub<Buildings>(id));
@@ -34,6 +36,7 @@ public class BuildingsDeleteAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.apartment;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.ab.service.ApartmentService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -11,6 +12,7 @@ public class ApartmentsDeleteAction extends FPActionSupport {
 	private ApartmentService apartmentService;
 	private Set<Long> objectIds = set();
 
+	@NotNull
 	public String doExecute() throws Exception {
 		apartmentService.disable(objectIds);
 
@@ -24,6 +26,7 @@ public class ApartmentsDeleteAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

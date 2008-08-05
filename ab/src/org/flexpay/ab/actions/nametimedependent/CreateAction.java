@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends Nam
 	/**
 	 * {@inheritDoc}
 	 */
+	@NotNull
 	public String doExecute() throws Exception {
 		ArrayStack filterArrayStack = getFilters();
 		for (Object filter : filterArrayStack) {
@@ -64,6 +66,7 @@ public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends Nam
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return INPUT;

@@ -8,6 +8,7 @@ import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.util.CollectionUtils.map;
+import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class StreetTypeEditAction extends FPActionSupport implements Preparable 
 	}
 
 
+	@NotNull
 	public String doExecute() throws Exception {
 		if (isSubmit()) {
 			streetTypeService.update(streetType, streetType.getTranslations());
@@ -49,6 +51,7 @@ public class StreetTypeEditAction extends FPActionSupport implements Preparable 
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;

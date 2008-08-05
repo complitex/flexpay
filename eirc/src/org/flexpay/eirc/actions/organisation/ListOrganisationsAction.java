@@ -4,6 +4,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.service.OrganisationService;
 import org.flexpay.eirc.persistence.Organisation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Collections;
@@ -15,6 +16,7 @@ public class ListOrganisationsAction extends FPActionSupport {
 	private Page<Organisation> pager = new Page<Organisation>();
 	private List<Organisation> organisations = Collections.emptyList();
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		organisations = organisationService.listOrganisations(pager);
@@ -29,6 +31,7 @@ public class ListOrganisationsAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

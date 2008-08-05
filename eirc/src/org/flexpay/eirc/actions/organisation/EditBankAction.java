@@ -10,6 +10,7 @@ import org.flexpay.eirc.persistence.Organisation;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.service.BankService;
 import org.flexpay.eirc.service.OrganisationService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public class EditBankAction extends FPActionSupport {
 	private OrganisationFilter organisationFilter = new OrganisationFilter();
 	private Map<Long, String> descriptions = map();
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		if (bank.getId() == null) {
@@ -83,6 +85,7 @@ public class EditBankAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return INPUT;
 	}

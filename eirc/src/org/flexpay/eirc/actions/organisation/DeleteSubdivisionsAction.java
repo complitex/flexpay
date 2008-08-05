@@ -4,6 +4,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.eirc.service.SubdivisionService;
 import org.flexpay.eirc.persistence.Organisation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -14,6 +15,7 @@ public class DeleteSubdivisionsAction extends FPActionSupport {
 	private Organisation organisation = new Organisation();
 	private Set<Long> objectIds = set();
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		if (organisation.isNew()) {
@@ -33,6 +35,7 @@ public class DeleteSubdivisionsAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

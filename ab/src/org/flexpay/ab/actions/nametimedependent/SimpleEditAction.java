@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.*;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public abstract class SimpleEditAction<
 		}
 	}
 
+	@NotNull
 	@SuppressWarnings ({"unchecked"})
 	public String doExecute() throws Exception {
 
@@ -83,6 +85,7 @@ public abstract class SimpleEditAction<
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return INPUT;

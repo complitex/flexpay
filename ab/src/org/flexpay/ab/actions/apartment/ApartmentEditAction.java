@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.jetbrains.annotations.NotNull;
 
 public class ApartmentEditAction extends BuildingsFilterDependentAction {
 
@@ -14,6 +15,7 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 	private Apartment apartment = new Apartment();
 	private String apartmentNumber;
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		if (!buildingsFilter.needFilter()) {
@@ -58,6 +60,7 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return INPUT;
 	}

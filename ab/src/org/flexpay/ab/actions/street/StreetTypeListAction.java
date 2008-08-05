@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.street;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class StreetTypeListAction extends FPActionSupport {
 	private StreetTypeService streetTypeService;
 	private List<StreetTypeTranslation> translationList;
 
+	@NotNull
 	public String doExecute() throws Exception {
 		translationList = streetTypeService.getTranslations(userPreferences.getLocale());
 
@@ -24,6 +26,7 @@ public class StreetTypeListAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;

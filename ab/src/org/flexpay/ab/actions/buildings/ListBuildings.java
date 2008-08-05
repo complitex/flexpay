@@ -10,6 +10,7 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class ListBuildings extends BuildingsActionsBase {
 	/**
 	 * {@inheritDoc}
 	 */
+	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
@@ -53,6 +55,7 @@ public class ListBuildings extends BuildingsActionsBase {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;

@@ -9,6 +9,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 		}
 	}
 
+	@NotNull
 	public String doExecute() throws FlexPayException {
 		for (Buildings current : buildingService.getBuildingBuildings(buildings.getBuilding())) {
 			if (buildings.getId().longValue() != current.getId().longValue()) {
@@ -60,6 +62,7 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return INPUT;
 	}

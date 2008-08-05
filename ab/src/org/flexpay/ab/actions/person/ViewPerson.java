@@ -7,6 +7,7 @@ import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.jetbrains.annotations.NotNull;
 
 public class ViewPerson extends FPActionSupport {
 
@@ -15,6 +16,7 @@ public class ViewPerson extends FPActionSupport {
 
 	private Person person = new Person();
 
+	@NotNull
 	public String doExecute() throws Exception {
 		if (log.isDebugEnabled()) {
 			log.debug("Object: " + person);
@@ -39,6 +41,7 @@ public class ViewPerson extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

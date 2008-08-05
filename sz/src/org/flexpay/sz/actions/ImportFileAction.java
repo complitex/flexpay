@@ -9,6 +9,7 @@ import org.flexpay.sz.persistence.Oszn;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.persistence.SzFileType;
 import org.flexpay.sz.service.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,6 +59,7 @@ public class ImportFileAction extends FPActionSupport {
 	private SzFileStatusService szFileStatusService;
 	private SzFileActualityStatusService szFileActualityStatusService;
 
+	@NotNull
 	public String doExecute() throws Exception {
 		if (isSubmit()) {
 			SzFileType szFileType = szFileTypeService
@@ -110,6 +112,7 @@ public class ImportFileAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return osznList.isEmpty() ? "oszn_absent" : INPUT;
 	}

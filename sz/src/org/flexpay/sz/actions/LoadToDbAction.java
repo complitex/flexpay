@@ -4,6 +4,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
+import org.jetbrains.annotations.NotNull;
 
 public class LoadToDbAction extends FPActionSupport {
 
@@ -12,6 +13,7 @@ public class LoadToDbAction extends FPActionSupport {
 
 	private SzFileService szFileService;
 
+	@NotNull
 	public String doExecute() throws Exception {
 		SzFile szFile = szFileService.readFull(szFileId);
 		if ("loadToDb".equals(action)) {
@@ -34,6 +36,7 @@ public class LoadToDbAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;

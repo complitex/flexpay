@@ -1,11 +1,13 @@
 package org.flexpay.eirc.actions.eirc_account;
 
 import org.flexpay.ab.actions.person.ListPersons;
+import org.jetbrains.annotations.NotNull;
 
 public class EircAccountCreateForm2Action extends ListPersons {
 	
 	private Long apartmentId;
 
+	@NotNull
 	public String doExecute() throws Exception {
 		if(apartmentId == null) {
 			return "form1";
@@ -23,6 +25,7 @@ public class EircAccountCreateForm2Action extends ListPersons {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return "form1";

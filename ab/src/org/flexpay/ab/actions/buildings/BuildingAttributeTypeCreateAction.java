@@ -10,6 +10,7 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.service.LanguageService;
 import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.CollectionUtils.set;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class BuildingAttributeTypeCreateAction extends FPActionSupport
 		}
 	}
 
+	@NotNull
 	public String doExecute() {
 		if (isSubmit()) {
 			boolean blancDefaultTranslation = true;
@@ -65,6 +67,7 @@ public class BuildingAttributeTypeCreateAction extends FPActionSupport
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return INPUT;

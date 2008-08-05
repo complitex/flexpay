@@ -3,12 +3,14 @@ package org.flexpay.ab.actions.town;
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.jetbrains.annotations.NotNull;
 
 public class TownTypeViewAction extends FPActionSupport {
 	private Long id;
 	private TownTypeService townTypeService;
 	private TownType townType;
 
+	@NotNull
 	public String doExecute() throws Exception {
 		townType = townTypeService.read(id);
 
@@ -22,6 +24,7 @@ public class TownTypeViewAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;

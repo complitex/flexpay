@@ -15,6 +15,7 @@ import org.flexpay.common.persistence.Translation;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.LanguageService;
 import static org.flexpay.common.util.CollectionUtils.map;
+import org.jetbrains.annotations.NotNull;
 
 import com.opensymphony.xwork2.Preparable;
 
@@ -41,6 +42,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport implements 
 	}
 	
 
+	@NotNull
 	public String doExecute() throws FlexPayException {
 		buildingAttributeType = buildingService.getAttributeType(stub(buildingAttributeType));
 		
@@ -97,6 +99,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport implements 
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

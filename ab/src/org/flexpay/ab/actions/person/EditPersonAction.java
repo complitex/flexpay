@@ -10,6 +10,7 @@ import org.flexpay.ab.util.config.ApplicationConfig;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
@@ -26,6 +27,7 @@ public class EditPersonAction extends ApartmentFilterDependentAction {
 	@NonNls
 	private String editType;
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		if (isSubmit()) {
@@ -102,6 +104,7 @@ public class EditPersonAction extends ApartmentFilterDependentAction {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return INPUT;

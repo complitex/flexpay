@@ -1,6 +1,7 @@
 package org.flexpay.eirc.actions.registry.corrections;
 
 import org.flexpay.common.actions.FPActionSupport;
+import org.jetbrains.annotations.NotNull;
 
 public class CorrectPersonAction extends FPActionSupport {
 	/**
@@ -11,8 +12,9 @@ public class CorrectPersonAction extends FPActionSupport {
 	 * @return execution result code
 	 * @throws Exception if failure occurs
 	 */
+	@NotNull
 	protected String doExecute() throws Exception {
-		return null;
+		throw new RuntimeException("Not implemented");
 	}
 
 	/**
@@ -22,7 +24,8 @@ public class CorrectPersonAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
-		return null;
+		throw new RuntimeException("Not implemented");
 	}
 }

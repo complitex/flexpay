@@ -4,6 +4,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -16,7 +17,8 @@ public class SpFileAction extends FPActionSupport {
 
     private ProcessManager processManager;
 
-    public String doExecute() throws Exception {
+    @NotNull
+	public String doExecute() throws Exception {
         if ("loadToDb".equals(action)) {
             Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
             contextVariables.put("FileId", spFileId);
@@ -39,7 +41,8 @@ public class SpFileAction extends FPActionSupport {
      *
      * @return {@link #ERROR} by default
      */
-    @Override
+    @NotNull
+	@Override
     protected String getErrorResult() {
         return SUCCESS;
     }

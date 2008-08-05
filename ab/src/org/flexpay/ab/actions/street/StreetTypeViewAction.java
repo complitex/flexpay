@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.street;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.jetbrains.annotations.NotNull;
 
 public class StreetTypeViewAction extends FPActionSupport {
 
@@ -10,6 +11,7 @@ public class StreetTypeViewAction extends FPActionSupport {
 	private StreetTypeService streetTypeService;
 	private StreetType streetType;
 
+	@NotNull
 	public String doExecute() throws Exception {
 		streetType = streetTypeService.read(id);
 
@@ -23,6 +25,7 @@ public class StreetTypeViewAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;

@@ -8,6 +8,7 @@ import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.util.DateUtil;
+import org.jetbrains.annotations.NotNull;
 
 public class StreetEditTypeAction extends FPActionSupport {
 
@@ -18,6 +19,7 @@ public class StreetEditTypeAction extends FPActionSupport {
 	private StreetService streetService;
 	private StreetTypeService streetTypeService;
 
+	@NotNull
 	public String doExecute() throws Exception {
 		object = streetService.read(object.getId());
 		temporal.setObject(object);
@@ -74,6 +76,7 @@ public class StreetEditTypeAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

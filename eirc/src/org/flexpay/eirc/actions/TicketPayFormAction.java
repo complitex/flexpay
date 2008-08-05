@@ -4,6 +4,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.pdf.PdfTicketWriter.TicketInfo;
 import org.flexpay.eirc.service.TicketService;
+import org.jetbrains.annotations.NotNull;
 
 public class TicketPayFormAction extends FPActionSupport {
 
@@ -13,6 +14,7 @@ public class TicketPayFormAction extends FPActionSupport {
 	private TicketInfo ticketInfo;
 
 
+	@NotNull
 	public String doExecute() throws FlexPayException {
 		if (isSubmit()) {
 			ticketInfo = ticketService.getTicketInfo(ticketId);
@@ -29,6 +31,7 @@ public class TicketPayFormAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;

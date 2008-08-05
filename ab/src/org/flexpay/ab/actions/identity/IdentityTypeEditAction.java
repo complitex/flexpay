@@ -8,6 +8,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.persistence.Language;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -18,6 +19,7 @@ public class IdentityTypeEditAction extends FPActionSupport {
 	private IdentityType identityType = new IdentityType();
 	private Map<Long, String> langToTranslation = treeMap();
 
+	@NotNull
 	public String doExecute() throws Exception {
 		if (identityType.isNew()) {
 			throw new FlexPayException("No id specified");
@@ -65,6 +67,7 @@ public class IdentityTypeEditAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return INPUT;

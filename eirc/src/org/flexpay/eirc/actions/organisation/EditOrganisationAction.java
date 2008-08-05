@@ -8,6 +8,7 @@ import org.flexpay.eirc.persistence.Organisation;
 import org.flexpay.eirc.persistence.OrganisationDescription;
 import org.flexpay.eirc.persistence.OrganisationName;
 import org.flexpay.eirc.service.OrganisationService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -19,6 +20,7 @@ public class EditOrganisationAction extends FPActionSupport {
 	private Map<Long, String> names = map();
 	private Map<Long, String> descriptions = map();
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		if (organisation.getId() == null) {
@@ -76,6 +78,7 @@ public class EditOrganisationAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return INPUT;
 	}

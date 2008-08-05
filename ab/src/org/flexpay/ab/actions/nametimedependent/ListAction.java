@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public abstract class ListAction<
 	/**
 	 * {@inheritDoc}
 	 */
+	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
@@ -52,6 +54,7 @@ public abstract class ListAction<
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;

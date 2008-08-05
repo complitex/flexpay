@@ -2,6 +2,7 @@ package org.flexpay.eirc.actions.serviceprovider;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.eirc.service.SPService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +13,7 @@ public class DeleteServiceProvidersAction extends FPActionSupport {
 
 	private Set<Long> objectIds = new HashSet<Long>();
 
+	@NotNull
 	public String doExecute() throws Exception {
 		spService.disable(objectIds);
 
@@ -25,6 +27,7 @@ public class DeleteServiceProvidersAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

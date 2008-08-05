@@ -5,6 +5,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.service.SpFileService;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Date;
@@ -16,6 +17,7 @@ public class SpFileCreateAction extends FPActionSupport {
 	private SpFileService spFileService;
 	private boolean isUploaded = false;
 
+	@NotNull
 	public String doExecute() throws Exception {
 		if (isSubmit()) {
 			if (StringUtils.isNotEmpty(uploadFileName)) {
@@ -46,6 +48,7 @@ public class SpFileCreateAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return INPUT;
