@@ -12,7 +12,6 @@ import java.util.Set;
 public class ServiceOrganisation extends DomainObjectWithStatus {
 
 	private Organisation organisation;
-	private District district;
 	private Set<ServedBuilding> servedBuildings = Collections.emptySet();
 	private Set<ServiceOrganisationDescription> descriptions = Collections.emptySet();
 
@@ -40,14 +39,6 @@ public class ServiceOrganisation extends DomainObjectWithStatus {
 
 	public void setBuildings(Set<ServedBuilding> servedBuildings) {
 		this.servedBuildings = servedBuildings;
-	}
-
-	public District getDistrict() {
-		return district;
-	}
-
-	public void setDistrict(District district) {
-		this.district = district;
 	}
 
 	public Set<ServiceOrganisationDescription> getDescriptions() {
