@@ -8,8 +8,8 @@ import java.util.TreeMap;
 
 public class RegistryRecordStatusFilter extends ObjectFilter {
 
-	public static Integer TYPE_ALL = -1;
-	private static Map<Integer, String> statusTypes = new TreeMap<Integer, String>();
+	public static final Integer TYPE_ALL = -1;
+	private static final Map<Integer, String> statusTypes = new TreeMap<Integer, String>();
 
 	static {
 		statusTypes.put(TYPE_ALL, "eirc.registry.record.status");
@@ -23,10 +23,6 @@ public class RegistryRecordStatusFilter extends ObjectFilter {
 
 	public static Map<Integer, String> getStatusTypes() {
 		return statusTypes;
-	}
-
-	public static void setStatusTypes(Map<Integer, String> statusTypes) {
-		RegistryRecordStatusFilter.statusTypes = statusTypes;
 	}
 
 	public Integer getSelectedStatus() {
