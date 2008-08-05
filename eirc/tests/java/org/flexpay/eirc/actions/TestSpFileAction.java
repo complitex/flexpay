@@ -1,6 +1,6 @@
 package org.flexpay.eirc.actions;
 
-import org.flexpay.eirc.dao.SpRegistryDao;
+import org.flexpay.eirc.dao.RegistryDao;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.common.process.ProcessManager;
@@ -16,7 +16,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	@Autowired
 	protected SpFileAction fileAction;
 	@Autowired
-	protected SpRegistryDao spRegistryDao;
+	protected RegistryDao registryDao;
 	@Autowired
 	protected ProcessManager processManager;
 
@@ -52,13 +52,13 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 
 	protected void deleteRecords(SpFile file) {
 		for (SpRegistry registry : fileService.getRegistries(file)) {
-//			spRegistryDao.deleteQuittances(registry.getId());
-//			spRegistryDao.deleteRecordContainers(registry.getId());
+//			registryDao.deleteQuittances(registry.getId());
+//			registryDao.deleteRecordContainers(registry.getId());
 			deleteQuittances(registry.getId());
 			deleteContainers(registry.getId());
-			spRegistryDao.deleteRegistryContainers(registry.getId());
-			spRegistryDao.deleteRecords(registry.getId());
-			spRegistryDao.delete(registry);
+			registryDao.deleteRegistryContainers(registry.getId());
+			registryDao.deleteRecords(registry.getId());
+			registryDao.delete(registry);
 		}
 	}
 

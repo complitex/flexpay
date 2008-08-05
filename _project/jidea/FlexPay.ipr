@@ -1017,7 +1017,10 @@
         <root url="jar://$PROJECT_DIR$/../../common/lib/jbpm/jbpm-3.1.4.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES />
+      <SOURCES>
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/jbpm-jpdl-3.2.2/src/jpdl" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/jbpm-jpdl-3.2.2/src/identity" />
+      </SOURCES>
     </library>
     <library name="Quartz">
       <CLASSES>

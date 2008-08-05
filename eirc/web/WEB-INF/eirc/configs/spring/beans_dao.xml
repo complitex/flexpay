@@ -44,7 +44,7 @@
 		</property>
 	</bean>
 
-	<bean id="spRegistryDaoExt" class="org.flexpay.eirc.dao.imp.SpRegistryDaoExtImpl">
+	<bean id="spRegistryDaoExt" class="org.flexpay.eirc.dao.imp.RegistryDaoExtImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
@@ -61,7 +61,7 @@
 
 	<bean id="spRegistryDao" parent="abstractDao">
 		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.SpRegistryDao" />
+				  value="org.flexpay.eirc.dao.RegistryDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.eirc.persistence.SpRegistry" />
@@ -130,6 +130,9 @@
 
 	<bean id="eircAccountDaoExt" class="org.flexpay.eirc.dao.imp.EircAccountDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
+
+	<bean id="quittanceDaoExt" class="org.flexpay.eirc.dao.imp.QuittanceDaoExtImpl"
+		  p:jdbcTemplate-ref="jdbcTemplate" />
 
 	<bean id="eircAccountDao" parent="abstractDao">
 		<property name="proxyInterfaces"

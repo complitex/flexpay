@@ -15,6 +15,7 @@ import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
+import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
 import org.flexpay.eirc.service.SpFileService;
 import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.SpRegistryService;
@@ -82,14 +83,11 @@ public class ServiceProviderFileProcessor {
 		for (SpRegistry registry : registries) {
 
 			try {
-				registryWorkflowManager.startProcessing(registry);
+				startRegistryProcessing(registry);
 
 				if (log.isInfoEnabled()) {
 					log.info("Starting processing registry #" + registry.getId());
 				}
-
-				serviceOperationsFactory.setDataSource(rawConsumersDataSource);
-				processHeader(registry);
 
 				setupRecordsConsumers(registry);
 
@@ -99,9 +97,7 @@ public class ServiceProviderFileProcessor {
 				log.error(errMsg, e);
 				container.addException(new FlexPayException(errMsg, e));
 			} finally {
-				registry = spRegistryService.read(registry.getId());
-				registryWorkflowManager.setNextSuccessStatus(registry);
-				registryWorkflowManager.endProcessing(registry);
+				endRegistryProcessing(registry);
 			}
 		}
 
@@ -126,11 +122,20 @@ public class ServiceProviderFileProcessor {
 		log.info("No more records to process");
 	}
 
-	public void setupRecordsConsumers(SpRegistry registry) {
 
+
+	public void setupRecordsConsumers(SpRegistry registry) throws Exception {
+
+		serviceOperationsFactory.setDataSource(rawConsumersDataSource);
+		processHeader(registry);
 		log.info("Starting importing consumers");
 		rawConsumersDataSource.setRegistry(registry);
+
 		setupRecordsConsumer(registry, rawConsumersDataSource);
+	}
+
+	public void startRegistryProcessing(SpRegistry registry) throws TransitionNotAllowed {
+		registryWorkflowManager.startProcessing(registry);
 	}
 
 	public void processRecords(SpRegistry registry, Set<Long> objectIds) throws Exception {
@@ -167,14 +172,18 @@ public class ServiceProviderFileProcessor {
 				}
 			}
 
-			registryWorkflowManager.startProcessing(registry);
+			startRegistryProcessing(registry);
 			setupRecordsConsumer(registry, dataSource);
 		} finally {
-			registry = spRegistryService.read(registry.getId());
-			registryWorkflowManager.setNextSuccessStatus(registry);
-			registryWorkflowManager.endProcessing(registry);
+			endRegistryProcessing(registry);
 			errorsSupport.unregisterAlias(dataSource);
 		}
+	}
+
+	public void endRegistryProcessing(SpRegistry registry) throws TransitionNotAllowed {
+		registry = spRegistryService.read(registry.getId());
+		registryWorkflowManager.setNextSuccessStatus(registry);
+		registryWorkflowManager.endProcessing(registry);
 	}
 
 	/**

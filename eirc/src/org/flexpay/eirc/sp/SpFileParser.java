@@ -36,7 +36,7 @@ public class SpFileParser {
 
 	private static final int MAX_CONTAINER_SIZE = 2048;
 
-	private SpRegistryService spRegistryService;
+	private SpRegistryService registryService;
 	private SpRegistryRecordService spRegistryRecordService;
 	private SpRegistryTypeService spRegistryTypeService;
 	private SpRegistryArchiveStatusService spRegistryArchiveStatusService;
@@ -217,13 +217,29 @@ public class SpFileParser {
 			}
 			newRegistry.setServiceProvider(provider);
 
-			return spRegistryService.create(newRegistry);
+			validateRegistry(newRegistry);
+
+			return registryService.create(newRegistry);
 		} catch (NumberFormatException e) {
 			log.error("Header parse error", e);
 			throw new SpFileFormatException("Header parse error");
 		} catch (ParseException e) {
 			log.error("Header parse error", e);
 			throw new SpFileFormatException("Header parse error");
+		}
+	}
+
+	/**
+	 * Check if registry header is valid
+	 *
+	 * @param registry Registry to validate
+	 * @throws FlexPayException if registry header validation fails
+	 */
+	@Transactional (readOnly = true)
+	private void validateRegistry(SpRegistry registry) throws FlexPayException {
+		SpRegistry persistent = registryService.getRegistryByNumber(registry.getRegistryNumber(), registry.getSenderStub());
+		if (persistent != null) {
+			throw new FlexPayException("Registry number duplicate");
 		}
 	}
 
@@ -395,10 +411,10 @@ public class SpFileParser {
 	}
 
 	/**
-	 * @param spRegistryService the spRegistryService to set
+	 * @param registryService the spRegistryService to set
 	 */
-	public void setSpRegistryService(SpRegistryService spRegistryService) {
-		this.spRegistryService = spRegistryService;
+	public void setRegistryService(SpRegistryService registryService) {
+		this.registryService = registryService;
 	}
 
 	/**

@@ -14,7 +14,7 @@
 	<bean id="spRegistryService"
 		  class="org.flexpay.eirc.service.imp.SpRegistryServiceImpl">
 		<property name="spRegistryDao" ref="spRegistryDao" />
-		<property name="spRegistryDaoExt" ref="spRegistryDaoExt" />
+		<property name="registryDaoExt" ref="spRegistryDaoExt" />
 		<property name="spRegistryRecordService" ref="spRegistryRecordService" />
 		<property name="organisationDao" ref="organisationDao" />
 		<property name="registryContainerDao" ref="registryContainerDao" />
@@ -55,7 +55,7 @@
 	</bean>
 
 	<bean id="spFileParser" class="org.flexpay.eirc.sp.SpFileParser">
-		<property name="spRegistryService" ref="spRegistryService" />
+		<property name="registryService" ref="spRegistryService" />
 		<property name="spRegistryRecordService" ref="spRegistryRecordService" />
 		<property name="spRegistryTypeService" ref="spRegistryTypeService" />
 		<property name="spRegistryArchiveStatusService" ref="spRegistryArchiveStatusService" />
@@ -118,9 +118,8 @@
 		  p:serviceTypeDao-ref="serviceTypeDao" />
 
 	<bean id="quittanceService" class="org.flexpay.eirc.service.imp.QuittanceServiceImpl"
-		  p:serviceOrganisationService-ref="serviceOrganisationService"
-		  p:eircAccountService-ref="eircAccountService"
 		  p:quittanceDetailsDao-ref="quittanceDetailsDao"
+		  p:quittanceDaoExt-ref="quittanceDaoExt"
 		  p:quittanceDao-ref="quittanceDao" />
 
 	<bean id="reportPeriodService" class="org.flexpay.eirc.service.imp.ReportPeriodServiceImpl" />

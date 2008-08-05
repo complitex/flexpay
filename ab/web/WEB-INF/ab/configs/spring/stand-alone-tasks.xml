@@ -8,7 +8,7 @@
 			<list>
 				<bean class="org.flexpay.ab.util.standalone.ImportTask">
 
-					 <!--Accounts import task for the DataSourceDescription(1L), Town(1L) -->
+					<!--Accounts import task for the DataSourceDescription(1L), Town(1L) -->
 					<property name="sourceDescription">
 						<bean class="org.flexpay.common.persistence.DataSourceDescription">
 							<constructor-arg index="0" type="java.lang.Long" value="1" />

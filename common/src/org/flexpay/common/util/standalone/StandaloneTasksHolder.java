@@ -1,6 +1,7 @@
 package org.flexpay.common.util.standalone;
 
 import org.apache.log4j.Logger;
+import org.flexpay.common.process.ProcessManager;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +42,8 @@ public class StandaloneTasksHolder {
 		for (StandaloneTask task : standaloneTasks) {
 			task.execute();
 		}
+
+		ProcessManager.unload();
 	}
 
 	public static StandaloneTasksHolder getInstance() {
