@@ -15,8 +15,7 @@
 	</start-state>
 
 	<task-node name="registryProcessJob">
-		<task swimlane="worker" blocking="yes">
-		</task>
+		<task swimlane="worker" blocking="yes" />
 		<transition name="next" to="end" />
 		<transition name="error" to="end" />
 	</task-node>

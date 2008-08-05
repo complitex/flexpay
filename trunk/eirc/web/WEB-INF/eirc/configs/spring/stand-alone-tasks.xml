@@ -16,6 +16,7 @@
 					  p:fileCreateAction-ref="spFileCreateAction"
 					  p:fileService-ref="spFileService"
 					  p:spRegistryDao-ref="spRegistryDao"
+					  p:registryService-ref="spRegistryService"
 					  p:fileProcessor-ref="serviceProviderFileProcessor" />
 			</list>
 		</property>

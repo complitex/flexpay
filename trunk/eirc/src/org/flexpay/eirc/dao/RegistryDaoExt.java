@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Collection;
 
-public interface SpRegistryDaoExt {
+public interface RegistryDaoExt {
 
 	/**
 	 * Find registries

@@ -259,6 +259,22 @@
 		where r.spFile.id=?
 	</query>
 
+	<query name="SpRegistry.listRegistryWithContainers">
+		select distinct r
+		from SpRegistry r
+			inner join fetch r.registryType
+			inner join fetch r.registryStatus
+			inner join fetch r.serviceProvider p
+			inner join fetch p.dataSourceDescription
+			left join fetch r.containers
+		where r.id=?
+	</query>
+
+	<query name="SpRegistry.findRegistriesByNumber">
+		from SpRegistry r
+		where r.registryNumber=? and r.sender.id=?
+	</query>
+
 	<query name="SpFile.listRecordsForProcessing.count">
 		select count(*)
 		from SpRegistryRecord rr
@@ -283,8 +299,7 @@
 		from SpRegistryRecord r
 			inner join r.recordStatus s
 		where s.code<4 and r.spRegistry.id=?
-		]]>
-	</query>
+	]]></query>
 
 	<query name="SpRegistryType.haveNotProcessedRecords"><![CDATA[
 		select 1 from Dual
@@ -292,10 +307,8 @@
 			select 1
 			from SpRegistryRecord r
 				inner join r.recordStatus s
-			where s.code<4 and r.spRegistry.id=?
-		)
-		]]>
-	</query>
+			where s.code<4 and r.spRegistry.id=?)
+	]]></query>
 
 	<query name="SpRegistryType.findAll">
 		from SpRegistryType

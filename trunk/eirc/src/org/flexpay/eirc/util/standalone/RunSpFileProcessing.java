@@ -5,12 +5,15 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.standalone.StandaloneTask;
+import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.actions.SpFileAction;
 import org.flexpay.eirc.actions.SpFileCreateAction;
-import org.flexpay.eirc.dao.SpRegistryDao;
+import org.flexpay.eirc.dao.RegistryDao;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.SpFileService;
+import org.flexpay.eirc.service.SpRegistryService;
 import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
 import org.jetbrains.annotations.NonNls;
 
@@ -30,7 +33,8 @@ public class RunSpFileProcessing implements StandaloneTask {
 	private SpFileCreateAction fileCreateAction;
 	private SpFileAction fileAction;
 	private SpFileService fileService;
-	private SpRegistryDao spRegistryDao;
+	private SpRegistryService registryService;
+	private RegistryDao registryDao;
 
 	public void setFileProcessor(ServiceProviderFileProcessor fileProcessor) {
 		this.fileProcessor = fileProcessor;
@@ -48,17 +52,23 @@ public class RunSpFileProcessing implements StandaloneTask {
 		this.fileService = fileService;
 	}
 
-	public void setSpRegistryDao(SpRegistryDao spRegistryDao) {
-		this.spRegistryDao = spRegistryDao;
+	public void setSpRegistryDao(RegistryDao registryDao) {
+		this.registryDao = registryDao;
 	}
 
+	public void setRegistryService(SpRegistryService registryService) {
+		this.registryService = registryService;
+	}
+	
 	/**
 	 * Execute task
 	 */
 	public void execute() {
 
 		try {
-			importRecords();
+//			loadRegistryOpenAccountsBig();
+//			loadRegistryQuittancesBig();
+//			importRecords();
 //			importOpenAccounts();
 //			processOpenAccounts();
 //			importQuittancesBig();
@@ -68,36 +78,36 @@ public class RunSpFileProcessing implements StandaloneTask {
 		}
 	}
 
-	public void loadRegistryBig() throws Throwable {
-		uploadRegistry("org/flexpay/eirc/actions/sp/ree_open.txt");
+	private void loadRegistryOpenAccountsBig() throws Throwable {
+		uploadRegistry("org/flexpay/eirc/actions/sp/ree_open.txt.gz");
 	}
 
-	public void loadRegistryQuittancesBig() throws Throwable {
-		uploadRegistry("org/flexpay/eirc/actions/sp/ree_quittances.2008.06.txt");
+	private void loadRegistryQuittancesBig() throws Throwable {
+		uploadRegistry("org/flexpay/eirc/actions/sp/ree_quittances.2008.06.txt.gz");
 	}
 
 	private void importOpenAccounts() throws Throwable {
-		importRegistry(3L);
+		importRegistry(1L);
 	}
 
 	private void importRecords() throws Throwable {
-		importRegistryRecords(3L, set(808862L, 808863L));
+		importRegistryRecords(-1L, set(808862L, 808863L));
 	}
 
 	private void processOpenAccounts() throws Throwable {
-		importRegistry(3L);
+		importRegistry(1L);
 	}
 
 	private void importQuittancesBig() throws Throwable {
-		importRegistry(12L);
+		importRegistry(2L);
 	}
 
 	private void processQuittancesBig() throws Throwable {
-		processRegistry(12L);
+		processRegistry(2L);
 	}
 
 	private void processRegistry(Long registryId) throws Throwable {
-		SpRegistry registry = spRegistryDao.readFull(registryId);
+		SpRegistry registry = registryService.readWithContainers(new Stub<SpRegistry>(registryId));
 
 		try {
 			long time = System.currentTimeMillis();
@@ -115,10 +125,17 @@ public class RunSpFileProcessing implements StandaloneTask {
 	}
 
 	private void importRegistry(Long registryId) throws Throwable {
-		SpRegistry registry = spRegistryDao.readFull(registryId);
+		SpRegistry registry = registryService.readWithContainers(new Stub<SpRegistry>(registryId));
 
 		long time = System.currentTimeMillis();
-		fileProcessor.setupRecordsConsumers(registry);
+
+		fileProcessor.startRegistryProcessing(registry);
+
+		try {
+			fileProcessor.setupRecordsConsumers(registry);
+		} finally {
+			fileProcessor.endRegistryProcessing(registry);
+		}
 
 		if (log.isDebugEnabled()) {
 			log.debug("Import took " + (System.currentTimeMillis() - time) + "ms");
@@ -126,10 +143,15 @@ public class RunSpFileProcessing implements StandaloneTask {
 	}
 
 	private void importRegistryRecords(Long registryId, Set<Long> recordIds) throws Throwable {
-		SpRegistry registry = spRegistryDao.readFull(registryId);
+		SpRegistry registry = registryService.readWithContainers(new Stub<SpRegistry>(registryId));
 
 		long time = System.currentTimeMillis();
-		fileProcessor.setupRecordsConsumers(registry, recordIds);
+		fileProcessor.startRegistryProcessing(registry);
+		try {
+			fileProcessor.setupRecordsConsumers(registry, recordIds);
+		} finally {
+			fileProcessor.endRegistryProcessing(registry);
+		}
 
 		if (log.isDebugEnabled()) {
 			log.debug("Import took " + (System.currentTimeMillis() - time) + "ms");
@@ -147,14 +169,13 @@ public class RunSpFileProcessing implements StandaloneTask {
 
 	private void deleteRecords(SpFile file) {
 		for (SpRegistry registry : fileService.getRegistries(file)) {
-			spRegistryDao.deleteRecordContainers(registry.getId());
-			spRegistryDao.deleteRegistryContainers(registry.getId());
-			spRegistryDao.deleteRecords(registry.getId());
-			spRegistryDao.delete(registry);
+			registryDao.deleteRecordContainers(registry.getId());
+			registryDao.deleteRegistryContainers(registry.getId());
+			registryDao.deleteRecords(registry.getId());
+			registryDao.delete(registry);
 		}
 	}
 
-	@SuppressWarnings ({"ThrowableResultOfMethodCallIgnored"})
 	private SpFile uploadFile(String fileName) throws Throwable {
 		SpFile newFile = createSpFile(fileName);
 
@@ -172,7 +193,9 @@ public class RunSpFileProcessing implements StandaloneTask {
 	}
 
 	private SpFile createSpFile(String spFile) throws Throwable {
-		File tmpDataFile = File.createTempFile("sp_sample", ".txt");
+		String name = StringUtil.getFileName(spFile);
+		String extension = StringUtil.getFileExtension(name);
+		File tmpDataFile = File.createTempFile(name, extension);
 		tmpDataFile.deleteOnExit();
 		OutputStream os = null;
 		InputStream is = null;
@@ -195,7 +218,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 		}
 
 		fileCreateAction.setUpload(tmpDataFile);
-		fileCreateAction.setUploadFileName("sp.txt");
+		fileCreateAction.setUploadFileName(name);
 		fileCreateAction.setSubmitted("submit");
 
 		fileCreateAction.execute();

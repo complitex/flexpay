@@ -425,10 +425,6 @@
 
     alter table eirc_service_organisations_tbl 
         drop 
-        foreign key FK_eirc_service_organisation_district;
-
-    alter table eirc_service_organisations_tbl 
-        drop 
         foreign key FK_eirc_service_organisation_organisation;
 
     alter table eirc_service_provider_descriptions_tbl 
@@ -1350,7 +1346,6 @@
         id bigint not null auto_increment,
         status integer not null,
         organisation_id bigint not null comment 'Organisation reference',
-        district_id bigint not null comment 'District reference organisation is servicing',
         primary key (id)
     );
 
@@ -2091,12 +2086,6 @@
         add constraint FK_eirc_service_organisation_description_language 
         foreign key (language_id) 
         references common_languages_tbl (id);
-
-    alter table eirc_service_organisations_tbl 
-        add index FK_eirc_service_organisation_district (district_id), 
-        add constraint FK_eirc_service_organisation_district 
-        foreign key (district_id) 
-        references ab_districts_tbl (id);
 
     alter table eirc_service_organisations_tbl 
         add index FK_eirc_service_organisation_organisation (organisation_id), 

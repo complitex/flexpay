@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.eirc.dao.TicketDao;
 import org.flexpay.eirc.pdf.PdfTicketWriter.ServiceAmountInfo;
@@ -27,10 +28,8 @@ public class TicketServiceImpl implements TicketService {
 	private TicketServiceAmountService ticketServiceAmountService;
 
 	@Transactional (readOnly = false)
-	public void generateForServiceOrganisation(Long serviceOrganisationId,
-											   Date dateFrom, Date dateTill) {
-		ServiceOrganisation serviceOrganisation = serviceOrganisationService
-				.read(serviceOrganisationId);
+	public void generateForServiceOrganisation(Stub<ServiceOrganisation> stub, Date dateFrom, Date dateTill) {
+		ServiceOrganisation serviceOrganisation = serviceOrganisationService.read(stub);
 		Set<ServedBuilding> buildingSet = serviceOrganisation.getBuildings();
 		for (Building building : buildingSet) {
 			generateForBuilding(serviceOrganisation, building, dateFrom,

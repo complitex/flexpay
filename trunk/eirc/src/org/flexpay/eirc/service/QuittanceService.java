@@ -1,13 +1,16 @@
 package org.flexpay.eirc.service;
 
-import java.util.Date;
-import java.util.List;
-
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.eirc.persistence.ServiceOrganisation;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Date;
+import java.util.List;
 
 public interface QuittanceService {
 
@@ -18,17 +21,31 @@ public interface QuittanceService {
 	 * @throws FlexPayExceptionContainer if validation failure occurs
 	 */
 	void save(QuittanceDetails details) throws FlexPayExceptionContainer;
-	
-	void generateForServiceOrganisation(Long serviceOrganisationId,
-			Date dateFrom, Date dateTill);
-	
+
+	/**
+	 * Create quittances for requested period.
+	 *
+	 * @param dateFrom Period begin date
+	 * @param dateTill Period end date
+	 */
+	void generateForServiceOrganisation(Date dateFrom, Date dateTill);
+
+	/**
+	 * Get a list of Quittances separated with addresses, used to divide quittances by bulks
+	 *
+	 * @param stub	 ServiceOrganisation stub
+	 * @param dateFrom Period begin date
+	 * @param dateTill Period end date
+	 * @return List of Quittances
+	 * @throws FlexPayException if failure occurs
+	 */
 	List<Object> getQuittanceListWithDelimiters(
-			Long serviceOrganisationId, Date dateFrom, Date dateTill)
+			@NotNull Stub<ServiceOrganisation> stub, Date dateFrom, Date dateTill)
 			throws FlexPayException;
-	
+
 	String getPayer(Quittance quittance);
-	
+
 	String getAddressStr(Quittance quittance, boolean withApartmentNumber) throws FlexPayException;
-	
+
 	QuittanceDetails calculateTotalQuittanceDetails(Quittance quittance, ServiceType serviceType);
 }

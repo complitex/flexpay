@@ -2,18 +2,18 @@ package org.flexpay.eirc.persistence.exchange;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
-import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
-import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
-import org.flexpay.eirc.service.*;
+import org.flexpay.eirc.service.ConsumerService;
+import org.flexpay.eirc.service.QuittanceService;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Calendar;
+import java.util.List;
 
 public class BaseContainerOperation extends ContainerOperation {
 
@@ -87,7 +87,7 @@ public class BaseContainerOperation extends ContainerOperation {
 					registry.getServiceProvider(), record.getPersonalAccountExt(), serviceId);
 			if (consumer == null) {
 				throw new FlexPayException("Cannot find consumer: SP-id=" + registry.getServiceProvider().getId() +
-						", account=" + record.getPersonalAccountExt() + ", code=" + serviceId);
+										   ", account=" + record.getPersonalAccountExt() + ", code=" + serviceId);
 			}
 		} else {
 			consumer = (Consumer) record.getConsumer();

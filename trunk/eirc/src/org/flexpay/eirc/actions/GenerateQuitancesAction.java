@@ -20,7 +20,6 @@ public class GenerateQuitancesAction extends FPActionSupport {
 
     private Integer year;
 	private Integer month;
-	private Long serviceOrganisationId;
 
 	public String doExecute() throws Exception {
 		if (isSubmit()) {
@@ -31,7 +30,6 @@ public class GenerateQuitancesAction extends FPActionSupport {
 
             Map<Serializable,Serializable> contextVariables = CollectionUtils.map();
 
-            contextVariables.put("serviceOrganisationId", serviceOrganisationId);
             contextVariables.put("dateFrom", dateFrom);
             contextVariables.put("dateTill", dateTill);
 
@@ -102,13 +100,6 @@ public class GenerateQuitancesAction extends FPActionSupport {
 	public void setServiceOrganisationService(
 			ServiceOrganisationService serviceOrganisationService) {
 		this.serviceOrganisationService = serviceOrganisationService;
-	}
-
-	/**
-	 * @param serviceOrganisationId the serviceOrganisationId to set
-	 */
-	public void setServiceOrganisationId(Long serviceOrganisationId) {
-		this.serviceOrganisationId = serviceOrganisationId;
 	}
 
     /**

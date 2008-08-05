@@ -22,8 +22,7 @@ public class QuittanceDetails extends DomainObject {
 	private BigDecimal subsidy;
 	private BigDecimal payment;
 	private Date month;
-	
-	
+
 	public void add(QuittanceDetails quittanceDetails) {
 		//incomingBalance = sumNullableBigDecimal(this.incomingBalance, quittanceDetails.incomingBalance); 
 		//outgoingBalance = sumNullableBigDecimal(this.outgoingBalance, quittanceDetails.outgoingBalance);
@@ -34,12 +33,12 @@ public class QuittanceDetails extends DomainObject {
 		subsidy = sumNullableBigDecimal(this.subsidy, quittanceDetails.subsidy);
 		payment = sumNullableBigDecimal(this.payment, quittanceDetails.payment);
 	}
-	
+
 	private BigDecimal sumNullableBigDecimal(BigDecimal o1, BigDecimal o2) {
-		if(o1 == null) {
-				return o2;
+		if (o1 == null) {
+			return o2;
 		} else {
-			return o2 == null ? o1 : o1.add(o2); 
+			return o2 == null ? o1 : o1.add(o2);
 		}
 	}
 

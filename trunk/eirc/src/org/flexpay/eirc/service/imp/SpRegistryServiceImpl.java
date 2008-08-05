@@ -3,12 +3,14 @@ package org.flexpay.eirc.service.imp;
 import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.eirc.dao.SpRegistryDao;
-import org.flexpay.eirc.dao.SpRegistryDaoExt;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.eirc.dao.RegistryDao;
+import org.flexpay.eirc.dao.RegistryDaoExt;
 import org.flexpay.eirc.dao.OrganisationDao;
 import org.flexpay.eirc.dao.RegistryContainerDao;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.RegistryContainer;
+import org.flexpay.eirc.persistence.Organisation;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.flexpay.eirc.service.SpRegistryRecordService;
@@ -25,8 +27,8 @@ import java.util.Set;
 public class SpRegistryServiceImpl implements SpRegistryService {
 	private Logger log = Logger.getLogger(getClass());
 
-	private SpRegistryDao spRegistryDao;
-	private SpRegistryDaoExt spRegistryDaoExt;
+	private RegistryDao registryDao;
+	private RegistryDaoExt registryDaoExt;
 	private RegistryContainerDao registryContainerDao;
 	private OrganisationDao organisationDao;
 
@@ -42,7 +44,7 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	public SpRegistry create(SpRegistry registry) throws FlexPayException {
 		registry.setRecipient(organisationDao.read(registry.getRecipient().getId()));
 		registry.setSender(organisationDao.read(registry.getSender().getId()));
-		spRegistryDao.create(registry);
+		registryDao.create(registry);
 
 		for (RegistryContainer container : registry.getContainers()) {
 			registryContainerDao.create(container);
@@ -63,7 +65,7 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	 */
 	@Transactional(readOnly = false)
 	public List<SpRegistry> findObjects(Page<SpRegistry> pager, Long spFileId) {
-		return spRegistryDao.findObjects(pager, spFileId);
+		return registryDao.findObjects(pager, spFileId);
 	}
 
 	/**
@@ -73,7 +75,7 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	 * @return SpRegistry object, or <code>null</code> if object not found
 	 */
 	public SpRegistry read(Long id) {
-		SpRegistry registry = spRegistryDao.readFull(id);
+		SpRegistry registry = registryDao.readFull(id);
 		if (registry == null) {
 			if (log.isDebugEnabled()) {
 				log.debug("Registry #" + id + " not found");
@@ -86,6 +88,21 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	}
 
 	/**
+	 * Read Registry with containers included
+	 *
+	 * @param stub Registry stub
+	 * @return Registry if found, or <code>null</code> otherwise
+	 */
+	public SpRegistry readWithContainers(@NotNull Stub<SpRegistry> stub) {
+		List<SpRegistry> registries = registryDao.listRegistryWithContainers(stub.getId());
+		if (registries.isEmpty()) {
+			return null;
+		}
+
+		return registries.get(0);
+	}
+
+	/**
 	 * Update SpRegistry
 	 *
 	 * @param spRegistry SpRegistry to update for
@@ -94,14 +111,14 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	 */
 	@Transactional(readOnly = false)
 	public SpRegistry update(SpRegistry spRegistry) throws FlexPayException {
-		spRegistryDao.update(spRegistry);
+		registryDao.update(spRegistry);
 
 		return spRegistry;
 	}
 
 	@Transactional(readOnly = false)
 	public void delete(SpRegistry spRegistry) {
-		spRegistryDao.delete(spRegistry);
+		registryDao.delete(spRegistry);
 	}
 
 	/**
@@ -117,7 +134,7 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	 */
 	public List<SpRegistry> findObjects(OrganisationFilter senderFilter, OrganisationFilter recipientFilter,
 										RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page pager) {
-		return spRegistryDaoExt.findRegistries(senderFilter, recipientFilter,
+		return registryDaoExt.findRegistries(senderFilter, recipientFilter,
 				typeFilter, fromDate, tillDate, pager);
 	}
 
@@ -128,18 +145,35 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	 * @return collection of registries
 	 */
 	public Collection<SpRegistry> findObjects(@NotNull Set<Long> objectIds) {
-		return spRegistryDaoExt.findRegistries(objectIds);
+		return registryDaoExt.findRegistries(objectIds);
 	}
 
 	/**
-	 * @param spRegistryDao the spRegistryDao to set
+	 * Find registry recieved from specified sender with a specified number
+	 *
+	 * @param registryNumber Registry number to search for
+	 * @param senderStub	 Sender organisation stub
+	 * @return Registry reference if found, or <code>null</code> otherwise
 	 */
-	public void setSpRegistryDao(SpRegistryDao spRegistryDao) {
-		this.spRegistryDao = spRegistryDao;
+	public SpRegistry getRegistryByNumber(@NotNull Long registryNumber, @NotNull Stub<Organisation> senderStub) {
+
+		List<SpRegistry> registries = registryDao.findRegistriesByNumber(registryNumber, senderStub.getId());
+		if (registries.isEmpty()) {
+			return null;
+		}
+
+		return registries.get(0);
 	}
 
-	public void setSpRegistryDaoExt(SpRegistryDaoExt spRegistryDaoExt) {
-		this.spRegistryDaoExt = spRegistryDaoExt;
+	/**
+	 * @param registryDao the spRegistryDao to set
+	 */
+	public void setSpRegistryDao(RegistryDao registryDao) {
+		this.registryDao = registryDao;
+	}
+
+	public void setRegistryDaoExt(RegistryDaoExt registryDaoExt) {
+		this.registryDaoExt = registryDaoExt;
 	}
 
 	public void setSpRegistryRecordService(SpRegistryRecordService spRegistryRecordService) {

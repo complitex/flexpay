@@ -5,8 +5,8 @@ import org.flexpay.eirc.persistence.SpRegistryStatus;
 
 import static org.flexpay.eirc.persistence.SpRegistryStatus.*;
 import org.flexpay.eirc.service.SpRegistryStatusService;
-import org.flexpay.eirc.dao.SpRegistryDao;
-import org.flexpay.eirc.dao.SpRegistryDaoExt;
+import org.flexpay.eirc.dao.RegistryDao;
+import org.flexpay.eirc.dao.RegistryDaoExt;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.log4j.Logger;
 
@@ -21,8 +21,8 @@ public class RegistryWorkflowManager {
 	private Logger log = Logger.getLogger(getClass());
 
 	private SpRegistryStatusService statusService;
-	private SpRegistryDao registryDao;
-	private SpRegistryDaoExt registryDaoExt;
+	private RegistryDao registryDao;
+	private RegistryDaoExt registryDaoExt;
 
 	// allowed transitions from source status code to target codes
 	// first status in lists is the successfull one, the second is transition with some processing error
@@ -222,11 +222,11 @@ public class RegistryWorkflowManager {
 		this.statusService = statusService;
 	}
 
-	public void setRegistryDao(SpRegistryDao registryDao) {
+	public void setRegistryDao(RegistryDao registryDao) {
 		this.registryDao = registryDao;
 	}
 
-	public void setRegistryDaoExt(SpRegistryDaoExt registryDaoExt) {
+	public void setRegistryDaoExt(RegistryDaoExt registryDaoExt) {
 		this.registryDaoExt = registryDaoExt;
 	}
 

@@ -2,10 +2,13 @@ package org.flexpay.eirc.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.eirc.persistence.Organisation;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 import java.util.List;
@@ -41,6 +44,15 @@ public interface SpRegistryService {
 	SpRegistry read(Long id);
 
 	/**
+	 * Read Registry with containers included
+	 *
+	 * @param stub Registry stub
+	 * @return Registry if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	SpRegistry readWithContainers(@NotNull Stub<SpRegistry> stub);
+
+	/**
 	 * Update SpRegistry
 	 *
 	 * @param spRegistry SpRegistry to update for
@@ -72,4 +84,14 @@ public interface SpRegistryService {
 	 * @return collection of registries
 	 */
 	Collection<SpRegistry> findObjects(@NotNull Set<Long> objectIds);
+
+	/**
+	 * Find registry recieved from specified sender with a specified number
+	 *
+	 * @param registryNumber Registry number to search for
+	 * @param senderStub Sender organisation stub
+	 * @return Registry reference if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	SpRegistry getRegistryByNumber(@NotNull Long registryNumber, @NotNull Stub<Organisation> senderStub);
 }

@@ -4,9 +4,11 @@ import com.lowagie.text.DocumentException;
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.job.Job;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.pdf.PdfA3Writer;
 import org.flexpay.eirc.pdf.PdfQuittanceWriter;
 import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.persistence.ServiceOrganisation;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
@@ -37,7 +39,7 @@ public class GenerateQuittancePDFJob extends Job {
 
         try {
 
-            String fileName = print(serviceOrganisationId, dateFrom, dateTill);
+            String fileName = print(new Stub<ServiceOrganisation>(serviceOrganisationId), dateFrom, dateTill);
             contextVariables.put(RESULT_FILE_NAME, fileName);
 
         } catch (IOException e) {
@@ -58,11 +60,11 @@ public class GenerateQuittancePDFJob extends Job {
         return Job.RESULT_NEXT;
     }
 
-    private String print(Long serviceOrganisationId, Date dateFrom,
+    private String print(Stub<ServiceOrganisation> stub, Date dateFrom,
                          Date dateTill) throws IOException, DocumentException,
             FlexPayException {
         List<Object> ticketsWithDelimiters = quittanceService
-                .getQuittanceListWithDelimiters(serviceOrganisationId, dateFrom, dateTill);
+                .getQuittanceListWithDelimiters(stub, dateFrom, dateTill);
         if (ticketsWithDelimiters.isEmpty()) {
             return null;
         }
@@ -87,7 +89,7 @@ public class GenerateQuittancePDFJob extends Job {
         quittanceWriter.setQuittanceService(quittanceService);
         quittanceWriter.setServiceTypeService(serviceTypeService);
         @NonNls DateFormat format = new SimpleDateFormat("MM.yyyy");
-        File outputA3File = new File(ApplicationConfig.getEircDataRoot(), serviceOrganisationId + "_"
+        File outputA3File = new File(ApplicationConfig.getEircDataRoot(), stub.getId() + "_"
                 + format.format(dateFrom) + ".pdf");
         OutputStream os = new FileOutputStream(outputA3File);
         PdfA3Writer a3Writer = new PdfA3Writer(os);

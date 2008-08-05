@@ -17,10 +17,10 @@ public interface ServiceOrganisationDao extends GenericDao<ServiceOrganisation, 
 	List<ServiceOrganisation> listServiceOrganisation();
 	
 	/**
-	 * Find ServedBuildings by Organisation key
+	 * Find ServedBuildings by ServiceOrganisation key
 	 *
-	 * @param id Organisation key
+	 * @param serviceOrganisationId ServiceOrganisation key
 	 * @return Set of ServedBuilding
 	 */
-	Set<ServedBuilding> findServedBuildings(Long id);
+	Set<ServedBuilding> findServedBuildings(Long serviceOrganisationId);
 }

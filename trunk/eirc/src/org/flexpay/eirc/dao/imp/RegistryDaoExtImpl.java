@@ -1,7 +1,7 @@
 package org.flexpay.eirc.dao.imp;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.eirc.dao.SpRegistryDaoExt;
+import org.flexpay.eirc.dao.RegistryDaoExt;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.SQLException;
 import java.util.*;
 
-public class SpRegistryDaoExtImpl extends HibernateDaoSupport implements SpRegistryDaoExt {
+public class RegistryDaoExtImpl extends HibernateDaoSupport implements RegistryDaoExt {
 
 	/**
 	 * Find registries

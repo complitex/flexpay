@@ -37,13 +37,13 @@
 
 
 	<bean id="generateTicketsAction" class="org.flexpay.eirc.actions.GenerateQuitancesAction"
-		  scope="prototype">
-		<property name="serviceOrganisationService" ref="serviceOrganisationService" />
-	</bean>
+		  scope="prototype"
+		  p:serviceOrganisationService-ref="serviceOrganisationService"
+		  p:processManager-ref="processManager" />
 
 	<bean id="printTicketsAction" class="org.flexpay.eirc.actions.GenerateQuitancePDFAction"
 		  scope="prototype"
-          p:serviceOrganisationService-ref="serviceOrganisationService"/>
+		  p:serviceOrganisationService-ref="serviceOrganisationService" />
 
 	<bean id="ticketPayFormAction" class="org.flexpay.eirc.actions.TicketPayFormAction"
 		  scope="prototype">
