@@ -8,6 +8,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class CorrespondenceExternalAction extends FPActionSupport {
 		countryFilter.setSelectedId(ApplicationConfig.getDefaultCountry().getId());
 	}
 
+	@NotNull
 	public String doExecute() throws FlexPayException {
 
 		ArrayStack filters = parentService.initFilters(getFilters(), userPreferences.getLocale());
@@ -45,6 +47,7 @@ public class CorrespondenceExternalAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

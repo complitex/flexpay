@@ -2,6 +2,7 @@ package org.flexpay.eirc.actions;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.eirc.service.TicketService;
+import org.jetbrains.annotations.NotNull;
 
 public class TicketPayAction extends FPActionSupport {
 
@@ -9,6 +10,7 @@ public class TicketPayAction extends FPActionSupport {
 
 	private Long ticketId;
 
+	@NotNull
 	public String doExecute() {
 		ticketService.payTicket(ticketId);
 
@@ -22,6 +24,7 @@ public class TicketPayAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;

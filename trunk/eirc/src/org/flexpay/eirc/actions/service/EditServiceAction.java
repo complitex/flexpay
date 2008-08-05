@@ -15,6 +15,7 @@ import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
 import org.flexpay.eirc.persistence.filters.ServiceTypeFilter;
 import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.ServiceTypeService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -33,6 +34,7 @@ public class EditServiceAction extends FPActionSupport {
 
 	private Map<Long, String> descriptions = map();
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		if (service.getId() == null) {
@@ -87,6 +89,7 @@ public class EditServiceAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return INPUT;
 	}

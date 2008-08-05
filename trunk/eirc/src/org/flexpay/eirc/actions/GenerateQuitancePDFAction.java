@@ -5,6 +5,7 @@ import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
 import org.flexpay.eirc.service.ServiceOrganisationService;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.*;
@@ -21,7 +22,8 @@ public class GenerateQuitancePDFAction extends FPActionSupport {
 
     private ProcessManager processManager;
 
-    public String doExecute() throws Exception {
+    @NotNull
+	public String doExecute() throws Exception {
 
         if (isSubmit()) {
 
@@ -54,7 +56,8 @@ public class GenerateQuitancePDFAction extends FPActionSupport {
      *
      * @return {@link #ERROR} by default
      */
-    @Override
+    @NotNull
+	@Override
     protected String getErrorResult() {
         return SUCCESS;
     }

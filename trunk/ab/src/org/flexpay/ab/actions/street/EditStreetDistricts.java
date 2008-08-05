@@ -9,6 +9,7 @@ import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,6 +25,7 @@ public class EditStreetDistricts extends FPActionSupport {
 	private StreetService streetService;
 	private DistrictService districtService;
 
+	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
@@ -72,6 +74,7 @@ public class EditStreetDistricts extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return INPUT;

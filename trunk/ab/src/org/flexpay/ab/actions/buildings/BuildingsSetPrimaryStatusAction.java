@@ -5,6 +5,7 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.actions.FPActionSupport;
+import org.jetbrains.annotations.NotNull;
 
 public class BuildingsSetPrimaryStatusAction extends FPActionSupport {
 
@@ -13,6 +14,7 @@ public class BuildingsSetPrimaryStatusAction extends FPActionSupport {
 	private Buildings buildings;
 	private Long redirectBuildingsId;
 
+	@NotNull
 	public String doExecute() throws FlexPayException {
 		buildings = buildingService.readFull(stub(buildings));
 		for (Buildings current : buildingService.getBuildingBuildings(buildings.getBuilding())) {
@@ -30,6 +32,7 @@ public class BuildingsSetPrimaryStatusAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

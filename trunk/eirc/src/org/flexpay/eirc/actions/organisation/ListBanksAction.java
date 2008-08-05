@@ -4,6 +4,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.Bank;
 import org.flexpay.eirc.service.BankService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +16,7 @@ public class ListBanksAction extends FPActionSupport {
 	private Page<Bank> pager = new Page<Bank>();
 	private List<Bank> banks = Collections.emptyList();
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		banks = bankService.listBanks(pager);
@@ -29,6 +31,7 @@ public class ListBanksAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

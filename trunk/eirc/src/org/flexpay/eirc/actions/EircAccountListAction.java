@@ -6,6 +6,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.service.EircAccountService;
+import org.jetbrains.annotations.NotNull;
 
 public class EircAccountListAction extends FPActionSupport {
 	
@@ -14,6 +15,7 @@ public class EircAccountListAction extends FPActionSupport {
 	private List<EircAccount> eircAccountList;
 	private Page<EircAccount> pager = new Page<EircAccount>();
 	
+	@NotNull
 	public String doExecute() {
 		
 		eircAccountList = eircAccountService.findAll(pager);
@@ -29,6 +31,7 @@ public class EircAccountListAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

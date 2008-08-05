@@ -9,6 +9,8 @@ import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.flexpay.eirc.service.OrganisationService;
 import org.flexpay.eirc.service.SpRegistryService;
 import org.flexpay.eirc.service.SpRegistryTypeService;
+import org.apache.commons.lang.time.DateUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 import java.util.List;
@@ -18,7 +20,7 @@ public class ListRegistriesAction extends FPActionSupport {
 	private OrganisationFilter senderOrganisationFilter = new OrganisationFilter();
 	private OrganisationFilter recipientOrganisationFilter = new OrganisationFilter();
 	private RegistryTypeFilter registryTypeFilter = new RegistryTypeFilter();
-	private Date fromDate = DateUtil.currentMonth();
+	private Date fromDate = DateUtils.addMonths(DateUtil.currentMonth(), -2);
 	private Date tillDate = new Date();
 	private Page pager = new Page();
 
@@ -28,6 +30,7 @@ public class ListRegistriesAction extends FPActionSupport {
 	private SpRegistryService registryService;
 	private SpRegistryTypeService registryTypeService;
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		organisationService.initFilter(senderOrganisationFilter);
@@ -48,6 +51,7 @@ public class ListRegistriesAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;

@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public abstract class AbstractCreateAction<Entity, T extends Translation>
 		}
 	}
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		if (isSubmit()) {
@@ -49,6 +51,7 @@ public abstract class AbstractCreateAction<Entity, T extends Translation>
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return "afterSubmit";

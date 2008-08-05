@@ -4,6 +4,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.service.ServiceTypeService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +16,7 @@ public class ListServiceTypesAction extends FPActionSupport {
 	private Page<ServiceType> pager = new Page<ServiceType>();
 	private List<ServiceType> serviceTypes = Collections.emptyList();
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		serviceTypes = serviceTypeService.listServiceTypes(pager);
@@ -29,6 +31,7 @@ public class ListServiceTypesAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

@@ -109,6 +109,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	 * @return execution result code
 	 * @throws Exception if failure occurs
 	 */
+	@NotNull
 	protected abstract String doExecute() throws Exception;
 
 	/**
@@ -118,6 +119,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected abstract String getErrorResult();
 
 	/**

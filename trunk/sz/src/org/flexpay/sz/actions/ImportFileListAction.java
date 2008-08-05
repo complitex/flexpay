@@ -7,6 +7,7 @@ import org.flexpay.sz.convert.NotSupportedOperationException;
 import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class ImportFileListAction extends FPActionSupport {
 
 	private List<SzFileWrapper> szFileWrapperList;
 
+	@NotNull
 	public String doExecute() throws FlexPayException {
 
 		List<SzFile> szFileList = szFileService.getEntities();
@@ -44,6 +46,7 @@ public class ImportFileListAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;

@@ -13,6 +13,7 @@ import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
+import org.jetbrains.annotations.NotNull;
 
 public class CorrectStreetAction extends StreetsList {
 
@@ -25,6 +26,7 @@ public class CorrectStreetAction extends StreetsList {
 	private SpRegistryRecordService recordService;
 	private ServiceTypeService serviceTypeService;
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		record = recordService.read(record.getId());
@@ -56,6 +58,7 @@ public class CorrectStreetAction extends StreetsList {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return "street".equals(setupType) ? "complete" : super.getErrorResult();

@@ -13,6 +13,7 @@ import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.persistence.filters.SubdivisionFilter;
 import org.flexpay.eirc.service.OrganisationService;
 import org.flexpay.eirc.service.SubdivisionService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -28,6 +29,7 @@ public class EditSubdivisionAction extends FPActionSupport {
 	private Map<Long, String> descriptions = map();
 	private Map<Long, String> names = map();
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		if (subdivision.getId() == null || headOrganisation.getId() == null) {
@@ -104,6 +106,7 @@ public class EditSubdivisionAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return INPUT;
 	}

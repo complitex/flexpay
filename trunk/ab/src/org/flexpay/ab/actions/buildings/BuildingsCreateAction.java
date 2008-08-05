@@ -15,6 +15,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -60,6 +61,7 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 		buildings.setBuildingAttributes(buildingAttributeSet);
 	}
 
+	@NotNull
 	public String doExecute() throws FlexPayException {
 		if ("create".equals(action)) {
 
@@ -133,6 +135,7 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return "list";
 	}

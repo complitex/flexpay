@@ -13,6 +13,7 @@ import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.SpRegistryService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +32,7 @@ public class ShowRegistryAction extends FPActionSupport {
 	private ImportErrorTypeFilter importErrorTypeFilter = new ImportErrorTypeFilter();
 	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
 
+	@NotNull
 	public String doExecute() throws Exception {
 		if (registry.getId() == null) {
 			addActionError("No registryId specified, give up.");
@@ -55,6 +57,7 @@ public class ShowRegistryAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return ERROR;
 	}

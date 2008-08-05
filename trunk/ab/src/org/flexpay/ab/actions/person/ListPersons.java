@@ -8,6 +8,7 @@ import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.ParentService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class ListPersons extends FPActionSupport {
 	private String searchString;
 	private Page pager = new Page();
 
+	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
@@ -43,6 +45,7 @@ public class ListPersons extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

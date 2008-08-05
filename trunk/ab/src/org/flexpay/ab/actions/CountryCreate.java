@@ -11,6 +11,7 @@ import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class CountryCreate extends FPActionSupport implements ServletRequestAwar
 	@NonNls
 	private HttpServletRequest request;
 
+	@NotNull
 	public String doExecute() throws FlexPayException {
 		List<CountryNameTranslation> countryNames = initCountryNames();
 
@@ -42,6 +44,7 @@ public class CountryCreate extends FPActionSupport implements ServletRequestAwar
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return INPUT;

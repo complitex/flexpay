@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.Translation;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class ObjectViewAction<
 		TV extends TemporaryValue<TV>,
@@ -36,6 +37,7 @@ public abstract class ObjectViewAction<
 	/**
 	 * {@inheritDoc}
 	 */
+	@NotNull
 	@Override
 	public String doExecute() {
 
@@ -56,6 +58,7 @@ public abstract class ObjectViewAction<
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return REDIRECT_ERROR;
 	}

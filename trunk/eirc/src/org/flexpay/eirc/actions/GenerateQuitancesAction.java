@@ -6,6 +6,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
 import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.apache.commons.lang.time.DateUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.io.Serializable;
@@ -21,6 +22,7 @@ public class GenerateQuitancesAction extends FPActionSupport {
     private Integer year;
 	private Integer month;
 
+	@NotNull
 	public String doExecute() throws Exception {
 		if (isSubmit()) {
 
@@ -49,6 +51,7 @@ public class GenerateQuitancesAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

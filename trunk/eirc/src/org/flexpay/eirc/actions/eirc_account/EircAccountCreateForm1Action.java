@@ -4,6 +4,7 @@ import org.flexpay.ab.actions.apartment.BuildingsFilterDependentAction;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.dao.paging.Page;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +16,7 @@ public class EircAccountCreateForm1Action extends BuildingsFilterDependentAction
 	private List<Apartment> apartments = Collections.emptyList();
 
 
+	@NotNull
 	public String doExecute() {
 
 		initFilters();
@@ -34,6 +36,7 @@ public class EircAccountCreateForm1Action extends BuildingsFilterDependentAction
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

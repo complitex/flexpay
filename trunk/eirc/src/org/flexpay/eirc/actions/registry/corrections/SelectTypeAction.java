@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.service.SpRegistryRecordService;
+import org.jetbrains.annotations.NotNull;
 
 public class SelectTypeAction extends FPActionSupport {
 
@@ -16,6 +17,7 @@ public class SelectTypeAction extends FPActionSupport {
 
 	private SpRegistryRecord record = new SpRegistryRecord();
 
+	@NotNull
 	public String doExecute() throws Exception {
 		if (record.getId() == null) {
 			addActionError(getText("error.registry.record.not_specified"));
@@ -60,6 +62,7 @@ public class SelectTypeAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return ERROR;
 	}

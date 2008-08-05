@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;import static org.flexpay.common.persistence.Stub.stub;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -21,6 +22,7 @@ public class ApartmentRegistrationsAction extends FPActionSupport {
 	private Region region;
 	private Country country;
 
+	@NotNull
 	public String doExecute() throws FlexPayException {
 		apartment = apartmentService.readWithPersons(stub(apartment));
 		buildings = buildingService.readFull(stub(buildings));
@@ -39,6 +41,7 @@ public class ApartmentRegistrationsAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

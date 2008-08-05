@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class ListServicesAction extends FPActionSupport {
 
 	private List<Service> services;
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		serviceProviderFilter = spService.initServiceProvidersFilter(serviceProviderFilter);
@@ -44,6 +46,7 @@ public class ListServicesAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

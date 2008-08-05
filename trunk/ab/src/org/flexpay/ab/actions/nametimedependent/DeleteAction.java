@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.Translation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,6 +24,7 @@ public abstract class DeleteAction<
 	/**
 	 * {@inheritDoc}
 	 */
+	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
@@ -52,6 +54,7 @@ public abstract class DeleteAction<
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;

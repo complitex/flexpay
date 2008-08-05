@@ -8,6 +8,7 @@ import org.flexpay.eirc.persistence.Subdivision;
 import org.flexpay.eirc.service.SubdivisionService;
 import org.flexpay.eirc.service.OrganisationService;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,7 @@ public class ListSubdivisionsAction extends FPActionSupport {
 	private Organisation organisation = new Organisation();
 	private List<Subdivision> subdivisions = Collections.emptyList();
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		if (organisation.isNew()) {
@@ -38,6 +40,7 @@ public class ListSubdivisionsAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

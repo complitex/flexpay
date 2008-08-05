@@ -4,6 +4,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.service.SPService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +16,7 @@ public class ListServiceProvidersAction extends FPActionSupport {
 	private Page<ServiceProvider> pager = new Page<ServiceProvider>();
 	private List<ServiceProvider> providers = Collections.emptyList();
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		providers = spService.listProviders(pager);
@@ -29,6 +31,7 @@ public class ListServiceProvidersAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;

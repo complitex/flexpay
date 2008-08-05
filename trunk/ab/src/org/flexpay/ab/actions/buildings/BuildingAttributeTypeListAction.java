@@ -5,6 +5,7 @@ import java.util.List;
 import org.flexpay.ab.persistence.BuildingAttributeType;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.jetbrains.annotations.NotNull;
 
 public class BuildingAttributeTypeListAction extends FPActionSupport {
 	
@@ -12,6 +13,7 @@ public class BuildingAttributeTypeListAction extends FPActionSupport {
 	
 	private List<BuildingAttributeType> types;
 	
+	@NotNull
 	public String doExecute() {
 		types = buildingService.getAttributeTypes();
 		
@@ -25,6 +27,7 @@ public class BuildingAttributeTypeListAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;

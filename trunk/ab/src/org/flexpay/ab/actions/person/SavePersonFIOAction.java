@@ -7,6 +7,7 @@ import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.ab.service.IdentityTypeService;
+import org.jetbrains.annotations.NotNull;
 
 public class SavePersonFIOAction extends FPActionSupport {
 
@@ -16,6 +17,7 @@ public class SavePersonFIOAction extends FPActionSupport {
 	private PersonService personService;
 	private IdentityTypeService identityTypeService;
 
+	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
@@ -58,6 +60,7 @@ public class SavePersonFIOAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return REDIRECT_ERROR;

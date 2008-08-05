@@ -4,6 +4,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.SpRegistryService;
 import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +17,7 @@ public class ProcessRegistryRecordsAction extends FPActionSupport {
 	private SpRegistryService registryService;
 	private ServiceProviderFileProcessor providerFileProcessor;
 
+	@NotNull
 	public String doExecute() throws Exception {
 
 		log.debug("About to execute ProcessRegistryRecordsAction");
@@ -42,6 +44,7 @@ public class ProcessRegistryRecordsAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return ERROR;
 	}

@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.identity;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.jetbrains.annotations.NotNull;
 
 public class IdentityTypeViewAction extends FPActionSupport {
 
@@ -10,6 +11,7 @@ public class IdentityTypeViewAction extends FPActionSupport {
 	private IdentityTypeService identityTypeService;
 	private IdentityType identityType;
 
+	@NotNull
 	public String doExecute() throws Exception {
 		identityType = identityTypeService.read(id);
 
@@ -23,6 +25,7 @@ public class IdentityTypeViewAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;

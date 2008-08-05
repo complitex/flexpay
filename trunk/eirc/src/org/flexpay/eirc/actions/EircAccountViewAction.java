@@ -3,6 +3,7 @@ package org.flexpay.eirc.actions;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.service.EircAccountService;
+import org.jetbrains.annotations.NotNull;
 
 public class EircAccountViewAction extends FPActionSupport {
 	
@@ -10,6 +11,7 @@ public class EircAccountViewAction extends FPActionSupport {
 	
 	private EircAccount eircAccount;
 	
+	@NotNull
 	public String doExecute() {
 		
 		eircAccount = eircAccountService.findWithPerson(eircAccount.getId());
@@ -24,6 +26,7 @@ public class EircAccountViewAction extends FPActionSupport {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
+	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
