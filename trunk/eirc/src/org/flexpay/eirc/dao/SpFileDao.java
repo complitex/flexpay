@@ -1,14 +1,12 @@
 package org.flexpay.eirc.dao;
 
-import java.util.List;
-
 import org.flexpay.common.dao.GenericDao;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
 
-public interface SpFileDao extends GenericDao<SpFile, Long>{
+import java.util.List;
+
+public interface SpFileDao extends GenericDao<SpFile, Long> {
 
 	/**
 	 * List files
@@ -24,13 +22,4 @@ public interface SpFileDao extends GenericDao<SpFile, Long>{
 	 * @return list of registries
 	 */
 	List<SpRegistry> listRegistries(Long fileId);
-
-	/**
-	 * List registry records 
-	 *
-	 * @param registryId Registry header id
-	 * @param pager Page
-	 * @return list of registry records
-	 */
-	List<SpRegistryRecord> listRecordsForProcessing(Long registryId, Page<SpRegistryRecord> pager);
 }

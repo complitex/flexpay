@@ -91,7 +91,7 @@
 
 	<bean id="spRegistryRecordDao" parent="abstractDao">
 		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.SpRegistryRecordDao" />
+				  value="org.flexpay.eirc.dao.RegistryRecordDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.eirc.persistence.SpRegistryRecord" />
@@ -100,7 +100,7 @@
 	</bean>
 
 	<bean id="spRegistryRecordDaoExt"
-		  class="org.flexpay.eirc.dao.imp.SpRegistryRecordDaoExtImpl">
+		  class="org.flexpay.eirc.dao.imp.RegistryRecordDaoExtImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 

@@ -2,8 +2,8 @@ package org.flexpay.eirc.dao.importexport;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
-import org.flexpay.eirc.dao.SpRegistryRecordDao;
-import org.flexpay.eirc.dao.SpRegistryRecordDaoExt;
+import org.flexpay.eirc.dao.RegistryRecordDao;
+import org.flexpay.eirc.dao.RegistryRecordDaoExt;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
@@ -14,8 +14,8 @@ import java.util.List;
 
 public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 
-	private SpRegistryRecordDao registryRecordDao;
-	private SpRegistryRecordDaoExt registryRecordDaoExt;
+	private RegistryRecordDao registryRecordDao;
+	private RegistryRecordDaoExt registryRecordDaoExt;
 	private SpRegistry registry;
 
 	private Page<SpRegistryRecord> pager;
@@ -94,11 +94,11 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 		return RawConsumersDataUtil.convert(record);
 	}
 
-	public void setRegistryRecordDao(SpRegistryRecordDao registryRecordDao) {
+	public void setRegistryRecordDao(RegistryRecordDao registryRecordDao) {
 		this.registryRecordDao = registryRecordDao;
 	}
 
-	public void setRegistryRecordDaoExt(SpRegistryRecordDaoExt registryRecordDaoExt) {
+	public void setRegistryRecordDaoExt(RegistryRecordDaoExt registryRecordDaoExt) {
 		this.registryRecordDaoExt = registryRecordDaoExt;
 	}
 }

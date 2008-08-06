@@ -3,13 +3,17 @@ package org.flexpay.eirc.service.imp;
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.dao.SpFileDao;
+import org.flexpay.eirc.dao.RegistryRecordDaoExt;
+import org.flexpay.eirc.dao.RegistryRecordDao;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.service.SpFileService;
 import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -20,6 +24,8 @@ public class SpFileServiceImpl implements SpFileService {
 	private Logger log = Logger.getLogger(getClass());
 
 	private SpFileDao spFileDao;
+	private RegistryRecordDao registryRecordDao;
+	private RegistryRecordDaoExt registryRecordDaoExt;
 
 	/**
 	 * Create SpFile
@@ -91,13 +97,31 @@ public class SpFileServiceImpl implements SpFileService {
 	 *
 	 * @param registry Registry header
 	 * @param pager Page
+	 * @param minMaxIds cached minimum and maximum registry record keys
 	 * @return list of records
 	 */
-	public List<SpRegistryRecord> getRecordsForProcessing(SpRegistry registry, Page<SpRegistryRecord> pager) {
-		return spFileDao.listRecordsForProcessing(registry.getId(), pager);
+	public List<SpRegistryRecord> getRecordsForProcessing(@NotNull Stub<SpRegistry> registry, Page<SpRegistryRecord> pager, Long[] minMaxIds) {
+
+		// cache min-max rerecord ids
+		if (minMaxIds[0] == null || minMaxIds[1] == null) {
+			Long[] values = registryRecordDaoExt.getMinMaxIdsForProcessing(registry.getId());
+			minMaxIds[0] = values[0];
+			minMaxIds[1] = values[1];
+		}
+		Long lowerBound = minMaxIds[0] + pager.getThisPageFirstElementNumber();
+		Long upperBound = minMaxIds[0] + pager.getThisPageLastElementNumber();
+		return registryRecordDao.listRecordsForProcessing(registry.getId(), lowerBound, upperBound);
 	}
 
 	public void setSpFileDao(SpFileDao spFileDao) {
 		this.spFileDao = spFileDao;
+	}
+
+	public void setRegistryRecordDao(RegistryRecordDao registryRecordDao) {
+		this.registryRecordDao = registryRecordDao;
+	}
+
+	public void setRegistryRecordDaoExt(RegistryRecordDaoExt registryRecordDaoExt) {
+		this.registryRecordDaoExt = registryRecordDaoExt;
 	}
 }

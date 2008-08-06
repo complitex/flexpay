@@ -8,7 +8,7 @@ import org.flexpay.common.service.importexport.ImportErrorService;
 import org.flexpay.common.service.importexport.ImportErrorsSupport;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.eirc.dao.SpRegistryRecordDao;
+import org.flexpay.eirc.dao.RegistryRecordDao;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
@@ -35,7 +35,7 @@ public class ServiceOperationsFactory {
 	private ImportErrorsSupport errorsSupport;
 	private ImportErrorService importErrorService;
 	private RawDataSource<RawConsumerData> dataSource;
-	private SpRegistryRecordDao registryRecordDao;
+	private RegistryRecordDao registryRecordDao;
 
 	/**
 	 * Get instance of Operation for registry record
@@ -48,7 +48,8 @@ public class ServiceOperationsFactory {
 	 */
 	public Operation getOperation(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
 
-		List<RegistryRecordContainer> containers = registryRecordService.getRecordContainers(record);
+//		List<RegistryRecordContainer> containers = registryRecordService.getRecordContainers(record);
+		List<RegistryRecordContainer> containers = record.getContainers();
 		if (containers.isEmpty()) {
 			return getOperation(registry);
 		}
@@ -170,7 +171,7 @@ public class ServiceOperationsFactory {
 
 		ImportError error = new ImportError();
 		error.setSourceDescription(spRegistry.getServiceProvider().getDataSourceDescription());
-		error.setSourceObjectId(record.getId().toString());
+		error.setSourceObjectId(String.valueOf(record.getId()));
 		error.setErrorId(errorCode);
 		error.setObjectType(registry.getType(clazz));
 		errorsSupport.setDataSourceBean(error, dataSource);
@@ -271,7 +272,7 @@ public class ServiceOperationsFactory {
 		this.errorsSupport = errorsSupport;
 	}
 
-	public void setRegistryRecordDao(SpRegistryRecordDao registryRecordDao) {
+	public void setRegistryRecordDao(RegistryRecordDao registryRecordDao) {
 		this.registryRecordDao = registryRecordDao;
 	}
 

@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.eirc.dao.SpRegistryRecordDao;
-import org.flexpay.eirc.dao.SpRegistryRecordDaoExt;
+import org.flexpay.eirc.dao.RegistryRecordDao;
+import org.flexpay.eirc.dao.RegistryRecordDaoExt;
 import org.flexpay.eirc.dao.RegistryRecordContainerDao;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
@@ -25,8 +25,8 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	private final Logger log = Logger.getLogger(getClass());
 
 	private RegistryRecordContainerDao recordContainerDao;
-	private SpRegistryRecordDao spRegistryRecordDao;
-	private SpRegistryRecordDaoExt spRegistryRecordDaoExt;
+	private RegistryRecordDao registryRecordDao;
+	private RegistryRecordDaoExt registryRecordDaoExt;
 
 	private RegistryRecordWorkflowManager workflowManager;
 
@@ -38,7 +38,7 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 */
 	@Transactional(readOnly = false)
 	public SpRegistryRecord create(SpRegistryRecord record) throws FlexPayException {
-		spRegistryRecordDao.create(record);
+		registryRecordDao.create(record);
 
 		for (RegistryRecordContainer container : record.getContainers()) {
 			recordContainerDao.create(container);
@@ -59,7 +59,7 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 *         found
 	 */
 	public SpRegistryRecord read(Long id) {
-		return spRegistryRecordDao.readFull(id);
+		return registryRecordDao.readFull(id);
 	}
 
 	/**
@@ -71,14 +71,14 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 */
 	@Transactional(readOnly = false)
 	public SpRegistryRecord update(SpRegistryRecord spRegistryRecord) throws FlexPayException {
-		spRegistryRecordDao.update(spRegistryRecord);
+		registryRecordDao.update(spRegistryRecord);
 
 		return spRegistryRecord;
 	}
 
 	@Transactional(readOnly = false)
 	public void delete(SpRegistryRecord spRegistryRecord) {
-		spRegistryRecordDao.delete(spRegistryRecord);
+		registryRecordDao.delete(spRegistryRecord);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	@Transactional(readOnly = true)
 	public List<SpRegistryRecord> listRecords(SpRegistry registry, ImportErrorTypeFilter importErrorTypeFilter,
 											  RegistryRecordStatusFilter recordStatusFilter, Page<SpRegistryRecord> pager) {
-		return spRegistryRecordDaoExt.filterRecords(registry.getId(), importErrorTypeFilter, recordStatusFilter, pager);
+		return registryRecordDaoExt.filterRecords(registry.getId(), importErrorTypeFilter, recordStatusFilter, pager);
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 * @return number of errors
 	 */
 	public int getErrorsNumber(SpRegistry registry) {
-		return spRegistryRecordDaoExt.getErrorsNumber(registry.getId());
+		return registryRecordDaoExt.getErrorsNumber(registry.getId());
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 * @return DataSourceDescription
 	 */
 	public DataSourceDescription getDataSourceDescription(SpRegistryRecord record) {
-		DataSourceDescription sd = spRegistryRecordDaoExt.getDataSourceDescription(record.getId());
+		DataSourceDescription sd = registryRecordDaoExt.getDataSourceDescription(record.getId());
 
 		if (log.isDebugEnabled()) {
 			log.debug("Record Data source: " + sd);
@@ -143,7 +143,7 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 * @return Records
 	 */
 	public Collection<SpRegistryRecord> findObjects(SpRegistry registry, Set<Long> objectIds) {
-		return spRegistryRecordDaoExt.findRecords(registry.getId(), objectIds);
+		return registryRecordDaoExt.findRecords(registry.getId(), objectIds);
 	}
 
 	/**
@@ -157,14 +157,14 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	}
 
 	/**
-	 * @param spRegistryRecordDao the spRegistryRecordDao to set
+	 * @param registryRecordDao the spRegistryRecordDao to set
 	 */
-	public void setSpRegistryRecordDao(SpRegistryRecordDao spRegistryRecordDao) {
-		this.spRegistryRecordDao = spRegistryRecordDao;
+	public void setSpRegistryRecordDao(RegistryRecordDao registryRecordDao) {
+		this.registryRecordDao = registryRecordDao;
 	}
 
-	public void setSpRegistryRecordDaoExt(SpRegistryRecordDaoExt spRegistryRecordDaoExt) {
-		this.spRegistryRecordDaoExt = spRegistryRecordDaoExt;
+	public void setSpRegistryRecordDaoExt(RegistryRecordDaoExt registryRecordDaoExt) {
+		this.registryRecordDaoExt = registryRecordDaoExt;
 	}
 
 	public void setWorkflowManager(RegistryRecordWorkflowManager workflowManager) {

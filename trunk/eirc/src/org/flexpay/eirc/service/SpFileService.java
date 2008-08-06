@@ -2,9 +2,11 @@ package org.flexpay.eirc.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -61,9 +63,10 @@ public interface SpFileService {
 	/**
 	 * Get registry records for processing
 	 *
-	 * @param registry Registry header
+	 * @param registry Registry header stub
 	 * @param pager	Page
+	 * @param minMaxIds Minimum and maximum record ids for processing
 	 * @return list of records
 	 */
-	List<SpRegistryRecord> getRecordsForProcessing(SpRegistry registry, Page<SpRegistryRecord> pager);
+	List<SpRegistryRecord> getRecordsForProcessing(@NotNull Stub<SpRegistry> registry, Page<SpRegistryRecord> pager, Long[] minMaxIds);
 }

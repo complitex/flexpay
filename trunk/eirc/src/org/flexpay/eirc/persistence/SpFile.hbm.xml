@@ -275,15 +275,15 @@
 		where r.registryNumber=? and r.sender.id=?
 	</query>
 
-	<query name="SpFile.listRecordsForProcessing.count">
-		select count(*)
+	<query name="SpRegistryRecord.getMinMaxRecordsForProcessing"><![CDATA[
+		select min(rr.id), max(rr.id)
 		from SpRegistryRecord rr
 			inner join rr.spRegistry r
 			inner join rr.recordStatus rrs
 		where r.id=? and rrs.code NOT IN (2, 4)
-	</query>
+	]]></query>
 
-	<query name="SpFile.listRecordsForProcessing">
+	<query name="SpRegistryRecord.listRecordsForProcessing"><![CDATA[
 		select distinct rr
 		from SpRegistryRecord rr
 			inner join fetch rr.spRegistry r
@@ -291,8 +291,9 @@
 			inner join fetch r.registryStatus rs
 			inner join fetch rr.recordStatus rrs
 			left join fetch rr.importError
-		where r.id=? and rrs.code NOT IN (2, 4)
-	</query>
+			left join fetch rr.containers 
+		where r.id=? and rr.id>=? and rr.id<=? and rrs.code NOT IN (2, 4)
+	]]></query>
 
 	<query name="SpRegistryType.countNotProcessedRecords"><![CDATA[
 		select count(*)

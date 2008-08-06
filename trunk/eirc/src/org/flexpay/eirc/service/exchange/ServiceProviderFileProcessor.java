@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.ImportErrorsSupport;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.dao.importexport.InMemoryRawConsumersDataSource;
@@ -27,9 +28,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Processor of instructions specified by service provider, usually payments, balance
- * notifications, etc. <br /> Precondition for processing file is complete import
- * operation, i.e. all records should already have assigned PersonalAccount.
+ * Processor of instructions specified by service provider, usually payments, balance notifications, etc. <br /> Precondition for
+ * processing file is complete import operation, i.e. all records should already have assigned PersonalAccount.
  */
 public class ServiceProviderFileProcessor {
 
@@ -76,7 +76,7 @@ public class ServiceProviderFileProcessor {
 	 * @throws FlexPayExceptionContainer if registry processing failed
 	 * @throws Exception				 if failure occurs
 	 */
-	@SuppressWarnings({"ThrowableInstanceNeverThrown"})
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	public void processRegistries(Collection<SpRegistry> registries) throws Exception {
 
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
@@ -107,22 +107,22 @@ public class ServiceProviderFileProcessor {
 	}
 
 	public void processRegistry(SpRegistry registry) throws Exception {
+
 		log.info("Starting processing records");
 		Page<SpRegistryRecord> pager = new Page<SpRegistryRecord>(50, 1);
 		boolean isEmpty;
+		Long[] minMaxIds = {null, null};
 		do {
 			log.info("Fetching for records: " + pager);
-			List<SpRegistryRecord> records = spFileService.getRecordsForProcessing(registry, pager);
+			List<SpRegistryRecord> records = spFileService.getRecordsForProcessing(stub(registry), pager, minMaxIds);
 			isEmpty = records.isEmpty();
 			for (SpRegistryRecord record : records) {
 				processRecord(registry, record);
 			}
 			pager.setPageNumber(pager.getPageNumber() + 1);
-		} while (!isEmpty);
+		} while (!isEmpty && pager.getThisPageFirstElementNumber() <= minMaxIds[1]);
 		log.info("No more records to process");
 	}
-
-
 
 	public void setupRecordsConsumers(SpRegistry registry) throws Exception {
 
@@ -144,7 +144,7 @@ public class ServiceProviderFileProcessor {
 
 		try {
 			// refresh records
-			Collection<SpRegistryRecord> records  = registryRecordService.findObjects(registry, objectIds);
+			Collection<SpRegistryRecord> records = registryRecordService.findObjects(registry, objectIds);
 			for (SpRegistryRecord record : records) {
 				processRecord(registry, record);
 			}
@@ -211,8 +211,7 @@ public class ServiceProviderFileProcessor {
 	 *
 	 * @param registry			   SpRegistry to process
 	 * @param rawConsumersDataSource Consumers data source
-	 * @return <code>true</code> if setup run without errors, or <code>false</code>
-	 *         otherwise
+	 * @return <code>true</code> if setup run without errors, or <code>false</code> otherwise
 	 */
 	private boolean setupRecordsConsumer(SpRegistry registry, RawDataSource<RawConsumerData> rawConsumersDataSource) {
 		try {
