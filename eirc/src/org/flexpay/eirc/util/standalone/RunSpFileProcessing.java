@@ -70,7 +70,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 //			loadRegistryQuittancesBig();
 //			importRecords();
 //			importOpenAccounts();
-//			processOpenAccounts();
+			processOpenAccounts();
 //			importQuittancesBig();
 //			processQuittancesBig();
 		} catch (Throwable e) {
@@ -95,7 +95,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 	}
 
 	private void processOpenAccounts() throws Throwable {
-		importRegistry(1L);
+		processRegistry(1L);
 	}
 
 	private void importQuittancesBig() throws Throwable {

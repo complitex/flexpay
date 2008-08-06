@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.dao.ImportErrorDao;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.dao.SpRegistryRecordDao;
+import org.flexpay.eirc.dao.RegistryRecordDao;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.persistence.SpRegistryRecordStatus;
 import static org.flexpay.eirc.persistence.SpRegistryRecordStatus.*;
@@ -23,7 +23,7 @@ public class RegistryRecordWorkflowManager {
 	private RegistryWorkflowManager registryWorkflowManager;
 
 	private SpRegistryRecordStatusService statusService;
-	private SpRegistryRecordDao recordDao;
+	private RegistryRecordDao recordDao;
 	private ImportErrorDao errorDao;
 
 	private Map<Integer, List<Integer>> transitions = CollectionUtils.map();
@@ -236,7 +236,7 @@ public class RegistryRecordWorkflowManager {
 		this.statusService = statusService;
 	}
 
-	public void setRecordDao(SpRegistryRecordDao recordDao) {
+	public void setRecordDao(RegistryRecordDao recordDao) {
 		this.recordDao = recordDao;
 	}
 

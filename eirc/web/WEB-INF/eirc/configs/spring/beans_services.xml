@@ -7,9 +7,10 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="spFileService"
-		  class="org.flexpay.eirc.service.imp.SpFileServiceImpl">
-		<property name="spFileDao" ref="spFileDao" />
-	</bean>
+		  class="org.flexpay.eirc.service.imp.SpFileServiceImpl"
+		  p:spFileDao-ref="spFileDao"
+		  p:registryRecordDao-ref="spRegistryRecordDao"
+		  p:registryRecordDaoExt-ref="spRegistryRecordDaoExt" />
 
 	<bean id="spRegistryService"
 		  class="org.flexpay.eirc.service.imp.SpRegistryServiceImpl">
@@ -99,7 +100,7 @@
 		  p:consumerInfoDao-ref="consumerInfoDao" />
 
 	<bean id="accountRecordService" class="org.flexpay.eirc.service.imp.AccountRecordServiceImpl"
-			p:accountRecordDao-ref="accountRecordDao" />
+		  p:accountRecordDao-ref="accountRecordDao" />
 
 	<bean id="organisationService" class="org.flexpay.eirc.service.imp.OrganisationServiceImpl"
 		  p:organisationDao-ref="organisationDao" />

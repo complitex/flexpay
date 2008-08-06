@@ -5,8 +5,9 @@ import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.flexpay.eirc.dao.SpRegistryRecordDao;
-import org.flexpay.eirc.dao.SpRegistryRecordDaoExt;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.eirc.dao.RegistryRecordDao;
+import org.flexpay.eirc.dao.RegistryRecordDaoExt;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.persistence.SpRegistryRecordStatus;
@@ -17,15 +18,14 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
 
 	@Autowired
-	private SpRegistryRecordDaoExt recordDaoExt;
+	protected RegistryRecordDaoExt recordDaoExt;
 	@Autowired
-	private SpRegistryRecordDao recordDao;
+	protected RegistryRecordDao recordDao;
 	private ClassToTypeRegistry classToTypeRegistry;
 
 	private ImportErrorTypeFilter errorTypeFilter = new ImportErrorTypeFilter();
@@ -35,7 +35,7 @@ public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
 	private SpRegistry registry = new SpRegistry(9L);
 
 	@Autowired
-	public void setClassToTypeRegistry(@Qualifier("typeRegistryEirc") ClassToTypeRegistry classToTypeRegistry) {
+	public void setClassToTypeRegistry(@Qualifier ("typeRegistryEirc")ClassToTypeRegistry classToTypeRegistry) {
 		this.classToTypeRegistry = classToTypeRegistry;
 	}
 
@@ -85,9 +85,11 @@ public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
 
 	@Test
 	public void testSelectMultipleRecordsById() {
-		List<Long> ids = new ArrayList<Long>();
-		ids.add(1L);
-		ids.add(2L);
-		recordDaoExt.findRecords(9L, ids);
+		recordDaoExt.findRecords(9L, CollectionUtils.list(1L, 2L));
+	}
+
+	@Test
+	public void testGetMaxMinForProcessing() {
+		recordDaoExt.getMinMaxIdsForProcessing(9L);
 	}
 }
