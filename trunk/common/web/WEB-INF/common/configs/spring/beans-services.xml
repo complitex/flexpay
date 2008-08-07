@@ -19,15 +19,14 @@
 		<property name="errorDao" ref="importErrorDao" />
 	</bean>
 
-	<bean class="org.flexpay.common.service.LanguageService" id="languageService" >
-		<property name="languageDao" ref="languageDAO" />
-	</bean>
+	<bean class="org.flexpay.common.service.imp.LanguageServiceImpl" id="languageServiceTarget"
+		  p:languageDao-ref="languageDAO" />
 
-	<bean class="org.flexpay.common.service.internal.SessionUtils" id="sessionUtils" >
+	<bean class="org.flexpay.common.service.internal.SessionUtils" id="sessionUtils">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-	<bean class="org.flexpay.common.service.reporting.ReportUtil" id="reportUtil" >
+	<bean class="org.flexpay.common.service.reporting.ReportUtil" id="reportUtil">
 		<property name="sessionFactory" ref="flexpaySessionFactory" />
 		<property name="dataSource" ref="dataSource" />
 	</bean>
