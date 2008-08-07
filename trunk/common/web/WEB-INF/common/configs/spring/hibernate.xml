@@ -114,17 +114,6 @@
 		<property name="sessionFactory" ref="flexpaySessionFactory" />
 	</bean>
 
-	<!--<bean id="cacheManager"-->
-	<!--class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">-->
-	<!--<property name="configLocation" value="WEB-INF/common/configs/spring/ehcache.xml" />-->
-	<!--</bean>-->
-
-	<!--<bean id="ehcache"-->
-	<!--class="org.springframework.cache.ehcache.EhCacheFactoryBean">-->
-	<!--<property name="cacheManager" ref="cacheManager" />-->
-	<!--<property name="cacheName" value="${ehcache.cacheName}" />-->
-	<!--</bean>-->
-
 	<!--
 		Indicates that transaction
 		configuration is defined by Java5 annotations on bean classes, and
@@ -183,11 +172,10 @@
 	</bean>
 
 	<bean name="jobManager" class="org.flexpay.common.process.job.JobManager"
-            factory-method="getInstance" destroy-method="unload">
-    </bean>
-    
+            factory-method="getInstance" destroy-method="unload" />
+
     <bean name="processManager" class="org.flexpay.common.process.ProcessManager"
-		  factory-method="getInstance" destroy-method="unload" scope="singleton" init-method="startProcessManager">
+		  factory-method="getInstance" destroy-method="unload" init-method="startProcessManager">
 		<property name="jbpmConfiguration" ref="jbpmConfiguration" />
 	</bean>
 

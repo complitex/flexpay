@@ -107,9 +107,18 @@ public class SpFileServiceImpl implements SpFileService {
 			Long[] values = registryRecordDaoExt.getMinMaxIdsForProcessing(registry.getId());
 			minMaxIds[0] = values[0];
 			minMaxIds[1] = values[1];
+
+			if (log.isInfoEnabled()) {
+				log.info("Min and max are " + values[0] + ", " + values[1]);
+			}
 		}
 		Long lowerBound = minMaxIds[0] + pager.getThisPageFirstElementNumber();
 		Long upperBound = minMaxIds[0] + pager.getThisPageLastElementNumber();
+
+		if (log.isInfoEnabled()) {
+			log.info("Bounds: " + lowerBound + ", " + upperBound + ")");
+		}
+
 		return registryRecordDao.listRecordsForProcessing(registry.getId(), lowerBound, upperBound);
 	}
 

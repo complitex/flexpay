@@ -4,9 +4,9 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.ImportErrorsSupport;
 import org.flexpay.common.service.importexport.RawDataSource;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.dao.importexport.InMemoryRawConsumersDataSource;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.eirc.persistence.SpFile;
@@ -14,7 +14,6 @@ import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.SpRegistryRecord;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
-import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
 import org.flexpay.eirc.service.SpFileService;
@@ -46,7 +45,8 @@ public class ServiceProviderFileProcessor {
 	private RawConsumersDataSource rawConsumersDataSource;
 	private ImportErrorsSupport errorsSupport;
 	private RegistryWorkflowManager registryWorkflowManager;
-	private RegistryRecordWorkflowManager recordWorkflowManager;
+
+	private ServiceProviderFileProcessorTx processorTx;
 
 	/**
 	 * Run processing of a registry data file
@@ -109,18 +109,11 @@ public class ServiceProviderFileProcessor {
 	public void processRegistry(SpRegistry registry) throws Exception {
 
 		log.info("Starting processing records");
-		Page<SpRegistryRecord> pager = new Page<SpRegistryRecord>(50, 1);
-		boolean isEmpty;
+		Page<SpRegistryRecord> pager = new Page<SpRegistryRecord>(500, 1);
 		Long[] minMaxIds = {null, null};
 		do {
-			log.info("Fetching for records: " + pager);
-			List<SpRegistryRecord> records = spFileService.getRecordsForProcessing(stub(registry), pager, minMaxIds);
-			isEmpty = records.isEmpty();
-			for (SpRegistryRecord record : records) {
-				processRecord(registry, record);
-			}
-			pager.setPageNumber(pager.getPageNumber() + 1);
-		} while (!isEmpty && pager.getThisPageFirstElementNumber() <= minMaxIds[1]);
+			processorTx.processRegistry(registry, pager, minMaxIds);
+		} while (pager.getThisPageFirstElementNumber() <= minMaxIds[1]);
 		log.info("No more records to process");
 	}
 
@@ -146,7 +139,7 @@ public class ServiceProviderFileProcessor {
 			// refresh records
 			Collection<SpRegistryRecord> records = registryRecordService.findObjects(registry, objectIds);
 			for (SpRegistryRecord record : records) {
-				processRecord(registry, record);
+				processorTx.processRecord(registry, record);
 			}
 		} catch (Exception e) {
 			String errMsg = "Failed processing registry: " + registry;
@@ -165,7 +158,7 @@ public class ServiceProviderFileProcessor {
 		try {
 			// setup records registry to the same object
 			for (SpRegistryRecord record : records) {
-				if (record.getSpRegistry().getId().equals(registry.getId())) {
+				if (stub(record.getSpRegistry()).getId().equals(registry.getId())) {
 					record.setSpRegistry(registry);
 				} else {
 					throw new FlexPayException("Only records of the same registry allowed for group processing");
@@ -225,35 +218,6 @@ public class ServiceProviderFileProcessor {
 		}
 	}
 
-	/**
-	 * Run processing on single registry record
-	 *
-	 * @param registry Registry header
-	 * @param record   Registry record
-	 * @throws Exception if failure occurs
-	 */
-	private void processRecord(SpRegistry registry, SpRegistryRecord record) throws Exception {
-		try {
-			if (!recordWorkflowManager.hasSuccessTransition(record)) {
-				if (log.isDebugEnabled()) {
-					log.debug("Skipping record: " + record);
-				}
-				return;
-			}
-
-			if (log.isDebugEnabled()) {
-				log.debug("record to process: " + record);
-			}
-
-			Operation op = serviceOperationsFactory.getOperation(registry, record);
-			op.process(registry, record);
-			recordWorkflowManager.setNextSuccessStatus(record);
-		} catch (Exception e) {
-			log.error("Failed processing registry record: " + record, e);
-			recordWorkflowManager.setNextErrorStatus(record);
-		}
-	}
-
 	public void setServiceOperationsFactory(ServiceOperationsFactory serviceOperationsFactory) {
 		this.serviceOperationsFactory = serviceOperationsFactory;
 	}
@@ -282,11 +246,11 @@ public class ServiceProviderFileProcessor {
 		this.registryWorkflowManager = registryWorkflowManager;
 	}
 
-	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
-		this.recordWorkflowManager = recordWorkflowManager;
-	}
-
 	public void setRegistryRecordService(SpRegistryRecordService registryRecordService) {
 		this.registryRecordService = registryRecordService;
+	}
+
+	public void setProcessorTx(ServiceProviderFileProcessorTx processorTx) {
+		this.processorTx = processorTx;
 	}
 }

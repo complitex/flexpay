@@ -136,6 +136,9 @@ public class Page<E> implements Serializable {
 	 * @return page last element number
 	 */
 	public int getThisPageLastElementNumber() {
+		if (elements == Collections.EMPTY_LIST) {
+			return getThisPageFirstElementNumber() + pageSize;
+		}
 		return getThisPageFirstElementNumber() + elements.size();
 	}
 

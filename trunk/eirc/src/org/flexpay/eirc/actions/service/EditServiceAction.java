@@ -2,6 +2,7 @@ package org.flexpay.eirc.actions.service;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import static org.flexpay.common.util.CollectionUtils.map;
@@ -24,7 +25,7 @@ public class EditServiceAction extends FPActionSupport {
 	private SPService spService;
 	private ServiceTypeService serviceTypeService;
 
-	private Service service = new Service();
+	private Service service = new Service(0L);
 
 	private ServiceProviderFilter serviceProviderFilter = new ServiceProviderFilter();
 	private ServiceTypeFilter serviceTypeFilter = new ServiceTypeFilter();
@@ -42,7 +43,7 @@ public class EditServiceAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		Service srvc = spService.read(service);
+		Service srvc = service.isNew() ? service : spService.read(stub(service));
 
 		serviceProviderFilter = spService.initServiceProvidersFilter(serviceProviderFilter);
 		serviceTypeFilter = serviceTypeService.initFilter(serviceTypeFilter);
