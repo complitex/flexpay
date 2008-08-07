@@ -3,14 +3,35 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:aop="http://www.springframework.org/schema/aop"
 	   xmlns:p="http://www.springframework.org/schema/p"
-	   xmlns:ehcache="http://www.springmodules.org/schema/ehcache"
 	   xmlns:context="http://www.springframework.org/schema/context"
 	   xsi:schemaLocation="
-	   http://www.springmodules.org/schema/ehcache http://www.springmodules.org/schema/cache/springmodules-ehcache.xsd
 	       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 
-	<ehcache:config configLocation="WEB-INF/common/configs/spring/ehcache.xml" />
+	<!-- The created cache manager is an instance of net.sf.ehcache.CacheManager -->
+	<bean id="cacheManager"
+		  class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+		  p:configLocation="WEB-INF/common/configs/spring/ehcache.xml" />
+
+	<bean id="cacheProviderFacade"
+		  class="org.springmodules.cache.provider.ehcache.EhCacheFacade"
+		  p:cacheManager-ref="cacheManager" />
+
+	<bean id="languageService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+				<prop key="get*">cacheName=commonFlexpayCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+				<prop key="update*">cacheNames=commonFlexpayCache</prop>
+			</props>
+		</property>
+		<property name="target" ref="languageServiceTarget" />
+	</bean>
 
 </beans>
