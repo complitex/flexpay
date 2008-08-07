@@ -74,8 +74,9 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	 * Save DomainObject
 	 *
 	 * @param object Object to save
+	 * @param externalId External object identifier
 	 */
-	protected void doSaveObject(Buildings object) {
+	protected void doSaveObject(Buildings object, String externalId) {
 		Building building = object.getBuilding();
 		if (object.getId() == null) {
 			buildingDao.create(building);
