@@ -133,8 +133,9 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * Save DomainObject
 	 *
 	 * @param object Object to save
+	 * @param externalId External object identifier
 	 */
-	public void doSaveObject(Apartment object) {
+	public void doSaveObject(Apartment object, String externalId) {
 		if (object.hasNoBuilding()) {
 			log.warn("Invalid sync data, no building specified");
 			return;

@@ -134,8 +134,9 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	 * Save DomainObject
 	 *
 	 * @param object Object to save
+	 * @param externalId External object identifier
 	 */
-	protected void doSaveObject(District object) {
+	protected void doSaveObject(District object, String externalId) {
 		if (object.getId() == null) {
 			districtDao.create(object);
 		} else {

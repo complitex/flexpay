@@ -145,8 +145,9 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * Save DomainObject
 	 *
 	 * @param object Object to save
+	 * @param externalId External object identifier
 	 */
-	protected void doSaveObject(StreetType object) {
+	protected void doSaveObject(StreetType object, String externalId) {
 		if (object.getId() != null) {
 			streetTypeDao.update(object);
 		} else {

@@ -235,9 +235,7 @@ public class PersonIdentity extends DomainObjectWithStatus {
 	public boolean isBlank() {
 		Date futureInfinite = ApplicationConfig.getFutureInfinite();
 		Date pastInfinite = ApplicationConfig.getPastInfinite();
-		return StringUtils.isBlank(firstName) &&
-				StringUtils.isBlank(middleName) &&
-				StringUtils.isBlank(lastName) &&
+		return isFIOEmpty() &&
 				beginDate.equals(pastInfinite) &&
 				endDate.equals(futureInfinite) &&
 				birthDate.equals(futureInfinite) &&
@@ -245,6 +243,18 @@ public class PersonIdentity extends DomainObjectWithStatus {
 				StringUtils.isBlank(organization) &&
 				StringUtils.isBlank(serialNumber) &&
 				StringUtils.isBlank(documentNumber);
+	}
+
+
+	/**
+	 * Check if first, middle and last names are all blank
+	 *
+	 * @return <code>true</code> if names are all blank, or <code>false</code> otherwise
+	 */
+	public boolean isFIOEmpty() {
+		return StringUtils.isBlank(firstName) &&
+				StringUtils.isBlank(middleName) &&
+				StringUtils.isBlank(lastName);
 	}
 
 	/**

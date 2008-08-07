@@ -1,6 +1,7 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.service.PersonService;
@@ -81,8 +82,10 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record,
+							DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
+
 		Person person = (Person) object;
 		switch (record.getFieldType()) {
 			case FirstName:
@@ -103,41 +106,28 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 		}
 	}
 
-	private void setFirstName(Person person, HistoryRecord record) {
+	private void setFirstName(@NotNull Person person, @NotNull HistoryRecord record) {
 		PersonIdentity identity = person.getDefaultIdentity();
 		if (log.isDebugEnabled()) {
 			log.debug("Setting first name, person: " + person);
 		}
-		boolean newIsBlank = StringUtils.isBlank(record.getCurrentValue());
-		boolean oldIsBlank = StringUtils.isBlank(identity.getFirstName());
-		if (newIsBlank && oldIsBlank) {
+
+		boolean valuesEquals = new EqualsBuilder()
+				.append(record.getCurrentValue(), identity.getFirstName())
+				.isEquals();
+		if (valuesEquals) {
 			// nothing to change
-			log.debug("First name is blank, do not updating");
+			log.debug("Values equals do not updating");
 			return;
 		}
-		if (newIsBlank) {
-			// new name is blank, create new identity
-			identity.setEndDate(record.getRecordDate());
-			identity.setDefault(false);
 
-			identity = PersonIdentity.newCopy(identity);
-			identity.setDefault(true);
+		identity = copyIdentityIfNotNew(record, identity);
 
-			log.debug("New first name is blank");
-			return;
+		if (StringUtils.isBlank(record.getCurrentValue())) {
+			identity.setFirstName("");
+		} else {
+			identity.setFirstName(record.getCurrentValue());
 		}
-		if (!oldIsBlank && !record.getCurrentValue().equals(identity.getFirstName())) {
-			// new name differs from the old
-			identity.setEndDate(record.getRecordDate());
-			identity.setDefault(false);
-
-			identity = PersonIdentity.newCopy(identity);
-			identity.setDefault(true);
-
-			log.debug("Person first name changed, creating a new identity");
-		}
-
-		identity.setFirstName(record.getCurrentValue());
 
 		log.debug("Set person first name");
 	}
@@ -147,77 +137,63 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 		if (log.isDebugEnabled()) {
 			log.debug("Setting middle name, person: " + person);
 		}
-		boolean newIsBlank = StringUtils.isBlank(record.getCurrentValue());
-		boolean oldIsBlank = StringUtils.isBlank(identity.getMiddleName());
-		if (newIsBlank && oldIsBlank) {
+
+		boolean valuesEquals = new EqualsBuilder()
+				.append(record.getCurrentValue(), identity.getMiddleName())
+				.isEquals();
+		if (valuesEquals) {
 			// nothing to change
-			log.debug("Middle name is blank, do not updating");
+			log.debug("Values equals do not updating");
 			return;
 		}
-		if (newIsBlank) {
-			// new name is blank, create new identity
-			identity.setEndDate(record.getRecordDate());
-			identity.setDefault(false);
 
-			identity = PersonIdentity.newCopy(identity);
-			identity.setDefault(true);
+		identity = copyIdentityIfNotNew(record, identity);
 
-			log.debug("New middle name is blank");
-			return;
-		}
-		if (!oldIsBlank && !record.getCurrentValue().equals(identity.getMiddleName())) {
-			// new name differs from the old
-			identity.setEndDate(record.getRecordDate());
-			identity.setDefault(false);
-
-			identity = PersonIdentity.newCopy(identity);
-			identity.setDefault(true);
-
-			log.debug("Person middle name changed, creating a new identity");
+		if (StringUtils.isBlank(record.getCurrentValue())) {
+			identity.setMiddleName("");
+		} else {
+			identity.setMiddleName(record.getCurrentValue());
 		}
 
-		identity.setMiddleName(record.getCurrentValue());
-
-		log.debug("Setting person middle name");
+		log.debug("Set person middle name");
 	}
 
-	private void setLastName(Person person, HistoryRecord record) {
+	private void setLastName(@NotNull Person person, @NotNull HistoryRecord record) {
 		PersonIdentity identity = person.getDefaultIdentity();
 		if (log.isDebugEnabled()) {
 			log.debug("Setting last name, person: " + person);
 		}
-		boolean newIsBlank = StringUtils.isBlank(record.getCurrentValue());
-		boolean oldIsBlank = StringUtils.isBlank(identity.getLastName());
-		if (newIsBlank && oldIsBlank) {
+
+		boolean valuesEquals = new EqualsBuilder()
+				.append(record.getCurrentValue(), identity.getLastName())
+				.isEquals();
+		if (valuesEquals && StringUtils.isNotBlank(record.getCurrentValue())) {
 			// nothing to change
-			log.debug("Last name is blank, do not updating");
+			log.debug("Values equals do not updating");
 			return;
 		}
-		if (newIsBlank) {
-			// new name is blank, create new identity
+		identity = copyIdentityIfNotNew(record, identity);
+
+
+		if (StringUtils.isBlank(record.getCurrentValue())) {
+			identity.setLastName("");
+		} else {
+			identity.setLastName(record.getCurrentValue());
+		}
+
+		log.debug("Set person last name");
+	}
+
+	private PersonIdentity copyIdentityIfNotNew(@NotNull HistoryRecord record, @NotNull PersonIdentity identity) {
+		// old identity is not new, create new one
+		if (identity.isNotNew()) {
 			identity.setEndDate(record.getRecordDate());
 			identity.setDefault(false);
 
 			identity = PersonIdentity.newCopy(identity);
 			identity.setDefault(true);
-
-			log.debug("New last name is blank");
-			return;
 		}
-		if (!oldIsBlank && !record.getCurrentValue().equals(identity.getLastName())) {
-			// new name differs from the old
-			identity.setEndDate(record.getRecordDate());
-			identity.setDefault(false);
-
-			identity = PersonIdentity.newCopy(identity);
-			identity.setDefault(true);
-
-			log.debug("Person last name changed, creating a new identity");
-		}
-
-		identity.setLastName(record.getCurrentValue());
-
-		log.debug("Setting person last name");
+		return identity;
 	}
 
 	private void setINN(@NotNull Person person, @Nullable String value) throws FlexPayException {
@@ -263,10 +239,15 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * Save DomainObject
 	 *
 	 * @param object Object to save
+	 * @param externalId External object identifier
 	 */
-	protected void doSaveObject(Person object) throws Exception {
+	protected void doSaveObject(Person object, String externalId) throws Exception {
 		PersonIdentity identity = object.getDefaultIdentity();
 		if (identity != null) {
+			if (identity.isFIOEmpty()) {
+				log.warn("Person with empty FIO, settion last name to ObjectId: " + externalId);
+				identity.setLastName(externalId);
+			}
 			if (StringUtils.isBlank(identity.getLastName())) {
 				log.error("Do not saving person, empty last name: " + object);
 				return;

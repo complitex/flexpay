@@ -183,7 +183,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 		if (log.isInfoEnabled()) {
 			log.info("Performing save: " + obj);
 		}
-		doSaveObject(obj);
+		doSaveObject(obj, externalId);
 
 		if (id == null && obj.getId() != null) {
 			log.info("Adding a new object correction: " + obj.getId());
@@ -209,7 +209,8 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * Save DomainObject
 	 *
 	 * @param object Object to save
+	 * @param externalId External object identifier
 	 * @throws Exception if failure occurs
 	 */
-	protected abstract void doSaveObject(T object) throws Exception;
+	protected abstract void doSaveObject(T object, String externalId) throws Exception;
 }

@@ -126,8 +126,9 @@ public class TownProcessor extends AbstractProcessor<Town> {
 	 * Save DomainObject
 	 *
 	 * @param object Object to save
+	 * @param externalId External object identifier
 	 */
-	public void doSaveObject(Town object) {
+	public void doSaveObject(Town object, String externalId) {
 		if (object.getId() == null) {
 			townDao.create(object);
 		} else {
