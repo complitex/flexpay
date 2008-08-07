@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ehcache="http://www.springmodules.org/schema/ehcache"
+	   xsi:schemaLocation="
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springmodules.org/schema/ehcache http://www.springmodules.org/schema/cache/springmodules-ehcache.xsd">
+
+	<ehcache:proxy id="spService" refId="spServiceTarget">
+		<ehcache:caching methodName="read" cacheName="flexpayCache" />
+		<ehcache:caching methodName="listServices" cacheName="flexpayCache" />
+		<ehcache:caching methodName="getService" cacheName="flexpayCache" />
+		<ehcache:flushing cacheNames="flexpayCache" methodName="save"/>
+	</ehcache:proxy>
+
+	<ehcache:proxy id="consumerService" refId="consumerServiceTarget">
+		<ehcache:caching methodName="findService" cacheName="flexpayCache" />
+	</ehcache:proxy>
+
+
+</beans>

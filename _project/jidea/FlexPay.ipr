@@ -895,6 +895,7 @@
     <library name="spring2">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/../../common/lib/spring2/spring.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/spring2/spring-modules-cache.jar!/" />
       </CLASSES>
       <JAVADOC>
         <root url="file:///windows/D/users/mixa/work/Java/_libs/spring-framework-2.5.4/docs/api" />
@@ -905,6 +906,7 @@
         <root url="file:///windows/D/users/mixa/work/Java/_libs/spring-framework-2.5.4/src" />
         <root url="file:///windows/D/users/mixa/work/Java/_libs/spring-framework-2.5.4/tiger/src" />
         <root url="file:///windows/D/users/mixa/work/Java/_libs/spring-framework-2.5.4/tiger/mock" />
+        <root url="jar:///windows/D/users/mixa/work/Java/_libs/spring-modules-cache-src.zip!/" />
       </SOURCES>
     </library>
     <library name="Struts2">

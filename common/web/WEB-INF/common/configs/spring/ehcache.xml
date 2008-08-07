@@ -537,4 +537,12 @@
 			memoryStoreEvictionPolicy="LRU"
 			/>
 
+	<!-- Spring services cache -->
+	<cache name="flexpayCache"
+			maxElementsInMemory="5000"
+			eternal="true"
+			overflowToDisk="true"
+			memoryStoreEvictionPolicy="LRU"
+			/>
+
 </ehcache>

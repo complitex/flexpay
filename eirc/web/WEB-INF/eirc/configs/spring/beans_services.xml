@@ -34,7 +34,7 @@
 		<property name="spRegistryTypeDao" ref="spRegistryTypeDao" />
 	</bean>
 
-	<bean id="spService" class="org.flexpay.eirc.service.imp.SPServiceImpl"
+	<bean id="spServiceTarget" class="org.flexpay.eirc.service.imp.SPServiceImpl"
 		  p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao"
 		  p:serviceDao-ref="serviceDao"
 		  p:serviceDaoExt-ref="serviceDaoExt"
@@ -91,7 +91,7 @@
 		  p:consumerInfoService-ref="consumerInfoService"
 		  p:accountService-ref="eircAccountService" />
 
-	<bean id="consumerService" class="org.flexpay.eirc.service.imp.ConsumerServiceImpl"
+	<bean id="consumerServiceTarget" class="org.flexpay.eirc.service.imp.ConsumerServiceImpl"
 		  p:serviceDao-ref="serviceDao"
 		  p:consumerDao-ref="consumerDao"
 		  p:consumerDaoExt-ref="consumerDaoExt" />
@@ -125,18 +125,23 @@
 
 	<bean id="reportPeriodService" class="org.flexpay.eirc.service.imp.ReportPeriodServiceImpl" />
 
+	<bean id="serviceProviderFileProcessorTx"
+		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessorTx"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
+		  p:serviceOperationsFactory-ref="serviceOperationsFactory"
+		  p:spFileService-ref="spFileService" />
+
 	<bean id="serviceProviderFileProcessor"
-		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor">
-		<property name="serviceOperationsFactory" ref="serviceOperationsFactory" />
-		<property name="spFileService" ref="spFileService" />
-		<property name="spRegistryService" ref="spRegistryService" />
-		<property name="importService" ref="importServiceEirc" />
-		<property name="rawConsumersDataSource" ref="consumersDataSource" />
-		<property name="errorsSupport" ref="importErrorSupport" />
-		<property name="recordWorkflowManager" ref="registryRecordWorkflowManager" />
-		<property name="registryWorkflowManager" ref="registryWorkflowManager" />
-		<property name="registryRecordService" ref="spRegistryRecordService" />
-	</bean>
+		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor"
+		  p:processorTx-ref="serviceProviderFileProcessorTx"
+		  p:serviceOperationsFactory-ref="serviceOperationsFactory"
+		  p:spFileService-ref="spFileService"
+		  p:spRegistryService-ref="spRegistryService"
+		  p:importService-ref="importServiceEirc"
+		  p:rawConsumersDataSource-ref="consumersDataSource"
+		  p:errorsSupport-ref="importErrorSupport"
+		  p:registryRecordService-ref="spRegistryRecordService"
+		  p:registryWorkflowManager-ref="registryWorkflowManager" />
 
 	<bean id="serviceOrganisationService" class="org.flexpay.eirc.service.imp.ServiceOrganisationServiceImpl">
 		<property name="serviceOrganisationDao" ref="serviceOrganisationDao" />

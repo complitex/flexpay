@@ -164,6 +164,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 						"inner join fetch r.recordStatus " +
 						"inner join fetch rr.registryType " +
 						"left join fetch r.importError " +
+						"left join fetch r.containers " +
 						"where rr.id=:rId and r.id in (:ids)")
 						.setParameterList("ids", objectIds)
 						.setLong("rId", registryId)

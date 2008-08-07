@@ -211,7 +211,7 @@
 		<java classpathref="classpath"
 			  classname="org.flexpay.common.util.standalone.ApplicationRunner"
 			  dir="${build.dir}/web" fork="yes">
-			<jvmarg value="-Xmx150m" />
+			<jvmarg value="-Xmx350m" />
 			<sysproperty key="log4j.configuration" value="WEB-INF/common/configs/log4j.xml" />
 			<sysproperty key="java.naming.factory.initial"
 						 value="org.flexpay.common.test.MockInitialContextFactory" />

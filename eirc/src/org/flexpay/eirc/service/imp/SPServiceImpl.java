@@ -7,6 +7,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.eirc.dao.ServiceDao;
@@ -18,13 +19,15 @@ import org.flexpay.eirc.persistence.filters.ParentServiceFilterMarker;
 import org.flexpay.eirc.persistence.filters.ServiceFilter;
 import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
 import org.flexpay.eirc.service.SPService;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Transactional(readOnly = true)
+@Transactional (readOnly = true)
 public class SPServiceImpl implements SPService {
 
 	private Logger log = Logger.getLogger(getClass());
@@ -57,8 +60,7 @@ public class SPServiceImpl implements SPService {
 	 *
 	 * @param provider ServiceProvider
 	 * @param type	 ServiceType to find
-	 * @return Service if found, or <code>null</code> if the requested service is not
-	 *         available from <code>provider</code>
+	 * @return Service if found, or <code>null</code> if the requested service is not available from <code>provider</code>
 	 */
 	public Service getService(ServiceProvider provider, ServiceType type) {
 		Service service = serviceDaoExt.findService(provider.getId(), type.getId());
@@ -100,7 +102,7 @@ public class SPServiceImpl implements SPService {
 	 *
 	 * @param objectIds Set of service provider identifiers
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void disable(Set<Long> objectIds) {
 		for (Long id : objectIds) {
 			ServiceProvider provider = serviceProviderDao.read(id);
@@ -131,7 +133,7 @@ public class SPServiceImpl implements SPService {
 	 * @param serviceProvider New or persitent object to save
 	 * @throws FlexPayExceptionContainer if provider validation fails
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void save(ServiceProvider serviceProvider) throws FlexPayExceptionContainer {
 		validate(serviceProvider);
 		if (serviceProvider.isNew()) {
@@ -149,7 +151,7 @@ public class SPServiceImpl implements SPService {
 		}
 	}
 
-	@SuppressWarnings({"ThrowableInstanceNeverThrown"})
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(ServiceProvider sp) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
@@ -251,7 +253,7 @@ public class SPServiceImpl implements SPService {
 	 * @param service Service to save
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void save(Service service) throws FlexPayExceptionContainer {
 		validate(service);
 		if (service.isNew()) {
@@ -262,7 +264,7 @@ public class SPServiceImpl implements SPService {
 		}
 	}
 
-	@SuppressWarnings({"ThrowableInstanceNeverThrown"})
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(Service service) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
@@ -341,12 +343,9 @@ public class SPServiceImpl implements SPService {
 	 * @param stub Service stub
 	 * @return Service description
 	 */
-	public Service read(Service stub) {
-		if (stub.isNotNew()) {
-			return serviceDao.readFull(stub.getId());
-		}
-
-		return new Service(0L);
+	@Nullable
+	public Service read(@NotNull Stub<Service> stub) {
+		return serviceDao.readFull(stub.getId());
 	}
 
 	/**

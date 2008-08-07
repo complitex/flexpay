@@ -3,6 +3,7 @@ package org.flexpay.eirc.service;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.filter.ObjectFilter;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.AccountRecordType;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.ServiceProvider;
@@ -109,7 +110,7 @@ public interface SPService {
 	 * @param stub Service stub
 	 * @return Service description
 	 */
-	Service read(Service stub);
+	Service read(Stub<Service> stub);
 
 	/**
 	 * Create or update service
