@@ -6,13 +6,18 @@ import org.flexpay.common.test.SpringBeanAwareTestCase;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
 public class LanguageServiceTest extends SpringBeanAwareTestCase {
 
+	private LanguageService languageService;
+
 	@Autowired
-	protected LanguageService languageService;
+	public void setLanguageService(@Qualifier ("languageService") LanguageService languageService) {
+		this.languageService = languageService;
+	}
 
 	@Test
 	public void testGetLanguages() {

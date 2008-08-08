@@ -12,6 +12,7 @@
     <orderEntry type="library" name="Commons" level="project" />
     <orderEntry type="library" name="Jetbrains" level="project" />
     <orderEntry type="library" name="jasper" level="project" />
+    <orderEntry type="library" name="j2ee" level="project" />
   </component>
 </module>
 
