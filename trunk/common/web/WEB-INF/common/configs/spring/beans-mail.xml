@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="propertyConfigurerMail"
+		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		  p:location="/WEB-INF/common/configs/spring/mail.properties"
+		  p:ignoreUnresolvablePlaceholders="true" />
+
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"
+		  p:host="${flexpay.email.host}"
+		  p:username="${flexpay.email.user_name}"
+		  p:password="${flexpay.email.user_pass}" />
+
+	<!-- this is a template message that we can pre-load with default state -->
+	<bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage" scope="prototype"
+		  p:to="${flexpay.email.default_to}"
+		  p:from="${flexpay.email.from}"
+		  p:subject="${flexpay.email.subject}" />
+
+</beans>

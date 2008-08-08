@@ -21,7 +21,6 @@
 		select external_object_id as externalId, internal_object_id as internalObjectId, object_type as objectType
 		from common_data_corrections_tbl
 		where data_source_description_id= $P{dataSourceId}
-		order by object_type
 		limit 5000
 		]]>
 	</queryString>

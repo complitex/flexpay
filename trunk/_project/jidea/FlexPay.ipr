@@ -876,17 +876,9 @@
         <root url="jar://$PROJECT_DIR$/../../common/lib/antlr/antlr-2.7.6.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="file://$PROJECT_DIR$/../Java/_libs/hibernate-3.2/doc/api" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/hibernate-annotations-3.3.0.GA/doc/jpa-api" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/hibernate-validator-3.0.0.GA/doc/api" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/hibernate-entitymanager-3.3.1.GA/doc/api" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/hibernate-annotations-3.3.0.GA/doc/api" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/hibernate-entitymanager-3.3.1.GA/doc/jpa-api" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/hibernate-3.2/doc/api" />
       </JAVADOC>
       <SOURCES>
-        <root url="file://$PROJECT_DIR$/../Java/_libs/hibernate-3.2/src" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/hibernate-entitymanager-3.3.1.GA/src" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/hibernate-annotations-3.3.0.GA/src" />
         <root url="file:///windows/D/users/mixa/work/Java/_libs/hibernate-annotations-3.3.0.GA/src" />
         <root url="file:///windows/D/users/mixa/work/Java/_libs/hibernate-entitymanager-3.3.1.GA/src" />
         <root url="file:///windows/D/users/mixa/work/Java/_libs/hibernate-3.2/src" />
@@ -984,10 +976,10 @@
         <root url="jar://$PROJECT_DIR$/../../common/lib/commons/standard.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="file://$PROJECT_DIR$/../Java/_libs/commons-lang-2.3/docs/api" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/commons-digester-1.8/docs/apidocs" />
-        <root url="jar://$PROJECT_DIR$/../Java/_libs/commons-io-1.3.2/commons-io-1.3.2.jar!/" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/commons-collections-3.2/docs/apidocs" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/commons-lang-2.3/docs/api" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/commons-digester-1.8/docs/apidocs" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/commons-io-1.3.2/docs/apidocs" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/commons-collections-3.2/docs/apidocs" />
       </JAVADOC>
       <SOURCES>
         <root url="file:///windows/D/users/mixa/work/Java/_libs/commons-digester-1.8/commons-digester-1.8-src/src/java" />
@@ -1051,14 +1043,21 @@
         <root url="jar://$PROJECT_DIR$/../../common/lib/jetbrains/asm-commons.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/../../idea/redist/src/src_annotations.zip!/" />
-      </SOURCES>
+      <SOURCES />
     </library>
     <library name="jasper">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/../../common/lib/jasperreports/jasperreports-3.0.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jasperreports/jdt-compiler-3.1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="j2ee">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../common/lib/j2ee/javaee.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/j2ee/mail.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/j2ee/activation.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

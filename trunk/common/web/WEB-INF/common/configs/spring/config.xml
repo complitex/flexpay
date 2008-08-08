@@ -4,6 +4,7 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
 	<import resource="beans-jmx.xml" />
+	<import resource="beans-mail.xml" />
 
 	<import resource="hibernate.xml" />
 	<import resource="beans-cache.xml" />
