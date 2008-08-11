@@ -2,7 +2,7 @@ package org.flexpay.eirc.dao;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 
@@ -18,7 +18,7 @@ public interface SpRegistryRecordDaoExt {
 	 * @param pager Pager
 	 * @return list of records
 	 */
-	List<SpRegistryRecord> listRecordsForUpdate(Long id, Page pager);
+	List<RegistryRecord> listRecordsForUpdate(Long id, Page pager);
 
 	/**
 	 * Filter registry records
@@ -29,8 +29,8 @@ public interface SpRegistryRecordDaoExt {
 	 * @param pager				 Page
 	 * @return list of registry records
 	 */
-	List<SpRegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter,
-										 RegistryRecordStatusFilter recordStatusFilter, Page<SpRegistryRecord> pager);
+	List<RegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter,
+										 RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager);
 
 	/**
 	 * Find registries by identifiers
@@ -39,7 +39,7 @@ public interface SpRegistryRecordDaoExt {
 	 * @param objectIds  Set of registry identifiers
 	 * @return collection of registries
 	 */
-	List<SpRegistryRecord> findRecords(Long registryId, Collection<Long> objectIds);
+	List<RegistryRecord> findRecords(Long registryId, Collection<Long> objectIds);
 
 
 	/**

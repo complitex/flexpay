@@ -6,18 +6,20 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+	<bean class="org.flexpay.eirc.util.standalone.RunSpFileProcessing" id="spFileProcessingRunner"
+		  p:fileAction-ref="spFileAction"
+		  p:fileCreateAction-ref="spFileCreateAction"
+		  p:fileService-ref="spFileService"
+		  p:spRegistryDao-ref="spRegistryDao"
+		  p:registryService-ref="spRegistryService"
+		  p:fileProcessor-ref="serviceProviderFileProcessor" />
+
 	<bean class="org.flexpay.common.util.standalone.StandaloneTasksHolder"
 		  factory-method="getInstance">
 		<property name="standaloneTasks">
 			<list>
 				<!-- run sp file processing -->
-				<bean class="org.flexpay.eirc.util.standalone.RunSpFileProcessing"
-					  p:fileAction-ref="spFileAction"
-					  p:fileCreateAction-ref="spFileCreateAction"
-					  p:fileService-ref="spFileService"
-					  p:spRegistryDao-ref="spRegistryDao"
-					  p:registryService-ref="spRegistryService"
-					  p:fileProcessor-ref="serviceProviderFileProcessor" />
+				<ref bean="spFileProcessingRunner" />
 			</list>
 		</property>
 	</bean>

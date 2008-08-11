@@ -23,7 +23,7 @@
 		<!-- Start at zero numbered files-->
 		<param name="ZeroBased" value="true" />
 		<!-- Backup Location -->
-		<!--<param name="backupFilesToPath" value="${QPID_WORK}/backup/log" />-->
+		<!--<param name="backupFilesToPath" value="${java.io.tmpdir}/logs/backup" />-->
 
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d %-5p [%t] %C{2} (%F:%L) - %m%n" />

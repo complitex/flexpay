@@ -123,8 +123,7 @@
 		<property name="typeId" not-null="true" column="type_enum_id" />
 	</class>
 
-	<class name="AccountRecord" table="eirc_account_records_tbl"
-		   optimistic-lock="version">
+	<class name="AccountRecord" table="eirc_account_records_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -147,7 +146,7 @@
 			</column>
 		</many-to-one>
 		<many-to-one name="sourceRegistryRecord" foreign-key="FK_eirc_account_record_registry_record"
-					 class="SpRegistryRecord">
+					 class="RegistryRecord">
 			<column name="source_registry_record_id" not-null="false">
 				<comment>Registry record reference</comment>
 			</column>

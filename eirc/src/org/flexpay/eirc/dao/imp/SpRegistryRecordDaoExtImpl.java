@@ -5,7 +5,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.eirc.dao.SpRegistryRecordDaoExt;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import org.hibernate.HibernateException;
@@ -31,7 +31,7 @@ public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements S
 	 * @return list of records
 	 */
 	@SuppressWarnings({"unchecked"})
-	public List<SpRegistryRecord> listRecordsForUpdate(final Long id, final Page pager) {
+	public List<RegistryRecord> listRecordsForUpdate(final Long id, final Page pager) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 
@@ -61,8 +61,8 @@ public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements S
 	 * @return list of registry records
 	 */
 	@SuppressWarnings({"unchecked"})
-	public List<SpRegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter,
-												RegistryRecordStatusFilter recordStatusFilter, final Page<SpRegistryRecord> pager) {
+	public List<RegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter,
+												RegistryRecordStatusFilter recordStatusFilter, final Page<RegistryRecord> pager) {
 		final StringBuilder hql = new StringBuilder("select distinct rr from SpRegistryRecord rr " +
 				"inner join fetch rr.spRegistry r " +
 				"inner join fetch rr.recordStatus rs " +
@@ -128,7 +128,7 @@ public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements S
 	public int getErrorsNumber(final Long registryId) {
 		Number count = (Number) getHibernateTemplate().execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				return session.createQuery("select count(r.id) from SpRegistryRecord r where r.spRegistry.id=? and r.importError is not null")
+				return session.createQuery("select count(r.id) from RegistryRecord r where r.spRegistry.id=? and r.importError is not null")
 						.setLong(0, registryId).uniqueResult();
 			}
 		});
@@ -151,10 +151,10 @@ public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements S
 	 * @return collection of registries
 	 */
 	@SuppressWarnings({"unchecked"})
-	public List<SpRegistryRecord> findRecords(final Long registryId, final Collection<Long> objectIds) {
+	public List<RegistryRecord> findRecords(final Long registryId, final Collection<Long> objectIds) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				return session.createQuery("select distinct r from SpRegistryRecord r " +
+				return session.createQuery("select distinct r from RegistryRecord r " +
 						"inner join fetch r.spRegistry rr " +
 						"inner join fetch rr.registryStatus " +
 						"inner join fetch rr.serviceProvider sp " +

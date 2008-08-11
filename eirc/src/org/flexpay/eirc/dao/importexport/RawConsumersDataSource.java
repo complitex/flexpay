@@ -5,7 +5,7 @@ import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.eirc.dao.RegistryRecordDao;
 import org.flexpay.eirc.dao.RegistryRecordDaoExt;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 	private RegistryRecordDaoExt registryRecordDaoExt;
 	private SpRegistry registry;
 
-	private Page<SpRegistryRecord> pager;
+	private Page<RegistryRecord> pager;
 
 	/**
 	 * Find raw data by its id
@@ -34,8 +34,8 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 	 * Initialize data source
 	 */
 	public void initialize() {
-		pager = new Page<SpRegistryRecord>(5000, 1);
-		List<SpRegistryRecord> datum = registryRecordDaoExt.listRecordsForUpdate(registry.getId(), pager);
+		pager = new Page<RegistryRecord>(5000, 1);
+		List<RegistryRecord> datum = registryRecordDaoExt.listRecordsForUpdate(registry.getId(), pager);
 		dataIterator = datum.iterator();
 
 		log.debug("Inited db data source");
@@ -61,7 +61,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 		// get next page
 		int nextPage = pager.getPageNumber() + 1;
 		pager.setPageNumber(nextPage);
-		List<SpRegistryRecord> datum = registryRecordDaoExt.listRecordsForUpdate(registry.getId(), pager);
+		List<RegistryRecord> datum = registryRecordDaoExt.listRecordsForUpdate(registry.getId(), pager);
 		dataIterator = datum.iterator();
 		return dataIterator.hasNext();
 	}
@@ -89,7 +89,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 		this.registry = registry;
 	}
 
-	protected RawConsumerData convert(SpRegistryRecord record) {
+	protected RawConsumerData convert(RegistryRecord record) {
 		record.setSpRegistry(registry);
 		return RawConsumersDataUtil.convert(record);
 	}

@@ -10,10 +10,10 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import java.math.BigDecimal;
 import java.util.*;
 
-public class SpRegistryRecord extends DomainObject {
+public class RegistryRecord extends DomainObject {
 
 	private SpRegistry spRegistry;
-	private SpRegistryRecordStatus recordStatus;
+	private RegistryRecordStatus recordStatus;
 	private String serviceCode;
 	private String personalAccountExt;
 	private String city;
@@ -34,6 +34,7 @@ public class SpRegistryRecord extends DomainObject {
 	private ImportError importError;
 	private Apartment apartment;
 	private Person person;
+	private Service service;
 
 	/**
 	 * @return the spRegistry
@@ -281,11 +282,11 @@ public class SpRegistryRecord extends DomainObject {
 		this.consumer = consumer;
 	}
 
-	public SpRegistryRecordStatus getRecordStatus() {
+	public RegistryRecordStatus getRecordStatus() {
 		return recordStatus;
 	}
 
-	public void setRecordStatus(SpRegistryRecordStatus recordStatus) {
+	public void setRecordStatus(RegistryRecordStatus recordStatus) {
 		this.recordStatus = recordStatus;
 	}
 
@@ -313,6 +314,14 @@ public class SpRegistryRecord extends DomainObject {
 		this.person = person;
 	}
 
+	public Service getService() {
+		return service;
+	}
+
+	public void setService(Service service) {
+		this.service = service;
+	}
+
 	@SuppressWarnings ({"UnnecessaryBoxing"})
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
@@ -334,6 +343,7 @@ public class SpRegistryRecord extends DomainObject {
 				.append("apartment", apartmentNum)
 				.append("apartment-id", apartment == null ? Long.valueOf(0) : apartment.getId())
 				.append("person-id", person == null ? Long.valueOf(0) : person.getId())
+				.append("service-id", service == null ? Long.valueOf(0) : service.getId())
 				.append("consumer-id", consumer == null ? Long.valueOf(0) : consumer.getId())
 				.toString();
 	}

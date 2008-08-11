@@ -2,7 +2,7 @@ package org.flexpay.eirc.persistence.account;
 
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,7 +10,7 @@ import java.util.Date;
 public class QuittanceDetails extends DomainObject {
 
 	private Consumer consumer;
-	private SpRegistryRecord registryRecord;
+	private RegistryRecord registryRecord;
 
 	private BigDecimal incomingBalance;
 	private BigDecimal outgoingBalance;
@@ -122,11 +122,11 @@ public class QuittanceDetails extends DomainObject {
 		this.payment = payment;
 	}
 
-	public SpRegistryRecord getRegistryRecord() {
+	public RegistryRecord getRegistryRecord() {
 		return registryRecord;
 	}
 
-	public void setRegistryRecord(SpRegistryRecord registryRecord) {
+	public void setRegistryRecord(RegistryRecord registryRecord) {
 		this.registryRecord = registryRecord;
 	}
 

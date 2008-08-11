@@ -4,7 +4,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.RegistryRecordContainer;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
@@ -22,7 +22,7 @@ public interface SpRegistryRecordService {
 	 * @return created SpRegistryRecord object
 	 * @throws FlexPayException if failure occurs
 	 */
-	public SpRegistryRecord create(SpRegistryRecord spRegistryRecord)
+	public RegistryRecord create(RegistryRecord spRegistryRecord)
 			throws FlexPayException;
 
 	/**
@@ -32,7 +32,7 @@ public interface SpRegistryRecordService {
 	 * @return SpRegistryRecord object, or <code>null</code> if object not
 	 *         found
 	 */
-	SpRegistryRecord read(Long id);
+	RegistryRecord read(Long id);
 
 	/**
 	 * Update SpRegistryRecord
@@ -41,10 +41,10 @@ public interface SpRegistryRecordService {
 	 * @return Updated SpRegistryRecord object
 	 * @throws FlexPayException if SpRegistryRecord object is invalid
 	 */
-	SpRegistryRecord update(SpRegistryRecord spRegistryRecord)
+	RegistryRecord update(RegistryRecord spRegistryRecord)
 			throws FlexPayException;
 
-	void delete(SpRegistryRecord spRegistryRecord);
+	void delete(RegistryRecord spRegistryRecord);
 
 	/**
 	 * List registry records
@@ -55,8 +55,8 @@ public interface SpRegistryRecordService {
 	 * @param pager				 Page
 	 * @return list of filtered registry records
 	 */
-	List<SpRegistryRecord> listRecords(SpRegistry registry, ImportErrorTypeFilter importErrorTypeFilter,
-									   RegistryRecordStatusFilter recordStatusFilter, Page<SpRegistryRecord> pager);
+	List<RegistryRecord> listRecords(SpRegistry registry, ImportErrorTypeFilter importErrorTypeFilter,
+									   RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager);
 
 	/**
 	 * Count number of error in registry
@@ -72,7 +72,7 @@ public interface SpRegistryRecordService {
 	 * @param record Registry record
 	 * @return DataSourceDescription
 	 */
-	DataSourceDescription getDataSourceDescription(SpRegistryRecord record);
+	DataSourceDescription getDataSourceDescription(RegistryRecord record);
 
 	/**
 	 * Set record status to fixed and invalidate error
@@ -81,7 +81,7 @@ public interface SpRegistryRecordService {
 	 * @return updated record
 	 * @throws Exception if failure occurs
 	 */
-	SpRegistryRecord removeError(SpRegistryRecord record) throws Exception;
+	RegistryRecord removeError(RegistryRecord record) throws Exception;
 
 	/**
 	 * Find registry records by identifiers
@@ -90,7 +90,7 @@ public interface SpRegistryRecordService {
 	 * @param objectIds Set of identifiers
 	 * @return Records
 	 */
-	Collection<SpRegistryRecord> findObjects(SpRegistry registry, Set<Long> objectIds);
+	Collection<RegistryRecord> findObjects(SpRegistry registry, Set<Long> objectIds);
 
 	/**
 	 * Find containers associated with a registry record
@@ -98,5 +98,5 @@ public interface SpRegistryRecordService {
 	 * @param stub Registry record stub
 	 * @return List of containers
 	 */
-	List<RegistryRecordContainer> getRecordContainers(SpRegistryRecord stub);
+	List<RegistryRecordContainer> getRecordContainers(RegistryRecord stub);
 }

@@ -46,7 +46,7 @@ public class ServiceOperationsFactory {
 	 * @throws InvalidContainerException if record contains invalid operation container
 	 *                                   information
 	 */
-	public Operation getOperation(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
+	public Operation getOperation(SpRegistry registry, RegistryRecord record) throws FlexPayException {
 
 //		List<RegistryRecordContainer> containers = registryRecordService.getRecordContainers(record);
 		List<RegistryRecordContainer> containers = record.getContainers();
@@ -72,9 +72,9 @@ public class ServiceOperationsFactory {
 	private Operation getOperation(SpRegistry registry) throws FlexPayException {
 		int typeId = registry.getRegistryType().getCode();
 		switch (typeId) {
-			case SpRegistryType.TYPE_SALDO:
+			case RegistryType.TYPE_SALDO:
 				return new BalanceOperation(this);
-			case SpRegistryType.TYPE_QUITTANCE:
+			case RegistryType.TYPE_QUITTANCE:
 				return new QuittanceOperation(this);
 		}
 
@@ -166,7 +166,7 @@ public class ServiceOperationsFactory {
 		return StringUtil.splitEscapable(containers, delimiter, Operation.ESCAPE_SIMBOL);
 	}
 
-	public ImportError addImportError(SpRegistry spRegistry, SpRegistryRecord record,
+	public ImportError addImportError(SpRegistry spRegistry, RegistryRecord record,
 									  Class<? extends DomainObject> clazz, String errorCode) {
 
 		ImportError error = new ImportError();

@@ -55,17 +55,17 @@
 		<property name="registryWorkflowManager" ref="registryWorkflowManager" />
 	</bean>
 
-	<bean id="spFileParser" class="org.flexpay.eirc.sp.SpFileParser">
-		<property name="registryService" ref="spRegistryService" />
-		<property name="spRegistryRecordService" ref="spRegistryRecordService" />
-		<property name="spRegistryTypeService" ref="spRegistryTypeService" />
-		<property name="spRegistryArchiveStatusService" ref="spRegistryArchiveStatusService" />
-		<property name="organisationService" ref="organisationService" />
-		<property name="spService" ref="spService" />
-		<property name="registryWorkflowManager" ref="registryWorkflowManager" />
-		<property name="recordWorkflowManager" ref="registryRecordWorkflowManager" />
-		<property name="sessionUtils" ref="sessionUtils" />
-	</bean>
+	<bean id="spFileParser" class="org.flexpay.eirc.sp.RegistryFileParser"
+		  p:consumerService-ref="consumerService"
+		  p:registryService-ref="spRegistryService"
+		  p:spRegistryArchiveStatusService-ref="spRegistryArchiveStatusService"
+		  p:spRegistryRecordService-ref="spRegistryRecordService"
+		  p:spRegistryTypeService-ref="spRegistryTypeService"
+		  p:organisationService-ref="organisationService"
+		  p:spService-ref="spService"
+		  p:registryWorkflowManager-ref="registryWorkflowManager"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
+		  p:sessionUtils-ref="sessionUtils" />
 
 	<bean id="eircAccountService"
 		  class="org.flexpay.eirc.service.imp.EircAccountServiceImpl"

@@ -9,8 +9,8 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.dao.RegistryRecordDao;
 import org.flexpay.eirc.dao.RegistryRecordDaoExt;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
-import org.flexpay.eirc.persistence.SpRegistryRecordStatus;
+import org.flexpay.eirc.persistence.RegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecordStatus;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import static org.junit.Assert.assertNotNull;
@@ -30,7 +30,7 @@ public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
 
 	private ImportErrorTypeFilter errorTypeFilter = new ImportErrorTypeFilter();
 	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
-	private Page<SpRegistryRecord> pager = new Page<SpRegistryRecord>();
+	private Page<RegistryRecord> pager = new Page<RegistryRecord>();
 
 	private SpRegistry registry = new SpRegistry(9L);
 
@@ -44,7 +44,7 @@ public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
 		errorTypeFilter.setSelectedType(ImportErrorTypeFilter.TYPE_ALL);
 		recordStatusFilter.setSelectedStatus(ImportErrorTypeFilter.TYPE_ALL);
 
-		List<SpRegistryRecord> records = recordDaoExt.filterRecords(
+		List<RegistryRecord> records = recordDaoExt.filterRecords(
 				registry.getId(), errorTypeFilter, recordStatusFilter, pager);
 
 		assertNotNull("Records list is null", records);
@@ -53,9 +53,9 @@ public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
 	@Test
 	public void testFilterLoadedWithError() {
 		errorTypeFilter.setSelectedType(ImportErrorTypeFilter.TYPE_ALL);
-		recordStatusFilter.setSelectedStatus(SpRegistryRecordStatus.PROCESSED_WITH_ERROR);
+		recordStatusFilter.setSelectedStatus(RegistryRecordStatus.PROCESSED_WITH_ERROR);
 
-		List<SpRegistryRecord> records = recordDaoExt.filterRecords(
+		List<RegistryRecord> records = recordDaoExt.filterRecords(
 				registry.getId(), errorTypeFilter, recordStatusFilter, pager);
 
 		assertNotNull("Records list is null", records);
@@ -66,7 +66,7 @@ public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
 		errorTypeFilter.setSelectedType(classToTypeRegistry.getType(Street.class));
 		recordStatusFilter.setSelectedStatus(ImportErrorTypeFilter.TYPE_ALL);
 
-		List<SpRegistryRecord> records = recordDaoExt.filterRecords(
+		List<RegistryRecord> records = recordDaoExt.filterRecords(
 				registry.getId(), errorTypeFilter, recordStatusFilter, pager);
 
 		assertNotNull("Records list is null", records);
@@ -77,7 +77,7 @@ public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
 		errorTypeFilter.setSelectedType(classToTypeRegistry.getType(Buildings.class));
 		recordStatusFilter.setSelectedStatus(ImportErrorTypeFilter.TYPE_ALL);
 
-		List<SpRegistryRecord> records = recordDaoExt.filterRecords(
+		List<RegistryRecord> records = recordDaoExt.filterRecords(
 				registry.getId(), errorTypeFilter, recordStatusFilter, pager);
 
 		assertNotNull("Records list is null", records);

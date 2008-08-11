@@ -2,6 +2,7 @@ package org.flexpay.ab.service;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Person;
+import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
@@ -38,6 +39,15 @@ public interface PersonService {
 	 */
 	@Nullable
 	Stub<Person> findPersonStub(Person person);
+
+	/**
+	 * Find persons registered in apartment
+	 *
+	 * @param stub Apartment
+	 * @return Persons list, empty if no persons found
+	 */
+	@NotNull
+	List<Person> findRegisteredPersons(@NotNull Stub<Apartment> stub);
 
 	List<Person> findByFIO(Page pager, String searchString);
 

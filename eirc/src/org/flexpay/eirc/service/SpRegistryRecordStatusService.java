@@ -1,6 +1,6 @@
 package org.flexpay.eirc.service;
 
-import org.flexpay.eirc.persistence.SpRegistryRecordStatus;
+import org.flexpay.eirc.persistence.RegistryRecordStatus;
 
 public interface SpRegistryRecordStatusService {
 
@@ -11,5 +11,5 @@ public interface SpRegistryRecordStatusService {
 	 * @return SpRegistryStatus object, or <code>null</code> if object
 	 *         not found
 	 */
-	SpRegistryRecordStatus findByCode(int code);
+	RegistryRecordStatus findByCode(int code);
 }

@@ -415,6 +415,10 @@
         drop 
         foreign key FK_eirc_registry_record_record_status;
 
+    alter table eirc_registry_records_tbl 
+        drop 
+        foreign key FK_eirc_registry_records_tbl_service_id;
+
     alter table eirc_service_descriptions_tbl 
         drop 
         foreign key FK_eirc_service__description_service;
@@ -1469,6 +1473,7 @@
         import_error_id bigint comment 'Import error reference',
         person_id bigint comment 'Person reference',
         apartment_id bigint comment 'Apartment reference',
+        service_id bigint comment 'Service reference',
         primary key (id)
     );
 
@@ -2341,6 +2346,12 @@
         add constraint FK_eirc_registry_record_record_status 
         foreign key (record_status_id) 
         references eirc_registry_record_statuses_tbl (id);
+
+    alter table eirc_registry_records_tbl 
+        add index FK_eirc_registry_records_tbl_service_id (service_id), 
+        add constraint FK_eirc_registry_records_tbl_service_id 
+        foreign key (service_id) 
+        references eirc_services_tbl (id);
 
     alter table eirc_service_descriptions_tbl 
         add index FK_eirc_service__description_service (service_id), 

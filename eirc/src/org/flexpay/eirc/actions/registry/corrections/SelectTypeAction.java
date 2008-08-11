@@ -6,7 +6,7 @@ import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +15,7 @@ public class SelectTypeAction extends FPActionSupport {
 	private SpRegistryRecordService registryRecordService;
 	private ClassToTypeRegistry typeRegistry;
 
-	private SpRegistryRecord record = new SpRegistryRecord();
+	private RegistryRecord record = new RegistryRecord();
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -67,11 +67,11 @@ public class SelectTypeAction extends FPActionSupport {
 		return ERROR;
 	}
 
-	public SpRegistryRecord getRecord() {
+	public RegistryRecord getRecord() {
 		return record;
 	}
 
-	public void setRecord(SpRegistryRecord record) {
+	public void setRecord(RegistryRecord record) {
 		this.record = record;
 	}
 

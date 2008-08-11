@@ -1,7 +1,7 @@
 package org.flexpay.eirc.persistence.filters;
 
 import org.flexpay.common.persistence.filter.ObjectFilter;
-import org.flexpay.eirc.persistence.SpRegistryRecordStatus;
+import org.flexpay.eirc.persistence.RegistryRecordStatus;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -13,10 +13,10 @@ public class RegistryRecordStatusFilter extends ObjectFilter {
 
 	static {
 		statusTypes.put(TYPE_ALL, "eirc.registry.record.status");
-		statusTypes.put(SpRegistryRecordStatus.LOADED, "eirc.registry.record.status.LOADED");
-		statusTypes.put(SpRegistryRecordStatus.PROCESSED_WITH_ERROR, "eirc.registry.record.status.PROCESSED_WITH_ERROR");
-		statusTypes.put(SpRegistryRecordStatus.FIXED, "eirc.registry.record.status.FIXED");
-		statusTypes.put(SpRegistryRecordStatus.PROCESSED, "eirc.registry.record.status.PROCESSED");
+		statusTypes.put(RegistryRecordStatus.LOADED, "eirc.registry.record.status.LOADED");
+		statusTypes.put(RegistryRecordStatus.PROCESSED_WITH_ERROR, "eirc.registry.record.status.PROCESSED_WITH_ERROR");
+		statusTypes.put(RegistryRecordStatus.FIXED, "eirc.registry.record.status.FIXED");
+		statusTypes.put(RegistryRecordStatus.PROCESSED, "eirc.registry.record.status.PROCESSED");
 	}
 
 	private Integer selectedStatus = TYPE_ALL;

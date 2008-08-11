@@ -35,7 +35,8 @@
 			<list-index column="order_weight" />
 			<one-to-many class="RegistryContainer" />
 		</list>
-		<many-to-one name="registryType" foreign-key="FK_eirc_registry_registry_type" class="SpRegistryType">
+		<many-to-one name="registryType" foreign-key="FK_eirc_registry_registry_type"
+					 class="org.flexpay.eirc.persistence.RegistryType">
 			<column name="registry_type_id" not-null="true">
 				<comment>Registry type reference</comment>
 			</column>
@@ -51,12 +52,14 @@
 				<comment>Service provider reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="registryStatus" class="SpRegistryStatus" foreign-key="FK_eirc_registry_status">
+		<many-to-one name="registryStatus" class="org.flexpay.eirc.persistence.RegistryStatus"
+					 foreign-key="FK_eirc_registry_status">
 			<column name="registry_status_id" not-null="true">
 				<comment>Registry status reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="archiveStatus" class="SpRegistryArchiveStatus" foreign-key="FK_eirc_registry_archive_status">
+		<many-to-one name="archiveStatus" class="org.flexpay.eirc.persistence.RegistryArchiveStatus"
+					 foreign-key="FK_eirc_registry_archive_status">
 			<column name="archive_status_id" not-null="true">
 				<comment>Registry archive status reference</comment>
 			</column>
@@ -109,7 +112,7 @@
 				<comment>Order of the container in a registry record</comment>
 			</column>
 		</property>
-		<many-to-one name="record" class="SpRegistryRecord"
+		<many-to-one name="record" class="org.flexpay.eirc.persistence.RegistryRecord"
 					 foreign-key="FK_eirc_registry_record_containers_tbl_record_id">
 			<column name="record_id" not-null="true">
 				<comment>Registry record reference</comment>
@@ -117,7 +120,7 @@
 		</many-to-one>
 	</class>
 
-	<class name="SpRegistryType" table="eirc_registry_types_tbl" optimistic-lock="version">
+	<class name="RegistryType" table="eirc_registry_types_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -133,7 +136,7 @@
 		</property>
 	</class>
 
-	<class name="SpRegistryStatus" table="eirc_registry_statuses_tbl" optimistic-lock="version">
+	<class name="RegistryStatus" table="eirc_registry_statuses_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -149,7 +152,7 @@
 		</property>
 	</class>
 
-	<class name="SpRegistryRecordStatus" table="eirc_registry_record_statuses_tbl">
+	<class name="RegistryRecordStatus" table="eirc_registry_record_statuses_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -160,15 +163,14 @@
 		</property>
 	</class>
 
-	<class name="SpRegistryArchiveStatus" table="eirc_registry_archive_statuses_tbl"
-		   optimistic-lock="version">
+	<class name="RegistryArchiveStatus" table="eirc_registry_archive_statuses_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
 		<property name="code" not-null="true" unique="true" />
 	</class>
 
-	<class name="SpRegistryRecord" table="eirc_registry_records_tbl">
+	<class name="RegistryRecord" table="eirc_registry_records_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -210,7 +212,7 @@
 				<comment>Registry reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="recordStatus" class="SpRegistryRecordStatus"
+		<many-to-one name="recordStatus" class="org.flexpay.eirc.persistence.RegistryRecordStatus"
 					 foreign-key="FK_eirc_registry_record_record_status">
 			<column name="record_status_id" not-null="false">
 				<comment>Record status reference</comment>
@@ -232,6 +234,12 @@
 					 class="org.flexpay.ab.persistence.Apartment">
 			<column name="apartment_id" not-null="false">
 				<comment>Apartment reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="service" foreign-key="FK_eirc_registry_records_tbl_service_id"
+					 class="Service">
+			<column name="service_id" not-null="false">
+				<comment>Service reference</comment>
 			</column>
 		</many-to-one>
 	</class>
@@ -275,17 +283,17 @@
 		where r.registryNumber=? and r.sender.id=?
 	</query>
 
-	<query name="SpRegistryRecord.getMinMaxRecordsForProcessing"><![CDATA[
+	<query name="RegistryRecord.getMinMaxRecordsForProcessing"><![CDATA[
 		select min(rr.id), max(rr.id)
-		from SpRegistryRecord rr
+		from RegistryRecord rr
 			inner join rr.spRegistry r
 			inner join rr.recordStatus rrs
 		where r.id=? and rrs.code NOT IN (2, 4)
 	]]></query>
 
-	<query name="SpRegistryRecord.listRecordsForProcessing"><![CDATA[
+	<query name="RegistryRecord.listRecordsForProcessing"><![CDATA[
 		select distinct rr
-		from SpRegistryRecord rr
+		from RegistryRecord rr
 			inner join fetch rr.spRegistry r
 			left join fetch rr.consumer c
 			inner join fetch r.registryStatus rs
@@ -295,27 +303,27 @@
 		where r.id=? and rr.id>=? and rr.id<=? and rrs.code NOT IN (2, 4)
 	]]></query>
 
-	<query name="SpRegistryType.countNotProcessedRecords"><![CDATA[
+	<query name="RegistryType.countNotProcessedRecords"><![CDATA[
 		select count(*)
-		from SpRegistryRecord r
+		from RegistryRecord r
 			inner join r.recordStatus s
 		where s.code<4 and r.spRegistry.id=?
 	]]></query>
 
-	<query name="SpRegistryType.haveNotProcessedRecords"><![CDATA[
+	<query name="RegistryType.haveNotProcessedRecords"><![CDATA[
 		select 1 from Dual
 		where exists (
 			select 1
-			from SpRegistryRecord r
+			from RegistryRecord r
 				inner join r.recordStatus s
 			where s.code<4 and r.spRegistry.id=?)
 	]]></query>
 
-	<query name="SpRegistryType.findAll">
-		from SpRegistryType
+	<query name="RegistryType.findAll">
+		from RegistryType
 	</query>
 
-	<query name="SpRegistry.readFull">
+	<query name="Registry.readFull">
 		select distinct r
 		from SpRegistry r
 			inner join fetch r.registryType
@@ -336,19 +344,19 @@
 	</query>
 
 	<query name="SpRegistry.deleteRecords">
-		delete from SpRegistryRecord where spRegistry.id=?
+		delete from RegistryRecord where spRegistry.id=?
 	</query>
 
 	<query name="SpRegistry.deleteRecordContainers">
 		delete
 		from RegistryRecordContainer rc
-		where rc.record.id in (select id from SpRegistryRecord where spRegistry.id=?)
+		where rc.record.id in (select id from RegistryRecord where spRegistry.id=?)
 	</query>
 
 	<query name="SpRegistry.deleteQuittances">
 		delete
 		from QuittanceDetails q
-		where q.registryRecord.id in (select id from SpRegistryRecord where spRegistry.id=?)
+		where q.registryRecord.id in (select id from RegistryRecord where spRegistry.id=?)
 	</query>
 
 	<query name="SpRegistry.deleteRegistryContainers">
@@ -359,44 +367,44 @@
 		select count(*) from SpRegistry r where r.spFile.id=?
 	</query>
 
-	<query name="SpRegistryRecord.readFull">
+	<query name="RegistryRecord.readFull">
 		select distinct r
-		from SpRegistryRecord r
+		from RegistryRecord r
 		inner join fetch r.recordStatus
 		left join fetch r.importError
 		where r.id=?
 	</query>
 
-	<query name="SpRegistryRecord.findDataSourceDescription">
+	<query name="RegistryRecord.findDataSourceDescription">
 		select r.spRegistry.serviceProvider.dataSourceDescription
-		from SpRegistryRecord r
+		from RegistryRecord r
 		where r.id=?
 	</query>
 
-	<query name="SpRegistryRecord.listRecords">
+	<query name="RegistryRecord.listRecords">
 		select rr
-		from SpRegistryRecord rr
-			inner join fetch rr.recordStatus
-			left join fetch rr.importError
+		from RegistryRecord rr
+		inner join fetch rr.recordStatus
+		left join fetch rr.importError
 		where rr.spRegistry.id=?
 	</query>
 
-	<query name="SpRegistryRecord.listRecords.count">
+	<query name="RegistryRecord.listRecords.count">
 		select count(*)
-		from SpRegistryRecord rr
+		from RegistryRecord rr
 		where rr.spRegistry.id=?
 	</query>
 
-	<query name="SpRegistryStatus.findAll">
-		from SpRegistryStatus
+	<query name="RegistryStatus.findAll">
+		from RegistryStatus
 	</query>
 
-	<query name="SpRegistryRecordStatus.findAll">
-		from SpRegistryRecordStatus
+	<query name="RegistryRecordStatus.findAll">
+		from RegistryRecordStatus
 	</query>
 
-	<query name="SpRegistryArchiveStatus.findByCode">
-		from SpRegistryArchiveStatus s where s.code=?
+	<query name="RegistryArchiveStatus.findByCode">
+		from RegistryArchiveStatus s where s.code=?
 	</query>
 
 	<query name="RegistryRecordContainer.findRecordContainers">

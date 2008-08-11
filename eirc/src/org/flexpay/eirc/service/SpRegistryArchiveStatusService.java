@@ -1,6 +1,6 @@
 package org.flexpay.eirc.service;
 
-import org.flexpay.eirc.persistence.SpRegistryArchiveStatus;
+import org.flexpay.eirc.persistence.RegistryArchiveStatus;
 
 public interface SpRegistryArchiveStatusService {
 	/**
@@ -11,7 +11,7 @@ public interface SpRegistryArchiveStatusService {
 	 * @return SpRegistryArchiveStatus object, or <code>null</code> if object
 	 *         not found
 	 */
-	SpRegistryArchiveStatus read(Long id);
+	RegistryArchiveStatus read(Long id);
 	
 	/**
 	 * Read SpRegistryArchiveStatus object by its unique code
@@ -21,6 +21,6 @@ public interface SpRegistryArchiveStatusService {
 	 * @return SpRegistryArchiveStatus object, or <code>null</code> if object
 	 *         not found
 	 */
-	SpRegistryArchiveStatus findByCode(int code);
+	RegistryArchiveStatus findByCode(int code);
 
 }

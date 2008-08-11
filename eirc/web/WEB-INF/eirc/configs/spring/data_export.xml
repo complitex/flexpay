@@ -13,33 +13,23 @@
 		<property name="registryRecordDaoExt" ref="spRegistryRecordDaoExt" />
 	</bean>
 
-	<!-- Data converters -->
-	<bean id="consumerDataConverter"
-		  class="org.flexpay.eirc.service.importexport.RawConsumerDataConverter"
-		  p:consumerService-ref="consumerService" />
-
 	<bean id="typeRegistryEirc"
 		  class="org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistry" />
 
 	<bean id="correctionsServiceEirc" parent="correctionsServiceAb"
-		  class="org.flexpay.common.service.importexport.imp.CorrectionsServiceImpl">
-		<property name="typeRegistry" ref="typeRegistryEirc" />
-	</bean>
+		  class="org.flexpay.common.service.importexport.imp.CorrectionsServiceImpl"
+		  p:typeRegistry-ref="typeRegistryEirc" />
 
-	<bean id="importErrorServiceEirc" parent="importErrorServiceTemplate">
-		<property name="registry" ref="typeRegistryEirc" />
-	</bean>
+	<bean id="importErrorServiceEirc" parent="importErrorServiceTemplate"
+		  p:registry-ref="typeRegistryEirc" />
 
 	<!-- Import-Export services -->
 	<bean id="importServiceEircTx" parent="importServiceAb"
-		  class="org.flexpay.eirc.service.importexport.EircImportServiceTx">
-		<property name="correctionsService" ref="correctionsServiceEirc" />
-		<property name="registry" ref="typeRegistryEirc" />
-		<property name="typeService" ref="identityTypeService" />
-		<property name="consumerDataConverter" ref="consumerDataConverter" />
-		<property name="consumerService" ref="consumerService" />
-		<property name="recordWorkflowManager" ref="registryRecordWorkflowManager" />
-	</bean>
+		  class="org.flexpay.eirc.service.importexport.EircImportServiceTx"
+		  p:correctionsService-ref="correctionsServiceEirc"
+		  p:registry-ref="typeRegistryEirc"
+		  p:consumerService-ref="consumerService"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManager" />
 
 	<bean id="importServiceEirc"
 		  class="org.flexpay.eirc.service.importexport.EircImportService"

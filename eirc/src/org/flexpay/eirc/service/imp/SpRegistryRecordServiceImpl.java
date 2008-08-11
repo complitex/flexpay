@@ -8,7 +8,7 @@ import org.flexpay.eirc.dao.RegistryRecordDao;
 import org.flexpay.eirc.dao.RegistryRecordDaoExt;
 import org.flexpay.eirc.dao.RegistryRecordContainerDao;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.RegistryRecordContainer;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
@@ -37,7 +37,7 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 * @return created SpRegistryRecord object
 	 */
 	@Transactional(readOnly = false)
-	public SpRegistryRecord create(SpRegistryRecord record) throws FlexPayException {
+	public RegistryRecord create(RegistryRecord record) throws FlexPayException {
 		registryRecordDao.create(record);
 
 		for (RegistryRecordContainer container : record.getContainers()) {
@@ -58,7 +58,7 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 * @return SpRegistryRecord object, or <code>null</code> if object not
 	 *         found
 	 */
-	public SpRegistryRecord read(Long id) {
+	public RegistryRecord read(Long id) {
 		return registryRecordDao.readFull(id);
 	}
 
@@ -70,14 +70,14 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 * @throws FlexPayException if SpRegistryRecord object is invalid
 	 */
 	@Transactional(readOnly = false)
-	public SpRegistryRecord update(SpRegistryRecord spRegistryRecord) throws FlexPayException {
+	public RegistryRecord update(RegistryRecord spRegistryRecord) throws FlexPayException {
 		registryRecordDao.update(spRegistryRecord);
 
 		return spRegistryRecord;
 	}
 
 	@Transactional(readOnly = false)
-	public void delete(SpRegistryRecord spRegistryRecord) {
+	public void delete(RegistryRecord spRegistryRecord) {
 		registryRecordDao.delete(spRegistryRecord);
 	}
 
@@ -91,8 +91,8 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 * @return list of filtered registry records
 	 */
 	@Transactional(readOnly = true)
-	public List<SpRegistryRecord> listRecords(SpRegistry registry, ImportErrorTypeFilter importErrorTypeFilter,
-											  RegistryRecordStatusFilter recordStatusFilter, Page<SpRegistryRecord> pager) {
+	public List<RegistryRecord> listRecords(SpRegistry registry, ImportErrorTypeFilter importErrorTypeFilter,
+											  RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager) {
 		return registryRecordDaoExt.filterRecords(registry.getId(), importErrorTypeFilter, recordStatusFilter, pager);
 	}
 
@@ -112,7 +112,7 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 * @param record Registry record
 	 * @return DataSourceDescription
 	 */
-	public DataSourceDescription getDataSourceDescription(SpRegistryRecord record) {
+	public DataSourceDescription getDataSourceDescription(RegistryRecord record) {
 		DataSourceDescription sd = registryRecordDaoExt.getDataSourceDescription(record.getId());
 
 		if (log.isDebugEnabled()) {
@@ -129,7 +129,7 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 * @return updated record
 	 */
 	@Transactional(readOnly = false)
-	public SpRegistryRecord removeError(SpRegistryRecord record) throws Exception {
+	public RegistryRecord removeError(RegistryRecord record) throws Exception {
 
 		workflowManager.setNextSuccessStatus(record);
 		return record;
@@ -142,7 +142,7 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 * @param objectIds Set of identifiers
 	 * @return Records
 	 */
-	public Collection<SpRegistryRecord> findObjects(SpRegistry registry, Set<Long> objectIds) {
+	public Collection<RegistryRecord> findObjects(SpRegistry registry, Set<Long> objectIds) {
 		return registryRecordDaoExt.findRecords(registry.getId(), objectIds);
 	}
 
@@ -152,7 +152,7 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 	 * @param stub Registry record stub
 	 * @return List of containers
 	 */
-	public List<RegistryRecordContainer> getRecordContainers(SpRegistryRecord stub) {
+	public List<RegistryRecordContainer> getRecordContainers(RegistryRecord stub) {
 		return recordContainerDao.findRecordContainers(stub.getId());
 	}
 

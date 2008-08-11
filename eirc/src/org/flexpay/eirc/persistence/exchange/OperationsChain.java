@@ -2,7 +2,7 @@ package org.flexpay.eirc.persistence.exchange;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class OperationsChain extends Operation {
 	 * 
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 */
-	public void process(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
+	public void process(SpRegistry registry, RegistryRecord record) throws FlexPayException {
 		for (Operation container : containers) {
 			container.process(registry, record);
 		}

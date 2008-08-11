@@ -1,7 +1,7 @@
 package org.flexpay.eirc.service.importexport;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.service.importexport.ImportService;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
@@ -9,8 +9,8 @@ import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.RawDataSource;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
 import org.flexpay.eirc.service.ConsumerService;
@@ -18,15 +18,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Transactional (readOnly = true)
 public class EircImportServiceTx extends ImportService {
 
-	private RawConsumerDataConverter consumerDataConverter;
 	private ConsumerService consumerService;
-	private IdentityTypeService typeService;
-
 	private RegistryRecordWorkflowManager recordWorkflowManager;
 
 	@Transactional (readOnly = false)
@@ -76,78 +75,44 @@ public class EircImportServiceTx extends ImportService {
 
 				if (persistentObj != null) {
 					log.info("Found existing consumer correction: #" + data.getExternalSourceId());
-					postSaveConsumer(data, consumerService.read(persistentObj));
+					// todo do we need to fetch this?
+					postSaveRecord(data, consumerService.read(persistentObj));
 					continue;
 				}
 
 				if (data.isPersonalInfoEmpty()) {
-					log.info("Cannot find consumer by short info");
+					log.info("Cannot find consumer by short info: " + data.getShortConsumerId());
 					ImportError error = addImportError(sd, data.getExternalSourceId(), Consumer.class, dataSource);
 					error.setErrorId("error.eirc.import.consumer_not_found");
 					setConsumerError(data, error);
 					continue;
 				}
 
-				Consumer rawConsumer = consumerDataConverter.fromRawData(data, sd, correctionsService);
 
-				if (rawConsumer.getApartment() == null) {
-					// Find apartment
-					Apartment apartment = findApartment(nameObjsMap, nameTypeMap, sd, data, dataSource);
-					if (apartment == null) {
-						addImportError(sd, data.getExternalSourceId(), Apartment.class, dataSource);
-						continue;
-					}
-					DataCorrection corr = correctionsService.getStub(
-							data.getApartmentId(), apartment, sd);
-					log.info("Adding apartment correction: " + data.getApartmentId());
-					addToStack(corr);
-					rawConsumer.setApartment(apartment);
+				// Find apartment
+				Apartment apartment = findApartment(nameObjsMap, nameTypeMap, sd, data, dataSource);
+				if (apartment == null) {
+					addImportError(sd, data.getExternalSourceId(), Apartment.class, dataSource);
+					continue;
 				}
-				data.getRegistryRecord().setApartment(rawConsumer.getApartment());
-				log.info("Found apartment: " + data.getApartmentId());
 
-				if (rawConsumer.getResponsiblePerson() == null) {
-					Person person = findPerson(data);
-					if (person == null) {
-						log.error("Person not found: " + data.getPersonCorrectionId());
-						ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
-						error.setErrorId("error.eirc.import.person_not_found");
-						setConsumerError(data, error);
-						continue;
-					}
-					// found person by name
-					DataCorrection corr = correctionsService.getStub(
-							data.getPersonCorrectionId(), person, sd);
-					addToStack(corr);
-					rawConsumer.setResponsiblePerson(person);
+				data.getRegistryRecord().setApartment(apartment);
+				if (log.isInfoEnabled()) {
+					log.info("Found apartment: " + data.getApartmentId());
 				}
-				data.getRegistryRecord().setPerson(rawConsumer.getResponsiblePerson());
-				log.info("Found responsible person: " + data.getPersonCorrectionId());
 
-				if (rawConsumer.getService() == null) {
-					log.error("Not found provider #" + data.getRegistry().getSenderCode() +
-							  " service by code: " + data.getRegistryRecord().getServiceCode());
-					ImportError error = addImportError(sd, data.getExternalSourceId(), Service.class, dataSource);
-					error.setErrorId("error.eirc.import.service_not_found");
+				Person person = findPerson(data);
+				if (person == null) {
+					log.error("Person not found: " + data.getPersonFIO());
+					ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
+					error.setErrorId("error.eirc.import.person_not_found");
 					setConsumerError(data, error);
 					continue;
 				}
-				log.info("Found service");
+				data.getRegistryRecord().setPerson(person);
+				log.info("Found responsible person: " + data.getPersonFIO());
 
-				Consumer persistent = consumerService.findConsumer(rawConsumer);
-				if (persistent != null) {
-					// Consumer found, add new correction
-					if (log.isInfoEnabled()) {
-						log.info("Creating new consumer correction: " + data.getFullConsumerId());
-					}
-
-					addToStack(correctionsService.getStub(data.getFullConsumerId(), persistent, sd));
-					addToStack(correctionsService.getStub(data.getShortConsumerId(), persistent, sd));
-				} else {
-					log.info("Consumer not found");
-				}
-
-				postSaveConsumer(data, persistent);
+				postSaveRecord(data, null);
 			} catch (Exception e) {
 				log.error("Failed getting consumer: " + data.toString(), e);
 				throw new RuntimeException(e);
@@ -180,7 +145,7 @@ public class EircImportServiceTx extends ImportService {
 		return result;
 	}
 
-	private void postSaveConsumer(RawConsumerData data, Consumer consumer) {
+	private void postSaveRecord(RawConsumerData data, Consumer consumer) {
 		data.getRegistryRecord().setConsumer(consumer);
 		addToStack(data.getRegistryRecord());
 	}
@@ -192,22 +157,37 @@ public class EircImportServiceTx extends ImportService {
 	@Nullable
 	private Person findPerson(@NotNull RawConsumerData data) {
 
-		PersonIdentity identity = new PersonIdentity();
-		identity.setFirstName(data.getFirstName());
-		identity.setMiddleName(data.getMiddleName());
-		identity.setLastName(data.getLastName());
-		identity.setDefault(true);
-		identity.setIdentityType(typeService.getType(IdentityType.TYPE_NAME_PASSPORT));
+		List<Person> persons = personService.findRegisteredPersons(
+				stub(data.getRegistryRecord().getApartment()));
+		if (persons.isEmpty()) {
+			return null;
+		}
 
-		Person example = new Person();
-		Set<PersonIdentity> identities = new HashSet<PersonIdentity>();
-		identities.add(identity);
-		example.setPersonIdentities(identities);
+		if (persons.size() == 1) {
+			return persons.get(0);
+		}
 
-		// todo add correction
+		// try to filter persons by FIO
+		List<Person> candidates = CollectionUtils.list();
+		for (Person person : persons) {
+			for (PersonIdentity identity : person.getPersonIdentities()) {
+				boolean sameFIO = new EqualsBuilder()
+						.append(identity.getFirstName(), data.getFirstName())
+						.append(identity.getMiddleName(), data.getMiddleName())
+						.append(identity.getLastName(), data.getLastName())
+						.isEquals();
+				if (sameFIO) {
+					candidates.add(person);
+					break;
+				}
+			}
+		}
 
-		Stub<Person> stub = personService.findPersonStub(example);
-		return stub != null ? new Person(stub) : null;
+		if (candidates.size() == 1) {
+			return candidates.get(0);
+		}
+
+		return null;
 	}
 
 	private Apartment findApartment(Map<String, List<Street>> nameObjsMap,
@@ -216,7 +196,9 @@ public class EircImportServiceTx extends ImportService {
 									RawDataSource<RawConsumerData> dataSource) throws Exception {
 
 		// try to find by apartment correction
-		log.info("Checking for apartment correction: " + data.getApartmentId());
+		if (log.isInfoEnabled()) {
+			log.info("Checking for apartment correction: " + data.getApartmentId());
+		}
 		Stub<Apartment> apartmentById = correctionsService.findCorrection(
 				data.getApartmentId(), Apartment.class, sd);
 		if (apartmentById != null) {
@@ -364,21 +346,17 @@ public class EircImportServiceTx extends ImportService {
 			return null;
 		}
 
-		// no need to add correction as caller code creates it
+		// Add correction to ease further search 
+		Apartment apartment = new Apartment(stub);
+		DataCorrection corr = correctionsService.getStub(data.getApartmentId(), apartment, sd);
+		log.info("Adding apartment correction: " + data.getApartmentId());
+		addToStack(corr);
 
 		return new Apartment(stub);
 	}
 
-	public void setConsumerDataConverter(RawConsumerDataConverter consumerDataConverter) {
-		this.consumerDataConverter = consumerDataConverter;
-	}
-
 	public void setConsumerService(ConsumerService consumerService) {
 		this.consumerService = consumerService;
-	}
-
-	public void setTypeService(IdentityTypeService typeService) {
-		this.typeService = typeService;
 	}
 
 	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {

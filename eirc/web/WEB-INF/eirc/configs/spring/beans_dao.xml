@@ -94,7 +94,7 @@
 				  value="org.flexpay.eirc.dao.RegistryRecordDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.SpRegistryRecord" />
+				<constructor-arg value="org.flexpay.eirc.persistence.RegistryRecord" />
 			</bean>
 		</property>
 	</bean>
@@ -109,7 +109,7 @@
 				  value="org.flexpay.eirc.dao.SpRegistryTypeDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.SpRegistryType" />
+				<constructor-arg value="org.flexpay.eirc.persistence.RegistryType" />
 			</bean>
 		</property>
 	</bean>
@@ -249,7 +249,7 @@
 				  value="org.flexpay.eirc.dao.SpRegistryStatusDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.SpRegistryStatus" />
+				<constructor-arg value="org.flexpay.eirc.persistence.RegistryStatus" />
 			</bean>
 		</property>
 	</bean>
@@ -259,7 +259,7 @@
 				  value="org.flexpay.eirc.dao.SpRegistryArchiveStatusDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.SpRegistryArchiveStatus" />
+				<constructor-arg value="org.flexpay.eirc.persistence.RegistryArchiveStatus" />
 			</bean>
 		</property>
 	</bean>
@@ -269,7 +269,7 @@
 				  value="org.flexpay.eirc.dao.SpRegistryRecordStatusDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.SpRegistryRecordStatus" />
+				<constructor-arg value="org.flexpay.eirc.persistence.RegistryRecordStatus" />
 			</bean>
 		</property>
 	</bean>

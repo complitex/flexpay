@@ -5,7 +5,7 @@ import org.flexpay.common.persistence.DomainObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SpRegistryStatus extends DomainObject {
+public class RegistryStatus extends DomainObject {
 
 	private static Map<Integer, String> typeToName = new HashMap<Integer, String>();
 

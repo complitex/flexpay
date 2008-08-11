@@ -16,7 +16,7 @@
 				<comment>Consumer reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="registryRecord" class="org.flexpay.eirc.persistence.SpRegistryRecord"
+		<many-to-one name="registryRecord" class="org.flexpay.eirc.persistence.RegistryRecord"
 					 foreign-key="FK_eirc_quittance_details_tbl_registry_record_id">
 			<column name="registry_record_id" not-null="true">
 				<comment>Source registry record reference</comment>

@@ -7,7 +7,7 @@ import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import org.flexpay.eirc.service.ServiceTypeService;
@@ -26,8 +26,8 @@ public class ShowRegistryAction extends FPActionSupport {
 	private ClassToTypeRegistry classToTypeRegistry;
 
 	private SpRegistry registry = new SpRegistry();
-	private List<SpRegistryRecord> records = Collections.emptyList();
-	private Page<SpRegistryRecord> pager = new Page<SpRegistryRecord>();
+	private List<RegistryRecord> records = Collections.emptyList();
+	private Page<RegistryRecord> pager = new Page<RegistryRecord>();
 
 	private ImportErrorTypeFilter importErrorTypeFilter = new ImportErrorTypeFilter();
 	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
@@ -76,11 +76,11 @@ public class ShowRegistryAction extends FPActionSupport {
 		this.registry = registry;
 	}
 
-	public Page<SpRegistryRecord> getPager() {
+	public Page<RegistryRecord> getPager() {
 		return pager;
 	}
 
-	public void setPager(Page<SpRegistryRecord> pager) {
+	public void setPager(Page<RegistryRecord> pager) {
 		this.pager = pager;
 	}
 
@@ -100,11 +100,11 @@ public class ShowRegistryAction extends FPActionSupport {
 		this.recordStatusFilter = recordStatusFilter;
 	}
 
-	public List<SpRegistryRecord> getRecords() {
+	public List<RegistryRecord> getRecords() {
 		return records;
 	}
 
-	public void setRecords(List<SpRegistryRecord> records) {
+	public void setRecords(List<RegistryRecord> records) {
 		this.records = records;
 	}
 

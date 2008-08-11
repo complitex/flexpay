@@ -16,7 +16,7 @@ import java.util.List;
 public class SpRegistry extends DomainObject {
 
 	private SpFile spFile;
-	private SpRegistryType registryType;
+	private RegistryType registryType;
 
 	private Long registryNumber;
 	private Long recordsNumber;
@@ -33,8 +33,8 @@ public class SpRegistry extends DomainObject {
 	private Organisation recipient;
 	private ServiceProvider serviceProvider;
 
-	private SpRegistryStatus registryStatus;
-	private SpRegistryArchiveStatus archiveStatus;
+	private RegistryStatus registryStatus;
+	private RegistryArchiveStatus archiveStatus;
 
 	private transient int errorsNumber;
 
@@ -67,14 +67,14 @@ public class SpRegistry extends DomainObject {
 	/**
 	 * @return the registryStatus
 	 */
-	public SpRegistryStatus getRegistryStatus() {
+	public RegistryStatus getRegistryStatus() {
 		return registryStatus;
 	}
 
 	/**
 	 * @param registryStatus the registryStatus to set
 	 */
-	public void setRegistryStatus(SpRegistryStatus registryStatus) {
+	public void setRegistryStatus(RegistryStatus registryStatus) {
 		this.registryStatus = registryStatus;
 	}
 
@@ -95,14 +95,14 @@ public class SpRegistry extends DomainObject {
 	/**
 	 * @return the registryType
 	 */
-	public SpRegistryType getRegistryType() {
+	public RegistryType getRegistryType() {
 		return registryType;
 	}
 
 	/**
 	 * @param registryType the registryType to set
 	 */
-	public void setRegistryType(SpRegistryType registryType) {
+	public void setRegistryType(RegistryType registryType) {
 		this.registryType = registryType;
 	}
 
@@ -283,14 +283,14 @@ public class SpRegistry extends DomainObject {
 	/**
 	 * @return the archiveStatus
 	 */
-	public SpRegistryArchiveStatus getArchiveStatus() {
+	public RegistryArchiveStatus getArchiveStatus() {
 		return archiveStatus;
 	}
 
 	/**
 	 * @param archiveStatus the archiveStatus to set
 	 */
-	public void setArchiveStatus(SpRegistryArchiveStatus archiveStatus) {
+	public void setArchiveStatus(RegistryArchiveStatus archiveStatus) {
 		this.archiveStatus = archiveStatus;
 	}
 

@@ -70,8 +70,8 @@ public class RunSpFileProcessing implements StandaloneTask {
 //			loadRegistryQuittancesBig();
 //			importRecords();
 //			importOpenAccounts();
-			processOpenAccounts();
-//			importQuittancesBig();
+//			processOpenAccounts();
+			importQuittancesBig();
 //			processQuittancesBig();
 		} catch (Throwable e) {
 			log.error("Failed processing registry file", e);
@@ -110,6 +110,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 		SpRegistry registry = registryService.readWithContainers(new Stub<SpRegistry>(registryId));
 
 		try {
+			log.debug("Starting registry processing");
 			long time = System.currentTimeMillis();
 			fileProcessor.processRegistry(registry);
 
@@ -129,6 +130,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 
 		long time = System.currentTimeMillis();
 
+		log.debug("Starting registry importing");
 		fileProcessor.startRegistryProcessing(registry);
 
 		try {

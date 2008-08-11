@@ -5,14 +5,14 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.service.SpFileService;
-import org.flexpay.eirc.sp.SpFileParser;
+import org.flexpay.eirc.sp.RegistryFileParser;
 
 import java.io.Serializable;
 import java.util.Map;
 
 public class FileParserJob extends Job {
 
-	private SpFileParser parser;
+	private RegistryFileParser parser;
 	private SpFileService spFileService;
 	private Logger log = Logger.getLogger(getClass());
 
@@ -33,7 +33,7 @@ public class FileParserJob extends Job {
 		return RESULT_NEXT;
 	}
 
-	public void setParser(SpFileParser parser) {
+	public void setParser(RegistryFileParser parser) {
 		this.parser = parser;
 	}
 

@@ -7,9 +7,9 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import java.util.Map;
 import java.util.HashMap;
 
-public class SpRegistryType extends DomainObject {
+public class RegistryType extends DomainObject {
 
-	private static Map<Integer, String> typeToName = new HashMap<Integer, String>();
+	private static final Map<Integer, String> typeToName = new HashMap<Integer, String>();
 
 	public static final int TYPE_UNKNOWN = 0;
 	public static final int TYPE_SALDO = 1;
@@ -44,10 +44,10 @@ public class SpRegistryType extends DomainObject {
 	/**
 	 * Constructs a new DomainObject.
 	 */
-	public SpRegistryType() {
+	public RegistryType() {
 	}
 
-	public SpRegistryType(Long id) {
+	public RegistryType(Long id) {
 		super(id);
 	}
 	

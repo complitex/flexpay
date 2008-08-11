@@ -3,7 +3,7 @@ package org.flexpay.eirc.dao.importexport;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 import java.util.Collection;
@@ -11,9 +11,9 @@ import java.util.List;
 
 public class InMemoryRawConsumersDataSource extends RawConsumersDataSourceBase {
 
-	private Collection<SpRegistryRecord> records;
+	private Collection<RegistryRecord> records;
 
-	public InMemoryRawConsumersDataSource(Collection<SpRegistryRecord> records) {
+	public InMemoryRawConsumersDataSource(Collection<RegistryRecord> records) {
 		this.records = records;
 		dataIterator = records.iterator();
 
@@ -37,7 +37,7 @@ public class InMemoryRawConsumersDataSource extends RawConsumersDataSourceBase {
 	 */
 	public RawConsumerData getById(String objId) {
 		Long id = Long.valueOf(objId);
-		for (SpRegistryRecord record : records) {
+		for (RegistryRecord record : records) {
 			if (stub(record).getId().equals(id)) {
 				return convert(record);
 			}
