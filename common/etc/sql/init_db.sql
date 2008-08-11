@@ -97,18 +97,68 @@ INSERT INTO ab_town_type_translations_tbl (name, short_name, language_id, town_t
 INSERT INTO ab_town_type_translations_tbl (name, short_name, language_id, town_type_id)
 	VALUES ('Isolated farmstead', 'is.fr', @en_id, @town_type_isolated_farmstead_id);
 
-INSERT INTO ab_street_types_tbl (status) VALUES (0);
-SELECT @street_type_street:=LAST_INSERT_ID();
+-- Init street types
+INSERT INTO ab_street_types_tbl (id, status) VALUES (1, 0);
+SELECT @street_type_id:=1;
 INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Улица', 'ул', @ru_id, @street_type_street);
+	VALUES ('Бульвар', 'б-р', @ru_id, @street_type_id);
 INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Street', 'st',  @en_id, @street_type_street);
+	VALUES ('Boulevard', 'blv', @en_id, @street_type_id);
 
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_street, 0x04, 'ул', NULL);
+INSERT INTO ab_street_types_tbl (id, status) VALUES (2, 0);
+SELECT @street_type_id:=2;
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Виадук', 'вдк', @ru_id, @street_type_id);
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Viaduct', 'vdt', @en_id, @street_type_id);
 
-INSERT INTO ab_street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO ab_street_types_tbl (id, status) VALUES (3, 0);
+SELECT @street_type_id:=3;
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Въезд', 'в-д', @ru_id, @street_type_id);
+
+INSERT INTO ab_street_types_tbl (id, status) VALUES (4, 0);
+SELECT @street_type_id:=4;
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Микрорайон', 'м-н', @ru_id, @street_type_id);
+
+INSERT INTO ab_street_types_tbl (id, status) VALUES (5, 0);
+SELECT @street_type_id:=5;
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Набережная', 'наб', @ru_id, @street_type_id);
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Embankment', 'emb', @en_id, @street_type_id);
+
+INSERT INTO ab_street_types_tbl (id, status) VALUES (6, 0);
+SELECT @street_type_id:=6;
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Переулок', 'пер', @ru_id, @street_type_id);
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Lane', 'ln', @en_id, @street_type_id);
+
+INSERT INTO ab_street_types_tbl (id, status) VALUES (7, 0);
+SELECT @street_type_id:=7;
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Площадь', 'пл', @ru_id, @street_type_id);
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Square', 'sq', @en_id, @street_type_id);
+
+INSERT INTO ab_street_types_tbl (id, status) VALUES (8, 0);
+SELECT @street_type_id:=8;
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Поселок', 'пос', @ru_id, @street_type_id);
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Settlement', 'stl', @en_id, @street_type_id);
+
+INSERT INTO ab_street_types_tbl (id, status) VALUES (9, 0);
+SELECT @street_type_id:=9;
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Проезд', 'пр-д', @ru_id, @street_type_id);
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Passage', 'pas', @en_id, @street_type_id);
+
+INSERT INTO ab_street_types_tbl (id, status) VALUES (10, 0);
+SELECT @street_type_id:=10;
 INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
 	VALUES ('Проспект', 'пр', @ru_id, @street_type_id);
 INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
@@ -116,84 +166,38 @@ INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, stre
 INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
 	VALUES (@street_type_id, 0x04, 'просп', NULL);
 
-INSERT INTO ab_street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Виадук', 'вдк', @ru_id, @street_type_id);
-INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Viaduct', 'vdt', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'в-д', NULL);
-
-INSERT INTO ab_street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Переулок', 'пер', @ru_id, @street_type_id);
-INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Lane', 'ln', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'пер', NULL);
-
-INSERT INTO ab_street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Набережная', 'наб', @ru_id, @street_type_id);
-INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Embankment', 'emb', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'наб', NULL);
-
-INSERT INTO ab_street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Проезд', 'пр', @ru_id, @street_type_id);
-INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Passage', 'pas', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'пр-д', NULL);
-
-INSERT INTO ab_street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Площадь', 'пл', @ru_id, @street_type_id);
-INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Square', 'sq', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'пл', NULL);
-
-INSERT INTO ab_street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Шоссе', 'шос', @ru_id, @street_type_id);
-INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Highway', 'hig', @en_id, @street_type_id);
-
-INSERT INTO ab_street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
-INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Бульвар', 'б-р', @ru_id, @street_type_id);
-INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Boulevard', 'blv', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'б-р', NULL);
-
-INSERT INTO ab_street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO ab_street_types_tbl (id, status) VALUES (11, 0);
+SELECT @street_type_id:=11;
 INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
 	VALUES ('Спуск', 'сп', @ru_id, @street_type_id);
 INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
 	VALUES ('Slope', 'sl', @en_id, @street_type_id);
-INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'сп', NULL);
 
-INSERT INTO ab_street_types_tbl (status) VALUES (0);
-SELECT @street_type_id:=LAST_INSERT_ID();
+INSERT INTO ab_street_types_tbl (id, status) VALUES (12, 0);
+SELECT @street_type_id:=12;
 INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Поселок', 'пос', @ru_id, @street_type_id);
+	VALUES ('Станция', 'ст', @ru_id, @street_type_id);
+
+INSERT INTO ab_street_types_tbl (id, status) VALUES (13, 0);
+SELECT @street_type_id:=13;
 INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
-	VALUES ('Settlement', 'stl', @en_id, @street_type_id);
+	VALUES ('Тупик', 'туп', @ru_id, @street_type_id);
 INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'пос', NULL);
+	VALUES (@street_type_id, 0x04, 'т', NULL);
+
+INSERT INTO ab_street_types_tbl (id, status) VALUES (14, 0);
+SELECT @street_type_street:=14;
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Улица', 'ул', @ru_id, @street_type_street);
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Street', 'st',  @en_id, @street_type_street);
+
+INSERT INTO ab_street_types_tbl (id, status) VALUES (15, 0);
+SELECT @street_type_id:=15;
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Шоссе', 'шос', @ru_id, @street_type_id);
+INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
+	VALUES ('Highway', 'hig', @en_id, @street_type_id);
 
 -- Init Regions table
 INSERT INTO ab_regions_tbl (status, country_id) VALUES (0, @ukraine_id);

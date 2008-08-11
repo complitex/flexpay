@@ -11,13 +11,12 @@ import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
-import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.service.importexport.CorrectionsService;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -214,12 +213,14 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	@Nullable
 	public StreetType findTypeByName(@NotNull String typeName) throws FlexPayException {
 		for (StreetType type : getEntities()) {
-			for (Translation ourType : type.getTranslations()) {
+			for (StreetTypeTranslation ourType : type.getTranslations()) {
 				if (log.isDebugEnabled()) {
 					log.debug("Internal street type : " + ourType.getName());
 				}
 
-				if (ourType.getName().equalsIgnoreCase(typeName)) {
+				String fullName = ourType.getName();
+				String shortName = ourType.getShortName();
+				if (fullName.equalsIgnoreCase(typeName) || shortName.equalsIgnoreCase(typeName)) {
 					return type;
 				}
 			}
