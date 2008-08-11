@@ -4,12 +4,11 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.service.SpFileService;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,16 +35,16 @@ public class ServiceProviderFileProcessorTx {
 	 * @throws Exception if failure occurs
 	 */
 //	@Transactional (readOnly = false)
-	public void processRegistry(SpRegistry registry, Page<SpRegistryRecord> pager, Long[] minMaxIds) throws Exception {
+	public void processRegistry(SpRegistry registry, Page<RegistryRecord> pager, Long[] minMaxIds) throws Exception {
 
 		do {
 			log.info("Fetching for records: " + pager);
-			List<SpRegistryRecord> records = spFileService.getRecordsForProcessing(stub(registry), pager, minMaxIds);
-			for (SpRegistryRecord record : records) {
+			List<RegistryRecord> records = spFileService.getRecordsForProcessing(stub(registry), pager, minMaxIds);
+			for (RegistryRecord record : records) {
 				processRecord(registry, record);
 			}
 			pager.setPageNumber(pager.getPageNumber() + 1);
-		} while (pager.getThisPageFirstElementNumber() <= minMaxIds[1]);
+		} while (pager.getThisPageFirstElementNumber() <= (minMaxIds[1] - minMaxIds[0]));
 		log.info("No more records to process");
 	}
 
@@ -57,7 +56,7 @@ public class ServiceProviderFileProcessorTx {
 	 * @throws Exception if failure occurs
 	 */
 //	@Transactional (readOnly = false)
-	public void processRecord(SpRegistry registry, SpRegistryRecord record) throws Exception {
+	public void processRecord(SpRegistry registry, RegistryRecord record) throws Exception {
 		try {
 			if (!recordWorkflowManager.hasSuccessTransition(record)) {
 				if (log.isDebugEnabled()) {

@@ -11,7 +11,7 @@ import org.flexpay.eirc.dao.importexport.InMemoryRawConsumersDataSource;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
@@ -109,7 +109,7 @@ public class ServiceProviderFileProcessor {
 	public void processRegistry(SpRegistry registry) throws Exception {
 
 		log.info("Starting processing records");
-		Page<SpRegistryRecord> pager = new Page<SpRegistryRecord>(500, 1);
+		Page<RegistryRecord> pager = new Page<RegistryRecord>(500, 1);
 		Long[] minMaxIds = {null, null};
 		do {
 			processorTx.processRegistry(registry, pager, minMaxIds);
@@ -137,8 +137,8 @@ public class ServiceProviderFileProcessor {
 
 		try {
 			// refresh records
-			Collection<SpRegistryRecord> records = registryRecordService.findObjects(registry, objectIds);
-			for (SpRegistryRecord record : records) {
+			Collection<RegistryRecord> records = registryRecordService.findObjects(registry, objectIds);
+			for (RegistryRecord record : records) {
 				processorTx.processRecord(registry, record);
 			}
 		} catch (Exception e) {
@@ -150,14 +150,14 @@ public class ServiceProviderFileProcessor {
 
 	public void setupRecordsConsumers(SpRegistry registry, Set<Long> recordIds) throws Exception {
 
-		Collection<SpRegistryRecord> records = registryRecordService.findObjects(registry, recordIds);
+		Collection<RegistryRecord> records = registryRecordService.findObjects(registry, recordIds);
 		RawDataSource<RawConsumerData> dataSource = new InMemoryRawConsumersDataSource(records);
 		errorsSupport.registerAlias(dataSource, rawConsumersDataSource);
 		serviceOperationsFactory.setDataSource(dataSource);
 
 		try {
 			// setup records registry to the same object
-			for (SpRegistryRecord record : records) {
+			for (RegistryRecord record : records) {
 				if (stub(record.getSpRegistry()).getId().equals(registry.getId())) {
 					record.setSpRegistry(registry);
 				} else {

@@ -2,7 +2,7 @@ package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
 
-public class SpRegistryArchiveStatus extends DomainObject {
+public class RegistryArchiveStatus extends DomainObject {
 	public static final int NONE = 0;
 	public static final int ARCHIVING = 1;
 	public static final int ARCHIVED = 2;
@@ -24,6 +24,4 @@ public class SpRegistryArchiveStatus extends DomainObject {
 	public void setCode(int code) {
 		this.code = code;
 	}
-	
-
 }

@@ -4,14 +4,14 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.service.importexport.RawData;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 
 import java.util.Collection;
 import java.util.HashSet;
 
 public class RawConsumerData extends RawData<Consumer> {
 
-	private static Collection<String> possibleNames = new HashSet<String>();
+	private static final Collection<String> possibleNames = new HashSet<String>();
 
 	public static final String FIELD_FIRST_NAME = "firstName";
 	public static final String FIELD_MIDDLE_NAME = "middleName";
@@ -68,7 +68,7 @@ public class RawConsumerData extends RawData<Consumer> {
 	}
 
 	public String getServiceCode() {
-		return getParam(FIELD_SERVICE_CODE);
+		return "#" + getParam(FIELD_SERVICE_CODE);
 	}
 
 	public String getAddressCity() {
@@ -95,9 +95,9 @@ public class RawConsumerData extends RawData<Consumer> {
 		return getParam(FIELD_ADDRESS_APARTMENT);
 	}
 
-	public SpRegistryRecord getRegistryRecord() {
+	public RegistryRecord getRegistryRecord() {
 		Object obj = getNameToValuesMap().get(FIELD_REGISTRY_RECORD);
-		return obj == null ? null : (SpRegistryRecord) obj;
+		return obj == null ? null : (RegistryRecord) obj;
 	}
 
 	public SpRegistry getRegistry() {
@@ -105,7 +105,7 @@ public class RawConsumerData extends RawData<Consumer> {
 		return obj == null ? null : (SpRegistry) obj;
 	}
 
-	public String getPersonCorrectionId() {
+	public String getPersonFIO() {
 		return new StringBuilder()
 				.append(getFirstName()).append('|')
 				.append(getMiddleName()).append('|')
@@ -171,7 +171,7 @@ public class RawConsumerData extends RawData<Consumer> {
 	public String getFullConsumerId() {
 		return new StringBuilder()
 				.append(getApartmentId()).append('|')
-				.append(getPersonCorrectionId()).append('|')
+				.append(getPersonFIO()).append('|')
 				.append(getAccountNumber()).append('|')
 				.append(getServiceCode())
 				.toString();

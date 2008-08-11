@@ -3,10 +3,10 @@ package org.flexpay.eirc.dao;
 import java.util.List;
 
 import org.flexpay.common.dao.GenericDao;
-import org.flexpay.eirc.persistence.SpRegistryArchiveStatus;
+import org.flexpay.eirc.persistence.RegistryArchiveStatus;
 
 public interface SpRegistryArchiveStatusDao extends
-		GenericDao<SpRegistryArchiveStatus, Long> {
-	List<SpRegistryArchiveStatus> findByCode(int code);
+		GenericDao<RegistryArchiveStatus, Long> {
+	List<RegistryArchiveStatus> findByCode(int code);
 
 }

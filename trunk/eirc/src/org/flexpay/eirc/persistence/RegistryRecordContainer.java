@@ -8,7 +8,7 @@ public class RegistryRecordContainer extends DomainObject {
 
 	private int order;
 	private String data;
-	private SpRegistryRecord record;
+	private RegistryRecord record;
 
 	public int getOrder() {
 		return order;
@@ -26,11 +26,11 @@ public class RegistryRecordContainer extends DomainObject {
 		this.data = data;
 	}
 
-	public SpRegistryRecord getRecord() {
+	public RegistryRecord getRecord() {
 		return record;
 	}
 
-	public void setRecord(SpRegistryRecord record) {
+	public void setRecord(RegistryRecord record) {
 		this.record = record;
 	}
 

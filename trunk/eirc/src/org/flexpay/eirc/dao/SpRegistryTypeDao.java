@@ -1,11 +1,11 @@
 package org.flexpay.eirc.dao;
 
 import org.flexpay.common.dao.GenericDao;
-import org.flexpay.eirc.persistence.SpRegistryType;
+import org.flexpay.eirc.persistence.RegistryType;
 
 import java.util.List;
 
-public interface SpRegistryTypeDao extends GenericDao<SpRegistryType, Long> {
+public interface SpRegistryTypeDao extends GenericDao<RegistryType, Long> {
 
-	List<SpRegistryType> findAll();
+	List<RegistryType> findAll();
 }

@@ -9,6 +9,7 @@ import org.flexpay.ab.dao.PersonRegistrationDao;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
+import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.dao.paging.Page;
@@ -157,5 +158,16 @@ public class PersonServiceImpl implements PersonService {
 		if (container.isNotEmpty()) {
 			throw container;
 		}
+	}
+
+	/**
+	 * Find persons registered in apartment
+	 *
+	 * @param stub Apartment
+	 * @return Persons list, empty if no persons found
+	 */
+	@NotNull
+	public List<Person> findRegisteredPersons(@NotNull Stub<Apartment> stub) {
+		return personRegistrationDao.listRegistrants(stub.getId());
 	}
 }

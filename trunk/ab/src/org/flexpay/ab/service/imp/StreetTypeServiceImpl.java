@@ -12,8 +12,10 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.service.importexport.CorrectionsService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
@@ -29,6 +31,8 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 
 	private StreetTypeDao streetTypeDao;
 	private StreetTypeTranslationDao streetTypeTranslationDao;
+
+	private CorrectionsService correctionsService;
 
 	/**
 	 * Create StreetType
@@ -221,6 +225,13 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 			}
 		}
 
+		// Try to find general correction by type name
+		Stub<StreetType> correction = correctionsService.findCorrection(
+				typeName, StreetType.class, null);
+		if (correction != null) {
+			return new StreetType(correction.getId());
+		}
+
 		return null;
 	}
 
@@ -296,5 +307,9 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	public void setStreetTypeTranslationDao(
 			StreetTypeTranslationDao streetTypeTranslationDao) {
 		this.streetTypeTranslationDao = streetTypeTranslationDao;
+	}
+
+	public void setCorrectionsService(CorrectionsService correctionsService) {
+		this.correctionsService = correctionsService;
 	}
 }

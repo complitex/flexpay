@@ -59,10 +59,8 @@
 		<mapping resource="org/flexpay/eirc/persistence/Subdivision.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/Bank.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/Service.hbm.xml" />
-		<mapping resource="org/flexpay/eirc/persistence/PersonalAccount.hbm.xml" />
-		
 		<mapping resource="org/flexpay/eirc/persistence/SpFile.hbm.xml" />
-
+		<mapping resource="org/flexpay/eirc/persistence/PersonalAccount.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/Ticket.hbm.xml" />
 
 		<!-- Eirc accounts -->

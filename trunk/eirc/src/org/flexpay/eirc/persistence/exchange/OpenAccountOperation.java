@@ -33,7 +33,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	 * @param record   Registry record
 	 * @throws FlexPayException if failure occurs
 	 */
-	public void process(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
+	public void process(SpRegistry registry, RegistryRecord record) throws FlexPayException {
 
 		if (!validate(registry, record)) {
 			return;
@@ -64,7 +64,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		record.setConsumer(consumer);
 	}
 
-	private void saveConsumerInfo(SpRegistryRecord record, Consumer consumer) {
+	private void saveConsumerInfo(RegistryRecord record, Consumer consumer) {
 		ConsumerInfo info = new ConsumerInfo();
 
 		info.setFirstName(record.getFirstName());
@@ -82,7 +82,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		consumer.setConsumerInfo(info);
 	}
 
-	private void createCorrection(SpRegistry registry, SpRegistryRecord record, Consumer consumer) {
+	private void createCorrection(SpRegistry registry, RegistryRecord record, Consumer consumer) {
 
 		CorrectionsService correctionsService = factory.getCorrectionsService();
 
@@ -98,7 +98,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		correctionsService.save(corr);
 	}
 
-	private Service findService(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
+	private Service findService(SpRegistry registry, RegistryRecord record) throws FlexPayException {
 		ConsumerService consumerService = factory.getConsumerService();
 		Service service = consumerService.findService(registry.getServiceProvider(), record.getServiceCode());
 		if (service == null) {
@@ -116,7 +116,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	 * @return EircAccount instance
 	 * @throws FlexPayException if failure occurs
 	 */
-	private EircAccount getEircAccount(SpRegistryRecord record) throws FlexPayException {
+	private EircAccount getEircAccount(RegistryRecord record) throws FlexPayException {
 
 		EircAccountService accountService = factory.getAccountService();
 		EircAccount account = accountService.findAccount(record.getPerson(), record.getApartment());
@@ -148,13 +148,13 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	 * @return <code>true</true> if processing allowed, or <code>false</code> otherwise
 	 * @throws FlexPayException if processing cannot be done at all
 	 */
-	private boolean validate(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
+	private boolean validate(SpRegistry registry, RegistryRecord record) throws FlexPayException {
 
 		if (log.isDebugEnabled()) {
 			log.debug("validating record: " + record);
 		}
 
-		if (registry.getRegistryType().getCode() != SpRegistryType.TYPE_INFO) {
+		if (registry.getRegistryType().getCode() != RegistryType.TYPE_INFO) {
 			throw new FlexPayException("Create consumer operation only allowed in Information registry type");
 		}
 

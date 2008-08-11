@@ -9,7 +9,7 @@ import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
@@ -19,7 +19,7 @@ public class CorrectBuildingAction extends ListBuildings {
 
 	private String setupType;
 	private Buildings object = new Buildings();
-	private SpRegistryRecord record = new SpRegistryRecord();
+	private RegistryRecord record = new RegistryRecord();
 
 	private RawConsumersDataSource consumersDataSource;
 	private CorrectionsService correctionsService;
@@ -86,11 +86,11 @@ public class CorrectBuildingAction extends ListBuildings {
 		this.object = object;
 	}
 
-	public SpRegistryRecord getRecord() {
+	public RegistryRecord getRecord() {
 		return record;
 	}
 
-	public void setRecord(SpRegistryRecord record) {
+	public void setRecord(RegistryRecord record) {
 		this.record = record;
 	}
 

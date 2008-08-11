@@ -1,12 +1,12 @@
 package org.flexpay.eirc.dao;
 
 import org.flexpay.common.dao.GenericDao;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public interface RegistryRecordDao extends GenericDao<SpRegistryRecord, Long> {
+public interface RegistryRecordDao extends GenericDao<RegistryRecord, Long> {
 
 	/**
 	 * List registry records
@@ -17,5 +17,5 @@ public interface RegistryRecordDao extends GenericDao<SpRegistryRecord, Long> {
 	 * @return list of registry records
 	 */
 	@NotNull
-	List<SpRegistryRecord> listRecordsForProcessing(Long registryId, Long lowerBoundId, Long upperBoundId);
+	List<RegistryRecord> listRecordsForProcessing(Long registryId, Long lowerBoundId, Long upperBoundId);
 }

@@ -6,7 +6,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.QuittanceService;
@@ -78,7 +78,7 @@ public class BaseContainerOperation extends ContainerOperation {
 		return StringUtils.isBlank(str);
 	}
 
-	private Consumer getConsumer(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
+	private Consumer getConsumer(SpRegistry registry, RegistryRecord record) throws FlexPayException {
 		ConsumerService consumerService = factory.getConsumerService();
 
 		Consumer consumer;
@@ -106,7 +106,7 @@ public class BaseContainerOperation extends ContainerOperation {
 	 * @param record   Registry record
 	 * @throws FlexPayException if failure occurs
 	 */
-	public void process(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
+	public void process(SpRegistry registry, RegistryRecord record) throws FlexPayException {
 		QuittanceService quittanceService = factory.getQuittanceService();
 
 		if (record.getConsumer() == null) {

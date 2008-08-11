@@ -56,7 +56,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 	 * @param record   Registry record
 	 * @throws FlexPayException if failure occurs
 	 */
-	public void process(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
+	public void process(SpRegistry registry, RegistryRecord record) throws FlexPayException {
 
 		if (!validate(registry, record)) {
 			return;
@@ -95,14 +95,14 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		createCorrection(registry, record, consumer);
 	}
 
-	private void saveConsumerInfo(SpRegistryRecord record, Consumer consumer) {
+	private void saveConsumerInfo(RegistryRecord record, Consumer consumer) {
 		ConsumerInfo info = ((Consumer) record.getConsumer()).getConsumerInfo();
 
 		consumer.setConsumerInfo(info);
 	}
 
 
-	private void createCorrection(SpRegistry registry, SpRegistryRecord record, Consumer consumer) {
+	private void createCorrection(SpRegistry registry, RegistryRecord record, Consumer consumer) {
 
 		CorrectionsService correctionsService = factory.getCorrectionsService();
 
@@ -142,9 +142,9 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 	 * @return <code>true</true> if processing allowed, or <code>false</code> otherwise
 	 * @throws FlexPayException if processing cannot be done at all
 	 */
-	private boolean validate(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
+	private boolean validate(SpRegistry registry, RegistryRecord record) throws FlexPayException {
 
-		if (registry.getRegistryType().getCode() != SpRegistryType.TYPE_INFO) {
+		if (registry.getRegistryType().getCode() != RegistryType.TYPE_INFO) {
 			throw new FlexPayException("Create consumer operation only allowed in Information registry type");
 		}
 

@@ -1,7 +1,7 @@
 package org.flexpay.eirc.service.imp;
 
 import org.flexpay.eirc.dao.SpRegistryArchiveStatusDao;
-import org.flexpay.eirc.persistence.SpRegistryArchiveStatus;
+import org.flexpay.eirc.persistence.RegistryArchiveStatus;
 import org.flexpay.eirc.service.SpRegistryArchiveStatusService;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class SpRegistryArchiveStatusServiceImpl implements SpRegistryArchiveStat
 	 * @param id SpRegistryArchiveStatus key
 	 * @return SpRegistryArchiveStatus object, or <code>null</code> if object not found
 	 */
-	public SpRegistryArchiveStatus read(Long id) {
+	public RegistryArchiveStatus read(Long id) {
 		return spRegistryArchiveStatusDao.read(id);
 	}
 
@@ -26,8 +26,8 @@ public class SpRegistryArchiveStatusServiceImpl implements SpRegistryArchiveStat
 	 * @param code SpRegistryArchiveStatus code
 	 * @return SpRegistryArchiveStatus object, or <code>null</code> if object not found
 	 */
-	public SpRegistryArchiveStatus findByCode(int code) {
-		List<SpRegistryArchiveStatus> statuses = spRegistryArchiveStatusDao.findByCode(code);
+	public RegistryArchiveStatus findByCode(int code) {
+		List<RegistryArchiveStatus> statuses = spRegistryArchiveStatusDao.findByCode(code);
 		if (statuses.size() < 1) {
 			return null;
 		}

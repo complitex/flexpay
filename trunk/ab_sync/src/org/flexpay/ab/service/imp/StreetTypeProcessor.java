@@ -127,9 +127,9 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 			}
 
 			// Try to find general correction by type name
-			Stub<StreetType> generalCorrection = cs.findCorrection(translation.getName(), StreetType.class, null);
-			if (generalCorrection != null) {
-				return generalCorrection;
+			Stub<StreetType> correction = cs.findCorrection(translation.getName(), StreetType.class, sd);
+			if (correction != null) {
+				return correction;
 			}
 
 			StreetType type = streetTypeService.findTypeByName(translation.getName());
@@ -147,12 +147,9 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @param object Object to save
 	 * @param externalId External object identifier
 	 */
-	protected void doSaveObject(StreetType object, String externalId) {
-		if (object.getId() != null) {
-			streetTypeDao.update(object);
-		} else {
-			streetTypeDao.create(object);
-		}
+	protected void doSaveObject(StreetType object, String externalId) throws Exception {
+
+		streetTypeService.save(object);
 	}
 
 	public void setStreetTypeDao(StreetTypeDao streetTypeDao) {

@@ -4,7 +4,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.AccountRecord;
 import org.flexpay.eirc.persistence.AccountRecordType;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.service.AccountRecordService;
 import org.flexpay.eirc.service.ReportPeriodService;
 import org.flexpay.eirc.service.SPService;
@@ -27,7 +27,7 @@ public class QuittanceOperation extends Operation {
 	 * @param record   Registry record
 	 * @throws FlexPayException if failure occurs
 	 */
-	public void process(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
+	public void process(SpRegistry registry, RegistryRecord record) throws FlexPayException {
 
 		ReportPeriodService reportPeriodService = factory.getReportPeriodService();
 		AccountRecordService recordService = factory.getAccountRecordService();

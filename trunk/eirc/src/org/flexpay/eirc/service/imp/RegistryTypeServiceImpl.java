@@ -2,7 +2,7 @@ package org.flexpay.eirc.service.imp;
 
 import org.apache.log4j.Logger;
 import org.flexpay.eirc.dao.SpRegistryTypeDao;
-import org.flexpay.eirc.persistence.SpRegistryType;
+import org.flexpay.eirc.persistence.RegistryType;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.flexpay.eirc.service.SpRegistryTypeService;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +22,7 @@ public class RegistryTypeServiceImpl implements SpRegistryTypeService {
 	 * @param id SpRegistryType key
 	 * @return SpRegistryType object, or <code>null</code> if object not found
 	 */
-	public SpRegistryType read(Long id) {
+	public RegistryType read(Long id) {
 		return spRegistryTypeDao.read(id);
 	}
 
@@ -32,7 +32,7 @@ public class RegistryTypeServiceImpl implements SpRegistryTypeService {
 	 * @param registryTypeFilter filter to init
 	 */
 	public void initFilter(RegistryTypeFilter registryTypeFilter) {
-		List<SpRegistryType> types = spRegistryTypeDao.findAll();
+		List<RegistryType> types = spRegistryTypeDao.findAll();
 		registryTypeFilter.setRegistryTypes(types);
 
 		if (log.isDebugEnabled()) {

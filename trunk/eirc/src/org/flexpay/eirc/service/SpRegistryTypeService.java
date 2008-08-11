@@ -1,6 +1,6 @@
 package org.flexpay.eirc.service;
 
-import org.flexpay.eirc.persistence.SpRegistryType;
+import org.flexpay.eirc.persistence.RegistryType;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 
 public interface SpRegistryTypeService {
@@ -12,7 +12,7 @@ public interface SpRegistryTypeService {
 	 *            SpRegistryType key
 	 * @return SpRegistryType object, or <code>null</code> if object not found
 	 */
-	SpRegistryType read(Long id);
+	RegistryType read(Long id);
 
 	/**
 	 * init filter

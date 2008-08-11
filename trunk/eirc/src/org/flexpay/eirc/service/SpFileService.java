@@ -5,7 +5,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -68,5 +68,5 @@ public interface SpFileService {
 	 * @param minMaxIds Minimum and maximum record ids for processing
 	 * @return list of records
 	 */
-	List<SpRegistryRecord> getRecordsForProcessing(@NotNull Stub<SpRegistry> registry, Page<SpRegistryRecord> pager, Long[] minMaxIds);
+	List<RegistryRecord> getRecordsForProcessing(@NotNull Stub<SpRegistry> registry, Page<RegistryRecord> pager, Long[] minMaxIds);
 }

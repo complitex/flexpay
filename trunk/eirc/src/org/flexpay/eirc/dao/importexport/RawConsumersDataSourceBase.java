@@ -3,7 +3,7 @@ package org.flexpay.eirc.dao.importexport;
 import org.apache.log4j.Logger;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 import java.util.Iterator;
@@ -12,7 +12,7 @@ public abstract class RawConsumersDataSourceBase implements RawDataSource<RawCon
 
 	protected Logger log = Logger.getLogger(getClass());
 
-	protected Iterator<SpRegistryRecord> dataIterator;
+	protected Iterator<RegistryRecord> dataIterator;
 
 	/**
 	 * Check if source is trusted and new objects are allowed to be created from this source
@@ -23,7 +23,7 @@ public abstract class RawConsumersDataSourceBase implements RawDataSource<RawCon
 		return false;
 	}
 
-	protected RawConsumerData convert(SpRegistryRecord record) {
+	protected RawConsumerData convert(RegistryRecord record) {
 		return RawConsumersDataUtil.convert(record);
 	}
 

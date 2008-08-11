@@ -15,7 +15,7 @@ import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.SpRegistryService;
-import org.flexpay.eirc.sp.SpFileParser;
+import org.flexpay.eirc.sp.RegistryFileParser;
 import org.flexpay.eirc.sp.SpFileReader;
 import org.flexpay.eirc.test.RandomObjects;
 import org.flexpay.eirc.util.config.ApplicationConfig;
@@ -184,10 +184,10 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 
 	private void checkOpenRegistryRecords(SpFile file) {
 		int nErrorLessRecords = DataAccessUtils.intResult(
-				hibernateTemplate.find("select count(*) from SpRegistryRecord rr " +
+				hibernateTemplate.find("select count(*) from RegistryRecord rr " +
 									   "where importError is null and rr.spRegistry.spFile.id=?", file.getId()));
 		int nConsumerLessRecords = DataAccessUtils.intResult(
-				hibernateTemplate.find("select count(*) from SpRegistryRecord rr " +
+				hibernateTemplate.find("select count(*) from RegistryRecord rr " +
 									   "where consumer is null and rr.spRegistry.spFile.id=?", file.getId()));
 		assertEquals("Invalid number of records without errors", nErrorLessRecords, nConsumerLessRecords);
 	}
@@ -278,7 +278,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		Service service = accountRecord.getConsumer().getService();
 		Date operationDate = accountRecord.getOperationDate();
 
-		DateFormat dateFormat = new SimpleDateFormat(SpFileParser.DATE_FORMAT);
+		DateFormat dateFormat = new SimpleDateFormat(RegistryFileParser.DATE_FORMAT);
 
 		buf
 				// message type
@@ -367,7 +367,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	private String getHeader(int nRecords, BigDecimal amount, Organisation recipient) throws IOException {
 		StringBuilder buf = new StringBuilder();
 
-		DateFormat dateFormat = new SimpleDateFormat(SpFileParser.DATE_FORMAT);
+		DateFormat dateFormat = new SimpleDateFormat(RegistryFileParser.DATE_FORMAT);
 
 		Date now = DateUtils.truncate(new Date(), Calendar.DATE);
 		Date begin = DateUtils.truncate(now, Calendar.MONTH);
@@ -382,7 +382,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 				.append(RECORD_DELIMITER)
 
 						// registry type
-				.append(SpRegistryType.TYPE_CASH_PAYMENTS)
+				.append(RegistryType.TYPE_CASH_PAYMENTS)
 				.append(RECORD_DELIMITER)
 
 						// records number

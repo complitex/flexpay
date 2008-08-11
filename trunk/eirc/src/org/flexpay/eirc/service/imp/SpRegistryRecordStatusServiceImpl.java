@@ -1,7 +1,7 @@
 package org.flexpay.eirc.service.imp;
 
 import org.flexpay.eirc.dao.SpRegistryRecordStatusDao;
-import org.flexpay.eirc.persistence.SpRegistryRecordStatus;
+import org.flexpay.eirc.persistence.RegistryRecordStatus;
 import org.flexpay.eirc.service.SpRegistryRecordStatusService;
 
 import java.util.HashMap;
@@ -11,13 +11,13 @@ import java.util.Map;
 public class SpRegistryRecordStatusServiceImpl implements SpRegistryRecordStatusService {
 
 	private SpRegistryRecordStatusDao spRegistryRecordStatusDao;
-	private Map<Integer, SpRegistryRecordStatus> code2StatusCache;
+	private Map<Integer, RegistryRecordStatus> code2StatusCache;
 
-	public SpRegistryRecordStatus findByCode(int code) {
+	public RegistryRecordStatus findByCode(int code) {
 		if (code2StatusCache == null) {
-			List<SpRegistryRecordStatus> statuses = spRegistryRecordStatusDao.findAll();
-			code2StatusCache = new HashMap<Integer, SpRegistryRecordStatus>();
-			for (SpRegistryRecordStatus status : statuses) {
+			List<RegistryRecordStatus> statuses = spRegistryRecordStatusDao.findAll();
+			code2StatusCache = new HashMap<Integer, RegistryRecordStatus>();
+			for (RegistryRecordStatus status : statuses) {
 				code2StatusCache.put(status.getCode(), status);
 			}
 		}

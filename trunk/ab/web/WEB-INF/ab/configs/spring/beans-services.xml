@@ -59,8 +59,8 @@
 		<property name="buildingsDaoExt" ref="buildingsDaoExt" />
 		<property name="buildingAttributeTypeDao" ref="buildingAttributeTypeDao" />
 		<property name="parentService" ref="streetService" />
-        <property name="districtParentService" ref="districtService" />
-    </bean>
+		<property name="districtParentService" ref="districtService" />
+	</bean>
 
 	<bean id="apartmentService" class="org.flexpay.ab.service.imp.ApartmentServiceImpl">
 		<property name="apartmentDao" ref="apartmentDao" />
@@ -73,10 +73,10 @@
 		<property name="townTypeTranslationDao" ref="townTypeTranslationDao" />
 	</bean>
 
-	<bean id="streetTypeService" class="org.flexpay.ab.service.imp.StreetTypeServiceImpl">
-		<property name="streetTypeDao" ref="streetTypeDAO" />
-		<property name="streetTypeTranslationDao" ref="streetTypeTranslationDao" />
-	</bean>
+	<bean id="streetTypeService" class="org.flexpay.ab.service.imp.StreetTypeServiceImpl"
+		  p:streetTypeDao-ref="streetTypeDAO"
+		  p:streetTypeTranslationDao-ref="streetTypeTranslationDao"
+		  p:correctionsService-ref="correctionsServiceAb" />
 
 	<bean id="identityTypeService"
 		  class="org.flexpay.ab.service.imp.IdentityTypeServiceImpl">

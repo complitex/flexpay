@@ -3,9 +3,9 @@ package org.flexpay.eirc.dao;
 import java.util.List;
 
 import org.flexpay.common.dao.GenericDao;
-import org.flexpay.eirc.persistence.SpRegistryStatus;
+import org.flexpay.eirc.persistence.RegistryStatus;
 
-public interface SpRegistryStatusDao extends GenericDao<SpRegistryStatus, Long> {
+public interface SpRegistryStatusDao extends GenericDao<RegistryStatus, Long> {
 
-	List<SpRegistryStatus> findAll();
+	List<RegistryStatus> findAll();
 }

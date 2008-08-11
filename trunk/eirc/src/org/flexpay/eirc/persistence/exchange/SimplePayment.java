@@ -29,7 +29,7 @@ public class SimplePayment extends ContainerOperation {
 	 * @param record   Registry record
 	 * @throws FlexPayException if failure occurs
 	 */
-	public void process(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
+	public void process(SpRegistry registry, RegistryRecord record) throws FlexPayException {
 
 		AccountRecord accountRecord = createRecordStub(registry, record);
 
@@ -56,13 +56,13 @@ public class SimplePayment extends ContainerOperation {
 	 * @return AccountRecord stub
 	 * @throws FlexPayException if failure occurs
 	 */
-	private AccountRecord createRecordStub(SpRegistry registry, SpRegistryRecord record) throws FlexPayException {
+	private AccountRecord createRecordStub(SpRegistry registry, RegistryRecord record) throws FlexPayException {
 		AccountRecord accountRecord = new AccountRecord();
 		accountRecord.setOperationDate(record.getOperationDate());
 		accountRecord.setAmount(record.getAmount());
 
 		int registryTypeID = registry.getRegistryType().getCode();
-		if (registryTypeID != SpRegistryType.TYPE_CASH_PAYMENTS) {
+		if (registryTypeID != RegistryType.TYPE_CASH_PAYMENTS) {
 			throw new IllegalOperationStateException(
 					"Illegal registry type #" + registryTypeID + " for simple payment operation");
 		}

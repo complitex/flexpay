@@ -9,7 +9,7 @@ import org.flexpay.eirc.dao.RegistryRecordDaoExt;
 import org.flexpay.eirc.dao.RegistryRecordDao;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.SpRegistryRecord;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.service.SpFileService;
 import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.NonNls;
@@ -100,7 +100,7 @@ public class SpFileServiceImpl implements SpFileService {
 	 * @param minMaxIds cached minimum and maximum registry record keys
 	 * @return list of records
 	 */
-	public List<SpRegistryRecord> getRecordsForProcessing(@NotNull Stub<SpRegistry> registry, Page<SpRegistryRecord> pager, Long[] minMaxIds) {
+	public List<RegistryRecord> getRecordsForProcessing(@NotNull Stub<SpRegistry> registry, Page<RegistryRecord> pager, Long[] minMaxIds) {
 
 		// cache min-max rerecord ids
 		if (minMaxIds[0] == null || minMaxIds[1] == null) {
