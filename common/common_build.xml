@@ -101,8 +101,11 @@
 	</target>
 
 	<target name="common.runtests.nobuild">
+		<condition property="class.name" value="${test.class.name}" else="org.flexpay.common.AllTests">
+			<isset property="test.class.name" />
+		</condition>
 		<antcall target="template.run.tests">
-			<param name="test_name" value="org.flexpay.common.AllTests" />
+			<param name="test_name" value="${class.name}" />
 			<reference refid="common.runtests.classpath" torefid="classpath" />
 		</antcall>
 	</target>

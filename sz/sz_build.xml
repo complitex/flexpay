@@ -162,8 +162,11 @@
 	</target>
 
 	<target name="sz.runtests" depends="sz.build.test.jar,sz.prepare.war">
+		<condition property="class.name" value="${test.class.name}" else="org.flexpay.sz.AllTests">
+			<isset property="test.class.name" />
+		</condition>
 		<antcall target="template.run.tests">
-			<param name="test_name" value="org.flexpay.sz.AllTests" />
+			<param name="test_name" value="${class.name}" />
 			<reference refid="sz.runtests.classpath" torefid="classpath" />
 		</antcall>
 	</target>

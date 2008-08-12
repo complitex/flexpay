@@ -165,8 +165,11 @@
 	</target>
 
 	<target name="eirc.runtests.nobuild">
+		<condition property="class.name" value="${test.class.name}" else="org.flexpay.eirc.AllTests">
+			<isset property="test.class.name" />
+		</condition>
 		<antcall target="template.run.tests">
-			<param name="test_name" value="org.flexpay.eirc.AllTests" />
+			<param name="test_name" value="${class.name}" />
 			<reference refid="eirc.runtests.classpath" torefid="classpath" />
 		</antcall>
 	</target>
