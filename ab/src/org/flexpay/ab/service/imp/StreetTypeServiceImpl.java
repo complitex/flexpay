@@ -256,6 +256,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 * @return Saved instance
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
+	@Transactional (readOnly = false)
 	public StreetType save(@NotNull StreetType streetType) throws FlexPayExceptionContainer {
 		validate(streetType);
 		if (streetType.isNew()) {
