@@ -10,7 +10,8 @@ public class EircAccountCreateForm2Action extends ListPersons {
 	@NotNull
 	public String doExecute() throws Exception {
 		if(apartmentId == null) {
-			return "form1";
+			addActionError(getText("eirc.error.account.create.no_apartment"));
+			return "redirectForm1";
 		}
 		
 		super.doExecute();
@@ -28,7 +29,7 @@ public class EircAccountCreateForm2Action extends ListPersons {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return "form1";
+		return "redirectForm1";
 	}
 
 	/**
@@ -44,5 +45,4 @@ public class EircAccountCreateForm2Action extends ListPersons {
 	public void setApartmentId(Long apartmentId) {
 		this.apartmentId = apartmentId;
 	}
-	
 }

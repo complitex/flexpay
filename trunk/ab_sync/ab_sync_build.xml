@@ -180,4 +180,17 @@
 		</antcall>
 	</target>
 
+	<target name="ab_sync.sql.init-db">
+		<antcall target="ab.sql.init-db" />
+	</target>
+
+	<target name="ab_sync.sql.all">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql">
+			<fileset file="${ab_sync.dir}/etc/sql/sync.sql" />
+		</concat>
+		<antcall target="ab_sync.sql.init-db" />
+	</target>
+
+
 </project>

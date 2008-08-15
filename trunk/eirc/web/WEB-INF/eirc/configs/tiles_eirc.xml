@@ -196,20 +196,22 @@
 	<definition name="eirc.registry.record.correct_person_complete" extends="ab.layout.content">
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_person_complete.jsp" />
 	</definition>
-	
+
+	<!--  EIRC Account -->
 	<definition name="eirc.eirc_account.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.eirc_account.list" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_list.jsp" />
 	</definition>
-	<definition name="eirc.eirc_account.view" extends="eirc.eirc_account.list">
+	<definition name="eirc.eirc_account.view" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.eirc_account.view" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_view.jsp" />
 	</definition>
-	<definition name="eirc.eirc_account.create.form1" extends="eirc.eirc_account.list">
-		<put-attribute name="title" value="eirc.eirc_account.create" />
+	<definition name="eirc.eirc_account.create.form1" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.eirc_account.create.select_apartment" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_create_form1.jsp" />
 	</definition>
-	<definition name="eirc.eirc_account.create.form2" extends="eirc.eirc_account.create.form1">
+	<definition name="eirc.eirc_account.create.form2" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.eirc_account.create.select_apartment" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_create_form2.jsp" />
 	</definition>
 

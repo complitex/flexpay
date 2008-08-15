@@ -1,34 +1,4 @@
 
-    alter table common_data_corrections_tbl 
-        drop 
-        foreign key FKF86BDC935BA789BB;
-
-    alter table common_import_errors_tbl 
-        drop 
-        foreign key FKBAEED8705355D490;
-
-    alter table common_language_names_tbl 
-        drop 
-        foreign key FK85F168F48626C2BC;
-
-    alter table common_language_names_tbl 
-        drop 
-        foreign key FK85F168F461F37403;
-
-    drop table if exists common_data_corrections_tbl;
-
-    drop table if exists common_data_source_descriptions_tbl;
-
-    drop table if exists common_dual_tbl;
-
-    drop table if exists common_import_errors_tbl;
-
-    drop table if exists common_language_names_tbl;
-
-    drop table if exists common_languages_tbl;
-
-    drop table if exists common_sequences_tbl;
-
     create table common_data_corrections_tbl (
         id bigint not null auto_increment,
         internal_object_id bigint not null,

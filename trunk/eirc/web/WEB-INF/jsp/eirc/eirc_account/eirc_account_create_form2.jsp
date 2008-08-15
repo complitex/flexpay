@@ -4,22 +4,21 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
-	<form id="fobjects" method="post" action="<s:url value="/eirc/eircAccountCreateForm2Action.action" includeParams="none" />">
-	<input type="hidden" name="apartmentId" value="<s:property value="apartmentId"/>" />
+	<form id="fobjects" method="post" action="<s:url value="/eirc/eircAccountCreateForm2.action" includeParams="none" />">
+		<input type="hidden" name="apartmentId" value="<s:property value="apartmentId"/>"/>
 
-	<tr>
-	  <td colspan="7">
-	    <s:textfield name="searchString" value="%{searchString}"/>
-	    <input type="submit" class="btn-exit" value="<s:text name="menu1.search"/>"/>
-	  </td>
-	</tr>
-	<tr>
-	  <td>
-	    &nbsp;
-	  </td>
-	</tr>
+		<tr>
+			<td colspan="7">
+				<s:textfield name="searchString" value="%{searchString}"/>
+				<input type="submit" class="btn-exit" value="<s:text name="menu1.search"/>"/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				&nbsp;
+			</td>
+		</tr>
 
-	
 
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
@@ -39,7 +38,7 @@
 				<td class="col"><s:property value="%{defaultIdentity.firstName}"/></td>
 				<td class="col"><s:property value="%{defaultIdentity.middleName}"/></td>
 				<td class="col"><s:property value="%{format(defaultIdentity.birthDate)}"/></td>
-				
+
 			</tr>
 		</s:iterator>
 		<tr>
@@ -50,7 +49,7 @@
 		<tr>
 			<td colspan="6">
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="eircAccountCreateAction" includeParams="none" />';$('fobjects').submit()"
+					   onclick="$('fobjects').action='<s:url action="eircAccountCreate" includeParams="none" />';$('fobjects').submit()"
 					   value="<s:text name="common.create"/>"/>
 			</td>
 		</tr>

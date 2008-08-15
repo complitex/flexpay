@@ -44,7 +44,7 @@
 			<annotationconfiguration configurationfile="${hibernate.cfg}"
 									 propertyfile="${hibernate.properties}" />
 
-			<hbm2ddl drop="true" create="true" export="false"
+			<hbm2ddl drop="false" create="true" export="false"
 					 outputfilename="${file_name}" format="true" />
 		</hibernatetool>
 	</target>

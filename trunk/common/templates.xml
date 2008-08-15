@@ -95,7 +95,6 @@
 	</path>
 
 
-
 	<!-- NotNull instrumentation javac task -->
 	<taskdef name="javac2"
 			 classname="com.intellij.ant.Javac2"
@@ -104,14 +103,14 @@
 	<!-- Build templates -->
 	<target name="template.compile.production" depends="init.build">
 		<javac2 srcdir="${sources.dir}" includes="**/*.java" destdir="${build.dir}/classes"
-			   deprecation="on" source="1.5" target="1.5" debug="on" encoding="utf8"
-			   classpathref="classpath" />
+				deprecation="on" source="1.5" target="1.5" debug="on" encoding="utf8"
+				classpathref="classpath" />
 	</target>
 
 	<target name="template.compile.test" depends="init.build,clean.build">
 		<javac2 srcdir="${sources.dir}" includes="**/*.java" destdir="${build.dir}/classes"
-			   debug="on" deprecation="on" source="1.5" target="1.5" encoding="utf8"
-			   classpathref="classpath" />
+				debug="on" deprecation="on" source="1.5" target="1.5" encoding="utf8"
+				classpathref="classpath" />
 	</target>
 
 	<target name="init.build">
@@ -234,6 +233,14 @@
 			<sysproperty key="java.naming.factory.initial"
 						 value="org.flexpay.common.test.MockInitialContextFactory" />
 		</java>
+	</target>
+
+	<property file="${common.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+	<target name="template.mysql.run">
+		<exec executable="mysql" failonerror="true" input="${src.sql}">
+			<arg value="--user=${mysql.username}" />
+			<arg value="--password=${mysql.password}" />
+		</exec>
 	</target>
 
 </project>

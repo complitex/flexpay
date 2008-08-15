@@ -1,22 +1,24 @@
 package org.flexpay.eirc.service.imp;
 
-import java.util.List;
-
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.service.SequenceService;
-import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.Luhn;
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.dao.EircAccountDao;
 import org.flexpay.eirc.dao.EircAccountDaoExt;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(readOnly = true)
+import java.util.List;
+
+@Transactional (readOnly = true)
 public class EircAccountServiceImpl implements EircAccountService {
 
 	private EircAccountDaoExt eircAccountDaoExt;
@@ -40,8 +42,9 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 *
 	 * @param account EIRC account to save
 	 */
-	@Transactional(readOnly = false)
-	public void save(EircAccount account) throws FlexPayExceptionContainer {
+	@Transactional (readOnly = false)
+	public void save(@NotNull EircAccount account) throws FlexPayExceptionContainer {
+		validate(account);
 		if (account.isNew()) {
 			account.setId(null);
 			account.setAccountNumber(nextPersonalAccount());
@@ -52,7 +55,23 @@ public class EircAccountServiceImpl implements EircAccountService {
 		}
 	}
 
-	@Transactional(readOnly = false)
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(EircAccount account) throws FlexPayExceptionContainer {
+		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
+
+		if (account.isNew()) {
+			EircAccount persistent = findAccount(account.getPerson(), account.getApartment());
+			if (persistent != null) {
+				ex.addException(new FlexPayException("Duplicate account", "eirc.error.account.create.duplicate"));
+			}
+		}
+
+		if (ex.isNotEmpty()) {
+			throw ex;
+		}
+	}
+
+	@Transactional (readOnly = false)
 	public String nextPersonalAccount() {
 		String eircId = ApplicationConfig.getEircId();
 		String result = sequenceService.next(
@@ -74,7 +93,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 	public void setSequenceService(SequenceService sequenceService) {
 		this.sequenceService = sequenceService;
 	}
-	
+
 	/**
 	 * Find all EircAccounts
 	 *
@@ -82,19 +101,19 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 */
 	public List<EircAccount> findAll(Page<EircAccount> pager) {
 		return this.eircAccountDao.findObjects(pager);
-		
+
 	}
-	
+
 	public List<EircAccount> findByApartment(Long id) {
 		return eircAccountDao.findByApartment(id);
 	}
-	
+
 	public EircAccount findWithPerson(Long id) {
 		List<EircAccount> list = eircAccountDao.findWithPerson(id);
-		if(list.isEmpty()) {
+		if (list.isEmpty()) {
 			return null;
 		}
-		
+
 		return list.iterator().next();
 	}
 }

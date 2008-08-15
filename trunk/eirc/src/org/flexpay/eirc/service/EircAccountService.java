@@ -7,6 +7,7 @@ import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.eirc.persistence.EircAccount;
+import org.jetbrains.annotations.NotNull;
 
 public interface EircAccountService {
 
@@ -25,7 +26,7 @@ public interface EircAccountService {
 	 * @param account EIRC account to save
 	 * @throws FlexPayExceptionContainer if validation failure occurs
 	 */
-	void save(EircAccount account) throws FlexPayExceptionContainer;
+	void save(@NotNull EircAccount account) throws FlexPayExceptionContainer;
 
 	/**
 	 * Get next personal account number
@@ -37,6 +38,7 @@ public interface EircAccountService {
 	/**
 	 * Find all EircAccounts
 	 *
+	 * @param pager Accounts pager
 	 * @return List of EircAccount
 	 */
 	List<EircAccount> findAll(Page<EircAccount> pager);
