@@ -181,4 +181,26 @@
 		</antcall>
 	</target>
 
+	<target name="ab.sql.init-db">
+		<antcall target="common.sql.init-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${ab.dir}/etc/sql/init_db.sql" />
+		</concat>
+	</target>
+
+	<target name="ab.sql.all">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${ab.dir}/etc/sql/flexpay_ab.ddl.sql" />
+		</concat>
+		<antcall target="ab.sql.init-db" />
+	</target>
+
+	<target name="ab.db" description="create ab db">
+		<antcall target="ab.sql.all" />
+		<antcall target="template.mysql.run">
+			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
+		</antcall>
+	</target>
+
 </project>

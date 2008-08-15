@@ -2,14 +2,6 @@
 <project relativePaths="true" version="4">
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
-    <buildFile url="file://$PROJECT_DIR$/../../build.xml">
-      <additionalClassPath />
-      <antReference name="Apache Ant version 1.7.0" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
-      <maximumStackSize value="32" />
-      <properties />
-    </buildFile>
     <buildFile url="file://$PROJECT_DIR$/../../common/common_build.xml">
       <additionalClassPath />
       <antReference projectDefault="true" />
@@ -43,14 +35,6 @@
       <properties />
       <executeOn event="beforeRun" target="eirc.prepare.war" />
     </buildFile>
-    <buildFile url="file://$PROJECT_DIR$/../../sz/sz_build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
-      <maximumStackSize value="32" />
-      <properties />
-    </buildFile>
     <buildFile url="file://$PROJECT_DIR$/../../ab_sync/ab_sync_build.xml">
       <additionalClassPath />
       <antReference projectDefault="true" />
@@ -60,6 +44,14 @@
       <properties />
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/../../deploy.xml">
+      <additionalClassPath />
+      <antReference projectDefault="true" />
+      <customJdkName value="" />
+      <maximumHeapSize value="128" />
+      <maximumStackSize value="32" />
+      <properties />
+    </buildFile>
+    <buildFile url="file://$PROJECT_DIR$/../../sz/sz_build.xml">
       <additionalClassPath />
       <antReference projectDefault="true" />
       <customJdkName value="" />
@@ -250,7 +242,6 @@
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/../../ab_sync/docs/comp.vw_cn_changes2.SQL" charset="windows-1251" />
-    <file url="file://$PROJECT_DIR$/../../eirc/tests/data/org/flexpay/eirc/actions/sp/ree_open_2.txt" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/../../eirc/tests/data/org/flexpay/eirc/actions/sp/ree_open_2_small.txt" charset="windows-1251" />
   </component>
   <component name="EntryPointsManager">

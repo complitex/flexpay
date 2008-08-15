@@ -157,32 +157,32 @@
 			<result type="tiles">eirc.process.view</result>
 		</action>
 		
-		<action name="eircAccountListAction" class="eircAccountListAction">
+		<action name="eircAccountList" class="eircAccountListAction">
 			<result type="tiles">eirc.eirc_account.list</result>
 		</action>
-		<action name="eircAccountViewAction" class="eircAccountViewAction">
+		<action name="eircAccountView" class="eircAccountViewAction">
 			<result type="tiles">eirc.eirc_account.view</result>
 		</action>
-		<action name="eircAccountCreateForm1Action" class="eircAccountCreateForm1Action">
+		<action name="eircAccountCreateForm1" class="eircAccountCreateForm1Action">
 			<result type="tiles">eirc.eirc_account.create.form1</result>
 		</action>
-		<action name="eircAccountCreateForm2Action" class="eircAccountCreateForm2Action">
+		<action name="eircAccountCreateForm2" class="eircAccountCreateForm2Action">
 			<result name="form2" type="tiles">eirc.eirc_account.create.form2</result>
-			<result name="form1" type="redirect-action">
-				<param name="actionName">eircAccountCreateForm1Action</param>
+			<result name="redirectForm1" type="redirect-action">
+				<param name="actionName">eircAccountCreateForm1</param>
 			</result>
 		</action>
-		<action name="eircAccountCreateAction" class="eircAccountCreateAction">
-			<result name="form1" type="redirect-action">
-				<param name="actionName">eircAccountCreateForm1Action</param>
+		<action name="eircAccountCreate" class="eircAccountCreateAction">
+			<result name="redirectForm1" type="redirect-action">
+				<param name="actionName">eircAccountCreateForm1</param>
 			</result>
-			<result name="form2" type="redirect-action">
-				<param name="actionName">eircAccountCreateForm2Action</param>
+			<result name="redirectForm2" type="redirect-action">
+				<param name="actionName">eircAccountCreateForm2</param>
 				<param name="parse">true</param>
 				<param name="apartmentId">${apartmentId}</param>
 			</result>
-			<result name="view" type="redirect-action">
-				<param name="actionName">eircAccountViewAction</param>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">eircAccountView</param>
 				<param name="parse">true</param>
 				<param name="eircAccount.id">${eircAccount.id}</param>
 			</result>

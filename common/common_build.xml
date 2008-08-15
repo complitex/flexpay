@@ -140,4 +140,32 @@
 		</antcall>
 	</target>
 
+	<target name="common.sql.create-db">
+		<concat destfile="${build.dir}/sql/init_db.sql" append="false" encoding="UTF-8">
+			<fileset file="${common.dir}/etc/sql/create_db.sql" />
+			<fileset file="${common.dir}/etc/sql/jbpm.jpdl.mysql.create.sql" />
+		</concat>
+	</target>
+
+	<target name="common.sql.init-db">
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${common.dir}/etc/sql/init_db.sql" />
+		</concat>
+	</target>
+
+	<target name="common.sql.all">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${common.dir}/etc/sql/flexpay_common.ddl.sql" />
+		</concat>
+		<antcall target="common.sql.init-db" />
+	</target>
+
+	<target name="common.db" description="create common db">
+		<antcall target="common.sql.all" />
+		<antcall target="template.mysql.run">
+			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
+		</antcall>
+	</target>
+
 </project>

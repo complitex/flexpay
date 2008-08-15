@@ -14,7 +14,7 @@ public class CollectionUtils {
 
 	@NotNull
 	public static <T> List<T> list(@NonNls @NotNull T... ts) {
-		return new ArrayList<T>(ts.length);
+		return list(Arrays.asList(ts));
 	}
 
 	@NotNull

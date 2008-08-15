@@ -15,7 +15,6 @@ public class EircAccountCreateForm1Action extends BuildingsFilterDependentAction
 
 	private List<Apartment> apartments = Collections.emptyList();
 
-
 	@NotNull
 	public String doExecute() {
 
