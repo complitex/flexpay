@@ -323,7 +323,7 @@
 		from RegistryType
 	</query>
 
-	<query name="Registry.readFull">
+	<query name="SpRegistry.readFull">
 		select distinct r
 		from SpRegistry r
 			inner join fetch r.registryType
