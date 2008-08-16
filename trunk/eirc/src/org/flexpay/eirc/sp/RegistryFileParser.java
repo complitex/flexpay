@@ -277,7 +277,7 @@ public class RegistryFileParser {
 			Service service = consumerService.findService(
 					registry.getServiceProvider(), record.getServiceCode());
 			if (service == null) {
-				throw new SpFileFormatException("Unknown service code");
+				throw new SpFileFormatException("Unknown service code: "+record.getServiceCode());
 			}
 			record.setService(service);
 
