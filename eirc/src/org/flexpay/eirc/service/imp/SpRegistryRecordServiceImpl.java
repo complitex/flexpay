@@ -15,6 +15,7 @@ import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
@@ -45,19 +46,20 @@ public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
 		}
 
 		if (log.isDebugEnabled()) {
-			log.debug("Created SpRegistryRecord: " + record);
+			log.debug("Created RegistryRecord: " + record);
 		}
 
 		return record;
 	}
 
 	/**
-	 * Read SpRegistryRecord object by its unique id
+	 * Read RegistryRecord object by its unique id
 	 *
-	 * @param id SpRegistryRecord key
-	 * @return SpRegistryRecord object, or <code>null</code> if object not
+	 * @param id RegistryRecord key
+	 * @return RegistryRecord object, or <code>null</code> if object not
 	 *         found
 	 */
+	@Nullable
 	public RegistryRecord read(Long id) {
 		return registryRecordDao.readFull(id);
 	}

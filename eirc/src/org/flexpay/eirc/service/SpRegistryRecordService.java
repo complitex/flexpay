@@ -8,6 +8,7 @@ import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.RegistryRecordContainer;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Set;
@@ -26,12 +27,13 @@ public interface SpRegistryRecordService {
 			throws FlexPayException;
 
 	/**
-	 * Read SpRegistryRecord object by its unique id
+	 * Read RegistryRecord object by its unique id
 	 *
-	 * @param id SpRegistryRecord key
-	 * @return SpRegistryRecord object, or <code>null</code> if object not
+	 * @param id RegistryRecord key
+	 * @return RegistryRecord object, or <code>null</code> if object not
 	 *         found
 	 */
+	@Nullable
 	RegistryRecord read(Long id);
 
 	/**

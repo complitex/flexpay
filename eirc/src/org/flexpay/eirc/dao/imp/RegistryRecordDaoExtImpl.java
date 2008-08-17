@@ -39,12 +39,12 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 
 				// read cached total elements
 				if (pager.getTotalNumberOfElements() <= 0) {
-					Long count = (Long) session.getNamedQuery("SpRegistryRecord.listRecords.count")
+					Long count = (Long) session.getNamedQuery("RegistryRecord.listRecords.count")
 							.setLong(0, id).uniqueResult();
 					pager.setTotalElements(count.intValue());
 				}
 
-				return session.getNamedQuery("SpRegistryRecord.listRecords")
+				return session.getNamedQuery("RegistryRecord.listRecords")
 						.setFirstResult(pager.getThisPageFirstElementNumber())
 						.setMaxResults(pager.getPageSize())
 						.setLong(0, id)
@@ -65,12 +65,12 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	@SuppressWarnings({"unchecked"})
 	public List<RegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter,
 												RegistryRecordStatusFilter recordStatusFilter, final Page<RegistryRecord> pager) {
-		final StringBuilder hql = new StringBuilder("select distinct rr from SpRegistryRecord rr " +
+		final StringBuilder hql = new StringBuilder("select distinct rr from RegistryRecord rr " +
 				"inner join fetch rr.spRegistry r " +
 				"inner join fetch rr.recordStatus rs " +
 				"left join fetch rr.importError e where r.id=? ");
 
-		final StringBuilder hqlCount = new StringBuilder("select count(*) from SpRegistryRecord rr " +
+		final StringBuilder hqlCount = new StringBuilder("select count(*) from RegistryRecord rr " +
 				"inner join rr.spRegistry r " +
 				"inner join rr.recordStatus rs " +
 				"left join rr.importError e where r.id=? ");
@@ -140,7 +140,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	public DataSourceDescription getDataSourceDescription(final Long id) {
 		return (DataSourceDescription) getHibernateTemplate().execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				return session.getNamedQuery("SpRegistryRecord.findDataSourceDescription")
+				return session.getNamedQuery("RegistryRecord.findDataSourceDescription")
 						.setLong(0, id).uniqueResult();
 			}
 		});
@@ -182,7 +182,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	@NotNull
 	public Long[] getMinMaxIdsForProcessing(@NotNull Long registryId) {
 		List result = getHibernateTemplate()
-				.findByNamedQuery("SpRegistryRecord.getMinMaxRecordsForProcessing", registryId);
+				.findByNamedQuery("RegistryRecord.getMinMaxRecordsForProcessing", registryId);
 		Object[] objs = (Object[]) result.get(0);
 
 		Long[] minMax = CollectionUtils.ar((Long) objs[0], (Long) objs[1]);
