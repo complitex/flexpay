@@ -10,6 +10,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
@@ -17,10 +18,14 @@ public class TestServiceDao extends SpringBeanAwareTestCase {
 
 	@Autowired
 	protected ServiceDaoExt serviceDaoExt;
-	@Autowired
 	protected SPService spService;
 	@Autowired
 	protected ServiceTypeService serviceTypeService;
+
+	@Autowired
+	public void setSpService(@Qualifier ("spService") SPService spService) {
+		this.spService = spService;
+	}
 
 	@Test
 	public void testGetIntersectionServices() {
