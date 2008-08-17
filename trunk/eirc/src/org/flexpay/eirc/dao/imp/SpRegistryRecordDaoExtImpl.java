@@ -37,12 +37,12 @@ public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements S
 
 				// read cached total elements
 				if (pager.getTotalNumberOfElements() <= 0) {
-					Long count = (Long) session.getNamedQuery("SpRegistryRecord.listRecords.count")
+					Long count = (Long) session.getNamedQuery("RegistryRecord.listRecords.count")
 							.setLong(0, id).uniqueResult();
 					pager.setTotalElements(count.intValue());
 				}
 
-				return session.getNamedQuery("SpRegistryRecord.listRecords")
+				return session.getNamedQuery("RegistryRecord.listRecords")
 						.setFirstResult(pager.getThisPageFirstElementNumber())
 						.setMaxResults(pager.getPageSize())
 						.setLong(0, id)
@@ -138,7 +138,7 @@ public class SpRegistryRecordDaoExtImpl extends HibernateDaoSupport implements S
 	public DataSourceDescription getDataSourceDescription(final Long id) {
 		return (DataSourceDescription) getHibernateTemplate().execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				return session.getNamedQuery("SpRegistryRecord.findDataSourceDescription")
+				return session.getNamedQuery("RegistryRecord.findDataSourceDescription")
 						.setLong(0, id).uniqueResult();
 			}
 		});
