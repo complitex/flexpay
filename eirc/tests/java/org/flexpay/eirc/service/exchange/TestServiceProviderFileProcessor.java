@@ -24,6 +24,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.test.annotation.NotTransactional;
 
@@ -43,7 +44,6 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	protected ServiceProviderFileProcessor fileProcessor;
 	@Autowired
 	protected ExchangeHelper exchangeHelper;
-	@Autowired
 	protected SPService spService;
 	@Autowired
 	protected SpRegistryService registryService;
@@ -55,6 +55,11 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	private static final char CONTAINER_DATA_DELIMITER = Operation.CONTAINER_DATA_DELIMITER;
 
 	private Random rand = new Random();
+
+	@Autowired
+	public void setSpService(@Qualifier ("spService") SPService spService) {
+		this.spService = spService;
+	}
 
 	@Ignore
 	@Test

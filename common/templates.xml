@@ -237,9 +237,10 @@
 
 	<property file="${common.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
 	<target name="template.mysql.run">
-		<exec executable="mysql" failonerror="true" input="${src.sql}">
+		<exec executable="mysql" failonerror="true" input="${src.sql}" >
 			<arg value="--user=${mysql.username}" />
 			<arg value="--password=${mysql.password}" />
+			<arg value="--default-character-set=utf8" />
 		</exec>
 	</target>
 
