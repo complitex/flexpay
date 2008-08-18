@@ -7,6 +7,7 @@ import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -141,7 +142,7 @@ public class Apartment extends DomainObjectWithStatus {
 	}
 
 	public Set<PersonRegistration> getValidPersonRegistrations(Date date) {
-		Set<PersonRegistration> result = new HashSet<PersonRegistration>();
+		Set<PersonRegistration> result = CollectionUtils.set();
 		for (PersonRegistration reg : personRegistrations) {
 			if (reg.isValid(date)) {
 				result.add(reg);

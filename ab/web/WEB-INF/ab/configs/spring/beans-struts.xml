@@ -207,13 +207,13 @@
 		  p:apartmentService-ref="apartmentService" />
 
 	<bean id="apartmentRegistrationsAction" scope="prototype"
-		  class="org.flexpay.ab.actions.apartment.ApartmentRegistrationsAction">
-		<property name="apartmentService" ref="apartmentService" />
-		<property name="buildingService" ref="buildingService" />
-		<property name="townService" ref="townService" />
-		<property name="regionService" ref="regionService" />
-		<property name="countryService" ref="countryService" />
-	</bean>
+		  class="org.flexpay.ab.actions.apartment.ApartmentRegistrationsAction"
+		  p:apartmentService-ref="apartmentService"
+		  p:buildingService-ref="buildingService"
+		  p:regionService-ref="regionService"
+		  p:townService-ref="townService"
+		  p:countryService-ref="countryService"
+		  p:streetService-ref="streetService" />
 
 	<!-- Town types -->
 	<bean id="townTypeListAction"

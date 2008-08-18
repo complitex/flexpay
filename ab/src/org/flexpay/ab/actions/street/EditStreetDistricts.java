@@ -9,6 +9,7 @@ import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class EditStreetDistricts extends FPActionSupport {
 			return INPUT;
 		}
 
-		street = streetService.read(street.getId());
+		street = streetService.readFull(stub(street));
 		if (street == null) {
 			addActionError(getText("error.street_invalid_id"));
 			return INPUT;

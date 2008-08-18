@@ -22,7 +22,7 @@
 		<td class="th"><s:text name="ab.person.registration.begin_date"/></td>
 		<td class="th"><s:text name="ab.person.registration.end_date"/></td>
 	</tr>
-	<s:iterator value="apartment.validPersonRegistrations" status="status">
+	<s:iterator value="apartment.personRegistrations" status="status">
 		<tr valign="middle" class="cols_1">
 			<td class="col_1s" align="right"><s:property value="%{#status.index + 1}"/></td>
 			<td class="col">
@@ -47,8 +47,8 @@
 	<tr>
 		<td colspan="5" width="100%">
 			<input type="button" class="btn-exit"
-				   onclick="window.location='<s:url action='apartmentRegistrationsHistory'><s:param name="apartment.id" value="%{apartment.id}"/><s:param name="buildings.id" value="%{buildings.id}"/></s:url>'"
-				   value="<s:text name="ab.apartment.registrations_history.title" />"/>
+				   onclick="window.location='<s:url action='apartmentRegistrations'><s:param name="apartment.id" value="%{apartment.id}"/><s:param name="buildings.id" value="%{buildings.id}"/></s:url>'"
+				   value="<s:text name="ab.apartment.registrations.title" />"/>
 		</td>
 	</tr>
 </table>

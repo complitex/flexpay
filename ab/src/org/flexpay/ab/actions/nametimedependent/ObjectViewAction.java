@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.Translation;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class ObjectViewAction<
@@ -43,7 +44,7 @@ public abstract class ObjectViewAction<
 
 		log.info("Object: " + object);
 		if (object.getId() != null) {
-			object = nameTimeDependentService.read(object.getId());
+			object = nameTimeDependentService.readFull(stub(object));
 			return SUCCESS;
 		} else {
 			addActionError(getText("error.no_id"));

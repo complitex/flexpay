@@ -33,7 +33,7 @@ public class ExchangeHelper {
 		String buildingNumber = buildings.getNumber();
 		String bulkNumber = buildings.getBulk();
 
-		Street street = streetService.read(buildings.getStreet().getId());
+		Street street = streetService.readFull(buildings.getStreetStub());
 
 		StreetName streetNameObj = street.getCurrentName();
 		StreetNameTranslation nameTranslation = TranslationUtil
@@ -48,7 +48,7 @@ public class ExchangeHelper {
 			streetType = typeTranslation.getName();
 		}
 
-		Town townObj = townService.read(street.getParent().getId());
+		Town townObj = townService.readFull(street.getTownStub());
 		TownName townNameObj = townObj.getCurrentName();
 		TownNameTranslation townNameTranslation = TranslationUtil
 				.getTranslation(townNameObj.getTranslations());

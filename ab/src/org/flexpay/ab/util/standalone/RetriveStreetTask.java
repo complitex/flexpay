@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.util.standalone.StandaloneTask;
+import org.flexpay.common.persistence.Stub;
 
 public class RetriveStreetTask implements StandaloneTask {
 
@@ -15,7 +16,7 @@ public class RetriveStreetTask implements StandaloneTask {
 	 */
 	public void execute() {
 //		Street street = streetDao.readFull(6L);
-		Street street = streetService.read(6L);
+		Street street = streetService.readFull(new Stub<Street>(6L));
 		log.info("===============================================\n" + street.getTypeTemporals());
 	}
 

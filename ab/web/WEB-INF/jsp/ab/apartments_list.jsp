@@ -27,7 +27,7 @@
 					<input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
 				</td>
 				<td class="col">
-					<a href="<s:url action='apartmentRegistrationsAction'><s:param name="apartment.id" value="%{id}"/><s:param name="buildings.id" value="%{buildingsFilter.selectedId}"/></s:url>">
+					<a href="<s:url action='apartmentRegistrations'><s:param name="apartment.id" value="%{id}"/><s:param name="buildings.id" value="%{buildingsFilter.selectedId}"/></s:url>">
 						<s:property value="%{number}"/>
 					</a>
 				</td>

@@ -12,12 +12,14 @@ public class ApartmentRegistrationsAction extends FPActionSupport {
 
 	private ApartmentService apartmentService;
 	private BuildingService buildingService;
+	private StreetService streetService;
 	private TownService townService;
 	private RegionService regionService;
 	private CountryService countryService;
 
 	private Apartment apartment;
 	private Buildings buildings;
+	private Street street;
 	private Town town;
 	private Region region;
 	private Country country;
@@ -26,10 +28,10 @@ public class ApartmentRegistrationsAction extends FPActionSupport {
 	public String doExecute() throws FlexPayException {
 		apartment = apartmentService.readWithPersons(stub(apartment));
 		buildings = buildingService.readFull(stub(buildings));
-		town = townService.readFull(buildings.getStreet().getParent().getId());
-		region = regionService.readFull(town.getParent().getId());
+		street = streetService.readFull(buildings.getStreetStub());
+		town = townService.readFull(street.getTownStub());
+		region = regionService.readFull(town.getRegionStub());
 		country = countryService.readFull(region.getParent().getId());
-
 
 		return SUCCESS;
 	}
@@ -72,39 +74,8 @@ public class ApartmentRegistrationsAction extends FPActionSupport {
 		this.apartment = apartment;
 	}
 
-	/**
-	 * @param apartmentService the apartmentService to set
-	 */
-	public void setApartmentService(ApartmentService apartmentService) {
-		this.apartmentService = apartmentService;
-	}
-
-	/**
-	 * @param buildingService the buildingService to set
-	 */
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
-	}
-
-	/**
-	 * @param townService the townService to set
-	 */
-	public void setTownService(TownService townService) {
-		this.townService = townService;
-	}
-
-	/**
-	 * @param regionService the regionService to set
-	 */
-	public void setRegionService(RegionService regionService) {
-		this.regionService = regionService;
-	}
-
-	/**
-	 * @param countryService the countryService to set
-	 */
-	public void setCountryService(CountryService countryService) {
-		this.countryService = countryService;
+	public Street getStreet() {
+		return street;
 	}
 
 	/**
@@ -142,4 +113,42 @@ public class ApartmentRegistrationsAction extends FPActionSupport {
 		this.buildings = buildings;
 	}
 
+	/**
+	 * @param apartmentService the apartmentService to set
+	 */
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
+	}
+
+	/**
+	 * @param buildingService the buildingService to set
+	 */
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
+	}
+
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
+	}
+
+	/**
+	 * @param townService the townService to set
+	 */
+	public void setTownService(TownService townService) {
+		this.townService = townService;
+	}
+
+	/**
+	 * @param regionService the regionService to set
+	 */
+	public void setRegionService(RegionService regionService) {
+		this.regionService = regionService;
+	}
+
+	/**
+	 * @param countryService the countryService to set
+	 */
+	public void setCountryService(CountryService countryService) {
+		this.countryService = countryService;
+	}
 }

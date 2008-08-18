@@ -2339,9 +2339,9 @@ INSERT INTO ab_building_attributes_tbl (value, attribute_type_id, buildings_id)
 
 -- Init Apartments for Novosibirsk, Ivanova st., 27
 INSERT INTO ab_apartments_tbl (status, building_id) VALUES (0, @building_ivanova_27_id);
-SELECT @apartment_ivanova_27_id:=last_insert_id();
+SELECT @apartment_ivanova_1_id:=last_insert_id();
 INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
-	VALUES ('1900-01-01', '2100-12-31', '1', @apartment_ivanova_27_id);
+	VALUES ('1900-01-01', '2100-12-31', '1', @apartment_ivanova_1_id);
 
 INSERT INTO ab_apartments_tbl (status, building_id) VALUES (0, @building_ivanova_27_id);
 SELECT @apartment_id:=last_insert_id();
@@ -3990,7 +3990,10 @@ INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 
 -- Init person registrations
 INSERT INTO ab_person_registrations_tbl (begin_date, end_date, person_id, apartment_id)
-	VALUES ('2007-01-12', '2008-01-13', @person_id, @apartment_ivanova_27_id);
+	VALUES ('2000-01-01', '2007-01-11', @person_id, @apartment_ivanova_330_id);
+
+INSERT INTO ab_person_registrations_tbl (begin_date, end_date, person_id, apartment_id)
+	VALUES ('2007-01-12', '2008-01-13', @person_id, @apartment_ivanova_1_id);
 
 INSERT INTO ab_person_registrations_tbl (begin_date, end_date, person_id, apartment_id)
 	VALUES ('2008-04-12', '2100-12-31', @person_id, @apartment_ivanova_330_id);

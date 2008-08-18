@@ -119,8 +119,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	/**
-	 * return base for name time-dependent objects in i18n files, like 'region', 'town',
-	 * etc.
+	 * return base for name time-dependent objects in i18n files, like 'region', 'town', etc.
 	 *
 	 * @return Localization key base
 	 */
@@ -243,9 +242,5 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		}
 
 		return false;
-	}
-	
-	public Region readFull(Long id) {
-		return regionDao.readFull(id);
 	}
 }
