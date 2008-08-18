@@ -1,8 +1,5 @@
 package org.flexpay.eirc.actions;
 
-import java.util.Date;
-import java.util.HashMap;
-
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 
@@ -12,7 +9,7 @@ public class ProcessViewAction {
 	
 	
 	public String execute() {
-		process = ProcessManager.getInstance().getProcessInastanceInfo(process.getId());
+		process = ProcessManager.getInstance().getProcessInstanceInfo(process.getId());
 		return "success";
 	}
 	

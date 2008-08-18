@@ -17,6 +17,7 @@ import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.SpRegistryService;
 import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Date;
@@ -71,14 +72,15 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	/**
 	 * Read SpRegistry object by its unique id
 	 *
-	 * @param id SpRegistry key
+	 * @param stub Registry stub
 	 * @return SpRegistry object, or <code>null</code> if object not found
 	 */
-	public SpRegistry read(Long id) {
-		SpRegistry registry = registryDao.readFull(id);
+	@Nullable 
+	public SpRegistry read(@NotNull Stub<SpRegistry> stub) {
+		SpRegistry registry = registryDao.readFull(stub.getId());
 		if (registry == null) {
 			if (log.isDebugEnabled()) {
-				log.debug("Registry #" + id + " not found");
+				log.debug("Registry #" + stub + " not found");
 			}
 			return null;
 		}

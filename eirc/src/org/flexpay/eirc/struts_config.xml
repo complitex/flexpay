@@ -22,7 +22,7 @@
 		</action>
 
 		<action name="spFileAction" class="spFileAction">
-			<result name="success" type="redirect">spFileList.action</result>
+			<result name="redirectSuccess" type="redirect">spFileList.action</result>
 		</action>
 
 		<action name="data">
@@ -140,12 +140,12 @@
 		</action>
 
 		<action name="process_registry_records" class="processRegistryRecordsAction">
-			<result type="redirect-action">
+			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">registry_view</param>
 				<param name="parse">true</param>
 				<param name="registry.id">${registry.id}</param>
 			</result>
-			<result name="error" type="redirect-action">
+			<result name="redirectError" type="redirect-action">
 				<param name="actionName" >registries_list</param>
 			</result>
 		</action>

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class RegistryStatus extends DomainObject {
 
-	private static Map<Integer, String> typeToName = new HashMap<Integer, String>();
+	private static final Map<Integer, String> typeToName = new HashMap<Integer, String>();
 
 	public static final int LOADING = 0;
 	public static final int LOADED = 1;

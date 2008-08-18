@@ -2,16 +2,16 @@ package org.flexpay.eirc.process.registry;
 
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.SpRegistryService;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class RegistryProcessJob extends Job {
+public class RegistryRecordsProcessJob extends Job {
 
 	private Logger log = Logger.getLogger(getClass());
 
@@ -20,13 +20,23 @@ public class RegistryProcessJob extends Job {
 
 	@SuppressWarnings ({"unchecked"})
 	public String execute(Map parameters) throws FlexPayException {
-		Set<Long> objectIds = (Set<Long>) parameters.get("registryIds");
+		Set<Long> recordIds = (Set<Long>) parameters.get("recordIds");
+		Stub<SpRegistry> stub = (Stub<SpRegistry>) parameters.get("registryStub");
 
 		try {
-			Collection<SpRegistry> registries = registryService.findObjects(objectIds);
-			registryProcessor.processRegistries(registries);
+			SpRegistry registry = registryService.read(stub);
+			if (registry == null) {
+				log.warn("Invalid registry stub: " + stub);
+				return RESULT_ERROR;
+			}
+
+			if (recordIds.isEmpty()) {
+				return RESULT_NEXT;
+			}
+
+			registryProcessor.processRecords(registry, recordIds);
 		} catch (Exception e) {
-			log.warn("Processing exception", e);
+			log.error("Processing exception", e);
 			return RESULT_ERROR;
 		}
 

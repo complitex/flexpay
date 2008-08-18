@@ -10,7 +10,8 @@
 		  class="org.flexpay.eirc.service.imp.SpFileServiceImpl"
 		  p:spFileDao-ref="spFileDao"
 		  p:registryRecordDao-ref="spRegistryRecordDao"
-		  p:registryRecordDaoExt-ref="spRegistryRecordDaoExt" />
+		  p:registryRecordDaoExt-ref="spRegistryRecordDaoExt"
+		  p:registryFileDaoExt-ref="registryFileDaoExt" />
 
 	<bean id="spRegistryService"
 		  class="org.flexpay.eirc.service.imp.SpRegistryServiceImpl">
@@ -131,7 +132,7 @@
 		  p:serviceOperationsFactory-ref="serviceOperationsFactory"
 		  p:spFileService-ref="spFileService" />
 
-	<bean id="serviceProviderFileProcessor"
+	<bean id="registryProcessor"
 		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor"
 		  p:processorTx-ref="serviceProviderFileProcessorTx"
 		  p:serviceOperationsFactory-ref="serviceOperationsFactory"

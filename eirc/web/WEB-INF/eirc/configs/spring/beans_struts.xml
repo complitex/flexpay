@@ -67,10 +67,8 @@
 		  p:processManager-ref="processManager" />
 
 	<bean id="processRegistryRecordsAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.ProcessRegistryRecordsAction">
-		<property name="providerFileProcessor" ref="serviceProviderFileProcessor" />
-		<property name="registryService" ref="spRegistryService" />
-	</bean>
+		  class="org.flexpay.eirc.actions.registry.ProcessRegistryRecordsAction"
+		  p:processManager-ref="processManager" />
 
 	<bean id="showRegistryAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.ShowRegistryAction">

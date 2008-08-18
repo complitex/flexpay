@@ -1,40 +1,35 @@
 package org.flexpay.eirc.actions.registry;
 
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.service.SpRegistryService;
-import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
+import java.io.Serializable;
+import java.util.Map;
 import java.util.Set;
 
 public class ProcessRegistryRecordsAction extends FPActionSupport {
 
-	private Set<Long> objectIds = new HashSet<Long>();
+	private Set<Long> objectIds = CollectionUtils.set();
 	private SpRegistry registry = new SpRegistry();
 
-	private SpRegistryService registryService;
-	private ServiceProviderFileProcessor providerFileProcessor;
+	private ProcessManager processManager;
 
 	@NotNull
 	public String doExecute() throws Exception {
 
 		log.debug("About to execute ProcessRegistryRecordsAction");
 
-		registry = registryService.read(registry.getId());
-		if (registry == null) {
-			addActionError(getText("error.eirc.invalid_registry_id"));
-			return ERROR;
-		}
+		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+		contextVariables.put("recordIds", (Serializable) objectIds);
+		contextVariables.put("registryStub", stub(registry));
 
-		if (objectIds.isEmpty()) {
-			return SUCCESS;
-		}
+		processManager.createProcess("ProcessRegistryRecordsWorkflow", contextVariables);
 
-		providerFileProcessor.processRecords(registry, objectIds);
-
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	/**
@@ -46,7 +41,7 @@ public class ProcessRegistryRecordsAction extends FPActionSupport {
 	 */
 	@NotNull
 	protected String getErrorResult() {
-		return ERROR;
+		return REDIRECT_ERROR;
 	}
 
 	public Set<Long> getObjectIds() {
@@ -65,11 +60,7 @@ public class ProcessRegistryRecordsAction extends FPActionSupport {
 		this.registry = registry;
 	}
 
-	public void setProviderFileProcessor(ServiceProviderFileProcessor providerFileProcessor) {
-		this.providerFileProcessor = providerFileProcessor;
-	}
-
-	public void setRegistryService(SpRegistryService registryService) {
-		this.registryService = registryService;
+	public void setProcessManager(ProcessManager processManager) {
+		this.processManager = processManager;
 	}
 }

@@ -21,16 +21,16 @@ import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.SpRegistryService;
 import org.flexpay.eirc.service.importexport.EircImportService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 /**
- * Processor of instructions specified by service provider, usually payments, balance notifications, etc. <br /> Precondition for
- * processing file is complete import operation, i.e. all records should already have assigned PersonalAccount.
+ * Processor of instructions specified by service provider, usually payments, balance notifications, etc.
  */
-public class ServiceProviderFileProcessor {
+public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 	private Logger log = Logger.getLogger(getClass());
 
@@ -52,10 +52,9 @@ public class ServiceProviderFileProcessor {
 	 * Run processing of a registry data file
 	 *
 	 * @param file uploaded SpFile
-	 * @throws FlexPayExceptionContainer if registry processing failed
 	 * @throws Exception				 if failure occurs
 	 */
-	public void processFile(SpFile file) throws Exception {
+	public void processFile(@NotNull SpFile file) throws Exception {
 
 		if (log.isInfoEnabled()) {
 			log.info("Starting processing file");
@@ -77,7 +76,7 @@ public class ServiceProviderFileProcessor {
 	 * @throws Exception				 if failure occurs
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	public void processRegistries(Collection<SpRegistry> registries) throws Exception {
+	public void processRegistries(@NotNull Collection<SpRegistry> registries) throws Exception {
 
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 		for (SpRegistry registry : registries) {
@@ -89,8 +88,7 @@ public class ServiceProviderFileProcessor {
 					log.info("Starting processing registry #" + registry.getId());
 				}
 
-				setupRecordsConsumers(registry);
-
+				importConsumers(registry);
 				processRegistry(registry);
 			} catch (Exception e) {
 				String errMsg = "Failed processing registry: " + registry;
@@ -117,7 +115,7 @@ public class ServiceProviderFileProcessor {
 		log.info("No more records to process");
 	}
 
-	public void setupRecordsConsumers(SpRegistry registry) throws Exception {
+	public void importConsumers(SpRegistry registry) throws Exception {
 
 		serviceOperationsFactory.setDataSource(rawConsumersDataSource);
 		processHeader(registry);
@@ -131,13 +129,20 @@ public class ServiceProviderFileProcessor {
 		registryWorkflowManager.startProcessing(registry);
 	}
 
-	public void processRecords(SpRegistry registry, Set<Long> objectIds) throws Exception {
+	public void endRegistryProcessing(SpRegistry registry) throws TransitionNotAllowed {
+		registry = spRegistryService.read(stub(registry));
+		registryWorkflowManager.setNextSuccessStatus(registry);
+		registryWorkflowManager.endProcessing(registry);
+	}
 
-		setupRecordsConsumers(registry, objectIds);
+	public void processRecords(SpRegistry registry, Set<Long> recordIds) throws Exception {
 
 		try {
+			startRegistryProcessing(registry);
+			setupRecordsConsumers(registry, recordIds);
+
 			// refresh records
-			Collection<RegistryRecord> records = registryRecordService.findObjects(registry, objectIds);
+			Collection<RegistryRecord> records = registryRecordService.findObjects(registry, recordIds);
 			for (RegistryRecord record : records) {
 				processorTx.processRecord(registry, record);
 			}
@@ -145,10 +150,12 @@ public class ServiceProviderFileProcessor {
 			String errMsg = "Failed processing registry: " + registry;
 			log.error(errMsg, e);
 			throw new FlexPayException(errMsg, e);
+		} finally {
+			endRegistryProcessing(registry);
 		}
 	}
 
-	public void setupRecordsConsumers(SpRegistry registry, Set<Long> recordIds) throws Exception {
+	private void setupRecordsConsumers(SpRegistry registry, Set<Long> recordIds) throws Exception {
 
 		Collection<RegistryRecord> records = registryRecordService.findObjects(registry, recordIds);
 		RawDataSource<RawConsumerData> dataSource = new InMemoryRawConsumersDataSource(records);
@@ -158,25 +165,17 @@ public class ServiceProviderFileProcessor {
 		try {
 			// setup records registry to the same object
 			for (RegistryRecord record : records) {
-				if (stub(record.getSpRegistry()).getId().equals(registry.getId())) {
+				if (stub(record.getSpRegistry()).equals(stub(registry))) {
 					record.setSpRegistry(registry);
 				} else {
-					throw new FlexPayException("Only records of the same registry allowed for group processing");
+					throw new FlexPayException("Only records of the same registry are allowed for group processing");
 				}
 			}
 
-			startRegistryProcessing(registry);
 			setupRecordsConsumer(registry, dataSource);
 		} finally {
-			endRegistryProcessing(registry);
 			errorsSupport.unregisterAlias(dataSource);
 		}
-	}
-
-	public void endRegistryProcessing(SpRegistry registry) throws TransitionNotAllowed {
-		registry = spRegistryService.read(registry.getId());
-		registryWorkflowManager.setNextSuccessStatus(registry);
-		registryWorkflowManager.endProcessing(registry);
 	}
 
 	/**

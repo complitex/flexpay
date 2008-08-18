@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.dao.SpFileDao;
 import org.flexpay.eirc.dao.RegistryRecordDaoExt;
 import org.flexpay.eirc.dao.RegistryRecordDao;
+import org.flexpay.eirc.dao.RegistryFileDaoExt;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.RegistryRecord;
@@ -24,6 +25,7 @@ public class SpFileServiceImpl implements SpFileService {
 	private Logger log = Logger.getLogger(getClass());
 
 	private SpFileDao spFileDao;
+	private RegistryFileDaoExt registryFileDaoExt;
 	private RegistryRecordDao registryRecordDao;
 	private RegistryRecordDaoExt registryRecordDaoExt;
 
@@ -122,6 +124,16 @@ public class SpFileServiceImpl implements SpFileService {
 		return registryRecordDao.listRecordsForProcessing(registry.getId(), lowerBound, upperBound);
 	}
 
+	/**
+	 * Check if RegistryFile was loaded
+	 *
+	 * @param stub File stub
+	 * @return <code>true</code> if file already loaded, or <code>false</code> otherwise
+	 */
+	public boolean isLoaded(@NotNull Stub<SpFile> stub) {
+		return registryFileDaoExt.isLoaded(stub.getId());
+	}
+
 	public void setSpFileDao(SpFileDao spFileDao) {
 		this.spFileDao = spFileDao;
 	}
@@ -132,5 +144,9 @@ public class SpFileServiceImpl implements SpFileService {
 
 	public void setRegistryRecordDaoExt(RegistryRecordDaoExt registryRecordDaoExt) {
 		this.registryRecordDaoExt = registryRecordDaoExt;
+	}
+
+	public void setRegistryFileDaoExt(RegistryFileDaoExt registryFileDaoExt) {
+		this.registryFileDaoExt = registryFileDaoExt;
 	}
 }

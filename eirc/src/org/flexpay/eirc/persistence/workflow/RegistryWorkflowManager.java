@@ -7,6 +7,7 @@ import static org.flexpay.eirc.persistence.RegistryStatus.*;
 import org.flexpay.eirc.service.SpRegistryStatusService;
 import org.flexpay.eirc.dao.RegistryDao;
 import org.flexpay.eirc.dao.RegistryDaoExt;
+import org.flexpay.common.util.CollectionUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.log4j.Logger;
 
@@ -26,60 +27,45 @@ public class RegistryWorkflowManager {
 
 	// allowed transitions from source status code to target codes
 	// first status in lists is the successfull one, the second is transition with some processing error
-	private Map<Integer, List<Integer>> transitions = new HashMap<Integer, List<Integer>>();
+	private Map<Integer, List<Integer>> transitions = CollectionUtils.map();
 
-	private Set<Integer> processingStates = new HashSet<Integer>();
-	private Set<Integer> transitionsToProcessing = new HashSet<Integer>();
+	private Set<Integer> processingStates = CollectionUtils.set();
+	private Set<Integer> transitionsToProcessing = CollectionUtils.set();
 
 	{
-		List<Integer> targets = new ArrayList<Integer>();
-		targets.add(LOADED);
-		targets.add(LOADED_WITH_ERROR);
+		List<Integer> targets = CollectionUtils.list(LOADED, LOADED_WITH_ERROR);
 		transitions.put(LOADING, targets);
 		transitionsToProcessing.add(LOADED);
 
 		transitions.put(LOADED_WITH_ERROR, Collections.<Integer>emptyList());
 
-		targets = new ArrayList<Integer>();
-		targets.add(PROCESSING);
+		targets = CollectionUtils.list(PROCESSING);
 		transitions.put(LOADED, targets);
 
-		targets = new ArrayList<Integer>();
-		targets.add(PROCESSED);
-		targets.add(PROCESSING_WITH_ERROR);
-		targets.add(PROCESSING_CANCELED);
+		targets = CollectionUtils.list(PROCESSED, PROCESSING_WITH_ERROR, PROCESSING_CANCELED);
 		transitions.put(PROCESSING, targets);
 		processingStates.add(PROCESSING);
 
-		targets = new ArrayList<Integer>();
-		targets.add(ROLLBACKING);
-		targets.add(PROCESSED_WITH_ERROR); // allow set processed with errors if there are any not processed records
+		// allow set processed with errors if there are any not processed records
+		targets = CollectionUtils.list(ROLLBACKING, PROCESSED_WITH_ERROR);
 		transitions.put(PROCESSED, targets);
 
-		targets = new ArrayList<Integer>();
-		targets.add(PROCESSED_WITH_ERROR);
-		targets.add(PROCESSING_CANCELED);
+		targets = CollectionUtils.list(PROCESSED_WITH_ERROR, PROCESSING_CANCELED);
 		transitions.put(PROCESSING_WITH_ERROR, targets);
 		processingStates.add(PROCESSING_WITH_ERROR);
 
-		targets = new ArrayList<Integer>();
-		targets.add(PROCESSING);
-		targets.add(ROLLBACKING);
+		targets = CollectionUtils.list(PROCESSING, ROLLBACKING);
 		transitions.put(PROCESSED_WITH_ERROR, targets);
 		transitionsToProcessing.add(PROCESSED_WITH_ERROR);
 
-		targets = new ArrayList<Integer>();
-		targets.add(PROCESSING);
-		targets.add(ROLLBACKING);
+		targets = CollectionUtils.list(PROCESSING, ROLLBACKING);
 		transitions.put(PROCESSING_CANCELED, targets);
 		transitionsToProcessing.add(PROCESSING_CANCELED);
 
-		targets = new ArrayList<Integer>();
-		targets.add(ROLLBACKED);
+		targets = CollectionUtils.list(ROLLBACKED);
 		transitions.put(ROLLBACKING, targets);
 
-		targets = new ArrayList<Integer>();
-		targets.add(PROCESSING);
+		targets = CollectionUtils.list(PROCESSING);
 		transitions.put(ROLLBACKED, targets);
 		transitionsToProcessing.add(ROLLBACKED);
 	}
@@ -97,8 +83,11 @@ public class RegistryWorkflowManager {
 	}
 
 	/**
-	 * Check if registry can be processed, i.e. has one of the following statuses: {@link org.flexpay.eirc.persistence.RegistryStatus#LOADED},
-	 * {@link org.flexpay.eirc.persistence.RegistryStatus#ROLLBACKED}, {@link org.flexpay.eirc.persistence.RegistryStatus#PROCESSING_CANCELED} or {@link org.flexpay.eirc.persistence.RegistryStatus#PROCESSED_WITH_ERROR}
+	 * Check if registry can be processed, i.e. has one of the following statuses:
+	 * {@link org.flexpay.eirc.persistence.RegistryStatus#LOADED},
+	 * {@link org.flexpay.eirc.persistence.RegistryStatus#ROLLBACKED},
+	 * {@link org.flexpay.eirc.persistence.RegistryStatus#PROCESSING_CANCELED} or
+	 * {@link org.flexpay.eirc.persistence.RegistryStatus#PROCESSED_WITH_ERROR}
 	 *
 	 * @param registry Registry to check
 	 * @return <code>true</code> if registry is allowed to be processed

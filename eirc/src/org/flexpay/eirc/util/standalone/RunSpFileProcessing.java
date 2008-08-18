@@ -3,10 +3,9 @@ package org.flexpay.eirc.util.standalone;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import static org.flexpay.common.util.CollectionUtils.set;
-import org.flexpay.common.util.standalone.StandaloneTask;
-import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.util.standalone.StandaloneTask;
 import org.flexpay.eirc.actions.SpFileAction;
 import org.flexpay.eirc.actions.SpFileCreateAction;
 import org.flexpay.eirc.dao.RegistryDao;
@@ -14,7 +13,7 @@ import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.SpFileService;
 import org.flexpay.eirc.service.SpRegistryService;
-import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
+import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.File;
@@ -22,22 +21,21 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.Set;
 
 public class RunSpFileProcessing implements StandaloneTask {
 
 	@NonNls
 	private Logger log = Logger.getLogger(getClass());
 
-	private ServiceProviderFileProcessor fileProcessor;
+	private RegistryProcessor registryProcessor;
 	private SpFileCreateAction fileCreateAction;
 	private SpFileAction fileAction;
 	private SpFileService fileService;
 	private SpRegistryService registryService;
 	private RegistryDao registryDao;
 
-	public void setFileProcessor(ServiceProviderFileProcessor fileProcessor) {
-		this.fileProcessor = fileProcessor;
+	public void setRegistryProcessor(RegistryProcessor registryProcessor) {
+		this.registryProcessor = registryProcessor;
 	}
 
 	public void setFileCreateAction(SpFileCreateAction fileCreateAction) {
@@ -59,7 +57,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 	public void setRegistryService(SpRegistryService registryService) {
 		this.registryService = registryService;
 	}
-	
+
 	/**
 	 * Execute task
 	 */
@@ -90,10 +88,6 @@ public class RunSpFileProcessing implements StandaloneTask {
 		importRegistry(1L);
 	}
 
-	private void importRecords() throws Throwable {
-		importRegistryRecords(-1L, set(808862L, 808863L));
-	}
-
 	private void processOpenAccounts() throws Throwable {
 		processRegistry(1L);
 	}
@@ -112,7 +106,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 		try {
 			log.debug("Starting registry processing");
 			long time = System.currentTimeMillis();
-			fileProcessor.processRegistry(registry);
+			registryProcessor.processRegistry(registry);
 
 			if (log.isDebugEnabled()) {
 				log.debug("Processing took " + (System.currentTimeMillis() - time) + "ms");
@@ -131,28 +125,12 @@ public class RunSpFileProcessing implements StandaloneTask {
 		long time = System.currentTimeMillis();
 
 		log.debug("Starting registry importing");
-		fileProcessor.startRegistryProcessing(registry);
+		registryProcessor.startRegistryProcessing(registry);
 
 		try {
-			fileProcessor.setupRecordsConsumers(registry);
+			registryProcessor.importConsumers(registry);
 		} finally {
-			fileProcessor.endRegistryProcessing(registry);
-		}
-
-		if (log.isDebugEnabled()) {
-			log.debug("Import took " + (System.currentTimeMillis() - time) + "ms");
-		}
-	}
-
-	private void importRegistryRecords(Long registryId, Set<Long> recordIds) throws Throwable {
-		SpRegistry registry = registryService.readWithContainers(new Stub<SpRegistry>(registryId));
-
-		long time = System.currentTimeMillis();
-		fileProcessor.startRegistryProcessing(registry);
-		try {
-			fileProcessor.setupRecordsConsumers(registry, recordIds);
-		} finally {
-			fileProcessor.endRegistryProcessing(registry);
+			registryProcessor.endRegistryProcessing(registry);
 		}
 
 		if (log.isDebugEnabled()) {

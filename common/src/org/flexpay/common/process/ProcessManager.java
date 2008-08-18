@@ -7,6 +7,7 @@ import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.process.exception.ProcessManagerConfigurationException;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.job.JobManager;
+import org.flexpay.common.util.CollectionUtils;
 import org.jbpm.JbpmConfiguration;
 import org.jbpm.JbpmContext;
 import org.jbpm.context.exe.ContextInstance;
@@ -33,10 +34,11 @@ public class ProcessManager implements Runnable {
 	private volatile static Thread localThread;
 	private volatile boolean stop = false;
 	private volatile Object sleepSemaphore = new Object();
+
 	private static final Logger log = Logger.getLogger(ProcessManager.class);
 
 
-	private HashMap<Long, Process> running = new HashMap<Long, Process>();
+	private Map<Long, Process> running = CollectionUtils.map();
 //	private HashMap<Long, Process> waiting = new HashMap<Long, Process>();
 
 	public static final int RESCAN_FREQ = 10000; //@todo into global
@@ -243,7 +245,7 @@ public class ProcessManager implements Runnable {
 	 * Init process by process definition name
 	 *
 	 * @param processDefinitionName name of process definition
-	 * @return ID of process definition
+	 * @return ID of process instance
 	 * @throws ProcessDefinitionException when process definition has an error
 	 * @throws ProcessInstanceException   when jbpm can't instanciate process from process definition
 	 */
@@ -259,14 +261,16 @@ public class ProcessManager implements Runnable {
 			jbpmContext.close();
 			log.error("initProcess: findLatestProcessDefinition", e);
 			throw new ProcessDefinitionException("Can't access ProcessDefinition for " + processDefinitionName);
-
 		}
 		if (processDefinition == null) {
 			log.error("initProcess: Can't find process definition for name: " + processDefinitionName);
 			throw new ProcessDefinitionException("initProcess: Can't find process definition for name: " + processDefinitionName);
 		}
 
-		log.error("initProcess: Initializing  process. Process Definition id = " + processDefinition.getId() + " name = " + processDefinition.getName() + " version = " + processDefinition.getVersion());
+		if (log.isInfoEnabled()) {
+			log.info("initProcess: Initializing  process. Process Definition id = " + processDefinition.getId() +
+					 " name = " + processDefinition.getName() + " version = " + processDefinition.getVersion());
+		}
 
 		try {
 			ProcessInstance processInstance = new ProcessInstance(processDefinition);
@@ -287,15 +291,15 @@ public class ProcessManager implements Runnable {
 	 * @return HashMap with process context parameters
 	 * @throws ProcessInstanceException when can't get process parameters
 	 */
-	public synchronized HashMap getProcessParameters(Long processID) throws ProcessInstanceException {
-		HashMap result = null;
+	public synchronized Map getProcessParameters(Long processID) throws ProcessInstanceException {
+		Map result = null;
 		GraphSession graphSession = jbpmConfiguration.createJbpmContext().getGraphSession();
 		try {
 			ProcessInstance processInstance = graphSession.loadProcessInstance(processID);
 			if (processInstance != null) {
 				ContextInstance contextInstance = processInstance.getContextInstance();
 				if (contextInstance != null) {
-					result = (HashMap) contextInstance.getVariables();
+					result = (Map) contextInstance.getVariables();
 				}
 			}
 		} catch (RuntimeException e) {
@@ -336,10 +340,12 @@ public class ProcessManager implements Runnable {
 	 *
 	 * @param processDefinitionName process definitiona name
 	 * @param parameters			initial context variables
+	 * @return process instance identifier
 	 * @throws ProcessInstanceException   when can't instantiate process instance
 	 * @throws ProcessDefinitionException when process definition not found
 	 */
-	public synchronized void createProcess(String processDefinitionName, Map<Serializable, Serializable> parameters) throws ProcessInstanceException, ProcessDefinitionException {
+	public synchronized long createProcess(String processDefinitionName, Map<Serializable, Serializable> parameters)
+			throws ProcessInstanceException, ProcessDefinitionException {
 		long processInstanceID = initProcess(processDefinitionName);
 		//starting process
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
@@ -355,9 +361,13 @@ public class ProcessManager implements Runnable {
 		Token token = processInstance.getRootToken();
 		token.signal();
 		jbpmContext.close();
-		log.info("initProcess: Process Instance id = " + processInstanceID + " started.");
+
+		if (log.isInfoEnabled()) {
+			log.info("initProcess: Process Instance id = " + processInstanceID + " started.");
+		}
 
 //        waiting.put((long) 1, process);
+		return processInstanceID;
 	}
 
 	/**
@@ -382,14 +392,15 @@ public class ProcessManager implements Runnable {
 		contextInstance.setVariable("StartTaskCounter", startTaskCounter, task.getToken());
 
 		if (startTaskCounter <= startTaskLimit) {
-			HashMap<Serializable, Serializable> params = (HashMap<Serializable, Serializable>) contextInstance.getVariables();
+			Map<Serializable, Serializable> params = contextInstance.getVariables();
 
 			log.info("Starting task \"" + task.getName() + "\" (" + task.getId() + ", pid - " + processInstance.getId() + ")");
 
 			if (null == task.getStart()) {
 				task.start();
 			} else {
-				log.info("Task \"" + task.getName() + "\" (" + task.getId() + ", pid - " + processInstance.getId() + ")" + " restarted. Recovering from failure.");
+				log.info("Task '" + task.getName() + "' (" + task.getId() + ", pid=" + processInstance.getId() + ")" +
+						 " restarted. Recovering from failure.");
 			}
 
 			try {
@@ -401,7 +412,8 @@ public class ProcessManager implements Runnable {
 			running.put(task.getId(), new Process());
 			return true;
 		} else {
-			log.info("Exceded limit (" + startTaskLimit + ") of starting task \"" + task.getName() + "\" (" + task.getId() + ", pid - " + processInstance.getId() + "). Process ended.");
+			log.info("Exceded limit (" + startTaskLimit + ") of starting task '" + task.getName() + "' (" +
+					 task.getId() + ", pid - " + processInstance.getId() + "). Process ended.");
 			processInstance.end();
 			task.end(Job.RESULT_ERROR);
 			//set status to failed
@@ -473,7 +485,7 @@ public class ProcessManager implements Runnable {
 	 * @param parameters process parameters
 	 * @throws ProcessInstanceException when can't start process
 	 */
-	public void startProcess(Long processID, HashMap<Serializable, Serializable> parameters)
+	public void startProcess(Long processID, Map<Serializable, Serializable> parameters)
 			throws ProcessInstanceException {
 		try {
 			JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
@@ -537,6 +549,7 @@ public class ProcessManager implements Runnable {
 		this.jbpmConfiguration = jbpmConfiguration;
 	}
 
+	@SuppressWarnings ({"unchecked"})
 	public List<Process> getProcessList() {
 		ArrayList<Process> processList = new ArrayList<Process>();
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
@@ -565,7 +578,8 @@ public class ProcessManager implements Runnable {
 	}
 
 	@NotNull
-	public Process getProcessInastanceInfo(@NotNull Long processId) {
+	@SuppressWarnings ({"unchecked"})
+	public Process getProcessInstanceInfo(@NotNull Long processId) {
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
 		Process process = new Process();
 		ProcessInstance processInstance = jbpmContext.getProcessInstance(processId);
@@ -603,6 +617,28 @@ public class ProcessManager implements Runnable {
 				jbpmContext.close();
 				return false;
 			}
+		}
+	}
+
+	/**
+	 * Wait for process completion
+	 *
+	 * @param processId ProcessInstance id
+	 * @throws InterruptedException if waiting thread is interrupted
+	 */
+	public void join(long processId) throws InterruptedException {
+		while (true) {
+			Process info = getProcessInstanceInfo(processId);
+			if (info.getId() != processId) {
+				return;
+			}
+
+			ProcessState state = info.getProcessState();
+			if (state == ProcessState.COMPLITED || state == ProcessState.COMPLITED_WITH_ERRORS) {
+				return;
+			}
+
+			Thread.sleep(50);
 		}
 	}
 

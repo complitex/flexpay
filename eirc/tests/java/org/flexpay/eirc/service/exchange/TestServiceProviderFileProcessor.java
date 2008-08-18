@@ -41,7 +41,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	private Logger log = Logger.getLogger(getClass());
 
 	@Autowired
-	protected ServiceProviderFileProcessor fileProcessor;
+	protected RegistryProcessor registryProcessor;
 	@Autowired
 	protected ExchangeHelper exchangeHelper;
 	protected SPService spService;
@@ -68,7 +68,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree.txt");
 
 		try {
-			fileProcessor.processFile(file);
+			registryProcessor.processFile(file);
 		} finally {
 			deleteRecords(file);
 			deleteFile(file);
@@ -82,7 +82,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open.txt");
 
 		try {
-			fileProcessor.processFile(file);
+			registryProcessor.processFile(file);
 		} catch (FlexPayExceptionContainer c) {
 			for (Exception e : c.getExceptions()) {
 				e.printStackTrace();
@@ -100,7 +100,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
 
 		try {
-			fileProcessor.processFile(file);
+			registryProcessor.processFile(file);
 		} catch (FlexPayExceptionContainer c) {
 			for (Exception e : c.getExceptions()) {
 				e.printStackTrace();
@@ -119,7 +119,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2.txt");
 
 		try {
-			fileProcessor.processFile(file);
+			registryProcessor.processFile(file);
 		} catch (FlexPayExceptionContainer c) {
 			for (Exception e : c.getExceptions()) {
 				e.printStackTrace();
@@ -138,7 +138,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_quittances_small.txt");
 
 		try {
-			fileProcessor.processFile(file);
+			registryProcessor.processFile(file);
 		} catch (FlexPayExceptionContainer c) {
 			for (Exception e : c.getExceptions()) {
 				e.printStackTrace();
@@ -157,7 +157,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_quittances.txt");
 
 		try {
-			fileProcessor.processFile(file);
+			registryProcessor.processFile(file);
 		} catch (FlexPayExceptionContainer c) {
 			for (Exception e : c.getExceptions()) {
 				e.printStackTrace();
@@ -176,7 +176,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		SpFile file = new SpFile(265L);
 
 		try {
-			fileProcessor.processFile(file);
+			registryProcessor.processFile(file);
 
 			checkOpenRegistryRecords(file);
 		} catch (FlexPayExceptionContainer c) {

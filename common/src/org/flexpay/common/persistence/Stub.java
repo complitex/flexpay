@@ -1,13 +1,17 @@
 package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.NonNls;
+
+import java.io.Serializable;
 
 /**
  * Stub is a simple holder of DomainObject ids
  */
-public class Stub<T extends DomainObject> {
+public class Stub<T extends DomainObject> implements Serializable {
 
 	@NonNls
 	private static final String INVALID_STUB_ID = "Invalid stub id: ";
@@ -33,5 +37,30 @@ public class Stub<T extends DomainObject> {
 
 	public static <T extends DomainObject> Stub<T> stub(@NotNull T o) {
 		return new Stub<T>(o);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Stub)) {
+			return false;
+		}
+
+		Stub stub = (Stub) o;
+
+		return id.equals(stub.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
+
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("id", id)
+				.toString();
 	}
 }
