@@ -3,6 +3,7 @@ package org.flexpay.eirc.actions;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.exception.FlexPayException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,12 +18,19 @@ public class SpFileAction extends FPActionSupport {
 
     private ProcessManager processManager;
 
+	private Long processId = null;
+
     @NotNull
 	public String doExecute() throws Exception {
+
+		if (spFileId == null || spFileId <= 0) {
+			throw new FlexPayException("Invalid registry id: " + spFileId);
+		}
+
         if ("loadToDb".equals(action)) {
             Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
             contextVariables.put("FileId", spFileId);
-            processManager.createProcess("ParseRegistryProcess", contextVariables);
+            processId = processManager.createProcess("ParseRegistryProcess", contextVariables);
         } else if ("loadFromDb".equals(action)) {
             // SzFileUtil.loadFromDb(szFile);
         } else if ("deleteFromDb".equals(action)) {
@@ -31,7 +39,7 @@ public class SpFileAction extends FPActionSupport {
             // SzFileUtil.delete(szFile);
         }
 
-        return SUCCESS;
+        return REDIRECT_SUCCESS;
     }
 
     /**
@@ -44,7 +52,7 @@ public class SpFileAction extends FPActionSupport {
     @NotNull
 	@Override
     protected String getErrorResult() {
-        return SUCCESS;
+        return REDIRECT_SUCCESS;
     }
 
     /**
@@ -61,7 +69,11 @@ public class SpFileAction extends FPActionSupport {
         this.action = action;
     }
 
-    public void setProcessManager(ProcessManager processManager) {
+	public Long getProcessId() {
+		return processId;
+	}
+
+	public void setProcessManager(ProcessManager processManager) {
         this.processManager = processManager;
     }
 }

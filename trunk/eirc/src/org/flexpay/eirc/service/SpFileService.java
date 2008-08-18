@@ -69,4 +69,12 @@ public interface SpFileService {
 	 * @return list of records
 	 */
 	List<RegistryRecord> getRecordsForProcessing(@NotNull Stub<SpRegistry> registry, Page<RegistryRecord> pager, Long[] minMaxIds);
+
+	/**
+	 * Check if RegistryFile was loaded
+	 *
+	 * @param stub File stub
+	 * @return <code>true</code> if file already loaded, or <code>false</code> otherwise
+	 */
+	boolean isLoaded(@NotNull Stub<SpFile> stub);
 }

@@ -100,7 +100,7 @@ public class JobManager implements BeanFactoryAware {
         jobParameters.put(job.getId(), param);
     }
 
-    public synchronized boolean addJob(long processId, long taskId, String jobName, HashMap<Serializable, Serializable> parameters)
+    public synchronized boolean addJob(long processId, long taskId, String jobName, Map<Serializable, Serializable> parameters)
         throws JobInstantiationException, JobClassNotFoundException, JobConfigurationNotFoundException{
 
         if (beanFactory.containsBean(jobName)){

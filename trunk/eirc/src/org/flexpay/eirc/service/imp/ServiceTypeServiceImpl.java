@@ -94,6 +94,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 		}
 	}
 
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(ServiceType type) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
@@ -187,7 +188,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	private Map<Long, ServiceType> id2TypeCache;
 
 	private void initializeServiceTypesCache() {
-		log.debug("Initialising caches");
+		log.debug("Initializing caches");
 		List<ServiceType> types = serviceTypeDao.findServiceTypes(new Page<ServiceType>(10000, 1));
 		updateCaches(types);
 	}

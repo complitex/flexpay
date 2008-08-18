@@ -38,10 +38,11 @@ public interface SpRegistryService {
 	/**
 	 * Read SpRegistry object by its unique id
 	 *
-	 * @param id SpRegistry key
+	 * @param stub Registry stub
 	 * @return SpRegistry object, or <code>null</code> if object not found
 	 */
-	SpRegistry read(Long id);
+	@Nullable
+	SpRegistry read(@NotNull Stub<SpRegistry> stub);
 
 	/**
 	 * Read Registry with containers included

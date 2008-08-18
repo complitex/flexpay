@@ -17,28 +17,40 @@ public class TestProcess extends SpringBeanAwareTestCase {
 	@NotTransactional
 	public void testLoad() {
 
-		ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("WEB-INF/eirc/process/ParseRegistryProcess.xml");
+		ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
+				"WEB-INF/eirc/process/ParseRegistryProcess.xml");
         processManager.deployProcessDefinition(processDefinition, true);
     }
 
     @Test
 	@NotTransactional
 	public void testLoadProcessRegistryWorkflow() {
-        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("WEB-INF/eirc/process/ProcessRegistryWorkflow.xml");
+        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
+				"WEB-INF/eirc/process/ProcessRegistryWorkflow.xml");
+        processManager.deployProcessDefinition(processDefinition, true);
+    }
+
+    @Test
+	@NotTransactional
+	public void testLoadProcessRegistryRecordsWorkflow() {
+        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
+				"WEB-INF/eirc/process/ProcessRegistryRecordsWorkflow.xml");
         processManager.deployProcessDefinition(processDefinition, true);
     }
 
     @Test
 	@NotTransactional
 	public void testLoadGenerateQuitancesWorkflow() {
-        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("WEB-INF/eirc/process/GenerateQuittances.xml");
+        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
+				"WEB-INF/eirc/process/GenerateQuittances.xml");
         processManager.deployProcessDefinition(processDefinition, true);
     }
     
     @Test
 	@NotTransactional
 	public void testLoadGenerateQuitancePDFWorkflow() {
-        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("WEB-INF/eirc/process/GenerateQuittancePDF.xml");
+        ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource(
+				"WEB-INF/eirc/process/GenerateQuittancePDF.xml");
         processManager.deployProcessDefinition(processDefinition, true);
     }
 }

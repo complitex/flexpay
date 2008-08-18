@@ -44,9 +44,11 @@
 		</property>
 	</bean>
 
-	<bean id="spRegistryDaoExt" class="org.flexpay.eirc.dao.imp.RegistryDaoExtImpl">
-		<property name="hibernateTemplate" ref="hibernateTemplate" />
-	</bean>
+	<bean id="spRegistryDaoExt" class="org.flexpay.eirc.dao.imp.RegistryDaoExtImpl"
+		p:hibernateTemplate-ref="hibernateTemplate" />
+
+	<bean id="registryFileDaoExt" class="org.flexpay.eirc.dao.imp.RegistryFileDaoExtImpl"
+		p:hibernateTemplate-ref="hibernateTemplate" />
 
 
 	<bean id="spFileDao" parent="abstractDao">

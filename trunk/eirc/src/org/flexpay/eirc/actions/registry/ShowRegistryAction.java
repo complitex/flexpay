@@ -4,6 +4,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
 import org.flexpay.eirc.persistence.SpRegistry;
@@ -39,7 +40,7 @@ public class ShowRegistryAction extends FPActionSupport {
 			return ERROR;
 		}
 		importErrorTypeFilter.init(classToTypeRegistry);
-		registry = registryService.read(registry.getId());
+		registry = registryService.read(stub(registry));
 		records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, pager);
 
 		if (log.isInfoEnabled()) {

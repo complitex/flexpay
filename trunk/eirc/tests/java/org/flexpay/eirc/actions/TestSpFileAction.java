@@ -1,17 +1,23 @@
 package org.flexpay.eirc.actions;
 
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.process.ProcessManager;
+import static org.flexpay.common.util.CollectionUtils.ar;
 import org.flexpay.eirc.dao.RegistryDao;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.common.process.ProcessManager;
-import static org.flexpay.common.util.CollectionUtils.ar;
+import org.flexpay.eirc.service.SpFileService;
 import org.jetbrains.annotations.NonNls;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.NotTransactional;
+import org.apache.log4j.Logger;
 
 public class TestSpFileAction extends TestSpFileCreateAction {
+
+	private Logger log = Logger.getLogger(getClass());
 
 	@Autowired
 	protected SpFileAction fileAction;
@@ -19,6 +25,8 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	protected RegistryDao registryDao;
 	@Autowired
 	protected ProcessManager processManager;
+	@Autowired
+	protected SpFileService spFileService;
 
 	@Test
 	@NotTransactional
@@ -51,15 +59,20 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	}
 
 	protected void deleteRecords(SpFile file) {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Deleting registries of file: " + file);
+		}
+
 		for (SpRegistry registry : fileService.getRegistries(file)) {
-//			registryDao.deleteQuittances(registry.getId());
-//			registryDao.deleteRecordContainers(registry.getId());
 			deleteQuittances(registry.getId());
 			deleteContainers(registry.getId());
 			registryDao.deleteRegistryContainers(registry.getId());
 			registryDao.deleteRecords(registry.getId());
 			registryDao.delete(registry);
 		}
+
+		log.debug("Deleted!");
 	}
 
 	private void deleteQuittances(Long registryId) {
@@ -87,12 +100,21 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 		fileAction.setAction("loadToDb");
 
 		try {
-			assertEquals("Invalid Struts action result", "success", fileAction.execute());
-		} catch (Exception e) {
+			if (log.isDebugEnabled()) {
+				log.debug("Starting upload file: " + newFile);
+			}
+			assertEquals("Invalid Struts action result", "redirectSuccess", fileAction.execute());
+
+			processManager.join(fileAction.getProcessId());
+
+			assertTrue("File is not loaded", spFileService.isLoaded(stub(newFile)));
+			log.debug("Uploaded!");
+		} catch (Throwable e) {
 			deleteRecords(newFile);
 			deleteFile(newFile);
 			throw e;
 		}
+
 		return newFile;
 	}
 }

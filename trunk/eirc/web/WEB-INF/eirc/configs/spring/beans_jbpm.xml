@@ -11,7 +11,11 @@
 		  p:spFileService-ref="spFileService" />
 
 	<bean name="registryProcessJob" class="org.flexpay.eirc.process.registry.RegistryProcessJob" scope="prototype"
-		  p:providerFileProcessor-ref="serviceProviderFileProcessor"
+		  p:registryProcessor-ref="registryProcessor"
+		  p:registryService-ref="spRegistryService" />
+
+	<bean name="registryRecordsProcessJob" class="org.flexpay.eirc.process.registry.RegistryRecordsProcessJob" scope="prototype"
+		  p:registryProcessor-ref="registryProcessor"
 		  p:registryService-ref="spRegistryService" />
 
 	<bean name="generateQuitancePDFJob" class="org.flexpay.eirc.process.quittance.GenerateQuittancePDFJob" scope="prototype"

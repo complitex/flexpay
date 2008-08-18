@@ -15,8 +15,8 @@ import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
@@ -45,31 +45,32 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 			"  <end-state name='end' />" +
 			"</process-definition>";
 
-	private static final String testProcessDefinition = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-														"\n" +
-														"<process-definition name=\"testProcessDefinition2\"\n" +
-														"    xmlns=\"http://jbpm.org/3/jpdl\"\n" +
-														"    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
-														"    xsi:schemaLocation=\"http://jbpm.org/3/jpdl http://jbpm.org/xsd/jpdl-3.0.xsd\">\n" +
-														"\n" +
-														"  <swimlane name=\"worker\">\n" +
-														"    <assignment class=\"org.flexpay.common.process.JobManagerAssignmentHandler\" />\n" +
-														"  </swimlane>\n" +
-														"\n" +
-														"\n" +
-														"  <start-state name=\"start\">\n" +
-														"    <transition to=\"MockJobFirst\" />\n" +
-														"  </start-state>\n" +
-														"\n" +
-														"  <task-node name=\"MockJobFirst\">\n" +
-														"    <task swimlane=\"worker\" blocking=\"yes\">\n" +
-														"    </task>\n" +
-														"    <transition name=\"next\" to=\"MockJobLast\" />\n" +
-														"    <transition name=\"error\" to=\"end\" />\n" +
-														"  </task-node>\n" +
-														"\n" +
-														"  <task-node name=\"MockJobLast\">\n" +
-														"    <task swimlane=\"worker\" blocking=\"yes\">\n" +
+	private static final String testProcessDefinition =
+			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+			"\n" +
+			"<process-definition name=\"testProcessDefinition2\"\n" +
+			"    xmlns=\"http://jbpm.org/3/jpdl\"\n" +
+			"    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" +
+			"    xsi:schemaLocation=\"http://jbpm.org/3/jpdl http://jbpm.org/xsd/jpdl-3.0.xsd\">\n" +
+			"\n" +
+			"  <swimlane name=\"worker\">\n" +
+			"    <assignment class=\"org.flexpay.common.process.JobManagerAssignmentHandler\" />\n" +
+			"  </swimlane>\n" +
+			"\n" +
+			"\n" +
+			"  <start-state name=\"start\">\n" +
+			"    <transition to=\"MockJobFirst\" />\n" +
+			"  </start-state>\n" +
+			"\n" +
+			"  <task-node name=\"MockJobFirst\">\n" +
+			"    <task swimlane=\"worker\" blocking=\"yes\">\n" +
+			"    </task>\n" +
+			"    <transition name=\"next\" to=\"MockJobLast\" />\n" +
+			"    <transition name=\"error\" to=\"end\" />\n" +
+			"  </task-node>\n" +
+			"\n" +
+			"  <task-node name=\"MockJobLast\">\n" +
+			"    <task swimlane=\"worker\" blocking=\"yes\">\n" +
 //            "        <event type=\"task-end\">\n" +
 //            "            <action class=\"org.flexpay.common.process.TestEvent\" >\n" +
 //            "                <eventExecuted>EVENT EXECUTED</eventExecuted>\n" +

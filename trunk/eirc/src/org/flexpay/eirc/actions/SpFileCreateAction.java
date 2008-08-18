@@ -11,23 +11,30 @@ import java.io.File;
 import java.util.Date;
 
 public class SpFileCreateAction extends FPActionSupport {
+
 	private File upload;
 	private String uploadFileName;
 
 	private SpFileService spFileService;
 	private boolean isUploaded = false;
 
+	private SpFile spFile;
+
 	@NotNull
 	public String doExecute() throws Exception {
 		if (isSubmit()) {
 			if (StringUtils.isNotEmpty(uploadFileName)) {
-				SpFile spFile = new SpFile();
+				spFile = new SpFile();
 				spFile.saveToFileSystem(upload);
 
 				spFile.setUserName("vld");
 				spFile.setRequestFileName(uploadFileName);
 				spFile.setImportDate(new Date());
 				try {
+					if (log.isDebugEnabled()) {
+						log.debug("Creating RegistryFile: " + spFile);
+					}
+
 					spFileService.create(spFile);
 				} catch (FlexPayException e) {
 					spFile.getRequestFile().delete();
@@ -52,6 +59,10 @@ public class SpFileCreateAction extends FPActionSupport {
 	@Override
 	protected String getErrorResult() {
 		return INPUT;
+	}
+
+	public SpFile getSpFile() {
+		return spFile;
 	}
 
 	public void setUpload(File upload) {
