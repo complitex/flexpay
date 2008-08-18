@@ -11,7 +11,4 @@ import org.flexpay.common.service.ParentService;
 public interface TownService extends
 		ParentService<TownFilter>,
 		NameTimeDependentService<TownName, TownNameTemporal, Town, TownNameTranslation> {
-	
-	public Town readFull(Long id);
-
 }

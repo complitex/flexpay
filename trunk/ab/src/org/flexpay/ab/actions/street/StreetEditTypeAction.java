@@ -8,6 +8,7 @@ import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.util.DateUtil;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 
 public class StreetEditTypeAction extends FPActionSupport {
@@ -21,7 +22,7 @@ public class StreetEditTypeAction extends FPActionSupport {
 
 	@NotNull
 	public String doExecute() throws Exception {
-		object = streetService.read(object.getId());
+		object = streetService.readFull(stub(object));
 		temporal.setObject(object);
 
 		// for get request set initial data from existing temporal

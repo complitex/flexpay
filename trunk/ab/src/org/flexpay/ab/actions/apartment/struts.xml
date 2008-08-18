@@ -27,14 +27,14 @@
 			<result name="redirectSuccess" type="redirect-action">list_apartments</result>
 		</action>
 
-		<action name="apartmentRegistrationsAction" class="apartmentRegistrationsAction">
+		<action name="apartmentRegistrations" class="apartmentRegistrationsAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">APARTMENT_READ</param>
 			</interceptor-ref>
 			<result name="success" type="tiles">ab.apartment.registrations</result>
 		</action>
 
-		<action name="apartmentRegistrationsHistoryAction" class="apartmentRegistrationsAction">
+		<action name="apartmentRegistrationsHistory" class="apartmentRegistrationsAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">APARTMENT_READ</param>
 			</interceptor-ref>

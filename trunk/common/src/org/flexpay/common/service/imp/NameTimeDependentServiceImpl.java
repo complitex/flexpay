@@ -109,11 +109,12 @@ public abstract class NameTimeDependentServiceImpl<
 	/**
 	 * Read name time-dependent object by its unique id
 	 *
-	 * @param id key
+	 * @param stub Object stub
 	 * @return object, or <code>null</code> if not found
 	 */
-	public NTD read(Long id) {
-		return getNameTimeDependentDao().readFull(id);
+	@Nullable
+	public final NTD readFull(@NotNull Stub<NTD> stub) {
+		return getNameTimeDependentDao().readFull(stub.getId());
 	}
 
 	/**

@@ -223,4 +223,9 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		}
 		return typeTanslation;
 	}
+
+	@NotNull
+	public Stub<Town> getTownStub() {
+		return new Stub<Town>(getParent().getId());
+	}
 }

@@ -1,6 +1,8 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.jetbrains.annotations.Nullable;
@@ -29,11 +31,15 @@ public class Building extends DomainObjectWithStatus {
 
 	@NotNull
 	public District getDistrict() {
-		return this.district;
+		return district;
 	}
 
 	public void setDistrict(@Nullable District district) {
 		this.district = district;
+	}
+
+	public Stub<District> getDistrictStub() {
+		return stub(district);
 	}
 
 	@NotNull
@@ -47,7 +53,7 @@ public class Building extends DomainObjectWithStatus {
 
 	@NotNull
 	public Set<Buildings> getBuildingses() {
-		return this.buildingses;
+		return buildingses;
 	}
 
 	public void setBuildingses(@NotNull Set<Buildings> buildingses) {
@@ -56,7 +62,7 @@ public class Building extends DomainObjectWithStatus {
 
 	@NotNull
 	public Set<Apartment> getApartments() {
-		return this.apartments;
+		return apartments;
 	}
 
 	public void setApartments(@NotNull Set<Apartment> apartments) {

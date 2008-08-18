@@ -4,13 +4,10 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.NameDateInterval;
-import org.flexpay.common.persistence.NameTimeDependentChild;
-import org.flexpay.common.persistence.TemporaryValue;
-import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.persistence.*;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Date;
@@ -48,10 +45,11 @@ public interface NameTimeDependentService<
 	/**
 	 * Read object by its unique id
 	 *
-	 * @param id key
+	 * @param stub Object stub
 	 * @return object, or <code>null</code> if object not found
 	 */
-	public NTD read(Long id);
+	@Nullable
+	public NTD readFull(@NotNull Stub<NTD> stub);
 
 	/**
 	 * Read object temporal name by its unique id

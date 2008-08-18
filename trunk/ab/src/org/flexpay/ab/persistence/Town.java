@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TimeLine;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -129,5 +130,10 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 				.append(typesTimeLine, that.typesTimeLine)
 				.appendSuper(super.equals(obj))
 				.isEquals();
+	}
+
+	@NotNull
+	public Stub<Region> getRegionStub() {
+		return new Stub<Region>(getParent().getId());
 	}
 }

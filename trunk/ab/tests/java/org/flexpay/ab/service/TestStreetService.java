@@ -61,7 +61,7 @@ public class TestStreetService extends TransactionalSpringBeanAwareTestCase {
 
 	@Test
 	public void testGetStreetName() throws Throwable {
-		Town town = townService.read(ApplicationConfig.getDefaultTown().getId());
+		Town town = townService.readFull(ApplicationConfig.getDefaultTownStub());
 		if (town.getStreets().isEmpty()) {
 			System.err.println("No streets in default town!");
 			return;

@@ -116,7 +116,7 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 
 			if (buildingId != null) {
 				Building building = buildingService.readBuilding(buildingId);
-				district = districtService.read(building.getDistrict().getId());
+				district = districtService.readFull(building.getDistrictStub());
 			} else {
 				districtList = districtService.findByTown(townFilter
 						.getSelectedId());
