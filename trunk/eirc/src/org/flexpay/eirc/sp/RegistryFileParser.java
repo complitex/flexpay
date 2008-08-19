@@ -38,8 +38,8 @@ public class RegistryFileParser {
 
 	private SpRegistryService registryService;
 	private SpRegistryRecordService spRegistryRecordService;
-	private SpRegistryTypeService spRegistryTypeService;
-	private SpRegistryArchiveStatusService spRegistryArchiveStatusService;
+	private SpRegistryTypeService registryTypeService;
+	private RegistryArchiveStatusService registryArchiveStatusService;
 	private SessionUtils sessionUtils;
 
 	private RegistryWorkflowManager registryWorkflowManager;
@@ -146,7 +146,7 @@ public class RegistryFileParser {
 		return registry;
 	}
 
-	@Transactional (readOnly = true, propagation = Propagation.REQUIRED)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	private SpRegistry processHeader(SpFile spFile, List<String> messageFieldList) throws Exception {
 		if (messageFieldList.size() < 11) {
 			throw new SpFileFormatException(
@@ -160,14 +160,14 @@ public class RegistryFileParser {
 		DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
 		SpRegistry newRegistry = new SpRegistry();
-		newRegistry.setArchiveStatus(spRegistryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
+		newRegistry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 		registryWorkflowManager.setInitialStatus(newRegistry);
 		newRegistry.setSpFile(spFile);
 		try {
 			int n = 0;
 			newRegistry.setRegistryNumber(Long.valueOf(messageFieldList.get(++n)));
 			String value = messageFieldList.get(++n);
-			RegistryType registryType = spRegistryTypeService.read(Long.valueOf(value));
+			RegistryType registryType = registryTypeService.read(Long.valueOf(value));
 			if (registryType == null) {
 				throw new FlexPayException("Unknown registry type field: " + value);
 			}
@@ -247,7 +247,7 @@ public class RegistryFileParser {
 	@Transactional (readOnly = true, propagation = Propagation.REQUIRED)
 	private void processRecord(List<String> messageFieldList, SpRegistry registry, Long[] recordCounter) throws Exception {
 		if (registry == null) {
-			throw new SpFileFormatException("Error - registry must start before record");
+			throw new SpFileFormatException("Error - registry header should go before record");
 		}
 
 		if (messageFieldList.size() < 10) {
@@ -277,7 +277,7 @@ public class RegistryFileParser {
 			Service service = consumerService.findService(
 					registry.getServiceProvider(), record.getServiceCode());
 			if (service == null) {
-				throw new SpFileFormatException("Unknown service code: "+record.getServiceCode());
+				log.warn("Unknown service code: "+record.getServiceCode());
 			}
 			record.setService(service);
 
@@ -433,17 +433,17 @@ public class RegistryFileParser {
 	}
 
 	/**
-	 * @param spRegistryTypeService the spRegistryTypeService to set
+	 * @param registryTypeService the spRegistryTypeService to set
 	 */
-	public void setSpRegistryTypeService(SpRegistryTypeService spRegistryTypeService) {
-		this.spRegistryTypeService = spRegistryTypeService;
+	public void setRegistryTypeService(SpRegistryTypeService registryTypeService) {
+		this.registryTypeService = registryTypeService;
 	}
 
 	/**
-	 * @param spRegistryArchiveStatusService the spRegistryArchiveStatusService to set
+	 * @param registryArchiveStatusService the spRegistryArchiveStatusService to set
 	 */
-	public void setSpRegistryArchiveStatusService(SpRegistryArchiveStatusService spRegistryArchiveStatusService) {
-		this.spRegistryArchiveStatusService = spRegistryArchiveStatusService;
+	public void setRegistryArchiveStatusService(RegistryArchiveStatusService registryArchiveStatusService) {
+		this.registryArchiveStatusService = registryArchiveStatusService;
 	}
 
 	public void setOrganisationService(OrganisationService organisationService) {

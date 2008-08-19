@@ -6,35 +6,39 @@ import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.Town;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.ImportError;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CRCUtil;
 import org.flexpay.eirc.actions.TestSpFileAction;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.persistence.exchange.Operation;
+import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
+import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import org.flexpay.eirc.service.SPService;
+import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.SpRegistryService;
 import org.flexpay.eirc.sp.RegistryFileParser;
 import org.flexpay.eirc.sp.SpFileReader;
 import org.flexpay.eirc.test.RandomObjects;
 import org.flexpay.eirc.util.config.ApplicationConfig;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.test.annotation.NotTransactional;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 public class TestServiceProviderFileProcessor extends TestSpFileAction {
 
@@ -45,6 +49,8 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	@Autowired
 	protected ExchangeHelper exchangeHelper;
 	protected SPService spService;
+	@Autowired
+	protected SpRegistryRecordService registryRecordService;
 	@Autowired
 	protected SpRegistryService registryService;
 
@@ -59,39 +65,6 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	@Autowired
 	public void setSpService(@Qualifier ("spService") SPService spService) {
 		this.spService = spService;
-	}
-
-	@Ignore
-	@Test
-	@NotTransactional
-	public void testSpFileProcessing() throws Throwable {
-		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree.txt");
-
-		try {
-			registryProcessor.processFile(file);
-		} finally {
-			deleteRecords(file);
-			deleteFile(file);
-		}
-	}
-
-	@Test
-	@Ignore
-	@NotTransactional
-	public void testProcessOpenAccountsRegistry() throws Throwable {
-		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open.txt");
-
-		try {
-			registryProcessor.processFile(file);
-		} catch (FlexPayExceptionContainer c) {
-			for (Exception e : c.getExceptions()) {
-				e.printStackTrace();
-			}
-			throw c;
-		} finally {
-			deleteRecords(file);
-			deleteFile(file);
-		}
 	}
 
 	@Test
@@ -113,13 +86,23 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	}
 
 	@Test
-	@Ignore
 	@NotTransactional
-	public void testProcessOpenSubAccountsRegistry() throws Throwable {
-		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2.txt");
+	public void testProcessNotKnownServiceCode() throws Throwable {
+		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_small_unknown_service.txt");
 
 		try {
 			registryProcessor.processFile(file);
+
+			List<SpRegistry> registries = registryService.findObjects(new Page<SpRegistry>(), file.getId());
+			assertEquals("Expected 1 registry", 1, registries.size());
+			SpRegistry registry = registries.get(0);
+			List<RegistryRecord> records = registryRecordService.listRecords(
+					registry, new ImportErrorTypeFilter(),
+					new RegistryRecordStatusFilter(), new Page<RegistryRecord>());
+			assertFalse("No records in registry", records.isEmpty());
+			RegistryRecord record = records.get(0);
+			ImportError error = record.getImportError();
+			assertNotNull("Import error expected", error);
 		} catch (FlexPayExceptionContainer c) {
 			for (Exception e : c.getExceptions()) {
 				e.printStackTrace();
@@ -132,7 +115,6 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	}
 
 	@Test
-	@Ignore
 	@NotTransactional
 	public void testProcessQuittancesSmallRegistry() throws Throwable {
 		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_quittances_small.txt");
@@ -148,53 +130,6 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 			deleteRecords(file);
 			deleteFile(file);
 		}
-	}
-
-	@Test
-	@Ignore
-	@NotTransactional
-	public void testProcessQuittancesRegistry() throws Throwable {
-		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_quittances.txt");
-
-		try {
-			registryProcessor.processFile(file);
-		} catch (FlexPayExceptionContainer c) {
-			for (Exception e : c.getExceptions()) {
-				e.printStackTrace();
-			}
-			throw c;
-		} finally {
-			deleteRecords(file);
-			deleteFile(file);
-		}
-	}
-
-	@Test
-	@Ignore
-	@NotTransactional
-	public void testProcessOpenSubAccountsRegistryNoClear() throws Throwable {
-		SpFile file = new SpFile(265L);
-
-		try {
-			registryProcessor.processFile(file);
-
-			checkOpenRegistryRecords(file);
-		} catch (FlexPayExceptionContainer c) {
-			for (Exception e : c.getExceptions()) {
-				e.printStackTrace();
-			}
-			throw c;
-		}
-	}
-
-	private void checkOpenRegistryRecords(SpFile file) {
-		int nErrorLessRecords = DataAccessUtils.intResult(
-				hibernateTemplate.find("select count(*) from RegistryRecord rr " +
-									   "where importError is null and rr.spRegistry.spFile.id=?", file.getId()));
-		int nConsumerLessRecords = DataAccessUtils.intResult(
-				hibernateTemplate.find("select count(*) from RegistryRecord rr " +
-									   "where consumer is null and rr.spRegistry.spFile.id=?", file.getId()));
-		assertEquals("Invalid number of records without errors", nErrorLessRecords, nConsumerLessRecords);
 	}
 
 	@SuppressWarnings ({"UnusedDeclaration"})

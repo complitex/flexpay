@@ -68,7 +68,7 @@ public class RawConsumerData extends RawData<Consumer> {
 	}
 
 	public String getServiceCode() {
-		return "#" + getParam(FIELD_SERVICE_CODE);
+		return getParam(FIELD_SERVICE_CODE);
 	}
 
 	public String getAddressCity() {
