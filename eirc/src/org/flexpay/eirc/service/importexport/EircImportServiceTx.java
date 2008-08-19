@@ -11,6 +11,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
 import org.flexpay.eirc.service.ConsumerService;
@@ -111,6 +112,22 @@ public class EircImportServiceTx extends ImportService {
 				}
 				data.getRegistryRecord().setPerson(person);
 				log.info("Found responsible person: " + data.getPersonFIO());
+
+				Service service = data.getRegistryRecord().getService();
+				if (service == null) {
+					service = consumerService.findService(
+							data.getRegistryRecord().getSpRegistry().getServiceProvider(), data.getServiceCode());
+					if (service == null) {
+						log.warn("Unknown service code: " + data.getServiceCode());
+						ImportError error = addImportError(sd, data.getExternalSourceId(), Service.class, dataSource);
+						error.setErrorId("error.eirc.import.consumer_not_found");
+						setConsumerError(data, error);
+						continue;
+					}
+
+					data.getRegistryRecord().setService(service);
+				}
+
 
 				postSaveRecord(data, null);
 			} catch (Exception e) {

@@ -52,16 +52,16 @@
 		  class="org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager">
 		<property name="errorDao" ref="importErrorDao" />
 		<property name="recordDao" ref="spRegistryRecordDao" />
-		<property name="statusService" ref="spRegistryRecordStatusService" />
+		<property name="statusService" ref="registryRecordStatusService" />
 		<property name="registryWorkflowManager" ref="registryWorkflowManager" />
 	</bean>
 
 	<bean id="spFileParser" class="org.flexpay.eirc.sp.RegistryFileParser"
 		  p:consumerService-ref="consumerService"
 		  p:registryService-ref="spRegistryService"
-		  p:spRegistryArchiveStatusService-ref="spRegistryArchiveStatusService"
+		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
 		  p:spRegistryRecordService-ref="spRegistryRecordService"
-		  p:spRegistryTypeService-ref="spRegistryTypeService"
+		  p:registryTypeService-ref="spRegistryTypeService"
 		  p:organisationService-ref="organisationService"
 		  p:spService-ref="spService"
 		  p:registryWorkflowManager-ref="registryWorkflowManager"
@@ -163,12 +163,10 @@
 		<property name="spRegistryStatusDao" ref="spRegistryStatusDao" />
 	</bean>
 
-	<bean id="spRegistryArchiveStatusService" class="org.flexpay.eirc.service.imp.SpRegistryArchiveStatusServiceImpl">
-		<property name="spRegistryArchiveStatusDao" ref="spRegistryArchiveStatusDao" />
-	</bean>
+	<bean id="registryArchiveStatusServiceTarget" class="org.flexpay.eirc.service.imp.RegistryArchiveStatusServiceImpl"
+		  p:registryArchiveStatusDao-ref="registryArchiveStatusDao" />
 
-	<bean id="spRegistryRecordStatusService" class="org.flexpay.eirc.service.imp.SpRegistryRecordStatusServiceImpl">
-		<property name="spRegistryRecordStatusDao" ref="spRegistryRecordStatusDao" />
-	</bean>
+	<bean id="registryRecordStatusService" class="org.flexpay.eirc.service.imp.SpRegistryRecordStatusServiceImpl"
+		  p:spRegistryRecordStatusDao-ref="spRegistryRecordStatusDao" />
 
 </beans>

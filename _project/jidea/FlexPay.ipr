@@ -243,6 +243,7 @@
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/../../ab_sync/docs/comp.vw_cn_changes2.SQL" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/../../eirc/tests/data/org/flexpay/eirc/actions/sp/ree_open_2_small.txt" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/../../eirc/tests/data/org/flexpay/eirc/actions/sp/ree_open_small_unknown_service.txt" charset="windows-1251" />
   </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
@@ -391,7 +392,7 @@
         <inspection_tool class="WhileLoopSpinsOnField" level="WARNING" enabled="true">
           <option name="ignoreNonEmtpyLoops" value="false" />
         </inspection_tool>
-        <inspection_tool class="ClassHasNoToStringMethod" level="WARNING" enabled="true">
+        <inspection_tool class="ClassHasNoToStringMethod" level="INFO" enabled="true">
           <option name="excludeClassNames" value="" />
           <option name="excludeException" value="true" />
           <option name="excludeDeprecated" value="true" />
