@@ -4,6 +4,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.util.TranslationUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Set;
@@ -47,6 +49,7 @@ public abstract class TemporaryName<TV extends TemporaryValue, T extends Transla
 	 *
 	 * @return Value for property 'translations'.
 	 */
+	@NotNull
 	public Set<T> getTranslations() {
 		return translations;
 	}
@@ -56,9 +59,15 @@ public abstract class TemporaryName<TV extends TemporaryValue, T extends Transla
 	 *
 	 * @param translations Value to set for property 'translations'.
 	 */
-	public void setTranslations(Set<T> translations) {
+	public void setTranslations(@NotNull Set<T> translations) {
 		this.translations = translations;
 	}
+
+	public void addNameTranslation(T translation) {
+
+		translations = TranslationUtil.setTranslation(translations, this, translation);
+	}
+
 
 	/**
 	 * {@inheritDoc}

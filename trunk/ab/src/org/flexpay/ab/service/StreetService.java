@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public interface StreetService
-		extends
+public interface StreetService extends
 		NameTimeDependentService<StreetName, StreetNameTemporal, Street, StreetNameTranslation>,
 		ParentService<StreetFilter> {
 
@@ -49,4 +48,11 @@ public interface StreetService
 	 * @return Street and street name pair
 	 */
 	Pair<Street, String> getFullStreetName(Stub<Street> stub);
+
+	/**
+	 * Create or update object
+	 *
+	 * @param object Object to save
+	 */
+	void save(Street object);
 }

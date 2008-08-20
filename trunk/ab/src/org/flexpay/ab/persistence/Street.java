@@ -10,6 +10,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -93,6 +94,24 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		return this;
 	}
 
+	public void setType(StreetType type) {
+		setTypeForDate(type, DateUtil.now());
+	}
+
+	public void setTypeForDate(StreetType type, Date beginDate) {
+		setTypeForDates(type, beginDate, ApplicationConfig.getFutureInfinite());
+	}
+
+	public void setTypeForDates(StreetType type, Date beginDate, Date endDate) {
+		StreetTypeTemporal temporal = new StreetTypeTemporal();
+		temporal.setBegin(beginDate);
+		temporal.setEnd(endDate);
+		temporal.setValue(type);
+		temporal.setObject(this);
+
+		addTypeTemporal(temporal);
+	}
+
 	/**
 	 * Setter for property 'typesTimeLine'.
 	 *
@@ -121,7 +140,15 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		if (typesTimeLine == null) {
 			return EMPTY_SORTED_SET;
 		}
-		return typesTimeLine.getIntervalsSet();
+
+		SortedSet<StreetTypeTemporal> temporals = typesTimeLine.getIntervalsSet();
+		for (StreetTypeTemporal temporal : temporals) {
+			if (temporal.getValue() != null && temporal.getValue().isNew()) {
+				temporal.setValue(null);
+			}
+		}
+
+		return temporals;
 	}
 
 	/**
@@ -227,5 +254,36 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	@NotNull
 	public Stub<Town> getTownStub() {
 		return new Stub<Town>(getParent().getId());
+	}
+
+	public void setName(StreetName name) {
+		setNameForDate(name, DateUtil.now());
+	}
+
+	public void setNameForDate(StreetName name, Date beginDate) {
+		setNameForDates(name, beginDate, ApplicationConfig.getFutureInfinite());
+	}
+
+	public void setNameForDates(StreetName name, Date beginDate, Date endDate) {
+		if (beginDate.after(endDate)) {
+			throw new RuntimeException("Invalid begin-end dates: [" + DateUtil.format(beginDate) +
+									   ", " + DateUtil.format(endDate) + "]");
+		}
+		if (beginDate.before(ApplicationConfig.getPastInfinite())) {
+			beginDate = ApplicationConfig.getPastInfinite();
+		}
+		if (endDate.after(ApplicationConfig.getFutureInfinite())) {
+			endDate = ApplicationConfig.getFutureInfinite();
+		}
+
+		name.setObject(this);
+
+		StreetNameTemporal temporal = new StreetNameTemporal();
+		temporal.setBegin(beginDate);
+		temporal.setEnd(endDate);
+		temporal.setValue(name);
+		temporal.setObject(this);
+
+		addNameTemporal(temporal);
 	}
 }

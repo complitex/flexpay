@@ -108,9 +108,12 @@
 
 	<!-- Strees -->
 	<bean id="createStreetAction"
-		  class="org.flexpay.ab.actions.street.StreetCreate" scope="prototype">
+		  class="org.flexpay.ab.actions.street.StreetCreate" scope="prototype"
+		  p:streetTypeService-ref="streetTypeService"
+		  p:parentService-ref="townService"
+		  p:streetService-ref="streetService"
+		  p:townService-ref="townService">
 		<property name="nameTimeDependentService" ref="streetService" />
-		<property name="parentService" ref="townService" />
 	</bean>
 
 	<bean id="viewStreetAction"

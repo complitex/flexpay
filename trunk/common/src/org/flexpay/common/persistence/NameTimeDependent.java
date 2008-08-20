@@ -50,6 +50,14 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 		namesTimeLine = new TimeLine<T, DI>(nameTemporals);
 	}
 
+	public void addNameTemporal(DI temporal) {
+		if (namesTimeLine == null) {
+			namesTimeLine = new TimeLine<T, DI>(temporal);
+		} else {
+			namesTimeLine = DateIntervalUtil.addInterval(namesTimeLine, temporal);
+		}
+	}
+
 	/**
 	 * Getter for property 'nameTemporals'.
 	 *
