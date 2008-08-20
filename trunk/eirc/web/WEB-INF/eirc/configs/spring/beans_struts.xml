@@ -25,11 +25,6 @@
 		  scope="prototype">
 	</bean>
 
-	<bean id="streetAjaxAction" class="org.flexpay.eirc.actions.StreetAjaxAction"
-		  scope="prototype">
-		<property name="streetService" ref="streetService" />
-	</bean>
-
 	<bean id="buildingAjaxAction" class="org.flexpay.eirc.actions.BuildingAjaxAction"
 		  scope="prototype">
 		<property name="buildingService" ref="buildingService" />

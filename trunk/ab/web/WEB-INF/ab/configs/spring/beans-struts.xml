@@ -150,6 +150,10 @@
 		<property name="parentService" ref="townService" />
 	</bean>
 
+	<bean id="streetSearchAjaxAction" scope="prototype"
+			  class="org.flexpay.ab.actions.street.StreetSearchAjaxAction"
+			  p:streetService-ref="streetService" />
+
 	<!-- Buildings -->
 	<bean id="listBuildings" scope="prototype"
 		  class="org.flexpay.ab.actions.buildings.ListBuildings">

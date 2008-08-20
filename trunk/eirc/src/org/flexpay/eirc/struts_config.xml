@@ -41,13 +41,6 @@
 			<result type="dispatcher">/WEB-INF/jsp/eirc/data/correspondence/internal_data.jsp</result>
 		</action>
 
-		<action name="street_ajax" class="streetAjaxAction">
-			<result name="success" type="dispatcher">/WEB-INF/jsp/eirc/data/correspondence/street_ajax.jsp</result>
-		</action>
-
-		<action name="building_ajax" class="buildingAjaxAction">
-			<result name="success" type="dispatcher">/WEB-INF/jsp/eirc/data/correspondence/building_ajax.jsp</result>
-		</action>
 
 
 		<action name="processing">

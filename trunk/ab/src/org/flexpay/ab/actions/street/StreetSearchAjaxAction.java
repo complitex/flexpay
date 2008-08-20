@@ -1,29 +1,30 @@
-package org.flexpay.eirc.actions;
+package org.flexpay.ab.actions.street;
 
 import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.eirc.util.config.ApplicationConfig;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO rename to a more meaningfull name or delete
- *
- * @deprecated
+ * Search streets by name
  */
-public class StreetAjaxAction extends FPActionSupport {
+public class StreetSearchAjaxAction extends FPActionSupport {
 
 	private StreetService streetService;
 	private List<StreetVis> streetVisList;
-	private String streetVar;
+	private String searchString;
+	private Town town = new Town();
 
 	@NotNull
 	public String doExecute() throws FlexPayException {
-		List<Street> streetList = streetService.findByTownAndName(ApplicationConfig.getDefaultTownStub(), streetVar + "%");
+		List<Street> streetList = streetService.findByTownAndName(
+				stub(town), "%" + searchString + "%");
 
 		streetVisList = new ArrayList<StreetVis>();
 		for (Street street : streetList) {
@@ -32,7 +33,7 @@ public class StreetAjaxAction extends FPActionSupport {
 			streetVis.setName(getTranslation(
 					street.getCurrentName().getTranslations()).getName());
 			streetVis.setType(getTranslation(
-					street.getCurrentType().getTranslations()).getName());
+					street.getCurrentType().getTranslations()).getShortName());
 			streetVisList.add(streetVis);
 		}
 
@@ -52,10 +53,18 @@ public class StreetAjaxAction extends FPActionSupport {
 	}
 
 	/**
-	 * @param streetVar the streetVar to set
+	 * @param searchString the streetVar to set
 	 */
-	public void setStreetVar(String streetVar) {
-		this.streetVar = streetVar;
+	public void setSearchString(String searchString) {
+		this.searchString = searchString;
+	}
+
+	public Town getTown() {
+		return town;
+	}
+
+	public void setTown(Town town) {
+		this.town = town;
 	}
 
 	/**

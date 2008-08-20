@@ -41,10 +41,10 @@ public abstract class DeleteAction<
 		if (!objectToDisable.isEmpty()) {
 			nameTimeDependentService.disable(objectToDisable);
 		} else {
-			addActionError(getText("error.no_regions_to_disable"));
+			addActionError(getText("error.no_objects_to_disable"));
 		}
 
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	/**
@@ -57,7 +57,7 @@ public abstract class DeleteAction<
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	/**

@@ -14,6 +14,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
@@ -272,6 +273,16 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 			filters = new ArrayStack();
 		}
 
+		// skip unknown filters if any
+		ArrayStack skippedFilters = new ArrayStack();
+		while(!filters.empty()) {
+			ObjectFilter filter = (ObjectFilter) filters.peek();
+			if (filter instanceof TownFilter) {
+				break;
+			}
+			skippedFilters.push(filters.pop());
+		}
+
 		TownFilter parentFilter = filters.isEmpty() ? null : (TownFilter) filters.pop();
 		filters = parentService.initFilters(filters, locale);
 		RegionFilter forefatherFilter = (RegionFilter) filters.peek();
@@ -279,6 +290,11 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		// init region filter
 		parentFilter = initFilter(parentFilter, forefatherFilter, locale);
 		filters.push(parentFilter);
+
+		// now add skipped filters
+		while (!skippedFilters.empty()) {
+			filters.push(skippedFilters.pop());
+		}
 
 		return filters;
 	}
