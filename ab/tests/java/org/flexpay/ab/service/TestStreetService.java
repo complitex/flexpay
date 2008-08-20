@@ -4,13 +4,12 @@ import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.test.TransactionalSpringBeanAwareTestCase;
+import org.flexpay.common.util.DateUtil;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.HashSet;
-import java.util.Set;
+import org.springframework.test.annotation.NotTransactional;
 
 public class TestStreetService extends TransactionalSpringBeanAwareTestCase {
 
@@ -20,11 +19,14 @@ public class TestStreetService extends TransactionalSpringBeanAwareTestCase {
 	protected StreetService streetService;
 	@Autowired
 	protected TownService townService;
+	@Autowired
+	protected StreetTypeService streetTypeService;
 
 	@Test
+	@NotTransactional
 	public void testCreateStreet() throws Throwable {
 
-		Town town = new Town(1L);
+		Town town = ApplicationConfig.getDefaultTown();
 
 		Street street = new Street();
 		street.setParent(town);
@@ -32,31 +34,21 @@ public class TestStreetService extends TransactionalSpringBeanAwareTestCase {
 		StreetName name = new StreetName();
 		name.setObject(street);
 
-		StreetNameTranslation translation = new StreetNameTranslation();
-		translation.setName("Test street");
-		translation.setTranslatable(name);
-		translation.setLang(ApplicationConfig.getDefaultLanguage());
-		Set<StreetNameTranslation> translations = new HashSet<StreetNameTranslation>();
-		translations.add(translation);
-		name.setTranslations(translations);
+		StreetNameTranslation translation = new StreetNameTranslation("----Test street----");
+		name.addNameTranslation(translation);
+		street.setNameForDate(name, DateUtil.now());
 
-		StreetNameTemporal temporal = new StreetNameTemporal();
-		temporal.setValue(name);
-		temporal.setObject(street);
-		TimeLine<StreetName, StreetNameTemporal> timeLine =
-				new TimeLine<StreetName, StreetNameTemporal>(temporal);
-		street.setNamesTimeLine(timeLine);
+		StreetType streetType = streetTypeService.read(1L);
+		assertNotNull("No street type found", streetType);
+		street.setType(streetType);
+//		street.setTypeForDate(streetType, ApplicationConfig.getPastInfinite());
 
-		StreetType streetType = new StreetType(1L);
-		StreetTypeTemporal typeTemporal = new StreetTypeTemporal();
-		typeTemporal.setObject(street);
-		typeTemporal.setValue(streetType);
-		TimeLine<StreetType, StreetTypeTemporal> typeTimeLine =
-				new TimeLine<StreetType, StreetTypeTemporal>(typeTemporal);
-		street.setTypesTimeLine(typeTimeLine);
+		streetService.save(street);
 
-		streetDao.create(street);
-		streetDao.delete(street);
+		streetType = streetTypeService.read(2L);
+		street.setTypeForDate(streetType, DateUtil.next(DateUtil.now()));
+		System.out.println("Types: " + street.getTypesTimeLine());
+		streetService.save(street);
 	}
 
 	@Test

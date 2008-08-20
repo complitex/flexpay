@@ -29,6 +29,7 @@ public interface NameTimeDependentService<
 	 * @param from			 Date from which the name is valid
 	 * @return persisted object
 	 * @throws FlexPayExceptionContainer if operation fails
+	 * @deprecated Use single save for create-update operations
 	 */
 	NTD create(NTD object, List<T> nameTranslations, ArrayStack filters, Date from)
 			throws FlexPayExceptionContainer;

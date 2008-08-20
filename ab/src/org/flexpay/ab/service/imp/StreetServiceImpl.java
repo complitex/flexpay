@@ -285,7 +285,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @param object Street to update
 	 */
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Transactional (readOnly = false)
 	public void saveTypes(Street object) {
 
 		if (log.isDebugEnabled()) {
@@ -319,5 +319,20 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	public Pair<Street, String> getFullStreetName(Stub<Street> stub) {
 		return null;
+	}
+
+	/**
+	 * Create or update object
+	 *
+	 * @param object Object to save
+	 */
+	@Transactional (readOnly = false)
+	public void save(@NotNull Street object) {
+		if (object.isNew()) {
+			object.setId(null);
+			streetDao.create(object);
+		} else {
+			streetDao.update(object);
+		}
 	}
 }

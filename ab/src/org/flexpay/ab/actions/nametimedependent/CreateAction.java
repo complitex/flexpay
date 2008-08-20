@@ -15,12 +15,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends NameDateInterval<TV, DI>, NTD extends NameTimeDependentChild<TV, DI>, T extends Translation>
-		extends ActionBase<TV, DI, NTD, T> implements Preparable {
+public abstract class CreateAction<
+		TV extends TemporaryValue<TV>,
+		DI extends NameDateInterval<TV, DI>,
+		NTD extends NameTimeDependentChild<TV, DI>,
+		T extends Translation> extends ActionBase<TV, DI, NTD, T> implements Preparable {
 
-	private List<T> nameTranslations = new ArrayList<T>();
-	private Date date;
-	private NTD object;
+	protected List<T> nameTranslations = new ArrayList<T>();
+	protected Date date;
+	protected NTD object;
 
 	/**
 	 * {@inheritDoc}
@@ -33,7 +36,10 @@ public abstract class CreateAction<TV extends TemporaryValue<TV>, DI extends Nam
 			T nameTranslation = nameTimeDependentService
 					.getEmptyNameTranslation();
 			nameTranslation.setLang(lang);
-			nameTranslation.setName(request.getParameter("translation." + lang.getId()));
+			String name = request.getParameter("translation." + lang.getId());
+			if (name != null) {
+				nameTranslation.setName(name);
+			}
 			nameTranslations.add(nameTranslation);
 		}
 	}

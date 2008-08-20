@@ -7,8 +7,9 @@
 		<s:hidden name="street.id" value="%{street.id}"/>
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
-			<td class="th" width="99%"><s:text name="ab.street"/>:&nbsp<s:property
-					value="%{getTranslation(street.currentName.translations).name}"/></td>
+			<td class="th" width="99%"><s:text name="ab.street"/>:&nbsp;
+				<s:property value="%{getTranslation(street.currentType.translations).shortName}"/>&nbsp;
+				<s:property value="%{getTranslation(street.currentName.translations).name}"/></td>
 		</tr>
 
 		<tr>

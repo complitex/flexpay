@@ -6,22 +6,13 @@
 	<s:form action="create_street" method="post">
 
 		<tr>
-			<td class="th" width="100%" colspan="3" align="center">
-				<%@ include file="filters/country_filter.jsp" %>
+			<td colspan="3">
+				<%@ include file="filters/groups/country_region_town.jsp" %>
 			</td>
 		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="3" align="center">
-				<%@ include file="filters/region_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="3" align="center">
-				<%@ include file="filters/town_filter.jsp" %>
-			</td>
-		</tr>
-		<tr>
-			<td class="th" width="100%" colspan="3" align="center">
+		<tr valign="top" class="cols_1">
+			<td class="col"><s:text name="ab.street.creation_date"/>:</td>
+			<td class="col">
 				<s:textfield name="date" id="date"/>
 				<img src="<s:url value="/resources/common/js/jscalendar/img.gif"/>" alt=""
 					 id="trigger_from"
@@ -41,35 +32,29 @@
 			</td>
 		</tr>
 
-		<tr>
-			<td class="th">&nbsp;</td>
-			<s:if test="nameTranslations.size() > 1">
-				<td class="th"><s:text name="ab.language"/></td>
-			</s:if>
-			<td class="th"><s:text name="ab.street"/></td>
-		</tr>
-		<s:iterator value="nameTranslations" status="rowstatus">
-			<tr valign="middle" class="cols_1">
-				<td class="col_1s"><s:property value="#rowstatus.index + 1"/></td>
-				<s:if test="nameTranslations.size() > 1">
-					<td class="col">
-						<s:property value="getLangName(lang)"/>
-						<s:if test="%{lang.default}">*</s:if>
-					</td>
-				</s:if>
-				<td class="col">
+		<tr valign="top" class="cols_1">
+			<td class="col"><s:text name="ab.street.name"/>:</td>
+			<td class="col">
+				<s:iterator value="nameTranslations">
 					<input type="text" name="translation.<s:property value="lang.id"/>"
 						   value="<s:property value="name"/>"/>
-				</td>
-			</tr>
-		</s:iterator>
+					<s:property value="getLangName(lang)"/>
+					<s:if test="%{lang.default}">*</s:if><br/>
+				</s:iterator>
+			</td>
+		</tr>
+
+		<tr valign="top" class="cols_1">
+			<td class="col"><s:text name="ab.street.type"/>:</td>
+			<td class="col">
+				<%@include file="filters/street_type_filter.jsp" %>
+			</td>
+		</tr>
 
 		<tr>
-			<td colspan="3" height="3" bgcolor="#4a4f4f"/>
-		<tr>
 			<td colspan="3">
-				<input type="submit" class="btn-exit"
-					   value="<s:text name="common.create"/>"/>
+				<input type="submit" class="btn-exit" name="submitted"
+					   value="<s:text name="common.save"/>"/>
 			</td>
 		</tr>
 	</s:form>
