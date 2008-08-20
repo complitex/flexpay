@@ -4,18 +4,21 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.dao.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.StreetFilter;
+import org.flexpay.ab.persistence.filters.StreetNameFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
@@ -275,6 +278,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return filters;
 	}
 
+	@NotNull
 	@Transactional (readOnly = true)
 	public List<Street> findByTownAndName(@NotNull Stub<Town> stub, @NotNull String name) {
 		return streetDao.findByTownAndName(stub.getId(), name);
@@ -312,16 +316,6 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	/**
-	 * Get street and name pair
-	 *
-	 * @param stub Street stub
-	 * @return Street and street name pair
-	 */
-	public Pair<Street, String> getFullStreetName(Stub<Street> stub) {
-		return null;
-	}
-
-	/**
 	 * Create or update object
 	 *
 	 * @param object Object to save
@@ -334,5 +328,31 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		} else {
 			streetDao.update(object);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<Street> find(ArrayStack filters, Page pager) {
+		ObjectFilter filter = (ObjectFilter) filters.peek();
+
+		// found street name filter, lookup for town filter and search via name
+		if (filter instanceof StreetNameFilter) {
+			if (filter.needFilter()) {
+				StreetNameFilter nameFilter = (StreetNameFilter) filter;
+				Street street = readFull(nameFilter.getSelectedStub());
+				log.debug("Streets search unique result");
+				return street != null ? CollectionUtils.list(street) : Collections.<Street>emptyList();
+			}
+
+			// remove not needed StreetNameFilter
+			log.debug("Removing StreetNameFilter");
+			filters.pop();
+		}
+
+		log.debug("Streets search redirected to super()");
+
+		return super.find(filters, pager);
 	}
 }

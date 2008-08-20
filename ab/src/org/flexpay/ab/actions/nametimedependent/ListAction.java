@@ -1,7 +1,6 @@
 package org.flexpay.ab.actions.nametimedependent;
 
 import org.apache.commons.collections.ArrayStack;
-import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.NameDateInterval;
@@ -17,7 +16,7 @@ public abstract class ListAction<
 		TV extends TemporaryValue<TV>,
 		DI extends NameDateInterval<TV, DI>,
 		NTD extends NameTimeDependentChild<TV, DI>,
-		T extends Translation> extends ActionBase<TV, DI, NTD, T> implements SessionAware {
+		T extends Translation> extends ActionBase<TV, DI, NTD, T> {
 
 	protected Page pager = new Page();
 	protected List objectNames;

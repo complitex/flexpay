@@ -9,6 +9,7 @@ import org.flexpay.ab.persistence.StreetNameTranslation;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.ab.persistence.filters.StreetNameFilter;
 import org.flexpay.common.exception.FlexPayException;
 
 public class StreetsList extends ListAction<
@@ -17,9 +18,15 @@ public class StreetsList extends ListAction<
 	private CountryFilter countryFilter = new CountryFilter();
 	private RegionFilter regionFilter = new RegionFilter();
 	private TownFilter townFilter = new TownFilter();
+	private StreetNameFilter streetNameFilter = new StreetNameFilter();
 
 	protected void initObjects(ArrayStack filters) throws FlexPayException {
 		objectNames = nameTimeDependentService.find(filters, pager);
+
+		if (log.isDebugEnabled()) {
+			log.debug("Streets: " + objectNames);
+			log.debug("Search string: " + streetNameFilter.getSearchString());
+		}
 	}
 
 	/**
@@ -76,6 +83,14 @@ public class StreetsList extends ListAction<
 		this.townFilter = townFilter;
 	}
 
+	public StreetNameFilter getStreetNameFilter() {
+		return streetNameFilter;
+	}
+
+	public void setStreetNameFilter(StreetNameFilter streetNameFilter) {
+		this.streetNameFilter = streetNameFilter;
+	}
+
 	/**
 	 * Get initial set of filters for action
 	 *
@@ -86,6 +101,7 @@ public class StreetsList extends ListAction<
 		filters.push(countryFilter);
 		filters.push(regionFilter);
 		filters.push(townFilter);
+		filters.push(streetNameFilter);
 		return filters;
 	}
 
@@ -95,8 +111,10 @@ public class StreetsList extends ListAction<
 	 * @param filters collection of filters
 	 */
 	protected void setFilters(ArrayStack filters) {
-		townFilter = (TownFilter) filters.peek(0);
-		regionFilter = (RegionFilter) filters.peek(1);
-		countryFilter = (CountryFilter) filters.peek(2);
+		int n = 0;
+		streetNameFilter = (StreetNameFilter) filters.peek(n++);
+		townFilter = (TownFilter) filters.peek(n++);
+		regionFilter = (RegionFilter) filters.peek(n++);
+		countryFilter = (CountryFilter) filters.peek(n);
 	}
 }

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="streets" namespace="/dicts" extends="common">
+		<action name="list_streets" class="listStreetsAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_READ</param>
+			</interceptor-ref>
+			<result type="tiles">ab.streets.list</result>
+		</action>
+
+		<action name="create_street" class="createStreetAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_ADD</param>
+			</interceptor-ref>
+			<result type="redirect-action">
+				<param name="actionName">view_street</param>
+				<param name="parse">true</param>
+				<param name="object.id">${object.id}</param>
+			</result>
+			<result type="tiles" name="input">ab.street.create</result>
+		</action>
+
+		<action name="view_street" class="viewStreetAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_READ</param>
+			</interceptor-ref>
+			<result type="tiles">ab.street.view</result>
+			<result type="redirect" name="redirectError">list_streets.action</result>
+		</action>
+
+		<action name="edit_street" class="editStreetAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_CHANGE</param>
+			</interceptor-ref>
+			<result type="redirect-action">
+				<param name="actionName">view_street</param>
+				<param name="parse">true</param>
+				<param name="object.id">${object.id}</param>
+			</result>
+			<result type="tiles" name="input">ab.street.edit</result>
+		</action>
+
+		<action name="edit_street_type" class="editStreetTypeAction">
+			<result type="redirect-action">
+				<param name="actionName">view_street</param>
+				<param name="parse">true</param>
+				<param name="object.id">${object.id}</param>
+			</result>
+			<result type="tiles" name="input">ab.street.edit.type</result>
+		</action>
+
+		<action name="delete_streets" class="deleteStreetsAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_DELETE</param>
+			</interceptor-ref>
+			<result name="redirectSuccess" type="redirect">list_streets.action</result>
+		</action>
+
+		<action name="edit_street_districts" class="editStreetDistricts">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_CHANGE</param>
+			</interceptor-ref>
+			<result type="tiles" name="input">ab.street.edit.districts</result>
+			<result type="redirect-action">
+				<param name="actionName">view_street</param>
+				<param name="parse">true</param>
+				<param name="object.id">${street.id}</param>
+			</result>
+		</action>
+
+		<action name="streetSearchAjax" class="streetSearchAjaxAction">
+			<result type="dispatcher">/WEB-INF/jsp/ab/streets_list_ajax.jsp</result>
+		</action>
+
+		<!--<action name="building_ajax" class="buildingAjaxAction">-->
+			<!--<result name="success" type="dispatcher">/WEB-INF/jsp/eirc/data/correspondence/building_ajax.jsp</result>-->
+		<!--</action>-->
+
+	</package>
+
+
+</struts>

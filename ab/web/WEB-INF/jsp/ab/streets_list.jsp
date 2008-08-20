@@ -3,14 +3,27 @@
 <s:actionerror/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="fobjects" method="post" action="<s:url value="/dicts/list_streets.action" includeParams="none" />">
+	<form id="fobjects" method="post" 
+		  action="<s:url value="/dicts/list_streets.action" includeParams="none" />">
 
 		<tr>
 			<td colspan="5">
 				<%@ include file="filters/groups/country_region_town.jsp" %>
+				<%@ include file="filters/street_search_filter.jsp" %>
 			</td>
 		</tr>
 
+		<tr>
+			<td colspan="5">
+				<%@ include file="filters/pager.jsp" %>
+				<input type="button" class="btn-exit"
+					   onclick="$('fobjects').action='<s:url action="delete_streets"/>';$('fobjects').submit()"
+					   value="<s:text name="common.delete_selected"/>"/>
+				<input type="button" class="btn-exit"
+					   onclick="window.location='<s:url action="create_street"/>'"
+					   value="<s:text name="common.new"/>"/>
+			</td>
+		</tr>
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%"><input type="checkbox"
@@ -48,7 +61,7 @@
 		<tr>
 			<td colspan="5">
 				<%@ include file="filters/pager.jsp" %>
-				<input type="submit" class="btn-exit"
+				<input type="button" class="btn-exit"
 					   onclick="$('fobjects').action='<s:url action="delete_streets"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
