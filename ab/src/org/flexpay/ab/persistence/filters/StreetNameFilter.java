@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class StreetNameFilter extends PrimaryKeyFilter<Street> {
 
+	private boolean showSearchString;
 	private String searchString;
 
 	@Override
@@ -19,5 +20,13 @@ public class StreetNameFilter extends PrimaryKeyFilter<Street> {
 
 	public void setSearchString(String searchString) {
 		this.searchString = searchString;
+	}
+
+	public boolean isShowSearchString() {
+		return showSearchString;
+	}
+
+	public void setShowSearchString(boolean showSearchString) {
+		this.showSearchString = showSearchString;
 	}
 }

@@ -24,7 +24,6 @@ public class StreetsList extends ListAction<
 		objectNames = nameTimeDependentService.find(filters, pager);
 
 		if (log.isDebugEnabled()) {
-			log.debug("Streets: " + objectNames);
 			log.debug("Search string: " + streetNameFilter.getSearchString());
 		}
 	}

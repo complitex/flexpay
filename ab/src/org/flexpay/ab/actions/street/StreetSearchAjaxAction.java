@@ -23,11 +23,20 @@ public class StreetSearchAjaxAction extends FPActionSupport {
 
 	@NotNull
 	public String doExecute() throws FlexPayException {
-		List<Street> streetList = streetService.findByTownAndName(
+
+		if (log.isDebugEnabled()) {
+			log.debug("Searching streets: " + searchString + ", town: " + town.getId());
+		}
+
+		List<Street> streets = streetService.findByTownAndName(
 				stub(town), "%" + searchString + "%");
 
+		if (log.isDebugEnabled()) {
+			log.debug("Found streets: " + streets);
+		}
+
 		streetVisList = new ArrayList<StreetVis>();
-		for (Street street : streetList) {
+		for (Street street : streets) {
 			StreetVis streetVis = new StreetVis();
 			streetVis.setId(street.getId());
 			streetVis.setName(getTranslation(
