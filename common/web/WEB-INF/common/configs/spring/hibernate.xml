@@ -172,12 +172,15 @@
 	</bean>
 
 	<bean name="jobManager" class="org.flexpay.common.process.job.JobManager"
-            factory-method="getInstance" destroy-method="unload" />
+            factory-method="getInstance" destroy-method="unload"
+			p:processManager-ref="processManager"
+			p:maximumRunningJobs="${job_manager.maximumRunningJobs}"
+			/>
 
     <bean name="processManager" class="org.flexpay.common.process.ProcessManager"
-		  factory-method="getInstance" destroy-method="unload" init-method="startProcessManager">
-		<property name="jbpmConfiguration" ref="jbpmConfiguration" />
-	</bean>
-
-
+		  factory-method="getInstance" destroy-method="unload" init-method="startProcessManager"
+			p:jbpmConfiguration-ref="jbpmConfiguration"
+			p:rescanFrequency="${process_manager.rescanFrequency}"
+			p:startTaskLimit="${process_manager.startTaskLimit}"
+			/>
 </beans>

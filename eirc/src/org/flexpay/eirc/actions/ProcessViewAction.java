@@ -6,10 +6,10 @@ import org.flexpay.common.process.ProcessManager;
 public class ProcessViewAction {
 	
 	private Process process;
-	
+	private ProcessManager processManager;
 	
 	public String execute() {
-		process = ProcessManager.getInstance().getProcessInstanceInfo(process.getId());
+		process = processManager.getProcessInstanceInfo(process.getId());
 		return "success";
 	}
 	
@@ -27,7 +27,8 @@ public class ProcessViewAction {
 	public void setProcess(Process process) {
 		this.process = process;
 	}
-	
-	
 
+	public void setProcessManager(ProcessManager processManager) {
+		this.processManager = processManager;
+	}
 }
