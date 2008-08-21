@@ -14,17 +14,18 @@ public class ProcessListAction {
 	private List<Process> processList;
 	private Set<Long> objectIds = new HashSet<Long>();
     private String submited = "";
+	private ProcessManager processManager;
 
     public String execute() {
         if (objectIds != null && objectIds.size() >0){
-            ProcessManager.getInstance().deleteProcessInstanceList(objectIds);
+            processManager.deleteProcessInstanceList(objectIds);
         }
         processList = getProcessListMethod();
 		return "success";
 	}
 	
 	private List<Process> getProcessListMethod() {
-		List<Process> processes = ProcessManager.getInstance().getProcessList();
+		List<Process> processes = processManager.getProcessList();
         Collections.sort(processes, new ProcessStateComparator());
         return processes;
 	}
@@ -43,4 +44,8 @@ public class ProcessListAction {
     public void setSubmited(String submited) {
         this.submited = submited;
     }
+
+	public void setProcessManager(ProcessManager processManager) {
+		this.processManager = processManager;
+	}
 }

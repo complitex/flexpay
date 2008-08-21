@@ -39,16 +39,12 @@ public class ProcessManager implements Runnable {
 
 
 	private Map<Long, Process> running = CollectionUtils.map();
-//	private HashMap<Long, Process> waiting = new HashMap<Long, Process>();
 
-	public static final int RESCAN_FREQ = 10000; //@todo into global
-	public static final int MAXIMUM_PROCESS_THREADS = 10; //@todo into global
+	private int rescanFrequency = 10000;
+	private int startTaskLimit = 10; 
+
 	public static final String PROCESS_INSTANCE_ID = "ProcessInstanceID";
-	private static final int startTaskLimit = 10; //@todo into global
-
 	private JbpmConfiguration jbpmConfiguration = null;
-//	protected LoggingSession loggingSession = null;
-
 
 	/**
 	 * protected constructor
@@ -56,6 +52,14 @@ public class ProcessManager implements Runnable {
 	protected ProcessManager() {
 //        this.jbpmConfiguration = JbpmConfiguration.getInstance();
 		log.debug("ProcessManager constructor called ");
+	}
+
+	public void setRescanFrequency(int rescanFrequency) {
+		this.rescanFrequency = rescanFrequency;
+	}
+
+	public void setStartTaskLimit(int startTaskLimit) {
+		this.startTaskLimit = startTaskLimit;
 	}
 
 	/**
@@ -213,7 +217,7 @@ public class ProcessManager implements Runnable {
 				//all task instances started, going to sleep
 				synchronized (sleepSemaphore) {
 					try {
-						sleepSemaphore.wait(RESCAN_FREQ);
+						sleepSemaphore.wait(rescanFrequency);
 						sleepSemaphore.notify();
 					} catch (InterruptedException e) {
 						log.debug("ProcessManager.run: Somebody interrupts me.", e);

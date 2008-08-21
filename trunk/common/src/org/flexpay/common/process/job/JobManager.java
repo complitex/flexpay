@@ -22,10 +22,11 @@ public class JobManager implements BeanFactoryAware {
 
     private Hashtable<String, Map<Serializable, Serializable>> jobParameters = new Hashtable<String, Map<Serializable, Serializable>>();
 
-    private int MAXIMUM_RUNNING_JOBS = 10;
+    private int maximumRunningJobs = 10;
 
-    
-    protected JobManager(){
+    private ProcessManager processManager;
+
+	protected JobManager(){
 
     }
 
@@ -34,7 +35,15 @@ public class JobManager implements BeanFactoryAware {
         return instance;
     }
 
-    public synchronized List<Job> getJobList(){
+	public void setMaximumRunningJobs(int maximumRunningJobs) {
+		this.maximumRunningJobs = maximumRunningJobs;
+	}
+
+	public void setProcessManager(ProcessManager processManager) {
+		this.processManager = processManager;
+	}
+
+	public synchronized List<Job> getJobList(){
         List<Job> result = new ArrayList<Job>();
         result.addAll(runningJobs.values());
         result.addAll(sleepingJobs.values());
@@ -78,8 +87,7 @@ public class JobManager implements BeanFactoryAware {
             job = sleepingJobs.get(id);
         }
 
-        ProcessManager pm = ProcessManager.getInstance();
-        pm.jobFinished(job.getTaskId(), jobParameters.get(id), transition);
+        processManager.jobFinished(job.getTaskId(), jobParameters.get(id), transition);
 
         jobParameters.remove(id);
         if (runningJobs.get(id) != null){
@@ -92,7 +100,7 @@ public class JobManager implements BeanFactoryAware {
 
 
     public synchronized final void addJob(Job job, Map<Serializable, Serializable> param) {
-        if (runningJobs.size() < MAXIMUM_RUNNING_JOBS) {
+        if (runningJobs.size() < maximumRunningJobs) {
             this.start(job, param);
         } else {
             waitingJobs.addLast(job);
