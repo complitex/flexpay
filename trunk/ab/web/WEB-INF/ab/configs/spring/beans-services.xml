@@ -62,6 +62,11 @@
 		<property name="districtParentService" ref="districtService" />
 	</bean>
 
+        <bean id="addressService" class="org.flexpay.ab.service.imp.AddressServiceImpl"
+                  p:apartmentService-ref="apartmentService"
+                  p:buildingService-ref="buildingService"
+                  p:streetService-ref="streetService" />
+
 	<bean id="apartmentService" class="org.flexpay.ab.service.imp.ApartmentServiceImpl">
 		<property name="apartmentDao" ref="apartmentDao" />
 		<property name="apartmentDaoExt" ref="apartmentDaoExt" />

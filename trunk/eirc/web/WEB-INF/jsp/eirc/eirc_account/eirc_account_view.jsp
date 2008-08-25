@@ -10,7 +10,6 @@
 	<s:iterator value="%{eircAccount.consumers}" status="status">
 		<tr valign="middle" class="cols_1">
 			<td class="col_1s" align="right"><s:property value="%{#status.index + 1}"/>
-				&nbsp;
 			</td>
 			<td class="col">
 				<s:property value="%{responsiblePerson.defaultIdentity.lastName}"/>

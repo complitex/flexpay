@@ -171,8 +171,8 @@ public class Buildings extends DomainObjectWithStatus {
 				.toString();
 	}
 
-	public String format(Locale locale, boolean shortMode)
-			throws FlexPayException {
+	public String format(Locale locale, boolean shortMode) throws FlexPayException {
+
 		StringBuilder result = new StringBuilder();
 		BuildingAttribute attribute = getNumberAttribute();
 		if (attribute != null) {

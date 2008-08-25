@@ -100,7 +100,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 * @return List of EircAccount
 	 */
 	public List<EircAccount> findAll(Page<EircAccount> pager) {
-		return this.eircAccountDao.findObjects(pager);
+		return eircAccountDao.findObjects(pager);
 
 	}
 
