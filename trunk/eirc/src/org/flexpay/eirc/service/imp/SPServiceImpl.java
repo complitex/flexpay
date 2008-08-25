@@ -56,23 +56,6 @@ public class SPServiceImpl implements SPService {
 	}
 
 	/**
-	 * Find service of specified <code>type</code> for provider
-	 *
-	 * @param provider ServiceProvider
-	 * @param type	 ServiceType to find
-	 * @return Service if found, or <code>null</code> if the requested service is not available from <code>provider</code>
-	 */
-	public Service getService(ServiceProvider provider, ServiceType type) {
-		Service service = serviceDaoExt.findService(provider.getId(), type.getId());
-		if (service == null) {
-			throw new IllegalArgumentException(
-					"Cannot find service (code " + type.getCode() + ") for provider" + provider.getId());
-		}
-
-		return service;
-	}
-
-	/**
 	 * Get record type by type id
 	 *
 	 * @param typeId Record type enum id

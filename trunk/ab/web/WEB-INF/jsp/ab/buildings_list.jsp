@@ -7,14 +7,14 @@
 
 		<tr>
 			<td colspan="4">
-				<%@ include file="filters/groups/country_region_town_street.jsp" %>
+				<%@ include file="filters/groups/country_region_town_streetname.jsp" %>
 			</td>
 		</tr>
 		
 		<tr>
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
-				<input type="submit" class="btn-exit"
+				<input type="button" class="btn-exit"
 				       onclick="$('fobjects').action='<s:url action="buildingsDeleteAction" />';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
@@ -40,7 +40,7 @@
 					<input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
 				</td>
 				<td class="col">
-					<a href="<s:url value="/dicts/list_apartments.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{regionFilter.selectedId}&townFilter.selectedId=%{townFilter.selectedId}&streetFilter.selectedId=%{streetFilter.selectedId}&buildingsFilter.selectedId=%{id}"/>">
+					<a href="<s:url value="/dicts/list_apartments.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{regionFilter.selectedId}&townFilter.selectedId=%{townFilter.selectedId}&streetNameFilter.selectedId=%{streetNameFilter.selectedId}&buildingsFilter.selectedId=%{id}"/>">
 						<s:property	value="%{getBuildingNumber(buildingAttributes)}"/>
 					</a>
 				</td>
@@ -56,7 +56,7 @@
 		<tr>
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
-				<input type="submit" class="btn-exit"
+				<input type="button" class="btn-exit"
 				       onclick="$('fobjects').action='<s:url action="buildingsDeleteAction" />';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"

@@ -169,4 +169,11 @@
 	<bean id="registryRecordStatusService" class="org.flexpay.eirc.service.imp.SpRegistryRecordStatusServiceImpl"
 		  p:spRegistryRecordStatusDao-ref="spRegistryRecordStatusDao" />
 
+	<bean parent="processManager">
+		<property name="definitionPaths">
+			<list>
+				<value>WEB-INF/eirc/process</value>
+			</list>
+		</property>
+	</bean>
 </beans>

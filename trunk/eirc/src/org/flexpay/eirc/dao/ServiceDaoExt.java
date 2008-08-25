@@ -31,15 +31,6 @@ public interface ServiceDaoExt {
 	ServiceProvider findByNumber(Long organisationId);
 
 	/**
-	 * Find Service by provider and type ids
-	 *
-	 * @param providerId ServiceProvider id
-	 * @param typeId ServiceType id
-	 * @return Service instance
-	 */
-	Service findService(Long providerId, Long typeId);
-
-	/**
 	 * Find record type by id
 	 *
 	 * @param typeId Record type enum id

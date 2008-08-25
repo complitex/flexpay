@@ -10,4 +10,7 @@
 		  init-method="doSelfTesting"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
+	<bean class="org.flexpay.common.util.selftest.TestGetResource"
+		  init-method="doSelfTesting" />
+
 </beans>

@@ -32,12 +32,20 @@
 				<td class="col" width="1%"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/></td>
 				<td class="col"><s:property value="%{getServiceTypeName(serviceType)}" /></td>
 				<td class="col"><s:property value="%{personalAccountExt}" /></td>
-				<td class="col" nowrap="nowrap"><s:property value="%{streetType}" /> <s:property
-						value="%{streetName}" /> <s:property
-						value="%{buildingNum}" /> <s:property value="%{buildingBulkNum}" /> <s:property
-						value="%{apartmentNum}" /></td>
-				<td class="col"><s:property value="%{firstName}" /> <s:property value="%{middleName}" /> <s:property
-						value="%{lastName}" /></td>
+				<td class="col" nowrap="nowrap">
+					<s:set name="addressVal" value="%{streetType + ', ' + streetName + ', ' + buildingNum + ' ' + buildingBulkNum + ', ' + apartmentNum}" />
+						<s:if test="apartment != null">
+							<a href="<s:url action="apartmentRegistrations" namespace="/dicts" includeParams="none"><s:param name="apartment.id" value="apartment.id" /></s:url>">
+								<s:property value="addressVal" />
+							</a>
+						</s:if><s:else><s:property value="addressVal" /></s:else>
+				<td class="col">
+					<s:set name="fioVal" value="%{firstName + ' ' + middleName + ' ' + lastName}" />
+					<s:if test="person != null">
+						<a  href="<s:url action="view_person" namespace="/dicts"><s:param name="person.id" value="person.id" /></s:url>">
+							<s:property value="#fioVal" />
+						</a>
+					</s:if><s:else><s:property value="#fioVal" /></s:else>
 				<td class="col"><s:date name="operationDate" format="yyyy/MM/dd" /></td>
 				<td class="col"><s:property value="%{amount}" /></td>
 				<%--<td class="col"><s:property value="%{containers}" /></td>--%>

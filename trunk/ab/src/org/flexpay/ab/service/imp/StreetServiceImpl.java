@@ -267,13 +267,30 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 			filters = new ArrayStack();
 		}
 
-		StreetFilter parentFilter = filters.isEmpty() ? null : (StreetFilter) filters.pop();
+		ObjectFilter filter = filters.isEmpty() ? null : (ObjectFilter) filters.pop();
 		filters = parentService.initFilters(filters, locale);
 		TownFilter forefatherFilter = (TownFilter) filters.peek();
 
-		// init filter
-		parentFilter = initFilter(parentFilter, forefatherFilter, locale);
-		filters.push(parentFilter);
+		if (filter instanceof StreetFilter) {
+			StreetFilter parentFilter = (StreetFilter) filter;
+
+			// init filter
+			parentFilter = initFilter(parentFilter, forefatherFilter, locale);
+			filters.push(parentFilter);
+		} else if (filter instanceof StreetNameFilter) {
+			StreetNameFilter streetNameFilter = (StreetNameFilter) filter;
+			// check if selected street is in a town
+			if (streetNameFilter.needFilter()) {
+				Street selected = readFull(streetNameFilter.getSelectedStub());
+				if (selected.getTownStub().equals(forefatherFilter.getSelectedStub())) {
+					streetNameFilter.setSearchString(format(streetNameFilter.getSelectedStub(), locale, true));
+				} else {
+					streetNameFilter.setSearchString("");
+					streetNameFilter.unsetSelected();
+				}
+			}
+			filters.push(streetNameFilter);
+		}
 
 		return filters;
 	}

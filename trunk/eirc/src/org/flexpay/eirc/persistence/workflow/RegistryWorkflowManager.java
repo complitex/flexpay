@@ -99,7 +99,8 @@ public class RegistryWorkflowManager {
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public void startProcessing(SpRegistry registry) throws TransitionNotAllowed {
 		if (!canProcess(registry)) {
-			throw new TransitionNotAllowed("Cannot start registry processing, invalid status");
+			throw new TransitionNotAllowed("Cannot start registry processing, invalid status: " +
+										   registry.getRegistryStatus().getI18nName());
 		}
 
 		setNextSuccessStatus(registry);
@@ -109,8 +110,14 @@ public class RegistryWorkflowManager {
 	public void endProcessing(SpRegistry registry) throws TransitionNotAllowed {
 		// all records processed
 		if (code(registry) == PROCESSED) {
-			if (registryDaoExt.hasMoreRecordsToProcess(registry.getId())) {
+			try {
+				if (registryDaoExt.hasMoreRecordsToProcess(registry.getId())) {
+					setNextStatus(registry, PROCESSED_WITH_ERROR);
+				}
+			} catch (Throwable t) {
 				setNextStatus(registry, PROCESSED_WITH_ERROR);
+				log.error("Unexpected error", t);
+				throw new RuntimeException("Unexpected error when ending processing", t);
 			}
 		}
 	}

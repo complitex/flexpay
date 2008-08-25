@@ -4,15 +4,15 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
-import org.flexpay.ab.persistence.filters.StreetFilter;
+import org.flexpay.ab.persistence.filters.StreetNameFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListBuildings extends BuildingsActionsBase {
@@ -23,10 +23,14 @@ public class ListBuildings extends BuildingsActionsBase {
 	private CountryFilter countryFilter = new CountryFilter();
 	private RegionFilter regionFilter = new RegionFilter();
 	private TownFilter townFilter = new TownFilter();
-	private StreetFilter streetFilter = new StreetFilter();
+	private StreetNameFilter streetNameFilter = new StreetNameFilter();
 	private Page pager = new Page();
 
-	private List<Buildings> buildingsList = new ArrayList<Buildings>();
+	private List<Buildings> buildingsList = list();
+
+	public ListBuildings() {
+		streetNameFilter.setShowSearchString(true);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -72,7 +76,7 @@ public class ListBuildings extends BuildingsActionsBase {
 		filters.push(countryFilter);
 		filters.push(regionFilter);
 		filters.push(townFilter);
-		filters.push(streetFilter);
+		filters.push(streetNameFilter);
 
 		return filters;
 	}
@@ -86,7 +90,7 @@ public class ListBuildings extends BuildingsActionsBase {
 		countryFilter = (CountryFilter) filters.peek(3);
 		regionFilter = (RegionFilter) filters.peek(2);
 		townFilter = (TownFilter) filters.peek(1);
-		streetFilter = (StreetFilter) filters.peek(0);
+		streetNameFilter = (StreetNameFilter) filters.peek(0);
 	}
 
 	/**
@@ -143,22 +147,12 @@ public class ListBuildings extends BuildingsActionsBase {
 		this.townFilter = townFilter;
 	}
 
-	/**
-	 * Getter for property 'streetFilter'.
-	 *
-	 * @return Value for property 'streetFilter'.
-	 */
-	public StreetFilter getStreetFilter() {
-		return streetFilter;
+	public StreetNameFilter getStreetNameFilter() {
+		return streetNameFilter;
 	}
 
-	/**
-	 * Setter for property 'streetFilter'.
-	 *
-	 * @param streetFilter Value to set for property 'streetFilter'.
-	 */
-	public void setStreetFilter(StreetFilter streetFilter) {
-		this.streetFilter = streetFilter;
+	public void setStreetNameFilter(StreetNameFilter streetNameFilter) {
+		this.streetNameFilter = streetNameFilter;
 	}
 
 	/**

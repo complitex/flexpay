@@ -2,18 +2,26 @@ package org.flexpay.common.util.config;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
 public class ApplicationConfig {
 
+	private static final Logger log = Logger.getLogger(ApplicationConfig.class);
+
+	private static ResourceLoader resourceLoader = new DefaultResourceLoader();
 	private static ApplicationConfig instance;
 
 	private List<Language> languages = new ArrayList<Language>(3);
@@ -185,6 +193,21 @@ public class ApplicationConfig {
 	 */
 	@Nullable
 	public static InputStream getResourceAsStream(@NotNull @NonNls String name) {
-		return getInstance().getClass().getResourceAsStream(name);
+		try {
+			Resource resource = resourceLoader.getResource(name);
+			if (resource.exists()) {
+				return resource.getInputStream();
+			} else {
+				return null;
+			}
+		} catch (IOException e) {
+			log.warn("Failed getting resource " + name, e);
+			return null;
+		}
+	}
+
+	public static void setResourceLoader(ResourceLoader resourceLoader) {
+		log.debug("Setting resource loader");
+		ApplicationConfig.resourceLoader = resourceLoader;
 	}
 }

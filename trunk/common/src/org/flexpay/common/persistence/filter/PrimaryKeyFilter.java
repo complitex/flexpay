@@ -66,6 +66,11 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 		this.selectedId = selectedId;
 	}
 
+
+	public void unsetSelected() {
+		this.selectedId = defaultId;
+	}
+
 	/**
 	 * @return the defaultId
 	 */

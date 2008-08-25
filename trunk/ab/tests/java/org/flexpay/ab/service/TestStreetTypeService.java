@@ -6,9 +6,10 @@ import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.ApplicationConfig;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.NotTransactional;
 
 import java.util.HashSet;
@@ -17,10 +18,14 @@ import java.util.Set;
 
 public class TestStreetTypeService extends SpringBeanAwareTestCase {
 
-	@Autowired
-	protected StreetTypeService service;
+	private StreetTypeService service;
 	@Autowired
 	protected StreetTypeDao streetTypeDao;
+
+	@Autowired
+	public void setService(@Qualifier ("streetTypeService") StreetTypeService service) {
+		this.service = service;
+	}
 
 	@Test
 	@NotTransactional
@@ -54,5 +59,14 @@ public class TestStreetTypeService extends SpringBeanAwareTestCase {
 
 		streetTypeDao.create(streetType);
 		streetTypeDao.delete(streetType);
+	}
+
+	@Test
+	public void testFindStreetType() throws Throwable {
+		assertNotNull("No type found by full name", service.findTypeByName("Улица"));
+		assertNotNull("No type found by short name", service.findTypeByName("ул"));
+		assertNotNull("No type found by ignore case full name", service.findTypeByName("УлиЦА"));
+
+		assertNull("Found not usual 'xxx' type", service.findTypeByName("xxx"));
 	}
 }

@@ -13,13 +13,14 @@ import java.util.List;
 public interface RegistryRecordDaoExt {
 
 	/**
-	 * List registry records
+	 * List registry records for import operation
 	 *
 	 * @param id	Registry id
-	 * @param pager Pager
+	 * @param minId Minimum registry record id to retrive
+	 * @param maxId Maximum registry record id to retrive
 	 * @return list of records
 	 */
-	List<RegistryRecord> listRecordsForUpdate(Long id, Page pager);
+	List<RegistryRecord> listRecordsForImport(Long id, Long minId, Long maxId);
 
 	/**
 	 * Filter registry records
@@ -66,4 +67,13 @@ public interface RegistryRecordDaoExt {
 	 * @return Minimum-Maximum pair
 	 */
 	Long[] getMinMaxIdsForProcessing(@NotNull Long registryId);
+
+	/**
+	 * Get minimum and maximum record ids for importing
+	 *
+	 * @param registryId Registry identifier to import
+	 * @return Minimum-Maximum pair
+	 */
+	@NotNull
+	Long[] getMinMaxIdsForImporting(@NotNull Long registryId);
 }

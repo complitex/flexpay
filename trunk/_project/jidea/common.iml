@@ -97,9 +97,6 @@
           <option name="enableValidation" value="true" />
           <option name="reportErrorsAsWarnings" value="true" />
         </options>
-        <customNs>
-          <enable>http://www.springmodules.org/schema/ehcache</enable>
-        </customNs>
       </configuration>
     </facet>
   </component>

@@ -28,7 +28,6 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 
 	@NonNls
 	private Logger log = Logger.getLogger(getClass());
-	private ServiceDaoJDBC serviceDaoJDBC;
 
 	@SuppressWarnings ({"unchecked"})
 	public List<ServiceType> getServiceTypes() {
@@ -61,17 +60,6 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 		} finally {
 			getHibernateTemplate().setMaxResults(0);
 		}
-	}
-
-	/**
-	 * Find Service by provider and type ids
-	 *
-	 * @param providerId ServiceProvider id
-	 * @param typeId	 ServiceType id
-	 * @return Service instance
-	 */
-	public Service findService(Long providerId, Long typeId) {
-		return serviceDaoJDBC.findService(providerId, typeId);
 	}
 
 	/**
@@ -171,9 +159,5 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 	public List<Service> findIntersectingServices(Long providerId, Long typeId, Date beginDate, Date endDate) {
 		Object[] params = {providerId, typeId, beginDate, endDate, beginDate, endDate};
 		return getHibernateTemplate().findByNamedQuery("Service.findIntersectingServices", params);
-	}
-
-	public void setServiceDaoJDBC(ServiceDaoJDBC serviceDaoJDBC) {
-		this.serviceDaoJDBC = serviceDaoJDBC;
 	}
 }

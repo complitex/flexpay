@@ -130,7 +130,7 @@ public class RegistryDaoExtImpl extends HibernateDaoSupport implements RegistryD
 	 * @return <code>true</code> if registry has records for processing, or <code>false</code> otherwise
 	 */
 	public boolean hasMoreRecordsToProcess(Long registryId) {
-		List value = getHibernateTemplate().findByNamedQuery("SpRegistryType.haveNotProcessedRecords", registryId);
+		List value = getHibernateTemplate().findByNamedQuery("RegistryType.haveNotProcessedRecords", registryId);
 
 		return !value.isEmpty();
 	}

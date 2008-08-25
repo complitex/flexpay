@@ -19,6 +19,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 	private SpRegistry registry;
 
 	private Page<RegistryRecord> pager;
+	private Long[] minMaxIds = {null, null};
 
 	/**
 	 * Find raw data by its id
@@ -34,8 +35,19 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 	 * Initialize data source
 	 */
 	public void initialize() {
-		pager = new Page<RegistryRecord>(5000, 1);
-		List<RegistryRecord> datum = registryRecordDaoExt.listRecordsForUpdate(registry.getId(), pager);
+		pager = new Page<RegistryRecord>(500, 1);
+		Long[] values = registryRecordDaoExt.getMinMaxIdsForProcessing(registry.getId());
+		minMaxIds[0] = values[0];
+		minMaxIds[1] = values[1];
+
+		if (log.isInfoEnabled()) {
+			log.info("Min and max are " + values[0] + ", " + values[1]);
+		}
+
+		Long minId = minMaxIds[0];
+		Long maxId = minMaxIds[0] + pager.getPageSize();
+
+		List<RegistryRecord> datum = registryRecordDaoExt.listRecordsForImport(registry.getId(), minId, maxId);
 		dataIterator = datum.iterator();
 
 		log.debug("Inited db data source");
@@ -58,10 +70,18 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 			return true;
 		}
 
+		if (pager.getThisPageLastElementNumber() >= minMaxIds[1]) {
+			return false;
+		}
+
 		// get next page
 		int nextPage = pager.getPageNumber() + 1;
 		pager.setPageNumber(nextPage);
-		List<RegistryRecord> datum = registryRecordDaoExt.listRecordsForUpdate(registry.getId(), pager);
+
+		Long minId = minMaxIds[0] + pager.getThisPageFirstElementNumber();
+		Long maxId = minMaxIds[0] + pager.getThisPageLastElementNumber();
+
+		List<RegistryRecord> datum = registryRecordDaoExt.listRecordsForImport(registry.getId(), minId, maxId);
 		dataIterator = datum.iterator();
 		return dataIterator.hasNext();
 	}

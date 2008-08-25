@@ -34,8 +34,7 @@
 	<bean id="importServiceEirc"
 		  class="org.flexpay.eirc.service.importexport.EircImportService"
 		  p:eircImportServiceTx-ref="importServiceEircTx"
-		  p:streetService-ref="streetService"
-		  p:streetTypeService-ref="streetTypeService" />
+		  p:streetService-ref="streetService" />
 
 	<bean id="spFilesExchangeHelper"
 		  class="org.flexpay.eirc.service.exchange.ExchangeHelper">

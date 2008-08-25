@@ -75,13 +75,13 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 	public List<Buildings> getBuildings(ArrayStack filters, Page pager) {
-		StreetFilter filter = (StreetFilter) filters.peek();
+		PrimaryKeyFilter streetFilter = (PrimaryKeyFilter) filters.peek();
 		if (filters.size() > 1 && filters.peek(1) instanceof DistrictFilter) {
 			DistrictFilter districtFilter = (DistrictFilter) filters.peek(1);
-			return buildingsDao.findStreetDistrictBuildings(filter
+			return buildingsDao.findStreetDistrictBuildings(streetFilter
 					.getSelectedId(), districtFilter.getSelectedId(), pager);
 		}
-		return buildingsDao.findBuildings(filter.getSelectedId(), pager);
+		return buildingsDao.findBuildings(streetFilter.getSelectedId(), pager);
 	}
 
 	public List<Buildings> getBuildings(Long streetId, Page pager) {
@@ -139,11 +139,11 @@ public class BuildingServiceImpl implements BuildingService {
 		}
 
 		BuildingsFilter parentFilter = filters.isEmpty() ? null
-									   : (BuildingsFilter) filters.pop();
+														 : (BuildingsFilter) filters.pop();
 
 		// check if a districts filter present
 		if (filters.size() > 1 && filters.peek(1) instanceof DistrictFilter) {
-			StreetFilter streetFilter = (StreetFilter) filters.pop();
+			PrimaryKeyFilter streetFilter = (PrimaryKeyFilter) filters.pop();
 
 			filters = districtParentService.initFilters(filters, locale);
 			DistrictFilter districtFilter = (DistrictFilter) filters.pop();
@@ -161,7 +161,7 @@ public class BuildingServiceImpl implements BuildingService {
 			filters.push(parentFilter);
 		} else {
 			filters = parentService.initFilters(filters, locale);
-			StreetFilter forefatherFilter = (StreetFilter) filters.peek();
+			PrimaryKeyFilter forefatherFilter = (PrimaryKeyFilter) filters.peek();
 
 			// init filter
 			parentFilter = initFilter(parentFilter, forefatherFilter, locale);
@@ -172,7 +172,7 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 	private BuildingsFilter initFilter(BuildingsFilter buildingFilter,
-									   StreetFilter streetFilter, DistrictFilter districtFilter)
+									   PrimaryKeyFilter streetFilter, DistrictFilter districtFilter)
 			throws FlexPayException {
 
 		if (buildingFilter == null) {

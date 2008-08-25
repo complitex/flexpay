@@ -36,6 +36,8 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	protected static final String REDIRECT_ERROR = "redirectError";
 	@NonNls
 	protected static final String REDIRECT_SUCCESS = "redirectSuccess";
+	@NonNls
+	protected static final String REDIRECT_INPUT = "redirectInput";
 
 	@NonNls
 	private static final String METHOD_POST = "post";

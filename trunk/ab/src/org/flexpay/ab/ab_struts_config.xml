@@ -318,8 +318,8 @@
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">BUILDING_DELETE</param>
 			</interceptor-ref>
-			<result name="SUCCESS" type="redirect-action">list_buildings</result>
-			<result name="input" type="redirect-action">
+			<result name="redirectSuccess" type="redirect-action">list_buildings</result>
+			<result name="redirectInput" type="redirect-action">
 				<param name="actionName">buildingsEditAction</param>
 				<param name="parse">true</param>
 				<param name="buildings.id">${redirectBuildingsId}</param>

@@ -8,6 +8,8 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.service.LanguageService;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.context.ResourceLoaderAware;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -15,7 +17,7 @@ import java.net.URL;
 /**
  * Application configuration loader
  */
-public class CommonConfigLoader {
+public class CommonConfigLoader implements ResourceLoaderAware {
 
 	@NonNls
 	private Log log = LogFactory.getLog(getClass());
@@ -108,5 +110,9 @@ public class CommonConfigLoader {
 	 */
 	public void setLanguageService(LanguageService languageService) {
 		this.languageService = languageService;
+	}
+
+	public void setResourceLoader(ResourceLoader resourceLoader) {
+		ApplicationConfig.setResourceLoader(resourceLoader);
 	}
 }
