@@ -12,10 +12,7 @@ import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Apartment
@@ -253,5 +250,9 @@ public class Apartment extends DomainObjectWithStatus {
 
 	public boolean hasNoNumber() {
 		return !hasNumber();
+	}
+
+	public String format(Locale locale, boolean shortMode) {
+		return getNumber();
 	}
 }

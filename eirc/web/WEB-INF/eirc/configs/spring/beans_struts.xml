@@ -196,11 +196,13 @@
 	</bean>
 
 	<bean id="eircAccountListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.EircAccountListAction">
-		<property name="eircAccountService" ref="eircAccountService" />
-	</bean>
+		  class="org.flexpay.eirc.actions.eirc_account.EircAccountListAction"
+		  p:eircAccountService-ref="eircAccountService"
+		  p:personService-ref="personService"
+		  p:addressService-ref="addressService" />
+
 	<bean id="eircAccountViewAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.EircAccountViewAction">
+		  class="org.flexpay.eirc.actions.eirc_account.EircAccountViewAction">
 		<property name="eircAccountService" ref="eircAccountService" />
 	</bean>
 	<bean id="eircAccountCreateForm1Action" scope="prototype"
