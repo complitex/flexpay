@@ -1,6 +1,7 @@
 package org.flexpay.common.process;
 
 import org.apache.log4j.Logger;
+import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
@@ -8,6 +9,7 @@ import org.flexpay.common.process.exception.ProcessManagerConfigurationException
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.job.JobManager;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.jbpm.JbpmConfiguration;
 import org.jbpm.JbpmContext;
 import org.jbpm.context.exe.ContextInstance;
@@ -19,7 +21,6 @@ import org.jbpm.graph.exe.Token;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.*;
@@ -32,7 +33,7 @@ public class ProcessManager implements Runnable {
 	 */
 	protected volatile static ProcessManager instance;
 	private volatile static Thread localThread;
-	private volatile boolean stop = false;
+	private volatile boolean stopped = false;
 	private volatile Object sleepSemaphore = new Object();
 
 	private static final Logger log = Logger.getLogger(ProcessManager.class);
@@ -45,6 +46,8 @@ public class ProcessManager implements Runnable {
 
 	public static final String PROCESS_INSTANCE_ID = "ProcessInstanceID";
 	private JbpmConfiguration jbpmConfiguration = null;
+
+	private final List<String> definitionPaths = CollectionUtils.list();
 
 	/**
 	 * protected constructor
@@ -75,7 +78,6 @@ public class ProcessManager implements Runnable {
 	/**
 	 * Start ProcessManager Thread
 	 *
-	 * @return ProcessManager
 	 */
 	public static synchronized void startProcessManager() {
 		log.debug("Starting ProcessManager thread");
@@ -117,20 +119,32 @@ public class ProcessManager implements Runnable {
 	 * @param replace if true old process definition should be removed with new one
 	 * @return ID of process definition
 	 * @throws ProcessDefinitionException when can't deplot process definition to jbpm
-	 * @throws ProcessManagerConfigurationException
-	 *                                    when misconfiguration present
 	 */
 	public long deployProcessDefinition(String name, boolean replace)
-			throws ProcessDefinitionException, ProcessManagerConfigurationException {
+			throws ProcessDefinitionException {
 
-		InputStream inputStream;
-		try {
-			inputStream = ProcessManagerConfiguration.getProcessDefinitionOSByName(name);
-		} catch (FileNotFoundException e) {
-			log.error("ProcessManager: process definition for name " + name + "file not found!");
-			throw new ProcessManagerConfigurationException(e);
+		if (log.isDebugEnabled()) {
+			log.debug("Requested definition deployment: " + name);
 		}
-		return deployProcessDefinition(inputStream, replace);
+		InputStream is = null;
+		try {
+			for (String path : definitionPaths) {
+				String resource = path + "/" + name + ".xml";
+				if (log.isDebugEnabled()) {
+					log.debug("Looking up " + resource);
+				}
+				is = ApplicationConfig.getResourceAsStream(resource);
+				if (is != null) {
+					log.debug("Found!");
+					return deployProcessDefinition(is, replace);
+				}
+			}
+
+			log.warn("No definition found: " + name);
+			throw new ProcessDefinitionException("Process definition for name " + name + " file not found!");
+		} finally {
+			IOUtils.closeQuietly(is);
+		}
 	}
 
 	/**
@@ -198,7 +212,7 @@ public class ProcessManager implements Runnable {
 	 */
 	public void run() {
 		log.debug("Starting process manager...");
-		while (!isStop()) {
+		while (!isStopped()) {
 			try {
 				//write tick-tack message
 				log.debug("Collecting task instances to run.");
@@ -235,14 +249,14 @@ public class ProcessManager implements Runnable {
 	 * Stops ProcessManager execution
 	 */
 	public synchronized void stopProcessManager() {
-		stop = true;
+		stopped = true;
 	}
 
 	/**
-	 * @return true if ProcessManager id not running
+	 * @return true if ProcessManager is not running
 	 */
-	public synchronized boolean isStop() {
-		return stop;
+	public synchronized boolean isStopped() {
+		return stopped;
 	}
 
 	/**
@@ -266,6 +280,11 @@ public class ProcessManager implements Runnable {
 			log.error("initProcess: findLatestProcessDefinition", e);
 			throw new ProcessDefinitionException("Can't access ProcessDefinition for " + processDefinitionName);
 		}
+		// try to search in predefined set of places
+		if (processDefinition == null) {
+			deployProcessDefinition(processDefinitionName, true);
+			processDefinition = graphSession.findLatestProcessDefinition(processDefinitionName);
+		}
 		if (processDefinition == null) {
 			log.error("initProcess: Can't find process definition for name: " + processDefinitionName);
 			throw new ProcessDefinitionException("initProcess: Can't find process definition for name: " + processDefinitionName);
@@ -282,7 +301,7 @@ public class ProcessManager implements Runnable {
 		} catch (RuntimeException e) {
 			jbpmContext.close();
 			log.error("initProcess: ProcessInstanceCreation", e);
-			throw new ProcessInstanceException("Can't create ProcessInstance for " + processDefinitionName);
+			throw new ProcessInstanceException("Can't create ProcessInstance for " + processDefinitionName, e);
 		}
 		jbpmContext.close();
 		return processId;
@@ -350,6 +369,7 @@ public class ProcessManager implements Runnable {
 	 */
 	public synchronized long createProcess(String processDefinitionName, Map<Serializable, Serializable> parameters)
 			throws ProcessInstanceException, ProcessDefinitionException {
+
 		long processInstanceID = initProcess(processDefinitionName);
 		//starting process
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
@@ -551,6 +571,11 @@ public class ProcessManager implements Runnable {
 	 */
 	public void setJbpmConfiguration(JbpmConfiguration jbpmConfiguration) {
 		this.jbpmConfiguration = jbpmConfiguration;
+	}
+
+	public void setDefinitionPaths(List<String> definitionPaths) {
+		this.definitionPaths.clear();
+		this.definitionPaths.addAll(definitionPaths);
 	}
 
 	@SuppressWarnings ({"unchecked"})

@@ -73,7 +73,7 @@
 		<property name="townTypeTranslationDao" ref="townTypeTranslationDao" />
 	</bean>
 
-	<bean id="streetTypeService" class="org.flexpay.ab.service.imp.StreetTypeServiceImpl"
+	<bean id="streetTypeServiceTarget" class="org.flexpay.ab.service.imp.StreetTypeServiceImpl"
 		  p:streetTypeDao-ref="streetTypeDAO"
 		  p:streetTypeTranslationDao-ref="streetTypeTranslationDao"
 		  p:correctionsService-ref="correctionsServiceAb" />

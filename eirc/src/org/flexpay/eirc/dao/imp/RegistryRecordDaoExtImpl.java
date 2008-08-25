@@ -26,31 +26,17 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	private Logger log = Logger.getLogger(getClass());
 
 	/**
-	 * List registry records
+	 * List registry records for import operation
 	 *
 	 * @param id	Registry id
-	 * @param pager Pager
+	 * @param minId Minimum registry record id to retrive
+	 * @param maxId Maximum registry record id to retrive
 	 * @return list of records
 	 */
-	@SuppressWarnings({"unchecked"})
-	public List<RegistryRecord> listRecordsForUpdate(final Long id, final Page pager) {
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-
-				// read cached total elements
-				if (pager.getTotalNumberOfElements() <= 0) {
-					Long count = (Long) session.getNamedQuery("RegistryRecord.listRecords.count")
-							.setLong(0, id).uniqueResult();
-					pager.setTotalElements(count.intValue());
-				}
-
-				return session.getNamedQuery("RegistryRecord.listRecords")
-						.setFirstResult(pager.getThisPageFirstElementNumber())
-						.setMaxResults(pager.getPageSize())
-						.setLong(0, id)
-						.list();
-			}
-		});
+	@SuppressWarnings ({"unchecked"})
+	public List<RegistryRecord> listRecordsForImport(Long id, Long minId, Long maxId) {
+		Object[] params = {id, minId, maxId};
+		return getHibernateTemplate().findByNamedQuery("RegistryRecord.listRecordsForImport", params);
 	}
 
 	/**
@@ -183,6 +169,26 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	public Long[] getMinMaxIdsForProcessing(@NotNull Long registryId) {
 		List result = getHibernateTemplate()
 				.findByNamedQuery("RegistryRecord.getMinMaxRecordsForProcessing", registryId);
+		Object[] objs = (Object[]) result.get(0);
+
+		Long[] minMax = CollectionUtils.ar((Long) objs[0], (Long) objs[1]);
+		if (minMax[0] == null || minMax[1] == null) {
+			return CollectionUtils.ar(0L, 0L);
+		}
+
+		return minMax;
+	}
+
+	/**
+	 * Get minimum and maximum record ids for importing
+	 *
+	 * @param registryId Registry identifier to import
+	 * @return Minimum-Maximum pair
+	 */
+	@NotNull
+	public Long[] getMinMaxIdsForImporting(@NotNull Long registryId) {
+		List result = getHibernateTemplate()
+				.findByNamedQuery("RegistryRecord.getMinMaxRecordsForImporting", registryId);
 		Object[] objs = (Object[]) result.get(0);
 
 		Long[] minMax = CollectionUtils.ar((Long) objs[0], (Long) objs[1]);

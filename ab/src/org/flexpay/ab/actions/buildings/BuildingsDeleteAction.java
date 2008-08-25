@@ -26,7 +26,7 @@ public class BuildingsDeleteAction extends FPActionSupport {
 			buildingService.update(buildings);
 		}
 
-		return redirectBuildingsId == null ? SUCCESS : INPUT;
+		return redirectBuildingsId == null ? REDIRECT_SUCCESS : REDIRECT_INPUT;
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class BuildingsDeleteAction extends FPActionSupport {
 	 */
 	@NotNull
 	protected String getErrorResult() {
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	/**

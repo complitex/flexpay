@@ -228,7 +228,12 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 
 		// Try to find general correction by type name
 		Stub<StreetType> correction = correctionsService.findCorrection(
-				typeName, StreetType.class, null);
+				typeName.toUpperCase(), StreetType.class, null);
+		if (correction != null) {
+			return new StreetType(correction.getId());
+		}
+		correction = correctionsService.findCorrection(
+				typeName.toLowerCase(), StreetType.class, null);
 		if (correction != null) {
 			return new StreetType(correction.getId());
 		}

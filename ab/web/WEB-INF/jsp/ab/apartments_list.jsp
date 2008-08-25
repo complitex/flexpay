@@ -7,10 +7,21 @@
 
 		<tr>
 			<td colspan="4">
-				<%@ include file="filters/groups/country_region_town_street_building.jsp" %>
+				<%@ include file="filters/groups/country_region_town_streetname_building.jsp" %>
 			</td>
 		</tr>
 
+		<tr>
+			<td colspan="4">
+				<%@ include file="filters/pager.jsp" %>
+				<input type="button" class="btn-exit"
+					   onclick="$('fobjects').action='<s:url action="apartmentsDelete"/>'"
+					   value="<s:text name="common.delete_selected"/>"/>
+				<input type="submit" class="btn-exit"
+					   onclick="$('fobjects').action='<s:url action='apartmentEdit'><s:param name="apartment.id" value="0"/></s:url>'"
+					   value="<s:text name="common.new"/>"/>
+			</td>
+		</tr>
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%"><input type="checkbox"
@@ -41,7 +52,7 @@
 		<tr>
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
-				<input type="submit" class="btn-exit"
+				<input type="button" class="btn-exit"
 					   onclick="$('fobjects').action='<s:url action="apartmentsDelete"/>'"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="submit" class="btn-exit"

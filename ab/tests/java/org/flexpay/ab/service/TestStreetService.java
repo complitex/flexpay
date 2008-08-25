@@ -9,6 +9,7 @@ import org.flexpay.common.util.DateUtil;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.NotTransactional;
 
 public class TestStreetService extends TransactionalSpringBeanAwareTestCase {
@@ -19,8 +20,13 @@ public class TestStreetService extends TransactionalSpringBeanAwareTestCase {
 	protected StreetService streetService;
 	@Autowired
 	protected TownService townService;
+	private StreetTypeService streetTypeService;
+
 	@Autowired
-	protected StreetTypeService streetTypeService;
+	public void setService(@Qualifier ("streetTypeService") StreetTypeService service) {
+		this.streetTypeService = service;
+	}
+
 
 	@Test
 	@NotTransactional
@@ -54,6 +60,8 @@ public class TestStreetService extends TransactionalSpringBeanAwareTestCase {
 	@Test
 	public void testGetStreetName() throws Throwable {
 		Town town = townService.readFull(ApplicationConfig.getDefaultTownStub());
+		assertNotNull("No default town", town);
+
 		if (town.getStreets().isEmpty()) {
 			System.err.println("No streets in default town!");
 			return;

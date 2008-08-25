@@ -8,9 +8,9 @@ import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListApartments extends BuildingsActionsBase {
@@ -21,11 +21,15 @@ public class ListApartments extends BuildingsActionsBase {
 	protected CountryFilter countryFilter = new CountryFilter();
 	protected RegionFilter regionFilter = new RegionFilter();
 	protected TownFilter townFilter = new TownFilter();
-	protected StreetFilter streetFilter = new StreetFilter();
+	protected StreetNameFilter streetNameFilter = new StreetNameFilter();
 	protected BuildingsFilter buildingsFilter = new BuildingsFilter();
 	private Page pager = new Page();
 
-	private List<Apartment> apartments = new ArrayList<Apartment>();
+	private List<Apartment> apartments = CollectionUtils.list();
+
+	public ListApartments() {
+		streetNameFilter.setShowSearchString(true);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -71,7 +75,7 @@ public class ListApartments extends BuildingsActionsBase {
 		filters.push(countryFilter);
 		filters.push(regionFilter);
 		filters.push(townFilter);
-		filters.push(streetFilter);
+		filters.push(streetNameFilter);
 		filters.push(buildingsFilter);
 
 		return filters;
@@ -86,7 +90,7 @@ public class ListApartments extends BuildingsActionsBase {
 		countryFilter = (CountryFilter) filters.peek(4);
 		regionFilter = (RegionFilter) filters.peek(3);
 		townFilter = (TownFilter) filters.peek(2);
-		streetFilter = (StreetFilter) filters.peek(1);
+		streetNameFilter = (StreetNameFilter) filters.peek(1);
 		buildingsFilter = (BuildingsFilter) filters.peek(0);
 	}
 
@@ -144,22 +148,12 @@ public class ListApartments extends BuildingsActionsBase {
 		this.townFilter = townFilter;
 	}
 
-	/**
-	 * Getter for property 'streetFilter'.
-	 *
-	 * @return Value for property 'streetFilter'.
-	 */
-	public StreetFilter getStreetFilter() {
-		return streetFilter;
+	public StreetNameFilter getStreetNameFilter() {
+		return streetNameFilter;
 	}
 
-	/**
-	 * Setter for property 'streetFilter'.
-	 *
-	 * @param streetFilter Value to set for property 'streetFilter'.
-	 */
-	public void setStreetFilter(StreetFilter streetFilter) {
-		this.streetFilter = streetFilter;
+	public void setStreetNameFilter(StreetNameFilter streetNameFilter) {
+		this.streetNameFilter = streetNameFilter;
 	}
 
 	/**
@@ -178,24 +172,6 @@ public class ListApartments extends BuildingsActionsBase {
 	 */
 	public void setBuildingsFilter(BuildingsFilter buildingsFilter) {
 		this.buildingsFilter = buildingsFilter;
-	}
-
-	/**
-	 * Setter for property 'buildingsService'.
-	 *
-	 * @param apartmentService Value to set for property 'buildingsService'.
-	 */
-	public void setApartmentService(ApartmentService apartmentService) {
-		this.apartmentService = apartmentService;
-	}
-
-	/**
-	 * Setter for property 'parentService'.
-	 *
-	 * @param parentService Value to set for property 'parentService'.
-	 */
-	public void setParentService(ParentService<BuildingsFilter> parentService) {
-		this.parentService = parentService;
 	}
 
 	/**
@@ -223,5 +199,13 @@ public class ListApartments extends BuildingsActionsBase {
 	 */
 	public void setPager(Page pager) {
 		this.pager = pager;
+	}
+
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
+	}
+
+	public void setParentService(ParentService<BuildingsFilter> parentService) {
+		this.parentService = parentService;
 	}
 }

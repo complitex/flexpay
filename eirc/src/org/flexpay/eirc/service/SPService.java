@@ -30,16 +30,6 @@ public interface SPService {
 	ServiceProvider getProvider(Long providerNumber) throws IllegalArgumentException;
 
 	/**
-	 * Find service of specified <code>type</code> for provider
-	 *
-	 * @param provider ServiceProvider
-	 * @param type	 ServiceType to find
-	 * @return Service if found, or <code>null</code> if the requested service is not
-	 *         available from <code>provider</code>
-	 */
-	Service getService(ServiceProvider provider, ServiceType type);
-
-	/**
 	 * Get record type by type id
 	 *
 	 * @param typeId Record type enum id

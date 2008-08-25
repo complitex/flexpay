@@ -32,7 +32,7 @@ public class EircImportServiceTx extends ImportService {
 	@Transactional (readOnly = false)
 	public boolean processBatch(long[] counters, boolean inited,
 								DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource,
-								Map<String, List<Street>> nameObjsMap, Map<String, StreetType> nameTypeMap) {
+								Map<String, List<Street>> nameObjsMap) {
 
 		log.debug("Fetching for next batch");
 
@@ -70,6 +70,13 @@ public class EircImportServiceTx extends ImportService {
 				continue;
 			}
 
+			if (data.getRegistryRecord().getApartment() != null &&
+				data.getRegistryRecord().getPerson() != null &&
+				data.getRegistryRecord().getService() != null) {
+				log.info("Record already have apartment, person and service set");
+				continue;
+			}
+
 			try {
 				Stub<Consumer> persistentObj = correctionsService.findCorrection(
 						data.getShortConsumerId(), Consumer.class, sd);
@@ -90,28 +97,28 @@ public class EircImportServiceTx extends ImportService {
 				}
 
 
-				// Find apartment
-				Apartment apartment = findApartment(nameObjsMap, nameTypeMap, sd, data, dataSource);
-				if (apartment == null) {
-					addImportError(sd, data.getExternalSourceId(), Apartment.class, dataSource);
-					continue;
+				if (data.getRegistryRecord().getApartment() == null) {
+					// Find apartment
+					Apartment apartment = findApartment(nameObjsMap, sd, data, dataSource);
+					if (apartment == null) {
+						addImportError(sd, data.getExternalSourceId(), Apartment.class, dataSource);
+						continue;
+					}
+
+					data.getRegistryRecord().setApartment(apartment);
+					if (log.isInfoEnabled()) {
+						log.info("Found apartment: " + data.getApartmentId());
+					}
 				}
 
-				data.getRegistryRecord().setApartment(apartment);
-				if (log.isInfoEnabled()) {
-					log.info("Found apartment: " + data.getApartmentId());
+				if (data.getRegistryRecord().getPerson() == null) {
+					Person person = findPerson(sd, data, dataSource);
+					if (person == null) {
+						continue;
+					}
+					data.getRegistryRecord().setPerson(person);
+					log.info("Found responsible person: " + data.getPersonFIO());
 				}
-
-				Person person = findPerson(data);
-				if (person == null) {
-					log.error("Person not found: " + data.getPersonFIO());
-					ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
-					error.setErrorId("error.eirc.import.person_not_found");
-					setConsumerError(data, error);
-					continue;
-				}
-				data.getRegistryRecord().setPerson(person);
-				log.info("Found responsible person: " + data.getPersonFIO());
 
 				Service service = data.getRegistryRecord().getService();
 				if (service == null) {
@@ -120,14 +127,13 @@ public class EircImportServiceTx extends ImportService {
 					if (service == null) {
 						log.warn("Unknown service code: " + data.getServiceCode());
 						ImportError error = addImportError(sd, data.getExternalSourceId(), Service.class, dataSource);
-						error.setErrorId("error.eirc.import.consumer_not_found");
+						error.setErrorId("error.eirc.import.service_not_found");
 						setConsumerError(data, error);
 						continue;
 					}
 
 					data.getRegistryRecord().setService(service);
 				}
-
 
 				postSaveRecord(data, null);
 			} catch (Exception e) {
@@ -172,15 +178,21 @@ public class EircImportServiceTx extends ImportService {
 	}
 
 	@Nullable
-	private Person findPerson(@NotNull RawConsumerData data) {
+	private Person findPerson(DataSourceDescription sd, @NotNull RawConsumerData data,
+							  RawDataSource<RawConsumerData> dataSource) throws Exception {
 
 		List<Person> persons = personService.findRegisteredPersons(
 				stub(data.getRegistryRecord().getApartment()));
 		if (persons.isEmpty()) {
+			log.debug("No registered persons found");
+			ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
+			error.setErrorId("error.eirc.import.person_no_registrants");
+			setConsumerError(data, error);
 			return null;
 		}
 
 		if (persons.size() == 1) {
+			log.debug("Unique person found!");
 			return persons.get(0);
 		}
 
@@ -195,20 +207,31 @@ public class EircImportServiceTx extends ImportService {
 						.isEquals();
 				if (sameFIO) {
 					candidates.add(person);
-					break;
 				}
 			}
 		}
 
 		if (candidates.size() == 1) {
+			log.debug("Unique FIO match");
 			return candidates.get(0);
 		}
 
+		if (candidates.size() > 0) {
+			log.debug("Too many FIO matches");
+			ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
+			error.setErrorId("error.eirc.import.person_several_fio_match");
+			setConsumerError(data, error);
+			return null;
+		}
+
+		log.error("No FIO matches");
+		ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
+		error.setErrorId("error.eirc.import.person_no_fio_match");
+		setConsumerError(data, error);
 		return null;
 	}
 
 	private Apartment findApartment(Map<String, List<Street>> nameObjsMap,
-									Map<String, StreetType> nameTypeMap,
 									DataSourceDescription sd, RawConsumerData data,
 									RawDataSource<RawConsumerData> dataSource) throws Exception {
 
@@ -240,7 +263,7 @@ public class EircImportServiceTx extends ImportService {
 			return findApartment(data, new Street(streetById), sd, dataSource);
 		}
 
-		Street streetByName = findStreet(nameObjsMap, nameTypeMap, data, sd, dataSource);
+		Street streetByName = findStreet(nameObjsMap, data, sd, dataSource);
 		if (streetByName == null) {
 			log.warn("Failed getting street for account #" + data.getExternalSourceId());
 			return null;
@@ -255,8 +278,19 @@ public class EircImportServiceTx extends ImportService {
 	}
 
 	private Street findStreet(Map<String, List<Street>> nameObjsMap,
-							  Map<String, StreetType> nameTypeMap, RawConsumerData data,
+							  RawConsumerData data,
 							  DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource) throws Exception {
+
+		StreetType streetType = findStreetType(data, sd);
+		if (streetType == null) {
+			log.warn("No street type was found: " + data.getAddressStreetType() +
+					 ", for street " + data.getAddressStreet());
+			ImportError error = addImportError(sd, data.getExternalSourceId(), StreetType.class, dataSource);
+			error.setErrorId("error.eirc.import.street_type_not_found");
+			setConsumerError(data, error);
+			return null;
+		}
+
 		List<Street> streets = nameObjsMap.get(data.getAddressStreet().toLowerCase());
 		// no candidates
 		if (streets == null) {
@@ -269,16 +303,6 @@ public class EircImportServiceTx extends ImportService {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Street candidates: " + streets);
-		}
-
-		StreetType streetType = findStreetType(nameTypeMap, data);
-		if (streetType == null) {
-			log.warn("Found several streets, but no type was found: " + data.getAddressStreetType() +
-					 ", " + data.getAddressStreet());
-			ImportError error = addImportError(sd, data.getExternalSourceId(), StreetType.class, dataSource);
-			error.setErrorId("error.eirc.import.street_type_not_found");
-			setConsumerError(data, error);
-			return null;
 		}
 
 		List<Street> filteredStreets = filterStreetsbyType(streets, streetType);
@@ -320,15 +344,17 @@ public class EircImportServiceTx extends ImportService {
 		return filteredStreets;
 	}
 
-	private StreetType findStreetType(Map<String, StreetType> nameTypeMap, RawConsumerData data) {
+	@Nullable
+	private StreetType findStreetType(RawConsumerData data, DataSourceDescription sd) throws Exception {
 
-		Stub<StreetType> typeById = correctionsService.findCorrection(
-				data.getAddressStreetType(), StreetType.class, null);
-		if (typeById != null) {
-			return new StreetType(typeById);
+		StreetType type = streetTypeService.findTypeByName(data.getAddressStreetType());
+		if (type != null) {
+			return type;
 		}
 
-		return nameTypeMap.get(data.getAddressStreetType().toLowerCase());
+		Stub<StreetType> stub = correctionsService.findCorrection(data.getAddressStreetType(),
+				StreetType.class, sd);
+		return stub != null ? new StreetType(stub.getId()) : null;
 	}
 
 	private Apartment findApartment(RawConsumerData data, Street street, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)

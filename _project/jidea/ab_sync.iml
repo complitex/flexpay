@@ -108,7 +108,6 @@
           <option name="enableValidation" value="false" />
           <option name="reportErrorsAsWarnings" value="true" />
         </options>
-        <customNs />
       </configuration>
     </facet>
   </component>

@@ -149,6 +149,8 @@
             <file>jar://$MODULE_DIR$/../../common/lib/struts2/xwork-2.0.4.jar!/xwork-default.xml</file>
             <file>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/struts-plugin.xml</file>
             <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/organisation/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/street/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/apartment/struts.xml</file>
           </fileset>
           <validation>
             <errors_as_warnings>false</errors_as_warnings>
@@ -167,9 +169,6 @@
           <option name="enableValidation" value="false" />
           <option name="reportErrorsAsWarnings" value="true" />
         </options>
-        <customNs>
-          <enable>http://www.springmodules.org/schema/ehcache</enable>
-        </customNs>
       </configuration>
     </facet>
   </component>

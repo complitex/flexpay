@@ -8,8 +8,7 @@
 
 		<tr>
 			<td colspan="5">
-				<%@ include file="filters/groups/country_region_town.jsp" %>
-				<%@ include file="filters/street_search_filter.jsp" %>
+				<%@ include file="filters/groups/country_region_town_streetname.jsp" %>
 			</td>
 		</tr>
 
@@ -45,7 +44,7 @@
 					<s:property value="%{getTranslation(getCurrentType().translations).name}"/>
 				</td>
 				<td class="col">
-					<a href="<s:url value="/dicts/list_buildings.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{regionFilter.selectedId}&townFilter.selectedId=%{townFilter.selectedId}&streetFilter.selectedId=%{id}"/>">
+					<a href="<s:url value="/dicts/list_buildings.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{regionFilter.selectedId}&townFilter.selectedId=%{townFilter.selectedId}&streetNameFilter.selectedId=%{id}"/>">
 						<s:property value="%{getTranslation(getCurrentName().translations).name}"/>
 					</a>
 				</td>

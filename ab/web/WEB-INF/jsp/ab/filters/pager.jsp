@@ -2,22 +2,28 @@
 
 
 <script type="text/javascript">
-function submitForm(amount, form) {
-  var el = document.createElement('INPUT');
-  el.type = 'hidden';
-  el.name = 'pager.pageSize';
-  el.value = amount;
-  form.appendChild(el);
-  form.submit();
-}
 
+	if (typeof(submitForm) == 'undefined') {
+		function submitForm(select) {
+
+			var elms = document.getElementsByName('pager.pageSize');
+			for (var i = 0; i < elms.length; ++i ) {
+				var el = elms[i];
+				if (el != select && el != null) {
+					el.name = null;
+				}
+			}
+			select.name = 'pager.pageSize';
+			select.form.submit();
+		}
+	}
 </script>
 
 <div>
 	<s:if test="%{pager.totalNumberOfElements > 0}">
 	<span style="float:right;" class="text">
 		&nbsp;<s:text name="common.show_by"/>&nbsp;
-		<select name="stub" class="form-select" onchange="submitForm(this.options[this.selectedIndex].value, this.form)">
+		<select name="pager.pageSize" class="form-select" onchange="submitForm(this)">
 			<option value="10"
 					<s:if test="%{pager.pageSize == 10}">selected</s:if> >10
 			</option>

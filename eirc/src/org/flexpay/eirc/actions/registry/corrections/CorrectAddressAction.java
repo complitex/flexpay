@@ -117,7 +117,7 @@ public class CorrectAddressAction extends ListApartments {
 		filters.push(regionFilter);
 		filters.push(townFilter);
 		filters.push(districtFilter);
-		filters.push(streetFilter);
+		filters.push(streetNameFilter);
 		filters.push(buildingsFilter);
 
 		return filters;
@@ -129,7 +129,7 @@ public class CorrectAddressAction extends ListApartments {
 		regionFilter = (RegionFilter) filters.peek(n--);
 		townFilter = (TownFilter) filters.peek(n--);
 		districtFilter = (DistrictFilter) filters.peek(n--);
-		streetFilter = (StreetFilter) filters.peek(n--);
+		streetNameFilter = (StreetNameFilter) filters.peek(n--);
 		buildingsFilter = (BuildingsFilter) filters.peek(n);
 	}
 

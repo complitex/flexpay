@@ -929,26 +929,16 @@
         <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/tiles-api-2.0.4.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-jfreechart-plugin-2.0.11.jar!/" />
       </CLASSES>
-      <JAVADOC>
-        <root url="file://$PROJECT_DIR$/../Java/_libs/struts-2.0.11/docs/struts2-core/apidocs" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/struts-2.0.11/docs/struts2-core" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="file://$PROJECT_DIR$/../Java/_libs/struts-2.0.11/src/struts-2.0.11/src/core/src/main/java" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/struts-2.0.11/src/xwork-2.1.0/src/java" />
-      </SOURCES>
+      <JAVADOC />
+      <SOURCES />
     </library>
     <library name="JUnit">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/../../common/lib/junit/junit-4.4.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/junit/spring-test.jar!/" />
       </CLASSES>
-      <JAVADOC>
-        <root url="file://$PROJECT_DIR$/../Java/_libs/junit4.4/javadoc" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/../Java/_libs/junit4.4/junit-4.4-src.jar!/" />
-      </SOURCES>
+      <JAVADOC />
+      <SOURCES />
     </library>
     <library name="logging">
       <CLASSES>
@@ -956,14 +946,8 @@
         <root url="jar://$PROJECT_DIR$/../../common/lib/commons/commons-logging-adapters-1.1.1.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/commons/commons-logging-1.1.1.jar!/" />
       </CLASSES>
-      <JAVADOC>
-        <root url="file://$PROJECT_DIR$/../Java/_libs/apache-log4j-1.2.15/src/main/javadoc" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/commons-logging-1.1.1/site/apidocs" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="file://$PROJECT_DIR$/../Java/_libs/apache-log4j-1.2.15/src/main/java" />
-        <root url="file://$PROJECT_DIR$/../Java/_libs/commons-logging-1.1.1/commons-logging-1.1.1-src/src/java" />
-      </SOURCES>
+      <JAVADOC />
+      <SOURCES />
     </library>
     <library name="Commons">
       <CLASSES>
@@ -1025,12 +1009,8 @@
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/../../common/lib/quartz/quartz-all-1.6.0.jar!/" />
       </CLASSES>
-      <JAVADOC>
-        <root url="file://$PROJECT_DIR$/../Java/_libs/quartz-1.6.0/docs/api" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="file://$PROJECT_DIR$/../Java/_libs/quartz-1.6.0/src/java" />
-      </SOURCES>
+      <JAVADOC />
+      <SOURCES />
     </library>
     <library name="iText">
       <CLASSES>
