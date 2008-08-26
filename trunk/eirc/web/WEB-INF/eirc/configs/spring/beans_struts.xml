@@ -202,9 +202,10 @@
 		  p:addressService-ref="addressService" />
 
 	<bean id="eircAccountViewAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.eirc_account.EircAccountViewAction">
-		<property name="eircAccountService" ref="eircAccountService" />
-	</bean>
+		  class="org.flexpay.eirc.actions.eirc_account.EircAccountViewAction"
+		  p:eircAccountService-ref="eircAccountService"
+		  p:spService-ref="spService" />
+
 	<bean id="eircAccountCreateForm1Action" scope="prototype"
 		  class="org.flexpay.eirc.actions.eirc_account.EircAccountCreateForm1Action">
 		<property name="parentService" ref="buildingService" />

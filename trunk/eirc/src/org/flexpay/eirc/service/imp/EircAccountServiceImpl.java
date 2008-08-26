@@ -8,12 +8,14 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.service.SequenceService;
 import org.flexpay.common.util.Luhn;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.dao.EircAccountDao;
 import org.flexpay.eirc.dao.EircAccountDaoExt;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -108,12 +110,14 @@ public class EircAccountServiceImpl implements EircAccountService {
 		return eircAccountDao.findByApartment(id);
 	}
 
-	public EircAccount findWithPerson(Long id) {
-		List<EircAccount> list = eircAccountDao.findWithPerson(id);
-		if (list.isEmpty()) {
-			return null;
-		}
-
-		return list.iterator().next();
+	/**
+	 * Read full account info, includes person and service
+	 *
+	 * @param stub Account stub
+	 * @return EircAccount if found, or <code>null</code> if stub references no object
+	 */
+	@Nullable
+	public EircAccount readFull(@NotNull Stub<EircAccount> stub) {
+		return eircAccountDao.readFull(stub.getId());
 	}
 }

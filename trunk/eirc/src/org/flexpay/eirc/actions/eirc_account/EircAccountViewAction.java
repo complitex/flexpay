@@ -1,8 +1,11 @@
 package org.flexpay.eirc.actions.eirc_account;
 
 import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.EircAccount;
+import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.service.EircAccountService;
+import org.flexpay.eirc.service.SPService;
 import org.jetbrains.annotations.NotNull;
 
 public class EircAccountViewAction extends FPActionSupport {
@@ -10,11 +13,12 @@ public class EircAccountViewAction extends FPActionSupport {
 	private EircAccountService eircAccountService;
 	
 	private EircAccount eircAccount;
-	
+	private SPService spService;
+
 	@NotNull
 	public String doExecute() {
 		
-		eircAccount = eircAccountService.findWithPerson(eircAccount.getId());
+		eircAccount = eircAccountService.readFull(stub(eircAccount));
 		
 		return SUCCESS;
 	}
@@ -31,11 +35,9 @@ public class EircAccountViewAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	/**
-	 * @param eircAccountService the eircAccountService to set
-	 */
-	public void setEircAccountService(EircAccountService eircAccountService) {
-		this.eircAccountService = eircAccountService;
+	public String getServiceDescription(@NotNull Service service) throws Exception {
+		Service persistent = spService.read(stub(service));
+		return persistent.format(getLocale());
 	}
 
 	/**
@@ -50,5 +52,13 @@ public class EircAccountViewAction extends FPActionSupport {
 	 */
 	public void setEircAccount(EircAccount eircAccount) {
 		this.eircAccount = eircAccount;
+	}
+
+	public void setEircAccountService(EircAccountService eircAccountService) {
+		this.eircAccountService = eircAccountService;
+	}
+
+	public void setSpService(SPService spService) {
+		this.spService = spService;
 	}
 }

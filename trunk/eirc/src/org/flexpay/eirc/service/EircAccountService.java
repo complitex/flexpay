@@ -1,13 +1,15 @@
 package org.flexpay.eirc.service;
 
-import java.util.List;
-
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public interface EircAccountService {
 
@@ -34,7 +36,7 @@ public interface EircAccountService {
 	 * @return Account number
 	 */
 	String nextPersonalAccount();
-	
+
 	/**
 	 * Find all EircAccounts
 	 *
@@ -42,8 +44,15 @@ public interface EircAccountService {
 	 * @return List of EircAccount
 	 */
 	List<EircAccount> findAll(Page<EircAccount> pager);
-	
-	EircAccount findWithPerson(Long id);
-	
+
+	/**
+	 * Read full account info, includes person and service
+	 *
+	 * @param stub Account stub
+	 * @return EircAccount if found, or <code>null</code> if stub references no object
+	 */
+	@Nullable
+	EircAccount readFull(@NotNull Stub<EircAccount> stub);
+
 	List<EircAccount> findByApartment(Long id);
 }

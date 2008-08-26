@@ -269,19 +269,16 @@
 		select count(*) from EircAccount a where a.status=0
 	</query>
 	
-	<query name="EircAccount.findWithPerson">
-		SELECT DISTINCT a
-		FROM EircAccount a
-			LEFT JOIN FETCH a.consumers c
-			LEFT JOIN FETCH c.responsiblePerson p
-			LEFT JOIN FETCH p.personAttributes pa
-			LEFT JOIN FETCH pa.lang pal
-			LEFT JOIN FETCH pal.translations tr
-			LEFT JOIN FETCH p.personIdentities pi
-			LEFT JOIN FETCH pi.identityType it
-			LEFT JOIN FETCH it.translations ittr
-			LEFT JOIN FETCH ittr.lang lang
-			LEFT JOIN FETCH lang.translations
+	<query name="EircAccount.readFull">
+		select distinct a
+		from EircAccount a
+			left join fetch a.consumers c
+			inner join fetch c.responsiblePerson p
+			left join fetch p.personAttributes pa
+			left join fetch p.personIdentities pi
+			inner join fetch pi.identityType it
+			inner join fetch c.service s
+			inner join fetch s.serviceType st
 		WHERE a.id=?
 	</query>
 	
