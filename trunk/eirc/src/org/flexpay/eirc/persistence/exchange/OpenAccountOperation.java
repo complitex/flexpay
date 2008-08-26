@@ -60,7 +60,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 			throw new FlexPayException("Failed creating consumer");
 		}
 
-		createCorrection(registry, record, consumer);
+		createCorrections(registry, record, consumer);
 		record.setConsumer(consumer);
 	}
 
@@ -82,7 +82,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		consumer.setConsumerInfo(info);
 	}
 
-	private void createCorrection(SpRegistry registry, RegistryRecord record, Consumer consumer) {
+	private void createCorrections(SpRegistry registry, RegistryRecord record, Consumer consumer) {
 
 		CorrectionsService correctionsService = factory.getCorrectionsService();
 

@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.NotTransactional;
 import org.apache.log4j.Logger;
 
@@ -23,10 +24,15 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	protected SpFileAction fileAction;
 	@Autowired
 	protected RegistryDao registryDao;
-	@Autowired
-	protected ProcessManager processManager;
+
+	private ProcessManager processManager;
 	@Autowired
 	protected SpFileService spFileService;
+
+	@Autowired
+	public void setProcessManager(@Qualifier ("processManager") ProcessManager processManager) {
+		this.processManager = processManager;
+	}
 
 	@Test
 	@NotTransactional

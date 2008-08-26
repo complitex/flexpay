@@ -49,42 +49,24 @@
 		<antcall target="clean.build" />
 	</target>
 
+	<property name="ab_sync.src.production" value="${ab_sync.dir}/${src.dir};${ab.src.production}" />
 	<target name="ab_sync.compile.production">
 		<antcall target="template.compile.production">
-			<param name="sources.dir" value="${ab_sync.dir}/${src.dir}" />
+			<param name="sources.dir" value="${ab_sync.src.production}" />
 			<reference refid="ab_sync.production.classpath" torefid="classpath" />
 		</antcall>
 	</target>
 
-	<!-- Build targets -->
-	<target name="ab_sync.build.production.jar"
-			depends="ab.build.production.jar,ab_sync.clean.build,ab_sync.compile.production">
-		<fileset dir="${build.dir}/empty" id="empty_res" />
-
-		<antcall target="template.jar">
-			<param name="dest.jar" value="${ab_sync.jar.name}" />
-			<reference refid="empty_res" torefid="resources" />
-		</antcall>
-	</target>
-
-	<target name="ab_sync.build.test.jar"
-			depends="ab.build.test.jar,ab_sync.build.production.jar">
+	<property name="ab_sync.src.test" value="${ab_sync.src.production};${ab_sync.dir}/${tests.src.dir};${ab.src.test}" />
+	<target name="ab_sync.compile.test">
 		<antcall target="template.compile.test">
-			<param name="sources.dir" value="${ab_sync.dir}/${tests.src.dir}" />
+			<param name="sources.dir" value="${ab_sync.src.test}" />
 			<reference refid="ab_sync.test.classpath" torefid="classpath" />
 		</antcall>
-
-		<fileset id="resources" dir="${ab_sync.dir}/${tests.resources.dir}">
-			<include name="**/*.*" />
-		</fileset>
-
-		<antcall target="template.jar">
-			<param name="dest.jar" value="${ab_sync.tests.jar.name}" />
-			<reference refid="resources" torefid="resources" />
-		</antcall>
 	</target>
 
-	<target name="ab_sync.docs" depends="ab_sync.build.production.jar">
+	<!-- Build targets -->
+	<target name="ab_sync.docs" depends="ab_sync.compile.production">
 		<fileset id="ab_sync.docs.resources" dir="${ab_sync.dir}/docs" />
 		<antcall target="template.docs">
 			<param name="sources.dir" value="${ab_sync.dir}/src" />
@@ -109,7 +91,7 @@
 		</antcall>
 	</target>
 
-    <target name="ab_sync.prepare.war" depends="ab_sync.build.test.jar,ab.prepare.war">
+    <target name="ab_sync.prepare.war" depends="ab_sync.compile.test,ab.prepare.war">
         <fileset id="ab_sync.web.resources" dir="${ab_sync.dir}/web" />
         <antcall target="template.prepare.war">
             <param name="to_dir" value="" />
@@ -129,7 +111,7 @@
 
     <!-- Build production web-archive -->
 	<target name="template.ab_sync.war.production"
-			depends="clean.all,ab_sync.build.production.jar,ab_sync.prepare.war,init.distr">
+			depends="clean.all,ab_sync.compile.production,ab_sync.prepare.war,init.distr">
 
 		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
 			  overwrite="true"

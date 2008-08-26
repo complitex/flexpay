@@ -130,10 +130,10 @@
 	</target>
 
 	<target name="clean.all">
-		<delete dir="${build.dir}/classes" includes="**/*" includeemptydirs="true" />
-		<delete dir="${build.dir}/web" includes="**/*" />
-		<delete dir="${build.dir}/docs" includes="**/*" />
-		<delete dir="${build.dir}/lib" includes="**/*" />
+		<delete dir="${build.dir}/classes" />
+		<delete dir="${build.dir}/web" />
+		<delete dir="${build.dir}/docs" />
+		<delete dir="${build.dir}/lib" />
 	</target>
 
 	<target name="init.distr">
@@ -153,7 +153,7 @@
 				 defaultexcludes="yes" author="true" version="true" use="true"
 				 classpathref="classpath">
 			<bottom>
-				<![CDATA[<i>Copyright &#169; 2007 FlexPay. All Rights Reserved.</i>]]></bottom>
+				<![CDATA[<i>Copyright &#169; 2008 FlexPay. All Rights Reserved.</i>]]></bottom>
 		</javadoc>
 		<copy todir="${build.dir}/docs">
 			<fileset refid="resources" />
@@ -170,6 +170,13 @@
 					  includes="**/*.properties" />
 		<copy todir="${build.dir}/web/WEB-INF/classes" overwrite="true">
 			<fileset dir="${build.dir}/src" />
+			<fileset dir="${build.dir}/classes" />
+		</copy>
+	</target>
+
+	<target name="template.prepare.war.classes" description="Add all compiled classes to WEB-INF/classes">
+		<copy todir="${build.dir}/web/WEB-INF/classes" overwrite="true">
+			<fileset dir="${build.dir}/classes" />
 		</copy>
 	</target>
 

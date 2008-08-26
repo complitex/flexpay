@@ -96,7 +96,7 @@ public class EircImportServiceTx extends ImportService {
 					continue;
 				}
 
-
+				// set apartment
 				if (data.getRegistryRecord().getApartment() == null) {
 					// Find apartment
 					Apartment apartment = findApartment(nameObjsMap, sd, data, dataSource);
@@ -111,6 +111,7 @@ public class EircImportServiceTx extends ImportService {
 					}
 				}
 
+				// set person
 				if (data.getRegistryRecord().getPerson() == null) {
 					Person person = findPerson(sd, data, dataSource);
 					if (person == null) {
@@ -120,6 +121,7 @@ public class EircImportServiceTx extends ImportService {
 					log.info("Found responsible person: " + data.getPersonFIO());
 				}
 
+				// set service if not found
 				Service service = data.getRegistryRecord().getService();
 				if (service == null) {
 					service = consumerService.findService(
@@ -135,7 +137,18 @@ public class EircImportServiceTx extends ImportService {
 					data.getRegistryRecord().setService(service);
 				}
 
-				postSaveRecord(data, null);
+				// try to find consumer (correction lost or service code came in a different format?)
+				Consumer consumer = consumerService.findConsumer(
+						data.getRegistryRecord().getSpRegistry().getServiceProvider(),
+						data.getAccountNumber(), data.getServiceCode());
+				if (consumer != null) {
+					// consumer found save correction
+					DataCorrection corr = correctionsService.getStub(data.getShortConsumerId(), consumer,
+							data.getRegistryRecord().getSpRegistry().getServiceProvider().getDataSourceDescription());
+					addToStack(corr);
+				}
+
+				postSaveRecord(data, consumer);
 			} catch (Exception e) {
 				log.error("Failed getting consumer: " + data.toString(), e);
 				throw new RuntimeException(e);

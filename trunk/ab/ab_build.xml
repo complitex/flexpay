@@ -47,42 +47,24 @@
 		<antcall target="clean.build" />
 	</target>
 
+	<property name="ab.src.production" value="${ab.dir}/${src.dir};${common.src.production}" />
 	<target name="ab.compile.production">
 		<antcall target="template.compile.production">
-			<param name="sources.dir" value="${ab.dir}/${src.dir}" />
+			<param name="sources.dir" value="${ab.src.production}" />
 			<reference refid="ab.production.classpath" torefid="classpath" />
 		</antcall>
 	</target>
 
-	<!-- Build targets -->
-	<target name="ab.build.production.jar"
-			depends="common.build.production.jar,ab.clean.build,ab.compile.production">
-		<fileset dir="${build.dir}/empty" id="empty_res" />
-
-		<antcall target="template.jar">
-			<param name="dest.jar" value="${ab.jar.name}" />
-			<reference refid="empty_res" torefid="resources" />
-		</antcall>
-	</target>
-
-	<target name="ab.build.test.jar"
-			depends="common.build.test.jar,ab.build.production.jar">
+	<property name="ab.src.test" value="${ab.src.production};${ab.dir}/${tests.src.dir};${common.src.test}" />
+	<target name="ab.compile.test">
 		<antcall target="template.compile.test">
-			<param name="sources.dir" value="${ab.dir}/${tests.src.dir}" />
+			<param name="sources.dir" value="${ab.src.test}" />
 			<reference refid="ab.test.classpath" torefid="classpath" />
 		</antcall>
-
-		<fileset id="resources" dir="${ab.dir}/${tests.resources.dir}">
-			<include name="**/*.*" />
-		</fileset>
-
-		<antcall target="template.jar">
-			<param name="dest.jar" value="${ab.tests.jar.name}" />
-			<reference refid="resources" torefid="resources" />
-		</antcall>
 	</target>
 
-	<target name="ab.docs" depends="ab.build.production.jar">
+	<!-- Build targets -->
+	<target name="ab.docs" depends="ab.compile.production">
 		<fileset id="ab.docs.resources" dir="${ab.dir}/docs" />
 		<antcall target="template.docs">
 			<param name="sources.dir" value="${ab.dir}/src" />
@@ -94,6 +76,7 @@
 	</target>
 
 	<target name="ab.war.production.tomcat_mysql5">
+		<antcall target="clean.all" />
 		<antcall target="template.ab.war.production">
 			<param name="app_server.properties" value="app_server_tomcat.properties" />
 			<param name="data_source.properties" value="data_source_mysql5.properties" />
@@ -107,7 +90,7 @@
 		</antcall>
 	</target>
 
-    <target name="ab.prepare.war" depends="ab.build.test.jar,common.prepare.war">
+    <target name="ab.prepare.war" depends="common.prepare.war">
         <fileset id="ab.web.resources" dir="${ab.dir}/web" />
         <antcall target="template.prepare.war">
             <param name="to_dir" value="" />
@@ -118,6 +101,7 @@
         <fileset dir="${ab.dir}/${src.dir}" id="ab.classes.resources">
             <patternset refid="resources_pattern" />
         </fileset>
+
         <antcall target="template.prepare.war">
             <param name="to_dir" value="/WEB-INF/classes" />
             <param name="src.i18n.dir" value="${ab.dir}/${src.dir}" />
@@ -127,7 +111,7 @@
 
     <!-- Build production web-archive -->
 	<target name="template.ab.war.production"
-			depends="clean.all,ab.build.production.jar,ab.prepare.war,init.distr">
+			depends="clean.all,ab.compile.production,ab.prepare.war,init.distr">
 
 		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
 			  overwrite="true"
@@ -144,10 +128,11 @@
 		<antcall target="common.war.include.libs">
 			<param name="warfile" value="${distr.dir}/${ab.war.name}" />
 		</antcall>
+
+		<antcall target="template.prepare.war.classes" />
 	</target>
 
-	<target name="ab.exportschema.mysql5"
-			depends="common.compile.production,ab.compile.production">
+	<target name="ab.exportschema.mysql5" depends="ab.compile.production">
 		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_ab.ddl.sql" />
@@ -159,7 +144,7 @@
 		</antcall>
 	</target>
 
-	<target name="ab.runtests" depends="ab.prepare.war">
+	<target name="ab.runtests" depends="ab.compile.test,ab.prepare.war">
 		<condition property="class.name" value="${test.class.name}" else="org.flexpay.ab.AllTests">
 			<isset property="test.class.name" />
 		</condition>
