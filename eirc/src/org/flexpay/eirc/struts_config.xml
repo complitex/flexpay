@@ -154,7 +154,10 @@
 			<result type="tiles">eirc.eirc_account.list</result>
 		</action>
 		<action name="eircAccountView" class="eircAccountViewAction">
-			<result type="tiles">eirc.eirc_account.view</result>
+			<result name="success" type="tiles">eirc.eirc_account.view</result>
+			<result name="redirectError" type="redirect-action">
+				<param name="actionName">eircAccountList</param>
+			</result>
 		</action>
 		<action name="eircAccountCreateForm1" class="eircAccountCreateForm1Action">
 			<result type="tiles">eirc.eirc_account.create.form1</result>

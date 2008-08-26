@@ -1,12 +1,11 @@
 package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.util.TranslationUtil;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
+import java.util.*;
 
 public class Service extends DomainObject {
 
@@ -130,5 +129,11 @@ public class Service extends DomainObject {
 
 	public void setChildServices(Set<Service> childServices) {
 		this.childServices = childServices;
+	}
+
+	@NotNull
+	public String format(Locale locale) throws Exception {
+		ServiceDescription description = TranslationUtil.getTranslation(descriptions, locale);
+		return description != null ? description.getName() : "";
 	}
 }
