@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <table>
 
@@ -9,7 +9,7 @@
     &nbsp;
   </td>
   <td class="th">
-    <input type="checkbox" disabled="1" onchange="FP.setCheckboxes(this.checked, 'objectIds')">
+    <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds')">
   </td>
   <td class="th">
     <s:text name="eirc.processing.process.id" />

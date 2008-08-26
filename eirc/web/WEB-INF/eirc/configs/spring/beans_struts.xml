@@ -189,11 +189,12 @@
 	</bean>
 
 	<bean id="processListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.ProcessListAction">
-	</bean>
+		  class="org.flexpay.eirc.actions.ProcessListAction"
+		  p:processManager-ref="processManager"/>
+
 	<bean id="processViewAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.ProcessViewAction">
-	</bean>
+		  class="org.flexpay.eirc.actions.ProcessViewAction"
+		  p:processManager-ref="processManager"/>
 
 	<bean id="eircAccountListAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.eirc_account.EircAccountListAction"
