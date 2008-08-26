@@ -42,6 +42,7 @@
 	</path>
 
 	<path id="common.runtests.classpath">
+		<path location="${build.dir}/classes" />
 		<path refid="common.test.classpath" />
 		<path location="${build.dir}/web" />
 		<path location="common/src" />
@@ -52,6 +53,7 @@
 		<antcall target="clean.build" />
 	</target>
 
+	<property name="common.src.production" value="${common.dir}/${src.dir}" />
 	<target name="common.compile.production">
 		<antcall target="template.compile.production">
 			<param name="sources.dir" value="${common.dir}/${src.dir}" />
@@ -59,33 +61,15 @@
 		</antcall>
 	</target>
 
-	<target name="common.build.production.jar"
-			depends="common.clean.build,common.compile.production">
-		<fileset dir="${build.dir}/empty" id="empty_res" />
-
-		<antcall target="template.jar">
-			<param name="dest.jar" value="${common.jar.name}" />
-			<reference refid="empty_res" torefid="resources" />
-		</antcall>
-	</target>
-
-	<target name="common.build.test.jar" depends="common.build.production.jar">
+	<property name="common.src.test" value="${common.src.production};${common.dir}/${tests.src.dir}" />
+	<target name="common.compile.test">
 		<antcall target="template.compile.test">
-			<param name="sources.dir" value="${common.dir}/${tests.src.dir}" />
+			<param name="sources.dir" value="${common.src.test}" />
 			<reference refid="common.test.classpath" torefid="classpath" />
 		</antcall>
-
-		<fileset id="resources" dir="${common.dir}/${tests.resources.dir}">
-			<include name="**/*.*" />
-		</fileset>
-
-		<antcall target="template.jar">
-			<param name="dest.jar" value="${common.tests.jar.name}" />
-			<reference refid="resources" torefid="resources" />
-		</antcall>
 	</target>
 
-	<target name="common.docs" depends="common.build.production.jar">
+	<target name="common.docs" depends="common.compile.production">
 		<fileset id="common.docs.resources" dir="${common.dir}/docs" />
 		<antcall target="template.docs">
 			<param name="sources.dir" value="${common.dir}/src" />
@@ -96,7 +80,7 @@
 		</antcall>
 	</target>
 
-	<target name="common.runtests" depends="common.build.test.jar,common.prepare.war">
+	<target name="common.runtests" depends="common.compile.test,common.prepare.war">
 		<antcall target="common.runtests.nobuild" />
 	</target>
 
