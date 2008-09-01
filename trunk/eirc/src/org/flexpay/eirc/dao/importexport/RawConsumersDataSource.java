@@ -36,7 +36,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 	 */
 	public void initialize() {
 		pager = new Page<RegistryRecord>(500, 1);
-		Long[] values = registryRecordDaoExt.getMinMaxIdsForProcessing(registry.getId());
+		Long[] values = registryRecordDaoExt.getMinMaxIdsForImporting(registry.getId());
 		minMaxIds[0] = values[0];
 		minMaxIds[1] = values[1];
 
