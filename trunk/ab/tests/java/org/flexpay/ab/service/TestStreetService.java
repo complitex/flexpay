@@ -49,12 +49,28 @@ public class TestStreetService extends TransactionalSpringBeanAwareTestCase {
 		street.setType(streetType);
 //		street.setTypeForDate(streetType, ApplicationConfig.getPastInfinite());
 
-		streetService.save(street);
+		try {
+			streetService.save(street);
 
-		streetType = streetTypeService.read(2L);
-		street.setTypeForDate(streetType, DateUtil.next(DateUtil.now()));
-		System.out.println("Types: " + street.getTypesTimeLine());
-		streetService.save(street);
+			streetType = streetTypeService.read(2L);
+			street.setTypeForDate(streetType, DateUtil.next(DateUtil.now()));
+
+			streetService.save(street);
+
+			// TODO! fixme additional name insert creates additional temporal referenced to the same Name object,
+			// TODO! so cascade delete will fail
+//			StreetName nameNew = new StreetName();
+//			nameNew.setObject(street);
+//			StreetNameTranslation translationNew = new StreetNameTranslation("----Test street new----");
+//			nameNew.addNameTranslation(translationNew);
+//			street.setNameForDate(nameNew, DateUtil.next(DateUtil.now()));
+//
+//			streetService.save(street);
+		} finally {
+			if (street.isNotNew()) {
+				streetDao.delete(street);
+			}
+		}
 	}
 
 	@Test

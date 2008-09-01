@@ -62,7 +62,7 @@ public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI
 		if (!intervalsChecked) {
 			List<DI> dis = new ArrayList<DI>();
 			for (DI di : intervals) {
-				if (di != null) {
+				if (di != null && di.getInvalidDate().equals(ApplicationConfig.getFutureInfinite())) {
 					dis.add(di);
 				}
 			}

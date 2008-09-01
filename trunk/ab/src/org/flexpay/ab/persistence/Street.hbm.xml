@@ -12,13 +12,11 @@
 		<many-to-one name="parent" column="town_id" class="Town" not-null="true" />
 		<property name="status" not-null="true" />
 
-		<set name="nameTemporals" inverse="true" cascade="all" lazy="true"
-			 where="invalid_date='2100-12-31'" sort="natural">
+		<set name="nameTemporals" inverse="true" cascade="all" lazy="true" sort="natural">
 			<key column="street_id" not-null="true" />
 			<one-to-many class="StreetNameTemporal" />
 		</set>
-		<set name="typeTemporals" inverse="true" cascade="all" lazy="true"
-			 where="invalid_date='2100-12-31'" sort="natural">
+		<set name="typeTemporals" inverse="true" cascade="all" lazy="true" sort="natural">
 			<key column="street_id" not-null="true" foreign-key="FK_street" />
 			<one-to-many class="StreetTypeTemporal" />
 		</set>
@@ -49,6 +47,7 @@
 	</class>
 
 	<class name="StreetNameTemporal" table="ab_street_names_temporal_tbl">
+		<comment>Street name temporals</comment>
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
@@ -56,8 +55,17 @@
 		<property name="end" column="end_date" type="date" not-null="true" />
 		<property name="createDate" column="create_date" type="date" not-null="true" />
 		<property name="invalidDate" column="invalid_date" type="date" not-null="true" />
-		<many-to-one name="object" class="Street" column="street_id" not-null="true" />
-		<many-to-one name="value" class="StreetName" cascade="all" column="street_name_id" />
+		<many-to-one name="object" class="Street" foreign-key="ab_street_names_temporal_tbl_street_id">
+			<column name="street_id" not-null="true">
+				<comment>Street reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="value" class="StreetName" cascade="all"
+					 foreign-key="ab_street_names_temporal_tbl_street_name_id">
+			<column name="street_name_id" not-null="false">
+				<comment>Street name reference</comment>
+			</column>
+		</many-to-one>
 	</class>
 
 	<class name="StreetName" table="ab_street_names_tbl" optimistic-lock="version">

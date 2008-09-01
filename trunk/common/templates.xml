@@ -90,6 +90,13 @@
 
 	<path id="jetbrains.lib">
 		<fileset dir="${common.dir}/lib">
+			<include name="jetbrains/annotations.jar" />
+			<include name="jetbrains/javac2.jar" />
+		</fileset>
+	</path>
+
+	<path id="jetbrains.compile.lib">
+		<fileset dir="${common.dir}/lib">
 			<include name="jetbrains/*.jar" />
 		</fileset>
 	</path>
@@ -98,7 +105,7 @@
 	<!-- NotNull instrumentation javac task -->
 	<taskdef name="javac2"
 			 classname="com.intellij.ant.Javac2"
-			 classpathref="jetbrains.lib" />
+			 classpathref="jetbrains.compile.lib" />
 
 	<!-- Build templates -->
 	<target name="template.compile.production" depends="init.build">
@@ -138,13 +145,6 @@
 
 	<target name="init.distr">
 		<mkdir dir="${distr.dir}" />
-	</target>
-
-	<target name="template.jar">
-		<jar destfile="${build.dir}/lib/${dest.jar}">
-			<fileset dir="${build.dir}/classes" />
-			<fileset refid="resources" />
-		</jar>
 	</target>
 
 	<target name="template.docs" depends="init.build,init.distr,clean.build">
@@ -198,6 +198,12 @@
 		</war>
 	</target>
 
+	<target name="template.exploded.include.libs">
+		<copy todir="${build.dir}/web/WEB-INF/lib" flatten="true" overwrite="false">
+			<path refid="libs" />
+		</copy>
+	</target>
+
 	<target name="template.run.tests">
 		<junit printsummary="yes" haltonfailure="yes" fork="yes" forkmode="once" dir="${build.dir}/web">
 			<classpath>
@@ -244,7 +250,7 @@
 
 	<property file="${common.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
 	<target name="template.mysql.run">
-		<exec executable="mysql" failonerror="true" input="${src.sql}" >
+		<exec executable="mysql" failonerror="true" input="${src.sql}">
 			<arg value="--user=${mysql.username}" />
 			<arg value="--password=${mysql.password}" />
 			<arg value="--default-character-set=utf8" />
