@@ -10,8 +10,11 @@
 			<generator class="native" />
 		</id>
 		<property name="status" column="status" not-null="true" />
-		<property name="externalAccountNumber" not-null="true"
-				  column="external_account_number" />
+		<property name="externalAccountNumber" index="I_external_account_number">
+			<column name="external_account_number" not-null="true">
+				<comment>Service providers internal account number</comment>
+			</column>
+				  </property>
 		<many-to-one name="service" foreign-key="FK_eirc_consumer_service" class="Service">
 			<column name="service_id" not-null="true">
 				<comment>Service reference</comment>
