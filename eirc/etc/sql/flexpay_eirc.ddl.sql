@@ -235,10 +235,10 @@
         end_date date not null,
         create_date date not null,
         invalid_date date not null,
-        street_id bigint not null,
-        street_name_id bigint,
+        street_id bigint not null comment 'Street reference',
+        street_name_id bigint comment 'Street name reference',
         primary key (id)
-    );
+    ) comment='Street name temporals';
 
     create table ab_street_type_translations_tbl (
         id bigint not null auto_increment,
@@ -462,7 +462,7 @@
     create table eirc_consumers_tbl (
         id bigint not null auto_increment,
         status integer not null,
-        external_account_number varchar(255) not null,
+        external_account_number varchar(255) not null comment 'Service providers internal account number',
         service_id bigint not null comment 'Service reference',
         person_id bigint not null comment 'Responsible person reference',
         apartment_id bigint not null comment 'Apartment reference',
@@ -1003,14 +1003,14 @@
         references ab_streets_tbl (id);
 
     alter table ab_street_names_temporal_tbl 
-        add index FKAEC123D6311847ED (street_id), 
-        add constraint FKAEC123D6311847ED 
+        add index ab_street_names_temporal_tbl_street_id (street_id), 
+        add constraint ab_street_names_temporal_tbl_street_id 
         foreign key (street_id) 
         references ab_streets_tbl (id);
 
     alter table ab_street_names_temporal_tbl 
-        add index FKAEC123D6D80067D4 (street_name_id), 
-        add constraint FKAEC123D6D80067D4 
+        add index ab_street_names_temporal_tbl_street_name_id (street_name_id), 
+        add constraint ab_street_names_temporal_tbl_street_name_id 
         foreign key (street_name_id) 
         references ab_street_names_tbl (id);
 
@@ -1193,6 +1193,8 @@
         add constraint FK_eirc_banks_tbl_organisation_id 
         foreign key (organisation_id) 
         references eirc_organisations_tbl (id);
+
+    create index I_external_account_number on eirc_consumers_tbl (external_account_number);
 
     alter table eirc_consumers_tbl 
         add index FK_eirc_consumer_eirc_account (eirc_account_id), 
