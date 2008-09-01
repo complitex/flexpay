@@ -1,16 +1,16 @@
 package org.flexpay.ab.persistence;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.NameTimeDependentChild;
-import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.TimeLine;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
-import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,6 +25,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 			Collections.unmodifiableSortedSet(new TreeSet<StreetTypeTemporal>());
 
 	private Set<District> districts = Collections.emptySet();
+	private SortedSet<StreetTypeTemporal> typeTemporals = EMPTY_SORTED_SET;
 	private TimeLine<StreetType, StreetTypeTemporal> typesTimeLine;
 	private Set<Buildings> buildingses = Collections.emptySet();
 
@@ -91,6 +92,11 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 			typesTimeLine = DateIntervalUtil.addInterval(typesTimeLine, temporal);
 		}
 
+		if (typeTemporals == EMPTY_SORTED_SET) {
+			typeTemporals = CollectionUtils.treeSet();
+		}
+		typeTemporals.addAll(typesTimeLine.getIntervals());
+
 		return this;
 	}
 
@@ -119,6 +125,11 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 */
 	public void setTypesTimeLine(TimeLine<StreetType, StreetTypeTemporal> typesTimeLine) {
 		this.typesTimeLine = typesTimeLine;
+
+		if (typeTemporals == EMPTY_SORTED_SET) {
+			typeTemporals = CollectionUtils.treeSet();
+		}
+		typeTemporals.addAll(typesTimeLine.getIntervals());
 	}
 
 	/**
@@ -127,6 +138,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 * @param typeTemporals Value to set for property 'typeTemporals'.
 	 */
 	public void setTypeTemporals(SortedSet<StreetTypeTemporal> typeTemporals) {
+		this.typeTemporals = typeTemporals;
 		typesTimeLine = new TimeLine<StreetType, StreetTypeTemporal>(typeTemporals);
 	}
 
@@ -137,18 +149,14 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 */
 	@NotNull
 	public SortedSet<StreetTypeTemporal> getTypeTemporals() {
-		if (typesTimeLine == null) {
-			return EMPTY_SORTED_SET;
-		}
 
-		SortedSet<StreetTypeTemporal> temporals = typesTimeLine.getIntervalsSet();
-		for (StreetTypeTemporal temporal : temporals) {
+		for (StreetTypeTemporal temporal : typeTemporals) {
 			if (temporal.getValue() != null && temporal.getValue().isNew()) {
 				temporal.setValue(null);
 			}
 		}
 
-		return temporals;
+		return typeTemporals;
 	}
 
 	/**
@@ -187,19 +195,8 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof Street)) {
-			return false;
-		}
 
-		Street that = (Street) obj;
-
-		return new EqualsBuilder()
-				.appendSuper(super.equals(obj))
-				.append(typesTimeLine, that.typesTimeLine)
-				.isEquals();
+		return this == obj || obj instanceof Street && super.equals(obj);
 	}
 
 	@Override
@@ -253,7 +250,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 
 	@NotNull
 	public Stub<Town> getTownStub() {
-		return new Stub<Town>(getParent().getId());
+		return new Stub<Town>((Town) getParent());
 	}
 
 	public void setName(StreetName name) {

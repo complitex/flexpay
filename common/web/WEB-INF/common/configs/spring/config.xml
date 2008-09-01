@@ -6,6 +6,7 @@
 	<import resource="beans-jmx.xml" />
 	<import resource="beans-mail.xml" />
 
+	<import resource="beans-data-source.xml" />
 	<import resource="hibernate.xml" />
 	<import resource="beans-cache.xml" />
 	<import resource="beans-dao.xml" />

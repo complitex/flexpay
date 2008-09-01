@@ -81,4 +81,14 @@ public class CollectionUtils {
 
 		return map;
 	}
+
+	@NotNull
+	public static <T> SortedSet<T> treeSet() {
+		return new TreeSet<T>();
+	}
+
+	@NotNull
+	public static <T> SortedSet<T> treeSet(@NotNull Collection<T> values) {
+		return new TreeSet<T>(values);
+	}
 }

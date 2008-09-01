@@ -2,9 +2,9 @@ package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.persistence.Translation;
-import org.flexpay.common.persistence.Language;
 import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Translation;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -32,7 +32,6 @@ public class StreetNameTranslation extends Translation {
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
 				.append("Id", getId())
-				//.append("Language", getLang().getLangIsoCode())
 				.append("Name", getName())
 				.toString();
 	}
@@ -42,11 +41,6 @@ public class StreetNameTranslation extends Translation {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		} else if (!(o instanceof StreetNameTranslation)) {
-			return false;
-		}
-		return super.equals(o);
+		return this == o || o instanceof StreetNameTranslation && super.equals(o);
 	}
 }
