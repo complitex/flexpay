@@ -135,6 +135,11 @@ public class ApplicationConfig {
 		return getInstance().getDataRootInternal();
 	}
 
+	public static File getProcessLogDirectory(){
+		File dataRoot = getInstance().getDataRootInternal();
+		return new File (dataRoot,"logs");
+	}
+
 	protected File getDataRootInternal() {
 		return new File(tmpDir(), dataRoot);
 	}
