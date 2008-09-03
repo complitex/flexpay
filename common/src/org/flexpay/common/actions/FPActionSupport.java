@@ -4,6 +4,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.config.Namespace;
 import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.common.actions.interceptor.UserPreferencesAware;
 import org.flexpay.common.exception.FlexPayException;
@@ -22,6 +23,7 @@ import java.util.*;
  * Helper ActionSupport extension, able to set
  */
 @SuppressWarnings ({"UnusedDeclaration"})
+@Namespace("")
 public abstract class FPActionSupport extends ActionSupport implements UserPreferencesAware, SessionAware {
 
 	@NonNls
