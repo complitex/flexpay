@@ -1,45 +1,46 @@
 package org.flexpay.eirc.actions;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.persistence.ServiceOrganisation;
+import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.persistence.filter.BeginDateFilter;
+import org.flexpay.common.persistence.filter.EndDateFilter;
+import org.flexpay.eirc.persistence.filters.ServiceOrganisationFilter;
 import org.flexpay.eirc.service.ServiceOrganisationService;
-import org.apache.commons.lang.time.DateUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 
 public class GenerateQuitancesAction extends FPActionSupport {
 
 	private ServiceOrganisationService serviceOrganisationService;
+	private ProcessManager processManager;
 
-	private List<ServiceOrganisation> serviceOrganizationList;
+	private ServiceOrganisationFilter serviceOrganisationFilter =
+			new ServiceOrganisationFilter();
 
-    private ProcessManager processManager;
-
-    private Integer year;
-	private Integer month;
+	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtils.truncate(new Date(), Calendar.MONTH));
+	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
 
 	@NotNull
 	public String doExecute() throws Exception {
+
 		if (isSubmit()) {
 
-            Calendar calendar = new GregorianCalendar(year, month, 1);
-            Date dateFrom = calendar.getTime();
-			Date dateTill = DateUtils.addMonths(dateFrom, 1);
+			Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
-            Map<Serializable,Serializable> contextVariables = CollectionUtils.map();
+			contextVariables.put("dateFrom", beginDateFilter.getDate());
+			contextVariables.put("dateTill", endDateFilter.getDate());
 
-            contextVariables.put("dateFrom", dateFrom);
-            contextVariables.put("dateTill", dateTill);
+			processManager.createProcess("GenerateQuitances", contextVariables);
+		}
 
-            processManager.createProcess("GenerateQuitances",contextVariables);
-        }
-
-		initDefaultDate();
-		serviceOrganizationList = serviceOrganisationService.listServiceOrganisations();
+		serviceOrganisationService.initServiceOrganisationsFilter(serviceOrganisationFilter);
 
 		return SUCCESS;
 	}
@@ -56,60 +57,36 @@ public class GenerateQuitancesAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	private void initDefaultDate() {
-		Calendar cal = Calendar.getInstance();
-		year = cal.get(Calendar.YEAR);
-		month = cal.get(Calendar.MONTH);
+	public ServiceOrganisationFilter getServiceOrganisationFilter() {
+		return serviceOrganisationFilter;
 	}
 
-	/**
-	 * @return the year
-	 */
-	public Integer getYear() {
-		return year;
+	public void setServiceOrganisationFilter(ServiceOrganisationFilter serviceOrganisationFilter) {
+		this.serviceOrganisationFilter = serviceOrganisationFilter;
 	}
 
-	/**
-	 * @param year the year to set
-	 */
-	public void setYear(Integer year) {
-		this.year = year;
+	public BeginDateFilter getBeginDateFilter() {
+		return beginDateFilter;
 	}
 
-	/**
-	 * @return the month
-	 */
-	public Integer getMonth() {
-		return month;
+	public void setBeginDateFilter(BeginDateFilter beginDateFilter) {
+		this.beginDateFilter = beginDateFilter;
 	}
 
-	/**
-	 * @param month the month to set
-	 */
-	public void setMonth(Integer month) {
-		this.month = month;
+	public EndDateFilter getEndDateFilter() {
+		return endDateFilter;
 	}
 
-	/**
-	 * @return the serviceOrganizationList
-	 */
-	public List<ServiceOrganisation> getServiceOrganizationList() {
-		return serviceOrganizationList;
+	public void setEndDateFilter(EndDateFilter endDateFilter) {
+		this.endDateFilter = endDateFilter;
 	}
 
-	/**
-	 * @param serviceOrganisationService the serviceOrganisationService to set
-	 */
 	public void setServiceOrganisationService(
 			ServiceOrganisationService serviceOrganisationService) {
 		this.serviceOrganisationService = serviceOrganisationService;
 	}
 
-    /**
-     *
-     * @param processManager the process manager to set
-     */
-    public void setProcessManager(ProcessManager processManager) {
-        this.processManager = processManager;
-    }
+	public void setProcessManager(ProcessManager processManager) {
+		this.processManager = processManager;
+	}
 }

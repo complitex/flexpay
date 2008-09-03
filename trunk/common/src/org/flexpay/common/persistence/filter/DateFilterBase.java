@@ -10,6 +10,10 @@ public abstract class DateFilterBase extends ObjectFilter {
 		setDate(getEmptyDate());
 	}
 
+	public DateFilterBase(Date date) {
+		setDate(date);
+	}
+
 	public abstract Date getDate();
 
 	public abstract void setDate(Date date);

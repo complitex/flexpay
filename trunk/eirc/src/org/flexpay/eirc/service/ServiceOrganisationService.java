@@ -2,6 +2,7 @@ package org.flexpay.eirc.service;
 
 import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
+import org.flexpay.eirc.persistence.filters.ServiceOrganisationFilter;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,9 +37,18 @@ public interface ServiceOrganisationService {
 	ServiceOrganisation readForTicketGeneration(Long id);
 
 	/**
+	 * Get served buildings
 	 * 
 	 * @param stub ServiceOrganisation stub
-	 * @return
+	 * @return set of served organisations
 	 */
 	Set<ServedBuilding> findServedBuildings(@NotNull Stub<ServiceOrganisation> stub);
+
+	/**
+	 * Initialize filter
+	 *
+	 * @param filter ServiceOrganisationFilter to initialize
+	 * @return ServiceOrganisationFilter back
+	 */
+	ServiceOrganisationFilter initServiceOrganisationsFilter(ServiceOrganisationFilter filter);
 }

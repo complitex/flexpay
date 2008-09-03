@@ -17,6 +17,7 @@
     <facet type="web" name="Web">
       <configuration>
         <descriptors>
+          <deploymentDescriptor name="sun-web.xml" url="file://$MODULE_DIR$/../../eirc/web/WEB-INF/sun-web.xml" optional="false" version="2.5.0" />
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../eirc/web/WEB-INF/web.xml" optional="false" version="2.5" />
         </descriptors>
         <webroots>
@@ -32,7 +33,7 @@
           <setting name="JAR_ENABLED" value="false" />
           <setting name="BUILD_MODULE_ON_FRAME_DEACTIVATION" value="false" />
           <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
-          <setting name="RUN_JASPER_VALIDATION" value="true" />
+          <setting name="RUN_JASPER_VALIDATION" value="false" />
           <setting name="BUILD_ONLY_WEB_RESOURCES" value="false" />
         </building>
         <packaging>

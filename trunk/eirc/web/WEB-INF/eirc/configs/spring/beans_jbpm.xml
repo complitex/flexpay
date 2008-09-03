@@ -23,5 +23,5 @@
 		  p:serviceTypeService-ref="serviceTypeService" />
 
 	<bean name="generateQuitancesJob" class="org.flexpay.eirc.process.quittance.GenerateQuittanceJob" scope="prototype"
-		  p:quittanceService="quittanceService" />
+		  p:quittanceService-ref="quittanceService" />
 </beans>

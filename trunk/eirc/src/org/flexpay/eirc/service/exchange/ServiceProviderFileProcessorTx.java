@@ -3,8 +3,11 @@ package org.flexpay.eirc.service.exchange;
 import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.RegistryRecord;
+import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
@@ -25,6 +28,7 @@ public class ServiceProviderFileProcessorTx {
 
 	private SpFileService spFileService;
 	private RegistryRecordWorkflowManager recordWorkflowManager;
+	private ClassToTypeRegistry classToTypeRegistry;
 
 	/**
 	 * Run next registry records batch processing
@@ -73,8 +77,18 @@ public class ServiceProviderFileProcessorTx {
 			op.process(registry, record);
 			recordWorkflowManager.setNextSuccessStatus(record);
 		} catch (Exception e) {
-			log.error("Failed processing registry record: " + record, e);
-			recordWorkflowManager.setNextErrorStatus(record);
+			log.warn("Failed processing registry record: " + e.getMessage());
+
+			ImportError error = new ImportError();
+			error.setErrorId(e.getMessage());
+			error.setSourceDescription(registry.getServiceProvider().getDataSourceDescription());
+
+			// todo remove hardcoded value
+			error.setDataSourceBean("consumersDataSource");
+
+			error.setSourceObjectId(String.valueOf(record.getId()));
+			error.setObjectType(classToTypeRegistry.getType(Consumer.class));
+			recordWorkflowManager.setNextErrorStatus(record, error);
 		}
 	}
 
@@ -88,5 +102,9 @@ public class ServiceProviderFileProcessorTx {
 
 	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
 		this.recordWorkflowManager = recordWorkflowManager;
+	}
+
+	public void setClassToTypeRegistry(ClassToTypeRegistry classToTypeRegistry) {
+		this.classToTypeRegistry = classToTypeRegistry;
 	}
 }

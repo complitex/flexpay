@@ -1,9 +1,9 @@
 package org.flexpay.eirc.dao.imp;
 
-import org.flexpay.eirc.dao.QuittanceDaoExt;
-import static org.flexpay.common.util.CollectionUtils.ar;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.apache.log4j.Logger;
+import static org.flexpay.common.util.CollectionUtils.ar;
+import org.flexpay.eirc.dao.QuittanceDaoExt;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import java.util.Date;
 
@@ -62,11 +62,32 @@ public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoE
 
 	private long updateOrderNumbers(Date dateFrom, Date dateTill, Date now) {
 
-		String insertSql = "update eirc_quittances_tbl set order_number=(" +
-						   "	select max(q.order_number) + 1 as next_number " +
-						   "	from eirc_quittances_tbl q " +
-						   "	where q.eirc_account_id=eirc_account_id and q.date_till=?) " +
-						   "where order_number=0 and date_from=? and date_till=? and creation_date=?";
-		return getJdbcTemplate().update(insertSql, ar(dateTill, dateFrom, dateTill, now));
+		String tmpTable = "create temporary table tmp_eirc_quittances_tbl ( " +
+						  "	order_number BIGINT, " +
+						  "	eirc_account_id BIGINT " +
+						  ")";
+		getJdbcTemplate().update(tmpTable);
+
+		String tmpIndex = "alter table tmp_eirc_quittances_tbl add index I_account_id (eirc_account_id)";
+		getJdbcTemplate().update(tmpIndex);
+
+//		getJdbcTemplate().batchUpdate(ar(tmpTable, tmpIndex));
+
+		String sqlTempQuittances = "insert into tmp_eirc_quittances_tbl (order_number, eirc_account_id) " +
+								   "(select max(q.order_number), q.eirc_account_id " +
+								   "from eirc_quittances_tbl q " +
+								   "where q.date_till>=? " +
+								   "group by q.eirc_account_id)";
+		getJdbcTemplate().update(sqlTempQuittances, ar(dateTill));
+
+		String insertSql = "update eirc_quittances_tbl q " +
+						   "	inner join tmp_eirc_quittances_tbl t on (q.eirc_account_id = t.eirc_account_id) " +
+						   "set q.order_number=(t.order_number + 1) " +
+						   "where q.order_number=0 and q.date_from=? and q.date_till=? and q.creation_date=?";
+		long count = getJdbcTemplate().update(insertSql, ar(dateFrom, dateTill, now));
+
+		getJdbcTemplate().update("drop table tmp_eirc_quittances_tbl");
+
+		return count;
 	}
 }

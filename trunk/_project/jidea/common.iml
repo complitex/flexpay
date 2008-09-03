@@ -17,6 +17,7 @@
     <facet type="web" name="Web">
       <configuration>
         <descriptors>
+          <deploymentDescriptor name="sun-web.xml" url="file://$MODULE_DIR$/../../common/web/WEB-INF/sun-web.xml" optional="false" version="2.5.0" />
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../common/web/WEB-INF/web.xml" optional="false" version="2.5" />
         </descriptors>
         <webroots>
@@ -90,6 +91,23 @@
           </containerElement>
         </packaging>
       </configuration>
+      <facet type="Struts2" name="Struts 2">
+        <configuration>
+          <fileset id="s2fileset1" name="My Fileset" removed="false">
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/common_struts_config.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-core-2.0.11.jar!/struts-default.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-spring-plugin-2.0.11.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/xwork-2.0.4.jar!/xwork-default.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-tiles-plugin-2.0.11.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/struts-plugin.xml</file>
+          </fileset>
+          <validation>
+            <errors_as_warnings>false</errors_as_warnings>
+            <validate_struts>true</validate_struts>
+            <validate_validation>true</validate_validation>
+          </validation>
+        </configuration>
+      </facet>
     </facet>
     <facet type="Spring" name="Spring">
       <configuration>

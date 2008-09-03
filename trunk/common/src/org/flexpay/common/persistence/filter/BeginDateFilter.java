@@ -8,6 +8,13 @@ public class BeginDateFilter extends DateFilterBase {
 
 	private Date beginDate;
 
+	public BeginDateFilter() {
+	}
+
+	public BeginDateFilter(Date date) {
+		super(date);
+	}
+
 	public Date getDate() {
 		return beginDate;
 	}

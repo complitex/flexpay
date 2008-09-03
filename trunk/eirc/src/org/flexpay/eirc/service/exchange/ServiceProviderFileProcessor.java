@@ -4,14 +4,14 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.ImportErrorsSupport;
 import org.flexpay.common.service.importexport.RawDataSource;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.dao.importexport.InMemoryRawConsumersDataSource;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
@@ -52,7 +52,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	 * Run processing of a registry data file
 	 *
 	 * @param file uploaded SpFile
-	 * @throws Exception				 if failure occurs
+	 * @throws Exception if failure occurs
 	 */
 	public void processFile(@NotNull SpFile file) throws Exception {
 
@@ -90,7 +90,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 				importConsumers(registry);
 				processRegistry(registry);
-			} catch (Exception e) {
+			} catch (Throwable e) {
 				String errMsg = "Failed processing registry: " + registry;
 				log.error(errMsg, e);
 				container.addException(new FlexPayException(errMsg, e));
@@ -146,10 +146,10 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 			for (RegistryRecord record : records) {
 				processorTx.processRecord(registry, record);
 			}
-		} catch (Exception e) {
+		} catch (Throwable t) {
 			String errMsg = "Failed processing registry: " + registry;
-			log.error(errMsg, e);
-			throw new FlexPayException(errMsg, e);
+			log.error(errMsg, t);
+			throw new FlexPayException(errMsg, t);
 		} finally {
 			endRegistryProcessing(registry);
 		}
@@ -203,18 +203,14 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	 *
 	 * @param registry			   SpRegistry to process
 	 * @param rawConsumersDataSource Consumers data source
-	 * @return <code>true</code> if setup run without errors, or <code>false</code> otherwise
+	 * @throws Exception if failure occurs
 	 */
-	private boolean setupRecordsConsumer(SpRegistry registry, RawDataSource<RawConsumerData> rawConsumersDataSource) {
-		try {
-			importService.importConsumers(
-					registry.getServiceProvider().getDataSourceDescription(),
-					rawConsumersDataSource);
-			return true;
-		} catch (FlexPayException e) {
-			log.error("Failed setting consumers", e);
-			return false;
-		}
+	private void setupRecordsConsumer(SpRegistry registry, RawDataSource<RawConsumerData> rawConsumersDataSource)
+			throws Exception {
+
+		importService.importConsumers(
+				registry.getServiceProvider().getDataSourceDescription(),
+				rawConsumersDataSource);
 	}
 
 	public void setServiceOperationsFactory(ServiceOperationsFactory serviceOperationsFactory) {
