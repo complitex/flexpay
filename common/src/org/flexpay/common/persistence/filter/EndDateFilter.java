@@ -8,6 +8,13 @@ public class EndDateFilter extends DateFilterBase {
 
 	private Date endDate;
 
+	public EndDateFilter() {
+	}
+
+	public EndDateFilter(Date date) {
+		super(date);
+	}
+
 	public Date getDate() {
 		return endDate;
 	}

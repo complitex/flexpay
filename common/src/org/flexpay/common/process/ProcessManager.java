@@ -34,12 +34,12 @@ public class ProcessManager implements Runnable {
 	protected volatile static ProcessManager instance;
 	private volatile static Thread localThread;
 	private volatile boolean stopped = false;
-	private volatile Object sleepSemaphore = new Object();
+	private final Object sleepSemaphore = new Object();
 
 	private static final Logger log = Logger.getLogger(ProcessManager.class);
 
 
-	private Map<Long, Process> running = CollectionUtils.map();
+	private final Map<Long, Process> running = CollectionUtils.map();
 
 	private int rescanFrequency = 10000;
 	private int startTaskLimit = 10; 
@@ -53,7 +53,6 @@ public class ProcessManager implements Runnable {
 	 * protected constructor
 	 */
 	protected ProcessManager() {
-//        this.jbpmConfiguration = JbpmConfiguration.getInstance();
 		log.debug("ProcessManager constructor called ");
 	}
 
@@ -86,9 +85,6 @@ public class ProcessManager implements Runnable {
 			localThread = new Thread(pmInstance, "ProcessManager Thread");
 			localThread.start();
 			log.debug("ProcessManager thread started");
-//            return pmInstance;
-//        }else{
-//            return getInstance();
 		} else {
 			log.debug("ProcessManager thread already started");
 		}
@@ -663,7 +659,7 @@ public class ProcessManager implements Runnable {
 			}
 
 			ProcessState state = info.getProcessState();
-			if (state == ProcessState.COMPLITED || state == ProcessState.COMPLITED_WITH_ERRORS) {
+			if (state.isCompleted()) {
 				return;
 			}
 
@@ -691,17 +687,5 @@ public class ProcessManager implements Runnable {
 			jbpmContext.getGraphSession().deleteProcessInstance(processId);
 		}
 		jbpmContext.close();
-	}
-
-	/**
-	 * Check if process definition already deployed
-	 * <p/>
-	 * TODO: implement me
-	 *
-	 * @param name Process definition name to check
-	 * @return
-	 */
-	public boolean hasProcessDefinition(String name) {
-		return false;
 	}
 }

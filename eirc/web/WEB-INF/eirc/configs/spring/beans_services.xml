@@ -85,7 +85,6 @@
 		  p:spFileService-ref="spFileService"
 		  p:accountRecordService-ref="accountRecordService"
 		  p:quittanceService-ref="quittanceService"
-		  p:registryRecordService-ref="spRegistryRecordService"
 		  p:organisationService-ref="organisationService"
 		  p:reportPeriodService-ref="reportPeriodService"
 		  p:consumerService-ref="consumerService"
@@ -130,6 +129,7 @@
 		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessorTx"
 		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
 		  p:serviceOperationsFactory-ref="serviceOperationsFactory"
+		  p:classToTypeRegistry-ref="typeRegistryEirc"
 		  p:spFileService-ref="spFileService" />
 
 	<bean id="registryProcessor"

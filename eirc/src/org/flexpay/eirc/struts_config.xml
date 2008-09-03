@@ -47,13 +47,13 @@
 			<result type="tiles">eirc.processing</result>
 		</action>
 
-		<action name="generateTickets" class="generateTicketsAction">
-			<result type="tiles">eirc.processing.generate_tickets</result>
+		<action name="generateQuittances" class="generateQuittancesAction">
+			<result type="tiles">eirc.quittances.generate_quittances</result>
 		</action>
 
 
-		<action name="tickets">
-			<result type="tiles">eirc.tickets</result>
+		<action name="quittances">
+			<result type="tiles">eirc.quittances</result>
 		</action>
 
 		<action name="printTickets" class="printTicketsAction">

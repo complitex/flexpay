@@ -53,13 +53,13 @@ public class QuittanceServiceImpl implements QuittanceService {
 	public void generateForServiceOrganisation(Date dateFrom, Date dateTill) {
 
 		long time = System.currentTimeMillis();
-		if(log.isInfoEnabled()) {
+		if (log.isInfoEnabled()) {
 			log.info("Starting quittances generation at " + new Date());
 		}
 
 		quittanceDaoExt.createQuittances(dateFrom, dateTill);
 
-		if(log.isInfoEnabled()) {
+		if (log.isInfoEnabled()) {
 			log.info("Quittances generation finished, time took: " + (System.currentTimeMillis() - time) + "ms");
 		}
 	}

@@ -46,11 +46,6 @@
 		<put-attribute name="menu34" value="/WEB-INF/jsp/eirc/menu/menu34_processing.jsp" />
 	</definition>
 
-	<definition name="eirc.processing.generate_tickets" extends="eirc.processing">
-		<put-attribute name="title" value="eirc.menu34.processing.generate_tickets" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/processing/generate_tickets.jsp" />
-	</definition>
-	
 	<definition name="eirc.process.list" extends="eirc.processing">
 		<put-attribute name="title" value="eirc.menu34.processing.process_list" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/processing/process_list.jsp" />
@@ -62,18 +57,23 @@
 	</definition>
 
 
-	<!-- Tickets -->
-	<definition name="eirc.tickets" extends="eirc.import">
+	<!-- Quittances -->
+	<definition name="eirc.quittances" extends="eirc.import">
 		<put-attribute name="title" value="eirc.menu2.tickets" />
 		<put-attribute name="menu34" value="/WEB-INF/jsp/eirc/menu/menu34_tickets.jsp" />
 	</definition>
 
-	<definition name="eirc.tickets.print_tickets" extends="eirc.tickets">
+	<definition name="eirc.quittances.generate_quittances" extends="eirc.quittances">
+		<put-attribute name="title" value="eirc.menu34.quittances.generate_quittances" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/generate_quittances.jsp" />
+	</definition>
+
+	<definition name="eirc.tickets.print_tickets" extends="eirc.quittances">
 		<put-attribute name="title" value="eirc.menu34.tickets.print_tickets" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/tickets/print_tickets.jsp" />
 	</definition>
 
-	<definition name="eirc.tickets.ticket_find" extends="eirc.tickets">
+	<definition name="eirc.tickets.ticket_find" extends="eirc.quittances">
 		<put-attribute name="title" value="eirc.menu34.tickets.pay_ticket" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/tickets/ticket_find.jsp" />
 	</definition>

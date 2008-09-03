@@ -21,7 +21,6 @@ public class ServiceOperationsFactory {
 
 	private SpFileService spFileService;
 	private SPService spService;
-	private SpRegistryRecordService registryRecordService;
 	private EircAccountService accountService;
 	private ConsumerService consumerService;
 	private QuittanceService quittanceService;
@@ -282,10 +281,6 @@ public class ServiceOperationsFactory {
 
 	public void setConsumerInfoService(ConsumerInfoService consumerInfoService) {
 		this.consumerInfoService = consumerInfoService;
-	}
-
-	public void setRegistryRecordService(SpRegistryRecordService registryRecordService) {
-		this.registryRecordService = registryRecordService;
 	}
 
 	public QuittanceService getQuittanceService() {

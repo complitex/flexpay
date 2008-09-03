@@ -6,9 +6,9 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean class="org.flexpay.eirc.util.selftest.TestConsumersCorrections"
-		  init-method="doSelfTesting"
-		  p:classToTypeRegistry-ref="typeRegistryEirc"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+	<!--<bean class="org.flexpay.eirc.util.selftest.TestConsumersCorrections"-->
+		  <!--init-method="doSelfTesting"-->
+		  <!--p:classToTypeRegistry-ref="typeRegistryEirc"-->
+		  <!--p:hibernateTemplate-ref="hibernateTemplate" />-->
 
 </beans>
