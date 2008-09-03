@@ -2,9 +2,8 @@ package org.flexpay.sz.actions;
 
 import org.apache.commons.io.FileUtils;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.config.ApplicationConfig;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.sz.persistence.Oszn;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.persistence.SzFileType;
@@ -12,8 +11,10 @@ import org.flexpay.sz.service.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class ImportFileAction extends FPActionSupport {
 
@@ -126,8 +127,8 @@ public class ImportFileAction extends FPActionSupport {
 	}
 
 	/**
-	 * @deprecated
 	 * @return years
+	 * @deprecated
 	 */
 	public static Integer[] getYears() {
 		return years;

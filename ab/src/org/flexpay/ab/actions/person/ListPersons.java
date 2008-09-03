@@ -2,7 +2,6 @@ package org.flexpay.ab.actions.person;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;

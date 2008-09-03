@@ -32,20 +32,27 @@
 				</td>
 				<td class="col" width="1%"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/></td>
 				<td class="col">
-					<s:property value="%{getServiceTypeName(service.serviceType)}"/>
+					<s:if test="service != null">
+						<a href="<s:url action="service_edit" namespace="/eirc" includeParams="none"><s:param name="service.id" value="service.id" /></s:url>">
+							<s:property value="serviceCode"/>
+						</a>
+					</s:if><s:else>
+					<s:property value="serviceCode"/>
+				</s:else>
+
 				</td>
 				<td class="col"><s:property value="%{personalAccountExt}"/></td>
 				<td class="col" nowrap="nowrap">
 					<s:if test="streetType != null && streetName != null && buildingNum != null || buildingBulkNum != null || apartmentNum != null">
 						<s:set name="addressVal"
-							   value="%{streetType + ', ' + streetName + ', ' + buildingNum + ' ' + buildingBulkNum + ', ' + apartmentNum}" />
-					<s:if test="apartment != null">
-					<a href="<s:url action="apartmentRegistrations" namespace="/dicts" includeParams="none"><s:param name="apartment.id" value="apartment.id" /></s:url>">
-						<s:property value="addressVal"/>
-					</a>
+							   value="%{streetType + ', ' + streetName + ', ' + buildingNum + ' ' + buildingBulkNum + ', ' + apartmentNum}"/>
+						<s:if test="apartment != null">
+							<a href="<s:url action="apartmentRegistrations" namespace="/dicts" includeParams="none"><s:param name="apartment.id" value="apartment.id" /></s:url>">
+								<s:property value="addressVal"/>
+							</a>
 						</s:if>
 						<s:else>
-							<s:property value="addressVal" />
+							<s:property value="addressVal"/>
 						</s:else>
 					</s:if>
 				</td>
@@ -56,10 +63,10 @@
 					<a href="<s:url action="view_person" namespace="/dicts"><s:param name="person.id" value="person.id" /></s:url>">
 						<s:property value="#fioVal"/>
 					</a>
-						</s:if>
-						<s:else>
-							<s:property value="#fioVal" />
-						</s:else>
+					</s:if>
+					<s:else>
+						<s:property value="#fioVal" />
+					</s:else>
 					</s:if>
 				<td class="col"><s:date name="operationDate" format="yyyy/MM/dd"/></td>
 				<td class="col"><s:property value="%{amount}"/></td>

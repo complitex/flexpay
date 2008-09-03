@@ -11,7 +11,6 @@ import static org.flexpay.common.util.CollectionUtils.map;
 import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.Map;
 
 public class TownTypeEditAction extends FPActionSupport implements Preparable {
