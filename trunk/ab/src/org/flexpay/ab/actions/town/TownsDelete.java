@@ -1,18 +1,13 @@
 package org.flexpay.ab.actions.town;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.actions.nametimedependent.DeleteAction;
+import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.TownName;
 import org.flexpay.ab.persistence.TownNameTemporal;
-import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.TownNameTranslation;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.apache.commons.collections.ArrayStack;
-
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class TownsDelete extends DeleteAction<
 		TownName, TownNameTemporal, Town, TownNameTranslation> {

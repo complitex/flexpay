@@ -1,11 +1,9 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.common.persistence.Translation;
-import org.flexpay.common.persistence.Language;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Translation;
 
 /**
  * BuildingAttributeTypeTranslation
@@ -33,15 +31,11 @@ public class BuildingAttributeTypeTranslation extends Translation {
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
-		} else if (! (o instanceof BuildingAttributeTypeTranslation)) {
+		} else if (!(o instanceof BuildingAttributeTypeTranslation)) {
 			return false;
 		}
 
-		BuildingAttributeTypeTranslation that = (BuildingAttributeTypeTranslation) o;
-		return new EqualsBuilder()
-				.append(shortName, that.getShortName())
-				.appendSuper(super.equals(o))
-				.isEquals();
+		return super.equals(o);
 	}
 
 	@Override

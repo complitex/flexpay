@@ -1,7 +1,5 @@
 package org.flexpay.ab.persistence;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
@@ -79,16 +77,7 @@ public class Country extends DomainObjectWithStatus {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof Country)) {
-			return false;
-		}
+		return this == obj || obj instanceof Country && super.equals(obj);
 
-		Country country = (Country) obj;
-		return new EqualsBuilder()
-				.append(countryNames, country.countryNames)
-				.isEquals();
 	}
 }
