@@ -17,7 +17,7 @@
 			<td class="col"><s:date name="importDate" format="yyyy/MM/dd HH:mm:ss" /></td>
 			<!-- <td class="col"><s:property value="userName"/></td> -->
 			<td class="col">
-				<s:if test="!isLoaded(id)">
+				<s:if test="%{!isLoaded(id)}">
 					<a href="<s:url action='spFileAction'><s:param name="spFileId" value="%{id}"/><s:param name="action" value="'loadToDb'"/></s:url>">
 						<s:text name="eirc.registry.file.load"/>
 					</a>
