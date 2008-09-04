@@ -12,6 +12,7 @@ import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.service.SpFileService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
  * Processor of instructions specified by service provider, usually payments, balance notifications, etc. <br /> Precondition for
  * processing file is complete import operation, i.e. all records should already have assigned PersonalAccount.
  */
-//@Transactional (readOnly = true)
+@Transactional (readOnly = true)
 public class ServiceProviderFileProcessorTx {
 
 	private Logger log = Logger.getLogger(getClass());
@@ -38,18 +39,15 @@ public class ServiceProviderFileProcessorTx {
 	 * @param minMaxIds Cached minimum and maximum registry record ids to process
 	 * @throws Exception if failure occurs
 	 */
-//	@Transactional (readOnly = false)
+	@Transactional (readOnly = false)
 	public void processRegistry(SpRegistry registry, Page<RegistryRecord> pager, Long[] minMaxIds) throws Exception {
 
-		do {
-			log.info("Fetching for records: " + pager);
-			List<RegistryRecord> records = spFileService.getRecordsForProcessing(stub(registry), pager, minMaxIds);
-			for (RegistryRecord record : records) {
-				processRecord(registry, record);
-			}
-			pager.setPageNumber(pager.getPageNumber() + 1);
-		} while (pager.getThisPageFirstElementNumber() <= (minMaxIds[1] - minMaxIds[0]));
-		log.info("No more records to process");
+		log.info("Fetching for records: " + pager);
+		List<RegistryRecord> records = spFileService.getRecordsForProcessing(stub(registry), pager, minMaxIds);
+		for (RegistryRecord record : records) {
+			processRecord(registry, record);
+		}
+		pager.setPageNumber(pager.getPageNumber() + 1);
 	}
 
 	/**
@@ -59,7 +57,7 @@ public class ServiceProviderFileProcessorTx {
 	 * @param record   Registry record
 	 * @throws Exception if failure occurs
 	 */
-//	@Transactional (readOnly = false)
+	@Transactional (readOnly = false)
 	public void processRecord(SpRegistry registry, RegistryRecord record) throws Exception {
 		try {
 			if (!recordWorkflowManager.hasSuccessTransition(record)) {

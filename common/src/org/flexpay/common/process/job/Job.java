@@ -2,8 +2,8 @@ package org.flexpay.common.process.job;
 
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.logger.FPLogger;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.process.ProcessLogger;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Random;
 
 public abstract class Job implements Runnable {
+
+	protected final Logger log = Logger.getLogger(getClass());
 
 	public final static String RESULT_NEXT = "next";
 	public final static String RESULT_ERROR = "error";
@@ -24,7 +26,6 @@ public abstract class Job implements Runnable {
 	private Map<Serializable, Serializable> parameters = CollectionUtils.map();
 	private Long taskId;
 	private Long processId;
-	private Logger log = Logger.getLogger(Job.class);
 
 	/**
 	 * object for generate random string of transaction id (job id)
@@ -32,27 +33,27 @@ public abstract class Job implements Runnable {
 	private final static Random random = new Random();
 
 	public Job() {
-		synchronized (random) {
-			long n = random.nextLong();
-			this.id = Long.toString(Math.abs(n), Character.MAX_RADIX);
-		}
+		this.id = Long.toString(Math.abs(random.nextLong()), Character.MAX_RADIX);
 	}
 
 	public void run() {
 
 		JobManager jobMgr = JobManager.getInstance();
 		setStart(new Date());
-		FPLogger.logMessage(FPLogger.INFO, "Job " + getId() + " started");
+		log.info("Job " + getId() + " started");
 
 		try {
+			// prepare process logger
+			ProcessLogger.setThreadProcessId(processId);
+
 			String transition = this.execute(parameters);
-			FPLogger.logMessage(FPLogger.INFO, "Job with id = " + getId() + " completed with status: " + transition);
+			log.info("Job with id = " + getId() + " completed with status: " + transition);
 			if (transition.equals(RESULT_ERROR)) {
 				parameters.put(STATUS_ERROR, Boolean.TRUE);
 			}
 			jobMgr.jobFinished(id, transition);
 		} catch (Throwable e) {
-			FPLogger.logMessage(FPLogger.ERROR, "Job with id = " + getId() + " completed with exception", e);
+			log.error("Job with id = " + getId() + " completed with exception", e);
 			parameters.put(STATUS_ERROR, Boolean.TRUE);
 			setEnd(new Date());
 			jobMgr.jobFinished(getId(), RESULT_ERROR);

@@ -1,6 +1,5 @@
 package org.flexpay.eirc.process.registry;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.eirc.persistence.SpFile;
@@ -14,7 +13,6 @@ public class FileParserJob extends Job {
 
 	private RegistryFileParser parser;
 	private SpFileService spFileService;
-	private Logger log = Logger.getLogger(getClass());
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 		Long fileID = (Long) parameters.get("FileId");

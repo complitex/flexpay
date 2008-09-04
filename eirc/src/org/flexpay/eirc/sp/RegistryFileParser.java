@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.FileSource;
 import org.flexpay.common.util.StringUtil;
@@ -49,6 +50,7 @@ public class RegistryFileParser {
 	private SPService spService;
 	private ConsumerService consumerService;
 
+	@SuppressWarnings ({"ConstantConditions"})
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
 	public void parse(SpFile spFile) throws Exception {
 
@@ -56,12 +58,17 @@ public class RegistryFileParser {
 		InputStream is = null;
 
 		SpRegistry registry = null;
+		Logger processLog = ProcessLogger.getLogger(getClass());
+
+		if (processLog.isInfoEnabled()) {
+			processLog.info("Starting parsing file: " + spFile);
+		}
+
+		Long[] recordCounter = {0L};
 		try {
 			fileSource = openRegistryFile(spFile);
 			is = fileSource.openStream();
 			SpFileReader reader = new SpFileReader(is);
-
-			Long[] recordCounter = {0L};
 
 			Message message;
 			while ((message = reader.readMessage()) != null) {
@@ -71,20 +78,28 @@ public class RegistryFileParser {
 			sessionUtils.flush();
 			sessionUtils.clear();
 
-			if (log.isDebugEnabled()) {
-				log.debug("Parsed " + recordCounter[0] + " records");
+			if (processLog.isInfoEnabled()) {
+				if (log.isTraceEnabled()) {
+					processLog.trace("Parsed " + recordCounter[0] + " records");
+				} else if (recordCounter[0] % 100 == 0) {
+					processLog.info("Parsed " + recordCounter[0] + " records");
+				}
 			}
 		} catch (Throwable t) {
 			if (registry != null) {
 				registryWorkflowManager.setNextErrorStatus(registry);
 			}
-			log.error("Failed parsing registry file", t);
+			processLog.error("Failed parsing registry file", t);
 			throw new Exception("Failed parsing registry file", t);
 		} finally {
 			IOUtils.closeQuietly(is);
 			if (fileSource != null) {
 				fileSource.close();
 			}
+		}
+
+		if (processLog.isInfoEnabled()) {
+			processLog.info("File successfully parsed, total records: " + recordCounter[0]);
 		}
 	}
 
@@ -277,7 +292,7 @@ public class RegistryFileParser {
 			Service service = consumerService.findService(
 					registry.getServiceProvider(), record.getServiceCode());
 			if (service == null) {
-				log.warn("Unknown service code: "+record.getServiceCode());
+				log.warn("Unknown service code: " + record.getServiceCode());
 			}
 			record.setService(service);
 

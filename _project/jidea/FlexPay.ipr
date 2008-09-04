@@ -377,11 +377,11 @@
           <option name="ignoreNonEmtpyLoops" value="false" />
         </inspection_tool>
         <inspection_tool class="ClassHasNoToStringMethod" level="INFO" enabled="true">
-          <option name="excludeClassNames" value="" />
+          <option name="excludeClassNames" value=".*Service.*" />
           <option name="excludeException" value="true" />
           <option name="excludeDeprecated" value="true" />
           <option name="excludeEnum" value="false" />
-          <option name="excludeAbstract" value="false" />
+          <option name="excludeAbstract" value="true" />
         </inspection_tool>
         <inspection_tool class="ComparatorNotSerializable" level="WARNING" enabled="true" />
         <inspection_tool class="ExternalizableWithSerializationMethods" level="WARNING" enabled="true" />
@@ -946,8 +946,12 @@
         <root url="jar://$PROJECT_DIR$/../../common/lib/commons/commons-logging-adapters-1.1.1.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/commons/commons-logging-1.1.1.jar!/" />
       </CLASSES>
-      <JAVADOC />
-      <SOURCES />
+      <JAVADOC>
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/apache-log4j-1.2.15/site/apidocs" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/apache-log4j-1.2.15/src/main/java" />
+      </SOURCES>
     </library>
     <library name="Commons">
       <CLASSES>

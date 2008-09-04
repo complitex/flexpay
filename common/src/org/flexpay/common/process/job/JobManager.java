@@ -15,7 +15,9 @@ public class JobManager implements BeanFactoryAware {
 
     volatile protected static JobManager instance = null;
     private volatile BeanFactory beanFactory;
+
     Logger log = Logger.getLogger(JobManager.class);
+
     private Map<String,Job> runningJobs = new Hashtable<String, Job>();
     private Map<String,Job> sleepingJobs = new Hashtable<String, Job>();
     private LinkedList<Job> waitingJobs = new LinkedList<Job>();
