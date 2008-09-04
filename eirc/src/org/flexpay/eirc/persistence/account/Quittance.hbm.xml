@@ -154,8 +154,11 @@
 	<query name="Quittance.findByServiceOrganisationAndDate">
 		<![CDATA[
 		FROM Quittance q
-		WHERE q.serviceOrganisation.id=? AND q.dateTill=?
-		ORDER BY q.eircAccount.apartment.building.id, q.eircAccount.id, q.orderNumber desc
+			inner join fetch q.eircAccount a
+			inner join fetch a.apartment ap
+			inner join fetch ap.building b
+		WHERE q.serviceOrganisation.id=? and q.dateFrom>=? and q.dateTill<=?
+		ORDER BY b.id, a.id, q.orderNumber desc
 		]]>
 	</query>
 

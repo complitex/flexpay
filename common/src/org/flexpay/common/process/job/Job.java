@@ -46,8 +46,13 @@ public abstract class Job implements Runnable {
 			// prepare process logger
 			ProcessLogger.setThreadProcessId(processId);
 
-			String transition = this.execute(parameters);
-			log.info("Job with id = " + getId() + " completed with status: " + transition);
+			// execute
+			String transition = execute(parameters);
+
+			if (log.isInfoEnabled()) {
+				log.info("Job with id = " + getId() + " completed with status: " + transition);
+			}
+
 			if (transition.equals(RESULT_ERROR)) {
 				parameters.put(STATUS_ERROR, Boolean.TRUE);
 			}
@@ -55,8 +60,7 @@ public abstract class Job implements Runnable {
 		} catch (Throwable e) {
 			log.error("Job with id = " + getId() + " completed with exception", e);
 			parameters.put(STATUS_ERROR, Boolean.TRUE);
-			setEnd(new Date());
-			jobMgr.jobFinished(getId(), RESULT_ERROR);
+			jobMgr.jobFinished(id, RESULT_ERROR);
 		}
 		setEnd(new Date());
 	}

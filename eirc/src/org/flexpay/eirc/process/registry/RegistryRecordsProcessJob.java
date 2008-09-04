@@ -1,6 +1,5 @@
 package org.flexpay.eirc.process.registry;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.job.Job;
@@ -12,8 +11,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class RegistryRecordsProcessJob extends Job {
-
-	private Logger log = Logger.getLogger(getClass());
 
 	private SpRegistryService registryService;
 	private RegistryProcessor registryProcessor;

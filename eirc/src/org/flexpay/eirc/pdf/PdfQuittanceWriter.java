@@ -13,6 +13,7 @@ import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -30,27 +31,30 @@ public class PdfQuittanceWriter {
 	private QuittanceService quittanceService;
 	private ServiceTypeService serviceTypeService;
 
-	private InputStream kvitPattern;
-	private PdfReader titlePattern;
+	private PdfReader quittancePatternReader;
+	private PdfReader titlePatternReader;
 	private ByteArrayOutputStream baos;
 
-	public PdfQuittanceWriter(InputStream kvitPattern, InputStream titlePattern)
+	public PdfQuittanceWriter(@NotNull InputStream kvitPattern, @NotNull InputStream titlePattern)
 			throws IOException {
+
 		baos = new ByteArrayOutputStream();
-		this.kvitPattern = kvitPattern;
-		this.titlePattern = new PdfReader(titlePattern);
+		quittancePatternReader = new PdfReader(kvitPattern);
+		titlePatternReader = new PdfReader(titlePattern);
 	}
 
-	public byte[] writeGetByteArray(Quittance quittance)
+	public byte[] getQuittanceBytes(Quittance quittance)
 			throws DocumentException, IOException, FlexPayException {
 		baos.reset();
 		write(baos, quittance);
 		return baos.toByteArray();
 	}
 
-	public void write(OutputStream os, Quittance quittance)
+	private void write(@NotNull OutputStream os, @NotNull Quittance quittance)
 			throws DocumentException, IOException, FlexPayException {
-		PdfStamper stamper = new PdfStamper(new PdfReader(kvitPattern), os);
+
+		PdfReader copy = new PdfReader(quittancePatternReader);
+		PdfStamper stamper = new PdfStamper(copy, os);
 		stamper.setFormFlattening(true);
 
 		AcroFields form = stamper.getAcroFields();
@@ -72,16 +76,16 @@ public class PdfQuittanceWriter {
 		stamper.close();
 	}
 
-	public byte[] writeTitleGetByteArray(String title)
-			throws DocumentException, IOException {
+	public byte[] getAddressTitleBytes(String title) throws DocumentException, IOException {
 		baos.reset();
 		writeTitle(baos, title);
 		return baos.toByteArray();
 	}
 
-	public void writeTitle(OutputStream os, String title)
+	private void writeTitle(OutputStream os, String title)
 			throws DocumentException, IOException {
-		PdfStamper stamper = new PdfStamper(titlePattern, os);
+		PdfReader copy = new PdfReader(titlePatternReader);
+		PdfStamper stamper = new PdfStamper(copy, os);
 		stamper.setFormFlattening(true);
 		@NonNls AcroFields form = stamper.getAcroFields();
 		form.setField("name", title);
@@ -101,7 +105,6 @@ public class PdfQuittanceWriter {
 		barcode.setText(code);
 
 		return barcode.getImage();
-
 	}
 
 	private String[] fillForm(@NonNls AcroFields form, Quittance quittance)
@@ -110,19 +113,17 @@ public class PdfQuittanceWriter {
 		form.setField("header_copy1", "КП “ЖИЛКОМСЕРВИС”");
 		form.setField("lsZks", "1000300660");
 		form.setField("lsZks_copy1", "1000300660");
-		form
-				.setField("properties",
-						"р/сч 260005593 в ОАО “МЕГАБАНК” МФО 351629, КОД ОКПО 34467793");
+		form.setField("properties",
+				"р/сч 260005593 в ОАО “МЕГАБАНК” МФО 351629, КОД ОКПО 34467793");
 		form.setField("footer", "Киевский филиал");
 
-		@NonNls DateFormat format = new SimpleDateFormat("MMMM yyyy", LOCALE_RU);
-		form.setField("date", format.format(quittance.getDateFrom()));
-		form.setField("date_copy1", format.format(quittance.getDateFrom()));
-		format = new SimpleDateFormat("dd.MM.yyyy");
-		form.setField("creationDate", format
-				.format(quittance.getCreationDate()));
-		form.setField("dateFrom", format.format(quittance.getDateFrom()));
-		form.setField("dateTill", format.format(quittance.getDateTill()));
+		@NonNls DateFormat df = new SimpleDateFormat("MMMM yyyy", LOCALE_RU);
+		form.setField("date", df.format(quittance.getDateFrom()));
+		form.setField("date_copy1", df.format(quittance.getDateFrom()));
+		df = new SimpleDateFormat("dd.MM.yyyy");
+		form.setField("creationDate", df.format(quittance.getCreationDate()));
+		form.setField("dateFrom", df.format(quittance.getDateFrom()));
+		form.setField("dateTill", df.format(quittance.getDateTill()));
 
 		// form.setField("paySum", kvitForm.paySum);
 		String payer = quittanceService.getPayer(quittance);
@@ -138,32 +139,21 @@ public class PdfQuittanceWriter {
 		// Services 2-5
 		for (int i = 2; i <= 5; i++) {
 			QuittanceDetails quittanceDetails = quittanceService
-					.calculateTotalQuittanceDetails(quittance,
-							serviceTypeService.getServiceType(i));
+					.calculateTotalQuittanceDetails(quittance, serviceTypeService.getServiceType(i));
 			if (quittanceDetails != null) {
-				BigDecimal outgoingBalance = quittanceDetails
-						.getOutgoingBalance();
-				BigDecimal incomingBalance = quittanceDetails
-						.getIncomingBalance();
+				BigDecimal outgoingBalance = quittanceDetails.getOutgoingBalance();
+				BigDecimal incomingBalance = quittanceDetails.getIncomingBalance();
 				if (outgoingBalance != null) {
 					dateTillSum = dateTillSum.add(outgoingBalance);
 					String[] amountDigitArray = getStringArray(outgoingBalance);
-					form.setField("service" + i + "_amount_digit0",
-							amountDigitArray[0]);
-					form.setField("service" + i + "_amount_digit1",
-							amountDigitArray[1]);
-					form.setField("service" + i + "_amount_digit2",
-							amountDigitArray[2]);
-					form.setField("service" + i + "_amount_digit3",
-							amountDigitArray[3]);
-					form.setField("service" + i + "_amount_digit4",
-							amountDigitArray[4]);
-					form.setField("service" + i + "_amount_digit5",
-							amountDigitArray[5]);
-					form.setField("service" + i + "_amount", outgoingBalance
-							.toString());
-					form.setField("service" + i + "_dateTill_amount",
-							outgoingBalance.toString());
+					form.setField("service" + i + "_amount_digit0", amountDigitArray[0]);
+					form.setField("service" + i + "_amount_digit1", amountDigitArray[1]);
+					form.setField("service" + i + "_amount_digit2", amountDigitArray[2]);
+					form.setField("service" + i + "_amount_digit3", amountDigitArray[3]);
+					form.setField("service" + i + "_amount_digit4", amountDigitArray[4]);
+					form.setField("service" + i + "_amount_digit5", amountDigitArray[5]);
+					form.setField("service" + i + "_amount", outgoingBalance.toString());
+					form.setField("service" + i + "_dateTill_amount", outgoingBalance.toString());
 				}
 				if (incomingBalance != null) {
 					dateFromSum = dateFromSum.add(incomingBalance);
@@ -175,13 +165,10 @@ public class PdfQuittanceWriter {
 
 		// Kvartplata services
 		QuittanceDetails quittanceDetails = quittanceService
-				.calculateTotalQuittanceDetails(quittance, serviceTypeService
-						.getServiceType(1));
+				.calculateTotalQuittanceDetails(quittance, serviceTypeService.getServiceType(1));
 		if (quittanceDetails != null) {
-			BigDecimal outgoingBalance = quittanceDetails
-					.getOutgoingBalance();
-			BigDecimal incomingBalance = quittanceDetails
-					.getIncomingBalance();
+			BigDecimal outgoingBalance = quittanceDetails.getOutgoingBalance();
+			BigDecimal incomingBalance = quittanceDetails.getIncomingBalance();
 			if (outgoingBalance != null) {
 				dateTillSum = dateTillSum.add(outgoingBalance);
 				String[] amountDigitArray = getStringArray(outgoingBalance);
@@ -231,17 +218,13 @@ public class PdfQuittanceWriter {
 		form.setField("ticketNumber_copy1", barcodes[0]);
 
 		StringBuilder barcode2d = new StringBuilder();
-		barcode2d.append(ApplicationConfig.getEircId());
-		barcode2d.append(StringUtil.fillLeadingZero(String.valueOf(quittance.getId()), 8));
-		barcode2d.append(";");
-		barcode2d.append(address);
-		barcode2d.append(";");
-		barcode2d.append(payer);
-		barcode2d.append(";");
-		barcode2d.append(dateTillSum);
-		barcode2d.append("\n");
-		barcode2d.append("2");
-		barcode2d.append(";");
+		// write EIRC ID and quittance id filled with zeros
+		barcode2d.append(ApplicationConfig.getEircId())
+				.append(StringUtil.fillLeadingZero(String.valueOf(quittance.getId()), 8))
+				// write address, payer and summ
+				.append(";").append(address).append(";").append(payer).append(";").append(dateTillSum)
+				// todo what is "2" here????
+				.append("\n").append("2").append(";");
 		/*if (ticketInfo.serviceAmountInfoMap != null) {
 			ServiceAmountInfo serviceAmountInfo = null;
 			for (int i = 2; i <= 15; i++) {
@@ -270,14 +253,10 @@ public class PdfQuittanceWriter {
 			result[5] = "";
 			result[4] = "";
 			try {
-				result[3] = amountStr.substring(amountStrLength - 1,
-						amountStrLength);
-				result[2] = amountStr.substring(amountStrLength - 2,
-						amountStrLength - 1);
-				result[1] = amountStr.substring(amountStrLength - 3,
-						amountStrLength - 2);
-				result[0] = amountStr.substring(amountStrLength - 4,
-						amountStrLength - 3);
+				result[3] = amountStr.substring(amountStrLength - 1, amountStrLength);
+				result[2] = amountStr.substring(amountStrLength - 2, amountStrLength - 1);
+				result[1] = amountStr.substring(amountStrLength - 3, amountStrLength - 2);
+				result[0] = amountStr.substring(amountStrLength - 4, amountStrLength - 3);
 			} catch (StringIndexOutOfBoundsException e) {
 				// ignore
 			}
@@ -293,7 +272,6 @@ public class PdfQuittanceWriter {
 				result[2] = amountStr.substring(dotInd - 2, dotInd - 1);
 				result[1] = amountStr.substring(dotInd - 3, dotInd - 2);
 				result[0] = amountStr.substring(dotInd - 4, dotInd - 3);
-
 			} catch (StringIndexOutOfBoundsException e) {
 				// ignore
 			}
@@ -315,5 +293,4 @@ public class PdfQuittanceWriter {
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
 		this.serviceTypeService = serviceTypeService;
 	}
-
 }

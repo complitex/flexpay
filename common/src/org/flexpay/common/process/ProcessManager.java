@@ -212,7 +212,7 @@ public class ProcessManager implements Runnable {
 		while (!isStopped()) {
 			try {
 				//write tick-tack message
-				log.debug("Collecting task instances to run.");
+				log.trace("Collecting task instances to run.");
 				//find not running task instances and run
 				JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
 				for (Object o : jbpmContext.getTaskMgmtSession().findTaskInstances(JobManagerAssignmentHandler.JOB_MANAGER_ACTOR_NAME)) {

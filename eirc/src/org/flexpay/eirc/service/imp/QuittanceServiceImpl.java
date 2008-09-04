@@ -64,24 +64,23 @@ public class QuittanceServiceImpl implements QuittanceService {
 		}
 	}
 
-	public List<Object> getQuittanceListWithDelimiters(
-			@NotNull Stub<ServiceOrganisation> stub, Date dateFrom, Date dateTill)
+	public List<Object> getQuittanceListWithDelimiters(@NotNull Stub<ServiceOrganisation> stub, Date dateFrom, Date dateTill)
 			throws FlexPayException {
+
 		List<Quittance> quittanceList = quittanceDao
 				.findByServiceOrganisationAndDate(stub.getId(), dateFrom, dateTill);
 
 		List<Object> result = new ArrayList<Object>();
 		Quittance lastQuittance = null;
 		for (Quittance quittance : quittanceList) {
-			if (lastQuittance == null || quittance.getEircAccount().getApartment().getBuilding().getId().longValue() !=
-										 lastQuittance.getEircAccount().getApartment().getBuilding().getId().longValue()) {
+			if (lastQuittance == null || buildingsDiffer(quittance, lastQuittance)) {
 				result.add(getAddressStr(quittance, false));
 				result.add(quittance);
 				lastQuittance = quittance;
 				continue;
 			}
 
-			if (quittance.getEircAccount().getId().longValue() != lastQuittance.getEircAccount().getId().longValue()) {
+			if (!quittance.getEircAccount().equals(lastQuittance.getEircAccount())) {
 				result.add(quittance);
 			}
 
@@ -91,8 +90,13 @@ public class QuittanceServiceImpl implements QuittanceService {
 		return result;
 	}
 
-	public String getAddressStr(Quittance quittance,
-								boolean withApartmentNumber) throws FlexPayException {
+	private boolean buildingsDiffer(Quittance q1, Quittance q2) {
+		return !q1.getEircAccount().getApartment().getBuilding()
+					.equals(q2.getEircAccount().getApartment().getBuilding());
+	}
+
+	public String getAddressStr(Quittance quittance, boolean withApartmentNumber) throws FlexPayException {
+
 		quittance = quittanceDao.read(quittance.getId());
 		Set<Buildings> buildingses = quittance.getEircAccount().getApartment().getBuilding().getBuildingses();
 		if (buildingses.isEmpty()) {
