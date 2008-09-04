@@ -16,7 +16,7 @@ public class RawStreetData extends RawData<Street> {
 	@NonNls
 	public static final String FIELD_ID = "id";
 
-	private static Collection<String> possibleNames = set(FIELD_ID, FIELD_NAME, FIELD_TYPE_ID);
+	private static final Collection<String> possibleNames = set(FIELD_ID, FIELD_NAME, FIELD_TYPE_ID);
 
 	/**
 	 * Get set of valid attribute names

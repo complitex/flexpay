@@ -19,7 +19,7 @@ import java.util.Map;
 public class ImportFileAction extends FPActionSupport {
 
 	private static final Map<Integer, String> months = treeMap();
-	private static Integer[] years;
+	private static final Integer[] years;
 
 	static {
 		months.put(0, "01");

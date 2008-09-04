@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class RawPersonData extends RawData<Person> {
 
-	private static Collection<String> possibleNames = new HashSet<String>();
+	private static final Collection<String> possibleNames = new HashSet<String>();
 
 	public static final String FIELD_FIRST_NAME = "firstName";
 	public static final String FIELD_MIDDLE_NAME = "middleName";
