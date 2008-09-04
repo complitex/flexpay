@@ -8,7 +8,8 @@ import java.io.IOException;
 
 public class ProcessLogger {
 
-	private static Logger LOG = Logger.getLogger(ProcessLogger.class.getName());
+	private static final Logger LOG = Logger.getLogger(ProcessLogger.class);
+
 	/**
 	 * Appender name
 	 */
@@ -32,8 +33,11 @@ public class ProcessLogger {
 	/**
 	 * Process log file name prefix sufix
 	 */
-
 	public static final String logFileNameSufix = ".log";
+
+	private static final String categoryPrefix = "process.";
+
+	private static final ThreadLocal<Long> processId = new ThreadLocal<Long>();
 
 	/**
 	 * Create file appender
@@ -84,7 +88,7 @@ public class ProcessLogger {
 	 * @return log file
 	 */
 	public static File getLogFile(long processId) {
-		return new File(getLogPath(), logFileNamePrefix+String.valueOf(processId)+logFileNameSufix);
+		return new File(getLogPath(), logFileNamePrefix + String.valueOf(processId) + logFileNameSufix);
 	}
 
 	/**
@@ -102,6 +106,7 @@ public class ProcessLogger {
 	 * @param processId process identifier
 	 */
 	public static synchronized void removeLogFile(long processId) {
+
 		closeLog(processId);
 		File logFile = getLogFile(processId);
 		if (logFile.exists()) {
@@ -115,7 +120,8 @@ public class ProcessLogger {
 	 * @param processId process identifier
 	 */
 	public static synchronized void closeLog(long processId) {
-		Logger logger = Logger.getLogger(String.valueOf(processId));
+
+		Logger logger = Logger.getLogger(categoryPrefix + processId);
 		Appender appender = logger.getAppender(appenderName);
 		if (appender != null) {
 			appender.close();
@@ -124,13 +130,15 @@ public class ProcessLogger {
 	}
 
 	/**
-	 * Get Logger by process ID
+	 * Get Logger by name and process ID
 	 *
+	 * @param name	  Logger name
 	 * @param processId process ID
 	 * @return Logger
 	 */
-	private static Logger getLogger(long processId) {
-		Logger logger = Logger.getLogger(String.valueOf(processId));
+	private static Logger getLogger(String name, long processId) {
+
+		Logger logger = Logger.getLogger(categoryPrefix + processId + "." + name);
 		if (logger.getAppender(ProcessLogger.appenderName) == null) {
 			logger.addAppender(ProcessLogger.makeAppender(processId));
 			logger.setLevel(ProcessLogger.getLogLevel());
@@ -138,4 +146,40 @@ public class ProcessLogger {
 		return logger;
 	}
 
+	/**
+	 * Associate current thread with a specified process.
+	 * <p/>
+	 * Later invoke of {@link #getLogger(String)} will use appropriate process id
+	 *
+	 * @param processId Process ID
+	 */
+	public static void setThreadProcessId(Long processId) {
+		ProcessLogger.processId.set(processId);
+	}
+
+	/**
+	 * Get process logger with specified name
+	 *
+	 * @param name Logger name
+	 * @return Logger
+	 */
+	public static Logger getLogger(String name) {
+
+		if (processId.get() == null) {
+			processId.set(0L);
+			LOG.warn("Inproper API usage, Process ID was not associated with a thread, using 0");
+		}
+		return getLogger(name, processId.get());
+	}
+
+	/**
+	 * Get process logger for specified <code>clazz</code>
+	 *
+	 * @param clazz Logger class
+	 * @return Logger
+	 */
+	public static Logger getLogger(Class clazz) {
+
+		return getLogger(clazz.getName());
+	}
 }

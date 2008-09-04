@@ -111,7 +111,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		Long[] minMaxIds = {null, null};
 		do {
 			processorTx.processRegistry(registry, pager, minMaxIds);
-		} while (pager.getThisPageFirstElementNumber() <= minMaxIds[1]);
+		} while (pager.getThisPageFirstElementNumber() <= (minMaxIds[1] - minMaxIds[0]));
 		log.info("No more records to process");
 	}
 

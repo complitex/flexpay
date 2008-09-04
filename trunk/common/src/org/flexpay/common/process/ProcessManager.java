@@ -1,11 +1,10 @@
 package org.flexpay.common.process;
 
-import org.apache.log4j.Logger;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
-import org.flexpay.common.process.exception.ProcessManagerConfigurationException;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.job.JobManager;
 import org.flexpay.common.util.CollectionUtils;
@@ -25,7 +24,6 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.*;
 
-
 public class ProcessManager implements Runnable {
 
 	/**
@@ -39,10 +37,13 @@ public class ProcessManager implements Runnable {
 	private static final Logger log = Logger.getLogger(ProcessManager.class);
 
 
+	/**
+	 * Mapping from task ids to Processes
+	 */
 	private final Map<Long, Process> running = CollectionUtils.map();
 
 	private int rescanFrequency = 10000;
-	private int startTaskLimit = 10; 
+	private int startTaskLimit = 10;
 
 	public static final String PROCESS_INSTANCE_ID = "ProcessInstanceID";
 	private JbpmConfiguration jbpmConfiguration = null;
@@ -76,7 +77,6 @@ public class ProcessManager implements Runnable {
 
 	/**
 	 * Start ProcessManager Thread
-	 *
 	 */
 	public static synchronized void startProcessManager() {
 		log.debug("Starting ProcessManager thread");
@@ -206,6 +206,7 @@ public class ProcessManager implements Runnable {
 	/**
 	 * main loop
 	 */
+	@SuppressWarnings ({"ConstantConditions"})
 	public void run() {
 		log.debug("Starting process manager...");
 		while (!isStopped()) {
@@ -228,9 +229,9 @@ public class ProcessManager implements Runnable {
 				synchronized (sleepSemaphore) {
 					try {
 						sleepSemaphore.wait(rescanFrequency);
-						sleepSemaphore.notify();
+						sleepSemaphore.notifyAll();
 					} catch (InterruptedException e) {
-						log.debug("ProcessManager.run: Somebody interrupts me.", e);
+						log.debug("Somebody interrupts me.", e);
 						Thread.interrupted(); // clear "interrupted" state of thread
 					}
 				}
@@ -274,7 +275,7 @@ public class ProcessManager implements Runnable {
 		} catch (RuntimeException e) {
 			jbpmContext.close();
 			log.error("initProcess: findLatestProcessDefinition", e);
-			throw new ProcessDefinitionException("Can't access ProcessDefinition for " + processDefinitionName);
+			throw new ProcessDefinitionException("Can't access ProcessDefinition for " + processDefinitionName, e);
 		}
 		// try to search in predefined set of places
 		if (processDefinition == null) {
@@ -283,7 +284,7 @@ public class ProcessManager implements Runnable {
 		}
 		if (processDefinition == null) {
 			log.error("initProcess: Can't find process definition for name: " + processDefinitionName);
-			throw new ProcessDefinitionException("initProcess: Can't find process definition for name: " + processDefinitionName);
+			throw new ProcessDefinitionException("Can't find process definition for name: " + processDefinitionName);
 		}
 
 		if (log.isInfoEnabled()) {
@@ -310,7 +311,7 @@ public class ProcessManager implements Runnable {
 	 * @return HashMap with process context parameters
 	 * @throws ProcessInstanceException when can't get process parameters
 	 */
-	public synchronized Map getProcessParameters(Long processID) throws ProcessInstanceException {
+	public Map getProcessParameters(Long processID) throws ProcessInstanceException {
 		Map result = null;
 		GraphSession graphSession = jbpmConfiguration.createJbpmContext().getGraphSession();
 		try {
@@ -318,7 +319,7 @@ public class ProcessManager implements Runnable {
 			if (processInstance != null) {
 				ContextInstance contextInstance = processInstance.getContextInstance();
 				if (contextInstance != null) {
-					result = (Map) contextInstance.getVariables();
+					result = contextInstance.getVariables();
 				}
 			}
 		} catch (RuntimeException e) {
@@ -363,7 +364,7 @@ public class ProcessManager implements Runnable {
 	 * @throws ProcessInstanceException   when can't instantiate process instance
 	 * @throws ProcessDefinitionException when process definition not found
 	 */
-	public synchronized long createProcess(String processDefinitionName, Map<Serializable, Serializable> parameters)
+	public long createProcess(String processDefinitionName, Map<Serializable, Serializable> parameters)
 			throws ProcessInstanceException, ProcessDefinitionException {
 
 		long processInstanceID = initProcess(processDefinitionName);
@@ -386,7 +387,6 @@ public class ProcessManager implements Runnable {
 			log.info("initProcess: Process Instance id = " + processInstanceID + " started.");
 		}
 
-//        waiting.put((long) 1, process);
 		return processInstanceID;
 	}
 
@@ -451,21 +451,17 @@ public class ProcessManager implements Runnable {
 	 * @param parameters Task context parameters
 	 * @param transition transition name
 	 */
-	public synchronized void jobFinished(Long taskId, Map<Serializable, Serializable> parameters, String transition) {
+	public void jobFinished(Long taskId, Map<Serializable, Serializable> parameters, String transition) {
 		// this method called by Job to report finish
 		log.debug("ProcessManager: jobFinished: taskId: " + taskId);
 
 		boolean proceed = false;
-		JbpmContext jbpmContext;
-		TaskMgmtSession taskMgmtSession;
 
 		while (!proceed) {
 			try {
-				jbpmContext = jbpmConfiguration.createJbpmContext();
-				taskMgmtSession = jbpmContext.getTaskMgmtSession();
-				TaskInstance task;
-
-				task = taskMgmtSession.loadTaskInstance(taskId);
+				JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
+				TaskMgmtSession taskMgmtSession = jbpmContext.getTaskMgmtSession();
+				TaskInstance task = taskMgmtSession.loadTaskInstance(taskId);
 
 				if (task == null) {
 					log.error("ProcessManager: jobFinished: Can't find Task Instance, id: " + taskId);
@@ -480,11 +476,17 @@ public class ProcessManager implements Runnable {
 				}
 				jbpmContext.close();
 				proceed = true;
+				Object removed;
 				synchronized (sleepSemaphore) {
-					Object removed = running.remove(taskId);
-					log.debug("ProcessManager: jobFinished: Task removed from list of running tasks: " + removed);
-					log.debug("ProcessManager: jobFinished: Number of running tasks: " + running.size());
-					sleepSemaphore.notify();
+					removed = running.remove(taskId);
+					sleepSemaphore.notifyAll();
+				}
+
+				checkProcessCompleted(task.getTaskMgmtInstance().getProcessInstance().getId());
+
+				if (log.isDebugEnabled()) {
+					log.debug("Task removed from list of running tasks: " + removed);
+					log.debug("Number of running tasks: " + running.size());
 				}
 			} catch (RuntimeException e) {
 				log.error("ProcessManager: jobFinished: Failed to finish task: " + taskId, e);
@@ -495,6 +497,19 @@ public class ProcessManager implements Runnable {
 					log.fatal("ProcessManager: jobFinished: System failure when finishing task: " + taskId, e);
 				}
 			}
+		}
+	}
+
+	/**
+	 * Check if process was completed and close its log
+	 *
+	 * @param processId Process ID
+	 */
+	private void checkProcessCompleted(long processId) {
+		Process process = getProcessInstanceInfo(processId);
+		if (process.getProcessState().isCompleted()) {
+			ProcessLogger.closeLog(processId);
+			log.info("Closing process log: " + processId);
 		}
 	}
 
@@ -626,19 +641,20 @@ public class ProcessManager implements Runnable {
 	}
 
 	protected boolean isTaskExecuting(long taskInstanceId) {
+
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
 		TaskInstance task = jbpmContext.getTaskMgmtSession().loadTaskInstance(taskInstanceId);
 		if (task.hasEnded()) {
-			log.debug(" Task already finished, ignoring task # " + String.valueOf(taskInstanceId));
+			log.debug("Task already finished, ignoring task # " + String.valueOf(taskInstanceId));
 			jbpmContext.close();
 			return true;
 		} else {
 			if (running.get(taskInstanceId) != null) {
-				log.debug(String.valueOf(taskInstanceId) + " is already started, checking runner");
+				log.debug(taskInstanceId + " is already started, checking runner");
 				jbpmContext.close();
 				return true;
 			} else {
-				log.debug(String.valueOf(taskInstanceId) + " is not started");
+				log.debug(taskInstanceId + " is not started");
 				jbpmContext.close();
 				return false;
 			}
