@@ -38,6 +38,7 @@
 
 	<bean id="printTicketsAction" class="org.flexpay.eirc.actions.GenerateQuitancePDFAction"
 		  scope="prototype"
+		  p:processManager-ref="processManager"
 		  p:serviceOrganisationService-ref="serviceOrganisationService" />
 
 	<bean id="ticketPayFormAction" class="org.flexpay.eirc.actions.TicketPayFormAction"

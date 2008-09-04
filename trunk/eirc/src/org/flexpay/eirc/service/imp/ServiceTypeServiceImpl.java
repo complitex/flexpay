@@ -148,7 +148,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 * @throws IllegalArgumentException if the <code>code</code> is invalid
 	 */
 	public ServiceType getServiceType(int code) throws IllegalArgumentException {
-		log.debug("Getting service type by code");
+
 		if (code2TypeCache == null) {
 			initializeServiceTypesCache();
 		}

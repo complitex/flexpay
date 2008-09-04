@@ -1,62 +1,37 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<table>
+<s:actionerror />
 
-<s:form action="printTickets" method="POST">
+<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
-<tr>
-  <td>
-    <s:text name="eirc.organisation" />
-  </td>
-  <td>
-    <s:select name="serviceOrganisationId" list="serviceOrganizationList" listKey="id" listValue="getTranslation(organisation.names).name" required="true" />
-  </td>
-</tr>
+	<s:form action="printQuittances" method="POST">
 
-<tr>
-  <td>
-    <s:text name="year" />
-  </td>
-  <td>
-    <s:select name="year" list="@org.flexpay.common.util.DateUtil@YEARS" value="year" required="true" />
-  </td>
-</tr>
+		<tr valign="middle" class="cols_1">
+			<td class="col">
+				<%@include file="../filters/service_organisation_filter.jsp" %>
+			</td>
+		</tr>
 
-<tr>
-  <td>
-    <s:text name="month" />
-  </td>
-  <td>
-    <s:select name="month" list="@org.flexpay.common.util.DateUtil@MONTHS" value="month" required="true" />
-  </td>
-</tr>
+		<tr class="cols_1">
+			<td class="col">
+				<s:text name="ab.from" />
+				<%@include file="../../common/filter/begin_date_filter.jsp" %>
+			</td>
+		</tr>
 
-<tr>
-  <td colspan="2" align="center">
-    &nbsp;
-  </td>
-</tr>
+		<tr class="cols_1">
+			<td class="col">
+				<s:text name="ab.till" />
+				<%@include file="../../common/filter/end_date_filter.jsp" %>
+			</td>
+		</tr>
 
-<tr>
-  <td colspan="2" align="center">
-    <s:submit name="submitted" value="%{getText('common.upload')}" cssClass="btn-exit" />
-  </td>
-</tr>  
+		<tr class="cols_1">
+			<td colspan="2" align="center">
+				<s:submit name="submitted" value="%{getText('common.upload')}" cssClass="btn-exit"/>
+			</td>
+		</tr>
 
-</s:form>
+	</s:form>
 
-
-<tr>
-  <td colspan="2" align="center">
-    &nbsp;
-  </td>
-</tr>
-
-<tr>
-  <td colspan="2" align="center">
-    <s:if test="resultFile != null">
-    Generated file <s:property value="resultFile" />
-    </s:if>
-  </td>
-</tr>
 </table>

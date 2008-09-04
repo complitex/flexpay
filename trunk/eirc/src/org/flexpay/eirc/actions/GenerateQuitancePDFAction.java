@@ -1,135 +1,101 @@
 package org.flexpay.eirc.actions;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.filter.BeginDateFilter;
+import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.persistence.ServiceOrganisation;
+import org.flexpay.common.util.DateUtil;
+import org.flexpay.eirc.persistence.filters.ServiceOrganisationFilter;
 import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 
 public class GenerateQuitancePDFAction extends FPActionSupport {
 
-    private ServiceOrganisationService serviceOrganisationService;
-    private Integer year;
-    private Integer month;
-    private Long serviceOrganisationId;
-    private List<ServiceOrganisation> serviceOrganizationList;
+	private ServiceOrganisationService serviceOrganisationService;
 
-    private String resultFile;
+	private ServiceOrganisationFilter serviceOrganisationFilter =
+			new ServiceOrganisationFilter();
 
-    private ProcessManager processManager;
+	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtils.truncate(new Date(), Calendar.MONTH));
+	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
 
-    @NotNull
+	private ProcessManager processManager;
+
+	@NotNull
 	public String doExecute() throws Exception {
 
-        if (isSubmit()) {
+		if (isSubmit()) {
 
-            Calendar cal = new GregorianCalendar(year, month, 1);
-            Date dateFrom = cal.getTime();
-            cal.add(Calendar.MONTH, 1);
-            Date dateTill = cal.getTime();
+			Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
-            Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+			contextVariables.put("serviceOrganisationId", serviceOrganisationFilter.getSelectedId());
+			contextVariables.put("dateFrom", beginDateFilter.getDate());
+			contextVariables.put("dateTill", endDateFilter.getDate());
 
-            contextVariables.put("serviceOrganisationId", serviceOrganisationId);
-            contextVariables.put("dateFrom", dateFrom);
-            contextVariables.put("dateTill", dateTill);
+			processManager.createProcess("GenerateQuitancePDF", contextVariables);
+		}
 
-            processManager.createProcess("GenerateQuitancePDF", contextVariables);
+		serviceOrganisationService.initServiceOrganisationsFilter(serviceOrganisationFilter);
 
-        }
+		return SUCCESS;
+	}
 
-        initDefaultDate();
+	public ServiceOrganisationFilter getServiceOrganisationFilter() {
+		return serviceOrganisationFilter;
+	}
 
-        serviceOrganizationList = serviceOrganisationService.listServiceOrganisations();
+	public void setServiceOrganisationFilter(ServiceOrganisationFilter serviceOrganisationFilter) {
+		this.serviceOrganisationFilter = serviceOrganisationFilter;
+	}
 
-        return SUCCESS;
-    }
+	public BeginDateFilter getBeginDateFilter() {
+		return beginDateFilter;
+	}
 
-    /**
-     * Get default error execution result
-     * <p/>
-     * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
-     *
-     * @return {@link #ERROR} by default
-     */
-    @NotNull
+	public void setBeginDateFilter(BeginDateFilter beginDateFilter) {
+		this.beginDateFilter = beginDateFilter;
+	}
+
+	public EndDateFilter getEndDateFilter() {
+		return endDateFilter;
+	}
+
+	public void setEndDateFilter(EndDateFilter endDateFilter) {
+		this.endDateFilter = endDateFilter;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@NotNull
 	@Override
-    protected String getErrorResult() {
-        return SUCCESS;
-    }
+	protected String getErrorResult() {
+		return SUCCESS;
+	}
 
-    private void initDefaultDate() {
-        Calendar cal = Calendar.getInstance();
-        year = cal.get(Calendar.YEAR);
-        month = cal.get(Calendar.MONTH);
-    }
+	/**
+	 * @param serviceOrganisationService the serviceOrganisationService to set
+	 */
+	public void setServiceOrganisationService(
+			ServiceOrganisationService serviceOrganisationService) {
+		this.serviceOrganisationService = serviceOrganisationService;
+	}
 
-
-    /**
-     * @return the year
-     */
-    public Integer getYear() {
-        return year;
-    }
-
-    /**
-     * @param year the year to set
-     */
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    /**
-     * @return the month
-     */
-    public Integer getMonth() {
-        return month;
-    }
-
-    /**
-     * @param month the month to set
-     */
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    /**
-     * @param serviceOrganisationId the serviceOrganisationId to set
-     */
-    public void setServiceOrganisationId(Long serviceOrganisationId) {
-        this.serviceOrganisationId = serviceOrganisationId;
-    }
-
-    /**
-     * @return the serviceOrganizationList
-     */
-    public List<ServiceOrganisation> getServiceOrganizationList() {
-        return serviceOrganizationList;
-    }
-
-    /**
-     * @param serviceOrganisationService the serviceOrganisationService to set
-     */
-    public void setServiceOrganisationService(
-            ServiceOrganisationService serviceOrganisationService) {
-        this.serviceOrganisationService = serviceOrganisationService;
-    }
-
-    /**
-     * @return the resultFile
-     */
-    public String getResultFile() {
-        return resultFile;
-    }
-
-    /**
-     * @param processManager process manager setter
-     */
-    public void setProcessManager(ProcessManager processManager) {
-        this.processManager = processManager;
-    }
+	/**
+	 * @param processManager process manager setter
+	 */
+	public void setProcessManager(ProcessManager processManager) {
+		this.processManager = processManager;
+	}
 }
