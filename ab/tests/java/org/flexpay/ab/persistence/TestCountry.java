@@ -1,16 +1,15 @@
 package org.flexpay.ab.persistence;
 
-import junit.framework.TestCase;
 import org.junit.Test;
 
 public class TestCountry {
 
 	@Test
-	public void testCountryName(){
-        Country country = new Country();
-        String lang = "english";
-        String longName = "Russia";
-        String shortName = "RUS";
+	public void testCountryName() {
+//        Country country = new Country();
+//        String lang = "english";
+//        String longName = "Russia";
+//        String shortName = "RUS";
 
 /*        country.setCountryName(longName,shortName,lang);
         assertEquals(country.getCountryName(lang).getLongValue(),longName);
@@ -21,6 +20,6 @@ public class TestCountry {
         assertEquals(country.getCountryName(lang).getShortValue(),"");
         */
 //        country.addCountryName(longName,lang,longName);
-        //assertEquals(country.getCountryShortName(),);
-    }
+		//assertEquals(country.getCountryShortName(),);
+	}
 }

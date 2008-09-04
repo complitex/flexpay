@@ -8,7 +8,7 @@ import java.util.HashSet;
 
 public class RawBuildingsData extends RawData<Buildings> {
 
-	private static Collection<String> possibleNames = new HashSet<String>();
+	private static final Collection<String> possibleNames = new HashSet<String>();
 
 	public static final String FIELD_STREET = "streetId";
 	public static final String FIELD_DISTRICT = "districtId";
