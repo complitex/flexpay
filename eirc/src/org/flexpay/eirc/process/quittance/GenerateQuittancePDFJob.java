@@ -38,7 +38,6 @@ public class GenerateQuittancePDFJob extends Job {
 		Date dateTill = (Date) contextVariables.get("dateTill");
 
 		try {
-
 			long time = System.currentTimeMillis();
 			log.info("Starting PDF quittances generation");
 
@@ -76,19 +75,7 @@ public class GenerateQuittancePDFJob extends Job {
 			return null;
 		}
 
-		// split objects by bulks of 4 quittancs per page
-		plog.info("Ordering quittances by bulk");
-		int length = ticketsWithDelimiters.size();
-		Object[] finalArray = new Object[length];
-		int pageNumber = length / 4 + ((length % 4) != 0 ? 1 : 0);
-		int a1Ind;
-		int a2Ind;
-		for (int i = 0; i < pageNumber; i++) {
-			for (int j = 0; (j < 4) && ((a2Ind = i * 4 + j) < length); j++) {
-				a1Ind = j * pageNumber + i;
-				finalArray[a2Ind] = (a1Ind < length) ? ticketsWithDelimiters.get(a1Ind) : null;
-			}
-		}
+		Object[] finalArray = splitQuittancesByBulks(plog, ticketsWithDelimiters);
 
 		InputStream ticketPattern = ApplicationConfig.getResourceAsStream("/resources/eirc/pdf/ticketPattern.pdf");
 		InputStream titlePattern = ApplicationConfig.getResourceAsStream("/resources/eirc/pdf/titlePattern.pdf");
@@ -115,7 +102,7 @@ public class GenerateQuittancePDFJob extends Job {
 					plog.info("Printing address page: " + element);
 					byteArray = quittanceWriter.getAddressTitleBytes((String) element);
 				}
-				else {
+				else if (element != null) {
 					++count;
 					if (plog.isInfoEnabled()) {
 						if (plog.isDebugEnabled()) {
@@ -127,11 +114,14 @@ public class GenerateQuittancePDFJob extends Job {
 
 					Quittance quittance = (Quittance) element;
 					byteArray = quittanceWriter.getQuittanceBytes(quittance);
+				} else {
+					plog.warn("Empty element");
+					continue;
 				}
 				a3Writer.write(byteArray);
 
 				// TODO remove me
-				if (count > 0 && count % 150 == 0) {
+				if (count >= 4000) {
 					break;
 				}
 			}
@@ -147,6 +137,23 @@ public class GenerateQuittancePDFJob extends Job {
 		}
 
 		return outputA3File.getAbsolutePath();
+	}
+
+	private Object[] splitQuittancesByBulks(Logger plog, List<Object> ticketsWithDelimiters) {
+		// split objects by bulks of 4 quittancs per page
+		plog.info("Ordering quittances by bulk");
+		int length = ticketsWithDelimiters.size();
+		Object[] finalArray = new Object[length];
+		int pageNumber = length / 4 + ((length % 4) != 0 ? 1 : 0);
+		int a1Ind;
+		int a2Ind;
+		for (int i = 0; i < pageNumber; i++) {
+			for (int j = 0; (j < 4) && ((a2Ind = i * 4 + j) < length); j++) {
+				a1Ind = j * pageNumber + i;
+				finalArray[a2Ind] = (a1Ind < length) ? ticketsWithDelimiters.get(a1Ind) : null;
+			}
+		}
+		return finalArray;
 	}
 
 	public void setQuittanceService(QuittanceService quittanceService) {

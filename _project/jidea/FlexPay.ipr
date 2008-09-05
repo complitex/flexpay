@@ -1046,8 +1046,12 @@
         <root url="jar://$PROJECT_DIR$/../../common/lib/jasperreports/jasperreports-3.0.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jasperreports/jdt-compiler-3.1.1.jar!/" />
       </CLASSES>
-      <JAVADOC />
-      <SOURCES />
+      <JAVADOC>
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/jasperreports-3.0.0/docs" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/jasperreports-3.0.0/src" />
+      </SOURCES>
     </library>
     <library name="j2ee">
       <CLASSES>

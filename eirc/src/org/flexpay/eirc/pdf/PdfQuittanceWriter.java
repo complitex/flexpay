@@ -43,7 +43,7 @@ public class PdfQuittanceWriter {
 		titlePatternReader = new PdfReader(titlePattern);
 	}
 
-	public byte[] getQuittanceBytes(Quittance quittance)
+	public byte[] getQuittanceBytes(@NotNull Quittance quittance)
 			throws DocumentException, IOException, FlexPayException {
 		baos.reset();
 		write(baos, quittance);
