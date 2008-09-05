@@ -22,7 +22,7 @@ public class TestGenerateQuittancesPDFJob extends SpringBeanAwareTestCase {
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
-		contextVariables.put("serviceOrganisationId", 69L);
+		contextVariables.put("serviceOrganisationId", 95L);
 		contextVariables.put("dateFrom", new GregorianCalendar(2008, 5, 1).getTime());
 		contextVariables.put("dateTill", DateUtil.now());
 
