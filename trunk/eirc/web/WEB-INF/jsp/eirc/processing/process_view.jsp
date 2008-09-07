@@ -4,13 +4,13 @@
 
   <tr>
     <td class="th" colspan="2">
-      process properties
+      <s:text name="eirc.processing.process.properties" />
     </td>
   </tr>
 
   <tr valign="middle" class="cols_1">
     <td class="col">
-      id
+      <s:text name="eirc.processing.process.id" />
     </td>
     <td class="col">
       <s:property value="process.id"/>
@@ -18,7 +18,7 @@
   </tr>
   <tr valign="middle" class="cols_1">
     <td class="col">
-      logFileName
+      <s:text name="eirc.processing.process.log_file" />
     </td>
     <td class="col">
       <s:property value="process.logFileName"/>
@@ -26,7 +26,7 @@
   </tr>
   <tr valign="middle" class="cols_1">
     <td class="col">
-      startDate
+      <s:text name="eirc.processing.process.start_date" />
     </td>
     <td class="col">
       <s:property value="process.processStartDate"/>
@@ -34,7 +34,7 @@
   </tr>
   <tr valign="middle" class="cols_1">
     <td class="col">
-      endDate
+      <s:text name="eirc.processing.process.end_date" />
     </td>
     <td class="col">
       <s:property value="process.processEndDate"/>
@@ -42,7 +42,7 @@
   </tr>
   <tr valign="middle" class="cols_1">
     <td class="col">
-      state
+      <s:text name="eirc.processing.process.state" />
     </td>
     <td class="col">
       <s:property value="process.processState"/>
@@ -50,7 +50,7 @@
   </tr>
   <tr valign="middle" class="cols_1">
     <td class="col">
-      definitionName
+      <s:text name="eirc.processing.process.definition_name" />
     </td>
     <td class="col">
       <s:property value="process.processDefinitionName"/>
@@ -58,7 +58,7 @@
   </tr>
   <tr valign="middle" class="cols_1">
     <td class="col">
-      instanceId
+      <s:text name="eirc.processing.process.instance_id" />
     </td>
     <td class="col">
       <s:property value="process.processInstaceId"/>
@@ -66,7 +66,7 @@
   </tr>
   <tr valign="middle" class="cols_1">
     <td class="col">
-      definitionVersion
+      <s:text name="eirc.processing.process.definition_version" />
     </td>
     <td class="col">
       <s:property value="process.processDefenitionVersion"/>
@@ -81,7 +81,7 @@
   
   <tr>
     <td class="th" colspan="2">
-      process variables
+      <s:text name="eirc.processing.process.context_variables" />
     </td>
   </tr>
   

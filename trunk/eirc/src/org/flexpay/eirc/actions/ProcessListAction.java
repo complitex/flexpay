@@ -1,33 +1,57 @@
 package org.flexpay.eirc.actions;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
-
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.ProcessStateComparator;
+import org.jetbrains.annotations.NotNull;
 
-public class ProcessListAction {
-	
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class ProcessListAction extends FPActionSupport {
+
 	private List<Process> processList;
 	private Set<Long> objectIds = new HashSet<Long>();
-    private String submited = "";
+	private String submited = "";
 	private ProcessManager processManager;
 
-    public String execute() {
-        if (objectIds != null && objectIds.size() >0){
-            processManager.deleteProcessInstanceList(objectIds);
-        }
-        processList = getProcessListMethod();
+	/**
+	 * Perform action execution.
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return execution result code
+	 * @throws Exception if failure occurs
+	 */
+	@NotNull
+	protected String doExecute() throws Exception {
+		if (objectIds != null && objectIds.size() > 0) {
+			processManager.deleteProcessInstanceList(objectIds);
+		}
+		processList = getProcessListMethod();
 		return "success";
 	}
-	
+
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@NotNull
+	protected String getErrorResult() {
+		return SUCCESS;
+	}
+
 	private List<Process> getProcessListMethod() {
 		List<Process> processes = processManager.getProcessList();
-        Collections.sort(processes, new ProcessStateComparator());
-        return processes;
+		Collections.sort(processes, new ProcessStateComparator());
+		return processes;
 	}
 
 	/**
@@ -37,13 +61,13 @@ public class ProcessListAction {
 		return processList;
 	}
 
-    public void setObjectIds(Set<Long> objectIds) {
-        this.objectIds = objectIds;
-    }
+	public void setObjectIds(Set<Long> objectIds) {
+		this.objectIds = objectIds;
+	}
 
-    public void setSubmited(String submited) {
-        this.submited = submited;
-    }
+	public void setSubmited(String submited) {
+		this.submited = submited;
+	}
 
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;

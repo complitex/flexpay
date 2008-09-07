@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
 import java.io.Serializable;
+import java.io.File;
 import java.util.*;
 
 public class ProcessManager implements Runnable {
@@ -629,6 +630,13 @@ public class ProcessManager implements Runnable {
 			process.setProcessEndDate(processInstance.getEnd());
 			process.setProcessStartDate(processInstance.getStart());
 			process.setProcessDefenitionVersion(processInstance.getProcessDefinition().getVersion());
+			File logFile = ProcessLogger.getLogFile(processInstance.getId());
+			if (logFile.exists()){
+				process.setLogFileName(logFile.getAbsolutePath());
+			}else{
+				process.setLogFileName("");
+			}
+
 			Map parameters = processInstance.getContextInstance().getVariables();
 			if (parameters == null) {
 				process.setParameters(new HashMap<Serializable, Serializable>());
