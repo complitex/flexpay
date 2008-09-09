@@ -146,28 +146,6 @@
           </containerElement>
         </packaging>
       </configuration>
-      <facet type="Struts2" name="Struts 2">
-        <configuration>
-          <fileset id="s2fileset1" name="My Fileset" removed="false">
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/ab_struts_config.xml</file>
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/person/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/service/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/serviceprovider/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/struts_config.xml</file>
-            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/common_struts_config.xml</file>
-            <file>file://$MODULE_DIR$/../../sz/src/org/flexpay/sz/struts_config.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-core-2.0.11.jar!/struts-default.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jfreechart-plugin-2.0.11.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-spring-plugin-2.0.11.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-tiles-plugin-2.0.11.jar!/struts-plugin.xml</file>
-          </fileset>
-          <validation>
-            <errors_as_warnings>false</errors_as_warnings>
-            <validate_struts>true</validate_struts>
-            <validate_validation>true</validate_validation>
-          </validation>
-        </configuration>
-      </facet>
     </facet>
     <facet type="hibernate" name="Hibernate">
       <configuration>

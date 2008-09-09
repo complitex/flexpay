@@ -226,7 +226,6 @@
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" defaultCharsetForPropertiesFiles="UTF-8">
-    <file url="file://$PROJECT_DIR$/../../ab_sync/docs/comp.vw_cn_changes2.SQL" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/../../eirc/tests/data/org/flexpay/eirc/actions/sp/ree_open_2_small.txt" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/../../eirc/tests/data/org/flexpay/eirc/actions/sp/ree_open_small_unknown_service.txt" charset="windows-1251" />
   </component>
@@ -647,7 +646,7 @@
       <SplitterProportionsDataImpl />
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/../../_build/classes" />
   </component>
   <component name="ResourceManagerContainer">

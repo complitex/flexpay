@@ -158,7 +158,7 @@
 			inner join fetch a.apartment ap
 			inner join fetch ap.building b
 		WHERE q.serviceOrganisation.id=? and q.dateFrom>=? and q.dateTill<=?
-		ORDER BY b.id, a.id, q.orderNumber desc
+		ORDER BY b.id, a.id, a.accountNumber, q.orderNumber desc
 		]]>
 	</query>
 
