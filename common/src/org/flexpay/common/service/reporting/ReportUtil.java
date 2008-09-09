@@ -4,8 +4,8 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.*;
 import net.sf.jasperreports.engine.query.JRHibernateQueryExecuterFactory;
 import net.sf.jasperreports.engine.util.JRLoader;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.common.util.JDBCUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -189,7 +189,7 @@ public class ReportUtil {
 	 * @return Filled report name
 	 * @throws Exception if failure occurs
 	 */
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings ({"unchecked"})
 	public String runReport(String name, Map parameters) throws Exception {
 
 		if (parameters == null || parameters == Collections.emptyMap()) {
@@ -203,6 +203,7 @@ public class ReportUtil {
 
 		// Load compiled report template
 		JasperReport report = (JasperReport) JRLoader.loadObject(getCompiledTemplateFile(name));
+
 		Collection<String> resourceNames = fillParameters(report, parameters);
 		try {
 			if (requiresConnection(report)) {
@@ -220,7 +221,7 @@ public class ReportUtil {
 		}
 	}
 
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings ({"unchecked"})
 	private Collection<String> fillParameters(JasperReport report, Map parameters) {
 
 		Collection<String> resourceNames = new ArrayList<String>();
