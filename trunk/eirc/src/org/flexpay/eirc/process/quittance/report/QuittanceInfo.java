@@ -1,8 +1,9 @@
 package org.flexpay.eirc.process.quittance.report;
 
+import org.flexpay.eirc.persistence.ServiceType;
+
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Container for all necessary Quittance information with calculated summs, service
@@ -11,7 +12,8 @@ import java.util.List;
 public class QuittanceInfo {
 
 	private String quittanceNumber;
-	private String address;
+	private String apartmentAddress;
+	private String buildingAddress;
 	private String personFIO;
 
 	private Date periodBeginDate;
@@ -32,6 +34,162 @@ public class QuittanceInfo {
 	private String jksBankAccount;
 	private String bankAccount;
 
-	private List<ServiceTotals> servicesTotals;
+	private Map<ServiceType, ServiceTotals> servicesTotals;
 
+	public QuittanceInfo() {
+	}
+
+	public String getQuittanceNumber() {
+		return quittanceNumber;
+	}
+
+	public void setQuittanceNumber(String quittanceNumber) {
+		this.quittanceNumber = quittanceNumber;
+	}
+
+	public String getApartmentAddress() {
+		return apartmentAddress;
+	}
+
+	public void setApartmentAddress(String apartmentAddress) {
+		this.apartmentAddress = apartmentAddress;
+	}
+
+	public String getBuildingAddress() {
+		return buildingAddress;
+	}
+
+	public void setBuildingAddress(String buildingAddress) {
+		this.buildingAddress = buildingAddress;
+	}
+
+	public String getPersonFIO() {
+		return personFIO;
+	}
+
+	public void setPersonFIO(String personFIO) {
+		this.personFIO = personFIO;
+	}
+
+	public Date getPeriodBeginDate() {
+		return periodBeginDate;
+	}
+
+	public void setPeriodBeginDate(Date periodBeginDate) {
+		this.periodBeginDate = periodBeginDate;
+	}
+
+	public Date getPeriodEndDate() {
+		return periodEndDate;
+	}
+
+	public void setPeriodEndDate(Date periodEndDate) {
+		this.periodEndDate = periodEndDate;
+	}
+
+	public Date getOperationDate() {
+		return operationDate;
+	}
+
+	public void setOperationDate(Date operationDate) {
+		this.operationDate = operationDate;
+	}
+
+	public BigDecimal getSummToPay() {
+		return summToPay;
+	}
+
+	public void setSummToPay(BigDecimal summToPay) {
+		this.summToPay = summToPay;
+	}
+
+	public BigDecimal getTotalSquare() {
+		return totalSquare;
+	}
+
+	public void setTotalSquare(BigDecimal totalSquare) {
+		this.totalSquare = totalSquare;
+	}
+
+	public BigDecimal getWarmSquare() {
+		return warmSquare;
+	}
+
+	public void setWarmSquare(BigDecimal warmSquare) {
+		this.warmSquare = warmSquare;
+	}
+
+	public BigDecimal getPrivileges() {
+		return privileges;
+	}
+
+	public void setPrivileges(BigDecimal privileges) {
+		this.privileges = privileges;
+	}
+
+	public int getHabitantNumber() {
+		return habitantNumber;
+	}
+
+	public void setHabitantNumber(int habitantNumber) {
+		this.habitantNumber = habitantNumber;
+	}
+
+	public int getPrivilegersNumber() {
+		return privilegersNumber;
+	}
+
+	public void setPrivilegersNumber(int privilegersNumber) {
+		this.privilegersNumber = privilegersNumber;
+	}
+
+	public BigDecimal getIncomingDebt() {
+		return incomingDebt;
+	}
+
+	public void setIncomingDebt(BigDecimal incomingDebt) {
+		this.incomingDebt = incomingDebt;
+	}
+
+	public BigDecimal getOutgoingDebt() {
+		return outgoingDebt;
+	}
+
+	public void setOutgoingDebt(BigDecimal outgoingDebt) {
+		this.outgoingDebt = outgoingDebt;
+	}
+
+	public String getJksBankAccount() {
+		return jksBankAccount;
+	}
+
+	public void setJksBankAccount(String jksBankAccount) {
+		this.jksBankAccount = jksBankAccount;
+	}
+
+	public String getBankAccount() {
+		return bankAccount;
+	}
+
+	public void setBankAccount(String bankAccount) {
+		this.bankAccount = bankAccount;
+	}
+
+	public Map<ServiceType, ServiceTotals> getServicesTotalsMap() {
+		return servicesTotals;
+	}
+
+	public Collection<ServiceTotals> getServicesTotals() {
+		return servicesTotals.values();
+	}
+
+	public List<ServiceTotals> getServiceTotalsList() {
+		SortedSet<ServiceTotals> set = new TreeSet<ServiceTotals>(new ServiceTotalsComparator<ServiceTotals>());
+		set.addAll(servicesTotals.values());
+		return new ArrayList<ServiceTotals>(set);
+	}
+
+	public void setServicesTotals(Map<ServiceType, ServiceTotals> servicesTotals) {
+		this.servicesTotals = servicesTotals;
+	}
 }

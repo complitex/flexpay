@@ -6,6 +6,7 @@ import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.Service;
+import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +30,6 @@ public class QuittanceDataSource implements JRDataSource {
 
 		@NotNull Long accountId = -1L;
 		int orderNumber = -1;
-		QuittanceInfo qi = null;
 
 		for (Quittance q : quittances) {
 
@@ -37,11 +37,6 @@ public class QuittanceDataSource implements JRDataSource {
 			if (isNewAccount(accountId, q)) {
 				accountId = q.getEircAccountId();
 				orderNumber = q.getOrderNumber();
-				if (qi == null) {
-					qi = new QuittanceInfo();
-				} else {
-					infos.add(qi);
-				}
 			}
 			// check for quittance order number, only quittances with max order number
 			// are taken into account
@@ -54,14 +49,9 @@ public class QuittanceDataSource implements JRDataSource {
 				continue;
 			}
 
-			// now merge quittance to quittance info
-			merge(qi, q);
+			// now build quittance into quittance info
+			infos.add(buildInfo(q));
 		}
-
-		if (qi != null) {
-			infos.add(qi);
-		}
-		// now all quittances are ready
 
 		return infos;
 	}
@@ -78,26 +68,78 @@ public class QuittanceDataSource implements JRDataSource {
 	}
 
 	/**
-	 * Merge quittance to info
+	 * Build quittance info
 	 *
-	 * @param qi QuittanceInfo to merge to
-	 * @param q  Next quittance
+	 * @param q Quittance
+	 * @return QuittanceInfo
 	 */
-	private void merge(QuittanceInfo qi, Quittance q) {
+	private QuittanceInfo buildInfo(Quittance q) {
 
 		Map<Service, ServiceGroup> groups = makeServiceGroups(q);
 
+		Map<Service, ServiceTotals> servicesTotals = CollectionUtils.map();
+		Map<ServiceType, ServiceTotalsBase> serviceTypesTotals = CollectionUtils.map();
+
 		// now setup servises totals
+		buildServicesTotals(groups, servicesTotals, serviceTypesTotals);
+
+		// now setup subservices totals and add them to services totals
+		buildSubservicesTotals(groups, servicesTotals, serviceTypesTotals);
+
+		// build from parent services totals map and put them to quittance info
+		Map<ServiceType, ServiceTotals> totalsMap = CollectionUtils.map();
+		for (Map.Entry<Service, ServiceTotals> entry : servicesTotals.entrySet()) {
+			totalsMap.put(entry.getKey().getServiceType(), entry.getValue());
+		}
+
+		QuittanceInfo qi = new QuittanceInfo();
+		qi.setServicesTotals(totalsMap);
+		return qi;
+	}
+
+	private void buildSubservicesTotals(Map<Service, ServiceGroup> groups,
+										Map<Service, ServiceTotals> servicesTotals,
+										Map<ServiceType, ServiceTotalsBase> serviceTypesTotals) {
 		for (Service service : groups.keySet()) {
 			if (service.isSubService()) {
-				
+				// check if group of specified type was already added
+				ServiceTotalsBase totals = serviceTypesTotals.get(service.getServiceType());
+
+				// calculate totals based on (possibly) calculated totals
+				totals = groups.get(service).addToGroup(totals);
+				serviceTypesTotals.put(service.getServiceType(), totals);
+
+				// add calculated totals to parent service subtotals
+				Service parentService = service.getParentService();
+				ServiceTotals serviceTotals = servicesTotals.get(parentService);
+				if (parentService == null) {
+					throw new IllegalStateException("No parent services in quittance: " + service);
+				}
+				serviceTotals.setSubServiceTotals((SubServiceTotals) totals);
+			}
+		}
+	}
+
+	private void buildServicesTotals(Map<Service, ServiceGroup> groups,
+									 Map<Service, ServiceTotals> servicesTotals,
+									 Map<ServiceType, ServiceTotalsBase> serviceTypesTotals) {
+		for (Service service : groups.keySet()) {
+			if (!service.isSubService()) {
+				// check if group of specified type was already added
+				ServiceTotalsBase totals = serviceTypesTotals.get(service.getServiceType());
+
+				// calculate totals based on (possibly) calculated totals
+				totals = groups.get(service).addToGroup(totals);
+				servicesTotals.put(service, (ServiceTotals) totals);
+				serviceTypesTotals.put(service.getServiceType(), totals);
 			}
 		}
 	}
 
 	/**
 	 * Get a collection of service groups (usually contains single QuittanceDetails but may
-	 * contain multiple if there are several quittance details in current quittance in period)
+	 * contain multiple if there are several quittance details in current quittance in
+	 * period)
 	 *
 	 * @param q Quittance to extract groups from
 	 * @return Service to groups map
