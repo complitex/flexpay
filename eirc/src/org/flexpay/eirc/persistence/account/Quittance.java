@@ -1,6 +1,7 @@
 package org.flexpay.eirc.persistence.account;
 
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
@@ -243,5 +244,19 @@ public class Quittance extends DomainObject {
 	 */
 	public void setEircAccount(EircAccount eircAccount) {
 		this.eircAccount = eircAccount;
+	}
+
+	/**
+	 * Get account number of associated EIRC account
+	 * 
+	 * @return account number
+	 */
+	public String getAccountNumber() {
+		return getEircAccount().getAccountNumber();
+	}
+
+	@NotNull
+	public Long getEircAccountId() {
+		return new Stub<EircAccount>(eircAccount).getId();
 	}
 }
