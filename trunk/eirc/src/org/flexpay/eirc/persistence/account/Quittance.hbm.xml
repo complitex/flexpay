@@ -151,15 +151,14 @@
 		select count(*) from Quittance q where q.eircAccount.id=? AND q.dateTill=?
 	</query>
 
-	<query name="Quittance.findByServiceOrganisationAndDate">
-		<![CDATA[
-		FROM Quittance q
+	<query name="Quittance.findByServiceOrganisationAndDate"><![CDATA[
+		select distinct q
+		from Quittance q
 			inner join fetch q.eircAccount a
 			inner join fetch a.apartment ap
 			inner join fetch ap.building b
-		WHERE q.serviceOrganisation.id=? and q.dateFrom>=? and q.dateTill<=?
-		ORDER BY b.id, a.id, a.accountNumber, q.orderNumber desc
-		]]>
-	</query>
+		where q.serviceOrganisation.id=? and q.dateFrom>=? and q.dateTill<=?
+		order by b.id, a.id, a.accountNumber, q.orderNumber desc
+	]]></query>
 
 </hibernate-mapping>

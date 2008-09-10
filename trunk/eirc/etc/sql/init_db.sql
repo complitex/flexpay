@@ -208,6 +208,24 @@ SELECT @service_provider_cn:=last_insert_id();
 INSERT INTO eirc_service_provider_descriptions_tbl (name, language_id, service_provider_id)
 	VALUES ('ПУ ЦН', @ru_id, @service_provider_cn);
 
+-- Init service organisations
+INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp)
+	VALUES (5, 0, '', '56');
+SELECT @organisation_service_org_1:=5;
+INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
+	VALUES ('Тестовая обсл. организация', @ru_id, @organisation_service_org_1);
+INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
+	VALUES ('Участог-45', @ru_id, @organisation_service_org_1);
+
+INSERT INTO eirc_service_organisations_tbl(id, status, organisation_id)
+	VALUES (1, 0, @organisation_service_org_1);
+SELECT @service_org_1:=1;
+INSERT INTO eirc_service_organisation_descriptions_tbl (name, language_id, service_organisation_id)
+	VALUES ('ЖКО', @ru_id, @service_org_1);
+
+-- Setup service organisation
+update ab_buildings_tbl set eirc_service_organisation_id=@service_org_1 where id=@building_ivanova_27_id;
+
 -- Init service types
 INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 11);
 SELECT @service_vodootvedenie:=last_insert_id();
@@ -359,9 +377,9 @@ INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '10', @service_territory_cleaning, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_id_territory_cleanup:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('Уборка территории', @ru_id, @service_id);
+	VALUES ('Уборка территории', @ru_id, @service_id_territory_cleanup);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '20', @service_cleaning_garbagecollectors, '1900-01-01', '2100-12-31', @service_kvarplata_id);
@@ -485,28 +503,63 @@ insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
 select @consumer_1:=1;
 insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (3, 0, '123123123', @service_id_territory_cleanup,
+	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_3:=3;
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
 	values (2, 0, '67676767', @service_kvarplata_id,
 	@person_id, @apartment_ivanova_329_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
 select @consumer_2:=2;
 
--- Init quittances
+-- Init quittance details
+-- Quittance details for consumer_1 (kvarplata)
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (1, @consumer_1, @eirc_registry_rec,
 	'0.00', '40.34', '40.34', '50.34', '123', '-4.0', '-5.0', '-1.0', '0.0', '2007-12-01');
 select @quittance_details_1:=1;
+-- Quittance details for consumer_1 (kvarplata)
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (2, @consumer_1, @eirc_registry_rec,
 	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_2:=2;
+-- Quittance details for consumer_3 (territory cleanup)
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (5, @consumer_3, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_5:=5;
+
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (3, @consumer_2, @eirc_registry_rec,
 	'0.00', '40.34', '40.34', '50.34', '123', '-4.0', '-5.0', '-1.0', '0.0', '2007-12-01');
-select @quittance_details_1:=3;
+select @quittance_details_3:=3;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (4, @consumer_2, @eirc_registry_rec,
 	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
-select @quittance_details_2:=4;
+select @quittance_details_4:=4;
+
+
+-- Init quittances
+
+-- Unique quittance details
+insert into eirc_quittances_tbl (id, service_organisation_id, eirc_account_id, order_number, date_from, date_till, creation_date)
+	values (1, @service_org_1, @account_id_1, 1, '2007-12-01', '2007-12-31', '2008-01-05');
+select @quittance_1:=1;
+insert into eirc_quittance_details_quittances_tbl (id, quittance_details_id, quittance_id)
+	values (1, @quittance_details_1, @quittance_1);
+
+-- Quittance with 2 details
+insert into eirc_quittances_tbl (id, service_organisation_id, eirc_account_id, order_number, date_from, date_till, creation_date)
+	values (2, @service_org_1, @account_id_1, 2, '2007-12-01', '2008-01-31', '2008-02-05');
+select @quittance_2:=2;
+insert into eirc_quittance_details_quittances_tbl (id, quittance_details_id, quittance_id)
+	values (2, @quittance_details_1, @quittance_2);
+insert into eirc_quittance_details_quittances_tbl (id, quittance_details_id, quittance_id)
+	values (3, @quittance_details_2, @quittance_2);
+insert into eirc_quittance_details_quittances_tbl (id, quittance_details_id, quittance_id)
+	values (4, @quittance_details_5, @quittance_2);
