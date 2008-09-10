@@ -60,10 +60,9 @@ public class DomainObject implements Serializable {
 		}
 
 		DomainObject that = (DomainObject) obj;
-		if (id == null || that.id == null) {
-			return false;
-		}
-		return id.equals(that.id);
+		Long thisId = getId();
+		// do not check this.id and that.id because of Hibernate proxies that return null
+		return thisId != null && that.getId() != null && thisId.equals(that.getId());
 	}
 
 	@Override

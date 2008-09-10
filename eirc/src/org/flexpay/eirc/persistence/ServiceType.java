@@ -88,4 +88,10 @@ public class ServiceType extends DomainObjectWithStatus {
 		nameTranslation.setTranslatable(this);
 		typeNames.add(nameTranslation);
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		return obj instanceof ServiceType && super.equals(obj);
+	}
 }

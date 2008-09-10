@@ -76,8 +76,8 @@ public class ServiceGroup {
 		if (!service.getServiceType().equals(totals.getServiceType())) {
 			throw new IllegalArgumentException(
 					"Invalid service totals type: " +
-					"expected #" + service.getServiceType().getCode() +
-					", but found #" + totals.getServiceType().getCode());
+					"expected #" + service.getServiceType().getId() +
+					", but found #" + totals.getServiceType().getId());
 		}
 
 		boolean isFirst = true;

@@ -43,14 +43,8 @@ public class StreetType extends TemporaryType<StreetType, StreetTypeTranslation>
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (!(obj instanceof StreetType)) {
-			return false;
-		}
-		StreetType that = (StreetType) obj;
 
-		return super.equals(that);
+		return obj instanceof StreetType && super.equals(obj);
 	}
 
 	/**
