@@ -15,17 +15,94 @@ INSERT INTO eirc_account_record_types_tbl (type_enum_id, description)
 	VALUES (3, 'Сальдо');
 
 -- Init service providers registry types
-INSERT INTO eirc_registry_types_tbl (code) VALUES (1);
-INSERT INTO eirc_registry_types_tbl (code) VALUES (2);
-INSERT INTO eirc_registry_types_tbl (code) VALUES (3);
-INSERT INTO eirc_registry_types_tbl (code) VALUES (4);
-INSERT INTO eirc_registry_types_tbl (code) VALUES (5);
-INSERT INTO eirc_registry_types_tbl (code) VALUES (6);
-INSERT INTO eirc_registry_types_tbl (code) VALUES (7);
-INSERT INTO eirc_registry_types_tbl (code) VALUES (8);
-INSERT INTO eirc_registry_types_tbl (code) VALUES (9);
-INSERT INTO eirc_registry_types_tbl (code) VALUES (10);
-INSERT INTO eirc_registry_types_tbl (code) VALUES (11);
+INSERT INTO eirc_registry_types_tbl (id, code) VALUES (1, 1);
+select @registry_type:=1;
+INSERT INTO eirc_registry_types_tbl (id, code) VALUES (2, 2);
+select @registry_type:=2;
+INSERT INTO eirc_registry_types_tbl (id, code) VALUES (3, 3);
+select @registry_type:=3;
+INSERT INTO eirc_registry_types_tbl (id, code) VALUES (4, 4);
+select @registry_type:=4;
+INSERT INTO eirc_registry_types_tbl (id, code) VALUES (5, 5);
+select @registry_type:=5;
+INSERT INTO eirc_registry_types_tbl (id, code) VALUES (6, 6);
+select @registry_type:=6;
+INSERT INTO eirc_registry_types_tbl (id, code) VALUES (7, 7);
+select @registry_type:=7;
+INSERT INTO eirc_registry_types_tbl (id, code) VALUES (8, 8);
+select @registry_type:=8;
+INSERT INTO eirc_registry_types_tbl (id, code) VALUES (9, 9);
+select @registry_type:=9;
+INSERT INTO eirc_registry_types_tbl (id, code) VALUES (10, 10);
+select @registry_type:=10;
+INSERT INTO eirc_registry_types_tbl (id, code) VALUES (11, 11);
+select @registry_type_info:=11;
+
+-- Init RegistryStatuses
+INSERT INTO eirc_registry_statuses_tbl (code) VALUES (0);
+SELECT @registry_status_loading:=last_insert_id();
+
+INSERT INTO eirc_registry_statuses_tbl (code) VALUES (1);
+SELECT @registry_status_loaded:=last_insert_id();
+
+INSERT INTO eirc_registry_statuses_tbl (code) VALUES (2);
+SELECT @registry_status_loading_canceled:=last_insert_id();
+
+INSERT INTO eirc_registry_statuses_tbl (code) VALUES (3);
+SELECT @registry_status_loaded_with_error:=last_insert_id();
+
+INSERT INTO eirc_registry_statuses_tbl (code) VALUES (4);
+SELECT @registry_status_processing:=last_insert_id();
+
+INSERT INTO eirc_registry_statuses_tbl (code) VALUES (5);
+SELECT @registry_status_processing_with_error:=last_insert_id();
+
+INSERT INTO eirc_registry_statuses_tbl (code) VALUES (6);
+SELECT @registry_status_processed:=last_insert_id();
+
+INSERT INTO eirc_registry_statuses_tbl (code) VALUES (7);
+SELECT @registry_status_processed_with_error:=last_insert_id();
+
+INSERT INTO eirc_registry_statuses_tbl (code) VALUES (8);
+SELECT @registry_status_processing_canceled:=last_insert_id();
+
+INSERT INTO eirc_registry_statuses_tbl (code) VALUES (9);
+SELECT @registry_status_rollbacking:=last_insert_id();
+
+INSERT INTO eirc_registry_statuses_tbl (code) VALUES (10);
+SELECT @registry_status_rollbacked:=last_insert_id();
+
+INSERT INTO eirc_registry_statuses_tbl (code) VALUES (11);
+SELECT @registry_status_creating:=last_insert_id();
+
+INSERT INTO eirc_registry_statuses_tbl (code) VALUES (12);
+SELECT @registry_status_created:=last_insert_id();
+
+INSERT INTO eirc_registry_statuses_tbl (code) VALUES (13);
+SELECT @registry_status_creating_canceled:=last_insert_id();
+
+-- Init RegistryArchiveStatuses
+INSERT INTO eirc_registry_archive_statuses_tbl (code) VALUES (0);
+SELECT @sp_registry_archive_status_none:=last_insert_id();
+
+INSERT INTO eirc_registry_archive_statuses_tbl (code) VALUES (1);
+SELECT @sp_registry_archive_status_archiving:=last_insert_id();
+
+INSERT INTO eirc_registry_archive_statuses_tbl (code) VALUES (2);
+SELECT @sp_registry_archive_status_archived:=last_insert_id();
+
+INSERT INTO eirc_registry_archive_statuses_tbl (code) VALUES (3);
+SELECT @sp_registry_archive_status_canceled:=last_insert_id();
+
+-- Init RegistryRecordStatus
+INSERT INTO eirc_registry_record_statuses_tbl (id, code) VALUES (1, 1);
+select @record_status_loaded:=1;
+INSERT INTO eirc_registry_record_statuses_tbl (id, code) VALUES (2, 2);
+select @record_status_error:=2;
+INSERT INTO eirc_registry_record_statuses_tbl (id, code) VALUES (3, 3);
+select @record_status_error_fixed:=3;
+INSERT INTO eirc_registry_record_statuses_tbl (id, code) VALUES (4, 4);
+select @record_status_processed:=4;
 
 -- Init organisations
 -- EIRC is the first one, ID=1
@@ -377,77 +454,59 @@ INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Энергоснабжение для лифтов', @ru_id, @service_id);
 
 -- Init EIRC accounts
-INSERT INTO eirc_eirc_accounts_tbl (version, status, apartment_id, person_id, account_number)
-	VALUES (0, 0, @apartment_ivanova_329_id, @person_id, 'TEST090123123123');
-SELECT @account_id_1:=last_insert_id();
-INSERT INTO eirc_eirc_accounts_tbl (version, status, apartment_id, person_id, account_number)
-	VALUES (0, 0, @apartment_ivanova_330_id, @person_id, 'TEST090123123124');
-SELECT @account_id_2:=last_insert_id();
+INSERT INTO eirc_eirc_accounts_tbl (id, version, status, apartment_id, person_id, account_number)
+	VALUES (1, 0, 0, @apartment_ivanova_329_id, @person_id, 'TEST090123123123');
+SELECT @account_id_1:=1;
+INSERT INTO eirc_eirc_accounts_tbl (id, version, status, apartment_id, person_id, account_number)
+	VALUES (2, 0, 0, @apartment_ivanova_330_id, @person_id, 'TEST090123123124');
+SELECT @account_id_2:=2;
+
+-- Init registry
+INSERT INTO eirc_registries_tbl (id, version, registry_type_id, registry_status_id, archive_status_id)
+	values (1, 0, @registry_type_info, @registry_status_loaded, @sp_registry_archive_status_none);
+select @eirc_registry:=1;
+
+-- Init registry records
+INSERT INTO eirc_registry_records_tbl (id, version, registry_id, operation_date) 
+	values (1, 0, @eirc_registry, '2008-01-01');
+select @eirc_registry_rec:=1;
 
 -- Init Consumers
-INSERT INTO eirc_consumers_tbl (status, external_account_number, service_id, eirc_account_id, person_id, apartment_id)
-	VALUES (0, 'TEST-123', @service_kvarplata, @account_id_1, @person_id, @apartment_ivanova_329_id);
-INSERT INTO eirc_consumers_tbl (status, external_account_number, service_id, eirc_account_id, person_id, apartment_id)
-	VALUES (0, 'TEST-124', @service_kvarplata, @account_id_2, @person_id, @apartment_ivanova_330_id);
+insert into eirc_consumer_infos_tbl (id, status, first_name, middle_name, last_name,
+	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
+	values (1, 0, 'М', 'А', 'Иванофф',
+	'Н-ск', 'ул', 'ИВОНОВА', '27-', '', '330');
+select @consumer_info:=1;
 
--- Init RegistryStatuses
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (0);
-SELECT @sp_registry_status_loading:=last_insert_id();
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (1, 0, '123123123', @service_kvarplata_id,
+	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_1:=1;
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (2, 0, '67676767', @service_kvarplata_id,
+	@person_id, @apartment_ivanova_329_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_2:=2;
 
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (1);
-SELECT @sp_registry_status_loaded:=last_insert_id();
-
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (2);
-SELECT @sp_registry_status_loading_canceled:=last_insert_id();
-
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (3);
-SELECT @sp_registry_status_loaded_with_error:=last_insert_id();
-
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (4);
-SELECT @sp_registry_status_processing:=last_insert_id();
-
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (5);
-SELECT @sp_registry_status_processing_with_error:=last_insert_id();
-
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (6);
-SELECT @sp_registry_status_processed:=last_insert_id();
-
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (7);
-SELECT @sp_registry_status_processed_with_error:=last_insert_id();
-
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (8);
-SELECT @sp_registry_status_processing_canceled:=last_insert_id();
-
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (9);
-SELECT @sp_registry_status_rollbacking:=last_insert_id();
-
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (10);
-SELECT @sp_registry_status_rollbacked:=last_insert_id();
-
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (11);
-SELECT @sp_registry_status_creating:=last_insert_id();
-
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (12);
-SELECT @sp_registry_status_created:=last_insert_id();
-
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (13);
-SELECT @sp_registry_status_creating_canceled:=last_insert_id();
-
--- Init RegistryRecordStatus
-INSERT INTO eirc_registry_record_statuses_tbl (code) VALUES (1);
-INSERT INTO eirc_registry_record_statuses_tbl (code) VALUES (2);
-INSERT INTO eirc_registry_record_statuses_tbl (code) VALUES (3);
-INSERT INTO eirc_registry_record_statuses_tbl (code) VALUES (4);
-
--- Init RegistryArchiveStatuses
-INSERT INTO eirc_registry_archive_statuses_tbl (code) VALUES (0);
-SELECT @sp_registry_archive_status_none:=last_insert_id();
-
-INSERT INTO eirc_registry_archive_statuses_tbl (code) VALUES (1);
-SELECT @sp_registry_archive_status_archiving:=last_insert_id();
-
-INSERT INTO eirc_registry_archive_statuses_tbl (code) VALUES (2);
-SELECT @sp_registry_archive_status_archived:=last_insert_id();
-
-INSERT INTO eirc_registry_archive_statuses_tbl (code) VALUES (3);
-SELECT @sp_registry_archive_status_canceled:=last_insert_id();
+-- Init quittances
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (1, @consumer_1, @eirc_registry_rec,
+	'0.00', '40.34', '40.34', '50.34', '123', '-4.0', '-5.0', '-1.0', '0.0', '2007-12-01');
+select @quittance_details_1:=1;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (2, @consumer_1, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_2:=2;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (3, @consumer_2, @eirc_registry_rec,
+	'0.00', '40.34', '40.34', '50.34', '123', '-4.0', '-5.0', '-1.0', '0.0', '2007-12-01');
+select @quittance_details_1:=3;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (4, @consumer_2, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_2:=4;
