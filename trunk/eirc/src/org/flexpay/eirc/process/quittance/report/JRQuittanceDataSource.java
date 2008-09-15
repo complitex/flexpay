@@ -4,18 +4,17 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
-import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.process.quittance.report.util.QuittanceInfoGenerator;
 import org.flexpay.eirc.service.SPService;
-import org.flexpay.ab.service.StreetService;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.List;
 
 public class JRQuittanceDataSource implements JRDataSource {
 

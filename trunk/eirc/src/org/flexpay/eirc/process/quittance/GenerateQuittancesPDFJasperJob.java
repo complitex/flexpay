@@ -47,8 +47,6 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 			String filledReportName = reportUtil.runReport("Quittance", jrDataSource);
 			File reportPath = reportUtil.exportToPdf(filledReportName);
 
-			System.out.println("Report path: " + reportPath);
-
 			contextVariables.put(RESULT_FILE_NAME, reportPath.getAbsolutePath());
 
 			log.info("Ended PDF quittances generation, time spent: " + (System.currentTimeMillis() - time) + "ms.");

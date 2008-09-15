@@ -1,59 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN"
-		"http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 
-<jasperReport name="Quittance" pageWidth="595" pageHeight="842" columnWidth="535"
-			  leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
-	<property name="ireport.scriptlethandling" value="0" />
-	<property name="ireport.encoding" value="UTF-8" />
-	<import value="net.sf.jasperreports.engine.*" />
-	<import value="java.util.*" />
-	<import value="net.sf.jasperreports.engine.data.*" />
+<jasperReport name="Quittance" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["/home/mixa/flexpay/eirc/web/WEB-INF/eirc/reports/quittance/"]]></defaultValueExpression>
 	</parameter>
+	<field name="apartmentAddress" class="java.lang.String"/>
+	<field name="servicesTotals" class="java.util.Collection"/>
 	<background>
-		<band />
+		<band/>
 	</background>
 	<title>
-		<band />
+		<band/>
 	</title>
 	<pageHeader>
-		<band />
+		<band/>
 	</pageHeader>
 	<columnHeader>
-		<band />
+		<band/>
 	</columnHeader>
 	<detail>
 		<band height="281">
 			<line>
-				<reportElement key="line-1" x="0" y="0" width="535" height="1" />
+				<reportElement key="line-1" x="0" y="0" width="535" height="1"/>
 			</line>
 			<line>
-				<reportElement key="line-3" x="140" y="0" width="1" height="262" />
+				<reportElement key="line-3" x="140" y="0" width="1" height="262"/>
 				<graphicElement>
-					<pen lineWidth="2.0" lineStyle="Double" />
+					<pen lineWidth="2.0" lineStyle="Double"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement key="line-4" x="1" y="262" width="534" height="2" />
+				<reportElement key="line-4" x="1" y="262" width="534" height="2"/>
 			</line>
+			<textField isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement key="textField" x="0" y="0" width="140" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{apartmentAddress}]]></textFieldExpression>
+			</textField>
 			<subreport>
-				<reportElement x="140" y="1" width="193" height="162" />
-				<connectionExpression>
-					<![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String">
-					<![CDATA[$P{SUBREPORT_DIR} + "sub_services.jasper"]]></subreportExpression>
+				<reportElement x="140" y="1" width="395" height="44"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servicesTotals})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "sub_services.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
 	<columnFooter>
-		<band />
+		<band/>
 	</columnFooter>
 	<pageFooter>
-		<band />
+		<band/>
 	</pageFooter>
 	<summary>
-		<band />
+		<band/>
 	</summary>
 </jasperReport>

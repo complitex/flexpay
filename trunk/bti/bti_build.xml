@@ -90,7 +90,12 @@
 		</antcall>
 	</target>
 
-    <target name="bti.prepare.war" depends="ab.prepare.war">
+    <target name="bti.prepare.war">
+		<antcall target="bti.prepare.war.internal" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+    <target name="bti.prepare.war.internal" depends="ab.prepare.war.internal">
         <fileset id="bti.web.resources" dir="${bti.dir}/web" />
         <antcall target="template.prepare.war">
             <param name="to_dir" value="" />
