@@ -1,5 +1,6 @@
 package org.flexpay.eirc.process.quittance.report;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.jetbrains.annotations.NotNull;
 
@@ -154,5 +155,22 @@ public abstract class ServiceTotalsBase {
 		}
 
 		return current.add(val);
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).
+				append("serviceType", serviceType).
+				append("rate", rate).
+				append("expence", expence).
+				append("expenceUnitKey", expenceUnitKey).
+				append("charges", charges).
+				append("recalculation", recalculation).
+				append("privilege", privilege).
+				append("subsidy", subsidy).
+				append("payed", payed).
+				append("incomingDebt", incomingDebt).
+				append("outgoingDebt", outgoingDebt).
+				toString();
 	}
 }

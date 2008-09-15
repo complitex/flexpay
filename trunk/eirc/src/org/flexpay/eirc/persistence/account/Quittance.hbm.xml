@@ -121,8 +121,8 @@
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<many-to-one name="quittanceDetails" foreign-key="FP_eirc_quittance_details_quittances_quittance_details"
-					 class="QuittanceDetails">
+		<many-to-one name="quittanceDetails" class="QuittanceDetails"
+					 foreign-key="FP_eirc_quittance_details_quittances_quittance_details">
 			<column name="quittance_details_id" not-null="true">
 				<comment>QuittanceDetails reference</comment>
 			</column>
@@ -157,6 +157,10 @@
 			inner join fetch q.eircAccount a
 			inner join fetch a.apartment ap
 			inner join fetch ap.building b
+			left join fetch q.quittanceDetailsQuittances qdq
+			inner join fetch qdq.quittanceDetails qd
+			inner join fetch qd.consumer c
+			inner join fetch c.service
 		where q.serviceOrganisation.id=? and q.dateFrom>=? and q.dateTill<=?
 		order by b.id, a.id, a.accountNumber, q.orderNumber desc
 	]]></query>

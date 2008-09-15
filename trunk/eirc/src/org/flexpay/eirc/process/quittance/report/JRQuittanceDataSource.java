@@ -5,23 +5,24 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.persistence.account.QuittanceDetails;
+import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.process.quittance.report.util.QuittanceInfoGenerator;
+import org.flexpay.eirc.service.SPService;
+import org.flexpay.ab.service.StreetService;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
-public class QuittanceDataSource implements JRDataSource {
+public class JRQuittanceDataSource implements JRDataSource {
 
-	private JRBeanCollectionDataSource collectionDataSource;
+	private SPService spService;
+	private JRBeanCollectionDataSource jrBeanCollectionDataSource;
 
-	public QuittanceDataSource(List<Quittance> quittances) {
-		Collection<QuittanceInfo> infos = initInfos(quittances);
-		collectionDataSource = new JRBeanCollectionDataSource(infos);
-	}
-
-	private Collection<QuittanceInfo> initInfos(List<Quittance> quittances) {
+	public void setQuittances(List<Quittance> quittances) {
 
 		List<QuittanceInfo> infos = CollectionUtils.list();
 
@@ -29,6 +30,8 @@ public class QuittanceDataSource implements JRDataSource {
 		int orderNumber = -1;
 
 		for (Quittance q : quittances) {
+
+			initLazyProperties(q);
 
 			// check account number
 			if (isNewAccount(accountId, q)) {
@@ -50,7 +53,14 @@ public class QuittanceDataSource implements JRDataSource {
 			infos.add(QuittanceInfoGenerator.buildInfo(q));
 		}
 
-		return infos;
+		jrBeanCollectionDataSource = new JRBeanCollectionDataSource(infos);
+	}
+
+	private void initLazyProperties(Quittance q) {
+		for (QuittanceDetails qd : q.getQuittanceDetails()) {
+			Stub<Service> serviceStub = stub(qd.getConsumer().getService());
+			qd.getConsumer().setService(spService.read(serviceStub));
+		}
 	}
 
 	/**
@@ -66,10 +76,16 @@ public class QuittanceDataSource implements JRDataSource {
 
 
 	public boolean next() throws JRException {
-		return collectionDataSource.next();
+		// delegate all work to native implementation
+		return jrBeanCollectionDataSource != null && jrBeanCollectionDataSource.next();
 	}
 
 	public Object getFieldValue(JRField jrField) throws JRException {
-		return collectionDataSource.getFieldValue(jrField);
+		// delegate all work to native implementation
+		return jrBeanCollectionDataSource.getFieldValue(jrField);
+	}
+
+	public void setSpService(SPService spService) {
+		this.spService = spService;
 	}
 }

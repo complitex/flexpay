@@ -5,12 +5,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.lang.time.DateUtils;
-import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Date interval is a interval of time with day granularity
@@ -46,13 +45,13 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	 * @param value Temporary values assigned to this interval
 	 */
 	public DateInterval(Date begin, Date end, T value) {
-		setBegin(begin);
-		setEnd(end);
+		doSetBegin(this, begin);
+		doSetEnd(this, end);
 		invalidDate = ApplicationConfig.getFutureInfinite();
 		createDate = DateUtil.now();
 		this.value = value;
 
-		if (!DateIntervalUtil.isValid(this)) {
+		if (begin.compareTo(end) <= 0) {
 			throw new IllegalArgumentException("Dates specified are invalid for interval");
 		}
 	}
@@ -71,12 +70,16 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	 *
 	 * @param begin Value to set for property 'begin'.
 	 */
-	public final void setBegin(Date begin) {
+	public void setBegin(Date begin) {
+		doSetBegin(this, begin);
+	}
+
+	private static void doSetBegin(DateInterval di, Date begin) {
 		Date pastInfinite = ApplicationConfig.getPastInfinite();
 		if (begin == null || begin.compareTo(pastInfinite) < 0) {
-			this.begin = pastInfinite;
+			di.begin = pastInfinite;
 		} else {
-			this.begin = DateUtils.truncate(begin, Calendar.DAY_OF_MONTH);
+			di.begin = DateUtils.truncate(begin, Calendar.DAY_OF_MONTH);
 		}
 	}
 
@@ -94,12 +97,16 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	 *
 	 * @param end Value to set for property 'end'.
 	 */
-	public final void setEnd(Date end) {
+	public void setEnd(Date end) {
+		doSetEnd(this, end);
+	}
+
+	private static void doSetEnd(DateInterval di, Date end) {
 		Date futureInfinite = ApplicationConfig.getFutureInfinite();
 		if (end == null || end.compareTo(futureInfinite) > 0) {
-			this.end = futureInfinite;
+			di.end = futureInfinite;
 		} else {
-			this.end = DateUtils.truncate(end, Calendar.DAY_OF_MONTH);
+			di.end = DateUtils.truncate(end, Calendar.DAY_OF_MONTH);
 		}
 	}
 

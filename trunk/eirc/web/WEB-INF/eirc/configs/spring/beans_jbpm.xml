@@ -22,6 +22,12 @@
 		  p:quittanceService-ref="quittanceService"
 		  p:serviceTypeService-ref="serviceTypeService" />
 
+	<bean name="generateQuittancesPDFJasperJob" scope="prototype"
+		  class="org.flexpay.eirc.process.quittance.GenerateQuittancesPDFJasperJob"
+		  p:jrDataSource-ref="jrQuittanceDataSource"
+		  p:quittanceService-ref="quittanceService"
+		  p:reportUtil-ref="reportUtil" />
+
 	<bean name="generateQuitancesJob" class="org.flexpay.eirc.process.quittance.GenerateQuittanceJob" scope="prototype"
 		  p:quittanceService-ref="quittanceService" />
 </beans>

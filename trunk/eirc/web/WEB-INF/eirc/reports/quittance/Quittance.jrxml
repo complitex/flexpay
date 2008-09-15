@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN"
+		"http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="Quittance" pageWidth="595" pageHeight="842" columnWidth="535"
+			  leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/mixa/flexpay/eirc/web/WEB-INF/eirc/reports/quittance/"]]></defaultValueExpression>
+	</parameter>
+	<background>
+		<band />
+	</background>
+	<title>
+		<band />
+	</title>
+	<pageHeader>
+		<band />
+	</pageHeader>
+	<columnHeader>
+		<band />
+	</columnHeader>
+	<detail>
+		<band height="281">
+			<line>
+				<reportElement key="line-1" x="0" y="0" width="535" height="1" />
+			</line>
+			<line>
+				<reportElement key="line-3" x="140" y="0" width="1" height="262" />
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double" />
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-4" x="1" y="262" width="534" height="2" />
+			</line>
+			<subreport>
+				<reportElement x="140" y="1" width="193" height="162" />
+				<connectionExpression>
+					<![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String">
+					<![CDATA[$P{SUBREPORT_DIR} + "sub_services.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band />
+	</columnFooter>
+	<pageFooter>
+		<band />
+	</pageFooter>
+	<summary>
+		<band />
+	</summary>
+</jasperReport>

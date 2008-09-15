@@ -38,6 +38,7 @@ public interface QuittanceService {
 	 * @param dateTill Period end date
 	 * @return List of Quittances
 	 * @throws FlexPayException if failure occurs
+	 * @deprecated 
 	 */
 	List<Object> getQuittanceListWithDelimiters(
 			@NotNull Stub<ServiceOrganisation> stub, Date dateFrom, Date dateTill)
@@ -48,4 +49,15 @@ public interface QuittanceService {
 	String getAddressStr(Quittance quittance, boolean withApartmentNumber) throws FlexPayException;
 
 	QuittanceDetails calculateTotalQuittanceDetails(Quittance quittance, ServiceType serviceType);
+
+	/**
+	 * Get a list of Quittances separated with addresses, used to divide quittances by bulks
+	 *
+	 * @param stub	 ServiceOrganisation stub
+	 * @param dateFrom Period begin date
+	 * @param dateTill Period end date
+	 * @return List of Quittances
+	 */
+	@NotNull
+	List<Quittance> getQuittances(Stub<ServiceOrganisation> stub, Date dateFrom, Date dateTill);
 }
