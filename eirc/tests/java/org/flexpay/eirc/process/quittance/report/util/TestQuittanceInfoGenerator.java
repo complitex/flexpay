@@ -15,6 +15,7 @@ import org.flexpay.eirc.process.quittance.report.SubServiceTotals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -40,6 +41,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	}
 
 	@Test
+	@Ignore
 	public void testGetUniqueQuittance() throws Throwable {
 
 		List<Quittance> uniqueQuittances = list(dt_2007_12_01, dt_2007_01_01);
@@ -49,6 +51,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	}
 
 	@Test
+	@Ignore
 	public void testGet2Quittances() throws Throwable {
 
 		List<Quittance> uniqueQuittances = list(dt_2007_12_01, dt_2007_02_01);
@@ -61,6 +64,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	}
 
 	@Test
+	@Ignore
 	public void testMakeServiceGroups1() throws Throwable {
 
 		Quittance q = list(dt_2007_12_01, dt_2007_01_01).get(0);
@@ -70,6 +74,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	}
 
 	@Test
+	@Ignore
 	public void testMakeServiceGroups2() throws Throwable {
 
 		Quittance q = list(dt_2007_12_01, dt_2007_02_01).get(0);
@@ -81,6 +86,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	}
 
 	@Test
+	@Ignore
 	public void testBuildServicesTotals1() throws Throwable {
 
 		Quittance q = list(dt_2007_12_01, dt_2007_01_01).get(0);
@@ -99,6 +105,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	}
 
 	@Test
+	@Ignore
 	public void testBuildServicesTotals2() throws Throwable {
 
 		Quittance q = list(dt_2007_12_01, dt_2007_02_01).get(0);
@@ -117,6 +124,9 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 		assertEquals("Invalid services totals", 1, servicesTotals.size());
 		// kvarplata only here
 		assertEquals("Invalid service types totals", 1, serviceTypesTotals.size());
+
+		ServiceTotals serviceTotals = servicesTotals.values().iterator().next();
+		assertNotNull("Service totals is null", serviceTotals);
 	}
 
 	@Test
@@ -143,10 +153,11 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 		assertEquals("Invalid service types totals", 2, serviceTypesTotals.size());
 
 		// check if there are actually subservice totals
-		ServiceTotals serviceTotals = servicesTotals.get(0);
+		ServiceTotals serviceTotals = servicesTotals.values().iterator().next();
 		assertNotNull("Service totals is null", serviceTotals);
 
 		List<SubServiceTotals> subServicesTotals = serviceTotals.getSubServicesTotalsList();
 		assertEquals("invalid subservices totals size", 1, subServicesTotals.size());
+		assertNotNull("SubserviceTotals is null", subServicesTotals.get(0));
 	}
 }

@@ -27,7 +27,7 @@ public class TestReportUtil extends SpringBeanAwareTestCase {
 	@Test (expected = Exception.class)
 	public void testFillNotExistingReport() throws Exception {
 		@NonNls String reportName = "_NOT_EXISTING_REPORT_";
-		reportUtil.runReport(reportName, Collections.emptyMap());
+		reportUtil.runReport(reportName, Collections.emptyMap(), null);
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class TestReportUtil extends SpringBeanAwareTestCase {
 			String repName = reportUtil.runReport(reportName,
 					map(
 							ar("dataSourceId", "dataSourceDescr"),
-							ar(sourceDescription.getId(), sourceDescription.getDescription())));
+							ar(sourceDescription.getId(), sourceDescription.getDescription())), null);
 			reportUtil.exportToTxt(repName);
 		} finally {
 			IOUtils.closeQuietly(is);
@@ -66,7 +66,7 @@ public class TestReportUtil extends SpringBeanAwareTestCase {
 			String repName = reportUtil.runReport(reportName,
 					map(
 							ar("dataSourceId", "dataSourceDescr"),
-							ar(sourceDescription.getId(), sourceDescription.getDescription())));
+							ar(sourceDescription.getId(), sourceDescription.getDescription())), null);
 
 			reportUtil.exportToPdf(repName);
 			reportUtil.exportToTxt(repName);

@@ -13,6 +13,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.jboss.util.file.FilePrefixFilter;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.sql.DataSource;
 import java.io.*;
@@ -25,7 +27,7 @@ public class ReportUtil {
 	private Logger log = Logger.getLogger(getClass());
 
 	@NonNls
-	private static final String EXTENSION_TEMPLATE = ".jrxml";
+	public static final String EXTENSION_TEMPLATE = ".jrxml";
 	@NonNls
 	private static final String EXTENSION_COMPILED_TEMPLATE = ".jasper";
 	@NonNls
@@ -42,6 +44,11 @@ public class ReportUtil {
 	@NonNls
 	private static final String EXTENSION_CSV = ".csv";
 
+	/**
+	 * Subreports directory parameter name
+	 */
+	private static final String PARAM_NAME_SUBREPORTS_DIR = "SUBREPORT_DIR";
+
 	@NonNls
 	private static final String RESOURCE_CONNECTION = ReportUtil.class.getName() + "_CONNECTION";
 
@@ -51,13 +58,13 @@ public class ReportUtil {
 	private Set<String> compiledReports = new HashSet<String>();
 
 	/**
-	 * Upload report
+	 * Upload report and compile it
 	 *
 	 * @param is   Report source stream
 	 * @param name Report name
-	 * @throws IOException if failure occurs
+	 * @throws Exception if failure occurs
 	 */
-	public void uploadReportTemplate(InputStream is, String name) throws IOException {
+	public void uploadReportTemplate(InputStream is, String name) throws Exception {
 		ensureDirsExist();
 		OutputStream os = new FileOutputStream(getTemplateFile(name));
 
@@ -67,6 +74,8 @@ public class ReportUtil {
 
 			// invalidate compiled report version
 			compiledReports.remove(name);
+
+			ensureReportCompiled(name);
 		} finally {
 			IOUtils.closeQuietly(os);
 		}
@@ -184,13 +193,55 @@ public class ReportUtil {
 	/**
 	 * Compile and fill report
 	 *
+	 * @param name Report template name
+	 * @return Filled report name
+	 * @throws Exception if failure occurs
+	 */
+	@SuppressWarnings ({"unchecked"})
+	public String runReport(@NotNull String name) throws Exception {
+		return runReport(name, null, null);
+	}
+
+	/**
+	 * Compile and fill report
+	 *
 	 * @param name	   Report template name
 	 * @param parameters Report parameters
 	 * @return Filled report name
 	 * @throws Exception if failure occurs
 	 */
 	@SuppressWarnings ({"unchecked"})
-	public String runReport(String name, Map parameters) throws Exception {
+	public String runReport(@NotNull String name, @Nullable Map parameters)
+			throws Exception {
+		return runReport(name, parameters, null);
+	}
+
+	/**
+	 * Compile and fill report
+	 *
+	 * @param name		 Report template name
+	 * @param jrDataSource optional data source
+	 * @return Filled report name
+	 * @throws Exception if failure occurs
+	 */
+	@SuppressWarnings ({"unchecked"})
+	public String runReport(@NotNull String name, @NotNull JRDataSource jrDataSource)
+			throws Exception {
+		return runReport(name, null, jrDataSource);
+	}
+
+	/**
+	 * Compile and fill report
+	 *
+	 * @param name		 Report template name
+	 * @param parameters   Report parameters
+	 * @param jrDataSource optional data source
+	 * @return Filled report name
+	 * @throws Exception if failure occurs
+	 */
+	@SuppressWarnings ({"unchecked"})
+	public String runReport(@NotNull String name, @Nullable Map parameters, @Nullable JRDataSource jrDataSource)
+			throws Exception {
 
 		if (parameters == null || parameters == Collections.emptyMap()) {
 			parameters = new HashMap();
@@ -206,7 +257,9 @@ public class ReportUtil {
 
 		Collection<String> resourceNames = fillParameters(report, parameters);
 		try {
-			if (requiresConnection(report)) {
+			if (jrDataSource != null) {
+				JasperFillManager.fillReportToFile(report, getReportPath(reportName), parameters, jrDataSource);
+			} else if (requiresConnection(report)) {
 				Connection c = dataSource.getConnection();
 				parameters.put(RESOURCE_CONNECTION, c);
 				resourceNames.add(RESOURCE_CONNECTION);
@@ -242,7 +295,8 @@ public class ReportUtil {
 			}
 		}
 
-		// Hope there is no subreports, todo check it
+		// set dubreports dir
+		parameters.put(PARAM_NAME_SUBREPORTS_DIR, getReportTemplatesDir().getAbsolutePath() + "/");
 
 		return resourceNames;
 	}
