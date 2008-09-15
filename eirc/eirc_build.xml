@@ -91,7 +91,12 @@
 		</antcall>
 	</target>
 
-    <target name="eirc.prepare.war" depends="eirc.compile.production,bti.prepare.war">
+    <target name="eirc.prepare.war">
+		<antcall target="eirc.prepare.war.internal" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+    <target name="eirc.prepare.war.internal" depends="eirc.compile.production,bti.prepare.war.internal">
         <fileset id="eirc.web.resources" dir="${eirc.dir}/web" />
         <antcall target="template.prepare.war">
             <param name="to_dir" value="" />

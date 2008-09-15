@@ -100,7 +100,12 @@
 		</antcall>
 	</target>
 
-	<target name="ab.prepare.war" depends="common.prepare.war">
+	<target name="ab.prepare.war">
+		<antcall target="ab.prepare.war.internal" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+	<target name="ab.prepare.war.internal" depends="common.prepare.war.internal">
 		<fileset id="ab.web.resources" dir="${ab.dir}/web" />
 		<antcall target="template.prepare.war">
 			<param name="to_dir" value="" />

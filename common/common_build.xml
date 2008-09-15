@@ -95,6 +95,10 @@
 	</target>
 
 	<target name="common.prepare.war">
+		<antcall target="common.prepare.war.internal" />
+		<antcall target="template.copy.classes" />
+	</target>
+	<target name="common.prepare.war.internal">
 		<fileset id="common.web.resources" dir="${common.dir}/web" />
 		<antcall target="template.prepare.war">
 			<param name="to_dir" value="" />

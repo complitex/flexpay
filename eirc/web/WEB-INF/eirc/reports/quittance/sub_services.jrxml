@@ -1,57 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN"
-		"http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 
-<jasperReport name="sub_services" pageWidth="595" pageHeight="842"
-			  whenNoDataType="BlankPage" columnWidth="535" leftMargin="30"
-			  rightMargin="30" topMargin="20" bottomMargin="20">
-	<property name="ireport.scriptlethandling" value="0" />
-	<property name="ireport.encoding" value="UTF-8" />
-	<import value="net.sf.jasperreports.engine.*" />
-	<import value="java.util.*" />
-	<import value="net.sf.jasperreports.engine.data.*" />
-	<field name="serviceTypeName" class="java.lang.String" />
-	<field name="serviceTypeSumm" class="java.math.BigDecimal" />
+<jasperReport name="sub_services" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<field name="serviceTypeName" class="java.lang.String"/>
+	<field name="outgoingDebt" class="java.math.BigDecimal"/>
 	<variable name="servicesTotal" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{serviceTypeSumm}]]></variableExpression>
+		<variableExpression><![CDATA[$F{outgoingDebt}]]></variableExpression>
 		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
 	</variable>
 	<background>
-		<band />
+		<band/>
 	</background>
 	<title>
-		<band />
+		<band/>
 	</title>
 	<pageHeader>
-		<band />
+		<band/>
 	</pageHeader>
 	<columnHeader>
 		<band height="15">
 			<staticText>
-				<reportElement key="staticText-1" x="0" y="0" width="105" height="15" />
+				<reportElement key="staticText-1" x="0" y="0" width="105" height="15"/>
 				<box>
-					<pen lineWidth="0.25" lineStyle="Solid" />
-					<topPen lineWidth="0.25" lineStyle="Solid" />
-					<leftPen lineWidth="0.25" lineStyle="Solid" />
-					<bottomPen lineWidth="0.25" lineStyle="Solid" />
-					<rightPen lineWidth="0.25" lineStyle="Solid" />
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" pdfFontName="Helvetica-Bold" />
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Услуга]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-2" x="105" y="0" width="113" height="15" />
+				<reportElement key="staticText-2" x="105" y="0" width="113" height="15"/>
 				<box>
-					<pen lineWidth="0.25" lineStyle="Solid" />
-					<topPen lineWidth="0.25" lineStyle="Solid" />
-					<leftPen lineWidth="0.25" lineStyle="Solid" />
-					<bottomPen lineWidth="0.25" lineStyle="Solid" />
-					<rightPen lineWidth="0.25" lineStyle="Solid" />
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" pdfFontName="Helvetica-Bold" />
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Сумма к оплате]]></text>
 			</staticText>
@@ -60,64 +57,64 @@
 	<detail>
 		<band height="15">
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField" x="0" y="0" width="105" height="15" />
+				<reportElement key="textField" x="0" y="0" width="105" height="15"/>
 				<box>
-					<pen lineWidth="0.25" lineStyle="Solid" />
-					<topPen lineWidth="0.25" lineStyle="Solid" />
-					<leftPen lineWidth="0.25" lineStyle="Solid" />
-					<bottomPen lineWidth="0.25" lineStyle="Solid" />
-					<rightPen lineWidth="0.25" lineStyle="Solid" />
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
-				<textElement verticalAlignment="Middle" />
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{serviceTypeName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField" x="105" y="0" width="113" height="15" />
+				<reportElement key="textField" x="105" y="0" width="113" height="15"/>
 				<box>
-					<pen lineWidth="0.25" lineStyle="Solid" />
-					<topPen lineWidth="0.25" lineStyle="Solid" />
-					<leftPen lineWidth="0.25" lineStyle="Solid" />
-					<bottomPen lineWidth="0.25" lineStyle="Solid" />
-					<rightPen lineWidth="0.25" lineStyle="Solid" />
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
-				<textElement verticalAlignment="Middle" />
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{serviceTypeSumm}]]></textFieldExpression>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{outgoingDebt}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band />
+		<band/>
 	</columnFooter>
 	<pageFooter>
-		<band />
+		<band/>
 	</pageFooter>
 	<summary>
 		<band height="15">
 			<staticText>
-				<reportElement key="staticText-3" x="0" y="0" width="105" height="15" />
+				<reportElement key="staticText-3" x="0" y="0" width="105" height="15"/>
 				<box>
-					<pen lineWidth="0.25" lineStyle="Solid" />
-					<topPen lineWidth="0.25" lineStyle="Solid" />
-					<leftPen lineWidth="0.25" lineStyle="Solid" />
-					<bottomPen lineWidth="0.25" lineStyle="Solid" />
-					<rightPen lineWidth="0.25" lineStyle="Solid" />
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font isBold="true" pdfFontName="Helvetica-Bold" />
+					<font isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="cp1251" />
 				</textElement>
 				<text><![CDATA[ИТОГО: ]]></text>
 			</staticText>
 			<textField pattern="##0.00" isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField" x="105" y="0" width="113" height="15" />
+				<reportElement key="textField" x="105" y="0" width="113" height="15"/>
 				<box>
-					<pen lineWidth="0.25" lineStyle="Solid" />
-					<topPen lineWidth="0.25" lineStyle="Solid" />
-					<leftPen lineWidth="0.25" lineStyle="Solid" />
-					<bottomPen lineWidth="0.25" lineStyle="Solid" />
-					<rightPen lineWidth="0.25" lineStyle="Solid" />
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font isBold="true" pdfFontName="Helvetica-Bold" />
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{servicesTotal}]]></textFieldExpression>
 			</textField>

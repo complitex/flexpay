@@ -2,6 +2,7 @@ package org.flexpay.eirc.process.quittance.report;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.eirc.persistence.ServiceType;
+import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
@@ -26,6 +27,12 @@ public abstract class ServiceTotalsBase {
 
 	public ServiceType getServiceType() {
 		return serviceType;
+	}
+
+	public String getServiceTypeName() throws Exception {
+		String name = TranslationUtil.getTranslation(serviceType.getTypeNames()).getName();
+		System.out.println("ServiceType: " + name);
+		return name;
 	}
 
 	public String getRate() {
@@ -136,6 +143,7 @@ public abstract class ServiceTotalsBase {
 	}
 
 	public BigDecimal getOutgoingDebt() {
+		System.out.println("Debt: " + outgoingDebt);
 		return outgoingDebt;
 	}
 
