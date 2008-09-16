@@ -9,10 +9,12 @@
 		<td><%@include file="../town_filter.jsp" %></td>
 	</tr>
 	<tr>
-		<td class="filter"><s:text name="ab.district"/></td>
-		<td><%@include file="../district_filter.jsp" %></td>
 		<td class="filter"><s:text name="ab.street"/></td>
-		<td><%@include file="../street_search_filter.jsp" %></td>
+		<td colspan="5"><%@include file="../street_search_filter.jsp" %></td>
+	</tr>
+	<tr>
+		<td class="filter"><s:text name="ab.district"/></td>
+		<td colspan="3"><%@include file="../district_filter.jsp" %></td>
 		<td class="filter"><s:text name="ab.building"/></td>
 		<td><%@include file="../buildings_filter.jsp" %></td>
 	</tr>
