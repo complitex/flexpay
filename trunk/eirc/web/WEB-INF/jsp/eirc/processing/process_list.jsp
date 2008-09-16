@@ -5,10 +5,10 @@
 <s:form>
 
 <tr>
-  <td class="th">
+  <td class="th" width="1%">
     &nbsp;
   </td>
-  <td class="th">
+  <td class="th" width="1%">
     <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds')">
   </td>
   <td class="th">

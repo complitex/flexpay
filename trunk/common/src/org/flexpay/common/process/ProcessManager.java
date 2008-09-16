@@ -160,9 +160,9 @@ public class ProcessManager implements Runnable {
 		} catch (Exception e) {
 			log.error("deployProcessDefinition: ", e);
 			if (processDefinition == null) {
-				throw new ProcessDefinitionException("ProcessManager: InputStream is not process definition file");
+				throw new ProcessDefinitionException("InputStream is not process definition file");
 			} else {
-				throw new ProcessDefinitionException("ProcessManager: Can't deploy processDefinition for " + processDefinition.getName());
+				throw new ProcessDefinitionException("Can't deploy processDefinition for " + processDefinition.getName());
 			}
 		}
 	}
@@ -186,15 +186,15 @@ public class ProcessManager implements Runnable {
 
 		if (replace || (latestProcessDefinition == null)) {
 			if (latestProcessDefinition == null) {
-				log.info("Process definition not found. Deploying " + processDefinition.getName() + "...");
+				log.info("Process definition not found. Deploying " + processDefinition.getName());
 				newVersion = 1;
 				processDefinition.setVersion(newVersion);
 			} else {
 				int oldVersion = latestProcessDefinition.getVersion();
-				log.info("Deploying new version of process definition " + processDefinition.getName() + "...");
+				log.info("Deploying new version of process definition " + processDefinition.getName());
 				newVersion = oldVersion + 1;
 				processDefinition.setVersion(newVersion);
-				log.info("Old version = " + oldVersion + " New version = " + newVersion);
+				log.info("Old version = " + oldVersion + ", New version = " + newVersion);
 			}
 			graphSession.saveProcessDefinition(processDefinition);
 			log.info("Deployed.");
@@ -275,7 +275,7 @@ public class ProcessManager implements Runnable {
 			processDefinition = graphSession.findLatestProcessDefinition(processDefinitionName);
 		} catch (RuntimeException e) {
 			jbpmContext.close();
-			log.error("initProcess: findLatestProcessDefinition", e);
+			log.error("findLatestProcessDefinition", e);
 			throw new ProcessDefinitionException("Can't access ProcessDefinition for " + processDefinitionName, e);
 		}
 		// try to search in predefined set of places
@@ -284,12 +284,12 @@ public class ProcessManager implements Runnable {
 			processDefinition = graphSession.findLatestProcessDefinition(processDefinitionName);
 		}
 		if (processDefinition == null) {
-			log.error("initProcess: Can't find process definition for name: " + processDefinitionName);
+			log.error("Can't find process definition for name: " + processDefinitionName);
 			throw new ProcessDefinitionException("Can't find process definition for name: " + processDefinitionName);
 		}
 
 		if (log.isInfoEnabled()) {
-			log.info("initProcess: Initializing  process. Process Definition id = " + processDefinition.getId() +
+			log.info("Initializing  process. Process Definition id = " + processDefinition.getId() +
 					 " name = " + processDefinition.getName() + " version = " + processDefinition.getVersion());
 		}
 
@@ -298,7 +298,7 @@ public class ProcessManager implements Runnable {
 			processId = processInstance.getId();
 		} catch (RuntimeException e) {
 			jbpmContext.close();
-			log.error("initProcess: ProcessInstanceCreation", e);
+			log.error("ProcessInstanceCreation", e);
 			throw new ProcessInstanceException("Can't create ProcessInstance for " + processDefinitionName, e);
 		}
 		jbpmContext.close();
@@ -324,8 +324,8 @@ public class ProcessManager implements Runnable {
 				}
 			}
 		} catch (RuntimeException e) {
-			log.error("ProcessManager: getProcessParameters: ", e);
-			throw new ProcessInstanceException("ProcessManager: Can't get Process Dictionary for " + processID);
+			log.error("getProcessParameters: ", e);
+			throw new ProcessInstanceException("Can't get Process Dictionary for " + processID);
 		}
 		return result;
 	}
@@ -350,8 +350,8 @@ public class ProcessManager implements Runnable {
 				}
 			}
 		} catch (RuntimeException e) {
-			log.error("ProcessManager: getProcessIDList: ", e);
-			throw new ProcessInstanceException("Can't get Process List");
+			log.error("Failed getting process list", e);
+			throw new ProcessInstanceException("Can't get Process List", e);
 		}
 		return result;
 	}
@@ -385,7 +385,7 @@ public class ProcessManager implements Runnable {
 		jbpmContext.close();
 
 		if (log.isInfoEnabled()) {
-			log.info("initProcess: Process Instance id = " + processInstanceID + " started.");
+			log.info("Process Instance id = " + processInstanceID + " started.");
 		}
 
 		return processInstanceID;
@@ -415,7 +415,7 @@ public class ProcessManager implements Runnable {
 		if (startTaskCounter <= startTaskLimit) {
 			Map<Serializable, Serializable> params = contextInstance.getVariables();
 
-			log.info("Starting task \"" + task.getName() + "\" (" + task.getId() + ", pid - " + processInstance.getId() + ")");
+			log.info("Starting task '" + task.getName() + "' (" + task.getId() + ", pid - " + processInstance.getId() + ")");
 
 			if (null == task.getStart()) {
 				task.start();
@@ -454,7 +454,7 @@ public class ProcessManager implements Runnable {
 	 */
 	public void jobFinished(Long taskId, Map<Serializable, Serializable> parameters, String transition) {
 		// this method called by Job to report finish
-		log.debug("ProcessManager: jobFinished: taskId: " + taskId);
+		log.debug("finished taskId: " + taskId);
 
 		boolean proceed = false;
 
@@ -465,9 +465,9 @@ public class ProcessManager implements Runnable {
 				TaskInstance task = taskMgmtSession.loadTaskInstance(taskId);
 
 				if (task == null) {
-					log.error("ProcessManager: jobFinished: Can't find Task Instance, id: " + taskId);
+					log.error("Can't find Task Instance, id: " + taskId);
 				} else {
-					log.info("ProcessManager: jobFinished: Finishing Task Instance, id: " + taskId);
+					log.info("Finishing Task Instance, id: " + taskId);
 					ContextInstance ci = task.getTaskMgmtInstance().getProcessInstance().getContextInstance();
 					// save the variables in ProcessInstance dictionary
 					ci.addVariables(parameters);
@@ -490,12 +490,12 @@ public class ProcessManager implements Runnable {
 					log.debug("Number of running tasks: " + running.size());
 				}
 			} catch (RuntimeException e) {
-				log.error("ProcessManager: jobFinished: Failed to finish task: " + taskId, e);
-				log.error("ProcessManager: jobFinished: Sleeping 30 sec and try again to finish task: " + taskId);
+				log.error("Failed finishing task: " + taskId, e);
+				log.error("Sleeping for 30 sec and try again to finish task: " + taskId);
 				try {
 					Thread.sleep(30000);
 				} catch (InterruptedException ie) {
-					log.fatal("ProcessManager: jobFinished: System failure when finishing task: " + taskId, e);
+					log.fatal("System failure when finishing task: " + taskId, e);
 				}
 			}
 		}
@@ -536,11 +536,11 @@ public class ProcessManager implements Runnable {
 			ci.addVariables(parameters);
 			Token token = processInstance.getRootToken();
 			token.signal();
-			log.info("initProcess: Process Instance id = " + processID.toString() + " started.");
+			log.info("Process Instance id = " + processID.toString() + " started.");
 			jbpmContext.close();
 		} catch (RuntimeException e) {
-			log.error("initProcess: ProcessInstanceCreation", e);
-			throw new ProcessInstanceException("Can't start ProcessInstance pid - " + processID.toString());
+			log.error("Failed start process", e);
+			throw new ProcessInstanceException("Can't start ProcessInstance pid - " + processID, e);
 		}
 	}
 
@@ -565,13 +565,13 @@ public class ProcessManager implements Runnable {
 					if (processInstances.size() == 0) {
 						graphSession.deleteProcessDefinition(processDefinitionID);
 					}
-					log.debug("ProcessManager.removeProcess: removeProcess: removed process definition " + processDefinitionID);
+					log.debug("Removed process definition " + processDefinitionID);
 				}
 			}
 			jbpmContext.close();
 		} catch (RuntimeException e) {
-			log.error("ProcessManager.removeProcess: ", e);
-			throw new ProcessInstanceException("Can't remove ProcessInstance for " + processID.toString());
+			log.error("Failed removeProcess", e);
+			throw new ProcessInstanceException("Can't remove ProcessInstance for " + processID, e);
 		}
 
 	}

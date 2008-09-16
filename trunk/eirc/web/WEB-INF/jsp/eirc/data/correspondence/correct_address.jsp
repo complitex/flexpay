@@ -11,7 +11,7 @@
 
 		<tr>
 			<td colspan="4">
-				<%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" %>
+				<%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_district_streetname_building.jsp" %>
 			</td>
 		</tr>
 

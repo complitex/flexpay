@@ -73,18 +73,20 @@ public class RegistryFileParser {
 			Message message;
 			while ((message = reader.readMessage()) != null) {
 				registry = processMessage(message, spFile, registry, recordCounter);
+
+				// add some process log
+				if (processLog.isInfoEnabled()) {
+					if (log.isTraceEnabled()) {
+						processLog.trace("Parsed " + recordCounter[0] + " records");
+					} else if (recordCounter[0] % 100 == 0) {
+						processLog.info("Parsed " + recordCounter[0] + " records");
+					}
+				}
 			}
 			finalizeRegistry(registry, recordCounter);
 			sessionUtils.flush();
 			sessionUtils.clear();
 
-			if (processLog.isInfoEnabled()) {
-				if (log.isTraceEnabled()) {
-					processLog.trace("Parsed " + recordCounter[0] + " records");
-				} else if (recordCounter[0] % 100 == 0) {
-					processLog.info("Parsed " + recordCounter[0] + " records");
-				}
-			}
 		} catch (Throwable t) {
 			if (registry != null) {
 				registryWorkflowManager.setNextErrorStatus(registry);

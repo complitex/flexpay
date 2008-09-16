@@ -16,7 +16,8 @@
 		<td class="col"><b><s:text name="eirc.registry.record.amount" />:</b> <s:property value="%{record.amount}" /></td>
 	</tr>
 	<tr class="cols_1">
-		<td class="col"><b><s:text name="eirc.registry.record.containers" />:</b> <s:property value="%{record.containers}" /></td>
+		<%--<td class="col"><b><s:text name="eirc.registry.record.containers" />:</b> <s:property value="%{record.containers}" /></td>--%>
+		<td class="col"><b><s:text name="eirc.registry.record.containers" />:</b> N/A</td>
 		<td class="col"><b><s:text name="eirc.registry.record.error" />:</b> <s:text name="%{record.importError.errorId}" /></td>
 	</tr>
 </table>
