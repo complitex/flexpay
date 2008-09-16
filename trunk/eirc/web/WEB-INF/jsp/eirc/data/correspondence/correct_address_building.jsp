@@ -37,7 +37,7 @@
 		<tr>
 			<td colspan="3">
 				<%@ include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
-				<input type="hidden" id="setupType" name="setupType" value="refresh"/>
+				<input type="hidden" id="setupType" name="setupType" value="setupType"/>
 				<s:hidden name="record.id" value="%{record.id}"/>
 				<input type="submit" onclick="$('setupType').value = 'building'" class="btn-exit"
 					   value="<s:text name="common.set"/>"/>
