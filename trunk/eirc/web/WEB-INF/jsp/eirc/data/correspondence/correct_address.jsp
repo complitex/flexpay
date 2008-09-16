@@ -7,13 +7,8 @@
 
 	<%@include file="../registry_record_info.jsp" %>
 
+	<%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_district_streetname_building.jsp" %>
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
-
-		<tr>
-			<td colspan="4">
-				<%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_district_streetname_building.jsp" %>
-			</td>
-		</tr>
 
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
