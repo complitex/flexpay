@@ -36,6 +36,8 @@ public class ReportUtil {
 	@NonNls
 	private static final String EXTENSION_PDF = ".pdf";
 	@NonNls
+	private static final String EXTENSION_RTF = ".rtf";
+	@NonNls
 	private static final String EXTENSION_TXT = ".txt";
 	@NonNls
 	private static final String EXTENSION_XML = ".xml";
@@ -123,6 +125,19 @@ public class ReportUtil {
 
 		JRPdfExporter exporter = new JRPdfExporter();
 		return exportToFile(exporter, name, EXTENSION_PDF);
+	}
+
+	/**
+	 * Export filled report to rtf format
+	 *
+	 * @param name Report name
+	 * @return Result RTF file
+	 * @throws Exception if failure occurs
+	 */
+	public File exportToRtf(String name) throws Exception {
+
+		JRRtfExporter exporter = new JRRtfExporter();
+		return exportToFile(exporter, name, EXTENSION_RTF);
 	}
 
 	/**

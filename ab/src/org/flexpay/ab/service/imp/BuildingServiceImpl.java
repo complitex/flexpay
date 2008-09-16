@@ -150,7 +150,7 @@ public class BuildingServiceImpl implements BuildingService {
 
 			filters.push(streetFilter);
 			filters = parentService.initFilters(filters, locale);
-			streetFilter = (StreetFilter) filters.pop();
+			streetFilter = (PrimaryKeyFilter) filters.pop();
 
 			filters.push(districtFilter);
 			filters.push(streetFilter);
