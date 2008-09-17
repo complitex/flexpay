@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.apache.commons.collections.ArrayStack;
 
 import java.util.List;
 
@@ -38,12 +39,13 @@ public interface EircAccountService {
 	String nextPersonalAccount();
 
 	/**
-	 * Find all EircAccounts
+	 * Find EircAccounts
 	 *
+	 * @param filters Filters stack
 	 * @param pager Accounts pager
 	 * @return List of EircAccount
 	 */
-	List<EircAccount> findAll(Page<EircAccount> pager);
+	List<EircAccount> findAll(ArrayStack filters, Page<EircAccount> pager);
 
 	/**
 	 * Read full account info, includes person and service
@@ -53,6 +55,4 @@ public interface EircAccountService {
 	 */
 	@Nullable
 	EircAccount readFull(@NotNull Stub<EircAccount> stub);
-
-	List<EircAccount> findByApartment(Long id);
 }

@@ -1,11 +1,11 @@
 package org.flexpay.eirc.actions.eirc_account;
 
+import org.flexpay.ab.actions.apartment.ApartmentFilterDependent2Action;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.PersonService;
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.EircAccount;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class EircAccountListAction extends FPActionSupport {
+public class EircAccountListAction extends ApartmentFilterDependent2Action {
 
 	private EircAccountService eircAccountService;
 	private PersonService personService;
@@ -23,10 +23,16 @@ public class EircAccountListAction extends FPActionSupport {
 	private List<EircAccount> eircAccountList;
 	private Page<EircAccount> pager = new Page<EircAccount>();
 
+	public EircAccountListAction() {
+		apartmentFilter.setNeedAutoChange(true);
+	}
+
 	@NotNull
 	public String doExecute() {
 
-		eircAccountList = eircAccountService.findAll(pager);
+		initFilters();
+
+		eircAccountList = eircAccountService.findAll(getFilters(), pager);
 
 
 		return SUCCESS;
@@ -35,7 +41,8 @@ public class EircAccountListAction extends FPActionSupport {
 	/**
 	 * Get default error execution result
 	 * <p/>
-	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in
+	 * a session
 	 *
 	 * @return {@link #ERROR} by default
 	 */

@@ -2,6 +2,7 @@ package org.flexpay.eirc.service.imp;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
+import org.flexpay.ab.persistence.filters.ApartmentFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -17,6 +18,7 @@ import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.commons.collections.ArrayStack;
 
 import java.util.List;
 
@@ -97,17 +99,20 @@ public class EircAccountServiceImpl implements EircAccountService {
 	}
 
 	/**
-	 * Find all EircAccounts
+	 * Find EircAccounts
 	 *
+	 * @param filters Filters stack
+	 * @param pager Accounts pager
 	 * @return List of EircAccount
 	 */
-	public List<EircAccount> findAll(Page<EircAccount> pager) {
+	public List<EircAccount> findAll(ArrayStack filters, Page<EircAccount> pager) {
+
+		if (filters.peek() instanceof ApartmentFilter) {
+			ApartmentFilter filter = (ApartmentFilter) filters.peek();
+			return eircAccountDao.findByApartment(filter.getSelectedId(), pager);
+		}
+
 		return eircAccountDao.findObjects(pager);
-
-	}
-
-	public List<EircAccount> findByApartment(Long id) {
-		return eircAccountDao.findByApartment(id);
 	}
 
 	/**
