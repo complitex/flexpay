@@ -7,7 +7,7 @@ import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,12 +30,16 @@ public abstract class BuildingsFilterDependent2Action extends FPActionSupport {
 		try {
 			ArrayStack filterArrayStack = getFilters();
 			for (Object filter : filterArrayStack) {
-				((PrimaryKeyFilter) filter).initFilter(session);
+				((ObjectFilter) filter).initFilter(session);
 			}
 			ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
 			setFilters(filters);
 		} catch (FlexPayException e) {
-			addActionError(e);
+			if (!ignoreFilterInitErrors()) {
+				addActionError(e);
+			}
+
+			log.info("Failed init filters", e);
 		}
 	}
 
@@ -81,6 +85,10 @@ public abstract class BuildingsFilterDependent2Action extends FPActionSupport {
 		}
 
 		return number.toString().trim();
+	}
+
+	protected boolean ignoreFilterInitErrors() {
+		return false;
 	}
 
 	/**

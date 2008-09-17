@@ -7,7 +7,7 @@ public class JobConfigurationNotFoundException extends FlexPayException {
         super(message);
     }
 
-    public JobConfigurationNotFoundException(String message, String errorKey, String... params) {
+    public JobConfigurationNotFoundException(String message, String errorKey, Object... params) {
         super(message, errorKey, params);
     }
 

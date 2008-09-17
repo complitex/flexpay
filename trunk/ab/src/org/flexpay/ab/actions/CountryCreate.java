@@ -28,7 +28,7 @@ public class CountryCreate extends FPActionSupport implements ServletRequestAwar
 		List<CountryNameTranslation> countryNames = initCountryNames();
 
 		// Need to create new Country
-		if (isPost()) {
+		if (isSubmit()) {
 			countryService.create(countryNames);
 			return SUCCESS;
 		}
@@ -67,7 +67,7 @@ public class CountryCreate extends FPActionSupport implements ServletRequestAwar
 			countryName.setLangTranslation(languageName);
 
 			// Actually got a form, extract data
-			if (isPost()) {
+			if (isSubmit()) {
 				countryName.setName(request.getParameter("name_" + lang.getId()));
 				countryName.setShortName(request.getParameter("shortname_" + lang.getId()));
 			}

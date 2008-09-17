@@ -6,7 +6,6 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.eirc.dao.ServiceDaoExt;
-import org.flexpay.eirc.persistence.AccountRecordType;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.ServiceType;
@@ -57,23 +56,6 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 			List objects = getHibernateTemplate()
 					.findByNamedQuery("ServiceProvider.findByOrganisationId", id);
 			return objects.isEmpty() ? null : (ServiceProvider) objects.get(0);
-		} finally {
-			getHibernateTemplate().setMaxResults(0);
-		}
-	}
-
-	/**
-	 * Find record type by id
-	 *
-	 * @param typeId Record type enum id
-	 * @return record type
-	 */
-	public AccountRecordType findRecordType(int typeId) {
-		try {
-			getHibernateTemplate().setMaxResults(1);
-			List objects = getHibernateTemplate().find(
-					"from AccountRecordType where typeId=?", typeId);
-			return objects.isEmpty() ? null : (AccountRecordType) objects.get(0);
 		} finally {
 			getHibernateTemplate().setMaxResults(0);
 		}

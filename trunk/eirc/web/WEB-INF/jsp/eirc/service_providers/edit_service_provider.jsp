@@ -18,7 +18,7 @@
 			</td>
 		</tr>
 		<tr valign="middle" class="cols_1">
-			<td colspan="2"><input type="submit" class="btn-exit" value="<s:text name="common.save"/>"/></td>
+			<td colspan="2"><input type="submit" name="submitted" Eclass="btn-exit" value="<s:text name="common.save"/>"/></td>
 		</tr>
 	</table>
 </s:form>

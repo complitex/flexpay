@@ -8,7 +8,7 @@ public class ProcessInstanceException extends FlexPayException {
         super(message);
     }
 
-    public ProcessInstanceException(String message, String errorKey, String... params) {
+    public ProcessInstanceException(String message, String errorKey, Object... params) {
         super(message, errorKey, params);
     }
 

@@ -56,21 +56,6 @@ public class SPServiceImpl implements SPService {
 	}
 
 	/**
-	 * Get record type by type id
-	 *
-	 * @param typeId Record type enum id
-	 * @return record type
-	 */
-	public AccountRecordType getRecordType(int typeId) {
-		AccountRecordType type = serviceDaoExt.findRecordType(typeId);
-		if (type == null) {
-			throw new IllegalArgumentException("Cannot find record type #" + typeId);
-		}
-
-		return type;
-	}
-
-	/**
 	 * List service providers
 	 *
 	 * @param pager Page

@@ -30,7 +30,7 @@ public class EditServiceTypeAction extends FPActionSupport {
 
 		ServiceType type = serviceTypeService.read(serviceType);
 
-		if (!isPost()) {
+		if (!isSubmit()) {
 			serviceType = type;
 			initNames();
 			return INPUT;

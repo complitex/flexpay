@@ -6,6 +6,7 @@
 	  action="<s:url action="eircAccountList" namespace="/eirc" includeParams="none" />">
 
 	<%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname_building_apartment.jsp" %>
+	<%@ include file="/WEB-INF/jsp/ab/filters/groups/person_search.jsp" %>
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
@@ -14,9 +15,9 @@
 			<td class="th" width="1%"><input type="checkbox" disabled="1"
 											 onchange="FP.setCheckboxes(this.checked, 'objectIds')">
 			</td>
-			<td class="th" width="33%"><s:text name="eirc.eirc_account"/></td>
-			<td class="th" width="33%"><s:text name="eirc.eirc_account.person"/></td>
-			<td class="th" width="32%"><s:text name="eirc.eirc_account.apartment"/></td>
+			<td class="th" width="14%"><s:text name="eirc.eirc_account"/></td>
+			<td class="th" width="42%"><s:text name="eirc.eirc_account.person"/></td>
+			<td class="th" width="42%"><s:text name="eirc.eirc_account.apartment"/></td>
 		</tr>
 		<s:iterator value="%{eircAccountList}" status="status">
 			<tr valign="middle" class="cols_1">

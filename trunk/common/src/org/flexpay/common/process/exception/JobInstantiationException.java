@@ -7,7 +7,7 @@ public class JobInstantiationException extends FlexPayException {
         super(message);
     }
 
-    public JobInstantiationException(String message, String errorKey, String... params) {
+    public JobInstantiationException(String message, String errorKey, Object... params) {
         super(message, errorKey, params);
     }
 

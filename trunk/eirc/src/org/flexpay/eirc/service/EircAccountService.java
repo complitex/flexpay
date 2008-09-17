@@ -45,7 +45,7 @@ public interface EircAccountService {
 	 * @param pager Accounts pager
 	 * @return List of EircAccount
 	 */
-	List<EircAccount> findAll(ArrayStack filters, Page<EircAccount> pager);
+	List<EircAccount> findAccounts(ArrayStack filters, Page<EircAccount> pager);
 
 	/**
 	 * Read full account info, includes person and service

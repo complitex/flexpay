@@ -83,7 +83,6 @@
 		  p:registryRecordDao-ref="spRegistryRecordDao"
 		  p:spService-ref="spService"
 		  p:spFileService-ref="spFileService"
-		  p:accountRecordService-ref="accountRecordService"
 		  p:quittanceService-ref="quittanceService"
 		  p:organisationService-ref="organisationService"
 		  p:reportPeriodService-ref="reportPeriodService"
@@ -98,9 +97,6 @@
 
 	<bean id="consumerInfoService" class="org.flexpay.eirc.service.imp.ConsumerInfoServiceImpl"
 		  p:consumerInfoDao-ref="consumerInfoDao" />
-
-	<bean id="accountRecordService" class="org.flexpay.eirc.service.imp.AccountRecordServiceImpl"
-		  p:accountRecordDao-ref="accountRecordDao" />
 
 	<bean id="organisationService" class="org.flexpay.eirc.service.imp.OrganisationServiceImpl"
 		  p:organisationDao-ref="organisationDao" />
@@ -155,7 +151,6 @@
 	<bean id="ticketService" class="org.flexpay.eirc.service.imp.TicketServiceImpl">
 		<property name="ticketDao" ref="ticketDao" />
 		<property name="serviceOrganisationService" ref="serviceOrganisationService" />
-		<property name="accountRecordService" ref="accountRecordService" />
 		<property name="ticketServiceAmountService" ref="ticketServiceAmountService" />
 	</bean>
 

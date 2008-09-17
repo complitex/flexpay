@@ -3,6 +3,8 @@ package org.flexpay.common.persistence.filter;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import java.util.Map;
+
 /**
  * Base class for all filters
  */
@@ -25,6 +27,10 @@ public class ObjectFilter {
 	 */
 	public boolean needFilter() {
 		return false;
+	}
+
+	public void initFilter(Map session) {
+		
 	}
 
 	@Override

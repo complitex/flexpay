@@ -38,7 +38,7 @@ public class EditServiceProviderAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		if (!isPost()) {
+		if (!isSubmit()) {
 			provider = serviceProvider;
 			initDescriptions();
 			return INPUT;

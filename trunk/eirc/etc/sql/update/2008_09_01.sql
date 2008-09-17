@@ -24,4 +24,4 @@ alter table ab_street_names_temporal_tbl
 
 create index I_external_account_number on eirc_consumers_tbl (external_account_number);
 
-update common_version_tbl set last_modified_date='2008-08-11', date_version=0;
+update common_version_tbl set last_modified_date='2008-09-01', date_version=0;

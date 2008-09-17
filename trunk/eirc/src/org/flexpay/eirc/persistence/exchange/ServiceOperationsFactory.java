@@ -25,7 +25,6 @@ public class ServiceOperationsFactory {
 	private ConsumerService consumerService;
 	private QuittanceService quittanceService;
 	private ConsumerInfoService consumerInfoService;
-	private AccountRecordService accountRecordService;
 	private OrganisationService organisationService;
 	private ReportPeriodService reportPeriodService;
 	private CorrectionsService correctionsService;
@@ -71,10 +70,6 @@ public class ServiceOperationsFactory {
 	private Operation getOperation(SpRegistry registry) throws FlexPayException {
 		int typeId = registry.getRegistryType().getCode();
 		switch (typeId) {
-			case RegistryType.TYPE_SALDO:
-				return new BalanceOperation(this);
-			case RegistryType.TYPE_QUITTANCE:
-				return new QuittanceOperation(this);
 		}
 
 		throw new UnsupportedRegistryTypeException("Registry type: " + typeId + " is not supported");
@@ -141,8 +136,7 @@ public class ServiceOperationsFactory {
 				return new OpenSubserviceAccountOperation(this, datum);
 
 				// Payment
-			case 50:
-				return new SimplePayment(this, datum);
+//			case 50:
 
 				// General info
 			case 100:
@@ -213,14 +207,6 @@ public class ServiceOperationsFactory {
 
 	public OrganisationService getOrganisationService() {
 		return organisationService;
-	}
-
-	public void setAccountRecordService(AccountRecordService accountRecordService) {
-		this.accountRecordService = accountRecordService;
-	}
-
-	public AccountRecordService getAccountRecordService() {
-		return accountRecordService;
 	}
 
 	public ReportPeriodService getReportPeriodService() {
