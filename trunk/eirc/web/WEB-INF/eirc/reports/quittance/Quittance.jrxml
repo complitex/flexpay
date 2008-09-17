@@ -36,7 +36,7 @@
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement key="line-4" x="1" y="262" width="534" height="2"/>
+				<reportElement key="line-4" x="0" y="262" width="534" height="1"/>
 			</line>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
 				<reportElement key="textField" x="0" y="0" width="140" height="15"/>

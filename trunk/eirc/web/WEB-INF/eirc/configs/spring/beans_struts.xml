@@ -201,6 +201,7 @@
 		  class="org.flexpay.eirc.actions.eirc_account.EircAccountListAction"
 		  p:eircAccountService-ref="eircAccountService"
 		  p:personService-ref="personService"
+		  p:parentService-ref="apartmentService"
 		  p:addressService-ref="addressService" />
 
 	<bean id="eircAccountViewAction" scope="prototype"
