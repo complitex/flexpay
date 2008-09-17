@@ -7,7 +7,7 @@ public interface EircAccountDaoExt {
 	/**
 	 * Find EIRC account by person and apartment identifiers
 	 *
-	 * @param personId Person key
+	 * @param personId	Person key
 	 * @param apartmentId Apartment key
 	 * @return EircAccount instance if found, or <code>null</code> otherwise
 	 */

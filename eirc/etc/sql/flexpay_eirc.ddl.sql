@@ -396,24 +396,6 @@
         primary key (id)
     );
 
-    create table eirc_account_record_types_tbl (
-        id bigint not null auto_increment,
-        description varchar(255) not null,
-        type_enum_id integer not null,
-        primary key (id)
-    );
-
-    create table eirc_account_records_tbl (
-        id bigint not null auto_increment,
-        consumer_id bigint not null comment 'Consumer reference',
-        organisation_id bigint comment 'Reference to organisation performed operation',
-        operation_date datetime not null,
-        amount decimal(19,2) not null,
-        record_type_id bigint not null comment 'Account record type reference',
-        source_registry_record_id bigint comment 'Registry record reference',
-        primary key (id)
-    );
-
     create table eirc_bank_accounts_tbl (
         id bigint not null auto_increment,
         version integer not null comment 'Optiomistic lock version',
@@ -1139,30 +1121,6 @@
         add constraint FK85F168F461F37403 
         foreign key (language_id) 
         references common_languages_tbl (id);
-
-    alter table eirc_account_records_tbl 
-        add index FK_eirc_account_record_consumer (consumer_id), 
-        add constraint FK_eirc_account_record_consumer 
-        foreign key (consumer_id) 
-        references eirc_consumers_tbl (id);
-
-    alter table eirc_account_records_tbl 
-        add index FK_eirc_account_record_record_type (record_type_id), 
-        add constraint FK_eirc_account_record_record_type 
-        foreign key (record_type_id) 
-        references eirc_account_record_types_tbl (id);
-
-    alter table eirc_account_records_tbl 
-        add index FK_eirc_account_record_organisation (organisation_id), 
-        add constraint FK_eirc_account_record_organisation 
-        foreign key (organisation_id) 
-        references eirc_organisations_tbl (id);
-
-    alter table eirc_account_records_tbl 
-        add index FK_eirc_account_record_registry_record (source_registry_record_id), 
-        add constraint FK_eirc_account_record_registry_record 
-        foreign key (source_registry_record_id) 
-        references eirc_registry_records_tbl (id);
 
     alter table eirc_bank_accounts_tbl 
         add index FK_eirc_bank_accounts_tbl_bank_id (bank_id), 

@@ -1,14 +1,13 @@
 package org.flexpay.eirc.dao;
 
-import org.flexpay.eirc.persistence.ServiceType;
-import org.flexpay.eirc.persistence.ServiceProvider;
-import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.AccountRecordType;
-import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.filter.ObjectFilter;
+import org.flexpay.eirc.persistence.Service;
+import org.flexpay.eirc.persistence.ServiceProvider;
+import org.flexpay.eirc.persistence.ServiceType;
 
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 public interface ServiceDaoExt {
 
@@ -31,14 +30,6 @@ public interface ServiceDaoExt {
 	ServiceProvider findByNumber(Long organisationId);
 
 	/**
-	 * Find record type by id
-	 *
-	 * @param typeId Record type enum id
-	 * @return record type
-	 */
-	AccountRecordType findRecordType(int typeId);
-
-	/**
 	 * List active services using filters and pager
 	 *
 	 * @param filters Set of filters to apply
@@ -50,10 +41,11 @@ public interface ServiceDaoExt {
 
 	/**
 	 * Find provider services of the specified type for date interval
+	 *
 	 * @param providerId Service provider identifier
-	 * @param typeId Service type identifier
-	 * @param beginDate Interval begin date
-	 * @param endDate interval end date
+	 * @param typeId	 Service type identifier
+	 * @param beginDate  Interval begin date
+	 * @param endDate	interval end date
 	 * @return List of services
 	 */
 	List<Service> findIntersectingServices(Long providerId, Long typeId, Date beginDate, Date endDate);

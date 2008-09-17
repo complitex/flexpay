@@ -49,7 +49,7 @@ public class EditServiceAction extends FPActionSupport {
 		serviceTypeFilter = serviceTypeService.initFilter(serviceTypeFilter);
 		parentServiceFilter = spService.initParentServicesFilter(parentServiceFilter);
 
-		if (!isPost()) {
+		if (!isSubmit()) {
 			service = srvc;
 			init();
 			return INPUT;

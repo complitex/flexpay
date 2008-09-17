@@ -1,15 +1,17 @@
 package org.flexpay.eirc.service.imp;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.filters.ApartmentFilter;
+import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.SequenceService;
 import org.flexpay.common.util.Luhn;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.dao.EircAccountDao;
 import org.flexpay.eirc.dao.EircAccountDaoExt;
 import org.flexpay.eirc.persistence.EircAccount;
@@ -18,7 +20,6 @@ import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.commons.collections.ArrayStack;
 
 import java.util.List;
 
@@ -102,14 +103,32 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 * Find EircAccounts
 	 *
 	 * @param filters Filters stack
-	 * @param pager Accounts pager
+	 * @param pager   Accounts pager
 	 * @return List of EircAccount
 	 */
-	public List<EircAccount> findAll(ArrayStack filters, Page<EircAccount> pager) {
+	public List<EircAccount> findAccounts(ArrayStack filters, Page<EircAccount> pager) {
+
+		PersonSearchFilter personSearchFilter = null;
+		if (filters.peek() instanceof PersonSearchFilter) {
+			personSearchFilter = (PersonSearchFilter) filters.peek();
+			if (personSearchFilter.needFilter()) {
+				String str = "%" + personSearchFilter.getSearchString() + "%";
+				return eircAccountDao.findByPersonFIO(str, pager);
+			}
+			personSearchFilter = (PersonSearchFilter) filters.pop();
+		}
 
 		if (filters.peek() instanceof ApartmentFilter) {
 			ApartmentFilter filter = (ApartmentFilter) filters.peek();
-			return eircAccountDao.findByApartment(filter.getSelectedId(), pager);
+			if (filter.needFilter()) {
+				if (personSearchFilter != null) {
+					filters.push(personSearchFilter);
+				}
+				return eircAccountDao.findByApartment(filter.getSelectedId(), pager);
+			}
+		}
+		if (personSearchFilter != null) {
+			filters.push(personSearchFilter);
 		}
 
 		return eircAccountDao.findObjects(pager);

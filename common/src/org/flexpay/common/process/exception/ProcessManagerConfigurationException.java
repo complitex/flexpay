@@ -7,7 +7,7 @@ public class ProcessManagerConfigurationException extends FlexPayException {
         super(message);
     }
 
-    public ProcessManagerConfigurationException(String message, String errorKey, String... params) {
+    public ProcessManagerConfigurationException(String message, String errorKey, Object... params) {
         super(message, errorKey, params);
     }
 

@@ -117,45 +117,6 @@
 		</property>
 	</class>
 
-	<class name="AccountRecordType" table="eirc_account_record_types_tbl"
-		   optimistic-lock="version">
-		<id name="id" column="id">
-			<generator class="native" />
-		</id>
-		<property name="description" not-null="true" />
-		<property name="typeId" not-null="true" column="type_enum_id" />
-	</class>
-
-	<class name="AccountRecord" table="eirc_account_records_tbl" optimistic-lock="version">
-		<id name="id" column="id">
-			<generator class="native" />
-		</id>
-		<many-to-one name="consumer" foreign-key="FK_eirc_account_record_consumer" class="Consumer">
-			<column name="consumer_id" not-null="true">
-				<comment>Consumer reference</comment>
-			</column>
-		</many-to-one>
-		<many-to-one name="organisation" foreign-key="FK_eirc_account_record_organisation" class="Organisation">
-			<column name="organisation_id" not-null="false">
-				<comment>Reference to organisation performed operation</comment>
-			</column>
-		</many-to-one>
-		<property name="operationDate" column="operation_date" not-null="true"
-				  type="timestamp" />
-		<property name="amount" type="big_decimal" not-null="true" />
-		<many-to-one name="recordType" foreign-key="FK_eirc_account_record_record_type" class="AccountRecordType">
-			<column name="record_type_id" not-null="true">
-				<comment>Account record type reference</comment>
-			</column>
-		</many-to-one>
-		<many-to-one name="sourceRegistryRecord" foreign-key="FK_eirc_account_record_registry_record"
-					 class="RegistryRecord">
-			<column name="source_registry_record_id" not-null="false">
-				<comment>Registry record reference</comment>
-			</column>
-		</many-to-one>
-	</class>
-
 	<class name="EircAccount" table="eirc_eirc_accounts_tbl">
 		<comment>EIRC Personal accounts table</comment>
 		<id name="id" column="id">
@@ -190,35 +151,6 @@
 		</set>
 		
 	</class>
-
-	<query name="AccountRecord.findRegisteredRecords.count">
-		select count(*) from AccountRecord
-		where organisation.id=? and consumer.id=? and operationDate=? and amount=? and
-		recordType.id=?
-	</query>
-
-	<query name="AccountRecord.findRegisteredRecords">
-		from AccountRecord
-		where organisation.id=? and consumer.id=? and operationDate=? and amount=? and
-		recordType.id=?
-	</query>
-
-	<query name="AccountRecord.findBalanceForDate">
-		<![CDATA[
-		SELECT SUM(record.amount)
-		FROM AccountRecord record
-		WHERE record.consumer.id=? AND record.operationDate<=?
-	]]>
-	</query>
-
-	<query name="AccountRecord.findCalculateServiceAmount">
-		SELECT record.consumer.id, sum(record.amount)
-		FROM AccountRecord record
-		WHERE record.consumer.responsiblePerson.id=? AND
-		record.consumer.apartment.id=? AND
-		record.operationDate <![CDATA[<]]> ?
-		GROUP BY record.consumer.id
-	</query>
 
 	<query name="Consumer.findConsumers.count">
 		select count(*)
@@ -255,11 +187,27 @@
 		where p.id=? and o.externalAccountNumber=? and s.externalCode=?
 	</query>
 
+	<query name="EircAccount.findByPersonFIO.count">
+		select count(a)
+		from EircAccount a
+			inner join a.person p
+			inner join p.personIdentities pi
+		where a.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName like ?
+	</query>
+	
+	<query name="EircAccount.findByPersonFIO">
+		select a
+		from EircAccount a
+			inner join a.person p
+			inner join p.personIdentities pi
+		where a.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName like ?
+	</query>
+
 	<query name="EircAccount.findByPersonAndApartment">
 		from EircAccount
 		where person.id=? and apartment.id=? and status=0
 	</query>
-	
+
 	<query name="EircAccount.findByApartment">
 		from EircAccount
 		where apartment.id=? and status=0

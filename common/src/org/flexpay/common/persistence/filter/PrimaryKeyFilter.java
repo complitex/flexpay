@@ -28,6 +28,7 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 	}
 
 	@SuppressWarnings({"unchecked"})
+	@Override
 	public void initFilter(Map session) {
 		String filterName = this.getClass().getName();
 		Long inSessionId = (Long) session.get(filterName);

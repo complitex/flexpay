@@ -21,7 +21,7 @@ public class SavePersonFIOAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (!isPost()) {
+		if (!isSubmit()) {
 			return REDIRECT_SUCCESS;
 		}
 

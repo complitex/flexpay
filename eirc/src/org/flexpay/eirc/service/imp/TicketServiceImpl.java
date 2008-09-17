@@ -3,14 +3,13 @@ package org.flexpay.eirc.service.imp;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.eirc.dao.TicketDao;
 import org.flexpay.eirc.pdf.PdfTicketWriter.ServiceAmountInfo;
 import org.flexpay.eirc.pdf.PdfTicketWriter.TicketInfo;
 import org.flexpay.eirc.persistence.*;
-import org.flexpay.eirc.service.AccountRecordService;
 import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.flexpay.eirc.service.TicketService;
 import org.flexpay.eirc.service.TicketServiceAmountService;
@@ -24,7 +23,6 @@ public class TicketServiceImpl implements TicketService {
 
 	private TicketDao ticketDao;
 	private ServiceOrganisationService serviceOrganisationService;
-	private AccountRecordService accountRecordService;
 	private TicketServiceAmountService ticketServiceAmountService;
 
 	@Transactional (readOnly = false)
@@ -83,12 +81,14 @@ public class TicketServiceImpl implements TicketService {
 		ticket.setApartment(apartment);
 		create(ticket);
 
-		List<Object[]> serviceAmountDateFromList = accountRecordService
-				.findCalculateServiceAmount(person.getId(), apartment.getId(),
-						dateFrom);
-		List<Object[]> serviceAmountDateTillList = accountRecordService
-				.findCalculateServiceAmount(person.getId(), apartment.getId(),
-						dateTill);
+		List<Object[]> serviceAmountDateFromList = null;
+//				accountRecordService
+//				.findCalculateServiceAmount(person.getId(), apartment.getId(),
+//						dateFrom);
+		List<Object[]> serviceAmountDateTillList = null;
+//		accountRecordService
+//				.findCalculateServiceAmount(person.getId(), apartment.getId(),
+//						dateTill);
 		Map<Long, TicketServiceAmount> map = new HashMap<Long, TicketServiceAmount>(
 				serviceAmountDateTillList.size());
 		for (Object[] element : serviceAmountDateFromList) {
@@ -110,9 +110,9 @@ public class TicketServiceImpl implements TicketService {
 				map.put(amount.getConsumer().getId(), amount);
 			}
 		}
-        for (TicketServiceAmount ticketServiceAmount : map.values()) {
-            ticketServiceAmountService.create(ticketServiceAmount);
-        }
+		for (TicketServiceAmount ticketServiceAmount : map.values()) {
+			ticketServiceAmountService.create(ticketServiceAmount);
+		}
 	}
 
 	private Integer getTicketNumber(Person person, Date dateTill) {
@@ -286,12 +286,14 @@ public class TicketServiceImpl implements TicketService {
 			if (amount == null || amount.compareTo(BigDecimal.ZERO) >= 0) {
 				continue;
 			}
-			AccountRecord record = new AccountRecord();
-			record.setAmount(amount.abs());
-			record.setConsumer(ticketServiceAmount.getConsumer());
-			record.setOperationDate(operationDate);
-			record.setRecordType(new AccountRecordType((long) AccountRecordType.TYPE_PAYMENT));
-			accountRecordService.create(record);
+//			AccountRecord record = new AccountRecord();
+//			record.setAmount(amount.abs());
+//			record.setConsumer(ticketServiceAmount.getConsumer());
+//			record.setOperationDate(operationDate);
+//			record.setRecordType(new AccountRecordType((long) AccountRecordType.TYPE_PAYMENT));
+
+			// todo save record
+//			accountRecordService.create(record);
 		}
 	}
 
@@ -301,14 +303,6 @@ public class TicketServiceImpl implements TicketService {
 	public void setServiceOrganisationService(
 			ServiceOrganisationService serviceOrganisationService) {
 		this.serviceOrganisationService = serviceOrganisationService;
-	}
-
-	/**
-	 * @param accountRecordService the accountRecordService to set
-	 */
-	public void setAccountRecordService(
-			AccountRecordService accountRecordService) {
-		this.accountRecordService = accountRecordService;
 	}
 
 	/**

@@ -4,6 +4,7 @@ import org.flexpay.ab.actions.apartment.ApartmentFilterDependent2Action;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
+import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.dao.paging.Page;
@@ -11,6 +12,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.service.EircAccountService;
 import org.jetbrains.annotations.NotNull;
+import org.apache.commons.collections.ArrayStack;
 
 import java.util.List;
 
@@ -21,9 +23,12 @@ public class EircAccountListAction extends ApartmentFilterDependent2Action {
 	private AddressService addressService;
 
 	private List<EircAccount> eircAccountList;
+
+	private PersonSearchFilter personSearchFilter = new PersonSearchFilter();
 	private Page<EircAccount> pager = new Page<EircAccount>();
 
 	public EircAccountListAction() {
+		apartmentFilter.setAllowEmpty(true);
 		apartmentFilter.setNeedAutoChange(true);
 	}
 
@@ -32,10 +37,42 @@ public class EircAccountListAction extends ApartmentFilterDependent2Action {
 
 		initFilters();
 
-		eircAccountList = eircAccountService.findAll(getFilters(), pager);
+		eircAccountList = eircAccountService.findAccounts(getFilters(), pager);
 
 
 		return SUCCESS;
+	}
+
+	/**
+	 * Getter for property 'filters'.
+	 *
+	 * @return Value for property 'filters'.
+	 */
+	@Override
+	public ArrayStack getFilters() {
+		ArrayStack filters = super.getFilters();
+		filters.push(personSearchFilter);
+
+		return filters;
+	}
+
+	/**
+	 * Setter for property 'filters'.
+	 *
+	 * @param filters Value to set for property 'filters'.
+	 */
+	@Override
+	public void setFilters(ArrayStack filters) {
+
+		setFilters(filters, 7);
+	}
+
+	@Override
+	protected int setFilters(ArrayStack filters, int n) {
+		n = super.setFilters(filters, n);
+		personSearchFilter = (PersonSearchFilter) filters.peek(--n);
+
+		return n;
 	}
 
 	/**
@@ -67,6 +104,11 @@ public class EircAccountListAction extends ApartmentFilterDependent2Action {
 		throw new RuntimeException("No default identity: " + persistent);
 	}
 
+	@Override
+	protected boolean ignoreFilterInitErrors() {
+		return true;
+	}
+
 	/**
 	 * @return the pager
 	 */
@@ -86,6 +128,14 @@ public class EircAccountListAction extends ApartmentFilterDependent2Action {
 	 */
 	public List<EircAccount> getEircAccountList() {
 		return eircAccountList;
+	}
+
+	public PersonSearchFilter getPersonSearchFilter() {
+		return personSearchFilter;
+	}
+
+	public void setPersonSearchFilter(PersonSearchFilter personSearchFilter) {
+		this.personSearchFilter = personSearchFilter;
 	}
 
 	public void setEircAccountService(EircAccountService eircAccountService) {

@@ -268,6 +268,11 @@ public class ApartmentServiceImpl implements ApartmentService {
 			filters = new ArrayStack();
 		}
 
+		ArrayStack stack = new ArrayStack();
+		while (!filters.isEmpty() && !(filters.peek() instanceof ApartmentFilter)) {
+			stack.push(filters.pop());
+		}
+
 		ApartmentFilter parentFilter = filters.isEmpty() ? null
 									   : (ApartmentFilter) filters.pop();
 
@@ -278,8 +283,11 @@ public class ApartmentServiceImpl implements ApartmentService {
 		parentFilter = initFilter(parentFilter, forefatherFilter, locale);
 		filters.push(parentFilter);
 
-		return filters;
+		while (!stack.isEmpty()) {
+			filters.push(stack.pop());
+		}
 
+		return filters;
 	}
 
 	public List<Apartment> getApartments(ArrayStack filters, Page pager) {

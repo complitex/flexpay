@@ -8,7 +8,7 @@ public class ProcessDefinitionException extends FlexPayException {
         super(message);
     }
 
-    public ProcessDefinitionException(String message, String errorKey, String... params) {
+    public ProcessDefinitionException(String message, String errorKey, Object... params) {
         super(message, errorKey, params);
     }
 
