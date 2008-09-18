@@ -2,15 +2,10 @@
 
 <s:actionerror/>
 
-<table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="fobjects" method="post" 
-		  action="<s:url value="/dicts/list_streets.action" includeParams="none" />">
-
-		<tr>
-			<td colspan="5">
-				<%@ include file="filters/groups/country_region_town_streetname.jsp" %>
-			</td>
-		</tr>
+<form id="fobjects" method="post"
+	  action="<s:url value="/dicts/list_streets.action" includeParams="none" />">
+	<%@ include file="filters/groups/country_region_town_streetname.jsp" %>
+	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
 		<tr>
 			<td colspan="5">
@@ -35,24 +30,26 @@
 		<s:iterator value="%{objectNames}" status="status">
 			<tr valign="middle" class="cols_1">
 				<td class="col_1s" align="right">
-					<s:property	value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
+					<s:property
+							value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
 				</td>
 				<td class="col">
-					<input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
+					<input type="checkbox" value="<s:property value="%{id}"/>"
+						   name="objectIds"/>
 				</td>
 				<td class="col">
-					<s:property value="%{getTranslation(getCurrentType().translations).name}"/>
+					<s:property
+							value="%{getTranslation(getCurrentType().translations).name}"/>
 				</td>
 				<td class="col">
 					<a href="<s:url value="/dicts/list_buildings.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{regionFilter.selectedId}&townFilter.selectedId=%{townFilter.selectedId}&streetNameFilter.selectedId=%{id}"/>">
-						<s:property value="%{getTranslation(getCurrentName().translations).name}"/>
+						<s:property
+								value="%{getTranslation(getCurrentName().translations).name}"/>
 					</a>
 				</td>
 				<td class="col">
 					<a href="<s:url value="/dicts/view_street.action?object.id=%{id}"/>">
-						<!-- <img src="<s:url value="/resources/common/img/i_view.gif" />" alt="<s:text name="common.view"/>"
-						 title="<s:text name="common.view"/>" /> -->
-						<s:text name="common.view"/> 
+						<s:text name="common.view"/>
 					</a>
 				</td>
 			</tr>
@@ -68,5 +65,5 @@
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
-	</form>
-</table>
+	</table>
+</form>

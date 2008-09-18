@@ -6,11 +6,12 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.Set;
-import java.util.SortedSet;
+import java.util.*;
 
 /**
  * Town
@@ -134,6 +135,39 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 
 	@NotNull
 	public Stub<Region> getRegionStub() {
-		return new Stub<Region>(getParent().getId());
+		return new Stub<Region>(getParentStub().getId());
 	}
+
+	/**
+	 * Find value for date
+	 *
+	 * @param dt Date to get value for
+	 * @return Value which interval includes specified date, or <code>null</code> if not found
+	 */
+	@Nullable
+	public TownType getTypeForDate(Date dt) {
+		if (typesTimeLine == null) {
+			return null;
+		}
+		List<TownTypeTemporal> intervals = typesTimeLine.getIntervals();
+		for (TownTypeTemporal di : intervals) {
+			if (DateIntervalUtil.includes(dt, di)) {
+				return di.getValue();
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Find value for current date
+	 *
+	 * @return Value which interval includes specified date, or <code>null</code> if not found
+	 */
+	@Nullable
+	public TownType getCurrentType() {
+		return getTypeForDate(DateUtil.now());
+	}
+
+
 }

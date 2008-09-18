@@ -154,7 +154,7 @@ public class RawConsumerData extends RawData<Consumer> {
 	/**
 	 * Get correction id for consumer, includes Account number | service code
 	 *
-	 * @return Correction ID for street
+	 * @return Correction ID for consumer
 	 */
 	public String getShortConsumerId() {
 		return new StringBuilder()
@@ -192,5 +192,18 @@ public class RawConsumerData extends RawData<Consumer> {
 				&& StringUtils.isBlank(getLastName())
 				&& StringUtils.isBlank(getMiddleName())
 				&& StringUtils.isBlank(getAddressStreetType());
+	}
+
+	/**
+	 * Get correction id for person, includes Account number | Address | FIO
+	 *
+	 * @return Correction ID for person
+	 */
+	public String getPersonFIOId() {
+		return new StringBuilder()
+				.append(getPersonFIO())
+				.append(getAccountNumber()).append("|")
+				.append(getApartmentId())
+				.toString();
 	}
 }

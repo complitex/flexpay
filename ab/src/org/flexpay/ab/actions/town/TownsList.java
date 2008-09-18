@@ -8,12 +8,18 @@ import org.flexpay.ab.persistence.TownNameTemporal;
 import org.flexpay.ab.persistence.TownNameTranslation;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
+import org.flexpay.common.exception.FlexPayException;
 
 public class TownsList extends ListAction<
 		TownName, TownNameTemporal, Town, TownNameTranslation> {
 
 	private CountryFilter countryFilter = new CountryFilter();
 	private RegionFilter regionFilter = new RegionFilter();
+
+	protected void initObjects(ArrayStack filters) throws FlexPayException {
+
+		objectNames = nameTimeDependentService.find(filters, pager);
+	}
 
 	/**
 	 * Getter for property 'countryFilter'.

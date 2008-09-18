@@ -27,6 +27,10 @@ public class NameTimeDependentChild<T extends TemporaryValue<T>, DI extends Date
 		return parent;
 	}
 
+	public Stub<DomainObject> getParentStub() {
+		return new Stub<DomainObject>(parent);
+	}
+
 	/**
 	 * Setter for property 'parent'.
 	 *

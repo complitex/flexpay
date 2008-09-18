@@ -185,8 +185,11 @@
 		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
-	<bean id="correctRecordPersonAction" scope="prototype"
+	<bean id="correctPersonAction" scope="prototype" parent="listPersons"
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectPersonAction">
+		<property name="consumersDataSource" ref="consumersDataSource" />
+		<property name="correctionsService" ref="correctionsServiceEirc" />
+		<property name="recordService" ref="spRegistryRecordService" />
 	</bean>
 
 	<bean id="processListAction" scope="prototype"

@@ -44,12 +44,17 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{apartmentAddress}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="140" y="1" width="395" height="44"/>
+				<reportElement x="140" y="1" width="129" height="175"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servicesTotals})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "sub_services.jasper"]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "services.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="269" y="1" width="155" height="108"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JRDataSource()]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "subservices.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

@@ -45,7 +45,7 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 
 			jrDataSource.setQuittances(quittances);
 			String filledReportName = reportUtil.runReport("Quittance", jrDataSource);
-			File reportPath = reportUtil.exportToRtf(filledReportName);
+			File reportPath = reportUtil.exportToHtml(filledReportName);
 
 			contextVariables.put(RESULT_FILE_NAME, reportPath.getAbsolutePath());
 

@@ -125,9 +125,9 @@
 			<result name="complete" type="tiles">eirc.registry.record.correct_address_complete</result>
 		</action>
 
-		<action name="registry_record_correct_person" class="correctRecordPersonAction">
+		<action name="registry_record_correct_person" class="correctPersonAction">
 			<result type="tiles">eirc.registry.record.correct_person</result>
-			<result name="complete" type="tiles">eirc.registry.record.correct_address_complete</result>
+			<result name="complete" type="tiles">eirc.registry.record.correct_person_complete</result>
 		</action>
 
 		<action name="process_registries" class="processRegistriesAction">

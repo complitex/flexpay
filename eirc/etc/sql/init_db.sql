@@ -4,16 +4,6 @@ insert into common_data_source_descriptions_tbl (id, description)
 -- Init Sequences table
 INSERT INTO common_sequences_tbl (id, counter, description) VALUES (1, 10, 'Последовательность для ЛС модуля ЕИРЦ');
 
--- Init personal account record types
-INSERT INTO eirc_account_record_types_tbl (type_enum_id, description)
-	VALUES (0, 'Ошибочный');
-INSERT INTO eirc_account_record_types_tbl (type_enum_id, description)
-	VALUES (1, 'Входящая оплата');
-INSERT INTO eirc_account_record_types_tbl (type_enum_id, description)
-	VALUES (2, 'Исходящая оплата');
-INSERT INTO eirc_account_record_types_tbl (type_enum_id, description)
-	VALUES (3, 'Сальдо');
-
 -- Init service providers registry types
 INSERT INTO eirc_registry_types_tbl (id, code) VALUES (1, 1);
 select @registry_type:=1;
