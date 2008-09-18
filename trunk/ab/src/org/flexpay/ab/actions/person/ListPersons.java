@@ -1,8 +1,8 @@
 package org.flexpay.ab.actions.person;
 
 import org.apache.commons.collections.ArrayStack;
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Person;
+import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
@@ -18,20 +18,23 @@ public class ListPersons extends FPActionSupport {
 	private PersonService personService;
 
 	private List<Person> persons = new ArrayList<Person>();
-	private String searchString;
+
+
+	private PersonSearchFilter personSearchFilter = new PersonSearchFilter();
+
 	private Page pager = new Page();
 
 	@NotNull
 	@Override
-	public String doExecute() throws Exception {
+	protected String doExecute() throws Exception {
 
-		if (StringUtils.isEmpty(searchString)) {
+		if (!personSearchFilter.needFilter()) {
 			ArrayStack filters = parentService == null ? null :
 								 parentService.initFilters(getFilters(), userPreferences.getLocale());
 
 			persons = personService.findPersons(filters, pager);
 		} else {
-			persons = personService.findByFIO(pager, "%" + searchString + "%");
+			persons = personService.findByFIO(pager, "%" + personSearchFilter.getSearchString() + "%");
 		}
 
 		return SUCCESS;
@@ -40,7 +43,8 @@ public class ListPersons extends FPActionSupport {
 	/**
 	 * Get default error execution result
 	 * <p/>
-	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in
+	 * a session
 	 *
 	 * @return {@link #ERROR} by default
 	 */
@@ -99,17 +103,11 @@ public class ListPersons extends FPActionSupport {
 		return persons;
 	}
 
-	/**
-	 * @return the searchString
-	 */
-	public String getSearchString() {
-		return searchString;
+	public PersonSearchFilter getPersonSearchFilter() {
+		return personSearchFilter;
 	}
 
-	/**
-	 * @param searchString the searchString to set
-	 */
-	public void setSearchString(String searchString) {
-		this.searchString = searchString;
+	public void setPersonSearchFilter(PersonSearchFilter personSearchFilter) {
+		this.personSearchFilter = personSearchFilter;
 	}
 }

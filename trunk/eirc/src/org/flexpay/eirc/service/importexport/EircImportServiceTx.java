@@ -194,6 +194,14 @@ public class EircImportServiceTx extends ImportService {
 	private Person findPerson(DataSourceDescription sd, @NotNull RawConsumerData data,
 							  RawDataSource<RawConsumerData> dataSource) throws Exception {
 
+		// first try to find person via set correction
+		Stub<Person> personById = correctionsService.findCorrection(
+				data.getPersonFIOId(), Person.class, sd);
+		if (personById != null) {
+			log.info("Found person correction");
+			return new Person(personById);
+		}
+
 		List<Person> persons = personService.findRegisteredPersons(
 				stub(data.getRegistryRecord().getApartment()));
 		if (persons.isEmpty()) {
@@ -385,7 +393,6 @@ public class EircImportServiceTx extends ImportService {
 		DataCorrection corr = correctionsService.getStub(data.getBuildingId(), buildings, sd);
 		log.info("Adding buildings correction: " + data.getBuildingId());
 		addToStack(corr);
-
 
 		return findApartment(data, buildings, sd, dataSource);
 	}

@@ -2,20 +2,12 @@
 
 <s:actionerror/>
 
-<table cellpadding="3" cellspacing="1" border="0" width="100%">
+<form id="fobjects" method="post"
+	  action="<s:url action="list_persons" includeParams="none" />">
 
-	<form id="fobjects" method="post" action="<s:url action="list_persons" includeParams="none" />">
+	<%@ include file="filters/groups/person_search.jsp" %>
 
-		<tr>
-			<td colspan="7">
-				<s:textfield name="searchString" value="%{searchString}"/>
-				<input type="submit" class="btn-exit" value="<s:text name="menu1.search"/>"/>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="7">&nbsp;</td>
-		</tr>
-
+	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
@@ -57,5 +49,5 @@
 			</td>
 		</tr>
 
-	</form>
-</table>
+	</table>
+</form>

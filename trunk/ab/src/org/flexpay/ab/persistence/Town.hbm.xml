@@ -70,12 +70,21 @@
 	</class>
 
 	<query name="Town.findObjects">
-		FROM Town t
-		WHERE t.status=? and t.parent.id=?
+		SELECT DISTINCT o
+		FROM Town o
+		LEFT JOIN FETCH o.nameTemporals t
+		LEFT JOIN FETCH t.value v
+		LEFT JOIN FETCH v.translations tr
+		LEFT JOIN FETCH o.typeTemporals tt
+		LEFT JOIN FETCH tt.value tv
+		LEFT JOIN FETCH tv.translations ttr
+		WHERE t.invalidDate='2100-12-31' and (tt is null or tt.invalidDate ='2100-12-31')
+		and o.status=? and o.parent.id=?
 	</query>
 
 	<query name="Town.findObjects.count">
-		select count(*) from Town t where t.status=? and t.parent.id=?
+		select count(*) from Town t
+		where t.status=? and t.parent.id=?
 	</query>
 
 	<query name="Town.readFull">
