@@ -153,18 +153,29 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 		StreetName name = object.getCurrentName();
 		StreetType type = object.getCurrentType();
 		if (name == null || name.getTranslations().isEmpty() || type == null) {
+			log.debug("No current name or type found");
 			return null;
 		}
 		String nameStr = name.getTranslations().iterator().next().getName();
-		List<Street> streets = streetService.findByName(nameStr.toLowerCase(), new TownFilter(object.getParent().getId()));
-		streets = filterStreetsByType(streets, type);
 
+		List<Street> streets = streetService.findByName(nameStr, new TownFilter(object.getParent().getId()));
+
+		if (log.isDebugEnabled()) {
+			log.debug("Looked up for " + nameStr + ", found " + streets.size());
+		}
 		if (streets.isEmpty()) {
 			return null;
 		}
 
+		streets = filterStreetsByType(streets, type);
+
+		if (streets.isEmpty()) {
+			log.debug("All candidates filtered by type");
+			return null;
+		}
+
 		if (streets.size() > 1) {
-			log.warn("Found similar streets: " + streets);
+			log.warn("Found several similar streets: " + streets);
 		}
 
 		return stub(streets.get(0));
