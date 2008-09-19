@@ -10,10 +10,10 @@
 		 pageHeight="842"
 		 columnWidth="535"
 		 columnSpacing="0"
-		 leftMargin="20"
-		 rightMargin="20"
-		 topMargin="20"
-		 bottomMargin="20"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="0"
 		 whenNoDataType="NoPages"
 		 isTitleNewPage="false"
 		 isSummaryNewPage="false">
@@ -22,12 +22,17 @@
 	<import value="java.util.*" />
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
+	<reportFont name="Arial_Normal" isDefault="true" fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="/tmp/tahoma.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
 
 
-	<field name="subserviceName" class="java.lang.String"/>
+	<field name="serviceTypeName" class="java.lang.String"/>
 	<field name="tarif" class="java.lang.String"/>
 	<field name="recalculation" class="java.math.BigDecimal"/>
 
+	<variable name="recalculationTotal" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{recalculation}]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -44,14 +49,38 @@
 			<band height="30"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
+						mode="Transparent"
+						x="0"
+						y="0"
+						width="207"
+						height="29"
+						key="staticText"/>
+					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font reportFont="Arial_Normal" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Составляющие кварплаты]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
 						x="207"
 						y="0"
 						width="51"
 						height="29"
 						key="staticText"/>
-					<box></box>
+					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true" isPdfEmbedded ="true" pdfEncoding ="Cp1251"/>
+						<font reportFont="Arial_Normal" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Тариф грн/м2]]></text>
 				</staticText>
@@ -59,12 +88,17 @@
 					<reportElement
 						x="258"
 						y="0"
-						width="64"
+						width="112"
 						height="29"
 						key="staticText"/>
-					<box></box>
+					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true" pdfEncoding ="Cp1251"/>
+						<font reportFont="Arial_Normal" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Перерасчет]]></text>
 				</staticText>
@@ -79,11 +113,16 @@
 						width="207"
 						height="20"
 						key="textField"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font/>
+					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font reportFont="Arial_Normal"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{subserviceName}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{serviceTypeName}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -92,43 +131,39 @@
 						width="51"
 						height="20"
 						key="textField"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font/>
+					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font reportFont="Arial_Normal"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{tarif}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="0"
-						y="-30"
-						width="207"
-						height="29"
-						key="staticText"/>
-					<box></box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true" pdfEncoding ="Cp1251"/>
-					</textElement>
-				<text><![CDATA[Составляющие кварплаты]]></text>
-				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="258"
 						y="0"
-						width="90"
+						width="112"
 						height="20"
 						key="textField"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font/>
+					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font reportFont="Arial_Normal"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{recalculation}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{recalculation}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
 		<columnFooter>
-			<band height="45"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</columnFooter>
 		<pageFooter>
@@ -136,7 +171,61 @@
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="20"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="0"
+						y="0"
+						width="207"
+						height="19"
+						key="staticText-1"/>
+					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font reportFont="Arial_Normal" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[ВСЕГО: ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="258"
+						y="0"
+						width="112"
+						height="19"
+						key="textField-1"/>
+					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font reportFont="Arial_Normal"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{recalculationTotal}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="207"
+						y="1"
+						width="51"
+						height="19"
+						key="staticText"/>
+					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+</box>
+					<textElement>
+						<font reportFont="Arial_Normal"/>
+					</textElement>
+				<text><![CDATA[]]></text>
+				</staticText>
 			</band>
 		</summary>
 </jasperReport>

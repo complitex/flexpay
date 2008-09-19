@@ -45,7 +45,7 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 
 			jrDataSource.setQuittances(quittances);
 			String filledReportName = reportUtil.runReport("Quittance", jrDataSource);
-			File reportPath = reportUtil.exportToHtml(filledReportName);
+			File reportPath = reportUtil.exportToPdf(filledReportName);
 
 			contextVariables.put(RESULT_FILE_NAME, reportPath.getAbsolutePath());
 
@@ -61,7 +61,8 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 
 	private void uploadReportTemplates() throws Exception {
 		uploadReportTemplate("Quittance");
-		uploadReportTemplate("sub_services");
+		uploadReportTemplate("services");
+		uploadReportTemplate("subservices");
 	}
 
 	private void uploadReportTemplate(String name) throws Exception {

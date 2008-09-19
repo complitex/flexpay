@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public abstract class ServiceTotalsBase {
 
 	private ServiceType serviceType;
-	private String rate = "";
+	private String tarif = "";
 	private BigDecimal expence = BigDecimal.ZERO;
 	private String expenceUnitKey;
 	private BigDecimal charges = BigDecimal.ZERO;
@@ -35,12 +35,12 @@ public abstract class ServiceTotalsBase {
 		return name;
 	}
 
-	public String getRate() {
-		return rate;
+	public String getTarif() {
+		return tarif;
 	}
 
-	public void setRate(String rate) {
-		this.rate = rate;
+	public void setTarif(String tarif) {
+		this.tarif = tarif;
 	}
 
 	public BigDecimal getExpence() {
@@ -169,7 +169,7 @@ public abstract class ServiceTotalsBase {
 	public String toString() {
 		return new ToStringBuilder(this).
 				append("serviceType", serviceType).
-				append("rate", rate).
+				append("tarif", tarif).
 				append("expence", expence).
 				append("expenceUnitKey", expenceUnitKey).
 				append("charges", charges).

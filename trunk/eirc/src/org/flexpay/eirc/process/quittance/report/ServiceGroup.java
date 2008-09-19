@@ -88,7 +88,7 @@ public class ServiceGroup {
 
 			if (isFirst) {
 				totals.addIncomingDebt(qd.getIncomingBalance());
-				totals.setRate(qd.getRate());
+				totals.setTarif(qd.getRate());
 			}
 			if (isLast) {
 				totals.addOutgoingDebt(qd.getOutgoingBalance());
