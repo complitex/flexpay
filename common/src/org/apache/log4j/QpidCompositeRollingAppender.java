@@ -544,7 +544,8 @@ public class QpidCompositeRollingAppender extends FileAppender
 
         if (files != null)
         {
-            for (int i = 0; i < files.length; i++)
+			//noinspection ForLoopReplaceableByForEach
+			for (int i = 0; i < files.length; i++)
             {
                 if (!files[i].startsWith(baseFileName))
                 {

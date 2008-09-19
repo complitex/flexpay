@@ -7,9 +7,9 @@
   </component>
   <component name="BuildServerSettings">
     <option name="HISTORY" value="" />
-    <option name="LOGIN" value="mixA" />
-    <option name="SERVER_URL" value="http://localhost:8111" />
-    <option name="PASSWORD" value="dfc9dfcfdfc6dfc0dfc2dfc0dfdfdfcc" />
+    <option name="LOGIN" value="mfedko" />
+    <option name="SERVER_URL" value="http://192.168.1.103:8080/teamCity" />
+    <option name="PASSWORD" value="df9bdf98df99df9edf9fdf9c" />
     <option name="REMEMBER_ME" value="true" />
     <option name="USE_IDEA_PROXY_SETTINGS" value="true" />
     <option name="INSPECTIONS_BUILD_TYPE_NAME" />
@@ -25,6 +25,102 @@
     <option name="FILTER_REMOTE_RUN_TREE" value="false" />
     <option name="FILTER_BY_STATUS" value="false" />
     <option name="SHOW_CLOSE_PROMPT" value="true" />
+    <TreeState key="project">
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Root" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Impex" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ProjectDescriptor" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Root" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPayTests" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ProjectDescriptor" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Root" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay inspections" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ProjectDescriptor" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Root" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay duplicates finder" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ProjectDescriptor" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Root" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Eirc auto deploy" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ProjectDescriptor" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Root" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
+        </PATH_ELEMENT>
+      </PATH>
+    </TreeState>
+    <TreeState key="changes">
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Root" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ChangesGroup::Older" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ChangesGroupDescriptor" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Root" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ChangesGroup::Yesterday" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ChangesGroupDescriptor" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Root" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ChangesGroup::Today" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ChangesGroupDescriptor" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Root" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
+        </PATH_ELEMENT>
+      </PATH>
+    </TreeState>
   </component>
   <component name="CCaseConfig">
     <option name="checkoutReserved" value="false" />
@@ -41,29 +137,28 @@
     <option name="historyRevisionsNumber" value="4" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/organisations/list_organisations.jsp" afterPath="$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/organisations/list_organisations.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/i18n/messages_ru.properties" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/i18n/messages_ru.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/i18n/messages.properties" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/i18n/messages.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/actions/FPActionSupport.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/actions/FPActionSupport.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/locking/TestLockManager.java" afterPath="$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/locking/TestLockManager.java" />
+    <list default="true" readonly="true" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/web/WEB-INF/common/configs/ps/app_server_glassfish.properties" afterPath="$PROJECT_DIR$/../../common/web/WEB-INF/common/configs/ps/app_server_glassfish.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/ActFilesId.java" afterPath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/ActFilesId.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/imp/TownTypeServiceImpl.java" afterPath="$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/imp/TownTypeServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sz.iml" afterPath="$PROJECT_DIR$/sz.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FlexPay.iws" afterPath="$PROJECT_DIR$/FlexPay.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/actions/organisation/EditOrganisationAction.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/actions/organisation/EditOrganisationAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/i18n/errors.properties" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/i18n/errors.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eirc.iml" afterPath="$PROJECT_DIR$/eirc.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/common.iml" afterPath="$PROJECT_DIR$/common.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FlexPay.ipr" afterPath="$PROJECT_DIR$/FlexPay.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/i18n/errors_ru.properties" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/i18n/errors_ru.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/common_build.xml" afterPath="$PROJECT_DIR$/../../common/common_build.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/organisations/edit_organisation.jsp" afterPath="$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/organisations/edit_organisation.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/imp/OrganisationServiceImpl.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/imp/OrganisationServiceImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bti.iml" afterPath="$PROJECT_DIR$/bti.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/PersonactId.java" afterPath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/PersonactId.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ab_sync.iml" afterPath="$PROJECT_DIR$/ab_sync.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ab.iml" afterPath="$PROJECT_DIR$/ab.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/web/WEB-INF/common/configs/ps/app_server_tomcat.properties" afterPath="$PROJECT_DIR$/../../common/web/WEB-INF/common/configs/ps/app_server_tomcat.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/ActsId.java" afterPath="$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/ActsId.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/apache/log4j/QpidCompositeRollingAppender.java" afterPath="$PROJECT_DIR$/../../common/src/org/apache/log4j/QpidCompositeRollingAppender.java" />
     </list>
-    <list name="Platform-Dependent" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/common_build.properties" afterPath="$PROJECT_DIR$/../../common/common_build.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/web/WEB-INF/common/configs/spring/data_export.properties" afterPath="$PROJECT_DIR$/../../common/web/WEB-INF/common/configs/spring/data_export.properties" />
-    </list>
+    <list name="WorkSpace" comment="WorkSpace" />
     <ignored path="FlexPay.iws" />
     <ignored path=".idea/workspace.xml" />
   </component>
-  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="true" />
   <component name="Commander">
     <leftPanel />
     <rightPanel />
@@ -112,6 +207,15 @@
     <breakpoint_rules />
     <ui_properties />
   </component>
+  <component name="FacetEditorsStateManager">
+    <facet-type-state type="javaeeApplication">
+      <facet-type>
+        <state>
+          <packaging-tree show-included-content="true" show-library-files="true" />
+        </state>
+      </facet-type>
+    </facet-type-state>
+  </component>
   <component name="FavoritesManager">
     <favorites_list name="FlexPay" />
   </component>
@@ -120,7 +224,7 @@
   </component>
   <component name="FindManager">
     <FindUsagesManager>
-      <setting name="OPEN_NEW_TAB" value="true" />
+      <setting name="OPEN_NEW_TAB" value="false" />
     </FindUsagesManager>
   </component>
   <component name="HierarchyBrowserManager">
@@ -133,48 +237,56 @@
   </component>
   <component name="JspContextManager">
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/pager.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/regions_list.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/service_providers/edit_service_provider.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/date_interval_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/regions_list.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/person_search.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/eirc_account/eirc_account_list.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/organisations/edit_bank.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/town_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/town_create.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/service_provider_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/group/begin_end_dates_service_provider.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_streetname_building.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/recipient_organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/street_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/street_edit_type.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/towns_list.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname_building_apartment.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/eirc_account/eirc_account_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_edit_fio.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_edit.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/layouts/language_switch.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/ab/menu/menu1.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_identities.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street_building.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/apartment_edit.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/town_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/district_create.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/street_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/registry_record_status_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/view_registry.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/recipient_organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_registration.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/sender_organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/street_search_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/country_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/region_create.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/import_error_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/view_registry.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/region_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/town_create.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/towns_list.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/sender_organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/apartment_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_set_registration_form.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/registry_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/registry_info.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/view_registry.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/service_provider_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/group/begin_end_dates_service_provider.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/group/begin_end_dates_service_provider.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/services/list_services.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_set_registration_form.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_edit.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/regions_list.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/layouts/language_switch.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/ab/menu/menu1.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address_building.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/date_interval_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/buildings_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/begin_date_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/group/begin_end_dates_service_provider.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_atributes.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_list_identities.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_edit.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/regions_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_fio.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/buildings_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname_building.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/apartments_list.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/pager.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/regions_list.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_list_identities.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_edit.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/header.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/footer.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/service_organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/quittances/generate_quittances.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/parent_service_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/services/edit_service.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/service_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/services/edit_service.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/taglibs.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/welcome.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/apartment_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_set_registration_form.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_identities.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/subdivision_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/organisations/edit_subdivision.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_registration.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/district_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address_street.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/districts_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/registry_record_info.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/person_search_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/person_search.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/end_date_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/group/begin_end_dates_service_provider.jsp" />
   </component>
   <component name="ModuleEditorState">
@@ -182,94 +294,7 @@
     <option name="LAST_EDITED_TAB_NAME" />
   </component>
   <component name="PackagesPane">
-    <subPane>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="org.flexpay.ab" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="org.flexpay.ab" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="persistence" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-        </PATH_ELEMENT>
-      </PATH>
-    </subPane>
-  </component>
-  <component name="ProjectInspectionProfilesVisibleTreeState">
-    <profile-state profile-name="Project Default">
-      <state>
-        <expanded_node name="Probable bugs" />
-        <expanded_node name="Resource management issues" />
-        <expanded_node name="Threading issues" />
-        <expanded_node name="Visibility issues" />
-        <expanded_node name="Initialization issues" />
-        <expanded_node name="Struts 2" />
-        <expanded_node name="Security issues" />
-        <expanded_node name="Properties Files" />
-        <expanded_node name="Inspections" />
-        <selected_node name="UnusedProperty" />
-      </state>
-    </profile-state>
-    <profile-state profile-name="FlexPay">
-      <state>
-        <expanded_node name="Serialization issues" />
-        <expanded_node name="Logging issues" />
-        <expanded_node name="Resource management issues" />
-        <expanded_node name="Threading issues" />
-        <expanded_node name="Struts Assistant" />
-        <expanded_node name="Initialization issues" />
-        <expanded_node name="Inspections" />
-        <selected_node name="StrutsTilesInspection" />
-      </state>
-    </profile-state>
+    <subPane />
   </component>
   <component name="ProjectLevelVcsManager">
     <OptionsSetting value="true" id="Add" />
@@ -297,7 +322,7 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -307,11 +332,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -321,11 +346,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -343,11 +368,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -359,11 +384,7 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="jsp" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -373,11 +394,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -389,15 +410,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="jsp" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="organisations" />
+          <option name="myItemId" value="configs" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -407,11 +424,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -423,7 +440,15 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="jsp" />
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="configs" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="spring" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -433,37 +458,31 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
           <option name="myItemId" value="web" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
-      </PATH>
-      <PATH>
         <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="WEB-INF" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="configs" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ps" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -473,23 +492,23 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
+          <option name="myItemId" value="web" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="resources" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="service" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -499,27 +518,27 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
+          <option name="myItemId" value="web" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="resources" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="service" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="imp" />
+          <option name="myItemId" value="js" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -529,11 +548,45 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="web" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="resources" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="js" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="jscalendar" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -541,7 +594,37 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
+          <option name="myItemId" value="org" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="org" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -549,7 +632,7 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="Resource Bundle 'messages'" />
+          <option name="myItemId" value="Resource Bundle 'common-messages'" />
           <option name="myItemType" value="com.intellij.lang.properties.projectView.ResourceBundleNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -559,112 +642,6 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="i18n" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="actions" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="actions" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="organisation" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
           <option name="myItemId" value="common" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
@@ -677,7 +654,11 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="org" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="log4j" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -687,11 +668,327 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="bti" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="bti" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="bti" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="bti" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="bti" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="web" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="bti" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="bti" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="web" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="WEB-INF" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="bti" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="bti" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="web" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="WEB-INF" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="bti" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="bti" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="bti" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="web" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="WEB-INF" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="bti" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="configs" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="spring" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab_sync" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab_sync" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab_sync" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab_sync" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab_sync" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="web" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="WEB-INF" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab_sync" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab_sync" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="web" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="WEB-INF" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab_sync" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="configs" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="spring" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab_sync" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab_sync" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="web" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="web" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="WEB-INF" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="web" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="WEB-INF" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="jsp" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="web" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -699,11 +996,63 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="actions" />
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FlexPay" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="src" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="ab" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="service" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="imp" />
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
@@ -727,36 +1076,37 @@
     </navigator>
   </component>
   <component name="PropertiesComponent">
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="100" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="71" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="15" />
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="31" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="96" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="15" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="15" />
     <property name="project.structure.proportion" value="0.15" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="15" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
     <property name="RunManagerConfig.showSettingsBeforeRunnig" value="false" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder3" value="3" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder2" value="2" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth2" value="75" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth2" value="15" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder4" value="4" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth1" value="81" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth0" value="81" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth4" value="755" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth3" value="81" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth1" value="15" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth0" value="15" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth4" value="15" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth3" value="15" />
     <property name="GoToClass.includeJavaFiles" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="TEMP_MODULE_EXPLODED_DIR_FOR_ab/web/Web" value="C:\Temp\webExplodedDir39919tmp" />
     <property name="MemberChooser.showClasses" value="true" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth4" value="775" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth4" value="15" />
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder4" value="4" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder1" value="1" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder2" value="2" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder2" value="2" />
     <property name="TEMP_MODULE_EXPLODED_DIR_FOR_eirc/web/Web" value="/tmp/webExplodedDir41318tmp" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder0" value="0" />
     <property name="MemberChooser.copyJavadoc" value="false" />
@@ -764,124 +1114,35 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="org.flexpay.eirc.persistence" />
-      <recent name="org.flexpay.ab.dao" />
-      <recent name="org.flexpay.ab.persistence.filters" />
-      <recent name="org.flexpay.eirc.persistence.filters" />
-      <recent name="org.flexpay.ab.dao.imp" />
-    </key>
-    <key name="MoveMembersDialog.RECENTS_KEY">
-      <recent name="org.flexpay.common.util.DateUtil" />
+      <recent name="org.flexpay.ab.actions.apartment" />
+      <recent name="org.flexpay.eirc.process.quittance" />
+      <recent name="org.flexpay.eirc.process.quittance.report" />
+      <recent name="org.flexpay.eirc.process.quittance.report.util" />
+      <recent name="org.flexpay.eirc.process" />
     </key>
     <key name="IntroduceConstantDialog.RECENTS_KEY">
       <recent name="" />
     </key>
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="org.flexpay.common.util.DateUtil" />
+    </key>
     <key name="CreateClassDialog.RecentsKey">
-      <recent name="org.flexpay.ab.actions.apartment" />
       <recent name="org.flexpay.ab.service.imp" />
-      <recent name="org.flexpay.eirc.dao" />
       <recent name="org.flexpay.eirc.dao.imp" />
+      <recent name="org.flexpay.ab.actions.apartment" />
+      <recent name="org.flexpay.eirc.dao" />
       <recent name="org.flexpay.eirc.persistence.exchange" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="org.flexpay.common.dao" />
     </key>
   </component>
-  <component name="RestoreUpdateTree">
-    <UpdateInfo date="21.07.08 9:04" ActionInfo="_Update">
-      <UpdatedFiles>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Updated from server" />
-          <option name="myStatusName" value="Changed on server" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="CHANGED_ON_SERVER" />
-          <FILE-GROUP>
-            <option name="myUpdateName" value="Updated" />
-            <option name="myStatusName" value="Changed" />
-            <option name="mySupportsDeletion" value="false" />
-            <option name="myCanBeAbsent" value="false" />
-            <option name="myId" value="UPDATED" />
-          </FILE-GROUP>
-          <FILE-GROUP>
-            <option name="myUpdateName" value="Created" />
-            <option name="myStatusName" value="Created" />
-            <option name="mySupportsDeletion" value="false" />
-            <option name="myCanBeAbsent" value="false" />
-            <option name="myId" value="CREATED" />
-          </FILE-GROUP>
-          <FILE-GROUP>
-            <option name="myUpdateName" value="Deleted" />
-            <option name="myStatusName" value="Deleted" />
-            <option name="mySupportsDeletion" value="false" />
-            <option name="myCanBeAbsent" value="true" />
-            <option name="myId" value="REMOVED_FROM_REPOSITORY" />
-          </FILE-GROUP>
-          <FILE-GROUP>
-            <option name="myUpdateName" value="Restored" />
-            <option name="myStatusName" value="Will be restored" />
-            <option name="mySupportsDeletion" value="false" />
-            <option name="myCanBeAbsent" value="false" />
-            <option name="myId" value="RESTORED" />
-          </FILE-GROUP>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Modified" />
-          <option name="myStatusName" value="Modified" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="MODIFIED" />
-          <PATH>$PROJECT_DIR$/../../common/templates.xml</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Skipped" />
-          <option name="myStatusName" value="Skipped" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="SKIPPED" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Merged with conflicts" />
-          <option name="myStatusName" value="Will be merged with conflicts" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="MERGED_WITH_CONFLICTS" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Merged" />
-          <option name="myStatusName" value="Will be merged" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="MERGED" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Not in repository" />
-          <option name="myStatusName" value="Not in repository" />
-          <option name="mySupportsDeletion" value="true" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="UNKNOWN" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Locally added" />
-          <option name="myStatusName" value="Locally added" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="LOCALLY_ADDED" />
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Locally removed" />
-          <option name="myStatusName" value="Locally removed" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="LOCALLY_REMOVED" />
-        </FILE-GROUP>
-      </UpdatedFiles>
-    </UpdateInfo>
-  </component>
-  <component name="RunManager">
-    <tempConfiguration default="false" name="NewConsoleConfiguration" type="com.intellij.persistence.run.ConsoleConfigurationType" factoryName="Query Language Console">
+  <component name="RunManager" selected="Query Language Console.NewConsoleConfiguration">
+    <tempConfiguration default="false" name="NewConsoleConfiguration" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
       <option name="VM_PARAMETERS" value="" />
       <option name="USER_CFG_CLASS" />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
       <method>
         <option name="Make" value="true" />
       </method>
@@ -893,6 +1154,83 @@
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application" enabled="false" merge="false" runner="emma">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+    </configuration>
+    <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
+      <option name="VM_PARAMETERS" value="" />
+      <option name="USER_CFG_CLASS" />
+    </configuration>
+    <configuration default="false" name="StandaloneAB" type="Application" factoryName="Application" enabled="false" merge="false" runner="emma">
+      <option name="MAIN_CLASS_NAME" value="org.flexpay.common.util.standalone.ApplicationRunner" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/../../_build/web" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="ab" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method>
+        <option name="Run Ant target" value="true" />
+        <option name="Make" value="false" />
+      </method>
+    </configuration>
+    <configuration default="false" name="StandaloneEirc" type="Application" factoryName="Application" enabled="false" merge="false" runner="emma">
+      <option name="MAIN_CLASS_NAME" value="org.flexpay.common.util.standalone.ApplicationRunner" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/../../_build/web" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="eirc" />
+      <envs />
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method>
+        <option name="Run Ant target" value="true" />
+        <option name="Make" value="false" />
+      </method>
+    </configuration>
+    <list size="3">
+      <item index="0" class="java.lang.String" itemvalue="Application.StandaloneAB" />
+      <item index="1" class="java.lang.String" itemvalue="Application.StandaloneEirc" />
+      <item index="2" class="java.lang.String" itemvalue="Query Language Console.NewConsoleConfiguration" />
+    </list>
     <configuration default="true" type="GlassfishConfiguration" factoryName="Local">
       <option name="WORKING_DIRECTORY" />
       <option name="HOST" value="localhost" />
@@ -925,9 +1263,82 @@
       <option name="PASSWORD" value="adminadmin" />
       <predefined_log_file id="Glassfish" enabled="true" />
     </configuration>
-    <configuration default="true" type="com.intellij.persistence.run.ConsoleConfigurationType" factoryName="Query Language Console">
-      <option name="VM_PARAMETERS" value="" />
-      <option name="USER_CFG_CLASS" />
+    <configuration default="false" name="Glassfish" type="GlassfishConfiguration" factoryName="Local">
+      <option name="WORKING_DIRECTORY" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="8080" />
+      <option name="LOCAL" value="true" />
+      <option name="OPEN_IN_BROWSER" value="false" />
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/web/ab/" />
+      <option name="BROWSER_ID" value="system" />
+      <option name="COMMON_VM_ARGUMENTS" value="" />
+      <JAVAEE_FACET FACET_ID="ab/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="DEPLOY" value="true" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="ab_sync/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="bti/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="common/web/Web">
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="eirc/web/Web">
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="sz/web/Web">
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <option name="DOMAIN" value="domain1" />
+      <option name="USERNAME" value="admin" />
+      <option name="PASSWORD" value="adminadmin" />
+      <log_file path="c:/domains/logs/server.log" checked="true" skipped="true" show_all="false" alias="Glassfish Log" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="38547" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="c:/bin/asadmin.bat" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="c:/bin/asadmin.bat" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="c:/bin/asadmin.bat" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="c:/bin/asadmin.bat" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+        <EnvironmentVariables>
+          <option name="NAME" value="" />
+          <option name="VALUE" value="" />
+          <option name="IS_PREDEFINED" value="false" />
+        </EnvironmentVariables>
+      </ConfigurationWrapper>
+      <method>
+        <option name="Run Ant target" value="true" />
+        <option name="Make" value="false" />
+      </method>
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG" enabled="false" merge="false" runner="emma">
       <module name="" />
@@ -957,31 +1368,6 @@
       <method>
         <option name="Make" value="true" />
       </method>
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application" enabled="false" merge="false" runner="emma">
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
     </configuration>
     <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
       <JSDebuggerConfigurationSettings>
@@ -1047,127 +1433,7 @@
       <option name="BASE_DIRECTORY_NAME" value="" />
       <predefined_log_file id="TOMCAT_LOCALHOST_LOG_ID" enabled="true" />
     </configuration>
-    <configuration default="false" name="StandaloneAB" type="Application" factoryName="Application" enabled="false" merge="false" runner="emma">
-      <option name="MAIN_CLASS_NAME" value="org.flexpay.common.util.standalone.ApplicationRunner" />
-      <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/../../_build/web" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="ab" />
-      <envs />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method>
-        <option name="Run Ant target" value="true" />
-        <option name="Make" value="false" />
-      </method>
-    </configuration>
-    <configuration default="false" name="StandaloneEirc" type="Application" factoryName="Application" enabled="false" merge="false" runner="emma">
-      <option name="MAIN_CLASS_NAME" value="org.flexpay.common.util.standalone.ApplicationRunner" />
-      <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/../../_build/web" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="eirc" />
-      <envs />
-      <RunnerSettings RunnerId="JProfiler">
-        <option name="WINDOW" value="false" />
-        <option name="JVMPI" value="false" />
-        <option name="INTERPRETED" value="false" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method>
-        <option name="Run Ant target" value="true" />
-        <option name="Make" value="false" />
-      </method>
-    </configuration>
-    <configuration default="false" name="Glassfish" type="GlassfishConfiguration" factoryName="Local">
-      <option name="WORKING_DIRECTORY" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="8080" />
-      <option name="LOCAL" value="true" />
-      <option name="OPEN_IN_BROWSER" value="false" />
-      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/ab/" />
-      <option name="BROWSER_ID" />
-      <option name="COMMON_VM_ARGUMENTS" value="" />
-      <JAVAEE_FACET FACET_ID="ab/web/Web" DEPLOYMENT_SOURCE_NAME="jar">
-        <option name="DEPLOY" value="true" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="ab_sync/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="bti/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="common/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="eirc/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="sz/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <option name="DOMAIN" value="domain1" />
-      <option name="USERNAME" value="admin" />
-      <option name="PASSWORD" value="adminadmin" />
-      <log_file path="c:/domains/logs/server.log" checked="true" skipped="true" show_all="false" alias="Glassfish Log" />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="2191" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="c:/bin/asadmin.bat" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="c:/bin/asadmin.bat" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="c:/bin/asadmin.bat" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="c:/bin/asadmin.bat" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-        <EnvironmentVariables>
-          <option name="NAME" value="" />
-          <option name="VALUE" value="" />
-          <option name="IS_PREDEFINED" value="false" />
-        </EnvironmentVariables>
-      </ConfigurationWrapper>
-      <method>
-        <option name="Run Ant target" value="true" />
-        <option name="Make" value="false" />
-      </method>
-    </configuration>
-    <configuration default="false" name="AllTests" type="JUnit" factoryName="JUnit" enabled="false" merge="false" runner="emma">
+    <configuration default="false" name="AllTests" type="JUnit" factoryName="JUnit" enabled="false" merge="false" sample_coverage="true" runner="emma">
       <pattern>
         <option name="PATTERN" value="org.flexpay.eirc.*" />
         <option name="ENABLED" value="true" />
@@ -1279,14 +1545,10 @@
         <option name="Make" value="false" />
       </method>
     </configuration>
-    <list size="6">
-      <item index="0" class="java.lang.String" itemvalue="Application.StandaloneAB" />
-      <item index="1" class="java.lang.String" itemvalue="Application.StandaloneEirc" />
-      <item index="2" class="java.lang.String" itemvalue="Glassfish Server.Glassfish" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.AllTests" />
-      <item index="4" class="java.lang.String" itemvalue="Tomcat Server.AB" />
-      <item index="5" class="java.lang.String" itemvalue="Query Language Console.NewConsoleConfiguration" />
-    </list>
+    <configuration default="true" type="com.intellij.persistence.run.ConsoleConfigurationType" factoryName="Query Language Console">
+      <option name="VM_PARAMETERS" value="" />
+      <option name="USER_CFG_CLASS" />
+    </configuration>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
       <Port>5050</Port>
@@ -1295,6 +1557,7 @@
   <component name="SQLPlugin.ProjectConfiguration">
     <queries />
   </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
   <component name="StarteamConfiguration">
     <option name="SERVER" value="" />
     <option name="PORT" value="49201" />
@@ -1316,9 +1579,11 @@
     <option name="PASSWORD" value="" />
     <option name="LAST_MERGED_REVISION" />
     <option name="UPDATE_RUN_STATUS" value="true" />
-    <option name="UPDATE_RECURSIVELY" value="true" />
     <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
     <configuration useDefault="true">$PROJECT_DIR$/../../../.subversion</configuration>
+    <myIsUseDefaultProxy>true</myIsUseDefaultProxy>
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -1341,49 +1606,53 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-5" width="1688" height="1012" extended-state="6" />
-    <editor active="false" />
+    <frame x="20" y="-5" width="1664" height="1012" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.47031963" order="12" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="2" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.329859" order="3" />
-      <window_info id="Ant Build" active="false" anchor="left" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.2512255" order="4" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37100455" order="1" x="24" y="342" width="1631" height="317" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" order="3" />
-      <window_info id="TeamCity" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.939951" order="14" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="16" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942238" order="3" />
-      <window_info id="Version Control" active="false" anchor="right" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.0" order="11" x="595" y="212" width="465" height="480" />
-      <window_info id="Slice" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5479452" order="13" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" order="6" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24954017" order="1" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3998195" order="0" />
-      <window_info id="Maven projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32965687" order="4" />
-      <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="6" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28125" order="0" />
-      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="14" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3561644" order="5" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="1" />
-      <window_info id="Duplicates" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="15" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42696628" order="2" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="2" />
-      <window_info id="DBHelper" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32965687" order="10" />
-      <window_info id="SQL Schema" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32941177" order="10" />
-      <window_info id="Maven" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32960895" order="8" />
-      <window_info id="Log4jMonitor" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.62806374" order="7" />
-      <window_info id="DB Browser" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.33393666" order="9" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="7" />
-      <window_info id="SQL" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.47058824" order="11" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="0" />
-      <window_info id="Library Finder" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" order="9" />
-      <window_info id="IRC Favorites" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32942238" order="5" />
-      <window_info id="IntellIRC" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.44052288" order="8" />
-      <window_info id="Sudoku" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.82096875" order="12" />
-      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="3" />
-      <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" order="4" />
-      <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" order="8" />
-      <window_info id="DBOutput" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32905984" order="13" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.47031963" sideWeight="0.5" order="16" side_tool="false" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32965687" sideWeight="0.5" order="3" side_tool="false" />
+      <window_info id="Ant Build" active="false" anchor="left" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.26803482" sideWeight="0.5" order="4" side_tool="false" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36384705" sideWeight="0.5" order="2" side_tool="false" x="24" y="342" width="1631" height="317" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" />
+      <window_info id="TeamCity" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.93967664" sideWeight="0.5" order="16" side_tool="false" />
+      <window_info id="Slice" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" />
+      <window_info id="Version Control" active="false" anchor="right" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.0" sideWeight="0.5" order="13" side_tool="false" x="595" y="212" width="465" height="480" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34994206" sideWeight="0.5" order="17" side_tool="false" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="7" side_tool="false" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24937811" sideWeight="0.5" order="1" side_tool="false" />
+      <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23258707" sideWeight="0.636153" order="0" side_tool="false" />
+      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32908458" sideWeight="0.5" order="18" side_tool="false" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3557358" sideWeight="0.5" order="6" side_tool="false" />
+      <window_info id="Duplicates" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="19" side_tool="false" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42526072" sideWeight="0.5" order="3" side_tool="false" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" />
+      <window_info id="DBHelper" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32965687" sideWeight="0.5" order="12" side_tool="false" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="20" side_tool="false" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942238" sideWeight="0.5" order="4" side_tool="false" />
+      <window_info id="SQL Schema" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32941177" sideWeight="0.5" order="14" side_tool="false" />
+      <window_info id="Maven" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32960895" sideWeight="0.5" order="11" side_tool="false" />
+      <window_info id="Atlassian" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4965197" sideWeight="0.5" order="21" side_tool="false" />
+      <window_info id="Maven projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32965687" sideWeight="0.5" order="6" side_tool="false" />
+      <window_info id="Log4jMonitor" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.62806374" sideWeight="0.5" order="9" side_tool="false" />
+      <window_info id="DB Browser" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.33393666" sideWeight="0.5" order="11" side_tool="false" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" />
+      <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3259861" sideWeight="0.5" order="0" side_tool="false" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" />
+      <window_info id="SQL" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.47058824" sideWeight="0.5" order="15" side_tool="false" />
+      <window_info id="SVN Properties" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32906976" sideWeight="0.5" order="8" side_tool="false" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" />
+      <window_info id="Library Finder" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="13" side_tool="false" />
+      <window_info id="IRC Favorites" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32942238" sideWeight="0.5" order="7" side_tool="false" />
+      <window_info id="Sudoku" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.82096875" sideWeight="0.5" order="14" side_tool="false" />
+      <window_info id="IntellIRC" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.44052288" sideWeight="0.5" order="10" side_tool="false" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" />
+      <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3998195" sideWeight="0.5" order="0" side_tool="false" />
+      <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" />
+      <window_info id="DBOutput" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32905984" sideWeight="0.5" order="15" side_tool="false" />
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
@@ -1392,10 +1661,10 @@
     <option name="PERFORM_UPDATE_IN_BACKGROUND" value="false" />
     <option name="PERFORM_COMMIT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
-    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
-    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="FP-113&#10;Organisations view-edit updated for new Organisation structure" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="true" />
+    <option name="LAST_COMMIT_MESSAGE" value="Code cleanup" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
@@ -1406,31 +1675,31 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="Some code cleanup" />
-    <MESSAGE value="Queries cashing added, JMX monitoring support added." />
-    <MESSAGE value="submit button name conflicts with a &quot;this.form.submit()&quot; javascript expression, so renamed to &quot;submitted&quot;.&#10;CommonAction marked as deprecated." />
-    <MESSAGE value="compile errors fixed" />
-    <MESSAGE value="FP-132&#10;Registration edit added (Only possible for existing person)." />
-    <MESSAGE value="CommonAction base class replaced with FPActionSupport" />
-    <MESSAGE value="ServletContext dependency removed from CommonConfigLoader" />
-    <MESSAGE value="init_db fixed" />
-    <MESSAGE value="some code cleanup" />
-    <MESSAGE value="code cleanup and tests fixed" />
-    <MESSAGE value="code cleanup.&#10;new inspections profile added." />
-    <MESSAGE value="FP-136&#10;Building attribute type code replaced with id" />
-    <MESSAGE value="FP-136&#10;Building attribute type code replaced with id." />
-    <MESSAGE value="FP-141&#10;Identity type edit fixed" />
-    <MESSAGE value="FP-146&#10;several HQL isseses fixes" />
-    <MESSAGE value="FP-146&#10;code cleanup&#10;" />
-    <MESSAGE value="FP-146&#10;code cleanup, Instance cariable initialisation inspection removed&#10;" />
-    <MESSAGE value="FP-146&#10;code cleanup.&#10;&#10;Module name added to config&#10;" />
-    <MESSAGE value="FP-146&#10;FPActionSu&#10;" />
-    <MESSAGE value="FP-146&#10;FPActionSupport is abstract now, all child classes updated to use doExecute and getErrorResult &#10;" />
-    <MESSAGE value="FP-146&#10;Compilation errors fixed&#10;" />
-    <MESSAGE value="FP-113 FP-114&#10;Organisation subdivisions added, Bank organisations added, Bank accounts added." />
-    <MESSAGE value="FP-113&#10;Organisation unique_id cut off, test fail due to not updated organisation ids" />
-    <MESSAGE value="multiple modules deployment issue fixed" />
-    <MESSAGE value="FP-113&#10;Organisations view-edit updated for new Organisation structure" />
+    <MESSAGE value="FP-173, FP-182&#10;Quittance generation UI fixed, quittance generation SQL-s fixed.&#10;&#10;Some code clean up." />
+    <MESSAGE value="Unused declarations ignored for Struts2 actions" />
+    <MESSAGE value="some unused imports cleaned up" />
+    <MESSAGE value="spring model validation failed on templates that rewrite files in config" />
+    <MESSAGE value="Non-final static variable is used during class initialization cleaned up" />
+    <MESSAGE value="FP-170&#10;&#10;ProcessLogger updated (Job now sets up process ID to ProcessLogger ThreadLocal).&#10;Added process logging to RegistryFileParser.&#10;&#10;Registry files processor records fetch fixed.&#10;" />
+    <MESSAGE value="FP-182&#10;&#10;Quittance generation test added, first generated quittance obtained! :)" />
+    <MESSAGE value="JasperReports port of quittance printing started, data source and beans stubs" />
+    <MESSAGE value="More details for QuittanceInfo structure" />
+    <MESSAGE value="FP-185&#10;Service totals build for QuittanceInfo completed." />
+    <MESSAGE value="FP-185&#10;Test quittances added." />
+    <MESSAGE value="FP-185&#10;Test data for quittances printing added. Validation test started." />
+    <MESSAGE value="FP-185&#10;Jasper quittance templates first version." />
+    <MESSAGE value="FP-185&#10;Subreport first version, ugly now" />
+    <MESSAGE value="FP-188&#10;Street search instead of selector in corrections setup dialog" />
+    <MESSAGE value="FP-188&#10;District - street - building filters group lookup fixed" />
+    <MESSAGE value="FP-187&#10;Fixed listings required object selection." />
+    <MESSAGE value="FP-125&#10;Address filter added to eirc accounts listing" />
+    <MESSAGE value="FP-125&#10;Person search added to accounts listing.&#10;&#10;SQL-update&#10;AccountRecord class cut off.&#10;ServiceOrganisation set to two missed houses." />
+    <MESSAGE value="FP-88&#10;&#10;Districts listing buitified" />
+    <MESSAGE value="FP-88,FP-87,FP-86,FP-189,FP-185&#10;&#10;Ab distionaries listing fixed.&#10;Person corrections setup added.&#10;&#10;Subservices subreport started." />
+    <MESSAGE value="Invalid equals implementation caused streets duplicates.&#10;Fixed." />
+    <MESSAGE value="Invalid constructor dates validation" />
+    <MESSAGE value="Report reorganised" />
+    <MESSAGE value="Code cleanup" />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
@@ -1590,86 +1859,6 @@
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="true" />
-    <buildFile url="file://$PROJECT_DIR$/../../build.xml">
-      <antCommandLine value="" />
-      <runInBackground value="false" />
-      <targetFilters>
-        <filter targetName="ab.build.production.jar" isVisible="false" />
-        <filter targetName="ab.build.test.jar" isVisible="false" />
-        <filter targetName="ab.clean.build" isVisible="false" />
-        <filter targetName="ab.compile.production" isVisible="false" />
-        <filter targetName="ab.docs" isVisible="false" />
-        <filter targetName="ab.exportschema.mysql5" isVisible="false" />
-        <filter targetName="ab.prepare.war" isVisible="false" />
-        <filter targetName="ab.runtests" isVisible="false" />
-        <filter targetName="ab.war.production.glassfish_mysql5" isVisible="false" />
-        <filter targetName="ab.war.production.tomcat_mysql5" isVisible="false" />
-        <filter targetName="bti.build.production.jar" isVisible="false" />
-        <filter targetName="bti.build.test.jar" isVisible="false" />
-        <filter targetName="bti.clean.build" isVisible="false" />
-        <filter targetName="bti.compile.production" isVisible="false" />
-        <filter targetName="bti.docs" isVisible="false" />
-        <filter targetName="bti.exportschema.mysql5" isVisible="false" />
-        <filter targetName="bti.prepare.war" isVisible="false" />
-        <filter targetName="bti.runtests" isVisible="false" />
-        <filter targetName="bti.war.production.glassfish_mysql5" isVisible="false" />
-        <filter targetName="bti.war.production.tomcat_mysql5" isVisible="false" />
-        <filter targetName="build.all" isVisible="true" />
-        <filter targetName="build.ddls" isVisible="true" />
-        <filter targetName="build.docs" isVisible="true" />
-        <filter targetName="build.wars" isVisible="true" />
-        <filter targetName="clean.all" isVisible="false" />
-        <filter targetName="clean.build" isVisible="false" />
-        <filter targetName="common.build.production.jar" isVisible="false" />
-        <filter targetName="common.build.test.jar" isVisible="false" />
-        <filter targetName="common.clean.build" isVisible="false" />
-        <filter targetName="common.compile.production" isVisible="false" />
-        <filter targetName="common.docs" isVisible="false" />
-        <filter targetName="common.exportschema.mysql5" isVisible="false" />
-        <filter targetName="common.prepare.war" isVisible="false" />
-        <filter targetName="common.runtests" isVisible="false" />
-        <filter targetName="common.war.include.libs" isVisible="false" />
-        <filter targetName="eirc.build.production.jar" isVisible="false" />
-        <filter targetName="eirc.build.test.jar" isVisible="false" />
-        <filter targetName="eirc.clean.build" isVisible="false" />
-        <filter targetName="eirc.compile.production" isVisible="false" />
-        <filter targetName="eirc.docs" isVisible="false" />
-        <filter targetName="eirc.exportschema.mysql5" isVisible="false" />
-        <filter targetName="eirc.prepare.war" isVisible="false" />
-        <filter targetName="eirc.runtests" isVisible="false" />
-        <filter targetName="eirc.war.production.glassfish_mysql5" isVisible="false" />
-        <filter targetName="eirc.war.production.tomcat_mysql5" isVisible="false" />
-        <filter targetName="init.build" isVisible="false" />
-        <filter targetName="init.distr" isVisible="false" />
-        <filter targetName="reveng.hbmxml" isVisible="false" />
-        <filter targetName="reveng.pojos" isVisible="false" />
-        <filter targetName="run.tests" isVisible="false" />
-        <filter targetName="sz.build.production.jar" isVisible="false" />
-        <filter targetName="sz.build.test.jar" isVisible="false" />
-        <filter targetName="sz.clean.build" isVisible="false" />
-        <filter targetName="sz.compile.production" isVisible="false" />
-        <filter targetName="sz.docs" isVisible="false" />
-        <filter targetName="sz.exportschema.mysql5" isVisible="false" />
-        <filter targetName="sz.prepare.war" isVisible="false" />
-        <filter targetName="sz.runtests" isVisible="false" />
-        <filter targetName="sz.war.production.glassfish_mysql5" isVisible="false" />
-        <filter targetName="sz.war.production.tomcat_mysql5" isVisible="false" />
-        <filter targetName="template.ab.war.production" isVisible="false" />
-        <filter targetName="template.bti.war.production" isVisible="false" />
-        <filter targetName="template.compile.production" isVisible="false" />
-        <filter targetName="template.compile.test" isVisible="false" />
-        <filter targetName="template.docs" isVisible="false" />
-        <filter targetName="template.eirc.war.production" isVisible="false" />
-        <filter targetName="template.jar" isVisible="false" />
-        <filter targetName="template.prepare.war" isVisible="false" />
-        <filter targetName="template.run.tests" isVisible="false" />
-        <filter targetName="template.schemaexport" isVisible="false" />
-        <filter targetName="template.sz.war.production" isVisible="false" />
-      </targetFilters>
-      <treeView value="true" />
-      <verbose value="true" />
-      <viewClosedWhenNoErrors value="true" />
-    </buildFile>
     <buildFile url="file://$PROJECT_DIR$/../../common/common_build.xml">
       <antCommandLine value="" />
       <runInBackground value="true" />
@@ -1708,96 +1897,52 @@
       <antCommandLine value="" />
       <runInBackground value="true" />
       <targetFilters>
-        <filter targetName="ab.build.production.jar" isVisible="false" />
-        <filter targetName="ab.build.test.jar" isVisible="false" />
         <filter targetName="ab.clean.build" isVisible="false" />
         <filter targetName="ab.compile.production" isVisible="false" />
+        <filter targetName="ab.compile.test" isVisible="false" />
+        <filter targetName="ab.db" isVisible="true" />
         <filter targetName="ab.docs" isVisible="false" />
+        <filter targetName="ab.exploded.production.glassfish_mysql5" isVisible="true" />
         <filter targetName="ab.exportschema.mysql5" isVisible="true" />
-        <filter targetName="ab.hprof.standalone" isVisible="true" />
         <filter targetName="ab.prepare.war" isVisible="false" />
         <filter targetName="ab.profile.standalone" isVisible="false" />
         <filter targetName="ab.run.standalone" isVisible="true" />
         <filter targetName="ab.runtests" isVisible="true" />
+        <filter targetName="ab.sql.all" isVisible="false" />
+        <filter targetName="ab.sql.init-db" isVisible="false" />
         <filter targetName="ab.war.production.glassfish_mysql5" isVisible="true" />
         <filter targetName="ab.war.production.tomcat_mysql5" isVisible="false" />
         <filter targetName="clean.all" isVisible="false" />
         <filter targetName="clean.build" isVisible="false" />
-        <filter targetName="common.build.production.jar" isVisible="false" />
-        <filter targetName="common.build.test.jar" isVisible="false" />
         <filter targetName="common.clean.build" isVisible="false" />
         <filter targetName="common.compile.production" isVisible="false" />
+        <filter targetName="common.compile.test" isVisible="false" />
+        <filter targetName="common.db" isVisible="false" />
         <filter targetName="common.docs" isVisible="false" />
         <filter targetName="common.exportschema.mysql5" isVisible="false" />
         <filter targetName="common.prepare.war" isVisible="false" />
         <filter targetName="common.runtests" isVisible="false" />
+        <filter targetName="common.runtests.nobuild" isVisible="false" />
+        <filter targetName="common.sql.all" isVisible="false" />
+        <filter targetName="common.sql.create-db" isVisible="false" />
+        <filter targetName="common.sql.init-db" isVisible="false" />
         <filter targetName="common.war.include.libs" isVisible="false" />
         <filter targetName="init.build" isVisible="false" />
         <filter targetName="init.distr" isVisible="false" />
         <filter targetName="reveng.hbmxml" isVisible="false" />
         <filter targetName="reveng.pojos" isVisible="false" />
+        <filter targetName="template.ab.exploded.production" isVisible="false" />
         <filter targetName="template.ab.war.production" isVisible="false" />
         <filter targetName="template.compile.production" isVisible="false" />
         <filter targetName="template.compile.test" isVisible="false" />
         <filter targetName="template.docs" isVisible="false" />
-        <filter targetName="template.hprof.standalone" isVisible="false" />
+        <filter targetName="template.exploded.include.libs" isVisible="false" />
         <filter targetName="template.jar" isVisible="false" />
+        <filter targetName="template.mysql.run" isVisible="false" />
         <filter targetName="template.prepare.war" isVisible="false" />
+        <filter targetName="template.prepare.war.classes" isVisible="false" />
         <filter targetName="template.profile.standalone" isVisible="false" />
         <filter targetName="template.run.standalone" isVisible="false" />
-        <filter targetName="template.run.tests" isVisible="false" />
-        <filter targetName="template.schemaexport" isVisible="false" />
-      </targetFilters>
-      <treeView value="true" />
-      <verbose value="true" />
-      <viewClosedWhenNoErrors value="false" />
-    </buildFile>
-    <buildFile url="file://$PROJECT_DIR$/../../bti/bti_build.xml">
-      <antCommandLine value="" />
-      <runInBackground value="true" />
-      <targetFilters>
-        <filter targetName="ab.build.production.jar" isVisible="false" />
-        <filter targetName="ab.build.test.jar" isVisible="false" />
-        <filter targetName="ab.clean.build" isVisible="false" />
-        <filter targetName="ab.compile.production" isVisible="false" />
-        <filter targetName="ab.docs" isVisible="false" />
-        <filter targetName="ab.exportschema.mysql5" isVisible="false" />
-        <filter targetName="ab.prepare.war" isVisible="false" />
-        <filter targetName="ab.runtests" isVisible="false" />
-        <filter targetName="ab.war.production.glassfish_mysql5" isVisible="false" />
-        <filter targetName="ab.war.production.tomcat_mysql5" isVisible="false" />
-        <filter targetName="bti.build.production.jar" isVisible="false" />
-        <filter targetName="bti.build.test.jar" isVisible="false" />
-        <filter targetName="bti.clean.build" isVisible="false" />
-        <filter targetName="bti.compile.production" isVisible="false" />
-        <filter targetName="bti.docs" isVisible="false" />
-        <filter targetName="bti.exportschema.mysql5" isVisible="true" />
-        <filter targetName="bti.prepare.war" isVisible="false" />
-        <filter targetName="bti.runtests" isVisible="true" />
-        <filter targetName="bti.war.production.glassfish_mysql5" isVisible="true" />
-        <filter targetName="bti.war.production.tomcat_mysql5" isVisible="false" />
-        <filter targetName="clean.all" isVisible="false" />
-        <filter targetName="clean.build" isVisible="false" />
-        <filter targetName="common.build.production.jar" isVisible="false" />
-        <filter targetName="common.build.test.jar" isVisible="false" />
-        <filter targetName="common.clean.build" isVisible="false" />
-        <filter targetName="common.compile.production" isVisible="false" />
-        <filter targetName="common.docs" isVisible="false" />
-        <filter targetName="common.exportschema.mysql5" isVisible="false" />
-        <filter targetName="common.prepare.war" isVisible="false" />
-        <filter targetName="common.runtests" isVisible="false" />
-        <filter targetName="common.war.include.libs" isVisible="false" />
-        <filter targetName="init.build" isVisible="false" />
-        <filter targetName="init.distr" isVisible="false" />
-        <filter targetName="reveng.hbmxml" isVisible="false" />
-        <filter targetName="reveng.pojos" isVisible="false" />
-        <filter targetName="template.ab.war.production" isVisible="false" />
-        <filter targetName="template.bti.war.production" isVisible="false" />
-        <filter targetName="template.compile.production" isVisible="false" />
-        <filter targetName="template.compile.test" isVisible="false" />
-        <filter targetName="template.docs" isVisible="false" />
-        <filter targetName="template.jar" isVisible="false" />
-        <filter targetName="template.prepare.war" isVisible="false" />
         <filter targetName="template.run.tests" isVisible="false" />
         <filter targetName="template.schemaexport" isVisible="false" />
       </targetFilters>
@@ -1809,65 +1954,78 @@
       <antCommandLine value="" />
       <runInBackground value="true" />
       <targetFilters>
-        <filter targetName="ab.build.production.jar" isVisible="false" />
-        <filter targetName="ab.build.test.jar" isVisible="false" />
         <filter targetName="ab.clean.build" isVisible="false" />
         <filter targetName="ab.compile.production" isVisible="false" />
+        <filter targetName="ab.compile.test" isVisible="false" />
+        <filter targetName="ab.db" isVisible="false" />
         <filter targetName="ab.docs" isVisible="false" />
+        <filter targetName="ab.exploded.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="ab.exportschema.mysql5" isVisible="false" />
         <filter targetName="ab.prepare.war" isVisible="false" />
         <filter targetName="ab.profile.standalone" isVisible="false" />
         <filter targetName="ab.run.standalone" isVisible="false" />
         <filter targetName="ab.runtests" isVisible="false" />
+        <filter targetName="ab.sql.all" isVisible="false" />
+        <filter targetName="ab.sql.init-db" isVisible="false" />
         <filter targetName="ab.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="ab.war.production.tomcat_mysql5" isVisible="false" />
-        <filter targetName="bti.build.production.jar" isVisible="false" />
-        <filter targetName="bti.build.test.jar" isVisible="false" />
         <filter targetName="bti.clean.build" isVisible="false" />
         <filter targetName="bti.compile.production" isVisible="false" />
+        <filter targetName="bti.compile.test" isVisible="false" />
+        <filter targetName="bti.db" isVisible="false" />
         <filter targetName="bti.docs" isVisible="false" />
         <filter targetName="bti.exportschema.mysql5" isVisible="false" />
         <filter targetName="bti.prepare.war" isVisible="false" />
         <filter targetName="bti.runtests" isVisible="false" />
+        <filter targetName="bti.sql.all" isVisible="false" />
+        <filter targetName="bti.sql.init-db" isVisible="false" />
         <filter targetName="bti.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="bti.war.production.tomcat_mysql5" isVisible="false" />
         <filter targetName="clean.all" isVisible="false" />
         <filter targetName="clean.build" isVisible="false" />
-        <filter targetName="common.build.production.jar" isVisible="false" />
-        <filter targetName="common.build.test.jar" isVisible="false" />
         <filter targetName="common.clean.build" isVisible="false" />
         <filter targetName="common.compile.production" isVisible="false" />
+        <filter targetName="common.compile.test" isVisible="false" />
+        <filter targetName="common.db" isVisible="false" />
         <filter targetName="common.docs" isVisible="false" />
         <filter targetName="common.exportschema.mysql5" isVisible="false" />
         <filter targetName="common.prepare.war" isVisible="false" />
         <filter targetName="common.runtests" isVisible="false" />
+        <filter targetName="common.runtests.nobuild" isVisible="false" />
+        <filter targetName="common.sql.all" isVisible="false" />
+        <filter targetName="common.sql.create-db" isVisible="false" />
+        <filter targetName="common.sql.init-db" isVisible="false" />
         <filter targetName="common.war.include.libs" isVisible="false" />
-        <filter targetName="eirc.build.production.jar" isVisible="false" />
-        <filter targetName="eirc.build.test.jar" isVisible="false" />
         <filter targetName="eirc.clean.build" isVisible="false" />
         <filter targetName="eirc.compile.production" isVisible="false" />
+        <filter targetName="eirc.compile.test" isVisible="false" />
+        <filter targetName="eirc.db" isVisible="true" />
         <filter targetName="eirc.docs" isVisible="false" />
         <filter targetName="eirc.exportschema.mysql5" isVisible="true" />
-        <filter targetName="eirc.prepare.for.test" isVisible="false" />
         <filter targetName="eirc.prepare.war" isVisible="false" />
         <filter targetName="eirc.profile.standalone" isVisible="true" />
         <filter targetName="eirc.run.standalone" isVisible="true" />
         <filter targetName="eirc.runtests" isVisible="true" />
-        <filter targetName="eirc.runtests.nobuild" isVisible="false" />
+        <filter targetName="eirc.runtests.nobuild" isVisible="true" />
+        <filter targetName="eirc.sql.all" isVisible="false" />
+        <filter targetName="eirc.sql.init-db" isVisible="false" />
         <filter targetName="eirc.war.production.glassfish_mysql5" isVisible="true" />
         <filter targetName="eirc.war.production.tomcat_mysql5" isVisible="false" />
         <filter targetName="init.build" isVisible="false" />
         <filter targetName="init.distr" isVisible="false" />
         <filter targetName="reveng.hbmxml" isVisible="false" />
         <filter targetName="reveng.pojos" isVisible="false" />
+        <filter targetName="template.ab.exploded.production" isVisible="false" />
         <filter targetName="template.ab.war.production" isVisible="false" />
         <filter targetName="template.bti.war.production" isVisible="false" />
         <filter targetName="template.compile.production" isVisible="false" />
         <filter targetName="template.compile.test" isVisible="false" />
         <filter targetName="template.docs" isVisible="false" />
         <filter targetName="template.eirc.war.production" isVisible="false" />
-        <filter targetName="template.jar" isVisible="false" />
+        <filter targetName="template.exploded.include.libs" isVisible="false" />
+        <filter targetName="template.mysql.run" isVisible="false" />
         <filter targetName="template.prepare.war" isVisible="false" />
+        <filter targetName="template.prepare.war.classes" isVisible="false" />
         <filter targetName="template.profile.standalone" isVisible="false" />
         <filter targetName="template.run.standalone" isVisible="false" />
         <filter targetName="template.run.tests" isVisible="false" />
@@ -1877,132 +2035,67 @@
       <verbose value="true" />
       <viewClosedWhenNoErrors value="false" />
     </buildFile>
-    <buildFile url="file://$PROJECT_DIR$/../../sz/sz_build.xml">
-      <antCommandLine value="" />
-      <runInBackground value="true" />
-      <targetFilters>
-        <filter targetName="ab.build.production.jar" isVisible="false" />
-        <filter targetName="ab.build.test.jar" isVisible="false" />
-        <filter targetName="ab.clean.build" isVisible="false" />
-        <filter targetName="ab.compile.production" isVisible="false" />
-        <filter targetName="ab.docs" isVisible="false" />
-        <filter targetName="ab.exportschema.mysql5" isVisible="false" />
-        <filter targetName="ab.prepare.war" isVisible="false" />
-        <filter targetName="ab.runtests" isVisible="false" />
-        <filter targetName="ab.war.production.glassfish_mysql5" isVisible="false" />
-        <filter targetName="ab.war.production.tomcat_mysql5" isVisible="false" />
-        <filter targetName="bti.build.production.jar" isVisible="false" />
-        <filter targetName="bti.build.test.jar" isVisible="false" />
-        <filter targetName="bti.clean.build" isVisible="false" />
-        <filter targetName="bti.compile.production" isVisible="false" />
-        <filter targetName="bti.docs" isVisible="false" />
-        <filter targetName="bti.exportschema.mysql5" isVisible="false" />
-        <filter targetName="bti.prepare.war" isVisible="false" />
-        <filter targetName="bti.runtests" isVisible="false" />
-        <filter targetName="bti.war.production.glassfish_mysql5" isVisible="false" />
-        <filter targetName="bti.war.production.tomcat_mysql5" isVisible="false" />
-        <filter targetName="clean.all" isVisible="false" />
-        <filter targetName="clean.build" isVisible="false" />
-        <filter targetName="common.build.production.jar" isVisible="false" />
-        <filter targetName="common.build.test.jar" isVisible="false" />
-        <filter targetName="common.clean.build" isVisible="false" />
-        <filter targetName="common.compile.production" isVisible="false" />
-        <filter targetName="common.docs" isVisible="false" />
-        <filter targetName="common.exportschema.mysql5" isVisible="false" />
-        <filter targetName="common.prepare.war" isVisible="false" />
-        <filter targetName="common.runtests" isVisible="false" />
-        <filter targetName="common.war.include.libs" isVisible="false" />
-        <filter targetName="eirc.build.production.jar" isVisible="false" />
-        <filter targetName="eirc.build.test.jar" isVisible="false" />
-        <filter targetName="eirc.clean.build" isVisible="false" />
-        <filter targetName="eirc.compile.production" isVisible="false" />
-        <filter targetName="eirc.docs" isVisible="false" />
-        <filter targetName="eirc.exportschema.mysql5" isVisible="false" />
-        <filter targetName="eirc.prepare.for.test" isVisible="false" />
-        <filter targetName="eirc.prepare.war" isVisible="false" />
-        <filter targetName="eirc.runtests" isVisible="false" />
-        <filter targetName="eirc.war.production.glassfish_mysql5" isVisible="false" />
-        <filter targetName="eirc.war.production.tomcat_mysql5" isVisible="false" />
-        <filter targetName="init.build" isVisible="false" />
-        <filter targetName="init.distr" isVisible="false" />
-        <filter targetName="reveng.hbmxml" isVisible="false" />
-        <filter targetName="reveng.pojos" isVisible="false" />
-        <filter targetName="sz.build.production.jar" isVisible="false" />
-        <filter targetName="sz.build.test.jar" isVisible="false" />
-        <filter targetName="sz.clean.build" isVisible="false" />
-        <filter targetName="sz.compile.production" isVisible="false" />
-        <filter targetName="sz.docs" isVisible="false" />
-        <filter targetName="sz.exportschema.mysql5" isVisible="true" />
-        <filter targetName="sz.prepare.war" isVisible="false" />
-        <filter targetName="sz.runtests" isVisible="true" />
-        <filter targetName="sz.war.production.glassfish_mysql5" isVisible="true" />
-        <filter targetName="sz.war.production.tomcat_mysql5" isVisible="false" />
-        <filter targetName="template.ab.war.production" isVisible="false" />
-        <filter targetName="template.bti.war.production" isVisible="false" />
-        <filter targetName="template.compile.production" isVisible="false" />
-        <filter targetName="template.compile.test" isVisible="false" />
-        <filter targetName="template.docs" isVisible="false" />
-        <filter targetName="template.eirc.war.production" isVisible="false" />
-        <filter targetName="template.jar" isVisible="false" />
-        <filter targetName="template.prepare.war" isVisible="false" />
-        <filter targetName="template.run.tests" isVisible="false" />
-        <filter targetName="template.schemaexport" isVisible="false" />
-        <filter targetName="template.sz.war.production" isVisible="false" />
-      </targetFilters>
-      <treeView value="true" />
-      <verbose value="true" />
-      <viewClosedWhenNoErrors value="false" />
-    </buildFile>
     <buildFile url="file://$PROJECT_DIR$/../../ab_sync/ab_sync_build.xml">
       <antCommandLine value="" />
       <runInBackground value="true" />
       <targetFilters>
-        <filter targetName="ab.build.production.jar" isVisible="false" />
-        <filter targetName="ab.build.test.jar" isVisible="false" />
         <filter targetName="ab.clean.build" isVisible="false" />
         <filter targetName="ab.compile.production" isVisible="false" />
+        <filter targetName="ab.compile.test" isVisible="false" />
+        <filter targetName="ab.db" isVisible="false" />
         <filter targetName="ab.docs" isVisible="false" />
+        <filter targetName="ab.exploded.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="ab.exportschema.mysql5" isVisible="false" />
         <filter targetName="ab.prepare.war" isVisible="false" />
         <filter targetName="ab.profile.standalone" isVisible="false" />
         <filter targetName="ab.run.standalone" isVisible="false" />
         <filter targetName="ab.runtests" isVisible="false" />
+        <filter targetName="ab.sql.all" isVisible="false" />
+        <filter targetName="ab.sql.init-db" isVisible="false" />
         <filter targetName="ab.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="ab.war.production.tomcat_mysql5" isVisible="false" />
-        <filter targetName="ab_sync.build.production.jar" isVisible="false" />
-        <filter targetName="ab_sync.build.test.jar" isVisible="false" />
         <filter targetName="ab_sync.clean.build" isVisible="false" />
         <filter targetName="ab_sync.compile.production" isVisible="false" />
+        <filter targetName="ab_sync.compile.test" isVisible="false" />
         <filter targetName="ab_sync.docs" isVisible="false" />
         <filter targetName="ab_sync.exportschema.mysql5" isVisible="true" />
         <filter targetName="ab_sync.prepare.war" isVisible="false" />
         <filter targetName="ab_sync.profile.standalone" isVisible="false" />
         <filter targetName="ab_sync.run.standalone" isVisible="false" />
         <filter targetName="ab_sync.runtests" isVisible="true" />
+        <filter targetName="ab_sync.sql.all" isVisible="false" />
+        <filter targetName="ab_sync.sql.init-db" isVisible="false" />
         <filter targetName="ab_sync.war.production.glassfish_mysql5" isVisible="true" />
         <filter targetName="ab_sync.war.production.tomcat_mysql5" isVisible="false" />
         <filter targetName="clean.all" isVisible="false" />
         <filter targetName="clean.build" isVisible="false" />
-        <filter targetName="common.build.production.jar" isVisible="false" />
-        <filter targetName="common.build.test.jar" isVisible="false" />
         <filter targetName="common.clean.build" isVisible="false" />
         <filter targetName="common.compile.production" isVisible="false" />
+        <filter targetName="common.compile.test" isVisible="false" />
+        <filter targetName="common.db" isVisible="false" />
         <filter targetName="common.docs" isVisible="false" />
         <filter targetName="common.exportschema.mysql5" isVisible="false" />
         <filter targetName="common.prepare.war" isVisible="false" />
         <filter targetName="common.runtests" isVisible="false" />
+        <filter targetName="common.runtests.nobuild" isVisible="false" />
+        <filter targetName="common.sql.all" isVisible="false" />
+        <filter targetName="common.sql.create-db" isVisible="false" />
+        <filter targetName="common.sql.init-db" isVisible="false" />
         <filter targetName="common.war.include.libs" isVisible="false" />
         <filter targetName="init.build" isVisible="false" />
         <filter targetName="init.distr" isVisible="false" />
         <filter targetName="reveng.hbmxml" isVisible="false" />
         <filter targetName="reveng.pojos" isVisible="false" />
+        <filter targetName="template.ab.exploded.production" isVisible="false" />
         <filter targetName="template.ab.war.production" isVisible="false" />
         <filter targetName="template.ab_sync.war.production" isVisible="false" />
         <filter targetName="template.compile.production" isVisible="false" />
         <filter targetName="template.compile.test" isVisible="false" />
         <filter targetName="template.docs" isVisible="false" />
-        <filter targetName="template.jar" isVisible="false" />
+        <filter targetName="template.exploded.include.libs" isVisible="false" />
+        <filter targetName="template.mysql.run" isVisible="false" />
         <filter targetName="template.prepare.war" isVisible="false" />
+        <filter targetName="template.prepare.war.classes" isVisible="false" />
         <filter targetName="template.profile.standalone" isVisible="false" />
         <filter targetName="template.run.standalone" isVisible="false" />
         <filter targetName="template.run.tests" isVisible="false" />
@@ -2016,81 +2109,113 @@
       <antCommandLine value="" />
       <runInBackground value="true" />
       <targetFilters>
-        <filter targetName="ab.build.production.jar" isVisible="false" />
-        <filter targetName="ab.build.test.jar" isVisible="false" />
         <filter targetName="ab.clean.build" isVisible="false" />
         <filter targetName="ab.compile.production" isVisible="false" />
+        <filter targetName="ab.compile.test" isVisible="false" />
+        <filter targetName="ab.db" isVisible="false" />
         <filter targetName="ab.deploy.sjsas" isVisible="true" />
         <filter targetName="ab.deploy.sjsas.nobuild" isVisible="true" />
         <filter targetName="ab.docs" isVisible="false" />
+        <filter targetName="ab.exploded.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="ab.exportschema.mysql5" isVisible="false" />
         <filter targetName="ab.prepare.war" isVisible="false" />
         <filter targetName="ab.profile.standalone" isVisible="false" />
         <filter targetName="ab.run.standalone" isVisible="false" />
         <filter targetName="ab.runtests" isVisible="false" />
+        <filter targetName="ab.sql.all" isVisible="false" />
+        <filter targetName="ab.sql.init-db" isVisible="false" />
         <filter targetName="ab.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="ab.war.production.tomcat_mysql5" isVisible="false" />
-        <filter targetName="bti.build.production.jar" isVisible="false" />
-        <filter targetName="bti.build.test.jar" isVisible="false" />
+        <filter targetName="ab_sync.clean.build" isVisible="false" />
+        <filter targetName="ab_sync.compile.production" isVisible="false" />
+        <filter targetName="ab_sync.compile.test" isVisible="false" />
+        <filter targetName="ab_sync.deploy.sjsas" isVisible="true" />
+        <filter targetName="ab_sync.deploy.sjsas.nobuild" isVisible="true" />
+        <filter targetName="ab_sync.docs" isVisible="false" />
+        <filter targetName="ab_sync.exportschema.mysql5" isVisible="false" />
+        <filter targetName="ab_sync.prepare.war" isVisible="false" />
+        <filter targetName="ab_sync.profile.standalone" isVisible="false" />
+        <filter targetName="ab_sync.run.standalone" isVisible="false" />
+        <filter targetName="ab_sync.runtests" isVisible="false" />
+        <filter targetName="ab_sync.sql.all" isVisible="false" />
+        <filter targetName="ab_sync.sql.init-db" isVisible="false" />
+        <filter targetName="ab_sync.war.production.glassfish_mysql5" isVisible="false" />
+        <filter targetName="ab_sync.war.production.tomcat_mysql5" isVisible="false" />
         <filter targetName="bti.clean.build" isVisible="false" />
         <filter targetName="bti.compile.production" isVisible="false" />
+        <filter targetName="bti.compile.test" isVisible="false" />
+        <filter targetName="bti.db" isVisible="false" />
         <filter targetName="bti.docs" isVisible="false" />
         <filter targetName="bti.exportschema.mysql5" isVisible="false" />
         <filter targetName="bti.prepare.war" isVisible="false" />
         <filter targetName="bti.runtests" isVisible="false" />
+        <filter targetName="bti.sql.all" isVisible="false" />
+        <filter targetName="bti.sql.init-db" isVisible="false" />
         <filter targetName="bti.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="bti.war.production.tomcat_mysql5" isVisible="false" />
         <filter targetName="clean.all" isVisible="false" />
         <filter targetName="clean.build" isVisible="false" />
-        <filter targetName="common.build.production.jar" isVisible="false" />
-        <filter targetName="common.build.test.jar" isVisible="false" />
         <filter targetName="common.clean.build" isVisible="false" />
         <filter targetName="common.compile.production" isVisible="false" />
+        <filter targetName="common.compile.test" isVisible="false" />
+        <filter targetName="common.db" isVisible="false" />
         <filter targetName="common.docs" isVisible="false" />
         <filter targetName="common.exportschema.mysql5" isVisible="false" />
         <filter targetName="common.prepare.war" isVisible="false" />
         <filter targetName="common.runtests" isVisible="false" />
+        <filter targetName="common.runtests.nobuild" isVisible="false" />
+        <filter targetName="common.sql.all" isVisible="false" />
+        <filter targetName="common.sql.create-db" isVisible="false" />
+        <filter targetName="common.sql.init-db" isVisible="false" />
         <filter targetName="common.war.include.libs" isVisible="false" />
-        <filter targetName="eirc.build.production.jar" isVisible="false" />
-        <filter targetName="eirc.build.test.jar" isVisible="false" />
         <filter targetName="eirc.clean.build" isVisible="false" />
         <filter targetName="eirc.compile.production" isVisible="false" />
+        <filter targetName="eirc.compile.test" isVisible="false" />
+        <filter targetName="eirc.db" isVisible="false" />
         <filter targetName="eirc.deploy.sjsas" isVisible="true" />
         <filter targetName="eirc.deploy.sjsas.nobuild" isVisible="true" />
         <filter targetName="eirc.docs" isVisible="false" />
         <filter targetName="eirc.exportschema.mysql5" isVisible="false" />
-        <filter targetName="eirc.prepare.for.test" isVisible="false" />
         <filter targetName="eirc.prepare.war" isVisible="false" />
         <filter targetName="eirc.profile.standalone" isVisible="false" />
         <filter targetName="eirc.run.standalone" isVisible="false" />
         <filter targetName="eirc.runtests" isVisible="false" />
         <filter targetName="eirc.runtests.nobuild" isVisible="false" />
+        <filter targetName="eirc.sql.all" isVisible="false" />
+        <filter targetName="eirc.sql.init-db" isVisible="false" />
         <filter targetName="eirc.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="eirc.war.production.tomcat_mysql5" isVisible="false" />
         <filter targetName="init.build" isVisible="false" />
         <filter targetName="init.distr" isVisible="false" />
         <filter targetName="reveng.hbmxml" isVisible="false" />
         <filter targetName="reveng.pojos" isVisible="false" />
-        <filter targetName="sz.build.production.jar" isVisible="false" />
-        <filter targetName="sz.build.test.jar" isVisible="false" />
         <filter targetName="sz.clean.build" isVisible="false" />
         <filter targetName="sz.compile.production" isVisible="false" />
-        <filter targetName="sz.deploy.sjsas" isVisible="true" />
+        <filter targetName="sz.compile.test" isVisible="false" />
+        <filter targetName="sz.db" isVisible="false" />
+        <filter targetName="sz.deploy.sjsas" isVisible="false" />
         <filter targetName="sz.docs" isVisible="false" />
         <filter targetName="sz.exportschema.mysql5" isVisible="false" />
         <filter targetName="sz.prepare.war" isVisible="false" />
         <filter targetName="sz.runtests" isVisible="false" />
+        <filter targetName="sz.sql.all" isVisible="false" />
+        <filter targetName="sz.sql.init-db" isVisible="false" />
         <filter targetName="sz.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="sz.war.production.tomcat_mysql5" isVisible="false" />
+        <filter targetName="template.ab.exploded.production" isVisible="false" />
         <filter targetName="template.ab.war.production" isVisible="false" />
+        <filter targetName="template.ab_sync.war.production" isVisible="false" />
         <filter targetName="template.bti.war.production" isVisible="false" />
         <filter targetName="template.compile.production" isVisible="false" />
         <filter targetName="template.compile.test" isVisible="false" />
+        <filter targetName="template.deploy.exploded.sjsas" isVisible="false" />
         <filter targetName="template.deploy.sjsas" isVisible="false" />
         <filter targetName="template.docs" isVisible="false" />
         <filter targetName="template.eirc.war.production" isVisible="false" />
-        <filter targetName="template.jar" isVisible="false" />
+        <filter targetName="template.exploded.include.libs" isVisible="false" />
+        <filter targetName="template.mysql.run" isVisible="false" />
         <filter targetName="template.prepare.war" isVisible="false" />
+        <filter targetName="template.prepare.war.classes" isVisible="false" />
         <filter targetName="template.profile.standalone" isVisible="false" />
         <filter targetName="template.run.standalone" isVisible="false" />
         <filter targetName="template.run.tests" isVisible="false" />
@@ -2102,135 +2227,215 @@
       <viewClosedWhenNoErrors value="false" />
     </buildFile>
   </component>
+  <component name="atlassian-ide-plugin-workspace">
+    <option name="bambooConfiguration">
+      <BambooProjectConfiguration>
+        <option name="tableConfiguration">
+          <ProjectToolWindowTableConfiguration />
+        </option>
+      </BambooProjectConfiguration>
+    </option>
+    <option name="crucibleConfiguration">
+      <CrucibleProjectConfiguration>
+        <option name="crucibleFilters">
+          <CrucibleFiltersBean>
+            <option name="predefinedFilters">
+              <array>
+                <option value="true" />
+                <option value="false" />
+                <option value="false" />
+                <option value="true" />
+                <option value="false" />
+                <option value="false" />
+                <option value="false" />
+                <option value="false" />
+                <option value="false" />
+                <option value="false" />
+                <option value="false" />
+              </array>
+            </option>
+            <option name="readStored" value="true" />
+          </CrucibleFiltersBean>
+        </option>
+        <option name="tableConfiguration">
+          <ProjectToolWindowTableConfiguration />
+        </option>
+      </CrucibleProjectConfiguration>
+    </option>
+    <option name="jiraConfiguration">
+      <JiraProjectConfiguration>
+        <option name="query">
+          <map>
+            <entry key="95f53960-0c5b-4e7e-a9cf-a69666e1ec27">
+              <value>
+                <JiraFiltersBean>
+                  <option name="savedFilter">
+                    <JiraFilterEntryBean>
+                      <option name="filterEntry">
+                        <map>
+                          <entry key="author" value="null" />
+                          <entry key="filterTypeClass" value="com.atlassian.theplugin.jira.api.JIRASavedFilterBean" />
+                          <entry key="id" value="10010" />
+                          <entry key="name" value="mfedko tasks" />
+                          <entry key="project" value="null" />
+                        </map>
+                      </option>
+                    </JiraFilterEntryBean>
+                  </option>
+                  <option name="savedFilterUsed" value="true" />
+                </JiraFiltersBean>
+              </value>
+            </entry>
+          </map>
+        </option>
+        <option name="selectedServerId" value="95f53960-0c5b-4e7e-a9cf-a69666e1ec27" />
+        <option name="tableConfiguration">
+          <ProjectToolWindowTableConfiguration>
+            <option name="properties">
+              <map>
+                <entry key="Order0" value="0" />
+                <entry key="Order1" value="1" />
+                <entry key="Order2" value="2" />
+                <entry key="Order3" value="3" />
+                <entry key="Order4" value="4" />
+                <entry key="Width0" value="61" />
+                <entry key="Width1" value="92" />
+                <entry key="Width2" value="72" />
+                <entry key="Width3" value="50" />
+                <entry key="Width4" value="500" />
+              </map>
+            </option>
+          </ProjectToolWindowTableConfiguration>
+        </option>
+      </JiraProjectConfiguration>
+    </option>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/locking/AllTests.java">
+    <entry file="file://$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/PersonactId.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="189" selection-end="189" vertical-scroll-proportion="0.14268728">
+        <state line="40" column="16" selection-start="639" selection-end="639" vertical-scroll-proportion="0.85877866">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/organisations/list_organisations.jsp">
+    <entry file="file://$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/ActsId.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="53" selection-start="1079" selection-end="1079" vertical-scroll-proportion="0.39772728">
+        <state line="42" column="26" selection-start="769" selection-end="769" vertical-scroll-proportion="0.629771">
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="J2eePreview">
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../bti/src/org/flexpay/bti/persistence/ActFilesId.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="11" selection-start="156" selection-end="156" vertical-scroll-proportion="0.20038168">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/BuildingBase.hbm.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="14" selection-start="673" selection-end="673" vertical-scroll-proportion="0.34009546">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-dao.xml">
+      <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab_sync/etc/sql/sync.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="724" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/eirc_build.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="166" column="0" selection-start="6042" selection-end="6177" vertical-scroll-proportion="0.43430656">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../common/lib/junit/spring-test.jar!/org/springframework/test/annotation/Repeat.class">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/locking/LockManager.java">
+    <entry file="file://$PROJECT_DIR$/../../ab_sync/web/WEB-INF/ab_sync/configs/spring/config.xml">
+      <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="100" column="0" selection-start="2833" selection-end="2833" vertical-scroll-proportion="0.63614744">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/tests/java/org/flexpay/common/locking/TestLockManager.java">
+    <entry file="file://$PROJECT_DIR$/../../ab_sync/web/WEB-INF/ab_sync/configs/spring/beans-schedule.xml">
+      <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="47" selection-start="669" selection-end="669" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/common_build.xml">
+    <entry file="file://$PROJECT_DIR$/../../bti/web/WEB-INF/bti/configs/spring/config.xml">
+      <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="0" selection-start="3341" selection-end="3341" vertical-scroll-proportion="0.31508517">
+        <state line="6" column="0" selection-start="307" selection-end="307" vertical-scroll-proportion="0.111386135">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/i18n/errors.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="65" selection-start="1145" selection-end="1145" vertical-scroll-proportion="0.351418">
-          <folding />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/i18n/common-messages.properties">
       <provider editor-type-id="ResourceBundle">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/i18n/errors_ru.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="60" selection-start="1126" selection-end="1126" vertical-scroll-proportion="-6.06383">
+        <state line="1" column="0" selection-start="1" selection-end="1" vertical-scroll-proportion="0.030364372">
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="ResourceBundle">
-        <state />
-      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/actions/FPActionSupport.java">
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/apache/log4j/QpidCompositeRollingAppender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="14" selection-start="978" selection-end="978" vertical-scroll-proportion="0.17835909">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/organisations/edit_organisation.jsp">
+    <entry file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/town_view.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="81" selection-start="2364" selection-end="2364" vertical-scroll-proportion="-9.5">
+        <state line="17" column="35" selection-start="659" selection-end="659" vertical-scroll-proportion="0.33267328">
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="J2eePreview">
-        <state />
-      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/actions/organisation/EditOrganisationAction.java">
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/service/imp/TownTypeServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="61" selection-start="566" selection-end="566" vertical-scroll-proportion="0.0">
+        <state line="230" column="35" selection-start="6765" selection-end="6765" vertical-scroll-proportion="0.5038168">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/service/imp/OrganisationServiceImpl.java">
+    <entry file="file://$PROJECT_DIR$/../../common/web/resources/common/js/jscalendar/calendar_stripped.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="125" column="0" selection-start="3796" selection-end="3796" vertical-scroll-proportion="0.41022593">
+        <state line="13" column="24413" selection-start="24909" selection-end="24909" vertical-scroll-proportion="0.029469548">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/i18n/messages_ru.properties">
-      <provider editor-type-id="text-editor">
-        <state line="99" column="26" selection-start="3722" selection-end="3722" vertical-scroll-proportion="0.6115906">
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="ResourceBundle">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/i18n/messages.properties">
+    <entry file="file://$PROJECT_DIR$/../../common/web/WEB-INF/common/configs/ps/app_server_tomcat.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="104" column="0" selection-start="3648" selection-end="3648" vertical-scroll-proportion="0.5918619">
+        <state line="3" column="5" selection-start="95" selection-end="95" vertical-scroll-proportion="0.085877866">
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="ResourceBundle">
-        <state />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../common/web/WEB-INF/common/configs/ps/app_server_glassfish.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="0" selection-start="197" selection-end="197" vertical-scroll-proportion="0.14312977">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../common/common_build.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="0" selection-start="354" selection-end="354" vertical-scroll-proportion="0.34351146">
+          <folding />
+        </state>
       </provider>
     </entry>
   </component>
@@ -2293,7 +2498,7 @@
                   </option>
                 </SplitterProportionsDataImpl>
               </option>
-              <option name="lastEditedConfigurable" value="FlexPay" />
+              <option name="lastEditedConfigurable" value="No Inspections" />
             </UIState>
           </value>
         </entry>
@@ -2329,7 +2534,7 @@
                   </option>
                 </SplitterProportionsDataImpl>
               </option>
-              <option name="lastEditedConfigurable" value="FlexPay" />
+              <option name="lastEditedConfigurable" value="No Inspections" />
             </UIState>
           </value>
         </entry>

@@ -222,13 +222,13 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 */
 	@Transactional(readOnly = false)
 	public void disable(Collection<TownType> townTypes) {
-		if (log.isDebugEnabled()) {
+		if (log.isInfoEnabled()) {
 			log.info(townTypes.size() + " types to disable");
 		}
 		for (TownType townType : townTypes) {
 			townType.setStatus(TownType.STATUS_DISABLED);
 			townTypeDao.update(townType);
-			if (log.isDebugEnabled()) {
+			if (log.isInfoEnabled()) {
 				log.info("Disabled: " + townType);
 			}
 		}
