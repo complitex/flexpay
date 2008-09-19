@@ -21,7 +21,7 @@
           <setting name="JAR_URL" value="file://" />
           <setting name="JAR_ENABLED" value="false" />
           <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
-          <setting name="RUN_JASPER_VALIDATION" value="true" />
+          <setting name="RUN_JASPER_VALIDATION" value="false" />
         </building>
         <packaging>
           <containerElement type="facet" facetId="ab/web/Web">
@@ -138,6 +138,44 @@
       <configuration>
         <fileset id="web: application context" name="MVC application context" removed="false">
           <file>file://$MODULE_DIR$/../../sz/web/WEB-INF/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-cache.xml</file>
+          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-dao.xml</file>
+          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-services.xml</file>
+          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-struts.xml</file>
+          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/config.xml</file>
+          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/data_export.xml</file>
+          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/stand-alone-tasks.xml</file>
+          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/config.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-cache.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-dao.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-data-source.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-jmx.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-mail.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-services.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans_self_testing.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/config.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/data_export.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/hibernate.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/stand-alone-tasks.xml</file>
+          <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/beans-cache.xml</file>
+          <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/beans-reports.xml</file>
+          <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/beans_dao.xml</file>
+          <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/beans_jbpm.xml</file>
+          <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/beans_self_testing.xml</file>
+          <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/beans_services.xml</file>
+          <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/beans_struts.xml</file>
+          <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/config.xml</file>
+          <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/data_export.xml</file>
+          <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/stand-alone-tasks.xml</file>
+          <file>file://$MODULE_DIR$/../../sz/web/WEB-INF/sz/configs/spring/beans-dao.xml</file>
+          <file>file://$MODULE_DIR$/../../sz/web/WEB-INF/sz/configs/spring/beans-logic.xml</file>
+          <file>file://$MODULE_DIR$/../../sz/web/WEB-INF/sz/configs/spring/beans-services.xml</file>
+          <file>file://$MODULE_DIR$/../../sz/web/WEB-INF/sz/configs/spring/beans-struts.xml</file>
+          <file>file://$MODULE_DIR$/../../sz/web/WEB-INF/sz/configs/spring/config.xml</file>
         </fileset>
         <options>
           <option name="enableValidation" value="true" />
@@ -149,8 +187,8 @@
       <configuration>
         <setting name="validation-enabled" value="false" />
         <datasource-map>
-          <unit-entry name="flexpay" value="2793241e-a9ec-4f5d-b7fe-3bdf60b0d686" />
-          <unit-entry name="flexpaySessionFactory" value="2793241e-a9ec-4f5d-b7fe-3bdf60b0d686" />
+          <unit-entry name="flexpay" value="d1b6f54f-3833-45ac-9df7-28e10c14f6af" />
+          <unit-entry name="flexpaySessionFactory" value="d1b6f54f-3833-45ac-9df7-28e10c14f6af" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../sz/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
       </configuration>
