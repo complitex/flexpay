@@ -74,12 +74,7 @@ public abstract class TemporaryType<TV extends TemporaryValue, T extends Transla
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (!(obj instanceof TemporaryName)) {
-			return false;
-		}
 
-		return super.equals(obj);
+		return obj instanceof TemporaryType && super.equals(obj);
 	}
 }

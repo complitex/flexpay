@@ -4,20 +4,9 @@
     <connections />
   </component>
   <component name="FacetManager">
-    <facet type="hibernate" name="Hibernate">
-      <configuration>
-        <setting name="validation-enabled" value="false" />
-        <datasource-map>
-          <unit-entry name="flexpay" />
-          <unit-entry name="flexpaySessionFactory" value="dataSource" />
-        </datasource-map>
-        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
-      </configuration>
-    </facet>
     <facet type="web" name="Web">
       <configuration>
         <descriptors>
-          <deploymentDescriptor name="sun-web.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/sun-web.xml" optional="false" version="2.5.0" />
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/web.xml" optional="false" version="2.5" />
         </descriptors>
         <webroots>
@@ -28,10 +17,8 @@
           <setting name="EXPLODED_ENABLED" value="true" />
           <setting name="JAR_URL" value="file://$MODULE_DIR$/../../_distr/ab.war" />
           <setting name="JAR_ENABLED" value="false" />
-          <setting name="BUILD_MODULE_ON_FRAME_DEACTIVATION" value="false" />
           <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
           <setting name="RUN_JASPER_VALIDATION" value="false" />
-          <setting name="BUILD_ONLY_WEB_RESOURCES" value="false" />
         </building>
         <packaging>
           <containerElement type="facet" facetId="common/web/Web">
@@ -136,6 +123,16 @@
           </validation>
         </configuration>
       </facet>
+    </facet>
+    <facet type="hibernate" name="Hibernate">
+      <configuration>
+        <setting name="validation-enabled" value="false" />
+        <datasource-map>
+          <unit-entry name="flexpay" />
+          <unit-entry name="flexpaySessionFactory" value="dataSource" />
+        </datasource-map>
+        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
+      </configuration>
     </facet>
     <facet type="Spring" name="Spring">
       <configuration>
