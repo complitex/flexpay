@@ -68,7 +68,11 @@ public class TestStreetService extends TransactionalSpringBeanAwareTestCase {
 //			streetService.save(street);
 		} finally {
 			if (street.isNotNew()) {
-				streetDao.delete(street);
+				//noinspection ConstantConditions
+				street = streetDao.read(street.getId());
+				if (street != null) {
+					streetDao.delete(street);
+				}
 			}
 		}
 	}
