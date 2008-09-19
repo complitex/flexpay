@@ -51,8 +51,9 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 		createDate = DateUtil.now();
 		this.value = value;
 
-		if (begin.compareTo(end) <= 0) {
-			throw new IllegalArgumentException("Dates specified are invalid for interval");
+		if (this.begin.compareTo(this.end) > 0) {
+			throw new IllegalArgumentException("Dates specified are invalid for interval: [" +
+				this.begin + ", " + this.end + "]");
 		}
 	}
 
