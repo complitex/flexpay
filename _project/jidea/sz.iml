@@ -149,8 +149,8 @@
       <configuration>
         <setting name="validation-enabled" value="false" />
         <datasource-map>
-          <unit-entry name="flexpay" />
-          <unit-entry name="flexpaySessionFactory" value="dataSource" />
+          <unit-entry name="flexpay" value="2793241e-a9ec-4f5d-b7fe-3bdf60b0d686" />
+          <unit-entry name="flexpaySessionFactory" value="2793241e-a9ec-4f5d-b7fe-3bdf60b0d686" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../sz/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
       </configuration>

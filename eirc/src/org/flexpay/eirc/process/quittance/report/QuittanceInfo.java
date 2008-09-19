@@ -183,7 +183,7 @@ public class QuittanceInfo {
 		return servicesTotals.values();
 	}
 
-	public List<ServiceTotals> getServiceTotalsList() {
+	public List<ServiceTotals> getServicesTotalsList() {
 		SortedSet<ServiceTotals> set = new TreeSet<ServiceTotals>(new ServiceTotalsComparator<ServiceTotals>());
 		set.addAll(servicesTotals.values());
 		return new ArrayList<ServiceTotals>(set);

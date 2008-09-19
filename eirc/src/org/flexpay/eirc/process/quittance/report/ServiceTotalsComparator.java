@@ -3,6 +3,11 @@ package org.flexpay.eirc.process.quittance.report;
 import java.util.Comparator;
 import java.io.Serializable;
 
+/**
+ * Compares service totals by service type code
+ * 
+ * @param <T>
+ */
 public class ServiceTotalsComparator<T extends ServiceTotalsBase>
 		implements Comparator<T>, Serializable {
 
