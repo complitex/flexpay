@@ -114,11 +114,14 @@ public class EircImportServiceTx extends ImportService {
 				// set person
 				if (data.getRegistryRecord().getPerson() == null) {
 					Person person = findPerson(sd, data, dataSource);
-					if (person == null) {
-						continue;
+					if (person != null) {
+						data.getRegistryRecord().setPerson(person);
+						if (log.isInfoEnabled()) {
+							log.info("Found responsible person: " + data.getPersonFIO());
+						}
+					} else {
+						log.info("No person found");
 					}
-					data.getRegistryRecord().setPerson(person);
-					log.info("Found responsible person: " + data.getPersonFIO());
 				}
 
 				// set service if not found
@@ -206,18 +209,13 @@ public class EircImportServiceTx extends ImportService {
 				stub(data.getRegistryRecord().getApartment()));
 		if (persons.isEmpty()) {
 			log.debug("No registered persons found");
-			ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
-			error.setErrorId("error.eirc.import.person_no_registrants");
-			setConsumerError(data, error);
+//			ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
+//			error.setErrorId("error.eirc.import.person_no_registrants");
+//			setConsumerError(data, error);
 			return null;
 		}
 
-		if (persons.size() == 1) {
-			log.debug("Unique person found!");
-			return persons.get(0);
-		}
-
-		// try to filter persons by FIO
+		// filter persons by FIO
 		List<Person> candidates = CollectionUtils.list();
 		for (Person person : persons) {
 			for (PersonIdentity identity : person.getPersonIdentities()) {
@@ -239,16 +237,16 @@ public class EircImportServiceTx extends ImportService {
 
 		if (candidates.size() > 0) {
 			log.debug("Too many FIO matches");
-			ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
-			error.setErrorId("error.eirc.import.person_several_fio_match");
-			setConsumerError(data, error);
+//			ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
+//			error.setErrorId("error.eirc.import.person_several_fio_match");
+//			setConsumerError(data, error);
 			return null;
 		}
 
 		log.error("No FIO matches");
-		ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
-		error.setErrorId("error.eirc.import.person_no_fio_match");
-		setConsumerError(data, error);
+//		ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
+//		error.setErrorId("error.eirc.import.person_no_fio_match");
+//		setConsumerError(data, error);
 		return null;
 	}
 

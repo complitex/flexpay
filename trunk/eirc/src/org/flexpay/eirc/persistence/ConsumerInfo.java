@@ -116,6 +116,10 @@ public class ConsumerInfo extends DomainObjectWithStatus {
 		this.consumers = consumers;
 	}
 
+	public String getFIO() {
+		return firstName + " " + middleName + " " + lastName;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)

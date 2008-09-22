@@ -154,7 +154,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		}
 
 		if (record.getPerson() == null || consumer.getResponsiblePerson().getId() == null) {
-			throw new FlexPayException("Cannot create sub consumer without person set");
+			log.warn("Creating sub consumer without person set");
 		}
 
 		// add short consumer correction

@@ -3,6 +3,7 @@ package org.flexpay.eirc.persistence.exchange;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataCorrection;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.*;
@@ -10,6 +11,8 @@ import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.flexpay.ab.persistence.Person;
+import org.flexpay.ab.persistence.Apartment;
 
 import java.util.List;
 
@@ -38,7 +41,8 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		if (!validate(registry, record)) {
 			return;
 		}
-		EircAccount account = getEircAccount(record);
+		ConsumerInfo info = saveConsumerInfo(record);
+		EircAccount account = getEircAccount(record, info);
 
 		Consumer consumer = new Consumer();
 		consumer.setApartment(record.getApartment());
@@ -48,8 +52,8 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		consumer.setEndDate(ApplicationConfig.getFutureInfinite());
 		consumer.setService(findService(registry, record));
 		consumer.setEircAccount(account);
+		consumer.setConsumerInfo(info);
 
-		saveConsumerInfo(record, consumer);
 		ConsumerService consumerService = factory.getConsumerService();
 		try {
 			consumerService.save(consumer);
@@ -64,7 +68,8 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		record.setConsumer(consumer);
 	}
 
-	private void saveConsumerInfo(RegistryRecord record, Consumer consumer) {
+	private ConsumerInfo saveConsumerInfo(RegistryRecord record) {
+
 		ConsumerInfo info = new ConsumerInfo();
 
 		info.setFirstName(record.getFirstName());
@@ -79,7 +84,8 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		info.setApartmentNumber(record.getApartmentNum());
 
 		factory.getConsumerInfoService().save(info);
-		consumer.setConsumerInfo(info);
+
+		return info;
 	}
 
 	private void createCorrections(SpRegistry registry, RegistryRecord record, Consumer consumer) {
@@ -113,20 +119,27 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	 * Check if EIRC account exists, and create a new one if necessary
 	 *
 	 * @param record RegistryRecord
+	 * @param info ConsumerInfo
 	 * @return EircAccount instance
 	 * @throws FlexPayException if failure occurs
 	 */
-	private EircAccount getEircAccount(RegistryRecord record) throws FlexPayException {
+	private EircAccount getEircAccount(RegistryRecord record, ConsumerInfo info) throws FlexPayException {
 
 		EircAccountService accountService = factory.getAccountService();
-		EircAccount account = accountService.findAccount(record.getPerson(), record.getApartment());
-		if (account != null) {
-			return account;
+
+		Stub<Person> personStub = record.getPersonStub();
+		Stub<Apartment> apartmentStub = record.getApartmentStub();
+		if (personStub != null && apartmentStub != null) {
+			EircAccount account = accountService.findAccount(personStub, apartmentStub);
+			if (account != null) {
+				return account;
+			}
 		}
 
-		account = new EircAccount();
+		EircAccount account = new EircAccount();
 		account.setPerson(record.getPerson());
 		account.setApartment(record.getApartment());
+		account.setConsumerInfo(info);
 
 		try {
 			accountService.save(account);
@@ -168,7 +181,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		}
 
 		if (record.getPerson() == null) {
-			throw new FlexPayException("Cannot create consumer without person set");
+			log.warn("Creating account without person set");
 		}
 
 		if (log.isDebugEnabled()) {

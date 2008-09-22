@@ -34,9 +34,13 @@
 					</a>
 				</td>
 				<td class="col">
-					<a href="<s:url action='view_person' namespace="/dicts" includeParams="none"><s:param name="person.id" value="%{person.id}"/></s:url>">
-						<s:property value="%{getFIO(person)}"/>
-					</a>
+					<s:if test="person != null">
+						<a href="<s:url action='view_person' namespace="/dicts" includeParams="none"><s:param name="person.id" value="%{person.id}"/></s:url>">
+							<s:property value="%{getFIO(person)}"/>
+						</a>
+					</s:if><s:else>
+						(*)&nbsp;<s:property value="%{consumerInfo.FIO}"/>
+					</s:else>
 				</td>
 				<td class="col">
 					<a href="<s:url action='apartmentRegistrations' namespace="/dicts" includeParams="none"><s:param name="apartment.id" value="%{apartment.id}"/></s:url>">

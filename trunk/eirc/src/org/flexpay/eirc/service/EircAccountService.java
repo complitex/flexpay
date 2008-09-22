@@ -21,7 +21,7 @@ public interface EircAccountService {
 	 * @param apartmentStub Apartment reference
 	 * @return EircAccount if found, or <code>null</code> otherwise
 	 */
-	EircAccount findAccount(Person personStub, Apartment apartmentStub);
+	EircAccount findAccount(@NotNull Stub<Person> personStub, @NotNull Stub<Apartment> apartmentStub);
 
 	/**
 	 * Create or update account

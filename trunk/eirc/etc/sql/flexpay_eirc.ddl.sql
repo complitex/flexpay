@@ -443,25 +443,26 @@
 
     create table eirc_consumers_tbl (
         id bigint not null auto_increment,
-        status integer not null,
+        status integer not null comment 'Enabled-Disabled status',
         external_account_number varchar(255) not null comment 'Service providers internal account number',
         service_id bigint not null comment 'Service reference',
-        person_id bigint not null comment 'Responsible person reference',
+        person_id bigint comment 'Responsible person reference',
         apartment_id bigint not null comment 'Apartment reference',
         eirc_account_id bigint not null comment 'EIRC account reference',
         begin_date datetime not null comment 'Consumer begin date',
         end_date datetime not null comment 'Consumer end date',
         consumer_info_id bigint comment 'Service providers consumer details',
         primary key (id)
-    );
+    ) comment='Consumer is a person that gets some service';
 
     create table eirc_eirc_accounts_tbl (
         id bigint not null auto_increment,
         version integer not null comment 'Optimistic lock version',
-        status integer not null,
+        status integer not null comment 'Enabled-Disabled status',
         account_number varchar(255) not null comment 'EIRC account number',
         apartment_id bigint not null comment 'Apartment reference',
-        person_id bigint not null comment 'Responsible person reference',
+        person_id bigint comment 'Responsible person reference',
+        consumer_info_id bigint comment 'Consumer info used to create account',
         primary key (id)
     ) comment='EIRC Personal accounts table';
 
@@ -1195,6 +1196,12 @@
         add constraint FK_eirc_eirc_accounts_apartment_id 
         foreign key (apartment_id) 
         references ab_apartments_tbl (id);
+
+    alter table eirc_eirc_accounts_tbl 
+        add index FK_eirc_eirc_accounts_consumer_info_id (consumer_info_id), 
+        add constraint FK_eirc_eirc_accounts_consumer_info_id 
+        foreign key (consumer_info_id) 
+        references eirc_consumer_infos_tbl (id);
 
     alter table eirc_organisation_descriptions_tbl 
         add index FK_eirc_organisation_description_organisation (organisation_id), 

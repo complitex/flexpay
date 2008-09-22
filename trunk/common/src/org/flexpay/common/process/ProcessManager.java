@@ -268,7 +268,6 @@ public class ProcessManager implements Runnable {
 	public synchronized Long initProcess(String processDefinitionName)
 			throws ProcessDefinitionException, ProcessInstanceException {
 		ProcessDefinition processDefinition;
-		Long processId;
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
 		GraphSession graphSession = jbpmContext.getGraphSession();
 		try {
@@ -281,6 +280,9 @@ public class ProcessManager implements Runnable {
 		// try to search in predefined set of places
 		if (processDefinition == null) {
 			deployProcessDefinition(processDefinitionName, true);
+			jbpmContext.close();
+			jbpmContext = jbpmConfiguration.createJbpmContext();
+			graphSession = jbpmContext.getGraphSession();
 			processDefinition = graphSession.findLatestProcessDefinition(processDefinitionName);
 		}
 		if (processDefinition == null) {
@@ -295,14 +297,13 @@ public class ProcessManager implements Runnable {
 
 		try {
 			ProcessInstance processInstance = new ProcessInstance(processDefinition);
-			processId = processInstance.getId();
+			return processInstance.getId();
 		} catch (RuntimeException e) {
-			jbpmContext.close();
 			log.error("ProcessInstanceCreation", e);
 			throw new ProcessInstanceException("Can't create ProcessInstance for " + processDefinitionName, e);
+		} finally {
+			jbpmContext.close();
 		}
-		jbpmContext.close();
-		return processId;
 	}
 
 	/**

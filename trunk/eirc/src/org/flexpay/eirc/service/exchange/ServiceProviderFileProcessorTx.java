@@ -2,12 +2,13 @@ package org.flexpay.eirc.service.exchange;
 
 import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
-import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.ImportError;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
-import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.RegistryRecord;
+import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
@@ -17,8 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Processor of instructions specified by service provider, usually payments, balance notifications, etc. <br /> Precondition for
- * processing file is complete import operation, i.e. all records should already have assigned PersonalAccount.
+ * Processor of instructions specified by service provider, usually payments, balance
+ * notifications, etc. <br /> Precondition for processing file is complete import
+ * operation, i.e. all records should already have assigned PersonalAccount.
  */
 @Transactional (readOnly = true)
 public class ServiceProviderFileProcessorTx {
@@ -75,7 +77,11 @@ public class ServiceProviderFileProcessorTx {
 			op.process(registry, record);
 			recordWorkflowManager.setNextSuccessStatus(record);
 		} catch (Exception e) {
-			log.warn("Failed processing registry record: " + e.getMessage());
+			if (e instanceof FlexPayExceptionContainer) {
+				e = ((FlexPayExceptionContainer) e).getExceptions().iterator().next();
+			}
+
+			log.warn("Failed processing registry record", e);
 
 			ImportError error = new ImportError();
 			error.setErrorId(e.getMessage());

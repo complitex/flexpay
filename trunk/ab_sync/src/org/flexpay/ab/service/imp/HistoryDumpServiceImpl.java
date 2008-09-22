@@ -37,15 +37,15 @@ public class HistoryDumpServiceImpl implements HistoryDumpService {
 				log.info("Last dumped record was: " + config.getLastDumpedRecordId());
 			}
 
-				Iterator<HistoryRecord> it = historySourceDao.getRecords(config.getLastDumpedRecordId());
-				while (it.hasNext()) {
-					HistoryRecord record = it.next();
-					historyDao.addRecord(record);
-					++nRecords;
-					config.setLastDumpedRecordId(record.getRecordId());
-				}
+			Iterator<HistoryRecord> it = historySourceDao.getRecords(config.getLastDumpedRecordId());
+			while (it.hasNext()) {
+				HistoryRecord record = it.next();
+				historyDao.addRecord(record);
+				++nRecords;
+				config.setLastDumpedRecordId(record.getRecordId());
+			}
 
-				updateConfigDao.saveConfig(config);
+			updateConfigDao.saveConfig(config);
 		} catch (Exception e) {
 			throw new RuntimeException("Failed dumping history", e);
 		} finally {
