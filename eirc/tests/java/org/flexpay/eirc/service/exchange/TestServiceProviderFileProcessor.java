@@ -102,5 +102,4 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 			deleteFile(file);
 		}
 	}
-
 }

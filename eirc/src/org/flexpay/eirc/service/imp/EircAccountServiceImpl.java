@@ -38,7 +38,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 * @param apartmentStub Apartment reference
 	 * @return EircAccount if found, or <code>null</code> otherwise
 	 */
-	public EircAccount findAccount(Person personStub, Apartment apartmentStub) {
+	public EircAccount findAccount(@NotNull Stub<Person> personStub, @NotNull Stub<Apartment> apartmentStub) {
 		return eircAccountDaoExt.findAccount(personStub.getId(), apartmentStub.getId());
 	}
 
@@ -64,8 +64,9 @@ public class EircAccountServiceImpl implements EircAccountService {
 	private void validate(EircAccount account) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
 
-		if (account.isNew()) {
-			EircAccount persistent = findAccount(account.getPerson(), account.getApartment());
+		Stub<Person> personStub = account.getPersonStub();
+		if (account.isNew() && personStub != null) {
+			EircAccount persistent = findAccount(personStub, account.getApartmentStub());
 			if (persistent != null) {
 				ex.addException(new FlexPayException("Duplicate account", "eirc.error.account.create.duplicate"));
 			}

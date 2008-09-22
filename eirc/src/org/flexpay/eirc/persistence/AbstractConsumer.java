@@ -2,6 +2,7 @@ package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.ab.persistence.Person;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
@@ -64,6 +65,7 @@ public abstract class AbstractConsumer extends DomainObjectWithStatus {
 	 *
 	 * @return Value for property 'responsiblePerson'.
 	 */
+	@Nullable
 	public Person getResponsiblePerson() {
 		return responsiblePerson;
 	}
@@ -73,7 +75,7 @@ public abstract class AbstractConsumer extends DomainObjectWithStatus {
 	 *
 	 * @param responsiblePerson Value to set for property 'responsiblePerson'.
 	 */
-	public void setResponsiblePerson(Person responsiblePerson) {
+	public void setResponsiblePerson(@Nullable Person responsiblePerson) {
 		this.responsiblePerson = responsiblePerson;
 	}
 

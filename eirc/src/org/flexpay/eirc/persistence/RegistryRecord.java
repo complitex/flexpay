@@ -1,14 +1,18 @@
 package org.flexpay.eirc.persistence;
 
-import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.ImportError;
-import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Person;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Person;
+import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.persistence.Stub;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 public class RegistryRecord extends DomainObject {
 
@@ -346,5 +350,21 @@ public class RegistryRecord extends DomainObject {
 				.append("service-id", service == null ? Long.valueOf(0) : service.getId())
 				.append("consumer-id", consumer == null ? Long.valueOf(0) : consumer.getId())
 				.toString();
+	}
+
+	@Nullable
+	public Stub<Person> getPersonStub() {
+		if (person == null) {
+			return null;
+		}
+		return new Stub<Person>(person);
+	}
+
+	@Nullable
+	public Stub<Apartment> getApartmentStub() {
+		if (apartment == null) {
+			return null;
+		}
+		return new Stub<Apartment>(apartment);
 	}
 }

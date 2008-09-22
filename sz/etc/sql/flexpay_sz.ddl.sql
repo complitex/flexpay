@@ -282,10 +282,10 @@
         end_date date not null,
         create_date date not null,
         invalid_date date not null,
-        street_id bigint not null,
-        street_name_id bigint,
+        street_id bigint not null comment 'Street reference',
+        street_name_id bigint comment 'Street name reference',
         primary key (id)
-    );
+    ) comment='Street name temporals';
 
     create table ab_street_type_translations_tbl (
         id bigint not null auto_increment,
@@ -466,24 +466,6 @@
         primary key (id)
     );
 
-    create table eirc_account_record_types_tbl (
-        id bigint not null auto_increment,
-        description varchar(255) not null,
-        type_enum_id integer not null,
-        primary key (id)
-    );
-
-    create table eirc_account_records_tbl (
-        id bigint not null auto_increment,
-        consumer_id bigint not null comment 'Consumer reference',
-        organisation_id bigint comment 'Reference to organisation performed operation',
-        operation_date datetime not null,
-        amount decimal(19,2) not null,
-        record_type_id bigint not null comment 'Account record type reference',
-        source_registry_record_id bigint comment 'Registry record reference',
-        primary key (id)
-    );
-
     create table eirc_bank_accounts_tbl (
         id bigint not null auto_increment,
         version integer not null comment 'Optiomistic lock version',
@@ -531,25 +513,26 @@
 
     create table eirc_consumers_tbl (
         id bigint not null auto_increment,
-        status integer not null,
-        external_account_number varchar(255) not null,
+        status integer not null comment 'Enabled-Disabled status',
+        external_account_number varchar(255) not null comment 'Service providers internal account number',
         service_id bigint not null comment 'Service reference',
-        person_id bigint not null comment 'Responsible person reference',
+        person_id bigint comment 'Responsible person reference',
         apartment_id bigint not null comment 'Apartment reference',
         eirc_account_id bigint not null comment 'EIRC account reference',
         begin_date datetime not null comment 'Consumer begin date',
         end_date datetime not null comment 'Consumer end date',
         consumer_info_id bigint comment 'Service providers consumer details',
         primary key (id)
-    );
+    ) comment='Consumer is a person that gets some service';
 
     create table eirc_eirc_accounts_tbl (
         id bigint not null auto_increment,
         version integer not null comment 'Optimistic lock version',
-        status integer not null,
+        status integer not null comment 'Enabled-Disabled status',
         account_number varchar(255) not null comment 'EIRC account number',
         apartment_id bigint not null comment 'Apartment reference',
-        person_id bigint not null comment 'Responsible person reference',
+        person_id bigint comment 'Responsible person reference',
+        consumer_info_id bigint comment 'Consumer info used to create account',
         primary key (id)
     ) comment='EIRC Personal accounts table';
 
@@ -1184,14 +1167,14 @@
         references ab_streets_tbl (id);
 
     alter table ab_street_names_temporal_tbl 
-        add index FKAEC123D6311847ED (street_id), 
-        add constraint FKAEC123D6311847ED 
+        add index ab_street_names_temporal_tbl_street_id (street_id), 
+        add constraint ab_street_names_temporal_tbl_street_id 
         foreign key (street_id) 
         references ab_streets_tbl (id);
 
     alter table ab_street_names_temporal_tbl 
-        add index FKAEC123D6D80067D4 (street_name_id), 
-        add constraint FKAEC123D6D80067D4 
+        add index ab_street_names_temporal_tbl_street_name_id (street_name_id), 
+        add constraint ab_street_names_temporal_tbl_street_name_id 
         foreign key (street_name_id) 
         references ab_street_names_tbl (id);
 
@@ -1327,30 +1310,6 @@
         foreign key (language_id) 
         references common_languages_tbl (id);
 
-    alter table eirc_account_records_tbl 
-        add index FK_eirc_account_record_consumer (consumer_id), 
-        add constraint FK_eirc_account_record_consumer 
-        foreign key (consumer_id) 
-        references eirc_consumers_tbl (id);
-
-    alter table eirc_account_records_tbl 
-        add index FK_eirc_account_record_record_type (record_type_id), 
-        add constraint FK_eirc_account_record_record_type 
-        foreign key (record_type_id) 
-        references eirc_account_record_types_tbl (id);
-
-    alter table eirc_account_records_tbl 
-        add index FK_eirc_account_record_organisation (organisation_id), 
-        add constraint FK_eirc_account_record_organisation 
-        foreign key (organisation_id) 
-        references eirc_organisations_tbl (id);
-
-    alter table eirc_account_records_tbl 
-        add index FK_eirc_account_record_registry_record (source_registry_record_id), 
-        add constraint FK_eirc_account_record_registry_record 
-        foreign key (source_registry_record_id) 
-        references eirc_registry_records_tbl (id);
-
     alter table eirc_bank_accounts_tbl 
         add index FK_eirc_bank_accounts_tbl_bank_id (bank_id), 
         add constraint FK_eirc_bank_accounts_tbl_bank_id 
@@ -1380,6 +1339,8 @@
         add constraint FK_eirc_banks_tbl_organisation_id 
         foreign key (organisation_id) 
         references eirc_organisations_tbl (id);
+
+    create index I_external_account_number on eirc_consumers_tbl (external_account_number);
 
     alter table eirc_consumers_tbl 
         add index FK_eirc_consumer_eirc_account (eirc_account_id), 
@@ -1422,6 +1383,12 @@
         add constraint FK_eirc_eirc_accounts_apartment_id 
         foreign key (apartment_id) 
         references ab_apartments_tbl (id);
+
+    alter table eirc_eirc_accounts_tbl 
+        add index FK_eirc_eirc_accounts_consumer_info_id (consumer_info_id), 
+        add constraint FK_eirc_eirc_accounts_consumer_info_id 
+        foreign key (consumer_info_id) 
+        references eirc_consumer_infos_tbl (id);
 
     alter table eirc_organisation_descriptions_tbl 
         add index FK_eirc_organisation_description_organisation (organisation_id), 

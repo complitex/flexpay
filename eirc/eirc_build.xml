@@ -148,7 +148,7 @@
 		</antcall>
 	</target>
 
-	<target name="eirc.runtests" depends="eirc.compile.test,eirc.prepare.war">
+	<target name="eirc.runtests" depends="clean.build,eirc.compile.test,eirc.prepare.war">
 		<antcall target="eirc.runtests.nobuild" />
 	</target>
 

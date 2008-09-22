@@ -1,6 +1,7 @@
 package org.flexpay.eirc.dao;
 
 import org.flexpay.eirc.persistence.EircAccount;
+import org.jetbrains.annotations.NotNull;
 
 public interface EircAccountDaoExt {
 
@@ -11,5 +12,5 @@ public interface EircAccountDaoExt {
 	 * @param apartmentId Apartment key
 	 * @return EircAccount instance if found, or <code>null</code> otherwise
 	 */
-	EircAccount findAccount(Long personId, Long apartmentId);
+	EircAccount findAccount(@NotNull Long personId, @NotNull Long apartmentId);
 }

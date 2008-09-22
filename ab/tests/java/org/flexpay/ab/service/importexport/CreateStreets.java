@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +15,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CreateStreets extends SpringBeanAwareTestCase {
+
+	private final Logger log = Logger.getLogger(getClass());
 
 	private static final String sqlGetStreets =
 			"select s.name, sc.cn_obj_id, tt.int_id " +
@@ -50,6 +53,9 @@ public class CreateStreets extends SpringBeanAwareTestCase {
 				String name = rs.getString("name");
 				Long cnObjectId = rs.getLong("cn_obj_id");
 				Long internalTypeId = rs.getLong("int_id");
+
+				log.info(String.format("inserting street (name, cn_obj_id, int_id) values (%s, %d, %d)",
+						name, cnObjectId, internalTypeId));
 
 				KeyHolder keyHolder = new GeneratedKeyHolder();
 				jdbcTemplate.update(new StreetInsertCreator(), keyHolder);

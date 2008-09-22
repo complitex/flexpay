@@ -30,6 +30,7 @@ public class EircAccountListAction extends ApartmentFilterDependent2Action {
 	public EircAccountListAction() {
 		apartmentFilter.setAllowEmpty(true);
 		apartmentFilter.setNeedAutoChange(true);
+		streetNameFilter.setShowSearchString(true);
 	}
 
 	@NotNull
