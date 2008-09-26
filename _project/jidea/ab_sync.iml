@@ -127,10 +127,6 @@
           <dependency>web: application context</dependency>
           <file>file://$MODULE_DIR$/../../ab_sync/web/WEB-INF/dispatcher-servlet.xml</file>
         </fileset>
-        <options>
-          <option name="enableValidation" value="false" />
-          <option name="reportErrorsAsWarnings" value="true" />
-        </options>
       </configuration>
     </facet>
   </component>

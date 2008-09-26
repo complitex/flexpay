@@ -158,10 +158,6 @@
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/hibernate.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/stand-alone-tasks.xml</file>
         </fileset>
-        <options>
-          <option name="enableValidation" value="true" />
-          <option name="reportErrorsAsWarnings" value="true" />
-        </options>
       </configuration>
     </facet>
   </component>

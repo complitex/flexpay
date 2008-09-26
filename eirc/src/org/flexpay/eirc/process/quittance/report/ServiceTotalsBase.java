@@ -3,6 +3,7 @@ package org.flexpay.eirc.process.quittance.report;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
@@ -30,9 +31,11 @@ public abstract class ServiceTotalsBase {
 	}
 
 	public String getServiceTypeName() throws Exception {
-		String name = TranslationUtil.getTranslation(serviceType.getTypeNames()).getName();
-		System.out.println("ServiceType: " + name);
-		return name;
+		return TranslationUtil.getTranslation(serviceType.getTypeNames()).getName();
+	}
+
+	public Integer getServiceTypeCode() {
+		return serviceType.getCode();
 	}
 
 	public String getTarif() {
@@ -143,11 +146,19 @@ public abstract class ServiceTotalsBase {
 	}
 
 	public BigDecimal getOutgoingDebt() {
-		System.out.println("Debt: " + outgoingDebt);
 		return outgoingDebt;
 	}
 
-	/**
+	/**	<style
+		name="LiberationSans-Bold"
+		isDefault="false"
+		style="LiberationSans-Regular"
+		fontName="LiberationSans-Bold"
+		isBold="true"
+		pdfFontName="/usr/share/fonts/truetype/LiberationSans-Bold.ttf"
+	>
+	</style>
+
 	 * Add amount to outgoing debt
 	 *
 	 * @param amount Summ to add
@@ -180,5 +191,26 @@ public abstract class ServiceTotalsBase {
 				append("incomingDebt", incomingDebt).
 				append("outgoingDebt", outgoingDebt).
 				toString();
+	}
+
+	public String[] getOutgoingDebtDigits() {
+
+		System.out.println("Calculating digits");
+
+		String[] result = new String[6];
+		for (int pos = -2; pos < 4; ++pos) {
+			result[pos + 2] = StringUtil.getDigit(outgoingDebt, pos);
+		}
+
+		// remove leading zeros
+		for (int pos = 5; pos > 2; --pos) {
+			if ("0".equals(result[pos])) {
+				result[pos] = "";
+			} else {
+				break;
+			}
+		}
+
+		return result;
 	}
 }

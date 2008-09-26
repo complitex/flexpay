@@ -3,6 +3,7 @@ package org.flexpay.ab.dao;
 import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -34,5 +35,5 @@ public interface BuildingsDao extends GenericDao<Buildings, Long> {
 	 * @param page Page instance
 	 * @return list of buildings for the building
 	 */
-	List<Buildings> findBuildingBuildings(Long buildingId, Page page);
+	List<Buildings> findBuildingBuildings(@NotNull Long buildingId, Page page);
 }

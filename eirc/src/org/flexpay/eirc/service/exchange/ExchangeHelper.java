@@ -29,7 +29,7 @@ public class ExchangeHelper {
 	public String getAddressGroup(Apartment apartment) throws FlexPayException {
 		String apartmentNumber = apartmentService.getApartmentNumber(stub(apartment));
 
-		Buildings buildings = buildingService.getFirstBuildings(apartment.getBuilding());
+		Buildings buildings = buildingService.getFirstBuildings(apartment.getBuildingStub());
 		String buildingNumber = buildings.getNumber();
 		String bulkNumber = buildings.getBulk();
 

@@ -174,14 +174,11 @@
 
 
 	<query name="ServiceOrganisation.readFull">
-		SELECT DISTINCT so
-		FROM ServiceOrganisation so
-		INNER JOIN FETCH so.organisation o
-		LEFT JOIN FETCH so.buildings sb
-		LEFT JOIN FETCH sb.apartments a
-		LEFT JOIN FETCH a.personRegistrations r
-		LEFT JOIN FETCH r.person
-		WHERE so.id=?
+		select distinct so
+		from ServiceOrganisation so
+			inner join fetch so.organisation o
+			left join fetch o.names
+		where so.id=?
 	</query>
 
 	<query name="ServiceOrganisation.listServiceOrganisation">

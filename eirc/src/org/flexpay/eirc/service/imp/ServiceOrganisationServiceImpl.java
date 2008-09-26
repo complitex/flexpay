@@ -12,9 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Set;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
-public class ServiceOrganisationServiceImpl implements
-		ServiceOrganisationService {
+@Transactional (readOnly = true)
+public class ServiceOrganisationServiceImpl implements ServiceOrganisationService {
 
 	private ServiceOrganisationDao serviceOrganisationDao;
 
@@ -24,10 +23,12 @@ public class ServiceOrganisationServiceImpl implements
 	 * @param stub ServiceOrganisation key
 	 * @return ServiceOrganisation object, or <code>null</code> if object not found
 	 */
+	@Transactional (readOnly = true)
 	public ServiceOrganisation read(@NotNull Stub<ServiceOrganisation> stub) {
-		return serviceOrganisationDao.read(stub.getId());
+		return serviceOrganisationDao.readFull(stub.getId());
 	}
 
+	@Transactional (readOnly = true)
 	public Set<ServedBuilding> findServedBuildings(@NotNull Stub<ServiceOrganisation> stub) {
 		return serviceOrganisationDao.findServedBuildings(stub.getId());
 	}
@@ -38,6 +39,7 @@ public class ServiceOrganisationServiceImpl implements
 	 * @param filter ServiceOrganisationFilter to initialize
 	 * @return ServiceOrganisationFilter back
 	 */
+	@Transactional (readOnly = true)
 	public ServiceOrganisationFilter initServiceOrganisationsFilter(ServiceOrganisationFilter filter) {
 
 		if (filter == null) {
@@ -55,18 +57,10 @@ public class ServiceOrganisationServiceImpl implements
 	 *
 	 * @return List of ServiceOrganisation
 	 */
+	@Transactional (readOnly = true)
 	@NotNull
 	public List<ServiceOrganisation> listServiceOrganisations() {
 		return serviceOrganisationDao.listServiceOrganisation();
-	}
-
-	/**
-	 * Get a ServiceOrganisation with organisation, buildings, apartments, persons
-	 *
-	 * @return ServiceOrganisation
-	 */
-	public ServiceOrganisation readForTicketGeneration(Long id) {
-		return serviceOrganisationDao.readFull(id);
 	}
 
 	/**
