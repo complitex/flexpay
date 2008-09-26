@@ -155,6 +155,9 @@
 		select distinct q
 		from Quittance q
 			inner join fetch q.eircAccount a
+			left join fetch a.consumerInfo ci
+			left join fetch a.person p
+			left join fetch p.personIdentities pi
 			inner join fetch a.apartment ap
 			inner join fetch ap.building b
 			left join fetch q.quittanceDetailsQuittances qdq

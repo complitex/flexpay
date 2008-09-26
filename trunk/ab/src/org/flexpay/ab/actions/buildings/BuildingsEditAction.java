@@ -38,8 +38,8 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 
 	@NotNull
 	public String doExecute() throws FlexPayException {
-		for (Buildings current : buildingService.getBuildingBuildings(buildings.getBuilding())) {
-			if (buildings.getId().longValue() != current.getId().longValue()) {
+		for (Buildings current : buildingService.getBuildingBuildings(buildings.getBuildingStub())) {
+			if (buildings.equals(current)) {
 				alternateBuildingsList.add(buildingService.readFull(stub(current)));
 			}
 		}

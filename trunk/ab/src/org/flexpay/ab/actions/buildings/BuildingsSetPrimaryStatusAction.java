@@ -17,8 +17,8 @@ public class BuildingsSetPrimaryStatusAction extends FPActionSupport {
 	@NotNull
 	public String doExecute() throws FlexPayException {
 		buildings = buildingService.readFull(stub(buildings));
-		for (Buildings current : buildingService.getBuildingBuildings(buildings.getBuilding())) {
-			current.setPrimaryStatus(buildings.getId().longValue() == current.getId().longValue());
+		for (Buildings current : buildingService.getBuildingBuildings(buildings.getBuildingStub())) {
+			current.setPrimaryStatus(buildings.equals(current));
 			buildingService.update(current);
 		}
 

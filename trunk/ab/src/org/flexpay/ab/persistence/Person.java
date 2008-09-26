@@ -355,4 +355,22 @@ public class Person extends DomainObjectWithStatus {
 		identity.setPerson(this);
 		return true;
 	}
+
+	/**
+	 * Get person First-middle-last name group
+	 *
+	 * @return person fio
+	 */
+	@NotNull
+	public String getFIO() {
+		PersonIdentity pi = getDefaultIdentity();
+		if (pi == null) {
+			if (personIdentities.isEmpty()) {
+				return "--------No FIO-------";
+			}
+			pi = personIdentities.iterator().next();
+		}
+
+		return pi.getLastName() + " " + pi.getFirstName() + " " + pi.getMiddleName();
+	}
 }

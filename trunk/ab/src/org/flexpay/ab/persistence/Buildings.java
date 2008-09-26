@@ -267,4 +267,9 @@ public class Buildings extends DomainObjectWithStatus {
 		attribute.setBuildingAttributeType(ApplicationConfig.getBuildingAttributeTypeBulk());
 		return attribute;
 	}
+
+	@NotNull
+	public Stub<Building> getBuildingStub() {
+		return stub(building);
+	}
 }

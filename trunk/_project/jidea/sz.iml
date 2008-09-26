@@ -177,10 +177,6 @@
           <file>file://$MODULE_DIR$/../../sz/web/WEB-INF/sz/configs/spring/beans-struts.xml</file>
           <file>file://$MODULE_DIR$/../../sz/web/WEB-INF/sz/configs/spring/config.xml</file>
         </fileset>
-        <options>
-          <option name="enableValidation" value="true" />
-          <option name="reportErrorsAsWarnings" value="true" />
-        </options>
       </configuration>
     </facet>
     <facet type="hibernate" name="Hibernate">

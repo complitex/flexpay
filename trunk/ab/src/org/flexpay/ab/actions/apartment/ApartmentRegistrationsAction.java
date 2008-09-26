@@ -28,7 +28,7 @@ public class ApartmentRegistrationsAction extends FPActionSupport {
 	public String doExecute() throws FlexPayException {
 
 		apartment = apartmentService.readWithPersons(stub(apartment));
-		List<Buildings> buildingses = buildingService.getBuildingBuildings(apartment.getBuilding());
+		List<Buildings> buildingses = buildingService.getBuildingBuildings(apartment.getBuildingStub());
 		buildings = buildingService.readFull(stub(buildingses.get(0)));
 		street = streetService.readFull(buildings.getStreetStub());
 		town = townService.readFull(street.getTownStub());

@@ -62,6 +62,8 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 	private void uploadReportTemplates() throws Exception {
 		uploadReportTemplate("Quittance");
 		uploadReportTemplate("services");
+		uploadReportTemplate("services_details");
+		uploadReportTemplate("services_left");
 		uploadReportTemplate("subservices");
 	}
 

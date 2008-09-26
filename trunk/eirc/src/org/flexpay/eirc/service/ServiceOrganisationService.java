@@ -27,15 +27,6 @@ public interface ServiceOrganisationService {
 	 */
 	ServiceOrganisation read(@NotNull Stub<ServiceOrganisation> stub);
 
-
-	/**
-	 * Get a ServiceOrganisation with organisation, buildings, apartaments, persons
-	 *
-	 * @param id ServiceOrganisation key
-	 * @return ServiceOrganisation
-	 */
-	ServiceOrganisation readForTicketGeneration(Long id);
-
 	/**
 	 * Get served buildings
 	 * 

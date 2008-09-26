@@ -3,6 +3,7 @@ package org.flexpay.ab.service.imp;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;
@@ -43,19 +44,29 @@ public class AddressServiceImpl implements AddressService {
 		if (apartment == null) {
 			throw new Exception("Invalid apartment stub: " + stub);
 		}
-		List<Buildings> buildingses = buildingService.getBuildingBuildings(apartment.getBuilding());
+
+		return getBuildingAddress(apartment.getBuildingStub(), locale) +
+			   ", " + apartment.format(locale, true);
+	}
+
+	@NotNull
+	public String getBuildingAddress(@NotNull Stub<Building> stub, @Nullable Locale locale) throws Exception {
+
+		if (locale == null) {
+			locale = ApplicationConfig.getDefaultLocale();
+		}
+
+		List<Buildings> buildingses = buildingService.getBuildingBuildings(stub);
 		Buildings buildings = buildingService.readFull(stub(buildingses.get(0)));
 		if (buildings == null) {
-			throw new Exception("No buildingses in apartment building: " + apartment);
+			throw new Exception("No buildingses in building: " + stub);
 		}
 		Street street = streetService.readFull(buildings.getStreetStub());
 		if (street == null) {
-			throw new Exception("No street found for apartment: " + apartment);
+			throw new Exception("No street found for building: " + stub);
 		}
 
-		return street.format(locale, true) + ", " +
-			   buildings.format(locale, true) + ", " +
-			   apartment.format(locale, true);
+		return street.format(locale, true) + ", " + buildings.format(locale, true);
 	}
 
 	public void setApartmentService(ApartmentService apartmentService) {

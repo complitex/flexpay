@@ -82,11 +82,11 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	/**
 	 * Find single Building relation for building stub
 	 *
-	 * @param building Building stub
+	 * @param stub
 	 * @return Buildings instance
 	 * @throws FlexPayException if building does not have any buildingses
 	 */
-	Buildings getFirstBuildings(Building building) throws FlexPayException;
+	Buildings getFirstBuildings(Stub<Building> stub) throws FlexPayException;
 
 	/**
 	 * Read full buildings info
@@ -135,11 +135,11 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	/**
 	 * Find all Buildings relation for building stub
 	 *
-	 * @param building Building stub
+	 * @param stub Building stub
 	 * @return List of Buildings
 	 * @throws FlexPayException if building does not have any buildingses
 	 */
-	List<Buildings> getBuildingBuildings(Building building)
+	List<Buildings> getBuildingBuildings(Stub<Building> stub)
 			throws FlexPayException;
 
 	Building readBuilding(Long id);

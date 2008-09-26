@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import java.util.List;
+import java.math.BigDecimal;
 
 public class TestStringUtil {
 
@@ -61,4 +62,19 @@ public class TestStringUtil {
 		assertEquals("invalid second part", "df", parts.get(1));
 	}
 
+	@Test
+	public void testGetDigit() {
+		BigDecimal bd = new BigDecimal("12.43");
+
+		assertEquals("Invalid digit 1", "0", StringUtil.getDigit(bd, 2));
+		assertEquals("Invalid digit 1", "1", StringUtil.getDigit(bd, 1));
+		assertEquals("Invalid digit 1", "2", StringUtil.getDigit(bd, 0));
+		assertEquals("Invalid digit 1", "4", StringUtil.getDigit(bd, -1));
+		assertEquals("Invalid digit 1", "3", StringUtil.getDigit(bd, -2));
+		assertEquals("Invalid digit 1", "0", StringUtil.getDigit(bd, -3));
+
+		assertEquals("Invalid digit 1", "0", StringUtil.getDigit(BigDecimal.ZERO, -3));
+		assertEquals("Invalid digit 1", "0", StringUtil.getDigit(BigDecimal.ZERO, 0));
+		assertEquals("Invalid digit 1", "0", StringUtil.getDigit(BigDecimal.ZERO, 123));
+	}
 }

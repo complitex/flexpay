@@ -1,9 +1,11 @@
 package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObjectWithStatus;
-import org.flexpay.ab.persistence.District;
+import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.eirc.util.config.ApplicationConfig;
 
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -47,5 +49,13 @@ public class ServiceOrganisation extends DomainObjectWithStatus {
 
 	public void setDescriptions(Set<ServiceOrganisationDescription> descriptions) {
 		this.descriptions = descriptions;
+	}
+
+	public String getName() throws Exception {
+		return getName(ApplicationConfig.getDefaultLocale());
+	}
+
+	public String getName(Locale locale) throws Exception {
+		return TranslationUtil.getTranslation(organisation.getNames(), locale).getName();
 	}
 }

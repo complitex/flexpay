@@ -1,14 +1,15 @@
 package org.flexpay.ab.persistence;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.DateUtil;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.set;
+import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -254,5 +255,10 @@ public class Apartment extends DomainObjectWithStatus {
 
 	public String format(Locale locale, boolean shortMode) {
 		return getNumber();
+	}
+
+	@NotNull
+	public Stub<Building> getBuildingStub() {
+		return stub(building);
 	}
 }

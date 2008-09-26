@@ -1,8 +1,10 @@
 package org.flexpay.eirc.process.quittance.report;
 
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.persistence.ServiceType;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -10,6 +12,8 @@ import java.util.*;
  * tarifs, subsidies, etc
  */
 public class QuittanceInfo {
+
+	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#,##0.00");
 
 	private String quittanceNumber;
 	private String apartmentAddress;
@@ -20,18 +24,22 @@ public class QuittanceInfo {
 	private Date periodEndDate;
 	private Date operationDate;
 
-	private BigDecimal summToPay;
-
 	private BigDecimal totalSquare;
 	private BigDecimal warmSquare;
-	private BigDecimal privileges;
 	private int habitantNumber;
 	private int privilegersNumber;
 
-	private BigDecimal incomingDebt;
-	private BigDecimal outgoingDebt;
+	private BigDecimal incomingBalance = BigDecimal.ZERO;
+	private BigDecimal outgoingBalance = BigDecimal.ZERO;
+	private BigDecimal charges = BigDecimal.ZERO;
+	private BigDecimal recalculation = BigDecimal.ZERO;
+	private BigDecimal privilege = BigDecimal.ZERO;
+	private BigDecimal subsidy = BigDecimal.ZERO;
+	private BigDecimal payed = BigDecimal.ZERO;
 
-	private String jksBankAccount;
+	private String serviceOrganisationName;
+	private String bankName;
+	private String serviceOrganisationAccount;
 	private String bankAccount;
 
 	private Map<ServiceType, ServiceTotals> servicesTotals;
@@ -45,6 +53,10 @@ public class QuittanceInfo {
 
 	public void setQuittanceNumber(String quittanceNumber) {
 		this.quittanceNumber = quittanceNumber;
+	}
+
+	public String getQuittanceNumberWithSumm() {
+		return getQuittanceNumber() + ";" + DECIMAL_FORMAT.format(outgoingBalance);
 	}
 
 	public String getApartmentAddress() {
@@ -95,14 +107,6 @@ public class QuittanceInfo {
 		this.operationDate = operationDate;
 	}
 
-	public BigDecimal getSummToPay() {
-		return summToPay;
-	}
-
-	public void setSummToPay(BigDecimal summToPay) {
-		this.summToPay = summToPay;
-	}
-
 	public BigDecimal getTotalSquare() {
 		return totalSquare;
 	}
@@ -117,14 +121,6 @@ public class QuittanceInfo {
 
 	public void setWarmSquare(BigDecimal warmSquare) {
 		this.warmSquare = warmSquare;
-	}
-
-	public BigDecimal getPrivileges() {
-		return privileges;
-	}
-
-	public void setPrivileges(BigDecimal privileges) {
-		this.privileges = privileges;
 	}
 
 	public int getHabitantNumber() {
@@ -143,28 +139,12 @@ public class QuittanceInfo {
 		this.privilegersNumber = privilegersNumber;
 	}
 
-	public BigDecimal getIncomingDebt() {
-		return incomingDebt;
+	public String getServiceOrganisationAccount() {
+		return serviceOrganisationAccount;
 	}
 
-	public void setIncomingDebt(BigDecimal incomingDebt) {
-		this.incomingDebt = incomingDebt;
-	}
-
-	public BigDecimal getOutgoingDebt() {
-		return outgoingDebt;
-	}
-
-	public void setOutgoingDebt(BigDecimal outgoingDebt) {
-		this.outgoingDebt = outgoingDebt;
-	}
-
-	public String getJksBankAccount() {
-		return jksBankAccount;
-	}
-
-	public void setJksBankAccount(String jksBankAccount) {
-		this.jksBankAccount = jksBankAccount;
+	public void setServiceOrganisationAccount(String serviceOrganisationAccount) {
+		this.serviceOrganisationAccount = serviceOrganisationAccount;
 	}
 
 	public String getBankAccount() {
@@ -191,5 +171,101 @@ public class QuittanceInfo {
 
 	public void setServicesTotals(Map<ServiceType, ServiceTotals> servicesTotals) {
 		this.servicesTotals = servicesTotals;
+	}
+
+	public BigDecimal getIncomingBalance() {
+		return incomingBalance;
+	}
+
+	public void setIncomingBalance(BigDecimal incomingBalance) {
+		this.incomingBalance = incomingBalance;
+	}
+
+	public BigDecimal getOutgoingBalance() {
+		return outgoingBalance;
+	}
+
+	public void setOutgoingBalance(BigDecimal outgoingBalance) {
+		this.outgoingBalance = outgoingBalance;
+	}
+
+	public BigDecimal getCharges() {
+		return charges;
+	}
+
+	public void setCharges(BigDecimal charges) {
+		this.charges = charges;
+	}
+
+	public BigDecimal getRecalculation() {
+		return recalculation;
+	}
+
+	public void setRecalculation(BigDecimal recalculation) {
+		this.recalculation = recalculation;
+	}
+
+	public BigDecimal getPrivilege() {
+		return privilege;
+	}
+
+	public void setPrivilege(BigDecimal privilege) {
+		this.privilege = privilege;
+	}
+
+	public BigDecimal getSubsidy() {
+		return subsidy;
+	}
+
+	public void setSubsidy(BigDecimal subsidy) {
+		this.subsidy = subsidy;
+	}
+
+	public BigDecimal getPayed() {
+		return payed;
+	}
+
+	public void setPayed(BigDecimal payed) {
+		this.payed = payed;
+	}
+
+	public String getServiceOrganisationName() {
+		return serviceOrganisationName;
+	}
+
+	public void setServiceOrganisationName(String serviceOrganisationName) {
+		this.serviceOrganisationName = serviceOrganisationName;
+	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
+	public String getFullQuittanceInfo() {
+		return "Barcode 2D text go here";
+	}
+
+	public String[] getOutgoingBalanceDigits() {
+
+		String[] result = new String[6];
+		for (int pos = -2; pos < 4; ++pos) {
+			result[pos + 2] = StringUtil.getDigit(outgoingBalance, pos);
+		}
+
+		// remove leading zeros
+		for (int pos = 5; pos > 2; --pos) {
+			if ("0".equals(result[pos])) {
+				result[pos] = "";
+			} else {
+				break;
+			}
+		}
+
+		return result;
+
 	}
 }

@@ -12,7 +12,7 @@
 	<!-- The created cache manager is an instance of net.sf.ehcache.CacheManager -->
 	<bean id="cacheManager"
 		  class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
-		  p:configLocation="WEB-INF/common/configs/spring/ehcache.xml" />
+		  p:configLocation="WEB-INF/common/configs/spring/ehcache-spring.xml" />
 
 	<bean id="cacheProviderFacade"
 		  class="org.springmodules.cache.provider.ehcache.EhCacheFacade"

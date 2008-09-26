@@ -306,16 +306,16 @@ public class BuildingServiceImpl implements BuildingService {
 	/**
 	 * Find single Building relation for building stub
 	 *
-	 * @param building Building stub
+	 * @param stub Building stub
 	 * @return Buildings instance
 	 * @throws FlexPayException if building does not have any buildingses
 	 */
-	public Buildings getFirstBuildings(Building building)
-			throws FlexPayException {
+	public Buildings getFirstBuildings(Stub<Building> stub) throws FlexPayException {
+
 		List<Buildings> buildingses = buildingsDao.findBuildingBuildings(
-				building.getId(), new Page());
+				stub.getId(), new Page());
 		if (buildingses.isEmpty()) {
-			throw new FlexPayException("Building #" + building.getId()
+			throw new FlexPayException("Building #" + stub.getId()
 									   + " does not have any buildings");
 		}
 		return buildingses.get(0);
@@ -473,13 +473,13 @@ public class BuildingServiceImpl implements BuildingService {
 	/**
 	 * Find all Buildings relation for building stub
 	 *
-	 * @param building Building stub
+	 * @param stub Building stub
 	 * @return List of Buildings
 	 * @throws FlexPayException if building does not have any buildingses
 	 */
-	public List<Buildings> getBuildingBuildings(Building building)
+	public List<Buildings> getBuildingBuildings(Stub<Building> stub)
 			throws FlexPayException {
-		return buildingsDao.findBuildingBuildings(building.getId(), new Page());
+		return buildingsDao.findBuildingBuildings(stub.getId(), new Page());
 	}
 
 	public Building readBuilding(Long id) {

@@ -50,6 +50,17 @@ public class Luhn {
 		return leftPart + controlDigit + rightPart;
 	}
 
+	public static String controlDigit(String str) {
+
+		int controlDigit = 0;
+		int reminder = getChecksum(str + 0) % 10;
+		if (reminder != 0) {
+			controlDigit = isEven(str.length()) ? (10 - reminder)
+												   : getSourceDigit(10 - reminder);
+		}
+		return String.valueOf(controlDigit);
+	}
+
 	private static int getChecksum(String number) {
 		int sum = 0;
 		for (int i = number.length() - 1; i >= 0; i--) {

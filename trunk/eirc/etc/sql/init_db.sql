@@ -463,10 +463,10 @@ INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 
 -- Init EIRC accounts
 INSERT INTO eirc_eirc_accounts_tbl (id, version, status, apartment_id, person_id, account_number)
-	VALUES (1, 0, 0, @apartment_ivanova_329_id, @person_id, 'TEST090123123123');
+	VALUES (1, 0, 0, @apartment_ivanova_329_id, @person_id, '09012345067');
 SELECT @account_id_1:=1;
 INSERT INTO eirc_eirc_accounts_tbl (id, version, status, apartment_id, person_id, account_number)
-	VALUES (2, 0, 0, @apartment_ivanova_330_id, @person_id, 'TEST090123123124');
+	VALUES (2, 0, 0, @apartment_ivanova_330_id, @person_id, '09076543021');
 SELECT @account_id_2:=2;
 
 -- Init registry
@@ -525,7 +525,7 @@ select @quittance_details_5:=5;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (3, @consumer_2, @eirc_registry_rec,
-	'0.00', '40.34', '40.34', '50.34', '123', '-4.0', '-5.0', '-1.0', '0.0', '2007-12-01');
+	'0.00', '40.34', '40.34', '50.34', '123.00', '-4.0', '-5.0', '-1.0', '0.0', '2007-12-01');
 select @quittance_details_3:=3;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
