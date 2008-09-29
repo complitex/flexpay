@@ -77,6 +77,12 @@
 				<comment>Service type reference</comment>
 			</column>
 		</many-to-one>
+		<many-to-one name="measureUnit" foreign-key="FK_eirc_services_tbl_measure_unit_id"
+					 class="org.flexpay.common.persistence.MeasureUnit">
+			<column name="measure_unit_id" not-null="false">
+				<comment>Measure unit reference</comment>
+			</column>
+		</many-to-one>
 		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
 			<key column="service_id" not-null="true"/>
 			<one-to-many class="ServiceDescription"/>

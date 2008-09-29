@@ -3,6 +3,8 @@ package org.flexpay.eirc.process.quittance.report;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
+import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.persistence.MeasureUnit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,18 +58,24 @@ public class ServiceGroup {
 	}
 
 	@NotNull
-	private ServiceTotalsBase initGroup() {
+	private ServiceTotalsBase initGroup() throws Exception {
 		ServiceType type = service.getServiceType();
 		ServiceTotalsBase totals =
 				service.isSubService() ?
 				new SubServiceTotals(type) : new ServiceTotals(type);
-		totals.setExpenceUnitKey("report.service.mesure_unit." + service.getServiceType().getCode());
+
+		// init measure unit name
+		MeasureUnit unit = service.getMeasureUnit();
+		if (unit != null) {
+			String unitName = TranslationUtil.getTranslation(unit.getUnitNames()).getName();
+			totals.setExpenceUnitKey(unitName);
+		}
 
 		return totals;
 	}
 
 	@NotNull
-	public ServiceTotalsBase addToGroup(@Nullable ServiceTotalsBase totals) {
+	public ServiceTotalsBase addToGroup(@Nullable ServiceTotalsBase totals) throws Exception {
 
 		if (totals == null) {
 			totals = initGroup();

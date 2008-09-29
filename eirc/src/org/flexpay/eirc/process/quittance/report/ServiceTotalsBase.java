@@ -149,16 +149,7 @@ public abstract class ServiceTotalsBase {
 		return outgoingDebt;
 	}
 
-	/**	<style
-		name="LiberationSans-Bold"
-		isDefault="false"
-		style="LiberationSans-Regular"
-		fontName="LiberationSans-Bold"
-		isBold="true"
-		pdfFontName="/usr/share/fonts/truetype/LiberationSans-Bold.ttf"
-	>
-	</style>
-
+	/**
 	 * Add amount to outgoing debt
 	 *
 	 * @param amount Summ to add
@@ -194,8 +185,6 @@ public abstract class ServiceTotalsBase {
 	}
 
 	public String[] getOutgoingDebtDigits() {
-
-		System.out.println("Calculating digits");
 
 		String[] result = new String[6];
 		for (int pos = -2; pos < 4; ++pos) {

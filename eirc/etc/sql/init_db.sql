@@ -359,104 +359,104 @@ INSERT INTO eirc_service_type_name_translations_tbl (name, description, language
 	VALUES ('ТО бытовых электроплит', '', @ru_id, @service_);
 
 -- Init services
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date)
-	VALUES (@service_provider_cn, '1', @service_kvarplata, '1900-01-01', '2100-12-31');
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date)
+	VALUES (@service_provider_cn, '1', @unit_grn_m2, @service_kvarplata, '1900-01-01', '2100-12-31');
 SELECT @service_kvarplata_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Кварплата', @ru_id, @service_kvarplata_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '10', @service_territory_cleaning, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '10', @unit_grn_m2, @service_territory_cleaning, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id_territory_cleanup:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Уборка территории', @ru_id, @service_id_territory_cleanup);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '20', @service_cleaning_garbagecollectors, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '20', @unit_grn_m2, @service_cleaning_garbagecollectors, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Очистка мусоросборников', @ru_id, @service_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '30', @service_cleaning_ext, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '30', @unit_grn_m2, @service_cleaning_ext, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Уборка подвалов, тех. этажей, крыш', @ru_id, @service_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '40', @service_TBO, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '40', @unit_grn_m2, @service_TBO, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Вывоз и утилизация ТБО', @ru_id, @service_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '50', @service_to_elevators, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '50', @unit_grn_m2, @service_to_elevators, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('ТО лифтов', @ru_id, @service_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '60', @service_to_dispetchering, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '60', @unit_grn_m2, @service_to_dispetchering, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('ТО систем диспетчеризации', @ru_id, @service_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '70', @service_to_water_supply, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '70', @unit_grn_m2, @service_to_water_supply, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('ТО систем водоснабжения', @ru_id, @service_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '80', @service_to_vodootvedenie, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '80', @unit_grn_m2, @service_to_vodootvedenie, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('ТО систем водоотведения', @ru_id, @service_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '90', @service_to_systems_warmproviding, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '90', @unit_grn_m2, @service_to_systems_warmproviding, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('ТО систем теплоснабжения', @ru_id, @service_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '100', @service_to_system_hot_water_providing, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '100', @unit_grn_m2, @service_to_system_hot_water_providing, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('ТО систем горячего водоснабжения', @ru_id, @service_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '110', @service_to_boliers, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '110', @unit_grn_m2, @service_to_boliers, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('ТО бойлеров', @ru_id, @service_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '120', @service_fog_canals, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '120', @unit_grn_m2, @service_fog_canals, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Обслуживание дымовент. каналов', @ru_id, @service_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '130', @service_cleaning_toilets, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '130', @unit_grn_m2, @service_cleaning_toilets, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Очистка дворовых туалетов', @ru_id, @service_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '140', @service_lighting, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '140', @unit_grn_m2, @service_lighting, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Освещение мест общего пользования', @ru_id, @service_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '150', @service_waterproviding_energy, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '150', @unit_grn_m2, @service_waterproviding_energy, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Энергоснабж. для подкачки воды', @ru_id, @service_id);
 
-INSERT INTO eirc_services_tbl (provider_id, external_code, type_id, begin_date, end_date, parent_service_id)
-	VALUES (@service_provider_cn, '160', @service_elevators_energy, '1900-01-01', '2100-12-31', @service_kvarplata_id);
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
+	VALUES (@service_provider_cn, '160', @unit_grn_m2, @service_elevators_energy, '1900-01-01', '2100-12-31', @service_kvarplata_id);
 SELECT @service_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Энергоснабжение для лифтов', @ru_id, @service_id);

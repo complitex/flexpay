@@ -27,6 +27,16 @@
 		</property>
 	</bean>
 
+	<bean id="measureUnitDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.common.dao.MeasureUnitDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.common.persistence.MeasureUnit" />
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="dataSourceDescriptionDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.common.dao.DataSourceDescriptionDao" />

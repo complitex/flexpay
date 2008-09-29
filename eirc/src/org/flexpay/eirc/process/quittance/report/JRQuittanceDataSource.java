@@ -19,13 +19,12 @@ import org.flexpay.eirc.process.quittance.report.util.QuittanceInfoGenerator;
 import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.flexpay.eirc.service.ServiceTypeService;
-import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class JRQuittanceDataSource implements JRDataSource {
 
@@ -84,7 +83,6 @@ public class JRQuittanceDataSource implements JRDataSource {
 				.append(q.getEircAccount().getAccountNumber())
 				.append(new SimpleDateFormat("mmyyyy").format(q.getDateTill()))
 				.append(String.format("%02d", q.getOrderNumber()));
-		System.out.println("Digits: " + digits);
 		String controlDigit = Luhn.controlDigit(digits.toString());
 
 		String quittanceNumber = new StringBuilder()
