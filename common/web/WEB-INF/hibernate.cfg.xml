@@ -19,6 +19,8 @@
 		<!-- common.ImportErrors -->
 		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
 
+		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
+
 	</session-factory>
 
 </hibernate-configuration>

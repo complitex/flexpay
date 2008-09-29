@@ -54,6 +54,8 @@
 		<!-- Dual virtual table -->
 		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
 
+		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
+
 		<!-- SZ File -->
 		<mapping resource="org/flexpay/sz/persistence/SzFile.hbm.xml" />
 		

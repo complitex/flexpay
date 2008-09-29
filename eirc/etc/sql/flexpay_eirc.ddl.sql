@@ -389,6 +389,21 @@
         primary key (id)
     );
 
+    create table common_measure_units_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        status integer not null comment 'Enabled - disabled status',
+        primary key (id)
+    ) comment='Measure unit translation';
+
+    create table common_mesuare_unit_names_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        name varchar(255) not null comment 'Translation',
+        language_id bigint not null comment 'Language reference',
+        measure_unit_id bigint not null comment 'Measure unit reference',
+        primary key (id),
+        unique (language_id, measure_unit_id)
+    ) comment='Measure unit translation';
+
     create table common_sequences_tbl (
         id bigint not null auto_increment,
         counter bigint not null,
@@ -1120,6 +1135,18 @@
     alter table common_language_names_tbl 
         add index FK85F168F461F37403 (language_id), 
         add constraint FK85F168F461F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table common_mesuare_unit_names_tbl 
+        add index common_mesuare_unit_names_tbl_measure_unit_id (measure_unit_id), 
+        add constraint common_mesuare_unit_names_tbl_measure_unit_id 
+        foreign key (measure_unit_id) 
+        references common_measure_units_tbl (id);
+
+    alter table common_mesuare_unit_names_tbl 
+        add index common_mesuare_unit_names_tbl_language_id (language_id), 
+        add constraint common_mesuare_unit_names_tbl_language_id 
         foreign key (language_id) 
         references common_languages_tbl (id);
 
