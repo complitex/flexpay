@@ -53,6 +53,12 @@
 		</properties>
 	</class>
 
+	<query name="MeasureUnit.readFull">
+		select distinct o
+		from MeasureUnit o
+			left join fetch o.unitNames
+		where o.id=?
+	</query>
 
 	<query name="MeasureUnit.listUnits">
 		select distinct o

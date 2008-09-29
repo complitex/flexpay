@@ -22,6 +22,9 @@
 	<bean class="org.flexpay.common.service.imp.LanguageServiceImpl" id="languageServiceTarget"
 		  p:languageDao-ref="languageDAO" />
 
+	<bean class="org.flexpay.common.service.imp.MeasureUnitServiceImpl" id="measureUnitServiceTarget"
+		  p:measureUnitDao-ref="measureUnitDao" />
+
 	<bean class="org.flexpay.common.service.internal.SessionUtils" id="sessionUtils">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>

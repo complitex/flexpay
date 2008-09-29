@@ -20,8 +20,9 @@ public class QuittanceInfoGenerator {
 	 *
 	 * @param q Quittance
 	 * @return QuittanceInfo
+	 * @throws Exception if failure occurs
 	 */
-	public static QuittanceInfo buildInfo(Quittance q) {
+	public static QuittanceInfo buildInfo(Quittance q) throws Exception {
 
 		Map<Service, ServiceGroup> groups = makeServiceGroups(q);
 
@@ -51,10 +52,13 @@ public class QuittanceInfoGenerator {
 	 * @param groups			 Service groups to get subservices from
 	 * @param servicesTotals	 Calculated parent services totals
 	 * @param serviceTypesTotals Calculated totals by service types
+	 * @throws Exception if failure occurs
 	 */
 	public static void buildSubservicesTotals(Map<Service, ServiceGroup> groups,
 											  Map<Service, ServiceTotals> servicesTotals,
-											  Map<ServiceType, ServiceTotalsBase> serviceTypesTotals) {
+											  Map<ServiceType, ServiceTotalsBase> serviceTypesTotals)
+			throws Exception {
+
 		for (Service service : groups.keySet()) {
 			if (service.isSubService()) {
 				// check if group of specified type was already added
@@ -82,10 +86,13 @@ public class QuittanceInfoGenerator {
 	 * @param groups			 Service groups to get services from
 	 * @param servicesTotals	 Map to store services totals in
 	 * @param serviceTypesTotals Map to store totals by service types in
+	 * @throws Exception if failure occurs
 	 */
 	public static void buildServicesTotals(Map<Service, ServiceGroup> groups,
 										   Map<Service, ServiceTotals> servicesTotals,
-										   Map<ServiceType, ServiceTotalsBase> serviceTypesTotals) {
+										   Map<ServiceType, ServiceTotalsBase> serviceTypesTotals)
+			throws Exception {
+
 		for (Service service : groups.keySet()) {
 			if (!service.isSubService()) {
 				// check if group of specified type was already added

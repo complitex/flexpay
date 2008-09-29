@@ -8,8 +8,10 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.service.internal.SessionUtils;
+import org.flexpay.common.service.MeasureUnitService;
 import org.flexpay.eirc.dao.ServiceDao;
 import org.flexpay.eirc.dao.ServiceDaoExt;
 import org.flexpay.eirc.dao.ServiceProviderDao;
@@ -38,6 +40,8 @@ public class SPServiceImpl implements SPService {
 
 	private SessionUtils sessionUtils;
 	private DataSourceDescriptionDao dataSourceDescriptionDao;
+
+	private MeasureUnitService measureUnitService;
 
 	/**
 	 * Find service provider by its number
@@ -313,7 +317,13 @@ public class SPServiceImpl implements SPService {
 	 */
 	@Nullable
 	public Service read(@NotNull Stub<Service> stub) {
-		return serviceDao.readFull(stub.getId());
+		Service service = serviceDao.readFull(stub.getId());
+		if (service != null && service.getMeasureUnit() != null) {
+			Stub<MeasureUnit> unitStub = Stub.stub(service.getMeasureUnit());
+			service.setMeasureUnit(measureUnitService.read(unitStub));
+		}
+
+		return service;
 	}
 
 	/**
@@ -354,5 +364,9 @@ public class SPServiceImpl implements SPService {
 
 	public void setSessionUtils(SessionUtils sessionUtils) {
 		this.sessionUtils = sessionUtils;
+	}
+
+	public void setMeasureUnitService(MeasureUnitService measureUnitService) {
+		this.measureUnitService = measureUnitService;
 	}
 }

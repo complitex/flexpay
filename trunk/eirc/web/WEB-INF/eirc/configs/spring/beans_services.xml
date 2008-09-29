@@ -40,6 +40,7 @@
 		  p:serviceDao-ref="serviceDao"
 		  p:serviceDaoExt-ref="serviceDaoExt"
 		  p:sessionUtils-ref="sessionUtils"
+		  p:measureUnitService-ref="measureUnitService"
 		  p:serviceProviderDao-ref="serviceProviderDao" />
 
 	<bean id="registryWorkflowManager" class="org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager">

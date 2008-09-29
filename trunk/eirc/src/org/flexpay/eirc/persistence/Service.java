@@ -1,6 +1,7 @@
 package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.util.TranslationUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +16,7 @@ public class Service extends DomainObject {
 	private String externalCode;
 	private Date beginDate;
 	private Date endDate;
+	private MeasureUnit measureUnit;
 	private Service parentService;
 	private Set<Service> childServices = Collections.emptySet();
 
@@ -129,6 +131,14 @@ public class Service extends DomainObject {
 
 	public void setChildServices(Set<Service> childServices) {
 		this.childServices = childServices;
+	}
+
+	public MeasureUnit getMeasureUnit() {
+		return measureUnit;
+	}
+
+	public void setMeasureUnit(MeasureUnit measureUnit) {
+		this.measureUnit = measureUnit;
 	}
 
 	@NotNull
