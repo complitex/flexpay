@@ -423,6 +423,9 @@
           </option>
           <option name="ADD_EJB_TO_ENTRIES" value="true" />
         </inspection_tool>
+        <inspection_tool class="RedundantThrowsDeclaration" level="WARNING" enabled="true" />
+        <inspection_tool class="HibernateMappingDatasourceDomInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="HibernateMappingDomInspection" level="ERROR" enabled="false" />
       </profile>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="No Inspections" />
@@ -1321,8 +1324,12 @@
         <root url="jar://$PROJECT_DIR$/../../common/lib/junit/junit-4.4.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/junit/spring-test.jar!/" />
       </CLASSES>
-      <JAVADOC />
-      <SOURCES />
+      <JAVADOC>
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/junit4.4/javadoc" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar:///windows/D/users/mixa/work/Java/_libs/junit4.4/junit-4.4-src.jar!/" />
+      </SOURCES>
     </library>
     <library name="logging">
       <CLASSES>

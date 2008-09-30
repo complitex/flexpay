@@ -3,6 +3,7 @@
 		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
+<!-- Map all class hierarchy to single table -->
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
 	<class name="Building" table="ab_buildings_tbl" discriminator-value="ab">

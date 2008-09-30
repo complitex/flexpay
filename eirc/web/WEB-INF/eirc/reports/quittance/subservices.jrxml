@@ -95,7 +95,7 @@
 						style="LiberationSans-Bold"
 						x="126"
 						y="0"
-						width="51"
+						width="42"
 						height="17"
 						key="staticText"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -112,9 +112,9 @@
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
-						x="177"
+						x="168"
 						y="0"
-						width="56"
+						width="32"
 						height="17"
 						key="staticText"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -130,10 +130,10 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						style="LiberationSans-Regular"
-						x="177"
+						style="LiberationSans-Bold"
+						x="168"
 						y="17"
-						width="56"
+						width="32"
 						height="13"
 						key="staticText-2"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -149,10 +149,10 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						style="LiberationSans-Regular"
+						style="LiberationSans-Bold"
 						x="126"
 						y="17"
-						width="51"
+						width="42"
 						height="13"
 						key="staticText-3"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -192,7 +192,7 @@
 					<reportElement
 						x="126"
 						y="0"
-						width="51"
+						width="42"
 						height="12"
 						key="textField"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -208,9 +208,9 @@
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="177"
+						x="168"
 						y="0"
-						width="56"
+						width="32"
 						height="12"
 						key="textField"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -235,33 +235,14 @@
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="14"  isSplitAllowed="true" >
-				<staticText>
-					<reportElement
-						style="LiberationSans-Bold"
-						x="0"
-						y="0"
-						width="126"
-						height="14"
-						key="staticText-1"/>
-					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
-					</textElement>
-				<text><![CDATA[ВСЕГО: ]]></text>
-				</staticText>
+			<band height="16"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="LiberationSans-Bold"
-						x="177"
+						x="168"
 						y="0"
-						width="56"
-						height="14"
+						width="32"
+						height="16"
 						key="textField-1"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -279,8 +260,8 @@
 						style="LiberationSans-Bold"
 						x="126"
 						y="0"
-						width="51"
-						height="14"
+						width="42"
+						height="16"
 						key="staticText"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -292,6 +273,26 @@
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
 				<text><![CDATA[]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						style="LiberationSans-Bold"
+						mode="Transparent"
+						x="0"
+						y="0"
+						width="126"
+						height="16"
+						key="staticText-4"/>
+					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[ВСЕГО:]]></text>
 				</staticText>
 			</band>
 		</summary>

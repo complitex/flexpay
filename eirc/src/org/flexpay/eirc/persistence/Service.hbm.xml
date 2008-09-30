@@ -217,6 +217,7 @@
 			left join fetch o.descriptions
 			inner join fetch o.serviceType t
 			left join fetch t.typeNames
+			left join fetch o.parentService
 			left join fetch o.childServices
 		where o.id=?
 	</query>
