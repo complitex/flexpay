@@ -217,30 +217,35 @@ INSERT INTO eirc_service_organisation_descriptions_tbl (name, language_id, servi
 update ab_buildings_tbl set eirc_service_organisation_id=@service_org_1 where id=@building_ivanova_27_id;
 
 -- Init service types
-INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 11);
-SELECT @service_vodootvedenie:=last_insert_id();
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 12);
+SELECT @service_t_vodosnabzhenie:=last_insert_id();
 INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Водоотведение', '', @ru_id, @service_vodootvedenie);
+	VALUES ('Водоснабжение', '', @ru_id, @service_t_vodosnabzhenie);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 13);
+SELECT @service_t_vodootvedenie:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Водоотведение', '', @ru_id, @service_t_vodootvedenie);
 
 INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 2);
-SELECT @service_dogs:=last_insert_id();
+SELECT @service_t_dogs:=last_insert_id();
 INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Содержание собак', '', @ru_id, @service_dogs);
+	VALUES ('Содержание собак', '', @ru_id, @service_t_dogs);
 
 INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 3);
-SELECT @service_garage:=last_insert_id();
+SELECT @service_t_garage:=last_insert_id();
 INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Гараж', '', @ru_id, @service_garage);
+	VALUES ('Гараж', '', @ru_id, @service_t_garage);
 
 INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 4);
-SELECT @service_heating:=last_insert_id();
+SELECT @service_t_heating:=last_insert_id();
 INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Отопление', '', @ru_id, @service_heating);
+	VALUES ('Отопление', '', @ru_id, @service_t_heating);
 
 INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 5);
-SELECT @service_water_cooling:=last_insert_id();
+SELECT @service_t_water_cooling:=last_insert_id();
 INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Подогрев воды', '', @ru_id, @service_water_cooling);
+	VALUES ('Подогрев воды', '', @ru_id, @service_t_water_cooling);
 
 INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 6);
 SELECT @service_cold_water:=last_insert_id();
@@ -360,106 +365,137 @@ INSERT INTO eirc_service_type_name_translations_tbl (name, description, language
 
 -- Init services
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date)
-	VALUES (@service_provider_cn, '1', @unit_grn_m2, @service_kvarplata, '1900-01-01', '2100-12-31');
+	VALUES (@service_provider_cn, '1', @unit_square_meter, @service_kvarplata, '1900-01-01', '2100-12-31');
 SELECT @service_kvarplata_id:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Кварплата', @ru_id, @service_kvarplata_id);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '10', @unit_grn_m2, @service_territory_cleaning, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id_territory_cleanup:=last_insert_id();
+SELECT @service_10:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('Уборка территории', @ru_id, @service_id_territory_cleanup);
+	VALUES ('Уборка территории', @ru_id, @service_10);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '20', @unit_grn_m2, @service_cleaning_garbagecollectors, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_20:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('Очистка мусоросборников', @ru_id, @service_id);
+	VALUES ('Очистка мусоросборников', @ru_id, @service_20);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '30', @unit_grn_m2, @service_cleaning_ext, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_30:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('Уборка подвалов, тех. этажей, крыш', @ru_id, @service_id);
+	VALUES ('Уборка подвалов, тех. этажей, крыш', @ru_id, @service_30);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '40', @unit_grn_m2, @service_TBO, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_40:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('Вывоз и утилизация ТБО', @ru_id, @service_id);
+	VALUES ('Вывоз и утилизация ТБО', @ru_id, @service_40);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '50', @unit_grn_m2, @service_to_elevators, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_50:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('ТО лифтов', @ru_id, @service_id);
+	VALUES ('ТО лифтов', @ru_id, @service_50);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '60', @unit_grn_m2, @service_to_dispetchering, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_60:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('ТО систем диспетчеризации', @ru_id, @service_id);
+	VALUES ('ТО систем диспетчеризации', @ru_id, @service_60);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '70', @unit_grn_m2, @service_to_water_supply, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_70:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('ТО систем водоснабжения', @ru_id, @service_id);
+	VALUES ('ТО систем водоснабжения', @ru_id, @service_70);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '80', @unit_grn_m2, @service_to_vodootvedenie, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_80:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('ТО систем водоотведения', @ru_id, @service_id);
+	VALUES ('ТО систем водоотведения', @ru_id, @service_80);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '90', @unit_grn_m2, @service_to_systems_warmproviding, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_90:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('ТО систем теплоснабжения', @ru_id, @service_id);
+	VALUES ('ТО систем теплоснабжения', @ru_id, @service_90);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '100', @unit_grn_m2, @service_to_system_hot_water_providing, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_100:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('ТО систем горячего водоснабжения', @ru_id, @service_id);
+	VALUES ('ТО систем горячего водоснабжения', @ru_id, @service_100);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '110', @unit_grn_m2, @service_to_boliers, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_110:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('ТО бойлеров', @ru_id, @service_id);
+	VALUES ('ТО бойлеров', @ru_id, @service_110);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '120', @unit_grn_m2, @service_fog_canals, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_120:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('Обслуживание дымовент. каналов', @ru_id, @service_id);
+	VALUES ('Обслуживание дымовент. каналов', @ru_id, @service_120);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '130', @unit_grn_m2, @service_cleaning_toilets, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_130:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('Очистка дворовых туалетов', @ru_id, @service_id);
+	VALUES ('Очистка дворовых туалетов', @ru_id, @service_130);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '140', @unit_grn_m2, @service_lighting, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_140:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('Освещение мест общего пользования', @ru_id, @service_id);
+	VALUES ('Освещение мест общего пользования', @ru_id, @service_140);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '150', @unit_grn_m2, @service_waterproviding_energy, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_150:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('Энергоснабж. для подкачки воды', @ru_id, @service_id);
+	VALUES ('Энергоснабж. для подкачки воды', @ru_id, @service_150);
 
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id)
 	VALUES (@service_provider_cn, '160', @unit_grn_m2, @service_elevators_energy, '1900-01-01', '2100-12-31', @service_kvarplata_id);
-SELECT @service_id:=last_insert_id();
+SELECT @service_160:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('Энергоснабжение для лифтов', @ru_id, @service_id);
+	VALUES ('Энергоснабжение для лифтов', @ru_id, @service_160);
+
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date)
+	VALUES (@service_provider_cn, '12', @unit_cubometr, @service_t_vodosnabzhenie, '1900-01-01', '2100-12-31');
+SELECT @service_12:=last_insert_id();
+INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
+	VALUES ('Водоснабжение', @ru_id, @service_12);
+
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date)
+	VALUES (@service_provider_cn, '13', @unit_cubometr, @service_t_vodootvedenie, '1900-01-01', '2100-12-31');
+SELECT @service_13:=last_insert_id();
+INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
+	VALUES ('Водоотведение', @ru_id, @service_13);
+
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date)
+	VALUES (@service_provider_cn, '2', null, @service_t_dogs, '1900-01-01', '2100-12-31');
+SELECT @service_2:=last_insert_id();
+INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
+	VALUES ('Содержание собак', @ru_id, @service_2);
+
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date)
+	VALUES (@service_provider_cn, '3', @unit_square_meter, @service_t_garage, '1900-01-01', '2100-12-31');
+SELECT @service_3:=last_insert_id();
+INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
+	VALUES ('Гараж', @ru_id, @service_3);
+
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date)
+	VALUES (@service_provider_cn, '4', @unit_gcalories, @service_t_heating, '1900-01-01', '2100-12-31');
+SELECT @service_4:=last_insert_id();
+INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
+	VALUES ('Отопление', @ru_id, @service_4);
+
 
 -- Init EIRC accounts
 INSERT INTO eirc_eirc_accounts_tbl (id, version, status, apartment_id, person_id, account_number)
@@ -479,23 +515,85 @@ INSERT INTO eirc_registry_records_tbl (id, version, registry_id, operation_date)
 	values (1, 0, @eirc_registry, '2008-01-01');
 select @eirc_registry_rec:=1;
 
--- Init Consumers
+-- Init Consumer infos
 insert into eirc_consumer_infos_tbl (id, status, first_name, middle_name, last_name,
 	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
 	values (1, 0, 'М', 'А', 'Иванофф',
 	'Н-ск', 'ул', 'ИВОНОВА', '27-', '', '330');
 select @consumer_info:=1;
 
+-- Init consumers
 insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
 	values (1, 0, '123123123', @service_kvarplata_id,
 	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
-select @consumer_1:=1;
+select @consumer_1_1:=1;
 insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
-	values (3, 0, '123123123', @service_id_territory_cleanup,
+	values (3, 0, '123123123', @service_2,
 	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
-select @consumer_3:=3;
+select @consumer_1_2:=3;
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (4, 0, '123123123', @service_3,
+	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_1_3:=4;
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (5, 0, '123123123', @service_4,
+	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_1_4:=5;
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (14, 0, '123123123', @service_12,
+	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_1_12:=14;
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (6, 0, '123123123', @service_13,
+	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_1_13:=6;
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (7, 0, '123123123', @service_10,
+	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_1_10:=7;
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (8, 0, '123123123', @service_20,
+	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_1_20:=8;
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (15, 0, '123123123', @service_30,
+	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_1_30:=15;
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (9, 0, '123123123', @service_40,
+	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_1_40:=9;
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (10, 0, '123123123', @service_50,
+	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_1_50:=10;
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (11, 0, '123123123', @service_60,
+	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_1_60:=11;
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (12, 0, '123123123', @service_70,
+	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_1_70:=12;
+insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
+	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
+	values (13, 0, '123123123', @service_80,
+	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
+select @consumer_1_80:=13;
+
 insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
 	values (2, 0, '67676767', @service_kvarplata_id,
@@ -506,21 +604,86 @@ select @consumer_2:=2;
 -- Quittance details for consumer_1 (kvarplata)
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
-	values (1, @consumer_1, @eirc_registry_rec,
+	values (1, @consumer_1_1, @eirc_registry_rec,
 	'0.00', '40.34', '40.34', '50.34', '123', '-4.0', '-5.0', '-1.0', '0.0', '2007-12-01');
 select @quittance_details_1:=1;
--- Quittance details for consumer_1 (kvarplata)
+-- Quittance details for consumer_1_1 (kvarplata)
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
-	values (2, @consumer_1, @eirc_registry_rec,
+	values (2, @consumer_1_1, @eirc_registry_rec,
 	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_2:=2;
--- Quittance details for consumer_3 (territory cleanup)
+-- Quittance details for consumer_1_10
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
-	values (5, @consumer_3, @eirc_registry_rec,
+	values (5, @consumer_1_10, @eirc_registry_rec,
 	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
-select @quittance_details_5:=5;
+select @quittance_details_1_10:=5;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (6, @consumer_1_2, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_1_2:=6;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (7, @consumer_1_3, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_1_3:=7;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (8, @consumer_1_4, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_1_4:=8;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (9, @consumer_1_12, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_1_12:=9;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (10, @consumer_1_13, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_1_13:=10;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (11, @consumer_1_10, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_1_10:=11;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (12, @consumer_1_20, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_1_20:=12;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (13, @consumer_1_30, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_1_30:=13;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (14, @consumer_1_40, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_1_40:=14;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (15, @consumer_1_50, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_1_50:=15;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (16, @consumer_1_60, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_1_60:=16;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (17, @consumer_1_70, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_1_70:=17;
+insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
+	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
+	values (18, @consumer_1_80, @eirc_registry_rec,
+	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+select @quittance_details_1_80:=18;
 
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
@@ -542,14 +705,36 @@ insert into eirc_quittances_tbl (id, service_organisation_id, eirc_account_id, o
 select @quittance_1:=1;
 insert into eirc_quittance_details_quittances_tbl (id, quittance_details_id, quittance_id)
 	values (1, @quittance_details_1, @quittance_1);
+insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
+	values (@quittance_details_1_10, @quittance_1);
+insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
+	values (@quittance_details_1_20, @quittance_1);
+insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
+	values (@quittance_details_1_30, @quittance_1);
+insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
+	values (@quittance_details_1_40, @quittance_1);
+insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
+	values (@quittance_details_1_50, @quittance_1);
+insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
+	values (@quittance_details_1_60, @quittance_1);
+insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
+	values (@quittance_details_1_70, @quittance_1);
+insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
+	values (@quittance_details_1_80, @quittance_1);
+insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
+	values (@quittance_details_1_2, @quittance_1);
+insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
+	values (@quittance_details_1_3, @quittance_1);
+insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
+	values (@quittance_details_1_4, @quittance_1);
+insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
+	values (@quittance_details_1_12, @quittance_1);
+insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
+	values (@quittance_details_1_13, @quittance_1);
 
 -- Quittance with 2 details
 insert into eirc_quittances_tbl (id, service_organisation_id, eirc_account_id, order_number, date_from, date_till, creation_date)
 	values (2, @service_org_1, @account_id_1, 2, '2007-12-01', '2008-01-31', '2008-02-05');
 select @quittance_2:=2;
-insert into eirc_quittance_details_quittances_tbl (id, quittance_details_id, quittance_id)
-	values (2, @quittance_details_1, @quittance_2);
-insert into eirc_quittance_details_quittances_tbl (id, quittance_details_id, quittance_id)
-	values (3, @quittance_details_2, @quittance_2);
-insert into eirc_quittance_details_quittances_tbl (id, quittance_details_id, quittance_id)
-	values (4, @quittance_details_5, @quittance_2);
+insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
+	values (@quittance_details_1, @quittance_2);

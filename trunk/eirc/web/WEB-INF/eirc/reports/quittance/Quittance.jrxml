@@ -169,7 +169,7 @@
 					</textElement>
 				<text><![CDATA[Льготы:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="LiberationSans-Regular"
 						x="236"
@@ -225,7 +225,7 @@
 					</textElement>
 				<text><![CDATA[Отапливаемая площадь:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="LiberationSans-Regular"
 						x="376"
@@ -310,10 +310,10 @@
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{personFIO}]]></textFieldExpression>
 				</textField>
 				<frame>					<reportElement
-						x="169"
-						y="73"
-						width="90"
-						height="130"
+						x="164"
+						y="68"
+						width="148"
+						height="151"
 						key="frame-services-totals"
 						isPrintWhenDetailOverflows="true"/>
 					<box></box>
@@ -330,14 +330,14 @@
 					<subreportParameter  name="outgoingBalance">
 						<subreportParameterExpression><![CDATA[$F{outgoingBalance}]]></subreportParameterExpression>
 					</subreportParameter>
-					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servicesTotals})]]></dataSourceExpression>
+					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servicesTotalsList})]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "services.jasper"]]></subreportExpression>
 				</subreport>
 				</frame>				<frame>					<reportElement
-						x="304"
-						y="72"
-						width="120"
-						height="106"
+						x="327"
+						y="68"
+						width="207"
+						height="151"
 						key="frame-subservices"
 						isPrintWhenDetailOverflows="true"/>
 					<box></box>
@@ -395,7 +395,7 @@
 					<subreportParameter  name="outgoingBalance">
 						<subreportParameterExpression><![CDATA[$F{outgoingBalance}]]></subreportParameterExpression>
 					</subreportParameter>
-					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servicesTotals})]]></dataSourceExpression>
+					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servicesTotalsList})]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "services_details.jasper"]]></subreportExpression>
 				</subreport>
 				</frame>				<line direction="TopDown">
@@ -992,20 +992,6 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{apartmentAddress}]]></textFieldExpression>
 				</textField>
-				<image  scaleImage="RetainShape" vAlign="Top" hAlign="Left" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Opaque"
-						x="431"
-						y="73"
-						width="85"
-						height="71"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="barcode-2"/>
-					<box></box>
-					<graphicElement stretchType="NoStretch" fill="Solid" />
-					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(16,$F{fullQuittanceInfo},false,false,"090",0,0)]]></imageExpression>
-				</image>
 				<frame>					<reportElement
 						style="LiberationSans-Regular"
 						x="0"
@@ -1029,7 +1015,7 @@
 					<subreportParameter  name="outgoingBalance">
 						<subreportParameterExpression><![CDATA[$F{outgoingBalance}]]></subreportParameterExpression>
 					</subreportParameter>
-					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servicesTotals})]]></dataSourceExpression>
+					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servicesTotalsList})]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "services_left.jasper"]]></subreportExpression>
 				</subreport>
 				</frame>			</band>
