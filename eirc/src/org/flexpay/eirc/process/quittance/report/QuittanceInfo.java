@@ -18,6 +18,7 @@ public class QuittanceInfo {
 	private String quittanceNumber;
 	private String apartmentAddress;
 	private String buildingAddress;
+	private String batchBuildingAddress;
 	private String personFIO;
 
 	private Date periodBeginDate;
@@ -73,6 +74,14 @@ public class QuittanceInfo {
 
 	public void setBuildingAddress(String buildingAddress) {
 		this.buildingAddress = buildingAddress;
+	}
+
+	public String getBatchBuildingAddress() {
+		return batchBuildingAddress;
+	}
+
+	public void setBatchBuildingAddress(String batchBuildingAddress) {
+		this.batchBuildingAddress = batchBuildingAddress;
 	}
 
 	public String getPersonFIO() {
