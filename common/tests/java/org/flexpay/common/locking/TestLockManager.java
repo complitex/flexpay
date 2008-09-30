@@ -17,8 +17,8 @@ public class TestLockManager extends SpringBeanAwareTestCase {
 		lockManager.releaseLock(lockString);
 	}
 
-	@Test
-	@Repeat(50)
+	@Test (timeout = 2500)
+	@Repeat(5)
 	public void testLock() {
 		LockManager lockManager = LockManager.getInstance();
 		assertTrue("lock string", lockManager.lock(lockString));
