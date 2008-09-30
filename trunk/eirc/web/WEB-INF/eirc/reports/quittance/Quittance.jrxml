@@ -93,7 +93,45 @@
 	<field name="fullQuittanceInfo" class="java.lang.String"/>
 	<field name="outgoingBalanceDigits" class="java.lang.String[]"/>
 	<field name="quittanceNumberWithSumm" class="java.lang.String"/>
+	<field name="buildingAddress" class="java.lang.String"/>
+	<field name="batchBuildingAddress" class="java.lang.String"/>
 
+
+		<group  name="buildingAddressGroup" >
+			<groupExpression><![CDATA[$F{batchBuildingAddress}]]></groupExpression>
+			<groupHeader>
+			<band height="401"  isSplitAllowed="false" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						style="LiberationSans-Regular"
+						x="0"
+						y="0"
+						width="535"
+						height="369"
+						key="textField-5"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="26"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{batchBuildingAddress}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						style="LiberationSans-Regular"
+						x="0"
+						y="386"
+						width="535"
+						height="0"
+						key="line-6"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -315,7 +353,7 @@
 						width="148"
 						height="151"
 						key="frame-services-totals"
-						isPrintWhenDetailOverflows="true"/>
+						isPrintRepeatedValues="false"/>
 					<box></box>
 				<subreport  isUsingCache="true">
 					<reportElement
@@ -323,7 +361,8 @@
 						y="0"
 						width="88"
 						height="65"
-						key="subreport"/>
+						key="subreport"
+						isPrintRepeatedValues="false"/>
 					<subreportParameter  name="SUBREPORT_DIR">
 						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 					</subreportParameter>
@@ -334,12 +373,13 @@
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "services.jasper"]]></subreportExpression>
 				</subreport>
 				</frame>				<frame>					<reportElement
+						mode="Opaque"
 						x="327"
 						y="68"
 						width="207"
 						height="151"
 						key="frame-subservices"
-						isPrintWhenDetailOverflows="true"/>
+						isPrintRepeatedValues="false"/>
 					<box></box>
 				<subreport  isUsingCache="true">
 					<reportElement
@@ -347,7 +387,8 @@
 						y="0"
 						width="77"
 						height="41"
-						key="subreport"/>
+						key="subreport"
+						isPrintRepeatedValues="false"/>
 					<subreportParameter  name="SUBREPORT_DIR">
 						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 					</subreportParameter>
@@ -999,7 +1040,7 @@
 						width="150"
 						height="164"
 						key="frame-1"
-						isPrintWhenDetailOverflows="true"/>
+						isPrintRepeatedValues="false"/>
 					<box></box>
 				<subreport  isUsingCache="true">
 					<reportElement
@@ -1008,7 +1049,8 @@
 						y="0"
 						width="61"
 						height="57"
-						key="subreport-2"/>
+						key="subreport-2"
+						isPrintRepeatedValues="false"/>
 					<subreportParameter  name="SUBREPORT_DIR">
 						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 					</subreportParameter>

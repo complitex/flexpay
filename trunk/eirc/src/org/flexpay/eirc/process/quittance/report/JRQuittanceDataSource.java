@@ -125,7 +125,9 @@ public class JRQuittanceDataSource implements JRDataSource {
 		info.setApartmentAddress(address);
 
 		Stub<Building> buildingStub = q.getEircAccount().getApartment().getBuildingStub();
-		info.setBuildingAddress(addressService.getBuildingAddress(buildingStub, null));
+		String buildingAddress = addressService.getBuildingAddress(buildingStub, null);
+		info.setBuildingAddress(buildingAddress);
+		info.setBatchBuildingAddress(buildingAddress);
 	}
 
 	private void initPersonFIO(Quittance q, QuittanceInfo info) {
