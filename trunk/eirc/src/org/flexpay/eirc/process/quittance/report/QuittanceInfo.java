@@ -1,6 +1,7 @@
 package org.flexpay.eirc.process.quittance.report;
 
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.ServiceType;
 
 import java.math.BigDecimal;
@@ -14,6 +15,8 @@ import java.util.*;
 public class QuittanceInfo {
 
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#,##0.00");
+
+	private boolean addressStub = false;
 
 	private String quittanceNumber;
 	private String apartmentAddress;
@@ -43,9 +46,17 @@ public class QuittanceInfo {
 	private String serviceOrganisationAccount;
 	private String bankAccount;
 
-	private Map<ServiceType, ServiceTotals> servicesTotals;
+	private Map<ServiceType, ServiceTotals> servicesTotals = Collections.emptyMap();
 
 	public QuittanceInfo() {
+	}
+
+	public Boolean getNotAddressStub() {
+		return !addressStub;
+	}
+
+	public void setAddressStub(boolean addressStub) {
+		this.addressStub = addressStub;
 	}
 
 	public String getQuittanceNumber() {
@@ -175,7 +186,9 @@ public class QuittanceInfo {
 	public List<ServiceTotals> getServicesTotalsList() {
 		SortedSet<ServiceTotals> set = new TreeSet<ServiceTotals>(new ServiceTotalsComparator<ServiceTotals>());
 		set.addAll(servicesTotals.values());
-		return new ArrayList<ServiceTotals>(set);
+		List<ServiceTotals> result = CollectionUtils.list();
+		result.addAll(set);
+		return result;
 	}
 
 	public void setServicesTotals(Map<ServiceType, ServiceTotals> servicesTotals) {

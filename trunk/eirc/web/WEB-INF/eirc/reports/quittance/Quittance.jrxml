@@ -95,23 +95,24 @@
 	<field name="quittanceNumberWithSumm" class="java.lang.String"/>
 	<field name="buildingAddress" class="java.lang.String"/>
 	<field name="batchBuildingAddress" class="java.lang.String"/>
+	<field name="notAddressStub" class="java.lang.Boolean"/>
 
 
 		<group  name="buildingAddressGroup" >
 			<groupExpression><![CDATA[$F{batchBuildingAddress}]]></groupExpression>
 			<groupHeader>
-			<band height="401"  isSplitAllowed="false" >
+			<band height="401"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="LiberationSans-Regular"
 						x="0"
-						y="0"
+						y="18"
 						width="535"
-						height="369"
+						height="315"
 						key="textField-5"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="26"/>
+						<font size="36"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{batchBuildingAddress}]]></textFieldExpression>
 				</textField>
@@ -123,6 +124,16 @@
 						width="535"
 						height="0"
 						key="line-6"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						style="LiberationSans-Regular"
+						x="0"
+						y="-1"
+						width="534"
+						height="0"
+						key="line-7"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -149,7 +160,8 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="400"  isSplitAllowed="true" >
+			<band height="390"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[$F{notAddressStub}]]></printWhenExpression>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -347,21 +359,13 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{personFIO}]]></textFieldExpression>
 				</textField>
-				<frame>					<reportElement
+				<subreport  isUsingCache="true">
+					<reportElement
 						x="164"
 						y="68"
 						width="148"
 						height="151"
-						key="frame-services-totals"
-						isPrintRepeatedValues="false"/>
-					<box></box>
-				<subreport  isUsingCache="true">
-					<reportElement
-						x="0"
-						y="0"
-						width="88"
-						height="65"
-						key="subreport"
+						key="subreport-services-summs"
 						isPrintRepeatedValues="false"/>
 					<subreportParameter  name="SUBREPORT_DIR">
 						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
@@ -372,22 +376,13 @@
 					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servicesTotalsList})]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "services.jasper"]]></subreportExpression>
 				</subreport>
-				</frame>				<frame>					<reportElement
-						mode="Opaque"
+				<subreport  isUsingCache="true">
+					<reportElement
 						x="327"
 						y="68"
 						width="207"
 						height="151"
-						key="frame-subservices"
-						isPrintRepeatedValues="false"/>
-					<box></box>
-				<subreport  isUsingCache="true">
-					<reportElement
-						x="0"
-						y="0"
-						width="77"
-						height="41"
-						key="subreport"
+						key="subreport-subservices"
 						isPrintRepeatedValues="false"/>
 					<subreportParameter  name="SUBREPORT_DIR">
 						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
@@ -395,20 +390,14 @@
 					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(((org.flexpay.eirc.process.quittance.report.ServiceTotals)$F{servicesTotalsList}.get(0)).getSubServicesTotalsList())]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "subservices.jasper"]]></subreportExpression>
 				</subreport>
-				</frame>				<frame>					<reportElement
+				<subreport  isUsingCache="true">
+					<reportElement
 						x="165"
 						y="240"
 						width="369"
-						height="55"
-						key="frame-services-details"/>
-					<box></box>
-				<subreport  isUsingCache="true">
-					<reportElement
-						x="0"
-						y="0"
-						width="130"
-						height="33"
-						key="subreport-1"/>
+						height="119"
+						key="subreport-service-details"
+						isPrintRepeatedValues="false"/>
 					<subreportParameter  name="beginDate">
 						<subreportParameterExpression><![CDATA[$F{periodBeginDate}]]></subreportParameterExpression>
 					</subreportParameter>
@@ -439,7 +428,7 @@
 					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servicesTotalsList})]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "services_details.jasper"]]></subreportExpression>
 				</subreport>
-				</frame>				<line direction="TopDown">
+				<line direction="TopDown">
 					<reportElement
 						style="LiberationSans-Regular"
 						x="0"
@@ -1033,23 +1022,13 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{apartmentAddress}]]></textFieldExpression>
 				</textField>
-				<frame>					<reportElement
-						style="LiberationSans-Regular"
+				<subreport  isUsingCache="true">
+					<reportElement
 						x="0"
 						y="189"
 						width="150"
-						height="164"
-						key="frame-1"
-						isPrintRepeatedValues="false"/>
-					<box></box>
-				<subreport  isUsingCache="true">
-					<reportElement
-						style="LiberationSans-Regular"
-						x="0"
-						y="0"
-						width="61"
-						height="57"
-						key="subreport-2"
+						height="170"
+						key="subreport-services-left"
 						isPrintRepeatedValues="false"/>
 					<subreportParameter  name="SUBREPORT_DIR">
 						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
@@ -1060,7 +1039,7 @@
 					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servicesTotalsList})]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "services_left.jasper"]]></subreportExpression>
 				</subreport>
-				</frame>			</band>
+			</band>
 		</detail>
 		<columnFooter>
 			<band height="0"  isSplitAllowed="true" >

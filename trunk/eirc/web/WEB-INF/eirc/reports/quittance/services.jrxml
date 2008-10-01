@@ -67,14 +67,14 @@
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="11"  isSplitAllowed="true" >
+			<band height="10"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
 						x="0"
 						y="0"
-						width="83"
-						height="11"
+						width="73"
+						height="10"
 						key="staticText-1"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -83,17 +83,17 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<text><![CDATA[Услуга]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
-						x="83"
+						x="73"
 						y="0"
-						width="71"
-						height="11"
+						width="51"
+						height="10"
 						key="staticText-2"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -102,20 +102,20 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<text><![CDATA[Сумма к оплате]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="12"  isSplitAllowed="true" >
+			<band height="7"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
 						y="0"
-						width="83"
-						height="12"
+						width="73"
+						height="7"
 						key="textField"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -124,16 +124,16 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{serviceTypeName}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="83"
+						x="73"
 						y="0"
-						width="71"
-						height="12"
+						width="51"
+						height="7"
 						key="textField"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -142,7 +142,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{outgoingDebt}]]></textFieldExpression>
 				</textField>
@@ -157,14 +157,14 @@
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="12"  isSplitAllowed="true" >
+			<band height="10"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
 						x="0"
 						y="0"
-						width="83"
-						height="12"
+						width="73"
+						height="10"
 						key="staticText-3"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -173,17 +173,17 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<text><![CDATA[ИТОГО:   ]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="LiberationSans-Bold"
-						x="83"
+						x="73"
 						y="0"
-						width="71"
-						height="12"
+						width="51"
+						height="10"
 						key="textField"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -192,7 +192,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$P{outgoingBalance}]]></textFieldExpression>
 				</textField>
