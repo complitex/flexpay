@@ -69,15 +69,15 @@
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="30"  isSplitAllowed="true" >
+			<band height="14"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
 						mode="Transparent"
 						x="0"
 						y="0"
-						width="126"
-						height="30"
+						width="88"
+						height="14"
 						key="staticText"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -86,17 +86,17 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Составляющие кварплаты]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
-						x="126"
+						x="88"
 						y="0"
-						width="42"
-						height="17"
+						width="27"
+						height="7"
 						key="staticText"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -105,17 +105,17 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Тариф]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
-						x="168"
+						x="115"
 						y="0"
-						width="32"
-						height="17"
+						width="24"
+						height="7"
 						key="staticText"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -124,17 +124,17 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Пере-]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
-						x="168"
-						y="17"
-						width="32"
-						height="13"
+						x="115"
+						y="7"
+						width="24"
+						height="7"
 						key="staticText-2"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.0" lineStyle="Solid"/>
@@ -143,17 +143,17 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Top">
-						<font isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<text><![CDATA[ расчет]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
-						x="126"
-						y="17"
-						width="42"
-						height="13"
+						x="88"
+						y="7"
+						width="27"
+						height="7"
 						key="staticText-3"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.0" lineStyle="Solid"/>
@@ -162,20 +162,20 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Top">
-						<font isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<text><![CDATA[грн/м2]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="12"  isSplitAllowed="true" >
+			<band height="7"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
 						y="0"
-						width="126"
-						height="12"
+						width="88"
+						height="7"
 						key="textField"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -184,16 +184,16 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{serviceTypeName}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="126"
+						x="88"
 						y="0"
-						width="42"
-						height="12"
+						width="27"
+						height="7"
 						key="textField"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -202,16 +202,16 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{tarif}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="168"
+						x="115"
 						y="0"
-						width="32"
-						height="12"
+						width="24"
+						height="7"
 						key="textField"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -220,7 +220,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{recalculation}]]></textFieldExpression>
 				</textField>
@@ -235,14 +235,14 @@
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="16"  isSplitAllowed="true" >
+			<band height="7"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="LiberationSans-Bold"
-						x="168"
+						x="115"
 						y="0"
-						width="32"
-						height="16"
+						width="24"
+						height="7"
 						key="textField-1"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -251,17 +251,17 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+						<font pdfFontName="Helvetica-Bold" size="5" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{recalculationTotal}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
-						x="126"
+						x="88"
 						y="0"
-						width="42"
-						height="16"
+						width="27"
+						height="7"
 						key="staticText"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -270,7 +270,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement>
-						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+						<font pdfFontName="Helvetica-Bold" size="5" isBold="true"/>
 					</textElement>
 				<text><![CDATA[]]></text>
 				</staticText>
@@ -280,8 +280,8 @@
 						mode="Transparent"
 						x="0"
 						y="0"
-						width="126"
-						height="16"
+						width="88"
+						height="7"
 						key="staticText-4"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -290,7 +290,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<text><![CDATA[ВСЕГО:]]></text>
 				</staticText>

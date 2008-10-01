@@ -20,7 +20,9 @@ public class ServiceTotals extends ServiceTotalsBase {
 	public List<SubServiceTotals> getSubServicesTotalsList() {
 		SortedSet<SubServiceTotals> set = new TreeSet<SubServiceTotals>(new ServiceTotalsComparator<SubServiceTotals>());
 		set.addAll(subServicesTotals.values());
-		return new ArrayList<SubServiceTotals>(set);
+		List<SubServiceTotals> result = CollectionUtils.list();
+		result.addAll(set);
+		return result;
 	}
 
 	public void setSubServiceTotals(SubServiceTotals totals) {

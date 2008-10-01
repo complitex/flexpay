@@ -68,14 +68,14 @@
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="15"  isSplitAllowed="true" >
+			<band height="7"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
 						x="0"
 						y="0"
 						width="59"
-						height="15"
+						height="7"
 						key="staticText-1"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -84,7 +84,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Услуга]]></text>
 				</staticText>
@@ -94,7 +94,7 @@
 						x="74"
 						y="0"
 						width="75"
-						height="15"
+						height="7"
 						key="staticText-2"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -103,7 +103,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<text><![CDATA[Сумма к оплате]]></text>
 				</staticText>
@@ -113,7 +113,7 @@
 						x="59"
 						y="0"
 						width="15"
-						height="15"
+						height="7"
 						key="staticText-4"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -122,21 +122,21 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement>
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<text><![CDATA[]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="16"  isSplitAllowed="true" >
+			<band height="7"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="LiberationSans-Regular"
 						x="0"
 						y="0"
 						width="59"
-						height="16"
+						height="7"
 						key="textField-1"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -145,7 +145,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{serviceTypeName}]]></textFieldExpression>
 				</textField>
@@ -155,7 +155,7 @@
 						x="59"
 						y="0"
 						width="15"
-						height="16"
+						height="7"
 						key="textField"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -164,7 +164,7 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{serviceTypeCode}]]></textFieldExpression>
 				</textField>
@@ -174,7 +174,7 @@
 						x="74"
 						y="0"
 						width="11"
-						height="16"
+						height="7"
 						key="textField-2"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -183,7 +183,7 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{outgoingDebtDigits}[5]]]></textFieldExpression>
 				</textField>
@@ -193,7 +193,7 @@
 						x="85"
 						y="0"
 						width="11"
-						height="16"
+						height="7"
 						key="textField-3"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -202,7 +202,7 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{outgoingDebtDigits}[4]]]></textFieldExpression>
 				</textField>
@@ -212,7 +212,7 @@
 						x="96"
 						y="0"
 						width="11"
-						height="16"
+						height="7"
 						key="textField-4"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -221,7 +221,7 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{outgoingDebtDigits}[3]]]></textFieldExpression>
 				</textField>
@@ -231,7 +231,7 @@
 						x="107"
 						y="0"
 						width="11"
-						height="16"
+						height="7"
 						key="textField-5"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -240,7 +240,7 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{outgoingDebtDigits}[2]]]></textFieldExpression>
 				</textField>
@@ -250,7 +250,7 @@
 						x="118"
 						y="0"
 						width="9"
-						height="16"
+						height="7"
 						key="staticText-5"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -259,7 +259,7 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<text><![CDATA[.]]></text>
 				</staticText>
@@ -269,7 +269,7 @@
 						x="127"
 						y="0"
 						width="11"
-						height="16"
+						height="7"
 						key="textField-6"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -278,7 +278,7 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{outgoingDebtDigits}[1]]]></textFieldExpression>
 				</textField>
@@ -288,7 +288,7 @@
 						x="138"
 						y="0"
 						width="11"
-						height="16"
+						height="7"
 						key="textField-7"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -297,7 +297,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font/>
+						<font size="5"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{outgoingDebtDigits}[0]]]></textFieldExpression>
 				</textField>
@@ -312,14 +312,14 @@
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="15"  isSplitAllowed="true" >
+			<band height="7"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
 						x="0"
 						y="0"
 						width="74"
-						height="15"
+						height="7"
 						key="staticText-3"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -328,7 +328,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<text><![CDATA[ИТОГО:   ]]></text>
 				</staticText>
@@ -338,7 +338,7 @@
 						x="74"
 						y="0"
 						width="11"
-						height="15"
+						height="7"
 						key="textField-8"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -347,7 +347,7 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{outgoingBalanceDigits}[5]]]></textFieldExpression>
 				</textField>
@@ -357,7 +357,7 @@
 						x="85"
 						y="0"
 						width="11"
-						height="15"
+						height="7"
 						key="textField-9"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -366,7 +366,7 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{outgoingBalanceDigits}[4]]]></textFieldExpression>
 				</textField>
@@ -376,7 +376,7 @@
 						x="96"
 						y="0"
 						width="11"
-						height="15"
+						height="7"
 						key="textField-10"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -385,7 +385,7 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{outgoingBalanceDigits}[3]]]></textFieldExpression>
 				</textField>
@@ -395,7 +395,7 @@
 						x="107"
 						y="0"
 						width="11"
-						height="15"
+						height="7"
 						key="textField-11"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -404,7 +404,7 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{outgoingBalanceDigits}[2]]]></textFieldExpression>
 				</textField>
@@ -414,7 +414,7 @@
 						x="118"
 						y="0"
 						width="9"
-						height="15"
+						height="7"
 						key="staticText-6"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -423,7 +423,7 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<text><![CDATA[.]]></text>
 				</staticText>
@@ -433,7 +433,7 @@
 						x="127"
 						y="0"
 						width="11"
-						height="15"
+						height="7"
 						key="textField-12"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -442,7 +442,7 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{outgoingBalanceDigits}[1]]]></textFieldExpression>
 				</textField>
@@ -452,7 +452,7 @@
 						x="138"
 						y="0"
 						width="11"
-						height="15"
+						height="7"
 						key="textField-13"/>
 					<box>					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -461,7 +461,7 @@
 					<rightPen lineWidth="0.25"/>
 </box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font size="5" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{outgoingBalanceDigits}[0]]]></textFieldExpression>
 				</textField>
