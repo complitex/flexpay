@@ -22,9 +22,7 @@ import org.flexpay.eirc.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 public class JRQuittanceDataSource implements JRDataSource {
 
@@ -41,6 +39,7 @@ public class JRQuittanceDataSource implements JRDataSource {
 		@NotNull Long accountId = -1L;
 		int orderNumber = -1;
 
+		QuittancesStats stats = new QuittancesStats();
 		for (Quittance q : quittances) {
 
 			initLazyProperties(q);
@@ -69,9 +68,80 @@ public class JRQuittanceDataSource implements JRDataSource {
 			initDates(q, info);
 			initQuittanceNumber(q, info);
 			infos.add(info);
+			stats.addAddress(info.getBuildingAddress());
 		}
 
+		infos = buildBatches(infos, stats, 2);
+
 		jrBeanCollectionDataSource = new JRBeanCollectionDataSource(infos);
+	}
+
+	private List<QuittanceInfo> buildBatches(List<QuittanceInfo> infos, QuittancesStats stats, int nBatches) {
+
+		Map<String, Integer> addrStats = stats.getStats();
+		int totalQuittances = stats.getCount() + addrStats.size();
+		int nPages = totalQuittances % nBatches == 0 ?
+					 totalQuittances / nBatches : totalQuittances / nBatches + 1;
+
+		QuittanceInfo[] result = new QuittanceInfo[totalQuittances];
+		String previousAddress = "";
+		int n = 0;
+		for (QuittanceInfo info : infos) {
+			if (!previousAddress.equals(info.getBuildingAddress())) {
+				QuittanceInfo addressStub = new QuittanceInfo();
+				// init batch address for later filling
+				addressStub.setBatchBuildingAddress(info.getBuildingAddress());
+				addressStub.setAddressStub(true);
+				int pos = getPosition(n, nPages, nBatches);
+				if (result[pos] != null) {
+					throw new IllegalStateException("Invalid position calc algorithm");
+				}
+				result[pos] = addressStub;
+				previousAddress = info.getBuildingAddress();
+				++n;
+			}
+
+			int pos = getPosition(n, nPages, nBatches);
+			if (result[pos] != null) {
+				throw new IllegalStateException("Invalid position calc algorithm");
+			}
+			result[pos] = info;
+			++n;
+		}
+
+		setupBatchAddresses(result);
+
+		return Arrays.asList(result);
+	}
+
+	/**
+	 * Go through infos and set their batch address, only marker address infos has already
+	 * set up batch address
+	 *
+	 * @param infos QuittanceInfo array to init
+	 */
+	private void setupBatchAddresses(QuittanceInfo[] infos) {
+		String prevAddr = "";
+		for (QuittanceInfo info : infos) {
+			if (info.getBatchBuildingAddress() != null) {
+				prevAddr = info.getBatchBuildingAddress();
+			}
+			info.setBatchBuildingAddress(prevAddr);
+		}
+	}
+
+	/**
+	 * Find position of n-th element for the batches
+	 *
+	 * @param n		 N-th element to find position for
+	 * @param nPages	Total number of pages
+	 * @param batchSize Batch size (i.e. number of quittances per page)
+	 * @return element position
+	 */
+	private int getPosition(int n, int nPages, int batchSize) {
+		int nPage = n % nPages;
+		int pagePos = n / nPages;
+		return nPage * batchSize + pagePos;
 	}
 
 	private void initQuittanceNumber(Quittance q, QuittanceInfo info) {
@@ -127,7 +197,6 @@ public class JRQuittanceDataSource implements JRDataSource {
 		Stub<Building> buildingStub = q.getEircAccount().getApartment().getBuildingStub();
 		String buildingAddress = addressService.getBuildingAddress(buildingStub, null);
 		info.setBuildingAddress(buildingAddress);
-		info.setBatchBuildingAddress(buildingAddress);
 	}
 
 	private void initPersonFIO(Quittance q, QuittanceInfo info) {
