@@ -12,7 +12,7 @@ import java.util.*;
  * Container for all necessary Quittance information with calculated summs, service
  * tarifs, subsidies, etc
  */
-public class QuittanceInfo {
+public class QuittanceInfo implements Cloneable {
 
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#,##0.00");
 
@@ -288,6 +288,10 @@ public class QuittanceInfo {
 		}
 
 		return result;
+	}
 
+	@Override
+	public QuittanceInfo clone() throws CloneNotSupportedException {
+		return (QuittanceInfo) super.clone();
 	}
 }
