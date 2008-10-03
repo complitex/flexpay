@@ -6,11 +6,14 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.annotation.Repeat;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestLockManager extends SpringBeanAwareTestCase {
 
 	public static final String lockString = "lock String";
 
+	@Autowired
+	public volatile LockManager lockManager;
 	@Before
 	public void setUp() throws Exception {
 		LockManager lockManager = LockManager.getInstance();
@@ -20,7 +23,7 @@ public class TestLockManager extends SpringBeanAwareTestCase {
 	@Test (timeout = 2500)
 	@Repeat(5)
 	public void testLock() {
-		LockManager lockManager = LockManager.getInstance();
+//		LockManager lockManager = LockManager.getInstance();
 		assertTrue("lock string", lockManager.lock(lockString));
 		ConflictingThread conflictingThread = new ConflictingThread();
 		Thread runner = new Thread(conflictingThread);
@@ -56,7 +59,6 @@ public class TestLockManager extends SpringBeanAwareTestCase {
 		public boolean locked = false;
 
 		public void run() {
-			LockManager lockManager = LockManager.getInstance();
 			locked = lockManager.lock(lockString);
 		}
 	}
