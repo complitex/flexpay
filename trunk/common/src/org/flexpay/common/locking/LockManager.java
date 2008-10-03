@@ -16,11 +16,14 @@ public class LockManager {
 	@NonNls
 	private Logger log = Logger.getLogger(getClass().getName());
 
-	private static LockManager instance = new LockManager();
+	private volatile static LockManager instance;// = new LockManager();
 	private HibernateTemplate hibernateTemplate;
 	private volatile Map<String, StatelessSession> lockedSessions = CollectionUtils.map();
 
 	public static LockManager getInstance() {
+		if (instance == null){
+			instance = new LockManager();
+		}
 		return instance;
 	}
 
@@ -112,6 +115,7 @@ public class LockManager {
 //
 //            }
 		}
+		instance = null;
 	}
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
