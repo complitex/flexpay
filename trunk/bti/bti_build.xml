@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="flexpay_bti" basedir="..">
+<project name="flexpay_bti" basedir=".." default="bti.help">
 
 	<import file="../ab/ab_build.xml" />
 
@@ -43,6 +43,22 @@
         <path location="bti/tests/data" />
     </path>
 
+	<target name="bti.help" description="Print bti module build script options">
+		<echo>
+	Bti module build script
+	Usage:
+	ant -f bti_build.xml [target_name [target_options]]
+
+	Available targets are:
+		bti.db - Initialize database
+		bti.exportschema.mysql5 - Generate DDL of module for MySQL5
+		bti.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
+			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.bti.service.TestBuildingService
+		bti.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
+		bti.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		</echo>
+	</target>
+
     <target name="bti.clean.build">
 		<antcall target="clean.build" />
 	</target>
@@ -76,6 +92,7 @@
 	</target>
 
 	<target name="bti.war.production.tomcat_mysql5">
+		<antcall target="clean.all" />
 		<antcall target="template.bti.war.production">
 			<param name="app_server.properties" value="app_server_tomcat.properties" />
 			<param name="data_source.properties" value="data_source_mysql5.properties" />

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="flexpay_ab" basedir="..">
+<project name="flexpay_ab" basedir=".." default="ab.help">
 
 	<import file="../common/common_build.xml" />
 	<import file="../common/hibernate_build.xml" />
@@ -42,6 +42,24 @@
 		<path location="ab/src" />
 		<path location="ab/tests/data" />
 	</path>
+
+	<target name="ab.help" description="Print ab module build script options">
+		<echo>
+	Ab module build script
+	Usage:
+	ant -f ab_build.xml [target_name [target_options]]
+
+	Available targets are:
+		ab.db - Initialize database
+		ab.exportschema.mysql5 - Generate DDL of module for MySQL5
+		ab.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
+			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.ab.service.TestStreetService
+		ab.runtests.nobuild - Run all module tests but skip build steps (added to speed up development process)
+			same test.class.name option applies to this target
+		ab.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
+		ab.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		</echo>
+	</target>
 
 	<target name="ab.clean.build">
 		<antcall target="clean.build" />

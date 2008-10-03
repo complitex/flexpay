@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="flexpay_common" basedir="..">
+<project name="flexpay_common" basedir=".." default="common.help">
 
 	<property name="common.dir" value="${basedir}/common" />
 
@@ -48,6 +48,22 @@
 		<path location="common/src" />
 		<path location="${common.dir}/tests/data" />
 	</path>
+
+	<target name="common.help" description="Print common module build script options">
+		<echo>
+	Common module build script
+	Usage:
+	ant -f common_build.xml [target_name [target_options]]
+
+	Available targets are:
+		common.db - Initialize database
+		common.exportschema.mysql5 - Generate DDL of module for MySQL5
+		common.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
+			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.common.test.TestStringUtil
+		common.runtests.nobuild - Run all module tests but skip build steps (added to speed up development process)
+			same test.class.name option applies to this target
+		</echo>
+	</target>
 
 	<target name="common.clean.build">
 		<antcall target="clean.build" />

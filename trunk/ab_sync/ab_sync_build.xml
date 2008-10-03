@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="flexpay_ab_sync" basedir="..">
+<project name="flexpay_ab_sync" basedir=".." default="ab_sync.help">
 
 	<import file="../common/common_build.xml" />
 	<import file="../common/hibernate_build.xml" />
@@ -44,6 +44,19 @@
         <path location="ab_sync/src" />
         <path location="ab_sync/tests/data" />
     </path>
+
+	<target name="ab_sync.help" description="Print ab_sync module build script options">
+		<echo>
+	Ab_sync module build script
+	Usage:
+	ant -f ab_sync_build.xml [target_name [target_options]]
+
+	Available targets are:
+		ab.db - Initialize database
+		ab_sync.runtests - Run all module tests
+		ab_sync.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		</echo>
+	</target>
 
     <target name="ab_sync.clean.build">
 		<antcall target="clean.build" />
