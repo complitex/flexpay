@@ -25,28 +25,9 @@
 			<result name="redirectSuccess" type="redirect">spFileList.action</result>
 		</action>
 
-		<action name="data">
-			<result type="tiles">eirc.data</result>
-		</action>
-
-		<action name="correspondence">
-			<result type="tiles">eirc.data.correspondence</result>
-		</action>
-
-		<action name="correspondence_external" class="correspondenceExternalAction">
-			<result type="dispatcher">/WEB-INF/jsp/eirc/data/correspondence/external_data.jsp</result>
-		</action>
-
-		<action name="correspondence_internal">
-			<result type="dispatcher">/WEB-INF/jsp/eirc/data/correspondence/internal_data.jsp</result>
-		</action>
-
-
-
 		<action name="processing">
 			<result type="tiles">eirc.processing</result>
 		</action>
-
 
 
 		<!-- Quittances -->

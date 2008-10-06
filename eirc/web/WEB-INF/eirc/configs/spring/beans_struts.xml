@@ -21,10 +21,6 @@
 		<property name="processManager" ref="processManager" />
 	</bean>
 
-	<bean id="correspondenceExternalAction" class="org.flexpay.eirc.actions.CorrespondenceExternalAction"
-		  scope="prototype">
-	</bean>
-
 	<bean id="buildingAjaxAction" class="org.flexpay.eirc.actions.BuildingAjaxAction"
 		  scope="prototype">
 		<property name="buildingService" ref="buildingService" />

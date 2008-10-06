@@ -29,17 +29,6 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/import/sp_file_list.jsp" />
 	</definition>
 
-	<!-- Data -->
-	<definition name="eirc.data" extends="eirc.import">
-		<put-attribute name="title" value="eirc.menu2.data" />
-		<put-attribute name="menu34" value="/WEB-INF/jsp/eirc/menu/menu34_data.jsp" />
-	</definition>
-
-	<definition name="eirc.data.correspondence" extends="eirc.data">
-		<put-attribute name="title" value="eirc.menu34_data.correspondence" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correspondence.jsp" />
-	</definition>
-
 	<!-- Processing -->
 	<definition name="eirc.processing" extends="eirc.import">
 		<put-attribute name="title" value="eirc.menu2.processing" />

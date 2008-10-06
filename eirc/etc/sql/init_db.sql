@@ -205,7 +205,7 @@ SELECT @organisation_service_org_1:=5;
 INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
 	VALUES ('Тестовая обсл. организация', @ru_id, @organisation_service_org_1);
 INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
-	VALUES ('Участог-45', @ru_id, @organisation_service_org_1);
+	VALUES ('Участок-45', @ru_id, @organisation_service_org_1);
 
 INSERT INTO eirc_service_organisations_tbl(id, status, organisation_id)
 	VALUES (1, 0, @organisation_service_org_1);
