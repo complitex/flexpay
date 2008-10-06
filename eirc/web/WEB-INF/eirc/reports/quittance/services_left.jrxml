@@ -34,7 +34,7 @@
 		isStrikeThrough="false"
 		pdfFontName="/usr/share/fonts/truetype/LiberationSans-Regular.ttf"
 		pdfEncoding="Cp1251"
-		isPdfEmbedded="false"
+		isPdfEmbedded="true"
 	>
 	</style>
 	<style 

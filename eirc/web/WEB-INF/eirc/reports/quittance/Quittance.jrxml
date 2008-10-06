@@ -3,13 +3,13 @@
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
 		 name="Quittance"
-		 columnCount="1"
+		 columnCount="2"
 		 printOrder="Vertical"
 		 orientation="Portrait"
-		 pageWidth="595"
+		 pageWidth="1190"
 		 pageHeight="842"
 		 columnWidth="535"
-		 columnSpacing="0"
+		 columnSpacing="20"
 		 leftMargin="30"
 		 rightMargin="30"
 		 topMargin="20"
@@ -34,7 +34,7 @@
 		isStrikeThrough="false"
 		pdfFontName="/usr/share/fonts/truetype/LiberationSans-Regular.ttf"
 		pdfEncoding="Cp1251"
-		isPdfEmbedded="false"
+		isPdfEmbedded="true"
 	>
 	</style>
 	<style 
@@ -160,7 +160,7 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="390"  isSplitAllowed="true" >
+			<band height="401"  isSplitAllowed="true" >
 				<printWhenExpression><![CDATA[$F{notAddressStub}]]></printWhenExpression>
 				<line direction="TopDown">
 					<reportElement
@@ -877,14 +877,14 @@
 						mode="Opaque"
 						x="0"
 						y="38"
-						width="149"
+						width="158"
 						height="36"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="barcode-1"/>
 					<box></box>
 					<graphicElement stretchType="NoStretch" fill="Solid" />
-					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(10,$F{quittanceNumberWithSumm},false,false,"090",0,36)]]></imageExpression>
+					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(10,$F{quittanceNumberWithSumm},true,true,"00",0,0)]]></imageExpression>
 				</image>
 				<staticText>
 					<reportElement
