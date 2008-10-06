@@ -69,6 +69,20 @@ public class JRQuittanceDataSource implements JRDataSource {
 			initQuittanceNumber(q, info);
 			infos.add(info);
 			stats.addAddress(info.getBuildingAddress());
+
+//			infos.add(info.clone());
+//			stats.addAddress(info.getBuildingAddress());
+
+//			infos.add(info);
+//			stats.addAddress(info.getBuildingAddress());
+
+//			QuittanceInfo stub = info.clone();
+//			stub.setApartmentAddress("Test address");
+//			stub.setBuildingAddress("Test address");
+//			infos.add(stub);
+//			stats.addAddress(stub.getBuildingAddress());
+//			infos.add(stub.clone());
+//			stats.addAddress(stub.getBuildingAddress());
 		}
 
 		infos = buildBatches(infos, stats, 2);
