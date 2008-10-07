@@ -191,9 +191,9 @@ INSERT INTO eirc_bank_descriptions_tbl (name, language_id, bank_id)
 
 
 -- Init service providers
-INSERT INTO eirc_service_providers_tbl(organisation_id, data_source_description_id)
-	VALUES (@organisation_cn, @source_description_id);
-SELECT @service_provider_cn:=last_insert_id();
+INSERT INTO eirc_service_providers_tbl(id, organisation_id, data_source_description_id)
+	VALUES (1, @organisation_cn, @source_description_id);
+SELECT @service_provider_cn:=1;
 INSERT INTO eirc_service_provider_descriptions_tbl (name, language_id, service_provider_id)
 	VALUES ('ПУ ЦН', @ru_id, @service_provider_cn);
 
@@ -255,6 +255,16 @@ INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 7);
 SELECT @service_hot_water:=last_insert_id();
 INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Горячая вода', '', @ru_id, @service_hot_water);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 240);
+SELECT @service_type_240:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Погреба', '', @ru_id, @service_type_250);
+
+INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 250);
+SELECT @service_type_250:=last_insert_id();
+INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Содержание животных', '', @ru_id, @service_type_250);
 
 -- kvarplata
 INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 1);
@@ -347,15 +357,10 @@ SELECT @service_staircases_cleaning:=last_insert_id();
 INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Уборка лестничных клеток', '', @ru_id, @service_staircases_cleaning);
 
-INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 170);
-SELECT @service_staircases_cleaning:=last_insert_id();
-INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Уборка лестничных клеток', '', @ru_id, @service_staircases_cleaning);
-
 INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 180);
-SELECT @service_:=last_insert_id();
+SELECT @service_180:=last_insert_id();
 INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Дератизация и дезинфекция', '', @ru_id, @service_);
+	VALUES ('Дератизация и дезинфекция', '', @ru_id, @service_180);
 
 INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 190);
 SELECT @service_:=last_insert_id();
@@ -494,6 +499,18 @@ INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type
 SELECT @service_4:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Отопление', @ru_id, @service_4);
+
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date)
+	VALUES (@service_provider_cn, '240', null, @service_type_240, '1900-01-01', '2100-12-31');
+SELECT @service_240:=last_insert_id();
+INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
+	VALUES ('Погреба', @ru_id, @service_240);
+
+INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date)
+	VALUES (@service_provider_cn, '250', null, @service_type_250, '1900-01-01', '2100-12-31');
+SELECT @service_250:=last_insert_id();
+INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
+	VALUES ('Погреба', @ru_id, @service_250);
 
 
 -- Init EIRC accounts
