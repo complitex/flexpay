@@ -136,11 +136,6 @@ public class QuittanceServiceImpl implements QuittanceService {
 		}
 	}
 
-	public QuittanceDetails calculateTotalQuittanceDetails(Quittance quittance, ServiceType serviceType) {
-		quittance = quittanceDao.read(quittance.getId());
-		return quittance.calculateTotals(serviceType);
-	}
-
 	@NotNull
 	public List<Quittance> getQuittances(Stub<ServiceOrganisation> stub, Date dateFrom, Date dateTill) {
 		return quittanceDao.findByServiceOrganisationAndDate(stub.getId(), dateFrom, dateTill);

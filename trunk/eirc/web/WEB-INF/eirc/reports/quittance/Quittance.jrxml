@@ -233,7 +233,7 @@
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{totalSquare}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="LiberationSans-Regular"
 						x="236"
@@ -386,6 +386,12 @@
 						isPrintRepeatedValues="false"/>
 					<subreportParameter  name="SUBREPORT_DIR">
 						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="tarifTotal">
+						<subreportParameterExpression><![CDATA[((org.flexpay.eirc.process.quittance.report.ServiceTotals)$F{servicesTotalsList}.get(0)).getTarif()]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="recalculationTotal">
+						<subreportParameterExpression><![CDATA[((org.flexpay.eirc.process.quittance.report.ServiceTotals)$F{servicesTotalsList}.get(0)).getRecalculation()]]></subreportParameterExpression>
 					</subreportParameter>
 					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(((org.flexpay.eirc.process.quittance.report.ServiceTotals)$F{servicesTotalsList}.get(0)).getSubServicesTotalsList())]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "subservices.jasper"]]></subreportExpression>
@@ -569,7 +575,7 @@
 						style="LiberationSans-Regular"
 						x="496"
 						y="43"
-						width="16"
+						width="17"
 						height="13"
 						key="textField"/>
 					<box></box>

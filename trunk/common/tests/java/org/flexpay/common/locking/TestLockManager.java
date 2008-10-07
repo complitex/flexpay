@@ -5,25 +5,35 @@ import org.flexpay.common.test.SpringBeanAwareTestCase;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.test.annotation.Repeat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Repeat;
 
 public class TestLockManager extends SpringBeanAwareTestCase {
 
 	public static final String lockString = "lock String";
 
 	@Autowired
-	public volatile LockManager lockManager;
+	public LockManager lockManager;
+
 	@Before
 	public void setUp() throws Exception {
-		LockManager lockManager = LockManager.getInstance();
 		lockManager.releaseLock(lockString);
 	}
 
+	@Test
+	public void testLockManagerSimple() {
+		String resource = "testLockManagerSimple";
+		try {
+			assertTrue("Failed getting lock", lockManager.lock(resource));
+		} finally {
+			lockManager.releaseLock(resource);
+		}
+	}
+
 	@Test (timeout = 2500)
-	@Repeat(5)
+	@Repeat (5)
 	public void testLock() {
-//		LockManager lockManager = LockManager.getInstance();
+
 		assertTrue("lock string", lockManager.lock(lockString));
 		ConflictingThread conflictingThread = new ConflictingThread();
 		Thread runner = new Thread(conflictingThread);
@@ -34,8 +44,8 @@ public class TestLockManager extends SpringBeanAwareTestCase {
 		try {
 			runner.join();
 		} catch (InterruptedException e) {
-			log.debug("TestLockManager: testLock: interrupted!", e);
-			fail("TestLockManager: testLock: interrupted!");
+			log.debug("Interrupted", e);
+			fail("Interrupted!");
 		}
 
 		assertFalse(conflictingThread.locked);
@@ -47,9 +57,10 @@ public class TestLockManager extends SpringBeanAwareTestCase {
 		try {
 			runner.join();
 		} catch (InterruptedException e) {
-			log.debug("TestLockManager: testLock: interrupted!", e);
-			fail();
+			log.debug("Interrupted!", e);
+			fail("Interrupted!");
 		}
+
 		assertTrue(conflictingThread.locked);
 		lockManager.releaseLock(lockString);
 	}

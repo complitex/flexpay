@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public abstract class ServiceTotalsBase {
 
 	private ServiceType serviceType;
-	private String tarif = "";
+	private BigDecimal tarif = BigDecimal.ZERO;
 	private BigDecimal expence = BigDecimal.ZERO;
 	private String expenceUnitKey;
 	private BigDecimal charges = BigDecimal.ZERO;
@@ -38,11 +38,11 @@ public abstract class ServiceTotalsBase {
 		return serviceType.getCode();
 	}
 
-	public String getTarif() {
+	public BigDecimal getTarif() {
 		return tarif;
 	}
 
-	public void setTarif(String tarif) {
+	public void setTarif(BigDecimal tarif) {
 		this.tarif = tarif;
 	}
 

@@ -5,13 +5,12 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
-import org.flexpay.eirc.persistence.ServiceProvider;
-import org.flexpay.eirc.persistence.ServiceType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Set;
 
 public class Quittance extends DomainObject {
 
@@ -22,96 +21,6 @@ public class Quittance extends DomainObject {
 	private Date dateTill;
 	private EircAccount eircAccount;
 	private Set<QuittanceDetailsQuittance> quittanceDetailsQuittances = Collections.emptySet();
-
-
-	/**
-	 * Get total details by service type, contains summs for all details of specified service type
-	 *
-	 * @param serviceType ServiceType
-	 * @return QuittanceDetails with total summs
-	 */
-	@Nullable
-	public QuittanceDetails calculateTotals(@NotNull ServiceType serviceType) {
-
-		List<QuittanceDetails> detailses = CollectionUtils.list();
-		for (QuittanceDetails quittanceDetails : getQuittanceDetails()) {
-			if (quittanceDetails.getConsumer().getService().getServiceType().getCode() == serviceType.getCode()) {
-				detailses.add(quittanceDetails);
-			}
-		}
-
-		return calculateTotalQuittanceDetail(detailses);
-	}
-
-	@Nullable
-	private QuittanceDetails calculateTotalQuittanceDetail(List<QuittanceDetails> list) {
-		if (list.isEmpty()) {
-			return null;
-		}
-
-		Map<ServiceProvider, List<QuittanceDetails>> map = groupByServiceProvider(list);
-		Map<ServiceProvider, QuittanceDetails> totals = CollectionUtils.map();
-		for (Map.Entry<ServiceProvider, List<QuittanceDetails>> entry : map.entrySet()) {
-			ServiceProvider serviceProvider = entry.getKey();
-			List<QuittanceDetails> detailses = entry.getValue();
-			// sort by dateTill
-			Collections.sort(detailses, new Comparator<QuittanceDetails>() {
-				public int compare(QuittanceDetails o1, QuittanceDetails o2) {
-					return o1.getMonth().compareTo(o2.getMonth());
-				}
-			});
-
-			if (detailses.size() == 1) {
-				totals.put(serviceProvider, detailses.get(0));
-			} else {
-				QuittanceDetails first = detailses.get(0);
-				QuittanceDetails last = detailses.get(list.size() - 1);
-				last.setIncomingBalance(first.getOutgoingBalance());
-				for (int i = 0; i < list.size() - 1; i++) {
-					last.add(list.get(i));
-				}
-				totals.put(serviceProvider, last);
-			}
-		}
-
-		// summ balances
-		Iterator<QuittanceDetails> it = totals.values().iterator();
-		QuittanceDetails result = it.next();
-		while (it.hasNext()) {
-			QuittanceDetails details = it.next();
-			result.setIncomingBalance(sum(result.getIncomingBalance(), details.getIncomingBalance()));
-			result.setOutgoingBalance(sum(result.getOutgoingBalance(), details.getOutgoingBalance()));
-			result.add(details);
-		}
-
-		return result;
-	}
-
-	private BigDecimal sum(BigDecimal bal1, BigDecimal bal2) {
-		if (bal1 == null || bal1.compareTo(BigDecimal.ZERO) < 0) {
-			bal1 = BigDecimal.ZERO;
-		}
-		if (bal2 == null || bal2.compareTo(BigDecimal.ZERO) < 0) {
-			bal2 = BigDecimal.ZERO;
-		}
-
-		return bal1.add(bal2);
-	}
-
-	private Map<ServiceProvider, List<QuittanceDetails>> groupByServiceProvider(List<QuittanceDetails> list) {
-
-		Map<ServiceProvider, List<QuittanceDetails>> result = CollectionUtils.map();
-		for (QuittanceDetails quittanceDetails : list) {
-			ServiceProvider serviceProvider = quittanceDetails.getConsumer().getService().getServiceProvider();
-			List<QuittanceDetails> quittanceDetailsList = result.get(serviceProvider);
-			if (quittanceDetailsList == null) {
-				result.put(serviceProvider, new ArrayList<QuittanceDetails>());
-			}
-			result.get(serviceProvider).add(quittanceDetails);
-		}
-
-		return result;
-	}
 
 	/**
 	 * @return the creationDate
@@ -181,28 +90,6 @@ public class Quittance extends DomainObject {
 		return quittanceDetails;
 	}
 
-	public void addQuittanceDetails(QuittanceDetails quittanceDetails) {
-
-		QuittanceDetailsQuittance quittanceDetailsQuittance = new QuittanceDetailsQuittance();
-		quittanceDetailsQuittance.setQuittance(this);
-		quittanceDetailsQuittance.setQuittanceDetails(quittanceDetails);
-
-		if (quittanceDetailsQuittances == Collections.EMPTY_SET) {
-			quittanceDetailsQuittances = CollectionUtils.set();
-		}
-		quittanceDetailsQuittances.add(quittanceDetailsQuittance);
-	}
-
-	/**
-	 * @param detailses the quittanceDetails to set
-	 */
-	public void addQuittanceDetails(@NotNull Collection<QuittanceDetails> detailses) {
-
-		for (QuittanceDetails quittanceDetails : detailses) {
-			addQuittanceDetails(quittanceDetails);
-		}
-	}
-
 	/**
 	 * @return the quittanceDetailsQuittances
 	 */
@@ -248,7 +135,7 @@ public class Quittance extends DomainObject {
 
 	/**
 	 * Get account number of associated EIRC account
-	 * 
+	 *
 	 * @return account number
 	 */
 	public String getAccountNumber() {

@@ -24,7 +24,7 @@ public class BaseContainerOperation extends ContainerOperation {
 	private BigDecimal outgoingBalance;
 	private BigDecimal amount;
 	private BigDecimal expence;
-	private String rate;
+	private BigDecimal rate;
 	private BigDecimal recalculation;
 	private BigDecimal benifit;
 	private BigDecimal subsidy;
@@ -56,7 +56,7 @@ public class BaseContainerOperation extends ContainerOperation {
 		expence = isBlank(datum.get(n)) ? null : new BigDecimal(datum.get(n));
 		++n;
 
-		rate = isBlank(datum.get(n)) ? null : datum.get(n);
+		rate = isBlank(datum.get(n)) ? null : new BigDecimal(datum.get(n));
 		++n;
 
 		recalculation = isBlank(datum.get(n)) ? null : new BigDecimal(datum.get(n));

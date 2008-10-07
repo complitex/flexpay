@@ -1,12 +1,12 @@
-package org.flexpay.bti;
+package org.flexpay.bti.service;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
-		org.flexpay.bti.service.AllTests.class
-})
+		TestBuildingService.class
+		})
 public class AllTests {
 
 }

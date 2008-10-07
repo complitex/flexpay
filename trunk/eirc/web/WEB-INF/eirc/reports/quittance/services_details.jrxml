@@ -49,7 +49,7 @@
 	<parameter name="outgoingBalance" isForPrompting="false" class="java.math.BigDecimal"/>
 
 	<field name="serviceTypeName" class="java.lang.String"/>
-	<field name="tarif" class="java.lang.String"/>
+	<field name="tarif" class="java.math.BigDecimal"/>
 	<field name="incomingDebt" class="java.math.BigDecimal"/>
 	<field name="expence" class="java.math.BigDecimal"/>
 	<field name="charges" class="java.math.BigDecimal"/>
@@ -410,7 +410,7 @@
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{incomingDebt}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,###0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="LiberationSans-Regular"
 						x="111"
@@ -427,7 +427,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="5"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{tarif}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{tarif}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

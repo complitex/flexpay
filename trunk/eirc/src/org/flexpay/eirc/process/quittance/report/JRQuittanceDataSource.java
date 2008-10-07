@@ -63,6 +63,7 @@ public class JRQuittanceDataSource implements JRDataSource {
 			// now build quittance into quittance info
 			QuittanceInfo info = QuittanceInfoGenerator.buildInfo(q);
 			initAddress(q, info);
+			initHabitants(q, info);
 			initPersonFIO(q, info);
 			initServiceOrganisation(q, info);
 			initDates(q, info);
@@ -229,6 +230,16 @@ public class JRQuittanceDataSource implements JRDataSource {
 			Stub<Service> serviceStub = stub(qd.getConsumer().getService());
 			qd.getConsumer().setService(spService.read(serviceStub));
 		}
+	}
+
+	private void initHabitants(Quittance q, QuittanceInfo info) {
+
+		Apartment apartment = q.getEircAccount().getApartment();
+		info.setHabitantNumber(apartment.getPersonRegistrations().size());
+	}
+
+	private void initTotals(QuittanceInfo info) {
+		
 	}
 
 	/**

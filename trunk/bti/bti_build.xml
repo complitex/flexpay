@@ -112,6 +112,12 @@
 		<antcall target="template.copy.classes" />
 	</target>
 
+	<target name="bti.prepare.test.war">
+		<antcall target="bti.prepare.war.internal" />
+		<antcall target="common.test.war.data-source" />
+		<antcall target="template.copy.classes" />
+	</target>
+
     <target name="bti.prepare.war.internal" depends="ab.prepare.war.internal">
         <fileset id="bti.web.resources" dir="${bti.dir}/web" />
         <antcall target="template.prepare.war">
@@ -136,10 +142,10 @@
 
 		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
 			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/common/app_server.properties" />
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
 		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
 			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/common/data_source.properties" />
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
 
 		<war destfile="${distr.dir}/${bti.war.name}" needxmlfile="false">
 			<fileset dir="${build.dir}/web" />
@@ -164,7 +170,7 @@
 		</antcall>
 	</target>
 
-	<target name="bti.runtests" depends="bti.compile.test,bti.prepare.war">
+	<target name="bti.runtests" depends="bti.compile.test,bti.prepare.test.war">
 		<antcall target="template.run.tests">
 			<param name="test_name" value="org.flexpay.bti.AllTests" />
 			<reference refid="bti.runtests.classpath" torefid="classpath" />
@@ -186,8 +192,16 @@
 		<antcall target="bti.sql.init-db" />
 	</target>
 
-	<target name="bti.db" description="create bti db">
-		<antcall target="bti.sql.all" />
+	<target name="bti.sql.all-test">
+		<antcall target="common.sql.create-test-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${bti.dir}/etc/sql/flexpay_bti.ddl.sql" />
+		</concat>
+		<antcall target="bti.sql.init-db" />
+	</target>
+
+	<target name="bti.db-test" description="create bti db">
+		<antcall target="bti.sql.all-test" />
 		<antcall target="template.mysql.run">
 			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
 		</antcall>

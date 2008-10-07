@@ -28,6 +28,9 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 
+/**
+ * @deprecated
+ */
 public class PdfTicketWriter {
 	private static final Locale LOCALE_RU = new Locale("ru");
 

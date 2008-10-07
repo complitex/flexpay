@@ -11,6 +11,9 @@ import com.lowagie.text.pdf.PdfImportedPage;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
 
+/**
+ * @deprecated
+ */
 public class PdfA3Writer {
 	private PdfWriter writer;
 	private PdfContentByte cb;

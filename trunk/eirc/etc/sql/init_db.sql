@@ -1,5 +1,6 @@
 insert into common_data_source_descriptions_tbl (id, description)
-	values (1, 'Харьковский центр начислений');
+	values (2, 'Харьковский центр начислений');
+SELECT @source_description_id:=2;
 
 -- Init Sequences table
 INSERT INTO common_sequences_tbl (id, counter, description) VALUES (1, 10, 'Последовательность для ЛС модуля ЕИРЦ');
@@ -190,8 +191,6 @@ INSERT INTO eirc_bank_descriptions_tbl (name, language_id, bank_id)
 
 
 -- Init service providers
-INSERT INTO common_data_source_descriptions_tbl (description) VALUES ('Источник - Тестовые данные ПУ из ЦН');
-SELECT @source_description_id:=last_insert_id();
 INSERT INTO eirc_service_providers_tbl(organisation_id, data_source_description_id)
 	VALUES (@organisation_cn, @source_description_id);
 SELECT @service_provider_cn:=last_insert_id();
@@ -605,7 +604,7 @@ select @consumer_2:=2;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (1, @consumer_1_1, @eirc_registry_rec,
-	'0.00', '40.34', '40.34', '50.34', '123', '-4.0', '-5.0', '-1.0', '0.0', '2007-12-01');
+	'0.00', '40.34', '40.34', '50.34', '1.1', '-4.0', '-5.0', '-1.0', '0.0', '2007-12-01');
 select @quittance_details_1:=1;
 -- Quittance details for consumer_1_1 (kvarplata)
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
@@ -617,83 +616,83 @@ select @quittance_details_2:=2;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (5, @consumer_1_10, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '10.10', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_1_10:=5;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (6, @consumer_1_2, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '2.0', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_1_2:=6;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (7, @consumer_1_3, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '3.003', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_1_3:=7;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (8, @consumer_1_4, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '4.04', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_1_4:=8;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (9, @consumer_1_12, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '12.012', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_1_12:=9;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (10, @consumer_1_13, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '13.13', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_1_13:=10;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (11, @consumer_1_10, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '10.010', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_1_10:=11;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (12, @consumer_1_20, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '20.20', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_1_20:=12;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (13, @consumer_1_30, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '30.030', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_1_30:=13;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (14, @consumer_1_40, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '40.040', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_1_40:=14;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (15, @consumer_1_50, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '50.050', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_1_50:=15;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (16, @consumer_1_60, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '60.060', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_1_60:=16;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (17, @consumer_1_70, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '70.070', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_1_70:=17;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (18, @consumer_1_80, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '80.80', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_1_80:=18;
 
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (3, @consumer_2, @eirc_registry_rec,
-	'0.00', '40.34', '40.34', '50.34', '123.00', '-4.0', '-5.0', '-1.0', '0.0', '2007-12-01');
+	'0.00', '40.34', '40.34', '50.34', '2.02', '-4.0', '-5.0', '-1.0', '0.0', '2007-12-01');
 select @quittance_details_3:=3;
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (4, @consumer_2, @eirc_registry_rec,
-	'-10.00', '50.00', '60.00', '60.00', '123', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
+	'-10.00', '50.00', '60.00', '60.00', '2.2', '0.0', '0.0', '0.0', '50.34', '2008-01-01');
 select @quittance_details_4:=4;
 
 

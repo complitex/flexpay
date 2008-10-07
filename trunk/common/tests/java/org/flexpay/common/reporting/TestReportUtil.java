@@ -82,10 +82,11 @@ public class TestReportUtil extends SpringBeanAwareTestCase {
 	@Before
 	public void before() {
 		// find data source description for CN
+		String dscr = "Источник - Тестовые данные ПУ из ЦН";
 		sourceDescription = (DataSourceDescription) DataAccessUtils.uniqueResult(hibernateTemplate.find(
-				"from DataSourceDescription where description='Источник - Тестовые данные ПУ из ЦН'"));
+				"from DataSourceDescription where description=?", dscr));
 		if (sourceDescription == null) {
-			throw new RuntimeException("Cannot find data source description");
+			throw new RuntimeException("Cannot find data source description: " + dscr);
 		}
 	}
 }
