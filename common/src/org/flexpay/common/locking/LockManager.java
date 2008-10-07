@@ -3,10 +3,9 @@ package org.flexpay.common.locking;
 import org.apache.log4j.Logger;
 import org.flexpay.common.util.CollectionUtils;
 import org.hibernate.*;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.jetbrains.annotations.NonNls;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ public class LockManager {
 	private volatile Map<String, StatelessSession> lockedSessions = CollectionUtils.map();
 
 	public static LockManager getInstance() {
-		if (instance == null){
+		if (instance == null) {
 			instance = new LockManager();
 		}
 		return instance;
@@ -54,12 +53,9 @@ public class LockManager {
 		}
 		if (list.size() == 0) {
 			// create semaphore
-			try {
-				session.connection().createStatement().executeUpdate(
-						"insert into common_semaphores_tbl (semaphoreID) values ('" + semaphoreID + "')");
-			} catch (SQLException e) {
-				log.error("LockManager: lock: Create semaphore " + semaphoreID + " exception!", e);
-			}
+			@NonNls SQLQuery semQuery = session.createSQLQuery("insert into common_semaphores_tbl (semaphoreID) values (:semaphoreID)");
+			semQuery.setString("semaphoreID", semaphoreID);
+			semQuery.executeUpdate();
 			transaction.commit();
 			transaction.begin();
 			list = acquireLock(session, semaphoreID);
