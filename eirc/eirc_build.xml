@@ -115,6 +115,12 @@
 		<antcall target="template.copy.classes" />
 	</target>
 
+    <target name="eirc.prepare.test.war">
+		<antcall target="eirc.prepare.war.internal" />
+		<antcall target="common.test.war.data-source" />
+		<antcall target="template.copy.classes" />
+	</target>
+
     <target name="eirc.prepare.war.internal" depends="eirc.compile.production,bti.prepare.war.internal">
         <fileset id="eirc.web.resources" dir="${eirc.dir}/web" />
         <antcall target="template.prepare.war">
@@ -139,10 +145,10 @@
 
 		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
 			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/common/app_server.properties" />
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
 		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
 			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/common/data_source.properties" />
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
 
 		<war destfile="${distr.dir}/${eirc.war.name}" needxmlfile="false">
 			<fileset dir="${build.dir}/web" />
@@ -167,7 +173,7 @@
 		</antcall>
 	</target>
 
-	<target name="eirc.runtests" depends="clean.build,eirc.compile.test,eirc.prepare.war">
+	<target name="eirc.runtests" depends="clean.build,eirc.compile.test,eirc.prepare.test.war">
 		<antcall target="eirc.runtests.nobuild" />
 	</target>
 
@@ -208,8 +214,16 @@
 		<antcall target="eirc.sql.init-db" />
 	</target>
 
-	<target name="eirc.db" description="create eirc db">
-		<antcall target="eirc.sql.all" />
+	<target name="eirc.sql.all-test">
+		<antcall target="common.sql.create-test-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${eirc.dir}/etc/sql/flexpay_eirc.ddl.sql" />
+		</concat>
+		<antcall target="eirc.sql.init-db" />
+	</target>
+
+	<target name="eirc.db-test" description="create eirc test db">
+		<antcall target="eirc.sql.all-test" />
 		<antcall target="template.mysql.run">
 			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
 		</antcall>

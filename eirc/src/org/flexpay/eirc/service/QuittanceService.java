@@ -48,8 +48,6 @@ public interface QuittanceService {
 
 	String getAddressStr(Quittance quittance, boolean withApartmentNumber) throws FlexPayException;
 
-	QuittanceDetails calculateTotalQuittanceDetails(Quittance quittance, ServiceType serviceType);
-
 	/**
 	 * Get a list of Quittances separated with addresses, used to divide quittances by bulks
 	 *

@@ -42,3 +42,7 @@ insert into common_measure_units_tbl (id, status) values (5, 0);
 select @unit_grn_m2:=5;
 insert into common_mesuare_unit_names_tbl(name, measure_unit_id, language_id)
 	values ('грн/м2', @unit_grn_m2, @ru_id);
+
+INSERT INTO common_data_source_descriptions_tbl (id, description) VALUES (1, 'Источник - Тестовые данные ПУ из ЦН');
+SELECT @source_description_test_data:=1;
+

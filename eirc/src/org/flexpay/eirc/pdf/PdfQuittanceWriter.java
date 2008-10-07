@@ -24,6 +24,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+/**
+ * @deprecated
+ */
 public class PdfQuittanceWriter {
 
 	private static final Locale LOCALE_RU = new Locale("ru");
@@ -138,8 +141,7 @@ public class PdfQuittanceWriter {
 
 		// Services 2-5
 		for (int i = 2; i <= 5; i++) {
-			QuittanceDetails quittanceDetails = quittanceService
-					.calculateTotalQuittanceDetails(quittance, serviceTypeService.getServiceType(i));
+			QuittanceDetails quittanceDetails = null;
 			if (quittanceDetails != null) {
 				BigDecimal outgoingBalance = quittanceDetails.getOutgoingBalance();
 				BigDecimal incomingBalance = quittanceDetails.getIncomingBalance();
@@ -164,8 +166,7 @@ public class PdfQuittanceWriter {
 		}
 
 		// Kvartplata services
-		QuittanceDetails quittanceDetails = quittanceService
-				.calculateTotalQuittanceDetails(quittance, serviceTypeService.getServiceType(1));
+		QuittanceDetails quittanceDetails = null;
 		if (quittanceDetails != null) {
 			BigDecimal outgoingBalance = quittanceDetails.getOutgoingBalance();
 			BigDecimal incomingBalance = quittanceDetails.getIncomingBalance();

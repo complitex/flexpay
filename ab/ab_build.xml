@@ -123,6 +123,12 @@
 		<antcall target="template.copy.classes" />
 	</target>
 
+	<target name="ab.prepare.test.war">
+		<antcall target="ab.prepare.war.internal" />
+		<antcall target="common.test.war.data-source" />
+		<antcall target="template.copy.classes" />
+	</target>
+
 	<target name="ab.prepare.war.internal" depends="common.prepare.war.internal">
 		<fileset id="ab.web.resources" dir="${ab.dir}/web" />
 		<antcall target="template.prepare.war">
@@ -197,7 +203,7 @@
 		</antcall>
 	</target>
 
-	<target name="ab.runtests" depends="ab.compile.test,ab.prepare.war">
+	<target name="ab.runtests" depends="ab.compile.test,ab.prepare.test.war">
 		<condition property="class.name" value="${test.class.name}" else="org.flexpay.ab.AllTests">
 			<isset property="test.class.name" />
 		</condition>
@@ -234,8 +240,16 @@
 		<antcall target="ab.sql.init-db" />
 	</target>
 
-	<target name="ab.db" description="create ab db">
-		<antcall target="ab.sql.all" />
+	<target name="ab.sql.all-test">
+		<antcall target="common.sql.create-test-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${ab.dir}/etc/sql/flexpay_ab.ddl.sql" />
+		</concat>
+		<antcall target="ab.sql.init-db" />
+	</target>
+
+	<target name="ab.db-test" description="create ab db">
+		<antcall target="ab.sql.all-test" />
 		<antcall target="template.mysql.run">
 			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
 		</antcall>

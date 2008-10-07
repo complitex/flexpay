@@ -595,7 +595,7 @@
         outgoing_balance decimal(19,2) comment 'Outgoing balance',
         amount decimal(19,5) comment 'Amount',
         expence decimal(19,5) comment 'Expence',
-        rate varchar(10) comment 'Rate',
+        rate decimal(19,5) comment 'Rate',
         recalculation decimal(19,5) comment 'Recalculation',
         benefit decimal(19,5) comment 'Benefits amount',
         subsidy decimal(19,5) comment 'Subsidy amount',

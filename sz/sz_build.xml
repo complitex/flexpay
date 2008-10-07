@@ -132,10 +132,10 @@
 
 		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
 			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/common/app_server.properties" />
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
 		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
 			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/common/data_source.properties" />
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
 
 		<war destfile="${distr.dir}/${sz.war.name}" needxmlfile="false">
 			<fileset dir="${build.dir}/web" />
@@ -185,8 +185,16 @@
 		<antcall target="sz.sql.init-db" />
 	</target>
 
-	<target name="sz.db" description="create sz db">
-		<antcall target="sz.sql.all" />
+	<target name="sz.sql.all-test">
+		<antcall target="common.sql.create-test-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${sz.dir}/etc/sql/flexpay_sz.ddl.sql" />
+		</concat>
+		<antcall target="sz.sql.init-db" />
+	</target>
+
+	<target name="sz.db-test" description="create sz db">
+		<antcall target="sz.sql.all-test" />
 		<antcall target="template.mysql.run">
 			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
 		</antcall>

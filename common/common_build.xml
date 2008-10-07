@@ -96,7 +96,7 @@
 		</antcall>
 	</target>
 
-	<target name="common.runtests" depends="common.compile.test,common.prepare.war">
+	<target name="common.runtests" depends="common.compile.test,common.prepare.test.war">
 		<antcall target="common.runtests.nobuild" />
 	</target>
 
@@ -114,6 +114,13 @@
 		<antcall target="common.prepare.war.internal" />
 		<antcall target="template.copy.classes" />
 	</target>
+
+	<target name="common.prepare.test.war" description="Prepare test war data">
+		<antcall target="common.prepare.war.internal" />
+		<antcall target="common.test.war.data-source" />
+		<antcall target="template.copy.classes" />
+	</target>
+
 	<target name="common.prepare.war.internal">
 		<fileset id="common.web.resources" dir="${common.dir}/web" />
 		<antcall target="template.prepare.war">
@@ -144,9 +151,23 @@
 		</antcall>
 	</target>
 
+	<target name="common.test.war.data-source" description="Copy test data source properties">
+		<echo>Overwriting data source properties</echo>
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/data_source_mysql5_test.properties"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+	</target>
+
 	<target name="common.sql.create-db">
 		<concat destfile="${build.dir}/sql/init_db.sql" append="false" encoding="UTF-8">
 			<fileset file="${common.dir}/etc/sql/create_db.sql" />
+			<fileset file="${common.dir}/etc/sql/jbpm.jpdl.mysql.create.sql" />
+		</concat>
+	</target>
+
+	<target name="common.sql.create-test-db">
+		<concat destfile="${build.dir}/sql/init_db.sql" append="false" encoding="UTF-8">
+			<fileset file="${common.dir}/etc/sql/create_tests_db.sql" />
 			<fileset file="${common.dir}/etc/sql/jbpm.jpdl.mysql.create.sql" />
 		</concat>
 	</target>
@@ -165,8 +186,16 @@
 		<antcall target="common.sql.init-db" />
 	</target>
 
-	<target name="common.db" description="create common db">
-		<antcall target="common.sql.all" />
+	<target name="common.sql.all-test">
+		<antcall target="common.sql.create-test-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${common.dir}/etc/sql/flexpay_common.ddl.sql" />
+		</concat>
+		<antcall target="common.sql.init-db" />
+	</target>
+
+	<target name="common.db-test" description="create common test db">
+		<antcall target="common.sql.all-test" />
 		<antcall target="template.mysql.run">
 			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
 		</antcall>

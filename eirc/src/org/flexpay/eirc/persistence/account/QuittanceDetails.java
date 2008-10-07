@@ -16,7 +16,7 @@ public class QuittanceDetails extends DomainObject {
 	private BigDecimal outgoingBalance;
 	private BigDecimal amount;
 	private BigDecimal expence;
-	private String rate;
+	private BigDecimal rate;
 	private BigDecimal recalculation;
 	private BigDecimal benifit;
 	private BigDecimal subsidy;
@@ -82,11 +82,11 @@ public class QuittanceDetails extends DomainObject {
 		this.expence = expence;
 	}
 
-	public String getRate() {
+	public BigDecimal getRate() {
 		return rate;
 	}
 
-	public void setRate(String rate) {
+	public void setRate(BigDecimal rate) {
 		this.rate = rate;
 	}
 
