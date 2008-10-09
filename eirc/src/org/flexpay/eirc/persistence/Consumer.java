@@ -1,6 +1,8 @@
 package org.flexpay.eirc.persistence;
 
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class Consumer extends AbstractConsumer {
 
@@ -56,5 +58,9 @@ public class Consumer extends AbstractConsumer {
 	 */
 	public void setEircAccount(EircAccount eircAccount) {
 		this.eircAccount = eircAccount;
+	}
+
+	public Stub<EircAccount> getEircAccountStub() {
+		return stub(eircAccount);
 	}
 }

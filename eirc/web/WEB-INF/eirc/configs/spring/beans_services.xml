@@ -89,6 +89,7 @@
 		  p:reportPeriodService-ref="reportPeriodService"
 		  p:consumerService-ref="consumerService"
 		  p:consumerInfoService-ref="consumerInfoService"
+		  p:importUtil-ref="eircImportUtil"
 		  p:accountService-ref="eircAccountService" />
 
 	<bean id="consumerServiceTarget" class="org.flexpay.eirc.service.imp.ConsumerServiceImpl"

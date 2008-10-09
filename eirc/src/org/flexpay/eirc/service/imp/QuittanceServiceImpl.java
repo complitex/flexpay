@@ -10,7 +10,6 @@ import org.flexpay.eirc.dao.QuittanceDao;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
 import org.flexpay.eirc.dao.QuittanceDetailsDao;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
-import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.service.QuittanceService;
@@ -50,7 +49,8 @@ public class QuittanceServiceImpl implements QuittanceService {
 	}
 
 	@Transactional (readOnly = false)
-	public void generateForServiceOrganisation(Date dateFrom, Date dateTill) {
+	public void generateForServiceOrganisation(Stub<ServiceOrganisation> stub,
+											   Date dateFrom, Date dateTill) {
 
 		long time = System.currentTimeMillis();
 		if (log.isInfoEnabled()) {
@@ -92,7 +92,7 @@ public class QuittanceServiceImpl implements QuittanceService {
 
 	private boolean buildingsDiffer(Quittance q1, Quittance q2) {
 		return !q1.getEircAccount().getApartment().getBuilding()
-					.equals(q2.getEircAccount().getApartment().getBuilding());
+				.equals(q2.getEircAccount().getApartment().getBuilding());
 	}
 
 	public String getAddressStr(Quittance quittance, boolean withApartmentNumber) throws FlexPayException {

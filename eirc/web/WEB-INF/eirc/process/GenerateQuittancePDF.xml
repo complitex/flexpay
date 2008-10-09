@@ -11,10 +11,11 @@
 
 
 	<start-state name="start">
-		<transition to="generateQuitancePDFJob" />
+		<transition to="generateQuittancesPDFJob" />
 	</start-state>
 
-	<task-node name="generateQuitancePDFJob">
+	<!-- task node name defines Spring bean name to use as a task -->
+	<task-node name="generateQuittancesPDFJob">
 		<task swimlane="worker" blocking="yes" />
 		<transition name="next" to="end" />
 		<transition name="error" to="end" />

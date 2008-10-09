@@ -22,4 +22,4 @@ INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type
 	VALUES (@service_provider_cn, '250', null, @service_type_250, '1900-01-01', '2100-12-31');
 SELECT @service_250:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('Погреба', @ru_id, @service_250);
+	VALUES ('Содержание животных', @ru_id, @service_250);

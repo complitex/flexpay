@@ -1,6 +1,5 @@
 package org.flexpay.eirc.service.importexport;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.importexport.ImportService;
 import org.flexpay.common.persistence.DataCorrection;
@@ -9,7 +8,6 @@ import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.RawDataSource;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
@@ -27,6 +25,7 @@ import java.util.Map;
 public class EircImportServiceTx extends ImportService {
 
 	private ConsumerService consumerService;
+	private ImportUtil importUtil;
 	private RegistryRecordWorkflowManager recordWorkflowManager;
 
 	@Transactional (readOnly = false)
@@ -205,48 +204,17 @@ public class EircImportServiceTx extends ImportService {
 			return new Person(personById);
 		}
 
-		List<Person> persons = personService.findRegisteredPersons(
-				stub(data.getRegistryRecord().getApartment()));
-		if (persons.isEmpty()) {
-			log.debug("No registered persons found");
-//			ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
-//			error.setErrorId("error.eirc.import.person_no_registrants");
+		ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
+		Person person = importUtil.findPersonByFIO(data.getRegistryRecord().getApartmentStub(),
+				data.getFirstName(), data.getMiddleName(), data.getLastName(), error);
+		if (person != null) {
+			return person;
+		}
+
+		if (error.getErrorId() != null) {
 //			setConsumerError(data, error);
-			return null;
 		}
 
-		// filter persons by FIO
-		List<Person> candidates = CollectionUtils.list();
-		for (Person person : persons) {
-			for (PersonIdentity identity : person.getPersonIdentities()) {
-				boolean sameFIO = new EqualsBuilder()
-						.append(identity.getFirstName(), data.getFirstName())
-						.append(identity.getMiddleName(), data.getMiddleName())
-						.append(identity.getLastName(), data.getLastName())
-						.isEquals();
-				if (sameFIO) {
-					candidates.add(person);
-				}
-			}
-		}
-
-		if (candidates.size() == 1) {
-			log.debug("Unique FIO match");
-			return candidates.get(0);
-		}
-
-		if (candidates.size() > 0) {
-			log.debug("Too many FIO matches");
-//			ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
-//			error.setErrorId("error.eirc.import.person_several_fio_match");
-//			setConsumerError(data, error);
-			return null;
-		}
-
-		log.error("No FIO matches");
-//		ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
-//		error.setErrorId("error.eirc.import.person_no_fio_match");
-//		setConsumerError(data, error);
 		return null;
 	}
 
@@ -422,5 +390,9 @@ public class EircImportServiceTx extends ImportService {
 
 	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
 		this.recordWorkflowManager = recordWorkflowManager;
+	}
+
+	public void setImportUtil(ImportUtil importUtil) {
+		this.importUtil = importUtil;
 	}
 }

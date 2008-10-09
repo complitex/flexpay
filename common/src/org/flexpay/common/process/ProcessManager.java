@@ -428,7 +428,7 @@ public class ProcessManager implements Runnable {
 			try {
 				JobManager.getInstance().addJob(processInstance.getId(), task.getId(), task.getName(), params);
 			} catch (FlexPayException e) {
-				log.error("ProcessManager: startTask: can't start task with name " + task.getName(), e);
+				log.error("Can't start task with name " + task.getName(), e);
 				return false;
 			}
 			running.put(task.getId(), new Process());

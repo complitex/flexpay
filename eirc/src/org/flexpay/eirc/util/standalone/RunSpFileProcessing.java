@@ -69,8 +69,8 @@ public class RunSpFileProcessing implements StandaloneTask {
 //			importRecords();
 //			importOpenAccounts();
 //			processOpenAccounts();
-			importQuittancesBig();
-//			processQuittancesBig();
+//			importQuittancesBig();
+			processQuittancesBig();
 		} catch (Throwable e) {
 			log.error("Failed processing registry file", e);
 		}
@@ -93,11 +93,11 @@ public class RunSpFileProcessing implements StandaloneTask {
 	}
 
 	private void importQuittancesBig() throws Throwable {
-		importRegistry(2L);
+		importRegistry(3L);
 	}
 
 	private void processQuittancesBig() throws Throwable {
-		processRegistry(2L);
+		processRegistry(3L);
 	}
 
 	private void processRegistry(Long registryId) throws Throwable {

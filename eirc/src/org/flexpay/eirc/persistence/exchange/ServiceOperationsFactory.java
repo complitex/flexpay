@@ -12,6 +12,7 @@ import org.flexpay.eirc.dao.RegistryRecordDao;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
+import org.flexpay.eirc.service.importexport.ImportUtil;
 import org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistry;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class ServiceOperationsFactory {
 	private ImportErrorService importErrorService;
 	private RawDataSource<RawConsumerData> dataSource;
 	private RegistryRecordDao registryRecordDao;
+	private ImportUtil importUtil;
 
 	/**
 	 * Get instance of Operation for registry record
@@ -46,7 +48,6 @@ public class ServiceOperationsFactory {
 	 */
 	public Operation getOperation(SpRegistry registry, RegistryRecord record) throws FlexPayException {
 
-//		List<RegistryRecordContainer> containers = registryRecordService.getRecordContainers(record);
 		List<RegistryRecordContainer> containers = record.getContainers();
 		if (containers.isEmpty()) {
 			return getOperation(registry);
@@ -55,7 +56,7 @@ public class ServiceOperationsFactory {
 		// get a list of operations
 		List<Operation> operations = new ArrayList<Operation>();
 		for (RegistryRecordContainer container : containers) {
-			Operation operation = fromSingleContainerData(container.getData());
+			Operation operation = fromSingleContainerData(registry, container.getData());
 			operations.add(operation);
 		}
 
@@ -92,14 +93,14 @@ public class ServiceOperationsFactory {
 		List<RegistryContainer> containers = registry.getContainers();
 		List<Operation> operations = new ArrayList<Operation>();
 		for (RegistryContainer containerData : containers) {
-			Operation container = fromSingleContainerData(containerData.getData());
+			Operation container = fromSingleContainerData(registry, containerData.getData());
 			operations.add(container);
 		}
 
 		return operations.size() > 1 ? new OperationsChain(operations) : operations.get(0);
 	}
 
-	private Operation fromSingleContainerData(String containerData)
+	private Operation fromSingleContainerData(SpRegistry registry, String containerData)
 			throws InvalidContainerException {
 		List<String> datum = splitEscapableData(containerData, Operation.CONTAINER_DATA_DELIMITER);
 		if (datum.size() < 2) {
@@ -110,10 +111,13 @@ public class ServiceOperationsFactory {
 		switch (containerType) {
 			case 1:
 				return new OpenAccountOperation(this, datum);
-//			case 2:
-//				return new CloseAccountOperation(datum);
-//			case 3:
-//				return new SetResponsiblePersonOperation(datum);
+			case 2:
+				if (registry.getRegistryType().getCode() != RegistryType.TYPE_CLOSED_ACCOUNTS) {
+					throw new InvalidContainerException("Close account containers are allowed only in close accounts registry");
+				}
+				return new CloseAccountOperation(this, datum);
+			case 3:
+				return new SetResponsiblePersonOperation(this, datum);
 //			case 4:
 //				return new SetNumberOfHabitantsOperation(datum);
 //			case 5:
@@ -275,5 +279,13 @@ public class ServiceOperationsFactory {
 
 	public void setQuittanceService(QuittanceService quittanceService) {
 		this.quittanceService = quittanceService;
+	}
+
+	public ImportUtil getImportUtil() {
+		return importUtil;
+	}
+
+	public void setImportUtil(ImportUtil importUtil) {
+		this.importUtil = importUtil;
 	}
 }

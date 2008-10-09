@@ -12,6 +12,7 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.Luhn;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
@@ -20,6 +21,7 @@ import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
+import org.apache.log4j.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -34,11 +36,14 @@ public class JRQuittanceDataSource implements JRDataSource {
 
 	public void setQuittances(List<Quittance> quittances) throws Exception {
 
+		Logger log = ProcessLogger.getLogger(getClass());
+		log.info("Starting quittance generation");
 		List<QuittanceInfo> infos = CollectionUtils.list();
 
 		@NotNull Long accountId = -1L;
 		int orderNumber = -1;
 
+		long count = 0;
 		QuittancesStats stats = new QuittancesStats();
 		for (Quittance q : quittances) {
 
@@ -84,6 +89,11 @@ public class JRQuittanceDataSource implements JRDataSource {
 //			stats.addAddress(stub.getBuildingAddress());
 //			infos.add(stub.clone());
 //			stats.addAddress(stub.getBuildingAddress());
+			
+			++count;
+			if (log.isInfoEnabled() && count % 100 == 0) {
+				log.info("Generated " + count + " quittance infos");
+			}
 		}
 
 		infos = buildBatches(infos, stats, 2);

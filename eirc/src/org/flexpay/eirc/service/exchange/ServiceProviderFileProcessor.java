@@ -107,7 +107,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	public void processRegistry(SpRegistry registry) throws Exception {
 
 		log.info("Starting processing records");
-		Page<RegistryRecord> pager = new Page<RegistryRecord>(500, 1);
+		Page<RegistryRecord> pager = new Page<RegistryRecord>(50, 1);
 		Long[] minMaxIds = {null, null};
 		do {
 			processorTx.processRegistry(registry, pager, minMaxIds);

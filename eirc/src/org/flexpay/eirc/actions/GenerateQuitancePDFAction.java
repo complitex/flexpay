@@ -33,13 +33,19 @@ public class GenerateQuitancePDFAction extends FPActionSupport {
 
 		if (isSubmit()) {
 
-			Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+			if (!serviceOrganisationFilter.needFilter()) {
+				addActionError(getText("eirc.error.quittance.no_service_organisation"));
+			} else {
+				Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
-			contextVariables.put("serviceOrganisationId", serviceOrganisationFilter.getSelectedId());
-			contextVariables.put("dateFrom", beginDateFilter.getDate());
-			contextVariables.put("dateTill", endDateFilter.getDate());
+				contextVariables.put("serviceOrganisationId", serviceOrganisationFilter.getSelectedId());
+				contextVariables.put("dateFrom", beginDateFilter.getDate());
+				contextVariables.put("dateTill", endDateFilter.getDate());
 
-			processManager.createProcess("GenerateQuitancePDF", contextVariables);
+				processManager.createProcess("GenerateQuitancePDF", contextVariables);
+
+				addActionError(getText("eirc.quittance.printing_started"));
+			}
 		}
 
 		serviceOrganisationService.initServiceOrganisationsFilter(serviceOrganisationFilter);
@@ -74,7 +80,8 @@ public class GenerateQuitancePDFAction extends FPActionSupport {
 	/**
 	 * Get default error execution result
 	 * <p/>
-	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in
+	 * a session
 	 *
 	 * @return {@link #ERROR} by default
 	 */

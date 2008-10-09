@@ -27,7 +27,7 @@ public class SpFileCreateAction extends FPActionSupport {
 				spFile = new SpFile();
 				spFile.saveToFileSystem(upload);
 
-				spFile.setUserName("vld");
+				spFile.setUserName(getUserPreferences().getUserName());
 				spFile.setRequestFileName(uploadFileName);
 				spFile.setImportDate(new Date());
 				try {

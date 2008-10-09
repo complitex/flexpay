@@ -1,13 +1,15 @@
 package org.flexpay.eirc.sp;
 
-public class SpFileFormatException extends Exception {
+import org.flexpay.common.exception.FlexPayException;
+
+public class RegistryFormatException extends FlexPayException {
 	private Long position;
 
-	public SpFileFormatException(String s) {
+	public RegistryFormatException(String s) {
 		super(s);
 	}
 
-	public SpFileFormatException(String s, Long position) {
+	public RegistryFormatException(String s, Long position) {
 		super(s);
 		this.position = position;
 	}

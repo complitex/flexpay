@@ -18,11 +18,7 @@
 		  p:registryProcessor-ref="registryProcessor"
 		  p:registryService-ref="spRegistryService" />
 
-	<bean name="generateQuitancePDFJob" class="org.flexpay.eirc.process.quittance.GenerateQuittancePDFJob" scope="prototype"
-		  p:quittanceService-ref="quittanceService"
-		  p:serviceTypeService-ref="serviceTypeService" />
-
-	<bean name="generateQuittancesPDFJasperJob" scope="prototype"
+	<bean name="generateQuittancesPDFJob" scope="prototype"
 		  class="org.flexpay.eirc.process.quittance.GenerateQuittancesPDFJasperJob"
 		  p:jrDataSource-ref="jrQuittanceDataSource"
 		  p:quittanceService-ref="quittanceService"
