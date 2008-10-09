@@ -82,7 +82,7 @@ public class BaseContainerOperation extends ContainerOperation {
 		ConsumerService consumerService = factory.getConsumerService();
 
 		Consumer consumer;
-		if (serviceId != null) {
+		if (serviceId != null && !"#".equals(serviceId)) {
 			consumer = consumerService.findConsumer(
 					registry.getServiceProvider(), record.getPersonalAccountExt(), serviceId);
 			if (consumer == null) {

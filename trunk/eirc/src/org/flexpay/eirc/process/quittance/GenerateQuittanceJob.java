@@ -1,7 +1,9 @@
 package org.flexpay.eirc.process.quittance;
 
 import org.flexpay.common.process.job.Job;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.service.QuittanceService;
+import org.flexpay.eirc.persistence.ServiceOrganisation;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,8 +17,10 @@ public class GenerateQuittanceJob extends Job {
 
 		Date dateFrom = (Date) contextVariables.get("dateFrom");
 		Date dateTill = (Date) contextVariables.get("dateTill");
+		Long organisationId = (Long) contextVariables.get("serviceOrganisationId");
 
-		quittanceService.generateForServiceOrganisation(dateFrom, dateTill);
+		Stub<ServiceOrganisation> stub = new Stub<ServiceOrganisation>(organisationId);
+		quittanceService.generateForServiceOrganisation(stub, dateFrom, dateTill);
 
 		return Job.RESULT_NEXT;
 	}

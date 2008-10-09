@@ -20,7 +20,7 @@ public class SpFileReader {
 		this.charset = DEFAULT_CHARSET;
 	}
 
-	public Message readMessage() throws IOException, SpFileFormatException {
+	public Message readMessage() throws IOException, RegistryFormatException {
 		if (b == -1) {
 			return null;
 		}
@@ -40,7 +40,7 @@ public class SpFileReader {
 				}
 			} else if (message != null) {
 				if (ind >= MAX_RECORD_LENTH) {
-					throw new SpFileFormatException("Message is too long", position);
+					throw new RegistryFormatException("Message is too long", position);
 				}
 				record[ind] = (byte) b;
 				ind++;

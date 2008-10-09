@@ -23,12 +23,17 @@
 	<bean id="importErrorServiceEirc" parent="importErrorServiceTemplate"
 		  p:registry-ref="typeRegistryEirc" />
 
+	<bean id="eircImportUtil"
+		  class="org.flexpay.eirc.service.importexport.ImportUtil"
+		  p:personService-ref="personService" />
+
 	<!-- Import-Export services -->
 	<bean id="importServiceEircTx" parent="importServiceAb"
 		  class="org.flexpay.eirc.service.importexport.EircImportServiceTx"
 		  p:correctionsService-ref="correctionsServiceEirc"
 		  p:registry-ref="typeRegistryEirc"
 		  p:consumerService-ref="consumerService"
+		  p:importUtil-ref="eircImportUtil"
 		  p:recordWorkflowManager-ref="registryRecordWorkflowManager" />
 
 	<bean id="importServiceEirc"

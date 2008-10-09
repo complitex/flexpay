@@ -1,9 +1,11 @@
 package org.flexpay.eirc.process.quittance;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.job.Job;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.reporting.ReportUtil;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
 import org.flexpay.eirc.persistence.account.Quittance;
@@ -33,26 +35,35 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 		Date dateFrom = (Date) contextVariables.get("dateFrom");
 		Date dateTill = (Date) contextVariables.get("dateTill");
 
+		Logger plog = ProcessLogger.getLogger(getClass());
+
 		try {
 			long time = System.currentTimeMillis();
-			log.info("Starting PDF quittances generation");
+			plog.info("Starting PDF quittances generation");
 
+			plog.info("Fetching quittances");
 			List<Quittance> quittances = quittanceService.getQuittances(
 					new Stub<ServiceOrganisation>(serviceOrganisationId), dateFrom, dateTill);
 
 			// upload report and subreports templates
+			plog.info("Uploading report template");
 			uploadReportTemplates();
 
+			plog.info("About to prepare JR data source");
 			jrDataSource.setQuittances(quittances);
+
+			plog.info("Running report");
 			String filledReportName = reportUtil.runReport("Quittance", jrDataSource);
+
+			plog.info("Exporting to PDF");
 			File reportPath = reportUtil.exportToPdf(filledReportName);
 
 			contextVariables.put(RESULT_FILE_NAME, reportPath.getAbsolutePath());
 
-			log.info("Ended PDF quittances generation, time spent: " + (System.currentTimeMillis() - time) + "ms.");
+			plog.info("Ended PDF quittances generation, time spent: " + (System.currentTimeMillis() - time) + "ms.");
 		} catch (Exception e) {
 			contextVariables.put(Job.STATUS_ERROR, "Error : " + e.getMessage());
-			log.error("Error", e);
+			plog.error("Error", e);
 			return Job.RESULT_ERROR;
 		}
 

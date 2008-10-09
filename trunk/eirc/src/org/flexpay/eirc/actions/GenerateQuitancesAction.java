@@ -32,12 +32,20 @@ public class GenerateQuitancesAction extends FPActionSupport {
 
 		if (isSubmit()) {
 
-			Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+			if (!serviceOrganisationFilter.needFilter()) {
+				addActionError(getText("eirc.error.quittance.no_service_organisation"));
+			} else {
 
-			contextVariables.put("dateFrom", beginDateFilter.getDate());
-			contextVariables.put("dateTill", endDateFilter.getDate());
+				Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
-			processManager.createProcess("GenerateQuitances", contextVariables);
+				contextVariables.put("dateFrom", beginDateFilter.getDate());
+				contextVariables.put("dateTill", endDateFilter.getDate());
+				contextVariables.put("serviceOrganisationId", serviceOrganisationFilter.getSelectedId());
+
+				processManager.createProcess("GenerateQuitances", contextVariables);
+
+				addActionError(getText("eirc.quittance.generation_started"));
+			}
 		}
 
 		serviceOrganisationService.initServiceOrganisationsFilter(serviceOrganisationFilter);

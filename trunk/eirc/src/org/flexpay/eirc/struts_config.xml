@@ -128,13 +128,6 @@
 			</result>
 		</action>
 		
-		<action name="processListAction" class="processListAction">
-			<result type="tiles">eirc.process.list</result>
-		</action>
-		<action name="processViewAction" class="processViewAction">
-			<result type="tiles">eirc.process.view</result>
-		</action>
-		
 		<action name="eircAccountList" class="eircAccountListAction">
 			<result type="tiles">eirc.eirc_account.list</result>
 		</action>
@@ -174,5 +167,6 @@
 	<include file="org/flexpay/eirc/actions/organisation/struts.xml" />
 	<include file="org/flexpay/eirc/actions/serviceprovider/struts.xml" />
 	<include file="org/flexpay/eirc/actions/service/struts.xml" />
+	<include file="org/flexpay/eirc/actions/processing/struts.xml" />
 
 </struts>

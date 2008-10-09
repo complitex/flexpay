@@ -1,5 +1,7 @@
 package org.flexpay.eirc.persistence.exchange;
 
+import org.flexpay.common.util.DateUtil;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +24,9 @@ public abstract class AbstractChangePersonalAccountOperation extends ContainerOp
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyy");
 		try {
 			changeApplyingDate = simpleDateFormat.parse(datum.get(1));
+			if (DateUtil.now().after(changeApplyingDate)) {
+				throw new InvalidContainerException("Someone invented time machine? Specified date is in a future: " + datum.get(1));
+			}
 		} catch (ParseException e) {
 			throw new InvalidContainerException("Cannot parse date: " + datum.get(1));
 		}

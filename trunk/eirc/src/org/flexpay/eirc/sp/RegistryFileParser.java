@@ -151,7 +151,7 @@ public class RegistryFileParser {
 
 		if (messageType.equals(Message.MESSAGE_TYPE_HEADER)) {
 			if (registry != null) {
-				throw new SpFileFormatException("Not unique registry header present");
+				throw new RegistryFormatException("Not unique registry header present");
 			}
 			registry = processHeader(spFile, messageFieldList);
 		} else if (messageType.equals(Message.MESSAGE_TYPE_RECORD)) {
@@ -166,7 +166,7 @@ public class RegistryFileParser {
 	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	private SpRegistry processHeader(SpFile spFile, List<String> messageFieldList) throws Exception {
 		if (messageFieldList.size() < 11) {
-			throw new SpFileFormatException(
+			throw new RegistryFormatException(
 					"Message header error, invalid number of fields: "
 					+ messageFieldList.size() + ", expected 11");
 		}
@@ -240,10 +240,10 @@ public class RegistryFileParser {
 			return registryService.create(newRegistry);
 		} catch (NumberFormatException e) {
 			log.error("Header parse error", e);
-			throw new SpFileFormatException("Header parse error");
+			throw new RegistryFormatException("Header parse error");
 		} catch (ParseException e) {
 			log.error("Header parse error", e);
-			throw new SpFileFormatException("Header parse error");
+			throw new RegistryFormatException("Header parse error");
 		}
 	}
 
@@ -264,11 +264,11 @@ public class RegistryFileParser {
 	@Transactional (readOnly = true, propagation = Propagation.REQUIRED)
 	private void processRecord(List<String> messageFieldList, SpRegistry registry, Long[] recordCounter) throws Exception {
 		if (registry == null) {
-			throw new SpFileFormatException("Error - registry header should go before record");
+			throw new RegistryFormatException("Error - registry header should go before record");
 		}
 
 		if (messageFieldList.size() < 10) {
-			throw new SpFileFormatException(
+			throw new RegistryFormatException(
 					"Message record error, invalid number of fields: "
 					+ messageFieldList.size());
 		}
@@ -283,8 +283,8 @@ public class RegistryFileParser {
 		record.setSpRegistry(registry);
 		try {
 			if (log.isInfoEnabled()) {
-				log.info("adding record: |"
-						 + StringUtils.join(messageFieldList, '-') + "|");
+				log.info("adding record: '"
+						 + StringUtils.join(messageFieldList, '-') + "'");
 			}
 
 			int n = 1;
@@ -305,7 +305,7 @@ public class RegistryFileParser {
 						addressStr, Operation.ADDRESS_DELIMITER, Operation.ESCAPE_SIMBOL);
 
 				if (addressFieldList.size() != 6) {
-					throw new SpFileFormatException(
+					throw new RegistryFormatException(
 							String.format("Address group '%s' has invalid number of fields %d",
 									addressStr, addressFieldList.size()));
 				}
@@ -320,16 +320,10 @@ public class RegistryFileParser {
 			// setup person first, middle, last names
 			String fioStr = messageFieldList.get(++n);
 			if (StringUtils.isNotEmpty(fioStr)) {
-				List<String> fioFieldList = StringUtil.splitEscapable(
-						fioStr, Operation.FIO_DELIMITER, Operation.ESCAPE_SIMBOL);
-				if (fioFieldList.size() != 3) {
-					throw new SpFileFormatException(
-							String.format("FIO group '%s' has invalid number of fields %d",
-									fioStr, fioFieldList.size()));
-				}
-				record.setLastName(fioFieldList.get(0));
-				record.setFirstName(fioFieldList.get(1));
-				record.setMiddleName(fioFieldList.get(2));
+				List<String> fields = RegistryUtil.parseFIO(fioStr);
+				record.setLastName(fields.get(0));
+				record.setFirstName(fields.get(1));
+				record.setMiddleName(fields.get(2));
 			}
 
 			// setup operation date
@@ -358,17 +352,17 @@ public class RegistryFileParser {
 			recordWorkflowManager.setInitialStatus(record);
 		} catch (NumberFormatException e) {
 			log.error("Record number parse error", e);
-			throw new SpFileFormatException("Record parse error");
+			throw new RegistryFormatException("Record parse error");
 		} catch (ParseException e) {
 			log.error("Record parse error", e);
-			throw new SpFileFormatException("Record parse error");
+			throw new RegistryFormatException("Record parse error");
 		}
 
 		spRegistryRecordService.create(record);
 	}
 
 	private List<RegistryRecordContainer> parseContainers(RegistryRecord record, String containersData)
-			throws SpFileFormatException {
+			throws RegistryFormatException {
 
 		List<String> containers = StringUtil.splitEscapable(
 				containersData, Operation.CONTAINER_DELIMITER, Operation.ESCAPE_SIMBOL);
@@ -379,7 +373,7 @@ public class RegistryFileParser {
 				continue;
 			}
 			if (data.length() > MAX_CONTAINER_SIZE) {
-				throw new SpFileFormatException("Too long container found: " + data);
+				throw new RegistryFormatException("Too long container found: " + data);
 			}
 			RegistryRecordContainer container = new RegistryRecordContainer();
 			container.setOrder(n++);
@@ -392,7 +386,7 @@ public class RegistryFileParser {
 	}
 
 	private List<RegistryContainer> parseContainers(SpRegistry registry, String containersData)
-			throws SpFileFormatException {
+			throws RegistryFormatException {
 
 		List<String> containers = StringUtil.splitEscapable(
 				containersData, Operation.CONTAINER_DELIMITER, Operation.ESCAPE_SIMBOL);
@@ -403,7 +397,7 @@ public class RegistryFileParser {
 				continue;
 			}
 			if (data.length() > MAX_CONTAINER_SIZE) {
-				throw new SpFileFormatException("Too long container found: " + data);
+				throw new RegistryFormatException("Too long container found: " + data);
 			}
 			RegistryContainer container = new RegistryContainer();
 			container.setOrder(n++);
@@ -416,9 +410,9 @@ public class RegistryFileParser {
 	}
 
 	private void processFooter(List<String> messageFieldList)
-			throws SpFileFormatException {
+			throws RegistryFormatException {
 		if (messageFieldList.size() < 2) {
-			throw new SpFileFormatException("Message footer error, invalid number of fields");
+			throw new RegistryFormatException("Message footer error, invalid number of fields");
 		}
 	}
 
@@ -428,7 +422,7 @@ public class RegistryFileParser {
 		}
 
 		if (!registry.getRecordsNumber().equals(recordCounter[0])) {
-			throw new SpFileFormatException("Registry records number error, expected: " +
+			throw new RegistryFormatException("Registry records number error, expected: " +
 											registry.getRecordsNumber() + ", found: " + recordCounter[0]);
 		}
 

@@ -73,4 +73,8 @@ public class FlexPayExceptionContainer extends Exception {
 	public boolean isNotEmpty() {
 		return !exceptions.isEmpty();
 	}
+
+	public FlexPayException getFirstException() {
+		return exceptions.iterator().next();
+	}
 }
