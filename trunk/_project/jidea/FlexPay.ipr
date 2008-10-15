@@ -1494,9 +1494,7 @@
       <SOURCES />
     </library>
     <library name="iText">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../common/lib/itext/iText-2.1.3.jar!/" />
-      </CLASSES>
+      <CLASSES />
       <JAVADOC>
         <root url="file:///windows/D/users/mixa/work/Java/_libs/iText-2.1.3/docs" />
       </JAVADOC>
@@ -1520,10 +1518,10 @@
     </library>
     <library name="jasper">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../common/lib/jasperreports/jasperreports-3.0.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jasperreports/jdt-compiler-3.1.1.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jasperreports/iReport.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/jasperreports/barbecue-1.5-beta1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/jasperreports/jasperreports-3.0.1.jar!/" />
       </CLASSES>
       <JAVADOC>
         <root url="file:///windows/D/users/mixa/work/Java/_libs/jasperreports-3.0.0/docs" />
