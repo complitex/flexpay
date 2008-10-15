@@ -41,16 +41,17 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 			long time = System.currentTimeMillis();
 			plog.info("Starting PDF quittances generation");
 
-			plog.info("Fetching quittances");
-			List<Quittance> quittances = quittanceService.getQuittances(
-					new Stub<ServiceOrganisation>(serviceOrganisationId), dateFrom, dateTill);
-
 			// upload report and subreports templates
 			plog.info("Uploading report template");
 			uploadReportTemplates();
 
+			plog.info("Fetching quittances");
+			List<Quittance> quittances = quittanceService.getQuittances(
+					new Stub<ServiceOrganisation>(serviceOrganisationId), dateFrom, dateTill);
+
 			plog.info("About to prepare JR data source");
-			jrDataSource.setQuittances(quittances);
+			jrDataSource.setQuittances(quittances, 4);
+			quittances.clear();
 
 			plog.info("Running report");
 			String filledReportName = reportUtil.runReport("Quittance", jrDataSource);

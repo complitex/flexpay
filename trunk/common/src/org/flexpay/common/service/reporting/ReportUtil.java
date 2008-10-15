@@ -17,7 +17,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.sql.DataSource;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.*;
 
@@ -91,6 +94,11 @@ public class ReportUtil {
 
 		File reportsDir = getReportsDir();
 		if (!reportsDir.exists()) {
+			reportsDir.mkdirs();
+		}
+
+		File cachesDir = getReportCachesDir();
+		if (!cachesDir.exists()) {
 			reportsDir.mkdirs();
 		}
 	}
@@ -262,6 +270,10 @@ public class ReportUtil {
 			parameters = new HashMap();
 		}
 
+		// set report virtualizer to prevent OOME generating big reports
+//        JRVirtualizer virtualizer = new JRFileVirtualizer(50, System.getProperty("java.io.tmpdir"));
+//        parameters.put(JRParameter.REPORT_VIRTUALIZER, virtualizer);
+
 		ensureReportCompiled(name);
 
 		// Timestamp should be enough to avoid report names collisions
@@ -285,6 +297,7 @@ public class ReportUtil {
 			}
 			return reportName;
 		} finally {
+//            virtualizer.cleanup();
 			cleanup(parameters, resourceNames);
 		}
 	}
@@ -344,6 +357,10 @@ public class ReportUtil {
 
 	private File getReportTemplatesDir() {
 		return new File(getReportsDir(), "templates");
+	}
+
+	private File getReportCachesDir() {
+		return new File(getReportsDir(), "caches");
 	}
 
 	/**

@@ -9,11 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 public class UserPreferences {
-	private String userName;
+
+	private String userName = "";
 	private Locale locale;
 
 	@NonNls
 	private static final String WW_TRANS_I18_N_LOCALE = "WW_TRANS_I18N_LOCALE";
+
+
 
 	/**
 	 * Get current user session preferences

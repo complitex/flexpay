@@ -3,6 +3,8 @@ package org.flexpay.eirc.persistence.account;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.RegistryRecord;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -50,72 +52,86 @@ public class QuittanceDetails extends DomainObject {
 		this.consumer = consumer;
 	}
 
+	@NotNull
+	private BigDecimal value(@Nullable BigDecimal bd) {
+		return bd == null ? BigDecimal.ZERO : bd;
+	}
+
+	@NotNull
 	public BigDecimal getIncomingBalance() {
-		return incomingBalance;
+		return value(incomingBalance);
 	}
 
 	public void setIncomingBalance(BigDecimal incomingBalance) {
 		this.incomingBalance = incomingBalance;
 	}
 
+	@NotNull
 	public BigDecimal getOutgoingBalance() {
-		return outgoingBalance;
+		return value(outgoingBalance);
 	}
 
 	public void setOutgoingBalance(BigDecimal outgoingBalance) {
 		this.outgoingBalance = outgoingBalance;
 	}
 
+	@NotNull
 	public BigDecimal getAmount() {
-		return amount;
+		return value(amount);
 	}
 
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 
+	@NotNull
 	public BigDecimal getExpence() {
-		return expence;
+		return value(expence);
 	}
 
 	public void setExpence(BigDecimal expence) {
 		this.expence = expence;
 	}
 
+	@NotNull
 	public BigDecimal getRate() {
-		return rate;
+		return value(rate);
 	}
 
 	public void setRate(BigDecimal rate) {
 		this.rate = rate;
 	}
 
+	@NotNull
 	public BigDecimal getRecalculation() {
-		return recalculation;
+		return value(recalculation);
 	}
 
 	public void setRecalculation(BigDecimal recalculation) {
 		this.recalculation = recalculation;
 	}
 
+	@NotNull
 	public BigDecimal getBenifit() {
-		return benifit;
+		return value(benifit);
 	}
 
 	public void setBenifit(BigDecimal benifit) {
 		this.benifit = benifit;
 	}
 
+	@NotNull
 	public BigDecimal getSubsidy() {
-		return subsidy;
+		return value(subsidy);
 	}
 
 	public void setSubsidy(BigDecimal subsidy) {
 		this.subsidy = subsidy;
 	}
 
+	@NotNull
 	public BigDecimal getPayment() {
-		return payment;
+		return value(payment);
 	}
 
 	public void setPayment(BigDecimal payment) {

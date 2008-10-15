@@ -151,7 +151,17 @@
 		select count(*) from Quittance q where q.eircAccount.id=? AND q.dateTill=?
 	</query>
 
-	<query name="Quittance.findByServiceOrganisationAndDate"><![CDATA[
+	<query name="Quittance.listQuittancesForPrinting"><![CDATA[
+		select distinct q
+		from Quittance q
+			inner join fetch q.eircAccount a
+			inner join fetch a.apartment ap
+			inner join fetch ap.building b
+		where q.serviceOrganisation.id=? and q.dateFrom>=? and q.dateTill<=?
+		order by b.id, a.id, a.accountNumber, q.orderNumber desc
+	]]></query>
+
+	<query name="Quittance.readFull"><![CDATA[
 		select distinct q
 		from Quittance q
 			inner join fetch q.eircAccount a
@@ -159,15 +169,14 @@
 			left join fetch a.person p
 			left join fetch p.personIdentities pi
 			inner join fetch a.apartment ap
+			inner join fetch ap.building
 			left join fetch ap.personRegistrations pr
-			inner join fetch ap.building b
 			left join fetch q.quittanceDetailsQuittances qdq
-			inner join fetch qdq.quittanceDetails qd
-			inner join fetch qd.consumer c
-			inner join fetch c.service
-		where q.serviceOrganisation.id=? and q.dateFrom>=? and q.dateTill<=?
-			and pr.beginDate<=current_date() and pr.endDate>=current_date()
-		order by b.id, a.id, a.accountNumber, q.orderNumber desc
+			left join fetch qdq.quittanceDetails qd
+			left join fetch qd.consumer c
+			left join fetch c.service
+		where q.id=?
+			and (pr is null or (pr.beginDate<=current_date() and pr.endDate>=current_date()))
 	]]></query>
 
 </hibernate-mapping>

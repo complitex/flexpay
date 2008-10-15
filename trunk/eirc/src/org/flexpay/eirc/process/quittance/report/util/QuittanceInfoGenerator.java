@@ -15,14 +15,15 @@ import java.util.Map;
  */
 public class QuittanceInfoGenerator {
 
+
 	/**
 	 * Build quittance info
 	 *
 	 * @param q Quittance
-	 * @return QuittanceInfo
+	 * @param info QuittanceInfo to build
 	 * @throws Exception if failure occurs
 	 */
-	public static QuittanceInfo buildInfo(Quittance q) throws Exception {
+	public static void buildInfo(Quittance q, QuittanceInfo info) throws Exception {
 
 		Map<Service, ServiceGroup> groups = makeServiceGroups(q);
 
@@ -41,8 +42,20 @@ public class QuittanceInfoGenerator {
 			totalsMap.put(entry.getKey().getServiceType(), entry.getValue());
 		}
 
+		info.setServicesTotals(totalsMap);
+	}
+
+	/**
+	 * Build quittance info
+	 *
+	 * @param q Quittance
+	 * @return QuittanceInfo
+	 * @throws Exception if failure occurs
+	 */
+	public static QuittanceInfo buildInfo(Quittance q) throws Exception {
+
 		QuittanceInfo qi = new QuittanceInfo();
-		qi.setServicesTotals(totalsMap);
+		buildInfo(q, qi);
 		return qi;
 	}
 
@@ -71,8 +84,9 @@ public class QuittanceInfoGenerator {
 				// add calculated totals to parent service subtotals
 				Service parentService = service.getParentService();
 				ServiceTotals serviceTotals = servicesTotals.get(parentService);
-				if (parentService == null) {
-					throw new IllegalStateException("No parent services in quittance: " + service);
+				if (serviceTotals == null) {
+					throw new IllegalStateException("No parent service in quittance: " + service +
+					", totals: " + totals);
 				}
 				serviceTotals.setSubServiceTotals((SubServiceTotals) totals);
 			}

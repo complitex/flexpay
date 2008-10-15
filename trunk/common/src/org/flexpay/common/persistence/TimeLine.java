@@ -5,11 +5,13 @@ import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.util.*;
+import java.io.Serializable;
 
 /**
  * Storage for a sorted list of intervals covering time line
  */
-public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>> {
+public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
+	implements Serializable {
 
 	// a set of intervals is fully covering time line,
 	// probably single interval with infinite bounds

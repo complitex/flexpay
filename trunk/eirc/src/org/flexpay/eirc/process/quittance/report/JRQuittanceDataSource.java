@@ -1,18 +1,19 @@
 package org.flexpay.eirc.process.quittance.report;
 
-import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.JRRewindableDataSource;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.Luhn;
-import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
@@ -20,23 +21,37 @@ import org.flexpay.eirc.process.quittance.report.util.QuittanceInfoGenerator;
 import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.flexpay.eirc.service.ServiceTypeService;
+import org.flexpay.eirc.service.QuittanceService;
 import org.jetbrains.annotations.NotNull;
-import org.apache.log4j.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class JRQuittanceDataSource implements JRDataSource {
+public class JRQuittanceDataSource implements JRRewindableDataSource {
+
+	/**
+	 * Field mapping that produces the current bean.
+	 * <p/>
+	 * If the field name/description matches this constant (the case is important), the data
+	 * source will return the current bean as the field value.
+	 */
+	public static final String CURRENT_BEAN_MAPPING = "_THIS";
 
 	private AddressService addressService;
 	private SPService spService;
+	private QuittanceService quittanceService;
 	private ServiceTypeService serviceTypeService;
 	private ServiceOrganisationService serviceOrganisationService;
-	private JRBeanCollectionDataSource jrBeanCollectionDataSource;
 
-	public void setQuittances(List<Quittance> quittances) throws Exception {
+	private Collection<QuittanceInfo> data = null;
+	private Iterator<QuittanceInfo> iterator = null;
+	private QuittanceInfo currentInfo = null;
+	private long processCounter = 0;
+	private Logger log = Logger.getLogger(getClass());
 
-		Logger log = ProcessLogger.getLogger(getClass());
+	public void setQuittances(List<Quittance> quittances, int nBatches) throws Exception {
+
+		log = ProcessLogger.getLogger(getClass());
 		log.info("Starting quittance generation");
 		List<QuittanceInfo> infos = CollectionUtils.list();
 
@@ -46,8 +61,6 @@ public class JRQuittanceDataSource implements JRDataSource {
 		long count = 0;
 		QuittancesStats stats = new QuittancesStats();
 		for (Quittance q : quittances) {
-
-			initLazyProperties(q);
 
 			// check account number
 			if (isNewAccount(accountId, q)) {
@@ -66,13 +79,9 @@ public class JRQuittanceDataSource implements JRDataSource {
 			}
 
 			// now build quittance into quittance info
-			QuittanceInfo info = QuittanceInfoGenerator.buildInfo(q);
+			QuittanceInfo info = new QuittanceInfo();
+			info.setQuittanceStub(stub(q));
 			initAddress(q, info);
-			initHabitants(q, info);
-			initPersonFIO(q, info);
-			initServiceOrganisation(q, info);
-			initDates(q, info);
-			initQuittanceNumber(q, info);
 			infos.add(info);
 			stats.addAddress(info.getBuildingAddress());
 
@@ -89,16 +98,58 @@ public class JRQuittanceDataSource implements JRDataSource {
 //			stats.addAddress(stub.getBuildingAddress());
 //			infos.add(stub.clone());
 //			stats.addAddress(stub.getBuildingAddress());
-			
+
 			++count;
 			if (log.isInfoEnabled() && count % 100 == 0) {
 				log.info("Generated " + count + " quittance infos");
 			}
+
+//			if (count >= 400) {
+//				break;
+//			}
 		}
 
-		infos = buildBatches(infos, stats, 2);
+		if (log.isInfoEnabled()) {
+			log.info("Total " + count + " quittances.");
+			log.info("Building batches");
+		}
 
-		jrBeanCollectionDataSource = new JRBeanCollectionDataSource(infos);
+		if (nBatches > 1) {
+			infos = buildBatches(infos, stats, nBatches);
+		}
+
+		data = infos;
+		iterator = data.iterator();
+
+		log.info("OK. Ready to print them");
+	}
+
+	private QuittanceInfo prepareInfo(@NotNull QuittanceInfo stub) throws JRException {
+
+		Stub<Quittance> quittanceStub = stub.getQuittanceStub();
+		if (quittanceStub == null) {
+			return stub;
+		}
+
+		Quittance q = quittanceService.readFull(quittanceStub);
+		if (q == null) {
+			throw new JRException("Expected quittance, but not found: " + quittanceStub);
+		}
+		initLazyProperties(q);
+
+		try {
+			QuittanceInfo info = stub.clone();
+			QuittanceInfoGenerator.buildInfo(q, info);
+			initHabitants(q, info);
+			initPersonFIO(q, info);
+			initServiceOrganisation(q, info);
+			initDates(q, info);
+			initQuittanceNumber(q, info);
+
+			return info;
+		} catch (Exception e) {
+			throw new JRException("Failed preparing quittance info #" + quittanceStub.getId(), e);
+		}
 	}
 
 	private List<QuittanceInfo> buildBatches(List<QuittanceInfo> infos, QuittancesStats stats, int nBatches) {
@@ -106,9 +157,9 @@ public class JRQuittanceDataSource implements JRDataSource {
 		Map<String, Integer> addrStats = stats.getStats();
 		int totalQuittances = stats.getCount() + addrStats.size();
 		int nPages = totalQuittances % nBatches == 0 ?
-					 totalQuittances / nBatches : totalQuittances / nBatches + 1;
+					 totalQuittances / nBatches : (totalQuittances / nBatches + 1);
 
-		QuittanceInfo[] result = new QuittanceInfo[totalQuittances];
+		QuittanceInfo[] result = new QuittanceInfo[nPages * nBatches];
 		String previousAddress = "";
 		int n = 0;
 		for (QuittanceInfo info : infos) {
@@ -147,8 +198,13 @@ public class JRQuittanceDataSource implements JRDataSource {
 	 */
 	private void setupBatchAddresses(QuittanceInfo[] infos) {
 		String prevAddr = "";
-		for (QuittanceInfo info : infos) {
-			if (info.getBatchBuildingAddress() != null) {
+		for (int n = 0; n < infos.length; ++n) {
+			QuittanceInfo info = infos[n];
+			if (info == null) {
+				info = new QuittanceInfo();
+				info.setEmptyInfo(true);
+				infos[n] = info;
+			} else if (info.getBatchBuildingAddress() != null) {
 				prevAddr = info.getBatchBuildingAddress();
 			}
 			info.setBatchBuildingAddress(prevAddr);
@@ -176,13 +232,13 @@ public class JRQuittanceDataSource implements JRDataSource {
 
 		StringBuilder digits = new StringBuilder()
 				.append(q.getEircAccount().getAccountNumber())
-				.append(new SimpleDateFormat("mmyyyy").format(q.getDateTill()))
+				.append(new SimpleDateFormat("MMyyyy").format(q.getDateTill()))
 				.append(String.format("%02d", q.getOrderNumber()));
 		String controlDigit = Luhn.controlDigit(digits.toString());
 
 		String quittanceNumber = new StringBuilder()
 				.append(q.getEircAccount().getAccountNumber())
-				.append("-").append(new SimpleDateFormat("mm/yyyy").format(q.getDateTill()))
+				.append("-").append(new SimpleDateFormat("MM/yyyy").format(q.getDateTill()))
 				.append("-").append(String.format("%02d", q.getOrderNumber()))
 				.append(controlDigit)
 				.toString();
@@ -198,6 +254,7 @@ public class JRQuittanceDataSource implements JRDataSource {
 	}
 
 	private void initServiceOrganisation(Quittance q, QuittanceInfo info) throws Exception {
+
 		ServedBuilding building = (ServedBuilding) q.getEircAccount().getApartment().getBuilding();
 		ServiceOrganisation org = serviceOrganisationService.read(building.getServiceOrganisationStub());
 
@@ -248,9 +305,10 @@ public class JRQuittanceDataSource implements JRDataSource {
 		info.setHabitantNumber(apartment.getPersonRegistrations().size());
 	}
 
-	private void initTotals(QuittanceInfo info) {
-		
-	}
+	// todo setup summs
+//	private void initTotals(QuittanceInfo info) {
+//
+//	}
 
 	/**
 	 * Check if next quittance has different account
@@ -264,14 +322,87 @@ public class JRQuittanceDataSource implements JRDataSource {
 	}
 
 
+	/**
+	 * Tries to position the cursor on the next element in the data source.
+	 *
+	 * @return true if there is a next record, false otherwise
+	 * @throws net.sf.jasperreports.engine.JRException
+	 *          if any error occurs while trying to move to the next element
+	 */
 	public boolean next() throws JRException {
-		// delegate all work to native implementation
-		return jrBeanCollectionDataSource != null && jrBeanCollectionDataSource.next();
+
+		boolean hasNext = false;
+
+		if (iterator != null) {
+			hasNext = iterator.hasNext();
+
+			if (hasNext) {
+				currentInfo = prepareInfo(iterator.next());
+
+				++processCounter;
+				if (log.isInfoEnabled() && processCounter % 100 == 0) {
+					log.info("Prepared info #" + processCounter);
+				}
+
+//				if (processCounter > 150) {
+//					return false;
+//				}
+			}
+		}
+
+		return hasNext;
 	}
 
+	/**
+	 * Gets the field value for the current position.
+	 *
+	 * @return an object containing the field value. The object type must be the field object
+	 *         type.
+	 */
 	public Object getFieldValue(JRField jrField) throws JRException {
-		// delegate all work to native implementation
-		return jrBeanCollectionDataSource.getFieldValue(jrField);
+		return getBeanProperty(currentInfo, jrField.getName());
+	}
+
+	protected static Object getBeanProperty(Object bean, String propertyName) throws JRException {
+		Object value = null;
+
+		if (isCurrentBeanMapping(propertyName)) {
+			value = bean;
+		} else if (bean != null) {
+			try {
+				value = PropertyUtils.getProperty(bean, propertyName);
+			}
+			catch (java.lang.IllegalAccessException e) {
+				throw new JRException("Error retrieving field value from bean : " + propertyName, e);
+			}
+			catch (java.lang.reflect.InvocationTargetException e) {
+				throw new JRException("Error retrieving field value from bean : " + propertyName, e);
+			}
+			catch (java.lang.NoSuchMethodException e) {
+				throw new JRException("Error retrieving field value from bean : " + propertyName, e);
+			}
+			catch (IllegalArgumentException e) {
+				//FIXME replace with NestedNullException when upgrading to BeanUtils 1.7
+				if (!e.getMessage().startsWith("Null property value for ")) {
+					throw e;
+				}
+			}
+		}
+
+		return value;
+	}
+
+	protected static boolean isCurrentBeanMapping(String propertyName) {
+		return CURRENT_BEAN_MAPPING.equals(propertyName);
+	}
+
+	/**
+	 * Moves back to the first element in the data source.
+	 */
+	public void moveFirst() throws JRException {
+		if (data != null) {
+			iterator = data.iterator();
+		}
 	}
 
 	public void setSpService(SPService spService) {
@@ -288,5 +419,9 @@ public class JRQuittanceDataSource implements JRDataSource {
 
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
 		this.serviceTypeService = serviceTypeService;
+	}
+
+	public void setQuittanceService(QuittanceService quittanceService) {
+		this.quittanceService = quittanceService;
 	}
 }

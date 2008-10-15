@@ -22,7 +22,6 @@ public class BaseContainerOperation extends ContainerOperation {
 	private String serviceId;
 	private BigDecimal incomingBalance;
 	private BigDecimal outgoingBalance;
-	private BigDecimal amount;
 	private BigDecimal expence;
 	private BigDecimal rate;
 	private BigDecimal recalculation;
@@ -48,9 +47,6 @@ public class BaseContainerOperation extends ContainerOperation {
 		++n;
 
 		outgoingBalance = isBlank(datum.get(n)) ? null : new BigDecimal(datum.get(n));
-		++n;
-
-		amount = isBlank(datum.get(n)) ? null : new BigDecimal(datum.get(n));
 		++n;
 
 		expence = isBlank(datum.get(n)) ? null : new BigDecimal(datum.get(n));
@@ -122,7 +118,7 @@ public class BaseContainerOperation extends ContainerOperation {
 		details.setRegistryRecord(record);
 		details.setIncomingBalance(incomingBalance);
 		details.setOutgoingBalance(outgoingBalance);
-		details.setAmount(amount);
+		details.setAmount(record.getAmount());
 		details.setExpence(expence);
 		details.setRate(rate);
 		details.setRecalculation(recalculation);

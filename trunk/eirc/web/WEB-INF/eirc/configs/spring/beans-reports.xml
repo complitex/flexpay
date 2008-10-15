@@ -9,6 +9,7 @@
 		  p:addressService-ref="addressService"
 		  p:serviceOrganisationService-ref="serviceOrganisationService"
 		  p:serviceTypeService-ref="serviceTypeService"
+		  p:quittanceService-ref="quittanceService"
 		  p:spService-ref="spService" />
 
 

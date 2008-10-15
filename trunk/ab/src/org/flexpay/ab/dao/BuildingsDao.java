@@ -32,8 +32,7 @@ public interface BuildingsDao extends GenericDao<Buildings, Long> {
 	 * Find buildings relations for building
 	 *
 	 * @param buildingId Building identifier
-	 * @param page Page instance
 	 * @return list of buildings for the building
 	 */
-	List<Buildings> findBuildingBuildings(@NotNull Long buildingId, Page page);
+	List<Buildings> findBuildingBuildings(@NotNull Long buildingId);
 }
