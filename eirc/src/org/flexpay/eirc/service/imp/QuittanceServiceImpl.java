@@ -1,11 +1,10 @@
 package org.flexpay.eirc.service.imp;
 
 import org.apache.log4j.Logger;
-import org.flexpay.ab.persistence.*;
-import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.eirc.dao.QuittanceDao;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
 import org.flexpay.eirc.dao.QuittanceDetailsDao;
@@ -16,16 +15,15 @@ import org.flexpay.eirc.service.QuittanceService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Transactional (readOnly = true)
 public class QuittanceServiceImpl implements QuittanceService {
 
 	private Logger log = Logger.getLogger(getClass());
 
+	private SessionUtils sessionUtil;
 	private QuittanceDetailsDao quittanceDetailsDao;
 	private QuittanceDao quittanceDao;
 
@@ -64,59 +62,6 @@ public class QuittanceServiceImpl implements QuittanceService {
 		}
 	}
 
-	public List<Object> getQuittanceListWithDelimiters(@NotNull Stub<ServiceOrganisation> stub, Date dateFrom, Date dateTill)
-			throws FlexPayException {
-
-		List<Quittance> quittanceList = quittanceDao
-				.findByServiceOrganisationAndDate(stub.getId(), dateFrom, dateTill);
-
-		List<Object> result = new ArrayList<Object>();
-		Quittance lastQuittance = null;
-		for (Quittance quittance : quittanceList) {
-			if (lastQuittance == null || buildingsDiffer(quittance, lastQuittance)) {
-				result.add(getAddressStr(quittance, false));
-				result.add(quittance);
-				lastQuittance = quittance;
-				continue;
-			}
-
-			if (!quittance.getEircAccount().equals(lastQuittance.getEircAccount())) {
-				result.add(quittance);
-			}
-
-			lastQuittance = quittance;
-		}
-
-		return result;
-	}
-
-	private boolean buildingsDiffer(Quittance q1, Quittance q2) {
-		return !q1.getEircAccount().getApartment().getBuilding()
-				.equals(q2.getEircAccount().getApartment().getBuilding());
-	}
-
-	public String getAddressStr(Quittance quittance, boolean withApartmentNumber) throws FlexPayException {
-
-		quittance = quittanceDao.read(quittance.getId());
-		Set<Buildings> buildingses = quittance.getEircAccount().getApartment().getBuilding().getBuildingses();
-		if (buildingses.isEmpty()) {
-			return null;
-		}
-
-		Buildings buildings = buildingses.iterator().next();
-		Street street = buildings.getStreet();
-		StreetName streetName = street.getCurrentName();
-		StreetNameTranslation streetNameTranslation = TranslationUtil
-				.getTranslation(streetName.getTranslations());
-		StreetType streetType = street.getCurrentType();
-		StreetTypeTranslation streetTypeTranslation = TranslationUtil
-				.getTranslation(streetType.getTranslations());
-
-		return streetTypeTranslation.getName() + " " + streetNameTranslation.getName()
-			   + ", д." + buildings.getNumber()
-			   + (withApartmentNumber ? ", кв." + quittance.getEircAccount().getApartment().getNumber() : "");
-	}
-
 	public String getPayer(Quittance quittance) {
 		quittance = quittanceDao.read(quittance.getId());
 		PersonIdentity personIdentity = quittance.getEircAccount().getPerson().getPassportIdentity();
@@ -138,7 +83,21 @@ public class QuittanceServiceImpl implements QuittanceService {
 
 	@NotNull
 	public List<Quittance> getQuittances(Stub<ServiceOrganisation> stub, Date dateFrom, Date dateTill) {
-		return quittanceDao.findByServiceOrganisationAndDate(stub.getId(), dateFrom, dateTill);
+		return quittanceDao.listQuittancesForPrinting(stub.getId(), dateFrom, dateTill);
+	}
+
+	/**
+	 * Read full quittance details
+	 *
+	 * @param stub Quittance stub
+	 * @return Quittance if found, or <code>null</code> otherwise
+	 */
+	public Quittance readFull(@NotNull Stub<Quittance> stub) {
+		Quittance q = quittanceDao.readFull(stub.getId());
+
+//		sessionUtil.evict(q);
+
+		return q;
 	}
 
 	/**
@@ -154,5 +113,9 @@ public class QuittanceServiceImpl implements QuittanceService {
 
 	public void setQuittanceDaoExt(QuittanceDaoExt quittanceDaoExt) {
 		this.quittanceDaoExt = quittanceDaoExt;
+	}
+
+	public void setSessionUtil(SessionUtils sessionUtil) {
+		this.sessionUtil = sessionUtil;
 	}
 }

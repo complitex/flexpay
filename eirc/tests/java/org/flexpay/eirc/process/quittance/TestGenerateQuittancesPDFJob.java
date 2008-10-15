@@ -8,6 +8,7 @@ import org.flexpay.eirc.persistence.ServiceOrganisation;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
@@ -26,6 +27,7 @@ public class TestGenerateQuittancesPDFJob extends SpringBeanAwareTestCase {
 	private Date dt_2007_01_01 = new GregorianCalendar(2008, 0, 1).getTime();
 
 	@Test
+	@Ignore
 	public void testGenerateQuittances() throws Throwable {
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
@@ -33,6 +35,20 @@ public class TestGenerateQuittancesPDFJob extends SpringBeanAwareTestCase {
 		contextVariables.put("serviceOrganisationId", organisationStub.getId());
 		contextVariables.put("dateFrom", dt_2007_12_01);
 		contextVariables.put("dateTill", dt_2007_01_01);
+
+		assertSame("Invalid result", Job.RESULT_NEXT, job.execute(contextVariables));
+
+		assertNotNull("Output file was not specified", contextVariables.get(GenerateQuittancesPDFJasperJob.RESULT_FILE_NAME));
+	}
+
+	@Test
+	public void testGenerateQuittancesProduction() throws Throwable {
+
+		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+
+		contextVariables.put("serviceOrganisationId", 5L);
+		contextVariables.put("dateFrom", new GregorianCalendar(2008, 5, 1).getTime());
+		contextVariables.put("dateTill", new GregorianCalendar(2008, 10, 1).getTime());
 
 		assertSame("Invalid result", Job.RESULT_NEXT, job.execute(contextVariables));
 

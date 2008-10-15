@@ -37,42 +37,11 @@ public class BuildingServiceImpl implements BuildingService {
 
 	private BuildingDao buildingDao;
 	private BuildingsDao buildingsDao;
-	private BuildingAttributeTypeDao buildingsTypeDao;
 	private BuildingsDaoExt buildingsDaoExt;
 	private BuildingAttributeTypeDao buildingAttributeTypeDao;
 
 	private ParentService<StreetFilter> parentService;
 	private ParentService<DistrictFilter> districtParentService;
-
-	public void setBuildingDao(BuildingDao buildingDao) {
-		this.buildingDao = buildingDao;
-	}
-
-	public void setBuildingsDao(BuildingsDao buildingsDao) {
-		this.buildingsDao = buildingsDao;
-	}
-
-	public void setBuildingsTypeDao(BuildingAttributeTypeDao buildingsTypeDao) {
-		this.buildingsTypeDao = buildingsTypeDao;
-	}
-
-	public void setBuildingsDaoExt(BuildingsDaoExt buildingsDaoExt) {
-		this.buildingsDaoExt = buildingsDaoExt;
-	}
-
-	/**
-	 * Setter for property 'parentService'.
-	 *
-	 * @param parentService Value to set for property 'parentService'.
-	 */
-	public void setParentService(ParentService<StreetFilter> parentService) {
-		this.parentService = parentService;
-	}
-
-	public void setDistrictParentService(
-			ParentService<DistrictFilter> districtParentService) {
-		this.districtParentService = districtParentService;
-	}
 
 	public List<Buildings> getBuildings(ArrayStack filters, Page pager) {
 		PrimaryKeyFilter streetFilter = (PrimaryKeyFilter) filters.peek();
@@ -210,7 +179,7 @@ public class BuildingServiceImpl implements BuildingService {
 	 */
 	public List<BuildingAttributeType> getAttributeTypes() {
 
-		return buildingsTypeDao.findAttributeTypes();
+		return buildingAttributeTypeDao.findAttributeTypes();
 	}
 
 	/**
@@ -312,8 +281,7 @@ public class BuildingServiceImpl implements BuildingService {
 	 */
 	public Buildings getFirstBuildings(Stub<Building> stub) throws FlexPayException {
 
-		List<Buildings> buildingses = buildingsDao.findBuildingBuildings(
-				stub.getId(), new Page());
+		List<Buildings> buildingses = buildingsDao.findBuildingBuildings(stub.getId());
 		if (buildingses.isEmpty()) {
 			throw new FlexPayException("Building #" + stub.getId()
 									   + " does not have any buildings");
@@ -477,9 +445,8 @@ public class BuildingServiceImpl implements BuildingService {
 	 * @return List of Buildings
 	 * @throws FlexPayException if building does not have any buildingses
 	 */
-	public List<Buildings> getBuildingBuildings(Stub<Building> stub)
-			throws FlexPayException {
-		return buildingsDao.findBuildingBuildings(stub.getId(), new Page());
+	public List<Buildings> getBuildingBuildings(Stub<Building> stub) throws FlexPayException {
+		return buildingsDao.findBuildingBuildings(stub.getId());
 	}
 
 	public Building readBuilding(Long id) {
@@ -499,11 +466,28 @@ public class BuildingServiceImpl implements BuildingService {
 		buildingAttributeTypeDao.update(type);
 	}
 
-	/**
-	 * @param buildingAttributeTypeDao the buildingAttributeTypeDao to set
-	 */
-	public void setBuildingAttributeTypeDao(
-			BuildingAttributeTypeDao buildingAttributeTypeDao) {
+	public void setBuildingAttributeTypeDao(BuildingAttributeTypeDao buildingAttributeTypeDao) {
 		this.buildingAttributeTypeDao = buildingAttributeTypeDao;
+	}
+
+	public void setBuildingDao(BuildingDao buildingDao) {
+		this.buildingDao = buildingDao;
+	}
+
+	public void setBuildingsDao(BuildingsDao buildingsDao) {
+		this.buildingsDao = buildingsDao;
+	}
+
+	public void setBuildingsDaoExt(BuildingsDaoExt buildingsDaoExt) {
+		this.buildingsDaoExt = buildingsDaoExt;
+	}
+
+	public void setParentService(ParentService<StreetFilter> parentService) {
+		this.parentService = parentService;
+	}
+
+	public void setDistrictParentService(
+			ParentService<DistrictFilter> districtParentService) {
+		this.districtParentService = districtParentService;
 	}
 }

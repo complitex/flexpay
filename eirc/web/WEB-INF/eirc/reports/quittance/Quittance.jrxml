@@ -22,6 +22,8 @@
 	<import value="java.util.*" />
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
+	<import value="org.flexpay.eirc.process.quittance.report.*" />
+	<import value="org.flexpay.eirc.persistence.*" />
 
 	<style 
 		name="LiberationSans-Regular"
@@ -70,13 +72,17 @@
 	</parameter>
 
 	<field name="apartmentAddress" class="java.lang.String"/>
+	<field name="buildingAddress" class="java.lang.String"/>
+	<field name="batchBuildingAddress" class="java.lang.String"/>
+	<field name="notAddressStub" class="java.lang.Boolean"/>
+	<field name="personFIO" class="java.lang.String"/>
 	<field name="servicesTotals" class="java.util.Collection"/>
 	<field name="servicesTotalsList" class="java.util.List"/>
+	<field name="servicesTotalsMap" class="java.util.Map"/>
 	<field name="totalSquare" class="java.math.BigDecimal"/>
 	<field name="warmSquare" class="java.math.BigDecimal"/>
 	<field name="habitantNumber" class="java.lang.Integer"/>
 	<field name="privilegersNumber" class="java.lang.Integer"/>
-	<field name="personFIO" class="java.lang.String"/>
 	<field name="subsidy" class="java.math.BigDecimal"/>
 	<field name="charges" class="java.math.BigDecimal"/>
 	<field name="payed" class="java.math.BigDecimal"/>
@@ -86,16 +92,15 @@
 	<field name="recalculation" class="java.math.BigDecimal"/>
 	<field name="periodBeginDate" class="java.util.Date"/>
 	<field name="periodEndDate" class="java.util.Date"/>
-	<field name="serviceOrganisationName" class="java.lang.String"/>
 	<field name="quittanceNumber" class="java.lang.String"/>
+	<field name="serviceOrganisationName" class="java.lang.String"/>
 	<field name="serviceOrganisationAccount" class="java.lang.String"/>
 	<field name="operationDate" class="java.util.Date"/>
 	<field name="fullQuittanceInfo" class="java.lang.String"/>
 	<field name="outgoingBalanceDigits" class="java.lang.String[]"/>
 	<field name="quittanceNumberWithSumm" class="java.lang.String"/>
-	<field name="buildingAddress" class="java.lang.String"/>
-	<field name="batchBuildingAddress" class="java.lang.String"/>
-	<field name="notAddressStub" class="java.lang.Boolean"/>
+	<field name="quittanceId" class="java.lang.Long"/>
+	<field name="notEmptyInfo" class="java.lang.Boolean"/>
 
 
 		<group  name="buildingAddressGroup" >
@@ -162,6 +167,16 @@
 		<detail>
 			<band height="401"  isSplitAllowed="true" >
 				<printWhenExpression><![CDATA[$F{notAddressStub}]]></printWhenExpression>
+				<frame>					<reportElement
+						style="LiberationSans-Regular"
+						x="0"
+						y="0"
+						width="535"
+						height="401"
+						key="frame-details">
+							<printWhenExpression><![CDATA[$F{notEmptyInfo}]]></printWhenExpression>
+						</reportElement>
+					<box></box>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -373,27 +388,30 @@
 					<subreportParameter  name="outgoingBalance">
 						<subreportParameterExpression><![CDATA[$F{outgoingBalance}]]></subreportParameterExpression>
 					</subreportParameter>
-					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servicesTotalsList})]]></dataSourceExpression>
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($F{servicesTotalsList})]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "services.jasper"]]></subreportExpression>
 				</subreport>
 				<subreport  isUsingCache="true">
 					<reportElement
-						x="327"
+						x="318"
 						y="68"
-						width="207"
+						width="215"
 						height="151"
 						key="subreport-subservices"
-						isPrintRepeatedValues="false"/>
+						isPrintRepeatedValues="false"
+						isPrintWhenDetailOverflows="true">
+							<printWhenExpression><![CDATA[Boolean.valueOf($F{servicesTotalsList}.size() > 0)]]></printWhenExpression>
+						</reportElement>
 					<subreportParameter  name="SUBREPORT_DIR">
 						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter  name="tarifTotal">
-						<subreportParameterExpression><![CDATA[((org.flexpay.eirc.process.quittance.report.ServiceTotals)$F{servicesTotalsList}.get(0)).getTarif()]]></subreportParameterExpression>
+						<subreportParameterExpression><![CDATA[((ServiceTotals)$F{servicesTotalsList}.get(0)).getTarif()]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter  name="recalculationTotal">
-						<subreportParameterExpression><![CDATA[((org.flexpay.eirc.process.quittance.report.ServiceTotals)$F{servicesTotalsList}.get(0)).getRecalculation()]]></subreportParameterExpression>
+						<subreportParameterExpression><![CDATA[((ServiceTotals)$F{servicesTotalsList}.get(0)).getRecalculation()]]></subreportParameterExpression>
 					</subreportParameter>
-					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(((org.flexpay.eirc.process.quittance.report.ServiceTotals)$F{servicesTotalsList}.get(0)).getSubServicesTotalsList())]]></dataSourceExpression>
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource(((ServiceTotals)$F{servicesTotalsList}.get(0)).getSubServicesTotalsList())]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "subservices.jasper"]]></subreportExpression>
 				</subreport>
 				<subreport  isUsingCache="true">
@@ -431,7 +449,7 @@
 					<subreportParameter  name="outgoingBalance">
 						<subreportParameterExpression><![CDATA[$F{outgoingBalance}]]></subreportParameterExpression>
 					</subreportParameter>
-					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servicesTotalsList})]]></dataSourceExpression>
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($F{servicesTotalsList})]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "services_details.jasper"]]></subreportExpression>
 				</subreport>
 				<line direction="TopDown">
@@ -713,7 +731,7 @@
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
-						x="362"
+						x="368"
 						y="367"
 						width="37"
 						height="10"
@@ -741,7 +759,7 @@
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
-						x="485"
+						x="491"
 						y="367"
 						width="10"
 						height="10"
@@ -755,7 +773,7 @@
 				<textField isStretchWithOverflow="false" pattern="dd MMMMM yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="LiberationSans-Bold"
-						x="399"
+						x="405"
 						y="367"
 						width="86"
 						height="10"
@@ -780,12 +798,12 @@
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{periodBeginDate}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="LiberationSans-Bold"
 						x="329"
 						y="367"
-						width="28"
+						width="39"
 						height="10"
 						key="textField"/>
 					<box></box>
@@ -794,12 +812,12 @@
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{incomingBalance}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="LiberationSans-Bold"
-						x="494"
+						x="500"
 						y="367"
-						width="26"
+						width="34"
 						height="10"
 						key="textField"/>
 					<box></box>
@@ -883,14 +901,14 @@
 						mode="Opaque"
 						x="0"
 						y="38"
-						width="158"
+						width="150"
 						height="36"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="barcode-1"/>
 					<box></box>
 					<graphicElement stretchType="NoStretch" fill="Solid" />
-					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(10,$F{quittanceNumberWithSumm},true,true,"00",0,0)]]></imageExpression>
+					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(5,$F{quittanceNumberWithSumm},true,true,null,0,100)]]></imageExpression>
 				</image>
 				<staticText>
 					<reportElement
@@ -1039,13 +1057,26 @@
 					<subreportParameter  name="SUBREPORT_DIR">
 						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportParameter  name="outgoingBalance">
-						<subreportParameterExpression><![CDATA[$F{outgoingBalance}]]></subreportParameterExpression>
+					<subreportParameter  name="outgoingBalanceDigits">
+						<subreportParameterExpression><![CDATA[$F{outgoingBalanceDigits}]]></subreportParameterExpression>
 					</subreportParameter>
-					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servicesTotalsList})]]></dataSourceExpression>
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($F{servicesTotalsList})]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "services_left.jasper"]]></subreportExpression>
 				</subreport>
-			</band>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="386"
+						width="158"
+						height="15"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{quittanceId}]]></textFieldExpression>
+				</textField>
+				</frame>			</band>
 		</detail>
 		<columnFooter>
 			<band height="0"  isSplitAllowed="true" >

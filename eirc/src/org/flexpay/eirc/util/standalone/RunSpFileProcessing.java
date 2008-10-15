@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.standalone.StandaloneTask;
 import org.flexpay.eirc.actions.SpFileAction;
 import org.flexpay.eirc.actions.SpFileCreateAction;
@@ -39,6 +40,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 	}
 
 	public void setFileCreateAction(SpFileCreateAction fileCreateAction) {
+		fileCreateAction.setUserPreferences(new UserPreferences());
 		this.fileCreateAction = fileCreateAction;
 	}
 

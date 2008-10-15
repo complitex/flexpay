@@ -109,13 +109,15 @@
 
 	<!-- Build templates -->
 	<target name="template.compile.production" depends="init.build">
-		<javac2 srcdir="${sources.dir}" includes="**/*.java" destdir="${build.dir}/classes"
+		<javac2 srcdir="${sources.dir}" includes="**/*.java"
+				destdir="${build.dir}/classes"
 				deprecation="on" source="1.5" target="1.5" debug="on" encoding="utf8"
 				classpathref="classpath" />
 	</target>
 
 	<target name="template.compile.test" depends="init.build">
-		<javac2 srcdir="${sources.dir}" includes="**/*.java" destdir="${build.dir}/classes"
+		<javac2 srcdir="${sources.dir}" includes="**/*.java"
+				destdir="${build.dir}/classes"
 				debug="on" deprecation="on" source="1.5" target="1.5" encoding="utf8"
 				classpathref="classpath" />
 	</target>
@@ -177,7 +179,8 @@
 		</copy>
 	</target>
 
-	<target name="template.prepare.war.classes" description="Add all compiled classes to WEB-INF/classes">
+	<target name="template.prepare.war.classes"
+			description="Add all compiled classes to WEB-INF/classes">
 		<copy todir="${build.dir}/web/WEB-INF/classes" overwrite="true">
 			<fileset dir="${build.dir}/classes" />
 		</copy>
@@ -208,14 +211,16 @@
 	</target>
 
 	<target name="template.run.tests">
-		<junit printsummary="yes" haltonfailure="yes" fork="yes" forkmode="once" dir="${build.dir}/web">
+		<junit printsummary="yes" haltonfailure="yes" fork="yes" forkmode="once"
+			   dir="${build.dir}/web">
 			<classpath>
 				<path refid="classpath" />
 			</classpath>
 			<sysproperty key="log4j.configuration" value="org/flexpay/common/log4j.xml" />
 			<sysproperty key="java.naming.factory.initial"
 						 value="org.flexpay.common.test.MockInitialContextFactory" />
-			<jvmarg value="-Xmx450m" />
+			<sysproperty key="java.awt.headless" value="true" />
+			<jvmarg value="-Xmx1000m" />
 			<test name="${test_name}" haltonfailure="yes">
 				<formatter type="brief" usefile="false" />
 			</test>
@@ -227,14 +232,16 @@
 			  classname="org.flexpay.common.util.standalone.ApplicationRunner"
 			  dir="${build.dir}/web" fork="yes">
 			<jvmarg value="-Xmx350m" />
-			<sysproperty key="log4j.configuration" value="WEB-INF/common/configs/log4j.xml" />
+			<sysproperty key="log4j.configuration"
+						 value="WEB-INF/common/configs/log4j.xml" />
 			<sysproperty key="java.naming.factory.initial"
 						 value="org.flexpay.common.test.MockInitialContextFactory" />
 		</java>
 	</target>
 
 	<target name="template.profile.standalone">
-		<fail unless="netbeans.home">This target can only run inside the NetBeans IDE.</fail>
+		<fail unless="netbeans.home">This target can only run inside the NetBeans IDE.
+		</fail>
 
 		<nbprofiledirect>
 			<classpath refid="classpath" />
@@ -245,13 +252,15 @@
 			  dir="${build.dir}/web" fork="yes">
 			<jvmarg value="${profiler.info.jvmargs.agent}" />
 			<jvmarg value="-Xmx150m" />
-			<sysproperty key="log4j.configuration" value="WEB-INF/common/configs/log4j.xml" />
+			<sysproperty key="log4j.configuration"
+						 value="WEB-INF/common/configs/log4j.xml" />
 			<sysproperty key="java.naming.factory.initial"
 						 value="org.flexpay.common.test.MockInitialContextFactory" />
 		</java>
 	</target>
 
-	<property file="${common.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+	<property
+			file="${common.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
 	<target name="template.mysql.run">
 		<exec executable="mysql" failonerror="true" input="${src.sql}">
 			<arg value="--user=${mysql.username}" />

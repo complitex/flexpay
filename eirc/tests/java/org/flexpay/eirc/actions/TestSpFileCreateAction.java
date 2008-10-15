@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.service.SpFileService;
 import org.jetbrains.annotations.NonNls;
@@ -13,6 +14,7 @@ import static org.junit.Assert.fail;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.NotTransactional;
 
 import java.io.File;
@@ -26,8 +28,13 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 
 	@Autowired
 	protected SpFileService fileService;
-	@Autowired
 	protected SpFileCreateAction fileCreateAction;
+
+	@Autowired
+	public void setFileCreateAction(@Qualifier ("spFileCreateAction") SpFileCreateAction fileCreateAction) {
+		fileCreateAction.setUserPreferences(new UserPreferences());
+		this.fileCreateAction = fileCreateAction;
+	}
 
 	@Test
 	@Ignore

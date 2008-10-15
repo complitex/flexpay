@@ -138,7 +138,7 @@ public class StringUtil {
 			multiplier = BigDecimal.TEN;
 		}
 		BigDecimal power = multiplier.pow(position);
-		BigDecimal value = bd.multiply(power).remainder(BigDecimal.TEN);
+		BigDecimal value = bd.abs().multiply(power).remainder(BigDecimal.TEN);
 
 		return String.valueOf(value.intValue());
 	}

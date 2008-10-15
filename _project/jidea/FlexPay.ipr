@@ -303,7 +303,6 @@
           <option name="m_ignorePrimitives" value="false" />
         </inspection_tool>
         <inspection_tool class="ThisEscapedInConstructor" level="WARNING" enabled="true" />
-        <inspection_tool class="OverriddenMethodCallDuringObjectConstruction" level="WARNING" enabled="true" />
         <inspection_tool class="OverridableMethodCallDuringObjectConstruction" level="WARNING" enabled="true" />
         <inspection_tool class="NonFinalStaticVariableUsedInClassInitialization" level="WARNING" enabled="true" />
         <inspection_tool class="InstanceVariableUninitializedUse" level="WARNING" enabled="true">
@@ -822,6 +821,8 @@
         <inspection_tool class="PointcutMethodStyleInspection" level="WARNING" enabled="false" />
         <inspection_tool class="SpringAopErrorsInspection" level="ERROR" enabled="false" />
         <inspection_tool class="SpringAopWarningsInspection" level="WARNING" enabled="false" />
+        <inspection_tool class="SpringOsgiServiceCommonInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="SpringOsgiElementsInconsistencyInspection" level="ERROR" enabled="false" />
       </profile>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Project Default" />

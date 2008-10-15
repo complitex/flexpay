@@ -11,5 +11,5 @@ public interface QuittanceDao extends GenericDao<Quittance, Long>{
 	List<Quittance> findObjectsByEircAccountAndDateTill(Page<Quittance> pager,
 			Long eircAccountId, Date dateTill);
 	
-	List<Quittance> findByServiceOrganisationAndDate(Long serviceOrganisationId, Date dateFrom, Date dateTill);
+	List<Quittance> listQuittancesForPrinting(Long serviceOrganisationId, Date dateFrom, Date dateTill);
 }

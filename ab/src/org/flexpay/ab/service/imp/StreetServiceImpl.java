@@ -40,69 +40,6 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 
 	private ParentService<TownFilter> parentService;
 
-
-	/**
-	 * Setter for property 'streetDao'.
-	 *
-	 * @param streetDao Value to set for property 'streetDao'.
-	 */
-	public void setStreetDao(StreetDao streetDao) {
-		this.streetDao = streetDao;
-	}
-
-	public void setStreetDaoExt(StreetDaoExt streetDaoExt) {
-		this.streetDaoExt = streetDaoExt;
-	}
-
-	/**
-	 * Setter for property 'streetNameDao'.
-	 *
-	 * @param streetNameDao Value to set for property 'streetNameDao'.
-	 */
-	public void setStreetNameDao(StreetNameDao streetNameDao) {
-		this.streetNameDao = streetNameDao;
-	}
-
-	/**
-	 * Setter for property 'streetNameTemporalDao'.
-	 *
-	 * @param streetNameTemporalDao Value to set for property 'streetNameTemporalDao'.
-	 */
-	public void setStreetNameTemporalDao(StreetNameTemporalDao streetNameTemporalDao) {
-		this.streetNameTemporalDao = streetNameTemporalDao;
-	}
-
-	/**
-	 * Setter for property 'streetNameTranslationDao'.
-	 *
-	 * @param streetNameTranslationDao Value to set for property 'streetNameTranslationDao'.
-	 */
-	public void setStreetNameTranslationDao(StreetNameTranslationDao streetNameTranslationDao) {
-		this.streetNameTranslationDao = streetNameTranslationDao;
-	}
-
-	/**
-	 * Setter for property 'townDao'.
-	 *
-	 * @param townDao Value to set for property 'townDao'.
-	 */
-	public void setTownDao(TownDao townDao) {
-		this.townDao = townDao;
-	}
-
-	/**
-	 * Setter for property 'parentService'.
-	 *
-	 * @param parentService Value to set for property 'parentService'.
-	 */
-	public void setParentService(ParentService<TownFilter> parentService) {
-		this.parentService = parentService;
-	}
-
-	public void setStreetTypeTemporalDao(StreetTypeTemporalDao streetTypeTemporalDao) {
-		this.streetTypeTemporalDao = streetTypeTemporalDao;
-	}
-
 	/**
 	 * Get DAO implementation working with Name time-dependent objects
 	 *
@@ -316,7 +253,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		streetDaoExt.invalidateTypeTemporals(object.getId(), ApplicationConfig.getFutureInfinite(), DateUtil.now());
 
 		for (StreetTypeTemporal temporal : object.getTypeTemporals()) {
-			if (temporal.getId() != null) {
+			if (temporal.isNotNew()) {
 				streetTypeTemporalDao.update(temporal);
 			} else {
 				streetTypeTemporalDao.create(temporal);
@@ -371,5 +308,38 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		log.debug("Streets search redirected to super()");
 
 		return super.find(filters, pager);
+	}
+
+
+	public void setStreetDao(StreetDao streetDao) {
+		this.streetDao = streetDao;
+	}
+
+	public void setStreetDaoExt(StreetDaoExt streetDaoExt) {
+		this.streetDaoExt = streetDaoExt;
+	}
+
+	public void setStreetNameDao(StreetNameDao streetNameDao) {
+		this.streetNameDao = streetNameDao;
+	}
+
+	public void setStreetNameTemporalDao(StreetNameTemporalDao streetNameTemporalDao) {
+		this.streetNameTemporalDao = streetNameTemporalDao;
+	}
+
+	public void setStreetNameTranslationDao(StreetNameTranslationDao streetNameTranslationDao) {
+		this.streetNameTranslationDao = streetNameTranslationDao;
+	}
+
+	public void setTownDao(TownDao townDao) {
+		this.townDao = townDao;
+	}
+
+	public void setParentService(ParentService<TownFilter> parentService) {
+		this.parentService = parentService;
+	}
+
+	public void setStreetTypeTemporalDao(StreetTypeTemporalDao streetTypeTemporalDao) {
+		this.streetTypeTemporalDao = streetTypeTemporalDao;
 	}
 }

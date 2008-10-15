@@ -132,7 +132,7 @@ public class PdfQuittanceWriter {
 		String payer = quittanceService.getPayer(quittance);
 		form.setField("payer", payer);
 		form.setField("payer_copy1", payer);
-		String address = quittanceService.getAddressStr(quittance, true);
+		String address = "address go here";
 		form.setField("address", address);
 		form.setField("address_copy1", address);
 

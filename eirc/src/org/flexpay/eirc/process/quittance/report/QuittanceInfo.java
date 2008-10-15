@@ -2,22 +2,28 @@ package org.flexpay.eirc.process.quittance.report;
 
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.ServiceType;
+import org.flexpay.eirc.persistence.account.Quittance;
+import static org.flexpay.eirc.process.quittance.report.util.SummUtil.addNonNegative;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.io.Serializable;
 
 /**
  * Container for all necessary Quittance information with calculated summs, service
  * tarifs, subsidies, etc
  */
-public class QuittanceInfo implements Cloneable {
+public class QuittanceInfo implements Cloneable, Serializable {
 
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#,##0.00");
 
 	private boolean addressStub = false;
+	private boolean emptyInfo = false;
 
+	private Stub<Quittance> quittanceStub;
 	private String quittanceNumber;
 	private String apartmentAddress;
 	private String buildingAddress;
@@ -33,14 +39,6 @@ public class QuittanceInfo implements Cloneable {
 	private int habitantNumber;
 	private int privilegersNumber;
 
-	private BigDecimal incomingBalance = BigDecimal.ZERO;
-	private BigDecimal outgoingBalance = BigDecimal.ZERO;
-	private BigDecimal charges = BigDecimal.ZERO;
-	private BigDecimal recalculation = BigDecimal.ZERO;
-	private BigDecimal privilege = BigDecimal.ZERO;
-	private BigDecimal subsidy = BigDecimal.ZERO;
-	private BigDecimal payed = BigDecimal.ZERO;
-
 	private String serviceOrganisationName;
 	private String bankName;
 	private String serviceOrganisationAccount;
@@ -51,12 +49,32 @@ public class QuittanceInfo implements Cloneable {
 	public QuittanceInfo() {
 	}
 
+	public Stub<Quittance> getQuittanceStub() {
+		return quittanceStub;
+	}
+
+	public void setQuittanceStub(Stub<Quittance> quittanceStub) {
+		this.quittanceStub = quittanceStub;
+	}
+
+	public Long getQuittanceId() {
+		return quittanceStub == null ? null : quittanceStub.getId();
+	}
+
 	public Boolean getNotAddressStub() {
 		return !addressStub;
 	}
 
 	public void setAddressStub(boolean addressStub) {
 		this.addressStub = addressStub;
+	}
+
+	public Boolean getNotEmptyInfo() {
+		return !emptyInfo;
+	}
+
+	public void setEmptyInfo(boolean emptyInfo) {
+		this.emptyInfo = emptyInfo;
 	}
 
 	public String getQuittanceNumber() {
@@ -68,7 +86,7 @@ public class QuittanceInfo implements Cloneable {
 	}
 
 	public String getQuittanceNumberWithSumm() {
-		return getQuittanceNumber() + ";" + DECIMAL_FORMAT.format(outgoingBalance);
+		return getQuittanceNumber() + ";" + DECIMAL_FORMAT.format(getOutgoingBalance());
 	}
 
 	public String getApartmentAddress() {
@@ -196,59 +214,59 @@ public class QuittanceInfo implements Cloneable {
 	}
 
 	public BigDecimal getIncomingBalance() {
-		return incomingBalance;
-	}
-
-	public void setIncomingBalance(BigDecimal incomingBalance) {
-		this.incomingBalance = incomingBalance;
+		BigDecimal value = BigDecimal.ZERO;
+		for (ServiceTotals total : getServicesTotals()) {
+			value = addNonNegative(value, total.getIncomingDebt());
+		}
+		return value;
 	}
 
 	public BigDecimal getOutgoingBalance() {
-		return outgoingBalance;
-	}
-
-	public void setOutgoingBalance(BigDecimal outgoingBalance) {
-		this.outgoingBalance = outgoingBalance;
+		BigDecimal value = BigDecimal.ZERO;
+		for (ServiceTotals total : getServicesTotals()) {
+			value = addNonNegative(value, total.getOutgoingDebt());
+		}
+		return value;
 	}
 
 	public BigDecimal getCharges() {
-		return charges;
-	}
-
-	public void setCharges(BigDecimal charges) {
-		this.charges = charges;
+		BigDecimal value = BigDecimal.ZERO;
+		for (ServiceTotals total : getServicesTotals()) {
+			value = addNonNegative(value, total.getCharges());
+		}
+		return value;
 	}
 
 	public BigDecimal getRecalculation() {
-		return recalculation;
-	}
-
-	public void setRecalculation(BigDecimal recalculation) {
-		this.recalculation = recalculation;
+		BigDecimal value = BigDecimal.ZERO;
+		for (ServiceTotals total : getServicesTotals()) {
+			value = addNonNegative(value, total.getRecalculation());
+		}
+		return value;
 	}
 
 	public BigDecimal getPrivilege() {
-		return privilege;
-	}
-
-	public void setPrivilege(BigDecimal privilege) {
-		this.privilege = privilege;
+		BigDecimal value = BigDecimal.ZERO;
+		for (ServiceTotals total : getServicesTotals()) {
+			value = addNonNegative(value, total.getPrivilege());
+		}
+		return value;
 	}
 
 	public BigDecimal getSubsidy() {
-		return subsidy;
-	}
-
-	public void setSubsidy(BigDecimal subsidy) {
-		this.subsidy = subsidy;
+		BigDecimal value = BigDecimal.ZERO;
+		for (ServiceTotals total : getServicesTotals()) {
+			value = addNonNegative(value, total.getSubsidy());
+		}
+		return value;
 	}
 
 	public BigDecimal getPayed() {
-		return payed;
-	}
-
-	public void setPayed(BigDecimal payed) {
-		this.payed = payed;
+		BigDecimal value = BigDecimal.ZERO;
+		for (ServiceTotals total : getServicesTotals()) {
+			value = addNonNegative(value, total.getPayed());
+		}
+		return value;
 	}
 
 	public String getServiceOrganisationName() {
@@ -273,6 +291,7 @@ public class QuittanceInfo implements Cloneable {
 
 	public String[] getOutgoingBalanceDigits() {
 
+		BigDecimal outgoingBalance = getOutgoingBalance();
 		String[] result = new String[6];
 		for (int pos = -2; pos < 4; ++pos) {
 			result[pos + 2] = StringUtil.getDigit(outgoingBalance, pos);

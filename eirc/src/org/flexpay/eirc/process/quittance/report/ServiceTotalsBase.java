@@ -1,14 +1,17 @@
 package org.flexpay.eirc.process.quittance.report;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.flexpay.eirc.persistence.ServiceType;
-import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.eirc.persistence.ServiceType;
+import static org.flexpay.eirc.process.quittance.report.util.SummUtil.addNonNegative;
+import static org.flexpay.eirc.process.quittance.report.util.SummUtil.addNegative;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public abstract class ServiceTotalsBase {
+public abstract class ServiceTotalsBase implements Serializable {
 
 	private ServiceType serviceType;
 	private BigDecimal tarif = BigDecimal.ZERO;
@@ -55,7 +58,7 @@ public abstract class ServiceTotalsBase {
 	 *
 	 * @param amount Summ to add
 	 */
-	public void addExpence(BigDecimal amount) {
+	public void addExpence(@NotNull BigDecimal amount) {
 		expence = addNonNegative(expence, amount);
 	}
 
@@ -76,7 +79,7 @@ public abstract class ServiceTotalsBase {
 	 *
 	 * @param amount Summ to add
 	 */
-	public void addCharges(BigDecimal amount) {
+	public void addCharges(@NotNull BigDecimal amount) {
 		charges = addNonNegative(charges, amount);
 	}
 
@@ -115,7 +118,7 @@ public abstract class ServiceTotalsBase {
 	 *
 	 * @param amount Summ to add
 	 */
-	public void addSubsidy(BigDecimal amount) {
+	public void addSubsidy(@NotNull BigDecimal amount) {
 		subsidy = addNonNegative(subsidy, amount);
 	}
 
@@ -141,8 +144,8 @@ public abstract class ServiceTotalsBase {
 	 *
 	 * @param amount Summ to add
 	 */
-	public void addIncomingDebt(BigDecimal amount) {
-		incomingDebt = addNonNegative(incomingDebt, amount);
+	public void addIncomingDebt(@NotNull BigDecimal amount) {
+		incomingDebt = addNegative(incomingDebt, amount);
 	}
 
 	public BigDecimal getOutgoingDebt() {
@@ -154,17 +157,8 @@ public abstract class ServiceTotalsBase {
 	 *
 	 * @param amount Summ to add
 	 */
-	public void addOutgoingDebt(BigDecimal amount) {
-		outgoingDebt = addNonNegative(outgoingDebt, amount);
-	}
-
-	private BigDecimal addNonNegative(@NotNull BigDecimal current, @NotNull BigDecimal val) {
-
-		if (val.compareTo(BigDecimal.ZERO) < 0) {
-			return current;
-		}
-
-		return current.add(val);
+	public void addOutgoingDebt(@NotNull BigDecimal amount) {
+		outgoingDebt = addNegative(outgoingDebt, amount);
 	}
 
 	@Override
@@ -192,12 +186,19 @@ public abstract class ServiceTotalsBase {
 		}
 
 		// remove leading zeros
-		for (int pos = 5; pos > 2; --pos) {
+		int pos;
+		for (pos = 5; pos > 2; --pos) {
 			if ("0".equals(result[pos])) {
 				result[pos] = "";
 			} else {
 				break;
 			}
+		}
+
+		// add minus if needed
+		if (outgoingDebt.compareTo(BigDecimal.ZERO) < 0) {
+			pos = pos == 2 ? 3 : pos;
+			result[pos] = "- " + result[pos];
 		}
 
 		return result;

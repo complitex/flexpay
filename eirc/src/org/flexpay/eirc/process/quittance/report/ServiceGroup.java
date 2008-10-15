@@ -92,7 +92,7 @@ public class ServiceGroup {
 		for (Iterator<QuittanceDetails> it = detailses.iterator(); it.hasNext();) {
 
 			QuittanceDetails qd = it.next();
-			boolean isLast = it.hasNext();
+			boolean isLast = !it.hasNext();
 
 			if (isFirst) {
 				totals.addIncomingDebt(qd.getIncomingBalance());

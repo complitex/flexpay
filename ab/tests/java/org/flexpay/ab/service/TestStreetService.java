@@ -16,11 +16,15 @@ public class TestStreetService extends TransactionalSpringBeanAwareTestCase {
 
 	@Autowired
 	protected StreetDao streetDao;
-	@Autowired
 	protected StreetService streetService;
 	@Autowired
 	protected TownService townService;
 	private StreetTypeService streetTypeService;
+
+	@Autowired
+	public void setStreetService(@Qualifier ("streetService") StreetService streetService) {
+		this.streetService = streetService;
+	}
 
 	@Autowired
 	public void setService(@Qualifier ("streetTypeService") StreetTypeService service) {
