@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.math.BigDecimal;
 
 public class JRQuittanceDataSource implements JRRewindableDataSource {
 
@@ -104,7 +105,7 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 				log.info("Generated " + count + " quittance infos");
 			}
 
-//			if (count >= 400) {
+//			if (count >= 122) {
 //				break;
 //			}
 		}
@@ -145,6 +146,10 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 			initServiceOrganisation(q, info);
 			initDates(q, info);
 			initQuittanceNumber(q, info);
+
+			if (info.getOutgoingBalance().compareTo(BigDecimal.ZERO) <= 0) {
+				log.warn("Quittance #" + q.getId() + " not positive balance.");
+			}
 
 			return info;
 		} catch (Exception e) {
@@ -343,10 +348,6 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 				if (log.isInfoEnabled() && processCounter % 100 == 0) {
 					log.info("Prepared info #" + processCounter);
 				}
-
-//				if (processCounter > 150) {
-//					return false;
-//				}
 			}
 		}
 
