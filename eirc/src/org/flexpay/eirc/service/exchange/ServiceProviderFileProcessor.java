@@ -5,17 +5,21 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.service.importexport.ImportErrorsSupport;
 import org.flexpay.common.service.importexport.RawDataSource;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.eirc.dao.importexport.InMemoryRawConsumersDataSource;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
+import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.service.SpFileService;
 import org.flexpay.eirc.service.SpRegistryRecordService;
 import org.flexpay.eirc.service.SpRegistryService;
@@ -28,7 +32,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Processor of instructions specified by service provider, usually payments, balance notifications, etc.
+ * Processor of instructions specified by service provider, usually payments, balance
+ * notifications, etc.
  */
 public class ServiceProviderFileProcessor implements RegistryProcessor {
 
@@ -45,6 +50,8 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	private RawConsumersDataSource rawConsumersDataSource;
 	private ImportErrorsSupport errorsSupport;
 	private RegistryWorkflowManager registryWorkflowManager;
+	private RegistryRecordWorkflowManager recordWorkflowManager;
+	private ClassToTypeRegistry classToTypeRegistry;
 
 	private ServiceProviderFileProcessorTx processorTx;
 
@@ -110,9 +117,50 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		Page<RegistryRecord> pager = new Page<RegistryRecord>(50, 1);
 		Long[] minMaxIds = {null, null};
 		do {
-			processorTx.processRegistry(registry, pager, minMaxIds);
+			processRegistry(registry, pager, minMaxIds);
 		} while (pager.getThisPageFirstElementNumber() <= (minMaxIds[1] - minMaxIds[0]));
 		log.info("No more records to process");
+	}
+
+	/**
+	 * Run next registry records batch processing
+	 *
+	 * @param registry  Registry those records to process
+	 * @param pager	 Page
+	 * @param minMaxIds Cached minimum and maximum registry record ids to process
+	 * @throws Exception if failure occurs
+	 */
+	private void processRegistry(SpRegistry registry, Page<RegistryRecord> pager, Long[] minMaxIds) throws Exception {
+
+		log.info("Fetching for records: " + pager);
+		List<RegistryRecord> records = spFileService.getRecordsForProcessing(stub(registry), pager, minMaxIds);
+		for (RegistryRecord record : records) {
+			try {
+				processorTx.processRecord(registry, record);
+			} catch (Throwable t) {
+				handleError(t, registry, record);
+			}
+		}
+		pager.setPageNumber(pager.getPageNumber() + 1);
+	}
+
+	private void handleError(Throwable t, SpRegistry registry, RegistryRecord record) throws Exception {
+		if (t instanceof FlexPayExceptionContainer) {
+				t = ((FlexPayExceptionContainer) t).getExceptions().iterator().next();
+			}
+
+			log.warn("Failed processing registry record", t);
+
+			ImportError error = new ImportError();
+			error.setErrorId(t.getMessage());
+			error.setSourceDescription(registry.getServiceProvider().getDataSourceDescription());
+
+			// todo remove hardcoded value
+			error.setDataSourceBean("consumersDataSource");
+
+			error.setSourceObjectId(String.valueOf(record.getId()));
+			error.setObjectType(classToTypeRegistry.getType(Consumer.class));
+			recordWorkflowManager.setNextErrorStatus(record, error);
 	}
 
 	public void importConsumers(SpRegistry registry) throws Exception {
@@ -144,7 +192,11 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 			// refresh records
 			Collection<RegistryRecord> records = registryRecordService.findObjects(registry, recordIds);
 			for (RegistryRecord record : records) {
-				processorTx.processRecord(registry, record);
+				try {
+					processorTx.processRecord(registry, record);
+				} catch (Throwable t) {
+					handleError(t, registry, record);
+				}
 			}
 		} catch (Throwable t) {
 			String errMsg = "Failed processing registry: " + registry;
@@ -247,5 +299,13 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 	public void setProcessorTx(ServiceProviderFileProcessorTx processorTx) {
 		this.processorTx = processorTx;
+	}
+
+	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
+		this.recordWorkflowManager = recordWorkflowManager;
+	}
+
+	public void setClassToTypeRegistry(ClassToTypeRegistry classToTypeRegistry) {
+		this.classToTypeRegistry = classToTypeRegistry;
 	}
 }

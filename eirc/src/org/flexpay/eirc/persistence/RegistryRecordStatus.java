@@ -40,4 +40,8 @@ public class RegistryRecordStatus extends DomainObject {
 	public String getI18nName() {
 		return typeToName.get(code);
 	}
+
+	public boolean isProcessedWithError() {
+		return getCode() == PROCESSED_WITH_ERROR;
+	}
 }
