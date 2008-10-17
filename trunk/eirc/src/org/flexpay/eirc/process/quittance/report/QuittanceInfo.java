@@ -224,7 +224,7 @@ public class QuittanceInfo implements Cloneable, Serializable {
 	public BigDecimal getOutgoingBalance() {
 		BigDecimal value = BigDecimal.ZERO;
 		for (ServiceTotals total : getServicesTotals()) {
-			value = addNonNegative(value, total.getOutgoingDebt());
+			value = addNonNegative(value, total.getAmount());
 		}
 		return value;
 	}

@@ -24,6 +24,7 @@ public abstract class ServiceTotalsBase implements Serializable {
 	private BigDecimal payed = BigDecimal.ZERO;
 	private BigDecimal incomingDebt = BigDecimal.ZERO;
 	private BigDecimal outgoingDebt = BigDecimal.ZERO;
+	private BigDecimal amount = BigDecimal.ZERO;
 
 	protected ServiceTotalsBase(ServiceType serviceType) {
 		this.serviceType = serviceType;
@@ -39,6 +40,14 @@ public abstract class ServiceTotalsBase implements Serializable {
 
 	public Integer getServiceTypeCode() {
 		return serviceType.getCode();
+	}
+
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+	public void addAmount(BigDecimal am) {
+		amount = addNonNegative(amount, am);
 	}
 
 	public BigDecimal getTarif() {

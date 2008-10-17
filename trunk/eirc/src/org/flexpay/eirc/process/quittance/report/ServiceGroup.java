@@ -102,6 +102,7 @@ public class ServiceGroup {
 				totals.addOutgoingDebt(qd.getOutgoingBalance());
 			}
 
+			totals.addAmount(qd.getAmount());
 			totals.addExpence(qd.getExpence());
 			totals.addCharges(qd.getAmount());
 			totals.addPayed(qd.getPayment());
