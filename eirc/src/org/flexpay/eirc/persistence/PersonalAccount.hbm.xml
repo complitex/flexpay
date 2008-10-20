@@ -246,13 +246,13 @@
 		from EircAccount a
 			left outer join fetch a.consumerInfo
 			left join fetch a.consumers c
-			inner join fetch c.consumerInfo
+			left join fetch c.consumerInfo
 			left join fetch c.responsiblePerson p
 			left join fetch p.personAttributes pa
 			left join fetch p.personIdentities pi
-			inner join fetch pi.identityType it
-			inner join fetch c.service s
-			inner join fetch s.serviceType st
+			left join fetch pi.identityType it
+			left join fetch c.service s
+			left join fetch s.serviceType st
 		WHERE a.id=? and (c is null or c.status=0)
 	</query>
 

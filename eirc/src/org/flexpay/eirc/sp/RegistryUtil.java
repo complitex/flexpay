@@ -14,7 +14,7 @@ public class RegistryUtil {
 	 * Parse registry FIO group
 	 *
 	 * @param fioStr Group string
-	 * @return First-middle-last names list
+	 * @return Last-First-Middle names list
 	 * @throws RegistryFormatException if fioStr is invalid
 	 */
 	@NotNull

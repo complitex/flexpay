@@ -1,5 +1,7 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
+<s:actionerror />
+
 <s:form method="post" id="frecords">
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
@@ -13,7 +15,7 @@
 		</tr>
 		<tr>
 			<td class="th">&nbsp;</td>
-			<td class="th"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds')"></td>
+			<td class="th"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');"></td>
 			<td class="th"><s:text name="eirc.registry.record.service"/></td>
 			<td class="th"><s:text name="eirc.registry.record.account"/></td>
 			<td class="th"><s:text name="eirc.registry.record.address"/></td>
@@ -72,7 +74,9 @@
 				<td class="col"><s:property value="%{amount}"/></td>
 					<%--<td class="col"><s:property value="%{containers}" /></td>--%>
 				<td class="col">N/A</td>
-				<td class="col"><s:text name="%{importError.errorId}"/></td>
+				<!-- TODO uncomment as fix for LocalizedTextUtil NPE available (see https://xwork.dev.java.net/issues/show_bug.cgi?id=6)-->
+				<%--<td class="col"><s:text name="%{importError.errorId}"/></td>--%>
+				<td class="col"><s:property value="%{importError.errorId}"/></td>
 				<td class="col"><s:text name="%{recordStatus.i18nName}"/></td>
 				<td class="col"><a href="javascript: correspondenceScreen(<s:property value="%{id}" />)">
 					<s:text name="common.edit"/></a>
@@ -94,7 +98,7 @@
 	function correspondenceScreen(recordId) {
 		var win = new Window(
 		{className: "spread", title: "Corrections", top:70, left:100, width:800, height:600,
-			url: '<s:url action="select_correction_type" includeParams="none"/>' + "?record.id=" + recordId})
+			url: '<s:url action="select_correction_type" includeParams="none"/>' + "?record.id=" + recordId});
 
 		// show window in center
 		win.showCenter(/*Modal*/ true, /*Top*/ 50, /*left*/ 200);

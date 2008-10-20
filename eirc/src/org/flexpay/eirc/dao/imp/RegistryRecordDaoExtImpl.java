@@ -84,7 +84,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 		}
 
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				if (log.isDebugEnabled()) {
 					log.debug("Filter records hql: " + hqlCount);
 				}
@@ -115,7 +115,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	 */
 	public int getErrorsNumber(final Long registryId) {
 		Number count = (Number) getHibernateTemplate().execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				return session.createQuery("select count(r.id) from RegistryRecord r where r.spRegistry.id=? and r.importError is not null")
 						.setLong(0, registryId).uniqueResult();
 			}
@@ -125,7 +125,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 
 	public DataSourceDescription getDataSourceDescription(final Long id) {
 		return (DataSourceDescription) getHibernateTemplate().execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				return session.getNamedQuery("RegistryRecord.findDataSourceDescription")
 						.setLong(0, id).uniqueResult();
 			}
@@ -141,9 +141,13 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	@SuppressWarnings({"unchecked"})
 	public List<RegistryRecord> findRecords(final Long registryId, final Collection<Long> objectIds) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				return session.createQuery("select distinct r from RegistryRecord r " +
 						"inner join fetch r.spRegistry rr " +
+						"left join fetch r.consumer c " +
+						"left join fetch c.consumerInfo " +
+						"left join fetch c.service srv " +
+						"left join fetch srv.serviceType " +
 						"inner join fetch rr.registryStatus " +
 						"inner join fetch rr.serviceProvider sp " +
 						"inner join fetch sp.dataSourceDescription " +

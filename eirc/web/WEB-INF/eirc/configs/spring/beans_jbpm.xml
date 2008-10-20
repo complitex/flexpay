@@ -7,16 +7,16 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean name="fileParserJob" class="org.flexpay.eirc.process.registry.FileParserJob" scope="prototype"
-		  p:parser-ref="spFileParser"
-		  p:spFileService-ref="spFileService" />
+		  p:parser-ref="registryFileParser"
+		  p:spFileService-ref="registryFileService" />
 
 	<bean name="registryProcessJob" class="org.flexpay.eirc.process.registry.RegistryProcessJob" scope="prototype"
 		  p:registryProcessor-ref="registryProcessor"
-		  p:registryService-ref="spRegistryService" />
+		  p:registryService-ref="registryService" />
 
 	<bean name="registryRecordsProcessJob" class="org.flexpay.eirc.process.registry.RegistryRecordsProcessJob" scope="prototype"
 		  p:registryProcessor-ref="registryProcessor"
-		  p:registryService-ref="spRegistryService" />
+		  p:registryService-ref="registryService" />
 
 	<bean name="generateQuittancesPDFJob" scope="prototype"
 		  class="org.flexpay.eirc.process.quittance.GenerateQuittancesPDFJasperJob"

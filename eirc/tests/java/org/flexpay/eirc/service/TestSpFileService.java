@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class TestSpFileService extends SpringBeanAwareTestCase {
 
 	@Autowired
-	protected SpFileService fileService;
+	protected RegistryFileService fileService;
 
 	@Test
 	public void testFindRecordsForProcessing() {

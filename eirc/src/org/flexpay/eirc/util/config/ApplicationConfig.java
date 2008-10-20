@@ -4,12 +4,13 @@ import org.flexpay.eirc.persistence.Organisation;
 
 import java.io.File;
 
-public class ApplicationConfig extends
-		org.flexpay.ab.util.config.ApplicationConfig {
+public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationConfig {
 
 	private Organisation selfOrganisation;
 	private String eircDataRoot;
 	private String eircId;
+
+	private int eircMainServiceCode;
 
 	/**
 	 * TODO: perform lookup by individual tax number, not id
@@ -30,6 +31,14 @@ public class ApplicationConfig extends
 
 	public static String getEircId() {
 		return getInstance().eircId;
+	}
+
+	public static int getEircMainServiceCode() {
+		return getInstance().eircMainServiceCode;
+	}
+
+	public void setEircMainServiceCode(String eircMainServiceCode) {
+		this.eircMainServiceCode = Integer.valueOf(eircMainServiceCode);
 	}
 
 	public void setEircId(String eircId) {

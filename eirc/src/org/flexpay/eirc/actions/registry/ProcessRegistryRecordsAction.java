@@ -29,6 +29,8 @@ public class ProcessRegistryRecordsAction extends FPActionSupport {
 
 		processManager.createProcess("ProcessRegistryRecordsWorkflow", contextVariables);
 
+		addActionError(getText("eirc.registry.records.processing_started"));
+
 		return REDIRECT_SUCCESS;
 	}
 

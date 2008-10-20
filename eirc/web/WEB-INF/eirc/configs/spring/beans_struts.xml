@@ -7,12 +7,12 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="spFileCreateAction" class="org.flexpay.eirc.actions.SpFileCreateAction"
-		  p:spFileService-ref="spFileService"
+		  p:spFileService-ref="registryFileService"
 		  scope="prototype" />
 
 	<bean id="spFileListAction" class="org.flexpay.eirc.actions.SpFileListAction"
 		  scope="prototype">
-		<property name="spFileService" ref="spFileService" />
+		<property name="spFileService" ref="registryFileService" />
 	</bean>
 
 	<bean id="spFileAction" class="org.flexpay.eirc.actions.SpFileAction"
@@ -48,9 +48,9 @@
 
 	<bean id="listRegistriesAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.ListRegistriesAction">
-		<property name="registryService" ref="spRegistryService" />
+		<property name="registryService" ref="registryService" />
 		<property name="organisationService" ref="organisationService" />
-		<property name="registryTypeService" ref="spRegistryTypeService" />
+		<property name="registryTypeService" ref="registryTypeService" />
 	</bean>
 
 	<bean id="processRegistriesAction" scope="prototype"
@@ -63,8 +63,8 @@
 
 	<bean id="showRegistryAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.ShowRegistryAction">
-		<property name="registryService" ref="spRegistryService" />
-		<property name="registryRecordService" ref="spRegistryRecordService" />
+		<property name="registryService" ref="registryService" />
+		<property name="registryRecordService" ref="registryRecordService" />
 		<property name="classToTypeRegistry" ref="typeRegistryEirc" />
 		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
@@ -151,7 +151,7 @@
 	<!-- Corrections -->
 	<bean id="selectCorrectionTypeAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.corrections.SelectTypeAction">
-		<property name="registryRecordService" ref="spRegistryRecordService" />
+		<property name="registryRecordService" ref="registryRecordService" />
 		<property name="typeRegistry" ref="typeRegistryEirc" />
 	</bean>
 
@@ -159,7 +159,7 @@
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectAddressAction">
 		<property name="consumersDataSource" ref="consumersDataSource" />
 		<property name="correctionsService" ref="correctionsServiceEirc" />
-		<property name="recordService" ref="spRegistryRecordService" />
+		<property name="recordService" ref="registryRecordService" />
 		<property name="serviceTypeService" ref="serviceTypeService" />
 		<property name="typeRegistry" ref="typeRegistryEirc" />
 	</bean>
@@ -168,7 +168,7 @@
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectBuildingAction">
 		<property name="consumersDataSource" ref="consumersDataSource" />
 		<property name="correctionsService" ref="correctionsServiceEirc" />
-		<property name="recordService" ref="spRegistryRecordService" />
+		<property name="recordService" ref="registryRecordService" />
 		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
@@ -176,7 +176,7 @@
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectStreetAction">
 		<property name="consumersDataSource" ref="consumersDataSource" />
 		<property name="correctionsService" ref="correctionsServiceEirc" />
-		<property name="recordService" ref="spRegistryRecordService" />
+		<property name="recordService" ref="registryRecordService" />
 		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
@@ -184,7 +184,7 @@
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectPersonAction">
 		<property name="consumersDataSource" ref="consumersDataSource" />
 		<property name="correctionsService" ref="correctionsServiceEirc" />
-		<property name="recordService" ref="spRegistryRecordService" />
+		<property name="recordService" ref="registryRecordService" />
 	</bean>
 
 	<bean id="processListAction" scope="prototype"

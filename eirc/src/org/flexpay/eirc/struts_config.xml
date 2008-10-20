@@ -54,83 +54,6 @@
 
 
 
-		<!-- Registries -->
-		<action name="registries_list" class="listRegistriesAction">
-			<result type="tiles">eirc.registry.list</result>
-		</action>
-
-		<action name="registry_view" class="showRegistryAction">
-			<result type="tiles">eirc.registry.view</result>
-			<result name="error" type="redirect-action">
-				<param name="actionName">registries_list</param>
-			</result>
-		</action>
-
-		<action name="select_correction_type" class="selectCorrectionTypeAction">
-			<result name="input" type="tiles">eirc.select_correction_type</result>
-			<result name="error" type="tiles">eirc.correction_type_error</result>
-			<result name="apartment" type="redirect-action">
-				<param name="actionName">registry_record_correct_address</param>
-				<param name="parse">true</param>
-				<param name="record.id">${record.id}</param>
-			</result>
-			<result name="building" type="redirect-action">
-				<param name="actionName">registry_record_correct_address_building</param>
-				<param name="parse">true</param>
-				<param name="record.id">${record.id}</param>
-			</result>
-			<result name="street" type="redirect-action">
-				<param name="actionName">registry_record_correct_address_street</param>
-				<param name="parse">true</param>
-				<param name="record.id">${record.id}</param>
-			</result>
-			<result name="person" type="redirect-action">
-				<param name="actionName">registry_record_correct_person</param>
-				<param name="parse">true</param>
-				<param name="record.id">${record.id}</param>
-			</result>
-		</action>
-
-		<action name="registry_record_correct_address" class="correctRecordAddressAction">
-			<result type="tiles">eirc.registry.record.correct_address</result>
-			<result name="complete" type="tiles">eirc.registry.record.correct_address_complete</result>
-		</action>
-
-		<action name="registry_record_correct_address_street" class="correctStreetAddressAction">
-			<result type="tiles">eirc.registry.record.correct_address_street</result>
-			<result name="complete" type="tiles">eirc.registry.record.correct_address_complete</result>
-		</action>
-
-		<action name="registry_record_correct_address_building" class="correctBuildingAddressAction">
-			<result type="tiles">eirc.registry.record.correct_address_building</result>
-			<result name="complete" type="tiles">eirc.registry.record.correct_address_complete</result>
-		</action>
-
-		<action name="registry_record_correct_person" class="correctPersonAction">
-			<result type="tiles">eirc.registry.record.correct_person</result>
-			<result name="complete" type="tiles">eirc.registry.record.correct_person_complete</result>
-		</action>
-
-		<action name="process_registries" class="processRegistriesAction">
-			<result type="redirect-action">
-				<param name="actionName">registries_list</param>
-			</result>
-		</action>
-
-		<action name="process_registry_records" class="processRegistryRecordsAction">
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">registry_view</param>
-				<param name="parse">true</param>
-				<param name="registry.id">${registry.id}</param>
-			</result>
-			<result name="redirectError" type="redirect-action">
-				<param name="actionName" >registries_list</param>
-			</result>
-		</action>
-		
-		<action name="eircAccountList" class="eircAccountListAction">
-			<result type="tiles">eirc.eirc_account.list</result>
-		</action>
 		<action name="eircAccountView" class="eircAccountViewAction">
 			<result name="success" type="tiles">eirc.eirc_account.view</result>
 			<result name="redirectError" type="redirect-action">
@@ -168,5 +91,6 @@
 	<include file="org/flexpay/eirc/actions/serviceprovider/struts.xml" />
 	<include file="org/flexpay/eirc/actions/service/struts.xml" />
 	<include file="org/flexpay/eirc/actions/processing/struts.xml" />
+	<include file="org/flexpay/eirc/actions/registry/struts.xml" />
 
 </struts>

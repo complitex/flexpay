@@ -10,6 +10,7 @@ import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional (readOnly = true)
@@ -43,6 +44,18 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	}
 
 	/**
+	 * Delete correction
+	 *
+	 * @param correction Data correction to delete
+	 */
+	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	public void delete(@NotNull DataCorrection correction) {
+		if (correction.isNotNew()) {
+			correctionsDao.delete(correction);
+		}
+	}
+
+	/**
 	 * Find domain object by its external data source id
 	 *
 	 * @param externalId External id
@@ -70,13 +83,14 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	}
 
 	/**
-	 * Create stub for new data correction
+	 * Create stub for new data correction or get existing one 
 	 *
 	 * @param externalId		External object id
 	 * @param obj			   DomainObject
 	 * @param sourceDescription Data source description
 	 * @return stub for a new DataCorrection
 	 */
+	@NotNull
 	public DataCorrection getStub(String externalId, DomainObject obj, DataSourceDescription sourceDescription) {
 
 		int type = typeRegistry.getType(obj.getClass());

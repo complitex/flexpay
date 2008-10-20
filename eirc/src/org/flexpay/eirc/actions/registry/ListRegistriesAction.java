@@ -7,7 +7,7 @@ import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.flexpay.eirc.service.OrganisationService;
-import org.flexpay.eirc.service.SpRegistryService;
+import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.SpRegistryTypeService;
 import org.apache.commons.lang.time.DateUtils;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +27,7 @@ public class ListRegistriesAction extends FPActionSupport {
 	private List<SpRegistry> registries;
 
 	private OrganisationService organisationService;
-	private SpRegistryService registryService;
+	private RegistryService registryService;
 	private SpRegistryTypeService registryTypeService;
 
 	@NotNull
@@ -105,7 +105,7 @@ public class ListRegistriesAction extends FPActionSupport {
 		tillDate = DateUtil.parseDate(dt, DateUtil.now());
 	}
 
-	public void setRegistryService(SpRegistryService registryService) {
+	public void setRegistryService(RegistryService registryService) {
 		this.registryService = registryService;
 	}
 

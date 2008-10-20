@@ -9,7 +9,8 @@ import org.junit.runners.Suite;
 		TestDateIntervalUtil.class,
 		TestStringUtil.class,
 		TestCRCUtil.class,
-		TestNotNull.class
+		TestNotNull.class,
+		TestDateParser.class
 		})
 public class AllTests {
 

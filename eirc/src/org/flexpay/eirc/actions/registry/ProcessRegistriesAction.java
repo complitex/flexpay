@@ -21,7 +21,7 @@ public class ProcessRegistriesAction extends FPActionSupport {
 
 		if (objectIds.isEmpty()) {
 			// just redirect, no registries to process
-			return SUCCESS;
+			return REDIRECT_SUCCESS;
 		}
 
 		log.debug("About to execute ProcessRegistriesAction");
@@ -30,8 +30,10 @@ public class ProcessRegistriesAction extends FPActionSupport {
 		contextVariables.put("registryIds", (Serializable) objectIds);
 
 		processManager.createProcess("ProcessRegistryWorkflow", contextVariables);
+		
+		addActionError(getText("eirc.registry.processing_started"));
 
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	/**
@@ -43,7 +45,7 @@ public class ProcessRegistriesAction extends FPActionSupport {
 	 */
 	@NotNull
 	protected String getErrorResult() {
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	public Set<Long> getObjectIds() {

@@ -17,7 +17,7 @@ import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
 import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.service.ServiceTypeService;
-import org.flexpay.eirc.service.SpRegistryRecordService;
+import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +31,7 @@ public class CorrectAddressAction extends ListApartments {
 
 	private RawConsumersDataSource consumersDataSource;
 	private CorrectionsService correctionsService;
-	private SpRegistryRecordService recordService;
+	private RegistryRecordService recordService;
 	private ServiceTypeService serviceTypeService;
 	private ClassToTypeRegistry typeRegistry;
 
@@ -160,7 +160,7 @@ public class CorrectAddressAction extends ListApartments {
 		this.correctionsService = correctionsService;
 	}
 
-	public void setRecordService(SpRegistryRecordService recordService) {
+	public void setRecordService(RegistryRecordService recordService) {
 		this.recordService = recordService;
 	}
 

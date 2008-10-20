@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Collection;
 
-public interface SpRegistryService {
+public interface RegistryService {
 
 	/**
 	 * Create SpRegistry

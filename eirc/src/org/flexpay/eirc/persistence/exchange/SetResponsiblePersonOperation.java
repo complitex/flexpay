@@ -10,6 +10,7 @@ import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.*;
+import org.flexpay.eirc.persistence.exchange.conditions.AccountPersonChangeCondition;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.ImportUtil;
@@ -47,39 +48,44 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		}
 
 		// find consumer and set FIO here
-		Consumer consumer = (Consumer) record.getConsumer();
+		Consumer consumer = record.getConsumer();
 		ConsumerInfo info = consumer.getConsumerInfo();
 
 		List<String> fields = RegistryUtil.parseFIO(newValue);
-		String fName = fields.get(0);
-		String mName = fields.get(1);
-		String lName = fields.get(2);
+		String lName = fields.get(0);
+		String fName = fields.get(1);
+		String mName = fields.get(2);
 
 		info.setFirstName(fName);
 		info.setMiddleName(mName);
 		info.setLastName(lName);
 		factory.getConsumerInfoService().save(info);
 
+		log.debug("Updated consumer info first-middle-last names");
+
 		EircAccountService accountService = factory.getAccountService();
-		EircAccount account = accountService.readFull(consumer.getEircAccountStub());
-		if (account == null) {
-			throw new IllegalStateException("EIRC account not found for consumer: " + consumer);
+		EircAccount eircAccount = accountService.readFull(consumer.getEircAccountStub());
+		if (eircAccount == null) {
+			throw new IllegalStateException("EIRC account not found for consumer #" + consumer.getId());
 		}
 
 		// setup consumers responsible person
 		Person person = findResponsiblePerson(record, fName, mName, lName);
-		setupResponsiblePerson(info, person, account);
-		saveConsumers(account, info);
+		setupResponsiblePerson(info, person, eircAccount);
+		saveConsumers(eircAccount, info);
+
+		log.debug("Set responsible person: " + person);
 
 		// check if need to setup eirc account responsible person
-		if (info.equals(account.getConsumerInfo())) {
-			account.setPerson(person);
-			saveAccount(account);
+		AccountPersonChangeCondition condition = factory.getConditionsFactory().getAccountPersonChangeCondition();
+		if (condition.needUpdatePerson(eircAccount, consumer)) {
+			eircAccount.setPerson(person);
+			saveAccount(eircAccount);
 		}
 
 		// update corrections
 		DataSourceDescription sd = registry.getServiceProvider().getDataSourceDescription();
-		updateCorrections(info, record, account, sd);
+		updateCorrections(info, record, eircAccount, sd);
 	}
 
 	/**
@@ -154,13 +160,16 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		List<String> fields = RegistryUtil.parseFIO(newValue);
 
 		// setup fio
-		data.addNameValuePair(RawConsumerData.FIELD_FIRST_NAME, fields.get(0));
-		data.addNameValuePair(RawConsumerData.FIELD_MIDDLE_NAME, fields.get(1));
-		data.addNameValuePair(RawConsumerData.FIELD_LAST_NAME, fields.get(2));
+		data.addNameValuePair(RawConsumerData.FIELD_FIRST_NAME, fields.get(1));
+		data.addNameValuePair(RawConsumerData.FIELD_MIDDLE_NAME, fields.get(2));
+		data.addNameValuePair(RawConsumerData.FIELD_LAST_NAME, fields.get(0));
 
 		CorrectionsService service = factory.getCorrectionsService();
 		for (Consumer consumer : account.getConsumers()) {
 			if (info.equals(consumer.getConsumerInfo())) {
+
+				// need to update corrections with a Full consumer info only as
+				// FIO is used only there
 
 				// update corrections (by internal service id)
 				String serviceCode = String.valueOf(consumer.getService().getId());
