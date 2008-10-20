@@ -10,8 +10,8 @@ import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import org.flexpay.eirc.service.SPService;
-import org.flexpay.eirc.service.SpRegistryRecordService;
-import org.flexpay.eirc.service.SpRegistryService;
+import org.flexpay.eirc.service.RegistryRecordService;
+import org.flexpay.eirc.service.RegistryService;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,9 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	protected ExchangeHelper exchangeHelper;
 	protected SPService spService;
 	@Autowired
-	protected SpRegistryRecordService registryRecordService;
+	protected RegistryRecordService registryRecordService;
 	@Autowired
-	protected SpRegistryService registryService;
+	protected RegistryService registryService;
 
 
 	@Autowired

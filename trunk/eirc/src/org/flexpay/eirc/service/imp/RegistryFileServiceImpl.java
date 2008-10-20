@@ -11,7 +11,7 @@ import org.flexpay.eirc.dao.RegistryFileDaoExt;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.service.SpFileService;
+import org.flexpay.eirc.service.RegistryFileService;
 import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @Transactional (readOnly = true)
-public class SpFileServiceImpl implements SpFileService {
+public class RegistryFileServiceImpl implements RegistryFileService {
 
 	@NonNls
 	private Logger log = Logger.getLogger(getClass());

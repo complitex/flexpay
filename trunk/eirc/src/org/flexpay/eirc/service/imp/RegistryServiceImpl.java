@@ -13,8 +13,8 @@ import org.flexpay.eirc.persistence.RegistryContainer;
 import org.flexpay.eirc.persistence.Organisation;
 import org.flexpay.eirc.persistence.filters.OrganisationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
-import org.flexpay.eirc.service.SpRegistryRecordService;
-import org.flexpay.eirc.service.SpRegistryService;
+import org.flexpay.eirc.service.RegistryRecordService;
+import org.flexpay.eirc.service.RegistryService;
 import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 @Transactional(readOnly = true)
-public class SpRegistryServiceImpl implements SpRegistryService {
+public class RegistryServiceImpl implements RegistryService {
 	private Logger log = Logger.getLogger(getClass());
 
 	private RegistryDao registryDao;
@@ -33,7 +33,7 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 	private RegistryContainerDao registryContainerDao;
 	private OrganisationDao organisationDao;
 
-	private SpRegistryRecordService spRegistryRecordService;
+	private RegistryRecordService registryRecordService;
 
 	/**
 	 * Create SpRegistry
@@ -84,7 +84,7 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 			}
 			return null;
 		}
-		registry.setErrorsNumber(spRegistryRecordService.getErrorsNumber(registry));
+		registry.setErrorsNumber(registryRecordService.getErrorsNumber(registry));
 
 		return registry;
 	}
@@ -178,8 +178,8 @@ public class SpRegistryServiceImpl implements SpRegistryService {
 		this.registryDaoExt = registryDaoExt;
 	}
 
-	public void setSpRegistryRecordService(SpRegistryRecordService spRegistryRecordService) {
-		this.spRegistryRecordService = spRegistryRecordService;
+	public void setSpRegistryRecordService(RegistryRecordService registryRecordService) {
+		this.registryRecordService = registryRecordService;
 	}
 
 	public void setOrganisationDao(OrganisationDao organisationDao) {

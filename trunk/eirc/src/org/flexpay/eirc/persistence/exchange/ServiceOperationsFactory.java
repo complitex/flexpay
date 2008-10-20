@@ -10,6 +10,7 @@ import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.dao.RegistryRecordDao;
 import org.flexpay.eirc.persistence.*;
+import org.flexpay.eirc.persistence.exchange.conditions.ConditionsFactory;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.service.importexport.ImportUtil;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class ServiceOperationsFactory {
 
-	private SpFileService spFileService;
+	private RegistryFileService registryFileService;
 	private SPService spService;
 	private EircAccountService accountService;
 	private ConsumerService consumerService;
@@ -29,6 +30,8 @@ public class ServiceOperationsFactory {
 	private OrganisationService organisationService;
 	private ReportPeriodService reportPeriodService;
 	private CorrectionsService correctionsService;
+
+	private ConditionsFactory conditionsFactory;
 
 	private ClassToTypeRegistry registry;
 	private ImportErrorsSupport errorsSupport;
@@ -189,12 +192,12 @@ public class ServiceOperationsFactory {
 		return dataSource;
 	}
 
-	public SpFileService getSpFileService() {
-		return spFileService;
+	public RegistryFileService getSpFileService() {
+		return registryFileService;
 	}
 
-	public void setSpFileService(SpFileService spFileService) {
-		this.spFileService = spFileService;
+	public void setSpFileService(RegistryFileService registryFileService) {
+		this.registryFileService = registryFileService;
 	}
 
 	public SPService getSpService() {
@@ -287,5 +290,13 @@ public class ServiceOperationsFactory {
 
 	public void setImportUtil(ImportUtil importUtil) {
 		this.importUtil = importUtil;
+	}
+
+	public ConditionsFactory getConditionsFactory() {
+		return conditionsFactory;
+	}
+
+	public void setConditionsFactory(ConditionsFactory conditionsFactory) {
+		this.conditionsFactory = conditionsFactory;
 	}
 }

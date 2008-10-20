@@ -34,7 +34,7 @@ public class RegistryRecord extends DomainObject {
 	private BigDecimal amount;
 	private List<RegistryRecordContainer> containers = Collections.emptyList();
 
-	private AbstractConsumer consumer;
+	private Consumer consumer;
 	private ImportError importError;
 	private Apartment apartment;
 	private Person person;
@@ -273,7 +273,7 @@ public class RegistryRecord extends DomainObject {
 	 *
 	 * @return Value for property 'account'.
 	 */
-	public AbstractConsumer getConsumer() {
+	public Consumer getConsumer() {
 		return consumer;
 	}
 
@@ -282,7 +282,7 @@ public class RegistryRecord extends DomainObject {
 	 *
 	 * @param consumer Value to set for property 'account'.
 	 */
-	public void setConsumer(AbstractConsumer consumer) {
+	public void setConsumer(Consumer consumer) {
 		this.consumer = consumer;
 	}
 

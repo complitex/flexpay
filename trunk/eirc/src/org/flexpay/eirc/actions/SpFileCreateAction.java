@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.SpFile;
-import org.flexpay.eirc.service.SpFileService;
+import org.flexpay.eirc.service.RegistryFileService;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -15,7 +15,7 @@ public class SpFileCreateAction extends FPActionSupport {
 	private File upload;
 	private String uploadFileName;
 
-	private SpFileService spFileService;
+	private RegistryFileService registryFileService;
 	private boolean isUploaded = false;
 
 	private SpFile spFile;
@@ -35,7 +35,7 @@ public class SpFileCreateAction extends FPActionSupport {
 						log.debug("Creating RegistryFile: " + spFile);
 					}
 
-					spFileService.create(spFile);
+					registryFileService.create(spFile);
 				} catch (FlexPayException e) {
 					spFile.getRequestFile().delete();
 					throw e;
@@ -77,8 +77,8 @@ public class SpFileCreateAction extends FPActionSupport {
 		this.uploadFileName = uploadFileName;
 	}
 
-	public void setSpFileService(SpFileService spFileService) {
-		this.spFileService = spFileService;
+	public void setSpFileService(RegistryFileService registryFileService) {
+		this.registryFileService = registryFileService;
 	}
 
 	public boolean isUploaded() {

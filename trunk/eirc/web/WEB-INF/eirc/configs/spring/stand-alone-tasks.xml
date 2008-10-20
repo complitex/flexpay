@@ -9,9 +9,9 @@
 	<bean class="org.flexpay.eirc.util.standalone.RunSpFileProcessing" id="spFileProcessingRunner"
 		  p:fileAction-ref="spFileAction"
 		  p:fileCreateAction-ref="spFileCreateAction"
-		  p:fileService-ref="spFileService"
+		  p:fileService-ref="registryFileService"
 		  p:spRegistryDao-ref="spRegistryDao"
-		  p:registryService-ref="spRegistryService"
+		  p:registryService-ref="registryService"
 		  p:registryProcessor-ref="registryProcessor" />
 
 	<bean class="org.flexpay.common.util.standalone.StandaloneTasksHolder"

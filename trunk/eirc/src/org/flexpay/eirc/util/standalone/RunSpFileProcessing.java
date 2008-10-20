@@ -12,8 +12,8 @@ import org.flexpay.eirc.actions.SpFileCreateAction;
 import org.flexpay.eirc.dao.RegistryDao;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.service.SpFileService;
-import org.flexpay.eirc.service.SpRegistryService;
+import org.flexpay.eirc.service.RegistryFileService;
+import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.jetbrains.annotations.NonNls;
 
@@ -31,8 +31,8 @@ public class RunSpFileProcessing implements StandaloneTask {
 	private RegistryProcessor registryProcessor;
 	private SpFileCreateAction fileCreateAction;
 	private SpFileAction fileAction;
-	private SpFileService fileService;
-	private SpRegistryService registryService;
+	private RegistryFileService fileService;
+	private RegistryService registryService;
 	private RegistryDao registryDao;
 
 	public void setRegistryProcessor(RegistryProcessor registryProcessor) {
@@ -48,7 +48,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 		this.fileAction = fileAction;
 	}
 
-	public void setFileService(SpFileService fileService) {
+	public void setFileService(RegistryFileService fileService) {
 		this.fileService = fileService;
 	}
 
@@ -56,7 +56,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 		this.registryDao = registryDao;
 	}
 
-	public void setRegistryService(SpRegistryService registryService) {
+	public void setRegistryService(RegistryService registryService) {
 		this.registryService = registryService;
 	}
 

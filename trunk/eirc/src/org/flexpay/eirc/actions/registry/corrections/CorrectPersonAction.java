@@ -7,7 +7,7 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.service.SpRegistryRecordService;
+import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +19,7 @@ public class CorrectPersonAction extends ListPersons {
 
 	private RawConsumersDataSource consumersDataSource;
 	private CorrectionsService correctionsService;
-	private SpRegistryRecordService recordService;
+	private RegistryRecordService recordService;
 
 	/**
 	 * Perform action execution.
@@ -99,7 +99,7 @@ public class CorrectPersonAction extends ListPersons {
 		this.correctionsService = correctionsService;
 	}
 
-	public void setRecordService(SpRegistryRecordService recordService) {
+	public void setRecordService(RegistryRecordService recordService) {
 		this.recordService = recordService;
 	}
 }

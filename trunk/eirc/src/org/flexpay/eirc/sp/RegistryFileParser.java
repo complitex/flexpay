@@ -37,8 +37,8 @@ public class RegistryFileParser {
 
 	private static final int MAX_CONTAINER_SIZE = 2048;
 
-	private SpRegistryService registryService;
-	private SpRegistryRecordService spRegistryRecordService;
+	private RegistryService registryService;
+	private RegistryRecordService registryRecordService;
 	private SpRegistryTypeService registryTypeService;
 	private RegistryArchiveStatusService registryArchiveStatusService;
 	private SessionUtils sessionUtils;
@@ -358,7 +358,7 @@ public class RegistryFileParser {
 			throw new RegistryFormatException("Record parse error");
 		}
 
-		spRegistryRecordService.create(record);
+		registryRecordService.create(record);
 	}
 
 	private List<RegistryRecordContainer> parseContainers(RegistryRecord record, String containersData)
@@ -432,15 +432,15 @@ public class RegistryFileParser {
 	/**
 	 * @param registryService the spRegistryService to set
 	 */
-	public void setRegistryService(SpRegistryService registryService) {
+	public void setRegistryService(RegistryService registryService) {
 		this.registryService = registryService;
 	}
 
 	/**
-	 * @param spRegistryRecordService the spRegistryRecordService to set
+	 * @param registryRecordService the spRegistryRecordService to set
 	 */
-	public void setSpRegistryRecordService(SpRegistryRecordService spRegistryRecordService) {
-		this.spRegistryRecordService = spRegistryRecordService;
+	public void setSpRegistryRecordService(RegistryRecordService registryRecordService) {
+		this.registryRecordService = registryRecordService;
 	}
 
 	/**

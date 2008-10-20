@@ -6,7 +6,7 @@ import static org.flexpay.common.util.CollectionUtils.ar;
 import org.flexpay.eirc.dao.RegistryDao;
 import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.service.SpFileService;
+import org.flexpay.eirc.service.RegistryFileService;
 import org.jetbrains.annotations.NonNls;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -27,7 +27,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 
 	private ProcessManager processManager;
 	@Autowired
-	protected SpFileService spFileService;
+	protected RegistryFileService registryFileService;
 
 	@Autowired
 	public void setProcessManager(@Qualifier ("processManager") ProcessManager processManager) {
@@ -113,7 +113,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 
 			processManager.join(fileAction.getProcessId());
 
-			assertTrue("File is not loaded", spFileService.isLoaded(stub(newFile)));
+			assertTrue("File is not loaded", registryFileService.isLoaded(stub(newFile)));
 			log.debug("Uploaded!");
 		} catch (Throwable e) {
 			deleteRecords(newFile);

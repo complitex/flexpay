@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 public interface CorrectionsService {
 
@@ -37,12 +38,20 @@ public interface CorrectionsService {
 	boolean existsCorrection(String externalId, Class<? extends DomainObject> cls, DataSourceDescription sourceDescription);
 
 	/**
-	 * Create stub for new data correction
+	 * Create stub for new data correction or get existing one
 	 *
 	 * @param externalId External object id
 	 * @param obj DomainObject
 	 * @param sourceDescription Data source description
 	 * @return stub for a new DataCorrection
 	 */
+	@NotNull
 	DataCorrection getStub(String externalId, DomainObject obj, DataSourceDescription sourceDescription);
+
+	/**
+	 * Delete correction
+	 * 
+	 * @param correction Data correction to delete
+	 */
+	void delete(@NotNull DataCorrection correction);
 }

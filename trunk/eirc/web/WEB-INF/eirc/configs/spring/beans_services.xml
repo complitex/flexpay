@@ -6,31 +6,31 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="spFileService"
-		  class="org.flexpay.eirc.service.imp.SpFileServiceImpl"
+	<bean id="registryFileService"
+		  class="org.flexpay.eirc.service.imp.RegistryFileServiceImpl"
 		  p:spFileDao-ref="spFileDao"
 		  p:registryRecordDao-ref="spRegistryRecordDao"
 		  p:registryRecordDaoExt-ref="spRegistryRecordDaoExt"
 		  p:registryFileDaoExt-ref="registryFileDaoExt" />
 
-	<bean id="spRegistryService"
-		  class="org.flexpay.eirc.service.imp.SpRegistryServiceImpl">
+	<bean id="registryService"
+		  class="org.flexpay.eirc.service.imp.RegistryServiceImpl">
 		<property name="spRegistryDao" ref="spRegistryDao" />
 		<property name="registryDaoExt" ref="spRegistryDaoExt" />
-		<property name="spRegistryRecordService" ref="spRegistryRecordService" />
+		<property name="spRegistryRecordService" ref="registryRecordService" />
 		<property name="organisationDao" ref="organisationDao" />
 		<property name="registryContainerDao" ref="registryContainerDao" />
 	</bean>
 
-	<bean id="spRegistryRecordService"
-		  class="org.flexpay.eirc.service.imp.SpRegistryRecordServiceImpl">
+	<bean id="registryRecordService"
+		  class="org.flexpay.eirc.service.imp.RegistryRecordServiceImpl">
 		<property name="spRegistryRecordDao" ref="spRegistryRecordDao" />
 		<property name="spRegistryRecordDaoExt" ref="spRegistryRecordDaoExt" />
 		<property name="recordContainerDao" ref="registryRecordContainerDao" />
 		<property name="workflowManager" ref="registryRecordWorkflowManager" />
 	</bean>
 
-	<bean id="spRegistryTypeService"
+	<bean id="registryTypeService"
 		  class="org.flexpay.eirc.service.imp.RegistryTypeServiceImpl">
 		<property name="spRegistryTypeDao" ref="spRegistryTypeDao" />
 	</bean>
@@ -57,12 +57,12 @@
 		<property name="registryWorkflowManager" ref="registryWorkflowManager" />
 	</bean>
 
-	<bean id="spFileParser" class="org.flexpay.eirc.sp.RegistryFileParser"
+	<bean id="registryFileParser" class="org.flexpay.eirc.sp.RegistryFileParser"
 		  p:consumerService-ref="consumerService"
-		  p:registryService-ref="spRegistryService"
+		  p:registryService-ref="registryService"
 		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
-		  p:spRegistryRecordService-ref="spRegistryRecordService"
-		  p:registryTypeService-ref="spRegistryTypeService"
+		  p:spRegistryRecordService-ref="registryRecordService"
+		  p:registryTypeService-ref="registryTypeService"
 		  p:organisationService-ref="organisationService"
 		  p:spService-ref="spService"
 		  p:registryWorkflowManager-ref="registryWorkflowManager"
@@ -77,13 +77,14 @@
 
 	<bean id="serviceOperationsFactory"
 		  class="org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory"
+		  p:conditionsFactory-ref="conditionsFactory"
 		  p:importErrorService-ref="importErrorServiceEirc"
 		  p:registry-ref="typeRegistryEirc"
 		  p:errorsSupport-ref="importErrorSupport"
 		  p:correctionsService-ref="correctionsServiceEirc"
 		  p:registryRecordDao-ref="spRegistryRecordDao"
 		  p:spService-ref="spService"
-		  p:spFileService-ref="spFileService"
+		  p:spFileService-ref="registryFileService"
 		  p:quittanceService-ref="quittanceService"
 		  p:organisationService-ref="organisationService"
 		  p:reportPeriodService-ref="reportPeriodService"
@@ -133,12 +134,12 @@
 		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor"
 		  p:processorTx-ref="serviceProviderFileProcessorTx"
 		  p:serviceOperationsFactory-ref="serviceOperationsFactory"
-		  p:spFileService-ref="spFileService"
-		  p:spRegistryService-ref="spRegistryService"
+		  p:registryFileService-ref="registryFileService"
+		  p:spRegistryService-ref="registryService"
 		  p:importService-ref="importServiceEirc"
 		  p:rawConsumersDataSource-ref="consumersDataSource"
 		  p:errorsSupport-ref="importErrorSupport"
-		  p:registryRecordService-ref="spRegistryRecordService"
+		  p:registryRecordService-ref="registryRecordService"
 		  p:classToTypeRegistry-ref="typeRegistryEirc"
 		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
 		  p:registryWorkflowManager-ref="registryWorkflowManager" />

@@ -20,9 +20,9 @@ import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
-import org.flexpay.eirc.service.SpFileService;
-import org.flexpay.eirc.service.SpRegistryRecordService;
-import org.flexpay.eirc.service.SpRegistryService;
+import org.flexpay.eirc.service.RegistryFileService;
+import org.flexpay.eirc.service.RegistryRecordService;
+import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.importexport.EircImportService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.jetbrains.annotations.NotNull;
@@ -41,9 +41,9 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 	private ServiceOperationsFactory serviceOperationsFactory;
 
-	private SpFileService spFileService;
-	private SpRegistryService spRegistryService;
-	private SpRegistryRecordService registryRecordService;
+	private RegistryFileService registryFileService;
+	private RegistryService registryService;
+	private RegistryRecordService registryRecordService;
 
 	private EircImportService importService;
 
@@ -67,7 +67,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 			log.info("Starting processing file");
 		}
 
-		List<SpRegistry> registries = spFileService.getRegistries(file);
+		List<SpRegistry> registries = registryFileService.getRegistries(file);
 		if (log.isInfoEnabled() && registries.isEmpty()) {
 			log.info("File does not have any registries");
 		}
@@ -133,7 +133,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	private void processRegistry(SpRegistry registry, Page<RegistryRecord> pager, Long[] minMaxIds) throws Exception {
 
 		log.info("Fetching for records: " + pager);
-		List<RegistryRecord> records = spFileService.getRecordsForProcessing(stub(registry), pager, minMaxIds);
+		List<RegistryRecord> records = registryFileService.getRecordsForProcessing(stub(registry), pager, minMaxIds);
 		for (RegistryRecord record : records) {
 			try {
 				processorTx.processRecord(registry, record);
@@ -178,7 +178,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	}
 
 	public void endRegistryProcessing(SpRegistry registry) throws TransitionNotAllowed {
-		registry = spRegistryService.read(stub(registry));
+		registry = registryService.read(stub(registry));
 		registryWorkflowManager.setNextSuccessStatus(registry);
 		registryWorkflowManager.endProcessing(registry);
 	}
@@ -269,12 +269,12 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		this.serviceOperationsFactory = serviceOperationsFactory;
 	}
 
-	public void setSpRegistryService(SpRegistryService spRegistryService) {
-		this.spRegistryService = spRegistryService;
+	public void setSpRegistryService(RegistryService registryService) {
+		this.registryService = registryService;
 	}
 
-	public void setSpFileService(SpFileService spFileService) {
-		this.spFileService = spFileService;
+	public void setRegistryFileService(RegistryFileService registryFileService) {
+		this.registryFileService = registryFileService;
 	}
 
 	public void setImportService(EircImportService importService) {
@@ -293,7 +293,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		this.registryWorkflowManager = registryWorkflowManager;
 	}
 
-	public void setRegistryRecordService(SpRegistryRecordService registryRecordService) {
+	public void setRegistryRecordService(RegistryRecordService registryRecordService) {
 		this.registryRecordService = registryRecordService;
 	}
 

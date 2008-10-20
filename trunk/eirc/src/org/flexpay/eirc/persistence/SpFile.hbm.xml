@@ -312,10 +312,13 @@
 		from RegistryRecord rr
 			inner join fetch rr.spRegistry r
 			left join fetch rr.consumer c
+			left join fetch c.consumerInfo
+			left join fetch c.service srv
+			left join fetch srv.serviceType
 			inner join fetch r.registryStatus rs
 			inner join fetch rr.recordStatus rrs
 			left join fetch rr.importError
-			left join fetch rr.containers 
+			left join fetch rr.containers
 		where r.id=? and rr.id>=? and rr.id<=? and rrs.code NOT IN (2, 4)
 	]]></query>
 

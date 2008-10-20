@@ -11,7 +11,7 @@ import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
 import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.service.ServiceTypeService;
-import org.flexpay.eirc.service.SpRegistryRecordService;
+import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +23,7 @@ public class CorrectStreetAction extends StreetsList {
 
 	private RawConsumersDataSource consumersDataSource;
 	private CorrectionsService correctionsService;
-	private SpRegistryRecordService recordService;
+	private RegistryRecordService recordService;
 	private ServiceTypeService serviceTypeService;
 
 	@NotNull
@@ -102,7 +102,7 @@ public class CorrectStreetAction extends StreetsList {
 		this.correctionsService = correctionsService;
 	}
 
-	public void setRecordService(SpRegistryRecordService recordService) {
+	public void setRecordService(RegistryRecordService recordService) {
 		this.recordService = recordService;
 	}
 

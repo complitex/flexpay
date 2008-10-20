@@ -791,38 +791,6 @@
         <inspection_tool class="HibernateMappingDatasourceDomInspection" level="ERROR" enabled="false" />
         <inspection_tool class="HibernateConfigDomInspection" level="ERROR" enabled="false" />
         <inspection_tool class="HibernateMappingDomInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="AbstractBeanReferencesInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="AutowiredDependenciesInspection" level="WARNING" enabled="false" />
-        <inspection_tool class="SpringJavaAutowiringInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="SpringBeanConstructorArgInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="DuplicatedBeanNamesInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="SpringInjectionValueConsistencyInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="InjectionValueTypeInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="SpringBeanLookupMethodInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="SpringReplacedMethodsInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="SpringRequiredAnnotationInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="SpringRequiredPropertyInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="SpringBeanAutowiringInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="SpringBeanDepedencyCheckInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="SpringFactoryMethodInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="SpringBeanInstantiationInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="SpringBeanNameConventionInspection" level="WARNING" enabled="false" />
-        <inspection_tool class="SpringFacetInspection" level="WARNING" enabled="false" />
-        <inspection_tool class="SpringInjectionValueStyleInspection" level="WARNING" enabled="false" />
-        <inspection_tool class="SpringJamErrorInspection" level="WARNING" enabled="false" />
-        <inspection_tool class="SpringModelInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="SpringScopesInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="UnparsedCustomBeanInspection" level="WARNING" enabled="false" />
-        <inspection_tool class="UtilSchemaInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="ArgNamesErrorsInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="ArgNamesWarningsInspection" level="WARNING" enabled="false" />
-        <inspection_tool class="AroundAdviceStyleInspection" level="WARNING" enabled="false" />
-        <inspection_tool class="DeclareParentsInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="PointcutMethodStyleInspection" level="WARNING" enabled="false" />
-        <inspection_tool class="SpringAopErrorsInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="SpringAopWarningsInspection" level="WARNING" enabled="false" />
-        <inspection_tool class="SpringOsgiServiceCommonInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="SpringOsgiElementsInconsistencyInspection" level="ERROR" enabled="false" />
       </profile>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Project Default" />
@@ -1382,28 +1350,35 @@
     <library name="Struts2">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/ognl-2.6.11.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-sitegraph-plugin-2.0.11.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-pell-multipart-plugin-2.0.11.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-tiles-plugin-2.0.11.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/freemarker-2.3.8.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-codebehind-plugin-2.0.11.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-struts1-plugin-2.0.11.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/tiles-core-2.0.4.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts-core-1.3.5.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/tiles-jsp-2.0.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-core-2.0.11.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-plexus-plugin-2.0.11.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-spring-plugin-2.0.11.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-jasperreports-plugin-2.0.11.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/oro-2.0.8.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/xwork-2.0.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-config-browser-plugin-2.0.11.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-sitemesh-plugin-2.0.11.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/tiles-api-2.0.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-jfreechart-plugin-2.0.11.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-pell-multipart-plugin-2.0.11.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-jasperreports-plugin-2.0.11.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-sitegraph-plugin-2.0.11.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-plexus-plugin-2.0.11.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-core-2.0.11.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/xwork-2.0.5.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-sitemesh-plugin-2.0.11.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-config-browser-plugin-2.0.11.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-struts1-plugin-2.0.11.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-spring-plugin-2.0.11.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-codebehind-plugin-2.0.11.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-jfreechart-plugin-2.0.11.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-tiles-plugin-2.0.11.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/struts2/struts2-jsf-plugin-2.0.11.2.jar!/" />
       </CLASSES>
-      <JAVADOC />
-      <SOURCES />
+      <JAVADOC>
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/struts-2.0.11.2/docs/struts2-core/apidocs" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/struts-2.0.11.2/docs/xwork-apidocs" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/xwork-2.0.4/src/java" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/struts-2.0.11.2/src/core/src/main/java" />
+      </SOURCES>
     </library>
     <library name="JUnit">
       <CLASSES>

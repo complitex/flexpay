@@ -13,7 +13,7 @@ import org.flexpay.eirc.persistence.RegistryRecordContainer;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
-import org.flexpay.eirc.service.SpRegistryRecordService;
+import org.flexpay.eirc.service.RegistryRecordService;
 import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 @Transactional(readOnly = true)
-public class SpRegistryRecordServiceImpl implements SpRegistryRecordService {
+public class RegistryRecordServiceImpl implements RegistryRecordService {
 	private final Logger log = Logger.getLogger(getClass());
 
 	private RegistryRecordContainerDao recordContainerDao;

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public interface SpFileService {
+public interface RegistryFileService {
 
 	/**
 	 * Create SpFile

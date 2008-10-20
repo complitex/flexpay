@@ -1,6 +1,7 @@
 package org.flexpay.eirc.persistence.exchange;
 
 import org.flexpay.common.util.DateUtil;
+import org.apache.commons.lang.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,10 +22,21 @@ public abstract class AbstractChangePersonalAccountOperation extends ContainerOp
 			throw new InvalidContainerException("Invalid change personal account operation data");
 		}
 
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyy");
 		try {
-			changeApplyingDate = simpleDateFormat.parse(datum.get(1));
-			if (DateUtil.now().after(changeApplyingDate)) {
+			String dateStr = datum.get(1);
+			if (StringUtils.isBlank(dateStr)) {
+				changeApplyingDate = DateUtil.now();
+			} else if (dateStr.length() == "ddMMyyyy".length()) {
+				changeApplyingDate = new SimpleDateFormat("ddMMyyyy").parse(dateStr);
+			} else if (dateStr.length() == "ddMMyyyyHHmmss".length()) {
+				changeApplyingDate = new SimpleDateFormat("ddMMyyyyHHmmss").parse(dateStr);
+			} else {
+				changeApplyingDate = DateUtil.now();
+			}
+			if (log.isDebugEnabled()) {
+				log.debug("Date to apply change: " + changeApplyingDate);
+			}
+			if (DateUtil.now().before(changeApplyingDate)) {
 				throw new InvalidContainerException("Someone invented time machine? Specified date is in a future: " + datum.get(1));
 			}
 		} catch (ParseException e) {

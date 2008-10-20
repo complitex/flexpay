@@ -6,7 +6,7 @@ import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.eirc.persistence.SpFile;
-import org.flexpay.eirc.service.SpFileService;
+import org.flexpay.eirc.service.RegistryFileService;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import static org.junit.Assert.assertEquals;
@@ -27,7 +27,7 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 	private Logger log = Logger.getLogger(getClass());
 
 	@Autowired
-	protected SpFileService fileService;
+	protected RegistryFileService fileService;
 	protected SpFileCreateAction fileCreateAction;
 
 	@Autowired

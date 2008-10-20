@@ -5,6 +5,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
 import org.flexpay.eirc.persistence.SpRegistry;
@@ -12,8 +13,8 @@ import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import org.flexpay.eirc.service.ServiceTypeService;
-import org.flexpay.eirc.service.SpRegistryRecordService;
-import org.flexpay.eirc.service.SpRegistryService;
+import org.flexpay.eirc.service.RegistryRecordService;
+import org.flexpay.eirc.service.RegistryService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -21,9 +22,9 @@ import java.util.List;
 
 public class ShowRegistryAction extends FPActionSupport {
 
-	private SpRegistryService registryService;
+	private RegistryService registryService;
 	private ServiceTypeService serviceTypeService;
-	private SpRegistryRecordService registryRecordService;
+	private RegistryRecordService registryRecordService;
 	private ClassToTypeRegistry classToTypeRegistry;
 
 	private SpRegistry registry = new SpRegistry();
@@ -109,11 +110,11 @@ public class ShowRegistryAction extends FPActionSupport {
 		this.records = records;
 	}
 
-	public void setRegistryService(SpRegistryService registryService) {
+	public void setRegistryService(RegistryService registryService) {
 		this.registryService = registryService;
 	}
 
-	public void setRegistryRecordService(SpRegistryRecordService registryRecordService) {
+	public void setRegistryRecordService(RegistryRecordService registryRecordService) {
 		this.registryRecordService = registryRecordService;
 	}
 

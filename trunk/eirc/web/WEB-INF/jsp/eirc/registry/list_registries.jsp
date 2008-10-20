@@ -1,5 +1,7 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
+<s:actionerror />
+
 <s:form method="post" id="fregistries">
 	<%@include file="../filters/sender_organisation_filter.jsp" %>
 	&nbsp;&nbsp;
