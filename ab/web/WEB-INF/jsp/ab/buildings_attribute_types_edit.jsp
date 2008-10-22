@@ -2,7 +2,7 @@
 
 <s:actionerror />
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<s:form action="buildingAttributeTypeEditAction">
+	<s:form action="buildingAttributeTypeEdit">
 		<s:hidden name="buildingAttributeType.id" />
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>

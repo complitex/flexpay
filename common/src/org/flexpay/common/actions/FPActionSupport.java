@@ -53,6 +53,10 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 		return submitted != null;
 	}
 
+	public boolean isNotSubmit() {
+		return !isSubmit();
+	}
+
 	/**
 	 * @return Execution result
 	 * @throws Exception if failure occurs

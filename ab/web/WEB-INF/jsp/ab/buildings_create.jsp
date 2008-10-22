@@ -1,120 +1,44 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 
-<s:if test="errorMessage != null">
-<ul>
-	<li><span class="errorMessage"><s:text name="%{filterError}" /></span></li>
-</ul>
-</s:if>
+<s:actionerror />
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
-<form id="fobjects" method="post" action="<s:url value="/dicts/buildingsCreateAction.action" includeParams="none" />">
-<s:hidden name="buildingId" value="%{buildingId}" />
+	<form id="fobjects" method="post"
+		  action="<s:url value="/dicts/buildingsCreate.action" includeParams="none" />">
+		<s:hidden name="buildingId" value="%{buildingId}" />
 
 		<tr>
-			<td colspan="4">
-				<table width="100%">
-					<col width="16%" align="center">
-					<col width="16%" align="center">
-					<col width="16%" align="right">
-					<col width="16%" align="left">
-					<col width="18%" align="right">
-					<col width="18%" align="left">
-			
-					<tr>
-						<td class="filter"><s:text name="ab.country"/></td>
-						<td>
-							<select name="countryFilter.selectedId" onchange="this.form.submit()" class="form-select" <s:if test="district != null" >disabled="1"</s:if>>
-  								<s:iterator value="countryFilter.names" >
-									<option  value="<s:property value="translatable.id"/>"<s:if test="%{translatable.id == countryFilter.selectedId}"> selected</s:if>><s:property value="name"/>
-									</option>
-  								</s:iterator>
-							</select>
-						</td>
-						<td class="filter"><s:text name="ab.region"/></td>
-						<td>
-							<select name="regionFilter.selectedId" onchange="this.form.submit()" class="form-select" <s:if test="district != null" >disabled="1"</s:if>><s:iterator value="regionFilter.names">
-								<option value="<s:property value="translatable.object.id"/>"<s:if test="%{translatable.object.id == regionFilter.selectedId}"> selected</s:if>><s:property value="name"/></option></s:iterator>
-							</select>
-						</td>
-						<td class="filter"><s:text name="ab.town"/></td>
-						<td>
-							<select name="townFilter.selectedId" onchange="this.form.submit()" class="form-select" <s:if test="district != null" >disabled="1"</s:if>><s:iterator value="townFilter.names">
-								<option value="<s:property value="translatable.object.id"/>"<s:if test="%{translatable.object.id == townFilter.selectedId}"> selected</s:if>><s:property value="name"/></option></s:iterator>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="filter"><s:text name="ab.street"/></td>
-						<td><%@include file="filters/street_filter.jsp" %></td>
-						<td colspan="4">&nbsp;</td>
-					</tr>
-				</table>
+			<td colspan="2">
+				<%@ include file="filters/groups/country_region_town_streetname.jsp" %>
 			</td>
 		</tr>
-		
-  <tr valign="middle" class="cols_1">
-    <td class="col">
-      <s:text name="ab.district" />
-    </td>
-    <td class="col" align="center">
-      <s:if test="district != null" >
-        <s:property value="%{getTranslation(district.currentName.translations).name}" />
-        <s:hidden name="districtId" value="%{district.id}" />
-      </s:if>
-      <s:if test="district == null" >
-        <s:select name="districtId" list="districtList" listKey="id" listValue="%{getTranslation(currentName.translations).name}" />
-      </s:if>  
-    </td>
-  </tr>
-  
-  <s:iterator value="buildings.buildingAttributes">
-  <tr valign="middle" class="cols_1">
-    <td class="col">
-      <s:property value="%{getTranslation(buildingAttributeType.translations).name}" />
-    </td>
-    <td class="col" align="center">
-      <s:textfield name="attributeMap['%{buildingAttributeType.type}'].value" value="" />
-    </td>
-  </tr>
-  </s:iterator>
-  		
-  
-  <tr>
-    <td>
 
-	  <input type="submit"
-	         class="btn-exit"
-	         onclick="$('fobjects').action='<s:url action="buildingsCreateAction" includeParams="none" />?action=create';$('fobjects').submit()"
-	         value="<s:text name="ab.create"/>"/>
-    </td>
-  </tr>
-  
-  <tr>
-    <td>
-      <ul>
-        <s:if test="districtError != null">
-	      <li><span class="errorMessage"><s:text name="%{districtError}" /></span></li>
-	    </s:if>
-	    <s:if test="streetError != null">
-	      <li><span class="errorMessage"><s:text name="%{streetError}" /></span></li>
-	    </s:if>
-	    <s:if test="buildingAttrError != null">
-	      <li><span class="errorMessage"><s:text name="%{buildingAttrError}" /></span></li>
-	    </s:if>
-	    <s:if test="creatingError != null">
-	      <li><span class="errorMessage"><s:text name="%{creatingError}" /></span></li>
-	    </s:if>
-      </ul>
-    </td>
-  </tr>
-  
-  
+		<tr valign="middle" class="cols_1">
+			<td class="col">
+				<s:text name="ab.district" />
+			</td>
+			<td class="col">
+				<%@ include file="filters/district_filter.jsp" %>
+			</td>
+		</tr>
+
+		<s:iterator value="attributeMap">
+			<tr valign="middle" class="cols_1">
+				<td class="col"><s:property value="%{getTypeName(key)}" /></td>
+				<td class="col"><s:textfield name="attributeMap[%{key}]" value="%{value}" /></td>
+			</tr>
+		</s:iterator>
 
 
+		<tr>
+			<td colspan="2">
+				<input type="submit" class="btn-exit" name="submitted"
+					   value="<s:text name="common.save"/>" />
+			</td>
+		</tr>
 
-
-</form>
+	</form>
 
 </table>

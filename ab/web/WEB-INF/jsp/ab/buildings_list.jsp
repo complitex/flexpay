@@ -15,10 +15,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-				       onclick="$('fobjects').action='<s:url action="buildingsDeleteAction" />';$('fobjects').submit()"
+				       onclick="$('fobjects').action='<s:url action="buildingsDelete" />';$('fobjects').submit();"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-				       onclick="window.location='<s:url action="buildingsCreateAction"/>'"
+				       onclick="window.location='<s:url action="buildingsCreate"/>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
@@ -26,7 +26,7 @@
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%"><input type="checkbox"
-											 onchange="FP.setCheckboxes(this.checked, 'objectIds')">
+											 onchange="FP.setCheckboxes(this.checked, 'objectIds');">
 			</td>
 			<td class="th" ><s:text name="ab.building"/></td>
 			<td class="th">&nbsp;</td>
@@ -45,9 +45,7 @@
 					</a>
 				</td>
 				<td class="col">
-					<a href="<s:url value="/dicts/buildingsEditAction.action?buildings.id=%{id}"/>">
-						<!-- <img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
-						 title="<s:text name="common.edit"/>" /> -->
+					<a href="<s:url value="/dicts/buildingsEdit.action?buildings.id=%{id}"/>">
 						<s:text name="common.edit"/> 
 					</a>
 				</td>
@@ -57,10 +55,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-				       onclick="$('fobjects').action='<s:url action="buildingsDeleteAction" />';$('fobjects').submit()"
+				       onclick="$('fobjects').action='<s:url action="buildingsDelete" />';$('fobjects').submit();"
 					   value="<s:text name="common.delete_selected"/>"/>
-				<input type="button" class="btn-exit"
-				       onclick="window.location='<s:url action="buildingsCreateAction"/>'"
+				<input type="submit" class="btn-exit"
+				       onclick="$('fobjects').action='<s:url action="buildingsCreate"/>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

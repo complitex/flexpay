@@ -151,8 +151,8 @@
 	</bean>
 
 	<bean id="streetSearchAjaxAction" scope="prototype"
-			  class="org.flexpay.ab.actions.street.StreetSearchAjaxAction"
-			  p:streetService-ref="streetService" />
+		  class="org.flexpay.ab.actions.street.StreetSearchAjaxAction"
+		  p:streetService-ref="streetService" />
 
 	<!-- Buildings -->
 	<bean id="listBuildings" scope="prototype"
@@ -166,10 +166,12 @@
 		<property name="parentService" ref="streetService" />
 		<property name="districtService" ref="districtService" />
 	</bean>
+
 	<bean id="buildingsEditAction" scope="prototype"
-		  class="org.flexpay.ab.actions.buildings.BuildingsEditAction">
-		<property name="buildingService" ref="buildingService" />
-	</bean>
+		  class="org.flexpay.ab.actions.buildings.BuildingsEditAction"
+		  p:buildingService-ref="buildingService"
+		  p:addressService-ref="addressService" />
+
 	<bean id="buildingsDeleteAction" scope="prototype"
 		  class="org.flexpay.ab.actions.buildings.BuildingsDeleteAction">
 		<property name="buildingService" ref="buildingService" />

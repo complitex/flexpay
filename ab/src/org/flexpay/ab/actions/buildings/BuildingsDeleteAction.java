@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class BuildingsDeleteAction extends FPActionSupport {
+
 	private BuildingService buildingService;
 
 	private List<Long> objectIds = Collections.emptyList();

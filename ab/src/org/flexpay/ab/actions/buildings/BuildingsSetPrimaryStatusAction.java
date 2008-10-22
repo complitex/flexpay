@@ -22,7 +22,7 @@ public class BuildingsSetPrimaryStatusAction extends FPActionSupport {
 			buildingService.update(current);
 		}
 
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class BuildingsSetPrimaryStatusAction extends FPActionSupport {
 	 */
 	@NotNull
 	protected String getErrorResult() {
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	/**

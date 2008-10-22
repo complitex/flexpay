@@ -45,7 +45,7 @@
 				<a href="<s:url namespace="/dicts" action='identity_type_list' includeParams="none" />"><s:text
 						name="menu34.dictionaries.identity_types"/></a></li>
 			<li>
-				<a href="<s:url namespace="/dicts" action='buildingAttributeTypeListAction' includeParams="none" />"><s:text
+				<a href="<s:url namespace="/dicts" action='buildingAttributeTypeList' includeParams="none" />"><s:text
 						name="ab.buildings.attribute_types"/></a></li>
 		</ul>
 	</li>

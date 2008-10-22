@@ -1,52 +1,66 @@
 package org.flexpay.ab.actions.buildings;
 
-import com.opensymphony.xwork2.Preparable;
 import org.flexpay.ab.persistence.BuildingAttribute;
 import org.flexpay.ab.persistence.BuildingAttributeType;
 import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.AddressService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.map;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class BuildingsEditAction extends FPActionSupport implements Preparable {
+public class BuildingsEditAction extends FPActionSupport {
 
 	private BuildingService buildingService;
+	private AddressService addressService;
 
 	private Buildings buildings = new Buildings();
 	private List<Buildings> alternateBuildingsList = new ArrayList<Buildings>();
-	private Map<String, BuildingAttribute> attributeMap = map();
+	private Map<Long, String> attributeMap = CollectionUtils.treeMap();
 
-	public void prepare() {
+	public void prepareAttributes() {
+
 		buildings = buildingService.readFull(stub(buildings));
+		if (isNotSubmit()) {
 
-		for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
-			BuildingAttribute attr = buildings.getAttribute(type);
-			if (attr == null) {
-				attr = new BuildingAttribute();
-				attr.setBuildingAttributeType(type);
+			for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
+				BuildingAttribute attr = buildings.getAttribute(type);
+				String value = "";
+				if (attr != null) {
+					value = attr.getValue();
+				}
+				attributeMap.put(type.getId(), value);
 			}
-			attributeMap.put("" + attr.getBuildingAttributeType().getId(), attr);
 		}
 	}
 
 	@NotNull
 	public String doExecute() throws FlexPayException {
+
+		if (buildings.isNew()) {
+			log.info("No buildings id specified to edit");
+			return REDIRECT_SUCCESS;
+		}
+
+		prepareAttributes();
+
 		for (Buildings current : buildingService.getBuildingBuildings(buildings.getBuildingStub())) {
-			if (buildings.equals(current)) {
+			if (!buildings.equals(current)) {
 				alternateBuildingsList.add(buildingService.readFull(stub(current)));
 			}
 		}
 
 		if (isSubmit()) {
-			for (BuildingAttribute attr : attributeMap.values()) {
-				buildings.setBuildingAttribute(attr.getValue(), attr.getBuildingAttributeType());
+			for (Long typeId : attributeMap.keySet()) {
+				BuildingAttributeType type = buildingService.getAttributeType(new Stub<BuildingAttributeType>(typeId));
+				buildings.setBuildingAttribute(attributeMap.get(typeId), type);
 			}
 
 			buildingService.update(buildings);
@@ -55,6 +69,18 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 		return INPUT;
 	}
 
+	public String getAddress(@NotNull Long buildingsId) throws Exception {
+		return addressService.getBuildingsAddress(new Stub<Buildings>(buildingsId), getUserPreferences().getLocale());
+	}
+
+	public String getTypeName(Long typeId) throws FlexPayException {
+		BuildingAttributeType type = buildingService.getAttributeType(new Stub<BuildingAttributeType>(typeId));
+		if (type == null) {
+			throw new RuntimeException("Unknown type id: " + typeId);
+		}
+		return getTranslation(type.getTranslations()).getName();
+	}
+	
 	/**
 	 * Get default error execution result
 	 * <p/>
@@ -65,13 +91,6 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 	@NotNull
 	protected String getErrorResult() {
 		return INPUT;
-	}
-
-	/**
-	 * @param buildingService the buildingService to set
-	 */
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
 	}
 
 	/**
@@ -98,14 +117,23 @@ public class BuildingsEditAction extends FPActionSupport implements Preparable {
 	/**
 	 * @return the attributeMap
 	 */
-	public Map<String, BuildingAttribute> getAttributeMap() {
+	public Map<Long, String> getAttributeMap() {
 		return attributeMap;
 	}
 
 	/**
 	 * @param attributeMap the attributeMap to set
 	 */
-	public void setAttributeMap(Map<String, BuildingAttribute> attributeMap) {
+	public void setAttributeMap(Map<Long, String> attributeMap) {
 		this.attributeMap = attributeMap;
 	}
+
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
+	}
+
+	public void setAddressService(AddressService addressService) {
+		this.addressService = addressService;
+	}
+
 }

@@ -7,14 +7,24 @@
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
 	<class name="Building" table="ab_buildings_tbl" discriminator-value="ab">
+
+		<comment>Buildings</comment>
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
 
-		<discriminator column="building_type" type="string" />
+		<discriminator type="string">
+			<column name="building_type" not-null="true">
+				<comment>Class hierarchy descriminator, all buildings should have the same value</comment>
+			</column>
+		</discriminator>
 
-		<many-to-one name="district" column="district_id" not-null="true"
-					 class="District" />
+		<many-to-one name="district" foreign-key="ab_buildings_tbl_district_id" class="District">
+			<column name="district_id" not-null="true">
+				<comment>District reference</comment>
+			</column>
+		</many-to-one>
+
 		<set name="buildingses" inverse="true" cascade="all">
 			<key column="building_id" not-null="true" />
 			<one-to-many class="Buildings" />
@@ -29,12 +39,4 @@
 		</set>
 	</class>
 
-	<query name="Building.readFull">
-		select distinct b
-		from Building b
-			left join fetch b.buildingses bs
-			left join fetch bs.buildingAttributes ba
-			inner join fetch ba.buildingAttributeType
-		where b.id=?
-	</query>
 </hibernate-mapping>
