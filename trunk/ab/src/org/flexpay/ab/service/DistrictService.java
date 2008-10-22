@@ -14,6 +14,4 @@ public interface DistrictService extends NameTimeDependentService<
         DistrictName, DistrictNameTemporal, District, DistrictNameTranslation>,
         ParentService<DistrictFilter> {
 	
-	List<District> findByTown(Long townId);
-
 }

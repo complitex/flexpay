@@ -6,73 +6,162 @@
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
 	<class name="Buildings" table="ab_buildingses_tbl">
+
+		<comment>Building addresses</comment>
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
 
-		<property name="status" not-null="true"/>
-		<many-to-one name="street" column="street_id" not-null="true"/>
-		<many-to-one name="building" column="building_id" not-null="true"/>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled/Disabled status</comment>
+			</column>
+		</property>
+
+		<property name="primaryStatus">
+			<column name="primary_status" not-null="true">
+				<comment>Flag of primary building address</comment>
+			</column>
+		</property>
+
+		<many-to-one name="street" foreign-key="ab_buildingses_tbl_street_id">
+			<column name="street_id" not-null="true">
+				<comment>Street reference</comment>
+			</column>
+		</many-to-one>
+
+		<many-to-one name="building" foreign-key="ab_buildingses_tbl_building_id">
+			<column name="building_id" not-null="true">
+				<comment>Building reference this address belongs to</comment>
+			</column>
+		</many-to-one>
 
 		<set name="buildingAttributes" inverse="true" cascade="all-delete-orphan">
-			<key column="buildings_id" not-null="true"/>
-			<one-to-many class="BuildingAttribute"/>
+			<key column="buildings_id" not-null="true" />
+			<one-to-many class="BuildingAttribute" />
 		</set>
 
-		<property name="primaryStatus" column="primary_status"/>
 	</class>
 
 	<class name="BuildingAttribute" table="ab_building_attributes_tbl">
+
+		<comment>Building address attributes</comment>
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
 
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled/Disabled status</comment>
+			</column>
+		</property>
 		<property name="value">
 			<column name="value" index="indx_value" not-null="true">
 				<comment>Building attribute value</comment>
 			</column>
 		</property>
-		<many-to-one name="buildingAttributeType" column="attribute_type_id" not-null="true"/>
-		<many-to-one name="buildings" column="buildings_id" not-null="true"/>
+		<many-to-one name="buildingAttributeType" foreign-key="ab_building_attributes_tbl_attribute_type_id">
+			<column name="attribute_type_id" not-null="true">
+				<comment>Attribute type reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="buildings" foreign-key="ab_building_attributes_tbl_buildings_id">
+			<column name="buildings_id" not-null="true">
+				<comment>Building address reference</comment>
+			</column>
+		</many-to-one>
 	</class>
 
 	<class name="BuildingAttributeType" table="ab_building_attribute_types_tbl">
+
 		<comment>Building attribute type (number, bulk, etc.)</comment>
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled/Disabled status</comment>
+			</column>
+		</property>
+
 		<set name="translations" inverse="true" cascade="all-delete-orphan">
-			<key column="attribute_type_id" not-null="true"/>
-			<one-to-many class="BuildingAttributeTypeTranslation"/>
+			<key column="attribute_type_id" not-null="true" />
+			<one-to-many class="BuildingAttributeTypeTranslation" />
 		</set>
 	</class>
 
-	<class name="BuildingAttributeTypeTranslation"
-		   table="ab_building_attribute_type_translations_tbl">
+	<class name="BuildingAttributeTypeTranslation" table="ab_building_attribute_type_translations_tbl">
+
+		<comment>Building attribute type translations</comment>
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
-		<property name="name" not-null="true"/>
-		<property name="shortName" column="short_name"/>
+
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Type translation</comment>
+			</column>
+		</property>
+		<property name="shortName">
+			<column name="short_name" not-null="false">
+				<comment>Optional short translation</comment>
+			</column>
+		</property>
+
 		<properties name="lang_building_attribute_type_pair" unique="true">
-			<many-to-one name="translatable" column="attribute_type_id" not-null="true"
-						 class="BuildingAttributeType"/>
-			<many-to-one name="lang" column="language_id" not-null="true"/>
+			<many-to-one name="translatable" class="BuildingAttributeType"
+						 foreign-key="ab_building_attribute_type_translations_tbl_attribute_type_id">
+				<column name="attribute_type_id" not-null="true">
+					<comment>Building attribute type reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="lang" class="org.flexpay.common.persistence.Language"
+						 foreign-key="lang_building_attribute_type_pair_language_id">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
 		</properties>
 	</class>
 
 	<class name="BuildingStatus" table="ab_building_statuses_tbl">
+
+		<comment>Buildings statuses, for example building started or rebuilding</comment>
 		<id name="id" column="id">
-			<generator class="native"/>
+			<generator class="native" />
 		</id>
 
-		<property name="begin" type="date" column="begin_date" not-null="true"/>
-		<property name="end" type="date" column="end_date" not-null="true"/>
-		<property name="value" not-null="true"/>
+		<property name="begin" type="date">
+			<column name="begin_date" not-null="true">
+				<comment>Status begin date</comment>
+			</column>
+		</property>
+		<property name="end" type="date">
+			<column name="end_date" not-null="true">
+				<comment>Status end date</comment>
+			</column>
+		</property>
+		<property name="value">
+			<column name="value" not-null="true">
+				<comment>Status value</comment>
+			</column>
+		</property>
 
-		<many-to-one name="building" column="building_id" class="Building"
-					 not-null="true"/>
+		<many-to-one name="building" class="Building" foreign-key="ab_building_statuses_tbl_building_id">
+			<column name="building_id" not-null="true">
+				<comment>Building reference status belongs to</comment>
+			</column>
+		</many-to-one>
 	</class>
+
+	<query name="Building.readFull">
+		select distinct b
+		from Building b
+		left join fetch b.buildingses bs
+		left join fetch bs.buildingAttributes ba
+		inner join fetch ba.buildingAttributeType
+		where b.id=?
+	</query>
 
 	<query name="Buildings.readFull">
 		select distinct o
@@ -162,8 +251,8 @@
 	<query name="Buildings.findBuildingBuildings">
 		select distinct b
 		from Buildings b
-			left join fetch b.buildingAttributes a
-			inner join fetch a.buildingAttributeType t
+		left join fetch b.buildingAttributes a
+		inner join fetch a.buildingAttributeType t
 		where b.building.id=? and b.status=0
 	</query>
 </hibernate-mapping>

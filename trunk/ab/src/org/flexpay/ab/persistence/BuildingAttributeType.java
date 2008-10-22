@@ -1,7 +1,7 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.ab.util.config.ApplicationConfig;
-import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.DomainObjectWithStatus;
 
 import java.util.Collections;
 import java.util.Set;
@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * BuildingAttributeType
  */
-public class BuildingAttributeType extends DomainObject {
+public class BuildingAttributeType extends DomainObjectWithStatus {
 
 	private Set<BuildingAttributeTypeTranslation> translations = Collections.emptySet();
 
@@ -44,8 +44,7 @@ public class BuildingAttributeType extends DomainObject {
 	 * @return <code>true</code> if attribute type is a building number
 	 */
 	public boolean isBuildingNumber() {
-		BuildingAttributeType type = ApplicationConfig.getBuildingAttributeTypeNumber();
-		return getId().equals(type.getId());
+		return equals(ApplicationConfig.getBuildingAttributeTypeNumber());
 	}
 
 	/**

@@ -6,7 +6,7 @@
 	<tr>
 		<td class="th" width="1%">&nbsp;</td>
 		<td class="th" width="1%">
-			<input type="checkbox" onclick="FP.setCheckboxes(this.checked,'objectIds')" disabled="1">
+			<input type="checkbox" onclick="FP.setCheckboxes(this.checked,'objectIds');" disabled="1">
 		</td>
 		<td class="th"><s:text name="ab.buildings.attribute_type"/></td>
 		<td class="th">&nbsp;</td>
@@ -23,7 +23,7 @@
 				<s:property value="%{getTranslation(translations).name}"/>
 			</td>
 			<td class="col_1s" align="right">
-				<a href="<s:url action='buildingAttributeTypeEditAction'><s:param name="buildingAttributeType.id" value="%{id}"/></s:url>">
+				<a href="<s:url action='buildingAttributeTypeEdit'><s:param name="buildingAttributeType.id" value="%{id}"/></s:url>">
 					<s:text name="ab.edit"/>
 				</a>
 			</td>
@@ -34,7 +34,7 @@
 			<input type="submit" class="btn-exit" disabled="1"
 				   value="<s:text name="common.delete_selected"/>"/>
 			<input type="button" class="btn-exit"
-				   onclick="window.location='<s:url action="buildingAttributeTypeCreateAction"/>'"
+				   onclick="window.location='<s:url action="buildingAttributeTypeCreate"/>';"
 				   value="<s:text name="common.new"/>"/>
 		</td>
 	</tr>

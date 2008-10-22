@@ -81,7 +81,7 @@ public class Building extends DomainObjectWithStatus {
 	@Nullable
 	public Buildings getDefaultBuildings() {
 		for(Buildings buildings : buildingses) {
-			if(buildings.getPrimaryStatus() != null && buildings.getPrimaryStatus()) {
+			if(buildings.isPrimary()) {
 				return buildings;
 			}
 		}

@@ -50,14 +50,13 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@NotNull
-	public String getBuildingAddress(@NotNull Stub<Building> stub, @Nullable Locale locale) throws Exception {
+	public String getBuildingsAddress(@NotNull Stub<Buildings> stub, @Nullable Locale locale) throws Exception {
 
 		if (locale == null) {
 			locale = ApplicationConfig.getDefaultLocale();
 		}
 
-		List<Buildings> buildingses = buildingService.getBuildingBuildings(stub);
-		Buildings buildings = buildingService.readFull(stub(buildingses.get(0)));
+		Buildings buildings = buildingService.readFull(stub);
 		if (buildings == null) {
 			throw new Exception("No buildingses in building: " + stub);
 		}
@@ -67,6 +66,24 @@ public class AddressServiceImpl implements AddressService {
 		}
 
 		return street.format(locale, true) + ", " + buildings.format(locale, true);
+	}
+
+	@NotNull
+	public String getBuildingAddress(@NotNull Stub<Building> stub, @Nullable Locale locale) throws Exception {
+
+		List<Buildings> buildingses = buildingService.getBuildingBuildings(stub);
+		Buildings candidate = null;
+		for (Buildings buildings : buildingses) {
+			if (buildings.isPrimary()) {
+				candidate = buildings;
+			}
+		}
+		if (candidate == null && buildingses.size() > 0) {
+			candidate = buildingses.get(0);
+		} else {
+			throw new IllegalStateException("Building does not have any address: " + stub);
+		}
+		return getBuildingsAddress(stub(candidate), locale);
 	}
 
 	public void setApartmentService(ApartmentService apartmentService) {

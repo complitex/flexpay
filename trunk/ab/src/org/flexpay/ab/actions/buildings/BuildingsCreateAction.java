@@ -1,13 +1,11 @@
 package org.flexpay.ab.actions.buildings;
 
-import com.opensymphony.xwork2.Preparable;
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.persistence.filters.CountryFilter;
-import org.flexpay.ab.persistence.filters.RegionFilter;
-import org.flexpay.ab.persistence.filters.StreetFilter;
-import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAttributeType;
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.common.actions.FPActionSupport;
@@ -15,11 +13,12 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Map;
 
-public class BuildingsCreateAction extends FPActionSupport implements Preparable {
+public class BuildingsCreateAction extends FPActionSupport {
 
 	private ParentService parentService;
 	private BuildingService buildingService;
@@ -28,104 +27,90 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 	private CountryFilter countryFilter = new CountryFilter();
 	private RegionFilter regionFilter = new RegionFilter();
 	private TownFilter townFilter = new TownFilter();
-	private StreetFilter streetFilter = new StreetFilter();
+	private StreetNameFilter streetNameFilter = new StreetNameFilter();
+	private DistrictFilter districtFilter = new DistrictFilter();
 
-	private List<District> districtList = Collections.emptyList();
-	private District district;
-
-	private String action;
-	private Long districtId;
 	private Long buildingId;
-	// private String numberValue;
-	// private String bulkValue;
 	private Buildings buildings = new Buildings();
-	private Map<String, BuildingAttribute> attributeMap;
 
-	private String filterError;
-	private String districtError;
-	private String streetError;
-	private String buildingAttrError;
-	private String creatingError;
+	// type id to value mapping
+	private Map<Long, String> attributeMap = CollectionUtils.treeMap();
 
-	public void prepare() {
-		Set<BuildingAttribute> buildingAttributeSet = new HashSet<BuildingAttribute>();
-		attributeMap = new HashMap<String, BuildingAttribute>();
-		for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
-			if (attributeMap.get("" + type.getId()) == null) {
-				BuildingAttribute attr = new BuildingAttribute();
-				attr.setBuildingAttributeType(type);
-				buildingAttributeSet.add(attr);
-				attributeMap.put("" + type.getId(), attr);
-			}
-		}
-		buildings.setBuildingAttributes(buildingAttributeSet);
+	public BuildingsCreateAction() {
+		streetNameFilter.setShowSearchString(true);
+		streetNameFilter.setNeedAutoChange(false);
+		districtFilter.setNeedAutoChange(false);
 	}
 
 	@NotNull
 	public String doExecute() throws FlexPayException {
-		if ("create".equals(action)) {
 
-			if (districtId == null) {
-				districtError = "ab.buildings.create.district_required";
+		setupAttributes();
+		setupFilters();
+
+		if (isSubmit()) {
+
+			// validate 
+			if (!districtFilter.needFilter()) {
+				addActionError(getText("ab.buildings.create.district_required"));
+				return INPUT;
 			}
-			if (streetFilter.getSelectedId() == null) {
-				streetError = "ab.buildings.create.street_required";
+			if (!streetNameFilter.needFilter()) {
+				addActionError(getText("ab.buildings.create.street_required"));
+				return INPUT;
+			}
+			if (buildings.getBuildingAttributes().isEmpty()) {
+				addActionError(getText("ab.buildings.create.buildings_attr_required"));
+				return INPUT;
 			}
 
-			boolean isAttrEmpty = true;
-			for (BuildingAttribute attr : buildings.getBuildingAttributes()) {
-				if (!StringUtils.isEmpty(attr.getValue())) {
-					isAttrEmpty = false;
-					break;
-				}
-			}
-			if (isAttrEmpty) {
-				buildingAttrError = "ab.buildings.create.buildings_attr_required";
-			}
-
-			if (streetFilter.getSelectedId() != null && districtId != null
-				&& !isAttrEmpty) {
-
-				try {
-					if (buildingId == null) {
-						buildings = buildingService.createStreetDistrictBuildings(
-								streetFilter.getSelectedStub(),
-								new Stub<District>(districtId),
-								buildings.getBuildingAttributes());
-						return "list";
-					} else {
-						buildings = buildingService.createStreetBuildings(
-								new Stub<Building>(buildingId), streetFilter.getSelectedStub(),
-								buildings.getBuildingAttributes());
-						return "edit";
-					}
-				} catch (FlexPayException e) {
-					creatingError = e.getErrorKey();
-				}
-			}
-		}
-
-		try {
-			ArrayStack filterArrayStack = getFilters();
-			for (Object filter : filterArrayStack) {
-				((PrimaryKeyFilter) filter).initFilter(session);
-			}
-			ArrayStack filters = parentService.initFilters(filterArrayStack,
-					getUserPreferences().getLocale());
-			setFilters(filters);
-
-			if (buildingId != null) {
-				Building building = buildingService.readBuilding(buildingId);
-				district = districtService.readFull(building.getDistrictStub());
+			log.debug("About to save new building");
+			if (buildingId == null) {
+				buildings = buildingService.createStreetDistrictBuildings(
+						streetNameFilter.getSelectedStub(), districtFilter.getSelectedStub(),
+						buildings.getBuildingAttributes());
+				addActionError(getText("ab.buildings.created_successfully"));
+				return REDIRECT_SUCCESS;
 			} else {
-				districtList = districtService.findByTown(townFilter
-						.getSelectedId());
+				buildings = buildingService.createStreetBuildings(
+						new Stub<Building>(buildingId), streetNameFilter.getSelectedStub(),
+						buildings.getBuildingAttributes());
+				return "edit";
 			}
-		} catch (FlexPayException e) {
-			filterError = e.getErrorKey();
 		}
 
-		return "form";
+		return INPUT;
+	}
+
+	private void setupFilters() throws FlexPayException {
+		ArrayStack filterArrayStack = getFilters();
+		for (Object filter : filterArrayStack) {
+			((PrimaryKeyFilter) filter).initFilter(session);
+		}
+		ArrayStack filters = parentService.initFilters(filterArrayStack, getUserPreferences().getLocale());
+		setFilters(filters);
+
+		if (buildingId != null) {
+			Building building = buildingService.readBuilding(buildingId);
+			districtFilter.setSelectedId(building.getDistrict().getId());
+			districtFilter.setReadOnly(true);
+		}
+		districtService.initFilter(districtFilter, townFilter, getUserPreferences().getLocale());
+	}
+
+	private void setupAttributes() {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Attributes: " + attributeMap);
+		}
+
+		for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
+			String value = attributeMap.get(type.getId());
+			if (StringUtils.isNotBlank(value)) {
+				buildings.setBuildingAttribute(value, type);
+			}
+			attributeMap.put(type.getId(), value);
+		}
 	}
 
 	/**
@@ -137,21 +122,15 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 	 */
 	@NotNull
 	protected String getErrorResult() {
-		return "list";
+		return INPUT;
 	}
 
-	/**
-	 * @return the errorKey
-	 */
-	public String getFilterError() {
-		return filterError;
-	}
-
-	/**
-	 * @param action the action to set
-	 */
-	public void setAction(String action) {
-		this.action = action;
+	public String getTypeName(Long typeId) throws FlexPayException {
+		BuildingAttributeType type = buildingService.getAttributeType(new Stub<BuildingAttributeType>(typeId));
+		if (type == null) {
+			throw new RuntimeException("Unknown type id: " + typeId);
+		}
+		return getTranslation(type.getTranslations()).getName();
 	}
 
 	/**
@@ -165,7 +144,7 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 		filters.push(countryFilter);
 		filters.push(regionFilter);
 		filters.push(townFilter);
-		filters.push(streetFilter);
+		filters.push(streetNameFilter);
 
 		return filters;
 	}
@@ -179,7 +158,7 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 		countryFilter = (CountryFilter) filters.peek(3);
 		regionFilter = (RegionFilter) filters.peek(2);
 		townFilter = (TownFilter) filters.peek(1);
-		streetFilter = (StreetFilter) filters.peek(0);
+		streetNameFilter = (StreetNameFilter) filters.peek(0);
 	}
 
 	/**
@@ -236,107 +215,16 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 		this.townFilter = townFilter;
 	}
 
-	/**
-	 * Getter for property 'streetFilter'.
-	 *
-	 * @return Value for property 'streetFilter'.
-	 */
-	public StreetFilter getStreetFilter() {
-		return streetFilter;
-	}
-
-	/**
-	 * Setter for property 'streetFilter'.
-	 *
-	 * @param streetFilter Value to set for property 'streetFilter'.
-	 */
-	public void setStreetFilter(StreetFilter streetFilter) {
-		this.streetFilter = streetFilter;
-	}
-
-	/**
-	 * Sets the Map of session attributes in the implementing class.
-	 *
-	 * @param session a Map of HTTP session attribute name/value pairs.
-	 */
-	public void setSession(Map session) {
-		this.session = session;
-	}
-
-	/**
-	 * @param parentService the parentService to set
-	 */
 	public void setParentService(ParentService parentService) {
 		this.parentService = parentService;
 	}
 
-	/**
-	 * @param buildingService the buildingService to set
-	 */
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
 
-	/**
-	 * @return the typeNumber
-	 */
-	/*
-	 * public BuildingAttributeType getTypeNumber() { return typeNumber; }
-	 * 
-	 *//**
- * @return the typeBulk
- */
-	/*
-	 * public BuildingAttributeType getTypeBulk() { return typeBulk; }
-	 */
-
-	/**
-	 * @return the districtList
-	 */
-	public List<District> getDistrictList() {
-		return districtList;
-	}
-
-	/**
-	 * @param districtService the districtService to set
-	 */
 	public void setDistrictService(DistrictService districtService) {
 		this.districtService = districtService;
-	}
-
-	/**
-	 * @return the districtId
-	 */
-	public Long getDistrictId() {
-		return districtId;
-	}
-
-	/**
-	 * @param districtId the districtId to set
-	 */
-	public void setDistrictId(Long districtId) {
-		this.districtId = districtId;
-	}
-
-	/**
-	 * @return the districtError
-	 */
-	public String getDistrictError() {
-		return districtError;
-	}
-
-	/**
-	 * @return the streetError
-	 */
-	public String getStreetError() {
-		return streetError;
-	}
-
-	/**
-	 * @return the buildingAttrError
-	 */
-	public String getBuildingAttrError() {
-		return buildingAttrError;
 	}
 
 	/**
@@ -344,13 +232,6 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 	 */
 	public void setBuildingId(Long buildingId) {
 		this.buildingId = buildingId;
-	}
-
-	/**
-	 * @return the district
-	 */
-	public District getDistrict() {
-		return district;
 	}
 
 	/**
@@ -370,21 +251,30 @@ public class BuildingsCreateAction extends FPActionSupport implements Preparable
 	/**
 	 * @return the attributeMap
 	 */
-	public Map<String, BuildingAttribute> getAttributeMap() {
+	public Map<Long, String> getAttributeMap() {
 		return attributeMap;
 	}
 
 	/**
 	 * @param attributeMap the attributeMap to set
 	 */
-	public void setAttributeMap(Map<String, BuildingAttribute> attributeMap) {
+	public void setAttributeMap(Map<Long, String> attributeMap) {
 		this.attributeMap = attributeMap;
 	}
 
-	/**
-	 * @return the creatingError
-	 */
-	public String getCreatingError() {
-		return creatingError;
+	public StreetNameFilter getStreetNameFilter() {
+		return streetNameFilter;
+	}
+
+	public void setStreetNameFilter(StreetNameFilter streetNameFilter) {
+		this.streetNameFilter = streetNameFilter;
+	}
+
+	public DistrictFilter getDistrictFilter() {
+		return districtFilter;
+	}
+
+	public void setDistrictFilter(DistrictFilter districtFilter) {
+		this.districtFilter = districtFilter;
 	}
 }

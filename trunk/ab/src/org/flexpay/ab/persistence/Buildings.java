@@ -24,7 +24,7 @@ public class Buildings extends DomainObjectWithStatus {
 	private Street street;
 	private Building building;
 	private Set<BuildingAttribute> buildingAttributes = Collections.emptySet();
-	private Boolean primaryStatus;
+	private boolean primaryStatus;
 
 	public Buildings() {
 	}
@@ -190,14 +190,23 @@ public class Buildings extends DomainObjectWithStatus {
 	/**
 	 * @return the primaryStatus
 	 */
-	public Boolean getPrimaryStatus() {
+	public boolean getPrimaryStatus() {
+		return primaryStatus;
+	}
+
+	/**
+	 * Check if buildings is a primary one
+	 *
+	 * @return <code>true</code> if buildings is a primary one, or <code>false</code> otherwise
+	 */
+	public boolean isPrimary() {
 		return primaryStatus;
 	}
 
 	/**
 	 * @param primaryStatus the primaryStatus to set
 	 */
-	public void setPrimaryStatus(Boolean primaryStatus) {
+	public void setPrimaryStatus(boolean primaryStatus) {
 		this.primaryStatus = primaryStatus;
 	}
 

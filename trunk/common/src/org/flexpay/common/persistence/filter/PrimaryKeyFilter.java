@@ -12,7 +12,7 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 
 	private Long selectedId;
 	private Long defaultId;
-	private boolean needAutoChange;
+	private boolean needAutoChange = true;
 	private boolean allowEmpty = true;
 
 	public PrimaryKeyFilter() {
