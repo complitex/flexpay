@@ -9,11 +9,11 @@
 
 	<!-- Build wars -->
 	<target name="build.wars">
-		<antcall target="ab.war.production.glassfish_mysql5" />
-		<antcall target="ab_sync.war.production.glassfish_mysql5" />
-		<antcall target="bti.war.production.glassfish_mysql5" />
-		<antcall target="eirc.war.production.glassfish_mysql5" />
 		<antcall target="sz.war.production.glassfish_mysql5" />
+		<antcall target="eirc.war.production.glassfish_mysql5" />
+		<antcall target="bti.war.production.glassfish_mysql5" />
+		<antcall target="ab_sync.war.production.glassfish_mysql5" />
+		<antcall target="ab.war.production.glassfish_mysql5" />
 	</target>
 
 	<!-- Build DLL schemas -->
@@ -28,11 +28,20 @@
 
 	<!-- Run tests -->
 	<target name="run.tests">
+		<antcall target="common.db-test" />
 		<antcall target="common.runtests" />
+
+		<antcall target="ab.db-test" />
 		<antcall target="ab.runtests" />
+
+		<antcall target="bti.db-test" />
 		<antcall target="bti.runtests" />
+
+		<antcall target="eirc.db-test" />
 		<antcall target="eirc.runtests" />
-		<!--<antcall target="sz.runtests" />-->
+
+		<antcall target="sz.db-test" />
+		<antcall target="sz.runtests" />
 	</target>
 
 	<!-- Build docs -->
