@@ -85,7 +85,7 @@
 	<target name="sz.docs" depends="sz.compile.production">
 		<fileset id="sz.docs.resources" dir="${sz.dir}/docs" />
 		<antcall target="template.docs">
-			<param name="sources.dir" value="${sz.dir}/src" />
+			<param name="sources.dir" value="${sz.src.production}" />
 			<param name="module_name" value="Social protection" />
 			<param name="docs.file" value="${sz.docs.name}" />
 			<reference refid="sz.docs.resources" torefid="resources" />

@@ -86,7 +86,7 @@
 	<target name="eirc.docs" depends="eirc.compile.production">
 		<fileset id="eirc.docs.resources" dir="${eirc.dir}/docs" />
 		<antcall target="template.docs">
-			<param name="sources.dir" value="${eirc.dir}/src" />
+			<param name="sources.dir" value="${eirc.src.production}" />
 			<param name="module_name" value="EIRC" />
 			<param name="docs.file" value="${eirc.docs.name}" />
 			<reference refid="eirc.docs.resources" torefid="resources" />

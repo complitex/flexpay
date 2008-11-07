@@ -83,7 +83,7 @@
 	<target name="bti.docs" depends="bti.compile.production">
 		<fileset id="bti.docs.resources" dir="${bti.dir}/docs" />
 		<antcall target="template.docs">
-			<param name="sources.dir" value="${bti.dir}/src" />
+			<param name="sources.dir" value="${bti.src.production}" />
 			<param name="module_name" value="Bureau of techinical stock-taking" />
 			<param name="docs.file" value="${bti.docs.name}" />
 			<reference refid="bti.docs.resources" torefid="resources" />

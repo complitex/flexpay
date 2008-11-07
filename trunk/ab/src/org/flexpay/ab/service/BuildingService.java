@@ -82,7 +82,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	/**
 	 * Find single Building relation for building stub
 	 *
-	 * @param stub
+	 * @param stub Building stub
 	 * @return Buildings instance
 	 * @throws FlexPayException if building does not have any buildingses
 	 */
