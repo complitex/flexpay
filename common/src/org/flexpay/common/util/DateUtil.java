@@ -95,7 +95,7 @@ public class DateUtil {
 	 */
 	@NotNull
 	public static Date now() {
-		return DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
+		return truncateDay(new Date());
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class DateUtil {
 	 */
 	@NotNull
 	public static Date currentMonth() {
-		return DateUtils.truncate(new Date(), Calendar.MONTH);
+		return truncateMonth(new Date());
 	}
 
 	/**
@@ -122,6 +122,28 @@ public class DateUtil {
 		}
 
 		return dayAfter;
+	}
+
+	/**
+	 * Get date that date is the same as of <code>dt</code>, but hours, minutes, seconds and millis are 0
+	 *
+	 * @param dt Date to truncate
+	 * @return Date that hours, minuts, seconds and millis are all 0
+	 */
+	@NotNull
+	public static Date truncateDay(@NotNull Date dt) {
+		return DateUtils.truncate(dt, Calendar.DAY_OF_MONTH);
+	}
+
+	/**
+	 * Get date that month is the me as of <code>dt</code>, but day is the first and hours, minutes, seconds and millis are 0
+	 *
+	 * @param dt Date to truncate
+	 * @return Date that hours, minuts, seconds and millis are all 0
+	 */
+	@NotNull
+	public static Date truncateMonth(@NotNull Date dt) {
+		return DateUtils.truncate(dt, Calendar.MONTH);
 	}
 
 	/**
