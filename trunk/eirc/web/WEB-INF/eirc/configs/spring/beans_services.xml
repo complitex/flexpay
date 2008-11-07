@@ -149,16 +149,6 @@
 		<property name="serviceOrganisationDao" ref="serviceOrganisationDao" />
 	</bean>
 
-	<bean id="ticketServiceAmountService" class="org.flexpay.eirc.service.imp.TicketServiceAmountServiceImpl">
-		<property name="ticketServiceAmountDao" ref="ticketServiceAmountDao" />
-	</bean>
-
-	<bean id="ticketService" class="org.flexpay.eirc.service.imp.TicketServiceImpl">
-		<property name="ticketDao" ref="ticketDao" />
-		<property name="serviceOrganisationService" ref="serviceOrganisationService" />
-		<property name="ticketServiceAmountService" ref="ticketServiceAmountService" />
-	</bean>
-
 	<bean id="spRegistryStatusService" class="org.flexpay.eirc.service.imp.SpRegistryStatusServiceImpl">
 		<property name="spRegistryStatusDao" ref="spRegistryStatusDao" />
 	</bean>
