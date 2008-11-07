@@ -82,7 +82,7 @@
 	<target name="ab_sync.docs" depends="ab_sync.compile.production">
 		<fileset id="ab_sync.docs.resources" dir="${ab_sync.dir}/docs" />
 		<antcall target="template.docs">
-			<param name="sources.dir" value="${ab_sync.dir}/src" />
+			<param name="sources.dir" value="${ab_sync.src.production}" />
 			<param name="module_name" value="Address Bureau Synchronisation " />
 			<param name="docs.file" value="${ab_sync.docs.name}" />
 			<reference refid="ab_sync.docs.resources" torefid="resources" />
