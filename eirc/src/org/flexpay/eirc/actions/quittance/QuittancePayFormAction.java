@@ -1,4 +1,4 @@
-package org.flexpay.eirc.actions;
+package org.flexpay.eirc.actions.quittance;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
@@ -6,7 +6,7 @@ import org.flexpay.eirc.pdf.PdfTicketWriter.TicketInfo;
 import org.flexpay.eirc.service.TicketService;
 import org.jetbrains.annotations.NotNull;
 
-public class TicketPayFormAction extends FPActionSupport {
+public class QuittancePayFormAction extends FPActionSupport {
 
 	private TicketService ticketService;
 
@@ -16,6 +16,7 @@ public class TicketPayFormAction extends FPActionSupport {
 
 	@NotNull
 	public String doExecute() throws FlexPayException {
+
 		if (isSubmit()) {
 			ticketInfo = ticketService.getTicketInfo(ticketId);
 			return SUCCESS;

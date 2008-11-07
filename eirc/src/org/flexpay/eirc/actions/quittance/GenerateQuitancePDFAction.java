@@ -1,12 +1,12 @@
-package org.flexpay.eirc.actions;
+package org.flexpay.eirc.actions.quittance;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.filter.BeginDateFilter;
+import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.persistence.filter.BeginDateFilter;
-import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.eirc.persistence.filters.ServiceOrganisationFilter;
 import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.jetbrains.annotations.NotNull;
@@ -16,16 +16,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-public class GenerateQuitancesAction extends FPActionSupport {
+public class GenerateQuitancePDFAction extends FPActionSupport {
 
 	private ServiceOrganisationService serviceOrganisationService;
-	private ProcessManager processManager;
 
 	private ServiceOrganisationFilter serviceOrganisationFilter =
 			new ServiceOrganisationFilter();
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtils.truncate(new Date(), Calendar.MONTH));
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
+
+	private ProcessManager processManager;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -35,33 +36,20 @@ public class GenerateQuitancesAction extends FPActionSupport {
 			if (!serviceOrganisationFilter.needFilter()) {
 				addActionError(getText("eirc.error.quittance.no_service_organisation"));
 			} else {
-
 				Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
+				contextVariables.put("serviceOrganisationId", serviceOrganisationFilter.getSelectedId());
 				contextVariables.put("dateFrom", beginDateFilter.getDate());
 				contextVariables.put("dateTill", endDateFilter.getDate());
-				contextVariables.put("serviceOrganisationId", serviceOrganisationFilter.getSelectedId());
 
-				processManager.createProcess("GenerateQuitances", contextVariables);
+				processManager.createProcess("GenerateQuitancePDF", contextVariables);
 
-				addActionError(getText("eirc.quittance.generation_started"));
+				addActionError(getText("eirc.quittance.printing_started"));
 			}
 		}
 
 		serviceOrganisationService.initServiceOrganisationsFilter(serviceOrganisationFilter);
 
-		return SUCCESS;
-	}
-
-	/**
-	 * Get default error execution result
-	 * <p/>
-	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
-	 *
-	 * @return {@link #ERROR} by default
-	 */
-	@NotNull
-	protected String getErrorResult() {
 		return SUCCESS;
 	}
 
@@ -89,11 +77,31 @@ public class GenerateQuitancesAction extends FPActionSupport {
 		this.endDateFilter = endDateFilter;
 	}
 
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in
+	 * a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@NotNull
+	@Override
+	protected String getErrorResult() {
+		return SUCCESS;
+	}
+
+	/**
+	 * @param serviceOrganisationService the serviceOrganisationService to set
+	 */
 	public void setServiceOrganisationService(
 			ServiceOrganisationService serviceOrganisationService) {
 		this.serviceOrganisationService = serviceOrganisationService;
 	}
 
+	/**
+	 * @param processManager process manager setter
+	 */
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
 	}

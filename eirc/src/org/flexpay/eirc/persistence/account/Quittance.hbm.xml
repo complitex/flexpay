@@ -161,6 +161,13 @@
 		order by b.id, a.id, a.accountNumber, q.orderNumber desc
 	]]></query>
 
+	<query name="Quittance.findQuittanceByNumber"><![CDATA[
+		select distinct q
+		from Quittance q
+			inner join q.eircAccount a
+		where a.accountNumber=? and month(q.dateTill)=? and q.orderNumber=? 
+	]]></query>
+
 	<query name="Quittance.readFull"><![CDATA[
 		select distinct q
 		from Quittance q

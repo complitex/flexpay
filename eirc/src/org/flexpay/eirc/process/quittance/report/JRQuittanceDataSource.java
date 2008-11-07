@@ -13,34 +13,34 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.Luhn;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
+import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.process.quittance.report.util.QuittanceInfoGenerator;
+import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.ServiceOrganisationService;
 import org.flexpay.eirc.service.ServiceTypeService;
-import org.flexpay.eirc.service.QuittanceService;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
 import java.math.BigDecimal;
+import java.util.*;
 
 public class JRQuittanceDataSource implements JRRewindableDataSource {
 
 	/**
 	 * Field mapping that produces the current bean.
 	 * <p/>
-	 * If the field name/description matches this constant (the case is important), the data
-	 * source will return the current bean as the field value.
+	 * If the field name/description matches this constant (the case is important), the data source will return the current
+	 * bean as the field value.
 	 */
 	public static final String CURRENT_BEAN_MAPPING = "_THIS";
 
 	private AddressService addressService;
 	private SPService spService;
 	private QuittanceService quittanceService;
+	private QuittanceNumberService quittanceNumberService;
 	private ServiceTypeService serviceTypeService;
 	private ServiceOrganisationService serviceOrganisationService;
 
@@ -196,8 +196,7 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 	}
 
 	/**
-	 * Go through infos and set their batch address, only marker address infos has already
-	 * set up batch address
+	 * Go through infos and set their batch address, only marker address infos has already set up batch address
 	 *
 	 * @param infos QuittanceInfo array to init
 	 */
@@ -232,22 +231,7 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 
 	private void initQuittanceNumber(Quittance q, QuittanceInfo info) {
 
-		Calendar cal = new GregorianCalendar();
-		cal.setTime(q.getDateTill());
-
-		StringBuilder digits = new StringBuilder()
-				.append(q.getEircAccount().getAccountNumber())
-				.append(new SimpleDateFormat("MMyyyy").format(q.getDateTill()))
-				.append(String.format("%02d", q.getOrderNumber()));
-		String controlDigit = Luhn.controlDigit(digits.toString());
-
-		String quittanceNumber = new StringBuilder()
-				.append(q.getEircAccount().getAccountNumber())
-				.append("-").append(new SimpleDateFormat("MM/yyyy").format(q.getDateTill()))
-				.append("-").append(String.format("%02d", q.getOrderNumber()))
-				.append(controlDigit)
-				.toString();
-
+		String quittanceNumber = quittanceNumberService.getNumber(q);
 		info.setQuittanceNumber(quittanceNumber);
 	}
 
@@ -357,8 +341,7 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 	/**
 	 * Gets the field value for the current position.
 	 *
-	 * @return an object containing the field value. The object type must be the field object
-	 *         type.
+	 * @return an object containing the field value. The object type must be the field object type.
 	 */
 	public Object getFieldValue(JRField jrField) throws JRException {
 		return getBeanProperty(currentInfo, jrField.getName());
@@ -424,5 +407,9 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 
 	public void setQuittanceService(QuittanceService quittanceService) {
 		this.quittanceService = quittanceService;
+	}
+
+	public void setQuittanceNumberService(QuittanceNumberService quittanceNumberService) {
+		this.quittanceNumberService = quittanceNumberService;
 	}
 }

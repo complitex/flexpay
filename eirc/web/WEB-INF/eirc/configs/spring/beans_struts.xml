@@ -26,25 +26,32 @@
 	</bean>
 
 
-	<bean id="generateQuittancesAction" class="org.flexpay.eirc.actions.GenerateQuitancesAction"
+	<bean id="generateQuittancesAction"
+		  class="org.flexpay.eirc.actions.quittance.GenerateQuitancesAction"
 		  scope="prototype"
 		  p:serviceOrganisationService-ref="serviceOrganisationService"
 		  p:processManager-ref="processManager" />
 
-	<bean id="printTicketsAction" class="org.flexpay.eirc.actions.GenerateQuitancePDFAction"
+	<bean id="printTicketsAction"
+		  class="org.flexpay.eirc.actions.quittance.GenerateQuitancePDFAction"
 		  scope="prototype"
 		  p:processManager-ref="processManager"
 		  p:serviceOrganisationService-ref="serviceOrganisationService" />
 
-	<bean id="ticketPayFormAction" class="org.flexpay.eirc.actions.TicketPayFormAction"
-		  scope="prototype">
-		<property name="ticketService" ref="ticketService" />
-	</bean>
+	<bean id="quittanceSearchAction"
+		  class="org.flexpay.eirc.actions.quittance.QuittanceSearchAction"
+		  scope="prototype"
+		  p:quittanceService-ref="quittanceService" />
 
-	<bean id="ticketPayAction" class="org.flexpay.eirc.actions.TicketPayAction"
-		  scope="prototype">
-		<property name="ticketService" ref="ticketService" />
-	</bean>
+	<bean id="quittancePayFormAction"
+		  class="org.flexpay.eirc.actions.quittance.QuittancePayFormAction"
+		  scope="prototype"
+		  p:ticketService-ref="ticketService" />
+
+	<bean id="quittancePayAction"
+		  class="org.flexpay.eirc.actions.quittance.QuittancePayAction"
+		  scope="prototype"
+		  p:ticketService-ref="ticketService" />
 
 	<bean id="listRegistriesAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.ListRegistriesAction">
@@ -189,15 +196,15 @@
 
 	<bean id="processListAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.processing.ProcessListAction"
-		  p:processManager-ref="processManager"/>
+		  p:processManager-ref="processManager" />
 
 	<bean id="processViewAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.processing.ProcessViewAction"
-		  p:processManager-ref="processManager"/>
+		  p:processManager-ref="processManager" />
 
 	<bean id="deployProcessDefinitionAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.processing.DeployProcessDefinitionAction"
-		  p:processManager-ref="processManager"/>
+		  p:processManager-ref="processManager" />
 
 	<bean id="eircAccountListAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.eirc_account.EircAccountListAction"
