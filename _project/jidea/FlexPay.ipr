@@ -432,9 +432,10 @@
           <option name="ADD_JUNIT_TO_ENTRIES" value="true" />
         </inspection_tool>
         <inspection_tool class="RedundantThrowsDeclaration" level="WARNING" enabled="true" />
-        <inspection_tool class="HibernateMappingDatasourceDomInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="HibernateMappingDomInspection" level="ERROR" enabled="false" />
         <inspection_tool class="Struts2ModelInspection" level="INFO" enabled="true" />
+        <inspection_tool class="HibernateMappingDomInspection" level="INFO" enabled="true" />
+        <inspection_tool class="HibernateConfigDomInspection" level="INFO" enabled="true" />
+        <inspection_tool class="HibernateMappingDatasourceDomInspection" level="INFO" enabled="true" />
       </profile>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="No Inspections" />

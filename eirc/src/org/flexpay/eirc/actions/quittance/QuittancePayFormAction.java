@@ -2,23 +2,14 @@ package org.flexpay.eirc.actions.quittance;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.eirc.pdf.PdfTicketWriter.TicketInfo;
-import org.flexpay.eirc.service.TicketService;
 import org.jetbrains.annotations.NotNull;
 
 public class QuittancePayFormAction extends FPActionSupport {
-
-	private TicketService ticketService;
-
-	private Long ticketId;
-	private TicketInfo ticketInfo;
-
 
 	@NotNull
 	public String doExecute() throws FlexPayException {
 
 		if (isSubmit()) {
-			ticketInfo = ticketService.getTicketInfo(ticketId);
 			return SUCCESS;
 		}
 
@@ -37,26 +28,4 @@ public class QuittancePayFormAction extends FPActionSupport {
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
-
-	/**
-	 * @param ticketService the ticketService to set
-	 */
-	public void setTicketService(TicketService ticketService) {
-		this.ticketService = ticketService;
-	}
-
-	/**
-	 * @param ticketId the ticketId to set
-	 */
-	public void setTicketId(Long ticketId) {
-		this.ticketId = ticketId;
-	}
-
-	/**
-	 * @return the ticketInfo
-	 */
-	public TicketInfo getTicketInfo() {
-		return ticketInfo;
-	}
-
 }

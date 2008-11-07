@@ -50,8 +50,7 @@
 
 	<bean id="quittancePayAction"
 		  class="org.flexpay.eirc.actions.quittance.QuittancePayAction"
-		  scope="prototype"
-		  p:ticketService-ref="ticketService" />
+		  scope="prototype" />
 
 	<bean id="listRegistriesAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.ListRegistriesAction">

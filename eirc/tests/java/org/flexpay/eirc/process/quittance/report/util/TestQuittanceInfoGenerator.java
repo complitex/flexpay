@@ -32,8 +32,9 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	private Stub<ServiceOrganisation> organisationStub = new Stub<ServiceOrganisation>(1L);
 
 	private Date dt_2007_12_01 = new GregorianCalendar(2007, 11, 1).getTime();
-	private Date dt_2007_01_01 = new GregorianCalendar(2008, 0, 1).getTime();
-	private Date dt_2007_02_01 = new GregorianCalendar(2008, 1, 1).getTime();
+	private Date dt_2007_12_31 = new GregorianCalendar(2007, 11, 31).getTime();
+	private Date dt_2008_01_01 = new GregorianCalendar(2008, 0, 1).getTime();
+	private Date dt_2008_02_01 = new GregorianCalendar(2008, 1, 1).getTime();
 
 	private List<Quittance> list(Date begin, Date end) {
 
@@ -44,7 +45,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	@Ignore
 	public void testGetUniqueQuittance() throws Throwable {
 
-		List<Quittance> uniqueQuittances = list(dt_2007_12_01, dt_2007_01_01);
+		List<Quittance> uniqueQuittances = list(dt_2007_12_01, dt_2008_01_01);
 
 		assertEquals("Invalid quittances count", 1, uniqueQuittances.size());
 		assertEquals("Invalid quittance fetched", Long.valueOf(1), uniqueQuittances.get(0).getId());
@@ -54,7 +55,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	@Ignore
 	public void testGet2Quittances() throws Throwable {
 
-		List<Quittance> uniqueQuittances = list(dt_2007_12_01, dt_2007_02_01);
+		List<Quittance> uniqueQuittances = list(dt_2007_12_01, dt_2008_02_01);
 
 		assertEquals("Invalid quittances count", 2, uniqueQuittances.size());
 
@@ -67,7 +68,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	@Ignore
 	public void testMakeServiceGroups1() throws Throwable {
 
-		Quittance q = list(dt_2007_12_01, dt_2007_01_01).get(0);
+		Quittance q = list(dt_2007_12_01, dt_2008_01_01).get(0);
 		Map<Service, ServiceGroup> groups = QuittanceInfoGenerator.makeServiceGroups(q);
 
 		assertEquals("Invalid groups size", 1, groups.size());
@@ -77,7 +78,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	@Ignore
 	public void testMakeServiceGroups2() throws Throwable {
 
-		Quittance q = list(dt_2007_12_01, dt_2007_02_01).get(0);
+		Quittance q = list(dt_2007_12_01, dt_2008_02_01).get(0);
 		assertEquals("Invalid quittance fetched", Long.valueOf(2L), q.getId());
 
 		Map<Service, ServiceGroup> groups = QuittanceInfoGenerator.makeServiceGroups(q);
@@ -89,7 +90,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	@Ignore
 	public void testBuildServicesTotals1() throws Throwable {
 
-		Quittance q = list(dt_2007_12_01, dt_2007_01_01).get(0);
+		Quittance q = list(dt_2007_12_01, dt_2008_01_01).get(0);
 
 		Map<Service, ServiceGroup> groups = QuittanceInfoGenerator.makeServiceGroups(q);
 		Map<Service, ServiceTotals> servicesTotals = CollectionUtils.map();
@@ -108,7 +109,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	@Ignore
 	public void testBuildServicesTotals2() throws Throwable {
 
-		Quittance q = list(dt_2007_12_01, dt_2007_02_01).get(0);
+		Quittance q = list(dt_2007_12_01, dt_2008_02_01).get(0);
 
 		// two kvarplata + one teritory cleanup
 		assertEquals("Invalid number of QuittanceDetails fetched", 3, q.getQuittanceDetails().size());
@@ -132,10 +133,10 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	@Test
 	public void testBuildSubServicesTotals2() throws Throwable {
 
-		Quittance q = list(dt_2007_12_01, dt_2007_02_01).get(0);
+		Quittance q = list(dt_2007_12_01, dt_2008_01_01).get(0);
 
 		// two kvarplata + one teritory cleanup
-		assertEquals("Invalid number of QuittanceDetails fetched", 3, q.getQuittanceDetails().size());
+		assertEquals("Invalid number of QuittanceDetails fetched", 14, q.getQuittanceDetails().size());
 
 		Map<Service, ServiceGroup> groups = QuittanceInfoGenerator.makeServiceGroups(q);
 		Map<Service, ServiceTotals> servicesTotals = CollectionUtils.map();
@@ -148,16 +149,16 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 		QuittanceInfoGenerator.buildSubservicesTotals(groups, servicesTotals, serviceTypesTotals);
 
 		// only kvarplata
-		assertEquals("Invalid services totals", 1, servicesTotals.size());
+		assertEquals("Invalid services totals", 6, servicesTotals.size());
 		// kvarplata and territory cleanup subservice
-		assertEquals("Invalid service types totals", 2, serviceTypesTotals.size());
+		assertEquals("Invalid service types totals", 14, serviceTypesTotals.size());
 
 		// check if there are actually subservice totals
 		ServiceTotals serviceTotals = servicesTotals.values().iterator().next();
 		assertNotNull("Service totals is null", serviceTotals);
 
 		List<SubServiceTotals> subServicesTotals = serviceTotals.getSubServicesTotalsList();
-		assertEquals("invalid subservices totals size", 1, subServicesTotals.size());
+		assertEquals("invalid subservices totals size", 8, subServicesTotals.size());
 		assertNotNull("SubserviceTotals is null", subServicesTotals.get(0));
 	}
 }
