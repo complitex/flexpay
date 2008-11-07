@@ -42,7 +42,7 @@
         <path refid="sz.test.classpath" />
         <path location="${build.dir}/web" />
         <path location="sz/src" />
-        <path location="sz/tests/data/org/flexpay/sz" />
+		<path location="${sz.dir}/tests/data" />
     </path>
 
 	<target name="sz.help" description="Print sz module build script options">
@@ -108,7 +108,7 @@
 		</antcall>
 	</target>
 
-    <target name="sz.prepare.war" depends="eirc.prepare.war">
+    <target name="sz.prepare.war.internal" depends="sz.compile.production,eirc.prepare.war.internal">
         <fileset id="sz.web.resources" dir="${sz.dir}/web" />
         <antcall target="template.prepare.war">
             <param name="to_dir" value="" />
@@ -147,6 +147,18 @@
 		</antcall>
 	</target>
 
+	<target name="sz.prepare.war">
+		<antcall target="sz.prepare.war.internal" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+	<target name="sz.prepare.test.war">
+		<antcall target="sz.prepare.war.internal" />
+		<antcall target="common.test.war.data-source" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+
 	<target name="sz.exportschema.mysql5"
 			depends="common.compile.production,ab.compile.production,bti.compile.production,eirc.compile.production,sz.compile.production">
 		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
@@ -160,7 +172,11 @@
 		</antcall>
 	</target>
 
-	<target name="sz.runtests" depends="sz.compile.test,sz.prepare.war">
+	<target name="sz.runtests" depends="clean.build,sz.compile.test,sz.prepare.test.war">
+		<antcall target="sz.runtests.nobuild" />
+	</target>
+
+	<target name="sz.runtests.nobuild">
 		<condition property="class.name" value="${test.class.name}" else="org.flexpay.sz.AllTests">
 			<isset property="test.class.name" />
 		</condition>
@@ -177,14 +193,6 @@
 		</concat>
 	</target>
 
-	<target name="sz.sql.all">
-		<antcall target="common.sql.create-db" />
-		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
-			<fileset file="${sz.dir}/etc/sql/flexpay_sz.ddl.sql" />
-		</concat>
-		<antcall target="sz.sql.init-db" />
-	</target>
-
 	<target name="sz.sql.all-test">
 		<antcall target="common.sql.create-test-db" />
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
@@ -193,7 +201,7 @@
 		<antcall target="sz.sql.init-db" />
 	</target>
 
-	<target name="sz.db-test" description="create sz db">
+	<target name="sz.db-test" description="create sz test db">
 		<antcall target="sz.sql.all-test" />
 		<antcall target="template.mysql.run">
 			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />

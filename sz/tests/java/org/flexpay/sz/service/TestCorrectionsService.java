@@ -6,12 +6,17 @@ import org.flexpay.sz.persistence.Oszn;
 import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.ExpectedException;
 
 public class TestCorrectionsService extends SpringBeanAwareTestCase {
 
+	private CorrectionsService service;
+
 	@Autowired
-	protected CorrectionsService service;
+	public void setService(@Qualifier("correctionsService") CorrectionsService service) {
+		this.service = service;
+	}
 
 	@Test
 	@ExpectedException(FlexPayException.class)
