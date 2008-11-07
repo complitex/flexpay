@@ -421,10 +421,12 @@
             </value>
           </option>
           <option name="ADD_EJB_TO_ENTRIES" value="true" />
+          <option name="ADD_JUNIT_TO_ENTRIES" value="true" />
         </inspection_tool>
         <inspection_tool class="RedundantThrowsDeclaration" level="WARNING" enabled="true" />
         <inspection_tool class="HibernateMappingDatasourceDomInspection" level="ERROR" enabled="false" />
         <inspection_tool class="HibernateMappingDomInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="Struts2ModelInspection" level="INFO" enabled="true" />
       </profile>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="No Inspections" />
@@ -532,6 +534,7 @@
             </value>
           </option>
           <option name="ADD_EJB_TO_ENTRIES" value="true" />
+          <option name="ADD_JUNIT_TO_ENTRIES" value="true" />
         </inspection_tool>
         <inspection_tool class="UnusedParameters" level="WARNING" enabled="false" />
         <inspection_tool class="UnusedReturnValue" level="WARNING" enabled="false" />
@@ -679,11 +682,6 @@
         <inspection_tool class="JSUnresolvedFunction" level="INFO" enabled="false" />
         <inspection_tool class="JSUnresolvedVariable" level="INFO" enabled="false" />
         <inspection_tool class="JSUnusedLocalSymbols" level="WARNING" enabled="false" />
-        <inspection_tool class="ELValidationInJSP" level="WARNING" enabled="false" />
-        <inspection_tool class="JspDirectiveInspection" level="ERROR" enabled="false" />
-        <inspection_tool class="ELSpecValidationInJSP" level="WARNING" enabled="false" />
-        <inspection_tool class="ReferencesToClassesFromDefaultPackagesInJSPFile" level="ERROR" enabled="false" />
-        <inspection_tool class="SelfIncludingJspFiles" level="ERROR" enabled="false" />
         <inspection_tool class="DuplicateCaseLabelJS" level="WARNING" enabled="false" />
         <inspection_tool class="DuplicatePropertyOnObjectJS" level="WARNING" enabled="false" />
         <inspection_tool class="BadExpressionStatementJS" level="WARNING" enabled="false" />
@@ -791,6 +789,47 @@
         <inspection_tool class="HibernateMappingDatasourceDomInspection" level="ERROR" enabled="false" />
         <inspection_tool class="HibernateConfigDomInspection" level="ERROR" enabled="false" />
         <inspection_tool class="HibernateMappingDomInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="ArgNamesErrorsInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="ArgNamesWarningsInspection" level="WARNING" enabled="false" />
+        <inspection_tool class="AroundAdviceStyleInspection" level="WARNING" enabled="false" />
+        <inspection_tool class="DeclareParentsInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="PointcutMethodStyleInspection" level="WARNING" enabled="false" />
+        <inspection_tool class="SpringAopErrorsInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="SpringAopWarningsInspection" level="WARNING" enabled="false" />
+        <inspection_tool class="ELValidationInJSP" level="WARNING" enabled="false" />
+        <inspection_tool class="JspDirectiveInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="ELSpecValidationInJSP" level="WARNING" enabled="false" />
+        <inspection_tool class="JspPropertiesInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="ReferencesToClassesFromDefaultPackagesInJSPFile" level="ERROR" enabled="false" />
+        <inspection_tool class="SelfIncludingJspFiles" level="ERROR" enabled="false" />
+        <inspection_tool class="AbstractBeanReferencesInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="AutowiredDependenciesInspection" level="WARNING" enabled="false" />
+        <inspection_tool class="SpringJavaAutowiringInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="SpringBeanConstructorArgInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="DuplicatedBeanNamesInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="SpringInjectionValueConsistencyInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="InjectionValueTypeInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="SpringBeanLookupMethodInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="SpringReplacedMethodsInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="SpringRequiredAnnotationInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="SpringRequiredPropertyInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="SpringBeanAutowiringInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="SpringBeanDepedencyCheckInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="SpringFactoryMethodInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="SpringBeanInstantiationInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="SpringBeanNameConventionInspection" level="WARNING" enabled="false" />
+        <inspection_tool class="SpringFacetInspection" level="WARNING" enabled="false">
+          <option name="checkTestFiles" value="false" />
+        </inspection_tool>
+        <inspection_tool class="SpringInjectionValueStyleInspection" level="WARNING" enabled="false" />
+        <inspection_tool class="SpringJamErrorInspection" level="WARNING" enabled="false" />
+        <inspection_tool class="SpringModelInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="SpringScopesInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="UnparsedCustomBeanInspection" level="WARNING" enabled="false" />
+        <inspection_tool class="UtilSchemaInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="Struts2ModelInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="ValidatorModelInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="ValidatorConfigModelInspection" level="ERROR" enabled="false" />
       </profile>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Project Default" />
@@ -1469,7 +1508,9 @@
       <SOURCES />
     </library>
     <library name="iText">
-      <CLASSES />
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../common/lib/itext/iText-2.1.3.jar!/" />
+      </CLASSES>
       <JAVADOC>
         <root url="file:///windows/D/users/mixa/work/Java/_libs/iText-2.1.3/docs" />
       </JAVADOC>

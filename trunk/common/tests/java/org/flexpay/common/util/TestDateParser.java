@@ -2,11 +2,13 @@ package org.flexpay.common.util;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import org.apache.commons.lang.time.DateUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 public class TestDateParser {
 
@@ -19,8 +21,8 @@ public class TestDateParser {
 		Date dt1 = new GregorianCalendar(2008, 7, 1).getTime();
 		Date dt2 = new GregorianCalendar(2008, 7, 28).getTime();
 
-		assertEquals("Correct date parse failed", dt1, df2.parse("01082008"));
+		assertEquals("Correct date parse failed", dt1, df.parse("01082008"));
 		assertEquals("InCorrect date parse failed", dt1, df2.parse("01082008000000"));
-		assertEquals("InCorrect 2-d date parse failed", dt2, df2.parse("28082008153317"));
+		assertEquals("InCorrect 2-d date parse failed", dt2, DateUtil.truncateDay(df2.parse("28082008153317")));
 	}
 }
