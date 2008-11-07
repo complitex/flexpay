@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
 	<bean id="szFileService" class="org.flexpay.sz.service.imp.SzFileServiceImpl">
 		<property name="szFileDao" ref="szFileDAO" />
 	</bean>
-	
+
 	<bean id="osznService" class="org.flexpay.sz.service.imp.OsznServiceImpl">
 		<property name="osznDao" ref="osznDAO" />
 	</bean>
-	
+
 	<bean id="szFileTypeService" class="org.flexpay.sz.service.imp.SzFileTypeServiceImpl">
 		<property name="szFileTypeDao" ref="szFileTypeDAO" />
 	</bean>
-	
+
 	<bean id="szFileStatusService" class="org.flexpay.sz.service.imp.SzFileStatusServiceImpl">
 		<property name="szFileStatusDao" ref="szFileStatusDAO" />
 	</bean>
-	
+
 	<bean id="szFileActualityStatusService" class="org.flexpay.sz.service.imp.SzFileActualityStatusServiceImpl">
 		<property name="szFileActualityStatusDao" ref="szFileActualityStatusDAO" />
 	</bean>
-	
+
 	<bean id="characteristicRecordService" class="org.flexpay.sz.service.imp.CharacteristicRecordServiceImpl">
 		<property name="characteristicRecordDao" ref="characteristicRecordDAO" />
 	</bean>
-	
+
 	<bean id="subsidyRecordService" class="org.flexpay.sz.service.imp.SubsidyRecordServiceImpl">
 		<property name="subsidyRecordDao" ref="subsidyRecordDAO" />
 	</bean>
@@ -35,11 +35,11 @@
 		<property name="serviceTypeRecordDao" ref="serviceTypeRecordDAO" />
 	</bean>
 
-    <bean id="correctionsService" class="org.flexpay.sz.service.imp.CorrectionsServiceImpl">
-        <property name="apartmentCorrectionDao" ref="apartmentCorrectionDao" />
-        <property name="buildingCorrectionDao" ref="buildingCorrectionDao" />
-        <property name="districtCorrectionDao" ref="districtCorrectionDao" />
-        <property name="streetCorrectionDao" ref="streetCorrectionDao" />
-    </bean>
+	<bean id="correctionsService" class="org.flexpay.sz.service.imp.CorrectionsServiceImpl">
+		<property name="apartmentCorrectionDao" ref="apartmentCorrectionDao" />
+		<property name="buildingCorrectionDao" ref="buildingCorrectionDao" />
+		<property name="districtCorrectionDao" ref="districtCorrectionDao" />
+		<property name="streetCorrectionDao" ref="streetCorrectionDao" />
+	</bean>
 
-</beans>	
+</beans>
