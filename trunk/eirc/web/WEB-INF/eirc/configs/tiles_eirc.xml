@@ -67,8 +67,8 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/print_quittances.jsp" />
 	</definition>
 
-	<definition name="eirc.tickets.ticket_find" extends="eirc.quittances">
-		<put-attribute name="title" value="eirc.menu34.tickets.pay_ticket" />
+	<definition name="eirc.quittances.find_quittance" extends="eirc.quittances">
+		<put-attribute name="title" value="eirc.menu34.quittances.find_quittance" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/find_quittance.jsp" />
 	</definition>
 

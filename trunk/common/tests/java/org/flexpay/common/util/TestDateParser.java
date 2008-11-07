@@ -1,14 +1,12 @@
 package org.flexpay.common.util;
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
-import org.apache.commons.lang.time.DateUtils;
+import org.junit.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Calendar;
 
 public class TestDateParser {
 

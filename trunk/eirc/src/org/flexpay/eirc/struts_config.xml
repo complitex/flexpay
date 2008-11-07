@@ -30,30 +30,7 @@
 		</action>
 
 
-		<!-- Quittances -->
-		<action name="quittances">
-			<result type="tiles">eirc.quittances</result>
-		</action>
-
-		<action name="generateQuittances" class="generateQuittancesAction">
-			<result type="tiles">eirc.quittances.generate_quittances</result>
-		</action>
-
-		<action name="printQuittances" class="printTicketsAction">
-			<result type="tiles">eirc.tickets.print_tickets</result>
-		</action>
-
-		<action name="payQuittanceForm" class="ticketPayFormAction">
-			<result name="input" type="tiles">eirc.tickets.ticket_find</result>
-			<result name="success" type="tiles">eirc.tickets.ticket_pay_form</result>
-		</action>
-
-		<action name="payQuittance" class="ticketPayAction">
-			<result name="success" type="tiles">eirc.tickets.ticket_pay_form</result>
-		</action>
-
-
-
+		<!-- Eirc account -->
 		<action name="eircAccountView" class="eircAccountViewAction">
 			<result name="success" type="tiles">eirc.eirc_account.view</result>
 			<result name="redirectError" type="redirect-action">
@@ -92,5 +69,6 @@
 	<include file="org/flexpay/eirc/actions/service/struts.xml" />
 	<include file="org/flexpay/eirc/actions/processing/struts.xml" />
 	<include file="org/flexpay/eirc/actions/registry/struts.xml" />
+	<include file="org/flexpay/eirc/actions/quittance/struts.xml" />
 
 </struts>

@@ -1,6 +1,7 @@
 package org.flexpay.eirc.service;
 
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
 import org.flexpay.eirc.persistence.account.Quittance;
@@ -51,4 +52,14 @@ public interface QuittanceService {
 	 */
 	@Nullable
 	Quittance readFull(@NotNull Stub<Quittance> stub);
+
+	/**
+	 * Find quittance by generated number
+	 *
+	 * @param quittanceNumber Generated quittance number
+	 * @return Quittance if found, or <code>null</code> otherwise
+	 * @throws FlexPayException if quittance has invalid format
+	 */
+	@Nullable
+	Quittance findByNumber(@NotNull String quittanceNumber) throws FlexPayException;
 }

@@ -1,10 +1,10 @@
-package org.flexpay.eirc.actions;
+package org.flexpay.eirc.actions.quittance;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.eirc.service.TicketService;
 import org.jetbrains.annotations.NotNull;
 
-public class TicketPayAction extends FPActionSupport {
+public class QuittancePayAction extends FPActionSupport {
 
 	private TicketService ticketService;
 

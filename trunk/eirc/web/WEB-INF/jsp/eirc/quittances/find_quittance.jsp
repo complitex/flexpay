@@ -1,31 +1,33 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<table>
 
-<s:form method="POST">
+<s:actionerror />
 
-<tr>
-  <td>
-    <s:text name="eirc.ticket_number" />
-  </td>
-  <td>
-    <s:textfield key="ticketId" />
-  </td>
-</tr>
+<s:form action="searchQuittance" method="POST">
 
-<tr>
-  <td colspan="2" align="center">
-    &nbsp;
-  </td>
-</tr>
+	<table cellpadding="3" cellspacing="1" border="0" width="100%">
+		<tr>
+			<td>
+				<s:text name="eirc.quittance.number" />
+			</td>
+			<td>
+				<s:textfield key="quittanceNumber" />
+			</td>
+		</tr>
 
-<tr>
-  <td colspan="2" align="center">
-    <s:submit name="submitted" value="%{getText('common.view')}" cssClass="btn-exit" />
-  </td>
-</tr>  
+		<tr>
+			<td colspan="2" align="center">
+				&nbsp;
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="2" align="center">
+				<s:submit name="submitted" value="%{getText('common.view')}" cssClass="btn-exit" />
+			</td>
+		</tr>
+
+	</table>
 
 </s:form>
-
-
-</table>
+	

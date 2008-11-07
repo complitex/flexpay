@@ -3,8 +3,8 @@ package org.flexpay.eirc.service.imp;
 import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.eirc.dao.QuittanceDao;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
 import org.flexpay.eirc.dao.QuittanceDetailsDao;
@@ -12,7 +12,9 @@ import org.flexpay.eirc.persistence.ServiceOrganisation;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.service.QuittanceService;
+import org.flexpay.eirc.process.QuittanceNumberService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -23,11 +25,12 @@ public class QuittanceServiceImpl implements QuittanceService {
 
 	private Logger log = Logger.getLogger(getClass());
 
-	private SessionUtils sessionUtil;
 	private QuittanceDetailsDao quittanceDetailsDao;
 	private QuittanceDao quittanceDao;
 
 	private QuittanceDaoExt quittanceDaoExt;
+
+	private QuittanceNumberService quittanceNumberService;
 
 	/**
 	 * Create or update a QuittanceDetails record
@@ -93,11 +96,31 @@ public class QuittanceServiceImpl implements QuittanceService {
 	 * @return Quittance if found, or <code>null</code> otherwise
 	 */
 	public Quittance readFull(@NotNull Stub<Quittance> stub) {
-		Quittance q = quittanceDao.readFull(stub.getId());
 
-//		sessionUtil.evict(q);
+		return quittanceDao.readFull(stub.getId());
+	}
 
-		return q;
+	/**
+	 * Find quittance by generated number
+	 *
+	 * @param quittanceNumber Generated quittance number
+	 * @return Quittance if found, or <code>null</code> otherwise
+	 * @throws FlexPayException if <code>quittanceNumber</code> has invalid format
+	 */
+	@Nullable
+	public Quittance findByNumber(@NotNull String quittanceNumber) throws FlexPayException {
+
+		QuittanceNumberService.QuittanceNumberInfo info = quittanceNumberService.parseInfo(quittanceNumber);
+		List<Quittance> quittances = quittanceDao.findQuittanceByNumber(
+				info.getAccountNumber(), info.getMonth(), info.getNumber());
+		if (quittances.size() == 0) {
+			return null;
+		}
+		if (quittances.size() > 1) {
+			throw new FlexPayException("Duplicate quittances?", "eirc.error.quittance.duplicates", quittanceNumber);
+		}
+
+		return quittances.get(0);
 	}
 
 	/**
@@ -113,9 +136,5 @@ public class QuittanceServiceImpl implements QuittanceService {
 
 	public void setQuittanceDaoExt(QuittanceDaoExt quittanceDaoExt) {
 		this.quittanceDaoExt = quittanceDaoExt;
-	}
-
-	public void setSessionUtil(SessionUtils sessionUtil) {
-		this.sessionUtil = sessionUtil;
 	}
 }

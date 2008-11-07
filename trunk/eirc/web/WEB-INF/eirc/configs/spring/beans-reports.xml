@@ -10,6 +10,7 @@
 		  p:serviceOrganisationService-ref="serviceOrganisationService"
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:quittanceService-ref="quittanceService"
+		  p:quittanceNumberService-ref="quittanceNumberService"
 		  p:spService-ref="spService" />
 
 
