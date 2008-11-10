@@ -19,7 +19,7 @@ import java.util.Set;
  */
 public class PersonIdentity extends DomainObjectWithStatus {
 
-	public static final short SEX_UNKNOWN = 1;
+	public static final short SEX_UNKNOWN = 0;
 	public static final short SEX_MAN = 1;
 	public static final short SEX_WOMAN = 2;
 

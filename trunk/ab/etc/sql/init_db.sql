@@ -1733,24 +1733,24 @@ INSERT INTO ab_person_attributes_tbl (name, value, language_id, person_id)
 INSERT INTO ab_person_attributes_tbl (name, value, language_id, person_id)
 	VALUES('Children number', '13', @en_id, @person_id);
 
-INSERT INTO ab_person_identities_tbl (status, begin_date, end_date, birth_date, serial_number,
+INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_date, serial_number,
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
-	VALUES (0, '1983-01-25', '2100-12-31', '1983-01-25', 0,
+	VALUES (0, 1, '1983-01-25', '2100-12-31', '1983-01-25', 0,
 	0, 'Михаил', 'Анатольевич', 'Федько', '',
 	0, @identity_type_fio_id, @person_id);
 SELECT @person_identity_id:=last_insert_id();
 
-INSERT INTO ab_person_identities_tbl (status, begin_date, end_date, birth_date, serial_number,
+INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_date, serial_number,
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
-	VALUES (0, '2003-06-09', '2100-12-31', '1983-01-25', 5003,
+	VALUES (0, 1, '2003-06-09', '2100-12-31', '1983-01-25', 5003,
 	1231231, 'Михаил', 'Анатольевич', 'Федько', 'ОВД Советского района города Новосибирска',
 	1, @identity_type_passport_id, @person_id);
-INSERT INTO ab_person_identities_tbl (status, begin_date, end_date, birth_date, serial_number,
+INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_date, serial_number,
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
-	VALUES (0, '2004-10-22', '2009-10-22', '1983-01-25', 60,
+	VALUES (0, 1, '2004-10-22', '2009-10-22', '1983-01-25', 60,
 	123123123, 'Mikhail', '', 'Fedko', 'ГУВД 316',
 	0, @identity_type_foreign_passport_id, @person_id);
 
