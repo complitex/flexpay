@@ -270,37 +270,43 @@
 
 	<!-- Identity types -->
 	<bean id="identityTypeListAction" scope="prototype"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeListAction">
-		<property name="identityTypeService" ref="identityTypeService" />
-	</bean>
-	<bean id="identityTypeCreteAction" scope="prototype"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeCreateAction">
-		<property name="identityTypeService" ref="identityTypeService" />
-	</bean>
-	<bean id="identityTypeViewAction" scope="prototype"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeViewAction">
-		<property name="identityTypeService" ref="identityTypeService" />
-	</bean>
-	<bean id="identityTypeEditAction" scope="prototype"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeEditAction">
-		<property name="identityTypeService" ref="identityTypeService" />
-	</bean>
-	<bean id="identityTypeDeleteAction" scope="prototype"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeDeleteAction">
-		<property name="identityTypeService" ref="identityTypeService" />
-	</bean>
+		  class="org.flexpay.ab.actions.identity.IdentityTypeListAction"
+		  p:identityTypeService-ref="identityTypeService" />
 
+	<bean id="identityTypeCreteAction" scope="prototype"
+		  class="org.flexpay.ab.actions.identity.IdentityTypeCreateAction"
+		  p:identityTypeService-ref="identityTypeService" />
+
+	<bean id="identityTypeViewAction" scope="prototype"
+		  class="org.flexpay.ab.actions.identity.IdentityTypeViewAction"
+		  p:identityTypeService-ref="identityTypeService" />
+
+	<bean id="identityTypeEditAction" scope="prototype"
+		  class="org.flexpay.ab.actions.identity.IdentityTypeEditAction"
+		  p:identityTypeService-ref="identityTypeService" />
+	<bean id="identityTypeDeleteAction" scope="prototype"
+		  class="org.flexpay.ab.actions.identity.IdentityTypeDeleteAction"
+		  p:identityTypeService-ref="identityTypeService" />
+
+	<!-- Measure units -->
+	<bean id="listMeasureUnitsAction" scope="prototype"
+		  class="org.flexpay.ab.actions.measureunit.ListMeasureUnitsAction"
+		  p:measureUnitService-ref="measureUnitService" />
+	<bean id="editMeasureUnitAction" scope="prototype"
+		  class="org.flexpay.ab.actions.measureunit.EditMeasureUnitsAction"
+		  p:measureUnitService-ref="measureUnitService" />
+	<bean id="deleteMeasureUnitsAction" scope="prototype"
+		  class="org.flexpay.ab.actions.measureunit.DeleteMeasureUnitsAction"
+		  p:measureUnitService-ref="measureUnitService" />
 
 	<!-- Persons -->
 	<bean id="listPersons" scope="prototype"
-		  class="org.flexpay.ab.actions.person.ListPersons">
-		<property name="personService" ref="personService" />
-	</bean>
+		  class="org.flexpay.ab.actions.person.ListPersons"
+		  p:personService-ref="personService" />
 	<bean id="viewPerson" scope="prototype"
-		  class="org.flexpay.ab.actions.person.ViewPerson">
-		<property name="personService" ref="personService" />
-		<property name="apartmentService" ref="apartmentService" />
-	</bean>
+		  class="org.flexpay.ab.actions.person.ViewPerson"
+		  p:personService-ref="personService"
+		  p:apartmentService-ref="apartmentService" />
 
 	<bean id="editPersonAction" scope="prototype"
 		  class="org.flexpay.ab.actions.person.EditPersonAction"

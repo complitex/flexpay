@@ -3,11 +3,15 @@ package org.flexpay.common.service.imp;
 import org.flexpay.common.service.MeasureUnitService;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.MeasureUnitName;
 import org.flexpay.common.persistence.filter.MeasureUnitFilter;
 import org.flexpay.common.dao.MeasureUnitDao;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.exception.FlexPayException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
@@ -53,6 +57,46 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 		filter.setMeasureUnits(listUnits());
 
 		return filter;
+	}
+
+	/**
+	 * Create or update measure unit
+	 *
+	 * @param unit MeasureUnit to save
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@Transactional(readOnly = false)
+	public void save(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer {
+
+		validate(unit);
+		if (unit.isNew()) {
+			unit.setId(null);
+			measureUnitDao.create(unit);
+		} else {
+			measureUnitDao.update(unit);
+		}
+	}
+
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer {
+
+		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
+
+		boolean defaultNameFound = false;
+		for (MeasureUnitName name : unit.getUnitNames()) {
+			if (name.getLang().isDefault() && StringUtils.isNotBlank(name.getName())) {
+				defaultNameFound = true;
+			}
+		}
+		if (!defaultNameFound) {
+			ex.addException(new FlexPayException(
+					"No default lang name", "eirc.error.organisation.no_default_lang_name"));
+		}
+
+		if (ex.isNotEmpty()) {
+			throw ex;
+		}
 	}
 
 	public void setMeasureUnitDao(MeasureUnitDao measureUnitDao) {

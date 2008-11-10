@@ -248,4 +248,15 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/apartment_registrations_history.jsp" />
 	</definition>
 
+	<!-- Measure units -->
+	<definition name="ab.measure_unit.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="common.measure_units.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/measure_unit/list_measure_units.jsp" />
+	</definition>
+	<definition name="ab.measure_unit.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="common.measure_units.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/measure_unit/edit_measure_unit.jsp" />
+	</definition>
+
+
 </tiles-definitions>
