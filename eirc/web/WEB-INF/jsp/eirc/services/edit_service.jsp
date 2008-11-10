@@ -28,6 +28,10 @@
 			<td class="col"><%@include file="../filters/parent_service_filter.jsp" %></td>
 		</tr>
 		<tr valign="top" class="cols_1">
+			<td class="col"><s:text name="common.measure_unit"/>:</td>
+			<td class="col"><%@include file="/WEB-INF/jsp/common/filter/measure_unit_filter.jsp" %></td>
+		</tr>
+		<tr valign="top" class="cols_1">
 			<td class="col"><s:text name="eirc.service.begin_date"/>:</td>
 			<td class="col"><%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %></td>
 		</tr>

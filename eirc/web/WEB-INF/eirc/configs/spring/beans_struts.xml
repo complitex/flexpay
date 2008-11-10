@@ -45,8 +45,7 @@
 
 	<bean id="quittancePayFormAction"
 		  class="org.flexpay.eirc.actions.quittance.QuittancePayFormAction"
-		  scope="prototype"
-		  p:ticketService-ref="ticketService" />
+		  scope="prototype" />
 
 	<bean id="quittancePayAction"
 		  class="org.flexpay.eirc.actions.quittance.QuittancePayAction"
@@ -151,6 +150,7 @@
 	<bean id="editServiceAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.service.EditServiceAction"
 		  p:serviceTypeService-ref="serviceTypeService"
+		  p:measureUnitService-ref="measureUnitService"
 		  p:spService-ref="spService" />
 
 

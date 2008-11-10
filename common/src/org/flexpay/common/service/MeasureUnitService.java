@@ -2,6 +2,7 @@ package org.flexpay.common.service;
 
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.MeasureUnitFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,4 +29,13 @@ public interface MeasureUnitService {
 	 */
 	@NotNull
 	List<MeasureUnit> listUnits();
+
+	/**
+	 * Initialize filter
+	 *
+	 * @param filter MeasureUnitFilter to init
+	 * @return Filter back, or a new instance if filter is <code>null</code>
+	 */
+	@NotNull
+	MeasureUnitFilter initFilter(@Nullable MeasureUnitFilter filter);
 }
