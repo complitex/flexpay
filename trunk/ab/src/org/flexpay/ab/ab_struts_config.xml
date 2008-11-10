@@ -293,5 +293,6 @@
 	<include file="org/flexpay/ab/actions/street/struts.xml" />
 	<include file="org/flexpay/ab/actions/buildings/struts.xml" />
 	<include file="org/flexpay/ab/actions/apartment/struts.xml" />
+	<include file="org/flexpay/ab/actions/measureunit/struts.xml" />
 
 </struts>

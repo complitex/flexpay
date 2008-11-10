@@ -5,7 +5,7 @@
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%">
-				<input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'idList')">
+				<input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'idList');">
 			</td>
 			<td class="th"><s:text name="ab.town_type"/></td>
 			<td class="th">&nbsp;</td>
@@ -33,7 +33,7 @@
 						  cssClass="btn-exit"/>
 
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action='town_type_create'/>'"
+					   onclick="window.location='<s:url action='town_type_create'/>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

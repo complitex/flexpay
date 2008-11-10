@@ -1,5 +1,6 @@
 package org.flexpay.common.service;
 
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.MeasureUnitFilter;
@@ -38,4 +39,12 @@ public interface MeasureUnitService {
 	 */
 	@NotNull
 	MeasureUnitFilter initFilter(@Nullable MeasureUnitFilter filter);
+
+	/**
+	 * Create or update measure unit
+	 *
+	 * @param unit MeasureUnit to save
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	void save(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer;
 }

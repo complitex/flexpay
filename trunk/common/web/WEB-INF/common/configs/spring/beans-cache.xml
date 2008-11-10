@@ -44,6 +44,11 @@
 				<prop key="initFilter">cacheName=commonFlexpayCache</prop>
 			</props>
 		</property>
+		<property name="flushingModels">
+			<props>
+				<prop key="save*">cacheNames=commonFlexpayCache</prop>
+			</props>
+		</property>
 		<property name="target" ref="measureUnitServiceTarget" />
 	</bean>
 
