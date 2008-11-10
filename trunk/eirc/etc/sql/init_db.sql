@@ -98,29 +98,29 @@ select @record_status_processed:=4;
 -- Init organisations
 -- EIRC is the first one, ID=1
 -- CN is the fourth one, ID=4
-INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp)
-	VALUES (1, 0, '-------', '123');
+INSERT INTO eirc_organisations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
+	VALUES (1, 0, 0, '', '', '-------', '123');
 SELECT @organisation_eirc:=1;
 INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
 	VALUES ('Eirc itself', @ru_id, @organisation_eirc);
 INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
 	VALUES ('EIRC', @ru_id, @organisation_eirc);
-INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp)
-	VALUES (2, 0, '123123123', '123');
+INSERT INTO eirc_organisations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
+	VALUES (2, 0, 0, '', '', '123123123', '123');
 SELECT @organisation_zhko:=2;
 INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
 	VALUES ('Test organisation', @ru_id, @organisation_zhko);
 INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
 	VALUES ('ЖКО', @ru_id, @organisation_zhko);
-INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp)
-	VALUES (3, 0, '456456456', '56');
+INSERT INTO eirc_organisations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
+	VALUES (3, 0, 0, '', '', '456456456', '56');
 SELECT @organisation_tszh:=3;
 INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
 	VALUES ('Test organisation 2', @ru_id, @organisation_tszh);
 INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
 	VALUES ('ТСЖ', @ru_id, @organisation_tszh);
-INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp)
-	VALUES (4, 0, '1111111', '56');
+INSERT INTO eirc_organisations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
+	VALUES (4, 0, 0, '', '', '1111111', '56');
 SELECT @organisation_cn:=4;
 INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
 	VALUES ('Calculation center', @ru_id, @organisation_cn);
@@ -128,8 +128,8 @@ INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
 	VALUES ('ЦН', @ru_id, @organisation_cn);
 
 -- Init subdivisions
-INSERT INTO eirc_subdivisions_tbl (status, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
-	VALUES (0, '3-я серверная стойка', null, @organisation_eirc, @organisation_eirc);
+INSERT INTO eirc_subdivisions_tbl (status,  version, tree_path, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
+	VALUES (0, 0, '', '3-я серверная стойка', null, @organisation_eirc, @organisation_eirc);
 SELECT @subdivision_eirc_it:=last_insert_id();
 INSERT INTO eirc_subdivision_names_tbl (name, language_id, subdivision_id)
 	VALUES ('АйТи', @ru_id, @subdivision_eirc_it);
@@ -140,32 +140,32 @@ INSERT INTO eirc_subdivision_descriptions_tbl (name, language_id, subdivision_id
 INSERT INTO eirc_subdivision_descriptions_tbl (name, language_id, subdivision_id)
 	VALUES ('Informational technoligies department', @en_id, @subdivision_eirc_it);
 
-INSERT INTO eirc_subdivisions_tbl (status, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
-	VALUES (0, '1-я серверная стойка', @subdivision_eirc_it, @organisation_eirc, null);
+INSERT INTO eirc_subdivisions_tbl (status, version, tree_path, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
+	VALUES (0, 0, '', '1-я серверная стойка', @subdivision_eirc_it, @organisation_eirc, null);
 SELECT @subdivision_eirc_it_java:=last_insert_id();
 INSERT INTO eirc_subdivision_names_tbl (name, language_id, subdivision_id)
 	VALUES ('Java', @ru_id, @subdivision_eirc_it_java);
 INSERT INTO eirc_subdivision_descriptions_tbl (name, language_id, subdivision_id)
 	VALUES ('Жабный сектор', @ru_id, @subdivision_eirc_it_java);
 
-INSERT INTO eirc_subdivisions_tbl (status, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
-	VALUES (0, '2-я серверная стойка', @subdivision_eirc_it, @organisation_eirc, null);
+INSERT INTO eirc_subdivisions_tbl (status, version, tree_path, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
+	VALUES (0, 0, '', '2-я серверная стойка', @subdivision_eirc_it, @organisation_eirc, null);
 SELECT @subdivision_eirc_it_web:=last_insert_id();
 INSERT INTO eirc_subdivision_names_tbl (name, language_id, subdivision_id)
 	VALUES ('Web', @ru_id, @subdivision_eirc_it_web);
 INSERT INTO eirc_subdivision_descriptions_tbl (name, language_id, subdivision_id)
 	VALUES ('Вэббизнес', @ru_id, @subdivision_eirc_it_web);
 
-INSERT INTO eirc_subdivisions_tbl (status, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
-	VALUES (0, 'Кабинет направо', null, @organisation_eirc, @organisation_eirc);
+INSERT INTO eirc_subdivisions_tbl (status, version, tree_path, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
+	VALUES (0, 0, '', 'Кабинет направо', null, @organisation_eirc, @organisation_eirc);
 SELECT @subdivision_eirc_buch:=last_insert_id();
 INSERT INTO eirc_subdivision_names_tbl (name, language_id, subdivision_id)
 	VALUES ('Бухгалтерия', @ru_id, @subdivision_eirc_buch);
 INSERT INTO eirc_subdivision_descriptions_tbl (name, language_id, subdivision_id)
 	VALUES ('Бухгалтерский отдел', @ru_id, @subdivision_eirc_buch);
 
-INSERT INTO eirc_subdivisions_tbl (status, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
-	VALUES (0, 'Центр клининг-услуг', null, @organisation_eirc, @organisation_cn);
+INSERT INTO eirc_subdivisions_tbl (status, version, tree_path, real_address, parent_subdivision_id, head_organisation_id, juridical_person_id)
+	VALUES (0, 0, '', 'Центр клининг-услуг', null, @organisation_eirc, @organisation_cn);
 SELECT @subdivision_eirc_cleaning:=last_insert_id();
 INSERT INTO eirc_subdivision_names_tbl (name, language_id, subdivision_id)
 	VALUES ('Уборщики', @ru_id, @subdivision_eirc_cleaning);
@@ -198,8 +198,8 @@ INSERT INTO eirc_service_provider_descriptions_tbl (name, language_id, service_p
 	VALUES ('ПУ ЦН', @ru_id, @service_provider_cn);
 
 -- Init service organisations
-INSERT INTO eirc_organisations_tbl (id, status, individual_tax_number, kpp)
-	VALUES (5, 0, '', '56');
+INSERT INTO eirc_organisations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
+	VALUES (5, 0, 0, '', '', '', '56');
 SELECT @organisation_service_org_1:=5;
 INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
 	VALUES ('Тестовая обсл. организация', @ru_id, @organisation_service_org_1);
