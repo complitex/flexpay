@@ -30,46 +30,46 @@ INSERT INTO eirc_registry_types_tbl (id, version, code) VALUES (11, 0, 11);
 select @registry_type_info:=11;
 
 -- Init RegistryStatuses
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (0);
+INSERT INTO eirc_registry_statuses_tbl (version, code) VALUES (0, 0);
 SELECT @registry_status_loading:=last_insert_id();
 
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (1);
+INSERT INTO eirc_registry_statuses_tbl (version, code) VALUES (0, 1);
 SELECT @registry_status_loaded:=last_insert_id();
 
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (2);
+INSERT INTO eirc_registry_statuses_tbl (version, code) VALUES (0, 2);
 SELECT @registry_status_loading_canceled:=last_insert_id();
 
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (3);
+INSERT INTO eirc_registry_statuses_tbl (version, code) VALUES (0, 3);
 SELECT @registry_status_loaded_with_error:=last_insert_id();
 
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (4);
+INSERT INTO eirc_registry_statuses_tbl (version, code) VALUES (0, 4);
 SELECT @registry_status_processing:=last_insert_id();
 
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (5);
+INSERT INTO eirc_registry_statuses_tbl (version, code) VALUES (0, 5);
 SELECT @registry_status_processing_with_error:=last_insert_id();
 
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (6);
+INSERT INTO eirc_registry_statuses_tbl (version, code) VALUES (0, 6);
 SELECT @registry_status_processed:=last_insert_id();
 
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (7);
+INSERT INTO eirc_registry_statuses_tbl (version, code) VALUES (0, 7);
 SELECT @registry_status_processed_with_error:=last_insert_id();
 
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (8);
+INSERT INTO eirc_registry_statuses_tbl (version, code) VALUES (0, 8);
 SELECT @registry_status_processing_canceled:=last_insert_id();
 
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (9);
+INSERT INTO eirc_registry_statuses_tbl (version, code) VALUES (0, 9);
 SELECT @registry_status_rollbacking:=last_insert_id();
 
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (10);
+INSERT INTO eirc_registry_statuses_tbl (version, code) VALUES (0, 10);
 SELECT @registry_status_rollbacked:=last_insert_id();
 
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (11);
+INSERT INTO eirc_registry_statuses_tbl (version, code) VALUES (0, 11);
 SELECT @registry_status_creating:=last_insert_id();
 
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (12);
+INSERT INTO eirc_registry_statuses_tbl (version, code) VALUES (0, 12);
 SELECT @registry_status_created:=last_insert_id();
 
-INSERT INTO eirc_registry_statuses_tbl (code) VALUES (13);
+INSERT INTO eirc_registry_statuses_tbl (version, code) VALUES (0, 13);
 SELECT @registry_status_creating_canceled:=last_insert_id();
 
 -- Init RegistryArchiveStatuses
