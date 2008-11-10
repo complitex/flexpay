@@ -6,27 +6,27 @@ SELECT @source_description_id:=2;
 INSERT INTO common_sequences_tbl (id, counter, description) VALUES (1, 10, 'Последовательность для ЛС модуля ЕИРЦ');
 
 -- Init service providers registry types
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (1, 1);
+INSERT INTO eirc_registry_types_tbl (id, version, code) VALUES (1, 0, 1);
 select @registry_type:=1;
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (2, 2);
+INSERT INTO eirc_registry_types_tbl (id, version, code) VALUES (2, 0, 2);
 select @registry_type:=2;
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (3, 3);
+INSERT INTO eirc_registry_types_tbl (id, version, code) VALUES (3, 0, 3);
 select @registry_type:=3;
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (4, 4);
+INSERT INTO eirc_registry_types_tbl (id, version, code) VALUES (4, 0, 4);
 select @registry_type:=4;
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (5, 5);
+INSERT INTO eirc_registry_types_tbl (id, version, code) VALUES (5, 0, 5);
 select @registry_type:=5;
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (6, 6);
+INSERT INTO eirc_registry_types_tbl (id, version, code) VALUES (6, 0, 6);
 select @registry_type:=6;
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (7, 7);
+INSERT INTO eirc_registry_types_tbl (id, version, code) VALUES (7, 0, 7);
 select @registry_type:=7;
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (8, 8);
+INSERT INTO eirc_registry_types_tbl (id, version, code) VALUES (8, 0, 8);
 select @registry_type:=8;
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (9, 9);
+INSERT INTO eirc_registry_types_tbl (id, version, code) VALUES (9, 0, 9);
 select @registry_type:=9;
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (10, 10);
+INSERT INTO eirc_registry_types_tbl (id, version, code) VALUES (10, 0, 10);
 select @registry_type:=10;
-INSERT INTO eirc_registry_types_tbl (id, code) VALUES (11, 11);
+INSERT INTO eirc_registry_types_tbl (id, version, code) VALUES (11, 0, 11);
 select @registry_type_info:=11;
 
 -- Init RegistryStatuses
