@@ -94,7 +94,7 @@
         value varchar(255) not null comment 'Status value',
         building_id bigint not null comment 'Building reference status belongs to',
         primary key (id)
-    ) comment='Buildings statuses, for example building started or rebuilding';
+    ) comment='Building status, for example building started or rebuilding';
 
     create table ab_buildings_tbl (
         id bigint not null auto_increment,
