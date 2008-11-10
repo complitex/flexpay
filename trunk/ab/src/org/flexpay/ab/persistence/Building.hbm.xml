@@ -126,7 +126,7 @@
 
 	<class name="BuildingStatus" table="ab_building_statuses_tbl">
 
-		<comment>Buildings statuses, for example building started or rebuilding</comment>
+		<comment>Building status, for example building started or rebuilding</comment>
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
