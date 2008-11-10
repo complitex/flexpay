@@ -72,10 +72,6 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/find_quittance.jsp" />
 	</definition>
 
-	<definition name="eirc.tickets.ticket_pay_form" extends="eirc.tickets.ticket_find">
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/quittance_pay_form.jsp" />
-	</definition>
-
 
 	<!-- Organisations -->
 	<definition name="eirc.organisations.list" extends="eirc.dictionaries">

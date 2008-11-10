@@ -7,6 +7,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.DomainObject;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 
@@ -48,6 +49,7 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 	 * 
 	 * @return Value for property 'selectedId'.
 	 */
+	@Nullable
 	public Long getSelectedId() {
 		return selectedId;
 	}

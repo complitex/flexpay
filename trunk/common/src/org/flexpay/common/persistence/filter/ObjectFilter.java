@@ -4,11 +4,12 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.util.Map;
+import java.io.Serializable;
 
 /**
  * Base class for all filters
  */
-public class ObjectFilter {
+public class ObjectFilter implements Serializable {
 
 	private boolean readOnly;
 

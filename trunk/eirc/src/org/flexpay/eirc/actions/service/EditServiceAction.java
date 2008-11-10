@@ -2,11 +2,14 @@ package org.flexpay.eirc.actions.service;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.MeasureUnit;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
+import org.flexpay.common.persistence.filter.MeasureUnitFilter;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.service.MeasureUnitService;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.ServiceDescription;
 import org.flexpay.eirc.persistence.ServiceProvider;
@@ -24,11 +27,13 @@ public class EditServiceAction extends FPActionSupport {
 
 	private SPService spService;
 	private ServiceTypeService serviceTypeService;
+	private MeasureUnitService measureUnitService;
 
 	private Service service = new Service(0L);
 
 	private ServiceProviderFilter serviceProviderFilter = new ServiceProviderFilter();
 	private ServiceTypeFilter serviceTypeFilter = new ServiceTypeFilter();
+	private MeasureUnitFilter measureUnitFilter = new MeasureUnitFilter();
 	private ServiceFilter parentServiceFilter = new ServiceFilter();
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();
@@ -48,6 +53,7 @@ public class EditServiceAction extends FPActionSupport {
 		serviceProviderFilter = spService.initServiceProvidersFilter(serviceProviderFilter);
 		serviceTypeFilter = serviceTypeService.initFilter(serviceTypeFilter);
 		parentServiceFilter = spService.initParentServicesFilter(parentServiceFilter);
+		measureUnitFilter = measureUnitService.initFilter(measureUnitFilter);
 
 		if (!isSubmit()) {
 			service = srvc;
@@ -63,6 +69,9 @@ public class EditServiceAction extends FPActionSupport {
 		srvc.setEndDate(endDateFilter.getDate());
 		srvc.setServiceProvider(new ServiceProvider(serviceProviderFilter.getSelectedId()));
 		srvc.setServiceType(new ServiceType(serviceTypeFilter.getSelectedId()));
+		MeasureUnit unit = measureUnitFilter.needFilter() ?
+						   new MeasureUnit(measureUnitFilter.getSelectedStub().getId()) : null;
+		srvc.setMeasureUnit(unit);
 		srvc.setExternalCode(service.getExternalCode());
 
 		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
@@ -117,6 +126,10 @@ public class EditServiceAction extends FPActionSupport {
 			if (service.isSubService()) {
 				parentServiceFilter.setSelectedId(service.getParentService().getId());
 			}
+
+			if (service.getMeasureUnit() != null) {
+				measureUnitFilter.setSelectedId(service.getMeasureUnit().getId());
+			}
 		}
 	}
 
@@ -168,6 +181,14 @@ public class EditServiceAction extends FPActionSupport {
 		this.endDateFilter = endDateFilter;
 	}
 
+	public MeasureUnitFilter getMeasureUnitFilter() {
+		return measureUnitFilter;
+	}
+
+	public void setMeasureUnitFilter(MeasureUnitFilter measureUnitFilter) {
+		this.measureUnitFilter = measureUnitFilter;
+	}
+
 	public Map<Long, String> getDescriptions() {
 		return descriptions;
 	}
@@ -182,5 +203,9 @@ public class EditServiceAction extends FPActionSupport {
 
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
 		this.serviceTypeService = serviceTypeService;
+	}
+
+	public void setMeasureUnitService(MeasureUnitService measureUnitService) {
+		this.measureUnitService = measureUnitService;
 	}
 }

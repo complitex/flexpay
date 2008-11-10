@@ -3,6 +3,7 @@ package org.flexpay.common.service.imp;
 import org.flexpay.common.service.MeasureUnitService;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.MeasureUnitFilter;
 import org.flexpay.common.dao.MeasureUnitDao;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,6 +35,24 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 	@NotNull
 	public List<MeasureUnit> listUnits() {
 		return measureUnitDao.listUnits();
+	}
+
+	/**
+	 * Initialize filter
+	 *
+	 * @param filter MeasureUnitFilter to init
+	 * @return Filter back, or a new instance if filter is <code>null</code>
+	 */
+	@NotNull
+	public MeasureUnitFilter initFilter(@Nullable MeasureUnitFilter filter) {
+
+		if (filter == null) {
+			filter = new MeasureUnitFilter();
+		}
+
+		filter.setMeasureUnits(listUnits());
+
+		return filter;
 	}
 
 	public void setMeasureUnitDao(MeasureUnitDao measureUnitDao) {
