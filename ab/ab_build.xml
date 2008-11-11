@@ -191,11 +191,11 @@
 		<antcall target="template.prepare.war.classes" />
 	</target>
 
-	<target name="ab.exportschema.mysql5" depends="ab.compile.production">
+	<target name="ab.exportschema.mysql5" depends="clean.build,ab.compile.production">
 		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_ab.ddl.sql" />
-			<param name="src.dir" value="${ab.dir}/src:${common.dir}/src" />
+			<param name="src.dir" value="${ab.src.production}" />
 			<param name="hibernate.cfg"
 				   value="${ab.dir}/web/WEB-INF/hibernate.cfg.xml" />
 			<param name="hibernate.properties"

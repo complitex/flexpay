@@ -160,12 +160,11 @@
 		</antcall>
 	</target>
 
-	<target name="eirc.exportschema.mysql5"
-			depends="common.compile.production,ab.compile.production,bti.compile.production,eirc.compile.production">
+	<target name="eirc.exportschema.mysql5" depends="clean.build,eirc.compile.production">
 		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_eirc.ddl.sql" />
-			<param name="src.dir" value="${eirc.dir}/src:${bti.dir}/src:${ab.dir}/src:${common.dir}/src" />
+			<param name="src.dir" value="${eirc.src.production}" />
 			<param name="hibernate.cfg"
 				   value="${eirc.dir}/web/WEB-INF/hibernate.cfg.xml" />
 			<param name="hibernate.properties"
