@@ -157,12 +157,11 @@
 		</antcall>
 	</target>
 
-	<target name="bti.exportschema.mysql5"
-			depends="common.compile.production,ab.compile.production,bti.compile.production">
+	<target name="bti.exportschema.mysql5" depends="clean.build,bti.compile.production">
 		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_bti.ddl.sql" />
-			<param name="src.dir" value="${bti.dir}/src:${ab.dir}/src:${common.dir}/src" />
+			<param name="src.dir" value="${bti.src.production}" />
 			<param name="hibernate.cfg"
 				   value="${bti.dir}/web/WEB-INF/hibernate.cfg.xml" />
 			<param name="hibernate.properties"
