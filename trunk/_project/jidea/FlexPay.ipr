@@ -436,6 +436,33 @@
         <inspection_tool class="HibernateMappingDomInspection" level="INFO" enabled="true" />
         <inspection_tool class="HibernateConfigDomInspection" level="INFO" enabled="true" />
         <inspection_tool class="HibernateMappingDatasourceDomInspection" level="INFO" enabled="true" />
+        <inspection_tool class="CollectionsFieldAccessReplaceableByMethodCall" level="WARNING" enabled="true" />
+        <inspection_tool class="IndexOfReplaceableByContains" level="WARNING" enabled="true" />
+        <inspection_tool class="RawUseOfParameterizedType" level="WARNING" enabled="true">
+          <option name="ignoreObjectConstruction" value="true" />
+          <option name="ignoreTypeCasts" value="false" />
+        </inspection_tool>
+        <inspection_tool class="InconsistentJavaDoc" level="WARNING" enabled="true">
+          <option name="methodDetectionLevel" value="private" />
+          <option name="checkAnonymousClasses" value="true" />
+          <option name="useSingleLineReferences" value="true" />
+        </inspection_tool>
+        <inspection_tool class="MissingClassJavaDoc" level="WARNING" enabled="true">
+          <option name="methodDetectionLevel" value="private" />
+          <option name="checkAnonymousClasses" value="true" />
+          <option name="useSingleLineReferences" value="true" />
+        </inspection_tool>
+        <inspection_tool class="MissingFieldJavaDoc" level="WARNING" enabled="true">
+          <option name="methodDetectionLevel" value="private" />
+          <option name="checkAnonymousClasses" value="true" />
+          <option name="useSingleLineReferences" value="true" />
+        </inspection_tool>
+        <inspection_tool class="MissingMethodJavaDoc" level="WARNING" enabled="true">
+          <option name="methodDetectionLevel" value="private" />
+          <option name="checkAnonymousClasses" value="true" />
+          <option name="useSingleLineReferences" value="true" />
+        </inspection_tool>
+        <inspection_tool class="JpaQlInspection" level="INFO" enabled="true" />
       </profile>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="No Inspections" />
