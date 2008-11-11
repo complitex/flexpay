@@ -549,8 +549,8 @@ INSERT INTO eirc_registries_tbl (id, version, registry_type_id, registry_status_
 select @eirc_registry:=1;
 
 -- Init registry records
-INSERT INTO eirc_registry_records_tbl (id, version, registry_id, operation_date) 
-	values (1, 0, @eirc_registry, '2008-01-01');
+INSERT INTO eirc_registry_records_tbl (id, version, service_code, registry_id, operation_date, personal_account_ext)
+	values (1, 0, '', @eirc_registry, '2008-01-01', '123456');
 select @eirc_registry_rec:=1;
 
 -- Init Consumer infos
