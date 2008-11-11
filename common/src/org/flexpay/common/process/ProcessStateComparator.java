@@ -7,6 +7,9 @@ import java.util.Comparator;
 import java.util.Map;
 import java.io.Serializable;
 
+/**
+ * ProcessStateComparator adds linear order on processes states 
+ */
 public class ProcessStateComparator implements Comparator<Process>, Serializable {
 	
 	private static final Map<ProcessState, Integer> priorityMap = map(
