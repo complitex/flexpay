@@ -174,15 +174,15 @@ INSERT INTO eirc_subdivision_descriptions_tbl (name, language_id, subdivision_id
 
 
 -- Init banks
-INSERT INTO eirc_banks_tbl (status, organisation_id, bank_identifier_code, corresponding_account)
-	VALUES (0, @organisation_cn, '044525957', '30101810600000000957');
+INSERT INTO eirc_banks_tbl (status, version, organisation_id, bank_identifier_code, corresponding_account)
+	VALUES (0, 0, @organisation_cn, '044525957', '30101810600000000957');
 SELECT @bank_cn:=last_insert_id();
 INSERT INTO eirc_bank_descriptions_tbl (name, language_id, bank_id)
 	VALUES ('Мега Банк', @ru_id, @bank_cn);
 INSERT INTO eirc_bank_descriptions_tbl (name, language_id, bank_id)
 	VALUES ('Mega Bank', @en_id, @bank_cn);
-INSERT INTO eirc_banks_tbl (status, organisation_id, bank_identifier_code, corresponding_account)
-	VALUES (0, @organisation_eirc, '1233455', '30101810600000000455');
+INSERT INTO eirc_banks_tbl (status, version, organisation_id, bank_identifier_code, corresponding_account)
+	VALUES (0, 0, @organisation_eirc, '1233455', '30101810600000000455');
 SELECT @bank_eirc:=last_insert_id();
 INSERT INTO eirc_bank_descriptions_tbl (name, language_id, bank_id)
 	VALUES ('ЕИРЦ Банк', @ru_id, @bank_eirc);
@@ -191,8 +191,8 @@ INSERT INTO eirc_bank_descriptions_tbl (name, language_id, bank_id)
 
 
 -- Init service providers
-INSERT INTO eirc_service_providers_tbl(id, organisation_id, data_source_description_id)
-	VALUES (1, @organisation_cn, @source_description_id);
+INSERT INTO eirc_service_providers_tbl(id, status, organisation_id, data_source_description_id)
+	VALUES (1, 0, @organisation_cn, @source_description_id);
 SELECT @service_provider_cn:=1;
 INSERT INTO eirc_service_provider_descriptions_tbl (name, language_id, service_provider_id)
 	VALUES ('ПУ ЦН', @ru_id, @service_provider_cn);
