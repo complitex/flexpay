@@ -4,7 +4,7 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
-	<form id="fobjects" method="post" action="<s:url value="/eirc/eircAccountCreateForm2.action" includeParams="none" />">
+	<form id="fobjects" method="post" action="<s:url action="eircAccountCreateForm2" includeParams="none" />">
 		<input type="hidden" name="apartmentId" value="<s:property value="apartmentId"/>"/>
 
 		<tr>

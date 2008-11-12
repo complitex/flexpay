@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="srform" method="post" action="<s:url value="/eirc/eircAccountCreateForm1.action" includeParams="none" />">
+	<form id="srform" method="post" action="<s:url action="eircAccountCreateForm1" includeParams="none" />">
 
 		<tr>
 			<td class="filter"><s:text name="ab.country"/></td>
@@ -46,7 +46,7 @@
 		<tr>
 			<td colspan="3">
 				<input type="submit" class="btn-exit"
-					   onclick="$('srform').action='<s:url value="/eirc/eircAccountCreateForm2.action" includeParams="none" />';$('srform').submit()"
+					   onclick="$('srform').action='<s:url action="eircAccountCreateForm2" includeParams="none" />';$('srform').submit()"
 					   value="<s:text name="common.next"/>"/>
 			</td>
 		</tr>

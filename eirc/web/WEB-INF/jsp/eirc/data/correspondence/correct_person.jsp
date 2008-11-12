@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <form id="fobjects" method="post"
-	  action="<s:url action="registry_record_correct_person" includeParams="none" />">
+	  action="<s:url action="registryRecordCorrectPerson" includeParams="none" />">
 
 	<%@include file="../registry_record_info.jsp" %>
 	<%@ include file="/WEB-INF/jsp/ab/filters/groups/person_search.jsp" %>
@@ -43,7 +43,7 @@
 				<%@ include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="hidden" id="setupType" name="setupType" value="setupType"/>
 				<s:hidden name="record.id" value="%{record.id}"/>
-				<input type="submit" onclick="$('setupType').value = 'person'"
+				<input type="submit" onclick="$('setupType').value = 'person';"
 					   class="btn-exit"
 					   value="<s:text name="common.set"/>"/>
 				<input type="button" value="<s:text name="common.close" />"

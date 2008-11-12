@@ -14,56 +14,29 @@
 		</action>
 
 		<action name="spFileCreate" class="spFileCreateAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_ADD</param>
+			</interceptor-ref>
 			<result name="input" type="tiles">eirc.import.file.upload.form</result>
 		</action>
 
 		<action name="spFileList" class="spFileListAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_ADD</param>
+			</interceptor-ref>
 			<result name="success" type="tiles">eirc.import.file.list</result>
 		</action>
 
 		<action name="spFileAction" class="spFileAction">
-			<result name="redirectSuccess" type="redirect">spFileList.action</result>
-		</action>
-
-		<action name="processing">
-			<result type="tiles">eirc.processing</result>
-		</action>
-
-
-		<!-- Eirc account -->
-		<action name="eircAccountView" class="eircAccountViewAction">
-			<result name="success" type="tiles">eirc.eirc_account.view</result>
-			<result name="redirectError" type="redirect-action">
-				<param name="actionName">eircAccountList</param>
-			</result>
-		</action>
-		<action name="eircAccountCreateForm1" class="eircAccountCreateForm1Action">
-			<result type="tiles">eirc.eirc_account.create.form1</result>
-		</action>
-		<action name="eircAccountCreateForm2" class="eircAccountCreateForm2Action">
-			<result name="form2" type="tiles">eirc.eirc_account.create.form2</result>
-			<result name="redirectForm1" type="redirect-action">
-				<param name="actionName">eircAccountCreateForm1</param>
-			</result>
-		</action>
-		<action name="eircAccountCreate" class="eircAccountCreateAction">
-			<result name="redirectForm1" type="redirect-action">
-				<param name="actionName">eircAccountCreateForm1</param>
-			</result>
-			<result name="redirectForm2" type="redirect-action">
-				<param name="actionName">eircAccountCreateForm2</param>
-				<param name="parse">true</param>
-				<param name="apartmentId">${apartmentId}</param>
-			</result>
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">eircAccountView</param>
-				<param name="parse">true</param>
-				<param name="eircAccount.id">${eircAccount.id}</param>
-			</result>
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_ADD</param>
+			</interceptor-ref>
+			<result name="redirectSuccess" type="redirect-action">spFileList</result>
 		</action>
 
 	</package>
 
+	<include file="org/flexpay/eirc/actions/eirc_account/struts.xml" />
 	<include file="org/flexpay/eirc/actions/organisation/struts.xml" />
 	<include file="org/flexpay/eirc/actions/serviceprovider/struts.xml" />
 	<include file="org/flexpay/eirc/actions/service/struts.xml" />

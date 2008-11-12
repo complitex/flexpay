@@ -17,7 +17,7 @@ public class DeleteOrganisationsAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 		organisationService.disable(objectIds);
 
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class DeleteOrganisationsAction extends FPActionSupport {
 	 */
 	@NotNull
 	protected String getErrorResult() {
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	public Set<Long> getObjectIds() {

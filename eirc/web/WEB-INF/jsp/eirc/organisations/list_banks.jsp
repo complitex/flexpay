@@ -7,7 +7,7 @@
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
-			<td class="th"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds')"></td>
+			<td class="th"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');"></td>
             <td class="th"><s:text name="eirc.bank.description"/></td>
 			<td class="th"><s:text name="eirc.organisation.inn"/></td>
 			<td class="th"><s:text name="eirc.organisation.kpp"/></td>
@@ -26,7 +26,7 @@
 				<td class="col"><s:property value="organisation.kpp"/></td>
 				<td class="col"><s:property value="bankIdentifierCode"/></td>
 				<td class="col"><s:property value="correspondingAccount"/></td>
-				<td class="col"><a href="<s:url value="/eirc/bankEdit.action?bank.id=%{id}"/>">
+				<td class="col"><a href="<s:url action="bankEdit"><s:param name="bank.id" value="%{id}"/></s:url>">
 						 <s:text name="common.edit"/>
 						 </a></td>
 			</tr>

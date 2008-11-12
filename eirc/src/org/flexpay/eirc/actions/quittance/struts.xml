@@ -12,14 +12,23 @@
 		</action>
 
 		<action name="generateQuittances" class="generateQuittancesAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_QUITTANCE_CREATE</param>
+			</interceptor-ref>
 			<result type="tiles">eirc.quittances.generate_quittances</result>
 		</action>
 
 		<action name="printQuittances" class="printTicketsAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_QUITTANCE_CREATE_PRINT_FILE</param>
+			</interceptor-ref>
 			<result type="tiles">eirc.tickets.print_tickets</result>
 		</action>
 
 		<action name="searchQuittance" class="quittanceSearchAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_QUITTANCE_READ</param>
+			</interceptor-ref>
 			<result name="input" type="tiles">eirc.quittances.find_quittance</result>
 			<result name="redirectSuccess" type="tiles">
 				<param name="actionName">payQuittanceForm</param>
@@ -29,11 +38,17 @@
 		</action>
 
 		<action name="payQuittanceForm" class="quittancePayFormAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_QUITTANCE_RECEIVE</param>
+			</interceptor-ref>
 			<result name="input" type="tiles">eirc.tickets.ticket_find</result>
 			<result name="success" type="tiles">eirc.tickets.ticket_pay_form</result>
 		</action>
 
 		<action name="payQuittance" class="quittancePayAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_QUITTANCE_RECEIVE</param>
+			</interceptor-ref>
 			<result name="success" type="tiles">eirc.tickets.ticket_pay_form</result>
 		</action>
 

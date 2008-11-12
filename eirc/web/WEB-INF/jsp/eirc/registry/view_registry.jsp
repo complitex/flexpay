@@ -35,7 +35,7 @@
 				<td class="col" width="1%"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/></td>
 				<td class="col">
 					<s:if test="service != null">
-						<a href="<s:url action="service_edit" namespace="/eirc" includeParams="none"><s:param name="service.id" value="service.id" /></s:url>">
+						<a href="<s:url action="serviceEdit" namespace="/eirc" includeParams="none"><s:param name="service.id" value="service.id" /></s:url>">
 							<s:property value="serviceCode"/>
 						</a>
 					</s:if><s:else>
@@ -87,7 +87,7 @@
 			<td colspan="12">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" value="<s:text name="eirc.process_selected" />" class="btn-exit"
-					   onclick="$('frecords').action='<s:url action="process_registry_records" includeParams="none"/>';"/>
+					   onclick="$('frecords').action='<s:url action="processRegistryRecords" includeParams="none"/>';"/>
 			</td>
 		</tr>
 	</table>
@@ -98,7 +98,7 @@
 	function correspondenceScreen(recordId) {
 		var win = new Window(
 		{className: "spread", title: "Corrections", top:70, left:100, width:800, height:600,
-			url: '<s:url action="select_correction_type" includeParams="none"/>' + "?record.id=" + recordId});
+			url: '<s:url action="selectCorrectionType" includeParams="none"/>' + "?record.id=" + recordId});
 
 		// show window in center
 		win.showCenter(/*Modal*/ true, /*Top*/ 50, /*left*/ 200);
