@@ -61,7 +61,7 @@ public class ShowRegistryAction extends FPActionSupport {
 	 */
 	@NotNull
 	protected String getErrorResult() {
-		return ERROR;
+		return REDIRECT_ERROR;
 	}
 
 	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {

@@ -22,7 +22,7 @@
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
-			<td class="th"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds')"></td>
+			<td class="th"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');"></td>
 			<td class="th"><s:text name="eirc.date"/></td>
 			<td class="th"><s:text name="eirc.sender"/></td>
 			<td class="th"><s:text name="eirc.recipient"/></td>
@@ -45,7 +45,7 @@
 				<td class="col"><s:date name="spFile.importDate" format="yyyy/MM/dd HH:mm:ss"/></td>
 				<td class="col"><s:property value="recordsNumber"/></td>
 				<td class="col"><s:text name="%{registryStatus.i18nName}"/></td>
-				<td class="col"><a href="<s:url action="registry_view"><s:param name="registry.id" value="%{id}"/></s:url>">
+				<td class="col"><a href="<s:url action="registryView"><s:param name="registry.id" value="%{id}"/></s:url>">
 					<s:text name="common.view"/>	 
 						</a></td>
 			</tr>
@@ -54,7 +54,7 @@
 			<td colspan="10">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" value="<s:text name="eirc.process" />" class="btn-exit"
-					   onclick="$('fregistries').action='<s:url action="process_registries"/>';"/>
+					   onclick="$('fregistries').action='<s:url action="processRegistries"/>';"/>
 			</td>
 		</tr>
 	</table>

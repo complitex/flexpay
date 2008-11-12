@@ -27,7 +27,7 @@
 				<td class="col"><s:property value="getOrganisationName(headOrganisation)"/></td>
 				<td class="col"><s:property value="getOrganisationName(juridicalPerson)"/></td>
 				<td class="col"><s:property value="getSubdivisionName(parentSubdivision)"/></td>
-				<td class="col"><a href="<s:url value="/eirc/subdivisionEdit.action?headOrganisation.id=%{organisation.id}&subdivision.id=%{id}" includeParams="none"/>">
+				<td class="col"><a href="<s:url action="subdivisionEdit"><s:param name="headOrganisation.id" value="%{organisation.id}" /><s:param name="subdivision.id" value="%{id}" /></s:url>">
 						 <s:text name="common.edit"/></a></td>
 			</tr>
 		</s:iterator>

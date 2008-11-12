@@ -18,7 +18,7 @@
 				<s:property value="%{responsiblePerson.defaultIdentity.middleName}"/></a>
 			</td>
 			<td class="col">
-				<a href="<s:url action="service_edit" namespace="/eirc" includeParams="none"><s:param name="service.id" value="%{service.id}"/></s:url>">
+				<a href="<s:url action="serviceEdit" namespace="/eirc" includeParams="none"><s:param name="service.id" value="%{service.id}"/></s:url>">
 				<s:property value="%{getServiceDescription(service)}" /></a>
 			</td>
 		</tr>

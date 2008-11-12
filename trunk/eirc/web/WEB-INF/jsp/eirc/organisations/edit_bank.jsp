@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 <s:actionerror />
-<s:form method="post">
+<s:form action="bankEdit">
 	<s:hidden name="bank.id" />
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr valign="middle" class="cols_1">

@@ -13,7 +13,7 @@
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%"><input type="checkbox" disabled="1"
-											 onchange="FP.setCheckboxes(this.checked, 'objectIds')">
+											 onchange="FP.setCheckboxes(this.checked, 'objectIds');">
 			</td>
 			<td class="th" width="14%"><s:text name="eirc.eirc_account"/></td>
 			<td class="th" width="42%"><s:text name="eirc.eirc_account.person"/></td>
@@ -53,7 +53,7 @@
 			<td colspan="5">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="eircAccountCreateForm1"/>'"
+					   onclick="window.location='<s:url action="eircAccountCreateForm1"/>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

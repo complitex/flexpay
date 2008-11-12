@@ -7,12 +7,8 @@
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
-			<td>
-				<s:text name="eirc.quittance.number" />
-			</td>
-			<td>
-				<s:textfield key="quittanceNumber" />
-			</td>
+			<td><s:text name="eirc.quittance.number" /></td>
+			<td><s:textfield key="quittanceNumber" /></td>
 		</tr>
 
 		<tr>

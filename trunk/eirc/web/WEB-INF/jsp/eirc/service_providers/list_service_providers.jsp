@@ -20,20 +20,17 @@
 				<td class="col"><s:property value="getTranslation(organisation.names).name"/></td>
 				<td class="col"><s:property value="getTranslation(descriptions).name"/></td>
 				<td class="col"><s:property value="organisation.id"/></td>
-				<td class="col"><a href="<s:url action="service_provider_edit"><s:param name="provider.id" value="%{id}"/></s:url>">
-					<!-- <img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
-						 title="<s:text name="common.edit"/>"/> -->
-					<s:text name="common.edit"/>	 
-						 </a></td>
+				<td class="col"><a href="<s:url action="serviceProviderEdit"><s:param name="provider.id" value="%{id}"/></s:url>">
+					<s:text name="common.edit"/></a></td>
 			</tr>
 		</s:iterator>
 		<tr>
 			<td colspan="10">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit"
-					   onclick="$('fproviders').action='<s:url action="service_providers_delete"/>';"/>
+					   onclick="$('fproviders').action='<s:url action="serviceProvidersDelete"/>';"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="service_provider_edit"><s:param name="provider.id" value="0"/></s:url>'"
+					   onclick="window.location='<s:url action="serviceProviderEdit"><s:param name="provider.id" value="0"/></s:url>'"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

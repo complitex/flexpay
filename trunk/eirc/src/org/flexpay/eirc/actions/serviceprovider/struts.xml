@@ -7,20 +7,28 @@
 	<package name="eirc-service-providers" namespace="/eirc" extends="common">
 
 		<!-- Service Providers -->
-		<action name="service_providers_list" class="listServiceProvidersAction">
+		<action name="serviceProvidersList" class="listServiceProvidersAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_PROVIDER_READ</param>
+			</interceptor-ref>
 			<result type="tiles">eirc.service_providers.list</result>
 		</action>
 
-		<action name="service_providers_delete" class="deleteServiceProvidersAction">
-			<result type="redirect-action">service_providers_list</result>
+		<action name="serviceProvidersDelete" class="deleteServiceProvidersAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_PROVIDER_DELETE</param>
+			</interceptor-ref>
+			<result type="redirect-action">serviceProvidersList</result>
 		</action>
 
-		<action name="service_provider_edit" class="editServiceProviderAction">
+		<action name="serviceProviderEdit" class="editServiceProviderAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_PROVIDER_CHANGE</param>
+			</interceptor-ref>
 			<result name="input" type="tiles">eirc.service_provider.edit</result>
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">service_providers_list</param>
-			</result>
+			<result name="redirectSuccess" type="redirect-action">serviceProvidersList</result>
 		</action>
 
 	</package>
+
 </struts>

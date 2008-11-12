@@ -7,32 +7,43 @@
 	<package name="eirc-service" namespace="/eirc" extends="common">
 
 		<!-- Service Types -->
-		<action name="service_types_list" class="listServiceTypesAction">
+		<action name="serviceTypesList" class="listServiceTypesAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_TYPE_READ</param>
+			</interceptor-ref>
 			<result type="tiles">eirc.service_types.list</result>
 		</action>
 
-		<action name="service_types_delete" class="deleteServiceTypesAction">
-			<result name="redirectSuccess" type="redirect-action">service_types_list</result>
+		<action name="serviceTypesDelete" class="deleteServiceTypesAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_TYPE_DELETE</param>
+			</interceptor-ref>
+			<result name="redirectSuccess" type="redirect-action">serviceTypesList</result>
 		</action>
 
-		<action name="service_type_edit" class="editServiceTypeAction">
+		<action name="serviceTypeEdit" class="editServiceTypeAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_TYPE_CHANGE</param>
+			</interceptor-ref>
 			<result name="input" type="tiles">eirc.service_type.edit</result>
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">service_types_list</param>
-			</result>
+			<result name="redirectSuccess" type="redirect-action">serviceTypesList</result>
 		</action>
 
 
 		<!-- Services -->
-		<action name="services_list" class="listServicesAction">
+		<action name="servicesList" class="listServicesAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_READ</param>
+			</interceptor-ref>
 			<result type="tiles">eirc.services.list</result>
 		</action>
 
-		<action name="service_edit" class="editServiceAction">
+		<action name="serviceEdit" class="editServiceAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_CHANGE</param>
+			</interceptor-ref>
 			<result name="input" type="tiles">eirc.service.edit</result>
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">services_list</param>
-			</result>
+			<result name="redirectSuccess" type="redirect-action">servicesList</result>
 		</action>
 
 	</package>

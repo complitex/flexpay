@@ -3,8 +3,8 @@
 <s:actionerror/>
 
 <form id="fobjects" method="post"
-	  action="<s:url action="registry_record_correct_address_street" includeParams="none"/>"
-	  onsubmit="return validateSubmit()">
+	  action="<s:url action="registryRecordCorrectAddressStreet" includeParams="none"/>"
+	  onsubmit="return validateSubmit();">
 
 	<%@include file="../registry_record_info.jsp" %>
 
@@ -35,7 +35,7 @@
 				<%@ include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="hidden" id="setupType" name="setupType" value="setupType" />
 				<s:hidden name="record.id" value="%{record.id}" />
-				<input type="submit" onclick="$('setupType').value = 'street'" class="btn-exit"
+				<input type="submit" onclick="$('setupType').value = 'street';" class="btn-exit"
 					   value="<s:text name="common.set"/>" />
 			</td>
 		</tr>

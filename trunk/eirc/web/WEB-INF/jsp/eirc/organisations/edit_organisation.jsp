@@ -4,7 +4,7 @@
 <br />
 
 <s:actionerror />
-<s:form method="post">
+<s:form action="organisationEdit">
 	<s:hidden name="organisation.id" />
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr valign="top" class="cols_1">

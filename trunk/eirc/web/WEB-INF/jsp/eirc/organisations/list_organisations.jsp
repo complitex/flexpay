@@ -6,7 +6,7 @@
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
-			<td class="th"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds')"></td>
+			<td class="th"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');"></td>
             <td class="th"><s:text name="eirc.organisation.id"/></td>
             <td class="th"><s:text name="eirc.organisation.name"/></td>
 			<td class="th"><s:text name="eirc.organisation.kpp"/></td>
@@ -26,7 +26,7 @@
 				</td>
 				<td class="col"><s:property value="kpp"/></td>
 				<td class="col"><s:property value="individualTaxNumber"/></td>
-				<td class="col"><a href="<s:url value="/eirc/organisation_edit.action?organisation.id=%{id}"/>">
+				<td class="col"><a href="<s:url action="organisationEdit"><s:param name="organisation.id" value="%{id}"/></s:url>">
 						 <s:text name="common.edit"/>
 						 </a></td>
 			</tr>
@@ -35,9 +35,9 @@
 			<td colspan="10">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit"
-					   onclick="$('forganisations').action='<s:url action="organisations_delete"/>';"/>
+					   onclick="$('forganisations').action='<s:url action="organisationsDelete"/>';"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="organisation_edit"><s:param name="organisation.id" value="0"/></s:url>'"
+					   onclick="window.location='<s:url action="organisationEdit"><s:param name="organisation.id" value="0"/></s:url>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

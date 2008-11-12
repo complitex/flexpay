@@ -10,7 +10,7 @@
 		</tr>
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
-			<td class="th" width="1%"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds')"></td>
+			<td class="th" width="1%"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');"></td>
 			<td class="th"><s:text name="eirc.service_type.name"/></td>
 			<td class="th"><s:text name="eirc.service.description"/></td>
 			<td class="th"><s:text name="eirc.service.service_provider"/></td>
@@ -35,18 +35,15 @@
 				<td class="col"><s:property value="externalCode"/></td>
 				<td class="col"><s:date name="beginDate" format="yyyy/MM/dd"/></td>
 				<td class="col"><s:date name="endDate" format="yyyy/MM/dd"/></td>
-				<td class="col"><a href="<s:url action="service_edit"><s:param name="service.id" value="%{id}"/></s:url>">
-					<!-- <img src="<s:url value="/resources/common/img/i_edit.gif" />" alt="<s:text name="common.edit"/>"
-						 title="<s:text name="common.edit"/>"/> -->
-					<s:text name="common.edit"/>	 
-						</a></td>
+				<td class="col"><a href="<s:url action="serviceEdit"><s:param name="service.id" value="%{id}"/></s:url>">
+					<s:text name="common.edit"/></a></td>
 			</tr>
 		</s:iterator>
 		<tr>
 			<td colspan="10">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="service_edit"><s:param name="service.id" value="0"/></s:url>'"
+					   onclick="window.location='<s:url action="serviceEdit"><s:param name="service.id" value="0"/></s:url>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

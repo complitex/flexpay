@@ -305,4 +305,194 @@
         <group-name>VIEW_ONLY</group-name>
     </security-role-mapping>
 
+	<!-- Organisation -->
+	<security-role-mapping>
+		<role-name>EIRC_ORGANIZATION_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_ORGANIZATION_CHANGE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_ORGANIZATION_ADD</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_ORGANIZATION_DELETE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_ORGANIZATION_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+	<!-- Organisation -->
+	<security-role-mapping>
+		<role-name>EIRC_BANK_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_BANK_CHANGE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_BANK_ADD</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_BANK_DELETE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_BANK_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+	<!-- Organisation -->
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_PROVIDER_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_PROVIDER_CHANGE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_PROVIDER_ADD</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_PROVIDER_DELETE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_PROVIDER_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+	<!-- Organisation -->
+	<security-role-mapping>
+		<role-name>EIRC_ACCOUNT_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_ACCOUNT_CHANGE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_ACCOUNT_ADD</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_ACCOUNT_DELETE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_ACCOUNT_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+	<!-- Organisation -->
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_ADD</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_CHANGE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_DELETE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+	<!-- Organisation -->
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_TYPE_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_TYPE_ADD</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_TYPE_CHANGE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_TYPE_DELETE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_SERVICE_TYPE_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+	<!-- EIRC Registries -->
+	<security-role-mapping>
+		<role-name>EIRC_FILE_UPLOAD</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_FILE_IMPORT</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_REGISTRY_PROCESS</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_REGISTRY_SET_CORRESPONDENCE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Processes -->
+	<security-role-mapping>
+		<role-name>EIRC_PROCESS_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_PROCESS_DELETE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_PROCESS_DEFINITION_UPLOAD_NEW</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_PROCESS_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+	<!-- Quittances -->
+	<security-role-mapping>
+		<role-name>EIRC_QUITTANCE_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_QUITTANCE_CREATE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_QUITTANCE_CREATE_PRINT_FILE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_QUITTANCE_RECEIVE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>EIRC_QUITTANCE_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
 </sun-web-app>

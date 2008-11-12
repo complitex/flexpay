@@ -22,24 +22,11 @@
 						<s:text name="eirc.registry.file.load"/>
 					</a>
 				</s:if>
-				<!-- <s:if test="loadedToDb">
-						  <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="action" value="'deleteFromDb'"/></s:url>">
-							delete from DB
-						  </a>
-						  </s:if> -->
-				<!-- <s:if test="loadedToDb">
-						  <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="action" value="'loadFromDb'"/></s:url>">
-							load from DB
-						  </a>
-						</s:if> -->
 				<s:if test="internalResponseFileName != null">
 					<a href="<s:url value='/spFileDownloadServlet'><s:param name="spFileId" value="%{id}"/></s:url>">
 						<s:property value="requestFileName"/>
 					</a>
 				</s:if>
-				<!--  <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="action" value="'fullDelete'"/></s:url>">
-						  delete
-						</a> -->
 			</td>
 
 		</tr>

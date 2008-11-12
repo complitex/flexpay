@@ -6,18 +6,30 @@
 
 	<package name="processing" namespace="/eirc" extends="common">
 
+		<!-- Menu item -->
+		<action name="processing">
+			<result type="tiles">eirc.processing</result>
+		</action>
+
 		<action name="processListAction" class="processListAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_PROCESS_READ</param>
+			</interceptor-ref>
 			<result type="tiles">eirc.process.list</result>
 		</action>
 
 		<action name="processViewAction" class="processViewAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_PROCESS_READ</param>
+			</interceptor-ref>
 			<result type="tiles">eirc.process.view</result>
 		</action>
 
 		<action name="deployProcessDefinitionAction" class="deployProcessDefinitionAction">
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">processListAction</param>
-			</result>
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_PROCESS_DEFINITION_UPLOAD_NEW</param>
+			</interceptor-ref>
+			<result name="redirectSuccess" type="redirect-action">processListAction</result>
 			<result name="input" type="tiles">eirc.process.deploy_definition</result>
 		</action>
 
