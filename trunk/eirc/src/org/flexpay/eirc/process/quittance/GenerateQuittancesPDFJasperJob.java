@@ -1,12 +1,14 @@
 package org.flexpay.eirc.process.quittance;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.reporting.ReportUtil;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.quittance.report.JRQuittanceDataSource;
@@ -19,21 +21,27 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class GenerateQuittancesPDFJasperJob extends Job {
+
+	public static final String JOB_NAME = "generateQuitancesPDFJob";
 
 	private QuittanceService quittanceService;
 	private ReportUtil reportUtil;
 	private JRQuittanceDataSource jrDataSource;
 
 	public final static String RESULT_FILE_NAME = "RESULT_FILE_NAME";
+	public static final String PARAM_DATE_FROM = "dateFrom";
+	public static final String PARAM_DATE_TILL = "dateTill";
+	public static final String PARAM_SERVICE_ORGANISATION_ID = "serviceOrganisationId";
 
 	public String execute(Map<Serializable, Serializable> contextVariables) throws FlexPayException {
 
-		Long serviceOrganisationId = (Long) contextVariables.get("serviceOrganisationId");
-		Date dateFrom = (Date) contextVariables.get("dateFrom");
-		Date dateTill = (Date) contextVariables.get("dateTill");
+		Date dateFrom = (Date) contextVariables.get(PARAM_DATE_FROM);
+		Date dateTill = (Date) contextVariables.get(PARAM_DATE_TILL);
+		Long organisationId = (Long) contextVariables.get(PARAM_SERVICE_ORGANISATION_ID);
 
 		Logger plog = ProcessLogger.getLogger(getClass());
 
@@ -47,7 +55,7 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 
 			plog.info("Fetching quittances");
 			List<Quittance> quittances = quittanceService.getQuittances(
-					new Stub<ServiceOrganisation>(serviceOrganisationId), dateFrom, dateTill);
+					new Stub<ServiceOrganisation>(organisationId), dateFrom, dateTill);
 
 			plog.info("About to prepare JR data source");
 			jrDataSource.setQuittances(quittances, 4);
@@ -88,6 +96,10 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 		} finally {
 			IOUtils.closeQuietly(is);
 		}
+	}
+
+	public static Set<String> getParameterNames() {
+		return CollectionUtils.set(PARAM_DATE_FROM, PARAM_DATE_TILL, PARAM_SERVICE_ORGANISATION_ID);
 	}
 
 	public void setQuittanceService(QuittanceService quittanceService) {

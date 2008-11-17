@@ -7,6 +7,11 @@ import java.util.Map;
 
 public class Process {
 
+	/**
+	 * Name of a parameter holding process instance id
+	 */
+	public static final String PROCESS_INSTANCE_ID = "ProcessInstanceID";
+
 	private long id;
 	private String logFileName;
 	private Date processStartDate;

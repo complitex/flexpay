@@ -2,6 +2,7 @@ package org.flexpay.common.util;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.NonNls;
+import org.apache.commons.lang.builder.EqualsBuilder;
 
 import java.util.*;
 
@@ -90,5 +91,24 @@ public class CollectionUtils {
 	@NotNull
 	public static <T> SortedSet<T> treeSet(@NotNull Collection<T> values) {
 		return new TreeSet<T>(values);
+	}
+
+	/**
+	 * Check if maps values are equals by a specified set of keys
+	 *
+	 * @param keys Set of keys to check equality against
+	 * @param p1 First map
+	 * @param p2 Second map
+	 * @param <K> Key parameter type
+	 * @param <V> Value parameter type
+	 * @return <code>true</code> if maps has equals values for requested set of keys 
+	 */
+	public static <K, V> boolean isSame(Collection<K> keys, Map<K, V> p1, Map<K, V> p2) {
+		EqualsBuilder equalsBuilder = new EqualsBuilder();
+		for (K k : keys) {
+			equalsBuilder.append(p1.get(k), p2.get(k));
+		}
+
+		return equalsBuilder.isEquals();
 	}
 }

@@ -28,7 +28,7 @@ public class ProcessListAction extends FPActionSupport {
 	@NotNull
 	protected String doExecute() throws Exception {
 		if (objectIds != null && objectIds.size() > 0) {
-			processManager.deleteProcessInstanceList(objectIds);
+			processManager.deleteProcessInstances(objectIds);
 		}
 		processList = getProcessListMethod();
 		return SUCCESS;

@@ -127,6 +127,6 @@
 		  factory-method="getInstance" destroy-method="unload" init-method="startProcessManager"
 			p:jbpmConfiguration-ref="jbpmConfiguration"
 			p:rescanFrequency="${process_manager.rescanFrequency}"
-			p:startTaskLimit="${process_manager.startTaskLimit}"
+			p:taskRepeatLimit="${process_manager.startTaskLimit}"
 			/>
 </beans>

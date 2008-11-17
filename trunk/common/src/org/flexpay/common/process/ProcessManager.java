@@ -20,12 +20,20 @@ import org.jbpm.graph.exe.Token;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.io.File;
 import java.util.*;
 
+/**
+ * Process manager allows to create and maintain processes lyfecycle
+ */
 public class ProcessManager implements Runnable {
+
+	/**
+	 * Loggger
+	 */
+	private static final Logger log = Logger.getLogger(ProcessManager.class);
 
 	/**
 	 * singleton instance
@@ -35,35 +43,35 @@ public class ProcessManager implements Runnable {
 	private volatile boolean stopped = false;
 	private final Object sleepSemaphore = new Object();
 
-	private static final Logger log = Logger.getLogger(ProcessManager.class);
-
-
 	/**
-	 * Mapping from task ids to Processes
+	 * Set of task instance ids currently in progress
 	 */
-	private final Map<Long, Process> running = CollectionUtils.map();
+	private final Set<Long> runningTasks = CollectionUtils.set();
 
 	private int rescanFrequency = 10000;
-	private int startTaskLimit = 10;
 
-	public static final String PROCESS_INSTANCE_ID = "ProcessInstanceID";
+	/**
+	 * Limit number of task restarts
+	 */
+	private int taskRepeatLimit = 10;
+
 	private JbpmConfiguration jbpmConfiguration = null;
 
+	/**
+	 * Predefined set of paths where to lookup definitions if not already deployed
+	 */
 	private final List<String> definitionPaths = CollectionUtils.list();
+
+	/**
+	 * LyfecycleVoters
+	 */
+	private List<LyfecycleVoter> lyfecycleVoters = Collections.emptyList();
 
 	/**
 	 * protected constructor
 	 */
 	protected ProcessManager() {
 		log.debug("ProcessManager constructor called ");
-	}
-
-	public void setRescanFrequency(int rescanFrequency) {
-		this.rescanFrequency = rescanFrequency;
-	}
-
-	public void setStartTaskLimit(int startTaskLimit) {
-		this.startTaskLimit = startTaskLimit;
 	}
 
 	/**
@@ -214,13 +222,13 @@ public class ProcessManager implements Runnable {
 			try {
 				//write tick-tack message
 				log.trace("Collecting task instances to run.");
-				//find not running task instances and run
+				//find not runningTasks task instances and run
 				JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
 				for (Object o : jbpmContext.getTaskMgmtSession().findTaskInstances(JobManagerAssignmentHandler.JOB_MANAGER_ACTOR_NAME)) {
-					// are there any not running taskInstances?
+					// are there any not runningTasks taskInstances?
 					TaskInstance taskInstance = (TaskInstance) o;
 					taskInstance = jbpmContext.getTaskMgmtSession().loadTaskInstance(taskInstance.getId());
-//                    if (!taskInstance.hasEnded() || (running.get(taskInstance.getId()) != null)) {
+//                    if (!taskInstance.hasEnded() || (runningTasks.get(taskInstance.getId()) != null)) {
 					if (!isTaskExecuting(taskInstance.getId())) {
 						startTask(taskInstance);
 					}
@@ -265,8 +273,9 @@ public class ProcessManager implements Runnable {
 	 * @throws ProcessDefinitionException when process definition has an error
 	 * @throws ProcessInstanceException   when jbpm can't instanciate process from process definition
 	 */
-	public synchronized Long initProcess(String processDefinitionName)
+	private synchronized Long initProcess(String processDefinitionName)
 			throws ProcessDefinitionException, ProcessInstanceException {
+
 		ProcessDefinition processDefinition;
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
 		GraphSession graphSession = jbpmContext.getGraphSession();
@@ -313,8 +322,8 @@ public class ProcessManager implements Runnable {
 	 * @return HashMap with process context parameters
 	 * @throws ProcessInstanceException when can't get process parameters
 	 */
-	public Map getProcessParameters(Long processID) throws ProcessInstanceException {
-		Map result = null;
+	private Map<Serializable, Serializable> getProcessParameters(Long processID) throws ProcessInstanceException {
+		Map<Serializable, Serializable> result = null;
 		GraphSession graphSession = jbpmConfiguration.createJbpmContext().getGraphSession();
 		try {
 			ProcessInstance processInstance = graphSession.loadProcessInstance(processID);
@@ -327,32 +336,6 @@ public class ProcessManager implements Runnable {
 		} catch (RuntimeException e) {
 			log.error("getProcessParameters: ", e);
 			throw new ProcessInstanceException("Can't get Process Dictionary for " + processID);
-		}
-		return result;
-	}
-
-	/**
-	 * Return all process definitions
-	 *
-	 * @return List with process definition IDs
-	 * @throws ProcessInstanceException when runtime exception caught
-	 */
-	public List<Long> getProcessIDList() throws ProcessInstanceException {
-		Vector<Long> result = new Vector<Long>();
-		try {
-			GraphSession graphSession = jbpmConfiguration.createJbpmContext().getGraphSession();
-			List processDefinitionList = graphSession.findAllProcessDefinitions();
-			for (Object def1 : processDefinitionList) {
-				ProcessDefinition processDefinition = (ProcessDefinition) def1;
-				List procs = graphSession.findProcessInstances(processDefinition.getId());
-				for (Object proc1 : procs) {
-					ProcessInstance processInstance = (ProcessInstance) proc1;
-					result.addElement(processInstance.getId());
-				}
-			}
-		} catch (RuntimeException e) {
-			log.error("Failed getting process list", e);
-			throw new ProcessInstanceException("Can't get Process List", e);
 		}
 		return result;
 	}
@@ -379,7 +362,7 @@ public class ProcessManager implements Runnable {
 		if (parameters == null) {
 			parameters = new HashMap<Serializable, Serializable>();
 		}
-		parameters.put(PROCESS_INSTANCE_ID, String.valueOf(processInstanceID));
+		parameters.put(Process.PROCESS_INSTANCE_ID, String.valueOf(processInstanceID));
 		ci.addVariables(parameters);
 		Token token = processInstance.getRootToken();
 		token.signal();
@@ -404,46 +387,91 @@ public class ProcessManager implements Runnable {
 		ProcessInstance processInstance = task.getTaskMgmtInstance().getProcessInstance();
 		ContextInstance contextInstance = processInstance.getContextInstance();
 
-		Integer startTaskCounter = (Integer) contextInstance.getVariable("StartTaskCounter", task.getToken());
+		Integer runCounter = getRunCount(task, contextInstance);
 
-		if (startTaskCounter == null) {
-			startTaskCounter = 1;
-		} else {
-			startTaskCounter = startTaskCounter + 1;
-		}
-		contextInstance.setVariable("StartTaskCounter", startTaskCounter, task.getToken());
-
-		if (startTaskCounter <= startTaskLimit) {
-			Map<Serializable, Serializable> params = contextInstance.getVariables();
-
-			log.info("Starting task '" + task.getName() + "' (" + task.getId() + ", pid - " + processInstance.getId() + ")");
-
-			if (null == task.getStart()) {
-				task.start();
-			} else {
-				log.info("Task '" + task.getName() + "' (" + task.getId() + ", pid=" + processInstance.getId() + ")" +
-						 " restarted. Recovering from failure.");
-			}
-
-			try {
-				JobManager.getInstance().addJob(processInstance.getId(), task.getId(), task.getName(), params);
-			} catch (FlexPayException e) {
-				log.error("Can't start task with name " + task.getName(), e);
-				return false;
-			}
-			running.put(task.getId(), new Process());
-			return true;
-		} else {
-			log.info("Exceded limit (" + startTaskLimit + ") of starting task '" + task.getName() + "' (" +
+		if (runCounter > taskRepeatLimit) {
+			log.info("Exceded limit (" + taskRepeatLimit + ") for task '" + task.getName() + "' (" +
 					 task.getId() + ", pid - " + processInstance.getId() + "). Process ended.");
-			processInstance.end();
-			task.end(Job.RESULT_ERROR);
-			//set status to failed
-			contextInstance.setVariable(Job.RESULT_ERROR, ProcessState.COMPLITED_WITH_ERRORS);
-			//remove from running tasks
-			running.remove(task.getId());
+			completeTask(task, processInstance, contextInstance);
 			return false;
 		}
+
+		LyfecycleVote vote = voteStart(task);
+		switch (vote) {
+			case CANCEL:
+				log.info("Task '" + task.getName() + "' (" +
+						 task.getId() + ", pid - " + processInstance.getId() + "). Cancelled by voters.");
+				completeTask(task, processInstance, contextInstance);
+				return false;
+			case POSTPONE:
+				log.info("Task " + task.getName() + " is beign postponed.");
+				return false;
+			case START:
+				break;
+		}
+
+		Map<Serializable, Serializable> params = contextInstance.getVariables();
+
+		log.info("Starting task '" + task.getName() + "' (" + task.getId() + ", pid - " + processInstance.getId() + ")");
+
+		if (task.getStart() == null) {
+			task.start();
+		} else {
+			log.info("Task '" + task.getName() + "' (" + task.getId() + ", pid=" + processInstance.getId() + ")" +
+					 " restarted. Recovering from failure.");
+		}
+
+		try {
+			JobManager.getInstance().addJob(processInstance.getId(), task.getId(), task.getName(), params);
+		} catch (FlexPayException e) {
+			log.error("Can't start task with name " + task.getName(), e);
+			return false;
+		}
+		runningTasks.add(task.getId());
+		return true;
+	}
+
+	private void completeTask(TaskInstance task, ProcessInstance processInstance, ContextInstance contextInstance) {
+
+		processInstance.end();
+		task.end(Job.RESULT_ERROR);
+		//set status to failed
+		contextInstance.setVariable(Job.RESULT_ERROR, ProcessState.COMPLITED_WITH_ERRORS);
+		//remove from runningTasks tasks
+		runningTasks.remove(task.getId());
+	}
+
+	private Integer getRunCount(TaskInstance task, ContextInstance contextInstance) {
+
+		Integer runCounter = (Integer) contextInstance.getVariable("StartTaskCounter", task.getToken());
+
+		if (runCounter == null) {
+			runCounter = 1;
+		} else {
+			runCounter = runCounter + 1;
+		}
+		contextInstance.setVariable("StartTaskCounter", runCounter, task.getToken());
+		return runCounter;
+	}
+
+	/**
+	 * Vote for task start
+	 *
+	 * @param instance TaskInstance to vote for
+	 * @return LyfecycleVote
+	 */
+	private LyfecycleVote voteStart(TaskInstance instance) {
+
+		// defualt one is to start task
+		LyfecycleVote vote = LyfecycleVote.START;
+		for (LyfecycleVoter voter : lyfecycleVoters) {
+			LyfecycleVote v = voter.onStart(instance);
+			if (v.ordinal() > vote.ordinal()) {
+				vote = v;
+			}
+		}
+
+		return vote;
 	}
 
 	/**
@@ -480,7 +508,7 @@ public class ProcessManager implements Runnable {
 				proceed = true;
 				Object removed;
 				synchronized (sleepSemaphore) {
-					removed = running.remove(taskId);
+					removed = runningTasks.remove(taskId);
 					sleepSemaphore.notifyAll();
 				}
 
@@ -488,7 +516,7 @@ public class ProcessManager implements Runnable {
 
 				if (log.isDebugEnabled()) {
 					log.debug("Task removed from list of running tasks: " + removed);
-					log.debug("Number of running tasks: " + running.size());
+					log.debug("Number of running tasks: " + runningTasks.size());
 				}
 			} catch (RuntimeException e) {
 				log.error("Failed finishing task: " + taskId, e);
@@ -522,7 +550,7 @@ public class ProcessManager implements Runnable {
 	 * @param parameters process parameters
 	 * @throws ProcessInstanceException when can't start process
 	 */
-	public void startProcess(Long processID, Map<Serializable, Serializable> parameters)
+	private void startProcess(Long processID, Map<Serializable, Serializable> parameters)
 			throws ProcessInstanceException {
 		try {
 			JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
@@ -533,7 +561,7 @@ public class ProcessManager implements Runnable {
 			if (parameters == null) {
 				parameters = new HashMap<Serializable, Serializable>();
 			}
-			parameters.put(PROCESS_INSTANCE_ID, String.valueOf(parameters));
+			parameters.put(Process.PROCESS_INSTANCE_ID, String.valueOf(processID));
 			ci.addVariables(parameters);
 			Token token = processInstance.getRootToken();
 			token.signal();
@@ -574,51 +602,53 @@ public class ProcessManager implements Runnable {
 			log.error("Failed removeProcess", e);
 			throw new ProcessInstanceException("Can't remove ProcessInstance for " + processID, e);
 		}
+	}
 
+	List<TaskInstance> getRunningTasks() {
+		JbpmContext context = jbpmConfiguration.createJbpmContext();
+		List<Long> taskIds = CollectionUtils.list(runningTasks);
+		return (List<TaskInstance>) context.getTaskMgmtSession().findTaskInstancesByIds(taskIds);
 	}
 
 	/**
-	 * Sets JbpmConfiguration
+	 * Get list of system processes
 	 *
-	 * @param jbpmConfiguration - current jbpmConfiguration
+	 * @return Process list
 	 */
-	public void setJbpmConfiguration(JbpmConfiguration jbpmConfiguration) {
-		this.jbpmConfiguration = jbpmConfiguration;
-	}
-
-	public void setDefinitionPaths(List<String> definitionPaths) {
-		this.definitionPaths.clear();
-		this.definitionPaths.addAll(definitionPaths);
-	}
-
 	@SuppressWarnings ({"unchecked"})
 	public List<Process> getProcessList() {
-		ArrayList<Process> processList = new ArrayList<Process>();
+		List<Process> processes = CollectionUtils.list();
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
 		GraphSession graphSession = jbpmContext.getGraphSession();
-		List<ProcessDefinition> processDefinitionList = graphSession.findAllProcessDefinitions();
-		for (ProcessDefinition processDefinition : processDefinitionList) {
-			List<ProcessInstance> processInstanceList = graphSession.findProcessInstances(processDefinition.getId());
-			for (ProcessInstance processInstance : processInstanceList) {
+		List<ProcessDefinition> processDefinitions = graphSession.findAllProcessDefinitions();
+		for (ProcessDefinition processDefinition : processDefinitions) {
+			List<ProcessInstance> processInstances = graphSession.findProcessInstances(processDefinition.getId());
+			for (ProcessInstance processInstance : processInstances) {
 				Process process = new Process();
 				process.setId(processInstance.getId());
 				process.setProcessDefinitionName(processInstance.getProcessDefinition().getName());
 				process.setProcessEndDate(processInstance.getEnd());
 				process.setProcessStartDate(processInstance.getStart());
 				process.setProcessDefenitionVersion(processInstance.getProcessDefinition().getVersion());
-				Map parameters = processInstance.getContextInstance().getVariables();
+				Map<Serializable, Serializable> parameters = processInstance.getContextInstance().getVariables();
 				if (parameters == null) {
 					process.setParameters(new HashMap<Serializable, Serializable>());
 				} else {
 					process.setParameters(parameters);
 				}
-				processList.add(process);
+				processes.add(process);
 			}
 		}
 		jbpmContext.close();
-		return processList;
+		return processes;
 	}
 
+	/**
+	 * Retrive process info
+	 *
+	 * @param processId ProcessInstance id
+	 * @return Process info
+	 */
 	@NotNull
 	@SuppressWarnings ({"unchecked"})
 	public Process getProcessInstanceInfo(@NotNull Long processId) {
@@ -632,13 +662,13 @@ public class ProcessManager implements Runnable {
 			process.setProcessStartDate(processInstance.getStart());
 			process.setProcessDefenitionVersion(processInstance.getProcessDefinition().getVersion());
 			File logFile = ProcessLogger.getLogFile(processInstance.getId());
-			if (logFile.exists()){
+			if (logFile.exists()) {
 				process.setLogFileName(logFile.getAbsolutePath());
-			}else{
+			} else {
 				process.setLogFileName("");
 			}
 
-			Map parameters = processInstance.getContextInstance().getVariables();
+			Map<Serializable, Serializable> parameters = processInstance.getContextInstance().getVariables();
 			if (parameters == null) {
 				process.setParameters(new HashMap<Serializable, Serializable>());
 			} else {
@@ -649,7 +679,13 @@ public class ProcessManager implements Runnable {
 		return process;
 	}
 
-	protected boolean isTaskExecuting(long taskInstanceId) {
+	/**
+	 * Check if task is currently executing
+	 *
+	 * @param taskInstanceId Task instance id
+	 * @return <code>true</code> if task is being executing, or <code>false</code> otherwise
+	 */
+	private boolean isTaskExecuting(long taskInstanceId) {
 
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
 		TaskInstance task = jbpmContext.getTaskMgmtSession().loadTaskInstance(taskInstanceId);
@@ -658,7 +694,7 @@ public class ProcessManager implements Runnable {
 			jbpmContext.close();
 			return true;
 		} else {
-			if (running.get(taskInstanceId) != null) {
+			if (runningTasks.contains(taskInstanceId)) {
 				log.debug(taskInstanceId + " is already started, checking runner");
 				jbpmContext.close();
 				return true;
@@ -692,25 +728,67 @@ public class ProcessManager implements Runnable {
 		}
 	}
 
+	/**
+	 * Delete process instance
+	 *
+	 * @param process Process to delete
+	 */
 	public void deleteProcessInstance(Process process) {
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
 		jbpmContext.getGraphSession().deleteProcessInstance(process.getId());
 		jbpmContext.close();
 	}
 
-	public void deleteProcessInstanceList(List<Process> processList) {
+	/**
+	 * Delete several process instances
+	 *
+	 * @param processes Processes to delete
+	 */
+	public void deleteProcessInstances(List<Process> processes) {
+		Set<Long> processIds = CollectionUtils.set();
+		for (Process process : processes) {
+			processIds.add(process.getId());
+		}
+
+		deleteProcessInstances(processIds);
+	}
+
+	/**
+	 * Delete several process instances
+	 *
+	 * @param processIds Process instances identifiers to delete
+	 */
+	public void deleteProcessInstances(Set<Long> processIds) {
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
-		for (Process process : processList) {
-			jbpmContext.getGraphSession().deleteProcessInstance(process.getId());
+		for (Long processId : processIds) {
+			jbpmContext.getGraphSession().deleteProcessInstance(processId);
 		}
 		jbpmContext.close();
 	}
 
-	public void deleteProcessInstanceList(Set<Long> objectIds) {
-		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
-		for (Long processId : objectIds) {
-			jbpmContext.getGraphSession().deleteProcessInstance(processId);
-		}
-		jbpmContext.close();
+	/**
+	 * Sets JbpmConfiguration
+	 *
+	 * @param jbpmConfiguration - current jbpmConfiguration
+	 */
+	public void setJbpmConfiguration(JbpmConfiguration jbpmConfiguration) {
+		this.jbpmConfiguration = jbpmConfiguration;
+	}
+
+	public void setDefinitionPaths(List<String> definitionPaths) {
+		this.definitionPaths.clear();
+		this.definitionPaths.addAll(definitionPaths);
+	}
+
+	public void setRescanFrequency(int rescanFrequency) {
+		this.rescanFrequency = rescanFrequency;
+	}
+
+	public void setTaskRepeatLimit(int taskRepeatLimit) {
+		this.taskRepeatLimit = taskRepeatLimit;
+	}
+
+	public void setLyfecycleVoters(List<LyfecycleVoter> lyfecycleVoters) {
+		this.lyfecycleVoters = lyfecycleVoters;
 	}
 }
