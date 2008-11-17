@@ -32,6 +32,9 @@ public abstract class Job implements Runnable {
 	 */
 	private final static Random random = new Random();
 
+	/**
+	 * Constructor Job creates a new Job instance.
+	 */
 	public Job() {
 		this.id = Long.toString(Math.abs(random.nextLong()), Character.MAX_RADIX);
 	}
