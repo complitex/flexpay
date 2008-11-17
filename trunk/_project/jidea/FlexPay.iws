@@ -32,6 +32,16 @@
           <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
+          <option name="myItemId" value="Importilka" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ProjectDescriptor" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Root" />
+          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
           <option name="myItemId" value="Impex" />
           <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ProjectDescriptor" />
         </PATH_ELEMENT>
@@ -42,44 +52,8 @@
           <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPayTests" />
+          <option name="myItemId" value="FlexPay" />
           <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ProjectDescriptor" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Root" />
-          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay inspections" />
-          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ProjectDescriptor" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Root" />
-          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay duplicates finder" />
-          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ProjectDescriptor" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Root" />
-          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Eirc auto deploy" />
-          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ProjectDescriptor" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Root" />
-          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
         </PATH_ELEMENT>
       </PATH>
     </TreeState>
@@ -92,32 +66,6 @@
         <PATH_ELEMENT>
           <option name="myItemId" value="ChangesGroup::Older" />
           <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ChangesGroupDescriptor" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Root" />
-          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ChangesGroup::Yesterday" />
-          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ChangesGroupDescriptor" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Root" />
-          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ChangesGroup::Today" />
-          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.ChangesGroupDescriptor" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Root" />
-          <option name="myItemType" value="jetbrains.buildServer.tree.descriptors.RootDescriptor" />
         </PATH_ELEMENT>
       </PATH>
     </TreeState>
@@ -138,26 +86,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" readonly="true" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/web/WEB-INF/hibernate.cfg.xml" afterPath="$PROJECT_DIR$/../../common/web/WEB-INF/hibernate.cfg.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/etc/sql/flexpay_bti.ddl.sql" afterPath="$PROJECT_DIR$/../../bti/etc/sql/flexpay_bti.ddl.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab_sync/web/WEB-INF/hibernate.cfg.xml" afterPath="$PROJECT_DIR$/../../ab_sync/web/WEB-INF/hibernate.cfg.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/web/WEB-INF/hibernate.cfg.xml" afterPath="$PROJECT_DIR$/../../eirc/web/WEB-INF/hibernate.cfg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../common/web/WEB-INF/common/reports" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FlexPay.iws" afterPath="$PROJECT_DIR$/FlexPay.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../bti/web/WEB-INF/hibernate.cfg.xml" afterPath="$PROJECT_DIR$/../../bti/web/WEB-INF/hibernate.cfg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/ProcessUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../sz/web/WEB-INF/hibernate.cfg.xml" afterPath="$PROJECT_DIR$/../../sz/web/WEB-INF/hibernate.cfg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/etc/sql/flexpay_eirc.ddl.sql" afterPath="$PROJECT_DIR$/../../eirc/etc/sql/flexpay_eirc.ddl.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/MeasureUnitName.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/web/WEB-INF/hibernate.cfg.xml" afterPath="$PROJECT_DIR$/../../ab/web/WEB-INF/hibernate.cfg.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/MeasureUnit.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../common/web/WEB-INF/common/reports/fonts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../common/etc/sql/update/2008_09_29.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../sz/etc/sql/flexpay_sz.ddl.sql" afterPath="$PROJECT_DIR$/../../sz/etc/sql/flexpay_sz.ddl.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ab/etc/sql/flexpay_ab.ddl.sql" afterPath="$PROJECT_DIR$/../../ab/etc/sql/flexpay_ab.ddl.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/LyfecycleVoter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/job/JobManager.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/job/JobManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/process/quittance/GenerateQuittancesPDFJasperJob.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/process/quittance/GenerateQuittancesPDFJasperJob.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/util/CollectionUtils.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/util/CollectionUtils.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/job/Job.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/job/Job.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/etc/sql/jbpm.jpdl.mysql.drop.sql" afterPath="$PROJECT_DIR$/../../common/etc/sql/jbpm.jpdl.mysql.drop.sql" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/actions/processing/ProcessListAction.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/actions/processing/ProcessListAction.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/ProcessUtil.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/ProcessHelper.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/Process.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/Process.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/etc/sql/jbpm.jpdl.mysql.create.sql" afterPath="$PROJECT_DIR$/../../common/etc/sql/jbpm.jpdl.mysql.create.sql" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../common/etc/sql/update/2008_11_14.sql" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/process/quittance/GenerateQuittanceJob.java" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/process/quittance/GenerateQuittanceJob.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FlexPay.ipr" afterPath="$PROJECT_DIR$/FlexPay.ipr" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/web/WEB-INF/common/configs/spring/hibernate.xml" afterPath="$PROJECT_DIR$/../../common/web/WEB-INF/common/configs/spring/hibernate.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/process/quittance/QuittanceJobVoter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/ProcessManager.java" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/ProcessManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../common/web/WEB-INF/jbpm.hibernate.cfg.xml" afterPath="$PROJECT_DIR$/../../common/web/WEB-INF/jbpm.hibernate.cfg.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../common/src/org/flexpay/common/process/LyfecycleVote.java" />
     </list>
-    <list name="WorkSpace" comment="WorkSpace" />
+    <list name="WorkSpace" comment="WorkSpace">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/common.iml" afterPath="$PROJECT_DIR$/common.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bti.iml" afterPath="$PROJECT_DIR$/bti.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ab_sync.iml" afterPath="$PROJECT_DIR$/ab_sync.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ab.iml" afterPath="$PROJECT_DIR$/ab.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sz.iml" afterPath="$PROJECT_DIR$/sz.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FlexPay.iws" afterPath="$PROJECT_DIR$/FlexPay.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/eirc.iml" afterPath="$PROJECT_DIR$/eirc.iml" />
+    </list>
     <ignored path="FlexPay.iws" />
     <ignored path=".idea/workspace.xml" />
   </component>
@@ -240,13 +196,13 @@
   </component>
   <component name="JspContextManager">
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/person_search.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_person.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/person_search.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/pager.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/regions_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/organisations/edit_bank.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/town_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/town_create.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/apartment_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname_building_apartment.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/service_provider_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/group/begin_end_dates_service_provider.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/street_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/street_edit_type.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/towns_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname_building_apartment.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/eirc_account/eirc_account_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_edit_fio.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_edit.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street_building.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/apartment_edit.jsp" />
@@ -256,37 +212,38 @@
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname_building.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/apartments_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/street_search_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_registration.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/sender_organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/country_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/region_create.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings_list.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/streets_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/import_error_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/view_registry.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/region_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/town_create.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/apartment_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_set_registration_form.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/towns_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/registry_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/registry_info.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/view_registry.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/group/begin_end_dates_service_provider.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/services/list_services.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_set_registration_form.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_edit.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/district_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/recipient_organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/measure_unit_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/services/edit_service.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/layouts/language_switch.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/ab/menu/menu1.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address_building.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/buildings_create.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/date_interval_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/filter/begin_date_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/group/begin_end_dates_service_provider.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_atributes.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/regions_list.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/recipient_organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_fio.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_streetname_building.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/buildings_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_list_identities.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_edit.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/regions_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/header.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/footer.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_street.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/service_organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/quittances/generate_quittances.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/parent_service_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/services/edit_service.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/service_type_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/services/edit_service.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_list_identities.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_edit.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/taglibs.jsp" context-file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jsp/common/welcome.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/subdivision_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/organisations/edit_subdivision.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view_identities.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/person_view.jsp" />
-    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/filters/sender_organisation_filter.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
+    <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/district_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/country_region_town.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/districts_list.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/registry_record_info.jsp" context-file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
     <jsp-to-context jsp-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/person_search_filter.jsp" context-file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/jsp/ab/filters/groups/person_search.jsp" />
@@ -319,482 +276,6 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
         </PATH_ELEMENT>
       </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="sz" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="sz" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="sz" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="sz" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="sz" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="web" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="WEB-INF" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="sz" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="sz" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="web" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="web" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="WEB-INF" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="eirc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="web" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="web" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="WEB-INF" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="web" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="org" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="org" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="persistence" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="org" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="exception" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="src" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="org" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="etc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="etc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="sql" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="common" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="etc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="sql" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="update" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab_sync" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab_sync" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab_sync" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab_sync" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab_sync" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="web" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="WEB-INF" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab_sync" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab_sync" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="web" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="FlexPay" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="ab" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="etc" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="sql" />
-          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-        </PATH_ELEMENT>
-      </PATH>
     </subPane>
   </component>
   <component name="ProjectReloadState">
@@ -817,10 +298,11 @@
   <component name="PropertiesComponent">
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="15" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="15" />
-    <property name="project.structure.last.edited" value="JDKs" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="15" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="15" />
     <property name="project.structure.proportion" value="0.15" />
+    <property name="options.splitter.main.proportions" value="0.3" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
     <property name="RunManagerConfig.showSettingsBeforeRunnig" value="false" />
@@ -839,7 +321,10 @@
     <property name="MemberChooser.showClasses" value="true" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth4" value="15" />
     <property name="GoToClass.includeLibraries" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="RESOURCE_BUNDLE_SPLITTER_PROPORTION" value="0.5" />
+    <property name="options.lastSelected" value="errors" />
     <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder4" value="4" />
@@ -850,36 +335,56 @@
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder0" value="0" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="TEMP_MODULE_EXPLODED_DIR_FOR_sz/web/Web" value="C:\Temp\webExplodedDir49482tmp" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.flexpay.ab.actions.measureunit" />
+      <recent name="org.flexpay.bti.service" />
       <recent name="org.flexpay.ab.actions.apartment" />
       <recent name="org.flexpay.eirc.process.quittance" />
       <recent name="org.flexpay.eirc.process.quittance.report" />
-      <recent name="org.flexpay.eirc.process.quittance.report.util" />
-      <recent name="org.flexpay.eirc.process" />
-    </key>
-    <key name="MoveMembersDialog.RECENTS_KEY">
-      <recent name="org.flexpay.common.util.DateUtil" />
     </key>
     <key name="IntroduceConstantDialog.RECENTS_KEY">
       <recent name="" />
     </key>
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="org.flexpay.common.util.DateUtil" />
+    </key>
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="org.flexpay.eirc.service.imp" />
+      <recent name="org.flexpay.common.service.imp" />
       <recent name="org.flexpay.common.persistence" />
       <recent name="org.flexpay.ab.service.imp" />
       <recent name="org.flexpay.eirc.dao.imp" />
-      <recent name="org.flexpay.ab.actions.apartment" />
-      <recent name="org.flexpay.eirc.dao" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="org.flexpay.common.dao" />
     </key>
   </component>
-  <component name="RunManager" selected="Query Language Console.NewConsoleConfiguration">
-    <tempConfiguration default="false" name="NewConsoleConfiguration" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
-      <option name="VM_PARAMETERS" value="" />
-      <option name="USER_CFG_CLASS" />
+  <component name="RunManager" selected="JUnit.TestDateParser">
+    <tempConfiguration default="false" name="TestDateParser" type="JUnit" factoryName="JUnit" enabled="false" merge="false" runner="emma">
+      <pattern>
+        <option name="PATTERN" value="org.flexpay.common.util.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+      <module name="common" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="org.flexpay.common.util" />
+      <option name="MAIN_CLASS_NAME" value="org.flexpay.common.util.TestDateParser" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="ADDITIONAL_CLASS_PATH" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <envs />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method>
@@ -892,6 +397,35 @@
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
+    </configuration>
+    <configuration default="true" type="GlassfishConfiguration" factoryName="Local">
+      <JAVAEE_FACET FACET_ID="ab/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="ab_sync/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="bti/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="common/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="eirc/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="sz/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <server-settings>
+        <option name="DOMAIN" value="" />
+        <option name="USERNAME" value="admin" />
+        <option name="PASSWORD" value="adminadmin" />
+      </server-settings>
+      <option name="DOMAIN" value="" />
+      <option name="USERNAME" value="admin" />
+      <option name="PASSWORD" value="adminadmin" />
+      <predefined_log_file id="Glassfish" enabled="true" />
     </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
       <module name="" />
@@ -918,9 +452,99 @@
       <module name="" />
       <envs />
     </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit" enabled="false" merge="false" runner="emma">
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="ADDITIONAL_CLASS_PATH" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <envs />
+      <method>
+        <option name="Make" value="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
       <option name="VM_PARAMETERS" value="" />
       <option name="USER_CFG_CLASS" />
+    </configuration>
+    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local">
+      <JAVAEE_FACET FACET_ID="ab/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="CONTEXT_PATH" value="/" />
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="ab_sync/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="CONTEXT_PATH" value="/" />
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="bti/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="CONTEXT_PATH" value="/" />
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="common/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="CONTEXT_PATH" value="/" />
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="eirc/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="CONTEXT_PATH" value="/" />
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <JAVAEE_FACET FACET_ID="sz/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
+        <option name="CONTEXT_PATH" value="/" />
+        <option name="DEPLOY" value="false" />
+      </JAVAEE_FACET>
+      <server-settings>
+        <option name="DEPLOY_TOMCAT_MANAGER" value="false" />
+        <option name="BASE_DIRECTORY_NAME" value="" />
+      </server-settings>
+      <option name="DEPLOY_TOMCAT_MANAGER" value="false" />
+      <option name="BASE_DIRECTORY_NAME" value="" />
+      <predefined_log_file id="TOMCAT_LOCALHOST_LOG_ID" enabled="true" />
+    </configuration>
+    <configuration default="false" name="AllTests" type="JUnit" factoryName="JUnit" enabled="false" merge="false" sample_coverage="true" runner="emma">
+      <pattern>
+        <option name="PATTERN" value="org.flexpay.eirc.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+      <module name="eirc" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="org.flexpay.eirc" />
+      <option name="MAIN_CLASS_NAME" value="org.flexpay.eirc.AllTests" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/../../_build/web" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="ADDITIONAL_CLASS_PATH" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <envs />
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="JProfiler" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method>
+        <option name="Run Ant target" value="true" />
+        <option name="Make" value="false" />
+      </method>
     </configuration>
     <configuration default="false" name="StandaloneAB" type="Application" factoryName="Application" enabled="false" merge="false" runner="emma">
       <option name="MAIN_CLASS_NAME" value="org.flexpay.common.util.standalone.ApplicationRunner" />
@@ -965,52 +589,10 @@
         <option name="Make" value="false" />
       </method>
     </configuration>
-    <list size="3">
-      <item index="0" class="java.lang.String" itemvalue="Query Language Console.NewConsoleConfiguration" />
-      <item index="1" class="java.lang.String" itemvalue="Application.StandaloneAB" />
-      <item index="2" class="java.lang.String" itemvalue="Application.StandaloneEirc" />
-    </list>
-    <configuration default="true" type="GlassfishConfiguration" factoryName="Local">
-      <option name="WORKING_DIRECTORY" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="8080" />
-      <option name="LOCAL" value="true" />
-      <option name="OPEN_IN_BROWSER" value="true" />
-      <option name="OPEN_IN_BROWSER_URL" value="/" />
-      <option name="BROWSER_ID" />
-      <option name="COMMON_VM_ARGUMENTS" value="" />
-      <JAVAEE_FACET FACET_ID="ab/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="ab_sync/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="bti/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="common/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="eirc/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="sz/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <option name="DOMAIN" value="" />
-      <option name="USERNAME" value="admin" />
-      <option name="PASSWORD" value="adminadmin" />
-      <predefined_log_file id="Glassfish" enabled="true" />
-    </configuration>
     <configuration default="false" name="Glassfish" type="GlassfishConfiguration" factoryName="Local">
-      <option name="WORKING_DIRECTORY" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="8080" />
-      <option name="LOCAL" value="true" />
       <option name="OPEN_IN_BROWSER" value="false" />
       <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/web/ab/" />
       <option name="BROWSER_ID" value="system" />
-      <option name="COMMON_VM_ARGUMENTS" value="" />
       <JAVAEE_FACET FACET_ID="ab/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
         <option name="DEPLOY" value="true" />
       </JAVAEE_FACET>
@@ -1029,12 +611,17 @@
       <JAVAEE_FACET FACET_ID="sz/web/Web">
         <option name="DEPLOY" value="false" />
       </JAVAEE_FACET>
+      <server-settings>
+        <option name="DOMAIN" value="domain1" />
+        <option name="USERNAME" value="admin" />
+        <option name="PASSWORD" value="adminadmin" />
+      </server-settings>
       <option name="DOMAIN" value="domain1" />
       <option name="USERNAME" value="admin" />
       <option name="PASSWORD" value="adminadmin" />
       <log_file path="c:/domains/logs/server.log" checked="true" skipped="true" show_all="false" alias="Glassfish Log" />
       <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="38547" />
+        <option name="DEBUG_PORT" value="40607" />
         <option name="TRANSPORT" value="0" />
         <option name="LOCAL" value="true" />
       </RunnerSettings>
@@ -1079,143 +666,9 @@
         <option name="Make" value="false" />
       </method>
     </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG" enabled="false" merge="false" runner="emma">
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="ANNOTATION_TYPE" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="ADDITIONAL_CLASS_PATH" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
-      <option name="PROPERTIES_FILE" />
-      <envs />
-      <properties />
-      <listeners />
-      <method>
-        <option name="Make" value="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
-      <JSDebuggerConfigurationSettings>
-        <option name="fileUrl" />
-      </JSDebuggerConfigurationSettings>
-    </configuration>
-    <configuration default="true" type="JUnit" factoryName="JUnit" enabled="false" merge="false" runner="emma">
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="ADDITIONAL_CLASS_PATH" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
-      <envs />
-      <method>
-        <option name="Make" value="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local">
-      <option name="WORKING_DIRECTORY" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="8080" />
-      <option name="LOCAL" value="true" />
-      <option name="OPEN_IN_BROWSER" value="true" />
-      <option name="OPEN_IN_BROWSER_URL" value="/" />
-      <option name="BROWSER_ID" />
-      <option name="COMMON_VM_ARGUMENTS" value="" />
-      <JAVAEE_FACET FACET_ID="ab/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="CONTEXT_PATH" value="/" />
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="ab_sync/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="CONTEXT_PATH" value="/" />
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="bti/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="CONTEXT_PATH" value="/" />
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="common/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="CONTEXT_PATH" value="/" />
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="eirc/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="CONTEXT_PATH" value="/" />
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <JAVAEE_FACET FACET_ID="sz/web/Web" DEPLOYMENT_SOURCE_NAME="exploded">
-        <option name="CONTEXT_PATH" value="/" />
-        <option name="DEPLOY" value="false" />
-      </JAVAEE_FACET>
-      <option name="DEPLOY_TOMCAT_MANAGER" value="false" />
-      <option name="BASE_DIRECTORY_NAME" value="" />
-      <predefined_log_file id="TOMCAT_LOCALHOST_LOG_ID" enabled="true" />
-    </configuration>
-    <configuration default="false" name="AllTests" type="JUnit" factoryName="JUnit" enabled="false" merge="false" sample_coverage="true" runner="emma">
-      <pattern>
-        <option name="PATTERN" value="org.flexpay.eirc.*" />
-        <option name="ENABLED" value="true" />
-      </pattern>
-      <module name="eirc" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="PACKAGE_NAME" value="org.flexpay.eirc" />
-      <option name="MAIN_CLASS_NAME" value="org.flexpay.eirc.AllTests" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/../../_build/web" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="ADDITIONAL_CLASS_PATH" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
-      <envs />
-      <RunnerSettings RunnerId="JProfiler">
-        <option name="WINDOW" value="false" />
-        <option name="JVMPI" value="false" />
-        <option name="INTERPRETED" value="false" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="JProfiler" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method>
-        <option name="Run Ant target" value="true" />
-        <option name="Make" value="false" />
-      </method>
-    </configuration>
     <configuration default="false" name="AB" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local">
-      <option name="WORKING_DIRECTORY" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="8080" />
-      <option name="LOCAL" value="true" />
       <option name="OPEN_IN_BROWSER" value="false" />
       <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/ab/" />
-      <option name="BROWSER_ID" />
-      <option name="COMMON_VM_ARGUMENTS" value="" />
       <JAVAEE_FACET FACET_ID="ab/web/Web" DEPLOYMENT_SOURCE_NAME="jar">
         <option name="CONTEXT_PATH" value="/ab" />
         <option name="DEPLOY" value="true" />
@@ -1240,6 +693,10 @@
         <option name="CONTEXT_PATH" value="/" />
         <option name="DEPLOY" value="false" />
       </JAVAEE_FACET>
+      <server-settings>
+        <option name="DEPLOY_TOMCAT_MANAGER" value="false" />
+        <option name="BASE_DIRECTORY_NAME" value="tomcat_Unnamed_FlexPay1114cb90" />
+      </server-settings>
       <option name="DEPLOY_TOMCAT_MANAGER" value="false" />
       <option name="BASE_DIRECTORY_NAME" value="tomcat_Unnamed_FlexPay1114cb90" />
       <predefined_log_file id="TOMCAT_LOCALHOST_LOG_ID" enabled="true" />
@@ -1283,6 +740,48 @@
         <option name="Run Ant target" value="true" />
         <option name="Make" value="false" />
       </method>
+    </configuration>
+    <list size="6">
+      <item index="0" class="java.lang.String" itemvalue="JUnit.TestDateParser" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.AllTests" />
+      <item index="2" class="java.lang.String" itemvalue="Application.StandaloneAB" />
+      <item index="3" class="java.lang.String" itemvalue="Application.StandaloneEirc" />
+      <item index="4" class="java.lang.String" itemvalue="Glassfish Server.Glassfish" />
+      <item index="5" class="java.lang.String" itemvalue="Tomcat Server.AB" />
+    </list>
+    <configuration default="true" type="TestNG" factoryName="TestNG" enabled="false" merge="false" runner="emma">
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="ADDITIONAL_CLASS_PATH" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method>
+        <option name="Make" value="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
+      <JSDebuggerConfigurationSettings>
+        <option name="fileUrl" />
+      </JSDebuggerConfigurationSettings>
     </configuration>
     <configuration default="true" type="com.intellij.persistence.run.ConsoleConfigurationType" factoryName="Query Language Console">
       <option name="VM_PARAMETERS" value="" />
@@ -1345,25 +844,27 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-5" width="1688" height="1012" extended-state="6" />
-    <editor active="true" />
+    <frame x="-3" y="46" width="1686" height="1007" extended-state="6" />
+    <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.47031963" sideWeight="0.5" order="16" side_tool="false" />
+      <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44935971" sideWeight="0.5" order="0" side_tool="false" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.47031432" sideWeight="0.5" order="16" side_tool="false" />
+      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36860466" sideWeight="0.5" order="23" side_tool="false" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32965687" sideWeight="0.5" order="3" side_tool="false" />
-      <window_info id="Ant Build" active="false" anchor="left" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.2677696" sideWeight="0.5" order="4" side_tool="false" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36384705" sideWeight="0.5" order="2" side_tool="false" x="24" y="342" width="1631" height="317" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.329859" sideWeight="0.5" order="3" side_tool="false" />
+      <window_info id="Ant Build" active="false" anchor="left" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.26670754" sideWeight="0.5" order="4" side_tool="false" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35855645" sideWeight="0.5" order="2" side_tool="false" x="24" y="342" width="1631" height="317" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" />
-      <window_info id="Slice" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" />
-      <window_info id="Version Control" active="false" anchor="right" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.0" sideWeight="0.5" order="13" side_tool="false" x="595" y="212" width="465" height="480" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26998842" sideWeight="0.8671617" order="17" side_tool="false" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="7" side_tool="false" />
+      <window_info id="TeamCity" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6534884" sideWeight="0.5" order="24" side_tool="false" />
+      <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
+      <window_info id="Version Control" active="false" anchor="right" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.0" sideWeight="0.0" order="13" side_tool="false" x="595" y="212" width="465" height="480" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2627907" sideWeight="0.8671617" order="17" side_tool="false" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32792583" sideWeight="0.5" order="22" side_tool="false" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24937811" sideWeight="0.5" order="1" side_tool="false" />
-      <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2904412" sideWeight="0.72190034" order="0" side_tool="false" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25015327" sideWeight="0.0" order="0" side_tool="false" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32908458" sideWeight="0.5" order="18" side_tool="false" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3557358" sideWeight="0.5" order="6" side_tool="false" />
-      <window_info id="Duplicates" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="19" side_tool="false" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42526072" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" />
       <window_info id="DBHelper" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32965687" sideWeight="0.5" order="12" side_tool="false" />
@@ -1376,21 +877,21 @@
       <window_info id="Log4jMonitor" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.62806374" sideWeight="0.5" order="9" side_tool="false" />
       <window_info id="DB Browser" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.33393666" sideWeight="0.5" order="11" side_tool="false" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" />
-      <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3259861" sideWeight="0.5" order="0" side_tool="false" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="9" side_tool="false" />
       <window_info id="SQL" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.47058824" sideWeight="0.5" order="15" side_tool="false" />
       <window_info id="SVN Properties" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32906976" sideWeight="0.5" order="8" side_tool="false" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Library Finder" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="13" side_tool="false" />
       <window_info id="IRC Favorites" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32942238" sideWeight="0.5" order="7" side_tool="false" />
-      <window_info id="TeamCity" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.93967664" sideWeight="0.5" order="16" side_tool="false" />
       <window_info id="IntellIRC" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.44052288" sideWeight="0.5" order="10" side_tool="false" />
       <window_info id="Sudoku" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.82096875" sideWeight="0.5" order="14" side_tool="false" />
+      <window_info id="Slice" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="EJB" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3998195" sideWeight="0.5" order="0" side_tool="false" />
       <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" />
+      <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" />
+      <window_info id="Duplicates" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="19" side_tool="false" />
       <window_info id="DBOutput" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32905984" sideWeight="0.5" order="15" side_tool="false" />
     </layout>
   </component>
@@ -1403,7 +904,7 @@
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="true" />
-    <option name="LAST_COMMIT_MESSAGE" value="Measure units added" />
+    <option name="LAST_COMMIT_MESSAGE" value="FP-221&#10;&#10;Access provileges added to eirc.&#10;Some Struts actions renamed to camelCase." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
@@ -1414,31 +915,31 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="Non-final static variable is used during class initialization cleaned up" />
-    <MESSAGE value="FP-170&#10;&#10;ProcessLogger updated (Job now sets up process ID to ProcessLogger ThreadLocal).&#10;Added process logging to RegistryFileParser.&#10;&#10;Registry files processor records fetch fixed.&#10;" />
-    <MESSAGE value="FP-182&#10;&#10;Quittance generation test added, first generated quittance obtained! :)" />
-    <MESSAGE value="JasperReports port of quittance printing started, data source and beans stubs" />
-    <MESSAGE value="More details for QuittanceInfo structure" />
-    <MESSAGE value="FP-185&#10;Service totals build for QuittanceInfo completed." />
-    <MESSAGE value="FP-185&#10;Test quittances added." />
-    <MESSAGE value="FP-185&#10;Test data for quittances printing added. Validation test started." />
-    <MESSAGE value="FP-185&#10;Jasper quittance templates first version." />
-    <MESSAGE value="FP-185&#10;Subreport first version, ugly now" />
-    <MESSAGE value="FP-188&#10;Street search instead of selector in corrections setup dialog" />
-    <MESSAGE value="FP-188&#10;District - street - building filters group lookup fixed" />
-    <MESSAGE value="FP-187&#10;Fixed listings required object selection." />
-    <MESSAGE value="FP-125&#10;Address filter added to eirc accounts listing" />
-    <MESSAGE value="FP-125&#10;Person search added to accounts listing.&#10;&#10;SQL-update&#10;AccountRecord class cut off.&#10;ServiceOrganisation set to two missed houses." />
-    <MESSAGE value="FP-88&#10;&#10;Districts listing buitified" />
-    <MESSAGE value="FP-88,FP-87,FP-86,FP-189,FP-185&#10;&#10;Ab distionaries listing fixed.&#10;Person corrections setup added.&#10;&#10;Subservices subreport started." />
-    <MESSAGE value="Invalid equals implementation caused streets duplicates.&#10;Fixed." />
-    <MESSAGE value="Invalid constructor dates validation" />
-    <MESSAGE value="Report reorganised" />
-    <MESSAGE value="Code cleanup" />
-    <MESSAGE value="test fix" />
-    <MESSAGE value="FP-192&#10;&#10;Person now optional for EIRCAccount and Consumer as well.&#10;If account was created automatically ConsumerInfo used instead." />
-    <MESSAGE value="FP-185 FP-198 FP-199 FP-195&#10;&#10;Quittance form fixes.&#10;" />
-    <MESSAGE value="Measure units added" />
+    <MESSAGE value="FP-185&#10;&#10;Quittance size changed to A3 (was A4), font size decreased" />
+    <MESSAGE value="FP-185 FP-205&#10;&#10;Tarif type updated to BigDecimal.&#10;Separate tests DB added.&#10;LockManager fixed (invalid insert and lock)" />
+    <MESSAGE value="Two services added" />
+    <MESSAGE value="FP-185, FP-206, FP-207, FP-208&#10;&#10;JBPM definitions deployment UI added.&#10;&#10;Set Responsible Person container processing&#10;Close account container processing started.&#10;&#10;220,230 services added." />
+    <MESSAGE value="FP-185&#10;&#10;Quittance clean up, summs fixed. A4 batches building fixed." />
+    <MESSAGE value="FP-185&#10;&#10;Process log notifications about non positive balance" />
+    <MESSAGE value="FP-127&#10;&#10;Single registry processing is done in a separate transaction." />
+    <MESSAGE value="FP-209&#10;&#10;Period end debt is a registry records amount (Number 10.2 ) instead of outgoing balance from quittance details ( Number 10.5 )" />
+    <MESSAGE value="FP-207, FP-208&#10;&#10;Change consumer responsible person fixed.&#10;" />
+    <MESSAGE value="FP-94&#10;&#10;Builfings CRUD operations fixed.&#10;" />
+    <MESSAGE value="Broken test fixed&#10;" />
+    <MESSAGE value="FP-200&#10;&#10;Quittance lookup added" />
+    <MESSAGE value="test db used instead of production one." />
+    <MESSAGE value="javadocs build warning cleaned up a bit" />
+    <MESSAGE value="Broken QuittanceGeneration test fixed.&#10;&#10;Old quittances generation stuff removed." />
+    <MESSAGE value="SZ tests fixed" />
+    <MESSAGE value="FP-204&#10;&#10;Measure units added to services.&#10;" />
+    <MESSAGE value="FP-217&#10;&#10;Measure units CRUD operation UI added" />
+    <MESSAGE value="default value for status added" />
+    <MESSAGE value="too long comment issue fixed" />
+    <MESSAGE value="defualt values for sex field" />
+    <MESSAGE value="default value for status column of ab_building_attribute_types_tbl" />
+    <MESSAGE value="ProcessStateComparator comment added&#10;&#10;Persistence QL Problem marked as info instead of errors" />
+    <MESSAGE value="build dir cleanup added when building ddls" />
+    <MESSAGE value="FP-221&#10;&#10;Access provileges added to eirc.&#10;Some Struts actions renamed to camelCase." />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
@@ -1607,16 +1108,21 @@
         <filter targetName="common.clean.build" isVisible="false" />
         <filter targetName="common.compile.production" isVisible="false" />
         <filter targetName="common.compile.test" isVisible="false" />
-        <filter targetName="common.db" isVisible="true" />
+        <filter targetName="common.db-test" isVisible="true" />
         <filter targetName="common.docs" isVisible="false" />
-        <filter targetName="common.exportschema.mysql5" isVisible="true" />
+        <filter targetName="common.exportschema.mysql5" isVisible="false" />
+        <filter targetName="common.help" isVisible="false" />
+        <filter targetName="common.prepare.test.war" isVisible="false" />
         <filter targetName="common.prepare.war" isVisible="false" />
         <filter targetName="common.prepare.war.internal" isVisible="false" />
         <filter targetName="common.runtests" isVisible="true" />
-        <filter targetName="common.runtests.nobuild" isVisible="true" />
+        <filter targetName="common.runtests.nobuild" isVisible="false" />
         <filter targetName="common.sql.all" isVisible="false" />
+        <filter targetName="common.sql.all-test" isVisible="false" />
         <filter targetName="common.sql.create-db" isVisible="false" />
+        <filter targetName="common.sql.create-test-db" isVisible="false" />
         <filter targetName="common.sql.init-db" isVisible="false" />
+        <filter targetName="common.test.war.data-source" isVisible="false" />
         <filter targetName="common.war.include.libs" isVisible="false" />
         <filter targetName="init.build" isVisible="false" />
         <filter targetName="init.distr" isVisible="false" />
@@ -1646,15 +1152,19 @@
         <filter targetName="ab.clean.build" isVisible="false" />
         <filter targetName="ab.compile.production" isVisible="false" />
         <filter targetName="ab.compile.test" isVisible="false" />
-        <filter targetName="ab.db" isVisible="true" />
+        <filter targetName="ab.db-test" isVisible="true" />
         <filter targetName="ab.docs" isVisible="false" />
-        <filter targetName="ab.exploded.production.glassfish_mysql5" isVisible="true" />
-        <filter targetName="ab.exportschema.mysql5" isVisible="true" />
+        <filter targetName="ab.exploded.production.glassfish_mysql5" isVisible="false" />
+        <filter targetName="ab.exportschema.mysql5" isVisible="false" />
+        <filter targetName="ab.help" isVisible="false" />
+        <filter targetName="ab.prepare.test.war" isVisible="false" />
         <filter targetName="ab.prepare.war" isVisible="false" />
+        <filter targetName="ab.prepare.war.internal" isVisible="false" />
         <filter targetName="ab.profile.standalone" isVisible="false" />
-        <filter targetName="ab.run.standalone" isVisible="true" />
+        <filter targetName="ab.run.standalone" isVisible="false" />
         <filter targetName="ab.runtests" isVisible="true" />
         <filter targetName="ab.sql.all" isVisible="false" />
+        <filter targetName="ab.sql.all-test" isVisible="false" />
         <filter targetName="ab.sql.init-db" isVisible="false" />
         <filter targetName="ab.war.production.glassfish_mysql5" isVisible="true" />
         <filter targetName="ab.war.production.tomcat_mysql5" isVisible="false" />
@@ -1663,15 +1173,21 @@
         <filter targetName="common.clean.build" isVisible="false" />
         <filter targetName="common.compile.production" isVisible="false" />
         <filter targetName="common.compile.test" isVisible="false" />
-        <filter targetName="common.db" isVisible="false" />
+        <filter targetName="common.db-test" isVisible="false" />
         <filter targetName="common.docs" isVisible="false" />
         <filter targetName="common.exportschema.mysql5" isVisible="false" />
+        <filter targetName="common.help" isVisible="false" />
+        <filter targetName="common.prepare.test.war" isVisible="false" />
         <filter targetName="common.prepare.war" isVisible="false" />
+        <filter targetName="common.prepare.war.internal" isVisible="false" />
         <filter targetName="common.runtests" isVisible="false" />
         <filter targetName="common.runtests.nobuild" isVisible="false" />
         <filter targetName="common.sql.all" isVisible="false" />
+        <filter targetName="common.sql.all-test" isVisible="false" />
         <filter targetName="common.sql.create-db" isVisible="false" />
+        <filter targetName="common.sql.create-test-db" isVisible="false" />
         <filter targetName="common.sql.init-db" isVisible="false" />
+        <filter targetName="common.test.war.data-source" isVisible="false" />
         <filter targetName="common.war.include.libs" isVisible="false" />
         <filter targetName="init.build" isVisible="false" />
         <filter targetName="init.distr" isVisible="false" />
@@ -1681,9 +1197,9 @@
         <filter targetName="template.ab.war.production" isVisible="false" />
         <filter targetName="template.compile.production" isVisible="false" />
         <filter targetName="template.compile.test" isVisible="false" />
+        <filter targetName="template.copy.classes" isVisible="false" />
         <filter targetName="template.docs" isVisible="false" />
         <filter targetName="template.exploded.include.libs" isVisible="false" />
-        <filter targetName="template.jar" isVisible="false" />
         <filter targetName="template.mysql.run" isVisible="false" />
         <filter targetName="template.prepare.war" isVisible="false" />
         <filter targetName="template.prepare.war.classes" isVisible="false" />
@@ -1703,27 +1219,35 @@
         <filter targetName="ab.clean.build" isVisible="false" />
         <filter targetName="ab.compile.production" isVisible="false" />
         <filter targetName="ab.compile.test" isVisible="false" />
-        <filter targetName="ab.db" isVisible="false" />
+        <filter targetName="ab.db-test" isVisible="false" />
         <filter targetName="ab.docs" isVisible="false" />
         <filter targetName="ab.exploded.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="ab.exportschema.mysql5" isVisible="false" />
+        <filter targetName="ab.help" isVisible="false" />
+        <filter targetName="ab.prepare.test.war" isVisible="false" />
         <filter targetName="ab.prepare.war" isVisible="false" />
+        <filter targetName="ab.prepare.war.internal" isVisible="false" />
         <filter targetName="ab.profile.standalone" isVisible="false" />
         <filter targetName="ab.run.standalone" isVisible="false" />
         <filter targetName="ab.runtests" isVisible="false" />
         <filter targetName="ab.sql.all" isVisible="false" />
+        <filter targetName="ab.sql.all-test" isVisible="false" />
         <filter targetName="ab.sql.init-db" isVisible="false" />
         <filter targetName="ab.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="ab.war.production.tomcat_mysql5" isVisible="false" />
         <filter targetName="bti.clean.build" isVisible="false" />
         <filter targetName="bti.compile.production" isVisible="false" />
         <filter targetName="bti.compile.test" isVisible="false" />
-        <filter targetName="bti.db" isVisible="false" />
+        <filter targetName="bti.db-test" isVisible="false" />
         <filter targetName="bti.docs" isVisible="false" />
         <filter targetName="bti.exportschema.mysql5" isVisible="false" />
+        <filter targetName="bti.help" isVisible="false" />
+        <filter targetName="bti.prepare.test.war" isVisible="false" />
         <filter targetName="bti.prepare.war" isVisible="false" />
+        <filter targetName="bti.prepare.war.internal" isVisible="false" />
         <filter targetName="bti.runtests" isVisible="false" />
         <filter targetName="bti.sql.all" isVisible="false" />
+        <filter targetName="bti.sql.all-test" isVisible="false" />
         <filter targetName="bti.sql.init-db" isVisible="false" />
         <filter targetName="bti.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="bti.war.production.tomcat_mysql5" isVisible="false" />
@@ -1732,28 +1256,38 @@
         <filter targetName="common.clean.build" isVisible="false" />
         <filter targetName="common.compile.production" isVisible="false" />
         <filter targetName="common.compile.test" isVisible="false" />
-        <filter targetName="common.db" isVisible="false" />
+        <filter targetName="common.db-test" isVisible="false" />
         <filter targetName="common.docs" isVisible="false" />
         <filter targetName="common.exportschema.mysql5" isVisible="false" />
+        <filter targetName="common.help" isVisible="false" />
+        <filter targetName="common.prepare.test.war" isVisible="false" />
         <filter targetName="common.prepare.war" isVisible="false" />
+        <filter targetName="common.prepare.war.internal" isVisible="false" />
         <filter targetName="common.runtests" isVisible="false" />
         <filter targetName="common.runtests.nobuild" isVisible="false" />
         <filter targetName="common.sql.all" isVisible="false" />
+        <filter targetName="common.sql.all-test" isVisible="false" />
         <filter targetName="common.sql.create-db" isVisible="false" />
+        <filter targetName="common.sql.create-test-db" isVisible="false" />
         <filter targetName="common.sql.init-db" isVisible="false" />
+        <filter targetName="common.test.war.data-source" isVisible="false" />
         <filter targetName="common.war.include.libs" isVisible="false" />
         <filter targetName="eirc.clean.build" isVisible="false" />
         <filter targetName="eirc.compile.production" isVisible="false" />
         <filter targetName="eirc.compile.test" isVisible="false" />
-        <filter targetName="eirc.db" isVisible="true" />
+        <filter targetName="eirc.db-test" isVisible="true" />
         <filter targetName="eirc.docs" isVisible="false" />
-        <filter targetName="eirc.exportschema.mysql5" isVisible="true" />
+        <filter targetName="eirc.exportschema.mysql5" isVisible="false" />
+        <filter targetName="eirc.help" isVisible="false" />
+        <filter targetName="eirc.prepare.test.war" isVisible="false" />
         <filter targetName="eirc.prepare.war" isVisible="false" />
-        <filter targetName="eirc.profile.standalone" isVisible="true" />
-        <filter targetName="eirc.run.standalone" isVisible="true" />
+        <filter targetName="eirc.prepare.war.internal" isVisible="false" />
+        <filter targetName="eirc.profile.standalone" isVisible="false" />
+        <filter targetName="eirc.run.standalone" isVisible="false" />
         <filter targetName="eirc.runtests" isVisible="true" />
-        <filter targetName="eirc.runtests.nobuild" isVisible="true" />
+        <filter targetName="eirc.runtests.nobuild" isVisible="false" />
         <filter targetName="eirc.sql.all" isVisible="false" />
+        <filter targetName="eirc.sql.all-test" isVisible="false" />
         <filter targetName="eirc.sql.init-db" isVisible="false" />
         <filter targetName="eirc.war.production.glassfish_mysql5" isVisible="true" />
         <filter targetName="eirc.war.production.tomcat_mysql5" isVisible="false" />
@@ -1766,6 +1300,7 @@
         <filter targetName="template.bti.war.production" isVisible="false" />
         <filter targetName="template.compile.production" isVisible="false" />
         <filter targetName="template.compile.test" isVisible="false" />
+        <filter targetName="template.copy.classes" isVisible="false" />
         <filter targetName="template.docs" isVisible="false" />
         <filter targetName="template.eirc.war.production" isVisible="false" />
         <filter targetName="template.exploded.include.libs" isVisible="false" />
@@ -1788,16 +1323,19 @@
         <filter targetName="ab.clean.build" isVisible="false" />
         <filter targetName="ab.compile.production" isVisible="false" />
         <filter targetName="ab.compile.test" isVisible="false" />
-        <filter targetName="ab.db" isVisible="false" />
+        <filter targetName="ab.db-test" isVisible="false" />
         <filter targetName="ab.docs" isVisible="false" />
         <filter targetName="ab.exploded.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="ab.exportschema.mysql5" isVisible="false" />
+        <filter targetName="ab.help" isVisible="false" />
+        <filter targetName="ab.prepare.test.war" isVisible="false" />
         <filter targetName="ab.prepare.war" isVisible="false" />
         <filter targetName="ab.prepare.war.internal" isVisible="false" />
         <filter targetName="ab.profile.standalone" isVisible="false" />
         <filter targetName="ab.run.standalone" isVisible="false" />
         <filter targetName="ab.runtests" isVisible="false" />
         <filter targetName="ab.sql.all" isVisible="false" />
+        <filter targetName="ab.sql.all-test" isVisible="false" />
         <filter targetName="ab.sql.init-db" isVisible="false" />
         <filter targetName="ab.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="ab.war.production.tomcat_mysql5" isVisible="false" />
@@ -1805,7 +1343,8 @@
         <filter targetName="ab_sync.compile.production" isVisible="false" />
         <filter targetName="ab_sync.compile.test" isVisible="false" />
         <filter targetName="ab_sync.docs" isVisible="false" />
-        <filter targetName="ab_sync.exportschema.mysql5" isVisible="true" />
+        <filter targetName="ab_sync.exportschema.mysql5" isVisible="false" />
+        <filter targetName="ab_sync.help" isVisible="false" />
         <filter targetName="ab_sync.prepare.war" isVisible="false" />
         <filter targetName="ab_sync.profile.standalone" isVisible="false" />
         <filter targetName="ab_sync.run.standalone" isVisible="false" />
@@ -1819,16 +1358,21 @@
         <filter targetName="common.clean.build" isVisible="false" />
         <filter targetName="common.compile.production" isVisible="false" />
         <filter targetName="common.compile.test" isVisible="false" />
-        <filter targetName="common.db" isVisible="false" />
+        <filter targetName="common.db-test" isVisible="false" />
         <filter targetName="common.docs" isVisible="false" />
         <filter targetName="common.exportschema.mysql5" isVisible="false" />
+        <filter targetName="common.help" isVisible="false" />
+        <filter targetName="common.prepare.test.war" isVisible="false" />
         <filter targetName="common.prepare.war" isVisible="false" />
         <filter targetName="common.prepare.war.internal" isVisible="false" />
         <filter targetName="common.runtests" isVisible="false" />
         <filter targetName="common.runtests.nobuild" isVisible="false" />
         <filter targetName="common.sql.all" isVisible="false" />
+        <filter targetName="common.sql.all-test" isVisible="false" />
         <filter targetName="common.sql.create-db" isVisible="false" />
+        <filter targetName="common.sql.create-test-db" isVisible="false" />
         <filter targetName="common.sql.init-db" isVisible="false" />
+        <filter targetName="common.test.war.data-source" isVisible="false" />
         <filter targetName="common.war.include.libs" isVisible="false" />
         <filter targetName="init.build" isVisible="false" />
         <filter targetName="init.distr" isVisible="false" />
@@ -1861,17 +1405,21 @@
         <filter targetName="ab.clean.build" isVisible="false" />
         <filter targetName="ab.compile.production" isVisible="false" />
         <filter targetName="ab.compile.test" isVisible="false" />
-        <filter targetName="ab.db" isVisible="false" />
+        <filter targetName="ab.db-test" isVisible="false" />
         <filter targetName="ab.deploy.sjsas" isVisible="true" />
         <filter targetName="ab.deploy.sjsas.nobuild" isVisible="true" />
         <filter targetName="ab.docs" isVisible="false" />
         <filter targetName="ab.exploded.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="ab.exportschema.mysql5" isVisible="false" />
+        <filter targetName="ab.help" isVisible="false" />
+        <filter targetName="ab.prepare.test.war" isVisible="false" />
         <filter targetName="ab.prepare.war" isVisible="false" />
+        <filter targetName="ab.prepare.war.internal" isVisible="false" />
         <filter targetName="ab.profile.standalone" isVisible="false" />
         <filter targetName="ab.run.standalone" isVisible="false" />
         <filter targetName="ab.runtests" isVisible="false" />
         <filter targetName="ab.sql.all" isVisible="false" />
+        <filter targetName="ab.sql.all-test" isVisible="false" />
         <filter targetName="ab.sql.init-db" isVisible="false" />
         <filter targetName="ab.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="ab.war.production.tomcat_mysql5" isVisible="false" />
@@ -1882,6 +1430,7 @@
         <filter targetName="ab_sync.deploy.sjsas.nobuild" isVisible="true" />
         <filter targetName="ab_sync.docs" isVisible="false" />
         <filter targetName="ab_sync.exportschema.mysql5" isVisible="false" />
+        <filter targetName="ab_sync.help" isVisible="false" />
         <filter targetName="ab_sync.prepare.war" isVisible="false" />
         <filter targetName="ab_sync.profile.standalone" isVisible="false" />
         <filter targetName="ab_sync.run.standalone" isVisible="false" />
@@ -1893,12 +1442,16 @@
         <filter targetName="bti.clean.build" isVisible="false" />
         <filter targetName="bti.compile.production" isVisible="false" />
         <filter targetName="bti.compile.test" isVisible="false" />
-        <filter targetName="bti.db" isVisible="false" />
+        <filter targetName="bti.db-test" isVisible="false" />
         <filter targetName="bti.docs" isVisible="false" />
         <filter targetName="bti.exportschema.mysql5" isVisible="false" />
+        <filter targetName="bti.help" isVisible="false" />
+        <filter targetName="bti.prepare.test.war" isVisible="false" />
         <filter targetName="bti.prepare.war" isVisible="false" />
+        <filter targetName="bti.prepare.war.internal" isVisible="false" />
         <filter targetName="bti.runtests" isVisible="false" />
         <filter targetName="bti.sql.all" isVisible="false" />
+        <filter targetName="bti.sql.all-test" isVisible="false" />
         <filter targetName="bti.sql.init-db" isVisible="false" />
         <filter targetName="bti.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="bti.war.production.tomcat_mysql5" isVisible="false" />
@@ -1907,30 +1460,40 @@
         <filter targetName="common.clean.build" isVisible="false" />
         <filter targetName="common.compile.production" isVisible="false" />
         <filter targetName="common.compile.test" isVisible="false" />
-        <filter targetName="common.db" isVisible="false" />
+        <filter targetName="common.db-test" isVisible="false" />
         <filter targetName="common.docs" isVisible="false" />
         <filter targetName="common.exportschema.mysql5" isVisible="false" />
+        <filter targetName="common.help" isVisible="false" />
+        <filter targetName="common.prepare.test.war" isVisible="false" />
         <filter targetName="common.prepare.war" isVisible="false" />
+        <filter targetName="common.prepare.war.internal" isVisible="false" />
         <filter targetName="common.runtests" isVisible="false" />
         <filter targetName="common.runtests.nobuild" isVisible="false" />
         <filter targetName="common.sql.all" isVisible="false" />
+        <filter targetName="common.sql.all-test" isVisible="false" />
         <filter targetName="common.sql.create-db" isVisible="false" />
+        <filter targetName="common.sql.create-test-db" isVisible="false" />
         <filter targetName="common.sql.init-db" isVisible="false" />
+        <filter targetName="common.test.war.data-source" isVisible="false" />
         <filter targetName="common.war.include.libs" isVisible="false" />
         <filter targetName="eirc.clean.build" isVisible="false" />
         <filter targetName="eirc.compile.production" isVisible="false" />
         <filter targetName="eirc.compile.test" isVisible="false" />
-        <filter targetName="eirc.db" isVisible="false" />
+        <filter targetName="eirc.db-test" isVisible="false" />
         <filter targetName="eirc.deploy.sjsas" isVisible="true" />
         <filter targetName="eirc.deploy.sjsas.nobuild" isVisible="true" />
         <filter targetName="eirc.docs" isVisible="false" />
         <filter targetName="eirc.exportschema.mysql5" isVisible="false" />
+        <filter targetName="eirc.help" isVisible="false" />
+        <filter targetName="eirc.prepare.test.war" isVisible="false" />
         <filter targetName="eirc.prepare.war" isVisible="false" />
+        <filter targetName="eirc.prepare.war.internal" isVisible="false" />
         <filter targetName="eirc.profile.standalone" isVisible="false" />
         <filter targetName="eirc.run.standalone" isVisible="false" />
         <filter targetName="eirc.runtests" isVisible="false" />
         <filter targetName="eirc.runtests.nobuild" isVisible="false" />
         <filter targetName="eirc.sql.all" isVisible="false" />
+        <filter targetName="eirc.sql.all-test" isVisible="false" />
         <filter targetName="eirc.sql.init-db" isVisible="false" />
         <filter targetName="eirc.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="eirc.war.production.tomcat_mysql5" isVisible="false" />
@@ -1941,13 +1504,15 @@
         <filter targetName="sz.clean.build" isVisible="false" />
         <filter targetName="sz.compile.production" isVisible="false" />
         <filter targetName="sz.compile.test" isVisible="false" />
-        <filter targetName="sz.db" isVisible="false" />
+        <filter targetName="sz.db-test" isVisible="false" />
         <filter targetName="sz.deploy.sjsas" isVisible="false" />
         <filter targetName="sz.docs" isVisible="false" />
         <filter targetName="sz.exportschema.mysql5" isVisible="false" />
+        <filter targetName="sz.help" isVisible="false" />
         <filter targetName="sz.prepare.war" isVisible="false" />
         <filter targetName="sz.runtests" isVisible="false" />
         <filter targetName="sz.sql.all" isVisible="false" />
+        <filter targetName="sz.sql.all-test" isVisible="false" />
         <filter targetName="sz.sql.init-db" isVisible="false" />
         <filter targetName="sz.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="sz.war.production.tomcat_mysql5" isVisible="false" />
@@ -1957,6 +1522,7 @@
         <filter targetName="template.bti.war.production" isVisible="false" />
         <filter targetName="template.compile.production" isVisible="false" />
         <filter targetName="template.compile.test" isVisible="false" />
+        <filter targetName="template.copy.classes" isVisible="false" />
         <filter targetName="template.deploy.exploded.sjsas" isVisible="false" />
         <filter targetName="template.deploy.sjsas" isVisible="false" />
         <filter targetName="template.docs" isVisible="false" />
@@ -1982,29 +1548,35 @@
         <filter targetName="ab.clean.build" isVisible="false" />
         <filter targetName="ab.compile.production" isVisible="false" />
         <filter targetName="ab.compile.test" isVisible="false" />
-        <filter targetName="ab.db" isVisible="false" />
+        <filter targetName="ab.db-test" isVisible="false" />
         <filter targetName="ab.docs" isVisible="false" />
         <filter targetName="ab.exploded.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="ab.exportschema.mysql5" isVisible="true" />
+        <filter targetName="ab.help" isVisible="false" />
+        <filter targetName="ab.prepare.test.war" isVisible="false" />
         <filter targetName="ab.prepare.war" isVisible="false" />
         <filter targetName="ab.prepare.war.internal" isVisible="false" />
         <filter targetName="ab.profile.standalone" isVisible="false" />
         <filter targetName="ab.run.standalone" isVisible="false" />
         <filter targetName="ab.runtests" isVisible="false" />
         <filter targetName="ab.sql.all" isVisible="false" />
+        <filter targetName="ab.sql.all-test" isVisible="false" />
         <filter targetName="ab.sql.init-db" isVisible="false" />
         <filter targetName="ab.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="ab.war.production.tomcat_mysql5" isVisible="false" />
         <filter targetName="bti.clean.build" isVisible="false" />
         <filter targetName="bti.compile.production" isVisible="false" />
         <filter targetName="bti.compile.test" isVisible="false" />
-        <filter targetName="bti.db" isVisible="false" />
+        <filter targetName="bti.db-test" isVisible="false" />
         <filter targetName="bti.docs" isVisible="false" />
         <filter targetName="bti.exportschema.mysql5" isVisible="true" />
+        <filter targetName="bti.help" isVisible="false" />
+        <filter targetName="bti.prepare.test.war" isVisible="false" />
         <filter targetName="bti.prepare.war" isVisible="false" />
         <filter targetName="bti.prepare.war.internal" isVisible="false" />
         <filter targetName="bti.runtests" isVisible="false" />
         <filter targetName="bti.sql.all" isVisible="false" />
+        <filter targetName="bti.sql.all-test" isVisible="false" />
         <filter targetName="bti.sql.init-db" isVisible="false" />
         <filter targetName="bti.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="bti.war.production.tomcat_mysql5" isVisible="false" />
@@ -2013,23 +1585,30 @@
         <filter targetName="common.clean.build" isVisible="false" />
         <filter targetName="common.compile.production" isVisible="false" />
         <filter targetName="common.compile.test" isVisible="false" />
-        <filter targetName="common.db" isVisible="false" />
+        <filter targetName="common.db-test" isVisible="false" />
         <filter targetName="common.docs" isVisible="false" />
         <filter targetName="common.exportschema.mysql5" isVisible="true" />
+        <filter targetName="common.help" isVisible="false" />
+        <filter targetName="common.prepare.test.war" isVisible="false" />
         <filter targetName="common.prepare.war" isVisible="false" />
         <filter targetName="common.prepare.war.internal" isVisible="false" />
         <filter targetName="common.runtests" isVisible="false" />
         <filter targetName="common.runtests.nobuild" isVisible="false" />
         <filter targetName="common.sql.all" isVisible="false" />
+        <filter targetName="common.sql.all-test" isVisible="false" />
         <filter targetName="common.sql.create-db" isVisible="false" />
+        <filter targetName="common.sql.create-test-db" isVisible="false" />
         <filter targetName="common.sql.init-db" isVisible="false" />
+        <filter targetName="common.test.war.data-source" isVisible="false" />
         <filter targetName="common.war.include.libs" isVisible="false" />
         <filter targetName="eirc.clean.build" isVisible="false" />
         <filter targetName="eirc.compile.production" isVisible="false" />
         <filter targetName="eirc.compile.test" isVisible="false" />
-        <filter targetName="eirc.db" isVisible="false" />
+        <filter targetName="eirc.db-test" isVisible="false" />
         <filter targetName="eirc.docs" isVisible="false" />
         <filter targetName="eirc.exportschema.mysql5" isVisible="true" />
+        <filter targetName="eirc.help" isVisible="false" />
+        <filter targetName="eirc.prepare.test.war" isVisible="false" />
         <filter targetName="eirc.prepare.war" isVisible="false" />
         <filter targetName="eirc.prepare.war.internal" isVisible="false" />
         <filter targetName="eirc.profile.standalone" isVisible="false" />
@@ -2037,6 +1616,7 @@
         <filter targetName="eirc.runtests" isVisible="false" />
         <filter targetName="eirc.runtests.nobuild" isVisible="false" />
         <filter targetName="eirc.sql.all" isVisible="false" />
+        <filter targetName="eirc.sql.all-test" isVisible="false" />
         <filter targetName="eirc.sql.init-db" isVisible="false" />
         <filter targetName="eirc.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="eirc.war.production.tomcat_mysql5" isVisible="false" />
@@ -2047,12 +1627,14 @@
         <filter targetName="sz.clean.build" isVisible="false" />
         <filter targetName="sz.compile.production" isVisible="false" />
         <filter targetName="sz.compile.test" isVisible="false" />
-        <filter targetName="sz.db" isVisible="false" />
+        <filter targetName="sz.db-test" isVisible="false" />
         <filter targetName="sz.docs" isVisible="false" />
         <filter targetName="sz.exportschema.mysql5" isVisible="true" />
+        <filter targetName="sz.help" isVisible="false" />
         <filter targetName="sz.prepare.war" isVisible="false" />
         <filter targetName="sz.runtests" isVisible="false" />
         <filter targetName="sz.sql.all" isVisible="false" />
+        <filter targetName="sz.sql.all-test" isVisible="false" />
         <filter targetName="sz.sql.init-db" isVisible="false" />
         <filter targetName="sz.war.production.glassfish_mysql5" isVisible="false" />
         <filter targetName="sz.war.production.tomcat_mysql5" isVisible="false" />
@@ -2072,6 +1654,145 @@
         <filter targetName="template.run.standalone" isVisible="false" />
         <filter targetName="template.run.tests" isVisible="false" />
         <filter targetName="template.schemaexport" isVisible="false" />
+        <filter targetName="template.sz.war.production" isVisible="false" />
+      </targetFilters>
+      <treeView value="true" />
+      <verbose value="true" />
+      <viewClosedWhenNoErrors value="false" />
+    </buildFile>
+    <buildFile url="file://$PROJECT_DIR$/../../build.xml">
+      <antCommandLine value="" />
+      <runInBackground value="true" />
+      <targetFilters>
+        <filter targetName="ab.clean.build" isVisible="false" />
+        <filter targetName="ab.compile.production" isVisible="false" />
+        <filter targetName="ab.compile.test" isVisible="false" />
+        <filter targetName="ab.db-test" isVisible="true" />
+        <filter targetName="ab.docs" isVisible="false" />
+        <filter targetName="ab.exploded.production.glassfish_mysql5" isVisible="false" />
+        <filter targetName="ab.exportschema.mysql5" isVisible="false" />
+        <filter targetName="ab.help" isVisible="true" />
+        <filter targetName="ab.prepare.test.war" isVisible="false" />
+        <filter targetName="ab.prepare.war" isVisible="false" />
+        <filter targetName="ab.prepare.war.internal" isVisible="false" />
+        <filter targetName="ab.profile.standalone" isVisible="false" />
+        <filter targetName="ab.run.standalone" isVisible="false" />
+        <filter targetName="ab.runtests" isVisible="false" />
+        <filter targetName="ab.sql.all" isVisible="false" />
+        <filter targetName="ab.sql.all-test" isVisible="false" />
+        <filter targetName="ab.sql.init-db" isVisible="false" />
+        <filter targetName="ab.war.production.glassfish_mysql5" isVisible="false" />
+        <filter targetName="ab.war.production.tomcat_mysql5" isVisible="false" />
+        <filter targetName="ab_sync.clean.build" isVisible="false" />
+        <filter targetName="ab_sync.compile.production" isVisible="false" />
+        <filter targetName="ab_sync.compile.test" isVisible="false" />
+        <filter targetName="ab_sync.docs" isVisible="false" />
+        <filter targetName="ab_sync.exportschema.mysql5" isVisible="false" />
+        <filter targetName="ab_sync.help" isVisible="true" />
+        <filter targetName="ab_sync.prepare.war" isVisible="false" />
+        <filter targetName="ab_sync.profile.standalone" isVisible="false" />
+        <filter targetName="ab_sync.run.standalone" isVisible="false" />
+        <filter targetName="ab_sync.runtests" isVisible="false" />
+        <filter targetName="ab_sync.sql.all" isVisible="false" />
+        <filter targetName="ab_sync.sql.init-db" isVisible="false" />
+        <filter targetName="ab_sync.war.production.glassfish_mysql5" isVisible="false" />
+        <filter targetName="ab_sync.war.production.tomcat_mysql5" isVisible="false" />
+        <filter targetName="bti.clean.build" isVisible="false" />
+        <filter targetName="bti.compile.production" isVisible="false" />
+        <filter targetName="bti.compile.test" isVisible="false" />
+        <filter targetName="bti.db-test" isVisible="true" />
+        <filter targetName="bti.docs" isVisible="false" />
+        <filter targetName="bti.exportschema.mysql5" isVisible="false" />
+        <filter targetName="bti.help" isVisible="true" />
+        <filter targetName="bti.prepare.test.war" isVisible="false" />
+        <filter targetName="bti.prepare.war" isVisible="false" />
+        <filter targetName="bti.prepare.war.internal" isVisible="false" />
+        <filter targetName="bti.runtests" isVisible="false" />
+        <filter targetName="bti.sql.all" isVisible="false" />
+        <filter targetName="bti.sql.all-test" isVisible="false" />
+        <filter targetName="bti.sql.init-db" isVisible="false" />
+        <filter targetName="bti.war.production.glassfish_mysql5" isVisible="false" />
+        <filter targetName="bti.war.production.tomcat_mysql5" isVisible="false" />
+        <filter targetName="build.all" isVisible="false" />
+        <filter targetName="build.ddls" isVisible="false" />
+        <filter targetName="build.docs" isVisible="false" />
+        <filter targetName="build.wars" isVisible="false" />
+        <filter targetName="clean.all" isVisible="false" />
+        <filter targetName="clean.build" isVisible="false" />
+        <filter targetName="common.clean.build" isVisible="false" />
+        <filter targetName="common.compile.production" isVisible="false" />
+        <filter targetName="common.compile.test" isVisible="false" />
+        <filter targetName="common.db-test" isVisible="true" />
+        <filter targetName="common.docs" isVisible="false" />
+        <filter targetName="common.exportschema.mysql5" isVisible="false" />
+        <filter targetName="common.help" isVisible="true" />
+        <filter targetName="common.prepare.test.war" isVisible="true" />
+        <filter targetName="common.prepare.war" isVisible="false" />
+        <filter targetName="common.prepare.war.internal" isVisible="false" />
+        <filter targetName="common.runtests" isVisible="false" />
+        <filter targetName="common.runtests.nobuild" isVisible="false" />
+        <filter targetName="common.sql.all" isVisible="false" />
+        <filter targetName="common.sql.all-test" isVisible="false" />
+        <filter targetName="common.sql.create-db" isVisible="false" />
+        <filter targetName="common.sql.create-test-db" isVisible="false" />
+        <filter targetName="common.sql.init-db" isVisible="false" />
+        <filter targetName="common.test.war.data-source" isVisible="true" />
+        <filter targetName="common.war.include.libs" isVisible="false" />
+        <filter targetName="eirc.clean.build" isVisible="false" />
+        <filter targetName="eirc.compile.production" isVisible="false" />
+        <filter targetName="eirc.compile.test" isVisible="false" />
+        <filter targetName="eirc.db-test" isVisible="true" />
+        <filter targetName="eirc.docs" isVisible="false" />
+        <filter targetName="eirc.exportschema.mysql5" isVisible="false" />
+        <filter targetName="eirc.help" isVisible="true" />
+        <filter targetName="eirc.prepare.test.war" isVisible="false" />
+        <filter targetName="eirc.prepare.war" isVisible="false" />
+        <filter targetName="eirc.prepare.war.internal" isVisible="false" />
+        <filter targetName="eirc.profile.standalone" isVisible="false" />
+        <filter targetName="eirc.run.standalone" isVisible="false" />
+        <filter targetName="eirc.runtests" isVisible="false" />
+        <filter targetName="eirc.runtests.nobuild" isVisible="false" />
+        <filter targetName="eirc.sql.all" isVisible="false" />
+        <filter targetName="eirc.sql.all-test" isVisible="false" />
+        <filter targetName="eirc.sql.init-db" isVisible="false" />
+        <filter targetName="eirc.war.production.glassfish_mysql5" isVisible="false" />
+        <filter targetName="eirc.war.production.tomcat_mysql5" isVisible="false" />
+        <filter targetName="init.build" isVisible="false" />
+        <filter targetName="init.distr" isVisible="false" />
+        <filter targetName="reveng.hbmxml" isVisible="true" />
+        <filter targetName="reveng.pojos" isVisible="true" />
+        <filter targetName="run.tests" isVisible="false" />
+        <filter targetName="sz.clean.build" isVisible="false" />
+        <filter targetName="sz.compile.production" isVisible="false" />
+        <filter targetName="sz.compile.test" isVisible="false" />
+        <filter targetName="sz.db-test" isVisible="true" />
+        <filter targetName="sz.docs" isVisible="false" />
+        <filter targetName="sz.exportschema.mysql5" isVisible="false" />
+        <filter targetName="sz.help" isVisible="true" />
+        <filter targetName="sz.prepare.war" isVisible="false" />
+        <filter targetName="sz.runtests" isVisible="false" />
+        <filter targetName="sz.sql.all" isVisible="false" />
+        <filter targetName="sz.sql.all-test" isVisible="false" />
+        <filter targetName="sz.sql.init-db" isVisible="false" />
+        <filter targetName="sz.war.production.glassfish_mysql5" isVisible="false" />
+        <filter targetName="sz.war.production.tomcat_mysql5" isVisible="false" />
+        <filter targetName="template.ab.exploded.production" isVisible="false" />
+        <filter targetName="template.ab.war.production" isVisible="false" />
+        <filter targetName="template.ab_sync.war.production" isVisible="false" />
+        <filter targetName="template.bti.war.production" isVisible="false" />
+        <filter targetName="template.compile.production" isVisible="false" />
+        <filter targetName="template.compile.test" isVisible="false" />
+        <filter targetName="template.copy.classes" isVisible="false" />
+        <filter targetName="template.docs" isVisible="false" />
+        <filter targetName="template.eirc.war.production" isVisible="false" />
+        <filter targetName="template.exploded.include.libs" isVisible="false" />
+        <filter targetName="template.mysql.run" isVisible="false" />
+        <filter targetName="template.prepare.war" isVisible="false" />
+        <filter targetName="template.prepare.war.classes" isVisible="true" />
+        <filter targetName="template.profile.standalone" isVisible="false" />
+        <filter targetName="template.run.standalone" isVisible="false" />
+        <filter targetName="template.run.tests" isVisible="false" />
+        <filter targetName="template.schemaexport" isVisible="true" />
         <filter targetName="template.sz.war.production" isVisible="false" />
       </targetFilters>
       <treeView value="true" />
@@ -2163,118 +1884,213 @@
     </option>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../common/hibernate_build.xml">
+    <entry file="jar:///windows/D/users/mixa/work/Java/_libs/commons-lang-2.3/commons-lang-2.3-sources.jar!/org/apache/commons/lang/builder/EqualsBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/web/WEB-INF/hibernate.cfg.xml">
+    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/process/quittance/GenerateQuittancesPDFJasperJob.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="81" selection-start="1981" selection-end="1981" vertical-scroll-proportion="0.8381295">
+        <state line="103" column="0" selection-start="3654" selection-end="3654" vertical-scroll-proportion="0.72989196">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../sz/web/WEB-INF/hibernate.cfg.xml">
+    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/process/quittance/GenerateQuittanceJob.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="0" selection-start="2904" selection-end="2904" vertical-scroll-proportion="1.4928057">
+        <state line="40" column="0" selection-start="1278" selection-end="1426" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../eirc/web/WEB-INF/hibernate.cfg.xml">
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/process/LyfecycleVoter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="81" selection-start="1983" selection-end="1983" vertical-scroll-proportion="0.64748204">
+        <state line="19" column="0" selection-start="356" selection-end="356" vertical-scroll-proportion="0.32412964">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/web/WEB-INF/hibernate.cfg.xml">
+    <entry file="file:///windows/D/users/mixa/work/Java/_libs/jbpm-jpdl-3.2.2/src/jpdl/org/jbpm/taskmgmt/exe/TaskInstance.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="8" selection-start="792" selection-end="865" vertical-scroll-proportion="0.37769786">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/common_build.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/Dual.hbm.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/MeasureUnit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="0" selection-start="488" selection-end="488" vertical-scroll-proportion="0.39568347">
+        <state line="321" column="12" selection-start="11654" selection-end="11654" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="imports" expanded="true" />
+            <marker date="1185956898000" expanded="false" signature="0:1013" placeholder="/.../" />
+            <marker date="1185956898000" expanded="false" signature="1053:2128" placeholder="..." />
+            <marker date="1185956898000" expanded="true" signature="2130:2316" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="3444:3475" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="3532:3591" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="3626:4406" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="4435:5622" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="5652:5827" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="5852:5875" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="5933:6607" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="6665:8075" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="8117:8494" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="8567:8857" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="8861:9019" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="9100:9252" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="9256:9439" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="9471:9692" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="9696:9854" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="9896:9932" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="9936:10193" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="10261:11207" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="11211:11257" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="11307:11382" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="11386:11500" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="11522:11969" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="11973:12079" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="12115:12146" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="12152:12266" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="12329:12391" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="12397:12432" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="12467:12490" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="12527:12586" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="12590:12780" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="12804:12843" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="12847:13069" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="13114:13163" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="13170:13392" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="13437:13490" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="13496:13650" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="13671:13703" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="13707:14122" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="14164:14624" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="14630:15029" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="15071:16698" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="16728:16757" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="16761:16805" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="16830:16975" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="16979:17022" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="17046:17190" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="17316:17359" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="17403:17660" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="17692:17718" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="17830:17981" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="17987:18127" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="18168:18359" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="18632:18676" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="18707:18820" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="18905:18947" placeholder="/**...*/" />
+            <marker date="1185956898000" expanded="true" signature="18996:19320" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="19464:19625" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="19739:19764" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="19792:19817" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="19857:19890" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="19914:19935" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="19967:19992" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20030:20061" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20084:20104" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20134:20157" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20183:20206" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20255:20289" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20359:20410" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20437:20460" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20497:20526" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20577:20620" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20653:20683" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20715:20744" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20771:20793" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20829:20856" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20887:20915" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="20962:21001" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="21028:21052" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="21077:21099" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="21148:21182" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="21252:21303" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="21341:21374" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="21402:21428" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="21469:21504" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="21531:21555" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="21589:21618" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="21668:21709" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="21741:21770" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="21817:21850" placeholder="{...}" />
+            <marker date="1185956898000" expanded="true" signature="21917:21966" placeholder="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/persistence/Country.hbm.xml">
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/process/ProcessManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="0" selection-start="1235" selection-end="1300" vertical-scroll-proportion="0.0">
+        <state line="340" column="5" selection-start="11384" selection-end="11384" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../bti/web/WEB-INF/hibernate.cfg.xml">
+    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/util/CollectionUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="81" selection-start="1979" selection-end="1979" vertical-scroll-proportion="0.8381295">
+        <state line="84" column="0" selection-start="1600" selection-end="1600" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/etc/sql/update/2008_09_29.sql">
+    <entry file="file://$PROJECT_DIR$/../../eirc/src/org/flexpay/eirc/process/quittance/QuittanceJobVoter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="0" selection-start="0" selection-end="1163" vertical-scroll-proportion="0.4676259">
+        <state line="43" column="35" selection-start="1390" selection-end="1390" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/etc/sql/update/2008_07_30.sql">
+    <entry file="file://$PROJECT_DIR$/../../common/etc/sql/jbpm.jpdl.mysql.drop.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="89" selection-end="167" vertical-scroll-proportion="0.0">
+        <state line="95" column="34" selection-start="5753" selection-end="5753" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab/etc/sql/flexpay_ab.ddl.sql">
+    <entry file="file://$PROJECT_DIR$/../../common/web/WEB-INF/jbpm.hibernate.cfg.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="789" column="0" selection-start="27869" selection-end="28430" vertical-scroll-proportion="0.0">
+        <state line="70" column="7" selection-start="3374" selection-end="3374" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/MeasureUnit.hbm.xml">
+    <entry file="file://$PROJECT_DIR$/../../common/etc/sql/jbpm.jpdl.mysql.create_new.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="0" selection-start="1888" selection-end="1888" vertical-scroll-proportion="1.1690648">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../ab_sync/web/WEB-INF/hibernate.cfg.xml">
+    <entry file="file://$PROJECT_DIR$/../../sz/etc/sql/flexpay_sz.ddl.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="67" selection-start="1967" selection-end="1967" vertical-scroll-proportion="0.0">
+        <state line="1" column="31" selection-start="32" selection-end="32" vertical-scroll-proportion="0.018028846">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../common/src/org/flexpay/common/persistence/DataSourceDescription.hbm.xml">
+    <entry file="jar:///usr/java/default/src.zip!/java/util/Stack.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="83" selection-start="909" selection-end="938" vertical-scroll-proportion="0.39568347">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../common/etc/sql/update/2008_11_14.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="61" column="0" selection-start="2208" selection-end="2208" vertical-scroll-proportion="0.7062423">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../common/etc/sql/jbpm.jpdl.mysql.create.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="0" selection-start="7569" selection-end="7569" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/struts.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider">
+        <state />
       </provider>
     </entry>
   </component>
@@ -2332,12 +2148,11 @@
                   <option name="proportions">
                     <list>
                       <option value="0.2" />
-                      <option value="0.5642857" />
                     </list>
                   </option>
                 </SplitterProportionsDataImpl>
               </option>
-              <option name="lastEditedConfigurable" value="No Inspections" />
+              <option name="lastEditedConfigurable" value="FlexPay|Project Profiles" />
             </UIState>
           </value>
         </entry>
@@ -2368,12 +2183,11 @@
                   <option name="proportions">
                     <list>
                       <option value="0.2" />
-                      <option value="0.5642857" />
                     </list>
                   </option>
                 </SplitterProportionsDataImpl>
               </option>
-              <option name="lastEditedConfigurable" value="No Inspections" />
+              <option name="lastEditedConfigurable" value="FlexPay|Project Profiles" />
             </UIState>
           </value>
         </entry>

@@ -19,7 +19,6 @@
           <setting name="JAR_URL" value="file://" />
           <setting name="JAR_ENABLED" value="false" />
           <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
-          <setting name="RUN_JASPER_VALIDATION" value="false" />
         </building>
         <packaging>
           <containerElement type="facet" facetId="ab/web/Web">
@@ -94,7 +93,6 @@
     </facet>
     <facet type="hibernate" name="Hibernate">
       <configuration>
-        <setting name="validation-enabled" value="false" />
         <datasource-map>
           <unit-entry name="flexpay" value="d1b6f54f-3833-45ac-9df7-28e10c14f6af" />
           <unit-entry name="flexpaySessionFactory" value="d1b6f54f-3833-45ac-9df7-28e10c14f6af" />
