@@ -18,7 +18,6 @@
           <setting name="JAR_URL" value="file://" />
           <setting name="JAR_ENABLED" value="false" />
           <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
-          <setting name="RUN_JASPER_VALIDATION" value="false" />
         </building>
         <packaging>
           <containerElement type="facet" facetId="ab/web/Web">
@@ -123,34 +122,40 @@
         <configuration>
           <fileset id="s2fileset1" name="My Fileset" removed="false">
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/ab_struts_config.xml</file>
-            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/street/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/struts.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/apartment/struts.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/person/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/street/struts.xml</file>
             <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/common_struts_config.xml</file>
-            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/service/struts.xml</file>
             <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/organisation/struts.xml</file>
             <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/serviceprovider/struts.xml</file>
-            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/struts_config.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-core-2.0.11.jar!/struts-default.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/xwork-2.0.4.jar!/xwork-default.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-struts1-plugin-2.0.11.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-tiles-plugin-2.0.11.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jasperreports-plugin-2.0.11.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-codebehind-plugin-2.0.11.jar!/struts-plugin.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/registry/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/service/struts.xml</file>
             <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/processing/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/struts_config.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-config-browser-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-sitemesh-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jsf-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-tiles-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jfreechart-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-codebehind-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/xwork-2.0.5.jar!/xwork-default.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-plexus-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-pell-multipart-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-struts1-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-core-2.0.11.2.jar!/struts-default.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-core-2.0.11.2.jar!/struts-portlet-default.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-spring-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jasperreports-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/struts-plugin.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/quittance/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/eirc_account/struts.xml</file>
           </fileset>
-          <validation>
-            <errors_as_warnings>false</errors_as_warnings>
-            <validate_struts>false</validate_struts>
-            <validate_validation>false</validate_validation>
-          </validation>
         </configuration>
       </facet>
     </facet>
     <facet type="hibernate" name="Hibernate">
       <configuration>
-        <setting name="validation-enabled" value="false" />
         <datasource-map>
           <unit-entry name="flexpay" value="d1b6f54f-3833-45ac-9df7-28e10c14f6af" />
           <unit-entry name="flexpaySessionFactory" value="d1b6f54f-3833-45ac-9df7-28e10c14f6af" />
