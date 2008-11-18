@@ -4,12 +4,15 @@ import org.flexpay.common.process.LyfecycleVote;
 import org.flexpay.common.process.LyfecycleVoter;
 import org.flexpay.common.process.ProcessHelper;
 import org.flexpay.common.util.CollectionUtils;
-import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jbpm.graph.exe.ProcessInstance;
+import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jetbrains.annotations.NotNull;
+import org.apache.log4j.Logger;
 
-import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Quittance job voter cancells duplicates of GenerateQuittanceJob or GenerateQuittancesPDFJasperJob that are already in
@@ -17,6 +20,14 @@ import java.util.*;
  */
 public class QuittanceJobVoter implements LyfecycleVoter {
 
+	/**
+	 * Logger
+	 */
+	private final Logger log = Logger.getLogger(getClass());
+
+	/**
+	 * ProcesHelper
+	 */
 	private ProcessHelper processHelper;
 
 	/**
@@ -27,6 +38,11 @@ public class QuittanceJobVoter implements LyfecycleVoter {
 	 */
 	@NotNull
 	public LyfecycleVote onStart(@NotNull TaskInstance instance) {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Voting on task start: " + instance.getName());
+		}
+
 		// allow to start non quittance jobs
 		if (!GenerateQuittanceJob.JOB_NAME.equals(instance.getName()) &&
 			!GenerateQuittancesPDFJasperJob.JOB_NAME.equals(instance.getName())) {
@@ -37,11 +53,21 @@ public class QuittanceJobVoter implements LyfecycleVoter {
 				GenerateQuittanceJob.JOB_NAME,
 				GenerateQuittancesPDFJasperJob.JOB_NAME);
 		List<TaskInstance> running = processHelper.getRunningTasks(taskNames);
+
+		// no quittance tasks running start it
 		if (running.isEmpty()) {
 			return LyfecycleVote.START;
 		}
 
-		return LyfecycleVote.START;
+		// check if there is a task with the same name and parameters and cancel it as a duplicate
+		for (TaskInstance task : running) {
+			if (instance.getName().equals(task.getName()) && isSameParameters(instance, task)) {
+				return LyfecycleVote.CANCEL;
+			}
+		}
+
+		// there is already a quittance task, postpone current candidate
+		return LyfecycleVote.POSTPONE;
 	}
 
 	/**
@@ -52,7 +78,7 @@ public class QuittanceJobVoter implements LyfecycleVoter {
 	 * @return <code>true</code> if parameters are the same, or <code>false</code> otherwise
 	 */
 	@SuppressWarnings ({"unchecked"})
-	public static boolean isSameParameters(TaskInstance i1, TaskInstance i2) {
+	private boolean isSameParameters(TaskInstance i1, TaskInstance i2) {
 
 		Collection<String> parameterNames = Collections.emptySet();
 		if (GenerateQuittanceJob.JOB_NAME.equals(i1.getName())) {
@@ -68,6 +94,12 @@ public class QuittanceJobVoter implements LyfecycleVoter {
 				pi2.getContextInstance().getVariables());
 	}
 
+	/**
+	 * Method setProcessHelper sets the processHelper of this QuittanceJobVoter object.
+	 *
+	 * @param processHelper the processHelper of this QuittanceJobVoter object.
+	 *
+	 */
 	public void setProcessHelper(ProcessHelper processHelper) {
 		this.processHelper = processHelper;
 	}

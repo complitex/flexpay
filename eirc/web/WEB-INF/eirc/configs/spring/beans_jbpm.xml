@@ -24,6 +24,6 @@
 		  p:quittanceService-ref="quittanceService"
 		  p:reportUtil-ref="reportUtil" />
 
-	<bean name="generateQuitancesJob" class="org.flexpay.eirc.process.quittance.GenerateQuittanceJob" scope="prototype"
+	<bean name="generateQuittancesJob" class="org.flexpay.eirc.process.quittance.GenerateQuittanceJob" scope="prototype"
 		  p:quittanceService-ref="quittanceService" />
 </beans>

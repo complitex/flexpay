@@ -65,7 +65,7 @@ public class ProcessManager implements Runnable {
 	/**
 	 * LyfecycleVoters
 	 */
-	private List<LyfecycleVoter> lyfecycleVoters = Collections.emptyList();
+	private List<LyfecycleVoter> lyfecycleVoters = CollectionUtils.list();
 
 	/**
 	 * protected constructor
@@ -349,7 +349,7 @@ public class ProcessManager implements Runnable {
 	 * @throws ProcessInstanceException   when can't instantiate process instance
 	 * @throws ProcessDefinitionException when process definition not found
 	 */
-	public long createProcess(String processDefinitionName, Map<Serializable, Serializable> parameters)
+	public synchronized long createProcess(String processDefinitionName, Map<Serializable, Serializable> parameters)
 			throws ProcessInstanceException, ProcessDefinitionException {
 
 		long processInstanceID = initProcess(processDefinitionName);
@@ -604,9 +604,13 @@ public class ProcessManager implements Runnable {
 		}
 	}
 
+	synchronized
 	List<TaskInstance> getRunningTasks() {
 		JbpmContext context = jbpmConfiguration.createJbpmContext();
 		List<Long> taskIds = CollectionUtils.list(runningTasks);
+		if (taskIds.isEmpty()) {
+			return Collections.emptyList();
+		}
 		return (List<TaskInstance>) context.getTaskMgmtSession().findTaskInstancesByIds(taskIds);
 	}
 
@@ -616,6 +620,7 @@ public class ProcessManager implements Runnable {
 	 * @return Process list
 	 */
 	@SuppressWarnings ({"unchecked"})
+	synchronized 
 	public List<Process> getProcessList() {
 		List<Process> processes = CollectionUtils.list();
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
@@ -651,6 +656,7 @@ public class ProcessManager implements Runnable {
 	 */
 	@NotNull
 	@SuppressWarnings ({"unchecked"})
+	synchronized 
 	public Process getProcessInstanceInfo(@NotNull Long processId) {
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
 		Process process = new Process();
@@ -788,7 +794,12 @@ public class ProcessManager implements Runnable {
 		this.taskRepeatLimit = taskRepeatLimit;
 	}
 
+	/**
+	 * Add voters
+	 *
+	 * @param lyfecycleVoters Voters to set
+	 */
 	public void setLyfecycleVoters(List<LyfecycleVoter> lyfecycleVoters) {
-		this.lyfecycleVoters = lyfecycleVoters;
+		this.lyfecycleVoters.addAll(lyfecycleVoters);
 	}
 }

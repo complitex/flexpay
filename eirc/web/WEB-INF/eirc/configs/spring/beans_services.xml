@@ -165,5 +165,11 @@
 				<value>WEB-INF/eirc/process</value>
 			</list>
 		</property>
+		<property name="lyfecycleVoters">
+			<list>
+				<bean class="org.flexpay.eirc.process.quittance.QuittanceJobVoter"
+					  p:processHelper-ref="processHelper" />
+			</list>
+		</property>
 	</bean>
 </beans>

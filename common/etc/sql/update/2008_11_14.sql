@@ -74,12 +74,6 @@ create index IDX_COMMENT_TSK on JBPM_COMMENT (TASKINSTANCE_);
 create index IDX_DELEG_PRCD on JBPM_DELEGATION (PROCESSDEFINITION_);
 
 
-
-alter table JBPM_ID_GROUP drop foreign key FK_ID_GRP_PARENT;
-alter table JBPM_ID_MEMBERSHIP drop foreign key FK_ID_MEMSHIP_GRP;
-alter table JBPM_ID_MEMBERSHIP drop foreign key FK_ID_MEMSHIP_USR;
-
-
 create index IDX_JOB_TSKINST on JBPM_JOB (TASKINSTANCE_);
 create index IDX_JOB_PRINST on JBPM_JOB (PROCESSINSTANCE_);
 create index IDX_JOB_TOKEN on JBPM_JOB (TOKEN_);
