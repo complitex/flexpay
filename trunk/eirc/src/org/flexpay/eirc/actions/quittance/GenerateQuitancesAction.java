@@ -42,7 +42,7 @@ public class GenerateQuitancesAction extends FPActionSupport {
 				contextVariables.put("dateTill", endDateFilter.getDate());
 				contextVariables.put("serviceOrganisationId", serviceOrganisationFilter.getSelectedId());
 
-				processManager.createProcess("GenerateQuitances", contextVariables);
+				processManager.createProcess("GenerateQuittances", contextVariables);
 
 				addActionError(getText("eirc.quittance.generation_started"));
 			}

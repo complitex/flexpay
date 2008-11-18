@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<process-definition name="GenerateQuitances"
+<process-definition name="GenerateQuittances"
 					xmlns="http://jbpm.org/3/jpdl"
 					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 					xsi:schemaLocation="http://jbpm.org/3/jpdl http://jbpm.org/xsd/jpdl-3.0.xsd">
@@ -11,10 +11,10 @@
 
 
 	<start-state name="start">
-		<transition to="generateQuitancesJob" />
+		<transition to="generateQuittancesJob" />
 	</start-state>
 
-	<task-node name="generateQuitancesJob">
+	<task-node name="generateQuittancesJob">
 		<task swimlane="worker" blocking="yes" />
 		<transition name="next" to="end" />
 		<transition name="error" to="end" />

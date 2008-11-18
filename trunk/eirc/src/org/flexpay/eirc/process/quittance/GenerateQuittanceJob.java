@@ -1,11 +1,10 @@
 package org.flexpay.eirc.process.quittance;
 
-import org.flexpay.common.process.job.Job;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.process.job.Job;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
-import org.apache.commons.lang.builder.EqualsBuilder;
+import org.flexpay.eirc.service.QuittanceService;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,7 +13,7 @@ import java.util.Set;
 
 public class GenerateQuittanceJob extends Job {
 
-	public static final String JOB_NAME = "generateQuitancesJob";
+	public static final String JOB_NAME = "generateQuittancesJob";
 
 	public static final String PARAM_DATE_FROM = "dateFrom";
 	public static final String PARAM_DATE_TILL = "dateTill";

@@ -20,8 +20,9 @@ public class TestGenerateQuittancesJob extends SpringBeanAwareTestCase {
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
-		contextVariables.put("dateFrom", new GregorianCalendar(2008, 5, 1).getTime());
-		contextVariables.put("dateTill", DateUtil.now());
+		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, new GregorianCalendar(2008, 5, 1).getTime());
+		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, DateUtil.now());
+		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANISATION_ID, 1L);
 
 		job.execute(contextVariables);
 	}
