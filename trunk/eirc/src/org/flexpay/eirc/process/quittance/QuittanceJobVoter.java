@@ -40,7 +40,7 @@ public class QuittanceJobVoter implements LyfecycleVoter {
 	public LyfecycleVote onStart(@NotNull TaskInstance instance) {
 
 		if (log.isDebugEnabled()) {
-			log.debug("Voting on task start: " + instance.getName());
+			log.debug("Voting on task start: " + instance.getName() + ", pid=" + instance.getId());
 		}
 
 		// allow to start non quittance jobs

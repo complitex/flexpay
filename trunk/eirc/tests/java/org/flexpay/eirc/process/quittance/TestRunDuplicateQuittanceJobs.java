@@ -33,21 +33,48 @@ public class TestRunDuplicateQuittanceJobs extends SpringBeanAwareTestCase {
 		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANISATION_ID, 1L);
 
 		long p1Id = processManager.createProcess("GenerateQuittances", contextVariables);
+		long p2Id = processManager.createProcess("GenerateQuittances", contextVariables);
 
 		ProcessWaiter pw1 = new ProcessWaiter(p1Id);
-//		ProcessWaiter pw2 = new ProcessWaiter(p2Id);
+//		ProcessWaiter pw2 = new ProcessWaiter(p1Id);
+		ProcessWaiter pw2 = new ProcessWaiter(p2Id);
 		Thread thr1 = new Thread(pw1);
-//		Thread thr2 = new Thread(pw2);
+		Thread thr2 = new Thread(pw2);
 		thr1.start();
-//		thr2.start();
+		thr2.start();
 		thr1.join();
-//		thr2.join();
+		thr2.join();
 
-		long p2Id = processManager.createProcess("GenerateQuittances", contextVariables);
-		
 		assertEquals("First process failed", ProcessState.COMPLITED, pw1.getProcess().getProcessState());
 		// Second process should be killed by voters
-//		assertEquals("Second process failed", ProcessState.COMPLITED_WITH_ERRORS, pw2.getProcess().getProcessState());
+		assertEquals("Second process failed", ProcessState.COMPLITED_WITH_ERRORS, pw2.getProcess().getProcessState());
+	}
+
+	@Test
+	@Ignore
+	public void testGenerateQuittancesLinear() throws Throwable {
+
+		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+
+		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, new GregorianCalendar(2008, 5, 1).getTime());
+		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, DateUtil.now());
+		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANISATION_ID, 1L);
+
+		long p1Id = processManager.createProcess("GenerateQuittances", contextVariables);
+
+		ProcessWaiter pw1 = new ProcessWaiter(p1Id);
+		Thread thr1 = new Thread(pw1);
+		thr1.start();
+		thr1.join();
+
+		long p2Id = processManager.createProcess("GenerateQuittances", contextVariables);
+		ProcessWaiter pw2 = new ProcessWaiter(p2Id);
+		Thread thr2 = new Thread(pw2);
+		thr2.start();
+		thr2.join();
+		
+		assertEquals("First process failed", ProcessState.COMPLITED, pw1.getProcess().getProcessState());
+		assertEquals("Second process failed", ProcessState.COMPLITED, pw2.getProcess().getProcessState());
 	}
 
 	@Test
@@ -61,10 +88,10 @@ public class TestRunDuplicateQuittanceJobs extends SpringBeanAwareTestCase {
 		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANISATION_ID, 1L);
 
 		long p1Id = processManager.createProcess("GenerateQuittances", contextVariables);
-//		long p2Id = processManager.createProcess("GenerateQuittancePDF", contextVariables);
+		long p2Id = processManager.createProcess("GenerateQuittancePDF", contextVariables);
 
 		ProcessWaiter pw1 = new ProcessWaiter(p1Id);
-		ProcessWaiter pw2 = new ProcessWaiter(p1Id);
+		ProcessWaiter pw2 = new ProcessWaiter(p2Id);
 		Thread thr1 = new Thread(pw1);
 		Thread thr2 = new Thread(pw2);
 		thr1.start();

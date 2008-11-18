@@ -2,7 +2,6 @@ package org.flexpay.common.process;
 
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.util.StopWatch;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 
 import java.util.List;
@@ -58,7 +57,7 @@ public class ProcessHelper {
 	@NotNull
 	public List<TaskInstance> getRunningTasks(@NotNull Set<String> taskNames) {
 
-		List<TaskInstance> instances = processManager.getRunningTasks();
+		List<TaskInstance> instances = processManager.getRunningTaskIds();
 		List<TaskInstance> result = CollectionUtils.list();
 		for (TaskInstance instance : instances) {
 			if (!instance.hasEnded() && taskNames.contains(instance.getName())) {
