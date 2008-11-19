@@ -5,7 +5,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.exception.FlexPayException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Set;
@@ -88,4 +90,11 @@ public abstract class TemporaryName<TV extends TemporaryValue, T extends Transla
 
 		return obj instanceof TemporaryName && super.equals(obj);
 	}
+
+	@Nullable
+	public String getDefaultNameTranslation() throws FlexPayException {
+		T t = TranslationUtil.getTranslation(translations);
+		return t == null ? null : t.getName();
+	}
+
 }

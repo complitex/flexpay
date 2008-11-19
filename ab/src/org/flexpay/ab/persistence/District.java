@@ -4,9 +4,13 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.DateUtil;
+import org.flexpay.ab.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 import java.util.Collections;
+import java.util.Date;
 
 public class District extends NameTimeDependentChild<DistrictName, DistrictNameTemporal> {
 
@@ -62,5 +66,38 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 	 */
 	public void setStreets(Set<Street> streets) {
 		this.streets = streets;
+	}
+
+	public void setNameForDate(DistrictName name, Date beginDate) {
+		setNameForDates(name, beginDate, ApplicationConfig.getFutureInfinite());
+	}
+
+	public void setNameForDates(DistrictName name, Date beginDate, Date endDate) {
+
+		if (beginDate.after(endDate)) {
+			throw new RuntimeException("Invalid begin-end dates: [" + DateUtil.format(beginDate) +
+									   ", " + DateUtil.format(endDate) + "]");
+		}
+		if (beginDate.before(ApplicationConfig.getPastInfinite())) {
+			beginDate = ApplicationConfig.getPastInfinite();
+		}
+		if (endDate.after(ApplicationConfig.getFutureInfinite())) {
+			endDate = ApplicationConfig.getFutureInfinite();
+		}
+
+		name.setObject(this);
+
+		DistrictNameTemporal temporal = new DistrictNameTemporal();
+		temporal.setBegin(beginDate);
+		temporal.setEnd(endDate);
+		temporal.setValue(name);
+		temporal.setObject(this);
+
+		addNameTemporal(temporal);
+	}
+
+	@NotNull
+	public Stub<Town> getTownStub() {
+		return new Stub<Town>((Town) getParent());
 	}
 }

@@ -50,5 +50,5 @@ public interface StreetService extends
 	 *
 	 * @param object Object to save
 	 */
-	void save(Street object);
+	void save(@NotNull Street object);
 }

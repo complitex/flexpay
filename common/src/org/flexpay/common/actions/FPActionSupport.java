@@ -168,6 +168,9 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	@NotNull
 	public String getErrorMessage(@NotNull FlexPayException e) {
 		if (StringUtils.isNotEmpty(e.getErrorKey())) {
+			if (log.isDebugEnabled()) {
+				log.debug("Adding error: " + e.getErrorKey() + ", params: " + StringUtils.join(e.getParams(), ","));
+			}
 			return getText(e.getErrorKey(), e.getParams());
 		} else {
 			return e.getMessage();
