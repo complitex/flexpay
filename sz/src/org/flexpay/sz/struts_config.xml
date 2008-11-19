@@ -34,7 +34,7 @@
 			<result name="success" type="redirect">importFilesList.action</result>
 		</action>
 
-		<action name="loadSzFileFromDb" class="loadSzFileFromDBAction">
+		<action name="loadSzFileFromDB" class="loadSzFileFromDBAction">
 			<result name="success" type="redirect">importFilesList.action</result>
 		</action>
 

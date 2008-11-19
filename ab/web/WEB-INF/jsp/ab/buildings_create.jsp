@@ -6,7 +6,7 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
 	<form id="fobjects" method="post"
-		  action="<s:url value="/dicts/buildingsCreate.action" includeParams="none" />">
+		  action="<s:url value="/dicts/buildingCreate.action" includeParams="none" />">
 		<s:hidden name="buildingId" value="%{buildingId}" />
 
 		<tr>

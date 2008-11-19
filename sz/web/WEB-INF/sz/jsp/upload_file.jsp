@@ -109,7 +109,7 @@ function newXMLHttpRequest() {
 var xmlHttp = newXMLHttpRequest();
 
 function getProgress() { 
-  var url = "/sz/common/uploadProgress.action";
+  var url = "/sz/common/fileUploadProgress.action";
   xmlHttp.open("POST", url, true);
   xmlHttp.onreadystatechange = updatePage;
   xmlHttp.send(null);

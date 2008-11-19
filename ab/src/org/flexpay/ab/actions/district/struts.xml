@@ -7,50 +7,50 @@
 
 	<package name="districts" namespace="/dicts" extends="common">
 
-		<action name="list_districts" class="districtsListAction">
+		<action name="districtsList" class="districtsListAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">DISTRICT_READ</param>
 			</interceptor-ref>
 			<result type="tiles">ab.districts.list</result>
 		</action>
 
-		<action name="create_district" class="districtCreateAction">
+		<action name="districtCreate" class="districtCreateAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">DISTRICT_ADD</param>
 			</interceptor-ref>
 			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">view_district</param>
+				<param name="actionName">districtView</param>
 				<param name="parse">true</param>
 				<param name="object.id">${object.id}</param>
 			</result>
 			<result type="tiles" name="input">ab.district.create</result>
 		</action>
 
-		<action name="view_district" class="districtViewAction">
+		<action name="districtView" class="districtViewAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">DISTRICT_READ</param>
 			</interceptor-ref>
 			<result type="tiles">ab.district.view</result>
-			<result type="redirect-action" name="redirectError">list_districts</result>
+			<result type="redirect-action" name="redirectError">districtsList</result>
 		</action>
 
-		<action name="edit_district" class="districtEditAction">
+		<action name="districtEdit" class="districtEditAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">DISTRICT_CHANGE</param>
 			</interceptor-ref>
 			<result type="redirect-action">
-				<param name="actionName">view_district</param>
+				<param name="actionName">districtView</param>
 				<param name="parse">true</param>
 				<param name="object.id">${object.id}</param>
 			</result>
 			<result type="tiles" name="input">ab.district.edit</result>
 		</action>
 
-		<action name="delete_districts" class="districtDeleteAction">
+		<action name="districtDelete" class="districtDeleteAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">DISTRICT_DELETE</param>
 			</interceptor-ref>
-			<result name="redirectSuccess" type="redirect">list_districts.action</result>
+			<result name="redirectSuccess" type="redirect">districtsList.action</result>
 		</action>
 
 	</package>

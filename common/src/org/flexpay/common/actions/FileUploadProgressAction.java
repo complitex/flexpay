@@ -5,6 +5,7 @@ import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 
 import com.davidjc.ajaxfileupload.multipart.ProgressMonitor;
+import com.opensymphony.xwork2.ActionSupport;
 
 public class FileUploadProgressAction implements SessionAware {
 
@@ -22,7 +23,7 @@ public class FileUploadProgressAction implements SessionAware {
 		String progressInfo = monitor == null ? "" : monitor.percentComplete();
 		setStringResult(progressInfo);
 
-		return "success";
+		return ActionSupport.SUCCESS;
 	}
 
 	public void setSession(Map sessionMap) {

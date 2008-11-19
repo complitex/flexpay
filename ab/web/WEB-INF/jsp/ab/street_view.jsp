@@ -105,7 +105,7 @@
 			<td colspan="3">&nbsp;</td>
 			<td class="col"><s:property value="%{getTranslation(currentName.translations).name}"/></td>
 			<td class="col">
-				<a href="<s:url value="/dicts/view_district.action?object.id=%{object.id}"/>"><s:text
+				<a href="<s:url value="/dicts/districtView.action?object.id=%{object.id}"/>"><s:text
 						name="common.view"/></a></td>
 		</tr>
 	</s:iterator>

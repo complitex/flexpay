@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <form id="fobjects" method="post"
-	  action="<s:url value="/dicts/townList.action" includeParams="none" />">
+	  action="<s:url value="/dicts/townsList.action" includeParams="none" />">
 	<%@ include file="filters/groups/country_region.jsp" %>
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
@@ -11,7 +11,7 @@
 			<td colspan="5">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="townsDelete"/>';$('fobjects').submit()"
+					   onclick="$('fobjects').action='<s:url action="townDelete"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="townCreate"/>'"
@@ -54,7 +54,7 @@
 			<td colspan="5">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="townsDelete"/>';$('fobjects').submit()"
+					   onclick="$('fobjects').action='<s:url action="townDelete"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="townCreate"/>'"

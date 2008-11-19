@@ -35,7 +35,8 @@ public abstract class BuildingsActionsBase extends FPActionSupport {
 			return number.toString().trim();
 		} catch (Exception e) {
 			log.error("Exception", e);
-			return "error";
+			return ERROR;
 		}
 	}
+
 }

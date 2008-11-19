@@ -1,8 +1,8 @@
 package org.flexpay.eirc.actions.processing;
 
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
 
 public class ProcessViewAction extends FPActionSupport {
@@ -21,7 +21,7 @@ public class ProcessViewAction extends FPActionSupport {
 	@NotNull
 	protected String doExecute() throws Exception {
 		process = processManager.getProcessInstanceInfo(process.getId());
-		return "success";
+		return SUCCESS;
 	}
 
 	/**

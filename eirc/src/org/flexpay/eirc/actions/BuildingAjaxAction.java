@@ -6,6 +6,7 @@ import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import com.opensymphony.xwork2.ActionSupport;
 
 public class BuildingAjaxAction {
 
@@ -17,7 +18,7 @@ public class BuildingAjaxAction {
 	public String execute() throws FlexPayException {
 		buildingsList = getBuildingListByStreetId(streetId);
 
-		return "success";
+		return ActionSupport.SUCCESS;
 	}
 
 	List<Buildings> getBuildingListByStreetId(Long streetId) {

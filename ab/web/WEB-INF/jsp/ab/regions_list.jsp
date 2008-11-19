@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <form id="fregions" method="post"
-	  action="<s:url value="/dicts/regionList.action" includeParams="none" />">
+	  action="<s:url value="/dicts/regionsList.action" includeParams="none" />">
 	<%@ include file="filters/groups/country.jsp" %>
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
@@ -11,7 +11,7 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fregions').action='<s:url action="regionsDelete"/>';$('fregions').submit()"
+					   onclick="$('fregions').action='<s:url action="regionDelete"/>';$('fregions').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="regionCreate"/>'"
@@ -34,7 +34,7 @@
 									   value="<s:property value="%{object.id}"/>"
 									   name="objectIds"/></td>
 				<td class="col">
-					<a href="<s:url value="/dicts/townList.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{object.id}"/>">
+					<a href="<s:url value="/dicts/townsList.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{object.id}"/>">
 						<s:property value="%{getTranslation(translations).name}"/>
 					</a>
 				</td>
@@ -49,7 +49,7 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fregions').action='<s:url action="regionsDelete"/>';$('fregions').submit()"
+					   onclick="$('fregions').action='<s:url action="regionDelete"/>';$('fregions').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="regionCreate"/>'"
