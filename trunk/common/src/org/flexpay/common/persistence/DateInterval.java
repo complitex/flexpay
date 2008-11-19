@@ -7,6 +7,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -62,6 +63,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	 *
 	 * @return Value for property 'begin'.
 	 */
+	@NotNull
 	public Date getBegin() {
 		return begin;
 	}
@@ -89,6 +91,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	 *
 	 * @return Value for property 'end'.
 	 */
+	@NotNull
 	public Date getEnd() {
 		return end;
 	}

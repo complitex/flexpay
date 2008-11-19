@@ -1,6 +1,7 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.DistrictFilter;
@@ -13,12 +14,17 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
+import org.flexpay.common.util.DateUtil;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Locale;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+/**
+ * Class DistrictServiceImpl
+ */
+@Transactional (readOnly = true)
 public class DistrictServiceImpl extends
 		NameTimeDependentServiceImpl<DistrictNameTranslation, DistrictName, DistrictNameTemporal, District, Town>
 		implements DistrictService {
@@ -235,12 +241,77 @@ public class DistrictServiceImpl extends
 	}
 
 	/**
-	 * return base for name time-dependent objects in i18n files, like 'region', 'town',
-	 * etc.
+	 * return base for name time-dependent objects in i18n files, like 'region', 'town', etc.
 	 *
 	 * @return Localization key base
 	 */
 	protected String getI18nKeyBase() {
 		return "ab.district";
+	}
+
+	/**
+	 * Create or update district
+	 *
+	 * @param object District to save
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Transactional (readOnly = false)
+	public void save(@NotNull District object) throws FlexPayExceptionContainer {
+		validate(object);
+		if (object.isNew()) {
+			object.setId(null);
+			districtDao.create(object);
+		} else {
+			districtDao.update(object);
+		}
+	}
+
+	/**
+	 * validate district before save
+	 *
+	 * @param object District object to validate
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(@NotNull District object) throws FlexPayExceptionContainer {
+
+		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
+
+		if (object.getParent() == null) {
+			ex.addException(new FlexPayException("No town", "error.ab.district.no_town"));
+		}
+
+		Collection<DistrictNameTemporal> temporals = object.getNameTemporals();
+		if (temporals.isEmpty()) {
+			ex.addException(new FlexPayException("No names", "error.ab.district.no_names"));
+		}
+
+		boolean first = true;
+		for (DistrictNameTemporal temporal : temporals) {
+
+			// the second and all next names should have default lang translation
+			if (!first || temporals.size() == 1) {
+				DistrictName name = object.getNameForDate(DateUtil.now());
+				try {
+					if (name == null || StringUtils.isBlank(name.getDefaultNameTranslation())) {
+						FlexPayException e = new FlexPayException("No translation", "error.ab.district.no_default_translation",
+								temporal.getBegin(), temporal.getEnd());
+						ex.addException(e);
+
+						if (log.isDebugEnabled()) {
+							log.debug("Period: " + temporal.getBegin() + " - " + temporal.getEnd() + " is empty");
+						}
+					}
+				} catch (FlexPayException e) {
+					ex.addException(e);
+				}
+			}
+
+			first = false;
+		}
+
+		if (ex.isNotEmpty()) {
+			throw ex;
+		}
 	}
 }

@@ -78,11 +78,12 @@
 	</bean>
 
 	<!-- Town districts -->
-	<bean id="districtCreateAction"
-		  class="org.flexpay.ab.actions.district.DistrictCreateAction" scope="prototype">
-		<property name="nameTimeDependentService" ref="districtService" />
-		<property name="parentService" ref="townService" />
-	</bean>
+	<bean id="districtCreateAction"  scope="prototype"
+		  class="org.flexpay.ab.actions.district.DistrictCreateAction"
+		  p:nameTimeDependentService-ref="districtService"
+		  p:parentService-ref="townService"
+		  p:districtService-ref="districtService"
+		  p:townService-ref="townService" />
 
 	<bean id="districtViewAction"
 		  class="org.flexpay.ab.actions.district.DistrictViewAction" scope="prototype">

@@ -3,6 +3,7 @@ package org.flexpay.common.exception;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nls;
 import org.flexpay.common.util.DateUtil;
+import org.apache.log4j.Logger;
 
 import java.util.Date;
 
@@ -11,7 +12,13 @@ import java.util.Date;
  */
 public class FlexPayException extends Exception {
 
+	/**
+	 * I18n error key name
+	 */
 	private String errorKey;
+	/**
+	 * parameters used to build error message
+	 */
 	private String[] params;
 
 	/**
@@ -93,7 +100,13 @@ public class FlexPayException extends Exception {
 		this.params = params;
 	}
 
-	private String[] convert(Object[] ... objects) {
+	/**
+	 * Convert objects array to string parameters
+	 *
+	 * @param objects Objects to convert
+	 * @return Array of string parameters
+	 */
+	private String[] convert(Object[] objects) {
 		String[] res = new String[objects.length];
 		int n = 0;
 		for (Object obj : objects) {

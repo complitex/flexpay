@@ -38,6 +38,8 @@ public class DistrictName extends TemporaryName<DistrictName, DistrictNameTransl
 	 * @return Null representation of this value
 	 */
 	public DistrictName getEmpty() {
-		return new DistrictName();
+		DistrictName empty = new DistrictName();
+		empty.setObject(getObject());
+		return empty;
 	}
 }

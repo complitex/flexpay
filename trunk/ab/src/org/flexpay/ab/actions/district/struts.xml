@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="districts" namespace="/dicts" extends="common">
+
+		<action name="list_districts" class="districtsListAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">DISTRICT_READ</param>
+			</interceptor-ref>
+			<result type="tiles">ab.districts.list</result>
+		</action>
+
+		<action name="create_district" class="districtCreateAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">DISTRICT_ADD</param>
+			</interceptor-ref>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">view_district</param>
+				<param name="parse">true</param>
+				<param name="object.id">${object.id}</param>
+			</result>
+			<result type="tiles" name="input">ab.district.create</result>
+		</action>
+
+		<action name="view_district" class="districtViewAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">DISTRICT_READ</param>
+			</interceptor-ref>
+			<result type="tiles">ab.district.view</result>
+			<result type="redirect-action" name="redirectError">list_districts</result>
+		</action>
+
+		<action name="edit_district" class="districtEditAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">DISTRICT_CHANGE</param>
+			</interceptor-ref>
+			<result type="redirect-action">
+				<param name="actionName">view_district</param>
+				<param name="parse">true</param>
+				<param name="object.id">${object.id}</param>
+			</result>
+			<result type="tiles" name="input">ab.district.edit</result>
+		</action>
+
+		<action name="delete_districts" class="districtDeleteAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">DISTRICT_DELETE</param>
+			</interceptor-ref>
+			<result name="redirectSuccess" type="redirect">list_districts.action</result>
+		</action>
+
+	</package>
+
+</struts>

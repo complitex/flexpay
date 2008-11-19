@@ -1,8 +1,11 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.common.persistence.Translation;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Translation;
+import org.jetbrains.annotations.NotNull;
 
 public class DistrictNameTranslation extends Translation {
 
@@ -10,6 +13,27 @@ public class DistrictNameTranslation extends Translation {
 	 * Constructs a new DistrictNameTranslation.
 	 */
 	public DistrictNameTranslation() {
+	}
+
+	/**
+	 * Constructs a new DistrictNameTranslation.
+	 *
+	 * @param name Translation
+	 * @throws Exception if failure occurs
+	 */
+	public DistrictNameTranslation(@NotNull String name) throws Exception {
+		super(name, ApplicationConfig.getDefaultLanguage());
+	}
+
+	/**
+	 * Constructs a new DistrictNameTranslation.
+	 *
+	 * @param name Translation
+	 * @param lang Language that translation is in
+	 * @throws Exception if failure occurs
+	 */
+	public DistrictNameTranslation(@NotNull String name, @NotNull Language lang) throws Exception {
+		super(name, lang);
 	}
 
 	/**
@@ -29,12 +53,7 @@ public class DistrictNameTranslation extends Translation {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		} else if (!(o instanceof DistrictNameTranslation)) {
-			return false;
-		}
 
-		return super.equals(o);
+		return o instanceof DistrictNameTranslation && super.equals(o);
 	}
 }

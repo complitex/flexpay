@@ -14,6 +14,9 @@ import java.util.*;
 public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
 		extends DomainObjectWithStatus {
 
+	private static final SortedSet EMPTY_SORTED_SET =
+			Collections.unmodifiableSortedSet(new TreeSet());
+
 	private TimeLine<T, DI> namesTimeLine;
 
 	public NameTimeDependent() {
@@ -64,6 +67,9 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	 * @return Value for property 'nameTemporals'.
 	 */
 	public SortedSet<DI> getNameTemporals() {
+		if (namesTimeLine == null) {
+			return (SortedSet<DI>) EMPTY_SORTED_SET;
+		}
 		return namesTimeLine.getIntervalsSet();
 	}
 
