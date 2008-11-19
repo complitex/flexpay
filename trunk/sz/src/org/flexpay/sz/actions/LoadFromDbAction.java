@@ -4,7 +4,7 @@ import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 
-public class LoadFromDbAction {
+public class LoadFromDBAction {
 
 	private Long szFileId;
 

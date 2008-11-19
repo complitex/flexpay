@@ -26,7 +26,7 @@ public interface RegistryProcessor {
 	 * @param registries Registries to process
 	 * @throws Exception if failure occurs
 	 */
-	void processRegistries(@NotNull Collection<SpRegistry> registries) throws Exception;
+	void registriesProcess(@NotNull Collection<SpRegistry> registries) throws Exception;
 
 	/**
 	 * Process a limited number of registry records.

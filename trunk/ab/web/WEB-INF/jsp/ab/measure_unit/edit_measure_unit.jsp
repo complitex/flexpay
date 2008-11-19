@@ -2,7 +2,7 @@
 
 
 <s:actionerror />
-<s:form action="editMeasureUnit">
+<s:form action="measureUnitEdit">
 	<s:hidden name="measureUnit.id" />
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr valign="top" class="cols_1">

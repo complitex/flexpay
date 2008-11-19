@@ -7,21 +7,21 @@
 	<package name="organisations" namespace="/eirc" extends="common">
 
 		<!-- Organisations -->
-		<action name="organisationsList" class="listOrganisationsAction">
+		<action name="organisationsList" class="organisationsListAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_READ</param>
 			</interceptor-ref>
 			<result type="tiles">eirc.organisations.list</result>
 		</action>
 
-		<action name="organisationsDelete" class="deleteOrganisationsAction">
+		<action name="organisationDelete" class="organisationDeleteAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_DELETE</param>
 			</interceptor-ref>
 			<result name="redirectSuccess" type="redirect-action">organisationsList</result>
 		</action>
 
-		<action name="organisationEdit" class="editOrganisationAction">
+		<action name="organisationEdit" class="organisationEditAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_CHANGE</param>
 			</interceptor-ref>
@@ -30,7 +30,7 @@
 		</action>
 
 		<!-- Subdivisions -->
-		<action name="subdivisionsList" class="listSubdivisionsAction">
+		<action name="subdivisionsList" class="subdivisionsListAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_READ</param>
 			</interceptor-ref>
@@ -38,7 +38,7 @@
 			<result name="redirectSuccess" type="redirect-action">organisationsList</result>
 		</action>
 
-		<action name="subdivisionsDelete" class="deleteSubdivisionsAction">
+		<action name="subdivisionDelete" class="subdivisionDeleteAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_DELETE</param>
 			</interceptor-ref>
@@ -50,7 +50,7 @@
 			<result name="redirectError" type="redirect-action">organisationsList</result>
 		</action>
 
-		<action name="subdivisionEdit" class="editSubdivisionAction">
+		<action name="subdivisionEdit" class="subdivisionEditAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_ADD</param>
 			</interceptor-ref>
@@ -63,21 +63,21 @@
 		</action>
 
 		<!-- Banks -->
-		<action name="banksList" class="listBanksAction">
+		<action name="banksList" class="banksListAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_BANK_READ</param>
 			</interceptor-ref>
 			<result type="tiles">eirc.organisation.banks.list</result>
 		</action>
 
-		<action name="banksDelete" class="deleteBanksAction">
+		<action name="bankDelete" class="bankDeleteAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_BANK_DELETE</param>
 			</interceptor-ref>
 			<result name="redirectSuccess" type="redirect-action">banksList</result>
 		</action>
 
-		<action name="bankEdit" class="editBankAction">
+		<action name="bankEdit" class="bankEditAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_BANK_CHANGE</param>
 			</interceptor-ref>

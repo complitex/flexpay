@@ -1,9 +1,9 @@
 package org.flexpay.eirc.actions.eirc_account;
 
-import org.flexpay.ab.actions.person.ListPersons;
+import org.flexpay.ab.actions.person.PersonsListAction;
 import org.jetbrains.annotations.NotNull;
 
-public class EircAccountCreateForm2Action extends ListPersons {
+public class EircAccountCreateForm2Action extends PersonsListAction {
 	
 	private Long apartmentId;
 

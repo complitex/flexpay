@@ -3,7 +3,7 @@
 
 <s:actionerror />
 
-<s:form action="searchQuittance" method="POST">
+<s:form action="quittanceSearch" method="POST">
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>

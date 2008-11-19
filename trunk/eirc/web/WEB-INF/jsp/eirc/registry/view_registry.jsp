@@ -49,7 +49,7 @@
 						<s:set name="addressVal"
 							   value="%{streetType + ', ' + streetName + ', ' + buildingNum + ' ' + buildingBulkNum + ', ' + apartmentNum}"/>
 						<s:if test="apartment != null">
-							<a href="<s:url action="apartmentRegistrations" namespace="/dicts" includeParams="none"><s:param name="apartment.id" value="apartment.id" /></s:url>">
+							<a href="<s:url action="apartmentRegistration" namespace="/dicts" includeParams="none"><s:param name="apartment.id" value="apartment.id" /></s:url>">
 								<s:property value="addressVal"/>
 							</a>
 						</s:if>
@@ -62,7 +62,7 @@
 					<s:if test="firstName != null || middleName != null || lastName != null">
 						<s:set name="fioVal" value="%{firstName + ' ' + middleName + ' ' + lastName}" />
 					<s:if test="person != null">
-					<a href="<s:url action="view_person" namespace="/dicts"><s:param name="person.id" value="person.id" /></s:url>">
+					<a href="<s:url action="personView" namespace="/dicts"><s:param name="person.id" value="person.id" /></s:url>">
 						<s:property value="#fioVal"/>
 					</a>
 					</s:if>
@@ -87,7 +87,7 @@
 			<td colspan="12">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" value="<s:text name="eirc.process_selected" />" class="btn-exit"
-					   onclick="$('frecords').action='<s:url action="processRegistryRecords" includeParams="none"/>';"/>
+					   onclick="$('frecords').action='<s:url action="registryRecordsProcess" includeParams="none"/>';"/>
 			</td>
 		</tr>
 	</table>

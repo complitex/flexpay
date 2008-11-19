@@ -34,7 +34,7 @@
 						value="%{format(defaultIdentity.birthDate)}"/></td>
 				<td class="col">
 					<a target="_blank"
-					   href="<s:url action="view_person" namespace="/dicts" includeParams="none"><s:param name="person.id" value="%{id}"/></s:url>">
+					   href="<s:url action="personView" namespace="/dicts" includeParams="none"><s:param name="person.id" value="%{id}"/></s:url>">
 						<s:text name="common.view"/></a></td>
 			</tr>
 		</s:iterator>

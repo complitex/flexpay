@@ -168,7 +168,7 @@
 
 
 
-<s:form action="payQuittance" method="POST">
+<s:form action="quittancePay" method="POST">
   <s:hidden name="ticketId" value="%{ticketInfo.ticketNumber}" />
     <s:submit name="submitted" value="%{getText('common.view')}" cssClass="btn-exit" />
 </s:form>

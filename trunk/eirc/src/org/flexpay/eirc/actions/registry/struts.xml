@@ -6,12 +6,12 @@
 
 	<package name="registry" namespace="/eirc" extends="common">
 
-		<action name="registriesList" class="listRegistriesAction">
+		<action name="registriesList" class="registriesListAction">
 			<!-- No security interceptor for now -->
 			<result type="tiles">eirc.registry.list</result>
 		</action>
 
-		<action name="registryView" class="showRegistryAction">
+		<action name="registryView" class="registryViewAction">
 			<!-- No security interceptor for now -->
 			<result name="success" type="tiles">eirc.registry.view</result>
 			<result name="redirectError" type="redirect-action">registriesList</result>
@@ -77,14 +77,14 @@
 			<result name="complete" type="tiles">eirc.registry.record.correct_person_complete</result>
 		</action>
 
-		<action name="processRegistries" class="processRegistriesAction">
+		<action name="registriesProcess" class="registriesProcessAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_REGISTRY_PROCESS</param>
 			</interceptor-ref>
 			<result name="redirectSuccess" type="redirect-action">registriesList</result>
 		</action>
 
-		<action name="processRegistryRecords" class="processRegistryRecordsAction">
+		<action name="registryRecordsProcess" class="registryRecordsProcessAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_REGISTRY_PROCESS</param>
 			</interceptor-ref>

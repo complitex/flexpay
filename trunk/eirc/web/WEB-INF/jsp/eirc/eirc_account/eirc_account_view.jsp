@@ -12,7 +12,7 @@
 		<tr valign="middle" class="cols_1">
 			<td class="col_1s" align="right"><s:property value="%{#status.index + 1}"/></td>
 			<td class="col">
-				<a href="<s:url action="view_person" namespace="/dicts" includeParams="none"><s:param name="person.id" value="%{responsiblePerson.id}" /></s:url>">
+				<a href="<s:url action="personView" namespace="/dicts" includeParams="none"><s:param name="person.id" value="%{responsiblePerson.id}" /></s:url>">
 				<s:property value="%{responsiblePerson.defaultIdentity.lastName}"/>
 				<s:property value="%{responsiblePerson.defaultIdentity.firstName}"/>
 				<s:property value="%{responsiblePerson.defaultIdentity.middleName}"/></a>

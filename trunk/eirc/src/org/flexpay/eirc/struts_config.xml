@@ -20,7 +20,7 @@
 			<result name="input" type="tiles">eirc.import.file.upload.form</result>
 		</action>
 
-		<action name="spFileList" class="spFileListAction">
+		<action name="spFileList" class="spFilesListAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_ADD</param>
 			</interceptor-ref>

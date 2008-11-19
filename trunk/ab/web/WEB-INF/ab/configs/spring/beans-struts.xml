@@ -9,106 +9,106 @@
 	<!-- Define struts actions beans -->
 
 	<!-- Countries -->
-	<bean id="listCountriesAction" class="org.flexpay.ab.actions.CountriesList"
+	<bean id="countriesListAction" class="org.flexpay.ab.actions.CountriesListAction"
 		  scope="prototype">
 		<property name="countryService" ref="countryService" />
 	</bean>
 
-	<bean id="createCountryAction" class="org.flexpay.ab.actions.CountryCreate"
+	<bean id="countryCreateAction" class="org.flexpay.ab.actions.CountryCreateAction"
 		  scope="prototype">
 		<property name="countryService" ref="countryService" />
 	</bean>
 
 	<!-- Regions -->
-	<bean id="createRegionAction"
-		  class="org.flexpay.ab.actions.region.RegionCreate" scope="prototype">
+	<bean id="regionCreateAction"
+		  class="org.flexpay.ab.actions.region.RegionCreateAction" scope="prototype">
 		<property name="nameTimeDependentService" ref="regionService" />
 		<property name="parentService" ref="countryService" />
 	</bean>
 
-	<bean id="viewRegionAction"
-		  class="org.flexpay.ab.actions.region.RegionView" scope="prototype">
+	<bean id="regionViewAction"
+		  class="org.flexpay.ab.actions.region.RegionViewAction" scope="prototype">
 		<property name="nameTimeDependentService" ref="regionService" />
 	</bean>
 
-	<bean id="editRegionAction" class="org.flexpay.ab.actions.region.RegionEditSimple"
+	<bean id="regionEditAction" class="org.flexpay.ab.actions.region.RegionEditSimpleAction"
 		  scope="prototype">
 		<property name="nameTimeDependentService" ref="regionService" />
 	</bean>
 
-	<bean id="listRegionsAction" class="org.flexpay.ab.actions.region.RegionsList"
+	<bean id="regionsListAction" class="org.flexpay.ab.actions.region.RegionsListAction"
 		  scope="prototype">
 		<property name="nameTimeDependentService" ref="regionService" />
 		<property name="parentService" ref="countryService" />
 	</bean>
 
-	<bean id="deleteRegionsAction" class="org.flexpay.ab.actions.region.RegionsDelete"
+	<bean id="regionDeleteAction" class="org.flexpay.ab.actions.region.RegionDeleteAction"
 		  scope="prototype">
 		<property name="nameTimeDependentService" ref="regionService" />
 		<property name="parentService" ref="countryService" />
 	</bean>
 
 	<!-- Towns -->
-	<bean id="createTownAction"
-		  class="org.flexpay.ab.actions.town.TownCreate" scope="prototype">
+	<bean id="townCreateAction"
+		  class="org.flexpay.ab.actions.town.TownCreateAction" scope="prototype">
 		<property name="nameTimeDependentService" ref="townService" />
 		<property name="parentService" ref="regionService" />
 	</bean>
 
-	<bean id="viewTownAction"
-		  class="org.flexpay.ab.actions.town.TownView" scope="prototype">
+	<bean id="townViewAction"
+		  class="org.flexpay.ab.actions.town.TownViewAction" scope="prototype">
 		<property name="nameTimeDependentService" ref="townService" />
 	</bean>
 
-	<bean id="editTownAction" class="org.flexpay.ab.actions.town.TownEditSimple"
+	<bean id="townEditAction" class="org.flexpay.ab.actions.town.TownEditSimpleAction"
 		  scope="prototype">
 		<property name="nameTimeDependentService" ref="townService" />
 	</bean>
 
-	<bean id="listTownsAction" class="org.flexpay.ab.actions.town.TownsList"
+	<bean id="townsListAction" class="org.flexpay.ab.actions.town.TownsListAction"
 		  scope="prototype">
 		<property name="nameTimeDependentService" ref="townService" />
 		<property name="parentService" ref="regionService" />
 	</bean>
 
-	<bean id="deleteTownsAction" class="org.flexpay.ab.actions.town.TownsDelete"
+	<bean id="townDeleteAction" class="org.flexpay.ab.actions.town.TownDeleteAction"
 		  scope="prototype">
 		<property name="nameTimeDependentService" ref="townService" />
 		<property name="parentService" ref="regionService" />
 	</bean>
 
 	<!-- Town districts -->
-	<bean id="createDistrictAction"
-		  class="org.flexpay.ab.actions.district.DistrictCreate" scope="prototype">
+	<bean id="districtCreateAction"
+		  class="org.flexpay.ab.actions.district.DistrictCreateAction" scope="prototype">
 		<property name="nameTimeDependentService" ref="districtService" />
 		<property name="parentService" ref="townService" />
 	</bean>
 
-	<bean id="viewDistrictAction"
-		  class="org.flexpay.ab.actions.district.DistrictView" scope="prototype">
+	<bean id="districtViewAction"
+		  class="org.flexpay.ab.actions.district.DistrictViewAction" scope="prototype">
 		<property name="nameTimeDependentService" ref="districtService" />
 	</bean>
 
-	<bean id="editDistrictAction"
-		  class="org.flexpay.ab.actions.district.DistrictEditSimple" scope="prototype">
+	<bean id="districtEditAction"
+		  class="org.flexpay.ab.actions.district.DistrictEditSimpleAction" scope="prototype">
 		<property name="nameTimeDependentService" ref="districtService" />
 	</bean>
 
-	<bean id="listDistrictsAction" class="org.flexpay.ab.actions.district.DistrictsList"
+	<bean id="districtsListAction" class="org.flexpay.ab.actions.district.DistrictsListAction"
 		  scope="prototype">
 		<property name="nameTimeDependentService" ref="districtService" />
 		<property name="parentService" ref="townService" />
 	</bean>
 
-	<bean id="deleteDistrictsAction"
-		  class="org.flexpay.ab.actions.district.DistrictsDelete" scope="prototype">
+	<bean id="districtDeleteAction"
+		  class="org.flexpay.ab.actions.district.DistrictDeleteAction" scope="prototype">
 		<property name="nameTimeDependentService" ref="districtService" />
 		<property name="parentService" ref="townService" />
 	</bean>
 
 	<!-- Strees -->
-	<bean id="createStreetAction"
-		  class="org.flexpay.ab.actions.street.StreetCreate" scope="prototype"
+	<bean id="streetCreateAction"
+		  class="org.flexpay.ab.actions.street.StreetCreateAction" scope="prototype"
 		  p:streetTypeService-ref="streetTypeService"
 		  p:parentService-ref="townService"
 		  p:streetService-ref="streetService"
@@ -116,12 +116,12 @@
 		<property name="nameTimeDependentService" ref="streetService" />
 	</bean>
 
-	<bean id="viewStreetAction"
-		  class="org.flexpay.ab.actions.street.StreetView" scope="prototype">
+	<bean id="streetViewAction"
+		  class="org.flexpay.ab.actions.street.StreetViewAction" scope="prototype">
 		<property name="nameTimeDependentService" ref="streetService" />
 	</bean>
 
-	<bean id="editStreetAction" class="org.flexpay.ab.actions.street.StreetEditSimple"
+	<bean id="streetEditAction" class="org.flexpay.ab.actions.street.StreetEditSimpleAction"
 		  scope="prototype">
 		<property name="nameTimeDependentService" ref="streetService" />
 	</bean>
@@ -132,19 +132,19 @@
 		<property name="streetTypeService" ref="streetTypeService" />
 	</bean>
 
-	<bean id="editStreetDistricts"
-		  class="org.flexpay.ab.actions.street.EditStreetDistricts" scope="prototype">
+	<bean id="streetDistrictEditAction"
+		  class="org.flexpay.ab.actions.street.StreetDistrictEditAction" scope="prototype">
 		<property name="districtService" ref="districtService" />
 		<property name="streetService" ref="streetService" />
 	</bean>
 
-	<bean id="listStreetsAction" class="org.flexpay.ab.actions.street.StreetsList"
+	<bean id="streetsListAction" class="org.flexpay.ab.actions.street.StreetsListAction"
 		  scope="prototype">
 		<property name="nameTimeDependentService" ref="streetService" />
 		<property name="parentService" ref="townService" />
 	</bean>
 
-	<bean id="deleteStreetsAction" class="org.flexpay.ab.actions.street.StreetsDelete"
+	<bean id="streetDeleteAction" class="org.flexpay.ab.actions.street.StreetDeleteAction"
 		  scope="prototype">
 		<property name="nameTimeDependentService" ref="streetService" />
 		<property name="parentService" ref="townService" />
@@ -155,42 +155,46 @@
 		  p:streetService-ref="streetService" />
 
 	<!-- Buildings -->
-	<bean id="listBuildings" scope="prototype"
-		  class="org.flexpay.ab.actions.buildings.ListBuildings">
+	<bean id="buildingsListAction" scope="prototype"
+		  class="org.flexpay.ab.actions.buildings.BuildingsListAction">
 		<property name="buildingService" ref="buildingService" />
 		<property name="parentService" ref="streetService" />
 	</bean>
-	<bean id="buildingsCreateAction" scope="prototype"
-		  class="org.flexpay.ab.actions.buildings.BuildingsCreateAction">
+
+	<bean id="buildingCreateAction" scope="prototype"
+		  class="org.flexpay.ab.actions.buildings.BuildingCreateAction">
 		<property name="buildingService" ref="buildingService" />
 		<property name="parentService" ref="streetService" />
 		<property name="districtService" ref="districtService" />
 	</bean>
 
-	<bean id="buildingsEditAction" scope="prototype"
-		  class="org.flexpay.ab.actions.buildings.BuildingsEditAction"
+	<bean id="buildingEditAction" scope="prototype"
+		  class="org.flexpay.ab.actions.buildings.BuildingEditAction"
 		  p:buildingService-ref="buildingService"
 		  p:addressService-ref="addressService" />
 
-	<bean id="buildingsDeleteAction" scope="prototype"
-		  class="org.flexpay.ab.actions.buildings.BuildingsDeleteAction">
+	<bean id="buildingDeleteAction" scope="prototype"
+		  class="org.flexpay.ab.actions.buildings.BuildingDeleteAction">
 		<property name="buildingService" ref="buildingService" />
 	</bean>
-	<bean id="buildingsSetPrimaryStatusAction" scope="prototype"
-		  class="org.flexpay.ab.actions.buildings.BuildingsSetPrimaryStatusAction">
+
+	<bean id="buildingSetPrimaryStatusAction" scope="prototype"
+		  class="org.flexpay.ab.actions.buildings.BuildingSetPrimaryStatusAction">
 		<property name="buildingService" ref="buildingService" />
 	</bean>
 
 	<!-- BuildingAttributeTypes -->
-	<bean id="buildingAttributeTypeListAction" scope="prototype"
-		  class="org.flexpay.ab.actions.buildings.BuildingAttributeTypeListAction">
+	<bean id="buildingAttributeTypesListAction" scope="prototype"
+		  class="org.flexpay.ab.actions.buildings.BuildingAttributeTypesListAction">
 		<property name="buildingService" ref="buildingService" />
 	</bean>
+
 	<bean id="buildingAttributeTypeCreateAction" scope="prototype"
 		  class="org.flexpay.ab.actions.buildings.BuildingAttributeTypeCreateAction">
 		<property name="buildingService" ref="buildingService" />
 		<property name="languageService" ref="languageService" />
 	</bean>
+
 	<bean id="buildingAttributeTypeEditAction" scope="prototype"
 		  class="org.flexpay.ab.actions.buildings.BuildingAttributeTypeEditAction">
 		<property name="buildingService" ref="buildingService" />
@@ -198,8 +202,8 @@
 	</bean>
 
 	<!-- Apartments -->
-	<bean id="listApartments" scope="prototype"
-		  class="org.flexpay.ab.actions.apartment.ListApartments">
+	<bean id="apartmentsListAction" scope="prototype"
+		  class="org.flexpay.ab.actions.apartment.ApartmentsListAction">
 		<property name="apartmentService" ref="apartmentService" />
 		<property name="parentService" ref="buildingService" />
 	</bean>
@@ -211,12 +215,12 @@
 		<property name="buildingService" ref="buildingService" />
 	</bean>
 
-	<bean id="apartmentsDeleteAction" scope="prototype"
-		  class="org.flexpay.ab.actions.apartment.ApartmentsDeleteAction"
+	<bean id="apartmentDeleteAction" scope="prototype"
+		  class="org.flexpay.ab.actions.apartment.ApartmentDeleteAction"
 		  p:apartmentService-ref="apartmentService" />
 
-	<bean id="apartmentRegistrationsAction" scope="prototype"
-		  class="org.flexpay.ab.actions.apartment.ApartmentRegistrationsAction"
+	<bean id="apartmentRegistrationAction" scope="prototype"
+		  class="org.flexpay.ab.actions.apartment.ApartmentRegistrationAction"
 		  p:apartmentService-ref="apartmentService"
 		  p:buildingService-ref="buildingService"
 		  p:regionService-ref="regionService"
@@ -225,55 +229,63 @@
 		  p:streetService-ref="streetService" />
 
 	<!-- Town types -->
-	<bean id="townTypeListAction"
-		  class="org.flexpay.ab.actions.town.TownTypeListAction" scope="prototype">
+	<bean id="townTypesListAction"
+		  class="org.flexpay.ab.actions.town.TownTypesListAction" scope="prototype">
 		<property name="townTypeService" ref="townTypeService" />
 	</bean>
-	<bean id="townTypeCreteAction"
+
+	<bean id="townTypeCreateAction"
 		  class="org.flexpay.ab.actions.town.TownTypeCreateAction" scope="prototype">
 		<property name="townTypeService" ref="townTypeService" />
 	</bean>
+
 	<bean id="townTypeViewAction"
 		  class="org.flexpay.ab.actions.town.TownTypeViewAction" scope="prototype">
 		<property name="townTypeService" ref="townTypeService" />
 	</bean>
+
 	<bean id="townTypeEditAction"
 		  class="org.flexpay.ab.actions.town.TownTypeEditAction" scope="prototype">
 		<property name="townTypeService" ref="townTypeService" />
 	</bean>
+
 	<bean id="townTypeDeleteAction"
 		  class="org.flexpay.ab.actions.town.TownTypeDeleteAction" scope="prototype">
 		<property name="townTypeService" ref="townTypeService" />
 	</bean>
 
 	<!-- Street types -->
-	<bean id="streetTypeListAction"
-		  class="org.flexpay.ab.actions.street.StreetTypeListAction" scope="prototype">
+	<bean id="streetTypesListAction"
+		  class="org.flexpay.ab.actions.street.StreetTypesListAction" scope="prototype">
 		<property name="streetTypeService" ref="streetTypeService" />
 	</bean>
-	<bean id="streetTypeCreteAction"
+
+	<bean id="streetTypeCreateAction"
 		  class="org.flexpay.ab.actions.street.StreetTypeCreateAction" scope="prototype">
 		<property name="streetTypeService" ref="streetTypeService" />
 	</bean>
+
 	<bean id="streetTypeViewAction"
 		  class="org.flexpay.ab.actions.street.StreetTypeViewAction" scope="prototype">
 		<property name="streetTypeService" ref="streetTypeService" />
 	</bean>
+
 	<bean id="streetTypeEditAction"
 		  class="org.flexpay.ab.actions.street.StreetTypeEditAction" scope="prototype">
 		<property name="streetTypeService" ref="streetTypeService" />
 	</bean>
+
 	<bean id="streetTypeDeleteAction"
 		  class="org.flexpay.ab.actions.street.StreetTypeDeleteAction" scope="prototype">
 		<property name="streetTypeService" ref="streetTypeService" />
 	</bean>
 
 	<!-- Identity types -->
-	<bean id="identityTypeListAction" scope="prototype"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeListAction"
+	<bean id="identityTypesListAction" scope="prototype"
+		  class="org.flexpay.ab.actions.identity.IdentityTypesListAction"
 		  p:identityTypeService-ref="identityTypeService" />
 
-	<bean id="identityTypeCreteAction" scope="prototype"
+	<bean id="identityTypeCreateAction" scope="prototype"
 		  class="org.flexpay.ab.actions.identity.IdentityTypeCreateAction"
 		  p:identityTypeService-ref="identityTypeService" />
 
@@ -284,38 +296,42 @@
 	<bean id="identityTypeEditAction" scope="prototype"
 		  class="org.flexpay.ab.actions.identity.IdentityTypeEditAction"
 		  p:identityTypeService-ref="identityTypeService" />
+
 	<bean id="identityTypeDeleteAction" scope="prototype"
 		  class="org.flexpay.ab.actions.identity.IdentityTypeDeleteAction"
 		  p:identityTypeService-ref="identityTypeService" />
 
 	<!-- Measure units -->
-	<bean id="listMeasureUnitsAction" scope="prototype"
-		  class="org.flexpay.ab.actions.measureunit.ListMeasureUnitsAction"
+	<bean id="measureUnitsListAction" scope="prototype"
+		  class="org.flexpay.ab.actions.measureunit.MeasureUnitsListAction"
 		  p:measureUnitService-ref="measureUnitService" />
-	<bean id="editMeasureUnitAction" scope="prototype"
-		  class="org.flexpay.ab.actions.measureunit.EditMeasureUnitsAction"
+
+	<bean id="measureUnitEditAction" scope="prototype"
+		  class="org.flexpay.ab.actions.measureunit.MeasureUnitEditAction"
 		  p:measureUnitService-ref="measureUnitService" />
-	<bean id="deleteMeasureUnitsAction" scope="prototype"
-		  class="org.flexpay.ab.actions.measureunit.DeleteMeasureUnitsAction"
+
+	<bean id="measureUnitDeleteAction" scope="prototype"
+		  class="org.flexpay.ab.actions.measureunit.MeasureUnitDeleteAction"
 		  p:measureUnitService-ref="measureUnitService" />
 
 	<!-- Persons -->
-	<bean id="listPersons" scope="prototype"
-		  class="org.flexpay.ab.actions.person.ListPersons"
+	<bean id="personsListAction" scope="prototype"
+		  class="org.flexpay.ab.actions.person.PersonsListAction"
 		  p:personService-ref="personService" />
-	<bean id="viewPerson" scope="prototype"
-		  class="org.flexpay.ab.actions.person.ViewPerson"
+
+	<bean id="personViewAction" scope="prototype"
+		  class="org.flexpay.ab.actions.person.PersonViewAction"
 		  p:personService-ref="personService"
 		  p:apartmentService-ref="apartmentService" />
 
-	<bean id="editPersonAction" scope="prototype"
-		  class="org.flexpay.ab.actions.person.EditPersonAction"
+	<bean id="personEditAction" scope="prototype"
+		  class="org.flexpay.ab.actions.person.PersonEditAction"
 		  p:parentService-ref="apartmentService"
 		  p:personService-ref="personService"
 		  p:apartmentService-ref="apartmentService"
 		  p:setRegistrationAction-ref="setRegistrationAction" />
 
-	<bean id="savePersonFIOAction" scope="prototype" class="org.flexpay.ab.actions.person.SavePersonFIOAction"
+	<bean id="personSaveFIOAction" scope="prototype" class="org.flexpay.ab.actions.person.PersonSaveFIOAction"
 		  p:personService-ref="personService"
 		  p:identityTypeService-ref="identityTypeService" />
 

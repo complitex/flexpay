@@ -35,7 +35,7 @@
 			<td colspan="10">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="subdivisionsDelete" includeParams="none"/>';"/>
+					   onclick="$('fobjects').action='<s:url action="subdivisionDelete" includeParams="none"/>';"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="subdivisionEdit" includeParams="none"><s:param name="headOrganisation.id" value="%{organisation.id}"/><s:param name="subdivision.id" value="0"/></s:url>'"
 					   value="<s:text name="common.new"/>"/>

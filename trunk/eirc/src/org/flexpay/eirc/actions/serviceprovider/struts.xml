@@ -7,21 +7,21 @@
 	<package name="eirc-service-providers" namespace="/eirc" extends="common">
 
 		<!-- Service Providers -->
-		<action name="serviceProvidersList" class="listServiceProvidersAction">
+		<action name="serviceProvidersList" class="serviceProvidersListAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_PROVIDER_READ</param>
 			</interceptor-ref>
 			<result type="tiles">eirc.service_providers.list</result>
 		</action>
 
-		<action name="serviceProvidersDelete" class="deleteServiceProvidersAction">
+		<action name="serviceProviderDelete" class="serviceProviderDeleteAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_PROVIDER_DELETE</param>
 			</interceptor-ref>
 			<result type="redirect-action">serviceProvidersList</result>
 		</action>
 
-		<action name="serviceProviderEdit" class="editServiceProviderAction">
+		<action name="serviceProviderEdit" class="serviceProviderEditAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_PROVIDER_CHANGE</param>
 			</interceptor-ref>

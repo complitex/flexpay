@@ -10,7 +10,7 @@
 		  p:spFileService-ref="registryFileService"
 		  scope="prototype" />
 
-	<bean id="spFileListAction" class="org.flexpay.eirc.actions.SpFileListAction"
+	<bean id="spFilesListAction" class="org.flexpay.eirc.actions.SpFilesListAction"
 		  scope="prototype">
 		<property name="spFileService" ref="registryFileService" />
 	</bean>
@@ -25,15 +25,14 @@
 		<property name="buildingService" ref="buildingService" />
 	</bean>
 
-
-	<bean id="generateQuittancesAction"
-		  class="org.flexpay.eirc.actions.quittance.GenerateQuitancesAction"
+	<bean id="quittanceGenerateAction"
+		  class="org.flexpay.eirc.actions.quittance.QuittanceGenerateAction"
 		  scope="prototype"
 		  p:serviceOrganisationService-ref="serviceOrganisationService"
 		  p:processManager-ref="processManager" />
 
 	<bean id="printTicketsAction"
-		  class="org.flexpay.eirc.actions.quittance.GenerateQuitancePDFAction"
+		  class="org.flexpay.eirc.actions.quittance.QuittanceGeneratePDFAction"
 		  scope="prototype"
 		  p:processManager-ref="processManager"
 		  p:serviceOrganisationService-ref="serviceOrganisationService" />
@@ -51,117 +50,115 @@
 		  class="org.flexpay.eirc.actions.quittance.QuittancePayAction"
 		  scope="prototype" />
 
-	<bean id="listRegistriesAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.ListRegistriesAction">
+	<bean id="registriesListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.registry.RegistriesListAction">
 		<property name="registryService" ref="registryService" />
 		<property name="organisationService" ref="organisationService" />
 		<property name="registryTypeService" ref="registryTypeService" />
 	</bean>
 
-	<bean id="processRegistriesAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.ProcessRegistriesAction"
+	<bean id="registriesProcessAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.registry.RegistriesProcessAction"
 		  p:processManager-ref="processManager" />
 
-	<bean id="processRegistryRecordsAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.ProcessRegistryRecordsAction"
+	<bean id="registryRecordsProcessAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.registry.RegistryRecordsProcessAction"
 		  p:processManager-ref="processManager" />
 
-	<bean id="showRegistryAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.ShowRegistryAction">
+	<bean id="registryViewAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.registry.RegistryViewAction">
 		<property name="registryService" ref="registryService" />
 		<property name="registryRecordService" ref="registryRecordService" />
 		<property name="classToTypeRegistry" ref="typeRegistryEirc" />
 		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
-	<bean id="listOrganisationsAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.ListOrganisationsAction"
+	<bean id="organisationsListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.OrganisationsListAction"
 		  p:organisationService-ref="organisationService" />
 
-	<bean id="deleteOrganisationsAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.DeleteOrganisationsAction"
+	<bean id="organisationDeleteAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.OrganisationDeleteAction"
 		  p:organisationService-ref="organisationService" />
 
-	<bean id="editOrganisationAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.EditOrganisationAction"
+	<bean id="organisationEditAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.OrganisationEditAction"
 		  p:organisationService-ref="organisationService" />
 
 	<!-- Bank actions -->
-	<bean id="listBanksAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.ListBanksAction"
+	<bean id="banksListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.BanksListAction"
 		  p:bankService-ref="bankService" />
 
-	<bean id="deleteBanksAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.DeleteBanksAction"
+	<bean id="bankDeleteAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.BankDeleteAction"
 		  p:bankService-ref="bankService" />
 
-	<bean id="editBankAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.EditBankAction"
+	<bean id="bankEditAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.BankEditAction"
 		  p:organisationService-ref="organisationService"
 		  p:bankService-ref="bankService" />
 
 	<!-- Subdivision actions -->
-	<bean id="listSubdivisionsAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.ListSubdivisionsAction"
+	<bean id="subdivisionsListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.SubdivisionsListAction"
 		  p:organisationService-ref="organisationService"
 		  p:subdivisionService-ref="subdivisionService" />
 
-	<bean id="deleteSubdivisionsAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.DeleteSubdivisionsAction"
+	<bean id="subdivisionDeleteAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.SubdivisionDeleteAction"
 		  p:subdivisionService-ref="subdivisionService" />
 
-	<bean id="editSubdivisionAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.EditSubdivisionAction"
+	<bean id="subdivisionEditAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organisation.SubdivisionEditAction"
 		  p:organisationService-ref="organisationService"
 		  p:subdivisionService-ref="subdivisionService" />
 
 	<!-- Service provider actions -->
-	<bean id="listServiceProvidersAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.serviceprovider.ListServiceProvidersAction"
+	<bean id="serviceProvidersListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.serviceprovider.ServiceProvidersListAction"
 		  p:spService-ref="spService" />
 
-	<bean id="deleteServiceProvidersAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.serviceprovider.DeleteServiceProvidersAction"
+	<bean id="serviceProviderDeleteAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.serviceprovider.ServiceProviderDeleteAction"
 		  p:spService-ref="spService" />
 
-	<bean id="editServiceProviderAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.serviceprovider.EditServiceProviderAction"
+	<bean id="serviceProviderEditAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.serviceprovider.ServiceProviderEditAction"
 		  p:organisationService-ref="organisationService"
 		  p:spService-ref="spService" />
 
-
 	<!-- Services -->
-	<bean id="listServiceTypesAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.service.ListServiceTypesAction"
+	<bean id="serviceTypesListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.service.ServiceTypesListAction"
 		  p:serviceTypeService-ref="serviceTypeService" />
 
-	<bean id="deleteServiceTypesAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.service.DeleteServiceTypesAction"
+	<bean id="serviceTypeDeleteAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.service.ServiceTypeDeleteAction"
 		  p:serviceTypeService-ref="serviceTypeService" />
 
-	<bean id="editServiceTypeAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.service.EditServiceTypeAction"
+	<bean id="serviceTypeEditAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.service.ServiceTypeEditAction"
 		  p:serviceTypeService-ref="serviceTypeService" />
 
-	<bean id="listServicesAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.service.ListServicesAction"
+	<bean id="servicesListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.service.ServicesListAction"
 		  p:spService-ref="spService" />
 
-	<bean id="editServiceAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.service.EditServiceAction"
+	<bean id="serviceEditAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.service.ServiceEditAction"
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:measureUnitService-ref="measureUnitService"
 		  p:spService-ref="spService" />
 
-
 	<!-- Corrections -->
 	<bean id="selectCorrectionTypeAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.corrections.SelectTypeAction">
+		  class="org.flexpay.eirc.actions.registry.corrections.SelectCorrectionTypeAction">
 		<property name="registryRecordService" ref="registryRecordService" />
 		<property name="typeRegistry" ref="typeRegistryEirc" />
 	</bean>
 
-	<bean id="correctRecordAddressAction" scope="prototype" parent="listApartments"
+	<bean id="correctRecordAddressAction" scope="prototype" parent="apartmentsListAction"
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectAddressAction">
 		<property name="consumersDataSource" ref="consumersDataSource" />
 		<property name="correctionsService" ref="correctionsServiceEirc" />
@@ -170,7 +167,7 @@
 		<property name="typeRegistry" ref="typeRegistryEirc" />
 	</bean>
 
-	<bean id="correctBuildingAddressAction" scope="prototype" parent="listBuildings"
+	<bean id="correctBuildingAddressAction" scope="prototype" parent="buildingsListAction"
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectBuildingAction">
 		<property name="consumersDataSource" ref="consumersDataSource" />
 		<property name="correctionsService" ref="correctionsServiceEirc" />
@@ -178,7 +175,7 @@
 		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
-	<bean id="correctStreetAddressAction" scope="prototype" parent="listStreetsAction"
+	<bean id="correctStreetAddressAction" scope="prototype" parent="streetsListAction"
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectStreetAction">
 		<property name="consumersDataSource" ref="consumersDataSource" />
 		<property name="correctionsService" ref="correctionsServiceEirc" />
@@ -186,27 +183,27 @@
 		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
-	<bean id="correctPersonAction" scope="prototype" parent="listPersons"
+	<bean id="correctPersonAction" scope="prototype" parent="personsListAction"
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectPersonAction">
 		<property name="consumersDataSource" ref="consumersDataSource" />
 		<property name="correctionsService" ref="correctionsServiceEirc" />
 		<property name="recordService" ref="registryRecordService" />
 	</bean>
 
-	<bean id="processListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.processing.ProcessListAction"
+	<bean id="processesListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.processing.ProcessesListAction"
 		  p:processManager-ref="processManager" />
 
 	<bean id="processViewAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.processing.ProcessViewAction"
 		  p:processManager-ref="processManager" />
 
-	<bean id="deployProcessDefinitionAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.processing.DeployProcessDefinitionAction"
+	<bean id="processDefinitionDeployAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.processing.ProcessDefinitionDeployAction"
 		  p:processManager-ref="processManager" />
 
-	<bean id="eircAccountListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.eirc_account.EircAccountListAction"
+	<bean id="eircAccountsListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.eirc_account.EircAccountsListAction"
 		  p:eircAccountService-ref="eircAccountService"
 		  p:personService-ref="personService"
 		  p:parentService-ref="apartmentService"
@@ -222,10 +219,12 @@
 		<property name="parentService" ref="buildingService" />
 		<property name="apartmentService" ref="apartmentService" />
 	</bean>
+
 	<bean id="eircAccountCreateForm2Action" scope="prototype"
 		  class="org.flexpay.eirc.actions.eirc_account.EircAccountCreateForm2Action">
 		<property name="personService" ref="personService" />
 	</bean>
+
 	<bean id="eircAccountCreateAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.eirc_account.EircAccountCreateAction">
 		<property name="eircAccountService" ref="eircAccountService" />

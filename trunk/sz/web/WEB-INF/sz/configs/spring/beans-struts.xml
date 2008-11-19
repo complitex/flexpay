@@ -14,15 +14,18 @@
 		<property name="szFileActualityStatusService"
 				  ref="szFileActualityStatusService" />
 	</bean>
-	<bean id="importFileListAction" class="org.flexpay.sz.actions.ImportFileListAction"
+
+    <bean id="importFilesListAction" class="org.flexpay.sz.actions.ImportFilesListAction"
 		  scope="prototype">
 		<property name="szFileService" ref="szFileService" />
 	</bean>
-	<bean id="loadSzFileToDbAction" class="org.flexpay.sz.actions.LoadToDbAction"
+
+	<bean id="loadSzFileToDBAction" class="org.flexpay.sz.actions.LoadToDBAction"
 		  scope="prototype">
 		<property name="szFileService" ref="szFileService" />
 	</bean>
-	<bean id="loadSzFileFromDbAction" class="org.flexpay.sz.actions.LoadFromDbAction"
+
+	<bean id="loadSzFileFromDBAction" class="org.flexpay.sz.actions.LoadFromDBAction"
 		  scope="prototype">
 		<property name="szFileService" ref="szFileService" />
 	</bean>

@@ -21,7 +21,7 @@ public class RegistryProcessJob extends Job {
 
 		try {
 			Collection<SpRegistry> registries = registryService.findObjects(objectIds);
-			registryProcessor.processRegistries(registries);
+			registryProcessor.registriesProcess(registries);
 		} catch (Exception e) {
 			log.warn("Processing exception", e);
 			return RESULT_ERROR;

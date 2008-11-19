@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<s:form action="edit_person_fio" method="post">
+	<s:form action="personEditFIO" method="post">
 
 		<s:set name="fio" value="%{FIOIdentity}"/>
 		<tr class="cols_1">

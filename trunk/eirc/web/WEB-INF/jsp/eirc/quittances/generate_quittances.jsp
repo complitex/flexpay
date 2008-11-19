@@ -4,7 +4,7 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
-	<s:form action="generateQuittances" method="POST">
+	<s:form action="quittanceGenerate" method="POST">
 
 		<tr valign="middle" class="cols_1">
 			<td class="col">

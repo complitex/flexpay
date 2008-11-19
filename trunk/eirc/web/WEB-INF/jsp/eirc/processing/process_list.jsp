@@ -22,7 +22,7 @@
 			<td class="col" width="1%"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>" /></td>
 			<td class="col"><s:property value="id" /></td>
 			<td class="col">
-				<a href="<s:url action="processViewAction"><s:param name="process.id" value="%{id}" /></s:url>">
+				<a href="<s:url action="processView"><s:param name="process.id" value="%{id}" /></s:url>">
 					<s:property value="processDefinitionName" />
 				</a>
 			</td>

@@ -2,23 +2,24 @@
 <!DOCTYPE struts PUBLIC
 		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
 <struts>
 
 	<package name="buildings" namespace="/dicts" extends="common">
 
-		<action name="list_buildings" class="listBuildings">
+		<action name="buildingsList" class="buildingsListAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">BUILDING_READ</param>
 			</interceptor-ref>
 			<result type="tiles">ab.building.list</result>
 		</action>
 
-		<action name="buildingsCreate" class="buildingsCreateAction">
+		<action name="buildingsCreate" class="buildingCreateAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">BUILDING_ADD</param>
 			</interceptor-ref>
 			<result name="input" type="tiles">ab.buildings.create</result>
-			<result name="redirectSuccess" type="redirect-action">list_buildings</result>
+			<result name="redirectSuccess" type="redirect-action">buildingsList</result>
 			<result name="edit" type="redirect-action">
 				<param name="actionName">buildingsEdit</param>
 				<param name="parse">true</param>
@@ -26,19 +27,19 @@
 			</result>
 		</action>
 
-		<action name="buildingsEdit" class="buildingsEditAction">
+		<action name="buildingsEdit" class="buildingEditAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">BUILDING_CHANGE</param>
 			</interceptor-ref>
 			<result name="input" type="tiles">ab.buildings.edit</result>
-			<result name="redirectSuccess" type="redirect-action">list_buildings</result>
+			<result name="redirectSuccess" type="redirect-action">buildingsList</result>
 		</action>
 
-		<action name="buildingsDelete" class="buildingsDeleteAction">
+		<action name="buildingsDelete" class="buildingDeleteAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">BUILDING_DELETE</param>
 			</interceptor-ref>
-			<result name="redirectSuccess" type="redirect-action">list_buildings</result>
+			<result name="redirectSuccess" type="redirect-action">buildingsList</result>
 			<result name="redirectInput" type="redirect-action">
 				<param name="actionName">buildingsEdit</param>
 				<param name="parse">true</param>
@@ -46,7 +47,7 @@
 			</result>
 		</action>
 
-		<action name="buildingsSetPrimaryStatus" class="buildingsSetPrimaryStatusAction">
+		<action name="buildingsSetPrimaryStatus" class="buildingSetPrimaryStatusAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">BUILDING_CHANGE</param>
 			</interceptor-ref>
@@ -57,7 +58,7 @@
 			</result>
 		</action>
 
-		<action name="buildingAttributeTypeList" class="buildingAttributeTypeListAction">
+		<action name="buildingAttributeTypesList" class="buildingAttributeTypesListAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">BUILDING_ATTRIBUTE_TYPE_READ</param>
 			</interceptor-ref>
@@ -69,7 +70,7 @@
 				<param name="flexpayRoles.allowedRoles">BUILDING_ATTRIBUTE_TYPE_ADD</param>
 			</interceptor-ref>
 			<result name="input" type="tiles">ab.buildings.attribute_types.create</result>
-			<result name="redirectSuccess" type="redirect-action">buildingAttributeTypeList</result>
+			<result name="redirectSuccess" type="redirect-action">buildingAttributeTypesList</result>
 		</action>
 
 		<action name="buildingAttributeTypeEdit" class="buildingAttributeTypeEditAction">
@@ -77,7 +78,7 @@
 				<param name="flexpayRoles.allowedRoles">BUILDING_ATTRIBUTE_TYPE_CHANGE</param>
 			</interceptor-ref>
 			<result name="input" type="tiles">ab.buildings.attribute_types.edit</result>
-			<result name="redirectSuccess" type="redirect-action">buildingAttributeTypeList</result>
+			<result name="redirectSuccess" type="redirect-action">buildingAttributeTypesList</result>
 		</action>
 
 	</package>

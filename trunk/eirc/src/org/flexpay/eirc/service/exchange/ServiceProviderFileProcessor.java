@@ -72,7 +72,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 			log.info("File does not have any registries");
 		}
 
-		processRegistries(registries);
+		registriesProcess(registries);
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	 * @throws Exception				 if failure occurs
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	public void processRegistries(@NotNull Collection<SpRegistry> registries) throws Exception {
+	public void registriesProcess(@NotNull Collection<SpRegistry> registries) throws Exception {
 
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 		for (SpRegistry registry : registries) {

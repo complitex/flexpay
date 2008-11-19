@@ -2,7 +2,7 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
-	<s:form action="edit_person" method="post">
+	<s:form action="personEdit" method="post">
 
 		<s:iterator value="identities" status="status">
 			<s:set name="pi" value="%{value}" />

@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="fobjects" method="post" action="<s:url value="/dicts/list_apartments.action" includeParams="none" />">
+	<form id="fobjects" method="post" action="<s:url value="/dicts/apartmentsList.action" includeParams="none" />">
 
 		<tr>
 			<td colspan="4">
@@ -38,7 +38,7 @@
 					<input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
 				</td>
 				<td class="col">
-					<a href="<s:url action='apartmentRegistrations'><s:param name="apartment.id" value="%{id}"/><s:param name="buildings.id" value="%{buildingsFilter.selectedId}"/></s:url>">
+					<a href="<s:url action='apartmentRegistration'><s:param name="apartment.id" value="%{id}"/><s:param name="buildings.id" value="%{buildingsFilter.selectedId}"/></s:url>">
 						<s:property value="%{number}"/>
 					</a>
 				</td>
