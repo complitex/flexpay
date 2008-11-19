@@ -2,7 +2,7 @@
 
 <s:actionerror />
 
-<s:form id="fobjects" action="listMeasureUnits" namespace="/dicts">
+<s:form id="fobjects" action="measureUnitsList" namespace="/dicts">
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
@@ -21,7 +21,7 @@
 					<s:property value="getTranslation(unitNames).name" />
 				</td>
 				<td class="col">
-					<a href="<s:url action='editMeasureUnit'><s:param name="measureUnit.id" value="%{id}"/></s:url>">
+					<a href="<s:url action='measureUnitEdit'><s:param name="measureUnit.id" value="%{id}"/></s:url>">
 						<s:text name="ab.edit" />
 					</a>
 				</td>
@@ -32,10 +32,10 @@
 			<td colspan="4">
 
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="deleteMeasureUnits"/>';"
+					   onclick="$('fobjects').action='<s:url action="measureUnitDelete"/>';"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action='editMeasureUnit'><s:param name="measureUnit.id" value="0" /></s:url>';"
+					   onclick="window.location='<s:url action='measureUnitEdit'><s:param name="measureUnit.id" value="0" /></s:url>';"
 					   value="<s:text name="common.new"/>" />
 			</td>
 		</tr>

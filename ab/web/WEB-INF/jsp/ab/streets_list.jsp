@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <form id="fobjects" method="post"
-	  action="<s:url value="/dicts/list_streets.action" includeParams="none" />">
+	  action="<s:url value="/dicts/streetsList.action" includeParams="none" />">
 	<%@ include file="filters/groups/country_region_town_streetname.jsp" %>
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
@@ -11,10 +11,10 @@
 			<td colspan="5">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="delete_streets"/>';$('fobjects').submit()"
+					   onclick="$('fobjects').action='<s:url action="streetDelete"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="create_street"/>'"
+					   onclick="window.location='<s:url action="streetCreate"/>'"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
@@ -42,13 +42,13 @@
 							value="%{getTranslation(getCurrentType().translations).name}"/>
 				</td>
 				<td class="col">
-					<a href="<s:url value="/dicts/list_buildings.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{regionFilter.selectedId}&townFilter.selectedId=%{townFilter.selectedId}&streetNameFilter.selectedId=%{id}"/>">
+					<a href="<s:url value="/dicts/buildingsList.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{regionFilter.selectedId}&townFilter.selectedId=%{townFilter.selectedId}&streetNameFilter.selectedId=%{id}"/>">
 						<s:property
 								value="%{getTranslation(getCurrentName().translations).name}"/>
 					</a>
 				</td>
 				<td class="col">
-					<a href="<s:url value="/dicts/view_street.action?object.id=%{id}"/>">
+					<a href="<s:url value="/dicts/streetView.action?object.id=%{id}"/>">
 						<s:text name="common.view"/>
 					</a>
 				</td>
@@ -58,10 +58,10 @@
 			<td colspan="5">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="delete_streets"/>';$('fobjects').submit()"
+					   onclick="$('fobjects').action='<s:url action="streetDelete"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="create_street"/>'"
+					   onclick="window.location='<s:url action="streetCreate"/>'"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

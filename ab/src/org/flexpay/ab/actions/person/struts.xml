@@ -2,50 +2,51 @@
 <!DOCTYPE struts PUBLIC
 		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
 <struts>
 
 	<package name="persons" namespace="/dicts" extends="common">
 
-		<action name="list_persons" class="listPersons">
+		<action name="personsList" class="personsListAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">PERSON_READ</param>
 			</interceptor-ref>
 			<result type="tiles">ab.person.list</result>
 		</action>
 
-		<action name="view_person" class="viewPerson">
+		<action name="personView" class="personViewAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">PERSON_READ</param>
 			</interceptor-ref>
 			<result type="tiles">ab.person.view</result>
 		</action>
 
-		<action name="edit_person" class="editPersonAction">
+		<action name="personEdit" class="personEditAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">PERSON_CHANGE</param>
 			</interceptor-ref>
 			<result name="input" type="tiles">ab.person.edit</result>
 			<result type="redirect-action">
-				<param name="actionName">view_person</param>
+				<param name="actionName">personView</param>
 				<param name="parse">true</param>
 				<param name="person.id">${person.id}</param>
 			</result>
 			<result name="redirectError" type="redirect-action">
-				<param name="actionName">list_persons</param>
+				<param name="actionName">personsList</param>
 			</result>
 		</action>
 
-		<action name="edit_person_fio" class="savePersonFIOAction">
+		<action name="personEditFIO" class="personSaveFIOAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">PERSON_CHANGE</param>
 			</interceptor-ref>
 			<result name="redirectError" type="redirect-action">
-				<param name="actionName">edit_person</param>
+				<param name="actionName">personEdit</param>
 				<param name="parse">true</param>
 				<param name="person.id">${person.id}</param>
 			</result>
 			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">edit_person</param>
+				<param name="actionName">personEdit</param>
 				<param name="parse">true</param>
 				<param name="person.id">${person.id}</param>
 			</result>
@@ -56,7 +57,7 @@
 				<param name="flexpayRoles.allowedRoles">PERSON_CHANGE</param>
 			</interceptor-ref>
 			<result name="redirectError" type="redirect-action">
-				<param name="actionName">edit_person</param>
+				<param name="actionName">personEdit</param>
 				<param name="parse">true</param>
 				<param name="person.id">${person.id}</param>
 				<param name="countryFilter.selectedId">${countryFilter.selectedId}</param>
@@ -67,7 +68,7 @@
 				<param name="apartmentFilter.selectedId">${apartmentFilter.selectedId}</param>
 			</result>
 			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">edit_person</param>
+				<param name="actionName">personEdit</param>
 				<param name="parse">true</param>
 				<param name="person.id">${person.id}</param>
 			</result>

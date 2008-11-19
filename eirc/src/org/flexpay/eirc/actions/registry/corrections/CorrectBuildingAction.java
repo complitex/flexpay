@@ -1,6 +1,6 @@
 package org.flexpay.eirc.actions.registry.corrections;
 
-import org.flexpay.ab.actions.buildings.ListBuildings;
+import org.flexpay.ab.actions.buildings.BuildingsListAction;
 import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataCorrection;
@@ -15,7 +15,7 @@ import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.jetbrains.annotations.NotNull;
 
-public class CorrectBuildingAction extends ListBuildings {
+public class CorrectBuildingAction extends BuildingsListAction {
 
 	private String setupType;
 	private Buildings object = new Buildings();

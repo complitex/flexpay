@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<s:form action="create_street" method="post">
+	<s:form action="streetCreate" method="post">
 
 		<tr>
 			<td colspan="3">

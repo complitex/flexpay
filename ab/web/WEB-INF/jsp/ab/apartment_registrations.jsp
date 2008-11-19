@@ -26,7 +26,7 @@
 		<tr valign="middle" class="cols_1">
 			<td class="col_1s" align="right"><s:property value="%{#status.index + 1}"/></td>
 			<td class="col">
-				<a href="<s:url action='view_person'><s:param name="person.id" value="%{person.id}" /></s:url>">
+				<a href="<s:url action='personView'><s:param name="person.id" value="%{person.id}" /></s:url>">
 					<s:property value="person.defaultIdentity.lastName"/>
 					<s:property value="person.defaultIdentity.firstName"/>
 					<s:property value="person.defaultIdentity.middleName"/>

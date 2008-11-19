@@ -54,7 +54,7 @@
 			<td colspan="10">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" value="<s:text name="eirc.process" />" class="btn-exit"
-					   onclick="$('fregistries').action='<s:url action="processRegistries"/>';"/>
+					   onclick="$('fregistries').action='<s:url action="registriesProcess"/>';"/>
 			</td>
 		</tr>
 	</table>

@@ -38,7 +38,7 @@
 				<td class="col">
 					<s:if test="#{#rowstatus.index > index}">
 						<s:set name="index" value="#rowstatus.index" />
-						<a href="<s:url action='edit_street'><s:param name="temporalId" value="%{temporalId}"/></s:url>">
+						<a href="<s:url action='streetEdit'><s:param name="temporalId" value="%{temporalId}"/></s:url>">
 							<s:text name="ab.edit"/>
 						</a>
 					</s:if>
@@ -82,7 +82,7 @@
 				<td class="col">
 					<s:if test="#{#rowstatus.index > index}">
 						<s:set name="index" value="#rowstatus.index" />
-						<a href="<s:url action='edit_street_type'><s:param name="temporal.id" value="%{temporalId}"/></s:url>">
+						<a href="<s:url action='editStreetType'><s:param name="temporal.id" value="%{temporalId}"/></s:url>">
 							<s:text name="ab.edit"/>
 						</a>
 					</s:if>
@@ -112,13 +112,13 @@
 	<tr>
 		<td colspan="6">
 			<input type="button" class="btn-exit" title="<s:text name="ab.street.add_street_name"/>"
-				   onclick="window.location='<s:url action='edit_street'><s:param name="temporalId" value="0"/></s:url>';"
+				   onclick="window.location='<s:url action='streetEdit'><s:param name="temporalId" value="0"/></s:url>';"
 				   value="<s:text name="ab.street.add_street_name"/>"/>
 			<input type="button" class="btn-exit" title="<s:text name="ab.street.add_street_type"/>"
-				   onclick="window.location='<s:url action='edit_street_type'><s:param name="temporal.id" value="0"/></s:url>';"
+				   onclick="window.location='<s:url action='editStreetType'><s:param name="temporal.id" value="0"/></s:url>';"
 				   value="<s:text name="ab.street.add_street_type"/>"/>
 			<input type="button" class="btn-exit" title="<s:text name="ab.street.manage.districts"/>"
-				   onclick="window.location='<s:url action='edit_street_districts'><s:param name="street.id" value="%{object.id}"/></s:url>';"
+				   onclick="window.location='<s:url action='streetDistrictEdit'><s:param name="street.id" value="%{object.id}"/></s:url>';"
 				   value="<s:text name="ab.street.manage.districts"/>"/>
 		</td>
 	</tr>

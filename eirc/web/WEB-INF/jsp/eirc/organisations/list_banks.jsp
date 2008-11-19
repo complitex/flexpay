@@ -35,7 +35,7 @@
 			<td colspan="10">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit"
-					   onclick="$('fbanks').action='<s:url action="banksDelete"/>';"/>
+					   onclick="$('fbanks').action='<s:url action="bankDelete"/>';"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="bankEdit"><s:param name="bank.id" value="0"/></s:url>'"
 					   value="<s:text name="common.new"/>"/>

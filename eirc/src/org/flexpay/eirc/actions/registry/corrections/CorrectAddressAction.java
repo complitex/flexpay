@@ -1,7 +1,7 @@
 package org.flexpay.eirc.actions.registry.corrections;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.actions.apartment.ListApartments;
+import org.flexpay.ab.actions.apartment.ApartmentsListAction;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.persistence.Street;
@@ -21,7 +21,7 @@ import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.jetbrains.annotations.NotNull;
 
-public class CorrectAddressAction extends ListApartments {
+public class CorrectAddressAction extends ApartmentsListAction {
 
 	private String setupType;
 	private Apartment object = new Apartment();

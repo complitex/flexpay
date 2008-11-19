@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<a href="<s:url action="edit_person"><s:param name="person.id" value="person.id" /></s:url>"><s:text name="common.edit" /></a>
+<a href="<s:url action="personEdit"><s:param name="person.id" value="person.id" /></s:url>"><s:text name="common.edit" /></a>
 <br />
 
 <%@include file="person_view_fio.jsp" %>

@@ -6,7 +6,7 @@ import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 import org.jetbrains.annotations.NotNull;
 
-public class LoadToDbAction extends FPActionSupport {
+public class LoadToDBAction extends FPActionSupport {
 
 	private Long szFileId;
 	private String action;

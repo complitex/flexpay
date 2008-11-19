@@ -26,7 +26,7 @@ public class TestBuildingsActionsBase extends SpringBeanAwareTestCase {
 	}
 
 	@Autowired
-	public void setBase(@Qualifier ("listApartments") BuildingsActionsBase base) {
+	public void setBase(@Qualifier ("apartmentsListAction") BuildingsActionsBase base) {
 		this.base = base;
 	}
 

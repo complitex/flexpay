@@ -39,7 +39,7 @@
 							value="%{getTranslation(getCurrentType().translations).name}"/>
 				</td>
 				<td class="col">
-					<a href="<s:url value="/dicts/list_streets.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{regionFilter.selectedId}&townFilter.selectedId=%{id}"/>">
+					<a href="<s:url value="/dicts/streetsList.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{regionFilter.selectedId}&townFilter.selectedId=%{id}"/>">
 						<s:property value="%{getTranslation(getCurrentName().translations).name}"/>
 					</a>
 				</td>

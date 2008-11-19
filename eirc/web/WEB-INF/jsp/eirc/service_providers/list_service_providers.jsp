@@ -28,7 +28,7 @@
 			<td colspan="10">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit"
-					   onclick="$('fproviders').action='<s:url action="serviceProvidersDelete"/>';"/>
+					   onclick="$('fproviders').action='<s:url action="serviceProviderDelete"/>';"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="serviceProviderEdit"><s:param name="provider.id" value="0"/></s:url>'"
 					   value="<s:text name="common.new"/>"/>

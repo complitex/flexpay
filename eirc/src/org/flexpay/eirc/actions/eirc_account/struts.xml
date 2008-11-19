@@ -7,7 +7,7 @@
 	<package name="eirc_account" namespace="/eirc" extends="common">
 
 		<!-- Eirc account -->
-		<action name="eircAccountList" class="eircAccountListAction">
+		<action name="eircAccountsList" class="eircAccountsListAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_ACCOUNT_READ</param>
 			</interceptor-ref>
@@ -19,7 +19,7 @@
 				<param name="flexpayRoles.allowedRoles">EIRC_ACCOUNT_READ</param>
 			</interceptor-ref>
 			<result name="success" type="tiles">eirc.eirc_account.view</result>
-			<result name="redirectError" type="redirect-action">eircAccountList</result>
+			<result name="redirectError" type="redirect-action">eircAccountsList</result>
 		</action>
 
 		<action name="eircAccountCreateForm1" class="eircAccountCreateForm1Action">

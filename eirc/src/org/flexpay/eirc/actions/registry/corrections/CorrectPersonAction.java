@@ -1,6 +1,6 @@
 package org.flexpay.eirc.actions.registry.corrections;
 
-import org.flexpay.ab.actions.person.ListPersons;
+import org.flexpay.ab.actions.person.PersonsListAction;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
@@ -11,7 +11,7 @@ import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.jetbrains.annotations.NotNull;
 
-public class CorrectPersonAction extends ListPersons {
+public class CorrectPersonAction extends PersonsListAction {
 
 	private String setupType;
 	private Person object = new Person();

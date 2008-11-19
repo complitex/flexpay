@@ -1,6 +1,6 @@
 package org.flexpay.eirc.actions.registry.corrections;
 
-import org.flexpay.ab.actions.street.StreetsList;
+import org.flexpay.ab.actions.street.StreetsListAction;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataCorrection;
@@ -15,7 +15,7 @@ import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.jetbrains.annotations.NotNull;
 
-public class CorrectStreetAction extends StreetsList {
+public class CorrectStreetAction extends StreetsListAction {
 
 	private String setupType;
 	private Street object = new Street();

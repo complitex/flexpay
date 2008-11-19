@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <form id="fobjects" method="post"
-	  action="<s:url action="list_persons" includeParams="none" />">
+	  action="<s:url action="personsList" includeParams="none" />">
 
 	<%@ include file="filters/groups/person_search.jsp" %>
 
@@ -32,7 +32,7 @@
 				<td class="col"><s:property
 						value="%{format(defaultIdentity.birthDate)}"/></td>
 				<td class="col">
-					<a href="<s:url action="view_person"><s:param name="person.id" value="%{id}"/></s:url>">
+					<a href="<s:url action="personView"><s:param name="person.id" value="%{id}"/></s:url>">
 						<s:text name="common.view"/></a></td>
 			</tr>
 		</s:iterator>
@@ -44,7 +44,7 @@
 					   onclick="alert('<s:text name="error.not_implemented" />')"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="edit_person"><s:param name="person.id" value="0"/></s:url>'"
+					   onclick="window.location='<s:url action="personEdit"><s:param name="person.id" value="0"/></s:url>'"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

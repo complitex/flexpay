@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <form id="fobjects" method="post"
-	  action="<s:url action="eircAccountList" namespace="/eirc" includeParams="none" />">
+	  action="<s:url action="eircAccountsList" namespace="/eirc" includeParams="none" />">
 
 	<%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname_building_apartment.jsp" %>
 	<%@ include file="/WEB-INF/jsp/ab/filters/groups/person_search.jsp" %>
@@ -19,7 +19,7 @@
 			<td class="th" width="42%"><s:text name="eirc.eirc_account.person"/></td>
 			<td class="th" width="42%"><s:text name="eirc.eirc_account.apartment"/></td>
 		</tr>
-		<s:iterator value="%{eircAccountList}" status="status">
+		<s:iterator value="%{eircAccountsList}" status="status">
 			<tr valign="middle" class="cols_1">
 				<td class="col" align="right"><s:property
 						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
@@ -35,7 +35,7 @@
 				</td>
 				<td class="col">
 					<s:if test="person != null">
-						<a href="<s:url action='view_person' namespace="/dicts" includeParams="none"><s:param name="person.id" value="%{person.id}"/></s:url>">
+						<a href="<s:url action='personView' namespace="/dicts" includeParams="none"><s:param name="person.id" value="%{person.id}"/></s:url>">
 							<s:property value="%{getFIO(person)}"/>
 						</a>
 					</s:if><s:else>
@@ -43,7 +43,7 @@
 					</s:else>
 				</td>
 				<td class="col">
-					<a href="<s:url action='apartmentRegistrations' namespace="/dicts" includeParams="none"><s:param name="apartment.id" value="%{apartment.id}"/></s:url>">
+					<a href="<s:url action='apartmentRegistration' namespace="/dicts" includeParams="none"><s:param name="apartment.id" value="%{apartment.id}"/></s:url>">
 						<s:property value="%{getAddress(apartment)}"/>
 					</a>
 				</td>

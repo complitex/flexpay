@@ -70,20 +70,20 @@
 	    <s:property value="userName"/>
 	  </td> -->
 	  <td class="col">
-	    <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="actions" value="'loadToDb'"/></s:url>">
+	    <a href="<s:url action='loadSzFileToDB'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="actions" value="'loadToDb'"/></s:url>">
 	      load to DB
 	    </a>
 	  </td>
 	  <td class="col">
 	    <s:if test="loadedToDb">
-	      <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="actions" value="'deleteFromDb'"/></s:url>">
+	      <a href="<s:url action='loadSzFileToDB'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="actions" value="'deleteFromDb'"/></s:url>">
 	        delete from DB
 	      </a>
 	      </s:if>
 	  </td>
 	  <td class="col">
 	    <s:if test="loadedToDb">
-	      <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="actions" value="'loadFromDb'"/></s:url>">
+	      <a href="<s:url action='loadSzFileToDB'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="actions" value="'loadFromDb'"/></s:url>">
 	        load from DB
 	      </a>
 	    </s:if>
@@ -96,7 +96,7 @@
 	    </s:if>
 	  </td>
 	  <td class="col">
-	    <a href="<s:url action='loadSzFileToDb'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="actions" value="'fullDelete'"/></s:url>">
+	    <a href="<s:url action='loadSzFileToDB'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="actions" value="'fullDelete'"/></s:url>">
 	      delete
 	    </a>
 	  </td>

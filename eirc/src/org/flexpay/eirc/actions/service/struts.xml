@@ -7,21 +7,21 @@
 	<package name="eirc-service" namespace="/eirc" extends="common">
 
 		<!-- Service Types -->
-		<action name="serviceTypesList" class="listServiceTypesAction">
+		<action name="serviceTypesList" class="serviceTypesListAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_TYPE_READ</param>
 			</interceptor-ref>
 			<result type="tiles">eirc.service_types.list</result>
 		</action>
 
-		<action name="serviceTypesDelete" class="deleteServiceTypesAction">
+		<action name="serviceTypeDelete" class="serviceTypeDeleteAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_TYPE_DELETE</param>
 			</interceptor-ref>
 			<result name="redirectSuccess" type="redirect-action">serviceTypesList</result>
 		</action>
 
-		<action name="serviceTypeEdit" class="editServiceTypeAction">
+		<action name="serviceTypeEdit" class="serviceTypeEditAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_TYPE_CHANGE</param>
 			</interceptor-ref>
@@ -29,16 +29,15 @@
 			<result name="redirectSuccess" type="redirect-action">serviceTypesList</result>
 		</action>
 
-
 		<!-- Services -->
-		<action name="servicesList" class="listServicesAction">
+		<action name="servicesList" class="servicesListAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_READ</param>
 			</interceptor-ref>
 			<result type="tiles">eirc.services.list</result>
 		</action>
 
-		<action name="serviceEdit" class="editServiceAction">
+		<action name="serviceEdit" class="serviceEditAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">EIRC_SERVICE_CHANGE</param>
 			</interceptor-ref>
