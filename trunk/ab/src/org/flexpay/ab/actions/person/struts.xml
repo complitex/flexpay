@@ -52,7 +52,7 @@
 			</result>
 		</action>
 
-		<action name="setPersonRegistration" class="setRegistrationAction">
+		<action name="setPersonRegistration" class="setPersonRegistrationAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">PERSON_CHANGE</param>
 			</interceptor-ref>

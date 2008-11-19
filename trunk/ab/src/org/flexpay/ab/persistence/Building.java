@@ -100,4 +100,5 @@ public class Building extends DomainObjectWithStatus {
 				.append("id", getId())
 				.toString();
 	}
+
 }

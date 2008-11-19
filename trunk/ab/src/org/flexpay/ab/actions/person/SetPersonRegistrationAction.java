@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
-public class SetRegistrationAction extends ApartmentFilterDependentAction {
+public class SetPersonRegistrationAction extends ApartmentFilterDependentAction {
 
 	private PersonService personService;
 

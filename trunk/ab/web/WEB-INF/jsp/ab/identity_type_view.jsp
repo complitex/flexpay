@@ -27,7 +27,7 @@
 	</tr>
 	<tr>
 		<td colspan="3">
-			<a href="<s:url action='identity_type_edit'><s:param name="identityType.id" value="%{identityType.id}"/></s:url>">
+			<a href="<s:url action='identityTypeEdit'><s:param name="identityType.id" value="%{identityType.id}"/></s:url>">
 				<s:text name="ab.edit"/>
 			</a>
 		</td>

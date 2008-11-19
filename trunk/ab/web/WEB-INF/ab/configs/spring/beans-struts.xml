@@ -330,14 +330,14 @@
 		  p:parentService-ref="apartmentService"
 		  p:personService-ref="personService"
 		  p:apartmentService-ref="apartmentService"
-		  p:setRegistrationAction-ref="setRegistrationAction" />
+		  p:setPersonRegistrationAction-ref="setPersonRegistrationAction" />
 
 	<bean id="personSaveFIOAction" scope="prototype" class="org.flexpay.ab.actions.person.PersonSaveFIOAction"
 		  p:personService-ref="personService"
 		  p:identityTypeService-ref="identityTypeService" />
 
-	<bean id="setRegistrationAction" scope="prototype"
-		  class="org.flexpay.ab.actions.person.SetRegistrationAction"
+	<bean id="setPersonRegistrationAction" scope="prototype"
+		  class="org.flexpay.ab.actions.person.SetPersonRegistrationAction"
 		  p:parentService-ref="apartmentService"
 		  p:personService-ref="personService" />
 

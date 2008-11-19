@@ -31,7 +31,7 @@
 		</tr>
 		<tr>
 		  <td colspan="4">
-		    <a href="<s:url action='town_type_edit'><s:param name="id" value="%{townType.id}"/></s:url>">
+		    <a href="<s:url action='townTypeEdit'><s:param name="id" value="%{townType.id}"/></s:url>">
 	          <s:text name="ab.edit" />
 	        </a>
 		  </td>

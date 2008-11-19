@@ -10,10 +10,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="delete_districts"/>';$('fobjects').submit()"
+					   onclick="$('fobjects').action='<s:url action="districtDelete"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="create_district"/>'"
+					   onclick="window.location='<s:url action="districtCreate"/>'"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
@@ -35,7 +35,7 @@
 				<td class="col"><s:property
 						value="%{getTranslation(translations).name}"/></td>
 				<td class="col">
-					<a href="<s:url value="/dicts/view_district.action?object.id=%{object.id}"/>">
+					<a href="<s:url value="/dicts/districtView.action?object.id=%{object.id}"/>">
 						<!-- <img src="<s:url value="/resources/common/img/i_view.gif" />" alt="<s:text name="common.view"/>"
 						 title="<s:text name="common.view"/>" /> -->
 						<s:text name="common.view"/>
@@ -46,10 +46,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="delete_districts"/>';$('fobjects').submit()"
+					   onclick="$('fobjects').action='<s:url action="districtDelete"/>';$('fobjects').submit()"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="create_district"/>'"
+					   onclick="window.location='<s:url action="districtCreate"/>'"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

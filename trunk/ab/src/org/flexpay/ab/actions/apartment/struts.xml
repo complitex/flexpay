@@ -22,7 +22,7 @@
 			<result name="redirectSuccess" type="redirect-action">apartmentsList</result>
 		</action>
 
-		<action name="apartmentsDelete" class="apartmentDeleteAction">
+		<action name="apartmentDelete" class="apartmentDeleteAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">APARTMENT_CHANGE</param>
 			</interceptor-ref>

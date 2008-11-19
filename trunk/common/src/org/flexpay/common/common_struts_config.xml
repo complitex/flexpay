@@ -29,7 +29,7 @@
 		</interceptors>
 		<default-interceptor-ref name="commonDefaultStack"/>
 
-		<action name="uploadProgress"
+		<action name="fileUploadProgress"
 				class="org.flexpay.common.actions.FileUploadProgressAction">
 			<result name="success" type="rawtext"/>
 		</action>

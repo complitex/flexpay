@@ -15,7 +15,7 @@
 				<input type="checkbox" name="objectIds">
 			</td>
 			<td class="col"> 
-				<a href="<s:url action='regionList.action'><s:param name="countryFilter.selectedId" value="%{translatable.id}"/></s:url>">
+				<a href="<s:url action='regionsList.action'><s:param name="countryFilter.selectedId" value="%{translatable.id}"/></s:url>">
 	            	<s:property value="name" />
 	            </a>
 			</td>

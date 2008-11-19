@@ -19,7 +19,7 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 	private PersonService personService;
 	private ApartmentService apartmentService;
 
-	private SetRegistrationAction setRegistrationAction;
+	private SetPersonRegistrationAction setPersonRegistrationAction;
 
 	private Person person = new Person();
 	private Date beginDate = DateUtil.now();
@@ -27,7 +27,7 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 	@NonNls
 	private String editType;
 
-	@NotNull
+    @NotNull
 	public String doExecute() throws Exception {
 
 		if (isSubmit()) {
@@ -70,31 +70,31 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 	@SuppressWarnings ({"unchecked"})
 	private void processSubmit() throws Exception {
 		if ("registration".equals(editType)) {
-			initSetRegistrationAction();
+			initSetPersonRegistrationAction();
 			// ignore set registration result
 			try {
-				setRegistrationAction.execute();
+				setPersonRegistrationAction.execute();
 				beginDate = DateUtil.now();
 				endDate = ApplicationConfig.getFutureInfinite();
 			} finally {
-				addActionErrors(setRegistrationAction.getActionErrors());
+				addActionErrors(setPersonRegistrationAction.getActionErrors());
 			}
 		}
 	}
 
-	private void initSetRegistrationAction() {
-		setRegistrationAction.setPerson(person);
-		setRegistrationAction.setBeginDate(beginDate);
-		setRegistrationAction.setEndDate(endDate);
-		setRegistrationAction.setCountryFilter(countryFilter);
-		setRegistrationAction.setRegionFilter(regionFilter);
-		setRegistrationAction.setTownFilter(townFilter);
-		setRegistrationAction.setStreetFilter(streetFilter);
-		setRegistrationAction.setBuildingsFilter(buildingsFilter);
-		setRegistrationAction.setApartmentFilter(apartmentFilter);
-		setRegistrationAction.setSubmitted(submitted);
-		setRegistrationAction.setSession(session);
-		setRegistrationAction.setUserPreferences(userPreferences);
+	private void initSetPersonRegistrationAction() {
+		setPersonRegistrationAction.setPerson(person);
+		setPersonRegistrationAction.setBeginDate(beginDate);
+		setPersonRegistrationAction.setEndDate(endDate);
+		setPersonRegistrationAction.setCountryFilter(countryFilter);
+		setPersonRegistrationAction.setRegionFilter(regionFilter);
+		setPersonRegistrationAction.setTownFilter(townFilter);
+		setPersonRegistrationAction.setStreetFilter(streetFilter);
+		setPersonRegistrationAction.setBuildingsFilter(buildingsFilter);
+		setPersonRegistrationAction.setApartmentFilter(apartmentFilter);
+		setPersonRegistrationAction.setSubmitted(submitted);
+		setPersonRegistrationAction.setSession(session);
+		setPersonRegistrationAction.setUserPreferences(userPreferences);
 	}
 
 	/**
@@ -164,8 +164,9 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 		this.apartmentService = apartmentService;
 	}
 
-	public void setSetRegistrationAction(SetRegistrationAction setRegistrationAction) {
-		log.debug("Setting setRegistrationAction");
-		this.setRegistrationAction = setRegistrationAction;
+	public void setSetPersonRegistrationAction(SetPersonRegistrationAction setPersonRegistrationAction) {
+		log.debug("Setting setPersonRegistrationAction");
+		this.setPersonRegistrationAction = setPersonRegistrationAction;
 	}
+
 }

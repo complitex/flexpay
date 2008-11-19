@@ -15,10 +15,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-				       onclick="$('fobjects').action='<s:url action="buildingsDelete" />';$('fobjects').submit();"
+				       onclick="$('fobjects').action='<s:url action="buildingDelete" />';$('fobjects').submit();"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-				       onclick="window.location='<s:url action="buildingsCreate"/>';"
+				       onclick="window.location='<s:url action="buildingCreate"/>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
@@ -45,7 +45,7 @@
 					</a>
 				</td>
 				<td class="col">
-					<a href="<s:url value="/dicts/buildingsEdit.action?buildings.id=%{id}"/>">
+					<a href="<s:url value="/dicts/buildingEdit.action?buildings.id=%{id}"/>">
 						<s:text name="common.edit"/> 
 					</a>
 				</td>
@@ -55,10 +55,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-				       onclick="$('fobjects').action='<s:url action="buildingsDelete" />';$('fobjects').submit();"
+				       onclick="$('fobjects').action='<s:url action="buildingDelete" />';$('fobjects').submit();"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="submit" class="btn-exit"
-				       onclick="$('fobjects').action='<s:url action="buildingsCreate"/>';"
+				       onclick="$('fobjects').action='<s:url action="buildingCreate"/>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

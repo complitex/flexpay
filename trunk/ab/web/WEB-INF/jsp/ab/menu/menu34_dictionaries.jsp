@@ -4,16 +4,16 @@
 	<li class="open"><b><s:text name="menu2.adress_dictionaries" /></b>
 		<ul class="docs">
 			<li>
-				<a href="<s:url namespace="/dicts" action='countryList' includeParams="none" />"><s:text
+				<a href="<s:url namespace="/dicts" action='countriesList' includeParams="none" />"><s:text
 						name="menu34.dictionaries.countries" /></a></li>
 			<li>
-				<a href="<s:url namespace="/dicts" action='regionList' includeParams="none" />"><s:text
+				<a href="<s:url namespace="/dicts" action='regionsList' includeParams="none" />"><s:text
 						name="menu34.dictionaries.regions" /></a></li>
 			<li>
-				<a href="<s:url namespace="/dicts" action='townList' includeParams="none" />"><s:text
+				<a href="<s:url namespace="/dicts" action='townsList' includeParams="none" />"><s:text
 						name="menu34.dictionaries.towns" /></a></li>
 			<li>
-				<a href="<s:url namespace="/dicts" action='list_districts' includeParams="none" />"><s:text
+				<a href="<s:url namespace="/dicts" action='districtsList' includeParams="none" />"><s:text
 						name="menu34.dictionaries.districts" /></a></li>
 			<li>
 				<a href="<s:url namespace="/dicts" action='streetsList' includeParams="none" />"><s:text
@@ -36,13 +36,13 @@
 	<li class="open"><b><s:text name="menu2.type_dictionaries" /> </b>
 		<ul class="docs">
 			<li>
-				<a href="<s:url namespace="/dicts" action='town_type_list' includeParams="none" />"><s:text
+				<a href="<s:url namespace="/dicts" action='townTypesList' includeParams="none" />"><s:text
 						name="menu34.dictionaries.town_types" /></a></li>
 			<li>
-				<a href="<s:url namespace="/dicts" action='street_type_list' includeParams="none" />"><s:text
+				<a href="<s:url namespace="/dicts" action='streetTypesList' includeParams="none" />"><s:text
 						name="menu34.dictionaries.street_types" /></a></li>
 			<li>
-				<a href="<s:url namespace="/dicts" action='identity_type_list' includeParams="none" />"><s:text
+				<a href="<s:url namespace="/dicts" action='identityTypesList' includeParams="none" />"><s:text
 						name="menu34.dictionaries.identity_types" /></a></li>
 			<li>
 				<a href="<s:url namespace="/dicts" action='buildingAttributeTypesList' includeParams="none" />"><s:text

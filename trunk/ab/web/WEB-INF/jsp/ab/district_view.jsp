@@ -38,7 +38,7 @@
 				<td class="col">
 					<s:if test="#{#rowstatus.index > index}">
 						<s:set name="index" value="#rowstatus.index" />
-						<a href="<s:url action='edit_district'><s:param name="temporalId" value="%{temporalId}"/></s:url>">
+						<a href="<s:url action='districtEdit'><s:param name="temporalId" value="%{temporalId}"/></s:url>">
 							<s:text name="ab.edit"/>
 						</a>
 					</s:if>
@@ -52,7 +52,7 @@
 	<tr>
 		<td colspan="6">
 			<input type="button" class="btn-exit"
-				   onclick="window.location='<s:url action='edit_district'><s:param name="temporalId" value="0"/></s:url>';"
+				   onclick="window.location='<s:url action='districtEdit'><s:param name="temporalId" value="0"/></s:url>';"
 				   value="<s:text name="common.add"/>"/>
 		</td>
 	</tr>

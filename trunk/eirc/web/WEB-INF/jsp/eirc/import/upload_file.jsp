@@ -65,7 +65,7 @@
 	var xmlHttp = newXMLHttpRequest();
 
 	function getProgress() {
-		var url = "/eirc/common/uploadProgress.action";
+		var url = "/eirc/common/fileUploadProgress.action";
 		xmlHttp.open("POST", url, true);
 		xmlHttp.onreadystatechange = updatePage;
 		xmlHttp.send(null);

@@ -65,4 +65,5 @@ public class RawApartmentDataConverter implements DataConverter<Apartment, RawAp
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
+
 }

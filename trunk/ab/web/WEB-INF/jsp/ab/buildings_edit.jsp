@@ -16,18 +16,18 @@
 					<s:if test="primaryStatus">(<s:text name="ab.buildings.primary_status" />)</s:if>
 				</td>
 				<td class="col">
-					<a href="<s:url value="/dicts/buildingsEdit.action?buildings.id=%{id}"/>">
+					<a href="<s:url value="/dicts/buildingEdit.action?buildings.id=%{id}"/>">
 						<s:text name="common.edit" />
 					</a>
 					&nbsp;
-					<a href="<s:url action="buildingsDelete" includeParams="none" />?objectIds=<s:property value="id" />&redirectBuildingsId=<s:property value="buildings.id" />">
+					<a href="<s:url action="buildingDelete" includeParams="none" />?objectIds=<s:property value="id" />&redirectBuildingsId=<s:property value="buildings.id" />">
 						<img src="<s:url value="/resources/common/img/i_delete.gif" />"
 							 alt="<s:text name="ab.delete"/>" title="<s:text name="ab.delete"/>" />
 					</a>
 					<s:if test="!primaryStatus">
 						&nbsp;
 						<input type="button" class="btn-exit"
-							   onclick="window.location='<s:url action="buildingsSetPrimaryStatus" includeParams="none" />?buildings.Id=<s:property value="id" />&redirectBuildingsId=<s:property value="buildings.id" />';"
+							   onclick="window.location='<s:url action="buildingSetPrimaryStatus" includeParams="none" />?buildings.Id=<s:property value="id" />&redirectBuildingsId=<s:property value="buildings.id" />';"
 							   value="<s:text name="ab.buildings.set_primary_status"/>" />
 					</s:if>
 				</td>
@@ -54,14 +54,14 @@
 			<td colspan="2">
 				<s:submit name="submitted" value="%{getText('common.save')}" cssClass="btn-exit" />
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="buildingsCreate" namespace="/dicts" includeParams="none" />?buildingId=<s:property value="buildings.building.id" />';"
+					   onclick="window.location='<s:url action="buildingCreate" namespace="/dicts" includeParams="none" />?buildingId=<s:property value="buildings.building.id" />';"
 					   value="<s:text name="common.new"/>" />
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="buildingsDelete" includeParams="none" />?objectIds=<s:property value="buildings.id" /><s:if test="!alternateBuildingsList.isEmpty()">&redirectBuildingsId=<s:property value="alternateBuildingsList.get(0).id" /></s:if>';"
+					   onclick="window.location='<s:url action="buildingDelete" includeParams="none" />?objectIds=<s:property value="buildings.id" /><s:if test="!alternateBuildingsList.isEmpty()">&redirectBuildingsId=<s:property value="alternateBuildingsList.get(0).id" /></s:if>';"
 					   value="<s:text name="ab.delete"/>" />
 				<s:if test="!buildings.primaryStatus">
 					<input type="button" class="btn-exit"
-						   onclick="window.location='<s:url action="buildingsSetPrimaryStatus" includeParams="none" />?buildings.id=<s:property value="buildings.id" />';"
+						   onclick="window.location='<s:url action="buildingSetPrimaryStatus" includeParams="none" />?buildings.id=<s:property value="buildings.id" />';"
 						   value="<s:text name="ab.buildings.set_primary_status"/>" />
 				</s:if>
 			</td>

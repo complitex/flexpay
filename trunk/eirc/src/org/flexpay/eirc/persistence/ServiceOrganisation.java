@@ -58,4 +58,20 @@ public class ServiceOrganisation extends DomainObjectWithStatus {
 	public String getName(Locale locale) throws Exception {
 		return TranslationUtil.getTranslation(organisation.getNames(), locale).getName();
 	}
+
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("ServiceOrganisation");
+        sb.append("{id=").append(getId());
+        try {
+            sb.append("{name=").append(getName());
+        } catch (Exception e) {
+            // Do nothing
+        }
+        sb.append("{organisation=").append(organisation);
+        sb.append('}');
+        return sb.toString();
+    }
 }
