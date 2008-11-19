@@ -51,7 +51,6 @@ public class TestRunDuplicateQuittanceJobs extends SpringBeanAwareTestCase {
 	}
 
 	@Test
-	@Ignore
 	public void testGenerateQuittancesLinear() throws Throwable {
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
@@ -78,7 +77,6 @@ public class TestRunDuplicateQuittanceJobs extends SpringBeanAwareTestCase {
 	}
 
 	@Test
-	@Ignore
 	public void testGenerateQuittances2() throws Throwable {
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();

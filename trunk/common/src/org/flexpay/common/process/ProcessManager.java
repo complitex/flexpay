@@ -176,7 +176,7 @@ public class ProcessManager implements Runnable {
 	}
 
 	/**
-	 * Delpoys parsed process definition to jbpm
+	 * Deploys parsed process definition to jbpm
 	 *
 	 * @param processDefinition parsed process definition
 	 * @param replace		   replace replace if true old process definition should be removed with new one
@@ -232,7 +232,7 @@ public class ProcessManager implements Runnable {
 							// are there any not runningTasks taskInstances?
 							TaskInstance taskInstance = (TaskInstance) o;
 							taskInstance = context.getTaskMgmtSession().loadTaskInstance(taskInstance.getId());
-							if (!isTaskExecuting(taskInstance.getId())) {
+							if (!isTaskExecuting(taskInstance)) {
 								startTask(taskInstance);
 							}
 						}
@@ -244,7 +244,6 @@ public class ProcessManager implements Runnable {
 				synchronized (sleepSemaphore) {
 					try {
 						sleepSemaphore.wait(rescanFrequency);
-						sleepSemaphore.notifyAll();
 					} catch (InterruptedException e) {
 						log.debug("Somebody interrupts me.", e);
 						Thread.interrupted(); // clear "interrupted" state of thread
@@ -254,7 +253,7 @@ public class ProcessManager implements Runnable {
 				log.debug("ProcessManager mainLoop : ", e);
 			}
 		}
-		log.debug("process manager stoped...");
+		log.debug("process manager stopped...");
 	}
 
 	/**
@@ -371,15 +370,15 @@ public class ProcessManager implements Runnable {
 	@SuppressWarnings ({"unchecked"})
 	protected boolean startTask(TaskInstance task) {
 		// get ProcessInstance dictionary to pass it to Job
-		ProcessInstance processInstance = task.getTaskMgmtInstance().getProcessInstance();
+		ProcessInstance processInstance = task.getProcessInstance();
 		ContextInstance contextInstance = processInstance.getContextInstance();
 
-		Integer runCounter = getRunCount(task, contextInstance);
+		Integer runCounter = getRunCount(task);
 
 		if (runCounter > taskRepeatLimit) {
 			log.info("Exceded limit (" + taskRepeatLimit + ") for task '" + task.getName() + "' (" +
 					 task.getId() + ", pid - " + processInstance.getId() + "). Process ended.");
-			completeTask(task, processInstance, contextInstance);
+			completeTask(task);
 			return false;
 		}
 
@@ -388,7 +387,7 @@ public class ProcessManager implements Runnable {
 			case CANCEL:
 				log.info("Task '" + task.getName() + "' (" +
 						 task.getId() + ", pid - " + processInstance.getId() + "). Cancelled by voters.");
-				completeTask(task, processInstance, contextInstance);
+				completeTask(task);
 				return false;
 			case POSTPONE:
 				log.info("Task " + task.getName() + " is beign postponed.");
@@ -413,12 +412,15 @@ public class ProcessManager implements Runnable {
 			log.error("Can't start task with name " + task.getName(), e);
 			return false;
 		}
+
 		runningTaskIds.add(task.getId());
 		return true;
 	}
 
-	private void completeTask(TaskInstance task, ProcessInstance processInstance, ContextInstance contextInstance) {
+	private void completeTask(TaskInstance task) {
 
+		ProcessInstance processInstance = task.getProcessInstance();
+		ContextInstance contextInstance = processInstance.getContextInstance();
 		processInstance.end();
 		task.end(Job.RESULT_ERROR);
 		//set status to failed
@@ -427,8 +429,10 @@ public class ProcessManager implements Runnable {
 		runningTaskIds.remove(task.getId());
 	}
 
-	private Integer getRunCount(TaskInstance task, ContextInstance contextInstance) {
+	private Integer getRunCount(TaskInstance task) {
 
+		ProcessInstance processInstance = task.getProcessInstance();
+		ContextInstance contextInstance = processInstance.getContextInstance();
 		Integer runCounter = (Integer) contextInstance.getVariable("StartTaskCounter", task.getToken());
 
 		if (runCounter == null) {
@@ -484,7 +488,7 @@ public class ProcessManager implements Runnable {
 							log.error("Can't find Task Instance, id: " + taskId);
 						} else {
 							log.info("Finishing Task Instance, id: " + taskId);
-							ContextInstance ci = task.getTaskMgmtInstance().getProcessInstance().getContextInstance();
+							ContextInstance ci = task.getProcessInstance().getContextInstance();
 							// save the variables in ProcessInstance dictionary
 							ci.addVariables(parameters);
 							ci.setVariable("StartTaskCounter", 0, task.getToken());
@@ -502,7 +506,7 @@ public class ProcessManager implements Runnable {
 					sleepSemaphore.notifyAll();
 				}
 
-				checkProcessCompleted(task.getTaskMgmtInstance().getProcessInstance().getId());
+				checkProcessCompleted(task.getProcessInstance().getId());
 
 				if (log.isDebugEnabled()) {
 					log.debug("Task removed from list of running tasks: " + removed);
@@ -587,7 +591,7 @@ public class ProcessManager implements Runnable {
 
 				return instances;
 			}
-		});
+		}, true);
 	}
 
 	/**
@@ -616,18 +620,35 @@ public class ProcessManager implements Runnable {
 	}
 
 	private Process getProcessInfo(ProcessInstance processInstance) {
+
 		Process process = new Process();
+		if (processInstance == null) {
+			return process;
+		}
+
 		process.setId(processInstance.getId());
 		process.setProcessDefinitionName(processInstance.getProcessDefinition().getName());
 		process.setProcessEndDate(processInstance.getEnd());
 		process.setProcessStartDate(processInstance.getStart());
 		process.setProcessDefenitionVersion(processInstance.getProcessDefinition().getVersion());
+
+		File logFile = ProcessLogger.getLogFile(processInstance.getId());
+		if (logFile.exists()) {
+			process.setLogFileName(logFile.getAbsolutePath());
+		} else {
+			process.setLogFileName("");
+		}
+
 		Map<Serializable, Serializable> parameters = processInstance.getContextInstance().getVariables();
 		if (parameters == null) {
-			process.setParameters(new HashMap<Serializable, Serializable>());
-		} else {
-			process.setParameters(parameters);
+			parameters = CollectionUtils.map();
 		}
+		process.setParameters(parameters);
+
+		if (parameters.containsKey(Job.RESULT_ERROR)) {
+			process.setProcessState((ProcessState) parameters.get(Job.RESULT_ERROR));
+		}
+
 		return process;
 	}
 
@@ -644,31 +665,7 @@ public class ProcessManager implements Runnable {
 		return execute(new ContextCallback<Process>() {
 
 			public Process doInContext(@NotNull JbpmContext context) {
-				Process process = new Process();
-				ProcessInstance processInstance = context.getProcessInstance(processId);
-				if (processInstance == null) {
-					return process;
-				}
-
-				process.setId(processInstance.getId());
-				process.setProcessDefinitionName(processInstance.getProcessDefinition().getName());
-				process.setProcessEndDate(processInstance.getEnd());
-				process.setProcessStartDate(processInstance.getStart());
-				process.setProcessDefenitionVersion(processInstance.getProcessDefinition().getVersion());
-				File logFile = ProcessLogger.getLogFile(processInstance.getId());
-				if (logFile.exists()) {
-					process.setLogFileName(logFile.getAbsolutePath());
-				} else {
-					process.setLogFileName("");
-				}
-
-				Map<Serializable, Serializable> parameters = processInstance.getContextInstance().getVariables();
-				if (parameters == null) {
-					process.setParameters(new HashMap<Serializable, Serializable>());
-				} else {
-					process.setParameters(parameters);
-				}
-				return process;
+				return getProcessInfo(context.getProcessInstance(processId));
 			}
 		});
 	}
@@ -676,29 +673,23 @@ public class ProcessManager implements Runnable {
 	/**
 	 * Check if task is currently executing
 	 *
-	 * @param taskInstanceId Task instance id
+	 * @param task Task instance
 	 * @return <code>true</code> if task is being executing, or <code>false</code> otherwise
 	 */
-	private boolean isTaskExecuting(final long taskInstanceId) {
+	private boolean isTaskExecuting(final TaskInstance task) {
 
-		return execute(new ContextCallback<Boolean>() {
-
-			public Boolean doInContext(@NotNull JbpmContext context) {
-				TaskInstance task = context.getTaskMgmtSession().loadTaskInstance(taskInstanceId);
-				if (task.hasEnded()) {
-					log.debug("Task already finished, ignoring task # " + String.valueOf(taskInstanceId));
-					return true;
-				} else {
-					if (runningTaskIds.contains(taskInstanceId)) {
-						log.debug(taskInstanceId + " is already started, checking runner");
-						return true;
-					} else {
-						log.debug(taskInstanceId + " is not started");
-						return false;
-					}
-				}
+		if (task.hasEnded()) {
+			log.debug("Task already finished, ignoring task # " + task.getId());
+			return true;
+		} else {
+			if (runningTaskIds.contains(task.getId())) {
+				log.debug(task.getId() + " is already started, checking runner");
+				return true;
+			} else {
+				log.debug(task.getId() + " is not started");
+				return false;
 			}
-		});
+		}
 	}
 
 	/**
@@ -720,17 +711,20 @@ public class ProcessManager implements Runnable {
 	 */
 	public void join(long processId) throws InterruptedException {
 		while (true) {
-			Process info = getProcessInstanceInfo(processId);
-			if (info.getId() != processId) {
-				return;
-			}
+			// wait untill there is any 
+			synchronized (sleepSemaphore) {
+				Process info = getProcessInstanceInfo(processId);
+				if (info.getId() != processId) {
+					return;
+				}
 
-			ProcessState state = info.getProcessState();
-			if (state.isCompleted()) {
-				return;
-			}
+				ProcessState state = info.getProcessState();
+				if (state.isCompleted()) {
+					return;
+				}
 
-			Thread.sleep(50);
+				sleepSemaphore.wait(5000);
+			}
 		}
 	}
 
@@ -791,12 +785,37 @@ public class ProcessManager implements Runnable {
 	 * @return instance of T
 	 */
 	private <T> T execute(@NotNull ContextCallback<T> callback) {
+		return execute(callback, false);
+	}
+	/**
+	 * Execute Context callback
+	 *
+	 * @param callback ContextCallback to execute
+	 * @param useExistingContext Whether to use existing context or not
+	 * @param <T>      Return value type
+	 * @return instance of T
+	 */
+	synchronized
+	private <T> T execute(@NotNull ContextCallback<T> callback, boolean useExistingContext) {
+
 		JbpmContext context = null;
+		boolean needClose = true;
 		try {
-			context = jbpmConfiguration.createJbpmContext();
+			context = useExistingContext ? jbpmConfiguration.getCurrentJbpmContext() : jbpmConfiguration.createJbpmContext();
+			if (useExistingContext) {
+				needClose = false;
+				if (context == null) {
+					log.warn("Required existing context, but not exists");
+					context = jbpmConfiguration.createJbpmContext();
+					needClose = true;
+				}
+			}
 			return callback.doInContext(context);
 		} finally {
-			closeQuietly(context);
+			if (needClose) {
+				closeQuietly(context);
+			}
+
 		}
 	}
 
