@@ -78,10 +78,12 @@ public class AddressServiceImpl implements AddressService {
 				candidate = buildings;
 			}
 		}
-		if (candidate == null && buildingses.size() > 0) {
-			candidate = buildingses.get(0);
-		} else {
-			throw new IllegalStateException("Building does not have any address: " + stub);
+		if (candidate == null){
+			if (buildingses.size() > 0) {
+				candidate = buildingses.get(0);
+			} else {
+				throw new IllegalStateException("Building does not have any address: " + stub);
+			}
 		}
 		return getBuildingsAddress(stub(candidate), locale);
 	}

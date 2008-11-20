@@ -27,14 +27,13 @@ public class TestGenerateQuittancesPDFJob extends SpringBeanAwareTestCase {
 	private Date dt_2007_01_01 = new GregorianCalendar(2008, 0, 1).getTime();
 
 	@Test
-	@Ignore
 	public void testGenerateQuittances() throws Throwable {
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
-		contextVariables.put("serviceOrganisationId", organisationStub.getId());
-		contextVariables.put("dateFrom", dt_2007_12_01);
-		contextVariables.put("dateTill", dt_2007_01_01);
+		contextVariables.put(GenerateQuittancesPDFJasperJob.PARAM_SERVICE_ORGANISATION_ID, organisationStub.getId());
+		contextVariables.put(GenerateQuittancesPDFJasperJob.PARAM_DATE_FROM, dt_2007_12_01);
+		contextVariables.put(GenerateQuittancesPDFJasperJob.PARAM_DATE_TILL, dt_2007_01_01);
 
 		assertSame("Invalid result", Job.RESULT_NEXT, job.execute(contextVariables));
 
@@ -42,6 +41,7 @@ public class TestGenerateQuittancesPDFJob extends SpringBeanAwareTestCase {
 	}
 
 	@Test
+	@Ignore
 	public void testGenerateQuittancesProduction() throws Throwable {
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();

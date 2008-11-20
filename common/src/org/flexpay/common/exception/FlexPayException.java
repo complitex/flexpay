@@ -1,9 +1,8 @@
 package org.flexpay.common.exception;
 
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.Nls;
 import org.flexpay.common.util.DateUtil;
-import org.apache.log4j.Logger;
+import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.NonNls;
 
 import java.util.Date;
 
@@ -31,12 +30,11 @@ public class FlexPayException extends Exception {
 	}
 
 	/**
-	 * Constructs exception with specified detail message, error code key and optional error
-	 * message parameters
+	 * Constructs exception with specified detail message, error code key and optional error message parameters
 	 *
-	 * @param message the detail message
+	 * @param message  the detail message
 	 * @param errorKey localization error message key
-	 * @param params optional localization error message parameters
+	 * @param params   optional localization error message parameters
 	 */
 	public FlexPayException(@NonNls String message, String errorKey, Object... params) {
 		super(message);

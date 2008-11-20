@@ -251,8 +251,8 @@
 	<query name="Buildings.findBuildingBuildings">
 		select distinct b
 		from Buildings b
-		left join fetch b.buildingAttributes a
-		inner join fetch a.buildingAttributeType t
+			left join fetch b.buildingAttributes a
+			left join fetch a.buildingAttributeType t
 		where b.building.id=? and b.status=0
 	</query>
 </hibernate-mapping>

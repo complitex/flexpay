@@ -378,7 +378,7 @@
 					<reportElement
 						x="164"
 						y="68"
-						width="148"
+						width="103"
 						height="151"
 						key="subreport-services-summs"
 						isPrintRepeatedValues="false"/>
@@ -393,9 +393,9 @@
 				</subreport>
 				<subreport  isUsingCache="true">
 					<reportElement
-						x="318"
+						x="276"
 						y="68"
-						width="215"
+						width="95"
 						height="151"
 						key="subreport-subservices"
 						isPrintRepeatedValues="false"
@@ -1076,6 +1076,18 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{quittanceId}]]></textFieldExpression>
 				</textField>
+				<image  scaleImage="RetainShape" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						style="LiberationSans-Regular"
+						x="422"
+						y="76"
+						width="106"
+						height="142"
+						key="barcode-2"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="net.sf.jasperreports.engine.JRRenderable"><![CDATA[new org.flexpay.common.service.reporting.BarbecueRenderer(net.sourceforge.barbecue.BarcodeFactory.createPDF417($F{fullQuittanceInfo}), true)]]></imageExpression>
+				</image>
 				</frame>			</band>
 		</detail>
 		<columnFooter>
