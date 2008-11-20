@@ -67,14 +67,14 @@
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="10"  isSplitAllowed="true" >
+			<band height="14"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
 						x="0"
 						y="0"
 						width="73"
-						height="10"
+						height="14"
 						key="staticText-1"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -92,19 +92,38 @@
 						style="LiberationSans-Bold"
 						x="73"
 						y="0"
-						width="51"
-						height="10"
-						key="staticText-2"/>
+						width="33"
+						height="7"
+						key="staticText"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="5" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Сумма к]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						style="LiberationSans-Bold"
+						x="73"
+						y="7"
+						width="33"
+						height="7"
+						key="staticText-2"/>
+					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.25" lineStyle="Solid"/>
 					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 </box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="5"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="5" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Сумма к оплате]]></text>
+				<text><![CDATA[оплате]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -132,7 +151,7 @@
 					<reportElement
 						x="73"
 						y="0"
-						width="51"
+						width="33"
 						height="7"
 						key="textField"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
@@ -182,7 +201,7 @@
 						style="LiberationSans-Bold"
 						x="73"
 						y="0"
-						width="51"
+						width="33"
 						height="10"
 						key="textField"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>

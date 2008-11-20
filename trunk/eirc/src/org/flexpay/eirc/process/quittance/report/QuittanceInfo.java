@@ -285,8 +285,22 @@ public class QuittanceInfo implements Cloneable, Serializable {
 		this.bankName = bankName;
 	}
 
-	public String getFullQuittanceInfo() {
-		return "Barcode 2D text go here";
+	public String getFullQuittanceInfo() throws Exception {
+
+		// add common info
+		StringBuilder sb = new StringBuilder()
+				.append(getQuittanceNumber()).append(";")
+				.append(getApartmentAddress()).append(";")
+				.append(getPersonFIO()).append(";")
+				.append(getOutgoingBalance()).append((char)0x0A).append((char)0x0D);
+
+		// now add services details
+		for (ServiceTotals totals : getServicesTotalsList()) {
+			sb.append(totals.getServiceTypeName()).append(";")
+					.append(totals.getOutgoingDebt()).append((char)0x0A).append((char)0x0D);
+		}
+
+		return sb.toString();
 	}
 
 	public String[] getOutgoingBalanceDigits() {

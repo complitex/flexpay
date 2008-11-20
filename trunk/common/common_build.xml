@@ -38,6 +38,7 @@
 		<path refid="common.production.classpath" />
 		<path refid="common.jar" />
 		<path refid="common.test.jar" />
+		<path refid="jdbc.lib" />
 		<path refid="junit.lib" />
 	</path>
 

@@ -91,7 +91,7 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 		}
 		if (!defaultNameFound) {
 			ex.addException(new FlexPayException(
-					"No default lang name", "eirc.error.organisation.no_default_lang_name"));
+					"No default lang name", "common.error.no_default_lang_name"));
 		}
 
 		if (ex.isNotEmpty()) {

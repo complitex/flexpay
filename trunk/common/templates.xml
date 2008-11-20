@@ -101,6 +101,13 @@
 		</fileset>
 	</path>
 
+	<path id="jdbc.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="jdbc/*.jar" />
+			<!-- log4jdbc used in tests depends on slf4j -->
+			<include name="logging/*.jar" />
+		</fileset>
+	</path>
 
 	<!-- NotNull instrumentation javac task -->
 	<taskdef name="javac2"

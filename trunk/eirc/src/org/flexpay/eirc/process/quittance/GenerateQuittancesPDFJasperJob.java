@@ -1,12 +1,11 @@
 package org.flexpay.eirc.process.quittance;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.ProcessLogger;
+import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.reporting.ReportUtil;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.ServiceOrganisation;
@@ -15,9 +14,9 @@ import org.flexpay.eirc.process.quittance.report.JRQuittanceDataSource;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
