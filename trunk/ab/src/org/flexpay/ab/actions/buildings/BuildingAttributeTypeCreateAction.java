@@ -5,9 +5,9 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.BuildingAttributeType;
 import org.flexpay.ab.persistence.BuildingAttributeTypeTranslation;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
-import org.flexpay.common.service.LanguageService;
 import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
@@ -16,16 +16,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class BuildingAttributeTypeCreateAction extends FPActionSupport
-		implements Preparable {
+public class BuildingAttributeTypeCreateAction extends FPActionSupport implements Preparable {
 
-	private LanguageService languageService;
 	private BuildingService buildingService;
 
 	private Map<Long, BuildingAttributeTypeTranslation> translationMap;
 
 	public void prepare() {
-		List<Language> languages = languageService.getLanguages();
+		List<Language> languages = ApplicationConfig.getLanguages();
 		translationMap = map();
 		for (Language language : languages) {
 			BuildingAttributeTypeTranslation translation = new BuildingAttributeTypeTranslation();
@@ -36,6 +34,7 @@ public class BuildingAttributeTypeCreateAction extends FPActionSupport
 
 	@NotNull
 	public String doExecute() {
+
 		if (isSubmit()) {
 			boolean blancDefaultTranslation = true;
 			BuildingAttributeType type = new BuildingAttributeType();
@@ -55,6 +54,8 @@ public class BuildingAttributeTypeCreateAction extends FPActionSupport
 
 				return REDIRECT_SUCCESS;
 			}
+
+			addActionError(getText("common.error.no_default_lang_name"));
 		}
 
 		return INPUT;
@@ -86,13 +87,6 @@ public class BuildingAttributeTypeCreateAction extends FPActionSupport
 	public void setTranslationMap(
 			Map<Long, BuildingAttributeTypeTranslation> translationMap) {
 		this.translationMap = translationMap;
-	}
-
-	/**
-	 * @param languageService the languageService to set
-	 */
-	public void setLanguageService(LanguageService languageService) {
-		this.languageService = languageService;
 	}
 
 	/**
