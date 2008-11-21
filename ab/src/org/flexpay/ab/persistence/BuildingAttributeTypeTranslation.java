@@ -2,6 +2,7 @@ package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
 
@@ -15,6 +16,10 @@ public class BuildingAttributeTypeTranslation extends Translation {
 	public BuildingAttributeTypeTranslation() {
 	}
 
+	public BuildingAttributeTypeTranslation(String name, Language lang) {
+		super(name, lang);
+	}
+
 	public String getShortName() {
 		return this.shortName;
 	}
@@ -23,19 +28,10 @@ public class BuildingAttributeTypeTranslation extends Translation {
 		this.shortName = shortName;
 	}
 
-	public BuildingAttributeTypeTranslation(String name, Language lang) {
-		super(name, lang);
-	}
-
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		} else if (!(o instanceof BuildingAttributeTypeTranslation)) {
-			return false;
-		}
 
-		return super.equals(o);
+		return o instanceof BuildingAttributeTypeTranslation && super.equals(o);
 	}
 
 	@Override
@@ -44,5 +40,9 @@ public class BuildingAttributeTypeTranslation extends Translation {
 				.appendSuper(super.toString())
 				.append("short name", shortName)
 				.toString();
+	}
+
+	public boolean isBlank() {
+		return StringUtils.isBlank(getName()) && StringUtils.isBlank(getShortName());
 	}
 }
