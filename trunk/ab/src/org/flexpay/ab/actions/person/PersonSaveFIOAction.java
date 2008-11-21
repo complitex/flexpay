@@ -40,6 +40,11 @@ public class PersonSaveFIOAction extends FPActionSupport {
 		identity.setSerialNumber("");
 		identity.setDocumentNumber("");
 
+		// set default identity flag to true if person is new 
+		if (person.isNew()) {
+			identity.setDefault(true);
+		}
+
 		boolean modified = person.setFIOIdentity(identity);
 		if (modified) {
 			log.info("Saving person");
