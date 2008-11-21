@@ -4,9 +4,11 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.*;
 import net.sf.jasperreports.engine.query.JRHibernateQueryExecuterFactory;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.util.JRSaver;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.JDBCUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.hibernate.Session;
@@ -15,12 +17,12 @@ import org.jboss.util.file.FilePrefixFilter;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
 
 import javax.sql.DataSource;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.sql.Connection;
 import java.util.*;
 
@@ -50,6 +52,25 @@ public class ReportUtil {
 	private static final String EXTENSION_CSV = ".csv";
 
 	/**
+	 * Name of fonts that are to
+	 */
+	private static Set<String> fontNames = CollectionUtils.set(
+			"LiberationMono-Italic",
+			"LiberationMono-Regular",
+			"LiberationSans-Bold",
+			"LiberationSans-BoldItalic",
+			"LiberationSans-Italic",
+			"LiberationSans-Regular",
+			"LiberationSerif-Bold",
+			"LiberationSerif-BoldItalic",
+			"LiberationSerif-Italic",
+			"LiberationSerif-Regular"
+	);
+
+	@NonNls
+	private static final String EXTENSION_FONT_TTF = ".ttf";
+
+	/**
 	 * Subreports directory parameter name
 	 */
 	private static final String PARAM_NAME_SUBREPORTS_DIR = "SUBREPORT_DIR";
@@ -60,7 +81,9 @@ public class ReportUtil {
 	private SessionFactory sessionFactory;
 	private DataSource dataSource;
 
-	private Set<String> compiledReports = new HashSet<String>();
+	private String fontsPath = "/WEB-INF/common/reports/fonts/";
+
+	private Set<String> compiledReports = CollectionUtils.set();
 
 	/**
 	 * Upload report and compile it
@@ -101,15 +124,20 @@ public class ReportUtil {
 		if (!cachesDir.exists()) {
 			reportsDir.mkdirs();
 		}
+
+		File fontsDir = getReportFontsDir();
+		if (!fontsDir.exists()) {
+			fontsDir.mkdirs();
+		}
 	}
 
 	/**
 	 * Compile report template and save it with a .jasper extension
 	 *
 	 * @param name Report name to compile
-	 * @throws JRException if failure occurs
+	 * @throws Exception if failure occurs
 	 */
-	private void ensureReportCompiled(String name) throws JRException {
+	private void ensureReportCompiled(String name) throws Exception {
 		if (compiledReports.contains(name)) {
 			return;
 		}
@@ -117,6 +145,14 @@ public class ReportUtil {
 		// compile report
 		JasperCompileManager.compileReportToFile(
 				getTemplatePath(name), getCompiledTemplatePath(name));
+
+		JasperReport report = JasperCompileManager.compileReport(getTemplatePath(name));
+
+		// setup Liberation fonts if they are used
+		adjustFontsPath(report);
+
+		// save compiled report 
+		JRSaver.saveObject(report, getCompiledTemplatePath(name));
 
 		// mark template compiled, no need to compile it again
 		compiledReports.add(name);
@@ -287,6 +323,7 @@ public class ReportUtil {
 			if (jrDataSource != null) {
 				JasperFillManager.fillReportToFile(report, getReportPath(reportName), parameters, jrDataSource);
 			} else if (requiresConnection(report)) {
+				@SuppressWarnings ({"JDBCResourceOpenedButNotSafelyClosed"})
 				Connection c = dataSource.getConnection();
 				parameters.put(RESOURCE_CONNECTION, c);
 				resourceNames.add(RESOURCE_CONNECTION);
@@ -302,6 +339,28 @@ public class ReportUtil {
 		}
 	}
 
+	/**
+	 * Setup styles fonts to point to valid fonts location
+	 *
+	 * @param report JasperReport that styles are to be updated
+	 */
+	private void adjustFontsPath(@NotNull JasperReport report) throws Exception {
+
+		ensureFontsCopied();
+
+		JRStyle[] styles = report.getStyles();
+		if (styles == null) {
+			log.debug("No styles in report");
+			return;
+		}
+
+		for (JRStyle style : styles) {
+			if (fontNames.contains(style.getFontName())) {
+				style.setPdfFontName(getFontPath(style.getFontName()));
+			}
+		}
+	}
+
 	@SuppressWarnings ({"unchecked"})
 	private Collection<String> fillParameters(JasperReport report, Map parameters) {
 
@@ -312,6 +371,7 @@ public class ReportUtil {
 			log.debug("Found QUERY!");
 			if ("hql".equalsIgnoreCase(query.getLanguage())) {
 				log.debug("Found hql QUERY!");
+				@SuppressWarnings ({"HibernateResourceOpenedButNotSafelyClosed"})
 				Session session = sessionFactory.openSession();
 				parameters.put(JRHibernateQueryExecuterFactory.PARAMETER_HIBERNATE_SESSION, session);
 				resourceNames.add(JRHibernateQueryExecuterFactory.PARAMETER_HIBERNATE_SESSION);
@@ -363,6 +423,10 @@ public class ReportUtil {
 		return new File(getReportsDir(), "caches");
 	}
 
+	private File getReportFontsDir() {
+		return new File(getReportsDir(), "fonts");
+	}
+
 	/**
 	 * Get path to the report template with a given name
 	 *
@@ -389,6 +453,50 @@ public class ReportUtil {
 
 	private String getCompiledTemplatePath(String name) {
 		return getCompiledTemplateFile(name).getAbsolutePath();
+	}
+
+	/**
+	 * Get path to the font with a given name
+	 *
+	 * @param name Font name
+	 * @return File path to the font
+	 */
+	private File getFontFile(String name) {
+		return new File(getReportFontsDir(), name + EXTENSION_FONT_TTF);
+	}
+
+	private String getFontPath(String name) {
+		return getFontFile(name).getAbsolutePath();
+	}
+
+	private void ensureFontsCopied() throws Exception {
+
+		for (String fontName : fontNames) {
+			File fontFile = getFontFile(fontName);
+
+			// file not found, copy it
+			if (!fontFile.exists()) {
+				String fontResource = fontsPath + fontName + EXTENSION_FONT_TTF;
+				InputStream is = ApplicationConfig.getResourceAsStream(fontResource);
+				if (is == null) {
+					throw new RuntimeException("Font " + fontName + " not found");
+				}
+
+				// do copying
+				OutputStream os = null;
+				try {
+					os = new BufferedOutputStream(new FileOutputStream(fontFile));
+
+					IOUtils.copyLarge(is, os);
+				} catch (IOException ex) {
+					log.error("Failed copying font " + fontName, ex);
+					throw new Exception("Failed copying font " + fontName, ex);
+				} finally {
+					IOUtils.closeQuietly(is);
+					IOUtils.closeQuietly(os);
+				}
+			}
+		}
 	}
 
 	/**

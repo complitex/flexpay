@@ -13,6 +13,21 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
+	<style
+		name="LiberationSans-Regular"
+		isDefault="true"
+		fontName="LiberationSans-Regular"
+		fontSize="8"
+		isBold="false"
+		isItalic="false"
+		isUnderline="false"
+		isStrikeThrough="false"
+		pdfFontName="path-to/LiberationSans-Regular.ttf"
+		pdfEncoding="Cp1251"
+		isPdfEmbedded="true"
+	>
+	</style>
+
 	<parameter name="dataSourceId" class="java.lang.Long" />
 	<parameter name="dataSourceDescr" class="java.lang.String" />
 
