@@ -60,7 +60,7 @@ public class PersonServiceImpl implements PersonService {
 	 * @param pager   Paging filter
 	 * @return List of persons
 	 */
-	public List<Person> findPersons(ArrayStack filters, Page pager) {
+	public List<Person> findPersons(ArrayStack filters, Page<Person> pager) {
 		return personDao.findObjects(pager, DomainObjectWithStatus.STATUS_ACTIVE);
 	}
 

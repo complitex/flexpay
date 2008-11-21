@@ -20,7 +20,7 @@ public interface PersonService {
 	 * @param pager   Paging filter
 	 * @return List of persons
 	 */
-	List<Person> findPersons(ArrayStack filters, Page pager);
+	List<Person> findPersons(ArrayStack filters, Page<Person> pager);
 
 	/**
 	 * Read person information
