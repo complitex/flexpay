@@ -1,6 +1,5 @@
 package org.flexpay.ab.actions.buildings;
 
-import com.opensymphony.xwork2.Preparable;
 import org.flexpay.ab.persistence.BuildingAttributeType;
 import org.flexpay.ab.persistence.BuildingAttributeTypeTranslation;
 import org.flexpay.ab.service.BuildingService;
@@ -9,77 +8,64 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.Translation;
 import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Map;
 
 
-public class BuildingAttributeTypeEditAction extends FPActionSupport implements Preparable {
+public class BuildingAttributeTypeEditAction extends FPActionSupport {
 
 	private BuildingService buildingService;
 
-	private BuildingAttributeType buildingAttributeType = new BuildingAttributeType();
-	private Map<Long, BuildingAttributeTypeTranslation> translationMap = map();
-
-	public void prepare() {
-		List<Language> languages = ApplicationConfig.getLanguages();
-		for (Language language : languages) {
-			BuildingAttributeTypeTranslation translation = new BuildingAttributeTypeTranslation();
-			translation.setLang(language);
-			translationMap.put(language.getId(), translation);
-		}
-	}
+	private BuildingAttributeType attributeType = new BuildingAttributeType();
+	private Map<Long, String> names = treeMap();
 
 	@NotNull
-	public String doExecute() throws FlexPayException {
-		buildingAttributeType = buildingService.getAttributeType(stub(buildingAttributeType));
+	public String doExecute() throws Exception {
 
-		if (isSubmit()) {
-			for (BuildingAttributeTypeTranslation translation : translationMap.values()) {
-				BuildingAttributeTypeTranslation persistentTranslation = getTranslationByLang(buildingAttributeType, translation.getLang());
-				if (translation.isBlank()) {
-					if (persistentTranslation != null) {
-						buildingAttributeType.getTranslations().remove(persistentTranslation);
-					}
-				} else {
-					if (persistentTranslation != null) {
-						persistentTranslation.setName(translation.getName());
-						persistentTranslation.setShortName(translation.getShortName());
-					} else {
-						translation.setTranslatable(buildingAttributeType);
-						buildingAttributeType.getTranslations().add(translation);
-					}
-				}
-			}
-
-			if (buildingAttributeType.getTranslations().isEmpty()) {
-				// hz che hotel sdelat
-			} else {
-				buildingService.updateBuildingAttributeType(buildingAttributeType);
-				return REDIRECT_SUCCESS;
-			}
+		if (attributeType.getId() == null) {
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_SUCCESS;
 		}
 
-		for (Language lang : ApplicationConfig.getLanguages()) {
-			boolean exist = false;
-			for (Translation t : buildingAttributeType.getTranslations()) {
-				if (t.getLang().equals(lang)) {
-					exist = true;
-					break;
-				}
-			}
-			if (!exist) {
-				BuildingAttributeTypeTranslation t = new BuildingAttributeTypeTranslation();
-				t.setLang(lang);
-				t.setTranslatable(buildingAttributeType);
-				buildingAttributeType.getTranslations().add(t);
-			}
+		BuildingAttributeType type = attributeType.isNew() ?
+									 attributeType :
+									 buildingService.read(stub(attributeType));
+
+		if (!isSubmit()) {
+			attributeType = type;
+			initTranslations();
+			return INPUT;
 		}
 
-		return INPUT;
+		// init translations
+		for (Map.Entry<Long, String> name : names.entrySet()) {
+			String value = name.getValue();
+			Language lang = getLang(name.getKey());
+			BuildingAttributeTypeTranslation translation = new BuildingAttributeTypeTranslation();
+			translation.setLang(lang);
+			translation.setName(value);
+			type.setTranslation(translation);
+		}
+
+		buildingService.save(type);
+
+		return REDIRECT_SUCCESS;
+	}
+
+	private void initTranslations() {
+
+		for (BuildingAttributeTypeTranslation translation : attributeType.getTranslations()) {
+			names.put(translation.getLang().getId(), translation.getName());
+		}
+
+		for (Language language : ApplicationConfig.getLanguages()) {
+			if (!names.containsKey(language.getId())) {
+				names.put(language.getId(), "");
+			}
+		}
 	}
 
 	/**
@@ -91,45 +77,23 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport implements 
 	 */
 	@NotNull
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return INPUT;
 	}
 
-	private BuildingAttributeTypeTranslation getTranslationByLang(BuildingAttributeType attrType, Language lang) {
-		for (BuildingAttributeTypeTranslation t : attrType.getTranslations()) {
-			if (t.getLang().equals(lang)) {
-				return t;
-			}
-		}
-
-		return null;
+	public BuildingAttributeType getAttributeType() {
+		return attributeType;
 	}
 
-	/**
-	 * @return the buildingAttributeType
-	 */
-	public BuildingAttributeType getBuildingAttributeType() {
-		return buildingAttributeType;
+	public void setAttributeType(BuildingAttributeType attributeType) {
+		this.attributeType = attributeType;
 	}
 
-	/**
-	 * @param buildingAttributeType the buildingAttributeType to set
-	 */
-	public void setBuildingAttributeType(BuildingAttributeType buildingAttributeType) {
-		this.buildingAttributeType = buildingAttributeType;
+	public Map<Long, String> getNames() {
+		return names;
 	}
 
-	/**
-	 * @return the translationMap
-	 */
-	public Map<Long, BuildingAttributeTypeTranslation> getTranslationMap() {
-		return translationMap;
-	}
-
-	/**
-	 * @param translationMap the translationMap to set
-	 */
-	public void setTranslationMap(Map<Long, BuildingAttributeTypeTranslation> translationMap) {
-		this.translationMap = translationMap;
+	public void setNames(Map<Long, String> names) {
+		this.names = names;
 	}
 
 	/**

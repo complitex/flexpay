@@ -65,14 +65,6 @@
 			<result name="success" type="tiles">ab.buildings.attribute_types.list</result>
 		</action>
 
-		<action name="buildingAttributeTypeCreate" class="buildingAttributeTypeCreateAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">BUILDING_ATTRIBUTE_TYPE_ADD</param>
-			</interceptor-ref>
-			<result name="input" type="tiles">ab.buildings.attribute_types.create</result>
-			<result name="redirectSuccess" type="redirect-action">buildingAttributeTypesList</result>
-		</action>
-
 		<action name="buildingAttributeTypeEdit" class="buildingAttributeTypeEditAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">BUILDING_ATTRIBUTE_TYPE_CHANGE</param>

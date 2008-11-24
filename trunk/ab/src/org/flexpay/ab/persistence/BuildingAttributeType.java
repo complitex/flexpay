@@ -2,6 +2,8 @@ package org.flexpay.ab.persistence;
 
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.util.TranslationUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Set;
@@ -55,5 +57,9 @@ public class BuildingAttributeType extends DomainObjectWithStatus {
 	public boolean isBulkNumber() {
 		BuildingAttributeType type = ApplicationConfig.getBuildingAttributeTypeBulk();
 		return equals(type);
+	}
+
+	public void setTranslation(@NotNull BuildingAttributeTypeTranslation translation) {
+		translations = TranslationUtil.setTranslation(translations, this, translation);
 	}
 }

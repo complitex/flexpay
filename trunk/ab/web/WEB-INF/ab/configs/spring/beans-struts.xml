@@ -162,10 +162,6 @@
 		  class="org.flexpay.ab.actions.buildings.BuildingAttributeTypesListAction"
 		  p:buildingService-ref="buildingService" />
 
-	<bean id="buildingAttributeTypeCreateAction" scope="prototype"
-		  class="org.flexpay.ab.actions.buildings.BuildingAttributeTypeCreateAction"
-		  p:buildingService-ref="buildingService" />
-
 	<bean id="buildingAttributeTypeEditAction" scope="prototype"
 		  class="org.flexpay.ab.actions.buildings.BuildingAttributeTypeEditAction"
 		  p:buildingService-ref="buildingService" />

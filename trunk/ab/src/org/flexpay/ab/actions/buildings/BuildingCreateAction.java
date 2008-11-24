@@ -126,7 +126,7 @@ public class BuildingCreateAction extends FPActionSupport {
 	}
 
 	public String getTypeName(Long typeId) throws FlexPayException {
-		BuildingAttributeType type = buildingService.getAttributeType(new Stub<BuildingAttributeType>(typeId));
+		BuildingAttributeType type = buildingService.read(new Stub<BuildingAttributeType>(typeId));
 		if (type == null) {
 			throw new RuntimeException("Unknown type id: " + typeId);
 		}

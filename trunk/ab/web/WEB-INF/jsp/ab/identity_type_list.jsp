@@ -2,11 +2,11 @@
 
 <s:actionerror />
 
-<table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="fobjects" method="post" action="<s:url value="/dicts/identityTypesList.action" includeParams="none" />">
+<s:form id="fobjects" method="post" action="identityTypesList">
+	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
-			<td class="th" width="1%"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'idList')"></td>
+			<td class="th" width="1%"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'idList');"></td>
 			<td class="th"><s:text name="ab.identity_type" /></td>
 			<td class="th" width="35%">&nbsp;</td>
 		</tr>
@@ -31,12 +31,12 @@
 		<tr>
 			<td colspan="4">
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="identityTypeDelete"/>';$('fobjects').submit()"
+					   onclick="$('fobjects').action='<s:url action="identityTypeDelete"/>';$('fobjects').submit();"
 					   value="<s:text name="common.delete_selected"/>" />
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="identityTypeEdit"><s:param name="identityType.id" value="0" /></s:url>'"
+					   onclick="window.location='<s:url action="identityTypeEdit"><s:param name="identityType.id" value="0" /></s:url>';"
 					   value="<s:text name="common.new"/>" />
 			</td>
 		</tr>
-	</form>
-</table>
+	</table>
+</s:form>
