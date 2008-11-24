@@ -84,4 +84,37 @@
 
 	</package>
 
+	<package name="street_types" namespace="/dicts" extends="common">
+
+		<action name="streetTypeView" class="streetTypeViewAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_TYPE_READ</param>
+			</interceptor-ref>
+			<result name="success" type="tiles">ab.street_type.view</result>
+		</action>
+
+		<action name="streetTypesList" class="streetTypesListAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_TYPE_READ</param>
+			</interceptor-ref>
+			<result name="success" type="tiles">ab.street_type.list</result>
+		</action>
+
+		<action name="editStreetType" class="streetTypeEditAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_TYPE_CHANGE</param>
+			</interceptor-ref>
+			<result name="input" type="tiles">ab.street_type.edit</result>
+			<result name="redirectSuccess" type="redirect-action">streetTypesList</result>
+		</action>
+
+		<action name="streetTypeDelete" class="streetTypeDeleteAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">STREET_TYPE_DELETE</param>
+			</interceptor-ref>
+			<result name="afterSubmit" type="redirect">streetTypesList.action</result>
+		</action>
+
+	</package>
+	
 </struts>

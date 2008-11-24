@@ -108,7 +108,7 @@ public class TranslationUtil {
 				translations.remove(candidate);
 				return translations;
 			}
-			candidate.setName(translation.getName());
+			candidate.copyName(translation);
 			return translations;
 		}
 

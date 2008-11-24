@@ -24,8 +24,7 @@ public class OrganisationEditAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (organisation.getId() == null) {
-			// todo: notify that no object was selected
-			addActionError("No object was selected");
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 

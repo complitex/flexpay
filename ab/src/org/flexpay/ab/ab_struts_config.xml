@@ -88,138 +88,6 @@
 
 	</package>
 
-	<package name="towns" namespace="/dicts" extends="common">
-
-		<action name="townsList" class="townsListAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">TOWN_READ</param>
-			</interceptor-ref>
-			<result type="tiles">ab.towns.list</result>
-		</action>
-
-		<action name="townCreate" class="townCreateAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">TOWN_ADD</param>
-			</interceptor-ref>
-			<result type="redirect-action">
-				<param name="actionName">townView</param>
-				<param name="parse">true</param>
-				<param name="object.id">${object.id}</param>
-			</result>
-			<result type="tiles" name="input">ab.town.create</result>
-		</action>
-
-		<action name="townView" class="townViewAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">TOWN_READ</param>
-			</interceptor-ref>
-			<result type="tiles">ab.town.view</result>
-			<result type="redirect" name="redirectError">townsList.action</result>
-		</action>
-
-		<action name="townEdit" class="townEditAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">TOWN_CHANGE</param>
-			</interceptor-ref>
-			<result type="redirect-action">
-				<param name="actionName">townView</param>
-				<param name="parse">true</param>
-				<param name="object.id">${object.id}</param>
-			</result>
-			<result type="tiles" name="input">ab.town.edit</result>
-		</action>
-
-		<action name="townDelete" class="townDeleteAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">TOWN_DELETE</param>
-			</interceptor-ref>
-			<result name="redirectSuccess" type="redirect">townsList.action</result>
-		</action>
-
-	</package>
-
-	<package name="town_types" namespace="/dicts" extends="common">
-
-        <action name="townTypeCreate" class="townTypeCreateAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">TOWN_TYPE_ADD</param>
-			</interceptor-ref>
-			<result name="form" type="tiles">ab.town_type.create</result>
-			<result name="afterSubmit" type="redirect">townTypesList.action</result>
-		</action>
-
-		<action name="townTypeView" class="townTypeViewAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">TOWN_TYPE_READ</param>
-			</interceptor-ref>
-			<result name="success" type="tiles">ab.town_type.view</result>
-		</action>
-
-		<action name="townTypesList" class="townTypesListAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">TOWN_TYPE_READ</param>
-			</interceptor-ref>
-			<result name="success" type="tiles">ab.town_type.list</result>
-		</action>
-
-		<action name="townTypeEdit" class="townTypeEditAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">TOWN_TYPE_CHANGE</param>
-			</interceptor-ref>
-			<result name="input" type="tiles">ab.town_type.edit</result>
-			<result name="redirectSuccess" type="redirect">townTypesList.action</result>
-		</action>
-
-		<action name="townTypeDelete" class="townTypeDeleteAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">TOWN_TYPE_DELETE</param>
-			</interceptor-ref>
-			<result name="afterSubmit" type="redirect">townTypesList.action</result>
-		</action>
-
-	</package>
-
-	<package name="street_types" namespace="/dicts" extends="common">
-
-		<action name="streetTypeCreate" class="streetTypeCreateAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">STREET_TYPE_ADD</param>
-			</interceptor-ref>
-			<result name="form" type="tiles">ab.street_type.create</result>
-			<result name="afterSubmit" type="redirect">streetTypesList.action</result>
-		</action>
-
-		<action name="streetTypeView" class="streetTypeViewAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">STREET_TYPE_READ</param>
-			</interceptor-ref>
-			<result name="success" type="tiles">ab.street_type.view</result>
-		</action>
-
-		<action name="streetTypesList" class="streetTypesListAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">STREET_TYPE_READ</param>
-			</interceptor-ref>
-			<result name="success" type="tiles">ab.street_type.list</result>
-		</action>
-
-		<action name="streetTypeEdit" class="streetTypeEditAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">STREET_TYPE_CHANGE</param>
-			</interceptor-ref>
-			<result name="input" type="tiles">ab.street_type.edit</result>
-			<result name="redirectSuccess" type="redirect">streetTypesList.action</result>
-		</action>
-
-		<action name="streetTypeDelete" class="streetTypeDeleteAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">STREET_TYPE_DELETE</param>
-			</interceptor-ref>
-			<result name="afterSubmit" type="redirect">streetTypesList.action</result>
-		</action>
-
-	</package>
-
 	<package name="identity_types" namespace="/dicts" extends="common">
 
 		<action name="identityTypeCreate" class="identityTypeCreateAction">
@@ -262,6 +130,7 @@
 	</package>
 
 	<include file="org/flexpay/ab/actions/person/struts.xml" />
+	<include file="org/flexpay/ab/actions/town/struts.xml" />
 	<include file="org/flexpay/ab/actions/street/struts.xml" />
 	<include file="org/flexpay/ab/actions/district/struts.xml" />
 	<include file="org/flexpay/ab/actions/buildings/struts.xml" />

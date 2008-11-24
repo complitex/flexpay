@@ -52,6 +52,10 @@ public class Translation extends DomainObject {
 		this.name = name;
 	}
 
+	public void copyName(Translation t) {
+		this.name = t.getName();
+	}
+
 	/**
 	 * Getter for property 'translatable'.
 	 *
