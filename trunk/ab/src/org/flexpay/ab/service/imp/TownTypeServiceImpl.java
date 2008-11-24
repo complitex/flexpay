@@ -27,47 +27,6 @@ public class TownTypeServiceImpl implements TownTypeService {
 	private TownTypeTranslationDao townTypeTranslationDao;
 
 	/**
-	 * Create TownType
-	 *
-	 * @param translations TownType names translations
-	 * @return created TownType object
-	 */
-	@Transactional (readOnly = false)
-	public TownType create(Collection<TownTypeTranslation> translations)
-			throws FlexPayException {
-		TownType townType = new TownType();
-
-		Set<TownTypeTranslation> translationSet = new HashSet<TownTypeTranslation>();
-		boolean hasDefaultLangTranslation = false;
-		for (TownTypeTranslation translation : translations) {
-			if (StringUtils.isNotBlank(translation.getName())) {
-				translationSet.add(translation);
-				hasDefaultLangTranslation = hasDefaultLangTranslation
-											|| translation.getLang().isDefault();
-			}
-		}
-		if (!hasDefaultLangTranslation) {
-			throw new FlexPayException(
-					"No default language town type translation",
-					"error.town_type_no_default_translation");
-		}
-
-		townType.setStatus(TownType.STATUS_ACTIVE);
-
-		townTypeDao.create(townType);
-		for (TownTypeTranslation translation : translationSet) {
-			translation.setTranslatable(townType);
-			townTypeTranslationDao.create(translation);
-		}
-
-		if (log.isDebugEnabled()) {
-			log.debug("Created TownType: " + townType);
-		}
-
-		return townType;
-	}
-
-	/**
 	 * Get TownType translations for specified locale, if translation is not found check for translation in default locale
 	 *
 	 * @param locale Locale to get translations for
@@ -152,55 +111,6 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 */
 	public TownType read(Long id) {
 		return townTypeDao.readFull(id);
-	}
-
-	/**
-	 * Update town type translations
-	 *
-	 * @param townType	 Town Type to update trnaslations for
-	 * @param translations Translations set
-	 * @return Updated TownType object
-	 */
-	@Transactional (readOnly = false)
-	public TownType update(TownType townType,
-						   Collection<TownTypeTranslation> translations) {
-		Set<TownTypeTranslation> translationList = new HashSet<TownTypeTranslation>(
-				translations.size());
-		List<TownTypeTranslation> translationsToDelete = new ArrayList<TownTypeTranslation>(
-				translations.size());
-		boolean hasDefaultLangTranslation = false;
-		for (TownTypeTranslation translation : translations) {
-			if (StringUtils.isNotBlank(translation.getName())) {
-				translationList.add(translation);
-				hasDefaultLangTranslation = hasDefaultLangTranslation
-											|| translation.getLang().isDefault();
-			} else if (translation.getId() != null) {
-				translationsToDelete.add(translation);
-			}
-		}
-		if (!hasDefaultLangTranslation) {
-			throw new IllegalArgumentException(
-					"No default language town type translation");
-		}
-
-		townType.setTranslations(translationList);
-
-		for (TownTypeTranslation translation : translationList) {
-			if (translation.getId() == null) {
-				townTypeTranslationDao.create(translation);
-			} else {
-				townTypeTranslationDao.update(translation);
-			}
-		}
-		for (TownTypeTranslation translation : translationsToDelete) {
-			townTypeTranslationDao.delete(translation);
-		}
-
-		if (log.isDebugEnabled()) {
-			log.debug("Updated StreetType: " + townType);
-		}
-
-		return townType;
 	}
 
 	/**

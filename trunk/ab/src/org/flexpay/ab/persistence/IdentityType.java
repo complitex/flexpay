@@ -5,11 +5,13 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import static org.flexpay.common.util.CollectionUtils.set;
+import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 /**
  * IdentityType entity class holds a general representation of various types of
@@ -33,7 +35,7 @@ public class IdentityType extends DomainObjectWithStatus {
 
 	private int typeId = TYPE_UNKNOWN;
 
-	private Collection<IdentityTypeTranslation> translations = Collections.emptyList();
+	private Set<IdentityTypeTranslation> translations = Collections.emptySet();
 
 	/**
 	 * Constructs a new IdentityType.
@@ -50,7 +52,7 @@ public class IdentityType extends DomainObjectWithStatus {
 	 *
 	 * @return Value for property 'translations'.
 	 */
-	public Collection<IdentityTypeTranslation> getTranslations() {
+	public Set<IdentityTypeTranslation> getTranslations() {
 		return translations;
 	}
 
@@ -59,7 +61,7 @@ public class IdentityType extends DomainObjectWithStatus {
 	 *
 	 * @param translations Value to set for property 'translations'.
 	 */
-	public void setTranslations(Collection<IdentityTypeTranslation> translations) {
+	public void setTranslations(Set<IdentityTypeTranslation> translations) {
 		this.translations = translations;
 	}
 
@@ -90,28 +92,6 @@ public class IdentityType extends DomainObjectWithStatus {
 	}
 
 	public void setTranslation(@NotNull IdentityTypeTranslation translation) {
-		boolean needRemove = false;
-		for (IdentityTypeTranslation typeTranslation : translations) {
-			if (typeTranslation.isSameLanguage(translation)) {
-				if (StringUtils.isBlank(translation.getName())) {
-					needRemove = true;
-					translation = typeTranslation;
-					break;
-				}
-				typeTranslation.setName(translation.getName());
-				return;
-			}
-		}
-
-		if (needRemove) {
-			translations.remove(translation);
-		} else {
-			if (translations == Collections.EMPTY_SET) {
-				translations = set();
-			}
-
-			translations.add(translation);
-			translation.setTranslatable(this);
-		}
+		translations = TranslationUtil.setTranslation(translations, this, translation);
 	}
 }

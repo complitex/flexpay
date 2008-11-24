@@ -17,22 +17,6 @@ public class IdentityTypeTranslation extends Translation {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String toString() {
-		return super.toString();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public boolean equals(Object o) {
 		return o instanceof IdentityTypeTranslation && super.equals(o);
 	}
