@@ -2,7 +2,7 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
-			<td class="th">&nbsp;</td>
+			<td class="th" width="1%">&nbsp;</td>
 			<td class="th"><s:text name="ab.language"/></td>
 			<td class="th"><s:text name="ab.street_type"/></td>
 			<td class="th"><s:text name="ab.short_name"/></td>
@@ -31,7 +31,7 @@
 		</tr>
 		<tr>
 		  <td colspan="4">
-		    <a href="<s:url action='streetTypeEdit'><s:param name="id" value="%{streetType.id}"/></s:url>">
+		    <a href="<s:url action='editStreetType' includeParams="none"><s:param name="streetType.id" value="%{streetType.id}"/></s:url>">
 	          <s:text name="ab.edit" />
 	        </a>
 		  </td>

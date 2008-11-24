@@ -35,6 +35,13 @@ public class TownTypeTranslation extends Translation {
 		this.shortName = shortName;
 	}
 
+	public void copyName(Translation t) {
+		super.copyName(t);
+		if (t instanceof TownTypeTranslation) {
+			this.shortName = ((TownTypeTranslation) t).getShortName();
+		}
+	}
+
 	/**
 	 * Returns a string representation of the object.
 	 *

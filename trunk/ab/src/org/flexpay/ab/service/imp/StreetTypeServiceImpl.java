@@ -155,10 +155,8 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	@Transactional (readOnly = false)
 	public StreetType update(StreetType streetType,
 							 Collection<StreetTypeTranslation> translations) {
-		Set<StreetTypeTranslation> translationList = new HashSet<StreetTypeTranslation>(
-				translations.size());
-		List<StreetTypeTranslation> translationsToDelete = new ArrayList<StreetTypeTranslation>(
-				translations.size());
+		Set<StreetTypeTranslation> translationList = new HashSet<StreetTypeTranslation>();
+		List<StreetTypeTranslation> translationsToDelete = new ArrayList<StreetTypeTranslation>();
 		boolean hasDefaultLangTranslation = false;
 		for (StreetTypeTranslation translation : translations) {
 			if (StringUtils.isNotBlank(translation.getName())) {
@@ -214,9 +212,6 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	public StreetType findTypeByName(@NotNull String typeName) throws FlexPayException {
 		for (StreetType type : getEntities()) {
 			for (StreetTypeTranslation ourType : type.getTranslations()) {
-				if (log.isDebugEnabled()) {
-					log.debug("Internal street type : " + ourType.getName());
-				}
 
 				String fullName = ourType.getName();
 				String shortName = ourType.getShortName();

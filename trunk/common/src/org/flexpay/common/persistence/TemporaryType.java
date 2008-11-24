@@ -2,6 +2,7 @@ package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.util.TranslationUtil;
 
 import java.util.Collections;
 import java.util.Set;
@@ -76,5 +77,14 @@ public abstract class TemporaryType<TV extends TemporaryValue, T extends Transla
 	public boolean equals(Object obj) {
 
 		return obj instanceof TemporaryType && super.equals(obj);
+	}
+
+	/**
+	 * Set translation for object
+	 *
+	 * @param translation Translation to set
+	 */
+	public void setTranslation(T translation) {
+		translations = TranslationUtil.setTranslation(translations, this, translation);
 	}
 }

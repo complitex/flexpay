@@ -1,12 +1,5 @@
 package org.flexpay.ab.service.imp;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.TownTypeDao;
@@ -18,27 +11,28 @@ import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.util.TranslationUtil;
-import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+import java.util.*;
+
+@Transactional (readOnly = true)
 public class TownTypeServiceImpl implements TownTypeService {
 
 	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private final Logger log = Logger.getLogger(getClass());
 
 	private TownTypeDao townTypeDao;
 	private TownTypeTranslationDao townTypeTranslationDao;
 
 	/**
 	 * Create TownType
-	 * 
-	 * @param translations
-	 *            TownType names translations
+	 *
+	 * @param translations TownType names translations
 	 * @return created TownType object
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public TownType create(Collection<TownTypeTranslation> translations)
 			throws FlexPayException {
 		TownType townType = new TownType();
@@ -49,7 +43,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 			if (StringUtils.isNotBlank(translation.getName())) {
 				translationSet.add(translation);
 				hasDefaultLangTranslation = hasDefaultLangTranslation
-						|| translation.getLang().isDefault();
+											|| translation.getLang().isDefault();
 			}
 		}
 		if (!hasDefaultLangTranslation) {
@@ -74,14 +68,11 @@ public class TownTypeServiceImpl implements TownTypeService {
 	}
 
 	/**
-	 * Get TownType translations for specified locale, if translation is not
-	 * found check for translation in default locale
-	 * 
-	 * @param locale
-	 *            Locale to get translations for
+	 * Get TownType translations for specified locale, if translation is not found check for translation in default locale
+	 *
+	 * @param locale Locale to get translations for
 	 * @return List of TownTypes
-	 * @throws FlexPayException
-	 *             if failure occurs
+	 * @throws FlexPayException if failure occurs
 	 */
 	public List<TownTypeTranslation> getTranslations(Locale locale)
 			throws FlexPayException {
@@ -116,6 +107,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * @return Saved instance
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
+	@Transactional (readOnly = false)
 	public TownType save(@NotNull TownType type) throws FlexPayExceptionContainer {
 		validate(type);
 		if (type.isNew()) {
@@ -129,6 +121,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 	}
 
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(TownType type) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
@@ -141,7 +134,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 		if (!defaultLangTranslationFound) {
 			container.addException(new FlexPayException(
-					"No default lang translation", "error.no_default_translation"));
+					"No default translation", "error.no_default_translation"));
 		}
 
 		// todo check if there is already a type with a specified name
@@ -153,9 +146,8 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 	/**
 	 * Read TownType object by its unique id
-	 * 
-	 * @param id
-	 *            TownType key
+	 *
+	 * @param id TownType key
 	 * @return TownType object, or <code>null</code> if object not found
 	 */
 	public TownType read(Long id) {
@@ -164,16 +156,14 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 	/**
 	 * Update town type translations
-	 * 
-	 * @param townType
-	 *            Town Type to update trnaslations for
-	 * @param translations
-	 *            Translations set
+	 *
+	 * @param townType	 Town Type to update trnaslations for
+	 * @param translations Translations set
 	 * @return Updated TownType object
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public TownType update(TownType townType,
-			Collection<TownTypeTranslation> translations) {
+						   Collection<TownTypeTranslation> translations) {
 		Set<TownTypeTranslation> translationList = new HashSet<TownTypeTranslation>(
 				translations.size());
 		List<TownTypeTranslation> translationsToDelete = new ArrayList<TownTypeTranslation>(
@@ -183,7 +173,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 			if (StringUtils.isNotBlank(translation.getName())) {
 				translationList.add(translation);
 				hasDefaultLangTranslation = hasDefaultLangTranslation
-						|| translation.getLang().isDefault();
+											|| translation.getLang().isDefault();
 			} else if (translation.getId() != null) {
 				translationsToDelete.add(translation);
 			}
@@ -214,13 +204,11 @@ public class TownTypeServiceImpl implements TownTypeService {
 	}
 
 	/**
-	 * Disable TownTypes TODO: check if there are any towns with specified type
-	 * and reject operation
-	 * 
-	 * @param townTypes
-	 *            TownTypes to disable
+	 * Disable TownTypes TODO: check if there are any towns with specified type and reject operation
+	 *
+	 * @param townTypes TownTypes to disable
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void disable(Collection<TownType> townTypes) {
 		if (log.isInfoEnabled()) {
 			log.info(townTypes.size() + " types to disable");
@@ -238,7 +226,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * {@inheritDoc}
 	 */
 	public TownTypeFilter initFilter(TownTypeFilter townTypeFilter,
-			Locale locale) throws FlexPayException {
+									 Locale locale) throws FlexPayException {
 		List<TownTypeTranslation> translations = getTranslations(locale);
 
 		if (townTypeFilter == null) {
@@ -257,7 +245,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 	/**
 	 * Get a list of available town types
-	 * 
+	 *
 	 * @return List of TownType
 	 */
 	public List<TownType> getTownTypes() {
@@ -266,7 +254,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 	/**
 	 * Get a list of available town types
-	 * 
+	 *
 	 * @return List of TownType
 	 */
 	@NotNull
@@ -276,9 +264,8 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 	/**
 	 * Setter for property 'townTypeDao'.
-	 * 
-	 * @param townTypeDao
-	 *            Value to set for property 'townTypeDao'.
+	 *
+	 * @param townTypeDao Value to set for property 'townTypeDao'.
 	 */
 	public void setTownTypeDao(TownTypeDao townTypeDao) {
 		this.townTypeDao = townTypeDao;
@@ -286,9 +273,8 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 	/**
 	 * Setter for property 'townTypeTranslationDao'.
-	 * 
-	 * @param townTypeTranslationDao
-	 *            Value to set for property 'townTypeTranslationDao'.
+	 *
+	 * @param townTypeTranslationDao Value to set for property 'townTypeTranslationDao'.
 	 */
 	public void setTownTypeTranslationDao(
 			TownTypeTranslationDao townTypeTranslationDao) {

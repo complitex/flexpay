@@ -1,47 +1,32 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 
-<s:form>
-<table cellpadding="3" cellspacing="1" border="0" width="100%">
-		<tr>
-			<td class="th">&nbsp;</td>
-			<td class="th"><s:text name="ab.language"/></td>
-			<td class="th"><s:text name="ab.street_type"/></td>
-			<td class="th"><s:text name="ab.short_name"/></td>
+<s:actionerror />
+<s:form action="editStreetType">
+	<s:hidden name="streetType.id" />
+	<table cellpadding="3" cellspacing="1" border="0" width="100%">
+
+		<tr valign="top" class="cols_1">
+			<td class="col"><s:text name="ab.street_type" />:</td>
+			<td class="col">
+				<s:iterator value="names"><s:set name="l" value="%{getLang(key)}" />
+					<s:textfield name="names[%{key}]" value="%{value}" />(<s:if test="%{#l.default}">*</s:if><s:property
+							value="%{getLangName(#l)}" />)<br />
+				</s:iterator>
+			</td>
 		</tr>
-		<s:iterator value="streetType.translations" status="rowstatus">
-		  <tr valign="middle" class="cols_1">
-		    <td class="col_1s">
-		      <s:property value="#rowstatus.index + 1" />
-		    </td>
-		    <td class="col">
-		      <s:property value="getLangName(lang)" />
-		      <s:if test="lang.default == true">
-		        (default)<font color="red">*</font>
-		      </s:if>
-		    </td>
-		    <td class="col">
-		      <s:textfield name="translationMap['%{id}'].name" value="%{name}" />
-		      <s:fielderror>
-                <s:param value="translationMap['%{id}'].name" />
-              </s:fielderror>
-		    </td>
-		    <td class="col">
-		      <s:textfield name="translationMap['%{id}'].shortName" value="%{shortName}" />
-		      <s:fielderror>
-                <s:param value="translationMap['%{id}'].shortName" />
-              </s:fielderror>
-		    </td>
-		  </tr>
-		</s:iterator>
-		<tr>
-			<td colspan="4" height="3" bgcolor="#4a4f4f"/>
-		</tr>	
-		<tr>
-		  <td colspan="4">
-		    <s:hidden name="id" value="%{streetType.id}" />
-		    <s:submit name="submitted" value="%{getText('ab.update')}" cssClass="btn-exit" />
-		  </td>
+		<tr valign="top" class="cols_1">
+			<td class="col"><s:text name="ab.short_name" />:</td>
+			<td class="col">
+				<s:iterator value="shortNames"><s:set name="l" value="%{getLang(key)}" />
+					<s:textfield name="shortNames[%{key}]" value="%{value}" />(<s:if
+							test="%{#l.default}">*</s:if><s:property value="%{getLangName(#l)}" />)<br />
+				</s:iterator>
+			</td>
 		</tr>
-</table>
+		<tr valign="middle">
+			<td colspan="2"><input type="submit" class="btn-exit" name="submitted"
+								   value="<s:text name="common.save"/>" /></td>
+		</tr>
+	</table>
 </s:form>

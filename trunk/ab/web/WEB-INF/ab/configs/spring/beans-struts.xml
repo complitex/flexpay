@@ -200,10 +200,6 @@
 		  class="org.flexpay.ab.actions.town.TownTypesListAction"
 		  p:townTypeService-ref="townTypeService" />
 
-	<bean id="townTypeCreateAction" scope="prototype"
-		  class="org.flexpay.ab.actions.town.TownTypeCreateAction"
-		  p:townTypeService-ref="townTypeService" />
-
 	<bean id="townTypeViewAction" scope="prototype"
 		  class="org.flexpay.ab.actions.town.TownTypeViewAction"
 		  p:townTypeService-ref="townTypeService" />
@@ -219,10 +215,6 @@
 	<!-- Street types -->
 	<bean id="streetTypesListAction" scope="prototype"
 		  class="org.flexpay.ab.actions.street.StreetTypesListAction"
-		  p:streetTypeService-ref="streetTypeService" />
-
-	<bean id="streetTypeCreateAction" scope="prototype"
-		  class="org.flexpay.ab.actions.street.StreetTypeCreateAction"
 		  p:streetTypeService-ref="streetTypeService" />
 
 	<bean id="streetTypeViewAction" scope="prototype"
