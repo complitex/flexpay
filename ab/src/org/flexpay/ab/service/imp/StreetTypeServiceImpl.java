@@ -34,45 +34,6 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	private CorrectionsService correctionsService;
 
 	/**
-	 * Create StreetType
-	 *
-	 * @param translations StreetType names translations
-	 * @return created StreetType object
-	 */
-	@Transactional (readOnly = false)
-	public StreetType create(Collection<StreetTypeTranslation> translations)
-			throws FlexPayException {
-		StreetType streetType = new StreetType();
-
-		Set<StreetTypeTranslation> translationSet = new HashSet<StreetTypeTranslation>();
-		boolean hasDefaultLangTranslation = false;
-		for (StreetTypeTranslation translation : translations) {
-			if (StringUtils.isNotBlank(translation.getName())) {
-				translationSet.add(translation);
-				hasDefaultLangTranslation =
-						hasDefaultLangTranslation || translation.getLang().isDefault();
-			}
-		}
-		if (!hasDefaultLangTranslation) {
-			throw new FlexPayException("No default language street type translation");
-		}
-
-		streetType.setStatus(StreetType.STATUS_ACTIVE);
-
-		streetTypeDao.create(streetType);
-		for (StreetTypeTranslation translation : translationSet) {
-			translation.setTranslatable(streetType);
-			streetTypeTranslationDao.create(translation);
-		}
-
-		if (log.isDebugEnabled()) {
-			log.debug("Created StreetType: " + streetType);
-		}
-
-		return streetType;
-	}
-
-	/**
 	 * Get StreetType translations for specified locale, if translation is not found check for translation in default locale
 	 *
 	 * @param locale Locale to get translations for
@@ -143,53 +104,6 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 */
 	public StreetType read(Long id) {
 		return streetTypeDao.readFull(id);
-	}
-
-	/**
-	 * Update street type translations
-	 *
-	 * @param streetType   Street Type to update trnaslations for
-	 * @param translations Translations set
-	 * @return Updated StreetType object
-	 */
-	@Transactional (readOnly = false)
-	public StreetType update(StreetType streetType,
-							 Collection<StreetTypeTranslation> translations) {
-		Set<StreetTypeTranslation> translationList = new HashSet<StreetTypeTranslation>();
-		List<StreetTypeTranslation> translationsToDelete = new ArrayList<StreetTypeTranslation>();
-		boolean hasDefaultLangTranslation = false;
-		for (StreetTypeTranslation translation : translations) {
-			if (StringUtils.isNotBlank(translation.getName())) {
-				translationList.add(translation);
-				hasDefaultLangTranslation = hasDefaultLangTranslation
-											|| translation.getLang().isDefault();
-			} else if (translation.getId() != null) {
-				translationsToDelete.add(translation);
-			}
-		}
-		if (!hasDefaultLangTranslation) {
-			throw new IllegalArgumentException(
-					"No default language street type translation");
-		}
-
-		streetType.setTranslations(translationList);
-
-		for (StreetTypeTranslation translation : translationList) {
-			if (translation.getId() == null) {
-				streetTypeTranslationDao.create(translation);
-			} else {
-				streetTypeTranslationDao.update(translation);
-			}
-		}
-		for (StreetTypeTranslation translation : translationsToDelete) {
-			streetTypeTranslationDao.delete(translation);
-		}
-
-		if (log.isDebugEnabled()) {
-			log.debug("Updated StreetType: " + streetType);
-		}
-
-		return streetType;
 	}
 
 	/**

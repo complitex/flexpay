@@ -234,10 +234,6 @@
 		  class="org.flexpay.ab.actions.identity.IdentityTypesListAction"
 		  p:identityTypeService-ref="identityTypeService" />
 
-	<bean id="identityTypeCreateAction" scope="prototype"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeCreateAction"
-		  p:identityTypeService-ref="identityTypeService" />
-
 	<bean id="identityTypeViewAction" scope="prototype"
 		  class="org.flexpay.ab.actions.identity.IdentityTypeViewAction"
 		  p:identityTypeService-ref="identityTypeService" />

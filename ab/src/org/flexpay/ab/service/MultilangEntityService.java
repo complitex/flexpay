@@ -15,16 +15,6 @@ import java.util.Locale;
 public interface MultilangEntityService<Entity, T extends Translation> {
 
 	/**
-	 * Create Entity
-	 *
-	 * @param translations Entity names translations
-	 * @return created Entity object
-	 * @throws FlexPayException if failure occurs
-	 * @deprecated use {@link #save} instead
-	 */
-	public Entity create(Collection<T> translations) throws FlexPayException;
-
-	/**
 	 * Read Entity object by its unique id
 	 *
 	 * @param id Entity key
@@ -49,17 +39,6 @@ public interface MultilangEntityService<Entity, T extends Translation> {
 	 */
 	@NotNull
 	List<Entity> getEntities();
-
-	/**
-	 * Update street type translations
-	 *
-	 * @param entity	   Entity to update trnaslations for
-	 * @param translations Translations set
-	 * @return Updated Entity object
-	 * @throws FlexPayException if failure occurs
-	 * @deprecated use {@link #save} instead
-	 */
-	Entity update(Entity entity, Collection<T> translations) throws FlexPayException;
 
 	/**
 	 * Disable Entity

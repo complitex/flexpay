@@ -6,23 +6,23 @@ import org.flexpay.ab.dao.IdentityTypeDao;
 import org.flexpay.ab.dao.IdentityTypeTranslationDao;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.IdentityTypeTranslation;
-import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
-import org.flexpay.common.util.LanguageUtil;
-import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.CollectionUtils.list;
+import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.springframework.transaction.annotation.Transactional;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class IdentityTypeServiceImpl implements IdentityTypeService {
 
 	@NonNls
@@ -34,48 +34,8 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	private List<IdentityType> identityTypes;
 
 	/**
-	 * Create IdentityType
-	 *
-	 * @param translations IdentityType names translations
-	 * @return created StreetType object
-	 */
-	@Transactional(readOnly = false)
-	public IdentityType create(Collection<IdentityTypeTranslation> translations)
-			throws FlexPayException {
-		IdentityType identityType = new IdentityType();
-
-		Set<IdentityTypeTranslation> translationSet = new HashSet<IdentityTypeTranslation>();
-		boolean hasDefaultLangTranslation = false;
-		for (IdentityTypeTranslation translation : translations) {
-			if (StringUtils.isNotBlank(translation.getName())) {
-				translationSet.add(translation);
-				hasDefaultLangTranslation =
-						hasDefaultLangTranslation || translation.getLang().isDefault();
-			}
-		}
-		if (!hasDefaultLangTranslation) {
-			throw new FlexPayException("No default language identity type translation");
-		}
-
-		identityType.setStatus(StreetType.STATUS_ACTIVE);
-		identityType.setTranslations(translationSet);
-
-		identityTypeDao.create(identityType);
-		for (IdentityTypeTranslation translation : translationSet) {
-			translation.setTranslatable(identityType);
-			identityTypeTranslationDao.create(translation);
-		}
-
-		if (log.isDebugEnabled()) {
-			log.debug("Created IdentityType: " + identityType);
-		}
-
-		return identityType;
-	}
-
-	/**
-	 * Get IdentityType translations for specified locale, if translation is not
-	 * found check for translation in default locale
+	 * Get IdentityType translations for specified locale, if translation is not found check for translation in default
+	 * locale
 	 *
 	 * @param locale Locale to get translations for
 	 * @return List of IdentityTypes
@@ -100,8 +60,8 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 			IdentityTypeTranslation translation = getTypeTranslation(identityType, language, defaultLang);
 			if (translation == null) {
 				log.error("No name for identity type: "
-						+ language.getLangIsoCode() + " : "
-						+ defaultLang.getLangIsoCode() + ", " + identityType);
+						  + language.getLangIsoCode() + " : "
+						  + defaultLang.getLangIsoCode() + ", " + identityType);
 				continue;
 			}
 			translations.add(translation);
@@ -146,59 +106,11 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	}
 
 	/**
-	 * Update identity type translations
-	 *
-	 * @param identityType Identity Type to update translations for
-	 * @param translations Translations set
-	 * @return Updated IdentityType object
-	 * @deprecated
-	 */
-	@Transactional(readOnly = false)
-	public IdentityType update(IdentityType identityType,
-							   Collection<IdentityTypeTranslation> translations) throws FlexPayException {
-		Set<IdentityTypeTranslation> translationList = set();
-		List<IdentityTypeTranslation> translationsToDelete = list();
-		boolean hasDefaultLangTranslation = false;
-		for (IdentityTypeTranslation translation : translations) {
-			if (StringUtils.isNotBlank(translation.getName())) {
-				translationList.add(translation);
-				hasDefaultLangTranslation = hasDefaultLangTranslation
-						|| translation.getLang().isDefault();
-			} else if (translation.getId() != null) {
-				translationsToDelete.add(translation);
-			}
-		}
-		if (!hasDefaultLangTranslation) {
-			throw new FlexPayException("No default lang translation", "error.ab.identity_type.no_default_lang_translation");
-		}
-
-		identityType.setTranslations(translationList);
-
-		for (IdentityTypeTranslation translation : translationList) {
-			if (translation.getId() == null) {
-				identityTypeTranslationDao.create(translation);
-			} else {
-				identityTypeTranslationDao.update(translation);
-			}
-		}
-		for (IdentityTypeTranslation translation : translationsToDelete) {
-			identityTypeTranslationDao.delete(translation);
-		}
-
-		if (log.isDebugEnabled()) {
-			log.debug("Updated IdentityType: " + identityType);
-		}
-
-		return identityType;
-	}
-
-	/**
-	 * Disable IdentityTypes
-	 * TODO: check if there are any documents with specified type and reject operation
+	 * Disable IdentityTypes TODO: check if there are any documents with specified type and reject operation
 	 *
 	 * @param identityTypes IdentityTypes to disable
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void disable(Collection<IdentityType> identityTypes) {
 		log.info(identityTypes.size() + " types to disable");
 		for (IdentityType identityType : identityTypes) {
@@ -218,10 +130,11 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @return Saved instance
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public IdentityType save(@NotNull IdentityType identityType) throws FlexPayExceptionContainer {
 		validate(identityType);
 		if (identityType.isNew()) {
+			identityType.setId(null);
 			identityTypeDao.create(identityType);
 		} else {
 			identityTypeDao.update(identityType);
@@ -270,6 +183,9 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 		return null;
 	}
 
+	/**
+	 * @deprecated replace with external caching
+	 */
 	private void initTypesCache() {
 		if (identityTypes == null) {
 			identityTypes = getEntities();
@@ -283,11 +199,13 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @return IdentityType if found, or <code>null</code> otherwise
 	 */
 	public IdentityType getType(String typeName) {
-		if (IdentityType.TYPE_NAME_PASSPORT.equals(typeName))
+		if (IdentityType.TYPE_NAME_PASSPORT.equals(typeName)) {
 			return getType(IdentityType.TYPE_PASSPORT);
+		}
 
-		if (IdentityType.TYPE_NAME_FOREIGN_PASSPORT.equals(typeName))
+		if (IdentityType.TYPE_NAME_FOREIGN_PASSPORT.equals(typeName)) {
 			return getType(IdentityType.TYPE_FOREIGN_PASSPORT);
+		}
 
 		return getType(IdentityType.TYPE_PASSPORT);
 	}

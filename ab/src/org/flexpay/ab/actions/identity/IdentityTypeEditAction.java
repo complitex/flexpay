@@ -17,45 +17,48 @@ public class IdentityTypeEditAction extends FPActionSupport {
 	private IdentityTypeService identityTypeService;
 
 	private IdentityType identityType = new IdentityType();
-	private Map<Long, String> langToTranslation = treeMap();
+	private Map<Long, String> names = treeMap();
 
 	@NotNull
 	public String doExecute() throws Exception {
-		if (identityType.isNew()) {
-			throw new FlexPayException("No id specified");
-		}
 
-		identityType = identityTypeService.read(identityType.getId());
-		if (isSubmit()) {
-			for (Long langId : langToTranslation.keySet()) {
-				Language lang = getLang(langId);
-				IdentityTypeTranslation translation = new IdentityTypeTranslation();
-				translation.setLang(lang);
-				translation.setName(langToTranslation.get(langId));
-				identityType.setTranslation(translation);
-			}
-			if (log.isDebugEnabled()) {
-				log.debug("Type translations: " + identityType.getTranslations());
-			}
-			identityTypeService.save(identityType);
-
+		if (identityType.getId() == null) {
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
-		} else {
-			initTranslations();
 		}
 
-		return INPUT;
+		IdentityType type = identityType.isNew() ? identityType : identityTypeService.read(identityType.getId());
+
+		if (!isSubmit()) {
+			identityType = type;
+			initTranslations();
+			return INPUT;
+		}
+
+		// init translations
+		for (Map.Entry<Long, String> name : names.entrySet()) {
+			String value = name.getValue();
+			Language lang = getLang(name.getKey());
+			IdentityTypeTranslation translation = new IdentityTypeTranslation();
+			translation.setLang(lang);
+			translation.setName(value);
+			type.setTranslation(translation);
+		}
+
+		identityTypeService.save(type);
+
+		return REDIRECT_SUCCESS;
 	}
 
 	private void initTranslations() {
 
 		for (IdentityTypeTranslation translation : identityType.getTranslations()) {
-			langToTranslation.put(translation.getLang().getId(), translation.getName());
+			names.put(translation.getLang().getId(), translation.getName());
 		}
 
 		for (Language language : ApplicationConfig.getLanguages()) {
-			if (!langToTranslation.containsKey(language.getId())) {
-				langToTranslation.put(language.getId(), "");
+			if (!names.containsKey(language.getId())) {
+				names.put(language.getId(), "");
 			}
 		}
 	}
@@ -81,12 +84,12 @@ public class IdentityTypeEditAction extends FPActionSupport {
 		this.identityType = identityType;
 	}
 
-	public Map<Long, String> getLangToTranslation() {
-		return langToTranslation;
+	public Map<Long, String> getNames() {
+		return names;
 	}
 
-	public void setLangToTranslation(Map<Long, String> langToTranslation) {
-		this.langToTranslation = langToTranslation;
+	public void setNames(Map<Long, String> names) {
+		this.names = names;
 	}
 
 	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
