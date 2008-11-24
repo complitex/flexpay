@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NotNull;
@@ -144,10 +145,6 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 
 	Building readBuilding(Long id);
 
-	BuildingAttributeType createBuildingAttributeType(BuildingAttributeType type);
-
-	void updateBuildingAttributeType(BuildingAttributeType type);
-
 	/**
 	 * Get building attribute type
 	 *
@@ -155,5 +152,13 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 * @return Attribute type if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	BuildingAttributeType getAttributeType(@NotNull Stub<BuildingAttributeType> stub);
+	BuildingAttributeType read(@NotNull Stub<BuildingAttributeType> stub);
+
+	/**
+	 * Create or update building attribute type
+	 *
+	 * @param type AttributeType to save
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	void save(@NotNull BuildingAttributeType type) throws FlexPayExceptionContainer;
 }

@@ -59,7 +59,7 @@ public class BuildingEditAction extends FPActionSupport {
 
 		if (isSubmit()) {
 			for (Long typeId : attributeMap.keySet()) {
-				BuildingAttributeType type = buildingService.getAttributeType(new Stub<BuildingAttributeType>(typeId));
+				BuildingAttributeType type = buildingService.read(new Stub<BuildingAttributeType>(typeId));
 				buildings.setBuildingAttribute(attributeMap.get(typeId), type);
 			}
 
@@ -74,7 +74,7 @@ public class BuildingEditAction extends FPActionSupport {
 	}
 
 	public String getTypeName(Long typeId) throws FlexPayException {
-		BuildingAttributeType type = buildingService.getAttributeType(new Stub<BuildingAttributeType>(typeId));
+		BuildingAttributeType type = buildingService.read(new Stub<BuildingAttributeType>(typeId));
 		if (type == null) {
 			throw new RuntimeException("Unknown type id: " + typeId);
 		}

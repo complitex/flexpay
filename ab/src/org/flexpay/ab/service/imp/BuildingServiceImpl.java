@@ -15,6 +15,7 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
@@ -424,7 +425,7 @@ public class BuildingServiceImpl implements BuildingService {
 	 * @return Attribute type if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	public BuildingAttributeType getAttributeType(@NotNull Stub<BuildingAttributeType> stub) {
+	public BuildingAttributeType read(@NotNull Stub<BuildingAttributeType> stub) {
 		return buildingAttributeTypeDao.readFull(stub.getId());
 	}
 
@@ -453,17 +454,46 @@ public class BuildingServiceImpl implements BuildingService {
 		return buildingDao.read(id);
 	}
 
+	/**
+	 * Create or update building attribute type
+	 *
+	 * @param type AttributeType to save
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
 	@Transactional (readOnly = false)
-	public BuildingAttributeType createBuildingAttributeType(BuildingAttributeType type) {
-		Long id = buildingAttributeTypeDao.create(type);
-		type.setId(id);
-
-		return type;
+	public void save(@NotNull BuildingAttributeType type) throws FlexPayExceptionContainer {
+		validate(type);
+		if (type.isNew()) {
+			type.setId(null);
+			buildingAttributeTypeDao.create(type);
+		} else {
+			buildingAttributeTypeDao.update(type);
+		}
 	}
 
-	@Transactional (readOnly = false)
-	public void updateBuildingAttributeType(BuildingAttributeType type) {
-		buildingAttributeTypeDao.update(type);
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(@NotNull BuildingAttributeType type) throws FlexPayExceptionContainer {
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
+
+		boolean defaultLangTranslationFound = false;
+		for (BuildingAttributeTypeTranslation translation : type.getTranslations()) {
+			if (translation.getLang().isDefault() && StringUtils.isNotEmpty(translation.getName())) {
+				defaultLangTranslationFound = true;
+			}
+		}
+
+		if (!defaultLangTranslationFound) {
+			container.addException(new FlexPayException(
+					"No default translation", "error.no_default_translation"));
+		}
+
+		// todo check if there is already a type with a specified name
+
+		if (container.isNotEmpty()) {
+			throw container;
+		}
+
 	}
 
 	public void setBuildingAttributeTypeDao(BuildingAttributeTypeDao buildingAttributeTypeDao) {
