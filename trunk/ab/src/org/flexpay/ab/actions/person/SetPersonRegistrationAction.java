@@ -24,7 +24,7 @@ public class SetPersonRegistrationAction extends ApartmentFilterDependentAction 
 
 		if (isSubmit()) {
 			if (!apartmentFilter.needFilter()) {
-				throw new FlexPayException("No apartment", "ab.person.apartment_absent");
+				throw new FlexPayException("No apartment", "error.ab.person.apartment_absent");
 			}
 
 			person = personService.read(stub(person));
