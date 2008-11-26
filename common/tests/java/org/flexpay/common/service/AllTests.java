@@ -6,6 +6,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 		LanguageServiceTest.class,
+		TestMeasureUnitService.class,
 		TestSendEmail.class
 		})
 public class AllTests {
