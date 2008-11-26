@@ -12,11 +12,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
 @Transactional(readOnly = true)
 public class MeasureUnitServiceImpl implements MeasureUnitService {
+
+	private final Logger log = Logger.getLogger(getClass());
 
 	private MeasureUnitDao measureUnitDao;
 
@@ -28,6 +31,7 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 	 */
 	@Nullable
 	public MeasureUnit read(@NotNull Stub<MeasureUnit> stub) {
+		log.debug("read called");
 		return measureUnitDao.readFull(stub.getId());
 	}
 
@@ -68,6 +72,8 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 	 */
 	@Transactional(readOnly = false)
 	public void save(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer {
+
+		log.debug("save called");
 
 		validate(unit);
 		if (unit.isNew()) {

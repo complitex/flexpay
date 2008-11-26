@@ -6,7 +6,7 @@ import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.MeasureUnitName;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.MeasureUnitService;
-import static org.flexpay.common.util.CollectionUtils.map;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +17,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 	private MeasureUnitService measureUnitService;
 
 	private MeasureUnit measureUnit = new MeasureUnit();
-	private Map<Long, String> names = map();
+	private Map<Long, String> names = CollectionUtils.treeMap();
 
 	/**
 	 * Perform action execution.
@@ -37,11 +37,15 @@ public class MeasureUnitEditAction extends FPActionSupport {
 		}
 
 		MeasureUnit unit = measureUnit.isNew() ?
-						   new MeasureUnit(0L) : measureUnitService.read(Stub.stub(measureUnit));
+						   measureUnit : measureUnitService.read(Stub.stub(measureUnit));
 		if (unit == null) {
 			log.debug("Invalid id specified");
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
+		}
+
+		if (log.isDebugEnabled()) {
+			log.debug("Unit names before: " + unit.getUnitNames());
 		}
 
 		if (!isSubmit()) {
@@ -57,6 +61,10 @@ public class MeasureUnitEditAction extends FPActionSupport {
 			unitName.setLang(lang);
 			unitName.setName(value);
 			unit.setName(unitName);
+		}
+
+		if (log.isDebugEnabled()) {
+			log.debug("Unit names: " + unit.getUnitNames());
 		}
 
 		measureUnitService.save(unit);

@@ -8,6 +8,8 @@ import java.util.Collections;
 
 public class MeasureUnit extends DomainObjectWithStatus {
 
+	public Set<MeasureUnitName> unitNames = Collections.emptySet();
+
 	/**
 	 * Constructs a new DomainObject.
 	 */
@@ -17,8 +19,6 @@ public class MeasureUnit extends DomainObjectWithStatus {
 	public MeasureUnit(@NotNull Long id) {
 		super(id);
 	}
-
-	public Set<MeasureUnitName> unitNames = Collections.emptySet();
 
 	public Set<MeasureUnitName> getUnitNames() {
 		return unitNames;
