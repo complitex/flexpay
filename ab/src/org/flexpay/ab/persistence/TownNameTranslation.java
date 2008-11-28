@@ -3,6 +3,8 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.ab.util.config.ApplicationConfig;
 
 /**
  * Town name translation
@@ -10,6 +12,14 @@ import org.flexpay.common.persistence.Translation;
 public class TownNameTranslation extends Translation {
 
 	public TownNameTranslation() {
+	}
+
+	public TownNameTranslation(String name) throws Exception {
+		super(name, ApplicationConfig.getDefaultLanguage());
+	}
+
+	public TownNameTranslation(String name, Language language) throws Exception {
+		super(name, language);
 	}
 
 	/**

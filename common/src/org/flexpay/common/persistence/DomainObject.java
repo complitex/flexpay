@@ -45,11 +45,17 @@ public class DomainObject implements Serializable {
 		this.id = id;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		return id == null ? 0 : id.hashCode();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -65,6 +71,9 @@ public class DomainObject implements Serializable {
 		return thisId != null && that.getId() != null && thisId.equals(that.getId());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)

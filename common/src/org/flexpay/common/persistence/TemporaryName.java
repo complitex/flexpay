@@ -97,4 +97,12 @@ public abstract class TemporaryName<TV extends TemporaryValue, T extends Transla
 		return t == null ? null : t.getName();
 	}
 
+	/**
+	 * Check if this value is empty
+	 *
+	 * @return <code>true</code> if this value is empty, or <code>false</code> otherwise
+	 */
+	public boolean isEmpty() {
+		return isNew() && translations == Collections.EMPTY_SET;
+	}
 }

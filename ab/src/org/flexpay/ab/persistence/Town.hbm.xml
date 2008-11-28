@@ -12,13 +12,11 @@
 		<many-to-one name="parent" column="region_id" class="Region" not-null="true" />
 		<property name="status" not-null="true" />
 
-		<set name="nameTemporals" inverse="true" sort="natural" cascade="all"
-			  where="invalid_date='2100-12-31'">
+		<set name="nameTemporals" inverse="true" sort="natural" cascade="all">
 			<key column="town_id" not-null="true" />
 			<one-to-many class="TownNameTemporal" />
 		</set>
-		<set name="typeTemporals" inverse="true" cascade="all" sort="natural"
-			  where="invalid_date='2100-12-31'">
+		<set name="typeTemporals" inverse="true" sort="natural" cascade="all">
 			<key column="town_id" not-null="true" />
 			<one-to-many class="TownTypeTemporal" />
 		</set>
@@ -93,9 +91,9 @@
 			LEFT JOIN FETCH t.nameTemporals nt
 			LEFT JOIN FETCH nt.value nv
 			LEFT JOIN FETCH nv.translations ntr
-			LEFT JOIN FETCH ntr.lang nl
-			LEFT JOIN FETCH nl.translations
-		WHERE t.id=? and nt.invalidDate='2100-12-31'
+			left join fetch t.typeTemporals tt
+			left join fetch tt.value ttt
+		WHERE t.id=? and nt.invalidDate='2100-12-31' and tt.invalidDate='2100-12-31'
 	</query>
 
 	<query name="TownNameTemporal.readFull">

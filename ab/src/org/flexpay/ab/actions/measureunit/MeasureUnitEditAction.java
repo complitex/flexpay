@@ -40,7 +40,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 						   measureUnit : measureUnitService.read(Stub.stub(measureUnit));
 		if (unit == null) {
 			log.debug("Invalid id specified");
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("error.invalid_id"));
 			return REDIRECT_SUCCESS;
 		}
 

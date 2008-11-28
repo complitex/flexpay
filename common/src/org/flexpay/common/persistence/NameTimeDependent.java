@@ -4,7 +4,9 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -17,6 +19,7 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	private static final SortedSet EMPTY_SORTED_SET =
 			Collections.unmodifiableSortedSet(new TreeSet());
 
+	private SortedSet<DI> nameTemporals = EMPTY_SORTED_SET;
 	private TimeLine<T, DI> namesTimeLine;
 
 	public NameTimeDependent() {
@@ -42,6 +45,11 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	 */
 	public void setNamesTimeLine(TimeLine<T, DI> namesTimeLine) {
 		this.namesTimeLine = namesTimeLine;
+
+		if (nameTemporals == EMPTY_SORTED_SET) {
+			nameTemporals = CollectionUtils.treeSet();
+		}
+		nameTemporals.addAll(namesTimeLine.getIntervals());
 	}
 
 	/**
@@ -50,15 +58,35 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	 * @param nameTemporals Value to set for property 'nameTemporals'.
 	 */
 	public void setNameTemporals(SortedSet<DI> nameTemporals) {
+		this.nameTemporals = nameTemporals;
 		namesTimeLine = new TimeLine<T, DI>(nameTemporals);
 	}
 
-	public void addNameTemporal(DI temporal) {
+	protected void addNameTemporal(DI temporal) {
+		TimeLine<T, DI> tlNew;
 		if (namesTimeLine == null) {
-			namesTimeLine = new TimeLine<T, DI>(temporal);
+			tlNew = new TimeLine<T, DI>(temporal);
 		} else {
-			namesTimeLine = DateIntervalUtil.addInterval(namesTimeLine, temporal);
+			tlNew = DateIntervalUtil.addInterval(namesTimeLine, temporal);
 		}
+
+		if (namesTimeLine == tlNew) {
+			// nothing to do, timeline did not changed
+			return;
+		}
+
+		if (nameTemporals == EMPTY_SORTED_SET) {
+			nameTemporals = CollectionUtils.treeSet();
+		}
+
+		// add all new intervals
+		nameTemporals.addAll(tlNew.getIntervals());
+
+		// invalidate old timeline and assign to a new
+//		if (namesTimeLine != null) {
+//			namesTimeLine.invalidate();
+//		}
+		namesTimeLine = tlNew;
 	}
 
 	/**
@@ -66,11 +94,52 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	 *
 	 * @return Value for property 'nameTemporals'.
 	 */
+	@NotNull
 	public SortedSet<DI> getNameTemporals() {
+
+//		for (DI temporal : nameTemporals) {
+//			if (temporal.getValue() != null && temporal.getValue().isNew()) {
+//				temporal.setValue(null);
+//			}
+//		}
+
+		return nameTemporals;
+	}
+
+	/**
+	 * Find temporal for current date
+	 *
+	 * @return Temporal which interval includes specified date, or <code>null</code> if not
+	 *         found
+	 */
+	@Nullable
+	public DI getCurrentNameTemporal() {
+		return getNameTemporalForDate(DateUtil.now());
+	}
+
+	/**
+	 * Find value for date
+	 *
+	 * @param dt Date to get value for
+	 * @return Temporal which interval includes specified date, or <code>null</code> if not
+	 *         found
+	 */
+	@Nullable
+	public DI getNameTemporalForDate(Date dt) {
+
 		if (namesTimeLine == null) {
-			return (SortedSet<DI>) EMPTY_SORTED_SET;
+			return null;
 		}
-		return namesTimeLine.getIntervalsSet();
+
+		List<DI> intervals = namesTimeLine.getIntervals();
+		for (DI di : intervals) {
+			if (DateIntervalUtil.includes(dt, di)) {
+				System.out.println("DI: " + di);
+				return di;
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -80,19 +149,10 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	 * @return Value which interval includes specified date, or <code>null</code> if not
 	 *         found
 	 */
+	@Nullable
 	public T getNameForDate(Date dt) {
-		if (namesTimeLine == null) {
-			return null;
-		}
-
-		List<DI> intervals = namesTimeLine.getIntervals();
-		for (DI di : intervals) {
-			if (DateIntervalUtil.includes(dt, di)) {
-				return di.getValue();
-			}
-		}
-
-		return null;
+		DI temporal = getNameTemporalForDate(dt);
+		return temporal != null ? temporal.getValue() : null;
 	}
 
 	/**
@@ -103,7 +163,8 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	 */
 	@Nullable
 	public T getCurrentName() {
-		return getNameForDate(DateUtil.now());
+		DI temporal = getCurrentNameTemporal();
+		return temporal != null ? temporal.getValue() : null;
 	}
 
 	/**
@@ -118,7 +179,7 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 			return false;
 		}
 
-		NameTimeDependent that = (NameTimeDependent) obj;
+		NameTimeDependent<T, DI> that = (NameTimeDependent<T, DI>) obj;
 
 		return new EqualsBuilder()
 				.append(namesTimeLine, that.namesTimeLine)

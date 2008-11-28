@@ -3,6 +3,7 @@ package org.flexpay.common.util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.NonNls;
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.collections.ArrayStack;
 
 import java.util.*;
 
@@ -110,5 +111,20 @@ public class CollectionUtils {
 		}
 
 		return equalsBuilder.isEquals();
+	}
+
+	/**
+	 * Create ArrayStack
+	 *
+	 * @param objects Objects to put to stack
+	 * @return ArrayStack
+	 */
+	public static ArrayStack arrayStack(@NotNull Object... objects) {
+		ArrayStack stack = new ArrayStack();
+		for (Object o : objects) {
+			stack.push(o);
+		}
+
+		return stack;
 	}
 }

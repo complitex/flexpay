@@ -13,7 +13,8 @@ import org.junit.runners.Suite;
 		TestStreetService.class,
 		TestPersonDao.class,
 		TestI18nQuery.class,
-		TestAddressService.class
+		TestAddressService.class,
+		TestTownService.class
 		})
 public class AllTests {
 

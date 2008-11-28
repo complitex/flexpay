@@ -48,6 +48,8 @@ public class TownName extends TemporaryName<TownName, TownNameTranslation> {
 	 * @return Null representation of this value
 	 */
 	public TownName getEmpty() {
-		return new TownName();
+		TownName empty = new TownName();
+		empty.setObject(getObject());
+		return empty;
 	}
 }

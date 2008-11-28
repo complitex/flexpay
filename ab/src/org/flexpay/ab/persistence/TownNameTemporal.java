@@ -1,6 +1,9 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.NameDateInterval;
+import org.flexpay.ab.util.config.ApplicationConfig;
+
+import java.util.Date;
 
 public class TownNameTemporal extends NameDateInterval<TownName, TownNameTemporal> {
 
@@ -9,6 +12,13 @@ public class TownNameTemporal extends NameDateInterval<TownName, TownNameTempora
 	 */
 	public TownNameTemporal() {
 		super(new TownName());
+	}
+
+	/**
+	 * Constructs a new RegionNameTemporal.
+	 */
+	public TownNameTemporal(Date beginDate, TownName townName) {
+		super(beginDate, ApplicationConfig.getFutureInfinite(), townName);
 	}
 
 	/**
@@ -32,29 +42,10 @@ public class TownNameTemporal extends NameDateInterval<TownName, TownNameTempora
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (!(obj instanceof TownNameTemporal)) {
-			return false;
-		}
-		return super.equals(obj);
+		return obj instanceof TownNameTemporal && super.equals(obj);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
-
-	/**
-	 * Returns a string representation of the object.
-	 *
-	 * @return a string representation of the object.
-	 */
-	@Override
-	public String toString() {
-		return super.toString();
+	public void setTown(Town town) {
+		setObject(town);
 	}
 }

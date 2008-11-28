@@ -87,4 +87,13 @@ public abstract class TemporaryType<TV extends TemporaryValue, T extends Transla
 	public void setTranslation(T translation) {
 		translations = TranslationUtil.setTranslation(translations, this, translation);
 	}
+
+	/**
+	 * Check if this value is empty
+	 *
+	 * @return <code>true</code> if this value is empty, or <code>false</code> otherwise
+	 */
+	public boolean isEmpty() {
+		return translations == Collections.EMPTY_SET;
+	}
 }
