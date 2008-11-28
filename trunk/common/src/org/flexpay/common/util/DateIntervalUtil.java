@@ -153,10 +153,10 @@ public class DateIntervalUtil {
 		DI di;
 		// setup lower bound of interval
 		// the old starts before the new
-		if (diOld.getBegin().compareTo(diNew.getBegin()) < 0) {
+		if (diOld.getBegin().before(diNew.getBegin())) {
 			di = copy(diOld);
 			// new interval begin is inside the old one, add shorter copy of the old interval
-			if (diOld.getEnd().compareTo(diNew.getBegin()) > 0) {
+			if (diOld.getEnd().after(diNew.getBegin())) {
 				// set old interval end is a day before a new starts
 				di.setEnd(DateUtil.previous(diNew.getBegin()));
 				add(dis, di);
@@ -168,7 +168,7 @@ public class DateIntervalUtil {
 		}
 		// the old interval end is after the new one, end current interval and
 		// create a short copy of the old interval
-		if (diOld.getEnd().compareTo(diNew.getEnd()) > 0) {
+		if (diOld.getEnd().after(diNew.getEnd())) {
 			di.setEnd(diNew.getEnd());
 			add(dis, di);
 			di = copy(diOld);
@@ -232,6 +232,7 @@ public class DateIntervalUtil {
 	TimeLine<T, DI> addInterval(TimeLine<T, DI> tl, DI di) {
 		List<DI> tlNew = new ArrayList<DI>();
 		for (DI diOld : tl.getIntervals()) {
+			diOld.invalidate();
 			tlNew.addAll(intersect(diOld, di));
 		}
 

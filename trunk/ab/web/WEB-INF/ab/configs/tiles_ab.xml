@@ -57,11 +57,6 @@
 	</definition>
 
 	<!-- Towns -->
-	<definition name="ab.town.create" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.town.create.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_create.jsp" />
-	</definition>
-
 	<definition name="ab.town.view" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.town.view.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_view.jsp" />

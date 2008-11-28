@@ -14,18 +14,6 @@
 			<result type="tiles">ab.towns.list</result>
 		</action>
 
-		<action name="townCreate" class="townCreateAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">TOWN_ADD</param>
-			</interceptor-ref>
-			<result type="redirect-action">
-				<param name="actionName">townView</param>
-				<param name="parse">true</param>
-				<param name="object.id">${object.id}</param>
-			</result>
-			<result type="tiles" name="input">ab.town.create</result>
-		</action>
-
 		<action name="townView" class="townViewAction">
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">TOWN_READ</param>
@@ -38,10 +26,10 @@
 			<interceptor-ref name="commonDefaultStack">
 				<param name="flexpayRoles.allowedRoles">TOWN_CHANGE</param>
 			</interceptor-ref>
-			<result type="redirect-action">
+			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">townView</param>
 				<param name="parse">true</param>
-				<param name="object.id">${object.id}</param>
+				<param name="object.id">${town.id}</param>
 			</result>
 			<result type="tiles" name="input">ab.town.edit</result>
 		</action>

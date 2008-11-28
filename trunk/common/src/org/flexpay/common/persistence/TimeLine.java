@@ -75,6 +75,15 @@ public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI
 	}
 
 	/**
+	 * Invalid all intervals in a timeline
+	 */
+	public void invalidate() {
+		for (DI di : getIntervals()) {
+			di.invalidate();
+		}
+	}
+
+	/**
 	 * Getter for property 'intervals'.
 	 *
 	 * @return Value for property 'intervals'.

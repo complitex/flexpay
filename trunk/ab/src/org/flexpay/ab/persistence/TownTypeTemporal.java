@@ -1,13 +1,15 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.common.persistence.DateInterval;
+import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.TypeDateInterval;
+
+import java.util.Date;
 
 /**
  * Temporal value of town type
  */
-public class TownTypeTemporal extends DateInterval<TownType, TownTypeTemporal> {
-
-	private Town town;
+public class TownTypeTemporal extends TypeDateInterval<TownType, TownTypeTemporal> {
 
 	/**
 	 * Constructs a new TownTypeTemporal.
@@ -19,10 +21,28 @@ public class TownTypeTemporal extends DateInterval<TownType, TownTypeTemporal> {
 	/**
 	 * Copy constructs a new TownTypeTemporal.
 	 *
-	 * @param temporal Another name temporal
+	 * @param di Another name temporal
 	 */
-	private TownTypeTemporal(TownTypeTemporal temporal) {
-		super(temporal.getBegin(), temporal.getEnd(), temporal.getValue());
+	private TownTypeTemporal(TypeDateInterval<TownType, TownTypeTemporal> di) {
+		super(di.getBegin(), di.getEnd(), di.getValue());
+	}
+
+	public TownTypeTemporal(Date beginDate, TownType townType) {
+		super(beginDate, ApplicationConfig.getFutureInfinite(), townType);
+	}
+
+	public TownTypeTemporal(Date beginDate, Stub<TownType> typeStub) {
+		this(beginDate, new TownType(typeStub.getId()));
+	}
+
+	/**
+	 * Create a copy of interval
+	 *
+	 * @param di Name date interval
+	 * @return a copy
+	 */
+	protected TownTypeTemporal doGetCopy(TypeDateInterval<TownType, TownTypeTemporal> di) {
+		return new TownTypeTemporal(di);
 	}
 
 	/**
@@ -31,7 +51,7 @@ public class TownTypeTemporal extends DateInterval<TownType, TownTypeTemporal> {
 	 * @return Value for property 'town'.
 	 */
 	public Town getTown() {
-		return town;
+		return (Town) getObject();
 	}
 
 	/**
@@ -40,19 +60,7 @@ public class TownTypeTemporal extends DateInterval<TownType, TownTypeTemporal> {
 	 * @param town Value to set for property 'town'.
 	 */
 	public void setTown(Town town) {
-		this.town = town;
-	}
-
-	/**
-	 * Create a new copy of this interval.
-	 *
-	 * @return Date interval copy
-	 */
-	public TownTypeTemporal copy() {
-		TownTypeTemporal temporal = new TownTypeTemporal(this);
-		temporal.setTown(getTown());
-
-		return temporal;
+		setObject(town);
 	}
 
 	/**
@@ -62,7 +70,7 @@ public class TownTypeTemporal extends DateInterval<TownType, TownTypeTemporal> {
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (! (obj instanceof TownTypeTemporal)) {
+		} else if (!(obj instanceof TownTypeTemporal)) {
 			return false;
 		}
 		return super.equals(obj);

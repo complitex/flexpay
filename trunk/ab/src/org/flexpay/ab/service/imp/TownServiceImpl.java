@@ -1,6 +1,7 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.RegionFilter;
@@ -18,12 +19,14 @@ import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+@Transactional (readOnly = true)
 public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		TownNameTranslation, TownName, TownNameTemporal, Town, Region>
 		implements TownService {
@@ -342,5 +345,63 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		}
 
 		return object;
+	}
+
+	/**
+	 * Create or update Town object
+	 *
+	 * @param town Town object to save
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@Transactional (readOnly = false)
+	public void save(@NotNull Town town) throws FlexPayExceptionContainer {
+		validate(town);
+		if (town.isNew()) {
+			town.setId(null);
+			townDao.create(town);
+		} else {
+			townDao.update(town);
+		}
+	}
+
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(@NotNull Town town) throws FlexPayExceptionContainer {
+		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
+
+		TownNameTemporal nameTmprl = town.getCurrentNameTemporal();
+		if (nameTmprl == null || nameTmprl.getValue() == null) {
+			ex.addException(new FlexPayException("No name", "ab.error.no_current_name"));
+		} else {
+			validate(nameTmprl.getValue(), ex);
+		}
+
+		TownTypeTemporal typeTmprl = town.getCurrentTypeTemporal();
+		if (typeTmprl == null || typeTmprl.getValue() == null) {
+			ex.addException(new FlexPayException("No type", "ab.error.no_current_type"));
+		}
+
+		if (town.getRegion() == null) {
+			ex.addException(new FlexPayException("No region", "ab.error.town.no_region"));
+		}
+
+		if (ex.isNotEmpty()) {
+			throw ex;
+		}
+	}
+
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(@NotNull TownName townName, @NotNull FlexPayExceptionContainer ex) {
+
+		boolean defaultLangTranslationFound = false;
+		for (TownNameTranslation translation : townName.getTranslations()) {
+			if (translation.getLang().isDefault() && StringUtils.isNotEmpty(translation.getName())) {
+				defaultLangTranslationFound = true;
+			}
+		}
+
+		if (!defaultLangTranslationFound) {
+			ex.addException(new FlexPayException("No default translation", "error.no_default_translation"));
+		}
 	}
 }

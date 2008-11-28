@@ -42,18 +42,15 @@
 		  p:parentService-ref="countryService" />
 
 	<!-- Towns -->
-	<bean id="townCreateAction" scope="prototype"
-		  class="org.flexpay.ab.actions.town.TownCreateAction"
-		  p:nameTimeDependentService-ref="townService"
-		  p:parentService-ref="regionService" />
-
 	<bean id="townViewAction" scope="prototype"
 		  class="org.flexpay.ab.actions.town.TownViewAction"
 		  p:nameTimeDependentService-ref="townService" />
 
 	<bean id="townEditAction" scope="prototype"
 		  class="org.flexpay.ab.actions.town.TownEditSimpleAction"
-		  p:nameTimeDependentService-ref="townService" />
+		  p:townTypeService-ref="townTypeService"
+		  p:townService-ref="townService"
+		  p:regionService-ref="regionService" />
 
 	<bean id="townsListAction" scope="prototype"
 		  class="org.flexpay.ab.actions.town.TownsListAction"

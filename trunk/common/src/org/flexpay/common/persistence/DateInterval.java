@@ -1,9 +1,6 @@
 package org.flexpay.common.persistence;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.builder.*;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -14,6 +11,9 @@ import java.util.Date;
 
 /**
  * Date interval is a interval of time with day granularity
+ *
+ * @param <T> Temporary value type
+ * @param <DI> DateInterval type
  */
 public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
 		extends DomainObject implements Comparable<DI> {
@@ -54,7 +54,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 
 		if (this.begin.compareTo(this.end) > 0) {
 			throw new IllegalArgumentException("Dates specified are invalid for interval: [" +
-				this.begin + ", " + this.end + "]");
+											   this.begin + ", " + this.end + "]");
 		}
 	}
 
@@ -77,7 +77,8 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 		doSetBegin(this, begin);
 	}
 
-	private static void doSetBegin(DateInterval di, Date begin) {
+	private static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
+	void doSetBegin(DateInterval<T, DI> di, Date begin) {
 		Date pastInfinite = ApplicationConfig.getPastInfinite();
 		if (begin == null || begin.compareTo(pastInfinite) < 0) {
 			di.begin = pastInfinite;
@@ -105,7 +106,9 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 		doSetEnd(this, end);
 	}
 
-	private static void doSetEnd(DateInterval di, Date end) {
+
+	private static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
+	void doSetEnd(DateInterval<T, DI> di, Date end) {
 		Date futureInfinite = ApplicationConfig.getFutureInfinite();
 		if (end == null || end.compareTo(futureInfinite) > 0) {
 			di.end = futureInfinite;
@@ -161,7 +164,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	 */
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
 				.append("Begin", DateUtil.format(begin))
 				.append("End", DateUtil.format(end))
 				.append("Created", DateUtil.format(createDate))
@@ -195,7 +198,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 			return false;
 		}
 
-		DateInterval that = (DateInterval) obj;
+		DateInterval<T, DI> that = (DateInterval<T, DI>) obj;
 		return new EqualsBuilder()
 				.append(begin, that.getBegin())
 				.append(end, that.getEnd())
@@ -248,12 +251,37 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	 * @param di Date interval
 	 * @return <code>true</code> if interval datum are equal
 	 */
-	public boolean dataEquals(DateInterval di) {
+	public boolean dataEquals(DateInterval<T, DI> di) {
 		return (value == null && di.getValue() == null) ||
 			   (value != null && value.equals(di.getValue()));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public int compareTo(DI o) {
-		return begin.compareTo(o.getBegin());
+
+		if (this == o) {
+			return 0;
+		}
+
+		CompareToBuilder builder = new CompareToBuilder()
+				.append(begin, o.getBegin())
+				.append(end, o.getEnd())
+				.append(createDate, o.getCreateDate())
+				.append(invalidDate, o.getInvalidDate());
+
+		if (value == null && o.getValue() == null) {
+			return builder.toComparison();
+		}
+		if (value == null) {
+			return builder.append(false, true).toComparison();
+		}
+		if (o.getValue() == null) {
+			return builder.append(true, false).toComparison();
+		}
+		builder.append(value.isEmpty() == o.getValue().isEmpty(), true);
+
+		return builder.toComparison();
 	}
 }

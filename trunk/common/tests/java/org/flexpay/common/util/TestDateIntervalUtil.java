@@ -192,6 +192,15 @@ class Price extends TemporaryValue<Price> {
 	}
 
 	/**
+	 * Check if this value is empty
+	 *
+	 * @return <code>true</code> if this value is empty, or <code>false</code> otherwise
+	 */
+	public boolean isEmpty() {
+		return false;
+	}
+
+	/**
 	 * Getter for property 'value'.
 	 *
 	 * @return Value for property 'value'.
