@@ -18,7 +18,7 @@
 		<property name="spRegistryDao" ref="spRegistryDao" />
 		<property name="registryDaoExt" ref="spRegistryDaoExt" />
 		<property name="spRegistryRecordService" ref="registryRecordService" />
-		<property name="organisationDao" ref="organisationDao" />
+		<property name="organizationDao" ref="organizationDao" />
 		<property name="registryContainerDao" ref="registryContainerDao" />
 	</bean>
 
@@ -63,7 +63,7 @@
 		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
 		  p:spRegistryRecordService-ref="registryRecordService"
 		  p:registryTypeService-ref="registryTypeService"
-		  p:organisationService-ref="organisationService"
+		  p:organizationService-ref="organizationService"
 		  p:spService-ref="spService"
 		  p:registryWorkflowManager-ref="registryWorkflowManager"
 		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
@@ -86,7 +86,7 @@
 		  p:spService-ref="spService"
 		  p:spFileService-ref="registryFileService"
 		  p:quittanceService-ref="quittanceService"
-		  p:organisationService-ref="organisationService"
+		  p:organizationService-ref="organizationService"
 		  p:reportPeriodService-ref="reportPeriodService"
 		  p:consumerService-ref="consumerService"
 		  p:consumerInfoService-ref="consumerInfoService"
@@ -101,17 +101,21 @@
 	<bean id="consumerInfoService" class="org.flexpay.eirc.service.imp.ConsumerInfoServiceImpl"
 		  p:consumerInfoDao-ref="consumerInfoDao" />
 
-	<bean id="organisationService" class="org.flexpay.eirc.service.imp.OrganisationServiceImpl"
-		  p:organisationDao-ref="organisationDao" />
+	<bean id="organizationService" class="org.flexpay.eirc.service.imp.OrganizationServiceImpl"
+		  p:organizationDao-ref="organizationDao" />
 
 	<bean id="subdivisionService" class="org.flexpay.eirc.service.imp.SubdivisionServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:subdivisionDao-ref="subdivisionDao"
-		  p:organisationService-ref="organisationService" />
+		  p:organizationService-ref="organizationService" />
 
 	<bean id="bankService" class="org.flexpay.eirc.service.imp.BankServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:bankDao-ref="bankDao" />
+
+    <bean id="serviceOrganizationService" class="org.flexpay.eirc.service.imp.ServiceOrganizationServiceImpl"
+          p:sessionUtils-ref="sessionUtils"
+          p:serviceOrganizationDao-ref="serviceOrganizationDao" />
 
 	<bean id="serviceTypeService" class="org.flexpay.eirc.service.imp.ServiceTypeServiceImpl"
 		  p:serviceDaoExt-ref="serviceDaoExt"
@@ -144,10 +148,6 @@
 		  p:classToTypeRegistry-ref="typeRegistryEirc"
 		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
 		  p:registryWorkflowManager-ref="registryWorkflowManager" />
-
-	<bean id="serviceOrganisationService" class="org.flexpay.eirc.service.imp.ServiceOrganisationServiceImpl">
-		<property name="serviceOrganisationDao" ref="serviceOrganisationDao" />
-	</bean>
 
 	<bean id="spRegistryStatusService" class="org.flexpay.eirc.service.imp.SpRegistryStatusServiceImpl">
 		<property name="spRegistryStatusDao" ref="spRegistryStatusDao" />

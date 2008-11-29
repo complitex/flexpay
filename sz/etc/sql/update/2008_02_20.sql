@@ -2,7 +2,7 @@
         drop
         foreign key FKB610981B47DC07F9;
 
-    alter table eirc_organisations_tbl
+    alter table eirc_organizations_tbl
         drop
         foreign key FK9AA6756E1AE9F4D;
 
@@ -48,7 +48,7 @@
 
     drop table if exists eirc_account_statuses_tbl;
 
-    drop table if exists eirc_organisations_tbl;
+    drop table if exists eirc_organizations_tbl;
 
     drop table if exists eirc_personal_account_records_tbl;
 
@@ -62,7 +62,7 @@
 
     drop table if exists eirc_services_tbl;
 
-	drop table if exists sz_organisations_tbl;
+	drop table if exists sz_organizations_tbl;
 
         create table eirc_account_statuses_tbl (
             id bigint not null auto_increment,
@@ -71,7 +71,7 @@
             primary key (id)
         );
 
-        create table eirc_organisations_tbl (
+        create table eirc_organizations_tbl (
             id bigint not null auto_increment,
             status integer not null,
             inn varchar(255) not null,
@@ -105,7 +105,7 @@
 
         create table eirc_service_providers_tbl (
             id bigint not null auto_increment,
-            organisation_id bigint not null,
+            organization_id bigint not null,
             description varchar(255) not null,
             primary key (id)
         );

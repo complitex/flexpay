@@ -4,9 +4,9 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.filters.OrganisationFilter;
+import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
-import org.flexpay.eirc.service.OrganisationService;
+import org.flexpay.eirc.service.OrganizationService;
 import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.SpRegistryTypeService;
 import org.apache.commons.lang.time.DateUtils;
@@ -17,8 +17,8 @@ import java.util.List;
 
 public class RegistriesListAction extends FPActionSupport {
 
-	private OrganisationFilter senderOrganisationFilter = new OrganisationFilter();
-	private OrganisationFilter recipientOrganisationFilter = new OrganisationFilter();
+	private OrganizationFilter senderOrganizationFilter = new OrganizationFilter();
+	private OrganizationFilter recipientOrganizationFilter = new OrganizationFilter();
 	private RegistryTypeFilter registryTypeFilter = new RegistryTypeFilter();
 	private Date fromDate = DateUtils.addMonths(DateUtil.currentMonth(), -2);
 	private Date tillDate = new Date();
@@ -26,19 +26,19 @@ public class RegistriesListAction extends FPActionSupport {
 
 	private List<SpRegistry> registries;
 
-	private OrganisationService organisationService;
+	private OrganizationService organizationService;
 	private RegistryService registryService;
 	private SpRegistryTypeService registryTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
 
-		organisationService.initFilter(senderOrganisationFilter);
-		organisationService.initFilter(recipientOrganisationFilter);
+		organizationService.initFilter(senderOrganizationFilter);
+		organizationService.initFilter(recipientOrganizationFilter);
 
 		registryTypeService.initFilter(registryTypeFilter);
 
-		registries = registryService.findObjects(senderOrganisationFilter, recipientOrganisationFilter,
+		registries = registryService.findObjects(senderOrganizationFilter, recipientOrganizationFilter,
 				registryTypeFilter, fromDate, tillDate, pager);
 
 		return SUCCESS;
@@ -65,20 +65,20 @@ public class RegistriesListAction extends FPActionSupport {
 		this.registries = registries;
 	}
 
-	public OrganisationFilter getSenderOrganisationFilter() {
-		return senderOrganisationFilter;
+	public OrganizationFilter getSenderOrganizationFilter() {
+		return senderOrganizationFilter;
 	}
 
-	public void setSenderOrganisationFilter(OrganisationFilter senderOrganisationFilter) {
-		this.senderOrganisationFilter = senderOrganisationFilter;
+	public void setSenderOrganizationFilter(OrganizationFilter senderOrganizationFilter) {
+		this.senderOrganizationFilter = senderOrganizationFilter;
 	}
 
-	public OrganisationFilter getRecipientOrganisationFilter() {
-		return recipientOrganisationFilter;
+	public OrganizationFilter getRecipientOrganizationFilter() {
+		return recipientOrganizationFilter;
 	}
 
-	public void setRecipientOrganisationFilter(OrganisationFilter recipientOrganisationFilter) {
-		this.recipientOrganisationFilter = recipientOrganisationFilter;
+	public void setRecipientOrganizationFilter(OrganizationFilter recipientOrganizationFilter) {
+		this.recipientOrganizationFilter = recipientOrganizationFilter;
 	}
 
 	public RegistryTypeFilter getRegistryTypeFilter() {
@@ -109,8 +109,8 @@ public class RegistriesListAction extends FPActionSupport {
 		this.registryService = registryService;
 	}
 
-	public void setOrganisationService(OrganisationService organisationService) {
-		this.organisationService = organisationService;
+	public void setOrganizationService(OrganizationService organizationService) {
+		this.organizationService = organizationService;
 	}
 
 	public void setRegistryTypeService(SpRegistryTypeService registryTypeService) {

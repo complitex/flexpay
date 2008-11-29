@@ -16,7 +16,7 @@ import org.flexpay.eirc.dao.ServiceDao;
 import org.flexpay.eirc.dao.ServiceDaoExt;
 import org.flexpay.eirc.dao.ServiceProviderDao;
 import org.flexpay.eirc.persistence.*;
-import org.flexpay.eirc.persistence.filters.OrganisationFilter;
+import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.ParentServiceFilterMarker;
 import org.flexpay.eirc.persistence.filters.ServiceFilter;
 import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
@@ -128,14 +128,14 @@ public class SPServiceImpl implements SPService {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		if (log.isInfoEnabled()) {
-			log.info("Provider organisation: " + sp.getOrganisation());
+			log.info("Provider organization: " + sp.getOrganization());
 		}
 
-		if (sp.getOrganisation() == null || sp.getOrganisation().isNew()) {
+		if (sp.getOrganization() == null || sp.getOrganization().isNew()) {
 			container.addException(new FlexPayException(
-					"No organisation selected", "eirc.error.service_provider.no_organisation_specified"));
+					"No organization selected", "eirc.error.service_provider.no_organization_specified"));
 		}
-		// todo validate organisation id was not changed for existing provider
+		// todo validate organization id was not changed for existing provider
 
 		boolean defaultDescFound = false;
 		for (ServiceProviderDescription description : sp.getDescriptions()) {
@@ -154,20 +154,20 @@ public class SPServiceImpl implements SPService {
 	}
 
 	/**
-	 * Initialize filter with organisations that do not have active service providers
+	 * Initialize filter with organizations that do not have active service providers
 	 * <p/>
 	 * todo: implement in a more efficient way
 	 *
-	 * @param organisationFilter filter to init
+	 * @param organizationFilter filter to init
 	 * @param sp				 Service Provider
 	 * @return filter
 	 */
-	public OrganisationFilter initOrganisationFilter(OrganisationFilter organisationFilter, ServiceProvider sp) {
-		List<Organisation> organisations = serviceProviderDao.findProviderlessOrgs();
-		List<Organisation> providerlessOrgs = new ArrayList<Organisation>();
-		Long orgId = sp.getOrganisation() != null ? sp.getOrganisation().getId() : null;
+	public OrganizationFilter initOrganizationFilter(OrganizationFilter organizationFilter, ServiceProvider sp) {
+		List<Organization> organizations = serviceProviderDao.findProviderlessOrgs();
+		List<Organization> providerlessOrgs = new ArrayList<Organization>();
+		Long orgId = sp.getOrganization() != null ? sp.getOrganization().getId() : null;
 		OUTER:
-		for (Organisation org : organisations) {
+		for (Organization org : organizations) {
 			if (org.getId().equals(orgId)) {
 				providerlessOrgs.add(org);
 				continue;
@@ -180,14 +180,14 @@ public class SPServiceImpl implements SPService {
 			providerlessOrgs.add(org);
 		}
 
-		organisationFilter.setOrganisations(providerlessOrgs);
+		organizationFilter.setOrganizations(providerlessOrgs);
 		if (orgId != null && !orgId.equals(0L)) {
-			organisationFilter.setReadOnly(true);
-			// todo ensure organisation really exists
-			organisationFilter.setSelectedId(orgId);
+			organizationFilter.setReadOnly(true);
+			// todo ensure organization really exists
+			organizationFilter.setSelectedId(orgId);
 		}
 
-		return organisationFilter;
+		return organizationFilter;
 	}
 
 	/**

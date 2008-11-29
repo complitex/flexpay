@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class BankAccount extends DomainObjectWithStatus {
 
 	private Bank bank;
-	private Organisation juridicalPerson;
+	private Organization juridicalPerson;
 	private String accountNumber;
 	private boolean isDefault = false;
 
@@ -37,11 +37,11 @@ public class BankAccount extends DomainObjectWithStatus {
 	}
 
 	@NotNull
-	public Organisation getJuridicalPerson() {
+	public Organization getJuridicalPerson() {
 		return juridicalPerson;
 	}
 
-	public void setJuridicalPerson(@NotNull Organisation juridicalPerson) {
+	public void setJuridicalPerson(@NotNull Organization juridicalPerson) {
 		this.juridicalPerson = juridicalPerson;
 	}
 

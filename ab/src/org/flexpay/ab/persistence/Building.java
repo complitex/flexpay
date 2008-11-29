@@ -70,7 +70,7 @@ public class Building extends DomainObjectWithStatus {
 	}
 
 	public void addBuildings(@NotNull Buildings buildings) {
-		if (buildingses == Collections.EMPTY_SET) {
+		if (Collections.emptySet().equals(buildingses)) {
 			buildingses = new HashSet<Buildings>();
 		}
 

@@ -4,9 +4,9 @@
 	<s:hidden name="provider.id" />
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr valign="top" class="cols_1">
-            <td class="col"><s:text name="eirc.organisation"/>:</td>
+            <td class="col"><s:text name="eirc.organization"/>:</td>
             <td class="col">
-                <%@include file="../filters/organisation_filter.jsp" %>
+                <%@include file="../filters/organization_filter.jsp" %>
             </td>
         </tr>
 		<tr valign="top" class="cols_1">

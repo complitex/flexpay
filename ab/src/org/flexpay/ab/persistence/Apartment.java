@@ -92,7 +92,7 @@ public class Apartment extends DomainObjectWithStatus {
 		}
 
 		// Check if apartment numbers is not empty (Collections.EMPTY_SET)
-		if (apartmentNumbers == Collections.EMPTY_SET) {
+		if (Collections.emptySet().equals(apartmentNumbers)) {
 			apartmentNumbers = set();
 		}
 

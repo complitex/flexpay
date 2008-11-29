@@ -28,14 +28,14 @@
 	<bean id="quittanceGenerateAction"
 		  class="org.flexpay.eirc.actions.quittance.QuittanceGenerateAction"
 		  scope="prototype"
-		  p:serviceOrganisationService-ref="serviceOrganisationService"
+		  p:serviceOrganizationService-ref="serviceOrganizationService"
 		  p:processManager-ref="processManager" />
 
 	<bean id="printTicketsAction"
 		  class="org.flexpay.eirc.actions.quittance.QuittanceGeneratePDFAction"
 		  scope="prototype"
 		  p:processManager-ref="processManager"
-		  p:serviceOrganisationService-ref="serviceOrganisationService" />
+		  p:serviceOrganizationService-ref="serviceOrganizationService" />
 
 	<bean id="quittanceSearchAction"
 		  class="org.flexpay.eirc.actions.quittance.QuittanceSearchAction"
@@ -53,7 +53,7 @@
 	<bean id="registriesListAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.RegistriesListAction">
 		<property name="registryService" ref="registryService" />
-		<property name="organisationService" ref="organisationService" />
+		<property name="organizationService" ref="organizationService" />
 		<property name="registryTypeService" ref="registryTypeService" />
 	</bean>
 
@@ -73,45 +73,59 @@
 		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
-	<bean id="organisationsListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.OrganisationsListAction"
-		  p:organisationService-ref="organisationService" />
+	<bean id="organizationsListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.OrganizationsListAction"
+		  p:organizationService-ref="organizationService" />
 
-	<bean id="organisationDeleteAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.OrganisationDeleteAction"
-		  p:organisationService-ref="organisationService" />
+	<bean id="organizationDeleteAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.OrganizationDeleteAction"
+		  p:organizationService-ref="organizationService" />
 
-	<bean id="organisationEditAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.OrganisationEditAction"
-		  p:organisationService-ref="organisationService" />
+	<bean id="organizationEditAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.OrganizationEditAction"
+		  p:organizationService-ref="organizationService" />
 
 	<!-- Bank actions -->
 	<bean id="banksListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.BanksListAction"
+		  class="org.flexpay.eirc.actions.organization.BanksListAction"
 		  p:bankService-ref="bankService" />
 
 	<bean id="bankDeleteAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.BankDeleteAction"
+		  class="org.flexpay.eirc.actions.organization.BankDeleteAction"
 		  p:bankService-ref="bankService" />
 
 	<bean id="bankEditAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.BankEditAction"
-		  p:organisationService-ref="organisationService"
+		  class="org.flexpay.eirc.actions.organization.BankEditAction"
+		  p:organizationService-ref="organizationService"
 		  p:bankService-ref="bankService" />
+
+    <!-- Service organization actions -->
+    <bean id="serviceOrganizationsListAction" scope="prototype"
+          class="org.flexpay.eirc.actions.organization.ServiceOrganizationsListAction"
+          p:serviceOrganizationService-ref="serviceOrganizationService" />
+
+    <bean id="serviceOrganizationDeleteAction" scope="prototype"
+          class="org.flexpay.eirc.actions.organization.ServiceOrganizationDeleteAction"
+          p:serviceOrganizationService-ref="serviceOrganizationService" />
+
+    <bean id="serviceOrganizationEditAction" scope="prototype"
+          class="org.flexpay.eirc.actions.organization.ServiceOrganizationEditAction"
+          p:organizationService-ref="organizationService"
+          p:serviceOrganizationService-ref="serviceOrganizationService" />
 
 	<!-- Subdivision actions -->
 	<bean id="subdivisionsListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.SubdivisionsListAction"
-		  p:organisationService-ref="organisationService"
+		  class="org.flexpay.eirc.actions.organization.SubdivisionsListAction"
+		  p:organizationService-ref="organizationService"
 		  p:subdivisionService-ref="subdivisionService" />
 
 	<bean id="subdivisionDeleteAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.SubdivisionDeleteAction"
+		  class="org.flexpay.eirc.actions.organization.SubdivisionDeleteAction"
 		  p:subdivisionService-ref="subdivisionService" />
 
 	<bean id="subdivisionEditAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organisation.SubdivisionEditAction"
-		  p:organisationService-ref="organisationService"
+		  class="org.flexpay.eirc.actions.organization.SubdivisionEditAction"
+		  p:organizationService-ref="organizationService"
 		  p:subdivisionService-ref="subdivisionService" />
 
 	<!-- Service provider actions -->
@@ -125,7 +139,7 @@
 
 	<bean id="serviceProviderEditAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.serviceprovider.ServiceProviderEditAction"
-		  p:organisationService-ref="organisationService"
+		  p:organizationService-ref="organizationService"
 		  p:spService-ref="spService" />
 
 	<!-- Services -->

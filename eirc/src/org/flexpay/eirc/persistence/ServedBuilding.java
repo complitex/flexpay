@@ -6,18 +6,18 @@ import static org.flexpay.common.persistence.Stub.stub;
 
 public class ServedBuilding extends Building {
 
-	private ServiceOrganisation serviceOrganisation;
+	private ServiceOrganization serviceOrganization;
 
-	public ServiceOrganisation getServiceOrganisation() {
-		return serviceOrganisation;
+	public ServiceOrganization getServiceOrganization() {
+		return serviceOrganization;
 	}
 
-	public void setServiceOrganisation(ServiceOrganisation serviceOrganisation) {
-		this.serviceOrganisation = serviceOrganisation;
+	public void setServiceOrganization(ServiceOrganization serviceOrganization) {
+		this.serviceOrganization = serviceOrganization;
 	}
 
-	public Stub<ServiceOrganisation> getServiceOrganisationStub() {
-		return stub(serviceOrganisation);
+	public Stub<ServiceOrganization> getServiceOrganizationStub() {
+		return stub(serviceOrganization);
 	}
 
 }

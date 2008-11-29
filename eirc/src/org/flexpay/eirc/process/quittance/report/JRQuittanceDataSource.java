@@ -20,7 +20,7 @@ import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.process.quittance.report.util.QuittanceInfoGenerator;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.SPService;
-import org.flexpay.eirc.service.ServiceOrganisationService;
+import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +42,7 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 	private QuittanceService quittanceService;
 	private QuittanceNumberService quittanceNumberService;
 	private ServiceTypeService serviceTypeService;
-	private ServiceOrganisationService serviceOrganisationService;
+	private ServiceOrganizationService serviceOrganizationService;
 
 	private Collection<QuittanceInfo> data = null;
 	private Iterator<QuittanceInfo> iterator = null;
@@ -143,7 +143,7 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 			QuittanceInfoGenerator.buildInfo(q, info);
 			initHabitants(q, info);
 			initPersonFIO(q, info);
-			initServiceOrganisation(q, info);
+			initServiceOrganization(q, info);
 			initDates(q, info);
 			initQuittanceNumber(q, info);
 
@@ -242,19 +242,19 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 		info.setOperationDate(q.getCreationDate());
 	}
 
-	private void initServiceOrganisation(Quittance q, QuittanceInfo info) throws Exception {
+	private void initServiceOrganization(Quittance q, QuittanceInfo info) throws Exception {
 
 		ServedBuilding building = (ServedBuilding) q.getEircAccount().getApartment().getBuilding();
-		ServiceOrganisation org = serviceOrganisationService.read(building.getServiceOrganisationStub());
+		ServiceOrganization org = serviceOrganizationService.read(building.getServiceOrganizationStub());
 
-		info.setServiceOrganisationName(org.getName());
+		info.setServiceOrganizationName(org.getName());
 
 		// kvarplata
 		ServiceType defaultService = serviceTypeService.getServiceType(1);
 		for (QuittanceDetails details : q.getQuittanceDetails()) {
 			if (details.getConsumer().getService().getServiceType().equals(defaultService)) {
 				String accountNumber = details.getConsumer().getExternalAccountNumber();
-				info.setServiceOrganisationAccount(accountNumber);
+				info.setServiceOrganizationAccount(accountNumber);
 			}
 		}
 	}
@@ -397,8 +397,8 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 		this.addressService = addressService;
 	}
 
-	public void setServiceOrganisationService(ServiceOrganisationService serviceOrganisationService) {
-		this.serviceOrganisationService = serviceOrganisationService;
+	public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
+		this.serviceOrganizationService = serviceOrganizationService;
 	}
 
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {

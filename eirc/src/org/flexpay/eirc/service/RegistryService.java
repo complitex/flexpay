@@ -4,8 +4,8 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.Organisation;
-import org.flexpay.eirc.persistence.filters.OrganisationFilter;
+import org.flexpay.eirc.persistence.Organization;
+import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -67,15 +67,15 @@ public interface RegistryService {
 	/**
 	 * Find registries
 	 *
-	 * @param senderFilter	sender organisation filter
-	 * @param recipientFilter recipient organisation filter
+	 * @param senderFilter	sender organization filter
+	 * @param recipientFilter recipient organization filter
 	 * @param typeFilter	  registry type filter
 	 * @param fromDate		registry generation start date
 	 * @param tillDate		registry generation end date
 	 * @param pager		   Page
 	 * @return list of registries matching specified criteria
 	 */
-	List<SpRegistry> findObjects(OrganisationFilter senderFilter, OrganisationFilter recipientFilter,
+	List<SpRegistry> findObjects(OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
 								 RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page pager);
 
 	/**
@@ -90,9 +90,9 @@ public interface RegistryService {
 	 * Find registry recieved from specified sender with a specified number
 	 *
 	 * @param registryNumber Registry number to search for
-	 * @param senderStub Sender organisation stub
+	 * @param senderStub Sender organization stub
 	 * @return Registry reference if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	SpRegistry getRegistryByNumber(@NotNull Long registryNumber, @NotNull Stub<Organisation> senderStub);
+	SpRegistry getRegistryByNumber(@NotNull Long registryNumber, @NotNull Stub<Organization> senderStub);
 }

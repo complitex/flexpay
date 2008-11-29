@@ -292,6 +292,19 @@
 		<role-name>EIRC_BANK_DELETE</role-name>
 	</security-role>
 
+    <security-role>
+        <role-name>EIRC_SERVICE_ORGANIZATION_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>EIRC_SERVICE_ORGANIZATION_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>EIRC_SERVICE_ORGANIZATION_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>EIRC_SERVICE_ORGANIZATION_DELETE</role-name>
+    </security-role>
+
 	<security-role>
 		<role-name>EIRC_SERVICE_PROVIDER_READ</role-name>
 	</security-role>

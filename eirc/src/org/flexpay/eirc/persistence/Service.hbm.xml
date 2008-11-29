@@ -10,9 +10,9 @@
 			<generator class="native"/>
 		</id>
 		<property name="status" not-null="true"/>
-		<many-to-one name="organisation" class="Organisation" foreign-key="FK_eirc_service_provider_organisation">
-			<column name="organisation_id" not-null="true">
-				<comment>Organisation reference</comment>
+		<many-to-one name="organization" class="Organization" foreign-key="FK_eirc_service_provider_organization">
+			<column name="organization_id" not-null="true">
+				<comment>Organization reference</comment>
 			</column>
 		</many-to-one>
 		<many-to-one name="dataSourceDescription" foreign-key="FK_eirc_service_provider_data_source_description"
@@ -154,22 +154,22 @@
 		</properties>
 	</class>
 
-	<query name="ServiceProvider.findByOrganisationId">
-		from ServiceProvider where organisation.id=?
+	<query name="ServiceProvider.findByOrganizationId">
+		from ServiceProvider where organization.id=?
 	</query>
 
 	<query name="ServiceProvider.readFull">
 		select distinct o
 		from ServiceProvider o
 		 	left join fetch o.descriptions
-		 	inner join fetch o.organisation org
+		 	inner join fetch o.organization org
 		 	left join fetch org.names
 		where o.id=?
 	</query>
 
 	<query name="ServiceProvider.findProviderlessOrgs">
 		select distinct o
-		from Organisation o
+		from Organization o
 		 	left join fetch o.names
 			left join fetch o.descriptions
 			left join fetch o.serviceProviders sp
@@ -186,7 +186,7 @@
 		select distinct o
 		from ServiceProvider o
 		 	left join fetch o.descriptions
-		 	inner join fetch o.organisation org
+		 	inner join fetch o.organization org
 		 	left join fetch org.names 
 		where o.status=0
 	</query>

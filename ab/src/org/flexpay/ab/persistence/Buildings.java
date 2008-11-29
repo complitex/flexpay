@@ -154,7 +154,7 @@ public class Buildings extends DomainObjectWithStatus {
 			attribute = new BuildingAttribute();
 			attribute.setBuildingAttributeType(type);
 			attribute.setBuildings(this);
-			if (buildingAttributes == Collections.EMPTY_SET) {
+			if (Collections.emptySet().equals(buildingAttributes)) {
 				buildingAttributes = new HashSet<BuildingAttribute>();
 			}
 			buildingAttributes.add(attribute);

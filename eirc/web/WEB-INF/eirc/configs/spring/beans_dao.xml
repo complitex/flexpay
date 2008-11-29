@@ -150,12 +150,12 @@
 		</property>
 	</bean>
 
-	<bean id="organisationDao" parent="abstractDao">
+	<bean id="organizationDao" parent="abstractDao">
 		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.OrganisationDao" />
+				  value="org.flexpay.eirc.dao.OrganizationDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.Organisation" />
+				<constructor-arg value="org.flexpay.eirc.persistence.Organization" />
 			</bean>
 		</property>
 	</bean>
@@ -180,6 +180,16 @@
 		</property>
 	</bean>
 
+    <bean id="serviceOrganizationDao" parent="abstractDao">
+        <property name="proxyInterfaces"
+                  value="org.flexpay.eirc.dao.ServiceOrganizationDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.eirc.persistence.ServiceOrganization" />
+            </bean>
+        </property>
+    </bean>
+
 	<bean id="quittanceDetailsDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.QuittanceDetailsDao" />
@@ -196,16 +206,6 @@
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.eirc.persistence.account.Quittance" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="serviceOrganisationDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.ServiceOrganisationDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.ServiceOrganisation" />
 			</bean>
 		</property>
 	</bean>

@@ -6,7 +6,7 @@ import org.flexpay.sz.persistence.Oszn;
 
 /**
  * Building correction is a mapping from internal Building object to third party
- * organisations Building numbers (internal ids, whatever)
+ * organizations Building numbers (internal ids, whatever)
  */
 public class BuildingNumberCorrection extends DomainObject {
 
@@ -22,7 +22,7 @@ public class BuildingNumberCorrection extends DomainObject {
 	// street correction
 	private StreetCorrection streetCorrection;
 
-	// third party organisation (OSZN for now)
+	// third party organization (OSZN for now)
 	private Oszn oszn;
 
 	/**

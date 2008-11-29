@@ -47,6 +47,6 @@ alter table eirc_registry_records_tbl
 -- Replace CN synchronisation data source with a registry file source
 insert into common_data_source_descriptions_tbl (description) values ('Источник данных - реестры ЦН');
 select @source_id:=last_insert_id();
-update eirc_service_providers_tbl set data_source_description_id=@source_id where organisation_id=4;
+update eirc_service_providers_tbl set data_source_description_id=@source_id where organization_id=4;
 
 update common_data_source_descriptions_tbl set description = 'Источник данных - синхронизация с ЦН' where id=1;

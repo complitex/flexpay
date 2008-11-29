@@ -4,7 +4,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.persistence.ServiceOrganisation;
+import org.flexpay.eirc.persistence.ServiceOrganization;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class TestGenerateQuittancesPDFJob extends SpringBeanAwareTestCase {
 	private GenerateQuittancesPDFJasperJob job;
 
 	// see init_db for ids definitions
-	private Stub<ServiceOrganisation> organisationStub = new Stub<ServiceOrganisation>(1L);
+	private Stub<ServiceOrganization> organizationStub = new Stub<ServiceOrganization>(1L);
 	private Date dt_2007_12_01 = new GregorianCalendar(2007, 11, 1).getTime();
 	private Date dt_2007_01_01 = new GregorianCalendar(2008, 0, 1).getTime();
 
@@ -31,7 +31,7 @@ public class TestGenerateQuittancesPDFJob extends SpringBeanAwareTestCase {
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
-		contextVariables.put(GenerateQuittancesPDFJasperJob.PARAM_SERVICE_ORGANISATION_ID, organisationStub.getId());
+		contextVariables.put(GenerateQuittancesPDFJasperJob.PARAM_SERVICE_ORGANIZATION_ID, organizationStub.getId());
 		contextVariables.put(GenerateQuittancesPDFJasperJob.PARAM_DATE_FROM, dt_2007_12_01);
 		contextVariables.put(GenerateQuittancesPDFJasperJob.PARAM_DATE_TILL, dt_2007_01_01);
 
@@ -46,7 +46,7 @@ public class TestGenerateQuittancesPDFJob extends SpringBeanAwareTestCase {
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
-		contextVariables.put("serviceOrganisationId", 5L);
+		contextVariables.put("serviceOrganizationId", 5L);
 		contextVariables.put("dateFrom", new GregorianCalendar(2008, 5, 1).getTime());
 		contextVariables.put("dateTill", new GregorianCalendar(2008, 10, 1).getTime());
 

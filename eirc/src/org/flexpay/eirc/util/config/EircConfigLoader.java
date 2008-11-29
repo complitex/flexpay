@@ -30,7 +30,7 @@ public class EircConfigLoader extends AbConfigLoader {
 	protected void addRules(Digester d) {
 		super.addRules(d);
 
-		d.addSetProperties("flexpay/organisation", "id", "selfOrganisationId");
+		d.addSetProperties("flexpay/organization", "id", "selfOrganizationId");
 
 		d.addCallMethod("flexpay/eircDataRoot", "setEircDataRoot", 0);
 		d.addCallMethod("flexpay/eircId", "setEircId", 0);

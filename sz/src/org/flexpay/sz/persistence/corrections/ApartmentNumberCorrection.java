@@ -6,7 +6,7 @@ import org.flexpay.sz.persistence.Oszn;
 
 /**
  * Apartment number correction is a mapping from internal apartment object to third party
- * organisations apartment numbers (internal ids, whatever)
+ * organizations apartment numbers (internal ids, whatever)
  */
 public class ApartmentNumberCorrection extends DomainObject {
 
@@ -16,7 +16,7 @@ public class ApartmentNumberCorrection extends DomainObject {
 	// external apartment number
 	private String externalNumber;
 
-	// third party organisation (OSZN for now)
+	// third party organization (OSZN for now)
 	private Oszn oszn;
 
 	/**

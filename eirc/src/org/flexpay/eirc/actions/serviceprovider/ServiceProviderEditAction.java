@@ -4,11 +4,11 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.eirc.persistence.Organisation;
+import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.ServiceProviderDescription;
-import org.flexpay.eirc.persistence.filters.OrganisationFilter;
-import org.flexpay.eirc.service.OrganisationService;
+import org.flexpay.eirc.persistence.filters.OrganizationFilter;
+import org.flexpay.eirc.service.OrganizationService;
 import org.flexpay.eirc.service.SPService;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,9 +17,9 @@ import java.util.Map;
 public class ServiceProviderEditAction extends FPActionSupport {
 
 	private SPService spService;
-	private OrganisationService organisationService;
+	private OrganizationService organizationService;
 
-	private OrganisationFilter organisationFilter = new OrganisationFilter();
+	private OrganizationFilter organizationFilter = new OrganizationFilter();
 	private ServiceProvider provider = new ServiceProvider();
 	private Map<Long, String> descriptions = map();
 
@@ -32,9 +32,9 @@ public class ServiceProviderEditAction extends FPActionSupport {
 		}
 
 		ServiceProvider serviceProvider = spService.read(provider);
-		organisationFilter = spService.initOrganisationFilter(organisationFilter, serviceProvider);
-		if (organisationFilter.getOrganisations().isEmpty()) {
-			addActionError(getText("eirc.error.service_provider.no_providerless_organisation"));
+		organizationFilter = spService.initOrganizationFilter(organizationFilter, serviceProvider);
+		if (organizationFilter.getOrganizations().isEmpty()) {
+			addActionError(getText("eirc.error.service_provider.no_providerless_organization"));
 			return INPUT;
 		}
 
@@ -64,8 +64,8 @@ public class ServiceProviderEditAction extends FPActionSupport {
 			log.info("New Service provider descriptions: " + serviceProvider.getDescriptions());
 		}
 
-		Organisation organisation = organisationService.read(new Organisation(organisationFilter.getSelectedId()));
-		serviceProvider.setOrganisation(organisation);
+		Organization organization = organizationService.read(new Organization(organizationFilter.getSelectedId()));
+		serviceProvider.setOrganization(organization);
 		spService.save(serviceProvider);
 
 		return REDIRECT_SUCCESS;
@@ -112,19 +112,20 @@ public class ServiceProviderEditAction extends FPActionSupport {
 		this.descriptions = descriptions;
 	}
 
-	public OrganisationFilter getOrganisationFilter() {
-		return organisationFilter;
+	public OrganizationFilter getOrganizationFilter() {
+		return organizationFilter;
 	}
 
-	public void setOrganisationFilter(OrganisationFilter organisationFilter) {
-		this.organisationFilter = organisationFilter;
+	public void setOrganizationFilter(OrganizationFilter organizationFilter) {
+		this.organizationFilter = organizationFilter;
 	}
 
 	public void setSpService(SPService spService) {
 		this.spService = spService;
 	}
 
-	public void setOrganisationService(OrganisationService organisationService) {
-		this.organisationService = organisationService;
+	public void setOrganizationService(OrganizationService organizationService) {
+		this.organizationService = organizationService;
 	}
+
 }

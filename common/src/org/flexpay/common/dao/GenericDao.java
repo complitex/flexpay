@@ -45,4 +45,5 @@ public interface GenericDao<T, PK extends Serializable> {
 	void update(@NotNull T transientObject);
 
 	void delete(@NotNull T persistentObject);
+
 }

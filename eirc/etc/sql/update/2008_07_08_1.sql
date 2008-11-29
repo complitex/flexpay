@@ -1,6 +1,6 @@
 create table eirc_quittances_tbl (
 	id bigint not null auto_increment,
-	service_organisation_id bigint not null comment 'Service organisation reference',
+	service_organization_id bigint not null comment 'Service organization reference',
 	eirc_account_id bigint not null comment 'Eirc account reference',
 	order_number integer not null comment 'quittance order number for date till',
 	date_from datetime not null comment 'Quittance date from',
@@ -10,9 +10,9 @@ create table eirc_quittances_tbl (
 ) comment='Quittance';
 
 alter table eirc_quittances_tbl
-	add index FK_eirc_quittances_service_organisation (service_organisation_id),
-	add constraint FK_eirc_quittances_service_organisation
-	foreign key (service_organisation_id) references eirc_service_organisations_tbl (id);
+	add index FK_eirc_quittances_service_organization (service_organization_id),
+	add constraint FK_eirc_quittances_service_organization
+	foreign key (service_organization_id) references eirc_service_organizations_tbl (id);
 
 alter table eirc_quittances_tbl
 	add index FK_eirc_quittance_services_eirc_account (eirc_account_id),

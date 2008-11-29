@@ -6,11 +6,11 @@ import org.flexpay.sz.persistence.corrections.ApartmentNumberCorrection;
 public interface ApartmentCorrectionDao extends GenericDao<ApartmentNumberCorrection, Long> {
 
 	/**
-	 * Find apartment number correction for particular organisation
+	 * Find apartment number correction for particular organization
 	 *
-	 * @param osznId	   Organisation id
+	 * @param osznId	   Organization id
 	 * @param buildingId   Building id
-	 * @param externalCode External organisation apartment number code
+	 * @param externalCode External organization apartment number code
 	 * @return DistrictCorrection
 	 */
 	ApartmentNumberCorrection findCorrection(Long osznId, Long buildingId, String externalCode);

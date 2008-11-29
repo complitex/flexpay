@@ -29,7 +29,7 @@
 			</tr>
 			<tr class="cols_1">
 				<td class="col_1s"><s:text name="ab.person.organization"/></td>
-				<td class="col"><s:textfield name="identities[%{key}].organisation" value="%{pi.organisation}"/></td>
+				<td class="col"><s:textfield name="identities[%{key}].organization" value="%{pi.organization}"/></td>
 			</tr>
 			<tr class="cols_1">
 				<td class="col_1s"><s:text name="ab.person.begin_date"/></td>

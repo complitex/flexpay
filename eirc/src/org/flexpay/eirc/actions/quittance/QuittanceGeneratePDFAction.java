@@ -7,8 +7,8 @@ import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.eirc.persistence.filters.ServiceOrganisationFilter;
-import org.flexpay.eirc.service.ServiceOrganisationService;
+import org.flexpay.eirc.persistence.filters.ServiceOrganizationFilter;
+import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -18,10 +18,10 @@ import java.util.Map;
 
 public class QuittanceGeneratePDFAction extends FPActionSupport {
 
-	private ServiceOrganisationService serviceOrganisationService;
+	private ServiceOrganizationService serviceOrganizationService;
 
-	private ServiceOrganisationFilter serviceOrganisationFilter =
-			new ServiceOrganisationFilter();
+	private ServiceOrganizationFilter serviceOrganizationFilter =
+			new ServiceOrganizationFilter();
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtils.truncate(new Date(), Calendar.MONTH));
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
@@ -33,12 +33,12 @@ public class QuittanceGeneratePDFAction extends FPActionSupport {
 
 		if (isSubmit()) {
 
-			if (!serviceOrganisationFilter.needFilter()) {
-				addActionError(getText("eirc.error.quittance.no_service_organisation"));
+			if (!serviceOrganizationFilter.needFilter()) {
+				addActionError(getText("eirc.error.quittance.no_service_organization"));
 			} else {
 				Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
-				contextVariables.put("serviceOrganisationId", serviceOrganisationFilter.getSelectedId());
+				contextVariables.put("serviceOrganizationId", serviceOrganizationFilter.getSelectedId());
 				contextVariables.put("dateFrom", beginDateFilter.getDate());
 				contextVariables.put("dateTill", endDateFilter.getDate());
 
@@ -48,17 +48,17 @@ public class QuittanceGeneratePDFAction extends FPActionSupport {
 			}
 		}
 
-		serviceOrganisationService.initServiceOrganisationsFilter(serviceOrganisationFilter);
+		serviceOrganizationService.initServiceOrganizationsFilter(serviceOrganizationFilter);
 
 		return SUCCESS;
 	}
 
-	public ServiceOrganisationFilter getServiceOrganisationFilter() {
-		return serviceOrganisationFilter;
+	public ServiceOrganizationFilter getServiceOrganizationFilter() {
+		return serviceOrganizationFilter;
 	}
 
-	public void setServiceOrganisationFilter(ServiceOrganisationFilter serviceOrganisationFilter) {
-		this.serviceOrganisationFilter = serviceOrganisationFilter;
+	public void setServiceOrganizationFilter(ServiceOrganizationFilter serviceOrganizationFilter) {
+		this.serviceOrganizationFilter = serviceOrganizationFilter;
 	}
 
 	public BeginDateFilter getBeginDateFilter() {
@@ -92,11 +92,11 @@ public class QuittanceGeneratePDFAction extends FPActionSupport {
 	}
 
 	/**
-	 * @param serviceOrganisationService the serviceOrganisationService to set
+	 * @param serviceOrganizationService the serviceOrganizationService to set
 	 */
-	public void setServiceOrganisationService(
-			ServiceOrganisationService serviceOrganisationService) {
-		this.serviceOrganisationService = serviceOrganisationService;
+	public void setServiceOrganizationService(
+			ServiceOrganizationService serviceOrganizationService) {
+		this.serviceOrganizationService = serviceOrganizationService;
 	}
 
 	/**

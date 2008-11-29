@@ -12,9 +12,9 @@ import java.util.Set;
 
 public class Subdivision extends DomainObjectWithStatus {
 
-	private Organisation headOrganisation;
+	private Organization headOrganization;
 	private Subdivision parentSubdivision;
-	private Organisation juridicalPerson;
+	private Organization juridicalPerson;
 
 	private String realAddress;
 
@@ -40,12 +40,12 @@ public class Subdivision extends DomainObjectWithStatus {
 	}
 
 	@NotNull
-	public Organisation getHeadOrganisation() {
-		return headOrganisation;
+	public Organization getHeadOrganization() {
+		return headOrganization;
 	}
 
-	public void setHeadOrganisation(@NotNull Organisation headOrganisation) {
-		this.headOrganisation = headOrganisation;
+	public void setHeadOrganization(@NotNull Organization headOrganization) {
+		this.headOrganization = headOrganization;
 	}
 
 	@Nullable
@@ -58,11 +58,11 @@ public class Subdivision extends DomainObjectWithStatus {
 	}
 
 	@Nullable
-	public Organisation getJuridicalPerson() {
+	public Organization getJuridicalPerson() {
 		return juridicalPerson;
 	}
 
-	public void setJuridicalPerson(@Nullable Organisation juridicalPerson) {
+	public void setJuridicalPerson(@Nullable Organization juridicalPerson) {
 		this.juridicalPerson = juridicalPerson;
 	}
 
@@ -109,12 +109,12 @@ public class Subdivision extends DomainObjectWithStatus {
 		this.realAddress = realAddress;
 	}
 
-	public boolean hasHeadOrganisation() {
-		return headOrganisation != null;
+	public boolean hasHeadOrganization() {
+		return headOrganization != null;
 	}
 
-	public boolean hasNoHeadOrganisation() {
-		return !hasHeadOrganisation();
+	public boolean hasNoHeadOrganization() {
+		return !hasHeadOrganization();
 	}
 
 	public boolean hasJuridicalPerson() {

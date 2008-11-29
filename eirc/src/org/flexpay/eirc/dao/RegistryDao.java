@@ -29,11 +29,11 @@ public interface RegistryDao extends GenericDao<SpRegistry, Long> {
 	List<SpRegistry> listRegistryWithContainers(Long registryId);
 
 	/**
-	 * Find registries by number and sender organisation
+	 * Find registries by number and sender organization
 	 * @param registryNumber Registry number
-	 * @param senderOrganisationId Sender organisation key
+	 * @param senderOrganizationId Sender organization key
 	 * @return List of registries, empty if no registries found matching criteria
 	 */
 	@NotNull
-	List<SpRegistry> findRegistriesByNumber(Long registryNumber, Long senderOrganisationId);
+	List<SpRegistry> findRegistriesByNumber(Long registryNumber, Long senderOrganizationId);
 }

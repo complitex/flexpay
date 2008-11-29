@@ -46,7 +46,7 @@ public class RegistryFileParser {
 	private RegistryWorkflowManager registryWorkflowManager;
 	private RegistryRecordWorkflowManager recordWorkflowManager;
 
-	private OrganisationService organisationService;
+	private OrganizationService organizationService;
 	private SPService spService;
 	private ConsumerService consumerService;
 
@@ -205,24 +205,24 @@ public class RegistryFileParser {
 				log.info("Creating new registry: " + newRegistry);
 			}
 
-			Organisation recipient;
+			Organization recipient;
 			if (newRegistry.getRecipientCode() == 0) {
 				log.debug("Recipient is EIRC, code=0");
-				recipient = ApplicationConfig.getSelfOrganisation();
+				recipient = ApplicationConfig.getSelfOrganization();
 			} else {
 				log.debug("Recipient is fetched via code=" + newRegistry.getRecipientCode());
-				recipient = organisationService.getOrganisation(newRegistry.getRecipientStub());
+				recipient = organizationService.getOrganization(newRegistry.getRecipientStub());
 			}
 			newRegistry.setRecipient(recipient);
 			if (recipient == null) {
 				log.error("Failed processing registry header, recipient not found: #" + newRegistry.getRecipientCode());
-				throw new FlexPayException("Cannot find recipient organisation " + newRegistry.getRecipientCode());
+				throw new FlexPayException("Cannot find recipient organization " + newRegistry.getRecipientCode());
 			}
-			Organisation sender = organisationService.getOrganisation(newRegistry.getSenderStub());
+			Organization sender = organizationService.getOrganization(newRegistry.getSenderStub());
 			newRegistry.setSender(sender);
 			if (sender == null) {
 				log.error("Failed processing registry header, sender not found: #" + newRegistry.getSenderCode());
-				throw new FlexPayException("Cannot find sender organisation " + newRegistry.getSenderCode());
+				throw new FlexPayException("Cannot find sender organization " + newRegistry.getSenderCode());
 			}
 			if (log.isInfoEnabled()) {
 				log.info("Recipient: " + recipient + "\n sender: " + sender);
@@ -457,8 +457,8 @@ public class RegistryFileParser {
 		this.registryArchiveStatusService = registryArchiveStatusService;
 	}
 
-	public void setOrganisationService(OrganisationService organisationService) {
-		this.organisationService = organisationService;
+	public void setOrganizationService(OrganizationService organizationService) {
+		this.organizationService = organizationService;
 	}
 
 	public void setSpService(SPService spService) {

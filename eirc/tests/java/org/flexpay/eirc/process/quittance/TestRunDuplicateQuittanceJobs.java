@@ -1,21 +1,20 @@
 package org.flexpay.eirc.process.quittance;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.ProcessState;
+import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.DateUtil;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.junit.Test;
-import org.junit.Ignore;
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertEquals;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.GregorianCalendar;
+import java.util.Map;
 
 public class TestRunDuplicateQuittanceJobs extends SpringBeanAwareTestCase {
 
@@ -30,7 +29,7 @@ public class TestRunDuplicateQuittanceJobs extends SpringBeanAwareTestCase {
 
 		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, new GregorianCalendar(2008, 5, 1).getTime());
 		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, DateUtil.now());
-		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANISATION_ID, 1L);
+		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANIZATION_ID, 1L);
 
 		long p1Id = processManager.createProcess("GenerateQuittances", contextVariables);
 		long p2Id = processManager.createProcess("GenerateQuittances", contextVariables);
@@ -57,7 +56,7 @@ public class TestRunDuplicateQuittanceJobs extends SpringBeanAwareTestCase {
 
 		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, new GregorianCalendar(2008, 5, 1).getTime());
 		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, DateUtil.now());
-		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANISATION_ID, 1L);
+		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANIZATION_ID, 1L);
 
 		long p1Id = processManager.createProcess("GenerateQuittances", contextVariables);
 
@@ -83,7 +82,7 @@ public class TestRunDuplicateQuittanceJobs extends SpringBeanAwareTestCase {
 
 		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, new GregorianCalendar(2008, 5, 1).getTime());
 		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, DateUtil.now());
-		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANISATION_ID, 1L);
+		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANIZATION_ID, 1L);
 
 		long p1Id = processManager.createProcess("GenerateQuittances", contextVariables);
 		long p2Id = processManager.createProcess("GenerateQuittancePDF", contextVariables);

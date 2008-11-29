@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.flexpay.eirc.persistence">
 
 	<class name="Subdivision" table="eirc_subdivisions_tbl" optimistic-lock="version">
-		<comment>Organisation subdivisions</comment>
+		<comment>Organization subdivisions</comment>
 		<id name="id" column="id">
 			<generator class="native"/>
 		</id>
@@ -36,16 +36,16 @@
 				<comment>Parent subdivision reference if any</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="headOrganisation" class="Organisation"
-					 foreign-key="FK_eirc_subdivisions_tbl_head_organisation_id">
-			<column name="head_organisation_id" not-null="true">
-				<comment>Head organisation reference</comment>
+		<many-to-one name="headOrganization" class="Organization"
+					 foreign-key="FK_eirc_subdivisions_tbl_head_organization_id">
+			<column name="head_organization_id" not-null="true">
+				<comment>Head organization reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="juridicalPerson" class="Organisation"
+		<many-to-one name="juridicalPerson" class="Organization"
 					 foreign-key="FK_eirc_subdivisions_tbl_juridical_person_id">
 			<column name="juridical_person_id" not-null="false">
-				<comment>Juridical person (organisation) reference if any</comment>
+				<comment>Juridical person (organization) reference if any</comment>
 			</column>
 		</many-to-one>
 		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
@@ -117,7 +117,7 @@
 		from Subdivision o
 		left outer join fetch o.names 
 		left outer join fetch o.descriptions
-		inner join fetch o.headOrganisation
+		inner join fetch o.headOrganization
 		left join fetch o.juridicalPerson 
 		where o.id=?
 	</query>
@@ -127,7 +127,7 @@
 		from Subdivision o
 		left outer join fetch o.names
 		left outer join fetch o.descriptions
-		inner join fetch o.headOrganisation h
+		inner join fetch o.headOrganization h
 		left join fetch o.juridicalPerson j
 		where o.status=0 and h.status=0 and h.id=? or j.id=?
 		order by o.treePath 

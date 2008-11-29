@@ -1,14 +1,13 @@
 package org.flexpay.eirc.dao;
 
-import java.util.List;
-
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.eirc.persistence.Organisation;
 import org.flexpay.eirc.persistence.Bank;
+import org.flexpay.eirc.persistence.Organization;
+
+import java.util.List;
 
 public interface BankDao extends GenericDao<Bank, Long> {
-
 
 	/**
 	 * Find banks
@@ -19,18 +18,19 @@ public interface BankDao extends GenericDao<Bank, Long> {
 	List<Bank> findBanks(Page<Bank> pager);
 
 	/**
-	 * Find banks for organisation
+	 * Find banks for organization
 	 *
-	 * @param organisationId Organisation key
-	 * @return List of banks for organisation 
+	 * @param organizationId Organization key
+	 * @return List of banks for organization
 	 */
-	List<Bank> findOrganisationBanks(Long organisationId);
+	List<Bank> findOrganizationBanks(Long organizationId);
 
 	/**
-	 * Find organisations that are not banks except of that has a bank with specified <code>includedBankId</code
+	 * Find organizations that are not banks except of that has a bank with specified <code>includedBankId</code
 	 * >
-	 * @param includedBankId Allowed bank key, that organisation will also be in a resulting list
-	 * @return List of organisations that are not banks
+	 * @param includedBankId Allowed bank key, that organization will also be in a resulting list
+	 * @return List of organizations that are not banks
 	 */
-	List<Organisation> findBanklessOrganisations(Long includedBankId);
+	List<Organization> findBanklessOrganizations(Long includedBankId);
+
 }

@@ -4,8 +4,8 @@ delete FROM eirc_services_tbl where parent_service_id is not null;
 delete FROM eirc_services_tbl;
 delete FROM eirc_service_types_tbl;
 
-delete FROM eirc_organisation_descriptions_tbl;
-delete FROM eirc_organisation_names_tbl ;
+delete FROM eirc_organization_descriptions_tbl;
+delete FROM eirc_organization_names_tbl ;
 delete FROM eirc_service_provider_descriptions_tbl ;
 
 delete FROM eirc_registry_record_containers_tbl;
@@ -14,45 +14,45 @@ delete FROM eirc_registries_tbl;
 delete FROM eirc_registry_files_tbl;
 
 delete FROM eirc_service_providers_tbl;
-delete FROM eirc_organisations_tbl;
+delete FROM eirc_organizations_tbl;
 
 select @ru_id:=id from languages_tbl where lang_iso_code='ru';
 
--- Init organisations
-INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, unique_id)
+-- Init organizations
+INSERT INTO eirc_organizations_tbl (status, individual_tax_number, kpp, unique_id)
 	VALUES (0, '-------', '123', '0');
-SELECT @organisation_eirc:=last_insert_id();
-INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
-	VALUES ('Eirc itself', @ru_id, @organisation_eirc);
-INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
-	VALUES ('EIRC', @ru_id, @organisation_eirc);
-INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, unique_id)
+SELECT @organization_eirc:=last_insert_id();
+INSERT INTO eirc_organization_descriptions_tbl (name, language_id, organization_id)
+	VALUES ('Eirc itself', @ru_id, @organization_eirc);
+INSERT INTO eirc_organization_names_tbl (name, language_id, organization_id)
+	VALUES ('EIRC', @ru_id, @organization_eirc);
+INSERT INTO eirc_organizations_tbl (status, individual_tax_number, kpp, unique_id)
 	VALUES (0, '123123123', '123', '2');
-SELECT @organisation_zhko:=last_insert_id();
-INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
-	VALUES ('Test organisation', @ru_id, @organisation_zhko);
-INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
-	VALUES ('ЖКО', @ru_id, @organisation_zhko);
-INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, unique_id)
+SELECT @organization_zhko:=last_insert_id();
+INSERT INTO eirc_organization_descriptions_tbl (name, language_id, organization_id)
+	VALUES ('Test organization', @ru_id, @organization_zhko);
+INSERT INTO eirc_organization_names_tbl (name, language_id, organization_id)
+	VALUES ('ЖКО', @ru_id, @organization_zhko);
+INSERT INTO eirc_organizations_tbl (status, individual_tax_number, kpp, unique_id)
 	VALUES (0, '456456456', '56', '3');
-SELECT @organisation_tszh:=last_insert_id();
-INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
-	VALUES ('Test organisation 2', @ru_id, @organisation_tszh);
-INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
-	VALUES ('ТСЖ', @ru_id, @organisation_tszh);
-INSERT INTO eirc_organisations_tbl (status, individual_tax_number, kpp, unique_id)
+SELECT @organization_tszh:=last_insert_id();
+INSERT INTO eirc_organization_descriptions_tbl (name, language_id, organization_id)
+	VALUES ('Test organization 2', @ru_id, @organization_tszh);
+INSERT INTO eirc_organization_names_tbl (name, language_id, organization_id)
+	VALUES ('ТСЖ', @ru_id, @organization_tszh);
+INSERT INTO eirc_organizations_tbl (status, individual_tax_number, kpp, unique_id)
 	VALUES (0, '1111111', '56', '10');
-SELECT @organisation_cn:=last_insert_id();
-INSERT INTO eirc_organisation_descriptions_tbl (name, language_id, organisation_id)
-	VALUES ('Calculation center', @ru_id, @organisation_cn);
-INSERT INTO eirc_organisation_names_tbl (name, language_id, organisation_id)
-	VALUES ('ЦН', @ru_id, @organisation_cn);
+SELECT @organization_cn:=last_insert_id();
+INSERT INTO eirc_organization_descriptions_tbl (name, language_id, organization_id)
+	VALUES ('Calculation center', @ru_id, @organization_cn);
+INSERT INTO eirc_organization_names_tbl (name, language_id, organization_id)
+	VALUES ('ЦН', @ru_id, @organization_cn);
 
 -- Init service providers
 INSERT INTO common_data_source_descriptions_tbl (description) VALUES ('Источник - Тестовые данные ПУ из ЦН');
 SELECT @source_description_id:=last_insert_id();
-INSERT INTO eirc_service_providers_tbl(organisation_id, data_source_description_id)
-	VALUES (@organisation_cn, @source_description_id);
+INSERT INTO eirc_service_providers_tbl(organization_id, data_source_description_id)
+	VALUES (@organization_cn, @source_description_id);
 SELECT @service_provider_cn:=last_insert_id();
 INSERT INTO eirc_service_provider_descriptions_tbl (name, language_id, service_provider_id)
 	VALUES ('ПУ ЦН', @ru_id, @service_provider_cn);

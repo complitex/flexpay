@@ -3,7 +3,7 @@ package org.flexpay.eirc.dao.imp;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.dao.RegistryDaoExt;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.filters.OrganisationFilter;
+import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -21,8 +21,8 @@ public class RegistryDaoExtImpl extends HibernateDaoSupport implements RegistryD
 	/**
 	 * Find registries
 	 *
-	 * @param senderFilter	sender organisation filter
-	 * @param recipientFilter recipient organisation filter
+	 * @param senderFilter	sender organization filter
+	 * @param recipientFilter recipient organization filter
 	 * @param typeFilter	  registry type filter
 	 * @param fromDate		registry generation start date
 	 * @param tillDate		registry generation end date
@@ -31,7 +31,7 @@ public class RegistryDaoExtImpl extends HibernateDaoSupport implements RegistryD
 	 */
 	@SuppressWarnings({"unchecked"})
 	public List<SpRegistry> findRegistries(
-			OrganisationFilter senderFilter, OrganisationFilter recipientFilter,
+			OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
 			RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, final Page pager) {
 
 		final List params = new ArrayList();

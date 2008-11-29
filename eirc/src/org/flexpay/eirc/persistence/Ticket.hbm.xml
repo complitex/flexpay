@@ -27,9 +27,9 @@
 			<generator class="native" />
 		</id>
 		<property name="creationDate" not-null="true" column="creation_date" />
-		<many-to-one name="serviceOrganisation" foreign-key="FK_eirc_ticket_service_organisation" class="ServiceOrganisation">
-			<column name="service_organisation_id" not-null="true">
-				<comment>Service organisation reference</comment>
+		<many-to-one name="serviceOrganization" foreign-key="FK_eirc_ticket_service_organization" class="ServiceOrganization">
+			<column name="service_organization_id" not-null="true">
+				<comment>Service organization reference</comment>
 			</column>
 		</many-to-one>
 		<many-to-one name="person" foreign-key="FK_eirc_ticket_person" class="org.flexpay.ab.persistence.Person">
@@ -60,9 +60,9 @@
 		select count(*) from Ticket t where t.person.id=? AND t.dateTill=?
 	</query>
 	
-	<query name="Ticket.findByOrganisationAndInterval">
+	<query name="Ticket.findByOrganizationAndInterval">
 		FROM Ticket t
-		WHERE t.serviceOrganisation.id=? AND
+		WHERE t.serviceOrganization.id=? AND
 		      t.dateFrom=? AND
 		      t.dateTill=?
 		ORDER BY t.apartment.building.id, t.person.id, t.dateTill, t.apartment.id, t.ticketNumber desc
