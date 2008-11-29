@@ -18,8 +18,8 @@ public interface CorrectionsService {
 	/**
 	 * Find District correction for external organization
 	 *
-	 * @param oszn External organisation
-	 * @param externalCode External organisation district code
+	 * @param oszn External organization
+	 * @param externalCode External organization district code
 	 * @return DistrictCorrection
 	 * @throws FlexPayException if correction could not be found
 	 */
@@ -29,8 +29,8 @@ public interface CorrectionsService {
 	/**
 	 * Find Street correction for external organization
 	 *
-	 * @param oszn External organisation
-	 * @param externalCode External organisation street code
+	 * @param oszn External organization
+	 * @param externalCode External organization street code
 	 * @param district District to find street in
 	 * @return StreetCorrection
 	 * @throws FlexPayException if correction could not be found
@@ -41,9 +41,9 @@ public interface CorrectionsService {
 	/**
 	 * Find Building correction for external organization
 	 *
-	 * @param oszn External organisation
-	 * @param externalCode External organisation building number
-	 * @param bulk Optional external organisation building bulk
+	 * @param oszn External organization
+	 * @param externalCode External organization building number
+	 * @param bulk Optional external organization building bulk
 	 * @param street Street to find building in
 	 * @return BuildingNumberCorrection
 	 * @throws FlexPayException if correction could not be found
@@ -54,8 +54,8 @@ public interface CorrectionsService {
 	/**
 	 * Find Apartment correction for external organization
 	 *
-	 * @param oszn External organisation
-	 * @param externalCode External organisation apartment number
+	 * @param oszn External organization
+	 * @param externalCode External organization apartment number
 	 * @param building Building to find apartment in
 	 * @return ApartmentNumberCorrection
 	 * @throws FlexPayException if correction could not be found

@@ -6,7 +6,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.ServiceProvider;
-import org.flexpay.eirc.persistence.filters.OrganisationFilter;
+import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.ServiceFilter;
 import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
 
@@ -59,13 +59,13 @@ public interface SPService {
 	void save(ServiceProvider serviceProvider) throws FlexPayExceptionContainer;
 
 	/**
-	 * Initialize filter with organisations that do not have active servise providers
+	 * Initialize filter with organizations that do not have active service providers
 	 *
-	 * @param organisationFilter filter to init
+	 * @param organizationFilter filter to init
 	 * @param sp				 ServiceProvider to init filter for
 	 * @return filter
 	 */
-	OrganisationFilter initOrganisationFilter(OrganisationFilter organisationFilter, ServiceProvider sp);
+	OrganizationFilter initOrganizationFilter(OrganizationFilter organizationFilter, ServiceProvider sp);
 
 	/**
 	 * Initialize filter

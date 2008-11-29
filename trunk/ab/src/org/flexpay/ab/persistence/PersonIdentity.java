@@ -302,7 +302,7 @@ public class PersonIdentity extends DomainObjectWithStatus {
 				.append("begin", beginDate)
 				.append("end", endDate)
 				.append("birthday", birthDate)
-				.append("organisation", organization)
+				.append("organization", organization)
 				.append("serialNumber", serialNumber)
 				.append("documentNumber", documentNumber)
 				.toString();

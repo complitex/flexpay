@@ -3,7 +3,7 @@ package org.flexpay.eirc.service;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.eirc.persistence.ServiceOrganisation;
+import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.jetbrains.annotations.NotNull;
@@ -25,24 +25,24 @@ public interface QuittanceService {
 	/**
 	 * Create quittances for requested period.
 	 *
-	 * @param stub	 ServiceOrganisation stub to generate quittances for
+	 * @param stub	 ServiceOrganization stub to generate quittances for
 	 * @param dateFrom Period begin date
 	 * @param dateTill Period end date
 	 */
-	void generateForServiceOrganisation(Stub<ServiceOrganisation> stub, Date dateFrom, Date dateTill);
+	void generateForServiceOrganization(Stub<ServiceOrganization> stub, Date dateFrom, Date dateTill);
 
 	String getPayer(Quittance quittance);
 
 	/**
 	 * Get a list of Quittances separated with addresses, used to divide quittances by bulks
 	 *
-	 * @param stub	 ServiceOrganisation stub
+	 * @param stub	 ServiceOrganization stub
 	 * @param dateFrom Period begin date
 	 * @param dateTill Period end date
 	 * @return List of Quittances
 	 */
 	@NotNull
-	List<Quittance> getQuittances(Stub<ServiceOrganisation> stub, Date dateFrom, Date dateTill);
+	List<Quittance> getQuittances(Stub<ServiceOrganization> stub, Date dateFrom, Date dateTill);
 
 	/**
 	 * Read full quittance details

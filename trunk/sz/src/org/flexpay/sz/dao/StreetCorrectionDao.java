@@ -6,11 +6,11 @@ import org.flexpay.sz.persistence.corrections.StreetCorrection;
 public interface StreetCorrectionDao extends GenericDao<StreetCorrection, Long> {
 
 	/**
-	 * Find street correction for particular organisation
+	 * Find street correction for particular organization
 	 *
-	 * @param osznId	   Organisation id
+	 * @param osznId	   Organization id
 	 * @param districtId   District id
-	 * @param externalCode External organisation street code
+	 * @param externalCode External organization street code
 	 * @return DistrictCorrection
 	 */
 	StreetCorrection findCorrection(Long osznId, Long districtId, String externalCode);

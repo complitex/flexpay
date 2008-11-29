@@ -29,8 +29,8 @@ public class SpRegistry extends DomainObject {
 
 	private List<RegistryContainer> containers = Collections.emptyList();
 
-	private Organisation sender;
-	private Organisation recipient;
+	private Organization sender;
+	private Organization recipient;
 	private ServiceProvider serviceProvider;
 
 	private RegistryStatus registryStatus;
@@ -158,8 +158,8 @@ public class SpRegistry extends DomainObject {
 	/**
 	 * @return the recipient stub
 	 */
-	public Stub<Organisation> getSenderStub() {
-		return new Stub<Organisation>(senderCode);
+	public Stub<Organization> getSenderStub() {
+		return new Stub<Organization>(senderCode);
 	}
 
 	/**
@@ -179,8 +179,8 @@ public class SpRegistry extends DomainObject {
 	/**
 	 * @return the recipient stub
 	 */
-	public Stub<Organisation> getRecipientStub() {
-		return new Stub<Organisation>(recipientCode);
+	public Stub<Organization> getRecipientStub() {
+		return new Stub<Organization>(recipientCode);
 	}
 
 	/**
@@ -264,19 +264,19 @@ public class SpRegistry extends DomainObject {
 		this.serviceProvider = serviceProvider;
 	}
 
-	public Organisation getSender() {
+	public Organization getSender() {
 		return sender;
 	}
 
-	public void setSender(Organisation sender) {
+	public void setSender(Organization sender) {
 		this.sender = sender;
 	}
 
-	public Organisation getRecipient() {
+	public Organization getRecipient() {
 		return recipient;
 	}
 
-	public void setRecipient(Organisation recipient) {
+	public void setRecipient(Organization recipient) {
 		this.recipient = recipient;
 	}
 

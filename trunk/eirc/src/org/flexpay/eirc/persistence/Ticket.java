@@ -9,7 +9,7 @@ import org.flexpay.common.persistence.DomainObject;
 
 public class Ticket extends DomainObject {
 	private Date creationDate;
-	private ServiceOrganisation serviceOrganisation;
+	private ServiceOrganization serviceOrganization;
 	private Person person;
 	private Integer ticketNumber;
 	private Date dateFrom;
@@ -40,18 +40,18 @@ public class Ticket extends DomainObject {
 	}
 
 	/**
-	 * @return the serviceOrganisation
+	 * @return the serviceOrganization
 	 */
-	public ServiceOrganisation getServiceOrganisation() {
-		return serviceOrganisation;
+	public ServiceOrganization getServiceOrganization() {
+		return serviceOrganization;
 	}
 
 	/**
-	 * @param serviceOrganisation
-	 *            the serviceOrganisation to set
+	 * @param serviceOrganization
+	 *            the serviceOrganization to set
 	 */
-	public void setServiceOrganisation(ServiceOrganisation serviceOrganisation) {
-		this.serviceOrganisation = serviceOrganisation;
+	public void setServiceOrganization(ServiceOrganization serviceOrganization) {
+		this.serviceOrganization = serviceOrganization;
 	}
 
 	/**

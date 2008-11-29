@@ -1,4 +1,4 @@
-alter table eirc_organisations_tbl add column individual_tax_number varchar(255) not null;
+alter table eirc_organizations_tbl add column individual_tax_number varchar(255) not null;
 
     alter table eirc_personal_account_records_tbl
         drop

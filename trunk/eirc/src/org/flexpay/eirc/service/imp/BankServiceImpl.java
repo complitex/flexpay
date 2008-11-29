@@ -9,8 +9,8 @@ import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.eirc.dao.BankDao;
 import org.flexpay.eirc.persistence.Bank;
 import org.flexpay.eirc.persistence.BankDescription;
-import org.flexpay.eirc.persistence.Organisation;
-import org.flexpay.eirc.persistence.filters.OrganisationFilter;
+import org.flexpay.eirc.persistence.Organization;
+import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.service.BankService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -110,19 +110,19 @@ public class BankServiceImpl implements BankService {
 					"No default lang desc", "eirc.error.bank.no_default_lang_description"));
 		}
 
-		List<Bank> organisationBanks = bankDao.findOrganisationBanks(bank.getOrganisation().getId());
-		if (organisationBanks.size() > 1) {
+		List<Bank> organizationBanks = bankDao.findOrganizationBanks(bank.getOrganization().getId());
+		if (organizationBanks.size() > 1) {
 			container.addException(new FlexPayException(
-					"Several banks found", "eirc.error.bank.several_banks_in_organisation"));
+					"Several banks found", "eirc.error.bank.several_banks_in_organization"));
 		}
-		if (!organisationBanks.isEmpty()) {
-			Bank existingBank = organisationBanks.get(0);
+		if (!organizationBanks.isEmpty()) {
+			Bank existingBank = organizationBanks.get(0);
 			if (!existingBank.equals(bank)) {
 				container.addException(new FlexPayException(
 						"Bank already exists", "eirc.error.bank.organasation_already_has_bank"));
 			}
 		}
-		sessionUtils.evict(organisationBanks);
+		sessionUtils.evict(organizationBanks);
 
 		if (container.isNotEmpty()) {
 			throw container;
@@ -130,17 +130,17 @@ public class BankServiceImpl implements BankService {
 	}
 
 	/**
-	 * Initialize organisations filter, includes only organisations that are not banks or this particular <code>bank</code>
-	 * organisation
+	 * Initialize organizations filter, includes only organizations that are not banks or this particular <code>bank</code>
+	 * organization
 	 *
-	 * @param organisationFilter Filter to initialize
+	 * @param organizationFilter Filter to initialize
 	 * @param bank Bank
 	 */
 	@SuppressWarnings ({"UnnecessaryBoxing"})
-	public void initBanklessFilter(@NotNull OrganisationFilter organisationFilter, @NotNull Bank bank) {
+	public void initBanklessFilter(@NotNull OrganizationFilter organizationFilter, @NotNull Bank bank) {
 		Long includedBankId = bank.isNotNew() ? bank.getId() : Long.valueOf(-1L);
-		List<Organisation> organisations = bankDao.findBanklessOrganisations(includedBankId);
-		organisationFilter.setOrganisations(organisations);
+		List<Organization> organizations = bankDao.findBanklessOrganizations(includedBankId);
+		organizationFilter.setOrganizations(organizations);
 	}
 
 	public void setBankDao(BankDao bankDao) {

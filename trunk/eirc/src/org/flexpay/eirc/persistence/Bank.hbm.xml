@@ -12,7 +12,7 @@
 		</id>
 		<version name="version" access="field">
 			<column name="version">
-				<comment>Optiomistic lock version</comment>
+				<comment>Optimistic lock version</comment>
 			</column>
 		</version>
 		<property name="status">
@@ -30,9 +30,9 @@
 				<comment>Corresponding Central Bank account</comment>
 			</column>
 		</property>
-		<many-to-one name="organisation" class="Organisation" foreign-key="FK_eirc_banks_tbl_organisation_id">
-			<column name="organisation_id" not-null="true">
-				<comment>Organisation reference</comment>
+		<many-to-one name="organization" class="Organization" foreign-key="FK_eirc_banks_tbl_organization_id">
+			<column name="organization_id" not-null="true">
+				<comment>Organization reference</comment>
 			</column>
 		</many-to-one>
 		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
@@ -101,9 +101,9 @@
 				<comment>Bank reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="juridicalPerson" class="Organisation" foreign-key="FK_eirc_bank_accounts_tbl_organisation_id">
-			<column name="organisation_id" not-null="true">
-				<comment>Juridical person (organisation) reference</comment>
+		<many-to-one name="juridicalPerson" class="Organization" foreign-key="FK_eirc_bank_accounts_tbl_organization_id">
+			<column name="organization_id" not-null="true">
+				<comment>Juridical person (organization) reference</comment>
 			</column>
 		</many-to-one>
 	</class>
@@ -112,7 +112,7 @@
 		select distinct b
 		from Bank b
 		left outer join fetch b.descriptions
-		inner join fetch b.organisation
+		inner join fetch b.organization
 		where b.id=?
 	</query>
 
@@ -120,22 +120,22 @@
 		select distinct b
 		from Bank b
 		left outer join fetch b.descriptions
-		inner join fetch b.organisation
+		inner join fetch b.organization
 		where b.status=0
 	</query>
 
-	<query name="Bank.findOrganisationBanks">
+	<query name="Bank.findOrganizationBanks">
 		from Bank
-		where status=0 and organisation.id=?
+		where status=0 and organization.id=?
 	</query>
 
-	<query name="Bank.findBanklessOrganisations">
+	<query name="Bank.findBanklessOrganizations">
 		select distinct o
-		from Organisation o
+		from Organization o
 		left join fetch o.names
 		left join fetch o.descriptions
 		left join o.banks b
-		where o.status=0 and (b.id=? or b.id is null)
+		where o.status = 0 and o.id not in (select b1.organization.id from Bank b1 where b1.status = 0) or b.id = ?
 	</query>
 
 </hibernate-mapping>

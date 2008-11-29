@@ -6,12 +6,12 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.dao.RegistryDao;
 import org.flexpay.eirc.dao.RegistryDaoExt;
-import org.flexpay.eirc.dao.OrganisationDao;
+import org.flexpay.eirc.dao.OrganizationDao;
 import org.flexpay.eirc.dao.RegistryContainerDao;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.RegistryContainer;
-import org.flexpay.eirc.persistence.Organisation;
-import org.flexpay.eirc.persistence.filters.OrganisationFilter;
+import org.flexpay.eirc.persistence.Organization;
+import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.RegistryService;
@@ -31,7 +31,7 @@ public class RegistryServiceImpl implements RegistryService {
 	private RegistryDao registryDao;
 	private RegistryDaoExt registryDaoExt;
 	private RegistryContainerDao registryContainerDao;
-	private OrganisationDao organisationDao;
+	private OrganizationDao organizationDao;
 
 	private RegistryRecordService registryRecordService;
 
@@ -43,8 +43,8 @@ public class RegistryServiceImpl implements RegistryService {
 	 */
 	@Transactional(readOnly = false)
 	public SpRegistry create(SpRegistry registry) throws FlexPayException {
-		registry.setRecipient(organisationDao.read(registry.getRecipient().getId()));
-		registry.setSender(organisationDao.read(registry.getSender().getId()));
+		registry.setRecipient(organizationDao.read(registry.getRecipient().getId()));
+		registry.setSender(organizationDao.read(registry.getSender().getId()));
 		registryDao.create(registry);
 
 		for (RegistryContainer container : registry.getContainers()) {
@@ -126,15 +126,15 @@ public class RegistryServiceImpl implements RegistryService {
 	/**
 	 * Find registries
 	 *
-	 * @param senderFilter	sender organisation filter
-	 * @param recipientFilter recipient organisation filter
+	 * @param senderFilter	sender organization filter
+	 * @param recipientFilter recipient organization filter
 	 * @param typeFilter	  registry type filter
 	 * @param fromDate		registry generation start date
 	 * @param tillDate		registry generation end date
 	 * @param pager		   Page
 	 * @return list of registries matching specified criteria
 	 */
-	public List<SpRegistry> findObjects(OrganisationFilter senderFilter, OrganisationFilter recipientFilter,
+	public List<SpRegistry> findObjects(OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
 										RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page pager) {
 		return registryDaoExt.findRegistries(senderFilter, recipientFilter,
 				typeFilter, fromDate, tillDate, pager);
@@ -154,10 +154,10 @@ public class RegistryServiceImpl implements RegistryService {
 	 * Find registry recieved from specified sender with a specified number
 	 *
 	 * @param registryNumber Registry number to search for
-	 * @param senderStub	 Sender organisation stub
+	 * @param senderStub	 Sender organization stub
 	 * @return Registry reference if found, or <code>null</code> otherwise
 	 */
-	public SpRegistry getRegistryByNumber(@NotNull Long registryNumber, @NotNull Stub<Organisation> senderStub) {
+	public SpRegistry getRegistryByNumber(@NotNull Long registryNumber, @NotNull Stub<Organization> senderStub) {
 
 		List<SpRegistry> registries = registryDao.findRegistriesByNumber(registryNumber, senderStub.getId());
 		if (registries.isEmpty()) {
@@ -182,8 +182,8 @@ public class RegistryServiceImpl implements RegistryService {
 		this.registryRecordService = registryRecordService;
 	}
 
-	public void setOrganisationDao(OrganisationDao organisationDao) {
-		this.organisationDao = organisationDao;
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
 	}
 
 	public void setRegistryContainerDao(RegistryContainerDao registryContainerDao) {

@@ -1,12 +1,12 @@
 package org.flexpay.eirc.util.config;
 
-import org.flexpay.eirc.persistence.Organisation;
+import org.flexpay.eirc.persistence.Organization;
 
 import java.io.File;
 
 public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationConfig {
 
-	private Organisation selfOrganisation;
+	private Organization selfOrganization;
 	private String eircDataRoot;
 	private String eircId;
 
@@ -15,18 +15,18 @@ public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationCon
 	/**
 	 * TODO: perform lookup by individual tax number, not id
 	 *
-	 * @param organisationId Organisation id
+	 * @param organizationId Organization id
 	 */
-	public void setSelfOrganisationId(String organisationId) {
-		selfOrganisation = new Organisation(Long.valueOf(organisationId));
+	public void setSelfOrganizationId(String organizationId) {
+		selfOrganization = new Organization(Long.valueOf(organizationId));
 	}
 
 	protected static ApplicationConfig getInstance() {
 		return (ApplicationConfig) org.flexpay.common.util.config.ApplicationConfig.getInstance();
 	}
 
-	public static Organisation getSelfOrganisation() {
-		return getInstance().selfOrganisation;
+	public static Organization getSelfOrganization() {
+		return getInstance().selfOrganization;
 	}
 
 	public static String getEircId() {

@@ -4,7 +4,7 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.EircAccount;
-import org.flexpay.eirc.persistence.ServiceOrganisation;
+import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -15,7 +15,7 @@ import java.util.Set;
 public class Quittance extends DomainObject {
 
 	private Date creationDate;
-	private ServiceOrganisation serviceOrganisation;
+	private ServiceOrganization serviceOrganization;
 	private Integer orderNumber;
 	private Date dateFrom;
 	private Date dateTill;
@@ -37,17 +37,17 @@ public class Quittance extends DomainObject {
 	}
 
 	/**
-	 * @return the serviceOrganisation
+	 * @return the serviceOrganization
 	 */
-	public ServiceOrganisation getServiceOrganisation() {
-		return serviceOrganisation;
+	public ServiceOrganization getServiceOrganization() {
+		return serviceOrganization;
 	}
 
 	/**
-	 * @param serviceOrganisation the serviceOrganisation to set
+	 * @param serviceOrganization the serviceOrganization to set
 	 */
-	public void setServiceOrganisation(ServiceOrganisation serviceOrganisation) {
-		this.serviceOrganisation = serviceOrganisation;
+	public void setServiceOrganization(ServiceOrganization serviceOrganization) {
+		this.serviceOrganization = serviceOrganization;
 	}
 
 	/**

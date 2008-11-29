@@ -1,7 +1,7 @@
 package org.flexpay.sz.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.eirc.persistence.Organisation;
+import org.flexpay.eirc.persistence.Organization;
 import java.util.Date;
 
 public class Tariff extends DomainObject {
@@ -13,7 +13,7 @@ public class Tariff extends DomainObject {
 	private Date endDate;
 	private Long cost;
 	private Integer unitCode;
-	private Organisation organisation;
+	private Organization organization;
 
 	/**
 	 * Constructs a new DomainObject.
@@ -148,20 +148,20 @@ public class Tariff extends DomainObject {
 	}
 
 	/**
-	 * Getter for property 'organisation'.
+	 * Getter for property 'organization'.
 	 *
-	 * @return Value for property 'organisation'.
+	 * @return Value for property 'organization'.
 	 */
-	public Organisation getOrganisation() {
-		return organisation;
+	public Organization getOrganization() {
+		return organization;
 	}
 
 	/**
-	 * Setter for property 'organisation'.
+	 * Setter for property 'organization'.
 	 *
-	 * @param organisation Value to set for property 'organisation'.
+	 * @param organization Value to set for property 'organization'.
 	 */
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	}
 }

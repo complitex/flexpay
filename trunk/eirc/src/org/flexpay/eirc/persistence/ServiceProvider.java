@@ -13,7 +13,7 @@ import java.util.Set;
 public class ServiceProvider extends DomainObjectWithStatus {
 
 	private Set<ServiceProviderDescription> descriptions = Collections.emptySet();
-	private Organisation organisation;
+	private Organization organization;
 	private DataSourceDescription dataSourceDescription;
 
 	/**
@@ -34,12 +34,12 @@ public class ServiceProvider extends DomainObjectWithStatus {
 		this.descriptions = descriptions;
 	}
 
-	public Organisation getOrganisation() {
-		return organisation;
+	public Organization getOrganization() {
+		return organization;
 	}
 
-	public void setOrganisation(Organisation organisation) {
-		this.organisation = organisation;
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class ServiceProvider extends DomainObjectWithStatus {
 	}
 
 	public void setDescription(ServiceProviderDescription description) {
-		if (descriptions == Collections.EMPTY_SET) {
+		if (Collections.emptySet().equals(descriptions)) {
 			descriptions = new HashSet<ServiceProviderDescription>();
 		}
 

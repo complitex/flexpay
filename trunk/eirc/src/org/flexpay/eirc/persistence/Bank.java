@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class Bank extends DomainObjectWithStatus {
 
-	private Organisation organisation;
+	private Organization organization;
 	private Set<BankDescription> descriptions = Collections.emptySet();
 	private Set<BankAccount> accounts = Collections.emptySet();
 
@@ -32,12 +32,12 @@ public class Bank extends DomainObjectWithStatus {
 	}
 
 	@NotNull
-	public Organisation getOrganisation() {
-		return organisation;
+	public Organization getOrganization() {
+		return organization;
 	}
 
-	public void setOrganisation(@NotNull Organisation organisation) {
-		this.organisation = organisation;
+	public void setOrganization(@NotNull Organization organization) {
+		this.organization = organization;
 	}
 
 	public Set<BankAccount> getAccounts() {

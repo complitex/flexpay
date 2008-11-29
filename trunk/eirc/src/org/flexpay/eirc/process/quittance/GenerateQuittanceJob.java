@@ -3,7 +3,7 @@ package org.flexpay.eirc.process.quittance;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.persistence.ServiceOrganisation;
+import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.service.QuittanceService;
 
 import java.io.Serializable;
@@ -17,7 +17,7 @@ public class GenerateQuittanceJob extends Job {
 
 	public static final String PARAM_DATE_FROM = "dateFrom";
 	public static final String PARAM_DATE_TILL = "dateTill";
-	public static final String PARAM_SERVICE_ORGANISATION_ID = "serviceOrganisationId";
+	public static final String PARAM_SERVICE_ORGANIZATION_ID = "serviceOrganizationId";
 
 	private QuittanceService quittanceService;
 
@@ -25,16 +25,16 @@ public class GenerateQuittanceJob extends Job {
 
 		Date dateFrom = (Date) contextVariables.get(PARAM_DATE_FROM);
 		Date dateTill = (Date) contextVariables.get(PARAM_DATE_TILL);
-		Long organisationId = (Long) contextVariables.get(PARAM_SERVICE_ORGANISATION_ID);
+		Long organizationId = (Long) contextVariables.get(PARAM_SERVICE_ORGANIZATION_ID);
 
-		Stub<ServiceOrganisation> stub = new Stub<ServiceOrganisation>(organisationId);
-		quittanceService.generateForServiceOrganisation(stub, dateFrom, dateTill);
+		Stub<ServiceOrganization> stub = new Stub<ServiceOrganization>(organizationId);
+		quittanceService.generateForServiceOrganization(stub, dateFrom, dateTill);
 
 		return Job.RESULT_NEXT;
 	}
 
 	public static Set<String> getParameterNames() {
-		return CollectionUtils.set(PARAM_DATE_FROM, PARAM_DATE_TILL, PARAM_SERVICE_ORGANISATION_ID);
+		return CollectionUtils.set(PARAM_DATE_FROM, PARAM_DATE_TILL, PARAM_SERVICE_ORGANIZATION_ID);
 	}
 
 	public void setQuittanceService(QuittanceService quittanceService) {

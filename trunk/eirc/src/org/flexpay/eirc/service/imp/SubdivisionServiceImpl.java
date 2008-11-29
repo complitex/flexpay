@@ -9,12 +9,12 @@ import org.flexpay.common.service.internal.SessionUtils;
 import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.eirc.dao.SubdivisionDao;
-import org.flexpay.eirc.persistence.Organisation;
+import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.Subdivision;
 import org.flexpay.eirc.persistence.SubdivisionDescription;
 import org.flexpay.eirc.persistence.SubdivisionName;
 import org.flexpay.eirc.persistence.filters.SubdivisionFilter;
-import org.flexpay.eirc.service.OrganisationService;
+import org.flexpay.eirc.service.OrganizationService;
 import org.flexpay.eirc.service.SubdivisionService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,7 @@ import java.util.Set;
 @Transactional (readOnly = true)
 public class SubdivisionServiceImpl implements SubdivisionService {
 
-	private OrganisationService organisationService;
+	private OrganizationService organizationService;
 	private SubdivisionDao subdivisionDao;
 	private SessionUtils sessionUtils;
 
@@ -35,7 +35,7 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 	 * <p/>
 	 * TODO: disable child subdivisions and juridical persons as well
 	 *
-	 * @param objectIds Organisations identifiers to disable
+	 * @param objectIds Organizations identifiers to disable
 	 */
 	@Transactional (readOnly = false)
 	public void disable(@NotNull Set<Long> objectIds) {
@@ -49,16 +49,16 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 	}
 
 	/**
-	 * Read organisation info with subdivisions
+	 * Read organization info with subdivisions
 	 *
-	 * @param stub Organisation stub
-	 * @return Organisation
+	 * @param stub Organization stub
+	 * @return Organization
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if stub references invalid object
 	 */
 	@NotNull
-	public List<Subdivision> getOrganisationSubdivisions(@NotNull Stub<Organisation> stub) throws FlexPayException {
-		Organisation org = organisationService.read(new Organisation(stub));
+	public List<Subdivision> getOrganizationSubdivisions(@NotNull Stub<Organization> stub) throws FlexPayException {
+		Organization org = organizationService.read(new Organization(stub));
 		if (org == null) {
 			throw new FlexPayException("Invalid id", "error.invalid_id");
 		}
@@ -95,11 +95,11 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 		} else {
 			subdivisionDao.update(subdivision);
 		}
-		updateTreePaths(stub(subdivision.getHeadOrganisation()));
+		updateTreePaths(stub(subdivision.getHeadOrganization()));
 	}
 
 	@Transactional (readOnly = false)
-	private void updateTreePaths(@NotNull Stub<Organisation> head) {
+	private void updateTreePaths(@NotNull Stub<Organization> head) {
 		List<Subdivision> subdivisions = subdivisionDao.findSubdivisions(head.getId(), -1L);
 		Map<Long, Subdivision> id2Subs = getId2Subdivisions(subdivisions);
 
@@ -133,17 +133,17 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 	private void validate(Subdivision subdivision) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
-		if (subdivision.hasNoHeadOrganisation()) {
+		if (subdivision.hasNoHeadOrganization()) {
 			container.addException(new FlexPayException(
-					"No organisation", "eirc.error.subdivision.no_organisation"));
+					"No organization", "eirc.error.subdivision.no_organization"));
 		}
-		Organisation organisation = organisationService.getOrganisation(stub(subdivision.getHeadOrganisation()));
+		Organization organization = organizationService.getOrganization(stub(subdivision.getHeadOrganization()));
 		//noinspection ConstantConditions
-		subdivision.setHeadOrganisation(organisation);
+		subdivision.setHeadOrganization(organization);
 
-		Organisation juridicalPersonStub = subdivision.getJuridicalPerson();
+		Organization juridicalPersonStub = subdivision.getJuridicalPerson();
 		if (juridicalPersonStub != null) {
-			Organisation juridicalPerson = organisationService.getOrganisation(stub(juridicalPersonStub));
+			Organization juridicalPerson = organizationService.getOrganization(stub(juridicalPersonStub));
 			if (juridicalPerson == null) {
 				container.addException(new FlexPayException(
 						"Invalid juridical person", "eirc.error.subdivision.invalid_juridical_person"));
@@ -201,8 +201,8 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 			return;
 		}
 
-		// check same head organisation
-		if (!parent.getHeadOrganisation().equals(subdivision.getHeadOrganisation())) {
+		// check same head organization
+		if (!parent.getHeadOrganization().equals(subdivision.getHeadOrganization())) {
 			container.addException(new FlexPayException(
 					"Invalid parent subdivision", "eirc.error.subdivision.parent_head_mismatch"));
 			return;
@@ -218,8 +218,8 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 	}
 
 	private boolean hasCircularDependence(Subdivision subdivision) {
-		Stub<Organisation> headOrganisation = stub(subdivision.getHeadOrganisation());
-		List<Subdivision> subdivisions = subdivisionDao.findSubdivisions(headOrganisation.getId(), -1L);
+		Stub<Organization> headOrganization = stub(subdivision.getHeadOrganization());
+		List<Subdivision> subdivisions = subdivisionDao.findSubdivisions(headOrganization.getId(), -1L);
 		Map<Long, Subdivision> id2Subdivisions = getId2Subdivisions(subdivisions);
 
 		try {
@@ -255,15 +255,15 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 	 * Initialize subdivision filter
 	 *
 	 * @param subdivisionFilter Filter to initialize
-	 * @param stub			  Organisation that departments to put to filter
+	 * @param stub			  Organization that departments to put to filter
 	 */
-	public void initFilter(@NotNull SubdivisionFilter subdivisionFilter, @NotNull Stub<Organisation> stub) {
+	public void initFilter(@NotNull SubdivisionFilter subdivisionFilter, @NotNull Stub<Organization> stub) {
 		List<Subdivision> subdivisions = subdivisionDao.findSubdivisions(stub.getId(), -1L);
 		subdivisionFilter.setSubdivisions(subdivisions);
 	}
 
-	public void setOrganisationService(OrganisationService organisationService) {
-		this.organisationService = organisationService;
+	public void setOrganizationService(OrganizationService organizationService) {
+		this.organizationService = organizationService;
 	}
 
 	public void setSubdivisionDao(SubdivisionDao subdivisionDao) {

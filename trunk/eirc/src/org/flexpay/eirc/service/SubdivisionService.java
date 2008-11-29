@@ -3,7 +3,7 @@ package org.flexpay.eirc.service;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.eirc.persistence.Organisation;
+import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.Subdivision;
 import org.flexpay.eirc.persistence.filters.SubdivisionFilter;
 import org.jetbrains.annotations.NotNull;
@@ -15,14 +15,14 @@ import java.util.List;
 public interface SubdivisionService {
 
 	/**
-	 * Read organisation info with subdivisions
+	 * Read organization info with subdivisions
 	 *
-	 * @param stub Organisation stub
-	 * @return Organisation
+	 * @param stub Organization stub
+	 * @return Organization
 	 * @throws FlexPayException if stub references invalid object
 	 */
 	@NotNull
-	List<Subdivision> getOrganisationSubdivisions(@NotNull Stub<Organisation> stub) throws FlexPayException;
+	List<Subdivision> getOrganizationSubdivisions(@NotNull Stub<Organization> stub) throws FlexPayException;
 
 	/**
 	 * Disable subdivisions
@@ -52,7 +52,7 @@ public interface SubdivisionService {
 	 * Initialize subdivision filter
 	 *
 	 * @param subdivisionFilter Filter to initialize
-	 * @param stub Organisation that departments to put to filter
+	 * @param stub Organization that departments to put to filter
 	 */
-	void initFilter(@NotNull SubdivisionFilter subdivisionFilter, @NotNull Stub<Organisation> stub);
+	void initFilter(@NotNull SubdivisionFilter subdivisionFilter, @NotNull Stub<Organization> stub);
 }

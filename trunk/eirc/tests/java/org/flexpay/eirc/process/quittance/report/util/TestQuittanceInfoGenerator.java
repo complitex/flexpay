@@ -5,7 +5,7 @@ import org.flexpay.common.test.TransactionalSpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.dao.QuittanceDao;
 import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.ServiceOrganisation;
+import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.quittance.report.ServiceGroup;
@@ -29,7 +29,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	private QuittanceDao quittanceDao;
 
 	// see init_db for ids definitions
-	private Stub<ServiceOrganisation> organisationStub = new Stub<ServiceOrganisation>(1L);
+	private Stub<ServiceOrganization> organizationStub = new Stub<ServiceOrganization>(1L);
 
 	private Date dt_2007_12_01 = new GregorianCalendar(2007, 11, 1).getTime();
 	private Date dt_2007_12_31 = new GregorianCalendar(2007, 11, 31).getTime();
@@ -38,7 +38,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 
 	private List<Quittance> list(Date begin, Date end) {
 
-		return quittanceDao.listQuittancesForPrinting(organisationStub.getId(), begin, end);
+		return quittanceDao.listQuittancesForPrinting(organizationStub.getId(), begin, end);
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 		Map<Service, ServiceTotals> servicesTotals = CollectionUtils.map();
 		Map<ServiceType, ServiceTotalsBase> serviceTypesTotals = CollectionUtils.map();
 
-		// now setup servises totals
+		// now setup services totals
 		QuittanceInfoGenerator.buildServicesTotals(groups, servicesTotals, serviceTypesTotals);
 
 		// only kvarplata
@@ -118,7 +118,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 		Map<Service, ServiceTotals> servicesTotals = CollectionUtils.map();
 		Map<ServiceType, ServiceTotalsBase> serviceTypesTotals = CollectionUtils.map();
 
-		// now setup servises totals
+		// now setup services totals
 		QuittanceInfoGenerator.buildServicesTotals(groups, servicesTotals, serviceTypesTotals);
 
 		// only kvarplata
@@ -142,7 +142,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 		Map<Service, ServiceTotals> servicesTotals = CollectionUtils.map();
 		Map<ServiceType, ServiceTotalsBase> serviceTypesTotals = CollectionUtils.map();
 
-		// now setup servises totals
+		// now setup services totals
 		QuittanceInfoGenerator.buildServicesTotals(groups, servicesTotals, serviceTypesTotals);
 
 		// now setup subservices totals and add them to services totals

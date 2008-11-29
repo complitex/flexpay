@@ -305,7 +305,7 @@
         <group-name>VIEW_ONLY</group-name>
     </security-role-mapping>
 
-	<!-- Organisation -->
+	<!-- Organization -->
 	<security-role-mapping>
 		<role-name>EIRC_ORGANIZATION_READ</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
@@ -327,7 +327,7 @@
 		<group-name>EIRC_READ_ONLY</group-name>
 	</security-role-mapping>
 
-	<!-- Organisation -->
+	<!-- Organization -->
 	<security-role-mapping>
 		<role-name>EIRC_BANK_READ</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
@@ -349,7 +349,29 @@
 		<group-name>EIRC_READ_ONLY</group-name>
 	</security-role-mapping>
 
-	<!-- Organisation -->
+    <!-- Organization -->
+    <security-role-mapping>
+        <role-name>EIRC_SERVICE_ORGANIZATION_READ</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>EIRC_SERVICE_ORGANIZATION_CHANGE</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>EIRC_SERVICE_ORGANIZATION_ADD</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>EIRC_SERVICE_ORGANIZATION_DELETE</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>EIRC_SERVICE_ORGANIZATION_READ</role-name>
+        <group-name>EIRC_READ_ONLY</group-name>
+    </security-role-mapping>
+
+	<!-- Organization -->
 	<security-role-mapping>
 		<role-name>EIRC_SERVICE_PROVIDER_READ</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
@@ -371,7 +393,7 @@
 		<group-name>EIRC_READ_ONLY</group-name>
 	</security-role-mapping>
 
-	<!-- Organisation -->
+	<!-- Organization -->
 	<security-role-mapping>
 		<role-name>EIRC_ACCOUNT_READ</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
@@ -393,7 +415,7 @@
 		<group-name>EIRC_READ_ONLY</group-name>
 	</security-role-mapping>
 
-	<!-- Organisation -->
+	<!-- Organization -->
 	<security-role-mapping>
 		<role-name>EIRC_SERVICE_READ</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
@@ -415,7 +437,7 @@
 		<group-name>EIRC_READ_ONLY</group-name>
 	</security-role-mapping>
 
-	<!-- Organisation -->
+	<!-- Organization -->
 	<security-role-mapping>
 		<role-name>EIRC_SERVICE_TYPE_READ</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>

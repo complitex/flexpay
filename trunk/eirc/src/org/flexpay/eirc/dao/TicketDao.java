@@ -11,7 +11,7 @@ public interface TicketDao extends GenericDao<Ticket, Long> {
 	List<Ticket> findObjectsByPersonAndTillDate(Page<Ticket> pager,
 			Long personId, Date dateTill);
 
-	List<Ticket> findByOrganisationAndInterval(Long serviceOrganisationId,
+	List<Ticket> findByOrganizationAndInterval(Long serviceOrganizationId,
 			Date dateFrom, Date dateTill);
 
 }

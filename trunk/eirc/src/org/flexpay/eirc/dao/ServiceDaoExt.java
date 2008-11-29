@@ -22,12 +22,12 @@ public interface ServiceDaoExt {
 	ServiceType findByCode(int code);
 
 	/**
-	 * Find Service Provider by Organisation id
+	 * Find Service Provider by Organization id
 	 *
-	 * @param organisationId Organisation key
+	 * @param organizationId Organization key
 	 * @return ServiceProvider instance
 	 */
-	ServiceProvider findByNumber(Long organisationId);
+	ServiceProvider findByNumber(Long organizationId);
 
 	/**
 	 * List active services using filters and pager
@@ -49,4 +49,5 @@ public interface ServiceDaoExt {
 	 * @return List of services
 	 */
 	List<Service> findIntersectingServices(Long providerId, Long typeId, Date beginDate, Date endDate);
+
 }

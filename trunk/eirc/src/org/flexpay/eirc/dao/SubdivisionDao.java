@@ -11,7 +11,7 @@ public interface SubdivisionDao extends GenericDao<Subdivision, Long> {
 	/**
 	 * Find subdivisions
 	 *
-	 * @param headId Head organisation key
+	 * @param headId Head organization key
 	 * @param juridicalId Juridical person key
 	 * @return List of subdivisions
 	 */

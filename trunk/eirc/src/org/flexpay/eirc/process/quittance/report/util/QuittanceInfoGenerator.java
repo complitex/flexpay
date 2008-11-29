@@ -30,7 +30,7 @@ public class QuittanceInfoGenerator {
 		Map<Service, ServiceTotals> servicesTotals = CollectionUtils.map();
 		Map<ServiceType, ServiceTotalsBase> serviceTypesTotals = CollectionUtils.map();
 
-		// now setup servises totals
+		// now setup services totals
 		buildServicesTotals(groups, servicesTotals, serviceTypesTotals);
 
 		// now setup subservices totals and add them to services totals

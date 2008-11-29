@@ -21,8 +21,8 @@
 alter table eirc_sp_registries_tbl
        modify column registry_status_id bigint not null comment 'Registry status reference',
        modify column archive_status_id bigint not null comment 'Registry archive status reference',
-       add column sender_id bigint comment 'Sender organisation reference',
-       add column recipient_id bigint comment 'Recipient organisation reference';
+       add column sender_id bigint comment 'Sender organization reference',
+       add column recipient_id bigint comment 'Recipient organization reference';
 
     alter table eirc_sp_registries_tbl
         add index FK_archive_status (archive_status_id),
@@ -34,7 +34,7 @@ alter table eirc_sp_registries_tbl
         add index FK_sender (sender_id),
         add constraint FK_sender
         foreign key (sender_id)
-        references eirc_organisations_tbl (id);
+        references eirc_organizations_tbl (id);
 
     alter table eirc_sp_registries_tbl
         add index FK_status (registry_status_id),
@@ -46,7 +46,7 @@ alter table eirc_sp_registries_tbl
         add index FK_recipient (recipient_id),
         add constraint FK_recipient
         foreign key (recipient_id)
-        references eirc_organisations_tbl (id);
+        references eirc_organizations_tbl (id);
 
 drop table if exists eirc_sp_registry_record_statuses_tbl;
 

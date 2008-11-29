@@ -39,9 +39,9 @@ public class QuittanceInfo implements Cloneable, Serializable {
 	private int habitantNumber;
 	private int privilegersNumber;
 
-	private String serviceOrganisationName;
+	private String serviceOrganizationName;
 	private String bankName;
-	private String serviceOrganisationAccount;
+	private String serviceOrganizationAccount;
 	private String bankAccount;
 
 	private Map<ServiceType, ServiceTotals> servicesTotals = Collections.emptyMap();
@@ -177,12 +177,12 @@ public class QuittanceInfo implements Cloneable, Serializable {
 		this.privilegersNumber = privilegersNumber;
 	}
 
-	public String getServiceOrganisationAccount() {
-		return serviceOrganisationAccount;
+	public String getServiceOrganizationAccount() {
+		return serviceOrganizationAccount;
 	}
 
-	public void setServiceOrganisationAccount(String serviceOrganisationAccount) {
-		this.serviceOrganisationAccount = serviceOrganisationAccount;
+	public void setServiceOrganizationAccount(String serviceOrganizationAccount) {
+		this.serviceOrganizationAccount = serviceOrganizationAccount;
 	}
 
 	public String getBankAccount() {
@@ -269,12 +269,12 @@ public class QuittanceInfo implements Cloneable, Serializable {
 		return value;
 	}
 
-	public String getServiceOrganisationName() {
-		return serviceOrganisationName;
+	public String getServiceOrganizationName() {
+		return serviceOrganizationName;
 	}
 
-	public void setServiceOrganisationName(String serviceOrganisationName) {
-		this.serviceOrganisationName = serviceOrganisationName;
+	public void setServiceOrganizationName(String serviceOrganizationName) {
+		this.serviceOrganizationName = serviceOrganizationName;
 	}
 
 	public String getBankName() {

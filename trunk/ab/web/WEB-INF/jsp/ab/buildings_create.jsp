@@ -5,8 +5,7 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
-	<form id="fobjects" method="post"
-		  action="<s:url value="/dicts/buildingCreate.action" includeParams="none" />">
+	<form id="fobjects" method="post" action="<s:url value="/dicts/buildingCreate.action" includeParams="none" />">
 		<s:hidden name="buildingId" value="%{buildingId}" />
 
 		<tr>
@@ -26,16 +25,29 @@
 
 		<s:iterator value="attributeMap">
 			<tr valign="middle" class="cols_1">
-				<td class="col"><s:property value="%{getTypeName(key)}" /></td>
-				<td class="col"><s:textfield name="attributeMap[%{key}]" value="%{value}" /></td>
+				<td class="col">
+                    <s:property value="%{getTypeName(key)}" />
+                </td>
+				<td class="col">
+                    <s:textfield name="attributeMap[%{key}]" value="%{value}" />
+                </td>
 			</tr>
 		</s:iterator>
 
+        <tr valign="middle" class="cols_1">
+            <td class="col">
+                Обслуживающая организация
+            </td>
+            <td class="col">
+                
+                <s:select list="organizations" />
+                
+            </td>
+        </tr>
 
-		<tr>
+        <tr>
 			<td colspan="2">
-				<input type="submit" class="btn-exit" name="submitted"
-					   value="<s:text name="common.save"/>" />
+				<input type="submit" class="btn-exit" name="submitted" value="<s:text name="common.save"/>" />
 			</td>
 		</tr>
 

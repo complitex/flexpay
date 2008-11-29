@@ -6,17 +6,17 @@ import org.flexpay.sz.persistence.Oszn;
 
 /**
  * District correction is a mapping from internal District object to third party
- * organisations district codes (internal ids, whatever)
+ * organizations district codes (internal ids, whatever)
  */
 public class DistrictCorrection extends DomainObject {
 
 	// internal district object
 	private District district;
 
-	// third party organisation id
+	// third party organization id
 	private String externalId;
 
-	// third party organisation (OSZN for now)
+	// third party organization (OSZN for now)
 	private Oszn oszn;
 
 	/**

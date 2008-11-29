@@ -5,7 +5,7 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.sz.persistence.Oszn;
 
 /**
- * Street correction is a mapping from internal Street object to third party organisations
+ * Street correction is a mapping from internal Street object to third party organizations
  * Street codes (internal ids, whatever)
  */
 public class StreetCorrection extends DomainObject {
@@ -13,10 +13,10 @@ public class StreetCorrection extends DomainObject {
 	// internal street object
 	private Street street;
 
-	// third party organisation id
+	// third party organization id
 	private String externalId;
 
-	// third party organisation (OSZN for now)
+	// third party organization (OSZN for now)
 	private Oszn oszn;
 
 	/**

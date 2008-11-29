@@ -6,7 +6,7 @@
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds')"></td>
-			<td class="th"><s:text name="eirc.organisation"/></td>
+			<td class="th"><s:text name="eirc.organization"/></td>
 			<td class="th"><s:text name="eirc.service_provider.description"/></td>
 			<td class="th"><s:text name="eirc.service_provider.provider_number"/></td>
 			<td class="th">&nbsp;</td>
@@ -17,9 +17,9 @@
 						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/></td>
 				<td class="col" width="1%"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/>
 				</td>
-				<td class="col"><s:property value="getTranslation(organisation.names).name"/></td>
+				<td class="col"><s:property value="getTranslation(organization.names).name"/></td>
 				<td class="col"><s:property value="getTranslation(descriptions).name"/></td>
-				<td class="col"><s:property value="organisation.id"/></td>
+				<td class="col"><s:property value="organization.id"/></td>
 				<td class="col"><a href="<s:url action="serviceProviderEdit"><s:param name="provider.id" value="%{id}"/></s:url>">
 					<s:text name="common.edit"/></a></td>
 			</tr>

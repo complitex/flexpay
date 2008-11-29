@@ -3,7 +3,7 @@ package org.flexpay.eirc.service;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.eirc.persistence.Bank;
-import org.flexpay.eirc.persistence.filters.OrganisationFilter;
+import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,11 +46,12 @@ public interface BankService {
 	void save(@NotNull Bank bank) throws FlexPayExceptionContainer;
 
 	/**
-	 * Initialize organisations filter, includes only organisations that are not banks or this particular <code>bank</code>
-	 * organisation
+	 * Initialize organizations filter, includes only organizations that are not banks or this particular <code>bank</code>
+	 * organization
 	 *
-	 * @param organisationFilter Filter to initialize
+	 * @param organizationFilter Filter to initialize
 	 * @param bank Bank
 	 */
-	void initBanklessFilter(@NotNull OrganisationFilter organisationFilter, @NotNull Bank bank);
+	void initBanklessFilter(@NotNull OrganizationFilter organizationFilter, @NotNull Bank bank);
+
 }

@@ -27,7 +27,7 @@ public class ServiceOperationsFactory {
 	private ConsumerService consumerService;
 	private QuittanceService quittanceService;
 	private ConsumerInfoService consumerInfoService;
-	private OrganisationService organisationService;
+	private OrganizationService organizationService;
 	private ReportPeriodService reportPeriodService;
 	private CorrectionsService correctionsService;
 
@@ -208,12 +208,12 @@ public class ServiceOperationsFactory {
 		this.spService = spService;
 	}
 
-	public void setOrganisationService(OrganisationService organisationService) {
-		this.organisationService = organisationService;
+	public void setOrganizationService(OrganizationService organizationService) {
+		this.organizationService = organizationService;
 	}
 
-	public OrganisationService getOrganisationService() {
-		return organisationService;
+	public OrganizationService getOrganizationService() {
+		return organizationService;
 	}
 
 	public ReportPeriodService getReportPeriodService() {

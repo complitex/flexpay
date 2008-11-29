@@ -63,8 +63,8 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	/**
 	 * Find District correction for external organization
 	 *
-	 * @param oszn		 External organisation
-	 * @param externalCode External organisation district code
+	 * @param oszn		 External organization
+	 * @param externalCode External organization district code
 	 * @return DistrictCorrection
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if correction could not be found

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="organizations" namespace="/eirc" extends="common">
+
+		<!-- Organizations -->
+		<action name="organizationsList" class="organizationsListAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_READ</param>
+			</interceptor-ref>
+			<result type="tiles">eirc.organizations.list</result>
+		</action>
+
+		<action name="organizationDelete" class="organizationDeleteAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_DELETE</param>
+			</interceptor-ref>
+			<result name="redirectSuccess" type="redirect-action">organizationsList</result>
+		</action>
+
+		<action name="organizationEdit" class="organizationEditAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_CHANGE</param>
+			</interceptor-ref>
+			<result name="input" type="tiles">eirc.organization.edit</result>
+			<result name="redirectSuccess" type="redirect-action">organizationsList</result>
+		</action>
+
+		<!-- Subdivisions -->
+		<action name="subdivisionsList" class="subdivisionsListAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_READ</param>
+			</interceptor-ref>
+			<result type="tiles">eirc.organization.subdivisions.list</result>
+			<result name="redirectSuccess" type="redirect-action">organizationsList</result>
+		</action>
+
+		<action name="subdivisionDelete" class="subdivisionDeleteAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_DELETE</param>
+			</interceptor-ref>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">subdivisionsList</param>
+				<param name="parse">true</param>
+				<param name="organization.id">${organization.id}</param>
+			</result>
+			<result name="redirectError" type="redirect-action">organizationsList</result>
+		</action>
+
+		<action name="subdivisionEdit" class="subdivisionEditAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_ADD</param>
+			</interceptor-ref>
+			<result name="input" type="tiles">eirc.organization.subdivision.edit</result>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">subdivisionsList</param>
+				<param name="parse">true</param>
+				<param name="organization.id">${headOrganization.id}</param>
+			</result>
+		</action>
+
+		<!-- Banks -->
+		<action name="banksList" class="banksListAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_BANK_READ</param>
+			</interceptor-ref>
+			<result type="tiles">eirc.organization.banks.list</result>
+		</action>
+
+		<action name="bankDelete" class="bankDeleteAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_BANK_DELETE</param>
+			</interceptor-ref>
+			<result name="redirectSuccess" type="redirect-action">banksList</result>
+		</action>
+
+		<action name="bankEdit" class="bankEditAction">
+			<interceptor-ref name="commonDefaultStack">
+				<param name="flexpayRoles.allowedRoles">EIRC_BANK_CHANGE</param>
+			</interceptor-ref>
+			<result name="input" type="tiles">eirc.organization.bank.edit</result>
+			<result name="redirectSuccess" type="redirect-action">banksList</result>
+		</action>
+
+        <!-- Service organizations -->
+        <action name="serviceOrganizationsList" class="serviceOrganizationsListAction">
+            <interceptor-ref name="commonDefaultStack">
+                <param name="flexpayRoles.allowedRoles">EIRC_SERVICE_ORGANIZATION_READ</param>
+            </interceptor-ref>
+            <result type="tiles">eirc.organization.service_organizations.list</result>
+        </action>
+
+        <action name="serviceOrganizationDelete" class="serviceOrganizationDeleteAction">
+            <interceptor-ref name="commonDefaultStack">
+                <param name="flexpayRoles.allowedRoles">EIRC_SERVICE_ORGANIZATION_DELETE</param>
+            </interceptor-ref>
+            <result name="redirectSuccess" type="redirect-action">serviceOrganizationsList</result>
+        </action>
+
+        <action name="serviceOrganizationEdit" class="serviceOrganizationEditAction">
+            <interceptor-ref name="commonDefaultStack">
+                <param name="flexpayRoles.allowedRoles">EIRC_SERVICE_ORGANIZATION_CHANGE</param>
+            </interceptor-ref>
+            <result name="input" type="tiles">eirc.organization.service_organization.edit</result>
+            <result name="redirectSuccess" type="redirect-action">serviceOrganizationsList</result>
+        </action>
+
+	</package>
+
+</struts>

@@ -1,0 +1,226 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.eirc.persistence">
+
+	<class name="Organization" table="eirc_organizations_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" column="version" access="field" />
+		<property name="status" not-null="true" />
+		<property name="individualTaxNumber" column="individual_tax_number" not-null="true" />
+		<property name="kpp" not-null="true" />
+		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
+			<key column="organization_id" not-null="true" />
+			<one-to-many class="OrganizationDescription" />
+		</set>
+		<set name="names" inverse="true" cascade="all-delete-orphan">
+			<key column="organization_id" not-null="true" />
+			<one-to-many class="OrganizationName" />
+		</set>
+		<set name="serviceProviders" inverse="true">
+			<key column="organization_id" not-null="true" />
+			<one-to-many class="ServiceProvider" />
+		</set>
+		<set name="banks" inverse="true">
+			<key column="organization_id" not-null="true" />
+			<one-to-many class="Bank" />
+		</set>
+        <set name="serviceOrganizations" inverse="true">
+            <key column="organization_id" not-null="true" />
+            <one-to-many class="ServiceOrganization" />
+        </set>
+		<set name="childSubdivisions" inverse="true">
+			<key column="head_organization_id" not-null="true" />
+			<one-to-many class="Subdivision" />
+		</set>
+		<set name="dependentSubdivisions" inverse="true">
+			<key column="juridical_person_id" not-null="true" />
+			<one-to-many class="Subdivision" />
+		</set>
+		<property name="juridicalAddress">
+			<column name="juridical_address" not-null="true">
+				<comment>Juridical address</comment>
+			</column>
+		</property>
+		<property name="postalAddress">
+			<column name="postal_address" not-null="true">
+				<comment>Postal address</comment>
+			</column>
+		</property>
+	</class>
+
+	<class name="OrganizationDescription" table="eirc_organization_descriptions_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<properties name="lang_organization_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_eirc_organization_description_language"
+						 class="org.flexpay.common.persistence.Language">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" class="Organization"
+						 foreign-key="FK_eirc_organization_description_organization">
+				<column name="organization_id" not-null="true">
+					<comment>Organization reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<class name="OrganizationName" table="eirc_organization_names_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<properties name="lang_organization_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_eirc_organization_name_language"
+						 class="org.flexpay.common.persistence.Language">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" class="Organization"
+						 foreign-key="FK_eirc_organization_name_organization">
+				<column name="organization_id" not-null="true">
+					<comment>Organization reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<class name="ServiceOrganization" table="eirc_service_organizations_tbl" optimistic-lock="version">
+        <comment>Service organizations</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+        <property name="status">
+            <column name="status" not-null="true">
+                <comment>Enabled/Disabled status</comment>
+            </column>
+        </property>
+		<many-to-one name="organization" foreign-key="FK_eirc_service_organization_organization" class="Organization">
+			<column name="organization_id" not-null="true">
+				<comment>Organization reference</comment>
+			</column>
+		</many-to-one>
+		<set name="buildings" inverse="true">
+			<key column="eirc_service_organization_id" />
+			<one-to-many class="ServedBuilding" />
+		</set>
+		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
+			<key column="service_organization_id" not-null="true" />
+			<one-to-many class="ServiceOrganizationDescription" />
+		</set>
+	</class>
+
+	<class name="ServiceOrganizationDescription" table="eirc_service_organization_descriptions_tbl">
+        <comment>Service organization descriptions</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+        <property name="name">
+            <column name="name" not-null="true">
+                <comment>Description value</comment>
+            </column>
+        </property>
+		<properties name="lang_service_organization_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_eirc_service_organization_description_language"
+						 class="org.flexpay.common.persistence.Language">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" class="ServiceOrganization"
+						 foreign-key="FK_eirc_service_organization_description_service_organization">
+				<column name="service_organization_id" not-null="true">
+					<comment>Organization reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<query name="Organization.findOrganizationsById">
+		from Organization where id=?
+	</query>
+
+	<query name="Organization.findAllOrganizations">
+		select distinct o
+		from Organization o
+		left join fetch o.names
+		left join fetch o.descriptions
+		where o.status=0
+	</query>
+
+	<query name="Organization.readFull">
+		select distinct o
+		from Organization o
+		left join fetch o.names
+		left join fetch o.descriptions
+		where o.id=?
+	</query>
+
+	<query name="Organization.findOrganizations.count">
+		select count(*)
+		from Organization o
+		where o.status=0
+	</query>
+
+	<query name="Organization.findOrganizations">
+		select distinct o
+		from Organization o
+		left join fetch o.names
+		left join fetch o.descriptions
+		where o.status=0
+	</query>
+
+
+	<query name="ServiceOrganization.findServedBuildings">
+		from ServedBuilding where serviceOrganization.id=?
+	</query>
+
+	<query name="ServiceOrganization.readFull">
+		select distinct so
+		from ServiceOrganization so
+        left outer join fetch so.descriptions
+        inner join fetch so.organization o
+		where so.id=?
+	</query>
+
+	<query name="ServiceOrganization.listServiceOrganizations">
+		select distinct so
+		from ServiceOrganization so
+		inner join fetch so.organization o
+		left join fetch o.names n
+		left join fetch n.lang l
+	</query>
+
+    <query name="ServiceOrganization.findServiceOrganizations">
+        select distinct so
+        from ServiceOrganization so
+        left outer join fetch so.descriptions
+        inner join fetch so.organization
+        where so.status=0
+    </query>
+
+    <query name="ServiceOrganization.findOrganizationServiceOrganizations">
+        from ServiceOrganization
+        where status=0 and organization.id=?
+    </query>
+
+    <query name="ServiceOrganization.findServiceOrganizationlessOrganizations">
+        select distinct o
+        from Organization o
+        left join fetch o.names
+        left join fetch o.descriptions
+        left join o.serviceOrganizations so
+        where o.status = 0 and o.id not in (select so1.organization.id from ServiceOrganization so1 where so1.status = 0) or so.id = ?
+    </query>
+
+</hibernate-mapping>

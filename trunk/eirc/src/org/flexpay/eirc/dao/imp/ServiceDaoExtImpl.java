@@ -54,7 +54,7 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 		try {
 			getHibernateTemplate().setMaxResults(1);
 			List objects = getHibernateTemplate()
-					.findByNamedQuery("ServiceProvider.findByOrganisationId", id);
+					.findByNamedQuery("ServiceProvider.findByOrganizationId", id);
 			return objects.isEmpty() ? null : (ServiceProvider) objects.get(0);
 		} finally {
 			getHibernateTemplate().setMaxResults(0);
@@ -75,7 +75,7 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 													"left join fetch o.childServices c " +
 													"inner join fetch o.serviceType t left join fetch t.typeNames " +
 													"inner join fetch o.serviceProvider p " +
-													"inner join fetch p.organisation org left join fetch org.names " +
+													"inner join fetch p.organization org left join fetch org.names " +
 													"where 1=1 ");
 		final StringBuilder hqlCount = new StringBuilder("select count(*) from Service o " +
 														 "inner join o.serviceType t inner join o.serviceProvider p where 1=1 ");
@@ -142,4 +142,5 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 		Object[] params = {providerId, typeId, beginDate, endDate, beginDate, endDate};
 		return getHibernateTemplate().findByNamedQuery("Service.findIntersectingServices", params);
 	}
+
 }

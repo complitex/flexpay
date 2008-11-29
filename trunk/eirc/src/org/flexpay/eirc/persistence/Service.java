@@ -79,7 +79,7 @@ public class Service extends DomainObject {
 	}
 
 	public void setDescription(ServiceDescription serviceDescription) {
-		if (descriptions == Collections.EMPTY_SET) {
+		if (Collections.emptySet().equals(descriptions)) {
 			descriptions = new HashSet<ServiceDescription>();
 		}
 

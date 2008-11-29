@@ -109,7 +109,7 @@
 		</property>
 		<property name="organization" length="4000" not-null="true">
 			<column name="organization" not-null="true" length="4000">
-				<comment>Organisation gave document</comment>
+				<comment>Organization gave document</comment>
 			</column>
 		</property>
 		<property name="default" type="boolean">

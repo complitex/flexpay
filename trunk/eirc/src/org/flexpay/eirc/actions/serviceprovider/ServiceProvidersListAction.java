@@ -52,4 +52,5 @@ public class ServiceProvidersListAction extends FPActionSupport {
 	public void setSpService(SPService spService) {
 		this.spService = spService;
 	}
+
 }

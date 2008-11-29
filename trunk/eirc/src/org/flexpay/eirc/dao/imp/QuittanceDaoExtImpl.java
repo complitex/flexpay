@@ -38,8 +38,8 @@ public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoE
 
 	private long generateQuittances(Date dateFrom, Date dateTill, Date now) {
 		String insertSql = "insert into eirc_quittances_tbl " +
-						   "(service_organisation_id, eirc_account_id, order_number, date_from, date_till, creation_date) " +
-						   "select b.eirc_service_organisation_id, acc.id, 0, ?, ?, ? " +
+						   "(service_organization_id, eirc_account_id, order_number, date_from, date_till, creation_date) " +
+						   "select b.eirc_service_organization_id, acc.id, 0, ?, ?, ? " +
 						   "from eirc_eirc_accounts_tbl acc " +
 						   "	inner join ab_apartments_tbl ap on ap.id=acc.apartment_id " +
 						   "	inner join ab_buildings_tbl b on b.id=ap.building_id " +

@@ -8,7 +8,7 @@
 
 		<tr valign="middle" class="cols_1">
 			<td class="col">
-				<%@include file="../filters/service_organisation_filter.jsp" %>
+				<%@include file="../filters/service_organization_filter.jsp" %>
 			</td>
 		</tr>
 

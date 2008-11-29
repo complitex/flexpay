@@ -59,7 +59,7 @@ public class ServiceType extends DomainObjectWithStatus {
 	}
 
 	public void setTypeName(ServiceTypeNameTranslation nameTranslation) {
-		if (typeNames == Collections.EMPTY_SET) {
+		if (Collections.emptySet().equals(typeNames)) {
 			typeNames = new HashSet<ServiceTypeNameTranslation>();
 		}
 

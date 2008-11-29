@@ -3,9 +3,9 @@
 <s:actionerror />
 
 <s:form method="post" id="fregistries">
-	<%@include file="../filters/sender_organisation_filter.jsp" %>
+	<%@include file="../filters/sender_organization_filter.jsp" %>
 	&nbsp;&nbsp;
-	<%@include file="../filters/recipient_organisation_filter.jsp" %>
+	<%@include file="../filters/recipient_organization_filter.jsp" %>
 	&nbsp;&nbsp;
 	<%@include file="../filters/registry_type_filter.jsp" %>
 	&nbsp;&nbsp;

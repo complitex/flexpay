@@ -118,7 +118,7 @@ public class Person extends DomainObjectWithStatus {
 		if (needRemove) {
 			personAttributes.remove(attribute);
 		} else {
-			if (personAttributes == Collections.EMPTY_SET) {
+			if (Collections.emptySet().equals(personAttributes)) {
 				personAttributes = CollectionUtils.set();
 			}
 
@@ -127,7 +127,7 @@ public class Person extends DomainObjectWithStatus {
 	}
 
 	public void setIdentity(PersonIdentity personIdentity) {
-		if (personIdentities == Collections.EMPTY_SET) {
+		if (Collections.emptySet().equals(personIdentities)) {
 			personIdentities = CollectionUtils.set();
 		}
 
@@ -157,7 +157,7 @@ public class Person extends DomainObjectWithStatus {
 	}
 
 	public void addIdentity(PersonIdentity identity) {
-		if (personIdentities == Collections.EMPTY_SET) {
+		if (Collections.emptySet().equals(personIdentities)) {
 			personIdentities = CollectionUtils.set();
 		}
 
@@ -231,7 +231,7 @@ public class Person extends DomainObjectWithStatus {
 			}
 		}
 
-		if (personRegistrations == Collections.EMPTY_SET) {
+		if (Collections.emptySet().equals(personRegistrations)) {
 			personRegistrations = CollectionUtils.set();
 		}
 
@@ -347,7 +347,7 @@ public class Person extends DomainObjectWithStatus {
 			current.setEndDate(identity.getBeginDate());
 		}
 
-		if (personIdentities == Collections.EMPTY_SET) {
+		if (Collections.emptySet().equals(personIdentities)) {
 			personIdentities = CollectionUtils.set();
 		}
 
@@ -373,4 +373,5 @@ public class Person extends DomainObjectWithStatus {
 
 		return pi.getLastName() + " " + pi.getFirstName() + " " + pi.getMiddleName();
 	}
+
 }

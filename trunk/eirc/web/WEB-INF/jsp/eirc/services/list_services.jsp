@@ -30,7 +30,7 @@
 					<s:if test="%{isSubService()}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</s:if>
 					<s:property value="getTranslation(serviceType.typeNames).name"/></td>
 				<td class="col"><s:property value="getTranslation(descriptions).name"/></td>
-				<td class="col"><s:property value="getTranslation(serviceProvider.organisation.names).name"/></td>
+				<td class="col"><s:property value="getTranslation(serviceProvider.organization.names).name"/></td>
 				<td class="col"><s:property value="serviceType.code"/></td>
 				<td class="col"><s:property value="externalCode"/></td>
 				<td class="col"><s:date name="beginDate" format="yyyy/MM/dd"/></td>

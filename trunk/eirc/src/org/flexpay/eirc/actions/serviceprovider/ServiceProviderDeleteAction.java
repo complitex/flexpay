@@ -43,4 +43,5 @@ public class ServiceProviderDeleteAction extends FPActionSupport {
 	public void setSpService(SPService spService) {
 		this.spService = spService;
 	}
+
 }
