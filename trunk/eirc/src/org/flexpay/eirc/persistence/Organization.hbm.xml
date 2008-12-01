@@ -188,8 +188,9 @@
 	<query name="ServiceOrganization.readFull">
 		select distinct so
 		from ServiceOrganization so
-        left outer join fetch so.descriptions
-        inner join fetch so.organization o
+			left outer join fetch so.descriptions
+			inner join fetch so.organization o
+			left join fetch o.names
 		where so.id=?
 	</query>
 

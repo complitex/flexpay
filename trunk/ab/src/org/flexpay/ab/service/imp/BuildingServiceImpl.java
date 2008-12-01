@@ -206,7 +206,6 @@ public class BuildingServiceImpl implements BuildingService {
 			return null;
 		}
 		if (buildingses.size() > 1) {
-			System.out.println(String.format("Duplicates %s", buildingses));
 			throw new FlexPayException("Adress duplicates",
 					"error.ab.address_duplicates", street.getId(), findNumber(attributes));
 		}

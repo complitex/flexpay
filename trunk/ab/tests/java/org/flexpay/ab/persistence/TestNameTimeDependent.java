@@ -28,8 +28,6 @@ public class TestNameTimeDependent extends SpringBeanAwareTestCase {
 		townName.addNameTranslation(new TownNameTranslation("2"));
 		town.setNameForDate(townName, dt_08_09_08);
 
-		System.out.println("Timeline: " + town.getNamesTimeLine());
-
 		assertEquals("Invalid temporal name setup", "1", town.getNameForDate(dt_08_08_08).getDefaultNameTranslation());
 		assertEquals("Invalid temporal name setup", "2", town.getNameForDate(dt_08_09_08).getDefaultNameTranslation());
 	}
