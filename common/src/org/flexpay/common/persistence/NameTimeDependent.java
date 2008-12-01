@@ -134,7 +134,6 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 		List<DI> intervals = namesTimeLine.getIntervals();
 		for (DI di : intervals) {
 			if (DateIntervalUtil.includes(dt, di)) {
-				System.out.println("DI: " + di);
 				return di;
 			}
 		}

@@ -93,8 +93,8 @@
 	<field name="periodBeginDate" class="java.util.Date"/>
 	<field name="periodEndDate" class="java.util.Date"/>
 	<field name="quittanceNumber" class="java.lang.String"/>
-	<field name="serviceOrganisationName" class="java.lang.String"/>
-	<field name="serviceOrganisationAccount" class="java.lang.String"/>
+	<field name="serviceOrganizationName" class="java.lang.String"/>
+	<field name="serviceOrganizationAccount" class="java.lang.String"/>
 	<field name="operationDate" class="java.util.Date"/>
 	<field name="fullQuittanceInfo" class="java.lang.String"/>
 	<field name="outgoingBalanceDigits" class="java.lang.String[]"/>
@@ -474,7 +474,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{serviceOrganisationName}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{serviceOrganizationName}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -516,7 +516,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{serviceOrganisationName}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{serviceOrganizationName}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -544,7 +544,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{serviceOrganisationAccount}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{serviceOrganizationAccount}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -880,7 +880,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{serviceOrganisationAccount}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{serviceOrganizationAccount}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
