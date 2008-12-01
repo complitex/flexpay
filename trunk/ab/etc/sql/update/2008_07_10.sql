@@ -60,7 +60,7 @@ ALTER TABLE ab_person_identities_tbl
 	MODIFY COLUMN first_name varchar(255) not null comment 'Person first name',
 	MODIFY COLUMN middle_name varchar(255) not null comment 'Person middle name',
 	MODIFY COLUMN last_name varchar(255) not null comment 'Person last name',
-	MODIFY COLUMN organization varchar(4000) not null comment 'Organization gave document',
+	MODIFY COLUMN organization varchar(4000) not null comment 'Organisation gave document',
 	MODIFY COLUMN is_default bit not null comment 'Default document flag',
 	MODIFY COLUMN identity_type_id bigint not null comment 'Identity document type reference',
 	MODIFY COLUMN person_id bigint not null comment 'Person reference',
@@ -161,7 +161,6 @@ INSERT INTO ab_person_identity_attributes_tbl (name, value, language_id, person_
 
 INSERT INTO ab_person_identity_attributes_tbl (name, value, language_id, person_identity_id)
 	VALUES ('Аттрибут', 'Значение', @ru_id, @person_identity_id);
-
 
 INSERT INTO ab_person_attributes_tbl (name, value, language_id, person_id)
 	VALUES('Кол-во детей', '12', @ru_id, @person_id);
