@@ -150,7 +150,7 @@
         first_name varchar(255) not null comment 'Person first name',
         middle_name varchar(255) not null comment 'Person middle name',
         last_name varchar(255) not null comment 'Person last name',
-        organization varchar(4000) not null comment 'Organisation gave document',
+        organization varchar(4000) not null comment 'Organization gave document',
         is_default bit not null comment 'Default document flag',
         sex smallint not null comment 'Person sex type',
         identity_type_id bigint not null comment 'Identity document type reference',

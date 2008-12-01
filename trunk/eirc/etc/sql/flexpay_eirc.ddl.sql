@@ -53,7 +53,7 @@
         id bigint not null auto_increment,
         building_type varchar(255) not null comment 'Class hierarchy descriminator, all buildings should have the same value',
         district_id bigint not null comment 'District reference',
-        eirc_service_organisation_id bigint comment 'Service organisation reference',
+        eirc_service_organization_id bigint comment 'Service organization reference',
         primary key (id)
     ) comment='Buildings';
 
@@ -151,7 +151,7 @@
         first_name varchar(255) not null comment 'Person first name',
         middle_name varchar(255) not null comment 'Person middle name',
         last_name varchar(255) not null comment 'Person last name',
-        organization varchar(4000) not null comment 'Organisation gave document',
+        organization varchar(4000) not null comment 'Organization gave document',
         is_default bit not null comment 'Default document flag',
         sex smallint not null comment 'Person sex type',
         identity_type_id bigint not null comment 'Identity document type reference',
@@ -420,7 +420,7 @@
         account_number varchar(255) not null comment 'Bank account number',
         is_default bit not null comment 'Juridical person default account flag',
         bank_id bigint not null comment 'Bank reference',
-        organisation_id bigint not null comment 'Juridical person (organisation) reference',
+        organization_id bigint not null comment 'Juridical person (organization) reference',
         primary key (id)
     ) comment='Bank accounts';
 
@@ -435,11 +435,11 @@
 
     create table eirc_banks_tbl (
         id bigint not null auto_increment,
-        version integer not null comment 'Optiomistic lock version',
+        version integer not null comment 'Optimistic lock version',
         status integer not null comment 'Enabled/Disabled status',
         bank_identifier_code varchar(255) not null comment 'Bank identifier code (BIK)',
         corresponding_account varchar(255) not null comment 'Corresponding Central Bank account',
-        organisation_id bigint not null comment 'Organisation reference',
+        organization_id bigint not null comment 'Organization reference',
         primary key (id)
     ) comment='Banks';
 
@@ -483,25 +483,25 @@
         primary key (id)
     ) comment='EIRC Personal accounts table';
 
-    create table eirc_organisation_descriptions_tbl (
+    create table eirc_organization_descriptions_tbl (
         id bigint not null auto_increment,
         name varchar(255),
         language_id bigint not null comment 'Language reference',
-        organisation_id bigint not null comment 'Organisation reference',
+        organization_id bigint not null comment 'Organization reference',
         primary key (id),
-        unique (language_id, organisation_id)
+        unique (language_id, organization_id)
     );
 
-    create table eirc_organisation_names_tbl (
+    create table eirc_organization_names_tbl (
         id bigint not null auto_increment,
         name varchar(255),
         language_id bigint not null comment 'Language reference',
-        organisation_id bigint not null comment 'Organisation reference',
+        organization_id bigint not null comment 'Organization reference',
         primary key (id),
-        unique (language_id, organisation_id)
+        unique (language_id, organization_id)
     );
 
-    create table eirc_organisations_tbl (
+    create table eirc_organizations_tbl (
         id bigint not null auto_increment,
         version integer not null,
         status integer not null,
@@ -538,7 +538,7 @@
 
     create table eirc_quittances_tbl (
         id bigint not null auto_increment,
-        service_organisation_id bigint not null comment 'Service organisation reference',
+        service_organization_id bigint not null comment 'Service organization reference',
         eirc_account_id bigint not null comment 'Eirc account reference',
         order_number integer not null comment 'quittance order number for date till',
         date_from datetime not null comment 'Quittance date from',
@@ -563,8 +563,8 @@
         service_provider_id bigint comment 'Service provider reference',
         registry_status_id bigint not null comment 'Registry status reference',
         archive_status_id bigint not null comment 'Registry archive status reference',
-        sender_id bigint comment 'Sender organisation reference',
-        recipient_id bigint comment 'Recipient organisation reference',
+        sender_id bigint comment 'Sender organization reference',
+        recipient_id bigint comment 'Recipient organization reference',
         primary key (id)
     );
 
@@ -656,21 +656,21 @@
         unique (language_id, service_id)
     );
 
-    create table eirc_service_organisation_descriptions_tbl (
+    create table eirc_service_organization_descriptions_tbl (
         id bigint not null auto_increment,
-        name varchar(255),
+        name varchar(255) not null comment 'Description value',
         language_id bigint not null comment 'Language reference',
-        service_organisation_id bigint not null comment 'Organisation reference',
+        service_organization_id bigint not null comment 'Organization reference',
         primary key (id),
-        unique (language_id, service_organisation_id)
-    );
+        unique (language_id, service_organization_id)
+    ) comment='Service organization descriptions';
 
-    create table eirc_service_organisations_tbl (
+    create table eirc_service_organizations_tbl (
         id bigint not null auto_increment,
-        status integer not null,
-        organisation_id bigint not null comment 'Organisation reference',
+        status integer not null comment 'Enabled/Disabled status',
+        organization_id bigint not null comment 'Organization reference',
         primary key (id)
-    );
+    ) comment='Service organizations';
 
     create table eirc_service_provider_descriptions_tbl (
         id bigint not null auto_increment,
@@ -684,7 +684,7 @@
     create table eirc_service_providers_tbl (
         id bigint not null auto_increment,
         status integer not null,
-        organisation_id bigint not null comment 'Organisation reference',
+        organization_id bigint not null comment 'Organization reference',
         data_source_description_id bigint not null comment 'Data source description reference',
         primary key (id)
     );
@@ -743,10 +743,10 @@
         real_address varchar(255) not null comment 'Subdivision real address',
         tree_path varchar(255) not null comment 'Subdivisions tree branch path',
         parent_subdivision_id bigint comment 'Parent subdivision reference if any',
-        head_organisation_id bigint not null comment 'Head organisation reference',
-        juridical_person_id bigint comment 'Juridical person (organisation) reference if any',
+        head_organization_id bigint not null comment 'Head organization reference',
+        juridical_person_id bigint comment 'Juridical person (organization) reference if any',
         primary key (id)
-    ) comment='Organisation subdivisions';
+    ) comment='Organization subdivisions';
 
     create table eirc_ticket_service_amounts_tbl (
         id bigint not null auto_increment,
@@ -760,7 +760,7 @@
     create table eirc_tickets_tbl (
         id bigint not null auto_increment,
         creation_date datetime not null,
-        service_organisation_id bigint not null comment 'Service organisation reference',
+        service_organization_id bigint not null comment 'Service organization reference',
         person_id bigint not null comment 'Person reference',
         ticket_number integer not null,
         date_from datetime not null,
@@ -816,16 +816,16 @@
         references ab_buildings_tbl (id);
 
     alter table ab_buildings_tbl 
+        add index FK_eirc_building_service_organization (eirc_service_organization_id), 
+        add constraint FK_eirc_building_service_organization 
+        foreign key (eirc_service_organization_id) 
+        references eirc_service_organizations_tbl (id);
+
+    alter table ab_buildings_tbl 
         add index ab_buildings_tbl_district_id (district_id), 
         add constraint ab_buildings_tbl_district_id 
         foreign key (district_id) 
         references ab_districts_tbl (id);
-
-    alter table ab_buildings_tbl 
-        add index FK_eirc_building_service_organisation (eirc_service_organisation_id), 
-        add constraint FK_eirc_building_service_organisation 
-        foreign key (eirc_service_organisation_id) 
-        references eirc_service_organisations_tbl (id);
 
     alter table ab_buildingses_tbl 
         add index ab_buildingses_tbl_street_id (street_id), 
@@ -1154,16 +1154,16 @@
         references common_languages_tbl (id);
 
     alter table eirc_bank_accounts_tbl 
+        add index FK_eirc_bank_accounts_tbl_organization_id (organization_id), 
+        add constraint FK_eirc_bank_accounts_tbl_organization_id 
+        foreign key (organization_id) 
+        references eirc_organizations_tbl (id);
+
+    alter table eirc_bank_accounts_tbl 
         add index FK_eirc_bank_accounts_tbl_bank_id (bank_id), 
         add constraint FK_eirc_bank_accounts_tbl_bank_id 
         foreign key (bank_id) 
         references eirc_banks_tbl (id);
-
-    alter table eirc_bank_accounts_tbl 
-        add index FK_eirc_bank_accounts_tbl_organisation_id (organisation_id), 
-        add constraint FK_eirc_bank_accounts_tbl_organisation_id 
-        foreign key (organisation_id) 
-        references eirc_organisations_tbl (id);
 
     alter table eirc_bank_descriptions_tbl 
         add index FK_eirc_bank_descriptions_tbl_bank_id (bank_id), 
@@ -1178,10 +1178,10 @@
         references common_languages_tbl (id);
 
     alter table eirc_banks_tbl 
-        add index FK_eirc_banks_tbl_organisation_id (organisation_id), 
-        add constraint FK_eirc_banks_tbl_organisation_id 
-        foreign key (organisation_id) 
-        references eirc_organisations_tbl (id);
+        add index FK_eirc_banks_tbl_organization_id (organization_id), 
+        add constraint FK_eirc_banks_tbl_organization_id 
+        foreign key (organization_id) 
+        references eirc_organizations_tbl (id);
 
     create index I_external_account_number on eirc_consumers_tbl (external_account_number);
 
@@ -1233,27 +1233,27 @@
         foreign key (consumer_info_id) 
         references eirc_consumer_infos_tbl (id);
 
-    alter table eirc_organisation_descriptions_tbl 
-        add index FK_eirc_organisation_description_organisation (organisation_id), 
-        add constraint FK_eirc_organisation_description_organisation 
-        foreign key (organisation_id) 
-        references eirc_organisations_tbl (id);
+    alter table eirc_organization_descriptions_tbl 
+        add index FK_eirc_organization_description_organization (organization_id), 
+        add constraint FK_eirc_organization_description_organization 
+        foreign key (organization_id) 
+        references eirc_organizations_tbl (id);
 
-    alter table eirc_organisation_descriptions_tbl 
-        add index FK_eirc_organisation_description_language (language_id), 
-        add constraint FK_eirc_organisation_description_language 
+    alter table eirc_organization_descriptions_tbl 
+        add index FK_eirc_organization_description_language (language_id), 
+        add constraint FK_eirc_organization_description_language 
         foreign key (language_id) 
         references common_languages_tbl (id);
 
-    alter table eirc_organisation_names_tbl 
-        add index FK_eirc_organisation_name_organisation (organisation_id), 
-        add constraint FK_eirc_organisation_name_organisation 
-        foreign key (organisation_id) 
-        references eirc_organisations_tbl (id);
+    alter table eirc_organization_names_tbl 
+        add index FK_eirc_organization_name_organization (organization_id), 
+        add constraint FK_eirc_organization_name_organization 
+        foreign key (organization_id) 
+        references eirc_organizations_tbl (id);
 
-    alter table eirc_organisation_names_tbl 
-        add index FK_eirc_organisation_name_language (language_id), 
-        add constraint FK_eirc_organisation_name_language 
+    alter table eirc_organization_names_tbl 
+        add index FK_eirc_organization_name_language (language_id), 
+        add constraint FK_eirc_organization_name_language 
         foreign key (language_id) 
         references common_languages_tbl (id);
 
@@ -1288,10 +1288,10 @@
         references eirc_eirc_accounts_tbl (id);
 
     alter table eirc_quittances_tbl 
-        add index FK_eirc_quittances_service_organisation (service_organisation_id), 
-        add constraint FK_eirc_quittances_service_organisation 
-        foreign key (service_organisation_id) 
-        references eirc_service_organisations_tbl (id);
+        add index FK_eirc_quittances_service_organization (service_organization_id), 
+        add constraint FK_eirc_quittances_service_organization 
+        foreign key (service_organization_id) 
+        references eirc_service_organizations_tbl (id);
 
     alter table eirc_registries_tbl 
         add index FK_eirc_registry_service_provider (service_provider_id), 
@@ -1309,7 +1309,7 @@
         add index FK_eirc_registry_sender (sender_id), 
         add constraint FK_eirc_registry_sender 
         foreign key (sender_id) 
-        references eirc_organisations_tbl (id);
+        references eirc_organizations_tbl (id);
 
     alter table eirc_registries_tbl 
         add index FK_eirc_registry_status (registry_status_id), 
@@ -1321,7 +1321,7 @@
         add index FK_eirc_registry_recipient (recipient_id), 
         add constraint FK_eirc_registry_recipient 
         foreign key (recipient_id) 
-        references eirc_organisations_tbl (id);
+        references eirc_organizations_tbl (id);
 
     alter table eirc_registries_tbl 
         add index FK_eirc_registry_registry_type (registry_type_id), 
@@ -1401,23 +1401,23 @@
         foreign key (language_id) 
         references common_languages_tbl (id);
 
-    alter table eirc_service_organisation_descriptions_tbl 
-        add index FK_eirc_service_organisation_description_service_organisation (service_organisation_id), 
-        add constraint FK_eirc_service_organisation_description_service_organisation 
-        foreign key (service_organisation_id) 
-        references eirc_service_organisations_tbl (id);
+    alter table eirc_service_organization_descriptions_tbl 
+        add index FK_eirc_service_organization_description_service_organization (service_organization_id), 
+        add constraint FK_eirc_service_organization_description_service_organization 
+        foreign key (service_organization_id) 
+        references eirc_service_organizations_tbl (id);
 
-    alter table eirc_service_organisation_descriptions_tbl 
-        add index FK_eirc_service_organisation_description_language (language_id), 
-        add constraint FK_eirc_service_organisation_description_language 
+    alter table eirc_service_organization_descriptions_tbl 
+        add index FK_eirc_service_organization_description_language (language_id), 
+        add constraint FK_eirc_service_organization_description_language 
         foreign key (language_id) 
         references common_languages_tbl (id);
 
-    alter table eirc_service_organisations_tbl 
-        add index FK_eirc_service_organisation_organisation (organisation_id), 
-        add constraint FK_eirc_service_organisation_organisation 
-        foreign key (organisation_id) 
-        references eirc_organisations_tbl (id);
+    alter table eirc_service_organizations_tbl 
+        add index FK_eirc_service_organization_organization (organization_id), 
+        add constraint FK_eirc_service_organization_organization 
+        foreign key (organization_id) 
+        references eirc_organizations_tbl (id);
 
     alter table eirc_service_provider_descriptions_tbl 
         add index FK_eirc_service_provider_description_service_provider (service_provider_id), 
@@ -1432,16 +1432,16 @@
         references common_languages_tbl (id);
 
     alter table eirc_service_providers_tbl 
+        add index FK_eirc_service_provider_organization (organization_id), 
+        add constraint FK_eirc_service_provider_organization 
+        foreign key (organization_id) 
+        references eirc_organizations_tbl (id);
+
+    alter table eirc_service_providers_tbl 
         add index FK_eirc_service_provider_data_source_description (data_source_description_id), 
         add constraint FK_eirc_service_provider_data_source_description 
         foreign key (data_source_description_id) 
         references common_data_source_descriptions_tbl (id);
-
-    alter table eirc_service_providers_tbl 
-        add index FK_eirc_service_provider_organisation (organisation_id), 
-        add constraint FK_eirc_service_provider_organisation 
-        foreign key (organisation_id) 
-        references eirc_organisations_tbl (id);
 
     alter table eirc_service_type_name_translations_tbl 
         add index FK_eirc_service_type_name_translation_service_type (service_type_id), 
@@ -1514,16 +1514,16 @@
         references eirc_subdivisions_tbl (id);
 
     alter table eirc_subdivisions_tbl 
-        add index FK_eirc_subdivisions_tbl_head_organisation_id (head_organisation_id), 
-        add constraint FK_eirc_subdivisions_tbl_head_organisation_id 
-        foreign key (head_organisation_id) 
-        references eirc_organisations_tbl (id);
+        add index FK_eirc_subdivisions_tbl_head_organization_id (head_organization_id), 
+        add constraint FK_eirc_subdivisions_tbl_head_organization_id 
+        foreign key (head_organization_id) 
+        references eirc_organizations_tbl (id);
 
     alter table eirc_subdivisions_tbl 
         add index FK_eirc_subdivisions_tbl_juridical_person_id (juridical_person_id), 
         add constraint FK_eirc_subdivisions_tbl_juridical_person_id 
         foreign key (juridical_person_id) 
-        references eirc_organisations_tbl (id);
+        references eirc_organizations_tbl (id);
 
     alter table eirc_ticket_service_amounts_tbl 
         add index FK_eirc_ticket_service_amount_ticket (ticket_id), 
@@ -1544,10 +1544,10 @@
         references ab_persons_tbl (id);
 
     alter table eirc_tickets_tbl 
-        add index FK_eirc_ticket_service_organisation (service_organisation_id), 
-        add constraint FK_eirc_ticket_service_organisation 
-        foreign key (service_organisation_id) 
-        references eirc_service_organisations_tbl (id);
+        add index FK_eirc_ticket_service_organization (service_organization_id), 
+        add constraint FK_eirc_ticket_service_organization 
+        foreign key (service_organization_id) 
+        references eirc_service_organizations_tbl (id);
 
     alter table eirc_tickets_tbl 
         add index FK_eirc_ticket_apartment (apartment_id), 
