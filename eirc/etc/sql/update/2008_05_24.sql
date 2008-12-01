@@ -1,1 +1,1 @@
-update eirc_organizations_tbl set version=1 where version is null;
+update eirc_organisations_tbl set version=1 where version is null;
