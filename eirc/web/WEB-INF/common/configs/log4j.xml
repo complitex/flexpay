@@ -11,8 +11,8 @@
 		<!-- Change the direction so newer files have bigger numbers -->
 		<!-- So log.1 is written then log.2 etc This prevents a lot of file renames at log rollover -->
 		<param name="CountDirection" value="1" />
-		<!-- Use default 10MB -->
-		<param name="MaxFileSize" value="50MB" />
+		<!-- Use 50MB -->
+		<param name="MaxFileSize" value="52428800" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd-HH" />
 		<!-- Unlimited number of backups -->
 		<param name="MaxSizeRollBackups" value="-1" />
