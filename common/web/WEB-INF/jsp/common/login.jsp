@@ -27,10 +27,10 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td width="50%">
 						<div class="text"><b><s:text name="login.username"/>:</b></div>
 					</td>
-					<td>
+					<td width="50%">
 						<input class="form-input-txt" type="text" name="j_username"/>
 					</td>
 				</tr>
