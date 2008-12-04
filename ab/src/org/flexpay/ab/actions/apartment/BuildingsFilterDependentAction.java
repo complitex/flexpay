@@ -21,6 +21,7 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 	protected RegionFilter regionFilter = new RegionFilter();
 	protected TownFilter townFilter = new TownFilter();
 	protected StreetFilter streetFilter = new StreetFilter();
+	protected StreetNameFilter streetNameFilter = new StreetNameFilter();
 	protected BuildingsFilter buildingsFilter = new BuildingsFilter();
 
 	private String filtersError;
@@ -44,6 +45,10 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 	 * @return Value for property 'filters'.
 	 */
 	public ArrayStack getFilters() {
+
+		if (streetNameFilter.needFilter() && !streetFilter.needFilter()) {
+			streetFilter.setSelectedId(streetNameFilter.getSelectedId());
+		}
 
 		ArrayStack filters = new ArrayStack();
 		filters.push(countryFilter);
@@ -155,6 +160,14 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 	 */
 	public void setStreetFilter(StreetFilter streetFilter) {
 		this.streetFilter = streetFilter;
+	}
+
+	public StreetNameFilter getStreetNameFilter() {
+		return streetNameFilter;
+	}
+
+	public void setStreetNameFilter(StreetNameFilter streetNameFilter) {
+		this.streetNameFilter = streetNameFilter;
 	}
 
 	/**
