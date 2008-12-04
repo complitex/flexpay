@@ -48,9 +48,13 @@ public class BuildingServiceImpl implements BuildingService {
 		PrimaryKeyFilter streetFilter = (PrimaryKeyFilter) filters.peek();
 		if (filters.size() > 1 && filters.peek(1) instanceof DistrictFilter) {
 			DistrictFilter districtFilter = (DistrictFilter) filters.peek(1);
+
+			log.debug("Getting district-street buildings");
 			return buildingsDao.findStreetDistrictBuildings(streetFilter
 					.getSelectedId(), districtFilter.getSelectedId(), pager);
 		}
+
+		log.debug("Getting street buildings");
 		return buildingsDao.findBuildings(streetFilter.getSelectedId(), pager);
 	}
 
@@ -80,10 +84,11 @@ public class BuildingServiceImpl implements BuildingService {
 		if (names.isEmpty()) {
 			throw new FlexPayException("No buildings", "ab.no_buildings");
 		}
-		if (parentFilter.getSelectedId() == null
-			|| !isFilterValid(parentFilter)) {
+		if (!isFilterValid(parentFilter)) {
 			Buildings firstObject = names.iterator().next();
 			parentFilter.setSelectedId(firstObject.getId());
+		} else {
+			log.debug("Building filter is invalid: " + parentFilter + "\n" + forefatherFilter);
 		}
 
 		return parentFilter;
