@@ -17,12 +17,8 @@
             <%
                 if (request.getUserPrincipal() != null) {
             %>
-            <span class="text-small">User: <%=request.getUserPrincipal()%>
-                <a href="<c:url value="/resources/common/jsp/logout.jsp" />">
-                    &nbsp
-                    <s:text name="logout.link.title" />
-                </a>
-            </span>
+			<span class="text-small"><s:text name="login.username" />: <%=request.getUserPrincipal()%> <a
+					href="<s:url value="/resources/common/jsp/logout.jsp" includeParams="none" />"><s:text name="logout.link.title" /></a></span>
             <%
                 }
             %>
