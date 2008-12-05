@@ -51,4 +51,50 @@
 
 	</class>
 
+    <query name="ServedBuilding.findServedBuildingsByServiceOrganization">
+        from ServedBuilding sb where sb.serviceOrganization.id=?
+    </query>
+
+    <query name="ServedBuilding.findServedBuildingsByServiceOrganization.count">
+        select count(*)
+        from ServedBuilding sb
+        where sb.serviceOrganization.id=?
+    </query>
+
+    <query name="ServedBuilding.findBuildingsWithBuildings.count">
+        select count(*) from Buildings o where o.status = 0 and o.street.id = ?
+    </query>
+
+    <query name="ServedBuilding.findBuildingsWithBuildings">
+        SELECT DISTINCT o
+        FROM Buildings o
+        LEFT JOIN FETCH o.buildingAttributes attrs
+        LEFT JOIN FETCH o.building b
+        LEFT JOIN FETCH attrs.buildingAttributeType attrType
+        LEFT JOIN FETCH attrType.translations attrTypeTr
+        LEFT JOIN FETCH attrTypeTr.lang langAttr
+        LEFT JOIN FETCH langAttr.translations
+        WHERE o.status = 0 AND o.street.id = ?
+    </query>
+
+    <query name="ServedBuilding.findStreetDistrictBuildingsWithBuildings.count">
+        select count(*) from Buildings o where o.status = 0 and o.street.id = ? and o.building.district.id = ?
+    </query>
+
+    <query name="ServedBuilding.findStreetDistrictBuildingsWithBuildings">
+        SELECT DISTINCT o
+        FROM Buildings o
+        LEFT JOIN FETCH o.buildingAttributes attrs
+        LEFT JOIN FETCH o.building b
+        LEFT JOIN FETCH attrs.buildingAttributeType attrType
+        LEFT JOIN FETCH attrType.translations attrTypeTr
+        LEFT JOIN FETCH attrTypeTr.lang langAttr
+        LEFT JOIN FETCH langAttr.translations
+        WHERE o.status = 0 AND o.street.id = ? and o.building.district.id = ?
+    </query>
+
+    <query name="ServedBuilding.findServedBuildings">
+        from ServedBuilding sb where sb.id in (:list_1)
+    </query>
+
 </hibernate-mapping>

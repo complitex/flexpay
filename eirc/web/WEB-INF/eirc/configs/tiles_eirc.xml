@@ -119,6 +119,16 @@
         <put-attribute name="body" value="/WEB-INF/jsp/eirc/organizations/service_organization_edit.jsp" />
     </definition>
 
+    <definition name="eirc.organization.service_organization.list_served_buildings" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.service_organization" />
+        <put-attribute name="body" value="/WEB-INF/jsp/eirc/organizations/service_organization_list_served_buildings.jsp" />
+    </definition>
+
+    <definition name="eirc.organization.service_organization.add_served_building" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.service_organization" />
+        <put-attribute name="body" value="/WEB-INF/jsp/eirc/organizations/service_organization_add_served_building.jsp" />
+    </definition>
+
 	<!-- Service Providers -->
 	<definition name="eirc.service_providers.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.service_providers" />

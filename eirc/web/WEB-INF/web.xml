@@ -299,6 +299,15 @@
         <role-name>EIRC_SERVICE_ORGANIZATION_CHANGE</role-name>
     </security-role>
     <security-role>
+        <role-name>EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>EIRC_SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>EIRC_SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS</role-name>
+    </security-role>
+    <security-role>
         <role-name>EIRC_SERVICE_ORGANIZATION_ADD</role-name>
     </security-role>
     <security-role>

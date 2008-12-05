@@ -16,16 +16,16 @@ import java.util.Set;
 
 public interface BuildingService extends ParentService<BuildingsFilter> {
 
-	public List<Buildings> getBuildings(ArrayStack filters, Page pager);
+	List<Buildings> getBuildings(ArrayStack filters, Page pager);
 
-	public List<Buildings> getBuildings(Long streetId, Page pager);
+	List<Buildings> getBuildings(Long streetId, Page pager);
 
 	/**
 	 * Get building attribute types
 	 *
 	 * @return BuildingAttributeType list
 	 */
-	public List<BuildingAttributeType> getAttributeTypes();
+	List<BuildingAttributeType> getAttributeTypes();
 
 	/**
 	 * Find buildings by attributes
@@ -161,4 +161,5 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	void save(@NotNull BuildingAttributeType type) throws FlexPayExceptionContainer;
+
 }

@@ -39,9 +39,9 @@
                     <s:property value="organization.kpp" />
                 </td>
 				<td class="col">
-                    <a href="<s:url action="serviceOrganizationEdit"><s:param name="serviceOrganization.id" value="%{id}" /></s:url>">
-                        <s:text name="common.edit"/>
-                    </a>
+                    <a href="<s:url action="serviceOrganizationEdit"><s:param name="serviceOrganization.id" value="%{id}" /></s:url>"><s:text name="common.edit"/></a>
+                    &nbsp;&nbsp;
+                    <a href="<s:url action="serviceOrganizationListServedBuildings"><s:param name="serviceOrganization.id" value="%{id}" /></s:url>"><s:text name="common.list_served_buildings"/></a>
                 </td>
 			</tr>
 		</s:iterator>
@@ -53,4 +53,5 @@
 			</td>
 		</tr>
 	</table>
+
 </s:form>

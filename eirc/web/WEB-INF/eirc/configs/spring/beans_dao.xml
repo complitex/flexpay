@@ -190,6 +190,16 @@
         </property>
     </bean>
 
+    <bean id="servedBuildingDao" parent="abstractDao">
+        <property name="proxyInterfaces"
+                  value="org.flexpay.eirc.dao.ServedBuildingDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.eirc.persistence.ServedBuilding" />
+            </bean>
+        </property>
+    </bean>
+
 	<bean id="quittanceDetailsDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.QuittanceDetailsDao" />
