@@ -12,28 +12,37 @@ import org.flexpay.common.dao.paging.Page;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.NonNls;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.List;
 
 /**
- * Hibernate implementation of GenericDao A typesafe implementation of CRUD and finder
- * methods based on Hibernate and Spring AOP The finders are implemented through the
- * executeFinder method. Normally called by the FinderIntroductionInterceptor
+ * Hibernate implementation of GenericDao A typesafe implementation of CRUD and finder methods based on Hibernate and
+ * Spring AOP The finders are implemented through the executeFinder method. Normally called by the
+ * FinderIntroductionInterceptor
  */
 @SuppressWarnings ({"unchecked"})
 public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		implements GenericDao<T, PK>, FinderExecutor, MethodExecutor {
 
+	/**
+	 * prefix of a named query parameters followed by list number, like list_1, list_2
+	 */
+	public static final String PARAM_LIST_PREFIX = "list_";
+
+	/**
+	 * Logger
+	 */
 	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private final Logger log = Logger.getLogger(getClass());
 
 	protected HibernateTemplate hibernateTemplate;
 
@@ -105,20 +114,47 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 				Query queryObject = session.getNamedQuery(queryName);
 //						.setCacheable(true).setCacheRegion(queryName);
 				Query queryCount = getCountQuery(session, queryName);
-				Page pageParam = null;
+				Page<?> pageParam = null;
 				if (values != null) {
+					int nNamedParam = 1;
 					for (int i = 0, fix = 0; i < values.length; i++) {
+
+						// handle page parameter
 						if (values[i] instanceof Page) {
 							++fix;
-							pageParam = (Page) values[i];
-						} else {
-							queryObject.setParameter(i - fix, values[i]);
+							pageParam = (Page<?>) values[i];
+							continue;
+						}
+						int nParam = i - fix;
+						// handle collection parameter
+						if (values[i] instanceof Collection) {
+							queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Collection<?>) values[i]);
 							if (queryCount != null) {
-								queryCount.setParameter(i - fix, values[i]);
+								queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Collection<?>) values[i]);
 							}
+							++fix;
+							++nNamedParam;
+							continue;
+						}
+						// handle array parameter
+						if (values[i] instanceof Object[]) {
+							queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Object[]) values[i]);
+							if (queryCount != null) {
+								queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Object[]) values[i]);
+							}
+							++fix;
+							++nNamedParam;
+							continue;
+						}
+
+						// usual parameter, just set it
+						queryObject.setParameter(nParam, values[i]);
+						if (queryCount != null) {
+							queryCount.setParameter(nParam, values[i]);
 						}
 					}
 				}
+
 				if (pageParam != null && queryCount != null) {
 					Long count = (Long) queryCount.uniqueResult();
 					pageParam.setTotalElements(count.intValue());

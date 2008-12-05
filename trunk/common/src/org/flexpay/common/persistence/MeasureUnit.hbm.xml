@@ -67,5 +67,12 @@
 		where o.status=0
 	</query>
 
+	<query name="MeasureUnit.listUnitsTest">
+		select distinct o
+		from MeasureUnit o
+			left join fetch o.unitNames
+		where o.status=0 and (o.id=? or o.id=? or o.id in (:list_1) or o.id in (:list_2))
+	</query>
+
 
 </hibernate-mapping>
