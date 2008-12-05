@@ -12,6 +12,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		TestProcess.class,
 		org.flexpay.eirc.actions.AllTests.class,
+		org.flexpay.eirc.dao.AllTests.class,
 		org.flexpay.eirc.service.AllTests.class,
 		org.flexpay.eirc.util.config.AllTests.class,
 		org.flexpay.eirc.sp.AllTests.class,
