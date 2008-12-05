@@ -65,8 +65,6 @@ public interface ServiceOrganizationService {
     void save(@NotNull ServiceOrganization serviceOrganization) throws FlexPayExceptionContainer;
 
 
-    List<Buildings> getBuildings(ArrayStack filters, ServiceOrganization serviceOrganization, Page pager);
-
     /**
      * Get served buildings by ids
      *
