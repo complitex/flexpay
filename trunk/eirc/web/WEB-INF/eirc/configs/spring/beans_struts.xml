@@ -113,6 +113,20 @@
           p:organizationService-ref="organizationService"
           p:serviceOrganizationService-ref="serviceOrganizationService" />
 
+    <bean id="serviceOrganizationListServedBuildingsAction" scope="prototype"
+          class="org.flexpay.eirc.actions.organization.ServiceOrganizationListServedBuildingsAction"
+          p:serviceOrganizationService-ref="serviceOrganizationService"
+          p:addressService-ref="addressService" />
+
+    <bean id="serviceOrganizationAddServedBuildingAction" scope="prototype"
+          class="org.flexpay.eirc.actions.organization.ServiceOrganizationAddServedBuildingAction"
+          p:parentService-ref="streetService"
+          p:serviceOrganizationService-ref="serviceOrganizationService" />
+
+    <bean id="serviceOrganizationRemoveServedBuildingsAction" scope="prototype"
+          class="org.flexpay.eirc.actions.organization.ServiceOrganizationRemoveServedBuildingsAction"
+          p:serviceOrganizationService-ref="serviceOrganizationService" />
+
 	<!-- Subdivision actions -->
 	<bean id="subdivisionsListAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.organization.SubdivisionsListAction"

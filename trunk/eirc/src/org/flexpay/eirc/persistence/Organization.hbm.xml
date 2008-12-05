@@ -180,14 +180,10 @@
 		where o.status=0
 	</query>
 
-
-	<query name="ServiceOrganization.findServedBuildings">
-		from ServedBuilding where serviceOrganization.id=?
-	</query>
-
 	<query name="ServiceOrganization.readFull">
 		select distinct so
 		from ServiceOrganization so
+            left outer join fetch so.buildings 
 			left outer join fetch so.descriptions
 			inner join fetch so.organization o
 			left join fetch o.names
@@ -207,6 +203,12 @@
         from ServiceOrganization so
         left outer join fetch so.descriptions
         inner join fetch so.organization
+        where so.status=0
+    </query>
+
+    <query name="ServiceOrganization.findServiceOrganizations.count">
+        select count(*)
+        from ServiceOrganization so
         where so.status=0
     </query>
 

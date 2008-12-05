@@ -115,7 +115,8 @@
 
     <bean id="serviceOrganizationService" class="org.flexpay.eirc.service.imp.ServiceOrganizationServiceImpl"
           p:sessionUtils-ref="sessionUtils"
-          p:serviceOrganizationDao-ref="serviceOrganizationDao" />
+          p:serviceOrganizationDao-ref="serviceOrganizationDao"
+          p:servedBuildingDao-ref="servedBuildingDao" />
 
 	<bean id="serviceTypeService" class="org.flexpay.eirc.service.imp.ServiceTypeServiceImpl"
 		  p:serviceDaoExt-ref="serviceDaoExt"

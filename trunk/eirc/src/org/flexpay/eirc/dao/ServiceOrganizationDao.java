@@ -2,12 +2,10 @@ package org.flexpay.eirc.dao;
 
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.eirc.persistence.ServedBuilding;
-import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.persistence.Organization;
+import org.flexpay.eirc.persistence.ServiceOrganization;
 
 import java.util.List;
-import java.util.Set;
 
 public interface ServiceOrganizationDao extends GenericDao<ServiceOrganization, Long> {
 
@@ -25,14 +23,6 @@ public interface ServiceOrganizationDao extends GenericDao<ServiceOrganization, 
      * @return list of service organizations
      */
     List<ServiceOrganization> findServiceOrganizations(Page<ServiceOrganization> pager);
-
-	/**
-	 * Find ServedBuildings by ServiceOrganization key
-	 *
-	 * @param serviceOrganizationId ServiceOrganization key
-	 * @return Set of ServedBuildings
-	 */
-	Set<ServedBuilding> findServedBuildings(Long serviceOrganizationId);
 
     /**
      * Find service organizations for organization

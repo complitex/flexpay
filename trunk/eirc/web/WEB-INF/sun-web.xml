@@ -9,7 +9,7 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
-	<!-- Country -->
+	<!-- Countries -->
     <security-role-mapping>
         <role-name>COUNTRY_READ</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -27,7 +27,7 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- Region -->
+    <!-- Regions -->
     <security-role-mapping>
         <role-name>REGION_READ</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -45,7 +45,7 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- Town -->
+    <!-- Towns -->
     <security-role-mapping>
         <role-name>TOWN_READ</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -63,7 +63,7 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- Town type -->
+    <!-- Town types -->
     <security-role-mapping>
         <role-name>TOWN_TYPE_READ</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -81,7 +81,7 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- District -->
+    <!-- Districts -->
     <security-role-mapping>
         <role-name>DISTRICT_READ</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -99,7 +99,7 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- Street -->
+    <!-- Streets -->
     <security-role-mapping>
         <role-name>STREET_READ</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -117,7 +117,7 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- Street type -->
+    <!-- Street types -->
     <security-role-mapping>
         <role-name>STREET_TYPE_READ</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -135,7 +135,7 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- Building attribute type -->
+    <!-- Building attribute types -->
     <security-role-mapping>
         <role-name>BUILDING_ATTRIBUTE_TYPE_READ</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -153,7 +153,7 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- Building -->
+    <!-- Buildings -->
     <security-role-mapping>
         <role-name>BUILDING_READ</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -171,7 +171,7 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- Apartment -->
+    <!-- Apartments -->
     <security-role-mapping>
         <role-name>APARTMENT_READ</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -189,7 +189,7 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- Identity type -->
+    <!-- Identity types -->
     <security-role-mapping>
         <role-name>IDENTITY_TYPE_READ</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -207,7 +207,7 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- Identity -->
+    <!-- Identities -->
     <security-role-mapping>
         <role-name>IDENTITY_READ</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -225,7 +225,7 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- Person -->
+    <!-- Persons -->
     <security-role-mapping>
         <role-name>PERSON_READ</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -305,7 +305,7 @@
         <group-name>VIEW_ONLY</group-name>
     </security-role-mapping>
 
-	<!-- Organization -->
+	<!-- Organizations -->
 	<security-role-mapping>
 		<role-name>EIRC_ORGANIZATION_READ</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
@@ -327,7 +327,7 @@
 		<group-name>EIRC_READ_ONLY</group-name>
 	</security-role-mapping>
 
-	<!-- Organization -->
+	<!-- Banks -->
 	<security-role-mapping>
 		<role-name>EIRC_BANK_READ</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
@@ -349,13 +349,25 @@
 		<group-name>EIRC_READ_ONLY</group-name>
 	</security-role-mapping>
 
-    <!-- Organization -->
+    <!-- Service organizations -->
     <security-role-mapping>
         <role-name>EIRC_SERVICE_ORGANIZATION_READ</role-name>
         <group-name>EIRC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>EIRC_SERVICE_ORGANIZATION_CHANGE</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>EIRC_SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>EIRC_SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS</role-name>
         <group-name>EIRC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
@@ -371,7 +383,7 @@
         <group-name>EIRC_READ_ONLY</group-name>
     </security-role-mapping>
 
-	<!-- Organization -->
+	<!-- Service providers -->
 	<security-role-mapping>
 		<role-name>EIRC_SERVICE_PROVIDER_READ</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
@@ -393,7 +405,7 @@
 		<group-name>EIRC_READ_ONLY</group-name>
 	</security-role-mapping>
 
-	<!-- Organization -->
+	<!-- EIRC accounts -->
 	<security-role-mapping>
 		<role-name>EIRC_ACCOUNT_READ</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
@@ -415,7 +427,7 @@
 		<group-name>EIRC_READ_ONLY</group-name>
 	</security-role-mapping>
 
-	<!-- Organization -->
+	<!-- EIRC services -->
 	<security-role-mapping>
 		<role-name>EIRC_SERVICE_READ</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
@@ -437,7 +449,7 @@
 		<group-name>EIRC_READ_ONLY</group-name>
 	</security-role-mapping>
 
-	<!-- Organization -->
+	<!-- EIRC Service types -->
 	<security-role-mapping>
 		<role-name>EIRC_SERVICE_TYPE_READ</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>

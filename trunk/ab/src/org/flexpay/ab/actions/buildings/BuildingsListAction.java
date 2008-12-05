@@ -156,24 +156,6 @@ public class BuildingsListAction extends BuildingsActionsBase {
 	}
 
 	/**
-	 * Setter for property 'buildingsService'.
-	 *
-	 * @param buildingService Value to set for property 'buildingsService'.
-	 */
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
-	}
-
-	/**
-	 * Setter for property 'parentService'.
-	 *
-	 * @param parentService Value to set for property 'parentService'.
-	 */
-	public void setParentService(ParentService parentService) {
-		this.parentService = parentService;
-	}
-
-	/**
 	 * Getter for property 'buildingsList'.
 	 *
 	 * @return Value for property 'buildingsList'.
@@ -199,4 +181,23 @@ public class BuildingsListAction extends BuildingsActionsBase {
 	public void setPager(Page pager) {
 		this.pager = pager;
 	}
+
+    /**
+     * Setter for property 'buildingsService'.
+     *
+     * @param buildingService Value to set for property 'buildingsService'.
+     */
+    public void setBuildingService(BuildingService buildingService) {
+        this.buildingService = buildingService;
+    }
+
+    /**
+     * Setter for property 'parentService'.
+     *
+     * @param parentService Value to set for property 'parentService'.
+     */
+    public void setParentService(ParentService parentService) {
+        this.parentService = parentService;
+    }
+
 }

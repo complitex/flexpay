@@ -1,31 +1,43 @@
 package org.flexpay.eirc.service.imp;
 
+import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.internal.SessionUtils;
+import org.flexpay.eirc.dao.ServedBuildingDao;
 import org.flexpay.eirc.dao.ServiceOrganizationDao;
+import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.persistence.ServiceOrganizationDescription;
-import org.flexpay.eirc.persistence.Organization;
-import org.flexpay.eirc.persistence.filters.ServiceOrganizationFilter;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
+import org.flexpay.eirc.persistence.filters.ServiceOrganizationFilter;
 import org.flexpay.eirc.service.ServiceOrganizationService;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 @Transactional (readOnly = true)
 public class ServiceOrganizationServiceImpl implements ServiceOrganizationService {
 
+    @NonNls
+    private Logger log = Logger.getLogger(getClass());
+
     private SessionUtils sessionUtils;
 	private ServiceOrganizationDao serviceOrganizationDao;
+    private ServedBuildingDao servedBuildingDao;
 
 	/**
 	 * Read ServiceOrganization object by its unique id
@@ -37,9 +49,41 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 		return serviceOrganizationDao.readFull(stub.getId());
 	}
 
-	public Set<ServedBuilding> findServedBuildings(@NotNull Stub<ServiceOrganization> stub) {
-		return serviceOrganizationDao.findServedBuildings(stub.getId());
-	}
+    public List<ServedBuilding> findServedBuildings(@NotNull Collection<Long> ids) {
+        return servedBuildingDao.findServedBuildings(ids);
+    }
+
+    public List<ServedBuilding> findServedBuildings(@NotNull Stub<ServiceOrganization> stub, Page<ServedBuilding> pager) {
+        return servedBuildingDao.findServedBuildingsByServiceOrganization(stub.getId(), pager);
+    }
+
+    @Transactional (readOnly = false)
+    public void removeServedBuildings(@NotNull Set<Long> objectIds) {
+        for (Long id : objectIds) {
+            ServedBuilding building = servedBuildingDao.read(id);
+            if (building != null) {
+                building.setServiceOrganization(null);
+                servedBuildingDao.update(building);
+            }
+        }
+    }
+
+    /**
+     * Create or update served building
+     *
+     * @param servedBuilding Served building to save
+     * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+     *          if validation fails
+     */
+    @Transactional (readOnly = false)
+    public void saveServedBuilding(@NotNull ServedBuilding servedBuilding) {
+        if (servedBuilding.isNew()) {
+            servedBuilding.setId(null);
+            servedBuildingDao.create(servedBuilding);
+        } else {
+            servedBuildingDao.update(servedBuilding);
+        }
+    }
 
     /**
      * Disable service organizations
@@ -55,6 +99,20 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
                 serviceOrganizationDao.update(sOrganization);
             }
         }
+    }
+
+    public List<Buildings> getBuildings(ArrayStack filters, ServiceOrganization serviceOrganization, Page pager) {
+        PrimaryKeyFilter streetFilter = (PrimaryKeyFilter) filters.peek();
+        if (filters.size() > 1 && filters.peek(1) instanceof DistrictFilter) {
+            DistrictFilter districtFilter = (DistrictFilter) filters.peek(1);
+
+            log.debug("Getting district-street buildings");
+            return servedBuildingDao.findStreetDistrictBuildingsWithBuildings(streetFilter.getSelectedId(),
+                    districtFilter.getSelectedId(), serviceOrganization.getId(), pager);
+        }
+
+        log.debug("Getting street buildings");
+        return servedBuildingDao.findBuildingsWithBuildings(streetFilter.getSelectedId(), serviceOrganization.getId(), pager);
     }
 
     /**
@@ -182,6 +240,10 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	public void setServiceOrganizationDao(ServiceOrganizationDao serviceOrganizationDao) {
 		this.serviceOrganizationDao = serviceOrganizationDao;
 	}
+
+    public void setServedBuildingDao(ServedBuildingDao servedBuildingDao) {
+        this.servedBuildingDao = servedBuildingDao;
+    }
 
     public void setSessionUtils(SessionUtils sessionUtils) {
         this.sessionUtils = sessionUtils;

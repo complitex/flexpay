@@ -7,10 +7,13 @@ import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.ServiceOrganizationFilter;
+import org.flexpay.ab.persistence.Buildings;
 import org.jetbrains.annotations.NotNull;
+import org.apache.commons.collections.ArrayStack;
 
 import java.util.List;
 import java.util.Set;
+import java.util.Collection;
 
 public interface ServiceOrganizationService {
 
@@ -61,13 +64,35 @@ public interface ServiceOrganizationService {
      */
     void save(@NotNull ServiceOrganization serviceOrganization) throws FlexPayExceptionContainer;
 
-	/**
-	 * Get served buildings
-	 * 
-	 * @param stub ServiceOrganization stub
-	 * @return set of served organizations
-	 */
-	Set<ServedBuilding> findServedBuildings(@NotNull Stub<ServiceOrganization> stub);
+
+    List<Buildings> getBuildings(ArrayStack filters, ServiceOrganization serviceOrganization, Page pager);
+
+    /**
+     * Get served buildings by ids
+     *
+     * @param ids Served building ids
+     * @return collection of served buildings
+     */
+    List<ServedBuilding> findServedBuildings(@NotNull Collection<Long> ids);
+
+    /**
+     * Get served buildings for service organization on specific page
+     *
+     * @param stub Service organization stub 
+     * @param pager Page
+     * @return Set of served buildings
+     */
+    List<ServedBuilding> findServedBuildings(@NotNull Stub<ServiceOrganization> stub, Page<ServedBuilding> pager);
+
+    void removeServedBuildings(@NotNull Set<Long> objectIds);
+
+    /**
+     * Save or update served building
+     *
+     * @param servedBuilding Served building to save
+     * @throws org.flexpay.common.exception.FlexPayExceptionContainer if validation fails
+     */
+    void saveServedBuilding(@NotNull ServedBuilding servedBuilding);
 
 	/**
 	 * Initialize filter
@@ -78,8 +103,8 @@ public interface ServiceOrganizationService {
 	ServiceOrganizationFilter initServiceOrganizationsFilter(ServiceOrganizationFilter filter);
 
     /**
-     * Initialize organizations filter, includes only organizations that are not banks or this particular <code>service organization</code>
-     * organization
+     * Initialize organizations filter, includes only organizations that are not service organizations
+     * or this particular <code>service organization</code> organization
      *
      * @param organizationFilter Filter to initialize
      * @param serviceOrganization service organization
