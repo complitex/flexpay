@@ -7,6 +7,7 @@ import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.filters.StreetNameFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
@@ -23,6 +24,7 @@ import java.util.Set;
 public class ServiceOrganizationAddServedBuildingAction extends BuildingsActionsBase {
 
     private ServiceOrganizationService serviceOrganizationService;
+    private BuildingService buildingService;
     private ParentService parentService;
 
     private CountryFilter countryFilter = new CountryFilter();
@@ -64,7 +66,7 @@ public class ServiceOrganizationAddServedBuildingAction extends BuildingsActions
             ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
             setFilters(filters);
 
-            buildingsList = serviceOrganizationService.getBuildings(filters, serviceOrganization, pager);
+            buildingsList = buildingService.getBuildings(filters, pager);
 
             return INPUT;
         }
@@ -187,6 +189,10 @@ public class ServiceOrganizationAddServedBuildingAction extends BuildingsActions
 
     public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
         this.serviceOrganizationService = serviceOrganizationService;
+    }
+
+    public void setBuildingService(BuildingService buildingService) {
+        this.buildingService = buildingService;
     }
 
 }

@@ -1,15 +1,11 @@
 package org.flexpay.eirc.service.imp;
 
-import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.eirc.dao.ServedBuildingDao;
 import org.flexpay.eirc.dao.ServiceOrganizationDao;
@@ -99,20 +95,6 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
                 serviceOrganizationDao.update(sOrganization);
             }
         }
-    }
-
-    public List<Buildings> getBuildings(ArrayStack filters, ServiceOrganization serviceOrganization, Page pager) {
-        PrimaryKeyFilter streetFilter = (PrimaryKeyFilter) filters.peek();
-        if (filters.size() > 1 && filters.peek(1) instanceof DistrictFilter) {
-            DistrictFilter districtFilter = (DistrictFilter) filters.peek(1);
-
-            log.debug("Getting district-street buildings");
-            return servedBuildingDao.findStreetDistrictBuildingsWithBuildings(streetFilter.getSelectedId(),
-                    districtFilter.getSelectedId(), serviceOrganization.getId(), pager);
-        }
-
-        log.debug("Getting street buildings");
-        return servedBuildingDao.findBuildingsWithBuildings(streetFilter.getSelectedId(), serviceOrganization.getId(), pager);
     }
 
     /**

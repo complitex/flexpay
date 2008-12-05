@@ -121,6 +121,7 @@
     <bean id="serviceOrganizationAddServedBuildingAction" scope="prototype"
           class="org.flexpay.eirc.actions.organization.ServiceOrganizationAddServedBuildingAction"
           p:parentService-ref="streetService"
+          p:buildingService-ref="buildingService"
           p:serviceOrganizationService-ref="serviceOrganizationService" />
 
     <bean id="serviceOrganizationRemoveServedBuildingsAction" scope="prototype"
