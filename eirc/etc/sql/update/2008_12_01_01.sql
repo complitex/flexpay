@@ -206,3 +206,5 @@ alter table eirc_tickets_tbl
     add constraint FK_eirc_ticket_service_organization
     foreign key (service_organization_id)
     references eirc_service_organizations_tbl (id);
+
+update common_version_tbl set last_modified_date='2008-12-01', date_version=1;
