@@ -1,10 +1,10 @@
 
 -- Init Languages table
-INSERT INTO common_languages_tbl (is_default, status, lang_iso_code) values (1, 0, 'ru');
-SELECT @ru_id:=last_insert_id();
+INSERT INTO common_languages_tbl (id, is_default, status, lang_iso_code) values (1, 1, 0, 'ru');
+SELECT @ru_id:=1;
 
-INSERT INTO common_languages_tbl (is_default, status, lang_iso_code) values (0, 0, 'en');
-SELECT @en_id:=last_insert_id();
+INSERT INTO common_languages_tbl (id, is_default, status, lang_iso_code) values (2, 0, 0, 'en');
+SELECT @en_id:=2;
 
 INSERT INTO common_language_names_tbl (translation, translation_from_language_id, language_id)
  	VALUES ('Русский', @ru_id, @ru_id);
