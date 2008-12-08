@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		org.flexpay.ab.action.AllTests.class,
 		org.flexpay.ab.persistence.AllTests.class,
-		org.flexpay.ab.service.AllTests.class
+		org.flexpay.ab.service.AllTests.class,
+		org.flexpay.ab.sort.AllTests.class
 		})
 public class AllTests extends TestCase {
 
