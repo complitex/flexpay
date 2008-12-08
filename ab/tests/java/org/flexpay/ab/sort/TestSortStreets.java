@@ -17,8 +17,8 @@ public class TestSortStreets extends SpringBeanAwareTestCase {
 					 "	left join tn.value n " +
 					 "	left outer join n.translations t1 with (t1.lang.id=?)" +
 					 "	left outer join n.translations t2 with (t2.lang.id=?)" +
-					 "	left join s.typeTemporals tt " +
-					 "	left join tt.value tv " +
+					 "	left join fetch s.typeTemporals tt " +
+					 "	left join fetch tt.value tv " +
 					 "where s.parent.id=? " +
 					 "	and tn.invalidDate='2100-12-31' " +
 					 "	and tn.begin <= current_date() and tn.end > current_date() " +
