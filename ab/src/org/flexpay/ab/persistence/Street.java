@@ -29,6 +29,8 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	private TimeLine<StreetType, StreetTypeTemporal> typesTimeLine;
 	private Set<Buildings> buildingses = Collections.emptySet();
 
+	private Set<StreetNameIndex> nameIndexes = Collections.emptySet();
+
 	public Street() {
 	}
 
@@ -86,16 +88,25 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	}
 
 	public Street addTypeTemporal(StreetTypeTemporal temporal) {
+		TimeLine<StreetType, StreetTypeTemporal> tlNew;
 		if (typesTimeLine == null) {
-			typesTimeLine = new TimeLine<StreetType, StreetTypeTemporal>(temporal);
+			tlNew = new TimeLine<StreetType, StreetTypeTemporal>(temporal);
 		} else {
-			typesTimeLine = DateIntervalUtil.addInterval(typesTimeLine, temporal);
+			tlNew = DateIntervalUtil.addInterval(typesTimeLine, temporal);
+		}
+
+		if (typesTimeLine == tlNew) {
+			// nothing to do, timeline did not changed
+			return this;
 		}
 
 		if (typeTemporals == EMPTY_SORTED_SET) {
 			typeTemporals = CollectionUtils.treeSet();
 		}
-		typeTemporals.addAll(typesTimeLine.getIntervals());
+
+		// add all new intervals
+		typeTemporals.addAll(tlNew.getIntervals());
+		typesTimeLine = tlNew;
 
 		return this;
 	}
@@ -138,6 +149,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 * @param typeTemporals Value to set for property 'typeTemporals'.
 	 */
 	public void setTypeTemporals(SortedSet<StreetTypeTemporal> typeTemporals) {
+
 		this.typeTemporals = typeTemporals;
 		typesTimeLine = new TimeLine<StreetType, StreetTypeTemporal>(typeTemporals);
 	}
@@ -150,13 +162,21 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	@NotNull
 	public SortedSet<StreetTypeTemporal> getTypeTemporals() {
 
-		for (StreetTypeTemporal temporal : typeTemporals) {
-			if (temporal.getValue() != null && temporal.getValue().isNew()) {
-				temporal.setValue(null);
-			}
-		}
+//		for (StreetTypeTemporal temporal : typeTemporals) {
+//			if (temporal.getValue() != null && temporal.getValue().isNew()) {
+//				temporal.setValue(null);
+//			}
+//		}
 
 		return typeTemporals;
+	}
+
+	public Set<StreetNameIndex> getNameIndexes() {
+		return nameIndexes;
+	}
+
+	public void setNameIndexes(Set<StreetNameIndex> nameIndexes) {
+		this.nameIndexes = nameIndexes;
 	}
 
 	/**

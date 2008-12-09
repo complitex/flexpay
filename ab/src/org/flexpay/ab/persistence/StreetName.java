@@ -1,6 +1,9 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.TemporaryName;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.exception.FlexPayException;
 
 /**
  * StreetName
@@ -40,5 +43,9 @@ public class StreetName extends TemporaryName<StreetName, StreetNameTranslation>
 		StreetName empty = new StreetName();
 		empty.setObject(getObject());
 		return empty;
+	}
+
+	public StreetNameTranslation getTranslation(Language lang) throws FlexPayException {
+		return TranslationUtil.getTranslation(getTranslations(), lang);
 	}
 }

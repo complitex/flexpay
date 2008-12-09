@@ -27,12 +27,13 @@ public class AllObjectsDao {
 		}
 	}
 
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
-	}
-
 	public void flushAndClear() {
 		hibernateTemplate.flush();
 		hibernateTemplate.clear();
+		counter = 0;
+	}
+
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
 	}
 }
