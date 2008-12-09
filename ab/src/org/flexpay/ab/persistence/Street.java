@@ -29,7 +29,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	private TimeLine<StreetType, StreetTypeTemporal> typesTimeLine;
 	private Set<Buildings> buildingses = Collections.emptySet();
 
-	private Set<StreetNameIndex> nameIndexes = Collections.emptySet();
+//	private Set<StreetNameIndex> nameIndexes = Collections.emptySet();
 
 	public Street() {
 	}
@@ -171,13 +171,13 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		return typeTemporals;
 	}
 
-	public Set<StreetNameIndex> getNameIndexes() {
-		return nameIndexes;
-	}
-
-	public void setNameIndexes(Set<StreetNameIndex> nameIndexes) {
-		this.nameIndexes = nameIndexes;
-	}
+//	public Set<StreetNameIndex> getNameIndexes() {
+//		return nameIndexes;
+//	}
+//
+//	public void setNameIndexes(Set<StreetNameIndex> nameIndexes) {
+//		this.nameIndexes = nameIndexes;
+//	}
 
 	/**
 	 * Find value for date
