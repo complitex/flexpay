@@ -22,7 +22,7 @@
 		<!-- Town districts -->
 		<mapping resource="org/flexpay/ab/persistence/District.hbm.xml" />
 
-		<!-- Town districts -->
+		<!-- Town streets -->
 		<mapping resource="org/flexpay/ab/persistence/Street.hbm.xml" />
 
 		<!-- Buildings -->
