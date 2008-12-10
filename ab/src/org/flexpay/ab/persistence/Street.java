@@ -29,8 +29,6 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	private TimeLine<StreetType, StreetTypeTemporal> typesTimeLine;
 	private Set<Buildings> buildingses = Collections.emptySet();
 
-//	private Set<StreetNameIndex> nameIndexes = Collections.emptySet();
-
 	public Street() {
 	}
 
@@ -108,6 +106,12 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		typeTemporals.addAll(tlNew.getIntervals());
 		typesTimeLine = tlNew;
 
+		for (StreetTypeTemporal typeTemporal : typeTemporals) {
+			if (typeTemporal.getValue() != null && typeTemporal.getValue().isNew()) {
+				typeTemporal.setValue(null);
+			}
+		}
+
 		return this;
 	}
 
@@ -162,22 +166,8 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	@NotNull
 	public SortedSet<StreetTypeTemporal> getTypeTemporals() {
 
-//		for (StreetTypeTemporal temporal : typeTemporals) {
-//			if (temporal.getValue() != null && temporal.getValue().isNew()) {
-//				temporal.setValue(null);
-//			}
-//		}
-
 		return typeTemporals;
 	}
-
-//	public Set<StreetNameIndex> getNameIndexes() {
-//		return nameIndexes;
-//	}
-//
-//	public void setNameIndexes(Set<StreetNameIndex> nameIndexes) {
-//		this.nameIndexes = nameIndexes;
-//	}
 
 	/**
 	 * Find value for date

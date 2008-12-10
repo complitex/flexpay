@@ -4,6 +4,7 @@ import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.test.TransactionalSpringBeanAwareTestCase;
 import org.flexpay.common.util.DateUtil;
 import static org.junit.Assert.assertNotNull;
@@ -14,23 +15,16 @@ import org.springframework.test.annotation.NotTransactional;
 
 public class TestStreetService extends TransactionalSpringBeanAwareTestCase {
 
+	private final Stub<Town> TOWN = new Stub<Town>(2L);
+
 	@Autowired
-	protected StreetDao streetDao;
-	protected StreetService streetService;
+	private StreetDao streetDao;
+	@Autowired @Qualifier("streetService")
+	private StreetService streetService;
 	@Autowired
-	protected TownService townService;
+	private TownService townService;
+	@Autowired @Qualifier("streetTypeService")
 	private StreetTypeService streetTypeService;
-
-	@Autowired
-	public void setStreetService(@Qualifier ("streetService") StreetService streetService) {
-		this.streetService = streetService;
-	}
-
-	@Autowired
-	public void setService(@Qualifier ("streetTypeService") StreetTypeService service) {
-		this.streetTypeService = service;
-	}
-
 
 	@Test
 	@NotTransactional
@@ -83,7 +77,7 @@ public class TestStreetService extends TransactionalSpringBeanAwareTestCase {
 
 	@Test
 	public void testGetStreetName() throws Throwable {
-		Town town = townService.readFull(ApplicationConfig.getDefaultTownStub());
+		Town town = townService.readFull(TOWN);
 		assertNotNull("No default town", town);
 
 		if (town.getStreets().isEmpty()) {
