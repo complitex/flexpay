@@ -16,6 +16,7 @@
 			<include name="hibernate3/*.jar" />
 			<include name="antlr/*.jar" />
 			<include name="log4j/*.jar" />
+            <include name="freemarker/*.jar" />
 		</fileset>
 		<path refid="commons.lib" />
 	</path>
@@ -26,10 +27,17 @@
 		</fileset>
 	</path>
 
+    <path id="freemarker.lib">
+        <fileset dir="${common.dir}/lib/freemarker">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+
 	<path id="struts.lib">
 		<fileset dir="${common.dir}/lib">
 			<include name="struts2/*.jar" />
 			<include name="antlr/*.jar" />
+            <include name="freemarker/*.jar" />
 		</fileset>
 	</path>
 
@@ -207,6 +215,8 @@
 			<lib dir="${common.dir}/lib/itext" />
 			<lib dir="${common.dir}/lib/quartz" />
 			<lib dir="${common.dir}/lib/jasperreports" />
+            <lib dir="${common.dir}/lib/freemarker" />
+            <lib dir="${common.dir}/lib/logging" />
 			<lib dir="${build.dir}/lib" />
 		</war>
 	</target>
