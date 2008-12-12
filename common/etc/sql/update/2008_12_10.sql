@@ -10,3 +10,5 @@ alter table JBPM_PROCESSDEFINITION modify column DESCRIPTION_ longtext;
 alter table JBPM_TASK modify column DESCRIPTION_ longtext;
 alter table JBPM_TASKINSTANCE modify column DESCRIPTION_ longtext;
 alter table JBPM_TRANSITION modify column DESCRIPTION_ longtext;
+
+update common_version_tbl set last_modified_date='2008-12-10', date_version=0;
