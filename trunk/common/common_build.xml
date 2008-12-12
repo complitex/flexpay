@@ -11,6 +11,7 @@
 		<path refid="spring.lib" />
 		<path refid="struts.lib" />
 		<path refid="hibernate.lib" />
+        <path refid="freemarker.lib" />
 		<path refid="log4j.lib" />
 		<path refid="j2ee.lib" />
 		<path refid="javadbf.lib" />
