@@ -12,15 +12,6 @@ public class TestEircAccountService extends SpringBeanAwareTestCase {
 	protected EircAccountService eircAccountService;
 
 	@Test
-	@Ignore
 	public void testGenerateAccountNumber() {
-		String number = eircAccountService.nextPersonalAccount();
-
-		assertNotNull("Number generation failed", number);
-
-		// prevent rollback
-		number = eircAccountService.nextPersonalAccount();
-
-		assertNotNull("Number generation failed", number);
 	}
 }

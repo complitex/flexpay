@@ -137,7 +137,7 @@ public abstract class NameTimeDependentServiceImpl<
 				continue;
 			}
 			NTD ntdDB = getNameTimeDependentDao().read(ntd.getId());
-			ntdDB.setStatus(DomainObjectWithStatus.STATUS_DISABLED);
+			ntdDB.disable();
 			getNameTimeDependentDao().update(ntdDB);
 
 			if (log.isDebugEnabled()) {
@@ -294,7 +294,7 @@ public abstract class NameTimeDependentServiceImpl<
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if failure occurs
 	 */
-	public NTD postCreate(NTD object) throws FlexPayExceptionContainer {
+	protected NTD postCreate(NTD object) throws FlexPayExceptionContainer {
 		return object;
 	}
 
@@ -327,32 +327,6 @@ public abstract class NameTimeDependentServiceImpl<
 			return null;
 		}
 		return domainObject;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public Map<Long, T> getTranslations(Long temporalId) {
-		DI temporal = getNameTemporalDao().readFull(temporalId);
-		if (log.isInfoEnabled()) {
-			log.info("Temporal: " + temporal);
-		}
-
-		if (temporal == null || temporal.getValue() == null) {
-			return Collections.emptyMap();
-		}
-
-		TV name = temporal.getValue();
-		if (log.isInfoEnabled()) {
-			log.info("Translations: " + name.getTranslations());
-		}
-
-		Map<Long, T> map = new HashMap<Long, T>();
-		for (T translation : name.getTranslations()) {
-			map.put(translation.getLang().getId(), translation);
-		}
-
-		return map;
 	}
 
 	/**

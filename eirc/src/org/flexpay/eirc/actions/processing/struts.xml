@@ -12,23 +12,14 @@
 		</action>
 
 		<action name="processesList" class="processesListAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">EIRC_PROCESS_READ</param>
-			</interceptor-ref>
 			<result type="tiles">eirc.process.list</result>
 		</action>
 
 		<action name="processView" class="processViewAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">EIRC_PROCESS_READ</param>
-			</interceptor-ref>
 			<result type="tiles">eirc.process.view</result>
 		</action>
 
 		<action name="processDefinitionDeploy" class="processDefinitionDeployAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">EIRC_PROCESS_DEFINITION_UPLOAD_NEW</param>
-			</interceptor-ref>
 			<result name="redirectSuccess" type="redirect-action">processesList</result>
 			<result name="input" type="tiles">eirc.process.deploy_definition</result>
 		</action>

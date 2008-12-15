@@ -6,6 +6,7 @@ import org.flexpay.eirc.persistence.Bank;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.security.annotation.Secured;
 
 import java.util.List;
 import java.util.Set;
@@ -18,6 +19,7 @@ public interface BankService {
 	 * @param pager Page
 	 * @return List of registered banks
 	 */
+	@Secured (Roles.BANK_READ)
 	@NotNull
 	List<Bank> listBanks(@NotNull Page<Bank> pager);
 
@@ -26,6 +28,7 @@ public interface BankService {
 	 *
 	 * @param objectIds Banks identifiers to disable
 	 */
+	@Secured (Roles.BANK_DELETE)
 	void disable(@NotNull Set<Long> objectIds);
 
 	/**
@@ -34,6 +37,7 @@ public interface BankService {
 	 * @param stub Bank stub
 	 * @return Bank
 	 */
+	@Secured (Roles.BANK_READ)
 	@Nullable
 	Bank read(@NotNull Bank stub);
 
@@ -43,6 +47,7 @@ public interface BankService {
 	 * @param bank Bank to save
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
+	@Secured ({Roles.BANK_ADD, Roles.BANK_CHANGE})
 	void save(@NotNull Bank bank) throws FlexPayExceptionContainer;
 
 	/**
@@ -50,8 +55,9 @@ public interface BankService {
 	 * organization
 	 *
 	 * @param organizationFilter Filter to initialize
-	 * @param bank Bank
+	 * @param bank			   Bank
 	 */
+	@Secured (Roles.BANK_READ)
 	void initBanklessFilter(@NotNull OrganizationFilter organizationFilter, @NotNull Bank bank);
 
 }

@@ -25,14 +25,11 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	@Autowired
 	protected RegistryDao registryDao;
 
+	@Autowired
+	@Qualifier("processManager")
 	private ProcessManager processManager;
 	@Autowired
 	protected RegistryFileService registryFileService;
-
-	@Autowired
-	public void setProcessManager(@Qualifier ("processManager") ProcessManager processManager) {
-		this.processManager = processManager;
-	}
 
 	@Test
 	@NotTransactional

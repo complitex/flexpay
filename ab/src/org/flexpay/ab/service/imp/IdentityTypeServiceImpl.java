@@ -211,16 +211,6 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	}
 
 	/**
-	 * Get available identity types
-	 *
-	 * @return Identity types
-	 */
-	public Collection<IdentityType> getIdentityTypes() {
-		initTypesCache();
-		return identityTypes;
-	}
-
-	/**
 	 * Get a list of available identity types
 	 *
 	 * @return List of IdentityType

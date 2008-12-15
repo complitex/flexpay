@@ -9,6 +9,7 @@ import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.ServiceFilter;
 import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
+import org.springframework.security.annotation.Secured;
 
 import java.util.List;
 import java.util.Set;
@@ -24,7 +25,9 @@ public interface SPService {
 	 * @param providerNumber Service provider unique number
 	 * @return ServiceProvider instance
 	 * @throws IllegalArgumentException if provider cannot be found
+	 * @deprecated todo refactor to use Stub
 	 */
+	@Secured (Roles.SERVICE_PROVIDER_READ)
 	ServiceProvider getProvider(Long providerNumber) throws IllegalArgumentException;
 
 	/**
@@ -33,6 +36,7 @@ public interface SPService {
 	 * @param pager Page
 	 * @return List of service providers
 	 */
+	@Secured (Roles.SERVICE_PROVIDER_READ)
 	List<ServiceProvider> listProviders(Page<ServiceProvider> pager);
 
 	/**
@@ -40,6 +44,7 @@ public interface SPService {
 	 *
 	 * @param objectIds Set of service provider identifiers
 	 */
+	@Secured (Roles.SERVICE_PROVIDER_DELETE)
 	void disable(Set<Long> objectIds);
 
 	/**
@@ -48,6 +53,7 @@ public interface SPService {
 	 * @param provider Service Provider stub
 	 * @return ServiceProvider
 	 */
+	@Secured (Roles.SERVICE_PROVIDER_READ)
 	ServiceProvider read(ServiceProvider provider);
 
 	/**
@@ -56,6 +62,7 @@ public interface SPService {
 	 * @param serviceProvider New or persitent object to save
 	 * @throws FlexPayExceptionContainer if provider validation fails
 	 */
+	@Secured ({Roles.SERVICE_PROVIDER_ADD, Roles.SERVICE_PROVIDER_CHANGE})
 	void save(ServiceProvider serviceProvider) throws FlexPayExceptionContainer;
 
 	/**
@@ -65,6 +72,7 @@ public interface SPService {
 	 * @param sp				 ServiceProvider to init filter for
 	 * @return filter
 	 */
+	@Secured (Roles.SERVICE_ORGANIZATION_READ)
 	OrganizationFilter initOrganizationFilter(OrganizationFilter organizationFilter, ServiceProvider sp);
 
 	/**
@@ -73,6 +81,7 @@ public interface SPService {
 	 * @param filter ServiceProviderFilter to initialize
 	 * @return ServiceProviderFilter back
 	 */
+	@Secured (Roles.SERVICE_PROVIDER_READ)
 	ServiceProviderFilter initServiceProvidersFilter(ServiceProviderFilter filter);
 
 	/**
@@ -82,6 +91,7 @@ public interface SPService {
 	 * @param pager   Page
 	 * @return List of services
 	 */
+	@Secured (Roles.SERVICE_READ)
 	List<Service> listServices(List<ObjectFilter> filters, Page<Service> pager);
 
 	/**
@@ -90,6 +100,7 @@ public interface SPService {
 	 * @param stub Service stub
 	 * @return Service description
 	 */
+	@Secured (Roles.SERVICE_READ)
 	Service read(Stub<Service> stub);
 
 	/**
@@ -98,13 +109,15 @@ public interface SPService {
 	 * @param service Service to save
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
+	@Secured ({Roles.SERVICE_ADD, Roles.SERVICE_CHANGE})
 	void save(Service service) throws FlexPayExceptionContainer;
 
 	/**
 	 * Initalize service filter with a list of parent services
 	 *
-	 * @param parentServiceFilter Filter to initialize
+	 * @param filter Filter to initialize
 	 * @return Filter back
 	 */
-	ServiceFilter initParentServicesFilter(ServiceFilter parentServiceFilter);
+	@Secured (Roles.SERVICE_READ)
+	ServiceFilter initParentServicesFilter(ServiceFilter filter);
 }

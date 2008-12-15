@@ -26,7 +26,7 @@ public class ProcessHelper {
 	@NotNull
 	public List<Process> findProcesses(@NotNull String definitionName) {
 		List<Process> result = CollectionUtils.list();
-		List<Process> processes = processManager.getProcessList();
+		List<Process> processes = processManager.getProcesses();
 		for (Process process : processes) {
 			if (definitionName.equals(process.getProcessDefinitionName())) {
 				result.add(process);
@@ -57,7 +57,7 @@ public class ProcessHelper {
 	@NotNull
 	public List<TaskInstance> getRunningTasks(@NotNull Set<String> taskNames) {
 
-		List<TaskInstance> instances = processManager.getRunningTaskIds();
+		List<TaskInstance> instances = processManager.getRunningTasks();
 		List<TaskInstance> result = CollectionUtils.list();
 		for (TaskInstance instance : instances) {
 			if (!instance.hasEnded() && taskNames.contains(instance.getName())) {

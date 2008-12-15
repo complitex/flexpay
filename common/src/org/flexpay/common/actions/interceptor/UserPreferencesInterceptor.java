@@ -14,8 +14,7 @@ public class UserPreferencesInterceptor extends AbstractInterceptor {
 		Object action = invocation.getAction();
 		if (action instanceof UserPreferencesAware) {
 			HttpServletRequest request = ServletActionContext.getRequest();
-			UserPreferences userPreferences = UserPreferences
-					.getPreferences(request);
+			UserPreferences userPreferences = UserPreferences.getPreferences(request);
 			((UserPreferencesAware) action).setUserPreferences(userPreferences);
 		}
 

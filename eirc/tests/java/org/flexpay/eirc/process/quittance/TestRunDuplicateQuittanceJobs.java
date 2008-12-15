@@ -19,7 +19,7 @@ import java.util.Map;
 public class TestRunDuplicateQuittanceJobs extends SpringBeanAwareTestCase {
 
 	@Autowired
-	@Qualifier("processManager")
+	@Qualifier ("processManager")
 	private ProcessManager processManager;
 
 	@Test
@@ -70,7 +70,7 @@ public class TestRunDuplicateQuittanceJobs extends SpringBeanAwareTestCase {
 		Thread thr2 = new Thread(pw2);
 		thr2.start();
 		thr2.join();
-		
+
 		assertEquals("First process failed", ProcessState.COMPLITED, pw1.getProcess().getProcessState());
 		assertEquals("Second process failed", ProcessState.COMPLITED, pw2.getProcess().getProcessState());
 	}

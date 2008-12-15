@@ -20,7 +20,6 @@
 		<interceptors>
 			<interceptor name="userPreferences"
 						 class="org.flexpay.common.actions.interceptor.UserPreferencesInterceptor"/>
-			<interceptor name="flexpayRoles" class="org.flexpay.common.actions.interceptor.FlexpayRolesInterceptor"/>
 			<interceptor-stack name="commonDefaultStack">
 				<!-- TODO find out why is it going before the default stack-->
 				<interceptor-ref name="userPreferences"/>

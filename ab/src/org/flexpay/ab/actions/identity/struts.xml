@@ -8,31 +8,19 @@
 	<package name="identity_types" namespace="/dicts" extends="common">
 
 		<action name="identityTypeView" class="identityTypeViewAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">IDENTITY_TYPE_READ</param>
-			</interceptor-ref>
 			<result name="success" type="tiles">ab.identity_type.view</result>
 		</action>
 
 		<action name="identityTypesList" class="identityTypesListAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">IDENTITY_TYPE_READ</param>
-			</interceptor-ref>
 			<result name="success" type="tiles">ab.identity_type.list</result>
 		</action>
 
 		<action name="identityTypeEdit" class="identityTypeEditAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">IDENTITY_TYPE_CHANGE</param>
-			</interceptor-ref>
 			<result name="input" type="tiles">ab.identity_type.edit</result>
 			<result name="redirectSuccess" type="redirect-action">identityTypesList</result>
 		</action>
 
 		<action name="identityTypeDelete" class="identityTypeDeleteAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">IDENTITY_TYPE_DELETE</param>
-			</interceptor-ref>
 			<result name="afterSubmit" type="redirect">identityTypesList.action</result>
 		</action>
 

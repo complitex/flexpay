@@ -8,38 +8,23 @@
 	<package name="apartments" namespace="/dicts" extends="common">
 
 		<action name="apartmentsList" class="apartmentsListAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">APARTMENT_READ</param>
-			</interceptor-ref>
 			<result type="tiles">ab.apartment.list</result>
 		</action>
 
 		<action name="apartmentEdit" class="apartmentEditAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">APARTMENT_CHANGE</param>
-			</interceptor-ref>
 			<result name="input" type="tiles">ab.apartment.edit</result>
 			<result name="redirectSuccess" type="redirect-action">apartmentsList</result>
 		</action>
 
 		<action name="apartmentDelete" class="apartmentDeleteAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">APARTMENT_CHANGE</param>
-			</interceptor-ref>
 			<result name="redirectSuccess" type="redirect-action">apartmentsList</result>
 		</action>
 
 		<action name="apartmentRegistration" class="apartmentRegistrationAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">APARTMENT_READ</param>
-			</interceptor-ref>
 			<result name="success" type="tiles">ab.apartment.registrations</result>
 		</action>
 
 		<action name="apartmentRegistrationsHistory" class="apartmentRegistrationAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">APARTMENT_READ</param>
-			</interceptor-ref>
 			<result name="success" type="tiles">ab.apartment.registrations_history</result>
 		</action>
 

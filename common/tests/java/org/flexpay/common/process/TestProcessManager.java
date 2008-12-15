@@ -1,22 +1,16 @@
 package org.flexpay.common.process;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.process.exception.JobConfigurationNotFoundException;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.process.job.Job;
-import org.flexpay.common.process.job.JobManager;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.jbpm.JbpmConfiguration;
 import org.jbpm.JbpmContext;
-import org.jbpm.db.GraphSession;
 import org.jbpm.graph.def.ProcessDefinition;
-import org.junit.After;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
@@ -26,14 +20,9 @@ import java.util.Map;
 
 public class TestProcessManager extends SpringBeanAwareTestCase {
 
-//    @Autowired
-	//    private ProcessManager processManager;
-//    volatile private static Thread thread = null;
-
 	volatile private static String eventExecuted = "";
 	private static final String EVENT_EXECUTED = "EVENT EXECUTED";
 	volatile private static int counter = 0;
-	//    private static final ProcessDefinition processDefinition = ProcessDefinition.parseXmlString(
 	private static final String processDefinitionString =
 			"<process-definition name=\"TestProcessDefinition\">" +
 			"  <start-state>" +
@@ -103,86 +92,21 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 
 	@Autowired
 	private JbpmConfiguration jbpmConfiguration;
-
-	@Before
-	public void setUp() {
-		ProcessManager.getInstance().stopProcessManager();
-		ProcessManager.unload();
-		clearDB();
-	}
-
-	@After
-	public void tearDown() {
-		ProcessManager.getInstance().stopProcessManager();
-//        try {
-//            thread.join();
-//        }
-//        catch (InterruptedException e) {
-//            Thread.interrupted(); // clear interrupded flag
-//        }
-		ProcessManager.unload();
-		clearDB();
-//        thread = null;
-	}
+	@Autowired
+	private ProcessManager processManager;
 
 	@Test
-	public void testProcessManager() throws InterruptedException, JobConfigurationNotFoundException {
+	@Ignore
+	public void testProcessManager() throws Exception {
 
-		new ProcessManagerConfiguration() {// ProcessManagerConfiguration pmc =
+		ProcessDefinition definition = ProcessDefinition.parseXmlString(testProcessDefinition);
+		processManager.deployProcessDefinition(definition, true);
 
-			{
-				instance = this;
-			}
+		processManager.createProcess("testProcessDefinition2", new HashMap<Serializable, Serializable>());
 
-			public String getJobClazzName(String jobName) throws JobConfigurationNotFoundException {
-				return "org.flexpay.common.process.TestProcessManager$" + jobName;
-			}
-		};
-
-		ProcessManager pm = new ProcessManager() {
-			{
-				instance = this;
-			}
-
-			public synchronized void jobFinished(Long taskId, HashMap<Serializable, Serializable> parameters, String transition) {
-				super.jobFinished(taskId, parameters, transition);
-				if (++counter >= 2) {
-					stopProcessManager();
-					instance = null;
-				}
-			}
-		};
-//        pmc.getJobClazzName("z");
-		ProcessDefinition processDefinition = null;
-		try {
-
-			pm.setJbpmConfiguration(jbpmConfiguration);
-			JobManager.getInstance();
-
-			processDefinition = ProcessDefinition.parseXmlString(testProcessDefinition);
-			ProcessManager.getInstance().deployProcessDefinition(processDefinition, true);
-
-
-			pm.createProcess("testProcessDefinition2", new HashMap<Serializable, Serializable>());
-
-			pm.run();
-
-			assertEquals(2, counter);
-			//@TODO why event class was not executed?
-			assertEquals(EVENT_EXECUTED, eventExecuted);
-
-		} catch (ProcessInstanceException e) {
-			e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-			fail();
-		} catch (ProcessDefinitionException e) {
-			e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-			fail();
-		} finally {
-			if (processDefinition != null) {
-				undeployTestProcessDefinition(processDefinition);
-			}
-		}
-
+		assertEquals(2, counter);
+		//@TODO why event class was not executed?
+		assertEquals(EVENT_EXECUTED, eventExecuted);
 	}
 
 	public JbpmConfiguration getJbpmConfiguration() {
@@ -196,8 +120,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 	@Test
 	public void testDeploy() {
 		ProcessDefinition processDefinition = ProcessDefinition.parseXmlString(processDefinitionString);
-		ProcessManager.getInstance().setJbpmConfiguration(jbpmConfiguration);
-		ProcessManager.getInstance().deployProcessDefinition(processDefinition, true);
+		processManager.deployProcessDefinition(processDefinition, true);
 
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
 		List li = jbpmContext.getGraphSession().findAllProcessDefinitionVersions(processDefinition.getName());
@@ -209,10 +132,9 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 	@Test
 	public void testCreateProcess() throws ProcessInstanceException, ProcessDefinitionException {
 		ProcessDefinition processDefinition = ProcessDefinition.parseXmlString(processDefinitionString);
-		ProcessManager.getInstance().setJbpmConfiguration(jbpmConfiguration);
-		ProcessManager.getInstance().deployProcessDefinition(processDefinition, true);
-		ProcessManager.getInstance().createProcess("testProcessDefinition", new HashMap<Serializable, Serializable>());
-		assertEquals(1, ProcessManager.getInstance().getProcessList().size());
+		processManager.deployProcessDefinition(processDefinition, true);
+		processManager.createProcess("testProcessDefinition", new HashMap<Serializable, Serializable>());
+		assertEquals(1, processManager.getProcesses().size());
 		undeployTestProcessDefinition(processDefinition);
 	}
 
@@ -226,7 +148,6 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 	public static class MockJobFirst extends Job {
 
 		public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
-//            counter++;
 			return Job.RESULT_NEXT;
 		}
 	}
@@ -234,22 +155,8 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 	public static class MockJobLast extends Job {
 
 		public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
-//            counter++;
 			return Job.RESULT_NEXT;
 		}
-	}
-
-	@Test
-	@Ignore
-	public void clearDB() {
-		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
-		GraphSession graphSession = jbpmContext.getGraphSession();
-
-		for (Object pd : graphSession.findAllProcessDefinitions()) {
-			graphSession.deleteProcessDefinition((ProcessDefinition) pd);
-		}
-		jbpmContext.close();
-
 	}
 
 	public static String getEventExecuted() {

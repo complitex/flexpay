@@ -14,6 +14,10 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/common/login.jsp" />
 	</definition>
 
+    <definition name="common.login-failed" extends="common.layout.simple">
+		<put-attribute name="body" value="/WEB-INF/jsp/common/login-failed.jsp" />
+	</definition>
+
     <definition name="common.forbidden" extends="common.layout.simple">
 		<put-attribute name="body" value="/WEB-INF/jsp/common/forbidden.jsp" />
 	</definition>

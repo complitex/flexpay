@@ -8,23 +8,14 @@
 	<package name="persons" namespace="/dicts" extends="common">
 
 		<action name="personsList" class="personsListAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">PERSON_READ</param>
-			</interceptor-ref>
 			<result type="tiles">ab.person.list</result>
 		</action>
 
 		<action name="personView" class="personViewAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">PERSON_READ</param>
-			</interceptor-ref>
 			<result type="tiles">ab.person.view</result>
 		</action>
 
 		<action name="personEdit" class="personEditAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">PERSON_CHANGE</param>
-			</interceptor-ref>
 			<result name="input" type="tiles">ab.person.edit</result>
 			<result type="redirect-action">
 				<param name="actionName">personView</param>
@@ -37,9 +28,6 @@
 		</action>
 
 		<action name="personEditFIO" class="personSaveFIOAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">PERSON_CHANGE</param>
-			</interceptor-ref>
 			<result name="redirectError" type="redirect-action">
 				<param name="actionName">personEdit</param>
 				<param name="parse">true</param>
@@ -53,9 +41,6 @@
 		</action>
 
 		<action name="setPersonRegistration" class="setPersonRegistrationAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">PERSON_CHANGE</param>
-			</interceptor-ref>
 			<result name="redirectError" type="redirect-action">
 				<param name="actionName">personEdit</param>
 				<param name="parse">true</param>

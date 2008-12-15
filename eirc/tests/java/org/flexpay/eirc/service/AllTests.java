@@ -7,7 +7,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		org.flexpay.eirc.service.importexport.AllTests.class,
 		org.flexpay.eirc.service.exchange.AllTests.class,
-//		org.flexpay.eirc.service.registry.AllTests.class,
+		org.flexpay.eirc.service.registry.AllTests.class,
 		TestBuildingService.class,
 		TestEircAccountService.class,
 		TestSpFileService.class,

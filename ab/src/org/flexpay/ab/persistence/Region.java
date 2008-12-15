@@ -3,6 +3,7 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.NameTimeDependentChild;
+import org.flexpay.common.persistence.Stub;
 
 import java.util.Collections;
 import java.util.Set;
@@ -68,5 +69,9 @@ public class Region extends NameTimeDependentChild<RegionName, RegionNameTempora
 	@Override
 	public int hashCode() {
 		return super.hashCode();
+	}
+
+	public Stub<Country> getCountryStub() {
+		return new Stub<Country>(getParent().getId());
 	}
 }

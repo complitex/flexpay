@@ -14,23 +14,14 @@
 		</action>
 
 		<action name="spFileCreate" class="spFileCreateAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_ADD</param>
-			</interceptor-ref>
 			<result name="input" type="tiles">eirc.import.file.upload.form</result>
 		</action>
 
 		<action name="spFileList" class="spFilesListAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_ADD</param>
-			</interceptor-ref>
 			<result name="success" type="tiles">eirc.import.file.list</result>
 		</action>
 
 		<action name="spFileAction" class="spFileAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">EIRC_ORGANIZATION_ADD</param>
-			</interceptor-ref>
 			<result name="redirectSuccess" type="redirect-action">spFileList</result>
 		</action>
 

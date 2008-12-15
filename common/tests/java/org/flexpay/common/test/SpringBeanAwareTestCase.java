@@ -16,19 +16,12 @@ import java.io.InputStream;
 @ContextConfiguration (locations = {"file:WEB-INF/applicationContext.xml"})
 public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContextTests {
 
-	@NonNls
+	@Autowired
+	@Qualifier ("hibernateTemplate")
 	protected HibernateTemplate hibernateTemplate;
+	@Autowired
+	@Qualifier("jdbcTemplate")
 	protected JdbcTemplate jdbcTemplate;
-
-	@Autowired
-	public void setJdbcTemplate(@Qualifier ("jdbcTemplate")JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
-
-	@Autowired
-	public void setHibernateTemplate(@Qualifier ("hibernateTemplate")HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
-	}
 
 	protected InputStream getFileStream(@NonNls String relativePath) {
 		return getClass().getClassLoader().getResourceAsStream(relativePath);

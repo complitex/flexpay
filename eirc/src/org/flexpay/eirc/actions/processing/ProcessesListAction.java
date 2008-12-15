@@ -48,7 +48,7 @@ public class ProcessesListAction extends FPActionSupport {
 	}
 
 	private List<Process> getProcessListMethod() {
-		List<Process> processes = processManager.getProcessList();
+		List<Process> processes = processManager.getProcesses();
 		Collections.sort(processes, new ProcessStateComparator());
 		return processes;
 	}

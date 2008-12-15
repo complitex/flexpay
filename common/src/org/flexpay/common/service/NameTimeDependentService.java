@@ -35,15 +35,6 @@ public interface NameTimeDependentService<
 			throws FlexPayExceptionContainer;
 
 	/**
-	 * Run any post create actions on object
-	 *
-	 * @param object Persisted object
-	 * @return The object itself
-	 * @throws FlexPayExceptionContainer if failure occurs
-	 */
-	NTD postCreate(NTD object) throws FlexPayExceptionContainer;
-
-	/**
 	 * Read object by its unique id
 	 *
 	 * @param stub Object stub
@@ -94,14 +85,6 @@ public interface NameTimeDependentService<
 	 * @throws FlexPayExceptionContainer if failure occurs
 	 */
 	void disable(Collection<NTD> objects) throws FlexPayExceptionContainer;
-
-	/**
-	 * Get name translations for temporal
-	 *
-	 * @param temporalId Temporal id
-	 * @return Mapping from language ids to translations
-	 */
-	Map<Long, T> getTranslations(Long temporalId);
 
 	/**
 	 * Update object name translations
