@@ -8,39 +8,24 @@
 
 		<!-- Eirc account -->
 		<action name="eircAccountsList" class="eircAccountsListAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">EIRC_ACCOUNT_READ</param>
-			</interceptor-ref>
 			<result type="tiles">eirc.eirc_account.list</result>
 		</action>
 
 		<action name="eircAccountView" class="eircAccountViewAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">EIRC_ACCOUNT_READ</param>
-			</interceptor-ref>
 			<result name="success" type="tiles">eirc.eirc_account.view</result>
 			<result name="redirectError" type="redirect-action">eircAccountsList</result>
 		</action>
 
 		<action name="eircAccountCreateForm1" class="eircAccountCreateForm1Action">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">EIRC_ACCOUNT_ADD</param>
-			</interceptor-ref>
 			<result type="tiles">eirc.eirc_account.create.form1</result>
 		</action>
 
 		<action name="eircAccountCreateForm2" class="eircAccountCreateForm2Action">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">EIRC_ACCOUNT_ADD</param>
-			</interceptor-ref>
 			<result name="form2" type="tiles">eirc.eirc_account.create.form2</result>
 			<result name="redirectForm1" type="redirect-action">eircAccountCreateForm1</result>
 		</action>
 
 		<action name="eircAccountCreate" class="eircAccountCreateAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">EIRC_ACCOUNT_ADD</param>
-			</interceptor-ref>
 			<result name="redirectForm1" type="redirect-action">eircAccountCreateForm1</result>
 			<result name="redirectForm2" type="redirect-action">
 				<param name="actionName">eircAccountCreateForm2</param>

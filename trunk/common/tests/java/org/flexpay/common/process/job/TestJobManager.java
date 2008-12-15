@@ -1,160 +1,47 @@
 package org.flexpay.common.process.job;
 
-import junit.framework.TestCase;
-import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.ProcessManagerConfiguration;
 import org.flexpay.common.process.exception.JobClassNotFoundException;
 import org.flexpay.common.process.exception.JobConfigurationNotFoundException;
 import org.flexpay.common.process.exception.JobInstantiationException;
-import org.junit.After;
-import org.junit.Before;
+import org.flexpay.common.test.SpringBeanAwareTestCase;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+import org.junit.Ignore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class TestJobManager extends TestCase {
+public class TestJobManager extends SpringBeanAwareTestCase {
 
-	public static volatile boolean job_finished = false;
-	public static volatile boolean job_waiting = true;
 	public final static String TEST_STRING = "test string";
 
-	@Before
-	public void setUp() throws Exception {
-		job_finished = false;
-		ProcessManager.unload();
-		super.setUp();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		super.tearDown();
-	}
+	@Autowired
+	private JobManager jobManager;
 
 	@Test
-	public void testAddJob_Added() {
-		try {
-			new ProcessManagerConfiguration() {
-				{
-					instance = this;
-				}
-
-				public String getJobClazzName(String jobName) throws JobConfigurationNotFoundException {
-					return "org.flexpay.common.process.job." + jobName;
-				}
-			};
-			new ProcessManager() {
-				{
-					instance = this;
-				}
-
-				public synchronized void jobFinished(Long taskId, HashMap<Serializable, Serializable> parameters, String transition) {
-					job_finished = true;
-					instance = null;
-				}
-			};
-
-			HashMap<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-			JobManager jobManager = JobManager.getInstance();
-			jobManager.addJob(1, 1, "MockJob", parameters);
-			assertEquals(1, jobManager.getJobList().size());
-			while (!job_finished) {
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail();
-		}
+	@Ignore
+	public void testAddJobAdded() throws Exception {
+		HashMap<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
+		jobManager.addJob(1, 1, "MockJob", parameters);
+		assertEquals(1, jobManager.getJobList().size());
 	}
 
-	@Test
-	public void testJobClassConfigurationNotFound() {
-		try {
-			new ProcessManagerConfiguration() {
-				{
-					instance = this;
-				}
-
-				public String getJobClazzName(String jobName) throws JobConfigurationNotFoundException {
-					throw new JobConfigurationNotFoundException("configuration for " + jobName + " not found");
-//                    return "org.flexpay.common.process.job." + jobName;
-				}
-			};
-			new ProcessManager() {
-				{
-					instance = this;
-				}
-
-				public synchronized void jobFinished(Long taskId, HashMap<Serializable, Serializable> parameters, String transition) {
-					job_finished = true;
-					instance = null;
-				}
-			};
-			JobManager jobManager = JobManager.getInstance();
-			jobManager.addJob(1, 1, "--=No One Job has this long name=--", new HashMap<Serializable, Serializable>());
-		} catch (JobConfigurationNotFoundException e) {
-			assertTrue(true);
-		} catch (JobClassNotFoundException e) {
-			fail();
-		} catch (JobInstantiationException e) {
-			fail();
-		}
-	}
-
-	@Test (expected = JobClassNotFoundException.class)
-	public void testJobClassNotFound() throws Throwable {
-		new ProcessManagerConfiguration() {
-			{
-				instance = this;
-			}
-
-			public String getJobClazzName(String jobName) throws JobConfigurationNotFoundException {
-				return "org.flexpay.common.process.job." + jobName;
-			}
-		};
-		new ProcessManager() {
-			{
-				instance = this;
-			}
-
-			public synchronized void jobFinished(Long taskId, HashMap<Serializable, Serializable> parameters, String transition) {
-				job_finished = true;
-				instance = null;
-			}
-		};
-		JobManager jobManager = JobManager.getInstance();
+	@Test (expected = JobConfigurationNotFoundException.class)
+	@Ignore
+	public void testJobClassConfigurationNotFound() throws Exception {
 		jobManager.addJob(1, 1, "--=No One Job has this long name=--", new HashMap<Serializable, Serializable>());
 	}
 
-	@Test
-	public void testJobInstantiation() {
-		try {
-			new ProcessManagerConfiguration() {
-				{
-					instance = this;
-				}
+	@Test (expected = JobClassNotFoundException.class)
+	@Ignore
+	public void testJobClassNotFound() throws Throwable {
+		jobManager.addJob(1, 1, "--=No One Job has this long name=--", new HashMap<Serializable, Serializable>());
+	}
 
-				public String getJobClazzName(String jobName) throws JobConfigurationNotFoundException {
-					return "org.flexpay.common.process.job." + jobName;
-				}
-			};
-			new ProcessManager() {
-				{
-					instance = this;
-				}
-
-				public synchronized void jobFinished(Long taskId, HashMap<Serializable, Serializable> parameters, String transition) {
-					job_finished = true;
-					instance = null;
-				}
-			};
-			JobManager jobManager = JobManager.getInstance();
-			jobManager.addJob(1, 1, "MockFakeJob", new HashMap<Serializable, Serializable>());
-		} catch (JobConfigurationNotFoundException e) {
-			fail();
-		} catch (JobClassNotFoundException e) {
-			fail();
-		} catch (JobInstantiationException e) {
-			assertTrue(true);
-		}
+	@Test (expected = JobInstantiationException.class)
+	@Ignore
+	public void testJobInstantiation() throws Exception {
+		jobManager.addJob(1, 1, "MockFakeJob", new HashMap<Serializable, Serializable>());
 	}
 }

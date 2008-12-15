@@ -30,7 +30,7 @@ public class CountryCreateAction extends FPActionSupport implements ServletReque
 		// Need to create new Country
 		if (isSubmit()) {
 			countryService.create(countryNames);
-			return SUCCESS;
+			return REDIRECT_SUCCESS;
 		}
 
 		request.setAttribute("country_names", countryNames);

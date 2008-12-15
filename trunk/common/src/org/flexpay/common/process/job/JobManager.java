@@ -9,12 +9,14 @@ import org.flexpay.common.util.CollectionUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.Assert;
 
 import java.io.Serializable;
 import java.util.*;
 
 
-public class JobManager implements BeanFactoryAware {
+public class JobManager implements BeanFactoryAware, InitializingBean {
 
 	private static JobManager instance = null;
 	private BeanFactory beanFactory;
@@ -22,7 +24,7 @@ public class JobManager implements BeanFactoryAware {
 	/**
 	 * Logger
 	 */
-	private final Logger log = Logger.getLogger(JobManager.class);
+	private final Logger log = Logger.getLogger(getClass());
 
 	private Map<String, Job> runningJobs = new Hashtable<String, Job>();
 	private Map<String, Job> sleepingJobs = new Hashtable<String, Job>();
@@ -48,14 +50,6 @@ public class JobManager implements BeanFactoryAware {
 		return instance;
 	}
 
-	public void setMaximumRunningJobs(int maximumRunningJobs) {
-		this.maximumRunningJobs = maximumRunningJobs;
-	}
-
-	public void setProcessManager(ProcessManager processManager) {
-		this.processManager = processManager;
-	}
-
 	public synchronized List<Job> getJobList() {
 		List<Job> result = new ArrayList<Job>();
 		result.addAll(runningJobs.values());
@@ -63,7 +57,6 @@ public class JobManager implements BeanFactoryAware {
 		result.addAll(waitingJobs);
 		return result;
 	}
-
 
 	public synchronized void reload() {
 		runningJobs = new Hashtable<String, Job>();
@@ -97,9 +90,13 @@ public class JobManager implements BeanFactoryAware {
 		Job job = runningJobs.get(id);
 		if (job == null) {
 			job = sleepingJobs.get(id);
+			if (job == null) {
+				log.warn("Know nothing about job #" + id);
+				throw new RuntimeException("Know nothing about job #" + id);
+			}
 		}
 
-		processManager.jobFinished(job.getTaskId(), jobParameters.get(id), transition);
+		processManager.taskCompleted(job.getTaskId(), jobParameters.get(id), transition);
 
 		jobParameters.remove(id);
 		if (runningJobs.get(id) != null) {
@@ -113,7 +110,7 @@ public class JobManager implements BeanFactoryAware {
 
 	public synchronized final void addJob(Job job, Map<Serializable, Serializable> param) {
 		if (runningJobs.size() < maximumRunningJobs) {
-			this.start(job, param);
+			start(job, param);
 		} else {
 			waitingJobs.addLast(job);
 		}
@@ -176,5 +173,25 @@ public class JobManager implements BeanFactoryAware {
 	 */
 	public void setBeanFactory(BeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
+	}
+
+	/**
+	 * Invoked by a BeanFactory after it has set all bean properties supplied (and satisfied BeanFactoryAware and
+	 * ApplicationContextAware). <p>This method allows the bean instance to perform initialization only possible when all
+	 * bean properties have been set and to throw an exception in the event of misconfiguration.
+	 *
+	 * @throws Exception in the event of misconfiguration (such as failure to set an essential property) or if
+	 *                   initialization fails.
+	 */
+	public void afterPropertiesSet() throws Exception {
+		Assert.notNull(processManager, "Process manager was not set");
+	}
+
+	public void setMaximumRunningJobs(int maximumRunningJobs) {
+		this.maximumRunningJobs = maximumRunningJobs;
+	}
+
+	public void setProcessManager(ProcessManager processManager) {
+		this.processManager = processManager;
 	}
 }

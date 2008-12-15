@@ -8,16 +8,10 @@
 	<package name="districts" namespace="/dicts" extends="common">
 
 		<action name="districtsList" class="districtsListAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">DISTRICT_READ</param>
-			</interceptor-ref>
 			<result type="tiles">ab.districts.list</result>
 		</action>
 
 		<action name="districtCreate" class="districtCreateAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">DISTRICT_ADD</param>
-			</interceptor-ref>
 			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">districtView</param>
 				<param name="parse">true</param>
@@ -27,17 +21,11 @@
 		</action>
 
 		<action name="districtView" class="districtViewAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">DISTRICT_READ</param>
-			</interceptor-ref>
 			<result type="tiles">ab.district.view</result>
 			<result type="redirect-action" name="redirectError">districtsList</result>
 		</action>
 
 		<action name="districtEdit" class="districtEditAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">DISTRICT_CHANGE</param>
-			</interceptor-ref>
 			<result type="redirect-action">
 				<param name="actionName">districtView</param>
 				<param name="parse">true</param>
@@ -47,9 +35,6 @@
 		</action>
 
 		<action name="districtDelete" class="districtDeleteAction">
-			<interceptor-ref name="commonDefaultStack">
-				<param name="flexpayRoles.allowedRoles">DISTRICT_DELETE</param>
-			</interceptor-ref>
 			<result name="redirectSuccess" type="redirect">districtsList.action</result>
 		</action>
 

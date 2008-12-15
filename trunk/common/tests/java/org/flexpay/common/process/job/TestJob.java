@@ -1,106 +1,68 @@
 package org.flexpay.common.process.job;
 
-import junit.framework.TestCase;
+import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.flexpay.common.util.CollectionUtils;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import org.junit.Ignore;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.Serializable;
 
-import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.util.CollectionUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.After;
+public class TestJob extends SpringBeanAwareTestCase {
 
-public class TestJob extends TestCase {
-    private final static String TEST_STRING = "test string";
-    public TestJob(String name) {
-        super(name);
-    }
+	private final static String TEST_STRING = "test string";
 
-    volatile boolean is_job_finished = false;
+	@Test
+	@Ignore
+	public void testRun() throws Exception {
 
-    @Before
-    public void setUp() throws Exception {
-        this.is_job_finished = false;
-        ProcessManager.unload();
-        super.setUp();
-    }
+		Job testJob = new MockJobNext();
+		testJob.setId("1");
+		JobManager jobManager = JobManager.getInstance();
+		HashMap<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
+		parameters.put(TEST_STRING, TEST_STRING);
+		jobManager.addJob(testJob, parameters);
 
-    @After
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
+		assertEquals(1, parameters.size());
+		assertEquals(TEST_STRING, parameters.get(TEST_STRING));
+	}
 
-    @Test
-    public void testRun() throws Exception {
-        ProcessManager pm = new ProcessManager() {
-            {
-                instance = this;
-            }
+	@Test
+	@Ignore
+	public void testJobException() throws Exception {
 
-            public void jobFinished(Long taskId, HashMap<Serializable, Serializable> parameters, String transition) {
-                is_job_finished = true;
-            }
-        };
+		Job testJob = new MockJobException();
+		testJob.setId("2");
+		JobManager jobManager = JobManager.getInstance();
+		Map<Serializable, Serializable> parameters = CollectionUtils.map();
+		parameters.put(TEST_STRING, TEST_STRING);
+		jobManager.addJob(testJob, parameters);
 
-        Job testJob = new MockJobNext();
-        testJob.setId("1");
-        JobManager jobManager = JobManager.getInstance();
-        HashMap<Serializable,Serializable> parameters = new HashMap<Serializable, Serializable>();
-        parameters.put(TEST_STRING, TEST_STRING);
-        jobManager.addJob(testJob, parameters);
-        while (!is_job_finished) {
-        }
-        assertEquals(1, parameters.size());
-        assertEquals(TEST_STRING, parameters.get(TEST_STRING));
-    }
-
-    @Test
-    public void testJobException() throws Exception {
-        ProcessManager pm = new ProcessManager() {
-            {
-                instance = this;
-            }
-            public synchronized void jobFinished(Long taskId, HashMap<Serializable, Serializable> parameters, String transition) {
-                is_job_finished = true;
-                assertEquals(Job.RESULT_ERROR, transition);
-            }
-        };
-
-        Job testJob = new MockJobException();
-        testJob.setId("1");
-        JobManager jobManager = JobManager.getInstance();
-        Map<Serializable,Serializable> parameters = CollectionUtils.map();
-        parameters.put(TEST_STRING, TEST_STRING);
-        jobManager.addJob(testJob, parameters);
-        while (!is_job_finished) {
-        }
-        parameters = testJob.getParameters();
-        assertEquals(2, parameters.size());
-        assertEquals(TEST_STRING, parameters.get(TEST_STRING));
-        assertEquals(Boolean.TRUE, testJob.getParameters().get(Job.STATUS_ERROR));
-    }
+		parameters = testJob.getParameters();
+		assertEquals(2, parameters.size());
+		assertEquals(TEST_STRING, parameters.get(TEST_STRING));
+		assertEquals(Boolean.TRUE, testJob.getParameters().get(Job.STATUS_ERROR));
+	}
 
 
-    /**
-     * Mock job for Normal job execution
-     */
-    public static class MockJobNext extends Job {
-        public String execute(Map param) {
-            assertTrue(true);
-            assertEquals((String) param.get(TEST_STRING), TEST_STRING);
-            return Job.RESULT_NEXT;
-        }
-    }
+	/**
+	 * Mock job for Normal job execution
+	 */
+	public static class MockJobNext extends Job {
+		public String execute(Map param) {
+			assertEquals(param.get(TEST_STRING), TEST_STRING);
+			return Job.RESULT_NEXT;
+		}
+	}
 
-    /**
-     * Mock job for Job execution with exception
-     */
-    public static class MockJobException extends Job {
-        public String execute(Map param) {
-            assertTrue(true);
-            throw new RuntimeException();
-        }
-    }
+	/**
+	 * Mock job for Job execution with exception
+	 */
+	public static class MockJobException extends Job {
+		public String execute(Map param) {
+			throw new RuntimeException();
+		}
+	}
 }

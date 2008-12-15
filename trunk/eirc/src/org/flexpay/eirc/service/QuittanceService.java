@@ -8,6 +8,7 @@ import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.security.annotation.Secured;
 
 import java.util.Date;
 import java.util.List;
@@ -50,6 +51,7 @@ public interface QuittanceService {
 	 * @param stub Quittance stub
 	 * @return Quittance if found, or <code>null</code> otherwise
 	 */
+	@Secured (Roles.QUITTANCE_READ)
 	@Nullable
 	Quittance readFull(@NotNull Stub<Quittance> stub);
 
@@ -60,6 +62,7 @@ public interface QuittanceService {
 	 * @return Quittance if found, or <code>null</code> otherwise
 	 * @throws FlexPayException if quittance has invalid format
 	 */
+	@Secured (Roles.QUITTANCE_READ)
 	@Nullable
 	Quittance findByNumber(@NotNull String quittanceNumber) throws FlexPayException;
 }

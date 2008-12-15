@@ -10,10 +10,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Region simple editor
@@ -29,13 +26,35 @@ public abstract class SimpleEditAction<
 	private Long temporalId;
 	private List<T> nameTranslations = new ArrayList<T>();
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public Map<Long, T> getTranslations(Long temporalId) {
+
+		DI temporal = nameTimeDependentService.readTemporalName(temporalId);
+
+		if (temporal == null || temporal.getValue() == null) {
+			return Collections.emptyMap();
+		}
+
+		TemporaryName<TV, T> name = (TemporaryName<TV,T>) temporal.getValue();
+
+		Map<Long, T> map = new HashMap<Long, T>();
+		for (T translation : name.getTranslations()) {
+			map.put(translation.getLang().getId(), translation);
+		}
+
+		return map;
+	}
+
+
+
 	public void prepare() {
 		@NonNls
 		HttpServletRequest request = ServletActionContext.getRequest();
 		temporalId = Long.parseLong(request.getParameter("temporalId"));
 
-		Map<Long, T> langToTranslationMap =
-				nameTimeDependentService.getTranslations(temporalId);
+		Map<Long, T> langToTranslationMap = getTranslations(temporalId);
 
 		if (!isPost()) {
 			DI temporal = nameTimeDependentService.readTemporalName(temporalId);

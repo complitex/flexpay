@@ -4,6 +4,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.filters.ServiceTypeFilter;
+import org.springframework.security.annotation.Secured;
 
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,7 @@ public interface ServiceTypeService {
 	 *
 	 * @param objectIds Identifiers of service type to disable
 	 */
+	@Secured (Roles.SERVICE_TYPE_DELETE)
 	void disable(Set<Long> objectIds);
 
 	/**
@@ -23,6 +25,7 @@ public interface ServiceTypeService {
 	 * @param pager Page
 	 * @return list of Service types for current page
 	 */
+	@Secured (Roles.SERVICE_TYPE_READ)
 	List<ServiceType> listServiceTypes(Page<ServiceType> pager);
 
 	/**
@@ -31,6 +34,7 @@ public interface ServiceTypeService {
 	 * @param serviceType ServiceType stub
 	 * @return ServiceType
 	 */
+	@Secured (Roles.SERVICE_TYPE_READ)
 	ServiceType read(ServiceType serviceType);
 
 	/**
@@ -39,6 +43,7 @@ public interface ServiceTypeService {
 	 * @param type ServiceType
 	 * @throws FlexPayExceptionContainer if validation error occurs
 	 */
+	@Secured ({Roles.SERVICE_TYPE_ADD, Roles.SERVICE_TYPE_CHANGE})
 	void save(ServiceType type) throws FlexPayExceptionContainer;
 
 	/**
@@ -48,6 +53,7 @@ public interface ServiceTypeService {
 	 * @return Service type if found
 	 * @throws IllegalArgumentException if the <code>code</code> is invalid
 	 */
+	@Secured (Roles.SERVICE_TYPE_READ)
 	ServiceType getServiceType(int code) throws IllegalArgumentException;
 
 	/**
@@ -56,6 +62,7 @@ public interface ServiceTypeService {
 	 * @param typeStub Service type stub
 	 * @return Service type
 	 */
+	@Secured (Roles.SERVICE_TYPE_READ)
 	ServiceType getServiceType(ServiceType typeStub);
 
 	/**
@@ -64,5 +71,6 @@ public interface ServiceTypeService {
 	 * @param serviceTypeFilter Filter to initialize
 	 * @return Filter back
 	 */
+	@Secured (Roles.SERVICE_TYPE_READ)
 	ServiceTypeFilter initFilter(ServiceTypeFilter serviceTypeFilter);
 }

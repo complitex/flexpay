@@ -158,15 +158,6 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 *
 	 * @return List of TownType
 	 */
-	public List<TownType> getTownTypes() {
-		return townTypeDao.listTownTypes(TownType.STATUS_ACTIVE);
-	}
-
-	/**
-	 * Get a list of available town types
-	 *
-	 * @return List of TownType
-	 */
 	@NotNull
 	public List<TownType> getEntities() {
 		return townTypeDao.listTownTypes(TownType.STATUS_ACTIVE);

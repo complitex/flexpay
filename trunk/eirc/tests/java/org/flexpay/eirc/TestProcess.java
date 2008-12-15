@@ -11,12 +11,9 @@ import org.springframework.test.annotation.NotTransactional;
 
 public class TestProcess extends SpringBeanAwareTestCase {
 
-	protected ProcessManager processManager;
-
 	@Autowired
-	public void setProcessManager(@Qualifier ("processManager") ProcessManager processManager) {
-		this.processManager = processManager;
-	}
+	@Qualifier ("processManager")
+	protected ProcessManager processManager;
 
 	@Test
 	@NotTransactional

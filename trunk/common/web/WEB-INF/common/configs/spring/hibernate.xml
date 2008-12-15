@@ -122,8 +122,8 @@
 		  p:processManager-ref="processManager"
 		  p:maximumRunningJobs="${job_manager.maximumRunningJobs}" />
 
-	<bean name="processManager" class="org.flexpay.common.process.ProcessManager"
-		  factory-method="getInstance" destroy-method="unload" init-method="startProcessManager"
+	<bean name="processManager" class="org.flexpay.common.process.ProcessManagerImpl"
+		  destroy-method="stop" init-method="start" factory-method="getInstance"
 		  p:jbpmConfiguration-ref="jbpmConfiguration"
 		  p:rescanFrequency="${process_manager.rescanFrequency}"
 		  p:taskRepeatLimit="${process_manager.startTaskLimit}" />

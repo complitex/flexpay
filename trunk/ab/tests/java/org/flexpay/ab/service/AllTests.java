@@ -3,8 +3,8 @@ package org.flexpay.ab.service;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
+@RunWith (Suite.class)
+@Suite.SuiteClasses ({
 		org.flexpay.ab.service.importexport.AllTests.class,
 		TestBuildingService.class,
 		TestApartmentService.class,
@@ -15,7 +15,8 @@ import org.junit.runners.Suite;
 		TestI18nQuery.class,
 		TestAddressService.class,
 		TestTownService.class
-		})
+//		, TestSecurity.class
+})
 public class AllTests {
 
 }

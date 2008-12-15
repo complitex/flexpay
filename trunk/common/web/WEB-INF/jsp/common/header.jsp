@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:i18n name="/i18n/common-messages">
@@ -13,16 +12,12 @@
                      vspace="6"/>
             </a>
         </td>
+		<sec:authorize ifAnyGranted="ROLE_BASIC">
         <td align="right">
-            <%
-                if (request.getUserPrincipal() != null) {
-            %>
-			<span class="text-small"><s:text name="login.username" />: <%=request.getUserPrincipal()%> <a
-					href="<s:url value="/resources/common/jsp/logout.jsp" includeParams="none" />"><s:text name="logout.link.title" /></a></span>
-            <%
-                }
-            %>
+			<span class="text-small"><s:text name="login.username" />: <sec:authentication property="principal.username"/>
+				<a href="<s:url value="/logout" includeParams="none" />"><s:text name="logout.link.title" /></a></span>
         </td>
+		</sec:authorize>
     </tr>
 </table>
 

@@ -45,6 +45,44 @@
 		<property name="target" ref="streetServiceTarget" />
 	</bean>
 
+	<bean id="countryService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+				<prop key="readFull">cacheName=abCountryFlexpayCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+				<prop key="create">cacheNames=abCountryFlexpayCache</prop>
+				<prop key="update*">cacheNames=abCountryFlexpayCache</prop>
+				<prop key="disable*">cacheNames=abCountryFlexpayCache</prop>
+				<prop key="save*">cacheNames=abCountryFlexpayCache</prop>
+			</props>
+		</property>
+		<property name="target" ref="countryServiceTarget" />
+	</bean>
+
+	<bean id="regionService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+				<prop key="readFull">cacheName=abRegionFlexpayCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+				<prop key="create">cacheNames=abRegionFlexpayCache</prop>
+				<prop key="update*">cacheNames=abRegionFlexpayCache</prop>
+				<prop key="disable*">cacheNames=abRegionFlexpayCache</prop>
+				<prop key="save*">cacheNames=abRegionFlexpayCache</prop>
+			</props>
+		</property>
+		<property name="target" ref="regionServiceTarget" />
+	</bean>
+
 	<bean id="buildingService"
 		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />

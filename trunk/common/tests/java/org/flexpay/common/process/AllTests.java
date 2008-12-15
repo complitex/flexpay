@@ -1,18 +1,13 @@
 package org.flexpay.common.process;
 
-import junit.framework.TestCase;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.framework.JUnit4TestAdapter;
-import org.flexpay.common.locking.TestLockManager;
-import org.flexpay.common.process.job.TestJob;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class AllTests extends TestCase {
+@RunWith (Suite.class)
+@Suite.SuiteClasses ({
+		org.flexpay.common.process.job.AllTests.class,
+		TestProcessManager.class
+})
+public class AllTests {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
-//        suite.addTest(org.flexpay.common.process.job.AllTests.suite());
-//        suite.addTest(new JUnit4TestAdapter(TestProcessManager.class));
-        return suite;
-	}
 }

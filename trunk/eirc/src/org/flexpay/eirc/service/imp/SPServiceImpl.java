@@ -329,16 +329,16 @@ public class SPServiceImpl implements SPService {
 	/**
 	 * Initalize service filter with a list of parent services
 	 *
-	 * @param parentServiceFilter Filter to initialize
+	 * @param filter Filter to initialize
 	 * @return Filter back
 	 */
-	public ServiceFilter initParentServicesFilter(ServiceFilter parentServiceFilter) {
+	public ServiceFilter initParentServicesFilter(ServiceFilter filter) {
 		List<ObjectFilter> filters = new ArrayList<ObjectFilter>();
 		filters.add(new ParentServiceFilterMarker());
 		List<Service> services = serviceDaoExt.findServices(filters, new Page<Service>(10000, 1));
-		parentServiceFilter.setServices(services);
+		filter.setServices(services);
 
-		return parentServiceFilter;
+		return filter;
 	}
 
 	/**

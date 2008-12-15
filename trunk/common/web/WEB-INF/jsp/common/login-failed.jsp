@@ -6,7 +6,7 @@
 			<table border="0">
 				<tr>
 					<td colspan="2">
-						<div align="center" class="text"><b><s:text name="login.please_login" /></b></div>
+						<div align="center" class="text"><b><s:text name="login.failure" /></b></div>
 					</td>
 				</tr>
 				<tr>

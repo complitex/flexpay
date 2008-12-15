@@ -7,12 +7,12 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="countryService" class="org.flexpay.ab.service.imp.CountryServiceImpl">
+	<bean id="countryServiceTarget" class="org.flexpay.ab.service.imp.CountryServiceImpl">
 		<property name="countryDao" ref="countryDAO" />
 		<property name="countryNameDao" ref="countryNameDAO" />
 	</bean>
 
-	<bean id="regionService" class="org.flexpay.ab.service.imp.RegionServiceImpl">
+	<bean id="regionServiceTarget" class="org.flexpay.ab.service.imp.RegionServiceImpl">
 		<property name="parentService" ref="countryService" />
 		<property name="townTypeService" ref="townTypeService" />
 		<property name="regionDao" ref="regionDAO" />

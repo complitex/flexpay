@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.security.annotation.Secured;
 
 import java.util.List;
 import java.util.Set;
@@ -18,6 +19,7 @@ public interface OrganizationService {
 	 * @param stub Organization stub
 	 * @return Organization if found, or <code>null</code> otherwise
 	 */
+	@Secured (Roles.ORGANIZATION_READ)
 	@Nullable
 	Organization getOrganization(Stub<Organization> stub);
 
@@ -26,6 +28,7 @@ public interface OrganizationService {
 	 *
 	 * @param organizationFilter Filter to initialize
 	 */
+	@Secured(Roles.ORGANIZATION_READ)
 	void initFilter(OrganizationFilter organizationFilter);
 
 	/**
@@ -34,6 +37,7 @@ public interface OrganizationService {
 	 * @param pager Page
 	 * @return List of registered organizations
 	 */
+	@Secured(Roles.ORGANIZATION_READ)
 	List<Organization> listOrganizations(Page<Organization> pager);
 
 	/**
@@ -41,6 +45,7 @@ public interface OrganizationService {
 	 *
 	 * @param objectIds Organizations identifiers to disable
 	 */
+	@Secured(Roles.ORGANIZATION_DELETE)
 	void disable(Set<Long> objectIds);
 
 	/**
@@ -49,6 +54,7 @@ public interface OrganizationService {
 	 * @param stub Organization stub
 	 * @return Organization
 	 */
+	@Secured(Roles.ORGANIZATION_READ)
 	Organization read(Organization stub);
 
 	/**
@@ -57,6 +63,7 @@ public interface OrganizationService {
 	 * @param organization Organization to save
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
+	@Secured({Roles.ORGANIZATION_ADD, Roles.ACCOUNT_CHANGE})
 	void save(Organization organization) throws FlexPayExceptionContainer;
 
 }
