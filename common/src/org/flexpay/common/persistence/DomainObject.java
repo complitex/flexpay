@@ -12,6 +12,8 @@ import java.io.Serializable;
  */
 public class DomainObject implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
 	@SuppressWarnings ({"UnusedDeclaration"})
 	protected Integer version;
 	private Long id;
