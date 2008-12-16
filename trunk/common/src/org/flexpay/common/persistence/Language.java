@@ -120,7 +120,7 @@ public class Language extends DomainObjectWithStatus {
 
 	public String getName() {
 		for (LangNameTranslation translation : translations) {
-			if (translation.getTranslationFrom().getId().equals(getId())) {
+			if (getId() != null && getId().equals(translation.getTranslationFrom().getId())) {
 				return translation.getTranslation();
 			}
 		}

@@ -55,4 +55,11 @@
 			memoryStoreEvictionPolicy="LRU"
 			/>
 
+    <cache name="flexPayFileFlexpayCache"
+            maxElementsInMemory="100"
+            eternal="true"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
+
 </ehcache>
