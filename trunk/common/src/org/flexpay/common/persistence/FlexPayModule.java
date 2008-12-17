@@ -1,22 +1,27 @@
 package org.flexpay.common.persistence;
 
-public enum FlexPayModule {
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
-    AB_MODULE("common.module.ab"),
-    BTI_MODULE("common.module.bti"),
-    COMMON_MODULE("common.module.common"),
-    EIRC_MODULE("common.module.eirc"),
-    SZ_MODULE("common.module.sz");
+public class FlexPayModule extends DomainObject {
 
-    private String message;
+    private String name;
 
-    private FlexPayModule(String message) {
-        this.message = message;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return message;
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                append("FlexPayModule {").
+                append("id", getId()).
+                append("name", name).
+                append("}").toString();
     }
 
 }

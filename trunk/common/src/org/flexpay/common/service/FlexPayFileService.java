@@ -9,11 +9,7 @@ import java.io.IOException;
 
 public interface FlexPayFileService {
 
-    FlexPayFileType getTypeByFileName(String fileName);
-
     FlexPayFile createFile(InputStream is, FlexPayFile file) throws FlexPayException;
-
-    FlexPayFile updateFile(InputStream is, Long oldFileId, FlexPayFile newFile) throws FlexPayException;
 
     void updateFile(InputStream is, FlexPayFile file) throws FlexPayException;
 

@@ -1,29 +1,57 @@
 package org.flexpay.common.persistence;
 
-public enum FlexPayFileType {
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
-    TARIF("common.file_type.tarif", "common.file_type.tarif.mask"),
-    CHARACTERISTICS("common.file_type.characteristics", "common.file_type.characteristics.mask"),
-    SUBSIDY("common.file_type.subsidy", "common.file_type.subsidy.mask"),
-    SRV("common.file_type.srv", "common.file_type.srv.mask"),
-    FORM2_FILES("common.file_type.form2", "common.file_type.form2.mask"),
-    UNKNOWN("common.file_type.unknown", "");
+public class FlexPayFileType extends DomainObject {
 
-    private String message;
-    private String mask;
+    private String title;
+    private String description;
+    private String fileMask;
+    private FlexPayModule module;
 
-    private FlexPayFileType(String message, String mask) {
-        this.message = message;
-        this.mask = mask;
+    public String getTitle() {
+        return title;
     }
 
-    public String getMask() {
-        return mask;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getFileMask() {
+        return fileMask;
+    }
+
+    public void setFileMask(String fileMask) {
+        this.fileMask = fileMask;
+    }
+
+    public FlexPayModule getModule() {
+        return module;
+    }
+
+    public void setModule(FlexPayModule module) {
+        this.module = module;
     }
 
     @Override
     public String toString() {
-        return message;
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                append("FlexPayFileType {").
+                append("id", getId()).
+                append("title", title).
+                append("description", description).
+                append("fileMask", fileMask).
+                append("module", module).
+                append("}").toString();
     }
 
 }

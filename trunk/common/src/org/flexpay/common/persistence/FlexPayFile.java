@@ -7,6 +7,7 @@ import java.util.Date;
 
 public class FlexPayFile extends DomainObject {
 
+    private String nameOnServer;
     private String originalName;
     private Long size;
     private String author;
@@ -15,6 +16,14 @@ public class FlexPayFile extends DomainObject {
     private FlexPayFileType type;
     private FlexPayFileStatus status;
     private FlexPayModule module;
+
+    public String getNameOnServer() {
+        return nameOnServer;
+    }
+
+    public void setNameOnServer(String nameOnServer) {
+        this.nameOnServer = nameOnServer;
+    }
 
     public String getOriginalName() {
         return originalName;
@@ -85,6 +94,7 @@ public class FlexPayFile extends DomainObject {
         return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
                 append("FlexPayFile {").
                 append("id", getId()).
+                append("nameOnServer", nameOnServer).
                 append("originalName", originalName).
                 append("size", size).
                 append("author", author).

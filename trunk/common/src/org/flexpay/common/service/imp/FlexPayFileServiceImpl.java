@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.dao.FlexPayFileDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FlexPayFile;
-import org.flexpay.common.persistence.FlexPayFileType;
 import org.flexpay.common.service.FlexPayFileService;
 import org.flexpay.common.util.FlexPayFileUtil;
 
@@ -12,23 +11,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.regex.Pattern;
 
 public class FlexPayFileServiceImpl implements FlexPayFileService {
 
     private Logger logger = Logger.getLogger(getClass());
 
     private FlexPayFileDao flexPayFileDao;
-
-    public FlexPayFileType getTypeByFileName(String fileName) {
-        for (FlexPayFileType type : FlexPayFileType.values()) {
-            if (Pattern.compile(type.getMask()).matcher(fileName).matches()) {
-                return type;
-            }
-        }
-
-        return FlexPayFileType.UNKNOWN;
-    }
 
 	private void deleteFileOnException(FlexPayFile file) throws FlexPayException {
 		String localPath = FlexPayFileUtil.getFileLocalPath(file);
@@ -48,34 +36,16 @@ public class FlexPayFileServiceImpl implements FlexPayFileService {
         }
     }
 
-    public FlexPayFile createFile(InputStream is, FlexPayFile file) throws FlexPayException {
+    public FlexPayFile createFile(InputStream is, FlexPayFile flexPayFile) throws FlexPayException {
 
         try {
-            file = flexPayFileDao.save(file);
-            Long size = FlexPayFileUtil.saveToFile(file, is);
-            file.setSize(size);
-            file = flexPayFileDao.save(file);
+            flexPayFileDao.create(FlexPayFileUtil.saveToFile(flexPayFile, is));
         } catch (Exception e) {
             logger.error("Error creating new file", e);
-            deleteFileOnException(file);
+            deleteFileOnException(flexPayFile);
             throw new FlexPayException(e);
         }
-        return file;
-    }
-
-    public FlexPayFile updateFile(InputStream is, Long oldFileId, FlexPayFile newFile) throws FlexPayException {
-        try {
-            try {
-                deleteFile(oldFileId);
-            } catch (FlexPayException e) {
-                // do nothing
-            }
-            return createFile(is, newFile);
-        } catch (FlexPayException e) {
-            logger.error("Error creating new file", e);
-            deleteFileOnException(newFile);
-            throw new FlexPayException(e);
-        }
+        return flexPayFile;
     }
 
     public void updateFile(InputStream is, FlexPayFile file) throws FlexPayException {
@@ -88,9 +58,7 @@ public class FlexPayFileServiceImpl implements FlexPayFileService {
                 throw new FlexPayException("Error deleting file: " + localPath);
             }
 
-            Long size = FlexPayFileUtil.saveToFile(file, is);
-            file.setSize(size);
-            flexPayFileDao.save(file);
+            flexPayFileDao.update(FlexPayFileUtil.saveToFile(file, is));
         } catch (Exception e) {
             logger.error("Error creating new file", e);
             deleteFileOnException(file);
