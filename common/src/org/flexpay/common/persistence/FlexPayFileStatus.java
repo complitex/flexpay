@@ -1,24 +1,47 @@
 package org.flexpay.common.persistence;
 
-public enum FlexPayFileStatus {
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
-    TEMP("common.file_status.temp"),
-    IMPORTED("common.file_status.imported"),
-    MARKED_FOR_PROCCESSING("common.file_status.marked_for_processing"),
-    PROCESSING("common.file_status.processing"),
-    PROCESSED("common.file_status.processed"),
-    PROCESSED_WITH_ERRORS("common.file_status.processed_with_errors"),
-    MARKED_TO_DELETE("common.file_status.marked_to_delete");
+public class FlexPayFileStatus extends DomainObject {
 
-    private String message;
+    private String title;
+    private String description;
+    private FlexPayModule module;
 
-    private FlexPayFileStatus(String message) {
-        this.message = message;
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public FlexPayModule getModule() {
+        return module;
+    }
+
+    public void setModule(FlexPayModule module) {
+        this.module = module;
     }
 
     @Override
     public String toString() {
-        return message;
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                append("FlexPayFileStatus {").
+                append("id", getId()).
+                append("title", title).
+                append("description", description).
+                append("module", module).
+                append("}").toString();
     }
 
 }

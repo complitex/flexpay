@@ -2,6 +2,7 @@ package org.flexpay.common.util;
 
 import org.apache.log4j.Logger;
 import org.flexpay.common.persistence.FlexPayFile;
+import org.flexpay.common.persistence.FlexPayModule;
 import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.io.*;
@@ -12,12 +13,12 @@ public class FlexPayFileUtil {
 
     private static Logger logger = Logger.getLogger(FlexPayFileUtil.class);
 
-	public static String getLocalDirPath(String module, Date creationDate) {
+	public static String getLocalDirPath(FlexPayModule module, Date creationDate) {
 		File dir = ApplicationConfig.getDataRoot();
         Calendar c = Calendar.getInstance();
         c.setTime(creationDate);
         return dir.getPath() + File.separator
-                + module + File.separator
+                + module.getName() + File.separator
                 + c.get(Calendar.YEAR) + File.separator
                 + (1 + c.get(Calendar.MONTH)) + File.separator
                 + c.get(Calendar.DATE) + File.separator;
@@ -41,6 +42,24 @@ public class FlexPayFileUtil {
 		return fileExtension;
 	}
 
+    /**
+     * Returns file name
+     *
+     * @param name full file name
+     * @return file name without extension
+     */
+    public static String getFileNameWithoutExtension(String name) {
+        if (null == name) {
+            return "";
+        }
+        String fileNameWithoutExtension = "";
+        int pos = name.lastIndexOf('.');
+        if (pos > 0) {
+            fileNameWithoutExtension = name.substring(0, pos);
+        }
+        return fileNameWithoutExtension;
+    }
+
 	/**
 	 * Returns local file path
 	 *
@@ -48,7 +67,7 @@ public class FlexPayFileUtil {
 	 * @return local file path
 	 */
 	public static String getFileLocalPath(FlexPayFile file) {
-		return getLocalDirPath(file.getModule().toString(), file.getCreationDate()) + file.getId() + "." + getFileExtension(file.getOriginalName());
+		return getLocalDirPath(file.getModule(), file.getCreationDate()) + file.getNameOnServer();
 	}
 
 	/**
@@ -60,26 +79,19 @@ public class FlexPayFileUtil {
 	 * @throws IOException if an error occurred
 	 */
 	@SuppressWarnings({"IOResourceOpenedButNotSafelyClosed"})
-    public static Long saveToFile(FlexPayFile flexPayFile, InputStream is) throws IOException {
+    public static FlexPayFile saveToFile(FlexPayFile flexPayFile, InputStream is) throws IOException {
 		Long size = 0L;
 		OutputStream out = null;
+        File fileOnSystem = null;
 		try {
-			String localPath = getLocalDirPath(flexPayFile.getModule().toString(), flexPayFile.getCreationDate());
-
-			File localDir = new File(localPath);
+            String name = flexPayFile.getOriginalName();
+            String localPath = getLocalDirPath(flexPayFile.getModule(), flexPayFile.getCreationDate());
+            File localDir = new File(localPath);
             boolean created = localDir.mkdirs();
             if (!created) {
-                String msg = "Can't create dirs for localDir = " + localDir;
-                logger.error(msg);
-                throw new IOException(msg);
+                throw new IOException("Can't create dirs for localDir = " + localDir);
             }
-			localPath += flexPayFile.getId() + "." + getFileExtension(flexPayFile.getOriginalName());
-			File fileOnSystem = new File(localPath);
-			if (!fileOnSystem.createNewFile()) {
-				String msg = "Error creating file: " + localPath;
-				logger.warn(msg);
-				throw new IOException(msg);
-			}
+            fileOnSystem = File.createTempFile(getFileNameWithoutExtension(name), getFileExtension(name), localDir);
 			byte buf[] = new byte[1024];
 			out = new FileOutputStream(fileOnSystem);
 			int len;
@@ -88,7 +100,6 @@ public class FlexPayFileUtil {
 				size += len;
 			}
 			out.flush();
-			return size;
 		} finally {
 			if (out != null) {
 				try {
@@ -105,6 +116,13 @@ public class FlexPayFileUtil {
 				}
 			}
 		}
+        if (fileOnSystem == null) {
+            throw new IOException("Error with creating file on system");
+        }
+
+        flexPayFile.setSize(size);
+        flexPayFile.setNameOnServer(fileOnSystem.getName());
+        return flexPayFile;
 	}
 
 }

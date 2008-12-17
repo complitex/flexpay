@@ -1,14 +1,11 @@
 package org.flexpay.common.dao;
 
 import org.flexpay.common.persistence.FlexPayFile;
-import org.jetbrains.annotations.NotNull;
 
-public interface FlexPayFileDao {
+import java.util.List;
 
-    FlexPayFile save(@NotNull FlexPayFile flexPayFile);
+public interface FlexPayFileDao extends GenericDao<FlexPayFile, Long> {
 
-    void delete(@NotNull FlexPayFile flexPayFile);
-
-    FlexPayFile read(@NotNull Long id);
+    List<FlexPayFile> listFilesByModuleName(String moduleName);
 
 }

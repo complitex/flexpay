@@ -6,32 +6,151 @@
 <hibernate-mapping package="org.flexpay.common.persistence">
 
 	<class name="FlexPayFile" table="common_files_tbl" optimistic-lock="version">
-		<id name="id" column="id">
-			<generator class="native" />
-		</id>
-        <property name="originalName" column="original_name" not-null="true" />
-        <property name="description" column="description" not-null="true" />
-        <property name="creationDate" column="creation_date" not-null="true" />
-		<property name="author" column="author_name" not-null="true" />
-        <property name="size" column="size" />
-        <property name="type" column="type">
-            <type name="org.hibernate.type.EnumType">
-                <param name="enumClass">org.flexpay.common.persistence.FlexPayFileType</param>
-                <param name="type">5</param>
-            </type>
+        <comment>Table, where store information about all flexpay files</comment>
+        <id name="id">
+            <column name="id">
+                <comment>Primary key</comment>
+            </column>
+            <generator class="native" />
+        </id>
+        <property name="nameOnServer">
+            <column name="name_on_server" not-null="true">
+                <comment>File name on flexpay server</comment>
+            </column>
         </property>
-        <property name="status" column="status">
-            <type name="org.hibernate.type.EnumType">
-                <param name="enumClass">org.flexpay.common.persistence.FlexPayFileStatus</param>
-                <param name="type">5</param>
-            </type>
+        <property name="originalName">
+            <column name="original_name" not-null="true">
+                <comment>Original file name</comment>
+            </column>
         </property>
-        <property name="module" column="module">
-            <type name="org.hibernate.type.EnumType">
-                <param name="enumClass">org.flexpay.common.persistence.FlexPayModule</param>
-                <param name="type">5</param>
-            </type>
+        <property name="description">
+            <column name="description" not-null="true">
+                <comment>File description</comment>
+            </column>
         </property>
+        <property name="creationDate">
+            <column name="creation_date" not-null="true">
+                <comment>File creation date</comment>
+            </column>
+        </property>
+        <property name="author">
+            <column name="user_name" not-null="true">
+                <comment>User name who create this file</comment>
+            </column>
+        </property>
+        <property name="size" type="long">
+            <column name="size">
+                <comment>File size</comment>
+            </column>
+        </property>
+        <many-to-one name="type" foreign-key="common_files_tbl_type_id">
+            <column name="type_id" not-null="true">
+                <comment>Flexpay file type reference</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="status" foreign-key="common_files_tbl_status_id">
+            <column name="status_id" not-null="true">
+                <comment>Flexpay file status reference</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="module" foreign-key="common_files_tbl_module_id">
+            <column name="module_id" not-null="true">
+                <comment>Flexpay module reference</comment>
+            </column>
+        </many-to-one>
 	</class>
+
+    <class name="FlexPayFileType" table="common_file_types_tbl" optimistic-lock="version">
+        <comment>Information about known filetypes</comment>
+        <id name="id">
+            <column name="id">
+                <comment>Primary key</comment>
+            </column>
+            <generator class="native" />
+        </id>
+        <property name="title">
+            <column name="title" not-null="true">
+                <comment>Filetype title</comment>
+            </column>
+        </property>
+        <property name="description">
+            <column name="description" not-null="true">
+                <comment>Filetype description</comment>
+            </column>
+        </property>
+        <property name="fileMask">
+            <column name="file_mask" not-null="true">
+                <comment>Mask of files for this type</comment>
+            </column>
+        </property>
+        <many-to-one name="module" foreign-key="common_file_types_tbl_module_id">
+            <column name="module_id" not-null="true">
+                <comment>Flexpay module reference</comment>
+            </column>
+        </many-to-one>
+    </class>
+
+    <class name="FlexPayFileStatus" table="common_file_statuses_tbl" optimistic-lock="version">
+        <comment>Information about file statuses</comment>
+        <id name="id">
+            <column name="id">
+                <comment>Primary key</comment>
+            </column>
+            <generator class="native" />
+        </id>
+        <property name="title">
+            <column name="title" not-null="true">
+                <comment>Flexpay filestatus title</comment>
+            </column>
+        </property>
+        <property name="description">
+            <column name="description" not-null="true">
+                <comment>Flexpay filestatus description</comment>
+            </column>
+        </property>
+        <many-to-one name="module" foreign-key="common_file_statuses_tbl_module_id">
+            <column name="module_id" not-null="true">
+                <comment>Flexpay module reference</comment>
+            </column>
+        </many-to-one>
+    </class>
+
+    <class name="FlexPayModule" table="common_flexpay_modules_tbl" optimistic-lock="version">
+        <comment>Information about all flexpay modules</comment>
+        <id name="id">
+            <column name="id">
+                <comment>Primary key</comment>
+            </column>
+            <generator class="native" />
+        </id>
+        <property name="name">
+            <column name="name" not-null="true">
+                <comment>Flexpay module name</comment>
+            </column>
+        </property>
+    </class>
+
+    <query name="FlexPayFile.readFull">
+		select distinct f
+		from FlexPayFile f
+			left join fetch f.type
+			left join fetch f.status
+			left join fetch f.module
+		WHERE f.id = ?
+	</query>
+
+    <query name="FlexPayFile.listFilesByModuleName">
+        select distinct f
+        from FlexPayFile f
+            left outer join fetch f.type
+            left outer join fetch f.status
+            left outer join fetch f.module
+        where f.module.name = ?
+    </query>
+
+    <query name="FlexPayFileType.listFileTypesByModuleName">
+        from FlexPayFileType f
+        where f.module.name = ?
+    </query>
 
 </hibernate-mapping>

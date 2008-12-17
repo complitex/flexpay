@@ -67,4 +67,34 @@
         </property>
     </bean>
 
+    <bean id="flexPayFileStatusDao" parent="abstractDao">
+        <property name="proxyInterfaces"
+                  value="org.flexpay.common.dao.FlexPayFileStatusDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.FlexPayFileStatus" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="flexPayFileTypeDao" parent="abstractDao">
+        <property name="proxyInterfaces"
+                  value="org.flexpay.common.dao.FlexPayFileTypeDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.FlexPayFileType" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="flexPayModuleDao" parent="abstractDao">
+        <property name="proxyInterfaces"
+                  value="org.flexpay.common.dao.FlexPayModuleDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.FlexPayModule" />
+            </bean>
+        </property>
+    </bean>
+
 </beans>
