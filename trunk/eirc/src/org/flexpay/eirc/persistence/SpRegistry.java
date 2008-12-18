@@ -293,7 +293,6 @@ public class SpRegistry extends DomainObject {
         return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
                 append("SpRegistry {").
                 append("id", getId()).
-                append("spFile", spFile).
                 append("registryType", registryType).
                 append("registryNumber", registryNumber).
                 append("recordsNumber", recordsNumber).
@@ -303,11 +302,6 @@ public class SpRegistry extends DomainObject {
                 append("senderCode", senderCode).
                 append("recipientCode", recipientCode).
                 append("amount", amount).
-                append("sender", sender).
-                append("recipient", recipient).
-                append("serviceProvider", serviceProvider).
-                append("registryStatus", registryStatus).
-                append("archiveStatus", archiveStatus).
                 append("errorsNumber", errorsNumber).
                 append("}").toString();
     }
