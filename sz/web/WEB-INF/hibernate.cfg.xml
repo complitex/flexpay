@@ -48,6 +48,8 @@
 		<!-- common.Sequences -->
 		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
 		
+        <mapping resource="org/flexpay/common/persistence/FlexPayFile.hbm.xml" />
+
 		<!-- common.ImportErrors -->
 		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
 
