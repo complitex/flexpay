@@ -19,6 +19,7 @@ import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.File;
 import java.io.InputStream;
@@ -352,6 +353,8 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		} else {
 			params = CollectionUtils.map();
 		}
+
+		params.put(PARAM_SECURITY_CONTEXT, SecurityContextHolder.getContext().getAuthentication());
 
 		return execute(new ContextCallback<Long>() {
 			public Long doInContext(@NotNull JbpmContext context) {

@@ -4,6 +4,9 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.process.ProcessLogger;
+import org.flexpay.common.process.ProcessManager;
+import org.springframework.security.Authentication;
+import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -49,6 +52,10 @@ public abstract class Job implements Runnable {
 			// prepare process logger
 			ProcessLogger.setThreadProcessId(processId);
 
+			// setup security context
+			Authentication auth = (Authentication) parameters.get(ProcessManager.PARAM_SECURITY_CONTEXT);
+			SecurityContextHolder.getContext().setAuthentication(auth);
+
 			// execute
 			String transition = execute(parameters);
 
@@ -59,10 +66,13 @@ public abstract class Job implements Runnable {
 			if (transition.equals(RESULT_ERROR)) {
 				parameters.put(STATUS_ERROR, Boolean.TRUE);
 			}
+
+			SecurityContextHolder.clearContext();
 			jobMgr.jobFinished(id, transition);
 		} catch (Throwable e) {
 			log.error("Job with id = " + getId() + " completed with exception", e);
 			parameters.put(STATUS_ERROR, Boolean.TRUE);
+			SecurityContextHolder.clearContext();
 			jobMgr.jobFinished(id, RESULT_ERROR);
 		}
 		setEnd(new Date());

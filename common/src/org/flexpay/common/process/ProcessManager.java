@@ -17,6 +17,11 @@ import java.util.Set;
 public interface ProcessManager {
 
 	/**
+	 * Key name used to store security context
+	 */
+	String PARAM_SECURITY_CONTEXT = "_PROCESS_MANAGER_SECURITY_CONTEXT";
+
+	/**
 	 * Deploys process definition to jbpm by process definition name
 	 *
 	 * @param name	name of process definition
