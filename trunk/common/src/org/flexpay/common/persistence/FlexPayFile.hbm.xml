@@ -24,7 +24,7 @@
             </column>
         </property>
         <property name="description">
-            <column name="description" not-null="true">
+            <column name="description">
                 <comment>File description</comment>
             </column>
         </property>
@@ -33,7 +33,7 @@
                 <comment>File creation date</comment>
             </column>
         </property>
-        <property name="author">
+        <property name="userName">
             <column name="user_name" not-null="true">
                 <comment>User name who create this file</comment>
             </column>
@@ -44,12 +44,12 @@
             </column>
         </property>
         <many-to-one name="type" foreign-key="common_files_tbl_type_id">
-            <column name="type_id" not-null="true">
+            <column name="type_id">
                 <comment>Flexpay file type reference</comment>
             </column>
         </many-to-one>
         <many-to-one name="status" foreign-key="common_files_tbl_status_id">
-            <column name="status_id" not-null="true">
+            <column name="status_id">
                 <comment>Flexpay file status reference</comment>
             </column>
         </many-to-one>
@@ -68,8 +68,8 @@
             </column>
             <generator class="native" />
         </id>
-        <property name="title">
-            <column name="title" not-null="true">
+        <property name="name">
+            <column name="name" not-null="true">
                 <comment>Filetype title</comment>
             </column>
         </property>
@@ -98,8 +98,8 @@
             </column>
             <generator class="native" />
         </id>
-        <property name="title">
-            <column name="title" not-null="true">
+        <property name="name">
+            <column name="name" not-null="true">
                 <comment>Flexpay filestatus title</comment>
             </column>
         </property>
@@ -151,6 +151,21 @@
     <query name="FlexPayFileType.listFileTypesByModuleName">
         from FlexPayFileType f
         where f.module.name = ?
+    </query>
+
+    <query name="FlexPayFileType.listTypesByName">
+        from FlexPayFileType f
+        where f.name = ?
+    </query>
+
+    <query name="FlexPayFileStatus.listStatusesByName">
+        from FlexPayFileStatus f
+        where f.name = ?
+    </query>
+
+    <query name="FlexPayModule.listModulesByName">
+        from FlexPayModule f
+        where f.name = ?
     </query>
 
 </hibernate-mapping>

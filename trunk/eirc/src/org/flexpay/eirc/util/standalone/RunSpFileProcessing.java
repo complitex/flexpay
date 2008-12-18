@@ -3,19 +3,21 @@ package org.flexpay.eirc.util.standalone;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.FlexPayFile;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.service.FlexPayFileService;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.standalone.StandaloneTask;
 import org.flexpay.eirc.actions.SpFileAction;
 import org.flexpay.eirc.actions.SpFileCreateAction;
 import org.flexpay.eirc.dao.RegistryDao;
-import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.RegistryFileService;
 import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.jetbrains.annotations.NonNls;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,37 +30,14 @@ public class RunSpFileProcessing implements StandaloneTask {
 	@NonNls
 	private Logger log = Logger.getLogger(getClass());
 
+    private String moduleName;
 	private RegistryProcessor registryProcessor;
 	private SpFileCreateAction fileCreateAction;
 	private SpFileAction fileAction;
+    private FlexPayFileService flexPayFileService;
 	private RegistryFileService fileService;
 	private RegistryService registryService;
 	private RegistryDao registryDao;
-
-	public void setRegistryProcessor(RegistryProcessor registryProcessor) {
-		this.registryProcessor = registryProcessor;
-	}
-
-	public void setFileCreateAction(SpFileCreateAction fileCreateAction) {
-		fileCreateAction.setUserPreferences(new UserPreferences());
-		this.fileCreateAction = fileCreateAction;
-	}
-
-	public void setFileAction(SpFileAction fileAction) {
-		this.fileAction = fileAction;
-	}
-
-	public void setFileService(RegistryFileService fileService) {
-		this.fileService = fileService;
-	}
-
-	public void setSpRegistryDao(RegistryDao registryDao) {
-		this.registryDao = registryDao;
-	}
-
-	public void setRegistryService(RegistryService registryService) {
-		this.registryService = registryService;
-	}
 
 	/**
 	 * Execute task
@@ -149,7 +128,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 		}
 	}
 
-	private void deleteRecords(SpFile file) {
+	private void deleteRecords(FlexPayFile file) {
 		for (SpRegistry registry : fileService.getRegistries(file)) {
 			registryDao.deleteRecordContainers(registry.getId());
 			registryDao.deleteRegistryContainers(registry.getId());
@@ -158,8 +137,8 @@ public class RunSpFileProcessing implements StandaloneTask {
 		}
 	}
 
-	private SpFile uploadFile(String fileName) throws Throwable {
-		SpFile newFile = createSpFile(fileName);
+	private FlexPayFile uploadFile(String fileName) throws Throwable {
+		FlexPayFile newFile = createSpFile(fileName);
 
 		fileAction.setSpFileId(newFile.getId());
 		fileAction.setAction("loadToDb");
@@ -174,7 +153,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 		return newFile;
 	}
 
-	private SpFile createSpFile(String spFile) throws Throwable {
+	private FlexPayFile createSpFile(String spFile) throws Throwable {
 		String name = StringUtil.getFileName(spFile);
 		String extension = StringUtil.getFileExtension(name);
 		File tmpDataFile = File.createTempFile(name, extension);
@@ -207,17 +186,55 @@ public class RunSpFileProcessing implements StandaloneTask {
 		return getLastFile();
 	}
 
-	private SpFile getLastFile() {
-		List<SpFile> spFiles = fileService.getEntities();
+	private FlexPayFile getLastFile() {
+		List<FlexPayFile> spFiles = flexPayFileService.getFilesByModuleName(moduleName);
 		return spFiles.get(spFiles.size() - 1);
 	}
 
-	private void deleteFile(SpFile file) {
-		fileService.delete(file);
+	private void deleteFile(FlexPayFile file) {
+		flexPayFileService.delete(file);
 		fileCreateAction.getUpload().delete();
-
-		if (file.getRequestFile() != null) {
-			file.getRequestFile().delete();
-		}
 	}
+
+    @Required
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
+
+    @Required
+    public void setFlexPayFileService(FlexPayFileService flexPayFileService) {
+        this.flexPayFileService = flexPayFileService;
+    }
+
+    @Required
+    public void setRegistryProcessor(RegistryProcessor registryProcessor) {
+		this.registryProcessor = registryProcessor;
+	}
+
+    @Required
+	public void setFileCreateAction(SpFileCreateAction fileCreateAction) {
+		fileCreateAction.setUserPreferences(new UserPreferences());
+		this.fileCreateAction = fileCreateAction;
+	}
+
+    @Required
+	public void setFileAction(SpFileAction fileAction) {
+		this.fileAction = fileAction;
+	}
+
+    @Required
+	public void setFileService(RegistryFileService fileService) {
+		this.fileService = fileService;
+	}
+
+    @Required
+	public void setSpRegistryDao(RegistryDao registryDao) {
+		this.registryDao = registryDao;
+	}
+
+    @Required
+	public void setRegistryService(RegistryService registryService) {
+		this.registryService = registryService;
+	}
+
 }

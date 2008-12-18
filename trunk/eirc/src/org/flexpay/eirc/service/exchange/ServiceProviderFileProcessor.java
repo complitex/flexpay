@@ -4,22 +4,22 @@ import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.FlexPayFile;
 import org.flexpay.common.persistence.ImportError;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.ImportErrorsSupport;
 import org.flexpay.common.service.importexport.RawDataSource;
-import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.eirc.dao.importexport.InMemoryRawConsumersDataSource;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.SpFile;
-import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.RegistryRecord;
+import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
+import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
-import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.service.RegistryFileService;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.RegistryService;
@@ -58,16 +58,16 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	/**
 	 * Run processing of a registry data file
 	 *
-	 * @param file uploaded SpFile
+	 * @param spFile uploaded spFile
 	 * @throws Exception if failure occurs
 	 */
-	public void processFile(@NotNull SpFile file) throws Exception {
+	public void processFile(@NotNull FlexPayFile spFile) throws Exception {
 
 		if (log.isInfoEnabled()) {
 			log.info("Starting processing file");
 		}
 
-		List<SpRegistry> registries = registryFileService.getRegistries(file);
+		List<SpRegistry> registries = registryFileService.getRegistries(spFile);
 		if (log.isInfoEnabled() && registries.isEmpty()) {
 			log.info("File does not have any registries");
 		}

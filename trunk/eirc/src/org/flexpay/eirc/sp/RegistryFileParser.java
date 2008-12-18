@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.FlexPayFile;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.FileSource;
@@ -52,7 +53,7 @@ public class RegistryFileParser {
 
 	@SuppressWarnings ({"ConstantConditions"})
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
-	public void parse(SpFile spFile) throws Exception {
+	public void parse(FlexPayFile spFile) throws Exception {
 
 		FileSource fileSource = null;
 		InputStream is = null;
@@ -112,21 +113,21 @@ public class RegistryFileParser {
 	 * @return FileSource
 	 * @throws Exception if failure occurs
 	 */
-	private FileSource openRegistryFile(SpFile spFile) throws Exception {
-		File file = spFile.getRequestFile();
+	private FileSource openRegistryFile(FlexPayFile spFile) throws Exception {
+		File file = spFile.getFile();
 		if (file == null) {
-			throw new FileNotFoundException("For SpFile(id=" + spFile.getId()
-											+ ") not found request file: "
-											+ spFile.getInternalRequestFileName());
+			throw new FileNotFoundException("For FlexPayFile(id=" + spFile.getId()
+											+ ") not found temp file: "
+											+ spFile.getNameOnServer());
 		}
 
 		log.debug("Opening registry file: " + spFile);
 
 		String type = "";
-		if (spFile.getRequestFileName().endsWith(".zip")) {
+		if (spFile.getOriginalName().endsWith(".zip")) {
 			log.debug("zip file");
 			type = "zip";
-		} else if (spFile.getRequestFileName().endsWith(".gz")) {
+		} else if (spFile.getOriginalName().endsWith(".gz")) {
 			log.debug("gzip file");
 			type = "gzip";
 		}
@@ -134,7 +135,7 @@ public class RegistryFileParser {
 	}
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
-	private SpRegistry processMessage(Message message, SpFile spFile, SpRegistry registry, Long[] recordCounter) throws Exception {
+	private SpRegistry processMessage(Message message, FlexPayFile spFile, SpRegistry registry, Long[] recordCounter) throws Exception {
 
 		String messageValue = message.getBody();
 		Integer messageType = message.getType();
@@ -164,7 +165,7 @@ public class RegistryFileParser {
 	}
 
 	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
-	private SpRegistry processHeader(SpFile spFile, List<String> messageFieldList) throws Exception {
+	private SpRegistry processHeader(FlexPayFile spFile, List<String> messageFieldList) throws Exception {
 		if (messageFieldList.size() < 11) {
 			throw new RegistryFormatException(
 					"Message header error, invalid number of fields: "

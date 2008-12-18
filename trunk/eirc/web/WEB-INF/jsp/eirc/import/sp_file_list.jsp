@@ -13,8 +13,8 @@
 	<s:iterator value="spFileList" status="rowstatus">
 		<tr valign="middle" class="cols_1">
 			<td class="col_1s"><s:property value="#rowstatus.index + 1"/></td>
-			<td class="col"><s:property value="requestFileName"/></td>
-			<td class="col"><s:date name="importDate" format="yyyy/MM/dd HH:mm:ss" /></td>
+			<td class="col"><s:property value="originalName"/></td>
+			<td class="col"><s:date name="creationDate" format="yyyy/MM/dd HH:mm:ss" /></td>
 			<!-- <td class="col"><s:property value="userName"/></td> -->
 			<td class="col">
 				<s:if test="%{!isLoaded(id)}">
@@ -22,9 +22,9 @@
 						<s:text name="eirc.registry.file.load"/>
 					</a>
 				</s:if>
-				<s:if test="internalResponseFileName != null">
+				<s:if test="nameOnServer != null">
 					<a href="<s:url value='/spFileDownloadServlet'><s:param name="spFileId" value="%{id}"/></s:url>">
-						<s:property value="requestFileName"/>
+						<s:property value="originalName"/>
 					</a>
 				</s:if>
 			</td>

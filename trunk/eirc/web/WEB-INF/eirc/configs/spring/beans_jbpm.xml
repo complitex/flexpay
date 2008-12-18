@@ -8,7 +8,7 @@
 
 	<bean name="fileParserJob" class="org.flexpay.eirc.process.registry.FileParserJob" scope="prototype"
 		  p:parser-ref="registryFileParser"
-		  p:spFileService-ref="registryFileService" />
+		  p:flexPayFileService-ref="flexPayFileService" />
 
 	<bean name="registryProcessJob" class="org.flexpay.eirc.process.registry.RegistryProcessJob" scope="prototype"
 		  p:registryProcessor-ref="registryProcessor"

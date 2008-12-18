@@ -2,16 +2,16 @@ package org.flexpay.eirc.service.exchange;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.FlexPayFile;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.eirc.actions.TestSpFileAction;
 import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
-import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.RegistryService;
+import org.flexpay.eirc.service.SPService;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	@Test
 	@NotTransactional
 	public void testProcessOpenSubAccountsRegistrySmall() throws Throwable {
-		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
+		FlexPayFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
 
 		try {
 			registryProcessor.processFile(file);
@@ -59,7 +59,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	@Test
 	@NotTransactional
 	public void testProcessNotKnownServiceCode() throws Throwable {
-		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_small_unknown_service.txt");
+		FlexPayFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_small_unknown_service.txt");
 
 		try {
 			registryProcessor.processFile(file);
@@ -88,7 +88,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	@Test
 	@NotTransactional
 	public void testProcessQuittancesSmallRegistry() throws Throwable {
-		SpFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_quittances_small.txt");
+		FlexPayFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_quittances_small.txt");
 
 		try {
 			registryProcessor.processFile(file);

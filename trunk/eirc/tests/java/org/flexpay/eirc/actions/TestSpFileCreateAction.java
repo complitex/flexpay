@@ -2,11 +2,11 @@ package org.flexpay.eirc.actions;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.flexpay.common.persistence.FlexPayFile;
+import org.flexpay.common.service.FlexPayFileService;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.config.UserPreferences;
-import org.flexpay.eirc.persistence.SpFile;
-import org.flexpay.eirc.service.RegistryFileService;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import static org.junit.Assert.assertEquals;
@@ -27,7 +27,7 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 	private Logger log = Logger.getLogger(getClass());
 
 	@Autowired
-	protected RegistryFileService fileService;
+    protected FlexPayFileService flexPayFileService;
 	protected SpFileCreateAction fileCreateAction;
 
 	@Autowired
@@ -40,11 +40,11 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 	@Ignore
 	@NotTransactional
 	public void testCreateSpFile() throws Throwable {
-		SpFile newFile = createSpFile("org/flexpay/eirc/actions/sp/k0108.ree");
+		FlexPayFile newFile = createSpFile("org/flexpay/eirc/actions/sp/k0108.ree");
 		deleteFile(newFile);
 	}
 
-	protected SpFile createSpFile(@NotNull @NonNls String spFile) throws Throwable {
+	protected FlexPayFile createSpFile(@NotNull @NonNls String spFile) throws Throwable {
 
 		String name = StringUtil.getFileName(spFile);
 		String extension = StringUtil.getFileExtension(name);
@@ -74,19 +74,16 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 		return fileCreateAction.getSpFile();
 	}
 
-	protected void deleteFile(SpFile file) {
+	protected void deleteFile(FlexPayFile file) {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Deleting registry file: " + file);
 		}
 
-		fileService.delete(file);
+		flexPayFileService.delete(file);
 		fileCreateAction.getUpload().delete();
-
-		if (file.getRequestFile() != null) {
-			file.getRequestFile().delete();
-		}
 
 		log.debug("Deleted file!");
 	}
+
 }

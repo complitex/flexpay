@@ -21,11 +21,12 @@ public class RegistryFileDaoExtImpl extends HibernateDaoSupport implements Regis
 	public boolean isLoaded(@NotNull final Long fileId) {
 		return (Boolean) getHibernateTemplate().execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				Query qCount = session.getNamedQuery("SpFile.listRegistries.count");
+				Query qCount = session.getNamedQuery("SpRegistry.listRegistries.count");
 				qCount.setLong(0, fileId);
 				Number count = (Number) qCount.uniqueResult();
 				return count.longValue() > 0;
 			}
 		});
 	}
+
 }

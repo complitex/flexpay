@@ -1,22 +1,31 @@
 package org.flexpay.common.service;
 
-import org.flexpay.common.persistence.FlexPayFileType;
-import org.flexpay.common.persistence.FlexPayFile;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.FlexPayFile;
+import org.flexpay.common.persistence.FlexPayFileType;
+import org.flexpay.common.persistence.FlexPayFileStatus;
+import org.flexpay.common.persistence.FlexPayModule;
 
-import java.io.InputStream;
-import java.io.IOException;
+import java.util.List;
 
 public interface FlexPayFileService {
 
-    FlexPayFile createFile(InputStream is, FlexPayFile file) throws FlexPayException;
+    FlexPayFile create(FlexPayFile file) throws FlexPayException;
 
-    void updateFile(InputStream is, FlexPayFile file) throws FlexPayException;
+    FlexPayFile update(FlexPayFile file) throws FlexPayException;
 
-    void deleteFile(Long fileId) throws FlexPayException;
+    void delete(FlexPayFile file);
 
-    FlexPayFile getFile(Long fileId) throws FlexPayException;
+    void deleteFromFileSystem(FlexPayFile file);
 
-    InputStream getContent(FlexPayFile file) throws IOException;
+    FlexPayFile read(Long fileId) throws FlexPayException;
+
+    List<FlexPayFile> getFilesByModuleName(String moduleName);
+
+    FlexPayFileType getTypeByName(String name);
+
+    FlexPayFileStatus getStatusByName(String name);
+
+    FlexPayModule getModuleByName(String name);
 
 }

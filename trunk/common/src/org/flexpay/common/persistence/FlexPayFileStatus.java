@@ -5,16 +5,16 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 public class FlexPayFileStatus extends DomainObject {
 
-    private String title;
+    private String name;
     private String description;
     private FlexPayModule module;
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -38,7 +38,7 @@ public class FlexPayFileStatus extends DomainObject {
         return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
                 append("FlexPayFileStatus {").
                 append("id", getId()).
-                append("title", title).
+                append("name", name).
                 append("description", description).
                 append("module", module).
                 append("}").toString();

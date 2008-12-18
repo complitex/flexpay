@@ -8,7 +8,7 @@
 
 	<bean id="registryFileService"
 		  class="org.flexpay.eirc.service.imp.RegistryFileServiceImpl"
-		  p:spFileDao-ref="spFileDao"
+		  p:registryDao-ref="spRegistryDao"
 		  p:registryRecordDao-ref="spRegistryRecordDao"
 		  p:registryRecordDaoExt-ref="spRegistryRecordDaoExt"
 		  p:registryFileDaoExt-ref="registryFileDaoExt" />

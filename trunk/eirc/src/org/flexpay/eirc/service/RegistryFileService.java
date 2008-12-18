@@ -1,11 +1,10 @@
 package org.flexpay.eirc.service;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.FlexPayFile;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.eirc.persistence.SpFile;
-import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.RegistryRecord;
+import org.flexpay.eirc.persistence.SpRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -13,52 +12,12 @@ import java.util.List;
 public interface RegistryFileService {
 
 	/**
-	 * Create SpFile
-	 *
-	 * @param spFile SpFile
-	 * @return created SpFile object
-	 * @throws FlexPayException if failure occurs
-	 */
-	public SpFile create(SpFile spFile) throws FlexPayException;
-
-	/**
-	 * Read SpFile object by its unique id
-	 *
-	 * @param id SpFile key
-	 * @return SpFile object, or <code>null</code> if object not found
-	 */
-	SpFile read(Long id);
-
-	/**
-	 * Update SpFile
-	 *
-	 * @param spFile SpFile to update for
-	 * @return Updated SpFile object
-	 * @throws FlexPayException if SpFile object is invalid
-	 */
-	SpFile update(SpFile spFile) throws FlexPayException;
-
-	/**
-	 * Get a list of available SpFile
-	 *
-	 * @return List of SpFile
-	 */
-	List<SpFile> getEntities();
-
-	/**
-	 * Delete file
-	 *
-	 * @param spFile ServiceProvider obtained file
-	 */
-	void delete(SpFile spFile);
-
-	/**
 	 * Get registries for file
 	 *
 	 * @param spFile ServiceProvider obtained file
 	 * @return List of registries in a file
 	 */
-	List<SpRegistry> getRegistries(SpFile spFile);
+	List<SpRegistry> getRegistries(FlexPayFile spFile);
 
 	/**
 	 * Get registry records for processing
@@ -76,5 +35,6 @@ public interface RegistryFileService {
 	 * @param stub File stub
 	 * @return <code>true</code> if file already loaded, or <code>false</code> otherwise
 	 */
-	boolean isLoaded(@NotNull Stub<SpFile> stub);
+	boolean isLoaded(@NotNull Stub<FlexPayFile> stub);
+
 }

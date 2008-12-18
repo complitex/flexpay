@@ -3,11 +3,12 @@ package org.flexpay.eirc.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.FlexPayFile;
 import org.flexpay.common.persistence.Stub;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class SpRegistry extends DomainObject {
 
-	private SpFile spFile;
+	private FlexPayFile spFile;
 	private RegistryType registryType;
 
 	private Long registryNumber;
@@ -38,21 +39,6 @@ public class SpRegistry extends DomainObject {
 
 	private transient int errorsNumber;
 
-
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("id", getId())
-				.append("registry number", registryNumber)
-				.append("records number", recordsNumber)
-				.append("created", creationDate)
-				.append("from", fromDate)
-				.append("till", tillDate)
-				.append("sender code", senderCode)
-				.append("recipient code", recipientCode)
-				.append("amount", amount)
-				.toString();
-	}
 
 	/**
 	 * Constructs a new DomainObject.
@@ -81,18 +67,18 @@ public class SpRegistry extends DomainObject {
 	/**
 	 * @return the spFile
 	 */
-	public SpFile getSpFile() {
-		return spFile;
-	}
+    public FlexPayFile getSpFile() {
+        return spFile;
+    }
 
-	/**
+    /**
 	 * @param spFile the spFile to set
 	 */
-	public void setSpFile(SpFile spFile) {
-		this.spFile = spFile;
-	}
+    public void setSpFile(FlexPayFile spFile) {
+        this.spFile = spFile;
+    }
 
-	/**
+    /**
 	 * @return the registryType
 	 */
 	public RegistryType getRegistryType() {
@@ -301,4 +287,29 @@ public class SpRegistry extends DomainObject {
 	public void setErrorsNumber(int errorsNumber) {
 		this.errorsNumber = errorsNumber;
 	}
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+                append("SpRegistry {").
+                append("id", getId()).
+                append("spFile", spFile).
+                append("registryType", registryType).
+                append("registryNumber", registryNumber).
+                append("recordsNumber", recordsNumber).
+                append("creationDate", creationDate).
+                append("fromDate", fromDate).
+                append("tillDate", tillDate).
+                append("senderCode", senderCode).
+                append("recipientCode", recipientCode).
+                append("amount", amount).
+                append("sender", sender).
+                append("recipient", recipient).
+                append("serviceProvider", serviceProvider).
+                append("registryStatus", registryStatus).
+                append("archiveStatus", archiveStatus).
+                append("errorsNumber", errorsNumber).
+                append("}").toString();
+    }
+
 }

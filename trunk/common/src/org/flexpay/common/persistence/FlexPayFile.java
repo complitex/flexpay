@@ -2,7 +2,9 @@ package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.util.FlexPayFileUtil;
 
+import java.io.File;
 import java.util.Date;
 
 public class FlexPayFile extends DomainObject {
@@ -10,7 +12,7 @@ public class FlexPayFile extends DomainObject {
     private String nameOnServer;
     private String originalName;
     private Long size;
-    private String author;
+    private String userName;
     private String description;
     private Date creationDate = new Date();
     private FlexPayFileType type;
@@ -33,6 +35,11 @@ public class FlexPayFile extends DomainObject {
         this.originalName = originalName;
     }
 
+    public File getFile() {
+        return new File(FlexPayFileUtil.getFileLocalPath(this));
+    }
+
+
     public Long getSize() {
         return size;
     }
@@ -41,12 +48,12 @@ public class FlexPayFile extends DomainObject {
         this.size = size;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getDescription() {
@@ -97,7 +104,7 @@ public class FlexPayFile extends DomainObject {
                 append("nameOnServer", nameOnServer).
                 append("originalName", originalName).
                 append("size", size).
-                append("author", author).
+                append("userName", userName).
                 append("creationDate", creationDate).
                 append("type", type).
                 append("status", status).

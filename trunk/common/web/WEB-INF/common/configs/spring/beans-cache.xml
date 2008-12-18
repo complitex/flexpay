@@ -34,21 +34,6 @@
 		<property name="target" ref="languageServiceTarget" />
 	</bean>
 
-    <bean id="flexPayFileService" class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
-        <property name="cacheProviderFacade" ref="cacheProviderFacade" />
-        <property name="cachingModels">
-            <props>
-                <prop key="read">cacheName=flexPayFileFlexpayCache</prop>
-            </props>
-        </property>
-        <property name="flushingModels">
-            <props>
-                <prop key="save">cacheNames=flexPayFileFlexpayCache;flushBeforeMethodExecution=true</prop>
-            </props>
-        </property>
-        <property name="target" ref="flexPayFileServiceTarget" />
-    </bean>
-
 	<bean id="measureUnitService"
 		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />

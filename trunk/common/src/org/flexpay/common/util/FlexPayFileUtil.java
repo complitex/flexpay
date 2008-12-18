@@ -1,46 +1,40 @@
 package org.flexpay.common.util;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.io.FileUtils;
 import org.flexpay.common.persistence.FlexPayFile;
-import org.flexpay.common.persistence.FlexPayModule;
 import org.flexpay.common.util.config.ApplicationConfig;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
 public class FlexPayFileUtil {
 
-    private static Logger logger = Logger.getLogger(FlexPayFileUtil.class);
-
-	public static String getLocalDirPath(FlexPayModule module, Date creationDate) {
-		File dir = ApplicationConfig.getDataRoot();
+	public static String getLocalDirPath(String moduleName, Date creationDate) {
+		File root = ApplicationConfig.getDataRoot();
         Calendar c = Calendar.getInstance();
         c.setTime(creationDate);
-        return dir.getPath() + File.separator
-                + module.getName() + File.separator
+        return root.getPath() + File.separator
+                + moduleName + File.separator
                 + c.get(Calendar.YEAR) + File.separator
                 + (1 + c.get(Calendar.MONTH)) + File.separator
                 + c.get(Calendar.DATE) + File.separator;
 	}
 
-	/**
-	 * Returns file extension according to given name
+    public static String getLocalDirPath(FlexPayFile file) {
+        return 	getLocalDirPath(file.getModule().getName(), file.getCreationDate());
+    }
+
+    /**
+     * Returns local file path
      *
-	 * @param name file name
-	 * @return file extension according to given name
-	 */
-	public static String getFileExtension(String name) {
-		if (null == name) {
-			return "";
-		}
-		String fileExtension = "";
-		int pos = name.lastIndexOf('.');
-		if (pos > 0) {
-			fileExtension = name.substring(pos + 1, name.length());
-		}
-		return fileExtension;
-	}
+     * @param file flexpay file
+     * @return local file path
+     */
+    public static String getFileLocalPath(FlexPayFile file) {
+        return getLocalDirPath(file.getModule().getName(), file.getCreationDate()) + file.getNameOnServer();
+    }
 
     /**
      * Returns file name
@@ -60,69 +54,38 @@ public class FlexPayFileUtil {
         return fileNameWithoutExtension;
     }
 
-	/**
-	 * Returns local file path
-	 *
-	 * @param file flexpay file
-	 * @return local file path
-	 */
-	public static String getFileLocalPath(FlexPayFile file) {
-		return getLocalDirPath(file.getModule(), file.getCreationDate()) + file.getNameOnServer();
-	}
+    /**
+     * Returns file
+     *
+     * @param flexPayFile flexPayFile
+     * @return file
+     */
+    public static File getFileOnServer(FlexPayFile flexPayFile) {
+        if (flexPayFile.getNameOnServer() == null) {
+            return null;
+        }
+        return new File(getFileLocalPath(flexPayFile));
+    }
 
 	/**
 	 * Saves all data from given input stream to file system
 	 *
 	 * @param flexPayFile flexpay file
-	 * @param is input stream to read data from
+	 * @param file to read from
 	 * @return number of written bytes
 	 * @throws IOException if an error occurred
 	 */
 	@SuppressWarnings({"IOResourceOpenedButNotSafelyClosed"})
-    public static FlexPayFile saveToFile(FlexPayFile flexPayFile, InputStream is) throws IOException {
-		Long size = 0L;
-		OutputStream out = null;
-        File fileOnSystem = null;
-		try {
-            String name = flexPayFile.getOriginalName();
-            String localPath = getLocalDirPath(flexPayFile.getModule(), flexPayFile.getCreationDate());
-            File localDir = new File(localPath);
-            boolean created = localDir.mkdirs();
-            if (!created) {
-                throw new IOException("Can't create dirs for localDir = " + localDir);
-            }
-            fileOnSystem = File.createTempFile(getFileNameWithoutExtension(name), getFileExtension(name), localDir);
-			byte buf[] = new byte[1024];
-			out = new FileOutputStream(fileOnSystem);
-			int len;
-			while ((len = is.read(buf)) > 0) {
-				out.write(buf, 0, len);
-				size += len;
-			}
-			out.flush();
-		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {
-					logger.warn("Error occurred trying to close output stream: ", e);
-				}
-			}
-			if (is != null) {
-				try {
-					is.close();
-				} catch (IOException e) {
-					logger.warn("Error occurred trying to close input stream: ", e);
-				}
-			}
-		}
-        if (fileOnSystem == null) {
-            throw new IOException("Error with creating file on system");
-        }
+    public static File saveToFileSystem(FlexPayFile flexPayFile, File file) throws IOException {
+        String name = flexPayFile.getOriginalName();
+        String localPath = getLocalDirPath(flexPayFile.getModule().getName(), flexPayFile.getCreationDate());
+        File localDir = new File(localPath);
+        localDir.mkdirs();
+        File fileOnServer = File.createTempFile(getFileNameWithoutExtension(name), StringUtil.getFileExtension(name), localDir);
 
-        flexPayFile.setSize(size);
-        flexPayFile.setNameOnServer(fileOnSystem.getName());
-        return flexPayFile;
+        FileUtils.copyFile(file, fileOnServer);
+
+        return fileOnServer;
 	}
 
 }

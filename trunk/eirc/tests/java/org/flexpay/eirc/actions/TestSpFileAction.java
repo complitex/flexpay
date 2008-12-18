@@ -1,10 +1,11 @@
 package org.flexpay.eirc.actions;
 
+import org.apache.log4j.Logger;
+import org.flexpay.common.persistence.FlexPayFile;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessManager;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import org.flexpay.eirc.dao.RegistryDao;
-import org.flexpay.eirc.persistence.SpFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.RegistryFileService;
 import org.jetbrains.annotations.NonNls;
@@ -14,7 +15,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.NotTransactional;
-import org.apache.log4j.Logger;
 
 public class TestSpFileAction extends TestSpFileCreateAction {
 
@@ -34,7 +34,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	@Test
 	@NotTransactional
 	public void testUploadFile() throws Throwable {
-		SpFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.txt");
+		FlexPayFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.txt");
 
 		// do clean up
 		deleteRecords(newFile);
@@ -44,7 +44,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	@Test
 	@NotTransactional
 	public void testUploadZipFile() throws Throwable {
-		SpFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.zip");
+		FlexPayFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.zip");
 
 		// do clean up
 		deleteRecords(newFile);
@@ -54,20 +54,20 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	@Test
 	@NotTransactional
 	public void testUploadGZipFile() throws Throwable {
-		SpFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.txt.gz");
+		FlexPayFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.txt.gz");
 
 		// do clean up
 		deleteRecords(newFile);
 		deleteFile(newFile);
 	}
 
-	protected void deleteRecords(SpFile file) {
+	protected void deleteRecords(FlexPayFile file) {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Deleting registries of file: " + file);
 		}
 
-		for (SpRegistry registry : fileService.getRegistries(file)) {
+		for (SpRegistry registry : registryFileService.getRegistries(file)) {
 			deleteQuittances(registry.getId());
 			deleteContainers(registry.getId());
 			registryDao.deleteRegistryContainers(registry.getId());
@@ -96,8 +96,8 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 		jdbcTemplate.update(sql, ar(registryId));
 	}
 
-	protected SpFile uploadFile(@NonNls String fileName) throws Throwable {
-		SpFile newFile = createSpFile(fileName);
+	protected FlexPayFile uploadFile(@NonNls String fileName) throws Throwable {
+		FlexPayFile newFile = createSpFile(fileName);
 
 		fileAction.setSpFileId(newFile.getId());
 		fileAction.setAction("loadToDb");
