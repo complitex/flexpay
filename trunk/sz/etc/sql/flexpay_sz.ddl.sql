@@ -433,6 +433,43 @@
         primary key (id)
     );
 
+    create table common_file_statuses_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        name varchar(255) not null comment 'Flexpay filestatus title',
+        description varchar(255) comment 'Flexpay filestatus description',
+        module_id bigint not null comment 'Flexpay module reference',
+        primary key (id)
+    ) comment='Information about file statuses';
+
+    create table common_file_types_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        name varchar(255) not null comment 'Filetype title',
+        description varchar(255) comment 'Filetype description',
+        file_mask varchar(255) not null comment 'Mask of files for this type',
+        module_id bigint not null comment 'Flexpay module reference',
+        primary key (id)
+    ) comment='Information about known filetypes';
+
+    create table common_files_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        name_on_server varchar(255) not null comment 'File name on flexpay server',
+        original_name varchar(255) not null comment 'Original file name',
+        description varchar(255) comment 'File description',
+        creation_date datetime not null comment 'File creation date',
+        user_name varchar(255) not null comment 'User name who create this file',
+        size bigint comment 'File size',
+        type_id bigint comment 'Flexpay file type reference',
+        status_id bigint comment 'Flexpay file status reference',
+        module_id bigint not null comment 'Flexpay module reference',
+        primary key (id)
+    ) comment='Table, where store information about all flexpay files';
+
+    create table common_flexpay_modules_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        name varchar(255) not null comment 'Flexpay module name',
+        primary key (id)
+    ) comment='Information about all flexpay modules';
+
     create table common_import_errors_tbl (
         id bigint not null auto_increment,
         status integer not null,
@@ -649,16 +686,6 @@
         data varchar(2048) not null comment 'Registry container data',
         order_weight integer not null comment 'Order of the container in a registry',
         registry_id bigint not null comment 'Registry reference',
-        primary key (id)
-    );
-
-    create table eirc_registry_files_tbl (
-        id bigint not null auto_increment,
-        request_file_name varchar(255) not null,
-        internal_request_file_name varchar(255) not null,
-        internal_response_file_name varchar(255),
-        user_name varchar(255) not null,
-        import_date datetime not null,
         primary key (id)
     );
 
@@ -1310,7 +1337,37 @@
         foreign key (data_source_description_id) 
         references common_data_source_descriptions_tbl (id);
 
-    alter table common_import_errors_tbl 
+    alter table common_file_statuses_tbl
+        add index common_file_statuses_tbl_module_id (module_id),
+        add constraint common_file_statuses_tbl_module_id
+        foreign key (module_id)
+        references common_flexpay_modules_tbl (id);
+
+    alter table common_file_types_tbl
+        add index common_file_types_tbl_module_id (module_id),
+        add constraint common_file_types_tbl_module_id
+        foreign key (module_id)
+        references common_flexpay_modules_tbl (id);
+
+    alter table common_files_tbl
+        add index common_files_tbl_module_id (module_id),
+        add constraint common_files_tbl_module_id
+        foreign key (module_id)
+        references common_flexpay_modules_tbl (id);
+
+    alter table common_files_tbl
+        add index common_files_tbl_status_id (status_id),
+        add constraint common_files_tbl_status_id
+        foreign key (status_id)
+        references common_file_statuses_tbl (id);
+
+    alter table common_files_tbl
+        add index common_files_tbl_type_id (type_id),
+        add constraint common_files_tbl_type_id
+        foreign key (type_id)
+        references common_file_types_tbl (id);
+
+    alter table common_import_errors_tbl
         add index FKBAEED8705355D490 (source_description_id), 
         add constraint FKBAEED8705355D490 
         foreign key (source_description_id) 
@@ -1516,11 +1573,11 @@
         foreign key (registry_type_id) 
         references eirc_registry_types_tbl (id);
 
-    alter table eirc_registries_tbl 
-        add index FK_eirc_registry_file (sp_file_id), 
-        add constraint FK_eirc_registry_file 
-        foreign key (sp_file_id) 
-        references eirc_registry_files_tbl (id);
+    alter table eirc_registries_tbl
+        add index FK_eirc_registry_file (sp_file_id),
+        add constraint FK_eirc_registry_file
+        foreign key (sp_file_id)
+        references common_files_tbl (id);
 
     alter table eirc_registry_containers_tbl 
         add index FK_eirc_registry_containers_tbl_registry_id (registry_id), 
