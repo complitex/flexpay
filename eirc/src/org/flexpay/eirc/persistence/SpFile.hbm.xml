@@ -5,18 +5,6 @@
 
 <hibernate-mapping package="org.flexpay.eirc.persistence">
 
-	<class name="SpFile" table="eirc_registry_files_tbl" optimistic-lock="version">
-		<id name="id" column="id">
-			<generator class="native" />
-		</id>
-		<property name="requestFileName" column="request_file_name" not-null="true" />
-		<property name="internalRequestFileName" column="internal_request_file_name"
-				  not-null="true" />
-		<property name="internalResponseFileName" column="internal_response_file_name" />
-		<property name="userName" column="user_name" not-null="true" />
-		<property name="importDate" column="import_date" not-null="true" />
-	</class>
-
 	<class name="SpRegistry" table="eirc_registries_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
@@ -42,7 +30,7 @@
 			</column>
 		</many-to-one>
 
-		<many-to-one name="spFile" foreign-key="FK_eirc_registry_file" class="SpFile">
+		<many-to-one name="spFile" foreign-key="FK_eirc_registry_file" class="org.flexpay.common.persistence.FlexPayFile">
 			<column name="sp_file_id" not-null="false">
 				<comment>Registry file reference</comment>
 			</column>
@@ -244,28 +232,20 @@
 		</many-to-one>
 	</class>
 
-	<query name="SpFile.listSpFiles.count">
-		select count(*) from SpFile
-	</query>
+    <query name="SpRegistry.listRegistries.count">
+        select count(*) from SpRegistry sr where sr.spFile.id = ?
+    </query>
 
-	<query name="SpFile.listSpFiles">
-		select distinct s from SpFile s
-	</query>
-
-	<query name="SpFile.listRegistries.count">
-		select count(*) from SpRegistry where spFile.id=?
-	</query>
-
-	<query name="SpFile.listRegistries">
-		select distinct r
-		from SpRegistry r
-			inner join fetch r.registryType
-			inner join fetch r.registryStatus
-			inner join fetch r.serviceProvider p
-			inner join fetch p.dataSourceDescription
-			left join fetch r.containers
-		where r.spFile.id=?
-	</query>
+    <query name="SpRegistry.listRegistries">
+        select distinct r
+        from SpRegistry r
+            inner join fetch r.registryType
+            inner join fetch r.registryStatus
+            inner join fetch r.serviceProvider p
+            inner join fetch p.dataSourceDescription
+            left join fetch r.containers
+        where r.spFile.id = ?
+    </query>
 
 	<query name="SpRegistry.listRegistryWithContainers">
 		select distinct r

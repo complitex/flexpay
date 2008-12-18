@@ -6,6 +6,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -73,7 +74,9 @@ public class SpFileAction extends FPActionSupport {
 		return processId;
 	}
 
+    @Required
 	public void setProcessManager(ProcessManager processManager) {
         this.processManager = processManager;
     }
+
 }

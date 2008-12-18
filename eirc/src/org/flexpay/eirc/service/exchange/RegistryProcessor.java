@@ -1,6 +1,6 @@
 package org.flexpay.eirc.service.exchange;
 
-import org.flexpay.eirc.persistence.SpFile;
+import org.flexpay.common.persistence.FlexPayFile;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
 import org.jetbrains.annotations.NotNull;
@@ -13,10 +13,10 @@ public interface RegistryProcessor {
 	/**
 	 * Run processing of a registry data file
 	 *
-	 * @param file uploaded SpFile
+	 * @param spFile uploaded spFile
 	 * @throws Exception if failure occurs
 	 */
-	void processFile(@NotNull SpFile file) throws Exception;
+	void processFile(@NotNull FlexPayFile spFile) throws Exception;
 
 	/**
 	 * Run processing of a <code>registries</code>

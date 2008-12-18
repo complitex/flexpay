@@ -1,16 +1,16 @@
 
 create table common_file_statuses_tbl (
     id bigint not null auto_increment comment 'Primary key',
-    title varchar(255) not null comment 'Flexpay filestatus title',
-    description varchar(255) not null comment 'Flexpay filestatus description',
+    name varchar(255) not null comment 'Flexpay filestatus title',
+    description varchar(255) comment 'Flexpay filestatus description',
     module_id bigint not null comment 'Flexpay module reference',
     primary key (id)
 ) comment='Information about file statuses';
 
 create table common_file_types_tbl (
     id bigint not null auto_increment comment 'Primary key',
-    title varchar(255) not null comment 'Filetype title',
-    description varchar(255) not null comment 'Filetype description',
+    name varchar(255) not null comment 'Filetype title',
+    description varchar(255) comment 'Filetype description',
     file_mask varchar(255) not null comment 'Mask of files for this type',
     module_id bigint not null comment 'Flexpay module reference',
     primary key (id)
@@ -20,12 +20,12 @@ create table common_files_tbl (
     id bigint not null auto_increment comment 'Primary key',
     name_on_server varchar(255) not null comment 'File name on flexpay server',
     original_name varchar(255) not null comment 'Original file name',
-    description varchar(255) not null comment 'File description',
+    description varchar(255) comment 'File description',
     creation_date datetime not null comment 'File creation date',
     user_name varchar(255) not null comment 'User name who create this file',
     size bigint comment 'File size',
-    type_id bigint not null comment 'Flexpay file type reference',
-    status_id bigint not null comment 'Flexpay file status reference',
+    type_id bigint comment 'Flexpay file type reference',
+    status_id bigint comment 'Flexpay file status reference',
     module_id bigint not null comment 'Flexpay module reference',
     primary key (id)
 ) comment='Table, where store information about all flexpay files';

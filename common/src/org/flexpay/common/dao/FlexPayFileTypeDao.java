@@ -8,4 +8,6 @@ public interface FlexPayFileTypeDao extends GenericDao<FlexPayFileType, Long> {
 
     List<FlexPayFileType> listFileTypesByModuleName(String moduleName);
 
+    List<FlexPayFileType> listTypesByName(String name);
+
 }

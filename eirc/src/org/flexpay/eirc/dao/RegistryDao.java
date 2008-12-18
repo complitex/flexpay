@@ -1,11 +1,11 @@
 package org.flexpay.eirc.dao;
 
-import java.util.List;
-
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public interface RegistryDao extends GenericDao<SpRegistry, Long> {
 
@@ -27,6 +27,14 @@ public interface RegistryDao extends GenericDao<SpRegistry, Long> {
 	 */
 	@NotNull
 	List<SpRegistry> listRegistryWithContainers(Long registryId);
+
+    /**
+     * List registries for file
+     *
+     * @param fileId spFile id
+     * @return list of registries
+     */
+    List<SpRegistry> listRegistries(Long fileId);
 
 	/**
 	 * Find registries by number and sender organization

@@ -27,10 +27,10 @@ public interface RegistryService {
 	public SpRegistry create(SpRegistry spRegistry) throws FlexPayException;
 
 	/**
-	 * Get all SpRegistry by SpFile in page mode
+	 * Get all SpRegistry by spFile id in page mode
 	 *
 	 * @param pager Page object
-	 * @param spFileId SpFile key
+	 * @param spFileId spFile id
 	 * @return List of SpRegistry objects for pager
 	 */
 	List<SpRegistry> findObjects(Page<SpRegistry> pager, Long spFileId);

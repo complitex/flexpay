@@ -45,16 +45,6 @@
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
 
-	<bean id="spFileDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.SpFileDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.SpFile" />
-			</bean>
-		</property>
-	</bean>
-
 	<bean id="spRegistryDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.RegistryDao" />

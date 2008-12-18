@@ -59,7 +59,7 @@ public class RegistryServiceImpl implements RegistryService {
 	}
 
 	/**
-	 * Get all SpRegistry by SpFile in page mode
+	 * Get all SpRegistry by spFile id in page mode
 	 *
 	 * @param pager Page object
 	 * @return List of SpRegistry objects for pager
