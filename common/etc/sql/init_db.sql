@@ -46,3 +46,9 @@ insert into common_mesuare_unit_names_tbl(name, measure_unit_id, language_id)
 INSERT INTO common_data_source_descriptions_tbl (id, description) VALUES (1, 'Источник - Тестовые данные ПУ из ЦН');
 SELECT @source_description_test_data:=1;
 
+-- Init FlexPayFiles
+INSERT INTO common_flexpay_modules_tbl (name) VALUES ('sz');
+INSERT INTO common_flexpay_modules_tbl (name) VALUES ('eirc');
+INSERT INTO common_flexpay_modules_tbl (name) VALUES ('bti');
+INSERT INTO common_flexpay_modules_tbl (name) VALUES ('ab');
+INSERT INTO common_flexpay_modules_tbl (name) VALUES ('common');
