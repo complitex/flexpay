@@ -11,41 +11,41 @@
 			<td colspan="5">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="streetDelete"/>';$('fobjects').submit()"
+					   onclick="$('fobjects').action='<s:url action="streetDelete"/>';$('fobjects').submit();"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="streetCreate"/>'"
+					   onclick="window.location='<s:url action="streetCreate"/>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%"><input type="checkbox"
-											 onchange="FP.setCheckboxes(this.checked, 'objectIds')">
+											 onchange="FP.setCheckboxes(this.checked, 'objectIds');">
 			</td>
-			<td class="th" width="32%"><s:text name="ab.street_type"/></td>
-			<td class="th" width="31%"><s:text name="ab.street"/></td>
+			<td class="<s:if test="streetSorterByName.activated">th_s</s:if><s:else>th</s:else>" width="31%" nowrap="nowrap">
+				<%@ include file="sorters/streetSortByNameHeader.jsp" %>
+			</td>
+			<td class="<s:if test="streetSorterByType.activated">th_s</s:if><s:else>th</s:else>" width="32%" nowrap="nowrap">
+				<%@ include file="sorters/streetSortByTypeHeader.jsp" %>
 			<td class="th" width="35%">&nbsp;</td>
 		</tr>
-		<s:iterator value="%{objectNames}" status="status">
+		<s:iterator value="%{streets}" status="status">
 			<tr valign="middle" class="cols_1">
-				<td class="col_1s" align="right">
-					<s:property
-							value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
+				<td class="col" align="right">
+					<s:property value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
 				</td>
 				<td class="col">
 					<input type="checkbox" value="<s:property value="%{id}"/>"
 						   name="objectIds"/>
 				</td>
 				<td class="col">
-					<s:property
-							value="%{getTranslation(getCurrentType().translations).name}"/>
+					<a href="<s:url value="/dicts/buildingsList.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{regionFilter.selectedId}&townFilter.selectedId=%{townFilter.selectedId}&streetNameFilter.selectedId=%{id}"/>">
+						<s:property value="%{getTranslation(getCurrentName().translations).name}"/>
+					</a>
 				</td>
 				<td class="col">
-					<a href="<s:url value="/dicts/buildingsList.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{regionFilter.selectedId}&townFilter.selectedId=%{townFilter.selectedId}&streetNameFilter.selectedId=%{id}"/>">
-						<s:property
-								value="%{getTranslation(getCurrentName().translations).name}"/>
-					</a>
+					<s:property value="%{getTranslation(getCurrentType().translations).name}"/>
 				</td>
 				<td class="col">
 					<a href="<s:url value="/dicts/streetView.action?object.id=%{id}"/>">
@@ -58,10 +58,10 @@
 			<td colspan="5">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="streetDelete"/>';$('fobjects').submit()"
+					   onclick="$('fobjects').action='<s:url action="streetDelete"/>';$('fobjects').submit();"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="streetCreate"/>'"
+					   onclick="window.location='<s:url action="streetCreate"/>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

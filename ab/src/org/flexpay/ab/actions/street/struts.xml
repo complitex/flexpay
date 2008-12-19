@@ -8,7 +8,7 @@
 	<package name="streets" namespace="/dicts" extends="common">
 
 		<action name="streetsList" class="streetsListAction">
-			<result type="tiles">ab.streets.list</result>
+			<result name="success" type="tiles">ab.streets.list</result>
 		</action>
 
 		<action name="streetCreate" class="streetCreateAction">

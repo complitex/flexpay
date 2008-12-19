@@ -3,7 +3,6 @@ package org.flexpay.common.util.config;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -91,26 +90,25 @@ public class ApplicationConfig {
 	 * Get Default Language configuaration option
 	 *
 	 * @return Language
-	 * @throws FlexPayException if Default language is not configured
+	 * @throws RuntimeException if Default language is not configured
 	 */
 	@NotNull
-	public static Language getDefaultLanguage() throws FlexPayException {
+	public static Language getDefaultLanguage() throws RuntimeException {
 		for (Language language : getInstance().languages) {
 			if (language.isDefault()) {
 				return language;
 			}
 		}
-		throw new FlexPayException("No default language defined");
+		throw new RuntimeException("No default language defined");
 	}
 
 	/**
 	 * Get Default Locale
 	 *
 	 * @return Locale
-	 * @throws FlexPayException if Default language is not configured
 	 */
 	@NotNull
-	public static Locale getDefaultLocale() throws FlexPayException {
+	public static Locale getDefaultLocale() {
 		return getDefaultLanguage().getLocale();
 	}
 
@@ -135,9 +133,9 @@ public class ApplicationConfig {
 		return getInstance().getDataRootInternal();
 	}
 
-	public static File getProcessLogDirectory(){
+	public static File getProcessLogDirectory() {
 		File dataRoot = getInstance().getDataRootInternal();
-		return new File (dataRoot,"logs");
+		return new File(dataRoot, "logs");
 	}
 
 	protected File getDataRootInternal() {

@@ -31,7 +31,7 @@ import java.util.List;
  */
 @SuppressWarnings ({"unchecked"})
 public class GenericDaoHibernateImpl<T, PK extends Serializable>
-		implements GenericDao<T, PK>, FinderExecutor, MethodExecutor {
+		implements GenericDao<T, PK>, FinderExecutor<T>, MethodExecutor {
 
 	/**
 	 * prefix of a named query parameters followed by list number, like list_1, list_2

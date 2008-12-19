@@ -55,9 +55,9 @@ public class LanguageUtil {
 	 *
 	 * @param locale java.util.Locale
 	 * @return Language with this locale, or default one
-	 * @throws FlexPayException if Languages configuration is invalid
 	 */
-	public static Language getLanguage(@NotNull Locale locale) throws FlexPayException {
+	@NotNull
+	public static Language getLanguage(@NotNull Locale locale) {
 		for (Language language : ApplicationConfig.getLanguages()) {
 			if (equals(language, locale)) {
 				return language;

@@ -9,5 +9,18 @@ var FP =
 						inp.checked = checked;
 					}
 				});
+	},
+
+	sorters : [],
+
+	activateSorter : function (sorter) {
+
+		// disable all sorters
+		this.sorters.each(
+				function (field) {
+					$(field).value = 0;
+				});
+		// set active passed sorter
+		$(sorter).value = 1;
 	}
-}
+};

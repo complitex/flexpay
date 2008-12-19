@@ -1,7 +1,6 @@
 package org.flexpay.common.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
@@ -23,12 +22,10 @@ public class TranslationUtil {
 	 * @param translations Collection of object translations
 	 * @param locale	   Locale to get translation in
 	 * @return Translation in specified locale if found, or in defualt locale, or <code>null</code>
-	 * @throws FlexPayException if languages configuration is invalid
 	 */
 	@Nullable
 	public static <T extends Translation> T getTranslation(
-			@NotNull Collection<T> translations, @NotNull Locale locale)
-			throws FlexPayException {
+			@NotNull Collection<T> translations, @NotNull Locale locale) {
 
 		Language language = LanguageUtil.getLanguage(locale);
 		return getTranslation(translations, language);
@@ -39,11 +36,9 @@ public class TranslationUtil {
 	 *
 	 * @param translations Collection of object translations
 	 * @return Translation in defualt language, or <code>null</code>
-	 * @throws FlexPayException if languages configuration is invalid
 	 */
 	@Nullable
-	public static <T extends Translation> T getTranslation(@NotNull Collection<T> translations)
-			throws FlexPayException {
+	public static <T extends Translation> T getTranslation(@NotNull Collection<T> translations) {
 
 		return getTranslation(translations, ApplicationConfig.getDefaultLanguage());
 	}
@@ -54,12 +49,10 @@ public class TranslationUtil {
 	 * @param translations Collection of object translations
 	 * @param language	 Language to get translation in
 	 * @return Translation in specified locale if found, or in defualt locale, or <code>null</code>
-	 * @throws FlexPayException if languages configuration is invalid
 	 */
 	@Nullable
 	public static <T extends Translation> T getTranslation(
-			@NotNull Collection<T> translations, @NotNull Language language)
-			throws FlexPayException {
+			@NotNull Collection<T> translations, @NotNull Language language) {
 
 		Language defaultLang = ApplicationConfig.getDefaultLanguage();
 		T defaultTranslation = null;

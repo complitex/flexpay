@@ -1,17 +1,18 @@
 package org.flexpay.ab.service;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.StreetFilter;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.service.ParentService;
-import org.flexpay.common.dao.paging.Page;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.annotation.Secured;
-import org.apache.commons.collections.ArrayStack;
 
 import java.util.*;
 
@@ -124,6 +125,18 @@ public interface StreetService extends
 	 */
 	@Secured (Roles.STREET_READ)
 	List<Street> find(ArrayStack filters, Page pager);
+
+	/**
+	 * Get a list of available objects
+	 *
+	 * @param filters Parent filters
+	 * @param sorters Stack of sorters
+	 * @param pager   Page
+	 * @return List of Objects
+	 */
+	@Secured (Roles.STREET_READ)
+	@NotNull
+	List<Street> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Street> pager);
 
 	/**
 	 * Disable objects

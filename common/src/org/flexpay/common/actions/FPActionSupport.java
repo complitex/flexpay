@@ -215,7 +215,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 				.getTranslation();
 	}
 
-	public <T extends Translation> T getTranslation(Set<T> translations) throws FlexPayException {
+	public <T extends Translation> T getTranslation(Set<T> translations) {
 		return TranslationUtil.getTranslation(translations, userPreferences.getLocale());
 	}
 
