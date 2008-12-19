@@ -14,6 +14,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
@@ -310,6 +311,26 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return super.find(filters, pager);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@NotNull
+	public List<Street> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Street> pager) {
+		ObjectFilter filter = (ObjectFilter) filters.peek();
+
+		// found street name filter, lookup for town filter and search via name
+		if (filter instanceof StreetNameFilter) {
+			if (filter.needFilter()) {
+				return find(filters, pager);
+			}
+			// remove name filter as there is nothing to search now
+			filters.pop();
+		}
+
+		log.debug("Finding town streets with sorters");
+		PrimaryKeyFilter<?> townFilter = (PrimaryKeyFilter<?>) filters.peek();
+		return streetDaoExt.findStreets(townFilter.getSelectedId(), sorters, pager);
+	}
 
 	public void setStreetDao(StreetDao streetDao) {
 		this.streetDao = streetDao;

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class TestSortStreets extends SpringBeanAwareTestCase {
 
-	private final Stub<Town> TOWN = new Stub<Town>(2L);
+	public static final Stub<Town> TOWN = new Stub<Town>(2L);
 
 	@Test
 	public void testSortStreetsByName() {

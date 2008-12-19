@@ -91,11 +91,7 @@ public class ServiceProvider extends DomainObjectWithStatus {
 	}
 
 	public String getDefaultDescription() {
-		try {
-			ServiceProviderDescription desc = TranslationUtil.getTranslation(getDescriptions());
-			return desc != null ? desc.getName() : "";
-		} catch (FlexPayException e) {
-			return "";
-		}
+		ServiceProviderDescription desc = TranslationUtil.getTranslation(getDescriptions());
+		return desc != null ? desc.getName() : "";
 	}
 }

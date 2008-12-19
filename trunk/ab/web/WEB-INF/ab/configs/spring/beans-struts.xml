@@ -117,8 +117,7 @@
 
 	<bean id="streetsListAction" scope="prototype"
 		  class="org.flexpay.ab.actions.street.StreetsListAction"
-		  p:nameTimeDependentService-ref="streetService"
-		  p:parentService-ref="townService" />
+		  p:streetService-ref="streetService" />
 
 	<bean id="streetDeleteAction" scope="prototype"
 		  class="org.flexpay.ab.actions.street.StreetDeleteAction"
