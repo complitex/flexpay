@@ -65,4 +65,12 @@ alter table common_files_tbl
     add constraint common_files_tbl_type_id
     foreign key (type_id)
     references common_file_types_tbl (id);
- 
+
+update common_version_tbl set last_modified_date='2008-12-17', date_version=0;
+
+INSERT INTO common_flexpay_modules_tbl (id, name) VALUES (1, 'common');
+INSERT INTO common_flexpay_modules_tbl (id, name) VALUES (2, 'ab');
+INSERT INTO common_flexpay_modules_tbl (id, name) VALUES (3, 'bti');
+INSERT INTO common_flexpay_modules_tbl (id, name) VALUES (4, 'eirc');
+INSERT INTO common_flexpay_modules_tbl (id, name) VALUES (5, 'sz');
+
