@@ -18,10 +18,10 @@ public class PersonViewAction extends FPActionSupport {
 
 	@NotNull
 	public String doExecute() throws Exception {
-		if (log.isDebugEnabled()) {
-			log.debug("Object: " + person);
-		}
-		if (person.isNotNew()) {
+
+        log.debug("Object: {}", person);
+
+        if (person.isNotNew()) {
 			person = personService.read(stub(person));
 			if (person == null) {
 				addActionError(getText("error.invalid_id"));
@@ -90,7 +90,7 @@ public class PersonViewAction extends FPActionSupport {
 				return apartmentService.getAddress(stub(registration));
 			}
 
-			log.warn("No registration for person: " + person);
+			log.warn("No registration for person: {}", person);
 			return "";
 		} catch (FlexPayException e) {
 			return getErrorMessage(e);

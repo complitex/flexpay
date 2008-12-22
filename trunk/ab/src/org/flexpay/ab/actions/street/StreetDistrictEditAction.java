@@ -40,9 +40,7 @@ public class StreetDistrictEditAction extends FPActionSupport {
 			addActionError(getText("error.street_invalid_id"));
 			return INPUT;
 		}
-		if (log.isInfoEnabled()) {
-			log.info("Street loaded: " + street.getCurrentName());
-		}
+		log.info("Street loaded: {}", street.getCurrentName());
 
 		// save street districts
 		if (isPost()) {
@@ -61,9 +59,7 @@ public class StreetDistrictEditAction extends FPActionSupport {
 
 		Page pager = new Page(1000, 1);
 		districtNames = districtService.findNames(filters, pager);
-		if (log.isInfoEnabled()) {
-			log.info("Found " + districtNames);
-		}
+        log.info("Found {}", districtNames);
 
 		return INPUT;
 	}

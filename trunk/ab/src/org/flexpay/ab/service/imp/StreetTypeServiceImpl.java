@@ -1,7 +1,8 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.StreetTypeDao;
 import org.flexpay.ab.dao.StreetTypeTranslationDao;
 import org.flexpay.ab.persistence.StreetType;
@@ -26,7 +27,7 @@ import java.util.*;
 public class StreetTypeServiceImpl implements StreetTypeService {
 
 	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private StreetTypeDao streetTypeDao;
 	private StreetTypeTranslationDao streetTypeTranslationDao;
@@ -53,9 +54,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		List<StreetTypeTranslation> translations = new ArrayList<StreetTypeTranslation>(
 				streetTypes.size());
 
-		if (log.isDebugEnabled()) {
-			log.debug("StreetTypes: " + streetTypes);
-		}
+		log.debug("StreetTypes: {}", streetTypes);
 
 		for (StreetType streetType : streetTypes) {
 			StreetTypeTranslation translation = getTypeTranslation(streetType,
@@ -78,19 +77,18 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 
 		Collection<StreetTypeTranslation> names = streetType
 				.getTranslations();
-		log.debug("Gettting translation: " + lang.getLangIsoCode() + " : "
-				  + names);
+		log.debug("Gettting translation: {} : {}", new Object[]{lang.getLangIsoCode(), names});
 		for (StreetTypeTranslation translation : names) {
 			if (lang.equals(translation.getLang())) {
-				log.debug("Found translation: " + translation);
+				log.debug("Found translation: {}", translation);
 				return translation;
 			}
 			if (defaultLang.equals(translation.getLang())) {
-				log.debug("Found default translation: " + translation);
+				log.debug("Found default translation: {}", translation);
 				defaultTranslation = translation;
 			}
 
-			log.debug("Translation is invalid: " + translation);
+			log.debug("Translation is invalid: {}", translation);
 		}
 
 		return defaultTranslation;
@@ -113,11 +111,11 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 */
 	@Transactional (readOnly = false)
 	public void disable(Collection<StreetType> streetTypes) {
-		log.info(streetTypes.size() + " types to disable");
+		log.info("{} types to disable", streetTypes.size());
 		for (StreetType streetType : streetTypes) {
 			streetType.setStatus(StreetType.STATUS_DISABLED);
 			streetTypeDao.update(streetType);
-			log.info("Disabled: " + streetType);
+			log.info("Disabled: {}", streetType);
 		}
 	}
 

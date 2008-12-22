@@ -99,9 +99,7 @@ public class TownEditSimpleAction extends FPActionSupport {
 		}
 		twn.setNameForDate(townName, beginDateFilter.getDate());
 
-		if (log.isDebugEnabled()) {
-			log.debug("Names timeline: " + twn.getNamesTimeLine());
-		}
+		log.debug("Names timeline: {}", twn.getNamesTimeLine());
 
 		// setup region for new object
 		if (twn.isNew()) {

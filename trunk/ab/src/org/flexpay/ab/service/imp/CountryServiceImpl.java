@@ -2,7 +2,8 @@ package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.CountryDao;
 import org.flexpay.ab.dao.CountryNameDao;
 import org.flexpay.ab.persistence.Country;
@@ -25,7 +26,7 @@ import java.util.*;
 public class CountryServiceImpl implements CountryService {
 
 	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private CountryDao countryDao;
 	private CountryNameDao countryNameDao;
@@ -35,9 +36,7 @@ public class CountryServiceImpl implements CountryService {
 		Country country = new Country();
 		country.setStatus(Country.STATUS_ACTIVE);
 
-		if (log.isInfoEnabled()) {
-			log.info("Country names to persiste: " + countryNames);
-		}
+		log.info("Country names to persiste: {}", countryNames);
 
 		Set<CountryNameTranslation> names = new HashSet<CountryNameTranslation>();
 		for (CountryNameTranslation name : countryNames) {
@@ -57,9 +56,7 @@ public class CountryServiceImpl implements CountryService {
 		}
 		country.setCountryNames(names);
 
-		if (log.isInfoEnabled()) {
-			log.info("Country: " + country);
-		}
+		log.info("Country: {}", country);
 
 		return country;
 	}
@@ -69,7 +66,7 @@ public class CountryServiceImpl implements CountryService {
 		Language defaultLang = ApplicationConfig.getDefaultLanguage();
 		List<Country> countries = countryDao.listCountries();
 
-		log.info("Found " + countries.size() + " countries");
+		log.info("Found {} countries", countries.size());
 
 		List<CountryNameTranslation> countryNameList = new ArrayList<CountryNameTranslation>();
 

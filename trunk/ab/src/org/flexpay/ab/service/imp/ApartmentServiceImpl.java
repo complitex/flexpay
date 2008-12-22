@@ -1,7 +1,8 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.ApartmentDaoExt;
 import org.flexpay.ab.persistence.Apartment;
@@ -30,7 +31,7 @@ import java.util.*;
 public class ApartmentServiceImpl implements ApartmentService {
 
 	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private ApartmentDao apartmentDao;
 	private ApartmentDaoExt apartmentDaoExt;
@@ -196,9 +197,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 				CountryFilter countryFilter = (CountryFilter) filter;
 				countryFilter.setSelectedId(apartment.getCountry().getId());
 			} else {
-				if (log.isDebugEnabled()) {
-					log.debug("Unsupported filter: " + filter);
-				}
+				log.debug("Unsupported filter: {}", filter);
 			}
 		}
 	}
@@ -219,9 +218,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 			parentFilter = new ApartmentFilter();
 		}
 
-		if (log.isInfoEnabled()) {
-			log.info("Getting list buildings, forefather filter: " + forefatherFilter);
-		}
+		log.info("Getting list buildings, forefather filter: {}", forefatherFilter);
 
 		ArrayStack filters = new ArrayStack();
 		filters.push(forefatherFilter);

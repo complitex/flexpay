@@ -1,6 +1,7 @@
 package org.flexpay.ab.actions.street;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.service.StreetTypeService;
 
@@ -11,16 +12,15 @@ import java.util.Set;
 
 public class StreetTypeDeleteAction {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private StreetTypeService streetTypeService;
 	private Set<Long> idList = new HashSet<Long>();
 
 	public String execute() throws Exception {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Ids of street types to disable: " + idList);
-		}
+		log.debug("Ids of street types to disable: {}", idList);
+
 
 		List<StreetType> streetTypeToDelete = new ArrayList<StreetType>();
 		for (Long id : idList) {

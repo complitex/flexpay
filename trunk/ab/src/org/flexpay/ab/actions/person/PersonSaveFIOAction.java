@@ -29,9 +29,7 @@ public class PersonSaveFIOAction extends FPActionSupport {
 			person = personService.read(stub(person));
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("FIO identity to save: " + identity);
-		}
+		log.debug("FIO identity to save: {}", identity);
 
 		identity.setIdentityType(identityTypeService.getType(IdentityType.TYPE_FIO));
 		identity.setBeginDate(null);
@@ -50,7 +48,7 @@ public class PersonSaveFIOAction extends FPActionSupport {
 			log.info("Saving person");
 			personService.save(person);
 			addActionError(getText("ab.person.fio.updated"));
-			log.info("Saved, errors: " + getActionErrors());
+			log.info("Saved, errors: {}", getActionErrors());
 		} else {
 			log.info("Not modified");
 		}

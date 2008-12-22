@@ -310,9 +310,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	public Town create(Town object, List<TownNameTranslation> nameTranslations, ArrayStack filters, Date date) throws FlexPayExceptionContainer {
 
 		TownTypeFilter filter = (TownTypeFilter) filters.pop();
-		if (log.isInfoEnabled()) {
-			log.info("type filter: " + filter);
-		}
+		log.info("type filter: {}", filter);
 		Town typable = object == null ? getNewNameTimeDependent() : object;
 
 		TownType type = townTypeService.read(filter.getSelectedId());

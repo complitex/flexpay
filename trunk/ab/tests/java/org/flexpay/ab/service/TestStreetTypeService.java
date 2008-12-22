@@ -1,7 +1,8 @@
 package org.flexpay.ab.service;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.StreetTypeDao;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
@@ -21,7 +22,7 @@ import java.util.Set;
 
 public class TestStreetTypeService extends SpringBeanAwareTestCase {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	@Qualifier ("streetTypeService")
@@ -102,9 +103,7 @@ public class TestStreetTypeService extends SpringBeanAwareTestCase {
 			// delete translation
 			type.setTranslation(new StreetTypeTranslation("", new Language(2L)));
 
-			if (log.isDebugEnabled()) {
-				log.debug("Translations: " + type.getTranslations());
-			}
+			log.debug("Translations: {}", type.getTranslations());
 
 			service.save(type);
 

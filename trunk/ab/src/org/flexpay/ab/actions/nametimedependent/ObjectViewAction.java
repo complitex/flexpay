@@ -26,7 +26,7 @@ public abstract class ObjectViewAction<
 	 */
 	@SuppressWarnings ({"unchecked"})
 	public void prepare() throws Exception {
-		log.info("Object: " + object);
+		log.info("Object: {}", object);
 		if (object.getId() == null) {
 			NTD reg = (NTD) session.remove(ATTRIBUTE_OBJECT);
 			if (reg != null) {
@@ -42,7 +42,7 @@ public abstract class ObjectViewAction<
 	@Override
 	public String doExecute() {
 
-		log.info("Object: " + object);
+		log.info("Object: {}", object);
 		if (object.getId() != null) {
 			object = nameTimeDependentService.readFull(stub(object));
 			return SUCCESS;

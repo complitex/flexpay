@@ -2,7 +2,6 @@ package org.flexpay.common.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.dao.paging.Page;
@@ -17,6 +16,8 @@ import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.*;
 
@@ -32,7 +33,7 @@ public abstract class NameTimeDependentServiceImpl<
 		Parent extends DomainObject
 		> implements NameTimeDependentService<TV, DI, NTD, T> {
 
-	protected Logger log = Logger.getLogger(getClass());
+	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * Get DAO implementation working with Name time-dependent objects
@@ -127,9 +128,7 @@ public abstract class NameTimeDependentServiceImpl<
 	@Transactional (readOnly = false)
 	public void disable(Collection<NTD> objects) throws FlexPayExceptionContainer {
 
-		if (log.isInfoEnabled()) {
-			log.info(objects.size() + " objects to disable");
-		}
+		log.info("{} objects to disable", objects.size());
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		for (NTD ntd : objects) {
@@ -140,9 +139,7 @@ public abstract class NameTimeDependentServiceImpl<
 			ntdDB.disable();
 			getNameTimeDependentDao().update(ntdDB);
 
-			if (log.isDebugEnabled()) {
-				log.debug("Disabled: " + ntdDB);
-			}
+			log.debug("Disabled: {}", ntdDB);
 		}
 
 		if (!container.getExceptions().isEmpty()) {
@@ -171,9 +168,7 @@ public abstract class NameTimeDependentServiceImpl<
 	public List<TV> findNames(ArrayStack filters, Page pager)
 			throws FlexPayException {
 
-		if (log.isInfoEnabled()) {
-			log.info("Getting list of names: " + filters);
-		}
+		log.info("Getting list of names: {}", filters);
 
 		PrimaryKeyFilter filter = (PrimaryKeyFilter) filters.peek();
 
@@ -186,7 +181,7 @@ public abstract class NameTimeDependentServiceImpl<
 			Collection<DI> temporals = ntd.getNameTemporals();
 			LinkedList<DI> wrapper = new LinkedList<DI>(temporals);
 			if (wrapper.isEmpty()) {
-				log.info("Found NTD, but no temporals: " + ntd);
+				log.info("Found NTD, but no temporals: {}", ntd);
 			} else {
 				DI temporal = wrapper.getLast();
 				names.add(getNameValueDao().readFull(temporal.getValue().getId()));
@@ -206,9 +201,7 @@ public abstract class NameTimeDependentServiceImpl<
 	protected List<TV> findNames(PrimaryKeyFilter filter)
 			throws FlexPayException {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Getting list of names: " + filter);
-		}
+		log.debug("Getting list of names: {}", filter);
 
 		List<NTD> ntds = getNameTimeDependentDao().findObjects(
 				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
@@ -218,7 +211,7 @@ public abstract class NameTimeDependentServiceImpl<
 		for (NTD ntd : ntds) {
 			LinkedList<DI> temporals = new LinkedList<DI>(ntd.getNameTemporals());
 			if (temporals.isEmpty()) {
-				log.warn("Object does not have any temporals: " + ntd);
+				log.warn("Object does not have any temporals: {}", ntd);
 				continue;
 			}
 			DI temporal = temporals.getLast();
@@ -322,8 +315,8 @@ public abstract class NameTimeDependentServiceImpl<
 		if (domainObject == null) {
 			container.addException(new FlexPayException("null",
 					getI18nKeyBase() + ".parent_id_invalid"));
-			log.info("Failed getting parent: filter:" +
-					 filter.getClass().getName() + "[id = " + filter.getSelectedId() + "]");
+			log.info("Failed getting parent: filter: {} [id = {}]", new Object[]{
+					 filter.getClass().getName(),filter.getSelectedId()});
 			return null;
 		}
 		return domainObject;
