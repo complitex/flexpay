@@ -1,7 +1,6 @@
 package org.flexpay.eirc.service.imp;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -13,6 +12,8 @@ import org.flexpay.eirc.persistence.OrganizationName;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.service.OrganizationService;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.List;
 import java.util.Set;
@@ -20,7 +21,7 @@ import java.util.Set;
 @Transactional (readOnly = true)
 public class OrganizationServiceImpl implements OrganizationService {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private OrganizationDao organizationDao;
 
@@ -43,9 +44,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 		List<Organization> organizations = organizationDao.findAllOrganizations();
 		organizationFilter.setOrganizations(organizations);
 
-		if (log.isDebugEnabled()) {
-			log.debug("Init organizations filter: " + organizations);
-		}
+		log.debug("Init organizations filter: {}", organizations);
 	}
 
 	public List<Organization> listOrganizations(Page<Organization> pager) {

@@ -1,6 +1,5 @@
 package org.flexpay.eirc.dao.imp;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
@@ -14,19 +13,18 @@ import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.jetbrains.annotations.NonNls;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDaoExt {
 
-	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	@SuppressWarnings ({"unchecked"})
 	public List<ServiceType> getServiceTypes() {
@@ -43,7 +41,7 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 	public ServiceType findByCode(int code) {
 		try {
 			getHibernateTemplate().setMaxResults(1);
-			List objects = getHibernateTemplate().find("from ServiceType where code=? and status=0", code);
+			List<?> objects = getHibernateTemplate().find("from ServiceType where code=? and status=0", code);
 			return objects.isEmpty() ? null : (ServiceType) objects.get(0);
 		} finally {
 			getHibernateTemplate().setMaxResults(0);
@@ -53,7 +51,7 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 	public ServiceProvider findByNumber(Long id) {
 		try {
 			getHibernateTemplate().setMaxResults(1);
-			List objects = getHibernateTemplate()
+			List<?> objects = getHibernateTemplate()
 					.findByNamedQuery("ServiceProvider.findByOrganizationId", id);
 			return objects.isEmpty() ? null : (ServiceProvider) objects.get(0);
 		} finally {
@@ -104,12 +102,12 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 				hql.append("and o.parentService is null ");
 				hqlCount.append("and o.parentService is null ");
 			} else {
-				log.warn("Unexpected filter: " + filter);
+				log.warn("Unexpected filter: {}", filter);
 			}
 		}
 
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				Number count = (Number) setParameters(session.createQuery(hqlCount.toString()), params).uniqueResult();
 				pager.setTotalElements(count.intValue());
 

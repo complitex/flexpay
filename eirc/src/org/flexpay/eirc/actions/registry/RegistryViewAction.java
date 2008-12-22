@@ -3,18 +3,17 @@ package org.flexpay.eirc.actions.registry;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
-import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.RegistryService;
+import org.flexpay.eirc.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -44,10 +43,8 @@ public class RegistryViewAction extends FPActionSupport {
 		registry = registryService.read(stub(registry));
 		records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, pager);
 
-		if (log.isInfoEnabled()) {
-			log.info(String.format("pager: size %d, total %d, first %d",
-					pager.getPageSize(), pager.getTotalNumberOfElements(), pager.getThisPageFirstElementNumber()));
-		}
+		log.info(String.format("pager: size %d, total %d, first %d",
+				pager.getPageSize(), pager.getTotalNumberOfElements(), pager.getThisPageFirstElementNumber()));
 
 		return SUCCESS;
 	}

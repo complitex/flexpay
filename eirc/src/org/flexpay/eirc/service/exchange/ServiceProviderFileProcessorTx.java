@@ -1,22 +1,23 @@
 package org.flexpay.eirc.service.exchange;
 
-import org.apache.log4j.Logger;
 import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Processor of instructions specified by service provider, usually payments, balance
- * notifications, etc. <br /> Precondition for processing file is complete import
- * operation, i.e. all records should already have assigned PersonalAccount.
+ * Processor of instructions specified by service provider, usually payments, balance notifications, etc. <br />
+ * Precondition for processing file is complete import operation, i.e. all records should already have assigned
+ * PersonalAccount.
  */
 @Transactional (readOnly = true)
 public class ServiceProviderFileProcessorTx {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private ServiceOperationsFactory serviceOperationsFactory;
 
@@ -35,15 +36,11 @@ public class ServiceProviderFileProcessorTx {
 		if (!recordWorkflowManager.hasSuccessTransition(record)
 			|| record.getRecordStatus().isProcessedWithError()) {
 
-			if (log.isDebugEnabled()) {
-				log.debug("Skipping record: " + record);
-			}
+			log.debug("Skipping record: {}", record);
 			return;
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Record to process: " + record);
-		}
+		log.debug("Record to process: {}", record);
 
 		Operation op = serviceOperationsFactory.getOperation(registry, record);
 		op.process(registry, record);

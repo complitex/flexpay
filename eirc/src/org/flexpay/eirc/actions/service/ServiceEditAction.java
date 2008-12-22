@@ -79,9 +79,7 @@ public class ServiceEditAction extends FPActionSupport {
 			description.setLang(getLang(name.getKey()));
 			description.setName(name.getValue());
 
-			if (log.isDebugEnabled()) {
-				log.debug("Setting service description: " + description);
-			}
+			log.debug("Setting service description: {}", description);
 
 			srvc.setDescription(description);
 		}

@@ -1,6 +1,5 @@
 package org.flexpay.eirc.service.imp;
 
-import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.exception.FlexPayException;
@@ -16,6 +15,8 @@ import org.flexpay.eirc.process.QuittanceNumberService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.Date;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
 @Transactional (readOnly = true)
 public class QuittanceServiceImpl implements QuittanceService {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private QuittanceDetailsDao quittanceDetailsDao;
 	private QuittanceDao quittanceDao;
@@ -54,15 +55,11 @@ public class QuittanceServiceImpl implements QuittanceService {
 											   Date dateFrom, Date dateTill) {
 
 		long time = System.currentTimeMillis();
-		if (log.isInfoEnabled()) {
-			log.info("Starting quittances generation at " + new Date());
-		}
+			log.info("Starting quittances generation at {}", new Date());
 
 		quittanceDaoExt.createQuittances(dateFrom, dateTill);
 
-		if (log.isInfoEnabled()) {
-			log.info("Quittances generation finished, time took: " + (System.currentTimeMillis() - time) + "ms");
-		}
+		log.info("Quittances generation finished, time took: {} ms", System.currentTimeMillis() - time);
 	}
 
 	public String getPayer(Quittance quittance) {
@@ -105,7 +102,8 @@ public class QuittanceServiceImpl implements QuittanceService {
 	 *
 	 * @param quittanceNumber Generated quittance number
 	 * @return Quittance if found, or <code>null</code> otherwise
-	 * @throws FlexPayException if <code>quittanceNumber</code> has invalid format
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if <code>quittanceNumber</code> has invalid format
 	 */
 	@Nullable
 	public Quittance findByNumber(@NotNull String quittanceNumber) throws FlexPayException {

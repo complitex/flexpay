@@ -1,29 +1,28 @@
 package org.flexpay.eirc.service.imp;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.eirc.dao.ServiceTypeDao;
 import org.flexpay.eirc.dao.ServiceDaoExt;
+import org.flexpay.eirc.dao.ServiceTypeDao;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
 import org.flexpay.eirc.persistence.filters.ServiceTypeFilter;
 import org.flexpay.eirc.service.ServiceTypeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
-import org.jetbrains.annotations.NonNls;
 
-import java.util.List;
-import java.util.Set;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-@Transactional(readOnly = true)
+@Transactional (readOnly = true)
 public class ServiceTypeServiceImpl implements ServiceTypeService {
 
-	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private ServiceTypeDao serviceTypeDao;
 	private ServiceDaoExt serviceDaoExt;
@@ -33,7 +32,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 *
 	 * @param objectIds Identifiers of service type to disable
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void disable(Set<Long> objectIds) {
 		log.debug("Disabling service types");
 		for (Long id : objectIds) {
@@ -82,7 +81,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation error occurs
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void save(ServiceType type) throws FlexPayExceptionContainer {
 		log.debug("Saving service types");
 		validate(type);

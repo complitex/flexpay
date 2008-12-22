@@ -1,6 +1,5 @@
 package org.flexpay.eirc.actions;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.persistence.FlexPayFile;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessManager;
@@ -18,15 +17,13 @@ import org.springframework.test.annotation.NotTransactional;
 
 public class TestSpFileAction extends TestSpFileCreateAction {
 
-	private Logger log = Logger.getLogger(getClass());
-
 	@Autowired
 	protected SpFileAction fileAction;
 	@Autowired
 	protected RegistryDao registryDao;
 
 	@Autowired
-	@Qualifier("processManager")
+	@Qualifier ("processManager")
 	private ProcessManager processManager;
 	@Autowired
 	protected RegistryFileService registryFileService;
@@ -63,9 +60,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 
 	protected void deleteRecords(FlexPayFile file) {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Deleting registries of file: " + file);
-		}
+		log.debug("Deleting registries of file: {}", file);
 
 		for (SpRegistry registry : registryFileService.getRegistries(file)) {
 			deleteQuittances(registry.getId());
@@ -103,9 +98,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 		fileAction.setAction("loadToDb");
 
 		try {
-			if (log.isDebugEnabled()) {
-				log.debug("Starting upload file: " + newFile);
-			}
+			log.debug("Starting upload file: {}", newFile);
 			assertEquals("Invalid Struts action result", "redirectSuccess", fileAction.execute());
 
 			processManager.join(fileAction.getProcessId());

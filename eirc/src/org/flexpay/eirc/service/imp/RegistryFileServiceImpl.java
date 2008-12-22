@@ -1,6 +1,5 @@
 package org.flexpay.eirc.service.imp;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.FlexPayFile;
 import org.flexpay.common.persistence.Stub;
@@ -11,8 +10,9 @@ import org.flexpay.eirc.dao.RegistryRecordDaoExt;
 import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.RegistryFileService;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +21,9 @@ import java.util.List;
 @Transactional (readOnly = true)
 public class RegistryFileServiceImpl implements RegistryFileService {
 
-	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
-    private RegistryDao registryDao;
+	private RegistryDao registryDao;
 	private RegistryFileDaoExt registryFileDaoExt;
 	private RegistryRecordDao registryRecordDao;
 	private RegistryRecordDaoExt registryRecordDaoExt;
@@ -42,8 +41,8 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 	/**
 	 * Get registry records for processing
 	 *
-	 * @param registry Registry header
-	 * @param pager Page
+	 * @param registry  Registry header
+	 * @param pager	 Page
 	 * @param minMaxIds cached minimum and maximum registry record keys
 	 * @return list of records
 	 */
@@ -55,16 +54,12 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 			minMaxIds[0] = values[0];
 			minMaxIds[1] = values[1];
 
-			if (log.isInfoEnabled()) {
-				log.info("Min and max are " + values[0] + ", " + values[1]);
-			}
+			log.info("Min and max are {}, {}", values[0], values[1]);
 		}
 		Long lowerBound = minMaxIds[0] + pager.getThisPageFirstElementNumber();
 		Long upperBound = minMaxIds[0] + pager.getThisPageLastElementNumber();
 
-		if (log.isInfoEnabled()) {
-			log.info("Bounds: " + lowerBound + ", " + upperBound + ")");
-		}
+		log.info("Bounds: [{}, {}]", lowerBound, upperBound);
 
 		return registryRecordDao.listRecordsForProcessing(registry.getId(), lowerBound, upperBound);
 	}
@@ -79,22 +74,22 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 		return registryFileDaoExt.isLoaded(stub.getId());
 	}
 
-    @Required
-    public void setRegistryDao(RegistryDao registryDao) {
-        this.registryDao = registryDao;
-    }
+	@Required
+	public void setRegistryDao(RegistryDao registryDao) {
+		this.registryDao = registryDao;
+	}
 
-    @Required
-    public void setRegistryRecordDao(RegistryRecordDao registryRecordDao) {
+	@Required
+	public void setRegistryRecordDao(RegistryRecordDao registryRecordDao) {
 		this.registryRecordDao = registryRecordDao;
 	}
 
-    @Required
+	@Required
 	public void setRegistryRecordDaoExt(RegistryRecordDaoExt registryRecordDaoExt) {
 		this.registryRecordDaoExt = registryRecordDaoExt;
 	}
 
-    @Required
+	@Required
 	public void setRegistryFileDaoExt(RegistryFileDaoExt registryFileDaoExt) {
 		this.registryFileDaoExt = registryFileDaoExt;
 	}

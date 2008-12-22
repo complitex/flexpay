@@ -1,32 +1,34 @@
 package org.flexpay.eirc.service.imp;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.eirc.dao.RegistryDao;
-import org.flexpay.eirc.dao.RegistryDaoExt;
 import org.flexpay.eirc.dao.OrganizationDao;
 import org.flexpay.eirc.dao.RegistryContainerDao;
-import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.RegistryContainer;
+import org.flexpay.eirc.dao.RegistryDao;
+import org.flexpay.eirc.dao.RegistryDaoExt;
 import org.flexpay.eirc.persistence.Organization;
+import org.flexpay.eirc.persistence.RegistryContainer;
+import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.RegistryService;
-import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-@Transactional(readOnly = true)
+@Transactional (readOnly = true)
 public class RegistryServiceImpl implements RegistryService {
-	private Logger log = Logger.getLogger(getClass());
+
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private RegistryDao registryDao;
 	private RegistryDaoExt registryDaoExt;
@@ -41,7 +43,7 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @param registry SpRegistry object
 	 * @return created SpRegistry object
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public SpRegistry create(SpRegistry registry) throws FlexPayException {
 		registry.setRecipient(organizationDao.read(registry.getRecipient().getId()));
 		registry.setSender(organizationDao.read(registry.getSender().getId()));
@@ -51,9 +53,7 @@ public class RegistryServiceImpl implements RegistryService {
 			registryContainerDao.create(container);
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Created SpRegistry: " + registry);
-		}
+		log.debug("Created SpRegistry: {}", registry);
 
 		return registry;
 	}
@@ -64,7 +64,7 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @param pager Page object
 	 * @return List of SpRegistry objects for pager
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public List<SpRegistry> findObjects(Page<SpRegistry> pager, Long spFileId) {
 		return registryDao.findObjects(pager, spFileId);
 	}
@@ -75,13 +75,11 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @param stub Registry stub
 	 * @return SpRegistry object, or <code>null</code> if object not found
 	 */
-	@Nullable 
+	@Nullable
 	public SpRegistry read(@NotNull Stub<SpRegistry> stub) {
 		SpRegistry registry = registryDao.readFull(stub.getId());
 		if (registry == null) {
-			if (log.isDebugEnabled()) {
-				log.debug("Registry #" + stub + " not found");
-			}
+			log.debug("Registry #{} not found", stub);
 			return null;
 		}
 		registry.setErrorsNumber(registryRecordService.getErrorsNumber(registry));
@@ -109,16 +107,17 @@ public class RegistryServiceImpl implements RegistryService {
 	 *
 	 * @param spRegistry SpRegistry to update for
 	 * @return Updated SpRegistry object
-	 * @throws FlexPayException if SpRegistry object is invalid
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if SpRegistry object is invalid
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public SpRegistry update(SpRegistry spRegistry) throws FlexPayException {
 		registryDao.update(spRegistry);
 
 		return spRegistry;
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void delete(SpRegistry spRegistry) {
 		registryDao.delete(spRegistry);
 	}

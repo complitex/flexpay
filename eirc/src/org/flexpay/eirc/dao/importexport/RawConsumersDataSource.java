@@ -40,9 +40,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 		minMaxIds[0] = values[0];
 		minMaxIds[1] = values[1];
 
-		if (log.isInfoEnabled()) {
-			log.info("Min and max are " + values[0] + ", " + values[1]);
-		}
+		log.info("Min and max are {}, {}", values[0], values[1]);
 
 		Long minId = minMaxIds[0];
 		Long maxId = minMaxIds[0] + pager.getPageSize();

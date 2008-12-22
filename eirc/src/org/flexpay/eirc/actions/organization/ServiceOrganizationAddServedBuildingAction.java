@@ -25,7 +25,7 @@ public class ServiceOrganizationAddServedBuildingAction extends BuildingsActions
 
     private ServiceOrganizationService serviceOrganizationService;
     private BuildingService buildingService;
-    private ParentService parentService;
+    private ParentService<?> parentService;
 
     private CountryFilter countryFilter = new CountryFilter();
     private RegionFilter regionFilter = new RegionFilter();
@@ -60,7 +60,7 @@ public class ServiceOrganizationAddServedBuildingAction extends BuildingsActions
         if (!isSubmit()) {
             ArrayStack filterArrayStack = getFilters();
             for (Object filter : filterArrayStack) {
-                ((PrimaryKeyFilter) filter).initFilter(session);
+                ((PrimaryKeyFilter<?>) filter).initFilter(session);
             }
 
             ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
@@ -71,7 +71,7 @@ public class ServiceOrganizationAddServedBuildingAction extends BuildingsActions
             return INPUT;
         }
 
-        log.info("Served building ids: " + objectIds);
+        log.info("Served building ids: {}", objectIds);
 
         List<ServedBuilding> servedBuildingList = serviceOrganizationService.findServedBuildings(objectIds);
 

@@ -37,10 +37,8 @@ public class OrganizationEditAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		if (log.isInfoEnabled()) {
-			log.info("Organization names: " + names);
-			log.info("Organization descriptions: " + descriptions);
-		}
+		log.info("Organization names: {}", names);
+		log.info("Organization descriptions: {}", descriptions);
 
 		org.setKpp(organization.getKpp());
 		org.setIndividualTaxNumber(organization.getIndividualTaxNumber());

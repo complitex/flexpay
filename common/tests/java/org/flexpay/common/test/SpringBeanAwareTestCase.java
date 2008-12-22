@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 
@@ -15,6 +17,8 @@ import java.io.InputStream;
  */
 @ContextConfiguration (locations = {"file:WEB-INF/applicationContext.xml"})
 public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContextTests {
+
+	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	@Qualifier ("hibernateTemplate")

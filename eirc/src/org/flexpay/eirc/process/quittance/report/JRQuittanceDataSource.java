@@ -4,7 +4,6 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.JRRewindableDataSource;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.Person;
@@ -23,7 +22,10 @@ import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -48,7 +50,7 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 	private Iterator<QuittanceInfo> iterator = null;
 	private QuittanceInfo currentInfo = null;
 	private long processCounter = 0;
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	public void setQuittances(List<Quittance> quittances, int nBatches) throws Exception {
 
@@ -356,13 +358,13 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 			try {
 				value = PropertyUtils.getProperty(bean, propertyName);
 			}
-			catch (java.lang.IllegalAccessException e) {
+			catch (IllegalAccessException e) {
 				throw new JRException("Error retrieving field value from bean : " + propertyName, e);
 			}
-			catch (java.lang.reflect.InvocationTargetException e) {
+			catch (InvocationTargetException e) {
 				throw new JRException("Error retrieving field value from bean : " + propertyName, e);
 			}
-			catch (java.lang.NoSuchMethodException e) {
+			catch (NoSuchMethodException e) {
 				throw new JRException("Error retrieving field value from bean : " + propertyName, e);
 			}
 			catch (IllegalArgumentException e) {

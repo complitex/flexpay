@@ -19,6 +19,7 @@ public class Organization extends DomainObjectWithStatus {
 	private Set<ServiceProvider> serviceProviders = Collections.emptySet();
 	private Set<Bank> banks = Collections.emptySet();
     private Set<ServiceOrganization> serviceOrganizations = Collections.emptySet();
+	private Set<PaymentPoint> paymentPoints = Collections.emptySet();
 
 	private String juridicalAddress;
 	private String postalAddress;
@@ -145,7 +146,15 @@ public class Organization extends DomainObjectWithStatus {
         this.serviceOrganizations = serviceOrganizations;
     }
 
-    public String toString() {
+	public Set<PaymentPoint> getPaymentPoints() {
+		return paymentPoints;
+	}
+
+	public void setPaymentPoints(Set<PaymentPoint> paymentPoints) {
+		this.paymentPoints = paymentPoints;
+	}
+
+	public String toString() {
         return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
                 .append("id", getId())
                 .append("KPP", kpp)

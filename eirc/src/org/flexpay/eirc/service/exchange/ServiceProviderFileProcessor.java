@@ -1,6 +1,5 @@
 package org.flexpay.eirc.service.exchange;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -26,18 +25,19 @@ import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.importexport.EircImportService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 /**
- * Processor of instructions specified by service provider, usually payments, balance
- * notifications, etc.
+ * Processor of instructions specified by service provider, usually payments, balance notifications, etc.
  */
 public class ServiceProviderFileProcessor implements RegistryProcessor {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private ServiceOperationsFactory serviceOperationsFactory;
 
@@ -63,12 +63,10 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	 */
 	public void processFile(@NotNull FlexPayFile spFile) throws Exception {
 
-		if (log.isInfoEnabled()) {
-			log.info("Starting processing file");
-		}
+		log.info("Starting processing file");
 
 		List<SpRegistry> registries = registryFileService.getRegistries(spFile);
-		if (log.isInfoEnabled() && registries.isEmpty()) {
+		if (registries.isEmpty()) {
 			log.info("File does not have any registries");
 		}
 
@@ -79,8 +77,9 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	 * Run processing of a <code>registries</code>
 	 *
 	 * @param registries Registries to process
-	 * @throws FlexPayExceptionContainer if registry processing failed
-	 * @throws Exception				 if failure occurs
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *                   if registry processing failed
+	 * @throws Exception if failure occurs
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	public void registriesProcess(@NotNull Collection<SpRegistry> registries) throws Exception {
@@ -91,9 +90,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 			try {
 				startRegistryProcessing(registry);
 
-				if (log.isInfoEnabled()) {
-					log.info("Starting processing registry #" + registry.getId());
-				}
+				log.info("Starting processing registry #{}", registry.getId());
 
 				importConsumers(registry);
 				processRegistry(registry);
@@ -132,7 +129,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	 */
 	private void processRegistry(SpRegistry registry, Page<RegistryRecord> pager, Long[] minMaxIds) throws Exception {
 
-		log.info("Fetching for records: " + pager);
+		log.info("Fetching for records: {}", pager);
 		List<RegistryRecord> records = registryFileService.getRecordsForProcessing(stub(registry), pager, minMaxIds);
 		for (RegistryRecord record : records) {
 			try {
@@ -146,21 +143,21 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 	private void handleError(Throwable t, SpRegistry registry, RegistryRecord record) throws Exception {
 		if (t instanceof FlexPayExceptionContainer) {
-				t = ((FlexPayExceptionContainer) t).getExceptions().iterator().next();
-			}
+			t = ((FlexPayExceptionContainer) t).getExceptions().iterator().next();
+		}
 
-			log.warn("Failed processing registry record", t);
+		log.warn("Failed processing registry record", t);
 
-			ImportError error = new ImportError();
-			error.setErrorId(t.getMessage());
-			error.setSourceDescription(registry.getServiceProvider().getDataSourceDescription());
+		ImportError error = new ImportError();
+		error.setErrorId(t.getMessage());
+		error.setSourceDescription(registry.getServiceProvider().getDataSourceDescription());
 
-			// todo remove hardcoded value
-			error.setDataSourceBean("consumersDataSource");
+		// todo remove hardcoded value
+		error.setDataSourceBean("consumersDataSource");
 
-			error.setSourceObjectId(String.valueOf(record.getId()));
-			error.setObjectType(classToTypeRegistry.getType(Consumer.class));
-			recordWorkflowManager.setNextErrorStatus(record, error);
+		error.setSourceObjectId(String.valueOf(record.getId()));
+		error.setObjectType(classToTypeRegistry.getType(Consumer.class));
+		recordWorkflowManager.setNextErrorStatus(record, error);
 	}
 
 	public void importConsumers(SpRegistry registry) throws Exception {

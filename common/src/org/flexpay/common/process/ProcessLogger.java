@@ -1,14 +1,19 @@
 package org.flexpay.common.process;
 
-import org.apache.log4j.*;
+import org.apache.log4j.Appender;
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.PatternLayout;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 
 public class ProcessLogger {
 
-	private static final Logger LOG = Logger.getLogger(ProcessLogger.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ProcessLogger.class);
 
 	/**
 	 * Appender name
@@ -68,7 +73,7 @@ public class ProcessLogger {
 	 *
 	 * @return logger Level
 	 */
-	protected static Level getLogLevel() {
+	private static Level getLogLevel() {
 		return defaultLogLevel;
 	}
 
@@ -121,7 +126,7 @@ public class ProcessLogger {
 	 */
 	public static synchronized void closeLog(long processId) {
 
-		Logger logger = Logger.getLogger(categoryPrefix + processId);
+		org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(categoryPrefix + processId);
 		Appender appender = logger.getAppender(appenderName);
 		if (appender != null) {
 			appender.close();
@@ -138,12 +143,13 @@ public class ProcessLogger {
 	 */
 	private static Logger getLogger(String name, long processId) {
 
-		Logger logger = Logger.getLogger(categoryPrefix + processId + "." + name);
+		String logName = categoryPrefix + processId + "." + name;
+		org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(logName);
 		if (logger.getAppender(ProcessLogger.appenderName) == null) {
 			logger.addAppender(ProcessLogger.makeAppender(processId));
-			logger.setLevel(ProcessLogger.getLogLevel());
+			logger.setLevel(getLogLevel());
 		}
-		return logger;
+		return LoggerFactory.getLogger(logName);
 	}
 
 	/**
@@ -178,7 +184,7 @@ public class ProcessLogger {
 	 * @param clazz Logger class
 	 * @return Logger
 	 */
-	public static Logger getLogger(Class clazz) {
+	public static Logger getLogger(Class<?> clazz) {
 
 		return getLogger(clazz.getName());
 	}

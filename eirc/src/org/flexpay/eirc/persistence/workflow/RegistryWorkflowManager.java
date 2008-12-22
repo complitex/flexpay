@@ -1,6 +1,5 @@
 package org.flexpay.eirc.persistence.workflow;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.dao.RegistryDao;
 import org.flexpay.eirc.dao.RegistryDaoExt;
@@ -8,6 +7,8 @@ import org.flexpay.eirc.persistence.RegistryStatus;
 import static org.flexpay.eirc.persistence.RegistryStatus.*;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.SpRegistryStatusService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
@@ -18,10 +19,10 @@ import java.util.Set;
 /**
  * Helper class for registries workflow
  */
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class RegistryWorkflowManager {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private SpRegistryStatusService statusService;
 	private RegistryDao registryDao;
@@ -85,9 +86,10 @@ public class RegistryWorkflowManager {
 	}
 
 	/**
-	 * Check if registry can be processed, i.e. has one of the following statuses: {@link org.flexpay.eirc.persistence.RegistryStatus#LOADED},
-	 * {@link org.flexpay.eirc.persistence.RegistryStatus#ROLLBACKED}, {@link org.flexpay.eirc.persistence.RegistryStatus#PROCESSING_CANCELED}
-	 * or {@link org.flexpay.eirc.persistence.RegistryStatus#PROCESSED_WITH_ERROR}
+	 * Check if registry can be processed, i.e. has one of the following statuses: {@link
+	 * org.flexpay.eirc.persistence.RegistryStatus#LOADED}, {@link org.flexpay.eirc.persistence.RegistryStatus#ROLLBACKED},
+	 * {@link org.flexpay.eirc.persistence.RegistryStatus#PROCESSING_CANCELED} or {@link
+	 * org.flexpay.eirc.persistence.RegistryStatus#PROCESSED_WITH_ERROR}
 	 *
 	 * @param registry Registry to check
 	 * @return <code>true</code> if registry is allowed to be processed
@@ -136,7 +138,8 @@ public class RegistryWorkflowManager {
 	 * Set next error registry status
 	 *
 	 * @param registry Registry to update
-	 * @throws TransitionNotAllowed if error transition is not allowed
+	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 *          if error transition is not allowed
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public void setNextErrorStatus(SpRegistry registry) throws TransitionNotAllowed {
@@ -152,7 +155,8 @@ public class RegistryWorkflowManager {
 	 * Set next success registry status
 	 *
 	 * @param registry Registry to update
-	 * @throws TransitionNotAllowed if success transition is not allowed
+	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 *          if success transition is not allowed
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public void setNextSuccessStatus(SpRegistry registry) throws TransitionNotAllowed {
@@ -170,7 +174,8 @@ public class RegistryWorkflowManager {
 	 *
 	 * @param registry Registry to update
 	 * @return SpRegistry back
-	 * @throws TransitionNotAllowed if registry already has a status
+	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 *          if registry already has a status
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public SpRegistry setInitialStatus(SpRegistry registry) throws TransitionNotAllowed {
@@ -191,7 +196,8 @@ public class RegistryWorkflowManager {
 	 *
 	 * @param registry Registry to update
 	 * @param code	 Next status code to set
-	 * @throws TransitionNotAllowed if transition from old to a new status is not allowed
+	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 *          if transition from old to a new status is not allowed
 	 */
 	private void setNextStatus(SpRegistry registry, Integer code) throws TransitionNotAllowed {
 		RegistryStatus status = statusService.findByCode(code);
@@ -203,7 +209,8 @@ public class RegistryWorkflowManager {
 	 *
 	 * @param registry Registry to update
 	 * @param status   Next status to set
-	 * @throws TransitionNotAllowed if transition from old to a new status is not allowed
+	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 *          if transition from old to a new status is not allowed
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public void setNextStatus(SpRegistry registry, RegistryStatus status) throws TransitionNotAllowed {
@@ -231,8 +238,9 @@ public class RegistryWorkflowManager {
 	 * Set registry processing status to {@link org.flexpay.eirc.persistence.RegistryStatus#PROCESSING_WITH_ERROR}
 	 *
 	 * @param spRegistry Registry to update
-	 * @throws TransitionNotAllowed if registry status is not {@link org.flexpay.eirc.persistence.RegistryStatus#PROCESSING} or
-	 *                              {@link org.flexpay.eirc.persistence.RegistryStatus#PROCESSING_WITH_ERROR}
+	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 *          if registry status is not {@link org.flexpay.eirc.persistence.RegistryStatus#PROCESSING} or {@link
+	 *          org.flexpay.eirc.persistence.RegistryStatus#PROCESSING_WITH_ERROR}
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	void markProcessingHasError(SpRegistry spRegistry) throws TransitionNotAllowed {
@@ -241,17 +249,13 @@ public class RegistryWorkflowManager {
 			throw new TransitionNotAllowed("Cannot mark not processing registry as having errors");
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Setting registry errorous: " + spRegistry);
-		}
+		log.debug("Setting registry errorous: {}", spRegistry);
 
 		if (code == PROCESSING) {
 			log.debug("Updating registry status");
 			setNextErrorStatus(spRegistry);
 		} else {
-			if (log.isDebugEnabled()) {
-				log.debug("Not updating registry status, current is " + code);
-			}
+			log.debug("Not updating registry status, current is {}", code);
 		}
 	}
 }

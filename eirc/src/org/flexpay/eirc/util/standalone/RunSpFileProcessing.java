@@ -1,7 +1,6 @@
 package org.flexpay.eirc.util.standalone;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.FlexPayFile;
 import org.flexpay.common.persistence.Stub;
@@ -16,7 +15,8 @@ import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.RegistryFileService;
 import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
-import org.jetbrains.annotations.NonNls;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
@@ -27,14 +27,13 @@ import java.util.List;
 
 public class RunSpFileProcessing implements StandaloneTask {
 
-	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
-    private String moduleName;
+	private String moduleName;
 	private RegistryProcessor registryProcessor;
 	private SpFileCreateAction fileCreateAction;
 	private SpFileAction fileAction;
-    private FlexPayFileService flexPayFileService;
+	private FlexPayFileService flexPayFileService;
 	private RegistryFileService fileService;
 	private RegistryService registryService;
 	private RegistryDao registryDao;
@@ -89,9 +88,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 			long time = System.currentTimeMillis();
 			registryProcessor.processRegistry(registry);
 
-			if (log.isDebugEnabled()) {
-				log.debug("Processing took " + (System.currentTimeMillis() - time) + "ms");
-			}
+			log.debug("Processing took {} ms", System.currentTimeMillis() - time);
 		} catch (FlexPayExceptionContainer c) {
 			for (Exception e : c.getExceptions()) {
 				log.error("Exception cought", e);
@@ -114,18 +111,14 @@ public class RunSpFileProcessing implements StandaloneTask {
 			registryProcessor.endRegistryProcessing(registry);
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Import took " + (System.currentTimeMillis() - time) + "ms");
-		}
+		log.debug("Import took {} ms", System.currentTimeMillis() - time);
 	}
 
 	private void uploadRegistry(String path) throws Throwable {
 		long time = System.currentTimeMillis();
 		uploadFile(path);
 
-		if (log.isDebugEnabled()) {
-			log.debug("Upload took " + (System.currentTimeMillis() - time) + "ms");
-		}
+		log.debug("Upload took {} ms", System.currentTimeMillis() - time);
 	}
 
 	private void deleteRecords(FlexPayFile file) {
@@ -174,9 +167,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 			IOUtils.closeQuietly(os);
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Upload file: " + tmpDataFile);
-		}
+		log.debug("Upload file: {}", tmpDataFile);
 
 		fileCreateAction.setUpload(tmpDataFile);
 		fileCreateAction.setUploadFileName(name);
@@ -196,43 +187,43 @@ public class RunSpFileProcessing implements StandaloneTask {
 		fileCreateAction.getUpload().delete();
 	}
 
-    @Required
-    public void setModuleName(String moduleName) {
-        this.moduleName = moduleName;
-    }
+	@Required
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
 
-    @Required
-    public void setFlexPayFileService(FlexPayFileService flexPayFileService) {
-        this.flexPayFileService = flexPayFileService;
-    }
+	@Required
+	public void setFlexPayFileService(FlexPayFileService flexPayFileService) {
+		this.flexPayFileService = flexPayFileService;
+	}
 
-    @Required
-    public void setRegistryProcessor(RegistryProcessor registryProcessor) {
+	@Required
+	public void setRegistryProcessor(RegistryProcessor registryProcessor) {
 		this.registryProcessor = registryProcessor;
 	}
 
-    @Required
+	@Required
 	public void setFileCreateAction(SpFileCreateAction fileCreateAction) {
 		fileCreateAction.setUserPreferences(new UserPreferences());
 		this.fileCreateAction = fileCreateAction;
 	}
 
-    @Required
+	@Required
 	public void setFileAction(SpFileAction fileAction) {
 		this.fileAction = fileAction;
 	}
 
-    @Required
+	@Required
 	public void setFileService(RegistryFileService fileService) {
 		this.fileService = fileService;
 	}
 
-    @Required
+	@Required
 	public void setSpRegistryDao(RegistryDao registryDao) {
 		this.registryDao = registryDao;
 	}
 
-    @Required
+	@Required
 	public void setRegistryService(RegistryService registryService) {
 		this.registryService = registryService;
 	}

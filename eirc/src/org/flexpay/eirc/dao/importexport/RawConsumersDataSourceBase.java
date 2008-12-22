@@ -1,16 +1,17 @@
 package org.flexpay.eirc.dao.importexport;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 
 public abstract class RawConsumersDataSourceBase implements RawDataSource<RawConsumerData> {
 
-	protected Logger log = Logger.getLogger(getClass());
+	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	protected Iterator<RegistryRecord> dataIterator;
 

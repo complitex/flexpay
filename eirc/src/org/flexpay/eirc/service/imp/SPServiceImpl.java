@@ -1,17 +1,16 @@
 package org.flexpay.eirc.service.imp;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.flexpay.common.dao.DataSourceDescriptionDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.MeasureUnit;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
-import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.service.MeasureUnitService;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.eirc.dao.ServiceDao;
 import org.flexpay.eirc.dao.ServiceDaoExt;
 import org.flexpay.eirc.dao.ServiceProviderDao;
@@ -23,6 +22,8 @@ import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
 import org.flexpay.eirc.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import java.util.Set;
 @Transactional (readOnly = true)
 public class SPServiceImpl implements SPService {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private ServiceProviderDao serviceProviderDao;
 	private ServiceDaoExt serviceDaoExt;
@@ -103,7 +104,8 @@ public class SPServiceImpl implements SPService {
 	 * Save service provider
 	 *
 	 * @param serviceProvider New or persitent object to save
-	 * @throws FlexPayExceptionContainer if provider validation fails
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if provider validation fails
 	 */
 	@Transactional (readOnly = false)
 	public void save(ServiceProvider serviceProvider) throws FlexPayExceptionContainer {
@@ -127,9 +129,7 @@ public class SPServiceImpl implements SPService {
 	private void validate(ServiceProvider sp) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
-		if (log.isInfoEnabled()) {
-			log.info("Provider organization: " + sp.getOrganization());
-		}
+		log.info("Provider organization: {}", sp.getOrganization());
 
 		if (sp.getOrganization() == null || sp.getOrganization().isNew()) {
 			container.addException(new FlexPayException(
@@ -223,7 +223,8 @@ public class SPServiceImpl implements SPService {
 	 * Create or update service
 	 *
 	 * @param service Service to save
-	 * @throws FlexPayExceptionContainer if validation fails
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
 	 */
 	@Transactional (readOnly = false)
 	public void save(Service service) throws FlexPayExceptionContainer {

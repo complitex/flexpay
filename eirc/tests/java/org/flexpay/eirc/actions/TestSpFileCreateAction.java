@@ -1,7 +1,6 @@
 package org.flexpay.eirc.actions;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.flexpay.common.persistence.FlexPayFile;
 import org.flexpay.common.service.FlexPayFileService;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
@@ -24,10 +23,8 @@ import java.io.OutputStream;
 
 public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 
-	private Logger log = Logger.getLogger(getClass());
-
 	@Autowired
-    protected FlexPayFileService flexPayFileService;
+	protected FlexPayFileService flexPayFileService;
 	protected SpFileCreateAction fileCreateAction;
 
 	@Autowired
@@ -76,9 +73,7 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 
 	protected void deleteFile(FlexPayFile file) {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Deleting registry file: " + file);
-		}
+		log.debug("Deleting registry file: {}", file);
 
 		flexPayFileService.delete(file);
 		fileCreateAction.getUpload().delete();

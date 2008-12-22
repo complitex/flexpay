@@ -46,9 +46,7 @@ public class ServiceTypeEditAction extends FPActionSupport {
 			nameTranslation.setName(value);
 			nameTranslation.setDescription(descriptions.get(name.getKey()));
 
-			if (log.isDebugEnabled()) {
-				log.debug("Setting type name: " + nameTranslation);
-			}
+			log.debug("Setting type name: {}", nameTranslation);
 
 			type.setTypeName(nameTranslation);
 		}
