@@ -163,9 +163,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	 */
 	private boolean validate(SpRegistry registry, RegistryRecord record) throws FlexPayException {
 
-		if (log.isDebugEnabled()) {
-			log.debug("validating record: " + record);
-		}
+		log.debug("validating record: {}", record);
 
 		if (registry.getRegistryType().getCode() != RegistryType.TYPE_INFO) {
 			throw new FlexPayException("Create consumer operation only allowed in Information registry type");
@@ -184,9 +182,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 			log.warn("Creating account without person set");
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Creating consumer: " + record);
-		}
+		log.debug("Creating consumer: {}", record);
 
 		return true;
 	}

@@ -74,7 +74,7 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		setupResponsiblePerson(info, person, eircAccount);
 		saveConsumers(eircAccount, info);
 
-		log.debug("Set responsible person: " + person);
+		log.debug("Set responsible person: {}", person);
 
 		// check if need to setup eirc account responsible person
 		AccountPersonChangeCondition condition = factory.getConditionsFactory().getAccountPersonChangeCondition();
@@ -130,7 +130,7 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		Person person = importUtil.findPersonByFIO(record.getApartmentStub(),
 				fName, mName, lName, error);
 		if (error.getErrorId() != null) {
-			log.warn("Responsible person not found " + error.getErrorId());
+			log.warn("Responsible person not found {}", error.getErrorId());
 		}
 		return person;
 	}
