@@ -247,9 +247,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	@Transactional (readOnly = false)
 	public void saveTypes(Street object) {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Types to save: " + object.getTypeTemporals());
-		}
+		log.debug("Types to save: {}", object.getTypeTemporals());
 
 		streetDaoExt.invalidateTypeTemporals(object.getId(), ApplicationConfig.getFutureInfinite(), DateUtil.now());
 

@@ -25,9 +25,7 @@ public class MeasureUnitDeleteAction extends FPActionSupport {
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Deleting measure units: " + objectIds);
-		}
+		log.debug("Deleting measure units: {}", objectIds);
 
 		for (Long id : objectIds) {
 			MeasureUnit unit = measureUnitService.read(new Stub<MeasureUnit>(id));

@@ -92,16 +92,12 @@ public class StreetsListAction extends FPActionSupport {
 			streets.add(streetService.readFull(stub(street)));
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Fetched: " + streets.size() + " streets");
-			log.debug("Search string: " + streetNameFilter.getSearchString());
-			log.debug("Sorters: " + sorters);
-		}
+		log.debug("Fetched: {} streets", streets.size());
+		log.debug("Search string: {}", streetNameFilter.getSearchString());
+		log.debug("Sorters: {}", sorters);
 	}
 
 	public String getStreetName(@NotNull Long id) {
-
-		log.debug("");
 
 		Street street = streetService.readFull(new Stub<Street>(id));
 		if (street == null) {

@@ -32,7 +32,7 @@ public class StreetEditTypeAction extends FPActionSupport {
 					if (typeTemporal.getId().equals(temporal.getId())) {
 						temporal = typeTemporal;
 
-						log.info("Found type temporal: " + typeTemporal.getValue());
+						log.info("Found type temporal: {}", typeTemporal.getValue());
 						break;
 					}
 				}
@@ -52,10 +52,8 @@ public class StreetEditTypeAction extends FPActionSupport {
 		if (isPost()) {
 			object.addTypeTemporal(temporal);
 
-			if (log.isDebugEnabled()) {
-				log.debug("Types: " + object.getTypeTemporals());
-				log.debug("Temporal: " + temporal);
-			}
+			log.debug("Types: {}", object.getTypeTemporals());
+			log.debug("Temporal: {}", temporal);
 
 			streetService.saveTypes(object);
 

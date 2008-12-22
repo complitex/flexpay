@@ -1,7 +1,8 @@
 package org.flexpay.ab.service.importexport;
 
 import org.apache.commons.collections.ArrayStack;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.importexport.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.TownFilter;
@@ -22,7 +23,7 @@ import java.util.*;
 public class ImportService {
 
 	@NonNls
-	protected Logger log = Logger.getLogger(getClass());
+	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	private RawDistrictDataConverter districtDataConverter;
 	private RawStreetTypeDataConverter streetTypeDataConverter;
@@ -80,9 +81,7 @@ public class ImportService {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	protected void flushStack() {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Starting flushing stack, size: " + objectsStack.size());
-		}
+		log.debug("Starting flushing stack, size: {}", objectsStack.size());
 
 		try {
 			DomainObject prevObj = null;
@@ -92,7 +91,7 @@ public class ImportService {
 					DataCorrection corr = (DataCorrection) object;
 					if (corr.getInternalObjectId() == null) {
 						if (prevObj == null) {
-							log.error("Failed saving correction, object not specified: " + corr);
+							log.error("Failed saving correction, object not specified: {}", corr);
 						} else {
 							corr.setInternalObjectId(prevObj.getId());
 						}
@@ -100,9 +99,7 @@ public class ImportService {
 				}
 
 				// Save building itself instead of its buildings address
-				if (log.isDebugEnabled()) {
-					log.debug("Saving object: " + object);
-				}
+				log.debug("Saving object: {}", object);
 				if (object instanceof Buildings) {
 					allObjectsDao.saveOrUpdate(((Buildings) object).getBuilding());
 				} else if (object instanceof DataCorrection) {
@@ -132,9 +129,7 @@ public class ImportService {
 			throws FlexPayException {
 
 		long time = System.currentTimeMillis();
-		if (log.isInfoEnabled()) {
-			log.info("Starting import districts at " + new Date());
-		}
+		log.info("Starting import districts at {}", new Date());
 
 		ArrayStack filters = new ArrayStack();
 		filters.push(new TownFilter(town.getId()));
@@ -159,19 +154,19 @@ public class ImportService {
 				if (persistentObj == null) {
 					// this is a new object
 					if (nameMatchObj == null) {
-						log.info("Creating new District: " + data.getName());
+						log.info("Creating new District: {}", data.getName());
 						addToStack(district);
 					} else {
 						// already existing object
 						district = nameMatchObj;
 					}
-					log.info("Creating new district correction: " + data.getName());
+					log.info("Creating new district correction: {}", data.getName());
 					DataCorrection correction = correctionsService.getStub(
 							data.getExternalSourceId(), district, sourceDescription);
 					addToStack(correction);
 				} else {
 					if (nameMatchObj == null) {
-						log.warn("Invalid correction found, no district found: " + data.getName());
+						log.warn("Invalid correction found, no district found: {}", data.getName());
 						addToStack(district);
 						DataCorrection correction = correctionsService.getStub(
 								data.getExternalSourceId(), district, sourceDescription);
@@ -182,9 +177,7 @@ public class ImportService {
 							log.warn("Found by name district does not match correction");
 							// TODO decide what to do here
 						} else {
-							if (log.isInfoEnabled()) {
-								log.info("District " + data.getName() + " found");
-							}
+							log.info("District {} found", data.getName());
 						}
 					}
 				}
@@ -194,10 +187,7 @@ public class ImportService {
 		}
 		flushStack();
 
-		if (log.isInfoEnabled()) {
-			log.info("End import districts at " + new Date() + ", total time: " +
-					(System.currentTimeMillis() - time) + "ms");
-		}
+		log.info("End import districts at {}, total time: {} ms",new Object[]{new Date(),(System.currentTimeMillis() - time)});
 	}
 
 	@SuppressWarnings({"unchecked"})
@@ -206,16 +196,12 @@ public class ImportService {
 			throws FlexPayException {
 
 		long time = System.currentTimeMillis();
-		if (log.isInfoEnabled()) {
-			log.info("Starting import streets at " + new Date());
-		}
+		log.info("Starting import streets at {}", new Date());
 
 		ArrayStack filters = new ArrayStack();
 		filters.push(new TownFilter(town.getId()));
 		List<Street> townStreets = streetService.find(filters);
-		if (log.isDebugEnabled()) {
-			log.debug("Town streets: " + townStreets);
-		}
+		log.debug("Town streets: {}", townStreets);
 		Map<String, List<Street>> nameObjsMap = initializeNamesToObjectsMap(townStreets);
 
 		streetDataSource.initialize();
@@ -252,10 +238,8 @@ public class ImportService {
 		}
 		flushStack();
 
-		if (log.isInfoEnabled()) {
-			log.info("End import streets at " + new Date() + ", total time: " +
-					(System.currentTimeMillis() - time) + "ms");
-		}
+		log.info("End import streets at {}, total time: {} ms", new Object[]{new Date(),
+					(System.currentTimeMillis() - time)});
 	}
 
 	private void saveStreetCorrection(DataSourceDescription sourceDescription, RawData<Street> data, Street street,
@@ -264,19 +248,19 @@ public class ImportService {
 		if (persistentObj == null) {
 			// this is a new object
 			if (nameMatchObj == null) {
-				log.info("Creating new Street: " + data);
+				log.info("Creating new Street: {}", data);
 				addToStack(street);
 			} else {
 				// already existing object
 				street = nameMatchObj;
 			}
-			log.info("Creating new street correction: " + data);
+			log.info("Creating new street correction: {}", data);
 			DataCorrection correction = correctionsService.getStub(
 					data.getExternalSourceId(), street, sourceDescription);
 			addToStack(correction);
 		} else {
 			if (nameMatchObj == null) {
-				log.warn("Invalid correction found, no street found: " + data);
+				log.warn("Invalid correction found, no street found: {}", data);
 				addToStack(street);
 				DataCorrection correction = correctionsService.getStub(
 						data.getExternalSourceId(), street, sourceDescription);
@@ -284,12 +268,10 @@ public class ImportService {
 			} else {
 				//	correction found but objects do not match
 				if (!persistentObj.getId().equals(nameMatchObj.getId())) {
-					log.warn("Found by name street does not match correction: " + data);
+					log.warn("Found by name street does not match correction: {}", data);
 					// TODO decide what to do here
 				} else {
-					if (log.isInfoEnabled()) {
-						log.info("Street " + data + " found");
-					}
+					log.info("Street {} found", data);
 				}
 			}
 		}
@@ -434,11 +416,9 @@ public class ImportService {
 		if (type != null) {
 			DataCorrection corr = correctionsService.getStub(data.getExternalSourceId(), type, sd);
 			correctionsService.save(corr);
-			if (log.isInfoEnabled()) {
-				log.info("Creating correction by street type name: " + tr.getName());
-			}
+			log.info("Creating correction by street type name: {}", tr.getName());
 		} else {
-			log.error("Cannot map external street type: " + tr.getName());
+			log.error("Cannot map external street type: {}", tr.getName());
 		}
 	}
 
@@ -447,9 +427,7 @@ public class ImportService {
 		buildingsDataSource.initialize();
 
 		long time = System.currentTimeMillis();
-		if (log.isInfoEnabled()) {
-			log.info("Starting import buildings at " + new Date());
-		}
+		log.info("Starting import buildings at {}", new Date());
 
 		try {
 			while (buildingsDataSource.hasNext()) {
@@ -461,9 +439,7 @@ public class ImportService {
 							data.getExternalSourceId(), Buildings.class, sourceDescription);
 
 					if (correction != null) {
-						if (log.isInfoEnabled()) {
-							log.info("Found correction for building #" + data.getExternalSourceId());
-						}
+						log.info("Found correction for building #{}", data.getExternalSourceId());
 						continue;
 					}
 
@@ -478,10 +454,7 @@ public class ImportService {
 						addToStack(buildings);
 //						addToStack(buildings.getBuilding());
 						persistent = buildings;
-						if (log.isInfoEnabled()) {
-							log.info("Creating new building: " + buildings.getNumber() +
-									" - " + buildings.getBulk());
-						}
+						log.info("Creating new building: {} - {}", new Object[]{ buildings.getNumber(), buildings.getBulk()});
 					}
 
 					DataCorrection corr = correctionsService.getStub(
@@ -498,10 +471,7 @@ public class ImportService {
 
 			flushStack();
 
-			if (log.isInfoEnabled()) {
-				log.info("End import buildings at " + new Date() + ", total time: " +
-						(System.currentTimeMillis() - time) + "ms");
-			}
+			log.info("End import buildings at {}, total time: {}ms", new Object[]{new Date(), (System.currentTimeMillis() - time)});
 		} catch (Throwable t) {
 			log.error("Failure", t);
 			throw new RuntimeException(t.getMessage(), t);
@@ -513,9 +483,7 @@ public class ImportService {
 		apartmentDataSource.initialize();
 
 		long time = System.currentTimeMillis();
-		if (log.isInfoEnabled()) {
-			log.info("Starting import apartments at " + new Date());
-		}
+		log.info("Starting import apartments at {}", new Date());
 
 		long counter = 0;
 		long cycleTime = System.currentTimeMillis();
@@ -535,9 +503,7 @@ public class ImportService {
 						data.getExternalSourceId(), Apartment.class, sourceDescription);
 
 				if (correction != null) {
-					if (log.isDebugEnabled()) {
-						log.debug("Found correction for apartment #" + data.getExternalSourceId());
-					}
+					log.debug("Found correction for apartment #{}", data.getExternalSourceId());
 					continue;
 				}
 
@@ -549,9 +515,8 @@ public class ImportService {
 				if (persistent == null) {
 					addToStack(apartment);
 					persistent = stub(apartment);
-					if (log.isDebugEnabled()) {
-						log.debug("Creating new apartment: " + apartment.getNumber());
-					}
+					log.debug("Creating new apartment: {}", apartment.getNumber());
+
 				}
 
 				DataCorrection corr = correctionsService.getStub(
@@ -567,11 +532,9 @@ public class ImportService {
 		}
 
 		flushStack();
-
-		if (log.isInfoEnabled()) {
-			log.info("End import apartments at " + new Date() + ", total time: " +
-					(System.currentTimeMillis() - time) + "ms");
-		}
+        if (log.isInfoEnabled()){
+		    log.info("End import apartments at {}, total time: {}ms", new Object[]{new Date(), (System.currentTimeMillis() - time)});
+        }
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.NOT_SUPPORTED)
@@ -579,9 +542,7 @@ public class ImportService {
 		personDataSource.initialize();
 
 		long time = System.currentTimeMillis();
-		if (log.isInfoEnabled()) {
-			log.info("Starting import persons at " + new Date());
-		}
+		log.info("Starting import persons at {}", new Date());
 
 		long counter = 0;
 		long cycleTime = System.currentTimeMillis();
@@ -604,9 +565,7 @@ public class ImportService {
 						data.getExternalSourceId(), Person.class, sourceDescription);
 
 				if (correction != null) {
-					if (log.isInfoEnabled()) {
-						log.info("Found correction for person " + data.getExternalSourceId());
-					}
+					log.info("Found correction for person {}", data.getExternalSourceId());
 					continue;
 				}
 
@@ -618,12 +577,10 @@ public class ImportService {
 					if (personDataSource.trusted()) {
 						addToStack(person);
 						persistent = stub(person);
-						if (log.isInfoEnabled()) {
-							log.info("Creating new person: " + person);
-						}
+						log.info("Creating new person: {}", person);
 					} else {
 						addPersonImportError(sourceDescription, data);
-						log.warn("Cannot find person: " + person);
+						log.warn("Cannot find person: {}",  person);
 						continue;
 					}
 				}
@@ -642,11 +599,9 @@ public class ImportService {
 		}
 
 		flushStack();
-
-		if (log.isInfoEnabled()) {
-			log.info("End import persons at " + new Date() + ", total time: " +
-					(System.currentTimeMillis() - time) + "ms");
-		}
+        if (log.isInfoEnabled()){
+		    log.info("End import persons at {}, total time: {}ms", new Object[]{new Date(), (System.currentTimeMillis() - time)});
+        }
 	}
 
 	public void setDistrictDataConverter(RawDistrictDataConverter districtDataConverter) {

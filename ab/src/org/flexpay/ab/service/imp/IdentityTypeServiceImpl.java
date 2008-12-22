@@ -1,7 +1,8 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.IdentityTypeDao;
 import org.flexpay.ab.dao.IdentityTypeTranslationDao;
 import org.flexpay.ab.persistence.IdentityType;
@@ -26,7 +27,7 @@ import java.util.Locale;
 public class IdentityTypeServiceImpl implements IdentityTypeService {
 
 	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private IdentityTypeDao identityTypeDao;
 	private IdentityTypeTranslationDao identityTypeTranslationDao;
@@ -52,9 +53,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 		List<IdentityType> types = identityTypeDao.listIdentityTypes(IdentityType.STATUS_ACTIVE);
 		List<IdentityTypeTranslation> translations = list();
 
-		if (log.isDebugEnabled()) {
-			log.debug("IdentityTypes: " + types);
-		}
+		log.debug("IdentityTypes: {}", types);
 
 		for (IdentityType identityType : types) {
 			IdentityTypeTranslation translation = getTypeTranslation(identityType, language, defaultLang);
@@ -112,14 +111,11 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 */
 	@Transactional (readOnly = false)
 	public void disable(Collection<IdentityType> identityTypes) {
-		log.info(identityTypes.size() + " types to disable");
+		log.info("{} types to disable", identityTypes.size());
 		for (IdentityType identityType : identityTypes) {
 			identityType.setStatus(IdentityType.STATUS_DISABLED);
 			identityTypeDao.update(identityType);
-
-			if (log.isInfoEnabled()) {
-				log.info("Disabled: " + identityType);
-			}
+			log.info("Disabled: {}", identityType);
 		}
 	}
 

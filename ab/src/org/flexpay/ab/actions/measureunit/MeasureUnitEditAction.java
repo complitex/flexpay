@@ -44,9 +44,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Unit names before: " + unit.getUnitNames());
-		}
+		log.debug("Unit names before: {}", unit.getUnitNames());
 
 		if (!isSubmit()) {
 			measureUnit = unit;
@@ -63,9 +61,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 			unit.setName(unitName);
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Unit names: " + unit.getUnitNames());
-		}
+		log.debug("Unit names: {}", unit.getUnitNames());
 
 		measureUnitService.save(unit);
 

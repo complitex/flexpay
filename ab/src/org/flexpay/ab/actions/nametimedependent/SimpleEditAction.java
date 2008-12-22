@@ -58,13 +58,11 @@ public abstract class SimpleEditAction<
 
 		if (!isPost()) {
 			DI temporal = nameTimeDependentService.readTemporalName(temporalId);
-			log.info("Temporal: " + temporal);
+			log.info("Temporal: {}", temporal);
 			date = temporal != null ? temporal.getBegin() : null;
 		}
 
-		if (log.isInfoEnabled()) {
-			log.info("Translations map: " + langToTranslationMap);
-		}
+		log.info("Translations map: {}", langToTranslationMap);
 
 		List<Language> langs = ApplicationConfig.getLanguages();
 		for (Language lang : langs) {
@@ -78,9 +76,7 @@ public abstract class SimpleEditAction<
 			}
 			nameTranslations.add(nameTranslation);
 		}
-		if (log.isInfoEnabled()) {
-			log.info("Translations to edit: " + nameTranslations);
-		}
+		log.info("Translations to edit: {}", nameTranslations);
 	}
 
 	@NotNull

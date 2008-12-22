@@ -1,7 +1,8 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.TownTypeDao;
 import org.flexpay.ab.dao.TownTypeTranslationDao;
 import org.flexpay.ab.persistence.TownType;
@@ -21,7 +22,7 @@ import java.util.*;
 public class TownTypeServiceImpl implements TownTypeService {
 
 	@NonNls
-	private final Logger log = Logger.getLogger(getClass());
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private TownTypeDao townTypeDao;
 	private TownTypeTranslationDao townTypeTranslationDao;
@@ -42,15 +43,14 @@ public class TownTypeServiceImpl implements TownTypeService {
 		List<TownTypeTranslation> translations = new ArrayList<TownTypeTranslation>(
 				townTypes.size());
 
-		if (log.isDebugEnabled()) {
-			log.debug("TownTypes: " + townTypes);
-		}
+		log.debug("TownTypes: {}", townTypes);
+
 
 		for (TownType townType : townTypes) {
 			TownTypeTranslation translation = TranslationUtil.getTranslation(
 					townType.getTranslations(), locale);
 			if (translation == null) {
-				log.error("No name for town type: " + townType);
+				log.error("No name for town type: {}", townType);
 				continue;
 			}
 			translations.add(translation);
@@ -120,15 +120,11 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 */
 	@Transactional (readOnly = false)
 	public void disable(Collection<TownType> townTypes) {
-		if (log.isInfoEnabled()) {
-			log.info(townTypes.size() + " types to disable");
-		}
+		log.info("{} types to disable", townTypes.size());
 		for (TownType townType : townTypes) {
 			townType.setStatus(TownType.STATUS_DISABLED);
 			townTypeDao.update(townType);
-			if (log.isInfoEnabled()) {
-				log.info("Disabled: " + townType);
-			}
+			log.info("Disabled: {}", townType);
 		}
 	}
 

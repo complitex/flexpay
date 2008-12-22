@@ -100,9 +100,7 @@ public class BuildingCreateAction extends FPActionSupport {
 
 	private void setupAttributes() {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Attributes: " + attributeMap);
-		}
+		log.debug("Attributes: {}", attributeMap);
 
 		for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
 			String value = attributeMap.get(type.getId());

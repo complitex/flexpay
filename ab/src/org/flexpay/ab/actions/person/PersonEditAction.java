@@ -60,9 +60,7 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 		initFilters();
 		apartmentFilter.setNeedAutoChange(false);
 
-		if (log.isDebugEnabled()) {
-			log.debug("Buildings: " + buildingsFilter.getBuildingses());
-		}
+		log.debug("Buildings: {}", buildingsFilter.getBuildingses());
 
 		return INPUT;
 	}
@@ -121,9 +119,7 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 	public PersonIdentity getFIOIdentity() {
 		PersonIdentity fio = person.getFIOIdentity();
 
-		if (log.isDebugEnabled()) {
-			log.debug("Person FIO: " + fio);
-		}
+		log.debug("Person FIO: {}", fio);
 
 		return fio != null ? fio : new PersonIdentity();
 	}

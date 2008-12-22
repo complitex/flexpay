@@ -2,7 +2,8 @@ package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.BuildingAttributeTypeDao;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.dao.BuildingsDao;
@@ -34,7 +35,7 @@ import java.util.Set;
 public class BuildingServiceImpl implements BuildingService {
 
 	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private BuildingDao buildingDao;
 	private BuildingsDao buildingsDao;
@@ -70,10 +71,7 @@ public class BuildingServiceImpl implements BuildingService {
 			parentFilter = new BuildingsFilter();
 		}
 
-		if (log.isInfoEnabled()) {
-			log.info("Getting list buildings, forefather filter: "
-					 + forefatherFilter);
-		}
+		log.info("Getting list buildings, forefather filter: {}", forefatherFilter);
 
 		ArrayStack filters = new ArrayStack();
 		filters.push(forefatherFilter);
@@ -88,7 +86,7 @@ public class BuildingServiceImpl implements BuildingService {
 			Buildings firstObject = names.iterator().next();
 			parentFilter.setSelectedId(firstObject.getId());
 		} else {
-			log.debug("Building filter is invalid: " + parentFilter + "\n" + forefatherFilter);
+			log.debug("Building filter is invalid: {} \n {}", new Object[]{parentFilter, forefatherFilter});
 		}
 
 		return parentFilter;
@@ -154,10 +152,8 @@ public class BuildingServiceImpl implements BuildingService {
 			buildingFilter = new BuildingsFilter();
 		}
 
-		if (log.isInfoEnabled()) {
-			log.info("Getting list of buildings, street filter: "
-					 + streetFilter + ", district filter: " + districtFilter);
-		}
+		log.info("Getting list of buildings, street filter: {}, district filter: {}",
+					 new Object[] {streetFilter, districtFilter});
 
 		ArrayStack filters = new ArrayStack();
 		filters.push(districtFilter);
