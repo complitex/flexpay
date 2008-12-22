@@ -85,6 +85,7 @@
 		<mapping resource="org/flexpay/sz/persistence/ServiceTypeRecord.hbm.xml" />
 
 		<mapping resource="org/flexpay/eirc/persistence/Organization.hbm.xml" />
+		<!--<mapping resource="org/flexpay/eirc/persistence/QuittancePacket.hbm.xml" />-->
 		<mapping resource="org/flexpay/eirc/persistence/Subdivision.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/Bank.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/Service.hbm.xml" />

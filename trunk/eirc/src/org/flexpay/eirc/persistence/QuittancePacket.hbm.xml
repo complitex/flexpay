@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.eirc.persistence">
+
+	<class name="PaymentPoint" table="eirc_payment_points_tbl" optimistic-lock="version" entity-name="PaymentPoint">
+		<comment>Payment points</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="status" not-null="true">
+			<column name="status" not-null="true">
+				<comment>Enabled-disabled status</comment>
+			</column>
+		</property>
+		<many-to-one name="apartment" foreign-key="eirc_payment_points_tbl_apartment_id"
+				class="org.flexpay.ab.persistence.Apartment">
+			<column name="apartment_id" not-null="true">
+				<comment>Apartment reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="organization" foreign-key="eirc_payment_points_tbl_organization_id"
+				class="org.flexpay.eirc.persistence.Organization">
+			<column name="organization_id" not-null="true">
+				<comment>Organization reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+    <query name="PaymentPoint.listPoints.count">
+		select count(o)
+        from PaymentPoint o
+        where o.status = 0 and o.apartment.building.district.town.id=?
+    </query>
+
+    <query name="PaymentPoint.listPoints">
+        from PaymentPoint o
+        where o.status = 0 and o.apartment.building.district.town.id=?
+    </query>
+
+</hibernate-mapping>

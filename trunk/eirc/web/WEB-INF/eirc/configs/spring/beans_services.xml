@@ -127,6 +127,9 @@
 		  p:quittanceDaoExt-ref="quittanceDaoExt"
 		  p:quittanceDao-ref="quittanceDao" />
 
+	<bean id="paymentPointService" class="org.flexpay.eirc.service.imp.PaymentPointServiceImpl"
+		  p:paymentPointDao-ref="paymentPointDao" />
+
 	<bean id="quittanceNumberService" class="org.flexpay.eirc.service.imp.QuittanceNumberServiceImpl" />
 
 	<bean id="reportPeriodService" class="org.flexpay.eirc.service.imp.ReportPeriodServiceImpl" />
