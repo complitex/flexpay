@@ -1,18 +1,19 @@
 package org.flexpay.eirc.service.imp;
 
-import org.apache.log4j.Logger;
 import org.flexpay.eirc.dao.SpRegistryTypeDao;
 import org.flexpay.eirc.persistence.RegistryType;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.flexpay.eirc.service.SpRegistryTypeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional(readOnly = true)
+@Transactional (readOnly = true)
 public class RegistryTypeServiceImpl implements SpRegistryTypeService {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private SpRegistryTypeDao spRegistryTypeDao;
 
@@ -35,9 +36,7 @@ public class RegistryTypeServiceImpl implements SpRegistryTypeService {
 		List<RegistryType> types = spRegistryTypeDao.findAll();
 		registryTypeFilter.setRegistryTypes(types);
 
-		if (log.isDebugEnabled()) {
-			log.debug("Registry types: " + types);
-		}
+		log.debug("Registry types: {}" + types);
 	}
 
 	/**

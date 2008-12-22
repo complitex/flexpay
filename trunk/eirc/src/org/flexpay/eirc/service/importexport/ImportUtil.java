@@ -1,7 +1,6 @@
 package org.flexpay.eirc.service.importexport;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
@@ -10,12 +9,14 @@ import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class ImportUtil {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private PersonService personService;
 
@@ -26,8 +27,7 @@ public class ImportUtil {
 	 * @param fName		 First name
 	 * @param mName		 Middle name
 	 * @param lName		 Last name
-	 * @param error		 Import error holder (error id will contain key if person not
-	 *                      found)
+	 * @param error		 Import error holder (error id will contain key if person not found)
 	 * @return Person if found, or <code>null</code> otherwise
 	 */
 	@Nullable

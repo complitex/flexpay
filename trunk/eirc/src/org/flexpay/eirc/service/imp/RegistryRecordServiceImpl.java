@@ -1,29 +1,31 @@
 package org.flexpay.eirc.service.imp;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.eirc.dao.RegistryRecordContainerDao;
 import org.flexpay.eirc.dao.RegistryRecordDao;
 import org.flexpay.eirc.dao.RegistryRecordDaoExt;
-import org.flexpay.eirc.dao.RegistryRecordContainerDao;
-import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.RegistryRecordContainer;
+import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.service.RegistryRecordService;
-import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-@Transactional(readOnly = true)
+@Transactional (readOnly = true)
 public class RegistryRecordServiceImpl implements RegistryRecordService {
-	private final Logger log = Logger.getLogger(getClass());
+
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private RegistryRecordContainerDao recordContainerDao;
 	private RegistryRecordDao registryRecordDao;
@@ -37,7 +39,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * @param record SpRegistryRecord object
 	 * @return created SpRegistryRecord object
 	 */
-	@Transactional(readOnly = false)
+	@Transactional(readOnly=false)
 	public RegistryRecord create(RegistryRecord record) throws FlexPayException {
 		registryRecordDao.create(record);
 
@@ -45,9 +47,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 			recordContainerDao.create(container);
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Created RegistryRecord: " + record);
-		}
+		log.debug("Created RegistryRecord: {}", record);
 
 		return record;
 	}
@@ -56,8 +56,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * Read RegistryRecord object by its unique id
 	 *
 	 * @param id RegistryRecord key
-	 * @return RegistryRecord object, or <code>null</code> if object not
-	 *         found
+	 * @return RegistryRecord object, or <code>null</code> if object not found
 	 */
 	@Nullable
 	public RegistryRecord read(Long id) {
@@ -69,16 +68,17 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 *
 	 * @param spRegistryRecord SpRegistryRecord to update for
 	 * @return Updated SpRegistryRecord object
-	 * @throws FlexPayException if SpRegistryRecord object is invalid
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if SpRegistryRecord object is invalid
 	 */
-	@Transactional(readOnly = false)
+	@Transactional(readOnly=false)
 	public RegistryRecord update(RegistryRecord spRegistryRecord) throws FlexPayException {
 		registryRecordDao.update(spRegistryRecord);
 
 		return spRegistryRecord;
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional(readOnly=false)
 	public void delete(RegistryRecord spRegistryRecord) {
 		registryRecordDao.delete(spRegistryRecord);
 	}
@@ -92,9 +92,9 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * @param pager				 Page
 	 * @return list of filtered registry records
 	 */
-	@Transactional(readOnly = true)
+	@Transactional(readOnly=true)
 	public List<RegistryRecord> listRecords(SpRegistry registry, ImportErrorTypeFilter importErrorTypeFilter,
-											  RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager) {
+											RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager) {
 		return registryRecordDaoExt.filterRecords(registry.getId(), importErrorTypeFilter, recordStatusFilter, pager);
 	}
 
@@ -117,9 +117,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	public DataSourceDescription getDataSourceDescription(RegistryRecord record) {
 		DataSourceDescription sd = registryRecordDaoExt.getDataSourceDescription(record.getId());
 
-		if (log.isDebugEnabled()) {
-			log.debug("Record Data source: " + sd);
-		}
+		log.debug("Record Data source: {}", sd);
 
 		return sd;
 	}
@@ -130,7 +128,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * @param record Registry record
 	 * @return updated record
 	 */
-	@Transactional(readOnly = false)
+	@Transactional(readOnly=false)
 	public RegistryRecord removeError(RegistryRecord record) throws Exception {
 
 		workflowManager.setNextSuccessStatus(record);

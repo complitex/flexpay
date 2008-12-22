@@ -7,7 +7,8 @@ import org.flexpay.common.util.CollectionUtils;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jetbrains.annotations.NotNull;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -23,7 +24,7 @@ public class QuittanceJobVoter implements LyfecycleVoter {
 	/**
 	 * Logger
 	 */
-	private final Logger log = Logger.getLogger(getClass());
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * ProcesHelper
@@ -39,9 +40,7 @@ public class QuittanceJobVoter implements LyfecycleVoter {
 	@NotNull
 	public LyfecycleVote onStart(@NotNull TaskInstance instance) {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Voting on task start: " + instance.getName() + ", pid=" + instance.getId());
-		}
+		log.debug("Voting on task start: {}, pid={}", instance.getName(), instance.getId());
 
 		// allow to start non quittance jobs
 		if (!GenerateQuittanceJob.JOB_NAME.equals(instance.getName()) &&
@@ -98,7 +97,6 @@ public class QuittanceJobVoter implements LyfecycleVoter {
 	 * Method setProcessHelper sets the processHelper of this QuittanceJobVoter object.
 	 *
 	 * @param processHelper the processHelper of this QuittanceJobVoter object.
-	 *
 	 */
 	public void setProcessHelper(ProcessHelper processHelper) {
 		this.processHelper = processHelper;

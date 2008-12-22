@@ -7,20 +7,21 @@ import org.flexpay.eirc.dao.ConsumerDao;
 import org.flexpay.eirc.dao.ConsumerDaoExt;
 import org.flexpay.eirc.dao.ServiceDao;
 import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.Service;
+import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.service.ConsumerService;
-import org.springframework.transaction.annotation.Transactional;
-import org.apache.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class ConsumerServiceImpl implements ConsumerService {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private ConsumerDao consumerDao;
 	private ConsumerDaoExt consumerDaoExt;
@@ -48,7 +49,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 *
 	 * @param serviceProvider ServiceProvider stub
 	 * @param accountNumber   External account number
-	 * @param serviceId	Service code
+	 * @param serviceId	   Service code
 	 * @return Consumer if found, or <code>null</code> otherwise
 	 */
 	public Consumer findConsumer(ServiceProvider serviceProvider, String accountNumber, String serviceId) {
@@ -63,7 +64,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * Find Service by service provider and subservice code
 	 *
 	 * @param serviceProvider ServiceProvider stub
-	 * @param serviceId	Subservice code
+	 * @param serviceId	   Subservice code
 	 * @return Service if found, or <code>null</code> otherwise
 	 */
 	public Service findService(ServiceProvider serviceProvider, String serviceId) {
@@ -79,7 +80,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 		}
 
 		if (services.size() > 1) {
-			log.error("Internal error, several services found for service code: " + serviceId);
+			log.error("Internal error, several services found for service code: {}", serviceId);
 			return null;
 		}
 
@@ -104,7 +105,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation failure occurs
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void save(Consumer consumer) throws FlexPayExceptionContainer {
 		if (consumer.isNew()) {
 			consumer.setId(null);

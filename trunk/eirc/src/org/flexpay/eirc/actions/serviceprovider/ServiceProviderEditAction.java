@@ -44,9 +44,7 @@ public class ServiceProviderEditAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		if (log.isInfoEnabled()) {
-			log.info("Service provider descriptions: " + descriptions);
-		}
+		log.info("Service provider descriptions: {}", descriptions);
 
 		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
 			String value = name.getValue();
@@ -54,17 +52,15 @@ public class ServiceProviderEditAction extends FPActionSupport {
 			ServiceProviderDescription description = new ServiceProviderDescription();
 			description.setLang(lang);
 			description.setName(value);
-			if (log.isInfoEnabled()) {
-				log.info("Setting description: " + description);
-			}
+
+			log.info("Setting description: {}", description);
+
 			serviceProvider.setDescription(description);
 		}
 
-		if (log.isInfoEnabled()) {
-			log.info("New Service provider descriptions: " + serviceProvider.getDescriptions());
-		}
+		log.info("New Service provider descriptions: {}", serviceProvider.getDescriptions());
 
-		Organization organization = organizationService.read(new Organization(organizationFilter.getSelectedId()));
+		Organization organization = organizationService.read(new Organization(organizationFilter.getSelectedStub()));
 		serviceProvider.setOrganization(organization);
 		spService.save(serviceProvider);
 
@@ -127,5 +123,4 @@ public class ServiceProviderEditAction extends FPActionSupport {
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
 	}
-
 }

@@ -1,6 +1,5 @@
 package org.flexpay.eirc.dao.imp;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
@@ -12,18 +11,19 @@ import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.jetbrains.annotations.NotNull;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements RegistryRecordDaoExt {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * List registry records for import operation
@@ -48,18 +48,18 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	 * @param pager				 Page
 	 * @return list of registry records
 	 */
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings ({"unchecked"})
 	public List<RegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter,
-												RegistryRecordStatusFilter recordStatusFilter, final Page<RegistryRecord> pager) {
+											  RegistryRecordStatusFilter recordStatusFilter, final Page<RegistryRecord> pager) {
 		final StringBuilder hql = new StringBuilder("select distinct rr from RegistryRecord rr " +
-				"inner join fetch rr.spRegistry r " +
-				"inner join fetch rr.recordStatus rs " +
-				"left join fetch rr.importError e where r.id=? ");
+													"inner join fetch rr.spRegistry r " +
+													"inner join fetch rr.recordStatus rs " +
+													"left join fetch rr.importError e where r.id=? ");
 
 		final StringBuilder hqlCount = new StringBuilder("select count(*) from RegistryRecord rr " +
-				"inner join rr.spRegistry r " +
-				"inner join rr.recordStatus rs " +
-				"left join rr.importError e where r.id=? ");
+														 "inner join rr.spRegistry r " +
+														 "inner join rr.recordStatus rs " +
+														 "left join rr.importError e where r.id=? ");
 
 		final List<Object> params = new ArrayList<Object>();
 		params.add(registryId);
@@ -85,9 +85,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
-				if (log.isDebugEnabled()) {
-					log.debug("Filter records hql: " + hqlCount);
-				}
+				log.debug("Filter records hql: {}", hqlCount);
 
 				Number count = (Number) setParameters(session.createQuery(hqlCount.toString()), params).uniqueResult();
 				pager.setTotalElements(count.intValue());
@@ -138,24 +136,24 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	 * @param objectIds Set of registry identifiers
 	 * @return collection of registries
 	 */
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings ({"unchecked"})
 	public List<RegistryRecord> findRecords(final Long registryId, final Collection<Long> objectIds) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
 				return session.createQuery("select distinct r from RegistryRecord r " +
-						"inner join fetch r.spRegistry rr " +
-						"left join fetch r.consumer c " +
-						"left join fetch c.consumerInfo " +
-						"left join fetch c.service srv " +
-						"left join fetch srv.serviceType " +
-						"inner join fetch rr.registryStatus " +
-						"inner join fetch rr.serviceProvider sp " +
-						"inner join fetch sp.dataSourceDescription " +
-						"inner join fetch r.recordStatus " +
-						"inner join fetch rr.registryType " +
-						"left join fetch r.importError " +
-						"left join fetch r.containers " +
-						"where rr.id=:rId and r.id in (:ids)")
+										   "inner join fetch r.spRegistry rr " +
+										   "left join fetch r.consumer c " +
+										   "left join fetch c.consumerInfo " +
+										   "left join fetch c.service srv " +
+										   "left join fetch srv.serviceType " +
+										   "inner join fetch rr.registryStatus " +
+										   "inner join fetch rr.serviceProvider sp " +
+										   "inner join fetch sp.dataSourceDescription " +
+										   "inner join fetch r.recordStatus " +
+										   "inner join fetch rr.registryType " +
+										   "left join fetch r.importError " +
+										   "left join fetch r.containers " +
+										   "where rr.id=:rId and r.id in (:ids)")
 						.setParameterList("ids", objectIds)
 						.setLong("rId", registryId)
 						.list();
@@ -171,7 +169,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	 */
 	@NotNull
 	public Long[] getMinMaxIdsForProcessing(@NotNull Long registryId) {
-		List result = getHibernateTemplate()
+		List<?> result = getHibernateTemplate()
 				.findByNamedQuery("RegistryRecord.getMinMaxRecordsForProcessing", registryId);
 		Object[] objs = (Object[]) result.get(0);
 
@@ -191,7 +189,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	 */
 	@NotNull
 	public Long[] getMinMaxIdsForImporting(@NotNull Long registryId) {
-		List result = getHibernateTemplate()
+		List<?> result = getHibernateTemplate()
 				.findByNamedQuery("RegistryRecord.getMinMaxRecordsForImporting", registryId);
 		Object[] objs = (Object[]) result.get(0);
 

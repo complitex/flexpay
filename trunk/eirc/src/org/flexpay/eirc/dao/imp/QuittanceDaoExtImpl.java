@@ -1,15 +1,16 @@
 package org.flexpay.eirc.dao.imp;
 
-import org.apache.log4j.Logger;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 import java.util.Date;
 
 public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoExt {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * Generate current snapshot of details and create quittances for the following processing
@@ -26,12 +27,10 @@ public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoE
 		long detailsCount = generateDetailsReferences(dateFrom, dateTill, now);
 		long updatedCount = updateOrderNumbers(dateFrom, dateTill, now);
 
-		if (log.isInfoEnabled()) {
-			log.info(String.format("Generated quittances statistics.\n" +
-								   "Total quittances: %d\n" +
-								   "Total details: %d\n" +
-								   "Total quittance numbers updated: %d", count, detailsCount, updatedCount));
-		}
+		log.info(String.format("Generated quittances statistics.\n" +
+							   "Total quittances: %d\n" +
+							   "Total details: %d\n" +
+							   "Total quittance numbers updated: %d", count, detailsCount, updatedCount));
 
 		return count;
 	}

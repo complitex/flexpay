@@ -35,9 +35,7 @@ public class SpFilesListAction extends FPActionSupport {
 	public boolean isLoaded(@NotNull Long fileId) {
 		boolean loaded = registryFileService.isLoaded(new Stub<FlexPayFile>(fileId));
 
-		if (log.isDebugEnabled()) {
-			log.debug("File was " + (loaded ? "" : "not") + " loaded: " + fileId);
-		}
+		log.debug("File was {} loaded: {}", (loaded ? "" : "not"), fileId);
 
 		return loaded;
 	}

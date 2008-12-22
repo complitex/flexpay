@@ -1,13 +1,14 @@
 package org.flexpay.eirc.persistence.exchange;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.RegistryRecord;
-import org.apache.log4j.Logger;
+import org.flexpay.eirc.persistence.SpRegistry;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public abstract class Operation {
 
-	protected Logger log = Logger.getLogger(getClass());
+	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * Simbol used escape special simbols
@@ -41,10 +42,11 @@ public abstract class Operation {
 
 	/**
 	 * Process operation
-	 * 
+	 *
 	 * @param registry Registry header
-	 * @param record Registry record
-	 * @throws FlexPayException if failure occurs
+	 * @param record   Registry record
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if failure occurs
 	 */
 	abstract public void process(SpRegistry registry, RegistryRecord record) throws FlexPayException;
 }

@@ -1,7 +1,6 @@
 package org.flexpay.eirc.service.importexport;
 
 import org.apache.commons.collections.ArrayStack;
-import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.filters.TownFilter;
@@ -14,12 +13,14 @@ import org.flexpay.common.persistence.TemporaryName;
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 public class EircImportService {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private StreetService streetService;
 	private EircImportServiceTx eircImportServiceTx;
@@ -27,9 +28,7 @@ public class EircImportService {
 	public void importConsumers(DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
 			throws FlexPayException {
 
-		if (log.isInfoEnabled()) {
-			log.info("Starting importing consumers for data source: " + sd.getId());
-		}
+		log.info("Starting importing consumers for data source: {}", sd.getId());
 
 		Town defaultTown = ApplicationConfig.getDefaultTown();
 		ArrayStack filters = new ArrayStack();
@@ -39,7 +38,7 @@ public class EircImportService {
 		Map<String, List<Street>> nameObjsMap = initializeNamesToObjectsMap(townStreets);
 
 		if (log.isInfoEnabled()) {
-			log.info("Streets number: " + nameObjsMap.keySet().size());
+			log.info("Streets number: {}", nameObjsMap.keySet().size());
 		}
 
 		// records count + skipped data read
@@ -54,9 +53,7 @@ public class EircImportService {
 			inited = true;
 		} while (hasMoreData);
 
-		if (log.isDebugEnabled()) {
-			log.debug("Imported " + counters[0] + " records. Skipped: " + counters[1]);
-		}
+		log.debug("Imported {} records. Skipped: {}", counters[0], counters[1]);
 	}
 
 	/**
@@ -64,7 +61,8 @@ public class EircImportService {
 	 *
 	 * @param ntds List of objects
 	 * @return mapping
-	 * @throws FlexPayException if language configuration is invalid
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if language configuration is invalid
 	 */
 	@SuppressWarnings ({"unchecked"})
 	protected <NTD extends NameTimeDependentChild> Map<String, List<NTD>> initializeNamesToObjectsMap(List<NTD> ntds)
@@ -74,7 +72,7 @@ public class EircImportService {
 		for (NTD object : ntds) {
 			TemporaryName tmpName = (TemporaryName) object.getCurrentName();
 			if (tmpName == null) {
-				log.error("No current name for object: " + object);
+				log.error("No current name for object: {}", object);
 				continue;
 			}
 			Translation defTranslation = getDefaultLangTranslation(tmpName.getTranslations());

@@ -2,7 +2,6 @@ package org.flexpay.common.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.config.Namespace;
 import org.apache.struts2.interceptor.SessionAware;
@@ -11,23 +10,31 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
-import org.flexpay.common.util.*;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.LanguageUtil;
+import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Helper ActionSupport extension, able to set
  */
 @SuppressWarnings ({"UnusedDeclaration"})
-@Namespace("")
+@Namespace ("")
 public abstract class FPActionSupport extends ActionSupport implements UserPreferencesAware, SessionAware {
 
 	@NonNls
-	protected Logger log = Logger.getLogger(getClass());
+	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	@NonNls
 	private static final String ERRORS_SESSION_ATTRIBUTE = FPActionSupport.class.getName() + ".ERRORS";

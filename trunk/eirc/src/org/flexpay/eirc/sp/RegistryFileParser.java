@@ -2,7 +2,6 @@ package org.flexpay.eirc.sp;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FlexPayFile;
 import org.flexpay.common.process.ProcessLogger;
@@ -16,6 +15,8 @@ import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.sp.SpFileReader.Message;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,7 @@ import java.util.List;
 @Transactional (readOnly = true)
 public class RegistryFileParser {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	public static final String DATE_FORMAT = "ddMMyyyyHHmmss";
 
@@ -61,9 +62,7 @@ public class RegistryFileParser {
 		SpRegistry registry = null;
 		Logger processLog = ProcessLogger.getLogger(getClass());
 
-		if (processLog.isInfoEnabled()) {
-			processLog.info("Starting parsing file: " + spFile);
-		}
+		processLog.info("Starting parsing file: {}", spFile);
 
 		Long[] recordCounter = {0L};
 		try {
@@ -76,12 +75,9 @@ public class RegistryFileParser {
 				registry = processMessage(message, spFile, registry, recordCounter);
 
 				// add some process log
-				if (processLog.isInfoEnabled()) {
-					if (log.isTraceEnabled()) {
-						processLog.trace("Parsed " + recordCounter[0] + " records");
-					} else if (recordCounter[0] % 100 == 0) {
-						processLog.info("Parsed " + recordCounter[0] + " records");
-					}
+				processLog.trace("Parsed {} records", recordCounter[0]);
+				if (recordCounter[0] > 0 && recordCounter[0] % 100 == 0) {
+					processLog.info("Parsed {} records", recordCounter[0]);
 				}
 			}
 			finalizeRegistry(registry, recordCounter);
@@ -101,9 +97,7 @@ public class RegistryFileParser {
 			}
 		}
 
-		if (processLog.isInfoEnabled()) {
-			processLog.info("File successfully parsed, total records: " + recordCounter[0]);
-		}
+		processLog.info("File successfully parsed, total records: {}", recordCounter[0]);
 	}
 
 	/**
@@ -121,7 +115,7 @@ public class RegistryFileParser {
 											+ spFile.getNameOnServer());
 		}
 
-		log.debug("Opening registry file: " + spFile);
+		log.debug("Opening registry file: {}", spFile);
 
 		String type = "";
 		if (spFile.getOriginalName().endsWith(".zip")) {
@@ -146,9 +140,7 @@ public class RegistryFileParser {
 		List<String> messageFieldList = StringUtil.splitEscapable(
 				messageValue, Operation.RECORD_DELIMITER, Operation.ESCAPE_SIMBOL);
 
-		if (log.isDebugEnabled()) {
-			log.debug("Message fields: " + messageFieldList);
-		}
+		log.debug("Message fields: {}", messageFieldList);
 
 		if (messageType.equals(Message.MESSAGE_TYPE_HEADER)) {
 			if (registry != null) {
@@ -172,9 +164,8 @@ public class RegistryFileParser {
 					+ messageFieldList.size() + ", expected 11");
 		}
 
-		if (log.isInfoEnabled()) {
-			log.info("adding header: " + messageFieldList);
-		}
+		log.info("adding header: {}", messageFieldList);
+
 		DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
 		SpRegistry newRegistry = new SpRegistry();
@@ -203,7 +194,7 @@ public class RegistryFileParser {
 			newRegistry.setContainers(parseContainers(newRegistry, messageFieldList.get(++n)));
 
 			if (log.isInfoEnabled()) {
-				log.info("Creating new registry: " + newRegistry);
+				log.info("Creating new registry: {}", newRegistry);
 			}
 
 			Organization recipient;
@@ -211,27 +202,27 @@ public class RegistryFileParser {
 				log.debug("Recipient is EIRC, code=0");
 				recipient = ApplicationConfig.getSelfOrganization();
 			} else {
-				log.debug("Recipient is fetched via code=" + newRegistry.getRecipientCode());
+				log.debug("Recipient is fetched via code={}", newRegistry.getRecipientCode());
 				recipient = organizationService.getOrganization(newRegistry.getRecipientStub());
 			}
 			newRegistry.setRecipient(recipient);
 			if (recipient == null) {
-				log.error("Failed processing registry header, recipient not found: #" + newRegistry.getRecipientCode());
+				log.error("Failed processing registry header, recipient not found: #{}", newRegistry.getRecipientCode());
 				throw new FlexPayException("Cannot find recipient organization " + newRegistry.getRecipientCode());
 			}
 			Organization sender = organizationService.getOrganization(newRegistry.getSenderStub());
 			newRegistry.setSender(sender);
 			if (sender == null) {
-				log.error("Failed processing registry header, sender not found: #" + newRegistry.getSenderCode());
+				log.error("Failed processing registry header, sender not found: #{}", newRegistry.getSenderCode());
 				throw new FlexPayException("Cannot find sender organization " + newRegistry.getSenderCode());
 			}
 			if (log.isInfoEnabled()) {
-				log.info("Recipient: " + recipient + "\n sender: " + sender);
+				log.info("Recipient: {}\n sender: {}", recipient, sender);
 			}
 
 			ServiceProvider provider = spService.getProvider(newRegistry.getSenderCode());
 			if (provider == null) {
-				log.error("Failed processing registry header, provider not found: #" + newRegistry.getSenderCode());
+				log.error("Failed processing registry header, provider not found: #{}", newRegistry.getSenderCode());
 				throw new FlexPayException("Cannot find service provider " + newRegistry.getSenderCode());
 			}
 			newRegistry.setServiceProvider(provider);
@@ -252,7 +243,8 @@ public class RegistryFileParser {
 	 * Check if registry header is valid
 	 *
 	 * @param registry Registry to validate
-	 * @throws FlexPayException if registry header validation fails
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if registry header validation fails
 	 */
 	@Transactional (readOnly = true)
 	private void validateRegistry(SpRegistry registry) throws FlexPayException {
@@ -295,7 +287,7 @@ public class RegistryFileParser {
 			Service service = consumerService.findService(
 					registry.getServiceProvider(), record.getServiceCode());
 			if (service == null) {
-				log.warn("Unknown service code: " + record.getServiceCode());
+				log.warn("Unknown service code: {}", record.getServiceCode());
 			}
 			record.setService(service);
 
@@ -424,7 +416,7 @@ public class RegistryFileParser {
 
 		if (!registry.getRecordsNumber().equals(recordCounter[0])) {
 			throw new RegistryFormatException("Registry records number error, expected: " +
-											registry.getRecordsNumber() + ", found: " + recordCounter[0]);
+											  registry.getRecordsNumber() + ", found: " + recordCounter[0]);
 		}
 
 		registryWorkflowManager.setNextSuccessStatus(registry);

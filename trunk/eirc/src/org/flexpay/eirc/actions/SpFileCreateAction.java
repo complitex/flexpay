@@ -38,9 +38,7 @@ public class SpFileCreateAction extends FPActionSupport {
                 spFile.setSize(fileOnSystem.length());
 
 				try {
-					if (log.isDebugEnabled()) {
-						log.debug("Creating RegistryFile: " + spFile);
-					}
+					log.debug("Creating RegistryFile: {}", spFile);
 
 					flexPayFileService.create(spFile);
 				} catch (FlexPayException e) {

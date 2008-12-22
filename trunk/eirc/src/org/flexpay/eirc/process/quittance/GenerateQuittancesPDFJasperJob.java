@@ -1,7 +1,6 @@
 package org.flexpay.eirc.process.quittance;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.ProcessLogger;
@@ -13,6 +12,7 @@ import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.quittance.report.JRQuittanceDataSource;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.InputStream;

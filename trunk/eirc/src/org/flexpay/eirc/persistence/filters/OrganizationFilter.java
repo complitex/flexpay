@@ -5,7 +5,7 @@ import org.flexpay.eirc.persistence.Organization;
 
 import java.util.List;
 
-public class OrganizationFilter extends PrimaryKeyFilter {
+public class OrganizationFilter extends PrimaryKeyFilter<Organization> {
 
 	private List<Organization> organizations;
 

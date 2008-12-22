@@ -54,9 +54,7 @@ public class BankEditAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Bank descriptions: " + descriptions);
-		}
+		log.debug("Bank descriptions: {}", descriptions);
 
 		Organization juridicalPerson = organizationService.read(new Organization(organizationFilter.getSelectedId()));
 		oldBank.setOrganization(juridicalPerson);
