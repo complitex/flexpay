@@ -86,7 +86,7 @@ public class BaseContainerOperation extends ContainerOperation {
 										   ", account=" + record.getPersonalAccountExt() + ", code=" + serviceId);
 			}
 		} else {
-			consumer = (Consumer) record.getConsumer();
+			consumer = record.getConsumer();
 			if (consumer == null) {
 				throw new FlexPayException("No consumer was set up");
 			}
