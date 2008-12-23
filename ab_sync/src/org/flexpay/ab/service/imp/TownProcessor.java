@@ -6,8 +6,8 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
@@ -99,9 +99,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 					String name = TranslationUtil.getTranslation(townName.getTranslations()).getName();
 
 					if (name.equals(record.getCurrentValue())) {
-						if (log.isDebugEnabled()) {
-							log.debug("History town name is the same as in DB: " + name);
-						}
+						log.debug("History town name is the same as in DB: {}", name);
 						return;
 					}
 				}
@@ -125,7 +123,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 	/**
 	 * Save DomainObject
 	 *
-	 * @param object Object to save
+	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
 	public void doSaveObject(Town object, String externalId) {

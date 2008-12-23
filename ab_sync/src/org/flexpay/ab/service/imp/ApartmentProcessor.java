@@ -1,17 +1,20 @@
 package org.flexpay.ab.service.imp;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.BuildingsDao;
-import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.ApartmentNumber;
+import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.HistoryRecord;
 import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -68,7 +71,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 				setBuildingId(apartment, record, sd, cs);
 				break;
 			default:
-				log.debug("Unknown apartment property: " + record.getFieldType());
+				log.debug("Unknown apartment property type: {}", record.getFieldType());
 		}
 	}
 
@@ -77,15 +80,15 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 
 		Stub<Buildings> stub = cs.findCorrection(record.getCurrentValue(), Buildings.class, sd);
 		if (stub == null) {
-			log.error(String.format("No correction for buildings #%s DataSourceDescription %d, " +
-					"cannot set up building reference for apartment", record.getCurrentValue(), sd.getId()));
+			log.error("No correction for buildings #{} DataSourceDescription {}, " +
+					  "cannot set up building reference for apartment", record.getCurrentValue(), sd.getId());
 			return;
 		}
 
 		Buildings buildings = buildingsDao.read(stub.getId());
 		if (buildings == null) {
 			log.error(String.format("Correction for buildings #%s DataSourceDescription %d is invalid, " +
-					"no buildings with id %d, cannot set up building reference for apartment",
+									"no buildings with id %d, cannot set up building reference for apartment",
 					record.getCurrentValue(), sd.getId(), stub.getId()));
 			return;
 		}
@@ -132,7 +135,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	/**
 	 * Save DomainObject
 	 *
-	 * @param object Object to save
+	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
 	public void doSaveObject(Apartment object, String externalId) {
@@ -160,9 +163,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 			return null;
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Checking if apartment exists: " + object + "(number: " + object.getNumber() + ")");
-		}
+		log.debug("Checking if apartment exists: {} (number:{})", object, object.getNumber());
 
 		if (object.hasNoBuilding()) {
 			log.warn("Do not have a building reference");
@@ -170,8 +171,8 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 		}
 
 		Stub<Apartment> stub = apartmentService.findApartmentStub(object.getBuilding(), object.getNumber());
-		if (stub != null && log.isDebugEnabled()) {
-			log.debug("Found apartment stub: " + stub.getId());
+		if (stub != null) {
+			log.debug("Found apartment stub: {}", stub);
 		}
 
 		return stub;

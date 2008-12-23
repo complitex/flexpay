@@ -1,6 +1,5 @@
 package org.flexpay.ab.service.imp;
 
-import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.HistoryDao;
 import org.flexpay.ab.persistence.HistoryRecord;
 import org.flexpay.ab.persistence.ObjectType;
@@ -12,6 +11,7 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 public class SyncServiceImpl implements SyncService {
 
 	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private org.slf4j.Logger log = LoggerFactory.getLogger(getClass());
 
 	private HistoryDao historyDao;
 	private CorrectionsService correctionsService;

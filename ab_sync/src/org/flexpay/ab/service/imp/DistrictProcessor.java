@@ -8,9 +8,9 @@ import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
@@ -96,7 +96,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 					String name = TranslationUtil.getTranslation(districtName.getTranslations()).getName();
 
 					if (name.equals(record.getCurrentValue())) {
-						log.debug("History district name is the same as in DB: " + name);
+						log.debug("History district name is the same as in DB: {}", name);
 						return;
 					}
 				}
@@ -125,7 +125,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 			return null;
 		}
 		if (districts.size() > 1) {
-			log.error("More than 1 district found by name: " + districts);
+			log.error("More than 1 district found by name: {}", districts);
 		}
 		return stub(districts.get(0));
 	}
@@ -133,7 +133,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	/**
 	 * Save DomainObject
 	 *
-	 * @param object Object to save
+	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
 	protected void doSaveObject(District object, String externalId) {

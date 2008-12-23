@@ -1,16 +1,17 @@
 package org.flexpay.ab.sync;
 
-import org.apache.log4j.Logger;
 import org.flexpay.ab.service.SyncService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.util.Date;
 
 public class SyncAbJob extends QuartzJobBean {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private SyncService syncService;
 
@@ -23,9 +24,7 @@ public class SyncAbJob extends QuartzJobBean {
 	 */
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Starting sync at " + new Date());
-		}
+		log.debug("Starting sync at {}", new Date());
 
 		try {
 			// do the job

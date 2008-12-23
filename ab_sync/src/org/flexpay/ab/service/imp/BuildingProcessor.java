@@ -63,9 +63,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 		buildings.setBuilding(building);
 		building.setBuildingses(buildingses);
 
-		if (log.isDebugEnabled()) {
-			log.debug("Read building: " + building);
-		}
+		log.debug("Read building: {}", building);
 
 		return buildings;
 	}
@@ -73,7 +71,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	/**
 	 * Save DomainObject
 	 *
-	 * @param object Object to save
+	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
 	protected void doSaveObject(Buildings object, String externalId) {
@@ -81,9 +79,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 		if (object.getId() == null) {
 			buildingDao.create(building);
 
-			if (log.isDebugEnabled()) {
-				log.debug(String.format("Created building: %s", building.toString()));
-			}
+			log.debug("Created building: {}", building);
 		} else {
 			buildingDao.update(building);
 		}
@@ -115,9 +111,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 				setBuildingBulk(buildings, record);
 				break;
 			default:
-				if (log.isDebugEnabled()) {
-					log.debug("Unknown building property: " + record.getFieldType());
-				}
+				log.debug("Unknown building property type: {}", record.getFieldType());
 		}
 	}
 
@@ -132,12 +126,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 		}
 
 		buildings.setBuildingAttribute(record.getCurrentValue(), ApplicationConfig.getBuildingAttributeTypeNumber());
-
-		if (log.isInfoEnabled()) {
-			log.info(String.format(
-					"Building number to set: %s, actual number: %s", record
-							.getCurrentValue(), buildings.getNumber()));
-		}
+		log.info("Building number to set: {}, actual number: {}", record.getCurrentValue(), buildings.getNumber());
 	}
 
 	private void setBuildingBulk(Buildings buildings, HistoryRecord record)
@@ -145,16 +134,12 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 
 		String value = buildings.getBulk();
 		if (value != null && !value.equals(record.getCurrentValue())) {
-			log.warn("Building bulk renumber, history loss. Object id: " + record.getObjectId());
+			log.warn("Building bulk renumber, history loss. Object id: {}", record.getObjectId());
 		}
 
 		buildings.setBuildingAttribute(record.getCurrentValue(), ApplicationConfig.getBuildingAttributeTypeBulk());
 
-		if (log.isInfoEnabled()) {
-			log.info(String.format(
-					"Building bulk to set: %s, actual value: %s", record
-							.getCurrentValue(), buildings.getBulk()));
-		}
+		log.info("Building bulk to set: {}, actual value: {}", record.getCurrentValue(), buildings.getBulk());
 	}
 
 	private void setDistrictId(Building building, HistoryRecord record,
@@ -162,16 +147,14 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 		Stub<District> stub = cs.findCorrection(record.getCurrentValue(),
 				District.class, sd);
 		if (stub == null) {
-			log.error(String.format(
-					"No correction for district #%s DataSourceDescription %d, "
-					+ "cannot set up reference for building",
-					record.getCurrentValue(), sd.getId()));
+			log.error("No correction for district #{} DataSourceDescription {}, "
+					  + "cannot set up reference for building",
+					record.getCurrentValue(), sd.getId());
 			return;
 		}
 
 		if (districtDao.read(stub.getId()) == null) {
-			log.error(String
-					.format(
+			log.error(String.format(
 					"Correction for district #%s DataSourceDescription %d is invalid, "
 					+ "no district with id %d, cannot set up reference for building",
 					record.getCurrentValue(), sd.getId(), stub.getId()));
@@ -185,10 +168,8 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 							 DataSourceDescription sd, CorrectionsService cs) {
 		Stub<Street> stub = cs.findCorrection(record.getCurrentValue(), Street.class, sd);
 		if (stub == null) {
-			log.error(String.format(
-					"No correction for street #%s DataSourceDescription %d, "
-					+ "cannot set up reference for building", record
-							.getCurrentValue(), sd.getId()));
+			log.error("No correction for street #{} DataSourceDescription {}, "
+					  + "cannot set up reference for building", record.getCurrentValue(), sd.getId());
 			return;
 		}
 

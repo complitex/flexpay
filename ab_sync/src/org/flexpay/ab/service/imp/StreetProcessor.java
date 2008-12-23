@@ -8,13 +8,13 @@ import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
-import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -82,8 +82,8 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	private void setStreetTypeId(Street street, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs) {
 		Stub<StreetType> stub = cs.findCorrection(record.getCurrentValue(), StreetType.class, sd);
 		if (stub == null) {
-			log.error(String.format("No correction for street type #%s DataSourceDescription %d, " +
-					"cannot set up reference for street", record.getCurrentValue(), sd.getId()));
+			log.error("No correction for street type #{} DataSourceDescription {}, " +
+					  "cannot set up reference for street", record.getCurrentValue(), sd.getId());
 			return;
 		}
 
@@ -126,9 +126,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 					String name = TranslationUtil.getTranslation(streetName.getTranslations()).getName();
 
 					if (name.equals(record.getCurrentValue())) {
-						if (log.isDebugEnabled()) {
-							log.debug("History street name is the same as in DB: " + name);
-						}
+						log.debug("History street name is the same as in DB: {}", name);
 						return;
 					}
 				}
@@ -160,9 +158,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 
 		List<Street> streets = streetService.findByName(nameStr, new TownFilter(object.getParent().getId()));
 
-		if (log.isDebugEnabled()) {
-			log.debug("Looked up for " + nameStr + ", found " + streets.size());
-		}
+		log.debug("Looked up for {}, found ", nameStr, streets.size());
 		if (streets.isEmpty()) {
 			return null;
 		}
@@ -175,7 +171,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 		}
 
 		if (streets.size() > 1) {
-			log.warn("Found several similar streets: " + streets);
+			log.warn("Found several similar streets: {}", streets);
 		}
 
 		return stub(streets.get(0));
@@ -187,7 +183,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 		for (Street street : streets) {
 			StreetType currentType = street.getCurrentType();
 			if (currentType == null) {
-				log.warn("No type for street: " + street);
+				log.warn("No type for street: {}", street);
 				continue;
 			}
 
@@ -202,7 +198,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	/**
 	 * Save DomainObject
 	 *
-	 * @param object Object to save
+	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
 	protected void doSaveObject(Street object, String externalId) {
