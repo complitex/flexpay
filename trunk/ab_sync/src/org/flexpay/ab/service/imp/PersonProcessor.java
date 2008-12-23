@@ -108,9 +108,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 
 	private void setFirstName(@NotNull Person person, @NotNull HistoryRecord record) {
 		PersonIdentity identity = person.getDefaultIdentity();
-		if (log.isDebugEnabled()) {
-			log.debug("Setting first name, person: " + person);
-		}
+		log.debug("Setting first name, person: {}", person);
 
 		boolean valuesEquals = new EqualsBuilder()
 				.append(record.getCurrentValue(), identity.getFirstName())
@@ -134,9 +132,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 
 	private void setMiddleName(Person person, HistoryRecord record) {
 		PersonIdentity identity = person.getDefaultIdentity();
-		if (log.isDebugEnabled()) {
-			log.debug("Setting middle name, person: " + person);
-		}
+		log.debug("Setting middle name, person: {}", person);
 
 		boolean valuesEquals = new EqualsBuilder()
 				.append(record.getCurrentValue(), identity.getMiddleName())
@@ -160,9 +156,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 
 	private void setLastName(@NotNull Person person, @NotNull HistoryRecord record) {
 		PersonIdentity identity = person.getDefaultIdentity();
-		if (log.isDebugEnabled()) {
-			log.debug("Setting last name, person: " + person);
-		}
+		log.debug("Setting last name, person: {}", person);
 
 		boolean valuesEquals = new EqualsBuilder()
 				.append(record.getCurrentValue(), identity.getLastName())
@@ -203,9 +197,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 		inn.setName("ab.person.attribute.inn");
 		inn.setTranslatable(person);
 
-		if (log.isDebugEnabled()) {
-			log.debug("Setting person INN: " + value);
-		}
+		log.debug("Setting person INN: {}", value);
 
 		person.setAttribute(inn);
 	}
@@ -215,7 +207,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 
 		Stub<Apartment> stub = cs.findCorrection(apartmentId, Apartment.class, sd);
 		if (stub == null) {
-			log.error("Cannot set residence apartment for person, correction not found: " + apartmentId);
+			log.error("Cannot set residence apartment for person, correction not found: {}", apartmentId);
 			return;
 		}
 
@@ -238,18 +230,18 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	/**
 	 * Save DomainObject
 	 *
-	 * @param object Object to save
+	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
 	protected void doSaveObject(Person object, String externalId) throws Exception {
 		PersonIdentity identity = object.getDefaultIdentity();
 		if (identity != null) {
 			if (identity.isFIOEmpty()) {
-				log.warn("Person with empty FIO, settion last name to ObjectId: " + externalId);
+				log.warn("Person with empty FIO, settion last name to ObjectId: {}", externalId);
 				identity.setLastName(externalId);
 			}
 			if (StringUtils.isBlank(identity.getLastName())) {
-				log.error("Do not saving person, empty last name: " + object);
+				log.error("Do not saving person, empty last name: {}", object);
 				return;
 			}
 			personService.save(object);

@@ -1,6 +1,5 @@
 package org.flexpay.ab.service.imp;
 
-import org.apache.log4j.Logger;
 import org.flexpay.ab.dao.HistoryDao;
 import org.flexpay.ab.dao.HistorySourceDao;
 import org.flexpay.ab.dao.UpdateConfigDao;
@@ -8,12 +7,14 @@ import org.flexpay.ab.persistence.HistoryRecord;
 import org.flexpay.ab.persistence.UpdateConfig;
 import org.flexpay.ab.service.HistoryDumpService;
 import org.flexpay.common.locking.LockManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 
 public class HistoryDumpServiceImpl implements HistoryDumpService {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private UpdateConfigDao updateConfigDao;
 	private HistoryDao historyDao;
@@ -33,9 +34,7 @@ public class HistoryDumpServiceImpl implements HistoryDumpService {
 		long nRecords = 0;
 		try {
 			UpdateConfig config = updateConfigDao.getConfig();
-			if (log.isInfoEnabled()) {
-				log.info("Last dumped record was: " + config.getLastDumpedRecordId());
-			}
+			log.info("Last dumped record was: {}", config.getLastDumpedRecordId());
 
 			Iterator<HistoryRecord> it = historySourceDao.getRecords(config.getLastDumpedRecordId());
 			while (it.hasNext()) {
@@ -56,7 +55,7 @@ public class HistoryDumpServiceImpl implements HistoryDumpService {
 			historySourceDao.close();
 		}
 
-		log.info("Dumped " + nRecords + " records.");
+		log.info("Dumped {} records.", nRecords);
 	}
 
 	public void setUpdateConfigDao(UpdateConfigDao updateConfigDao) {

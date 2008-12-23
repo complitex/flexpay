@@ -9,9 +9,9 @@ import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
@@ -63,9 +63,8 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 */
 	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
-		if (log.isDebugEnabled()) {
-			log.debug("About to set property: " + record.getFieldType());
-		}
+
+		log.debug("About to set property: {}", record.getFieldType());
 
 		StreetType streetType = (StreetType) object;
 		switch (record.getFieldType()) {
@@ -75,23 +74,17 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 					String name = typeTranslation.getName();
 
 					if (name.equals(record.getCurrentValue())) {
-						if (log.isDebugEnabled()) {
-							log.debug("History street type name is the same as in DB: " + name);
-						}
+						log.debug("History street type name is the same as in DB: {}", name);
 						return;
 					}
 				}
 
-				if (log.isDebugEnabled()) {
-					log.debug("Setting street type name, object is new: " + (object.getId() == null));
-				}
+				log.debug("Setting street type name, object is new: {}", object.getId() == null);
 
 				setName(streetType, record.getCurrentValue());
 				break;
 			default:
-				if (log.isDebugEnabled()) {
-					log.debug("Unknown street type field: " + record.getFieldType());
-				}
+				log.debug("Unknown street type field: {}", record.getFieldType());
 		}
 	}
 
@@ -136,7 +129,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 			return type != null ? stub(type) : null;
 
 		} catch (FlexPayException e) {
-			log.info("Cannot find persistent street type by example: ", e);
+			log.info("Cannot find persistent street type by example", e);
 			return null;
 		}
 	}
@@ -144,7 +137,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	/**
 	 * Save DomainObject
 	 *
-	 * @param object Object to save
+	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
 	protected void doSaveObject(StreetType object, String externalId) throws Exception {

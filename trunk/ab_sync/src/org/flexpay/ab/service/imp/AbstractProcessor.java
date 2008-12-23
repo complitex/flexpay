@@ -1,17 +1,16 @@
 package org.flexpay.ab.service.imp;
 
-import org.apache.log4j.Logger;
 import org.flexpay.ab.persistence.HistoryRecord;
 import org.flexpay.common.persistence.*;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractProcessor<T extends DomainObject> {
 
-	@NonNls
-	protected final Logger log = Logger.getLogger(getClass());
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	private Class<T> type;
 
@@ -35,7 +34,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 		if (obj == null) {
 			Stub<T> stub = cs.findCorrection(extId, type, sd);
 			if (stub != null) {
-				log.debug("External object already exists: " + extId);
+				log.debug("External object already exists: {}", extId);
 				T t = readObject(stub);
 				if (t == null) {
 					throw new IllegalStateException("Invalid correction present, no object: " + extId + ", type: " + type);
@@ -48,7 +47,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 
 		if (!type.isInstance(obj)) {
 			throw new IllegalArgumentException("Object of type " + obj.getClass() +
-					" cannot be handled by processor " + getClass());
+											   " cannot be handled by processor " + getClass());
 		}
 
 		return type.cast(obj);
@@ -101,9 +100,8 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 		if (obj == null) {
 			Stub<T> stub = cs.findCorrection(extId, type, sd);
 			if (stub != null) {
-				if (log.isDebugEnabled()) {
-					log.debug("External object already exists: " + extId);
-				}
+				log.debug("External object already exists: {}", extId);
+
 				T object = readObject(stub);
 				if (object == null) {
 					throw new IllegalStateException("Invalid correction present, no object: " + extId + ", type: " + type);
@@ -111,9 +109,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 				return object;
 			}
 
-			if (log.isDebugEnabled()) {
-				log.debug("Cannot find correction for object of type " + type + " with id " + extId + ", creating a stub");
-			}
+			log.debug("Cannot find correction for object of type {} with id {}, creating a stub", type, extId);
 			return doCreateObject();
 		}
 
@@ -146,11 +142,9 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @throws Exception if failure occurs
 	 */
 	public void saveObject(DomainObject object, String externalId, DataSourceDescription sd, CorrectionsService cs)
-		throws Exception {
+			throws Exception {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Saving object: " + object.getId() + ", externalID: " + externalId);
-		}
+		log.debug("Saving object: {}, externalID: {}", object.getId(), externalId);
 
 		Long id = object.getId();
 		T obj = type.cast(object);
@@ -159,7 +153,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 			if (obj instanceof DomainObjectWithStatus) {
 				DomainObjectWithStatus withStatus = (DomainObjectWithStatus) obj;
 				if (withStatus.getStatus() == DomainObjectWithStatus.STATUS_DISABLED) {
-					log.warn("Deleting unknown object nothing to do: " + externalId);
+					log.warn("Deleting unknown object nothing to do: {}", externalId);
 					return;
 				}
 			}
@@ -180,13 +174,11 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 			return;
 		}
 
-		if (log.isInfoEnabled()) {
-			log.info("Performing save: " + obj);
-		}
+		log.info("Performing save: {}", obj);
 		doSaveObject(obj, externalId);
 
 		if (id == null && obj.getId() != null) {
-			log.info("Adding a new object correction: " + obj.getId());
+			log.info("Adding a new object correction: {}", obj.getId());
 			DataCorrection correction = cs.getStub(externalId, obj, sd);
 			cs.save(correction);
 		}
@@ -196,8 +188,8 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * Try to find persistent object by set properties
 	 *
 	 * @param object DomainObject
-	 * @param sd DataSourceDescription
-	 * @param cs CorrectionsService
+	 * @param sd	 DataSourceDescription
+	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 * @throws Exception if failure occurs
 	 */
@@ -208,7 +200,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	/**
 	 * Save DomainObject
 	 *
-	 * @param object Object to save
+	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 * @throws Exception if failure occurs
 	 */
