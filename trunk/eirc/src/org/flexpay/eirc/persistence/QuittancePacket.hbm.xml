@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.flexpay.eirc.persistence">
 
-	<class name="PaymentPoint" table="eirc_payment_points_tbl" optimistic-lock="version" entity-name="PaymentPoint">
+	<class name="PaymentPoint" table="eirc_payment_points_tbl" optimistic-lock="version">
 		<comment>Payment points</comment>
 		<id name="id" column="id">
 			<generator class="native" />
@@ -20,16 +20,15 @@
 				<comment>Enabled-disabled status</comment>
 			</column>
 		</property>
-		<many-to-one name="apartment" foreign-key="eirc_payment_points_tbl_apartment_id"
-				class="org.flexpay.ab.persistence.Apartment">
-			<column name="apartment_id" not-null="true">
-				<comment>Apartment reference</comment>
+		<property name="address">
+			<column name="address" not-null="true">
+				<comment>Address</comment>
 			</column>
-		</many-to-one>
-		<many-to-one name="organization" foreign-key="eirc_payment_points_tbl_organization_id"
-				class="org.flexpay.eirc.persistence.Organization">
-			<column name="organization_id" not-null="true">
-				<comment>Organization reference</comment>
+		</property>
+		<many-to-one name="collector" foreign-key="FK_eirc_payment_points_tbl_collector_id"
+				class="org.flexpay.eirc.persistence.PaymentsCollector">
+			<column name="collector_id" not-null="true">
+				<comment>Payments collector reference</comment>
 			</column>
 		</many-to-one>
 	</class>
@@ -37,12 +36,12 @@
     <query name="PaymentPoint.listPoints.count">
 		select count(o)
         from PaymentPoint o
-        where o.status = 0 and o.apartment.building.district.town.id=?
+        where o.status = 0
     </query>
 
     <query name="PaymentPoint.listPoints">
         from PaymentPoint o
-        where o.status = 0 and o.apartment.building.district.town.id=?
+        where o.status = 0
     </query>
 
 </hibernate-mapping>

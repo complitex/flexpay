@@ -116,20 +116,20 @@
 		where b.id=?
 	</query>
 
-	<query name="Bank.findBanks">
+	<query name="Bank.findInstances">
 		select distinct b
 		from Bank b
-		left outer join fetch b.descriptions
-		inner join fetch b.organization
+			left outer join fetch b.descriptions
+			inner join fetch b.organization
 		where b.status=0
 	</query>
 
-	<query name="Bank.findOrganizationBanks">
+	<query name="Bank.findOrganizationInstances">
 		from Bank
 		where status=0 and organization.id=?
 	</query>
 
-	<query name="Bank.findBanklessOrganizations">
+	<query name="Bank.findInstancelessOrganizations">
 		select distinct o
 		from Organization o
 		left join fetch o.names

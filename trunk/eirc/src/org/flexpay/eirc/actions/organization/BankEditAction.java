@@ -2,6 +2,7 @@ package org.flexpay.eirc.actions.organization;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.eirc.persistence.Bank;
@@ -31,13 +32,13 @@ public class BankEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		Bank oldBank = bankService.read(bank);
+		Bank oldBank = bank.isNotNew() ? bankService.read(stub(bank)) : bank;
 		if (oldBank == null) {
 			addActionError(getText("error.invalid_id"));
 			return REDIRECT_SUCCESS;
 		}
 
-		bankService.initBanklessFilter(organizationFilter, oldBank);
+		bankService.initInstancelessFilter(organizationFilter, oldBank);
 
 		// prepare initial setup
 		if (!isSubmit()) {
@@ -50,13 +51,17 @@ public class BankEditAction extends FPActionSupport {
 		}
 
 		if (!organizationFilter.needFilter()) {
-			addActionError(getText("eirc.error.bank.no_organization_selected"));
+			addActionError(getText("eirc.error.orginstance.no_organization_selected"));
+			return INPUT;
+		}
+		Organization juridicalPerson = organizationService.readFull(organizationFilter.getSelectedStub());
+		if (juridicalPerson == null) {
+			addActionError(getText("eirc.error.orginstance.no_organization"));
 			return INPUT;
 		}
 
 		log.debug("Bank descriptions: {}", descriptions);
 
-		Organization juridicalPerson = organizationService.read(new Organization(organizationFilter.getSelectedId()));
 		oldBank.setOrganization(juridicalPerson);
 		oldBank.setBankIdentifierCode(bank.getBankIdentifierCode());
 		oldBank.setCorrespondingAccount(bank.getCorrespondingAccount());
@@ -70,7 +75,11 @@ public class BankEditAction extends FPActionSupport {
 			oldBank.setDescription(description);
 		}
 
-		bankService.save(oldBank);
+		if (oldBank.isNew()) {
+			bankService.create(oldBank);
+		} else {
+			bankService.update(oldBank);
+		}
 
 		return REDIRECT_SUCCESS;
 	}

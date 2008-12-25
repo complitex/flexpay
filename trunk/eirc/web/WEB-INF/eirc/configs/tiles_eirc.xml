@@ -108,6 +108,17 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/organizations/edit_bank.jsp" />
 	</definition>
 
+	<!-- Payments Collectors -->
+	<definition name="eirc.organization.payments_collectors.list" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.payments_collectors" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/organizations/list_payments_collectors.jsp" />
+	</definition>
+
+	<definition name="eirc.organization.payments_collector.edit" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.payments_collector" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/organizations/edit_payments_collector.jsp" />
+	</definition>
+
     <!-- Service organizations -->
     <definition name="eirc.organization.service_organizations.list" extends="eirc.dictionaries">
         <put-attribute name="title" value="eirc.service_organizations" />

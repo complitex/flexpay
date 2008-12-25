@@ -58,7 +58,7 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 	 */
 	@NotNull
 	public List<Subdivision> getOrganizationSubdivisions(@NotNull Stub<Organization> stub) throws FlexPayException {
-		Organization org = organizationService.read(new Organization(stub));
+		Organization org = organizationService.readFull(stub);
 		if (org == null) {
 			throw new FlexPayException("Invalid id", "error.invalid_id");
 		}
@@ -137,13 +137,13 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 			container.addException(new FlexPayException(
 					"No organization", "eirc.error.subdivision.no_organization"));
 		}
-		Organization organization = organizationService.getOrganization(stub(subdivision.getHeadOrganization()));
+		Organization organization = organizationService.readFull(stub(subdivision.getHeadOrganization()));
 		//noinspection ConstantConditions
 		subdivision.setHeadOrganization(organization);
 
 		Organization juridicalPersonStub = subdivision.getJuridicalPerson();
 		if (juridicalPersonStub != null) {
-			Organization juridicalPerson = organizationService.getOrganization(stub(juridicalPersonStub));
+			Organization juridicalPerson = organizationService.readFull(stub(juridicalPersonStub));
 			if (juridicalPerson == null) {
 				container.addException(new FlexPayException(
 						"Invalid juridical person", "eirc.error.subdivision.invalid_juridical_person"));

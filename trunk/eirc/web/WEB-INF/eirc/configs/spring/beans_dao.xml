@@ -170,6 +170,16 @@
 		</property>
 	</bean>
 
+	<bean id="paymentsCollectorDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.eirc.dao.PaymentsCollectorDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.eirc.persistence.PaymentsCollector" />
+			</bean>
+		</property>
+	</bean>
+
     <bean id="serviceOrganizationDao" parent="abstractDao">
         <property name="proxyInterfaces"
                   value="org.flexpay.eirc.dao.ServiceOrganizationDao" />

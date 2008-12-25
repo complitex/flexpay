@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface PaymentPointDao extends GenericDao<PaymentPoint, Long> {
 
-	List<PaymentPoint> listPoints(Long townId, Page<PaymentPoint> pager);
+	List<PaymentPoint> listPoints(Page<PaymentPoint> pager);
 }

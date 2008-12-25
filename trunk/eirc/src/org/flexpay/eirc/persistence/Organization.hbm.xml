@@ -33,6 +33,10 @@
             <key column="organization_id" not-null="true" />
             <one-to-many class="ServiceOrganization" />
         </set>
+        <set name="paymentsCollectors" inverse="true">
+            <key column="organization_id" not-null="true" />
+            <one-to-many class="PaymentsCollector" />
+        </set>
 		<set name="childSubdivisions" inverse="true">
 			<key column="head_organization_id" not-null="true" />
 			<one-to-many class="Subdivision" />

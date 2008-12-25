@@ -109,9 +109,19 @@
 		  p:subdivisionDao-ref="subdivisionDao"
 		  p:organizationService-ref="organizationService" />
 
+	<bean id="organisationInstanceService" class="org.flexpay.eirc.service.imp.OrganisationInstanceServiceImpl"
+		  abstract="true"
+		  p:sessionUtils-ref="sessionUtils"/>
+
 	<bean id="bankService" class="org.flexpay.eirc.service.imp.BankServiceImpl"
-		  p:sessionUtils-ref="sessionUtils"
+		  parent="organisationInstanceService"
+		  p:instanceDao-ref="bankDao"
 		  p:bankDao-ref="bankDao" />
+
+	<bean id="paymentsCollectorService" class="org.flexpay.eirc.service.imp.PaymentsCollectorServiceImpl"
+		  parent="organisationInstanceService"
+		  p:instanceDao-ref="paymentsCollectorDao"
+		  p:collectorDao-ref="paymentsCollectorDao" />
 
     <bean id="serviceOrganizationService" class="org.flexpay.eirc.service.imp.ServiceOrganizationServiceImpl"
           p:sessionUtils-ref="sessionUtils"

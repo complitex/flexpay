@@ -1,7 +1,5 @@
 package org.flexpay.eirc.persistence;
 
-import org.flexpay.common.persistence.Translation;
-
-public class ServiceOrganizationDescription extends Translation {
+public class ServiceOrganizationDescription extends OrganizationInstanceDescription {
 
 }

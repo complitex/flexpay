@@ -5,6 +5,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.ab.persistence.Town;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -19,4 +20,13 @@ public interface PaymentPointService {
 	 */
 	@NotNull
 	List<PaymentPoint> listPoints(@NotNull Stub<Town> townStub, @NotNull Page<PaymentPoint> pager);
+
+	/**
+	 * Read full payment point info
+	 *
+	 * @param stub payment point stub
+	 * @return Payment point if available, or <code>null</code> if not found
+	 */
+	@Nullable
+	PaymentPoint read(@NotNull Stub<PaymentPoint> stub);
 }

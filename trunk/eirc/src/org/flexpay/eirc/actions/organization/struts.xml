@@ -58,6 +58,20 @@
 			<result name="redirectSuccess" type="redirect-action">banksList</result>
 		</action>
 
+		<!-- Payments Collectors -->
+		<action name="paymentsCollectorsList" class="paymentsCollectorsListAction">
+			<result type="tiles">eirc.organization.payments_collectors.list</result>
+		</action>
+
+		<action name="paymentsCollectorsDelete" class="paymentsCollectorsDeleteAction">
+			<result name="redirectSuccess" type="redirect-action">banksList</result>
+		</action>
+
+		<action name="paymentsCollectorEdit" class="paymentsCollectorEditAction">
+			<result name="input" type="tiles">eirc.organization.payments_collector.edit</result>
+			<result name="redirectSuccess" type="redirect-action">paymentsCollectorsList</result>
+		</action>
+
         <!-- Service organizations -->
         <action name="serviceOrganizationsList" class="serviceOrganizationsListAction">
             <result type="tiles">eirc.organization.service_organizations.list</result>

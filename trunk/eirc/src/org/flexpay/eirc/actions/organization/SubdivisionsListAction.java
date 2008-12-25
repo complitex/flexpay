@@ -46,10 +46,14 @@ public class SubdivisionsListAction extends FPActionSupport {
 	}
 
 	public String getOrganizationName(@Nullable Organization org) throws FlexPayException {
-		if (org == null) {
+		if (org == null || org.isNew()) {
 			return "---";
 		}
-		Organization persistent = organizationService.read(org);
+		Organization persistent = organizationService.readFull(stub(org));
+		if (persistent == null) {
+			log.warn("Invalid organisation requested {}", org);
+			return "---";
+		}
 		return getTranslation(persistent.getNames()).getName();
 	}
 

@@ -50,13 +50,17 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 		}
 
 		if (!organizationFilter.needFilter()) {
-			addActionError(getText("eirc.error.service_organization.no_organization_selected"));
+			addActionError(getText("eirc.error.orginstance.no_organization_selected"));
+			return INPUT;
+		}
+		Organization juridicalPerson = organizationService.readFull(organizationFilter.getSelectedStub());
+		if (juridicalPerson == null) {
+			addActionError(getText("eirc.error.orginstance.no_organization"));
 			return INPUT;
 		}
 
 		log.debug("Service organization descriptions: {}", descriptions);
 
-		Organization juridicalPerson = organizationService.read(new Organization(organizationFilter.getSelectedStub()));
 		oldServiceOrganization.setOrganization(juridicalPerson);
 
 		for (Map.Entry<Long, String> name : descriptions.entrySet()) {

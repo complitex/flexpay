@@ -23,7 +23,7 @@
 	<s:if test="%{pager.totalNumberOfElements > 0}">
 	<span style="float:right;" class="text">
 		&nbsp;<s:text name="common.show_by"/>&nbsp;
-		<select name="pager.pageSize" class="form-select" onchange="submitForm(this)">
+		<select name="pager.pageSize" class="form-select" onchange="submitForm(this);">
 			<option value="10"
 					<s:if test="%{pager.pageSize == 10}">selected</s:if> >10
 			</option>

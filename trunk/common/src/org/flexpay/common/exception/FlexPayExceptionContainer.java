@@ -1,10 +1,11 @@
 package org.flexpay.common.exception;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * Container for a FlexPayExceptions, followed to the first 10 exceptions are thrown away 
+ * Container for a FlexPayExceptions, followed to the first 10 exceptions are thrown away
  */
 public class FlexPayExceptionContainer extends Exception {
 
@@ -14,6 +15,15 @@ public class FlexPayExceptionContainer extends Exception {
 	 * Constructs a new FlexPayExceptionContainer.
 	 */
 	public FlexPayExceptionContainer() {
+	}
+
+	/**
+	 * Construct container from a set of exceptions
+	 *
+	 * @param exs Exceptions
+	 */
+	public FlexPayExceptionContainer(FlexPayException... exs) {
+		exceptions.addAll(Arrays.asList(exs));
 	}
 
 	/**

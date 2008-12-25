@@ -16,10 +16,12 @@ public class Organization extends DomainObjectWithStatus {
 	private String kpp; // code prichiny postanovki na nalogoviy uchet (TODO: translate me)
 	private Set<OrganizationDescription> descriptions = Collections.emptySet();
 	private Set<OrganizationName> names = Collections.emptySet();
+
+	// instances
 	private Set<ServiceProvider> serviceProviders = Collections.emptySet();
 	private Set<Bank> banks = Collections.emptySet();
     private Set<ServiceOrganization> serviceOrganizations = Collections.emptySet();
-	private Set<PaymentPoint> paymentPoints = Collections.emptySet();
+	private Set<PaymentsCollector> paymentsCollectors = Collections.emptySet();
 
 	private String juridicalAddress;
 	private String postalAddress;
@@ -146,12 +148,12 @@ public class Organization extends DomainObjectWithStatus {
         this.serviceOrganizations = serviceOrganizations;
     }
 
-	public Set<PaymentPoint> getPaymentPoints() {
-		return paymentPoints;
+	public Set<PaymentsCollector> getPaymentsCollectors() {
+		return paymentsCollectors;
 	}
 
-	public void setPaymentPoints(Set<PaymentPoint> paymentPoints) {
-		this.paymentPoints = paymentPoints;
+	public void setPaymentsCollectors(Set<PaymentsCollector> paymentsCollectors) {
+		this.paymentsCollectors = paymentsCollectors;
 	}
 
 	public String toString() {

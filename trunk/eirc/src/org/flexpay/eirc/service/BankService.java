@@ -2,7 +2,9 @@ package org.flexpay.eirc.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.Bank;
+import org.flexpay.eirc.persistence.BankDescription;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,7 +13,7 @@ import org.springframework.security.annotation.Secured;
 import java.util.List;
 import java.util.Set;
 
-public interface BankService {
+public interface BankService extends OrganisationInstanceService<BankDescription, Bank> {
 
 	/**
 	 * List registered banks
@@ -21,7 +23,7 @@ public interface BankService {
 	 */
 	@Secured (Roles.BANK_READ)
 	@NotNull
-	List<Bank> listBanks(@NotNull Page<Bank> pager);
+	List<Bank> listInstances(@NotNull Page<Bank> pager);
 
 	/**
 	 * Disable banks
@@ -39,16 +41,31 @@ public interface BankService {
 	 */
 	@Secured (Roles.BANK_READ)
 	@Nullable
-	Bank read(@NotNull Bank stub);
+	Bank read(@NotNull Stub<Bank> stub);
 
 	/**
-	 * Save or update bank
+	 * Create instance
 	 *
-	 * @param bank Bank to save
-	 * @throws FlexPayExceptionContainer if validation fails
+	 * @param instance Organisation instance to save
+	 * @return saved instance back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
 	 */
-	@Secured ({Roles.BANK_ADD, Roles.BANK_CHANGE})
-	void save(@NotNull Bank bank) throws FlexPayExceptionContainer;
+	@Secured (Roles.BANK_ADD)
+	@NotNull
+	Bank create(@NotNull Bank instance) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update instance
+	 *
+	 * @param instance Organisation instance to save
+	 * @return updated instance back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@Secured (Roles.BANK_CHANGE)
+	@NotNull
+	Bank update(@NotNull Bank instance) throws FlexPayExceptionContainer;
 
 	/**
 	 * Initialize organizations filter, includes only organizations that are not banks or this particular <code>bank</code>
@@ -56,8 +73,9 @@ public interface BankService {
 	 *
 	 * @param organizationFilter Filter to initialize
 	 * @param bank			   Bank
+	 * @return filter
 	 */
 	@Secured (Roles.BANK_READ)
-	void initBanklessFilter(@NotNull OrganizationFilter organizationFilter, @NotNull Bank bank);
-
+	@NotNull
+	OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter organizationFilter, @NotNull Bank bank);
 }

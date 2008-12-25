@@ -21,7 +21,7 @@ public interface OrganizationService {
 	 */
 	@Secured (Roles.ORGANIZATION_READ)
 	@Nullable
-	Organization getOrganization(Stub<Organization> stub);
+	Organization readFull(Stub<Organization> stub);
 
 	/**
 	 * Initialize organizations filter
@@ -47,15 +47,6 @@ public interface OrganizationService {
 	 */
 	@Secured(Roles.ORGANIZATION_DELETE)
 	void disable(Set<Long> objectIds);
-
-	/**
-	 * Read full organization info
-	 *
-	 * @param stub Organization stub
-	 * @return Organization
-	 */
-	@Secured(Roles.ORGANIZATION_READ)
-	Organization read(Organization stub);
 
 	/**
 	 * Save or update organization
