@@ -2,7 +2,7 @@ package org.flexpay.eirc.actions.serviceprovider;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
-import static org.flexpay.common.util.CollectionUtils.map;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.ServiceProvider;
@@ -21,7 +21,7 @@ public class ServiceProviderEditAction extends FPActionSupport {
 
 	private OrganizationFilter organizationFilter = new OrganizationFilter();
 	private ServiceProvider provider = new ServiceProvider();
-	private Map<Long, String> descriptions = map();
+	private Map<Long, String> descriptions = CollectionUtils.map();
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -44,6 +44,16 @@ public class ServiceProviderEditAction extends FPActionSupport {
 			return INPUT;
 		}
 
+		if (!organizationFilter.needFilter()) {
+			addActionError(getText("eirc.error.orginstance.no_organization_selected"));
+			return INPUT;
+		}
+		Organization juridicalPerson = organizationService.readFull(organizationFilter.getSelectedStub());
+		if (juridicalPerson == null) {
+			addActionError(getText("eirc.error.orginstance.no_organization"));
+			return INPUT;
+		}
+
 		log.info("Service provider descriptions: {}", descriptions);
 
 		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
@@ -60,8 +70,7 @@ public class ServiceProviderEditAction extends FPActionSupport {
 
 		log.info("New Service provider descriptions: {}", serviceProvider.getDescriptions());
 
-		Organization organization = organizationService.read(new Organization(organizationFilter.getSelectedStub()));
-		serviceProvider.setOrganization(organization);
+		serviceProvider.setOrganization(juridicalPerson);
 		spService.save(serviceProvider);
 
 		return REDIRECT_SUCCESS;

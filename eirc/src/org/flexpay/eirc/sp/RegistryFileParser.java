@@ -203,14 +203,14 @@ public class RegistryFileParser {
 				recipient = ApplicationConfig.getSelfOrganization();
 			} else {
 				log.debug("Recipient is fetched via code={}", newRegistry.getRecipientCode());
-				recipient = organizationService.getOrganization(newRegistry.getRecipientStub());
+				recipient = organizationService.readFull(newRegistry.getRecipientStub());
 			}
 			newRegistry.setRecipient(recipient);
 			if (recipient == null) {
 				log.error("Failed processing registry header, recipient not found: #{}", newRegistry.getRecipientCode());
 				throw new FlexPayException("Cannot find recipient organization " + newRegistry.getRecipientCode());
 			}
-			Organization sender = organizationService.getOrganization(newRegistry.getSenderStub());
+			Organization sender = organizationService.readFull(newRegistry.getSenderStub());
 			newRegistry.setSender(sender);
 			if (sender == null) {
 				log.error("Failed processing registry header, sender not found: #{}", newRegistry.getSenderCode());

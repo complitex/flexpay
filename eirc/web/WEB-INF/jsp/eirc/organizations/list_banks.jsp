@@ -7,7 +7,7 @@
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
-			<td class="th"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');"></td>
+			<td class="th" width="1%"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');"></td>
             <td class="th"><s:text name="eirc.bank.description"/></td>
 			<td class="th"><s:text name="eirc.organization.inn"/></td>
 			<td class="th"><s:text name="eirc.organization.kpp"/></td>
@@ -37,7 +37,7 @@
 				<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit"
 					   onclick="$('fbanks').action='<s:url action="bankDelete"/>';"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="bankEdit"><s:param name="bank.id" value="0"/></s:url>'"
+					   onclick="window.location='<s:url action="bankEdit"><s:param name="bank.id" value="0"/></s:url>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

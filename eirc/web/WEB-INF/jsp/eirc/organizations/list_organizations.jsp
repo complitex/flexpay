@@ -6,7 +6,7 @@
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
-			<td class="th"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');"></td>
+			<td class="th" width="1%"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');"></td>
             <td class="th"><s:text name="eirc.organization.id"/></td>
             <td class="th"><s:text name="eirc.organization.name"/></td>
 			<td class="th"><s:text name="eirc.organization.kpp"/></td>

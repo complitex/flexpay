@@ -31,8 +31,8 @@ public class OrganizationServiceImpl implements OrganizationService {
 	 * @param stub Organization stub
 	 * @return Organization if found, or <code>null</code> otherwise
 	 */
-	public Organization getOrganization(Stub<Organization> stub) {
-		return organizationDao.read(stub.getId());
+	public Organization readFull(Stub<Organization> stub) {
+		return organizationDao.readFull(stub.getId());
 	}
 
 	/**
@@ -65,20 +65,6 @@ public class OrganizationServiceImpl implements OrganizationService {
 				organizationDao.update(organization);
 			}
 		}
-	}
-
-	/**
-	 * Read full organization info
-	 *
-	 * @param stub Organization stub
-	 * @return Organization
-	 */
-	public Organization read(Organization stub) {
-		if (stub.isNotNew()) {
-			return organizationDao.readFull(new Stub<Organization>(stub).getId());
-		}
-
-		return new Organization(0L);
 	}
 
 	/**

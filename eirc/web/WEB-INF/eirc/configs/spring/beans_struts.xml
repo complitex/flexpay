@@ -101,6 +101,21 @@
 		  p:organizationService-ref="organizationService"
 		  p:bankService-ref="bankService" />
 
+	<!-- Payments Collectors actions -->
+	<bean id="paymentsCollectorsListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.PaymentsCollectorsListAction"
+		  p:organizationService-ref="organizationService"
+		  p:collectorService-ref="paymentsCollectorService" />
+
+	<bean id="paymentsCollectorsDeleteAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.PaymentsCollectorsDeleteAction"
+		  p:collectorService-ref="paymentsCollectorService" />
+
+	<bean id="paymentsCollectorEditAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.PaymentsCollectorEditAction"
+		  p:organizationService-ref="organizationService"
+		  p:instanceService-ref="paymentsCollectorService" />
+
     <!-- Service organization actions -->
     <bean id="serviceOrganizationsListAction" scope="prototype"
           class="org.flexpay.eirc.actions.organization.ServiceOrganizationsListAction"

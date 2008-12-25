@@ -8,22 +8,22 @@ import org.flexpay.ab.persistence.Apartment;
  */
 public class PaymentPoint extends DomainObjectWithStatus {
 
-	private Organization organization;
-	private Apartment apartment;
+	private PaymentsCollector collector;
+	private String address;
 
-	public Organization getOrganization() {
-		return organization;
+	public PaymentsCollector getCollector() {
+		return collector;
 	}
 
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
+	public void setCollector(PaymentsCollector collector) {
+		this.collector = collector;
 	}
 
-	public Apartment getApartment() {
-		return apartment;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setApartment(Apartment apartment) {
-		this.apartment = apartment;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 }

@@ -311,7 +311,7 @@
         end_date date not null,
         create_date date not null,
         invalid_date date not null,
-        street_id bigint not null,
+        street_id bigint not null comment 'Street reference',
         street_type_id bigint comment 'Street type reference',
         primary key (id)
     );
@@ -436,7 +436,7 @@
     create table common_file_statuses_tbl (
         id bigint not null auto_increment comment 'Primary key',
         name varchar(255) not null comment 'Flexpay filestatus title',
-        description varchar(255) comment 'Flexpay filestatus description',
+        description varchar(255) not null comment 'Flexpay filestatus description',
         module_id bigint not null comment 'Flexpay module reference',
         primary key (id)
     ) comment='Information about file statuses';
@@ -444,7 +444,7 @@
     create table common_file_types_tbl (
         id bigint not null auto_increment comment 'Primary key',
         name varchar(255) not null comment 'Filetype title',
-        description varchar(255) comment 'Filetype description',
+        description varchar(255) not null comment 'Filetype description',
         file_mask varchar(255) not null comment 'Mask of files for this type',
         module_id bigint not null comment 'Flexpay module reference',
         primary key (id)
@@ -618,6 +618,32 @@
         postal_address varchar(255) not null comment 'Postal address',
         primary key (id)
     );
+
+    create table eirc_payment_points_tbl (
+        id bigint not null auto_increment,
+        version integer not null comment 'Optimistic lock version',
+        status integer not null comment 'Enabled-disabled status',
+        address varchar(255) not null comment 'Address',
+        collector_id bigint not null comment 'Payments collector reference',
+        primary key (id)
+    ) comment='Payment points';
+
+    create table eirc_payments_collectors_descriptions_tbl (
+        id bigint not null auto_increment,
+        name varchar(255) not null comment 'Description value',
+        language_id bigint not null comment 'Language reference',
+        collector_id bigint not null comment 'Payment collector reference',
+        primary key (id),
+        unique (language_id, collector_id)
+    ) comment='Payment collector desriptions';
+
+    create table eirc_payments_collectors_tbl (
+        id bigint not null auto_increment,
+        version integer not null comment 'Optimistic lock version',
+        status integer not null comment 'Enabled/Disabled status',
+        organization_id bigint not null comment 'Organization reference',
+        primary key (id)
+    ) comment='Payment collectors';
 
     create table eirc_quittance_details_quittances_tbl (
         id bigint not null auto_increment,
@@ -1236,14 +1262,14 @@
         references common_languages_tbl (id);
 
     alter table ab_street_types_temporal_tbl 
-        add index FK_street (street_id), 
-        add constraint FK_street 
+        add index FK_ab_street_types_temporal_tbl_street_id (street_id), 
+        add constraint FK_ab_street_types_temporal_tbl_street_id 
         foreign key (street_id) 
         references ab_streets_tbl (id);
 
     alter table ab_street_types_temporal_tbl 
-        add index FK_street_type (street_type_id), 
-        add constraint FK_street_type 
+        add index FK_ab_street_types_temporal_tbl_street_type_id (street_type_id), 
+        add constraint FK_ab_street_types_temporal_tbl_street_type_id 
         foreign key (street_type_id) 
         references ab_street_types_tbl (id);
 
@@ -1337,37 +1363,37 @@
         foreign key (data_source_description_id) 
         references common_data_source_descriptions_tbl (id);
 
-    alter table common_file_statuses_tbl
-        add index common_file_statuses_tbl_module_id (module_id),
-        add constraint common_file_statuses_tbl_module_id
-        foreign key (module_id)
+    alter table common_file_statuses_tbl 
+        add index common_file_statuses_tbl_module_id (module_id), 
+        add constraint common_file_statuses_tbl_module_id 
+        foreign key (module_id) 
         references common_flexpay_modules_tbl (id);
 
-    alter table common_file_types_tbl
-        add index common_file_types_tbl_module_id (module_id),
-        add constraint common_file_types_tbl_module_id
-        foreign key (module_id)
+    alter table common_file_types_tbl 
+        add index common_file_types_tbl_module_id (module_id), 
+        add constraint common_file_types_tbl_module_id 
+        foreign key (module_id) 
         references common_flexpay_modules_tbl (id);
 
-    alter table common_files_tbl
-        add index common_files_tbl_module_id (module_id),
-        add constraint common_files_tbl_module_id
-        foreign key (module_id)
+    alter table common_files_tbl 
+        add index common_files_tbl_module_id (module_id), 
+        add constraint common_files_tbl_module_id 
+        foreign key (module_id) 
         references common_flexpay_modules_tbl (id);
 
-    alter table common_files_tbl
-        add index common_files_tbl_status_id (status_id),
-        add constraint common_files_tbl_status_id
-        foreign key (status_id)
+    alter table common_files_tbl 
+        add index common_files_tbl_status_id (status_id), 
+        add constraint common_files_tbl_status_id 
+        foreign key (status_id) 
         references common_file_statuses_tbl (id);
 
-    alter table common_files_tbl
-        add index common_files_tbl_type_id (type_id),
-        add constraint common_files_tbl_type_id
-        foreign key (type_id)
+    alter table common_files_tbl 
+        add index common_files_tbl_type_id (type_id), 
+        add constraint common_files_tbl_type_id 
+        foreign key (type_id) 
         references common_file_types_tbl (id);
 
-    alter table common_import_errors_tbl
+    alter table common_import_errors_tbl 
         add index FKBAEED8705355D490 (source_description_id), 
         add constraint FKBAEED8705355D490 
         foreign key (source_description_id) 
@@ -1501,6 +1527,30 @@
         foreign key (language_id) 
         references common_languages_tbl (id);
 
+    alter table eirc_payment_points_tbl 
+        add index FK_eirc_payment_points_tbl_collector_id (collector_id), 
+        add constraint FK_eirc_payment_points_tbl_collector_id 
+        foreign key (collector_id) 
+        references eirc_payments_collectors_tbl (id);
+
+    alter table eirc_payments_collectors_descriptions_tbl 
+        add index FK_eirc_payments_collector_descriptions_tbl_collector_id (collector_id), 
+        add constraint FK_eirc_payments_collector_descriptions_tbl_collector_id 
+        foreign key (collector_id) 
+        references eirc_payments_collectors_tbl (id);
+
+    alter table eirc_payments_collectors_descriptions_tbl 
+        add index FK_eirc_payments_collector_descriptions_tbl_language_id (language_id), 
+        add constraint FK_eirc_payments_collector_descriptions_tbl_language_id 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table eirc_payments_collectors_tbl 
+        add index FK_eirc_payments_collectors_tbl_organization_id (organization_id), 
+        add constraint FK_eirc_payments_collectors_tbl_organization_id 
+        foreign key (organization_id) 
+        references eirc_organizations_tbl (id);
+
     alter table eirc_quittance_details_quittances_tbl 
         add index FP_eirc_quittance_details_quittances_quittance (quittance_id), 
         add constraint FP_eirc_quittance_details_quittances_quittance 
@@ -1573,10 +1623,10 @@
         foreign key (registry_type_id) 
         references eirc_registry_types_tbl (id);
 
-    alter table eirc_registries_tbl
-        add index FK_eirc_registry_file (sp_file_id),
-        add constraint FK_eirc_registry_file
-        foreign key (sp_file_id)
+    alter table eirc_registries_tbl 
+        add index FK_eirc_registry_file (sp_file_id), 
+        add constraint FK_eirc_registry_file 
+        foreign key (sp_file_id) 
         references common_files_tbl (id);
 
     alter table eirc_registry_containers_tbl 

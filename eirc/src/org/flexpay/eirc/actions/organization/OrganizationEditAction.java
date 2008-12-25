@@ -2,6 +2,7 @@ package org.flexpay.eirc.actions.organization;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.eirc.persistence.Organization;
@@ -23,12 +24,12 @@ public class OrganizationEditAction extends FPActionSupport {
 	@NotNull
 	public String doExecute() throws Exception {
 
-		if (organization.getId() == null) {
+		Organization org = organization.isNew() ?
+						   organization : organizationService.readFull(stub(organization));
+		if (org == null) {
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
-
-		Organization org = organizationService.read(organization);
 
 		if (!isSubmit()) {
 			organization = org;

@@ -23,7 +23,7 @@
     create table common_file_statuses_tbl (
         id bigint not null auto_increment comment 'Primary key',
         name varchar(255) not null comment 'Flexpay filestatus title',
-        description varchar(255) comment 'Flexpay filestatus description',
+        description varchar(255) not null comment 'Flexpay filestatus description',
         module_id bigint not null comment 'Flexpay module reference',
         primary key (id)
     ) comment='Information about file statuses';
@@ -31,7 +31,7 @@
     create table common_file_types_tbl (
         id bigint not null auto_increment comment 'Primary key',
         name varchar(255) not null comment 'Filetype title',
-        description varchar(255) comment 'Filetype description',
+        description varchar(255) not null comment 'Filetype description',
         file_mask varchar(255) not null comment 'Mask of files for this type',
         module_id bigint not null comment 'Flexpay module reference',
         primary key (id)
@@ -50,7 +50,7 @@
         module_id bigint not null comment 'Flexpay module reference',
         primary key (id)
     ) comment='Table, where store information about all flexpay files';
- 
+
     create table common_flexpay_modules_tbl (
         id bigint not null auto_increment comment 'Primary key',
         name varchar(255) not null comment 'Flexpay module name',
@@ -113,6 +113,36 @@
         foreign key (data_source_description_id) 
         references common_data_source_descriptions_tbl (id);
 
+    alter table common_file_statuses_tbl 
+        add index common_file_statuses_tbl_module_id (module_id), 
+        add constraint common_file_statuses_tbl_module_id 
+        foreign key (module_id) 
+        references common_flexpay_modules_tbl (id);
+
+    alter table common_file_types_tbl 
+        add index common_file_types_tbl_module_id (module_id), 
+        add constraint common_file_types_tbl_module_id 
+        foreign key (module_id) 
+        references common_flexpay_modules_tbl (id);
+
+    alter table common_files_tbl 
+        add index common_files_tbl_module_id (module_id), 
+        add constraint common_files_tbl_module_id 
+        foreign key (module_id) 
+        references common_flexpay_modules_tbl (id);
+
+    alter table common_files_tbl 
+        add index common_files_tbl_status_id (status_id), 
+        add constraint common_files_tbl_status_id 
+        foreign key (status_id) 
+        references common_file_statuses_tbl (id);
+
+    alter table common_files_tbl 
+        add index common_files_tbl_type_id (type_id), 
+        add constraint common_files_tbl_type_id 
+        foreign key (type_id) 
+        references common_file_types_tbl (id);
+
     alter table common_import_errors_tbl 
         add index FKBAEED8705355D490 (source_description_id), 
         add constraint FKBAEED8705355D490 
@@ -142,34 +172,3 @@
         add constraint common_mesuare_unit_names_tbl_language_id 
         foreign key (language_id) 
         references common_languages_tbl (id);
-
-    alter table common_file_statuses_tbl
-        add index common_file_statuses_tbl_module_id (module_id),
-        add constraint common_file_statuses_tbl_module_id
-        foreign key (module_id)
-        references common_flexpay_modules_tbl (id);
-
-    alter table common_file_types_tbl
-        add index common_file_types_tbl_module_id (module_id),
-        add constraint common_file_types_tbl_module_id
-        foreign key (module_id)
-        references common_flexpay_modules_tbl (id);
-
-    alter table common_files_tbl
-        add index common_files_tbl_module_id (module_id),
-        add constraint common_files_tbl_module_id
-        foreign key (module_id)
-        references common_flexpay_modules_tbl (id);
-
-    alter table common_files_tbl
-        add index common_files_tbl_status_id (status_id),
-        add constraint common_files_tbl_status_id
-        foreign key (status_id)
-        references common_file_statuses_tbl (id);
-
-    alter table common_files_tbl
-        add index common_files_tbl_type_id (type_id),
-        add constraint common_files_tbl_type_id
-        foreign key (type_id)
-        references common_file_types_tbl (id);
-    

@@ -7,6 +7,7 @@ import org.flexpay.ab.persistence.Town;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.dao.paging.Page;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -28,7 +29,18 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 	 */
 	@NotNull
 	public List<PaymentPoint> listPoints(@NotNull Stub<Town> townStub, @NotNull Page<PaymentPoint> pager) {
-		return paymentPointDao.listPoints(townStub.getId(), pager);
+		return paymentPointDao.listPoints(pager);
+	}
+
+	/**
+	 * Read full payment point info
+	 *
+	 * @param stub payment point stub
+	 * @return Payment point if available, or <code>null</code> if not found
+	 */
+	@Nullable
+	public PaymentPoint read(@NotNull Stub<PaymentPoint> stub) {
+		return paymentPointDao.readFull(stub.getId());
 	}
 
 	public void setPaymentPointDao(PaymentPointDao paymentPointDao) {

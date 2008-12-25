@@ -203,7 +203,7 @@ public class SPServiceImpl implements SPService {
 		}
 
 		List<ServiceProvider> providers = serviceProviderDao.findProviders(new Page<ServiceProvider>(10000, 1));
-		filter.setProviders(providers);
+		filter.setInstances(providers);
 
 		return filter;
 	}

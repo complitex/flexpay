@@ -25,6 +25,11 @@
                 </a>
             </li>
 			<li>
+                <a href="<s:url action='paymentsCollectorsList' includeParams="none" namespace="/eirc" />">
+                    <s:text name="eirc.payments_collectors"/>
+                </a>
+            </li>
+			<li>
                 <a href="<s:url action='eircAccountsList' includeParams="none" namespace="/eirc" />">
                     <s:text name="eirc.eirc_account.list"/>
                 </a>

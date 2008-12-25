@@ -19,7 +19,7 @@ public class BanksListAction extends FPActionSupport {
 	@NotNull
 	public String doExecute() throws Exception {
 
-		banks = bankService.listBanks(pager);
+		banks = bankService.listInstances(pager);
 
 		return SUCCESS;
 	}
