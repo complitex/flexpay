@@ -75,6 +75,7 @@
 		<property name="serviceTypeService" ref="serviceTypeService" />
 	</bean>
 
+	<!-- Organisations -->
 	<bean id="organizationsListAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.organization.OrganizationsListAction"
 		  p:organizationService-ref="organizationService" />
@@ -85,6 +86,10 @@
 
 	<bean id="organizationEditAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.organization.OrganizationEditAction"
+		  p:organizationService-ref="organizationService" />
+
+	<bean id="organizationHelper" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.OrganizationHelper"
 		  p:organizationService-ref="organizationService" />
 
 	<!-- Bank actions -->
@@ -115,6 +120,23 @@
 		  class="org.flexpay.eirc.actions.organization.PaymentsCollectorEditAction"
 		  p:organizationService-ref="organizationService"
 		  p:instanceService-ref="paymentsCollectorService" />
+
+	<!-- Payment points actions -->
+	<bean id="paymentPointsListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.PaymentPointsListAction"
+		  p:organizationHelper-ref="organizationHelper"
+		  p:collectorService-ref="paymentsCollectorService"
+		  p:paymentPointService-ref="paymentPointService" />
+
+	<bean id="paymentPointsDeleteAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.PaymentPointsDeleteAction"
+		  p:paymentPointService-ref="paymentPointService" />
+
+	<bean id="paymentPointEditAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.PaymentPointEditAction"
+		  p:organizationHelper-ref="organizationHelper"
+		  p:paymentPointService-ref="paymentPointService"
+		  p:paymentsCollectorService-ref="paymentsCollectorService" />
 
     <!-- Service organization actions -->
     <bean id="serviceOrganizationsListAction" scope="prototype"

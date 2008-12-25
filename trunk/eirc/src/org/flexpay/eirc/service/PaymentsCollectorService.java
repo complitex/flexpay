@@ -6,6 +6,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
+import org.flexpay.eirc.persistence.filters.PaymentsCollectorFilter;
 import org.flexpay.eirc.persistence.PaymentsCollector;
 import org.flexpay.eirc.persistence.PaymentsCollectorDescription;
 

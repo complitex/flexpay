@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.OrganizationInstance;
 import org.flexpay.eirc.persistence.OrganizationInstanceDescription;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
+import org.flexpay.eirc.persistence.filters.OrganizationInstanceFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,4 +72,13 @@ public interface OrganisationInstanceService<
 	 */
 	@NotNull
 	OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter filter, @NotNull T instance);
+
+	/**
+	 * Initialize instances filter
+	 *
+	 * @param filter Instance filter to init
+	 * @return Filter back
+	 */
+	@NotNull
+	OrganizationInstanceFilter<D, T> initFilter(@NotNull OrganizationInstanceFilter<D, T> filter);
 }
