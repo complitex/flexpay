@@ -30,6 +30,11 @@
                 </a>
             </li>
 			<li>
+                <a href="<s:url action='paymentPointsList' includeParams="none" namespace="/eirc" />">
+                    <s:text name="eirc.payment_points"/>
+                </a>
+            </li>
+			<li>
                 <a href="<s:url action='eircAccountsList' includeParams="none" namespace="/eirc" />">
                     <s:text name="eirc.eirc_account.list"/>
                 </a>

@@ -2,13 +2,14 @@ package org.flexpay.eirc.persistence;
 
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
-import java.util.Collections;
 
 /**
  * Particular Juridical person instance, may be only one for single organisation
@@ -42,6 +43,10 @@ public abstract class OrganizationInstance<
 		return organization;
 	}
 
+	public Stub<Organization> getOrganizationStub() {
+		return stub(organization);
+	}
+
 	public void setOrganization(@NotNull Organization organization) {
 		this.organization = organization;
 	}
@@ -58,7 +63,7 @@ public abstract class OrganizationInstance<
 	public void setDescription(D description) {
 		descriptions = TranslationUtil.setTranslation(descriptions, this, description);
 	}
-	
+
 
 	public String getName(@NotNull Locale locale) {
 		return TranslationUtil.getTranslation(organization.getNames(), locale).getName();

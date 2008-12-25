@@ -6,9 +6,11 @@ import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.Locale;
 
 public class Organization extends DomainObjectWithStatus {
 
@@ -116,6 +118,13 @@ public class Organization extends DomainObjectWithStatus {
 		this.dependentSubdivisions = dependentSubdivisions;
 	}
 
+	@Nullable
+	public String getName(@NotNull Locale locale) {
+
+		OrganizationName name = TranslationUtil.getTranslation(getNames(), locale);
+		return name != null ? name.getName() : null;
+	}
+
 	public void setName(OrganizationName name) {
 		names = TranslationUtil.setTranslation(names, this, name);
 	}
@@ -163,5 +172,4 @@ public class Organization extends DomainObjectWithStatus {
                 .append("INN", individualTaxNumber)
                 .toString();
     }
-
 }

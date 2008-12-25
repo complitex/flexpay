@@ -11,6 +11,7 @@ import org.flexpay.eirc.persistence.OrganizationInstance;
 import org.flexpay.eirc.persistence.OrganizationInstanceDescription;
 import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
+import org.flexpay.eirc.persistence.filters.OrganizationInstanceFilter;
 import org.flexpay.eirc.service.OrganisationInstanceService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -190,6 +191,21 @@ public abstract class OrganisationInstanceServiceImpl<
 	 * @param ex	   Container to store validation errors in
 	 */
 	protected abstract void doValidate(T instance, FlexPayExceptionContainer ex);
+
+	/**
+	 * Initialize instances filter
+	 *
+	 * @param filter Instance filter to init
+	 * @return Filter back
+	 */
+	@NotNull
+	public OrganizationInstanceFilter<D, T> initFilter(@NotNull OrganizationInstanceFilter<D, T> filter) {
+
+		List<T> instances = listInstances(new Page<T>(1000, 1));
+		filter.setInstances(instances);
+
+		return filter;
+	}
 
 	@Required
 	public void setInstanceDao(OrganisationInstanceDao<D, T> instanceDao) {

@@ -41,7 +41,26 @@
 
     <query name="PaymentPoint.listPoints">
         from PaymentPoint o
+        	inner join fetch o.collector 
         where o.status = 0
+    </query>
+
+    <query name="PaymentPoint.listCollectorPoints.count">
+		select count(o)
+        from PaymentPoint o
+        where o.status = 0 and o.collector.id = ?
+    </query>
+
+    <query name="PaymentPoint.listCollectorPoints">
+        from PaymentPoint o
+        	inner join fetch o.collector
+        where o.status = 0 and o.collector.id = ?
+    </query>
+
+    <query name="PaymentPoint.readFull">
+        from PaymentPoint o
+        	inner join fetch o.collector
+        where o.id=?
     </query>
 
 </hibernate-mapping>

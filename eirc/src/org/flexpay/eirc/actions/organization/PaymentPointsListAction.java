@@ -2,21 +2,28 @@ package org.flexpay.eirc.actions.organization;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.PaymentPoint;
 import org.flexpay.eirc.persistence.PaymentsCollector;
+import org.flexpay.eirc.persistence.Organization;
+import org.flexpay.eirc.persistence.filters.PaymentsCollectorFilter;
 import org.flexpay.eirc.service.PaymentPointService;
+import org.flexpay.eirc.service.PaymentsCollectorService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.collections.ArrayStack;
 
 import java.util.Collections;
 import java.util.List;
 
 public class PaymentPointsListAction extends FPActionSupport {
 
+	private OrganizationHelper organizationHelper;
+	private PaymentsCollectorService collectorService;
 	private PaymentPointService paymentPointService;
 
-	private PaymentsCollector collector = new PaymentsCollector();
+	private PaymentsCollectorFilter paymentsCollectorFilter = new PaymentsCollectorFilter();
 	private List<PaymentPoint> points = Collections.emptyList();
 	private Page<PaymentPoint> pager = new Page<PaymentPoint>();
 
@@ -31,14 +38,22 @@ public class PaymentPointsListAction extends FPActionSupport {
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		if (collector.isNew()) {
-			addActionError(getText("error.no_id"));
-			return REDIRECT_ERROR;
-		}
+		collectorService.initFilter(paymentsCollectorFilter);
 
-		points = paymentPointService.listPoints(ApplicationConfig.getDefaultTownStub(), pager);
+		ArrayStack filters = CollectionUtils.arrayStack(paymentsCollectorFilter);
+		points = paymentPointService.listPoints(filters, pager);
 
 		return SUCCESS;
+	}
+
+	public String getCollectorName(@NotNull PaymentsCollector collectorStub) {
+
+		return organizationHelper.getName(collectorStub, userPreferences.getLocale());
+	}
+
+	public String getCollectorName(@NotNull Organization organizationStub) {
+
+		return organizationHelper.getName(organizationStub, userPreferences.getLocale());
 	}
 
 	/**
@@ -50,15 +65,15 @@ public class PaymentPointsListAction extends FPActionSupport {
 	 */
 	@NotNull
 	protected String getErrorResult() {
-		return REDIRECT_ERROR;
+		return SUCCESS;
 	}
 
-	public PaymentsCollector getCollector() {
-		return collector;
+	public PaymentsCollectorFilter getPaymentsCollectorFilter() {
+		return paymentsCollectorFilter;
 	}
 
-	public void setCollector(PaymentsCollector collector) {
-		this.collector = collector;
+	public void setPaymentsCollectorFilter(PaymentsCollectorFilter paymentsCollectorFilter) {
+		this.paymentsCollectorFilter = paymentsCollectorFilter;
 	}
 
 	public List<PaymentPoint> getPoints() {
@@ -76,5 +91,15 @@ public class PaymentPointsListAction extends FPActionSupport {
 	@Required
 	public void setPaymentPointService(PaymentPointService paymentPointService) {
 		this.paymentPointService = paymentPointService;
+	}
+
+	@Required
+	public void setOrganizationHelper(OrganizationHelper organizationHelper) {
+		this.organizationHelper = organizationHelper;
+	}
+
+	@Required
+	public void setCollectorService(PaymentsCollectorService collectorService) {
+		this.collectorService = collectorService;
 	}
 }

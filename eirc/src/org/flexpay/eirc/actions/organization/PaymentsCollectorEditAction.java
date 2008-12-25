@@ -141,5 +141,4 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 	public void setInstanceService(PaymentsCollectorService instanceService) {
 		this.instanceService = instanceService;
 	}
-
 }
