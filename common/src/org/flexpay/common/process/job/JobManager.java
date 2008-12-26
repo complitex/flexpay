@@ -129,10 +129,10 @@ public class JobManager implements BeanFactoryAware, InitializingBean {
 				addJob(job, parameters);
 				log.info("Job {} was added. Id = {}", jobName, job.getId());
 			} catch (ClassCastException e) {
-				log.error("Illegal exception when creating instance of {}", jobName, e);
+				log.error("Illegal exception when creating instance of " + jobName, e);
 				throw new JobInstantiationException("Illegal exception when creating instance of " + jobName, e);
 			} catch (BeansException e) {
-				log.error("Illegal exception when creating instance of {}", jobName, e);
+				log.error("Illegal exception when creating instance of " + jobName, e);
 				throw new JobInstantiationException("Illegal exception when creating instance of " + jobName, e);
 			}
 		} else {

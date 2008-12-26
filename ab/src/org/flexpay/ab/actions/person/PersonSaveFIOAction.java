@@ -48,7 +48,9 @@ public class PersonSaveFIOAction extends FPActionSupport {
 			log.info("Saving person");
 			personService.save(person);
 			addActionError(getText("ab.person.fio.updated"));
-			log.info("Saved, errors: {}", getActionErrors());
+			if (log.isInfoEnabled()) {
+				log.info("Saved, errors: {}", getActionErrors());
+			}
 		} else {
 			log.info("Not modified");
 		}

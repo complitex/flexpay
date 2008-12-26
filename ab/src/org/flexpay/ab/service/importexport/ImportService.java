@@ -129,7 +129,9 @@ public class ImportService {
 			throws FlexPayException {
 
 		long time = System.currentTimeMillis();
-		log.info("Starting import districts at {}", new Date());
+		if (log.isInfoEnabled()) {
+			log.info("Starting import districts at {}", new Date());
+		}
 
 		ArrayStack filters = new ArrayStack();
 		filters.push(new TownFilter(town.getId()));
@@ -187,7 +189,9 @@ public class ImportService {
 		}
 		flushStack();
 
-		log.info("End import districts at {}, total time: {} ms", new Date(), (System.currentTimeMillis() - time));
+		if (log.isInfoEnabled()) {
+			log.info("End import districts at {}, total time: {} ms", new Date(), (System.currentTimeMillis() - time));
+		}
 	}
 
 	@SuppressWarnings({"unchecked"})
@@ -196,7 +200,9 @@ public class ImportService {
 			throws FlexPayException {
 
 		long time = System.currentTimeMillis();
-		log.info("Starting import streets at {}", new Date());
+		if (log.isInfoEnabled()) {
+			log.info("Starting import streets at {}", new Date());
+		}
 
 		ArrayStack filters = new ArrayStack();
 		filters.push(new TownFilter(town.getId()));
@@ -236,7 +242,9 @@ public class ImportService {
 		}
 		flushStack();
 
-		log.info("End import streets at {}, total time: {} ms", new Date(), (System.currentTimeMillis() - time));
+		if (log.isInfoEnabled()) {
+			log.info("End import streets at {}, total time: {} ms", new Date(), (System.currentTimeMillis() - time));
+		}
 	}
 
 	private void saveStreetCorrection(DataSourceDescription sourceDescription, RawData<Street> data, Street street,
@@ -424,7 +432,9 @@ public class ImportService {
 		buildingsDataSource.initialize();
 
 		long time = System.currentTimeMillis();
-		log.info("Starting import buildings at {}", new Date());
+		if (log.isInfoEnabled()) {
+			log.info("Starting import buildings at {}", new Date());
+		}
 
 		try {
 			while (buildingsDataSource.hasNext()) {
@@ -468,7 +478,9 @@ public class ImportService {
 
 			flushStack();
 
-			log.info("End import buildings at {}, total time: {} ms", new Date(), (System.currentTimeMillis() - time));
+			if (log.isInfoEnabled()) {
+				log.info("End import buildings at {}, total time: {} ms", new Date(), (System.currentTimeMillis() - time));
+			}
 		} catch (Throwable t) {
 			log.error("Failure", t);
 			throw new RuntimeException(t.getMessage(), t);
@@ -480,7 +492,9 @@ public class ImportService {
 		apartmentDataSource.initialize();
 
 		long time = System.currentTimeMillis();
-		log.info("Starting import apartments at {}", new Date());
+		if (log.isInfoEnabled()) {
+			log.info("Starting import apartments at {}", new Date());
+		}
 
 		long counter = 0;
 		long cycleTime = System.currentTimeMillis();
@@ -529,7 +543,9 @@ public class ImportService {
 		}
 
 		flushStack();
-		log.info("End import apartments at {}, total time: {}ms", new Date(), (System.currentTimeMillis() - time));
+		if (log.isInfoEnabled()) {
+			log.info("End import apartments at {}, total time: {}ms", new Date(), (System.currentTimeMillis() - time));
+		}
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.NOT_SUPPORTED)
@@ -537,7 +553,9 @@ public class ImportService {
 		personDataSource.initialize();
 
 		long time = System.currentTimeMillis();
-		log.info("Starting import persons at {}", new Date());
+		if (log.isInfoEnabled()) {
+			log.info("Starting import persons at {}", new Date());
+		}
 
 		long counter = 0;
 		long cycleTime = System.currentTimeMillis();
@@ -594,7 +612,9 @@ public class ImportService {
 		}
 
 		flushStack();
-		log.info("End import persons at {}, total time: {} ms", new Date(), (System.currentTimeMillis() - time));
+		if (log.isInfoEnabled()) {
+			log.info("End import persons at {}, total time: {} ms", new Date(), (System.currentTimeMillis() - time));
+		}
 	}
 
 	public void setDistrictDataConverter(RawDistrictDataConverter districtDataConverter) {

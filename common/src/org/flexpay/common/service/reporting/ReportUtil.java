@@ -487,7 +487,7 @@ public class ReportUtil {
 
 					IOUtils.copyLarge(is, os);
 				} catch (IOException ex) {
-					log.error("Failed copying font {}", fontName, ex);
+					log.error("Failed copying font " + fontName, ex);
 					throw new Exception("Failed copying font " + fontName, ex);
 				} finally {
 					IOUtils.closeQuietly(is);

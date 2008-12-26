@@ -46,7 +46,7 @@ public class FPFileServiceImpl implements FPFileService {
         try {
             fpFileDao.delete(file);
         } catch (Exception e) {
-            log.error("Can't delete file with id = {} from DB", file.getId(), e);
+            log.error("Can't delete file with id = " + file.getId() + " from DB", e);
             throw new FlexPayException(e);
         }
     }

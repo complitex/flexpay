@@ -69,7 +69,9 @@ public class SyncServiceImpl implements SyncService {
 					log.debug("Starting sync for next records");
 					long time = System.currentTimeMillis();
 					List<HistoryRecord> records = historyDao.getRecords(new Page(50000, 1));
-					log.error("time spent for fetch: {}", (System.currentTimeMillis() - time));
+					if (log.isErrorEnabled()) {
+						log.error("time spent for fetch: {}", (System.currentTimeMillis() - time));
+					}
 					if (records.isEmpty() || recordBuffer.containsAll(records)) {
 						saveObject();
 						log.debug("No more records.");
@@ -94,7 +96,9 @@ public class SyncServiceImpl implements SyncService {
 			}
 
 			log.info("Processed history records: {}", count);
-			log.info("History processing took {} ms", (System.currentTimeMillis() - timeStart));
+			if (log.isInfoEnabled()) {
+				log.info("History processing took {} ms", (System.currentTimeMillis() - timeStart));
+			}
 
 		} finally {
 			lockManager.releaseLock("sync_ab_lock");

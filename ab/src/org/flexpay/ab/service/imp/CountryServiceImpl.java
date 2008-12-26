@@ -73,8 +73,7 @@ public class CountryServiceImpl implements CountryService {
 		for (Country country : countries) {
 			CountryNameTranslation name = getCountryName(country, language, defaultLang);
 			if (name == null) {
-				log.error("No name for country: " + language.getLangIsoCode() + " : " +
-						  defaultLang.getLangIsoCode() + ", " + country);
+				log.error("No name for country: {} : {}, {}", new Object[] {language.getLangIsoCode(), defaultLang.getLangIsoCode(), country});
 				continue;
 			}
 			name.setLangTranslation(LanguageUtil.getLanguageName(name.getLang(), locale));
