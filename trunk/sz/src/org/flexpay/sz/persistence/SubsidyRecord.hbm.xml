@@ -5,11 +5,10 @@
 
 <hibernate-mapping package="org.flexpay.sz.persistence">
 
-	<class name="SubsidyRecord" table="SubsReqvNach">
+	<class name="SubsidyRecord" table="sz_subsidy_records_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<many-to-one name="szFile" column="sz_file_id" not-null="true" />
 
         <property name="surName"/>
         <property name="firstName"/>
@@ -52,19 +51,25 @@
         <property name="orgsID"/>
         <property name="fileID"/>
         <property name="status"/>
+
+        <many-to-one name="szFile" column="sz_file_id" not-null="true" />
+
 	</class>
 
 	<query name="SubsidyRecord.findObjects">
-		FROM SubsidyRecord c
-		WHERE c.szFile.id=?
+		from SubsidyRecord c
+		where c.szFile.id=?
 	</query>
 
 	<query name="SubsidyRecord.findObjects.count">
-		select count(*) from SubsidyRecord c where c.szFile.id=?
+		select count(*)
+		from SubsidyRecord c
+		where c.szFile.id=?
 	</query>
 	
 	<query name="SubsidyRecord.deleteBySzFileId">
-		delete from SubsidyRecord c where c.szFile.id=?
+		delete from SubsidyRecord c
+		where c.szFile.id=?
 	</query>
 
 </hibernate-mapping>

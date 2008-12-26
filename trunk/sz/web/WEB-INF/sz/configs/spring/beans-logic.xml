@@ -10,4 +10,5 @@
 		<property name="serviceTypeRecordService" ref="serviceTypeRecordService" />
 	</bean>
 	
-</beans>	
+</beans>
+        

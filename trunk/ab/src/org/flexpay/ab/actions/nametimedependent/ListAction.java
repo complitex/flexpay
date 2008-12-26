@@ -39,9 +39,7 @@ public abstract class ListAction<
 
 		initObjects(filters);
 
-        if (log.isInfoEnabled()){
-		    log.info("Listing {}ms", (System.currentTimeMillis() - start));
-        }
+		log.info("Listing {} ms", (System.currentTimeMillis() - start));
 
 		return SUCCESS;
 	}

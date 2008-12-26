@@ -80,16 +80,15 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 
 		Stub<Buildings> stub = cs.findCorrection(record.getCurrentValue(), Buildings.class, sd);
 		if (stub == null) {
-			log.error("No correction for buildings #{} DataSourceDescription {}, " +
-					  "cannot set up building reference for apartment", record.getCurrentValue(), sd.getId());
+			log.error("No correction for buildings #{} DataSourceDescription {}, cannot set up building reference for apartment",
+					record.getCurrentValue(), sd.getId());
 			return;
 		}
 
 		Buildings buildings = buildingsDao.read(stub.getId());
 		if (buildings == null) {
-			log.error(String.format("Correction for buildings #%s DataSourceDescription %d is invalid, " +
-									"no buildings with id %d, cannot set up building reference for apartment",
-					record.getCurrentValue(), sd.getId(), stub.getId()));
+			log.error("Correction for buildings #{} DataSourceDescription {} is invalid, no buildings with id {}, cannot set up building reference for apartment",
+					new Object[] {record.getCurrentValue(), sd.getId(), stub.getId()});
 			return;
 		}
 		apartment.setBuilding(buildings.getBuilding());
@@ -163,7 +162,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 			return null;
 		}
 
-		log.debug("Checking if apartment exists: {} (number:{})", object, object.getNumber());
+		log.debug("Checking if apartment exists: {} (number: {})", object, object.getNumber());
 
 		if (object.hasNoBuilding()) {
 			log.warn("Do not have a building reference");
@@ -172,7 +171,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 
 		Stub<Apartment> stub = apartmentService.findApartmentStub(object.getBuilding(), object.getNumber());
 		if (stub != null) {
-			log.debug("Found apartment stub: {}", stub);
+			log.debug("Found apartment stub: {}", stub.getId());
 		}
 
 		return stub;

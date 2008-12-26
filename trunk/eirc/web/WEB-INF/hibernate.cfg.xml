@@ -50,8 +50,9 @@
 		<!-- common.ImportErrors -->
 		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
 
-        <!-- FlexPayFiles, FlexPayFileTypes, FlexPayFileStatuses, FlexPayModules -->
-        <mapping resource="org/flexpay/common/persistence/FlexPayFile.hbm.xml" />
+        <!-- FPFiles, FPFileTypes, FPFileStatuses, FPModules -->
+        <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
+        <mapping resource="org/flexpay/common/persistence/FPFile.hbm.xml" />
 
 		<!-- Dual virtual table -->
 		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />

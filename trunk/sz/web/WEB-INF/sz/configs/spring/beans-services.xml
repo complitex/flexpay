@@ -11,18 +11,6 @@
 		<property name="osznDao" ref="osznDAO" />
 	</bean>
 
-	<bean id="szFileTypeService" class="org.flexpay.sz.service.imp.SzFileTypeServiceImpl">
-		<property name="szFileTypeDao" ref="szFileTypeDAO" />
-	</bean>
-
-	<bean id="szFileStatusService" class="org.flexpay.sz.service.imp.SzFileStatusServiceImpl">
-		<property name="szFileStatusDao" ref="szFileStatusDAO" />
-	</bean>
-
-	<bean id="szFileActualityStatusService" class="org.flexpay.sz.service.imp.SzFileActualityStatusServiceImpl">
-		<property name="szFileActualityStatusDao" ref="szFileActualityStatusDAO" />
-	</bean>
-
 	<bean id="characteristicRecordService" class="org.flexpay.sz.service.imp.CharacteristicRecordServiceImpl">
 		<property name="characteristicRecordDao" ref="characteristicRecordDAO" />
 	</bean>

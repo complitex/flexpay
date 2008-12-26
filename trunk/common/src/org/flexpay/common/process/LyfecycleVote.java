@@ -17,4 +17,5 @@ public enum LyfecycleVote {
 	 * Task should be cancelled
 	 */
 	CANCEL
+
 }

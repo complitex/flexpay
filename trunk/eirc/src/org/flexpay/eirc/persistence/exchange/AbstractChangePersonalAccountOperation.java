@@ -33,9 +33,7 @@ public abstract class AbstractChangePersonalAccountOperation extends ContainerOp
 			} else {
 				changeApplyingDate = DateUtil.now();
 			}
-			if (log.isDebugEnabled()) {
-				log.debug("Date to apply change: " + changeApplyingDate);
-			}
+			log.debug("Date to apply change: {}", changeApplyingDate);
 			if (DateUtil.now().before(changeApplyingDate)) {
 				throw new InvalidContainerException("Someone invented time machine? Specified date is in a future: " + datum.get(1));
 			}

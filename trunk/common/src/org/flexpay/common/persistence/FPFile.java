@@ -2,12 +2,12 @@ package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.util.FlexPayFileUtil;
+import org.flexpay.common.util.FPFileUtil;
 
 import java.io.File;
 import java.util.Date;
 
-public class FlexPayFile extends DomainObject {
+public class FPFile extends DomainObject {
 
     private String nameOnServer;
     private String originalName;
@@ -15,9 +15,7 @@ public class FlexPayFile extends DomainObject {
     private String userName;
     private String description;
     private Date creationDate = new Date();
-    private FlexPayFileType type;
-    private FlexPayFileStatus status;
-    private FlexPayModule module;
+    private FPModule module;
 
     public String getNameOnServer() {
         return nameOnServer;
@@ -36,9 +34,8 @@ public class FlexPayFile extends DomainObject {
     }
 
     public File getFile() {
-        return new File(FlexPayFileUtil.getFileLocalPath(this));
+        return new File(FPFileUtil.getFileLocalPath(this));
     }
-
 
     public Long getSize() {
         return size;
@@ -72,43 +69,24 @@ public class FlexPayFile extends DomainObject {
         this.creationDate = creationDate;
     }
 
-    public FlexPayFileType getType() {
-        return type;
-    }
-
-    public void setType(FlexPayFileType type) {
-        this.type = type;
-    }
-
-    public FlexPayFileStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(FlexPayFileStatus status) {
-        this.status = status;
-    }
-
-    public FlexPayModule getModule() {
+    public FPModule getModule() {
         return module;
     }
 
-    public void setModule(FlexPayModule module) {
+    public void setModule(FPModule module) {
         this.module = module;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-                append("FlexPayFile {").
+                append("FPFile {").
                 append("id", getId()).
                 append("nameOnServer", nameOnServer).
                 append("originalName", originalName).
                 append("size", size).
                 append("userName", userName).
                 append("creationDate", creationDate).
-                append("type", type).
-                append("status", status).
-                append("module", module).
                 append("}").toString();
     }
 

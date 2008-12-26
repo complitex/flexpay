@@ -46,6 +46,18 @@
 		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
 	</listener>
 
+    <!--
+        - Loads the menu-config.xml for struts-menu at startup,
+        - by default from "/WEB-INF/menu-config.xml".
+        - To override this, add a context-param named "menuConfigLocation"
+        - web.xml file.
+    -->
+<!--
+    <listener>
+        <listener-class>net.sf.navigator.menu.MenuContextListener</listener-class>
+    </listener>
+-->
+
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

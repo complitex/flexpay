@@ -57,42 +57,42 @@
 		</property>
 	</bean>
 
-    <bean id="flexPayFileDao" parent="abstractDao">
+    <bean id="fpFileDao" parent="abstractDao">
         <property name="proxyInterfaces"
-                  value="org.flexpay.common.dao.FlexPayFileDao" />
+                  value="org.flexpay.common.dao.FPFileDao" />
         <property name="target">
             <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.common.persistence.FlexPayFile" />
+                <constructor-arg value="org.flexpay.common.persistence.FPFile" />
             </bean>
         </property>
     </bean>
 
-    <bean id="flexPayFileStatusDao" parent="abstractDao">
+    <bean id="fpFileStatusDao" parent="abstractDao">
         <property name="proxyInterfaces"
-                  value="org.flexpay.common.dao.FlexPayFileStatusDao" />
+                  value="org.flexpay.common.dao.FPFileStatusDao" />
         <property name="target">
             <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.common.persistence.FlexPayFileStatus" />
+                <constructor-arg value="org.flexpay.common.persistence.FPFileStatus" />
             </bean>
         </property>
     </bean>
 
-    <bean id="flexPayFileTypeDao" parent="abstractDao">
+    <bean id="fpFileTypeDao" parent="abstractDao">
         <property name="proxyInterfaces"
-                  value="org.flexpay.common.dao.FlexPayFileTypeDao" />
+                  value="org.flexpay.common.dao.FPFileTypeDao" />
         <property name="target">
             <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.common.persistence.FlexPayFileType" />
+                <constructor-arg value="org.flexpay.common.persistence.FPFileType" />
             </bean>
         </property>
     </bean>
 
-    <bean id="flexPayModuleDao" parent="abstractDao">
+    <bean id="fpModuleDao" parent="abstractDao">
         <property name="proxyInterfaces"
-                  value="org.flexpay.common.dao.FlexPayModuleDao" />
+                  value="org.flexpay.common.dao.FPModuleDao" />
         <property name="target">
             <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.common.persistence.FlexPayModule" />
+                <constructor-arg value="org.flexpay.common.persistence.FPModule" />
             </bean>
         </property>
     </bean>

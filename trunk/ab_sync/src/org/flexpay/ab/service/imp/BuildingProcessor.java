@@ -78,7 +78,6 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 		Building building = object.getBuilding();
 		if (object.getId() == null) {
 			buildingDao.create(building);
-
 			log.debug("Created building: {}", building);
 		} else {
 			buildingDao.update(building);
@@ -126,6 +125,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 		}
 
 		buildings.setBuildingAttribute(record.getCurrentValue(), ApplicationConfig.getBuildingAttributeTypeNumber());
+
 		log.info("Building number to set: {}, actual number: {}", record.getCurrentValue(), buildings.getNumber());
 	}
 
@@ -144,20 +144,17 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 
 	private void setDistrictId(Building building, HistoryRecord record,
 							   DataSourceDescription sd, CorrectionsService cs) {
-		Stub<District> stub = cs.findCorrection(record.getCurrentValue(),
-				District.class, sd);
+		Stub<District> stub = cs.findCorrection(record.getCurrentValue(), District.class, sd);
 		if (stub == null) {
-			log.error("No correction for district #{} DataSourceDescription {}, "
-					  + "cannot set up reference for building",
+			log.error("No correction for district #{} DataSourceDescription {}, cannot set up reference for building",
 					record.getCurrentValue(), sd.getId());
 			return;
 		}
 
 		if (districtDao.read(stub.getId()) == null) {
-			log.error(String.format(
-					"Correction for district #%s DataSourceDescription %d is invalid, "
-					+ "no district with id %d, cannot set up reference for building",
-					record.getCurrentValue(), sd.getId(), stub.getId()));
+			log.error("Correction for district #{} DataSourceDescription {} is invalid, " +
+					"no district with id {}, cannot set up reference for building",
+					new Object[] {record.getCurrentValue(), sd.getId(), stub.getId()});
 			return;
 		}
 
@@ -168,16 +165,15 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 							 DataSourceDescription sd, CorrectionsService cs) {
 		Stub<Street> stub = cs.findCorrection(record.getCurrentValue(), Street.class, sd);
 		if (stub == null) {
-			log.error("No correction for street #{} DataSourceDescription {}, "
-					  + "cannot set up reference for building", record.getCurrentValue(), sd.getId());
+			log.error("No correction for street #{} DataSourceDescription {}, cannot set up reference for building",
+					record.getCurrentValue(), sd.getId());
 			return;
 		}
 
 		if (streetDao.read(stub.getId()) == null) {
-			log.error(String.format(
-					"Correction for street #%s DataSourceDescription %d is invalid, "
-					+ "no street with id %d, cannot set up reference for building",
-					record.getCurrentValue(), sd.getId(), stub.getId()));
+			log.error("Correction for street #{} DataSourceDescription {} is invalid, " +
+					"no street with id {}, cannot set up reference for building",
+					new Object[] {record.getCurrentValue(), sd.getId(), stub.getId()});
 			return;
 		}
 

@@ -8,13 +8,13 @@ import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -82,8 +82,8 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	private void setStreetTypeId(Street street, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs) {
 		Stub<StreetType> stub = cs.findCorrection(record.getCurrentValue(), StreetType.class, sd);
 		if (stub == null) {
-			log.error("No correction for street type #{} DataSourceDescription {}, " +
-					  "cannot set up reference for street", record.getCurrentValue(), sd.getId());
+			log.error("No correction for street type #{} DataSourceDescription {}, cannot set up reference for street",
+					record.getCurrentValue(), sd.getId());
 			return;
 		}
 
@@ -158,7 +158,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 
 		List<Street> streets = streetService.findByName(nameStr, new TownFilter(object.getParent().getId()));
 
-		log.debug("Looked up for {}, found ", nameStr, streets.size());
+		log.debug("Looked up for {}, found {}", nameStr, streets.size());
 		if (streets.isEmpty()) {
 			return null;
 		}
@@ -198,7 +198,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	/**
 	 * Save DomainObject
 	 *
-	 * @param object	 Object to save
+	 * @param object Object to save
 	 * @param externalId External object identifier
 	 */
 	protected void doSaveObject(Street object, String externalId) {

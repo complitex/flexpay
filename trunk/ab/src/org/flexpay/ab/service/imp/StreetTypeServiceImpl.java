@@ -77,7 +77,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 
 		Collection<StreetTypeTranslation> names = streetType
 				.getTranslations();
-		log.debug("Gettting translation: {} : {}", new Object[]{lang.getLangIsoCode(), names});
+		log.debug("Gettting translation: {} : {}", lang.getLangIsoCode(), names);
 		for (StreetTypeTranslation translation : names) {
 			if (lang.equals(translation.getLang())) {
 				log.debug("Found translation: {}", translation);

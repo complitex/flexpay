@@ -3,7 +3,7 @@ package org.flexpay.eirc.sp;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.FlexPayFile;
+import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.FileSource;
@@ -54,7 +54,7 @@ public class RegistryFileParser {
 
 	@SuppressWarnings ({"ConstantConditions"})
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
-	public void parse(FlexPayFile spFile) throws Exception {
+	public void parse(FPFile spFile) throws Exception {
 
 		FileSource fileSource = null;
 		InputStream is = null;
@@ -107,12 +107,11 @@ public class RegistryFileParser {
 	 * @return FileSource
 	 * @throws Exception if failure occurs
 	 */
-	private FileSource openRegistryFile(FlexPayFile spFile) throws Exception {
+	private FileSource openRegistryFile(FPFile spFile) throws Exception {
 		File file = spFile.getFile();
 		if (file == null) {
-			throw new FileNotFoundException("For FlexPayFile(id=" + spFile.getId()
-											+ ") not found temp file: "
-											+ spFile.getNameOnServer());
+			throw new FileNotFoundException("For FPFile(id=" + spFile.getId()
+					+ ") not found temp file: " + spFile.getNameOnServer());
 		}
 
 		log.debug("Opening registry file: {}", spFile);
@@ -129,7 +128,7 @@ public class RegistryFileParser {
 	}
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
-	private SpRegistry processMessage(Message message, FlexPayFile spFile, SpRegistry registry, Long[] recordCounter) throws Exception {
+	private SpRegistry processMessage(Message message, FPFile spFile, SpRegistry registry, Long[] recordCounter) throws Exception {
 
 		String messageValue = message.getBody();
 		Integer messageType = message.getType();
@@ -157,7 +156,7 @@ public class RegistryFileParser {
 	}
 
 	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
-	private SpRegistry processHeader(FlexPayFile spFile, List<String> messageFieldList) throws Exception {
+	private SpRegistry processHeader(FPFile spFile, List<String> messageFieldList) throws Exception {
 		if (messageFieldList.size() < 11) {
 			throw new RegistryFormatException(
 					"Message header error, invalid number of fields: "
@@ -193,9 +192,7 @@ public class RegistryFileParser {
 			}
 			newRegistry.setContainers(parseContainers(newRegistry, messageFieldList.get(++n)));
 
-			if (log.isInfoEnabled()) {
-				log.info("Creating new registry: {}", newRegistry);
-			}
+			log.info("Creating new registry: {}", newRegistry);
 
 			Organization recipient;
 			if (newRegistry.getRecipientCode() == 0) {
@@ -216,9 +213,7 @@ public class RegistryFileParser {
 				log.error("Failed processing registry header, sender not found: #{}", newRegistry.getSenderCode());
 				throw new FlexPayException("Cannot find sender organization " + newRegistry.getSenderCode());
 			}
-			if (log.isInfoEnabled()) {
 				log.info("Recipient: {}\n sender: {}", recipient, sender);
-			}
 
 			ServiceProvider provider = spService.getProvider(newRegistry.getSenderCode());
 			if (provider == null) {
@@ -275,11 +270,7 @@ public class RegistryFileParser {
 		RegistryRecord record = new RegistryRecord();
 		record.setSpRegistry(registry);
 		try {
-			if (log.isInfoEnabled()) {
-				log.info("adding record: '"
-						 + StringUtils.join(messageFieldList, '-') + "'");
-			}
-
+			log.info("adding record: '{}'", StringUtils.join(messageFieldList, '-'));
 			int n = 1;
 			record.setServiceCode(messageFieldList.get(++n));
 			record.setPersonalAccountExt(messageFieldList.get(++n));

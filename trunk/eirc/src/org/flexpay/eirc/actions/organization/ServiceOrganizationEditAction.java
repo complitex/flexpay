@@ -27,27 +27,27 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (serviceOrganization.getId() == null) {
-			addActionError(getText("error.no_id"));
+            addActionError(getText("error.no_id"));
 			return REDIRECT_SUCCESS;
 		}
 
 		ServiceOrganization oldServiceOrganization = serviceOrganizationService.read(serviceOrganization);
-		if (oldServiceOrganization == null) {
-			addActionError(getText("error.invalid_id"));
-			return REDIRECT_SUCCESS;
-		}
+        if (oldServiceOrganization == null) {
+            addActionError(getText("error.invalid_id"));
+            return REDIRECT_SUCCESS;
+        }
 
-		serviceOrganizationService.initServiceOrganizationlessFilter(organizationFilter, oldServiceOrganization);
+        serviceOrganizationService.initServiceOrganizationlessFilter(organizationFilter, oldServiceOrganization);
 
-		// prepare initial setup
-		if (!isSubmit()) {
-			if (oldServiceOrganization.isNotNew()) {
-				organizationFilter.setSelectedId(oldServiceOrganization.getOrganization().getId());
-			}
-			serviceOrganization = oldServiceOrganization;
-			initDescriptions();
-			return INPUT;
-		}
+        // prepare initial setup
+        if (!isSubmit()) {
+            if (oldServiceOrganization.isNotNew()) {
+                organizationFilter.setSelectedId(oldServiceOrganization.getOrganization().getId());
+            }
+            serviceOrganization = oldServiceOrganization;
+            initDescriptions();
+            return INPUT;
+        }
 
 		if (!organizationFilter.needFilter()) {
 			addActionError(getText("eirc.error.orginstance.no_organization_selected"));
@@ -63,24 +63,22 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 
 		oldServiceOrganization.setOrganization(juridicalPerson);
 
-		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
-			String value = name.getValue();
-			Language lang = getLang(name.getKey());
-			ServiceOrganizationDescription description = new ServiceOrganizationDescription();
-			description.setLang(lang);
-			description.setName(value);
-			oldServiceOrganization.setDescription(description);
-		}
+        for (Map.Entry<Long, String> name : descriptions.entrySet()) {
+            String value = name.getValue();
+            Language lang = getLang(name.getKey());
+            ServiceOrganizationDescription description = new ServiceOrganizationDescription();
+            description.setLang(lang);
+            description.setName(value);
+            oldServiceOrganization.setDescription(description);
+        }
 
-		if (log.isInfoEnabled()) {
-			log.info("--------------------------------");
-			for (ServiceOrganizationDescription d : oldServiceOrganization.getDescriptions()) {
-				log.info("{} - {}", d.getLang(), d.getName());
-			}
-			log.info("--------------------------------");
-		}
+        log.info("--------------------------------");
+        for (ServiceOrganizationDescription d : oldServiceOrganization.getDescriptions()) {
+            log.info("{} - {}", d.getLang(), d.getName());
+        }
+        log.info("--------------------------------");
 
-		serviceOrganizationService.save(oldServiceOrganization);
+        serviceOrganizationService.save(oldServiceOrganization);
 
 		return REDIRECT_SUCCESS;
 	}
@@ -110,15 +108,15 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 		}
 	}
 
-	public ServiceOrganization getServiceOrganization() {
-		return serviceOrganization;
-	}
+    public ServiceOrganization getServiceOrganization() {
+        return serviceOrganization;
+    }
 
-	public void setServiceOrganization(ServiceOrganization serviceOrganization) {
-		this.serviceOrganization = serviceOrganization;
-	}
+    public void setServiceOrganization(ServiceOrganization serviceOrganization) {
+        this.serviceOrganization = serviceOrganization;
+    }
 
-	public Map<Long, String> getDescriptions() {
+    public Map<Long, String> getDescriptions() {
 		return descriptions;
 	}
 
@@ -134,9 +132,9 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 		this.organizationFilter = organizationFilter;
 	}
 
-	public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
-		this.serviceOrganizationService = serviceOrganizationService;
-	}
+    public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
+        this.serviceOrganizationService = serviceOrganizationService;
+    }
 
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;

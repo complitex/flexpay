@@ -49,8 +49,6 @@
 		<!-- common.Sequences -->
 		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
 
-		<mapping resource="org/flexpay/common/persistence/FlexPayFile.hbm.xml" />
-
 		<!-- common.ImportErrors -->
 		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
 
@@ -58,6 +56,8 @@
 		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
 
 		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
+
+        <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
 
 	</session-factory>
 

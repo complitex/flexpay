@@ -1,3 +1,6 @@
+INSERT INTO common_flexpay_modules_tbl (name) VALUES ('ab');
+SELECT @module_ab:=last_insert_id();
+
 -- Init Countries table
 INSERT INTO ab_countries_tbl (status) values (0);
 SELECT @russia_id:=last_insert_id();

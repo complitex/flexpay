@@ -8,4 +8,5 @@ import org.junit.runners.Suite;
 		TestReportUtil.class
 		})
 public class AllTests {
+
 }

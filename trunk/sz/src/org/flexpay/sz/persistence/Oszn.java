@@ -11,23 +11,6 @@ public class Oszn extends DomainObject {
 	//private Organization organization;
 	private District district;
 	
-	/**
-	 * Constructs a new Oszn.
-	 */
-	public Oszn() {
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-				.append("id", getId())
-				.append("Description", getDescription())
-				.append("District", getDistrict())
-				.toString();
-	}
-	
 	public String getDescription() {
 		return description;
 	}
@@ -43,4 +26,14 @@ public class Oszn extends DomainObject {
 	public void setDistrict(District district) {
 		this.district = district;
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("Oszn {").
+				append("id", getId()).
+				append("description", description).
+				append("}").toString();
+	}
+
 }

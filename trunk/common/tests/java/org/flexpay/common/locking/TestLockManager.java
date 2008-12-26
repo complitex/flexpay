@@ -1,10 +1,11 @@
 package org.flexpay.common.locking;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Repeat;
 
@@ -39,7 +40,7 @@ public class TestLockManager extends SpringBeanAwareTestCase {
 		Thread runner = new Thread(conflictingThread);
 		runner.start();
 
-		Logger log = Logger.getLogger(TestLockManager.class);
+		Logger log = LoggerFactory.getLogger(TestLockManager.class);
 
 		try {
 			runner.join();

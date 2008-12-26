@@ -30,4 +30,5 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 	protected InputStream getFileStream(@NonNls String relativePath) {
 		return getClass().getClassLoader().getResourceAsStream(relativePath);
 	}
+
 }

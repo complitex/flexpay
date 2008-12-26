@@ -1,6 +1,6 @@
 package org.flexpay.eirc.actions;
 
-import org.flexpay.common.persistence.FlexPayFile;
+import org.flexpay.common.persistence.FPFile;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessManager;
 import static org.flexpay.common.util.CollectionUtils.ar;
@@ -31,7 +31,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	@Test
 	@NotTransactional
 	public void testUploadFile() throws Throwable {
-		FlexPayFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.txt");
+		FPFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.txt");
 
 		// do clean up
 		deleteRecords(newFile);
@@ -41,7 +41,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	@Test
 	@NotTransactional
 	public void testUploadZipFile() throws Throwable {
-		FlexPayFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.zip");
+		FPFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.zip");
 
 		// do clean up
 		deleteRecords(newFile);
@@ -51,14 +51,14 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	@Test
 	@NotTransactional
 	public void testUploadGZipFile() throws Throwable {
-		FlexPayFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.txt.gz");
+		FPFile newFile = uploadFile("org/flexpay/eirc/actions/sp/ree.txt.gz");
 
 		// do clean up
 		deleteRecords(newFile);
 		deleteFile(newFile);
 	}
 
-	protected void deleteRecords(FlexPayFile file) {
+	protected void deleteRecords(FPFile file) {
 
 		log.debug("Deleting registries of file: {}", file);
 
@@ -91,8 +91,8 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 		jdbcTemplate.update(sql, ar(registryId));
 	}
 
-	protected FlexPayFile uploadFile(@NonNls String fileName) throws Throwable {
-		FlexPayFile newFile = createSpFile(fileName);
+	protected FPFile uploadFile(@NonNls String fileName) throws Throwable {
+		FPFile newFile = createSpFile(fileName);
 
 		fileAction.setSpFileId(newFile.getId());
 		fileAction.setAction("loadToDb");

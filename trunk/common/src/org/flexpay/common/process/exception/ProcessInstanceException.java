@@ -19,4 +19,5 @@ public class ProcessInstanceException extends FlexPayException {
     public ProcessInstanceException(String message, Throwable cause) {
         super(message, cause);
     }
+
 }

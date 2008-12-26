@@ -1,6 +1,7 @@
 package org.flexpay.sz.service.imp;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.sz.dao.CharacteristicRecordDao;
 import org.flexpay.sz.persistence.CharacteristicRecord;
@@ -10,10 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
-public class CharacteristicRecordServiceImpl implements
-		RecordService<CharacteristicRecord> {
+public class CharacteristicRecordServiceImpl implements RecordService<CharacteristicRecord> {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private CharacteristicRecordDao characteristicRecordDao;
 
@@ -26,9 +26,7 @@ public class CharacteristicRecordServiceImpl implements
 	@Transactional (readOnly = false)
 	public CharacteristicRecord create(CharacteristicRecord characteristic) {
 		characteristicRecordDao.create(characteristic);
-		if (log.isDebugEnabled()) {
-			log.debug("Created CharacteristicRecord: " + characteristic);
-		}
+		log.debug("Created CharacteristicRecord: {}", characteristic);
 
 		return characteristic;
 	}
@@ -49,8 +47,8 @@ public class CharacteristicRecordServiceImpl implements
 		characteristicRecordDao.deleteBySzFileId(id);
 	}
 
-	public void setCharacteristicRecordDao(
-			CharacteristicRecordDao characteristicRecordDao) {
+	public void setCharacteristicRecordDao(CharacteristicRecordDao characteristicRecordDao) {
 		this.characteristicRecordDao = characteristicRecordDao;
 	}
+
 }

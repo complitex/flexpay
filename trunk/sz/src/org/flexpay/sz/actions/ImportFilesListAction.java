@@ -2,15 +2,14 @@ package org.flexpay.sz.actions;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.sz.convert.NotSupportedOperationException;
 import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,19 +51,12 @@ public class ImportFilesListAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	public void setSzFileService(SzFileService szFileService) {
-		this.szFileService = szFileService;
-	}
-
-	public String getSzDataRoot() throws IOException {
-		return ApplicationConfig.getSzDataRoot().getCanonicalPath();
-	}
-
 	public String getSeparator() {
 		return File.separator;
 	}
 
 	public static class SzFileWrapper {
+
 		private SzFile szFile;
 		private boolean isLoadedToDb;
 
@@ -88,6 +80,11 @@ public class ImportFilesListAction extends FPActionSupport {
 
 	public List<SzFileWrapper> getSzFileWrapperList() {
 		return szFileWrapperList;
+	}
+
+	@Required
+	public void setSzFileService(SzFileService szFileService) {
+		this.szFileService = szFileService;
 	}
 
 }

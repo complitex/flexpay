@@ -23,36 +23,6 @@
 		</property>
 	</bean>
 
-	<bean id="szFileTypeDAO" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.sz.dao.SzFileTypeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.sz.persistence.SzFileType" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="szFileStatusDAO" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.sz.dao.SzFileStatusDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.sz.persistence.SzFileStatus" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="szFileActualityStatusDAO" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.sz.dao.SzFileActualityStatusDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.sz.persistence.SzFileActualityStatus" />
-			</bean>
-		</property>
-	</bean>
-
 	<bean id="characteristicRecordDAO" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.sz.dao.CharacteristicRecordDao" />
@@ -124,3 +94,4 @@
 	</bean>
 
 </beans>
+        

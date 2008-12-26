@@ -20,11 +20,11 @@
 	<bean class="org.flexpay.common.service.imp.LanguageServiceImpl" id="languageServiceTarget"
 		  p:languageDao-ref="languageDAO" />
 
-    <bean class="org.flexpay.common.service.imp.FlexPayFileServiceImpl" id="flexPayFileService"
-          p:flexPayFileDao-ref="flexPayFileDao"
-          p:flexPayFileStatusDao-ref="flexPayFileStatusDao"
-          p:flexPayFileTypeDao-ref="flexPayFileTypeDao"
-          p:flexPayModuleDao-ref="flexPayModuleDao" />
+    <bean class="org.flexpay.common.service.imp.FPFileServiceImpl" id="fpFileService"
+          p:fpFileDao-ref="fpFileDao"
+          p:fpFileStatusDao-ref="fpFileStatusDao"
+          p:fpFileTypeDao-ref="fpFileTypeDao"
+          p:fpModuleDao-ref="fpModuleDao" />
 
 	<bean class="org.flexpay.common.service.imp.MeasureUnitServiceImpl" id="measureUnitServiceTarget"
 		  p:measureUnitDao-ref="measureUnitDao" />

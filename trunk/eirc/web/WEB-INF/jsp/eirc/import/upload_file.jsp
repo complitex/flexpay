@@ -1,87 +1,129 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
+<div id="mainBlock">
 
-<s:form action="spFileCreate" method="POST" enctype="multipart/form-data">
+    <div id="copyBlock0">
 
-	<table>
-		<tr>
-			<td><s:text name="eirc.file" /></td>
-			<td><s:file name="upload" label="File" id="upload" /></td>
-		</tr>
-		<tr>
-			<td colspan="2">&nbsp</td>
-		</tr>
+        <s:form id="uploadForm0" action="doSpFileUploadAjax" method="POST" enctype="multipart/form-data" onsubmit="startUpload(0);" target="uploadFrame0" >
+            <div>
+                <span>
+                    <s:text name="eirc.file" />
+                    <s:file name="upload" label="File" />
+                </span>
+                <a href="javascript:void(0)" id="delBut0" idd="0" onclick="removeBlock(this);" style="font-size:10px;display:none;"><s:text name="remove_block" /></a>
+            </div>
+        </s:form>
 
-		<tr>
-			<td colspan="2">
-				<s:submit name="submitted" value="%{getText('common.upload')}" cssClass="btn-exit"
-						  onclick='startUpload();' />
-				<font color="red" id="ajaxResponse"></font>
-			</td>
-		</tr>
+        <iframe id="uploadFrame0" name="uploadFrame0" style="display:none;"></iframe>
+        <font color="red" id="ajaxResponse0"></font>
 
-		<tr>
-			<td colspan="2">
-				<s:if test="%{uploaded & submitted}">
-					<s:text name="eirc.successfullUpload" />
-				</s:if>
-			</td>
-		</tr>
-	</table>
+    </div>
 
-</s:form>
+</div>
 
+<%--<s:form action="doUpload" method="POST" enctype="multipart/form-data">--%>
+    <div>
+        <input type="button" value="<s:text name="common.upload" />" class="btn-exit" onclick="submitAll();" />
+        <input type="button" value="<s:text name="add_block" />" class="btn-exit" onclick="addBlock();" />
+    </div>
+<%--</s:form>--%>
 
 <script type="text/javascript">
-	function newXMLHttpRequest() {
 
-		var xmlreq = false;
+    var newBlocks = 0;
+    var mainBlock = "mainBlock";
+    var copyBlock = "copyBlock";
 
-		if (window.XMLHttpRequest) {
-			// Создадим XMLHttpRequest объект для не-Microsoft браузеров
-			xmlreq = new XMLHttpRequest();
-		} else if (window.ActiveXObject) {
+    function submitAll() {
+        $$('form[name="doSpFileUploadAjax"]').each(
+                function (s) {
+                    s.submit();
+                }
+            );
+    }
 
-			// Создадим XMLHttpRequest с помощью MS ActiveX
-			try {
-				// Попробуем создать XMLHttpRequest для поздних версий
-				// Internet Explorer
-				xmlreq = new ActiveXObject("Msxml2.XMLHTTP");
-			} catch (e1) {
-				// Не удалось создать требуемый ActiveXObject
-				try {
-					// Пробуем вариант, который поддержат более старые версии
-					//  Internet Explorer
-					xmlreq = new ActiveXObject("Microsoft.XMLHTTP");
-				} catch (e2) {
-					// Не в состоянии создать XMLHttpRequest с помощью ActiveX
-				}
-			}
-		}
+    function addBlock() {
+        newBlocks++;
+        //clone
+        var block = $(copyBlock + "0");
 
-		return xmlreq;
-	}
+        var clone = block.cloneNode(1);
+        clone.id = copyBlock + newBlocks;
+        $(mainBlock).appendChild(clone);
 
-	var xmlHttp = newXMLHttpRequest();
+        var removeBtn = $$('a[id="delBut0"]')[1];
+        removeBtn.id = "delBut" + newBlocks;
+        removeBtn.setAttribute("idd", newBlocks);
+        removeBtn.style.display = "block";
 
-	function getProgress() {
-		var url = "/eirc/common/fileUploadProgress.action";
-		xmlHttp.open("POST", url, true);
-		xmlHttp.onreadystatechange = updatePage;
-		xmlHttp.send(null);
+        var uploadForm = $$('form[id="uploadForm0"]')[1];
+        uploadForm.id = "uploadForm" + newBlocks;
+        uploadForm.setAttribute("target", "uploadFrame" + newBlocks);
+        uploadForm.setAttribute("onsubmit", "startUpload(" + newBlocks + ");");
 
-	}
+        var uploadFrame = $$('iframe[id="uploadFrame0"]')[1];
+        uploadFrame.id = "uploadFrame" + newBlocks;
+        uploadFrame.setAttribute("name", "uploadFrame" + newBlocks);
 
-	function updatePage() {
-		if (xmlHttp.readyState == 4) {
-			document.getElementById('ajaxResponse').innerHTML = 'Loaded ' + xmlHttp.responseText + '%';
-			setTimeout(getProgress, 1000);
-		}
-	}
+        var statusEl = $$('font[id="ajaxResponse0"]')[1];
+        statusEl.id = "ajaxResponse" + newBlocks;
 
-	function startUpload() {
-		//document.getElementById('submit').disabled = 'true';
-		setTimeout(getProgress, 2000);
-	}
+    }
+
+    function eraseValues() {
+
+    }
+
+    function removeBlock(btn) {
+        var id = Number(btn.getAttribute("idd"));
+        Element.Methods.remove("copyBlock" + id);
+    }
+
+    function newXMLHttpRequest() {
+      var xmlreq = false;
+      if (window.XMLHttpRequest) {
+        // Создадим XMLHttpRequest объект для не-Microsoft браузеров
+        xmlreq = new XMLHttpRequest();
+      } else if (window.ActiveXObject) {
+        // Создадим XMLHttpRequest с помощью MS ActiveX
+        try {
+          // Попробуем создать XMLHttpRequest для поздних версий
+          // Internet Explorer
+          xmlreq = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e1) {
+          // Не удалось создать требуемый ActiveXObject
+          try {
+            // Пробуем вариант, который поддержат более старые версии
+            //  Internet Explorer
+            xmlreq = new ActiveXObject("Microsoft.XMLHTTP");
+          } catch (e2) {
+            // Не в состоянии создать XMLHttpRequest с помощью ActiveX
+          }
+        }
+      }
+
+      return xmlreq;
+    }
+
+    var xmlHttp = newXMLHttpRequest();
+
+    function getProgress(id) {
+      var url = "/sz/common/fileUploadProgress.action";
+      xmlHttp.open("POST", url, true);
+      xmlHttp.onreadystatechange = updatePage(id);
+      xmlHttp.send(null);
+    }
+
+    function updatePage(id) {
+       if (xmlHttp.readyState == 4) {
+           $("ajaxResponse" + id).innerHTML = 'Loaded ' + xmlHttp.responseText + '%';
+           setTimeout(getProgress,1000);
+       }
+    }
+
+    function startUpload(id) {
+      //document.getElementById('submit').disabled = 'true';
+      setTimeout(getProgress(id),2000);
+    }
 
 </script>

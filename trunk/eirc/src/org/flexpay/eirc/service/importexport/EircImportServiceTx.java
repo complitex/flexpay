@@ -53,14 +53,10 @@ public class EircImportServiceTx extends ImportService {
 			}
 
 			try {
-				if (log.isDebugEnabled()) {
-					log.debug("Starting record processing: " + data.getRegistryRecord());
-				}
+				log.debug("Starting record processing: {}", data.getRegistryRecord());
 				recordWorkflowManager.startProcessing(data.getRegistryRecord());
 			} catch (TransitionNotAllowed e) {
-				if (log.isInfoEnabled()) {
-					log.info("Skipping record, processing not allowed: " + data.getExternalSourceId());
-				}
+				log.info("Skipping record, processing not allowed: {}", data.getExternalSourceId());
 				continue;
 			}
 
@@ -81,14 +77,14 @@ public class EircImportServiceTx extends ImportService {
 						data.getShortConsumerId(), Consumer.class, sd);
 
 				if (persistentObj != null) {
-					log.info("Found existing consumer correction: #" + data.getExternalSourceId());
+					log.info("Found existing consumer correction: #{}", data.getExternalSourceId());
 					// todo do we need to fetch this?
 					postSaveRecord(data, consumerService.read(persistentObj));
 					continue;
 				}
 
 				if (data.isPersonalInfoEmpty()) {
-					log.info("Cannot find consumer by short info: " + data.getShortConsumerId());
+					log.info("Cannot find consumer by short info: {}", data.getShortConsumerId());
 					ImportError error = addImportError(sd, data.getExternalSourceId(), Consumer.class, dataSource);
 					error.setErrorId("error.eirc.import.consumer_not_found");
 					setConsumerError(data, error);
@@ -105,9 +101,7 @@ public class EircImportServiceTx extends ImportService {
 					}
 
 					data.getRegistryRecord().setApartment(apartment);
-					if (log.isInfoEnabled()) {
-						log.info("Found apartment: " + data.getApartmentId());
-					}
+					log.info("Found apartment: {}", data.getApartmentId());
 				}
 
 				// set person
@@ -115,9 +109,7 @@ public class EircImportServiceTx extends ImportService {
 					Person person = findPerson(sd, data, dataSource);
 					if (person != null) {
 						data.getRegistryRecord().setPerson(person);
-						if (log.isInfoEnabled()) {
-							log.info("Found responsible person: " + data.getPersonFIO());
-						}
+						log.info("Found responsible person: {}", data.getPersonFIO());
 					} else {
 						log.info("No person found");
 					}
@@ -129,7 +121,7 @@ public class EircImportServiceTx extends ImportService {
 					service = consumerService.findService(
 							data.getRegistryRecord().getSpRegistry().getServiceProvider(), data.getServiceCode());
 					if (service == null) {
-						log.warn("Unknown service code: " + data.getServiceCode());
+						log.warn("Unknown service code: {}", data.getServiceCode());
 						ImportError error = addImportError(sd, data.getExternalSourceId(), Service.class, dataSource);
 						error.setErrorId("error.eirc.import.service_not_found");
 						setConsumerError(data, error);
@@ -152,16 +144,14 @@ public class EircImportServiceTx extends ImportService {
 
 				postSaveRecord(data, consumer);
 			} catch (Exception e) {
-				log.error("Failed getting consumer: " + data.toString(), e);
+				log.error("Failed getting consumer: {}", data.toString(), e);
 				throw new RuntimeException(e);
 			}
 		}
 
 		flushStack();
 
-		if (log.isDebugEnabled()) {
-			log.debug("Imported " + counters[0] + " records so far.");
-		}
+		log.debug("Imported {} records so far", counters[0]);
 
 		return true;
 	}
@@ -223,9 +213,7 @@ public class EircImportServiceTx extends ImportService {
 									RawDataSource<RawConsumerData> dataSource) throws Exception {
 
 		// try to find by apartment correction
-		if (log.isInfoEnabled()) {
-			log.info("Checking for apartment correction: " + data.getApartmentId());
-		}
+		log.info("Checking for apartment correction: {}", data.getApartmentId());
 		Stub<Apartment> apartmentById = correctionsService.findCorrection(
 				data.getApartmentId(), Apartment.class, sd);
 		if (apartmentById != null) {
@@ -237,7 +225,7 @@ public class EircImportServiceTx extends ImportService {
 		Stub<Buildings> buildingsById = correctionsService.findCorrection(
 				data.getBuildingId(), Buildings.class, sd);
 		if (buildingsById != null) {
-			log.info("Found buildings correction: " + data.getBuildingId());
+			log.info("Found buildings correction: {}", data.getBuildingId());
 			Buildings buildings = buildingService.readFull(buildingsById);
 			return findApartment(data, buildings, sd, dataSource);
 		}
@@ -246,19 +234,18 @@ public class EircImportServiceTx extends ImportService {
 		Stub<Street> streetById = correctionsService.findCorrection(
 				data.getStreetId(), Street.class, sd);
 		if (streetById != null) {
-			log.info("Found street correction: " + data.getStreetId());
+			log.info("Found street correction: {}", data.getStreetId());
 			return findApartment(data, new Street(streetById), sd, dataSource);
 		}
 
 		Street streetByName = findStreet(nameObjsMap, data, sd, dataSource);
 		if (streetByName == null) {
-			log.warn("Failed getting street for account #" + data.getExternalSourceId());
+			log.warn("Failed getting street for account #{}", data.getExternalSourceId());
 			return null;
 		}
 
-		DataCorrection corr = correctionsService.getStub(
-				data.getStreetId(), streetByName, sd);
-		log.info("Adding street correction: " + data.getStreetId());
+		DataCorrection corr = correctionsService.getStub(data.getStreetId(), streetByName, sd);
+		log.info("Adding street correction: {}", data.getStreetId());
 		addToStack(corr);
 
 		return findApartment(data, streetByName, sd, dataSource);
@@ -270,8 +257,7 @@ public class EircImportServiceTx extends ImportService {
 
 		StreetType streetType = findStreetType(data, sd);
 		if (streetType == null) {
-			log.warn("No street type was found: " + data.getAddressStreetType() +
-					 ", for street " + data.getAddressStreet());
+			log.warn("No street type was found: {}, for street {}", data.getAddressStreetType(), data.getAddressStreet());
 			ImportError error = addImportError(sd, data.getExternalSourceId(), StreetType.class, dataSource);
 			error.setErrorId("error.eirc.import.street_type_not_found");
 			setConsumerError(data, error);
@@ -281,21 +267,18 @@ public class EircImportServiceTx extends ImportService {
 		List<Street> streets = nameObjsMap.get(data.getAddressStreet().toLowerCase());
 		// no candidates
 		if (streets == null) {
-			log.info("No candidates for street: " + data.getAddressStreet());
+			log.info("No candidates for street: {}", data.getAddressStreet());
 			ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
 			error.setErrorId("error.eirc.import.street_not_found");
 			setConsumerError(data, error);
 			return null;
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Street candidates: " + streets);
-		}
+		log.debug("Street candidates: {}", streets);
 
 		List<Street> filteredStreets = filterStreetsbyType(streets, streetType);
 		if (filteredStreets.isEmpty()) {
-			log.warn("Cannot find street by type: " + data.getAddressStreetType() +
-					 ", " + data.getAddressStreet());
+			log.warn("Cannot find street by type: {}, {}", data.getAddressStreetType(), data.getAddressStreet());
 			ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
 			error.setErrorId("error.eirc.import.street_type_invalid");
 			setConsumerError(data, error);
@@ -303,12 +286,12 @@ public class EircImportServiceTx extends ImportService {
 		}
 
 		if (filteredStreets.size() == 1) {
-			log.info("Street filtered by type: " + data.getAddressStreet());
+			log.info("Street filtered by type: {}", data.getAddressStreet());
 			return filteredStreets.get(0);
 		}
 
-		log.warn("Cannot find street candidate, even by type: " + data.getAddressStreetType() +
-				 ", " + data.getAddressStreet());
+		log.warn("Cannot find street candidate, even by type: {}, {}",
+				data.getAddressStreetType(), data.getAddressStreet());
 		ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
 		error.setErrorId("error.eirc.import.street_too_many_variants");
 		setConsumerError(data, error);
@@ -320,7 +303,7 @@ public class EircImportServiceTx extends ImportService {
 		for (Street street : streets) {
 			StreetType current = street.getCurrentType();
 			if (current == null) {
-				log.warn("No type for street " + street);
+				log.warn("No type for street {}", street);
 				continue;
 			}
 			if (stub(current).getId().equals(type.getId())) {
@@ -348,8 +331,8 @@ public class EircImportServiceTx extends ImportService {
 			throws Exception {
 		Buildings buildings = buildingService.findBuildings(stub(street), data.getAddressHouse(), data.getAddressBulk());
 		if (buildings == null) {
-			log.warn(String.format("Failed getting building for consumer, Street(%d, %s), Building(%s, %s) ",
-					street.getId(), data.getAddressStreet(), data.getAddressHouse(), data.getAddressBulk()));
+			log.warn("Failed getting building for consumer, Street({}, {}), Building({}, {}) ",
+					new Object[] {street.getId(), data.getAddressStreet(), data.getAddressHouse(), data.getAddressBulk()});
 			ImportError error = addImportError(sd, data.getExternalSourceId(), Buildings.class, dataSource);
 			error.setErrorId("error.eirc.import.building_not_found");
 			setConsumerError(data, error);
@@ -357,7 +340,7 @@ public class EircImportServiceTx extends ImportService {
 		}
 
 		DataCorrection corr = correctionsService.getStub(data.getBuildingId(), buildings, sd);
-		log.info("Adding buildings correction: " + data.getBuildingId());
+		log.info("Adding buildings correction: {}", data.getBuildingId());
 		addToStack(corr);
 
 		return findApartment(data, buildings, sd, dataSource);
@@ -378,7 +361,7 @@ public class EircImportServiceTx extends ImportService {
 		// Add correction to ease further search 
 		Apartment apartment = new Apartment(stub);
 		DataCorrection corr = correctionsService.getStub(data.getApartmentId(), apartment, sd);
-		log.info("Adding apartment correction: " + data.getApartmentId());
+		log.info("Adding apartment correction: {}", data.getApartmentId());
 		addToStack(corr);
 
 		return new Apartment(stub);

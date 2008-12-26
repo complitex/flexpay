@@ -1,4 +1,5 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@ taglib uri="http://struts-menu.sf.net/tag" prefix="menu" %>
 
 <ul class="folders">
 	<li class="open">
@@ -57,3 +58,12 @@
 		</ul>
 	</li>
 </ul>
+
+<%--
+<ul class="folders">
+    <menu:useMenuDisplayer name="Simple" config="MenuStrings" bundle="struts.custom.i18n.resources">
+        <menu:displayMenu name="L3Organizations" />
+        <menu:displayMenu name="L3Services" />
+    </menu:useMenuDisplayer>
+</ul>
+--%>

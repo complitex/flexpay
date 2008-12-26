@@ -1,6 +1,7 @@
 package org.flexpay.common.dao.impl;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.finder.FinderArgumentTypeFactory;
 import org.flexpay.common.dao.finder.FinderExecutor;
@@ -42,7 +43,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	 * Logger
 	 */
 	@NonNls
-	private final Logger log = Logger.getLogger(getClass());
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	protected HibernateTemplate hibernateTemplate;
 
@@ -158,14 +159,11 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 				if (pageParam != null && queryCount != null) {
 					Long count = (Long) queryCount.uniqueResult();
 					pageParam.setTotalElements(count.intValue());
-					if (log.isDebugEnabled()) {
-						log.debug(String.format("Setting page for query: %s %d - %d", queryName,
-								pageParam.getThisPageFirstElementNumber(), pageParam.getPageSize()));
-					}
+					log.debug("Setting page for query: {} {} - {}", new Object[] {queryName, pageParam.getThisPageFirstElementNumber(), pageParam.getPageSize()});
 					queryObject.setFirstResult(pageParam.getThisPageFirstElementNumber());
 					queryObject.setMaxResults(pageParam.getPageSize());
 				} else if (pageParam != null) {
-					log.warn("Page parameter found, but no count query found: " + queryName + ", invalid API usage");
+					log.warn("Page parameter found, but no count query found: {}, invalid API usage", queryName);
 				}
 				List results = queryObject.list();
 				if (pageParam != null) {

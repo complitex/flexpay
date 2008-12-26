@@ -48,7 +48,8 @@
 		<!-- common.Sequences -->
 		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
 		
-        <mapping resource="org/flexpay/common/persistence/FlexPayFile.hbm.xml" />
+        <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
+        <mapping resource="org/flexpay/common/persistence/FPFile.hbm.xml" />
 
 		<!-- common.ImportErrors -->
 		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
@@ -67,15 +68,6 @@
 		<!-- SZ Oszn -->
 		<mapping resource="org/flexpay/sz/persistence/Oszn.hbm.xml" />
 		
-		<!-- SZ File type -->
-		<mapping resource="org/flexpay/sz/persistence/SzFileType.hbm.xml" />
-		
-		<!-- SZ File status -->
-		<mapping resource="org/flexpay/sz/persistence/SzFileStatus.hbm.xml" />
-		
-		<!-- SZ File actuality status -->
-		<mapping resource="org/flexpay/sz/persistence/SzFileActualityStatus.hbm.xml" />
-
         <!-- SZ  SubsidyRecord-->
         <mapping resource="org/flexpay/sz/persistence/SubsidyRecord.hbm.xml" />
 

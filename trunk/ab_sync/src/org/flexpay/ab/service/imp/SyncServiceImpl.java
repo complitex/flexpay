@@ -11,6 +11,7 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.List;
 public class SyncServiceImpl implements SyncService {
 
 	@NonNls
-	private org.slf4j.Logger log = LoggerFactory.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private HistoryDao historyDao;
 	private CorrectionsService correctionsService;
@@ -68,7 +69,7 @@ public class SyncServiceImpl implements SyncService {
 					log.debug("Starting sync for next records");
 					long time = System.currentTimeMillis();
 					List<HistoryRecord> records = historyDao.getRecords(new Page(50000, 1));
-					log.error("time spent for fetch: " + (System.currentTimeMillis() - time));
+					log.error("time spent for fetch: {}", (System.currentTimeMillis() - time));
 					if (records.isEmpty() || recordBuffer.containsAll(records)) {
 						saveObject();
 						log.debug("No more records.");
@@ -81,9 +82,7 @@ public class SyncServiceImpl implements SyncService {
 							prevId = record.getObjectId();
 							prevType = record.getObjectType();
 						}
-						if (log.isDebugEnabled()) {
-							log.debug("Sync record: " + record);
-						}
+						log.debug("Sync record: {}", record);
 						processRecord(record);
 						recordBuffer.add(record);
 						++count;
@@ -94,10 +93,8 @@ public class SyncServiceImpl implements SyncService {
 				}
 			}
 
-			if (log.isInfoEnabled()) {
-				log.info("Processed history records: " + count);
-				log.info("History processing took " + (System.currentTimeMillis() - timeStart) + "ms");
-			}
+			log.info("Processed history records: {}", count);
+			log.info("History processing took {} ms", (System.currentTimeMillis() - timeStart));
 
 		} finally {
 			lockManager.releaseLock("sync_ab_lock");
@@ -108,9 +105,7 @@ public class SyncServiceImpl implements SyncService {
 		if (prevObj != null) {
 			processor.saveObject(prevObj, String.valueOf(prevId), sd, correctionsService);
 		}
-		if (log.isDebugEnabled()) {
-			log.debug("Marking as processed " + recordBuffer.size() + " history records.");
-		}
+		log.debug("Marking as processed {} history records.", recordBuffer.size());
 		historyDao.setProcessed(recordBuffer);
 		recordBuffer.clear();
 		prevObj = null;

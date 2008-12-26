@@ -83,9 +83,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 			throw e;
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Current errors: " + getActionErrors());
-		}
+		log.debug("Current errors: {}", getActionErrors());
 
 		// extract this domain session errors
 		String damainName = getDomainName();
@@ -97,9 +95,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 			//noinspection unchecked
 			addActionErrors(errors);
 
-			if (log.isDebugEnabled()) {
-				log.debug("Added errors: " + errors);
-			}
+			log.debug("Added errors: {}", errors);
 		}
 
 		// put all errors to session if redirecting
@@ -175,9 +171,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	@NotNull
 	public String getErrorMessage(@NotNull FlexPayException e) {
 		if (StringUtils.isNotEmpty(e.getErrorKey())) {
-			if (log.isDebugEnabled()) {
-				log.debug("Adding error: " + e.getErrorKey() + ", params: " + StringUtils.join(e.getParams(), ","));
-			}
+			log.debug("Adding error: {}, params: {}", e.getErrorKey(), StringUtils.join(e.getParams(), ","));
 			return getText(e.getErrorKey(), e.getParams());
 		} else {
 			return e.getMessage();

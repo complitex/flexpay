@@ -24,7 +24,7 @@ public class StreetSearchAjaxAction extends FPActionSupport {
 	@NotNull
 	public String doExecute() throws FlexPayException {
 
-		log.debug("Searching streets: {}, town: {}", new Object[]{searchString, town.getId()});
+		log.debug("Searching streets: {}, town: {}", searchString, town.getId());
 
 		List<Street> streets = streetService.findByTownAndName(
 				stub(town), "%" + searchString + "%");

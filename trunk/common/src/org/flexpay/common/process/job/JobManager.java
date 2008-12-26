@@ -1,6 +1,7 @@
 package org.flexpay.common.process.job;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.JobClassNotFoundException;
 import org.flexpay.common.process.exception.JobConfigurationNotFoundException;
@@ -24,7 +25,7 @@ public class JobManager implements BeanFactoryAware, InitializingBean {
 	/**
 	 * Logger
 	 */
-	private final Logger log = Logger.getLogger(getClass());
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private Map<String, Job> runningJobs = new Hashtable<String, Job>();
 	private Map<String, Job> sleepingJobs = new Hashtable<String, Job>();
@@ -91,7 +92,7 @@ public class JobManager implements BeanFactoryAware, InitializingBean {
 		if (job == null) {
 			job = sleepingJobs.get(id);
 			if (job == null) {
-				log.warn("Know nothing about job #" + id);
+				log.warn("Know nothing about job #{}", id);
 				throw new RuntimeException("Know nothing about job #" + id);
 			}
 		}
@@ -126,12 +127,12 @@ public class JobManager implements BeanFactoryAware, InitializingBean {
 				job.setTaskId(taskId);
 				job.setProcessId(processId);
 				addJob(job, parameters);
-				log.info("Job " + jobName + " was added. Id=" + job.getId());
+				log.info("Job {} was added. Id = {}", jobName, job.getId());
 			} catch (ClassCastException e) {
-				log.fatal("Illegal exception when creating instance of " + jobName, e);
+				log.error("Illegal exception when creating instance of {}", jobName, e);
 				throw new JobInstantiationException("Illegal exception when creating instance of " + jobName, e);
 			} catch (BeansException e) {
-				log.fatal("Illegal exception when creating instance of " + jobName, e);
+				log.error("Illegal exception when creating instance of {}", jobName, e);
 				throw new JobInstantiationException("Illegal exception when creating instance of " + jobName, e);
 			}
 		} else {

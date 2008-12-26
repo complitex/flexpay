@@ -3,99 +3,81 @@ package org.flexpay.sz.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.FPFileStatus;
+import org.flexpay.common.persistence.FPFileType;
 
-import java.io.File;
 import java.util.Date;
 
 public class SzFile extends DomainObject {
 
-	public static final Integer IMPORTING_FILE_STATUS = 0;
-	public static final Integer IMPORTED_FILE_STATUS = 1;
-	public static final Integer MARKED_FOR_PROCESSING_FILE_STATUS = 2;
-	public static final Integer PROCESSING_FILE_STATUS = 3;
-	public static final Integer PROCESSED_FILE_STATUS = 4;
-	public static final Integer MARK_AS_DELETED_FILE_STATUS = 5;
+	public static final Long IMPORTING_FILE_STATUS = 0L;
+	public static final Long IMPORTED_FILE_STATUS = 1L;
+	public static final Long MARKED_FOR_PROCESSING_FILE_STATUS = 2L;
+	public static final Long PROCESSING_FILE_STATUS = 3L;
+	public static final Long PROCESSED_FILE_STATUS = 4L;
+	public static final Long MARK_AS_DELETED_FILE_STATUS = 5L;
 
-	public static final Integer VALID_FILE_VALIDATION = 1;
-	public static final Integer INVALID_FILE_VALIDATION = 2;
+	public static final Long TARIFF_FILE_TYPE = 1L;
+	public static final Long CHARACTERISTIC_FILE_TYPE = 2L;
+	public static final Long SRV_TYPES_FILE_TYPE = 3L;
+	public static final Long FORM2_FILE_TYPE = 4L;
+	public static final Long CHARACTERISTIC_RESPONSE_FILE_TYPE = 5L;
+	public static final Long SRV_TYPES_RESPONSE_FILE_TYPE = 6L;
+	public static final Long SUBSIDY_FILE_TYPE = 7L;
 
-	private Oszn oszn;
-
-	private String requestFileName;
-	private String internalRequestFileName;
-	private String internalResponseFileName;
-
-	private SzFileType szFileType;
 	private Integer fileYear;
 	private Integer fileMonth;
+	private Date importDate = new Date();
+	private Boolean isActually = true;
 	private String userName;
-	private Date importDate;
-	private SzFileStatus szFileStatus;
-	private SzFileActualityStatus szFileActualityStatus;
+	private Oszn oszn;
+	private FPFile uploadedFile;
+	private FPFile fileToDownload;
+	private FPFileType type;
+	private FPFileStatus status;
 
-	public SzFile() {
-	}
+    public Integer getFileYear() {
+        return fileYear;
+    }
 
-	public static String getRandomString() {
-		return System.currentTimeMillis() + "-" + Math.random();
-	}
+    public void setFileYear(Integer fileYear) {
+        this.fileYear = fileYear;
+    }
 
-	public File getRequestFile(File parentDir) {
-		String yyyy_mm = fileYear + "_" + ((fileMonth + 1) <= 9 ? "0" : "")
-						 + (fileMonth + 1);
-		File file = new File(parentDir, yyyy_mm);
-		file = new File(file, internalRequestFileName);
+    public Integer getFileMonth() {
+        return fileMonth;
+    }
 
-		return file;
-	}
+    public void setFileMonth(Integer fileMonth) {
+        this.fileMonth = fileMonth;
+    }
 
-	public File getResponseFile(File parentDir) {
-		String yyyy_mm = fileYear + "_" + ((fileMonth + 1) <= 9 ? "0" : "")
-						 + (fileMonth + 1);
-		File file = new File(parentDir, yyyy_mm);
-		file = new File(file, internalResponseFileName);
+    public Date getImportDate() {
+        return importDate;
+    }
 
-		return file;
-	}
+    public void setImportDate(Date importDate) {
+        this.importDate = importDate;
+    }
 
-	public String getYyyyMm() {
-		return fileYear + "_" + ((fileMonth + 1) <= 9 ? "0" : "")
-			   + (fileMonth + 1);
-	}
+    public Boolean getIsActually() {
+        return isActually;
+    }
 
-	public Integer getFileYear() {
-		return fileYear;
-	}
+    public void setIsActually(Boolean isActually) {
+        this.isActually = isActually;
+    }
 
-	public void setFileYear(Integer fileYear) {
-		this.fileYear = fileYear;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public Integer getFileMonth() {
-		return fileMonth;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	public void setFileMonth(Integer fileMonth) {
-		this.fileMonth = fileMonth;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public Date getImportDate() {
-		return importDate;
-	}
-
-	public void setImportDate(Date importDate) {
-		this.importDate = importDate;
-	}
-
-	public Oszn getOszn() {
+    public Oszn getOszn() {
 		return oszn;
 	}
 
@@ -103,72 +85,51 @@ public class SzFile extends DomainObject {
 		this.oszn = oszn;
 	}
 
-	public SzFileType getSzFileType() {
-		return szFileType;
+    public FPFile getUploadedFile() {
+        return uploadedFile;
+    }
+
+    public void setUploadedFile(FPFile uploadedFile) {
+        this.uploadedFile = uploadedFile;
+    }
+
+    public FPFile getFileToDownload() {
+        return fileToDownload;
+    }
+
+    public void setFileToDownload(FPFile fileToDownload) {
+        this.fileToDownload = fileToDownload;
+    }
+
+	public FPFileType getType() {
+		return type;
 	}
 
-	public void setSzFileType(SzFileType szFileType) {
-		this.szFileType = szFileType;
+	public void setType(FPFileType type) {
+		this.type = type;
 	}
 
-	public String getRequestFileName() {
-		return requestFileName;
+	public FPFileStatus getStatus() {
+		return status;
 	}
 
-	public void setRequestFileName(String requestFileName) {
-		this.requestFileName = requestFileName;
+	public void setStatus(FPFileStatus status) {
+		this.status = status;
 	}
 
-	public String getInternalRequestFileName() {
-		return internalRequestFileName;
-	}
-
-	public void setInternalRequestFileName(String internalRequestFileName) {
-		this.internalRequestFileName = internalRequestFileName;
-	}
-
-	public String getInternalResponseFileName() {
-		return internalResponseFileName;
-	}
-
-	public void setInternalResponseFileName(String internalResponseFileName) {
-		this.internalResponseFileName = internalResponseFileName;
-	}
-
-	/**
-	 * Returns a string representation of the object.
-	 *
-	 * @return a string representation of the object.
-	 */
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-				.append("Id", getId())
-				.append("Oszn", oszn)
-				.append("Request file name", requestFileName)
-				.append("Internal request file name", internalRequestFileName)
-				.append("Internal response file name", internalResponseFileName)
-				.append("File type", szFileType).append("File year", fileYear)
-				.append("File month", fileMonth).append("User name", userName)
-				.append("Import date", importDate).append("Sz file status",
-				szFileStatus).append("Sz file actuality status",
-				szFileActualityStatus).toString();
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("SzFile {").
+				append("idr", getId()).
+				append("fileYear", fileYear).
+				append("fileMonth", fileMonth).
+				append("importDate", importDate).
+				append("isActually", isActually).
+				append("userName", userName).
+				append("uploadedFile", uploadedFile).
+				append("fileToDownload", fileToDownload).
+				append("}").toString();
 	}
 
-	public SzFileStatus getSzFileStatus() {
-		return szFileStatus;
-	}
-
-	public void setSzFileStatus(SzFileStatus szFileStatus) {
-		this.szFileStatus = szFileStatus;
-	}
-
-	public SzFileActualityStatus getSzFileActualityStatus() {
-		return szFileActualityStatus;
-	}
-
-	public void setSzFileActualityStatus(
-			SzFileActualityStatus szFileActualityStatus) {
-		this.szFileActualityStatus = szFileActualityStatus;
-	}
 }

@@ -5,11 +5,10 @@
 
 <hibernate-mapping package="org.flexpay.sz.persistence">
 
-	<class name="CharacteristicRecord" table="characteristic_records_tbl">
+	<class name="CharacteristicRecord" table="sz_characteristic_records_tbl">
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<many-to-one name="szFile" column="sz_file_id" not-null="true" />
 		<property name="cod" />
 		<property name="cdpr" />
 		<property name="ncard" />
@@ -27,19 +26,23 @@
 		<property name="vl" />
 		<property name="plzag" />
 		<property name="plopal" />
+        <many-to-one name="szFile" column="sz_file_id" not-null="true" />
 	</class>
 	
 	<query name="CharacteristicRecord.findObjects">
-		FROM CharacteristicRecord c
-		WHERE c.szFile.id=?
+		from CharacteristicRecord c
+		where c.szFile.id=?
 	</query>
 	
 	<query name="CharacteristicRecord.findObjects.count">
-		select count(*) from CharacteristicRecord c where c.szFile.id=?
+		select count(*)
+		from CharacteristicRecord c
+		where c.szFile.id=?
 	</query>
 	
 	<query name="CharacteristicRecord.deleteBySzFileId">
-		delete from CharacteristicRecord c where c.szFile.id=?
+		delete from CharacteristicRecord c
+		where c.szFile.id=?
 	</query>
 
 </hibernate-mapping>

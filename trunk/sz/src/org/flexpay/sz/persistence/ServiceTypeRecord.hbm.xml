@@ -9,10 +9,6 @@
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<many-to-one name="szFile" column="sz_file_id" not-null="true" />
-		<many-to-one name="deadhead" column="deadhead_id"
-					 class="org.flexpay.ab.persistence.Person" />
-
 		<property name="apartmentNumber" />
 		<property name="buildingNumber" />
 		<property name="bulkNumber" />
@@ -37,19 +33,25 @@
 		<property name="serviceType" />
 		<property name="tarifCode" />
 
+        <many-to-one name="szFile" column="sz_file_id" not-null="true" />
+        <many-to-one name="deadhead" column="deadhead_id" class="org.flexpay.ab.persistence.Person" />
+
 	</class>
 
 	<query name="ServiceTypeRecord.findObjects">
-		FROM ServiceTypeRecord c
-		WHERE c.szFile.id=?
+		from ServiceTypeRecord c
+		where c.szFile.id=?
 	</query>
 
 	<query name="ServiceTypeRecord.findObjects.count">
-		select count(*) from ServiceTypeRecord c where c.szFile.id=?
+		select count(*)
+		from ServiceTypeRecord c
+		where c.szFile.id=?
 	</query>
 
 	<query name="ServiceTypeRecord.deleteBySzFileId">
-		delete from ServiceTypeRecord c where c.szFile.id=?
+		delete from ServiceTypeRecord c
+		where c.szFile.id=?
 	</query>
 
 </hibernate-mapping>

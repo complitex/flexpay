@@ -5,6 +5,7 @@ import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class LoadToDBAction extends FPActionSupport {
 
@@ -42,15 +43,17 @@ public class LoadToDBAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
+	public void setAction(String action) {
+		this.action = action;
+	}
+
 	public void setSzFileId(Long szFileId) {
 		this.szFileId = szFileId;
 	}
 
+	@Required
 	public void setSzFileService(SzFileService szFileService) {
 		this.szFileService = szFileService;
 	}
 
-	public void setAction(String action) {
-		this.action = action;
-	}
 }

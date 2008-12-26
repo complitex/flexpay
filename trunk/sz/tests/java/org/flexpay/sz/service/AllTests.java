@@ -8,4 +8,5 @@ import org.junit.runners.Suite;
 		TestCorrectionsService.class
 		})
 public class AllTests {
+
 }

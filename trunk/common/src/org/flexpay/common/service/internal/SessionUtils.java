@@ -3,7 +3,8 @@ package org.flexpay.common.service.internal;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
@@ -13,7 +14,7 @@ import java.util.Collection;
 @Transactional
 public class SessionUtils {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private HibernateTemplate hibernateTemplate;
 

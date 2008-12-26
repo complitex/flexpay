@@ -1,7 +1,7 @@
 package org.flexpay.common.util;
 
 import org.apache.commons.io.FileUtils;
-import org.flexpay.common.persistence.FlexPayFile;
+import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.io.File;
@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
-public class FlexPayFileUtil {
+public class FPFileUtil {
 
 	public static String getLocalDirPath(String moduleName, Date creationDate) {
 		File root = ApplicationConfig.getDataRoot();
@@ -22,7 +22,7 @@ public class FlexPayFileUtil {
                 + c.get(Calendar.DATE) + File.separator;
 	}
 
-    public static String getLocalDirPath(FlexPayFile file) {
+    public static String getLocalDirPath(FPFile file) {
         return 	getLocalDirPath(file.getModule().getName(), file.getCreationDate());
     }
 
@@ -32,7 +32,7 @@ public class FlexPayFileUtil {
      * @param file flexpay file
      * @return local file path
      */
-    public static String getFileLocalPath(FlexPayFile file) {
+    public static String getFileLocalPath(FPFile file) {
         return getLocalDirPath(file.getModule().getName(), file.getCreationDate()) + file.getNameOnServer();
     }
 
@@ -57,33 +57,35 @@ public class FlexPayFileUtil {
     /**
      * Returns file
      *
-     * @param flexPayFile flexPayFile
+     * @param fpFile fpFile
      * @return file
      */
-    public static File getFileOnServer(FlexPayFile flexPayFile) {
-        if (flexPayFile.getNameOnServer() == null) {
+    public static File getFileOnServer(FPFile fpFile) {
+        if (fpFile == null || fpFile.getNameOnServer() == null) {
             return null;
         }
-        return new File(getFileLocalPath(flexPayFile));
+        return new File(getFileLocalPath(fpFile));
     }
 
 	/**
 	 * Saves all data from given input stream to file system
 	 *
-	 * @param flexPayFile flexpay file
+	 * @param fpFile flexpay file
 	 * @param file to read from
 	 * @return number of written bytes
 	 * @throws IOException if an error occurred
 	 */
 	@SuppressWarnings({"IOResourceOpenedButNotSafelyClosed"})
-    public static File saveToFileSystem(FlexPayFile flexPayFile, File file) throws IOException {
-        String name = flexPayFile.getOriginalName();
-        String localPath = getLocalDirPath(flexPayFile.getModule().getName(), flexPayFile.getCreationDate());
+    public static File saveToFileSystem(FPFile fpFile, File file) throws IOException {
+        String name = fpFile.getOriginalName();
+        String localPath = getLocalDirPath(fpFile.getModule().getName(), fpFile.getCreationDate());
         File localDir = new File(localPath);
         localDir.mkdirs();
-        File fileOnServer = File.createTempFile(getFileNameWithoutExtension(name), StringUtil.getFileExtension(name), localDir);
+        File fileOnServer = File.createTempFile(getFileNameWithoutExtension(name) + "_", StringUtil.getFileExtension(name), localDir);
 
-        FileUtils.copyFile(file, fileOnServer);
+		if (file != null && file.length() > 0) {
+        	FileUtils.copyFile(file, fileOnServer);
+		}
 
         return fileOnServer;
 	}

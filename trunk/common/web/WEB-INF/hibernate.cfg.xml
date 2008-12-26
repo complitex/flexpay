@@ -21,7 +21,8 @@
 
 		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
 
-        <mapping resource="org/flexpay/common/persistence/FlexPayFile.hbm.xml" />
+        <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
+        <mapping resource="org/flexpay/common/persistence/FPFile.hbm.xml" />
 
 	</session-factory>
 

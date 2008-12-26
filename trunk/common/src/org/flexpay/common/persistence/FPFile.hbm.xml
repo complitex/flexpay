@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence">
+
+	<class name="FPFile" table="common_files_tbl" optimistic-lock="version">
+        <comment>Table, where store information about all flexpay files</comment>
+        <id name="id">
+            <column name="id">
+                <comment>Primary key</comment>
+            </column>
+            <generator class="native" />
+        </id>
+        <property name="nameOnServer">
+            <column name="name_on_server" not-null="true">
+                <comment>File name on flexpay server</comment>
+            </column>
+        </property>
+        <property name="originalName">
+            <column name="original_name" not-null="true">
+                <comment>Original file name</comment>
+            </column>
+        </property>
+        <property name="description">
+            <column name="description">
+                <comment>File description</comment>
+            </column>
+        </property>
+        <property name="creationDate">
+            <column name="creation_date" not-null="true">
+                <comment>File creation date</comment>
+            </column>
+        </property>
+        <property name="userName">
+            <column name="user_name" not-null="true">
+                <comment>User name who create this file</comment>
+            </column>
+        </property>
+        <property name="size" type="long">
+            <column name="size">
+                <comment>File size</comment>
+            </column>
+        </property>
+        <many-to-one name="module" foreign-key="common_files_tbl_module_id">
+            <column name="module_id" not-null="true">
+                <comment>Flexpay module reference</comment>
+            </column>
+        </many-to-one>
+	</class>
+
+    <class name="FPFileType" table="common_file_types_tbl" optimistic-lock="version">
+        <comment>Information about known filetypes</comment>
+        <id name="id">
+            <column name="id">
+                <comment>Primary key</comment>
+            </column>
+            <generator class="native" />
+        </id>
+        <property name="fileMask" unique="true">
+            <column name="file_mask" not-null="true">
+                <comment>Mask of files for this type</comment>
+            </column>
+        </property>
+        <property name="name">
+            <column name="name" not-null="true">
+                <comment>Filetype name</comment>
+            </column>
+        </property>
+        <property name="description">
+            <column name="description">
+                <comment>Filetype description</comment>
+            </column>
+        </property>
+        <properties name="code_module_pair" unique="true">
+            <property name="code">
+                <column name="code" not-null="true">
+                    <comment>Unique filetype code</comment>
+                </column>
+            </property>
+            <many-to-one name="module" foreign-key="common_file_types_tbl_module_id">
+                <column name="module_id" not-null="true">
+                    <comment>Flexpay module reference</comment>
+                </column>
+            </many-to-one>
+        </properties>
+    </class>
+
+    <class name="FPFileStatus" table="common_file_statuses_tbl" optimistic-lock="version">
+        <comment>Information about file statuses</comment>
+        <id name="id">
+            <column name="id">
+                <comment>Primary key</comment>
+            </column>
+            <generator class="native" />
+        </id>
+        <property name="name">
+            <column name="name" not-null="true">
+                <comment>Filestatus name</comment>
+            </column>
+        </property>
+        <property name="description">
+            <column name="description">
+                <comment>Filestatus description</comment>
+            </column>
+        </property>
+        <properties name="code_module_pair" unique="true">
+            <property name="code">
+                <column name="code" not-null="true">
+                    <comment>Unique filestatus code</comment>
+                </column>
+            </property>
+            <many-to-one name="module" foreign-key="common_file_statuses_tbl_module_id">
+                <column name="module_id" not-null="true">
+                    <comment>Flexpay module reference</comment>
+                </column>
+            </many-to-one>
+        </properties>
+    </class>
+
+    <query name="FPFile.readFull">
+        select distinct f
+        from FPFile f
+        left join fetch f.module
+        WHERE f.id = ?
+    </query>
+
+    <query name="FPFile.listFilesByModuleName">
+        select distinct f
+        from FPFile f
+        left outer join fetch f.module
+        where f.module.name = ?
+    </query>
+
+    <query name="FPFileType.listFileTypesByModuleName">
+        from FPFileType f
+        where f.module.name = ?
+    </query>
+
+    <query name="FPFileType.listTypesByCode">
+        from FPFileType f
+        where f.code = ?
+    </query>
+
+    <query name="FPFileStatus.listStatusesByCode">
+        from FPFileStatus f
+        where f.code = ?
+    </query>
+
+</hibernate-mapping>

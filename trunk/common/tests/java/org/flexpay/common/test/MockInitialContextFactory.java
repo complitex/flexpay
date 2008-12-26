@@ -11,4 +11,5 @@ public class MockInitialContextFactory implements InitialContextFactory {
 	public Context getInitialContext(Hashtable env) {
         return new SimpleNamingContext();
     }
+
 }

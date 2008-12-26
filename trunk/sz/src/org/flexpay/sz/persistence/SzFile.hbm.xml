@@ -9,39 +9,49 @@
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<many-to-one name="oszn" class="Oszn" column="oszn_id" not-null="true" />
-		<property name="requestFileName" column="request_file_name" not-null="true" />
-		<property name="internalRequestFileName" column="internal_request_file_name" not-null="true" />
-		<property name="internalResponseFileName" column="internal_response_file_name" />
-		<many-to-one name="szFileType" class="SzFileType" column="sz_file_type_id" not-null="true" />
 		<property name="fileYear" column="file_year" not-null="true" />
 		<property name="fileMonth" column="file_month" not-null="true" />
+        <property name="importDate" column="import_date" not-null="true" />
+        <property name="isActually" column="is_actually" not-null="true" />
 		<property name="userName" column="user_name" not-null="true" />
-		<property name="importDate" column="import_date" not-null="true" />
-		<many-to-one name="szFileStatus" class="SzFileStatus" column="sz_file_status_id" not-null="true" />
-		<many-to-one name="szFileActualityStatus" class="SzFileActualityStatus" column="sz_file_actuality_status_id" not-null="true" />
-		
-		
+        <many-to-one name="oszn" class="Oszn" column="oszn_id" not-null="true" />
+        <many-to-one name="uploadedFile" column="uploaded_file_id" unique="true" not-null="true" cascade="all" />
+        <many-to-one name="fileToDownload" column="file_to_download_id" unique="true" cascade="all" />
+        <many-to-one name="type" class="org.flexpay.common.persistence.FPFileType" foreign-key="sz_files_tbl_type_id" not-null="true">
+            <column name="type_id">
+                <comment>SZ file type reference</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="status" class="org.flexpay.common.persistence.FPFileStatus" foreign-key="sz_files_tbl_status_id" not-null="true">
+            <column name="status_id">
+                <comment>SZ file status reference</comment>
+            </column>
+        </many-to-one>
 	</class>
 
     <query name="SzFile.readFull">
 		select distinct s
 		from SzFile s
 			left join fetch s.oszn
-			left join fetch s.szFileType
-			left join fetch s.szFileStatus
-			left join fetch s.szFileActualityStatus 
-		WHERE s.id=?
+            left join fetch s.uploadedFile
+			left join fetch s.fileToDownload 
+            left join fetch s.status
+            left join fetch s.type
+            left join fetch s.uploadedFile.module
+            left join fetch s.fileToDownload.module
+            left join fetch s.status.module
+            left join fetch s.type.module 
+		where s.id=?
 	</query>
 
 	<query name="SzFile.listSzFiles">
 		select distinct s
 		from SzFile s
-			left outer join fetch s.oszn
-			left outer join fetch s.szFileType
-			left outer join fetch s.szFileStatus
-			left outer join fetch s.szFileActualityStatus
-			
+			left join fetch s.oszn
+			left join fetch s.uploadedFile
+			left join fetch s.fileToDownload
+            left join fetch s.status
+            left join fetch s.type
 	</query>
 	
 </hibernate-mapping>

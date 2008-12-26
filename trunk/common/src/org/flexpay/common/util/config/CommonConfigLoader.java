@@ -2,12 +2,12 @@ package org.flexpay.common.util.config;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.service.LanguageService;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
 
@@ -20,7 +20,7 @@ import java.net.URL;
 public class CommonConfigLoader implements ResourceLoaderAware {
 
 	@NonNls
-	private Log log = LogFactory.getLog(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	// Configuration file URL
 	private URL[] configFiles;
@@ -62,9 +62,7 @@ public class CommonConfigLoader implements ResourceLoaderAware {
 			log.debug("Loading languages");
 			config.setLanguages(languageService.getLanguages());
 		}
-		if (log.isDebugEnabled()) {
-			log.debug("Loaded config: " + config.toString());
-		}
+		log.debug("Loaded config: {}", config.toString());
 
 		ApplicationConfig.setInstance(config);
 		setApplicationProperties();

@@ -7,7 +7,6 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRSaver;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.JDBCUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -17,9 +16,8 @@ import org.jboss.util.file.FilePrefixFilter;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.io.*;
@@ -29,7 +27,7 @@ import java.util.*;
 public class ReportUtil {
 
 	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	@NonNls
 	public static final String EXTENSION_TEMPLATE = ".jrxml";
@@ -489,7 +487,7 @@ public class ReportUtil {
 
 					IOUtils.copyLarge(is, os);
 				} catch (IOException ex) {
-					log.error("Failed copying font " + fontName, ex);
+					log.error("Failed copying font {}", fontName, ex);
 					throw new Exception("Failed copying font " + fontName, ex);
 				} finally {
 					IOUtils.closeQuietly(is);

@@ -1,6 +1,7 @@
 package org.flexpay.common.process.job;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.process.ProcessLogger;
@@ -16,7 +17,7 @@ import java.util.Random;
 
 public abstract class Job implements Runnable {
 
-	protected final Logger log = Logger.getLogger(getClass());
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	public final static String RESULT_NEXT = "next";
 	public final static String RESULT_ERROR = "error";
@@ -46,7 +47,7 @@ public abstract class Job implements Runnable {
 
 		JobManager jobMgr = JobManager.getInstance();
 		setStart(new Date());
-		log.info("Job " + getId() + " started");
+		log.info("Job {} started", getId());
 
 		try {
 			// prepare process logger
@@ -59,9 +60,7 @@ public abstract class Job implements Runnable {
 			// execute
 			String transition = execute(parameters);
 
-			if (log.isInfoEnabled()) {
-				log.info("Job with id = " + getId() + " completed with status: " + transition);
-			}
+			log.info("Job with id = {} completed with status: {}", getId(), transition);
 
 			if (transition.equals(RESULT_ERROR)) {
 				parameters.put(STATUS_ERROR, Boolean.TRUE);
@@ -70,7 +69,7 @@ public abstract class Job implements Runnable {
 			SecurityContextHolder.clearContext();
 			jobMgr.jobFinished(id, transition);
 		} catch (Throwable e) {
-			log.error("Job with id = " + getId() + " completed with exception", e);
+			log.error("Job with id = {} completed with exception", getId(), e);
 			parameters.put(STATUS_ERROR, Boolean.TRUE);
 			SecurityContextHolder.clearContext();
 			jobMgr.jobFinished(id, RESULT_ERROR);
@@ -85,7 +84,7 @@ public abstract class Job implements Runnable {
 			jobThread = new Thread(this, "JobThread-" + id);
 			jobThread.start();
 		} else {
-			log.fatal("Job thread already started! Check Job Bean configuration. Scope must be prototype!");
+			log.error("Job thread already started! Check Job Bean configuration. Scope must be prototype!");
 		}
 
 		return jobThread;

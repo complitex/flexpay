@@ -3,7 +3,7 @@ package org.flexpay.common.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class FlexPayModule extends DomainObject {
+public class FPModule extends DomainObject {
 
     private String name;
 
@@ -18,7 +18,7 @@ public class FlexPayModule extends DomainObject {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-                append("FlexPayModule {").
+                append("FPModule {").
                 append("id", getId()).
                 append("name", name).
                 append("}").toString();

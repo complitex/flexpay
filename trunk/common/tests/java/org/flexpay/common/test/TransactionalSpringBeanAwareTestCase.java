@@ -43,4 +43,5 @@ public abstract class TransactionalSpringBeanAwareTestCase extends AbstractTrans
 	protected InputStream getFileStream(@NonNls String relativePath) {
 		return getClass().getClassLoader().getResourceAsStream(relativePath);
 	}
+
 }
