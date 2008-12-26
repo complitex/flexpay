@@ -4,7 +4,8 @@ import org.flexpay.sz.persistence.SubsidyRecord;
 import org.flexpay.sz.service.RecordService;
 import org.flexpay.sz.dao.SubsidyRecordDao;
 import org.flexpay.common.dao.paging.Page;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class SubsidyRecordServiceImpl implements RecordService<SubsidyRecord> {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private SubsidyRecordDao subsidyRecordDao;
 
@@ -26,16 +27,13 @@ public class SubsidyRecordServiceImpl implements RecordService<SubsidyRecord> {
 	@Transactional(readOnly = false)
 	public SubsidyRecord create(SubsidyRecord subsidyRecord) {
 		subsidyRecordDao.create(subsidyRecord);
-		if (log.isDebugEnabled()) {
-			log.debug("Created SubsidyRecord: " + subsidyRecord);
-		}
+		log.debug("Created SubsidyRecord: {}", subsidyRecord);
 
 		return subsidyRecord;
 	}
 
 	@Transactional(readOnly = false)
-	public List<SubsidyRecord> findObjects(Page<SubsidyRecord> pager,
-			Long szFileId) {
+	public List<SubsidyRecord> findObjects(Page<SubsidyRecord> pager, Long szFileId) {
 		return subsidyRecordDao.findObjects(pager, szFileId);
 	}
 

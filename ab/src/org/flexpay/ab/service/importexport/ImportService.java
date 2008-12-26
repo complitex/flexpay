@@ -187,7 +187,7 @@ public class ImportService {
 		}
 		flushStack();
 
-		log.info("End import districts at {}, total time: {} ms",new Object[]{new Date(),(System.currentTimeMillis() - time)});
+		log.info("End import districts at {}, total time: {} ms", new Date(), (System.currentTimeMillis() - time));
 	}
 
 	@SuppressWarnings({"unchecked"})
@@ -220,10 +220,8 @@ public class ImportService {
 						data.getExternalSourceId(), Street.class, sourceDescription);
 				boolean found = correctionsService.existsCorrection(
 						data.getExternalSourceId(), Street.class, sourceDescription);
-				if (log.isInfoEnabled()) {
-					log.info((found ? "F" : "Not f") + "ound street " + data + ", total time: " +
-							(System.currentTimeMillis() - tm) + "ms");
-				}
+				log.info("{}ound street {}, total time: {} ms",
+						new Object[] {(found ? "F" : "Not f"), data, (System.currentTimeMillis() - tm)});
 
 				// Find object by its name
 				Street nameMatchObj = findObject(nameObjsMap, street);
@@ -238,8 +236,7 @@ public class ImportService {
 		}
 		flushStack();
 
-		log.info("End import streets at {}, total time: {} ms", new Object[]{new Date(),
-					(System.currentTimeMillis() - time)});
+		log.info("End import streets at {}, total time: {} ms", new Date(), (System.currentTimeMillis() - time));
 	}
 
 	private void saveStreetCorrection(DataSourceDescription sourceDescription, RawData<Street> data, Street street,
@@ -283,7 +280,7 @@ public class ImportService {
 
 		TemporaryName newName = (TemporaryName) newObj.getCurrentName();
 		if (newName == null) {
-			log.error("No current name for object: " + newObj);
+			log.error("No current name for object: {}", newObj);
 			return null;
 		}
 		Translation newTranslation = getDefaultLangTranslation(newName.getTranslations());
@@ -318,7 +315,7 @@ public class ImportService {
 		for (NTD object : ntds) {
 			TemporaryName tmpName = (TemporaryName) object.getCurrentName();
 			if (tmpName == null) {
-				log.error("No current name for object: " + object);
+				log.error("No current name for object: {}", object);
 				continue;
 			}
 			Translation defTranslation = getDefaultLangTranslation(tmpName.getTranslations());
@@ -454,7 +451,7 @@ public class ImportService {
 						addToStack(buildings);
 //						addToStack(buildings.getBuilding());
 						persistent = buildings;
-						log.info("Creating new building: {} - {}", new Object[]{ buildings.getNumber(), buildings.getBulk()});
+						log.info("Creating new building: {} - {}", buildings.getNumber(), buildings.getBulk());
 					}
 
 					DataCorrection corr = correctionsService.getStub(
@@ -471,7 +468,7 @@ public class ImportService {
 
 			flushStack();
 
-			log.info("End import buildings at {}, total time: {}ms", new Object[]{new Date(), (System.currentTimeMillis() - time)});
+			log.info("End import buildings at {}, total time: {} ms", new Date(), (System.currentTimeMillis() - time));
 		} catch (Throwable t) {
 			log.error("Failure", t);
 			throw new RuntimeException(t.getMessage(), t);
@@ -491,7 +488,7 @@ public class ImportService {
 
 			if (log.isInfoEnabled()) {
 				long now = System.currentTimeMillis();
-				log.info("Apartment #" + (++counter) + ", time spent: " + (now - cycleTime));
+				log.info("Apartment #{}, time spent: {}", ++counter, (now - cycleTime));
 				cycleTime = now;
 			}
 
@@ -532,9 +529,7 @@ public class ImportService {
 		}
 
 		flushStack();
-        if (log.isInfoEnabled()){
-		    log.info("End import apartments at {}, total time: {}ms", new Object[]{new Date(), (System.currentTimeMillis() - time)});
-        }
+		log.info("End import apartments at {}, total time: {}ms", new Date(), (System.currentTimeMillis() - time));
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.NOT_SUPPORTED)
@@ -550,7 +545,7 @@ public class ImportService {
 
 			if (log.isInfoEnabled()) {
 				long now = System.currentTimeMillis();
-				log.info("Person #" + (++counter) + ", time spent: " + (now - cycleTime));
+				log.info("Person #{}, time spent: {}", ++counter, (now - cycleTime));
 				cycleTime = now;
 			}
 
@@ -599,9 +594,7 @@ public class ImportService {
 		}
 
 		flushStack();
-        if (log.isInfoEnabled()){
-		    log.info("End import persons at {}, total time: {}ms", new Object[]{new Date(), (System.currentTimeMillis() - time)});
-        }
+		log.info("End import persons at {}, total time: {} ms", new Date(), (System.currentTimeMillis() - time));
 	}
 
 	public void setDistrictDataConverter(RawDistrictDataConverter districtDataConverter) {
@@ -695,4 +688,5 @@ public class ImportService {
 	public void setRegistry(ClassToTypeRegistry registry) {
 		this.registry = registry;
 	}
+
 }

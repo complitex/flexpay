@@ -1,11 +1,10 @@
 package org.flexpay.sz.service.imp;
 
-import java.util.List;
-
-import org.apache.log4j.Logger;
 import org.flexpay.sz.dao.OsznDao;
 import org.flexpay.sz.persistence.Oszn;
 import org.flexpay.sz.service.OsznService;
+
+import java.util.List;
 
 public class OsznServiceImpl implements OsznService {
 

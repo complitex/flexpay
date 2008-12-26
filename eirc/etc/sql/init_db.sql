@@ -1,3 +1,6 @@
+INSERT INTO common_flexpay_modules_tbl (name) VALUES ('eirc');
+SELECT @module_eirc:=last_insert_id();
+
 insert into common_data_source_descriptions_tbl (id, description)
 	values (2, 'Харьковский центр начислений');
 SELECT @source_description_id:=2;

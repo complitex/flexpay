@@ -1,6 +1,5 @@
 package org.flexpay.common.service.importexport.imp;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.dao.CorrectionsDao;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
@@ -9,15 +8,17 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional (readOnly = true)
 public class CorrectionsServiceImpl implements CorrectionsService {
 
 	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private ClassToTypeRegistry typeRegistry;
 	private CorrectionsDao correctionsDao;

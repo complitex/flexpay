@@ -3,6 +3,7 @@ package org.flexpay.common.process.exception;
 import org.flexpay.common.exception.FlexPayException;
 
 public class JobClassNotFoundException extends FlexPayException {
+
     public JobClassNotFoundException(String message) {
         super(message);
     }
@@ -18,4 +19,5 @@ public class JobClassNotFoundException extends FlexPayException {
     public JobClassNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
+
 }

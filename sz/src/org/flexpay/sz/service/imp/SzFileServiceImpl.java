@@ -1,6 +1,7 @@
 package org.flexpay.sz.service.imp;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.sz.dao.SzFileDao;
 import org.flexpay.sz.persistence.SzFile;
@@ -12,7 +13,7 @@ import java.util.List;
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class SzFileServiceImpl implements SzFileService {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private SzFileDao szFileDao;
 
@@ -26,9 +27,7 @@ public class SzFileServiceImpl implements SzFileService {
 	public SzFile create(SzFile importFile) throws FlexPayException {
 		szFileDao.create(importFile);
 
-		if (log.isDebugEnabled()) {
-			log.debug("Created ImportFile: " + importFile);
-		}
+		log.debug("Created ImportFile: {}", importFile);
 
 		return importFile;
 	}

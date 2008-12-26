@@ -1,6 +1,7 @@
 package org.flexpay.common.util.standalone;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class StandaloneTasksHolder {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private static StandaloneTasksHolder instance = new StandaloneTasksHolder();
 
@@ -34,9 +35,7 @@ public class StandaloneTasksHolder {
 	 */
 	public void executeTasks() {
 
-		if (log.isDebugEnabled()) {
-			log.debug("About to execute " + standaloneTasks.size() + " tasks");
-		}
+		log.debug("About to execute {} tasks", standaloneTasks.size());
 
 		for (StandaloneTask task : standaloneTasks) {
 			task.execute();

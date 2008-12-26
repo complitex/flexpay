@@ -1,17 +1,18 @@
 package org.flexpay.common.service.imp;
 
-import org.flexpay.common.persistence.Language;
 import org.flexpay.common.dao.LanguageDao;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.service.LanguageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.log4j.Logger;
 
 import java.util.List;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class LanguageServiceImpl implements LanguageService {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private LanguageDao languageDao;
 
@@ -23,9 +24,7 @@ public class LanguageServiceImpl implements LanguageService {
 	public List<Language> getLanguages() {
 		List<Language> langs = languageDao.listLanguages();
 
-		if (log.isDebugEnabled()) {
-			log.debug("Loaded languages: " + langs);
-		}
+		log.debug("Loaded languages: {}", langs);
 
 		return langs;
 	}

@@ -2,14 +2,13 @@ package org.flexpay.eirc.util.standalone;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.FlexPayFile;
+import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.service.FlexPayFileService;
+import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.standalone.StandaloneTask;
 import org.flexpay.eirc.actions.SpFileAction;
-import org.flexpay.eirc.actions.SpFileCreateAction;
+import org.flexpay.eirc.actions.UploadFileAction;
 import org.flexpay.eirc.dao.RegistryDao;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.RegistryFileService;
@@ -31,9 +30,9 @@ public class RunSpFileProcessing implements StandaloneTask {
 
 	private String moduleName;
 	private RegistryProcessor registryProcessor;
-	private SpFileCreateAction fileCreateAction;
+	private UploadFileAction spFileUploadAjaxAction;
 	private SpFileAction fileAction;
-	private FlexPayFileService flexPayFileService;
+	private FPFileService fpFileService;
 	private RegistryFileService fileService;
 	private RegistryService registryService;
 	private RegistryDao registryDao;
@@ -121,7 +120,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 		log.debug("Upload took {} ms", System.currentTimeMillis() - time);
 	}
 
-	private void deleteRecords(FlexPayFile file) {
+	private void deleteRecords(FPFile file) {
 		for (SpRegistry registry : fileService.getRegistries(file)) {
 			registryDao.deleteRecordContainers(registry.getId());
 			registryDao.deleteRegistryContainers(registry.getId());
@@ -130,8 +129,8 @@ public class RunSpFileProcessing implements StandaloneTask {
 		}
 	}
 
-	private FlexPayFile uploadFile(String fileName) throws Throwable {
-		FlexPayFile newFile = createSpFile(fileName);
+	private FPFile uploadFile(String fileName) throws Throwable {
+		FPFile newFile = createSpFile(fileName);
 
 		fileAction.setSpFileId(newFile.getId());
 		fileAction.setAction("loadToDb");
@@ -146,7 +145,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 		return newFile;
 	}
 
-	private FlexPayFile createSpFile(String spFile) throws Throwable {
+	private FPFile createSpFile(String spFile) throws Throwable {
 		String name = StringUtil.getFileName(spFile);
 		String extension = StringUtil.getFileExtension(name);
 		File tmpDataFile = File.createTempFile(name, extension);
@@ -169,22 +168,21 @@ public class RunSpFileProcessing implements StandaloneTask {
 
 		log.debug("Upload file: {}", tmpDataFile);
 
-		fileCreateAction.setUpload(tmpDataFile);
-		fileCreateAction.setUploadFileName(name);
-		fileCreateAction.setSubmitted("submit");
+		spFileUploadAjaxAction.setUpload(tmpDataFile);
+		spFileUploadAjaxAction.setUploadFileName(name);
 
-		fileCreateAction.execute();
+		spFileUploadAjaxAction.execute();
 		return getLastFile();
 	}
 
-	private FlexPayFile getLastFile() {
-		List<FlexPayFile> spFiles = flexPayFileService.getFilesByModuleName(moduleName);
+	private FPFile getLastFile() {
+		List<FPFile> spFiles = fpFileService.getFilesByModuleName(moduleName);
 		return spFiles.get(spFiles.size() - 1);
 	}
 
-	private void deleteFile(FlexPayFile file) {
-		flexPayFileService.delete(file);
-		fileCreateAction.getUpload().delete();
+	private void deleteFile(FPFile file) {
+		fpFileService.delete(file);
+		spFileUploadAjaxAction.getUpload().delete();
 	}
 
 	@Required
@@ -193,8 +191,8 @@ public class RunSpFileProcessing implements StandaloneTask {
 	}
 
 	@Required
-	public void setFlexPayFileService(FlexPayFileService flexPayFileService) {
-		this.flexPayFileService = flexPayFileService;
+	public void setFpFileService(FPFileService fpFileService) {
+		this.fpFileService = fpFileService;
 	}
 
 	@Required
@@ -203,9 +201,8 @@ public class RunSpFileProcessing implements StandaloneTask {
 	}
 
 	@Required
-	public void setFileCreateAction(SpFileCreateAction fileCreateAction) {
-		fileCreateAction.setUserPreferences(new UserPreferences());
-		this.fileCreateAction = fileCreateAction;
+	public void setSpFileUploadAjaxAction(UploadFileAction spFileUploadAjaxAction) {
+		this.spFileUploadAjaxAction = spFileUploadAjaxAction;
 	}
 
 	@Required

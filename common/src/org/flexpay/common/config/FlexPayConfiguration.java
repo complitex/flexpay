@@ -4,7 +4,6 @@ import java.io.File;
 
 public class FlexPayConfiguration {
 
-
     /**
      * Rolling DatePattern
      */
@@ -51,4 +50,5 @@ public class FlexPayConfiguration {
         return "FlexPay.log";
 
     }
+
 }

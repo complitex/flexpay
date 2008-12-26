@@ -2,7 +2,7 @@ package org.flexpay.eirc.service.exchange;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.FlexPayFile;
+import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.eirc.actions.TestSpFileAction;
 import org.flexpay.eirc.persistence.RegistryRecord;
@@ -41,7 +41,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	@Test
 	@NotTransactional
 	public void testProcessOpenSubAccountsRegistrySmall() throws Throwable {
-		FlexPayFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
+		FPFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_2_small.txt");
 
 		try {
 			registryProcessor.processFile(file);
@@ -59,7 +59,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	@Test
 	@NotTransactional
 	public void testProcessNotKnownServiceCode() throws Throwable {
-		FlexPayFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_small_unknown_service.txt");
+		FPFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_open_small_unknown_service.txt");
 
 		try {
 			registryProcessor.processFile(file);
@@ -88,7 +88,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	@Test
 	@NotTransactional
 	public void testProcessQuittancesSmallRegistry() throws Throwable {
-		FlexPayFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_quittances_small.txt");
+		FPFile file = uploadFile("org/flexpay/eirc/actions/sp/ree_quittances_small.txt");
 
 		try {
 			registryProcessor.processFile(file);

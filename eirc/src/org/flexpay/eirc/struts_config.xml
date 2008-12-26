@@ -18,6 +18,10 @@
 			<result type="tiles">eirc.import</result>
 		</action>
 
+        <action name="doSpFileUploadAjax" class="spFileUploadAjaxAction">
+            <result name="success" type="rawtext"/>
+        </action>
+
 		<action name="spFileCreate" class="spFileCreateAction">
 			<result name="input" type="tiles">eirc.import.file.upload.form</result>
 		</action>

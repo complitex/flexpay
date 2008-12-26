@@ -19,4 +19,5 @@ public class ProcessDefinitionException extends FlexPayException {
     public ProcessDefinitionException(String message, Throwable cause) {
         super(message, cause);
     }
+
 }

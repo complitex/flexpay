@@ -1,25 +1,26 @@
 package org.flexpay.common.service.imp;
 
-import org.flexpay.common.service.MeasureUnitService;
-import org.flexpay.common.persistence.MeasureUnit;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.MeasureUnitName;
-import org.flexpay.common.persistence.filter.MeasureUnitFilter;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.MeasureUnitDao;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.MeasureUnit;
+import org.flexpay.common.persistence.MeasureUnitName;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.MeasureUnitFilter;
+import org.flexpay.common.service.MeasureUnitService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 import java.util.List;
 
 @Transactional(readOnly = true)
 public class MeasureUnitServiceImpl implements MeasureUnitService {
 
-	private final Logger log = Logger.getLogger(getClass());
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private MeasureUnitDao measureUnitDao;
 

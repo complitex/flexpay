@@ -1,7 +1,7 @@
 package org.flexpay.eirc.service.imp;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.FlexPayFile;
+import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.dao.RegistryDao;
 import org.flexpay.eirc.dao.RegistryFileDaoExt;
@@ -34,7 +34,7 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 	 * @param spFile ServiceProvider obtained file
 	 * @return List of registries in a file
 	 */
-	public List<SpRegistry> getRegistries(FlexPayFile spFile) {
+	public List<SpRegistry> getRegistries(FPFile spFile) {
 		return registryDao.listRegistries(spFile.getId());
 	}
 
@@ -70,7 +70,7 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 	 * @param stub File stub
 	 * @return <code>true</code> if file already loaded, or <code>false</code> otherwise
 	 */
-	public boolean isLoaded(@NotNull Stub<FlexPayFile> stub) {
+	public boolean isLoaded(@NotNull Stub<FPFile> stub) {
 		return registryFileDaoExt.isLoaded(stub.getId());
 	}
 

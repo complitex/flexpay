@@ -28,9 +28,6 @@ public class CharacteristicRecord extends Record {
 	private Double plzag;
 	private Double plopal;
 
-	public CharacteristicRecord() {
-	}
-
 	public Double getCod() {
 		return cod;
 	}
@@ -167,33 +164,29 @@ public class CharacteristicRecord extends Record {
 		this.idx = idx;
 	}
 
-	/**
-	 * Returns a string representation of the object.
-	 *
-	 * @return a string representation of the object.
-	 */
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-				.append("Id", getId())
-				.append("SzFile", getSzFile())
-				.append("COD", cod)
-				.append("CDPR", cdpr)
-				.append("NCARD", ncard)
-				.append("IDCODE", idcode)
-				.append("PASP", pasp)
-				.append("FIO", fio)
-				.append("IDPIL", idpil)
-				.append("PAPSPIL", pasppil)
-				.append("FIOPIL", fiopil)
-				.append("INDEX", idx)
-				.append("CDUL", cdul)
-				.append("HOUSE", house)
-				.append("BUILD", build)
-				.append("APT", apt)
-				.append("VL", vl)
-				.append("PLZAG", plzag)
-				.append("PLOPAL", plopal)
-				.toString();
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("CharacteristicRecord {").
+				append("id", getId()).
+				append("cod", cod).
+				append("cdpr", cdpr).
+				append("ncard", ncard).
+				append("idcode", idcode).
+				append("pasp", pasp).
+				append("fio", fio).
+				append("idpil", idpil).
+				append("pasppil", pasppil).
+				append("fiopil", fiopil).
+				append("idx", idx).
+				append("cdul", cdul).
+				append("house", house).
+				append("build", build).
+				append("apt", apt).
+				append("vl", vl).
+				append("plzag", plzag).
+				append("plopal", plopal).
+				append("}").toString();
 	}
+
 }

@@ -1,11 +1,11 @@
 package org.flexpay.sz.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 import java.util.Date;
 
 public class SubsidyRecord extends Record {
-
-	public SubsidyRecord() {
-	}
 
 	private String surName;//	VARCHAR(30)
 	private String firstName;//	VARCHAR(15)
@@ -375,6 +375,55 @@ public class SubsidyRecord extends Record {
 
 	public void setStatus(Double status) {
 		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("SubsidyRecord {").
+				append("id", getId()).
+				append("surName", surName).
+				append("firstName", firstName).
+				append("midName", midName).
+				append("indx", indx).
+				append("n_name", n_name).
+				append("n_code", n_code).
+				append("streetType", streetType).
+				append("streetName", streetName).
+				append("extStreetID", extStreetID).
+				append("houseNum", houseNum).
+				append("partNum", partNum).
+				append("appartment", appartment).
+				append("account", account).
+				append("app_num", app_num).
+				append("begin", begin).
+				append("dat_end", dat_end).
+				append("cm_area", cm_area).
+				append("totalSq", totalSq).
+				append("blc_area", blc_area).
+				append("frog", frog).
+				append("debt", debt).
+				append("living", living).
+				append("nach", nach).
+				append("tarif", tarif).
+				append("p2", p2).
+				append("n2", n2).
+				append("p3", p3).
+				append("n3", n3).
+				append("p4", p4).
+				append("n4", n4).
+				append("p5", p5).
+				append("n5", n5).
+				append("p6", p6).
+				append("n6", n6).
+				append("p7", p7).
+				append("n7", n7).
+				append("p8", p8).
+				append("n8", n8).
+				append("orgsID", orgsID).
+				append("fileID", fileID).
+				append("status", status).
+				append("}").toString();
 	}
 
 }

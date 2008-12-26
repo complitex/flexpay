@@ -298,7 +298,7 @@ public class DistrictServiceImpl extends
 								temporal.getBegin(), temporal.getEnd());
 						ex.addException(e);
 
-						log.debug("Period: {} - {} is empty ", new Object[]{temporal.getBegin(), temporal.getEnd()});
+						log.debug("Period: {} - {} is empty ", temporal.getBegin(), temporal.getEnd());
 					}
 				} catch (FlexPayException e) {
 					ex.addException(e);

@@ -55,7 +55,7 @@
 			memoryStoreEvictionPolicy="LRU"
 			/>
 
-    <cache name="flexPayFileFlexpayCache"
+    <cache name="fpFileFlexpayCache"
             maxElementsInMemory="100"
             eternal="true"
             overflowToDisk="true"

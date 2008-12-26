@@ -86,7 +86,7 @@ public class BuildingServiceImpl implements BuildingService {
 			Buildings firstObject = names.iterator().next();
 			parentFilter.setSelectedId(firstObject.getId());
 		} else {
-			log.debug("Building filter is invalid: {} \n {}", new Object[]{parentFilter, forefatherFilter});
+			log.debug("Building filter is invalid: {} \n {}", parentFilter, forefatherFilter);
 		}
 
 		return parentFilter;
@@ -152,8 +152,7 @@ public class BuildingServiceImpl implements BuildingService {
 			buildingFilter = new BuildingsFilter();
 		}
 
-		log.info("Getting list of buildings, street filter: {}, district filter: {}",
-					 new Object[] {streetFilter, districtFilter});
+		log.info("Getting list of buildings, street filter: {}, district filter: {}", streetFilter, districtFilter);
 
 		ArrayStack filters = new ArrayStack();
 		filters.push(districtFilter);

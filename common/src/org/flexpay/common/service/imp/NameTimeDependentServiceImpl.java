@@ -315,8 +315,7 @@ public abstract class NameTimeDependentServiceImpl<
 		if (domainObject == null) {
 			container.addException(new FlexPayException("null",
 					getI18nKeyBase() + ".parent_id_invalid"));
-			log.info("Failed getting parent: filter: {} [id = {}]", new Object[]{
-					 filter.getClass().getName(),filter.getSelectedId()});
+			log.info("Failed getting parent: filter: {} [id = {}]", filter.getClass().getName(),filter.getSelectedId());
 			return null;
 		}
 		return domainObject;

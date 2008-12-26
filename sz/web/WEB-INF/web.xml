@@ -12,7 +12,10 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/applicationContext.xml</param-value>
+		<param-value>
+            /WEB-INF/applicationContext.xml
+            /WEB-INF/applicationContext-security.xml
+        </param-value>
 	</context-param>
 
 	<!--
@@ -25,7 +28,9 @@
 	</context-param>
 	<context-param>
 		<param-name>definitions-config</param-name>
-		<param-value>/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/eirc/configs/tiles_eirc.xml,/WEB-INF/sz/configs/tiles_sz.xml</param-value>
+		<param-value>
+            /WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/eirc/configs/tiles_eirc.xml,/WEB-INF/sz/configs/tiles_sz.xml
+        </param-value>
 	</context-param>
 
 	<listener>
@@ -35,10 +40,11 @@
 		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
 	</listener>
 	<listener>
-		<listener-class>
-			org.springframework.web.context.ContextLoaderListener
-		</listener-class>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+    <listener>
+        <listener-class>org.springframework.security.ui.session.HttpSessionEventPublisher</listener-class>
+    </listener>
 
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
@@ -56,6 +62,16 @@
 		<filter-name>CharacterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
 	<filter>
 		<filter-name>actionFilter</filter-name>
@@ -415,6 +431,11 @@
             <form-error-page>/resources/common/jsp/login.jsp</form-error-page>
         </form-login-config>
     </login-config>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/resources/common/jsp/forbidden.jsp</location>
+    </error-page>
 
     <welcome-file-list>
 		<welcome-file>/resources/sz/jsp/index.jsp</welcome-file>

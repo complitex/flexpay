@@ -1,8 +1,9 @@
 package org.flexpay.eirc.actions;
 
+import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.io.IOUtils;
-import org.flexpay.common.persistence.FlexPayFile;
-import org.flexpay.common.service.FlexPayFileService;
+import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.config.UserPreferences;
@@ -24,24 +25,24 @@ import java.io.OutputStream;
 public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 
 	@Autowired
-	protected FlexPayFileService flexPayFileService;
-	protected SpFileCreateAction fileCreateAction;
+	protected FPFileService FPFileService;
+	protected UploadFileAction uploadFileAction;
 
 	@Autowired
-	public void setFileCreateAction(@Qualifier ("spFileCreateAction") SpFileCreateAction fileCreateAction) {
-		fileCreateAction.setUserPreferences(new UserPreferences());
-		this.fileCreateAction = fileCreateAction;
+	public void setUploadFileAction(@Qualifier ("spFileUploadAjaxAction") UploadFileAction uploadFileAction) {
+		uploadFileAction.setUserPreferences(new UserPreferences());
+		this.uploadFileAction = uploadFileAction;
 	}
 
 	@Test
 	@Ignore
 	@NotTransactional
 	public void testCreateSpFile() throws Throwable {
-		FlexPayFile newFile = createSpFile("org/flexpay/eirc/actions/sp/k0108.ree");
+		FPFile newFile = createSpFile("org/flexpay/eirc/actions/sp/k0108.ree");
 		deleteFile(newFile);
 	}
 
-	protected FlexPayFile createSpFile(@NotNull @NonNls String spFile) throws Throwable {
+	protected FPFile createSpFile(@NotNull @NonNls String spFile) throws Throwable {
 
 		String name = StringUtil.getFileName(spFile);
 		String extension = StringUtil.getFileExtension(name);
@@ -63,20 +64,19 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 			IOUtils.closeQuietly(os);
 		}
 
-		fileCreateAction.setUpload(tmpDataFile);
-		fileCreateAction.setUploadFileName(name);
-		fileCreateAction.setSubmitted("submitted");
+		uploadFileAction.setUpload(tmpDataFile);
+		uploadFileAction.setUploadFileName(name);
 
-		assertEquals("Invalid Struts action result", SpFileCreateAction.INPUT, fileCreateAction.execute());
-		return fileCreateAction.getSpFile();
+		assertEquals("Invalid Struts action result", ActionSupport.SUCCESS, uploadFileAction.execute());
+		return uploadFileAction.getSpFile();
 	}
 
-	protected void deleteFile(FlexPayFile file) {
+	protected void deleteFile(FPFile file) {
 
 		log.debug("Deleting registry file: {}", file);
 
-		flexPayFileService.delete(file);
-		fileCreateAction.getUpload().delete();
+		FPFileService.delete(file);
+		uploadFileAction.getUpload().delete();
 
 		log.debug("Deleted file!");
 	}

@@ -168,9 +168,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 			return false;
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Creating subconsumer");
-		}
+		log.debug("Creating subconsumer");
 
 		return true;
 	}

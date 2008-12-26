@@ -1,4 +1,3 @@
-
     create table ab_apartment_numbers_tbl (
         id bigint not null auto_increment,
         begin_date date not null,
@@ -266,7 +265,7 @@
         street_id bigint not null comment 'Street reference',
         street_type_id bigint comment 'Street type reference',
         primary key (id)
-    );
+    ) comment='Street type temporals';
 
     create table ab_streets_districts_tbl (
         district_id bigint not null,
@@ -362,40 +361,9 @@
         primary key (id)
     );
 
-    create table common_file_statuses_tbl (
-        id bigint not null auto_increment comment 'Primary key',
-        name varchar(255) not null comment 'Flexpay filestatus title',
-        description varchar(255) not null comment 'Flexpay filestatus description',
-        module_id bigint not null comment 'Flexpay module reference',
-        primary key (id)
-    ) comment='Information about file statuses';
-
-    create table common_file_types_tbl (
-        id bigint not null auto_increment comment 'Primary key',
-        name varchar(255) not null comment 'Filetype title',
-        description varchar(255) not null comment 'Filetype description',
-        file_mask varchar(255) not null comment 'Mask of files for this type',
-        module_id bigint not null comment 'Flexpay module reference',
-        primary key (id)
-    ) comment='Information about known filetypes';
-
-    create table common_files_tbl (
-        id bigint not null auto_increment comment 'Primary key',
-        name_on_server varchar(255) not null comment 'File name on flexpay server',
-        original_name varchar(255) not null comment 'Original file name',
-        description varchar(255) comment 'File description',
-        creation_date datetime not null comment 'File creation date',
-        user_name varchar(255) not null comment 'User name who create this file',
-        size bigint comment 'File size',
-        type_id bigint comment 'Flexpay file type reference',
-        status_id bigint comment 'Flexpay file status reference',
-        module_id bigint not null comment 'Flexpay module reference',
-        primary key (id)
-    ) comment='Table, where store information about all flexpay files';
-
     create table common_flexpay_modules_tbl (
         id bigint not null auto_increment comment 'Primary key',
-        name varchar(255) not null comment 'Flexpay module name',
+        name varchar(255) not null unique comment 'Flexpay module name',
         primary key (id)
     ) comment='Information about all flexpay modules';
 
@@ -451,408 +419,378 @@
 
     create index indx_value on ab_apartment_numbers_tbl (value);
 
-    alter table ab_apartment_numbers_tbl 
-        add index FK_ab_apartment_numbers_tbl_apartment_id (apartment_id), 
-        add constraint FK_ab_apartment_numbers_tbl_apartment_id 
-        foreign key (apartment_id) 
+    alter table ab_apartment_numbers_tbl
+        add index FK_ab_apartment_numbers_tbl_apartment_id (apartment_id),
+        add constraint FK_ab_apartment_numbers_tbl_apartment_id
+        foreign key (apartment_id)
         references ab_apartments_tbl (id);
 
-    alter table ab_apartments_tbl 
-        add index FKBEC651DEF71F858D (building_id), 
-        add constraint FKBEC651DEF71F858D 
-        foreign key (building_id) 
+    alter table ab_apartments_tbl
+        add index FKBEC651DEF71F858D (building_id),
+        add constraint FKBEC651DEF71F858D
+        foreign key (building_id)
         references ab_buildings_tbl (id);
 
-    alter table ab_building_attribute_type_translations_tbl 
-        add index ab_building_attribute_type_translations_tbl_attribute_type_id (attribute_type_id), 
-        add constraint ab_building_attribute_type_translations_tbl_attribute_type_id 
-        foreign key (attribute_type_id) 
+    alter table ab_building_attribute_type_translations_tbl
+        add index ab_building_attribute_type_translations_tbl_attribute_type_id (attribute_type_id),
+        add constraint ab_building_attribute_type_translations_tbl_attribute_type_id
+        foreign key (attribute_type_id)
         references ab_building_attribute_types_tbl (id);
 
-    alter table ab_building_attribute_type_translations_tbl 
-        add index lang_building_attribute_type_pair_language_id (language_id), 
-        add constraint lang_building_attribute_type_pair_language_id 
-        foreign key (language_id) 
+    alter table ab_building_attribute_type_translations_tbl
+        add index lang_building_attribute_type_pair_language_id (language_id),
+        add constraint lang_building_attribute_type_pair_language_id
+        foreign key (language_id)
         references common_languages_tbl (id);
 
     create index indx_value on ab_building_attributes_tbl (value);
 
-    alter table ab_building_attributes_tbl 
-        add index ab_building_attributes_tbl_buildings_id (buildings_id), 
-        add constraint ab_building_attributes_tbl_buildings_id 
-        foreign key (buildings_id) 
+    alter table ab_building_attributes_tbl
+        add index ab_building_attributes_tbl_buildings_id (buildings_id),
+        add constraint ab_building_attributes_tbl_buildings_id
+        foreign key (buildings_id)
         references ab_buildingses_tbl (id);
 
-    alter table ab_building_attributes_tbl 
-        add index ab_building_attributes_tbl_attribute_type_id (attribute_type_id), 
-        add constraint ab_building_attributes_tbl_attribute_type_id 
-        foreign key (attribute_type_id) 
+    alter table ab_building_attributes_tbl
+        add index ab_building_attributes_tbl_attribute_type_id (attribute_type_id),
+        add constraint ab_building_attributes_tbl_attribute_type_id
+        foreign key (attribute_type_id)
         references ab_building_attribute_types_tbl (id);
 
-    alter table ab_building_statuses_tbl 
-        add index ab_building_statuses_tbl_building_id (building_id), 
-        add constraint ab_building_statuses_tbl_building_id 
-        foreign key (building_id) 
+    alter table ab_building_statuses_tbl
+        add index ab_building_statuses_tbl_building_id (building_id),
+        add constraint ab_building_statuses_tbl_building_id
+        foreign key (building_id)
         references ab_buildings_tbl (id);
 
-    alter table ab_buildings_tbl 
-        add index ab_buildings_tbl_district_id (district_id), 
-        add constraint ab_buildings_tbl_district_id 
-        foreign key (district_id) 
+    alter table ab_buildings_tbl
+        add index ab_buildings_tbl_district_id (district_id),
+        add constraint ab_buildings_tbl_district_id
+        foreign key (district_id)
         references ab_districts_tbl (id);
 
-    alter table ab_buildingses_tbl 
-        add index ab_buildingses_tbl_street_id (street_id), 
-        add constraint ab_buildingses_tbl_street_id 
-        foreign key (street_id) 
+    alter table ab_buildingses_tbl
+        add index ab_buildingses_tbl_street_id (street_id),
+        add constraint ab_buildingses_tbl_street_id
+        foreign key (street_id)
         references ab_streets_tbl (id);
 
-    alter table ab_buildingses_tbl 
-        add index ab_buildingses_tbl_building_id (building_id), 
-        add constraint ab_buildingses_tbl_building_id 
-        foreign key (building_id) 
+    alter table ab_buildingses_tbl
+        add index ab_buildingses_tbl_building_id (building_id),
+        add constraint ab_buildingses_tbl_building_id
+        foreign key (building_id)
         references ab_buildings_tbl (id);
 
-    alter table ab_country_name_translations_tbl 
-        add index FK31EC318E9E89EB47 (country_id), 
-        add constraint FK31EC318E9E89EB47 
-        foreign key (country_id) 
+    alter table ab_country_name_translations_tbl
+        add index FK31EC318E9E89EB47 (country_id),
+        add constraint FK31EC318E9E89EB47
+        foreign key (country_id)
         references ab_countries_tbl (id);
 
-    alter table ab_country_name_translations_tbl 
-        add index FK31EC318E61F37403 (language_id), 
-        add constraint FK31EC318E61F37403 
-        foreign key (language_id) 
+    alter table ab_country_name_translations_tbl
+        add index FK31EC318E61F37403 (language_id),
+        add constraint FK31EC318E61F37403
+        foreign key (language_id)
         references common_languages_tbl (id);
 
-    alter table ab_district_name_translations_tbl 
-        add index FKD194B702398B1DAA (district_name_id), 
-        add constraint FKD194B702398B1DAA 
-        foreign key (district_name_id) 
+    alter table ab_district_name_translations_tbl
+        add index FKD194B702398B1DAA (district_name_id),
+        add constraint FKD194B702398B1DAA
+        foreign key (district_name_id)
         references ab_district_names_tbl (id);
 
-    alter table ab_district_name_translations_tbl 
-        add index FKD194B70261F37403 (language_id), 
-        add constraint FKD194B70261F37403 
-        foreign key (language_id) 
+    alter table ab_district_name_translations_tbl
+        add index FKD194B70261F37403 (language_id),
+        add constraint FKD194B70261F37403
+        foreign key (language_id)
         references common_languages_tbl (id);
 
-    alter table ab_district_names_tbl 
-        add index FK7A70D3B41AE9F4D (district_id), 
-        add constraint FK7A70D3B41AE9F4D 
-        foreign key (district_id) 
+    alter table ab_district_names_tbl
+        add index FK7A70D3B41AE9F4D (district_id),
+        add constraint FK7A70D3B41AE9F4D
+        foreign key (district_id)
         references ab_districts_tbl (id);
 
-    alter table ab_district_names_temporal_tbl 
-        add index FK6525F5EB1AE9F4D (district_id), 
-        add constraint FK6525F5EB1AE9F4D 
-        foreign key (district_id) 
+    alter table ab_district_names_temporal_tbl
+        add index FK6525F5EB1AE9F4D (district_id),
+        add constraint FK6525F5EB1AE9F4D
+        foreign key (district_id)
         references ab_districts_tbl (id);
 
-    alter table ab_district_names_temporal_tbl 
-        add index FK6525F5EB398B1DAA (district_name_id), 
-        add constraint FK6525F5EB398B1DAA 
-        foreign key (district_name_id) 
+    alter table ab_district_names_temporal_tbl
+        add index FK6525F5EB398B1DAA (district_name_id),
+        add constraint FK6525F5EB398B1DAA
+        foreign key (district_name_id)
         references ab_district_names_tbl (id);
 
-    alter table ab_districts_tbl 
-        add index FK79F1E386712C324D (town_id), 
-        add constraint FK79F1E386712C324D 
-        foreign key (town_id) 
+    alter table ab_districts_tbl
+        add index FK79F1E386712C324D (town_id),
+        add constraint FK79F1E386712C324D
+        foreign key (town_id)
         references ab_towns_tbl (id);
 
-    alter table ab_identity_type_translations_tbl 
-        add index ab_identity_type_translations_tbl_identity_type_id (identity_type_id), 
-        add constraint ab_identity_type_translations_tbl_identity_type_id 
-        foreign key (identity_type_id) 
+    alter table ab_identity_type_translations_tbl
+        add index ab_identity_type_translations_tbl_identity_type_id (identity_type_id),
+        add constraint ab_identity_type_translations_tbl_identity_type_id
+        foreign key (identity_type_id)
         references ab_identity_types_tbl (id);
 
-    alter table ab_identity_type_translations_tbl 
-        add index ab_identity_type_translations_tbl_language_id (language_id), 
-        add constraint ab_identity_type_translations_tbl_language_id 
-        foreign key (language_id) 
+    alter table ab_identity_type_translations_tbl
+        add index ab_identity_type_translations_tbl_language_id (language_id),
+        add constraint ab_identity_type_translations_tbl_language_id
+        foreign key (language_id)
         references common_languages_tbl (id);
 
-    alter table ab_person_attributes_tbl 
-        add index ab_person_attributes_tbl_person_id (person_id), 
-        add constraint ab_person_attributes_tbl_person_id 
-        foreign key (person_id) 
+    alter table ab_person_attributes_tbl
+        add index ab_person_attributes_tbl_person_id (person_id),
+        add constraint ab_person_attributes_tbl_person_id
+        foreign key (person_id)
         references ab_persons_tbl (id);
 
-    alter table ab_person_attributes_tbl 
-        add index ab_person_attributes_tbl_language_id (language_id), 
-        add constraint ab_person_attributes_tbl_language_id 
-        foreign key (language_id) 
+    alter table ab_person_attributes_tbl
+        add index ab_person_attributes_tbl_language_id (language_id),
+        add constraint ab_person_attributes_tbl_language_id
+        foreign key (language_id)
         references common_languages_tbl (id);
 
     create index data_index on ab_person_identities_tbl (first_name, middle_name, last_name);
 
-    alter table ab_person_identities_tbl 
-        add index ab_person_identities_tbl_identity_type_id (identity_type_id), 
-        add constraint ab_person_identities_tbl_identity_type_id 
-        foreign key (identity_type_id) 
+    alter table ab_person_identities_tbl
+        add index ab_person_identities_tbl_identity_type_id (identity_type_id),
+        add constraint ab_person_identities_tbl_identity_type_id
+        foreign key (identity_type_id)
         references ab_identity_types_tbl (id);
 
-    alter table ab_person_identities_tbl 
-        add index ab_person_identities_tbl_person_id (person_id), 
-        add constraint ab_person_identities_tbl_person_id 
-        foreign key (person_id) 
+    alter table ab_person_identities_tbl
+        add index ab_person_identities_tbl_person_id (person_id),
+        add constraint ab_person_identities_tbl_person_id
+        foreign key (person_id)
         references ab_persons_tbl (id);
 
-    alter table ab_person_identity_attributes_tbl 
-        add index ab_person_identity_attributes_tbl_person_identity_id (person_identity_id), 
-        add constraint ab_person_identity_attributes_tbl_person_identity_id 
-        foreign key (person_identity_id) 
+    alter table ab_person_identity_attributes_tbl
+        add index ab_person_identity_attributes_tbl_person_identity_id (person_identity_id),
+        add constraint ab_person_identity_attributes_tbl_person_identity_id
+        foreign key (person_identity_id)
         references ab_person_identities_tbl (id);
 
-    alter table ab_person_identity_attributes_tbl 
-        add index ab_person_identity_attributes_tbl_language_id (language_id), 
-        add constraint ab_person_identity_attributes_tbl_language_id 
-        foreign key (language_id) 
+    alter table ab_person_identity_attributes_tbl
+        add index ab_person_identity_attributes_tbl_language_id (language_id),
+        add constraint ab_person_identity_attributes_tbl_language_id
+        foreign key (language_id)
         references common_languages_tbl (id);
 
-    alter table ab_person_registrations_tbl 
-        add index FP_ab_person_registrations_person (person_id), 
-        add constraint FP_ab_person_registrations_person 
-        foreign key (person_id) 
+    alter table ab_person_registrations_tbl
+        add index FP_ab_person_registrations_person (person_id),
+        add constraint FP_ab_person_registrations_person
+        foreign key (person_id)
         references ab_persons_tbl (id);
 
-    alter table ab_person_registrations_tbl 
-        add index FP_ab_person_registrations_apartment (apartment_id), 
-        add constraint FP_ab_person_registrations_apartment 
-        foreign key (apartment_id) 
+    alter table ab_person_registrations_tbl
+        add index FP_ab_person_registrations_apartment (apartment_id),
+        add constraint FP_ab_person_registrations_apartment
+        foreign key (apartment_id)
         references ab_apartments_tbl (id);
 
-    alter table ab_region_name_translations_tbl 
-        add index FK3DB8D968D605B436 (region_name_id), 
-        add constraint FK3DB8D968D605B436 
-        foreign key (region_name_id) 
+    alter table ab_region_name_translations_tbl
+        add index FK3DB8D968D605B436 (region_name_id),
+        add constraint FK3DB8D968D605B436
+        foreign key (region_name_id)
         references ab_region_names_tbl (id);
 
-    alter table ab_region_name_translations_tbl 
-        add index FK3DB8D96861F37403 (language_id), 
-        add constraint FK3DB8D96861F37403 
-        foreign key (language_id) 
+    alter table ab_region_name_translations_tbl
+        add index FK3DB8D96861F37403 (language_id),
+        add constraint FK3DB8D96861F37403
+        foreign key (language_id)
         references common_languages_tbl (id);
 
-    alter table ab_region_names_tbl 
-        add index FKF918DF1A458E164D (region_id), 
-        add constraint FKF918DF1A458E164D 
-        foreign key (region_id) 
+    alter table ab_region_names_tbl
+        add index FKF918DF1A458E164D (region_id),
+        add constraint FKF918DF1A458E164D
+        foreign key (region_id)
         references ab_regions_tbl (id);
 
-    alter table ab_region_names_temporal_tbl 
-        add index FK609D5D45D605B436 (region_name_id), 
-        add constraint FK609D5D45D605B436 
-        foreign key (region_name_id) 
+    alter table ab_region_names_temporal_tbl
+        add index FK609D5D45D605B436 (region_name_id),
+        add constraint FK609D5D45D605B436
+        foreign key (region_name_id)
         references ab_region_names_tbl (id);
 
-    alter table ab_region_names_temporal_tbl 
-        add index FK609D5D45458E164D (region_id), 
-        add constraint FK609D5D45458E164D 
-        foreign key (region_id) 
+    alter table ab_region_names_temporal_tbl
+        add index FK609D5D45458E164D (region_id),
+        add constraint FK609D5D45458E164D
+        foreign key (region_id)
         references ab_regions_tbl (id);
 
-    alter table ab_regions_tbl 
-        add index FK61DDD0609E89EB47 (country_id), 
-        add constraint FK61DDD0609E89EB47 
-        foreign key (country_id) 
+    alter table ab_regions_tbl
+        add index FK61DDD0609E89EB47 (country_id),
+        add constraint FK61DDD0609E89EB47
+        foreign key (country_id)
         references ab_countries_tbl (id);
 
-    alter table ab_street_name_translations_tbl 
-        add index FK72F93D37D80067D4 (street_name_id), 
-        add constraint FK72F93D37D80067D4 
-        foreign key (street_name_id) 
+    alter table ab_street_name_translations_tbl
+        add index FK72F93D37D80067D4 (street_name_id),
+        add constraint FK72F93D37D80067D4
+        foreign key (street_name_id)
         references ab_street_names_tbl (id);
 
-    alter table ab_street_name_translations_tbl 
-        add index FK72F93D3761F37403 (language_id), 
-        add constraint FK72F93D3761F37403 
-        foreign key (language_id) 
+    alter table ab_street_name_translations_tbl
+        add index FK72F93D3761F37403 (language_id),
+        add constraint FK72F93D3761F37403
+        foreign key (language_id)
         references common_languages_tbl (id);
 
-    alter table ab_street_names_tbl 
-        add index FK496D4169311847ED (street_id), 
-        add constraint FK496D4169311847ED 
-        foreign key (street_id) 
+    alter table ab_street_names_tbl
+        add index FK496D4169311847ED (street_id),
+        add constraint FK496D4169311847ED
+        foreign key (street_id)
         references ab_streets_tbl (id);
 
-    alter table ab_street_names_temporal_tbl 
-        add index ab_street_names_temporal_tbl_street_id (street_id), 
-        add constraint ab_street_names_temporal_tbl_street_id 
-        foreign key (street_id) 
+    alter table ab_street_names_temporal_tbl
+        add index FK_ab_street_names_temporal_tbl_street_id (street_id),
+        add constraint FK_ab_street_names_temporal_tbl_street_id
+        foreign key (street_id)
         references ab_streets_tbl (id);
 
-    alter table ab_street_names_temporal_tbl 
-        add index ab_street_names_temporal_tbl_street_name_id (street_name_id), 
-        add constraint ab_street_names_temporal_tbl_street_name_id 
-        foreign key (street_name_id) 
+    alter table ab_street_names_temporal_tbl
+        add index FK_ab_street_names_temporal_tbl_street_name_id (street_name_id),
+        add constraint FK_ab_street_names_temporal_tbl_street_name_id
+        foreign key (street_name_id)
         references ab_street_names_tbl (id);
 
-    alter table ab_street_type_translations_tbl 
-        add index FKDEBA3C683E877574 (street_type_id), 
-        add constraint FKDEBA3C683E877574 
-        foreign key (street_type_id) 
+    alter table ab_street_type_translations_tbl
+        add index FKDEBA3C683E877574 (street_type_id),
+        add constraint FKDEBA3C683E877574
+        foreign key (street_type_id)
         references ab_street_types_tbl (id);
 
-    alter table ab_street_type_translations_tbl 
-        add index FKDEBA3C6861F37403 (language_id), 
-        add constraint FKDEBA3C6861F37403 
-        foreign key (language_id) 
+    alter table ab_street_type_translations_tbl
+        add index FKDEBA3C6861F37403 (language_id),
+        add constraint FKDEBA3C6861F37403
+        foreign key (language_id)
         references common_languages_tbl (id);
 
-    alter table ab_street_types_temporal_tbl 
-        add index FK_ab_street_types_temporal_tbl_street_id (street_id), 
-        add constraint FK_ab_street_types_temporal_tbl_street_id 
-        foreign key (street_id) 
+    alter table ab_street_types_temporal_tbl
+        add index FK_ab_street_types_temporal_tbl_street_id (street_id),
+        add constraint FK_ab_street_types_temporal_tbl_street_id
+        foreign key (street_id)
         references ab_streets_tbl (id);
 
-    alter table ab_street_types_temporal_tbl 
-        add index FK_ab_street_types_temporal_tbl_street_type_id (street_type_id), 
-        add constraint FK_ab_street_types_temporal_tbl_street_type_id 
-        foreign key (street_type_id) 
+    alter table ab_street_types_temporal_tbl
+        add index FK_ab_street_types_temporal_tbl_street_type_id (street_type_id),
+        add constraint FK_ab_street_types_temporal_tbl_street_type_id
+        foreign key (street_type_id)
         references ab_street_types_tbl (id);
 
-    alter table ab_streets_districts_tbl 
-        add index FK93093857311847ED (street_id), 
-        add constraint FK93093857311847ED 
-        foreign key (street_id) 
+    alter table ab_streets_districts_tbl
+        add index FK93093857311847ED (street_id),
+        add constraint FK93093857311847ED
+        foreign key (street_id)
         references ab_streets_tbl (id);
 
-    alter table ab_streets_districts_tbl 
-        add index FK930938571AE9F4D (district_id), 
-        add constraint FK930938571AE9F4D 
-        foreign key (district_id) 
+    alter table ab_streets_districts_tbl
+        add index FK930938571AE9F4D (district_id),
+        add constraint FK930938571AE9F4D
+        foreign key (district_id)
         references ab_districts_tbl (id);
 
-    alter table ab_streets_tbl 
-        add index FKFFBAF8B1712C324D (town_id), 
-        add constraint FKFFBAF8B1712C324D 
-        foreign key (town_id) 
+    alter table ab_streets_tbl
+        add index FKFFBAF8B1712C324D (town_id),
+        add constraint FKFFBAF8B1712C324D
+        foreign key (town_id)
         references ab_towns_tbl (id);
 
-    alter table ab_town_name_translations_tbl 
-        add index FKE4BB206B6638732 (town_name_id), 
-        add constraint FKE4BB206B6638732 
-        foreign key (town_name_id) 
+    alter table ab_town_name_translations_tbl
+        add index FKE4BB206B6638732 (town_name_id),
+        add constraint FKE4BB206B6638732
+        foreign key (town_name_id)
         references ab_town_names_tbl (id);
 
-    alter table ab_town_name_translations_tbl 
-        add index FKE4BB20661F37403 (language_id), 
-        add constraint FKE4BB20661F37403 
-        foreign key (language_id) 
+    alter table ab_town_name_translations_tbl
+        add index FKE4BB20661F37403 (language_id),
+        add constraint FKE4BB20661F37403
+        foreign key (language_id)
         references common_languages_tbl (id);
 
-    alter table ab_town_names_tbl 
-        add index FK85A534B8712C324D (town_id), 
-        add constraint FK85A534B8712C324D 
-        foreign key (town_id) 
+    alter table ab_town_names_tbl
+        add index FK85A534B8712C324D (town_id),
+        add constraint FK85A534B8712C324D
+        foreign key (town_id)
         references ab_towns_tbl (id);
 
-    alter table ab_town_names_temporal_tbl 
-        add index FK59747967B6638732 (town_name_id), 
-        add constraint FK59747967B6638732 
-        foreign key (town_name_id) 
+    alter table ab_town_names_temporal_tbl
+        add index FK59747967B6638732 (town_name_id),
+        add constraint FK59747967B6638732
+        foreign key (town_name_id)
         references ab_town_names_tbl (id);
 
-    alter table ab_town_names_temporal_tbl 
-        add index FK59747967712C324D (town_id), 
-        add constraint FK59747967712C324D 
-        foreign key (town_id) 
+    alter table ab_town_names_temporal_tbl
+        add index FK59747967712C324D (town_id),
+        add constraint FK59747967712C324D
+        foreign key (town_id)
         references ab_towns_tbl (id);
 
-    alter table ab_town_type_translations_tbl 
-        add index FK7A0CB1371CEA94D2 (town_type_id), 
-        add constraint FK7A0CB1371CEA94D2 
-        foreign key (town_type_id) 
+    alter table ab_town_type_translations_tbl
+        add index FK7A0CB1371CEA94D2 (town_type_id),
+        add constraint FK7A0CB1371CEA94D2
+        foreign key (town_type_id)
         references ab_town_types_tbl (id);
 
-    alter table ab_town_type_translations_tbl 
-        add index FK7A0CB13761F37403 (language_id), 
-        add constraint FK7A0CB13761F37403 
-        foreign key (language_id) 
+    alter table ab_town_type_translations_tbl
+        add index FK7A0CB13761F37403 (language_id),
+        add constraint FK7A0CB13761F37403
+        foreign key (language_id)
         references common_languages_tbl (id);
 
-    alter table ab_town_types_temporal_tbl 
-        add index FK29822FD61CEA94D2 (town_type_id), 
-        add constraint FK29822FD61CEA94D2 
-        foreign key (town_type_id) 
+    alter table ab_town_types_temporal_tbl
+        add index FK29822FD61CEA94D2 (town_type_id),
+        add constraint FK29822FD61CEA94D2
+        foreign key (town_type_id)
         references ab_town_types_tbl (id);
 
-    alter table ab_town_types_temporal_tbl 
-        add index FK29822FD6712C324D (town_id), 
-        add constraint FK29822FD6712C324D 
-        foreign key (town_id) 
+    alter table ab_town_types_temporal_tbl
+        add index FK29822FD6712C324D (town_id),
+        add constraint FK29822FD6712C324D
+        foreign key (town_id)
         references ab_towns_tbl (id);
 
-    alter table ab_towns_tbl 
-        add index FK23FDF002458E164D (region_id), 
-        add constraint FK23FDF002458E164D 
-        foreign key (region_id) 
+    alter table ab_towns_tbl
+        add index FK23FDF002458E164D (region_id),
+        add constraint FK23FDF002458E164D
+        foreign key (region_id)
         references ab_regions_tbl (id);
 
-    alter table common_data_corrections_tbl 
-        add index FKF86BDC935BA789BB (data_source_description_id), 
-        add constraint FKF86BDC935BA789BB 
-        foreign key (data_source_description_id) 
+    alter table common_data_corrections_tbl
+        add index FKF86BDC935BA789BB (data_source_description_id),
+        add constraint FKF86BDC935BA789BB
+        foreign key (data_source_description_id)
         references common_data_source_descriptions_tbl (id);
 
-    alter table common_file_statuses_tbl 
-        add index common_file_statuses_tbl_module_id (module_id), 
-        add constraint common_file_statuses_tbl_module_id 
-        foreign key (module_id) 
-        references common_flexpay_modules_tbl (id);
-
-    alter table common_file_types_tbl 
-        add index common_file_types_tbl_module_id (module_id), 
-        add constraint common_file_types_tbl_module_id 
-        foreign key (module_id) 
-        references common_flexpay_modules_tbl (id);
-
-    alter table common_files_tbl 
-        add index common_files_tbl_module_id (module_id), 
-        add constraint common_files_tbl_module_id 
-        foreign key (module_id) 
-        references common_flexpay_modules_tbl (id);
-
-    alter table common_files_tbl 
-        add index common_files_tbl_status_id (status_id), 
-        add constraint common_files_tbl_status_id 
-        foreign key (status_id) 
-        references common_file_statuses_tbl (id);
-
-    alter table common_files_tbl 
-        add index common_files_tbl_type_id (type_id), 
-        add constraint common_files_tbl_type_id 
-        foreign key (type_id) 
-        references common_file_types_tbl (id);
-
-    alter table common_import_errors_tbl 
-        add index FKBAEED8705355D490 (source_description_id), 
-        add constraint FKBAEED8705355D490 
-        foreign key (source_description_id) 
+    alter table common_import_errors_tbl
+        add index FKBAEED8705355D490 (source_description_id),
+        add constraint FKBAEED8705355D490
+        foreign key (source_description_id)
         references common_data_source_descriptions_tbl (id);
 
-    alter table common_language_names_tbl 
-        add index FK85F168F48626C2BC (translation_from_language_id), 
-        add constraint FK85F168F48626C2BC 
-        foreign key (translation_from_language_id) 
+    alter table common_language_names_tbl
+        add index FK85F168F48626C2BC (translation_from_language_id),
+        add constraint FK85F168F48626C2BC
+        foreign key (translation_from_language_id)
         references common_languages_tbl (id);
 
-    alter table common_language_names_tbl 
-        add index FK85F168F461F37403 (language_id), 
-        add constraint FK85F168F461F37403 
-        foreign key (language_id) 
+    alter table common_language_names_tbl
+        add index FK85F168F461F37403 (language_id),
+        add constraint FK85F168F461F37403
+        foreign key (language_id)
         references common_languages_tbl (id);
 
-    alter table common_mesuare_unit_names_tbl 
-        add index common_mesuare_unit_names_tbl_measure_unit_id (measure_unit_id), 
-        add constraint common_mesuare_unit_names_tbl_measure_unit_id 
-        foreign key (measure_unit_id) 
+    alter table common_mesuare_unit_names_tbl
+        add index common_mesuare_unit_names_tbl_measure_unit_id (measure_unit_id),
+        add constraint common_mesuare_unit_names_tbl_measure_unit_id
+        foreign key (measure_unit_id)
         references common_measure_units_tbl (id);
 
-    alter table common_mesuare_unit_names_tbl 
-        add index common_mesuare_unit_names_tbl_language_id (language_id), 
-        add constraint common_mesuare_unit_names_tbl_language_id 
-        foreign key (language_id) 
-        references common_languages_tbl (id);
+    alter table common_mesuare_unit_names_tbl
+        add index common_mesuare_unit_names_tbl_language_id (language_id),
+        add constraint common_mesuare_unit_names_tbl_language_id
+        foreign key (language_id)
+        references common_languages_tbl (id);  

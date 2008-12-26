@@ -4,10 +4,11 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 public class Translation extends DomainObject {
+
 	private String name;
 	private Language lang;
 	private DomainObject translatable;
@@ -97,11 +98,14 @@ public class Translation extends DomainObject {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("Name", name)
-				.append("Lang", lang.getLangIsoCode())
-				.toString();
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("Translation {").
+				append("id", getId()).
+				append("name", name).
+				append("lang", lang).
+				append("}").toString();
 	}
 
 	/**
@@ -118,6 +122,7 @@ public class Translation extends DomainObject {
 	/**
 	 * {@inheritDoc}
 	 */
+    @Override
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
@@ -132,4 +137,5 @@ public class Translation extends DomainObject {
 				.append(name, that.getName())
 				.isEquals();
 	}
+
 }

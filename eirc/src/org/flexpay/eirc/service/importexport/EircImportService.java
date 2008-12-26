@@ -37,9 +37,7 @@ public class EircImportService {
 
 		Map<String, List<Street>> nameObjsMap = initializeNamesToObjectsMap(townStreets);
 
-		if (log.isInfoEnabled()) {
-			log.info("Streets number: {}", nameObjsMap.keySet().size());
-		}
+		log.info("Streets number: {}", nameObjsMap.keySet().size());
 
 		// records count + skipped data read
 		long[] counters = {0, 0};

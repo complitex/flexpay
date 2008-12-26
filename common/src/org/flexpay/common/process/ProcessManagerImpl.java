@@ -1,7 +1,8 @@
 package org.flexpay.common.process;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
@@ -37,7 +38,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	/**
 	 * Loggger
 	 */
-	private static final Logger log = Logger.getLogger(ProcessManagerImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(ProcessManagerImpl.class);
 
 	/**
 	 * singleton instance
@@ -76,7 +77,6 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * protected constructor
 	 */
 	private ProcessManagerImpl() {
-
 		log.debug("ProcessManager constructor called ");
 	}
 
@@ -120,7 +120,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 			log.error("Failed joining thread", e);
 			throw new RuntimeException("Failed joining thread", e);
 		}
-		log.debug("ProcessManager thread stoped ");
+		log.debug("ProcessManager thread stoped");
 	}
 
 	/**
@@ -131,19 +131,14 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @return ID of process definition
 	 * @throws ProcessDefinitionException when can't deplot process definition to jbpm
 	 */
-	public long deployProcessDefinition(String name, boolean replace)
-			throws ProcessDefinitionException {
+	public long deployProcessDefinition(String name, boolean replace) throws ProcessDefinitionException {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Requested definition deployment: " + name);
-		}
+		log.debug("Requested definition deployment: {}", name);
 		InputStream is = null;
 		try {
 			for (String path : definitionPaths) {
 				String resource = path + "/" + name + ".xml";
-				if (log.isDebugEnabled()) {
-					log.debug("Looking up " + resource);
-				}
+				log.debug("Looking up {}", resource);
 				is = ApplicationConfig.getResourceAsStream(resource);
 				if (is != null) {
 					log.debug("Found!");
@@ -151,7 +146,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 				}
 			}
 
-			log.warn("No definition found: " + name);
+			log.warn("No definition found: {}", name);
 			throw new ProcessDefinitionException("Process definition for name " + name + " file not found!");
 		} finally {
 			IOUtils.closeQuietly(is);
@@ -201,18 +196,18 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 
 				if (replace || (latestProcessDefinition == null)) {
 					if (latestProcessDefinition == null) {
-						log.info("Process definition not found. Deploying " + processDefinition.getName());
+						log.info("Process definition not found. Deploying {}", processDefinition.getName());
 						newVersion = 1;
 						processDefinition.setVersion(newVersion);
 					} else {
 						int oldVersion = latestProcessDefinition.getVersion();
-						log.info("Deploying new version of process definition " + processDefinition.getName());
+						log.info("Deploying new version of process definition {}", processDefinition.getName());
 						newVersion = oldVersion + 1;
 						processDefinition.setVersion(newVersion);
-						log.info("Old version = " + oldVersion + ", New version = " + newVersion);
+						log.info("Old version = {}, New version = {}", oldVersion, newVersion);
 					}
 					graphSession.saveProcessDefinition(processDefinition);
-					log.info("Deployed.");
+					log.info("Deployed");
 				}
 
 				return processDefinition.getId();
@@ -314,14 +309,12 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 			processDefinition = graphSession.findLatestProcessDefinition(processDefinitionName);
 		}
 		if (processDefinition == null) {
-			log.error("Can't find process definition for name: " + processDefinitionName);
+			log.error("Can't find process definition for name: {}", processDefinitionName);
 			throw new ProcessDefinitionException("Can't find process definition for name: " + processDefinitionName);
 		}
 
-		if (log.isInfoEnabled()) {
-			log.info("Initializing  process. Process Definition id = " + processDefinition.getId() +
-					 " name = " + processDefinition.getName() + " version = " + processDefinition.getVersion());
-		}
+		log.info("Initializing  process. Process Definition id = {}, name = {}, version = {}",
+				new Object[] {processDefinition.getId(), processDefinition.getName(), processDefinition.getVersion()});
 
 		try {
 			ProcessInstance processInstance = new ProcessInstance(processDefinition);
@@ -368,9 +361,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 				ci.addVariables(params);
 				processInstance.getRootToken().signal();
 
-				if (log.isInfoEnabled()) {
-					log.info("Process Instance id = " + processId + " started.");
-				}
+				log.info("Process Instance id = {} started.", processId);
 
 				return processId;
 			}
@@ -392,8 +383,8 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		Integer runCounter = getRunCount(task);
 
 		if (runCounter > taskRepeatLimit) {
-			log.info("Exceded limit (" + taskRepeatLimit + ") for task '" + task.getName() + "' (" +
-					 task.getId() + ", pid - " + processInstance.getId() + "). Process ended.");
+			log.info("Exceded limit ({}) for task '{}' ({}, pid - {}). Process ended.",
+					new Object[] {taskRepeatLimit, task.getName(), task.getId(), processInstance.getId()});
 			completeTask(task);
 			return false;
 		}
@@ -401,31 +392,32 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		LyfecycleVote vote = voteStart(task);
 		switch (vote) {
 			case CANCEL:
-				log.info("Task '" + task.getName() + "' (" +
-						 task.getId() + ", pid - " + processInstance.getId() + "). Cancelled by voters.");
+				log.info("Task '{}' ({}, pid - {}). Cancelled by voters.",
+					new Object[] {task.getName(), task.getId(), processInstance.getId()});
 				completeTask(task);
 				return false;
 			case POSTPONE:
-				log.info("Task " + task.getName() + " is beign postponed.");
+				log.info("Task {} is beign postponed.", task.getName());
 				return false;
 			case START:
 				break;
 		}
 
-		log.info("Starting task '" + task.getName() + "' (" + task.getId() + ", pid - " + processInstance.getId() + ")");
+		log.info("Starting task '{}' ({}, pid - {})",
+					new Object[] {task.getName(), task.getId(), processInstance.getId()});
 
 		if (task.getStart() == null) {
 			task.start();
 		} else {
-			log.info("Task '" + task.getName() + "' (" + task.getId() + ", pid=" + processInstance.getId() + ")" +
-					 " restarted. Recovering from failure.");
+			log.info("Task '{}' ({}, pid={}) restarted. Recovering from failure.",
+					new Object[] {task.getName(), task.getId(), processInstance.getId()});
 		}
 
 		try {
 			Map<Serializable, Serializable> params = contextInstance.getVariables();
 			JobManager.getInstance().addJob(processInstance.getId(), task.getId(), task.getName(), params);
 		} catch (FlexPayException e) {
-			log.error("Can't start task with name " + task.getName(), e);
+			log.error("Can't start task with name {}", task.getName(), e);
 			return false;
 		}
 
@@ -489,7 +481,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 */
 	public void taskCompleted(final Long taskId, final Map<Serializable, Serializable> parameters, final String transition) {
 		// this method called by Job to report finish
-		log.debug("finished task #: " + taskId);
+		log.debug("finished task #: {}", taskId);
 
 		boolean proceed = false;
 
@@ -501,9 +493,9 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 						TaskInstance task = taskMgmtSession.loadTaskInstance(taskId);
 
 						if (task == null) {
-							log.error("Can't find Task Instance, id: " + taskId);
+							log.error("Can't find Task Instance, id: {}", taskId);
 						} else {
-							log.info("Finishing Task Instance, id: " + taskId);
+							log.info("Finishing Task Instance, id: {}", taskId);
 							ContextInstance ci = task.getProcessInstance().getContextInstance();
 							// save the variables in ProcessInstance dictionary
 							ci.addVariables(parameters);
@@ -524,17 +516,15 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 
 				checkProcessCompleted(task.getProcessInstance().getId());
 
-				if (log.isDebugEnabled()) {
-					log.debug("Task removed from list of running tasks: " + removed);
-					log.debug("Number of running tasks: " + runningTaskIds.size());
-				}
+				log.debug("Task removed from list of running tasks: {}", removed);
+				log.debug("Number of running tasks: {}", runningTaskIds.size());
 			} catch (RuntimeException e) {
-				log.error("Failed finishing task: " + taskId, e);
-				log.error("Sleeping for 30 sec and try again to finish task: " + taskId);
+				log.error("Failed finishing task: {}", taskId, e);
+				log.error("Sleeping for 30 sec and try again to finish task: {}", taskId);
 				try {
 					Thread.sleep(30000);
 				} catch (InterruptedException ie) {
-					log.fatal("System failure when finishing task: " + taskId, e);
+					log.error("System failure when finishing task: {}", taskId, e);
 				}
 			}
 		}
@@ -549,7 +539,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		Process process = getProcessInstanceInfo(processId);
 		if (process.getProcessState().isCompleted()) {
 			ProcessLogger.closeLog(processId);
-			log.info("Closing process log: " + processId);
+			log.info("Closing process log: {}", processId);
 		}
 	}
 
@@ -575,7 +565,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 							if (processInstances.size() == 0) {
 								graphSession.deleteProcessDefinition(processDefinitionID);
 							}
-							log.debug("Removed process definition " + processDefinitionID);
+							log.debug("Removed process definition {}", processDefinitionID);
 						}
 					}
 
@@ -695,14 +685,14 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	private boolean isTaskExecuting(final TaskInstance task) {
 
 		if (task.hasEnded()) {
-			log.debug("Task already finished, ignoring task # " + task.getId());
+			log.debug("Task already finished, ignoring task # {}", task.getId());
 			return true;
 		} else {
 			if (runningTaskIds.contains(task.getId())) {
-				log.debug(task.getId() + " is already started, checking runner");
+				log.debug("Task {} is already started, checking runner", task.getId());
 				return true;
 			} else {
-				log.debug(task.getId() + " is not started");
+				log.debug("Task {} is not started", task.getId());
 				return false;
 			}
 		}

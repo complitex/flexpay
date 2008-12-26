@@ -103,8 +103,8 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 //			stats.addAddress(stub.getBuildingAddress());
 
 			++count;
-			if (log.isInfoEnabled() && count % 100 == 0) {
-				log.info("Generated " + count + " quittance infos");
+			if (count % 100 == 0) {
+				log.info("Generated {} quittance infos", count);
 			}
 
 //			if (count >= 122) {
@@ -112,10 +112,8 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 //			}
 		}
 
-		if (log.isInfoEnabled()) {
-			log.info("Total " + count + " quittances.");
-			log.info("Building batches");
-		}
+		log.info("Total {} quittances.", count);
+		log.info("Building batches");
 
 		if (nBatches > 1) {
 			infos = buildBatches(infos, stats, nBatches);
@@ -150,7 +148,7 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 			initQuittanceNumber(q, info);
 
 			if (info.getOutgoingBalance().compareTo(BigDecimal.ZERO) <= 0) {
-				log.warn("Quittance #" + q.getId() + " not positive balance.");
+				log.warn("Quittance #{} not positive balance.", q.getId());
 			}
 
 			return info;
@@ -331,8 +329,8 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 				currentInfo = prepareInfo(iterator.next());
 
 				++processCounter;
-				if (log.isInfoEnabled() && processCounter % 100 == 0) {
-					log.info("Prepared info #" + processCounter);
+				if (processCounter % 100 == 0) {
+					log.info("Prepared info #{}", processCounter);
 				}
 			}
 		}

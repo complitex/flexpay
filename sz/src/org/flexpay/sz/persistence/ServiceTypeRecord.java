@@ -1,5 +1,7 @@
 package org.flexpay.sz.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.persistence.Person;
 
 public class ServiceTypeRecord extends Record {
@@ -485,4 +487,36 @@ public class ServiceTypeRecord extends Record {
 	public void setDeadhead(Person deadhead) {
 		this.deadhead = deadhead;
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("ServiceTypeRecord {").
+				append("id", getId()).
+				append("tarifCode", tarifCode).
+				append("extDistrictCode", extDistrictCode).
+				append("extOrganizationCode", extOrganizationCode).
+				append("dwellingOwnerId", dwellingOwnerId).
+				append("dwellingOwnerTaxNumber", dwellingOwnerTaxNumber).
+				append("dwellingOwnerPasport", dwellingOwnerPasport).
+				append("dwellingOwnerName", dwellingOwnerName).
+				append("deadheadTaxNumber", deadheadTaxNumber).
+				append("deadheadPassport", deadheadPassport).
+				append("deadheadName", deadheadName).
+				append("postalCode", postalCode).
+				append("extStreetCode", extStreetCode).
+				append("buildingNumber", buildingNumber).
+				append("bulkNumber", bulkNumber).
+				append("apartmentNumber", apartmentNumber).
+				append("deadheadCategory", deadheadCategory).
+				append("privilegeCode", privilegeCode).
+				append("privilegeStartYear", privilegeStartYear).
+				append("privilegeStartMonth", privilegeStartMonth).
+				append("privilegeEndYear", privilegeEndYear).
+				append("privilegeEndMonth", privilegeEndMonth).
+				append("personalAccountNumber", personalAccountNumber).
+				append("serviceType", serviceType).
+				append("}").toString();
+	}
+
 }

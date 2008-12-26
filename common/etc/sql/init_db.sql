@@ -47,13 +47,5 @@ INSERT INTO common_data_source_descriptions_tbl (id, description) VALUES (1, 'И
 SELECT @source_description_test_data:=1;
 
 -- Init modules
-INSERT INTO common_flexpay_modules_tbl (id, name) VALUES (1, 'common');
-SELECT @module_common:=1;
-INSERT INTO common_flexpay_modules_tbl (id, name) VALUES (2, 'ab');
-SELECT @module_ab:=2;
-INSERT INTO common_flexpay_modules_tbl (id, name) VALUES (3, 'bti');
-SELECT @module_bti:=3;
-INSERT INTO common_flexpay_modules_tbl (id, name) VALUES (4, 'eirc');
-SELECT @module_eirc:=4;
-INSERT INTO common_flexpay_modules_tbl (id, name) VALUES (5, 'sz');
-SELECT @module_sz:=5;
+INSERT INTO common_flexpay_modules_tbl (name) VALUES ('common');
+SELECT @module_common:=last_insert_id();

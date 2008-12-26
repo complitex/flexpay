@@ -2,11 +2,12 @@ package org.flexpay.common.util.config;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.log4j.Logger;
 import org.flexpay.common.persistence.Language;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -18,7 +19,7 @@ import java.util.*;
 
 public class ApplicationConfig {
 
-	private static final Logger log = Logger.getLogger(ApplicationConfig.class);
+	private static final Logger log = LoggerFactory.getLogger(ApplicationConfig.class);
 
 	private static ResourceLoader resourceLoader = new DefaultResourceLoader();
 	private static ApplicationConfig instance;
@@ -204,7 +205,7 @@ public class ApplicationConfig {
 				return null;
 			}
 		} catch (IOException e) {
-			log.warn("Failed getting resource " + name, e);
+			log.warn("Failed getting resource {}", name, e);
 			return null;
 		}
 	}

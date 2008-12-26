@@ -1,6 +1,7 @@
 package org.flexpay.common.locking;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.flexpay.common.util.CollectionUtils;
 import org.hibernate.*;
 import org.jetbrains.annotations.NonNls;
@@ -13,7 +14,7 @@ import java.util.Map;
 public class LockManager {
 
 	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private HibernateTemplate hibernateTemplate;
 	private Map<String, StatelessSession> lockedSessions = CollectionUtils.map();
@@ -45,9 +46,7 @@ public class LockManager {
 		transaction.begin();
 		List list = acquireLock(session, semaphoreID);
 		if (list == null) {
-			if (log.isDebugEnabled()) {
-				log.debug("Semaphore already locked: " + semaphoreID);
-			}
+			log.debug("Semaphore already locked: {}", semaphoreID);
 			session.getTransaction().commit();
 			session.close();
 			return false;
@@ -99,9 +98,7 @@ public class LockManager {
 	 */
 	public synchronized void releaseLock(@NonNls String semaphoreID) {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Releasing lock: " + semaphoreID);
-		}
+		log.debug("Releasing lock: {}", semaphoreID);
 
 		StatelessSession session = lockedSessions.remove(semaphoreID);
 		if (session != null) {
@@ -129,4 +126,5 @@ public class LockManager {
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
 	}
+
 }

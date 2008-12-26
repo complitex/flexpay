@@ -56,7 +56,7 @@ public class CreateStreets extends SpringBeanAwareTestCase {
 				Long internalTypeId = rs.getLong("int_id");
 
 				log.info("inserting street (name, cn_obj_id, int_id) values ({}, {}, {})",
-						new Object[]{name, cnObjectId, internalTypeId});
+						new Object[] {name, cnObjectId, internalTypeId});
 
 				KeyHolder keyHolder = new GeneratedKeyHolder();
 				jdbcTemplate.update(new StreetInsertCreator(), keyHolder);

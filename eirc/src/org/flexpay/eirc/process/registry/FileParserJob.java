@@ -1,9 +1,9 @@
 package org.flexpay.eirc.process.registry;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.FlexPayFile;
+import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.process.job.Job;
-import org.flexpay.common.service.FlexPayFileService;
+import org.flexpay.common.service.FPFileService;
 import org.flexpay.eirc.sp.RegistryFileParser;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -13,12 +13,12 @@ import java.util.Map;
 public class FileParserJob extends Job {
 
 	private RegistryFileParser parser;
-    private FlexPayFileService flexPayFileService;
+    private FPFileService fpFileService;
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 		Long fileId = (Long) parameters.get("FileId");
 
-		FlexPayFile spFile = flexPayFileService.read(fileId);
+		FPFile spFile = fpFileService.read(fileId);
 		if (spFile == null) {
 			log.warn("Invalid File Id");
 			return RESULT_ERROR;
@@ -38,8 +38,8 @@ public class FileParserJob extends Job {
 	}
 
     @Required
-    public void setFlexPayFileService(FlexPayFileService flexPayFileService) {
-        this.flexPayFileService = flexPayFileService;
-    }
+	public void setFpFileService(FPFileService fpFileService) {
+		this.fpFileService = fpFileService;
+	}
 
 }

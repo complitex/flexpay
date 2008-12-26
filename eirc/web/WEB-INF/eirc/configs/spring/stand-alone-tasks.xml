@@ -9,10 +9,10 @@
 	<bean class="org.flexpay.eirc.util.standalone.RunSpFileProcessing" id="spFileProcessingRunner"
           p:moduleName="${flexpay.module.name}"
 		  p:fileAction-ref="spFileAction"
-		  p:fileCreateAction-ref="spFileCreateAction"
+		  p:spFileUploadAjaxAction-ref="spFileUploadAjaxAction"
 		  p:fileService-ref="registryFileService"
 		  p:spRegistryDao-ref="spRegistryDao"
-          p:flexPayFileService-ref="flexPayFileService"
+          p:fpFileService-ref="fpFileService"
 		  p:registryService-ref="registryService"
 		  p:registryProcessor-ref="registryProcessor" />
 

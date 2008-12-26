@@ -28,4 +28,5 @@ public class TestCorrectionsService extends SpringBeanAwareTestCase {
 		service.findDistrictCorrection(oszn, "xbz");
 		fail("Found invalid correction");
 	}
+
 }

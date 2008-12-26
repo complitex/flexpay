@@ -12,4 +12,5 @@ public class AllTests extends TestCase {
 		suite.addTest(new JUnit4TestAdapter(org.flexpay.sz.service.AllTests.class));
 		return suite;
 	}
+
 }

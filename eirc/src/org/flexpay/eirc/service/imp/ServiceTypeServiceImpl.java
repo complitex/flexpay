@@ -99,9 +99,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 
 		boolean defaultNameFound = false;
 		for (ServiceTypeNameTranslation translation : type.getTypeNames()) {
-			if (log.isDebugEnabled()) {
-				log.debug("Validating translation: " + translation);
-			}
+			log.debug("Validating translation: {}", translation);
 			boolean nameBlank = StringUtils.isBlank(translation.getName());
 			if (translation.getLang().isDefault() && !nameBlank) {
 				defaultNameFound = true;

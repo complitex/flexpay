@@ -1,11 +1,13 @@
 package org.flexpay.sz.actions;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
-import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.sz.persistence.SzFile;
-import org.flexpay.sz.service.SzFileService;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.service.FPFileService;
+import org.flexpay.common.util.FPFileUtil;
 import org.jetbrains.annotations.NonNls;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -17,47 +19,55 @@ import java.io.*;
 public class SzFileDownloadServlet extends HttpServlet {
 
 	@NonNls
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
-	public void doGet(@NonNls HttpServletRequest request, @NonNls HttpServletResponse response)
-			throws IOException {
-		String szFileIdParam = request.getParameter("szFileId");
-		Long szFileId = new Long(szFileIdParam);
-		SzFileService szFileService = getSzFileService();
+	public void doGet(@NonNls HttpServletRequest request, @NonNls HttpServletResponse response) throws IOException {
 
-		SzFile szFile = szFileService.readFull(szFileId);
-		File szDataRoot = ApplicationConfig.getSzDataRoot();
-		File file;
-		if (szFile != null) {
-			file = szFile.getResponseFile(szDataRoot);
-		} else {
-			@NonNls OutputStream os = response.getOutputStream();
-			os.write(("File not found: " + szFileId).getBytes());
-			IOUtils.closeQuietly(os);
-			return;
-		}
+		Long fileId = Long.parseLong(request.getParameter("szFileId"));
+
+        FPFileService fpFileService = getFpFileService();
+        @NonNls OutputStream os = response.getOutputStream();
+
+        FPFile fpFile;
+
+        try {
+            fpFile = fpFileService.read(fileId);
+        } catch (FlexPayException e) {
+            log.error("Can't get file with id {}", fileId, e);
+            os.write(("Can't get file with id " + fileId).getBytes());
+            IOUtils.closeQuietly(os);
+            return;
+        }
+
+        File file;
+        if (fpFile == null) {
+            log.error("File not found: id = {}", fileId);
+            os.write(("File not found: id = " + fileId).getBytes());
+            IOUtils.closeQuietly(os);
+            return;
+        } else {
+            file = FPFileUtil.getFileOnServer(fpFile);
+        }
 
 		response.setContentType("application/octet-stream");
 		response.setContentLength((int) file.length());
-		response.setHeader("Content-Disposition", "attachment; filename=\""
-												  + szFile.getRequestFileName() + "\"");
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + fpFile.getOriginalName() + "\"");
 
 		InputStream is = null;
-		OutputStream os = null;
 		try {
-			os = response.getOutputStream();
 			is = new DataInputStream(new FileInputStream(file));
 			IOUtils.copyLarge(is, os);
 		} catch (IOException e) {
-			log.error("Error getting file " + file, e);
+			log.error("Error getting file {}", file, e);
 		} finally {
 			IOUtils.closeQuietly(is);
 			IOUtils.closeQuietly(os);
 		}
 	}
 
-	private SzFileService getSzFileService() {
+	private FPFileService getFpFileService() {
 		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-		return (SzFileService) context.getBean("szFileService");
+		return (FPFileService) context.getBean("fpFileService");
 	}
+
 }

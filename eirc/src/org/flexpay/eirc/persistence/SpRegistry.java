@@ -3,7 +3,7 @@ package org.flexpay.eirc.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.FlexPayFile;
+import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.Stub;
 
 import java.math.BigDecimal;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class SpRegistry extends DomainObject {
 
-	private FlexPayFile spFile;
+	private FPFile spFile;
 	private RegistryType registryType;
 
 	private Long registryNumber;
@@ -67,14 +67,14 @@ public class SpRegistry extends DomainObject {
 	/**
 	 * @return the spFile
 	 */
-    public FlexPayFile getSpFile() {
+    public FPFile getSpFile() {
         return spFile;
     }
 
     /**
 	 * @param spFile the spFile to set
 	 */
-    public void setSpFile(FlexPayFile spFile) {
+    public void setSpFile(FPFile spFile) {
         this.spFile = spFile;
     }
 

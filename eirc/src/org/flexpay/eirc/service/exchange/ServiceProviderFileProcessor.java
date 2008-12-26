@@ -3,7 +3,7 @@ package org.flexpay.eirc.service.exchange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.FlexPayFile;
+import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.ImportError;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
@@ -61,7 +61,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	 * @param spFile uploaded spFile
 	 * @throws Exception if failure occurs
 	 */
-	public void processFile(@NotNull FlexPayFile spFile) throws Exception {
+	public void processFile(@NotNull FPFile spFile) throws Exception {
 
 		log.info("Starting processing file");
 

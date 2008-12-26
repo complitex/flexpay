@@ -1,15 +1,16 @@
 package org.flexpay.common.service.imp;
 
-import org.apache.log4j.Logger;
 import org.flexpay.common.dao.SequenceDao;
 import org.flexpay.common.persistence.Sequence;
 import org.flexpay.common.service.SequenceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class SequenceServiceImpl implements SequenceService {
 
-	private Logger log = Logger.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private SequenceDao sequenceDao;
 
@@ -27,9 +28,7 @@ public class SequenceServiceImpl implements SequenceService {
 			sequence.setCounter(next);
 			sequenceDao.update(sequence);
 		}
-		if (log.isDebugEnabled()) {
-			log.debug("Updated sequence: " + sequence);
-		}
+		log.debug("Updated sequence: {}", sequence);
 
 		return next;
 	}

@@ -6,21 +6,22 @@ import org.flexpay.ab.persistence.HistoryRecord;
 import org.flexpay.ab.persistence.ObjectType;
 import org.flexpay.ab.persistence.SyncAction;
 import org.flexpay.common.dao.paging.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.log4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryDao {
 
-	private org.slf4j.Logger log = LoggerFactory.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * List history records
@@ -106,7 +107,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 		int count = getSimpleJdbcTemplate().queryForInt("select count(1) from ab_sync_changes_tbl " + getWhere(record),
 				getParams(record));
 		if (count > 0) {
-			log.info("Record alread exists: " + record);
+			log.info("Record alread exists: {}", record);
 			return;
 		}
 
