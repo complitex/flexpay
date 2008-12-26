@@ -144,7 +144,7 @@ public class EircImportServiceTx extends ImportService {
 
 				postSaveRecord(data, consumer);
 			} catch (Exception e) {
-				log.error("Failed getting consumer: {}", data.toString(), e);
+				log.error("Failed getting consumer: " + data.toString(), e);
 				throw new RuntimeException(e);
 			}
 		}

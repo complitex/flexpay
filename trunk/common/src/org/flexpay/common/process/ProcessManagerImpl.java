@@ -417,7 +417,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 			Map<Serializable, Serializable> params = contextInstance.getVariables();
 			JobManager.getInstance().addJob(processInstance.getId(), task.getId(), task.getName(), params);
 		} catch (FlexPayException e) {
-			log.error("Can't start task with name {}", task.getName(), e);
+			log.error("Can't start task with name " + task.getName(), e);
 			return false;
 		}
 
@@ -519,12 +519,12 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 				log.debug("Task removed from list of running tasks: {}", removed);
 				log.debug("Number of running tasks: {}", runningTaskIds.size());
 			} catch (RuntimeException e) {
-				log.error("Failed finishing task: {}", taskId, e);
+				log.error("Failed finishing task: " + taskId, e);
 				log.error("Sleeping for 30 sec and try again to finish task: {}", taskId);
 				try {
 					Thread.sleep(30000);
 				} catch (InterruptedException ie) {
-					log.error("System failure when finishing task: {}", taskId, e);
+					log.error("System failure when finishing task: " + taskId, e);
 				}
 			}
 		}

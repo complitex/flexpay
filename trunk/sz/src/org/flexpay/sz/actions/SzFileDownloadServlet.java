@@ -33,7 +33,7 @@ public class SzFileDownloadServlet extends HttpServlet {
         try {
             fpFile = fpFileService.read(fileId);
         } catch (FlexPayException e) {
-            log.error("Can't get file with id {}", fileId, e);
+            log.error("Can't get file with id " + fileId, e);
             os.write(("Can't get file with id " + fileId).getBytes());
             IOUtils.closeQuietly(os);
             return;
@@ -58,7 +58,7 @@ public class SzFileDownloadServlet extends HttpServlet {
 			is = new DataInputStream(new FileInputStream(file));
 			IOUtils.copyLarge(is, os);
 		} catch (IOException e) {
-			log.error("Error getting file {}", file, e);
+			log.error("Error getting file " + file, e);
 		} finally {
 			IOUtils.closeQuietly(is);
 			IOUtils.closeQuietly(os);

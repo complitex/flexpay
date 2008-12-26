@@ -19,7 +19,9 @@ public class DumpHistoryJob extends QuartzJobBean {
 	 */
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
-		log.info("Starting dump history at {}", new Date());
+		if (log.isInfoEnabled()) {
+			log.info("Starting dump history at {}", new Date());
+		}
 
 		try {
 			// do the job

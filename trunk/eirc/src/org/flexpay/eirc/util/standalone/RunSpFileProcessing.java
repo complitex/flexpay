@@ -87,7 +87,9 @@ public class RunSpFileProcessing implements StandaloneTask {
 			long time = System.currentTimeMillis();
 			registryProcessor.processRegistry(registry);
 
-			log.debug("Processing took {} ms", System.currentTimeMillis() - time);
+			if (log.isDebugEnabled()) {
+				log.debug("Processing took {} ms", System.currentTimeMillis() - time);
+			}
 		} catch (FlexPayExceptionContainer c) {
 			for (Exception e : c.getExceptions()) {
 				log.error("Exception cought", e);
@@ -110,14 +112,18 @@ public class RunSpFileProcessing implements StandaloneTask {
 			registryProcessor.endRegistryProcessing(registry);
 		}
 
-		log.debug("Import took {} ms", System.currentTimeMillis() - time);
+		if (log.isDebugEnabled()) {
+			log.debug("Import took {} ms", System.currentTimeMillis() - time);
+		}
 	}
 
 	private void uploadRegistry(String path) throws Throwable {
 		long time = System.currentTimeMillis();
 		uploadFile(path);
 
-		log.debug("Upload took {} ms", System.currentTimeMillis() - time);
+		if (log.isDebugEnabled()) {
+			log.debug("Upload took {} ms", System.currentTimeMillis() - time);
+		}
 	}
 
 	private void deleteRecords(FPFile file) {

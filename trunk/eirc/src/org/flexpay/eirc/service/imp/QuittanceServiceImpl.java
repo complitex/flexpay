@@ -55,11 +55,15 @@ public class QuittanceServiceImpl implements QuittanceService {
 											   Date dateFrom, Date dateTill) {
 
 		long time = System.currentTimeMillis();
+		if (log.isInfoEnabled()) {
 			log.info("Starting quittances generation at {}", new Date());
+		}
 
 		quittanceDaoExt.createQuittances(dateFrom, dateTill);
 
-		log.info("Quittances generation finished, time took: {} ms", System.currentTimeMillis() - time);
+		if (log.isInfoEnabled()) {
+			log.info("Quittances generation finished, time took: {} ms", System.currentTimeMillis() - time);
+		}
 	}
 
 	public String getPayer(Quittance quittance) {

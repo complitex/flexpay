@@ -69,7 +69,7 @@ public abstract class Job implements Runnable {
 			SecurityContextHolder.clearContext();
 			jobMgr.jobFinished(id, transition);
 		} catch (Throwable e) {
-			log.error("Job with id = {} completed with exception", getId(), e);
+			log.error("Job with id = " + getId() + " completed with exception", e);
 			parameters.put(STATUS_ERROR, Boolean.TRUE);
 			SecurityContextHolder.clearContext();
 			jobMgr.jobFinished(id, RESULT_ERROR);

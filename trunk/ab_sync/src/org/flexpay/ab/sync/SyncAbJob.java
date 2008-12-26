@@ -24,7 +24,9 @@ public class SyncAbJob extends QuartzJobBean {
 	 */
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
-		log.debug("Starting sync at {}", new Date());
+		if (log.isDebugEnabled()) {
+			log.debug("Starting sync at {}", new Date());
+		}
 
 		try {
 			// do the job

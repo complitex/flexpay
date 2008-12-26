@@ -63,7 +63,7 @@ public class SubdivisionsListAction extends FPActionSupport {
 		}
 		Subdivision persistent = subdivisionService.read(subdivision);
 		if (persistent == null) {
-			log.error("Invalid Subdivision requested: #{}", subdivision.getId());
+			log.error("Invalid Subdivision requested: #" + subdivision.getId());
 			throw new RuntimeException("");
 		}
 		return getTranslation(persistent.getNames()).getName();

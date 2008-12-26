@@ -79,7 +79,9 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 					}
 				}
 
-				log.debug("Setting street type name, object is new: {}", object.getId() == null);
+				if (log.isDebugEnabled()) {
+					log.debug("Setting street type name, object is new: {}", object.getId() == null);
+				}
 
 				setName(streetType, record.getCurrentValue());
 				break;
