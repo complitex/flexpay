@@ -15,7 +15,7 @@
 				<comment>Optimistic lock version</comment>
 			</column>
 		</version>
-		<property name="status" not-null="true">
+		<property name="status">
 			<column name="status" not-null="true">
 				<comment>Enabled-disabled status</comment>
 			</column>
@@ -26,41 +26,215 @@
 			</column>
 		</property>
 		<many-to-one name="collector" foreign-key="FK_eirc_payment_points_tbl_collector_id"
-				class="org.flexpay.eirc.persistence.PaymentsCollector">
+					 class="org.flexpay.eirc.persistence.PaymentsCollector">
 			<column name="collector_id" not-null="true">
 				<comment>Payments collector reference</comment>
 			</column>
 		</many-to-one>
 	</class>
 
-    <query name="PaymentPoint.listPoints.count">
+	<class name="QuittancePacket" table="eirc_quittance_packets_tbl" optimistic-lock="version">
+		<comment>Quittance payment packets</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled-disabled status</comment>
+			</column>
+		</property>
+		<property name="packetNumber">
+			<column name="packet_number" not-null="true">
+				<comment>Packet number</comment>
+			</column>
+		</property>
+		<property name="creationDate">
+			<column name="creation_date" not-null="true">
+				<comment>Creation date</comment>
+			</column>
+		</property>
+		<property name="beginDate">
+			<column name="begin_date" not-null="false">
+				<comment>First quittance added date</comment>
+			</column>
+		</property>
+		<property name="closeDate">
+			<column name="close_date" not-null="false">
+				<comment>Packet close date</comment>
+			</column>
+		</property>
+		<many-to-one name="paymentPoint" foreign-key="eirc_quittance_packets_tbl_payment_id"
+					 class="PaymentPoint">
+			<column name="payment_id" not-null="true">
+				<comment>Payment point reference</comment>
+			</column>
+		</many-to-one>
+		<property name="controlQuittanciesNumber">
+			<column name="control_quittances_number" not-null="true">
+				<comment>Control quittances number</comment>
+			</column>
+		</property>
+		<property name="controlOverallSumm">
+			<column name="control_overall_summ" not-null="true">
+				<comment>Control overall summ</comment>
+			</column>
+		</property>
+		<property name="quittanciesNumber">
+			<column name="quittances_number" not-null="true">
+				<comment>Inputed quittances number</comment>
+			</column>
+		</property>
+		<property name="overallSumm">
+			<column name="overall_summ" not-null="true">
+				<comment>Inputed overall summ</comment>
+			</column>
+		</property>
+		<property name="creatorUserName">
+			<column name="creator_user_name" not-null="true">
+				<comment>User name that created packet</comment>
+			</column>
+		</property>
+		<property name="closerUserName">
+			<column name="closer_user_name" not-null="true">
+				<comment>User name that closed packet</comment>
+			</column>
+		</property>
+		<set name="payments" cascade="all" inverse="true">
+			<key column="packet_id" not-null="true" />
+			<one-to-many class="QuittancePayment" />
+		</set>
+	</class>
+
+	<class name="QuittancePaymentStatus" table="eirc_quittance_payment_statuses_tbl" optimistic-lock="version">
+		<comment>Statuses of quittance payments</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="code">
+			<column name="code" not-null="true">
+				<comment>System known code</comment>
+			</column>
+		</property>
+		<property name="i18nName">
+			<column name="i18n_name" not-null="true">
+				<comment>Translation code</comment>
+			</column>
+		</property>
+	</class>
+
+	<class name="QuittancePayment" table="eirc_quittance_payments_tbl" optimistic-lock="version">
+		<comment>Quittance payments</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<many-to-one name="packet" foreign-key="FK_eirc_quittance_payments_tbl_packet_id"
+					 class="QuittancePacket">
+			<column name="packet_id" not-null="true">
+				<comment>Quittances packet reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="paymentStatus" foreign-key="FK_eirc_quittance_payments_tbl_payment_status_id"
+					 class="QuittancePaymentStatus">
+			<column name="payment_status_id" not-null="true">
+				<comment>Payment status reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="quittance" foreign-key="FK_eirc_quittance_payments_tbl_quittance_id"
+					 class="org.flexpay.eirc.persistence.account.Quittance">
+			<column name="quittance_id" not-null="true">
+				<comment>Quittance reference</comment>
+			</column>
+		</many-to-one>
+		<property name="amount">
+			<column name="amount" not-null="true">
+				<comment>Amount payed for quittance</comment>
+			</column>
+		</property>
+		<set name="detailsPayments" cascade="all" inverse="true">
+			<key column="quittance_payment_id" not-null="true" />
+			<one-to-many class="QuittanceDetailsPayment" />
+		</set>
+	</class>
+
+	<class name="QuittanceDetailsPayment" table="eirc_quittance_details_payments_tbl" optimistic-lock="version">
+		<comment>Quittance details payments</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<many-to-one name="payment" foreign-key="FK_eirc_quittance_details_payments_tbl_payment_id"
+					 class="QuittancePayment">
+			<column name="payment_id" not-null="true">
+				<comment>Quittances payment reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="paymentStatus" foreign-key="FK_eirc_quittance_details_payments_tbl_payment_status_id"
+					 class="QuittancePaymentStatus">
+			<column name="payment_status_id" not-null="true">
+				<comment>Payment status reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="quittanceDetails" foreign-key="FK_eirc_quittance_details_payments_tbl_details_id"
+					 class="org.flexpay.eirc.persistence.account.QuittanceDetails">
+			<column name="details_id" not-null="true">
+				<comment>Quittance details reference</comment>
+			</column>
+		</many-to-one>
+		<property name="amount">
+			<column name="amount" not-null="true">
+				<comment>Amount payed for quittance</comment>
+			</column>
+		</property>
+	</class>
+
+
+	<query name="PaymentPoint.listPoints.count">
 		select count(o)
-        from PaymentPoint o
-        where o.status = 0
-    </query>
+		from PaymentPoint o
+		where o.status = 0
+	</query>
 
-    <query name="PaymentPoint.listPoints">
-        from PaymentPoint o
-        	inner join fetch o.collector 
-        where o.status = 0
-    </query>
+	<query name="PaymentPoint.listPoints">
+		from PaymentPoint o
+		inner join fetch o.collector
+		where o.status = 0
+	</query>
 
-    <query name="PaymentPoint.listCollectorPoints.count">
+	<query name="PaymentPoint.listCollectorPoints.count">
 		select count(o)
-        from PaymentPoint o
-        where o.status = 0 and o.collector.id = ?
-    </query>
+		from PaymentPoint o
+		where o.status = 0 and o.collector.id = ?
+	</query>
 
-    <query name="PaymentPoint.listCollectorPoints">
-        from PaymentPoint o
-        	inner join fetch o.collector
-        where o.status = 0 and o.collector.id = ?
-    </query>
+	<query name="PaymentPoint.listCollectorPoints">
+		from PaymentPoint o
+		inner join fetch o.collector
+		where o.status = 0 and o.collector.id = ?
+	</query>
 
-    <query name="PaymentPoint.readFull">
-        from PaymentPoint o
-        	inner join fetch o.collector
-        where o.id=?
-    </query>
+	<query name="PaymentPoint.readFull">
+		from PaymentPoint o
+		inner join fetch o.collector
+		where o.id=?
+	</query>
 
 </hibernate-mapping>
