@@ -1,1 +1,0 @@
-ALTER TABLE `flexpay_db`.`common_import_errors_tbl` ADD INDEX `Index_ext_object_id`(`ext_object_id`);
