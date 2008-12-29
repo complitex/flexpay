@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.eirc.persistence.account">
+
+	<class name="EircAccountPlan" table="eirc_account_plans_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled/disabled status</comment>
+			</column>
+		</property>
+		<set name="accounts" inverse="true">
+			<key column="account_plan_id" not-null="true" />
+			<one-to-many class="Account" />
+		</set>
+	</class>
+
+	<class name="Account" table="eirc_accounts_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled/disabled status</comment>
+			</column>
+		</property>
+		<many-to-one name="accountPlan" class="EircAccountPlan" foreign-key="FK_eirc_accounts_tbl_account_plan_id">
+			<column name="account_plan_id" not-null="true">
+				<comment>EIRC account plan reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+</hibernate-mapping>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="eirc_account" namespace="/eirc" extends="common">
+
+		<!-- Eirc account -->
+		<action name="eircAccountsList" class="eircAccountsListAction">
+			<result type="tiles">eirc.eirc_account.list</result>
+		</action>
+
+		<action name="eircAccountView" class="eircAccountViewAction">
+			<result name="success" type="tiles">eirc.eirc_account.view</result>
+			<result name="redirectError" type="redirect-action">eircAccountsList</result>
+		</action>
+
+		<action name="eircAccountCreateForm1" class="eircAccountCreateForm1Action">
+			<result type="tiles">eirc.eirc_account.create.form1</result>
+		</action>
+
+		<action name="eircAccountCreateForm2" class="eircAccountCreateForm2Action">
+			<result name="form2" type="tiles">eirc.eirc_account.create.form2</result>
+			<result name="redirectForm1" type="redirect-action">eircAccountCreateForm1</result>
+		</action>
+
+		<action name="eircAccountCreate" class="eircAccountCreateAction">
+			<result name="redirectForm1" type="redirect-action">eircAccountCreateForm1</result>
+			<result name="redirectForm2" type="redirect-action">
+				<param name="actionName">eircAccountCreateForm2</param>
+				<param name="parse">true</param>
+				<param name="apartmentId">${apartmentId}</param>
+			</result>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">eircAccountView</param>
+				<param name="parse">true</param>
+				<param name="eircAccount.id">${eircAccount.id}</param>
+			</result>
+		</action>
+
+	</package>
+
+</struts>

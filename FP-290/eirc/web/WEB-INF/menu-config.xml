@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<MenuConfig>
+
+    <Displayers>
+        <Displayer name="Simple" type="net.sf.navigator.displayer.SimpleMenuDisplayer"/>
+    </Displayers>
+
+    <Menus>
+
+        <Menu name="L3Organizations" title="menu.organizations" description="Organizations menu">
+            <Item name="L4Organizations" title="menu.organizations.organizations" action="/eirc/organizationsList.action" />
+            <Item name="L4Banks" title="menu.organizations.banks" action="/eirc/banksList.action" />
+            <Item name="L4ServiceOrganizations" title="menu.organizations.service_organizations" action="/eirc/serviceOrganizationsList.action" />
+            <Item name="L4ServiceProviders" title="menu.organizations.service_providers" action="/eirc/serviceProvidersList.action" />
+            <Item name="L4EIRCAccounts" title="menu.organizations.eirc_account.list" action="/eirc/eircAccountsList.action" />
+        </Menu>
+
+        <Menu name="L3Services" title="menu.services" description="Services menu">
+            <Item name="L4ServiceTypes" title="menu.services.service_types" action="/eirc/serviceTypesList.action" />
+            <Item name="L4Services" title="menu.services.services" action="/eirc/servicesList.action" />
+        </Menu>
+
+        <Menu name="L3Import" title="menu.import" description="Import menu">
+            <Item name="L4FileUpload" title="menu.import.import_file" action="/eirc/spFileCreate.action" />
+            <Item name="L4FileList" title="menu.import.imported_files" action="/eirc/spFileList.action" />
+            <Item name="L4Registries" title="menu.import.registries" action="/eirc/registriesList.action" />
+        </Menu>
+
+        <Menu name="L3Processing" title="menu.processing" description="Processing menu">
+            <Item name="L4ProcessList" title="menu.processing.process_list" action="/eirc/processesList.action" />
+            <Item name="L4ProcessDefinition" title="menu.processing.process_definition" action="/eirc/processDefinitionDeploy.action" />
+        </Menu>
+
+        <Menu name="L3Tickets" title="menu.tickets" description="Tickets menu">
+            <Item name="L4GenerateQuittances" title="menu.tickets.generate_quittances" action="/eirc/quittanceGenerate.action" />
+            <Item name="L4PrintTickets" title="menu.tickets.print_tickets" action="/eirc/printQuittances.action" />
+            <Item name="L4PayForm" title="menu.tickets.pay_ticket" action="/eirc/quittancePayForm.action" />
+        </Menu>
+
+        <Menu name="L3AddressDictionaries" title="menu.adress_dictionaries" description="Address dictionaries menu">
+            <Item name="L4CountriesList" title="menu.dictionaries.countries" action="/dicts/countriesList.action" />
+            <Item name="L4RegionsList" title="menu.dictionaries.regions" action="/dicts/regionsList.action" />
+            <Item name="L4TownsList" title="menu.dictionaries.towns" action="/dicts/townsList.action" />
+            <Item name="L4DistrictsList" title="menu.dictionaries.districts" action="/dicts/districtsList.action" />
+            <Item name="L4StreetsList" title="menu.dictionaries.streets" action="/dicts/streetsList.action" />
+            <Item name="L4BuildingsList" title="menu.dictionaries.buildings" action="/dicts/buildingsList.action" />
+            <Item name="L4ApartmentsList" title="menu.dictionaries.apartments" action="/dicts/apartmentsList.action" />
+        </Menu>
+
+        <Menu name="L3PersonDictionaries" title="menu.person_dictionaries" description="Person dictionaries menu">
+            <Item name="L4PersonsList" title="menu.dictionaries.persons" action="/dicts/personsList.action" />
+        </Menu>
+
+        <Menu name="L3TypeDictionaries" title="menu.type_dictionaries" description="Type dictionaries menu">
+            <Item name="L4TownTypesList" title="menu.dictionaries.town_types" action="/dicts/townTypesList.action" />
+            <Item name="L4StreetTypesList" title="menu.dictionaries.street_types" action="/dicts/streetTypesList.action" />
+            <Item name="L4IdentityTypesList" title="menu.dictionaries.identity_types" action="/dicts/identityTypesList.action" />
+            <Item name="L4BuildingAttributeTypesList" title="menu.dictionaries.attribute_types" action="/dicts/buildingAttributeTypesList.action" />
+        </Menu>
+
+        <Menu name="L3OtherDictionaries" title="menu.other_dictionaries" description="Other dictionaries menu">
+            <Item name="L4MeasureUnitsList" title="menu.dictionaries.measure_units" action="/dicts/measureUnitsList.action" />
+        </Menu>
+
+    </Menus>
+
+</MenuConfig>

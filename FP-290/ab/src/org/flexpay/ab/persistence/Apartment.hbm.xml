@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.ab.persistence">
+
+	<class name="Apartment" table="ab_apartments_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status" not-null="true" />
+		<many-to-one name="building" class="Building" column="building_id"
+					 not-null="true" />
+
+		<set name="apartmentNumbers" inverse="true" cascade="all-delete-orphan">
+			<key column="apartment_id" not-null="true" />
+			<one-to-many class="ApartmentNumber" />
+		</set>
+		<set name="personRegistrations" inverse="true" lazy="false" cascade="all">
+			<key column="apartment_id" not-null="true" />
+			<one-to-many class="PersonRegistration" />
+		</set>
+	</class>
+
+	<class name="ApartmentNumber" table="ab_apartment_numbers_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="begin" not-null="true" type="date" column="begin_date" />
+		<property name="end" not-null="true" type="date" column="end_date" />
+		<property name="value" index="indx_value">
+			<column name="value" not-null="true">
+				<comment>Apartment number value</comment>
+			</column>
+		</property>
+		<many-to-one name="apartment" class="Apartment"
+					 foreign-key="FK_ab_apartment_numbers_tbl_apartment_id">
+			<column name="apartment_id" not-null="true">
+				<comment>Apartment reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<query name="Apartment.findObjects"><![CDATA[
+		select distinct o
+		FROM Apartment o
+			LEFT JOIN FETCH o.apartmentNumbers n
+		WHERE o.status=0 and o.building.id=? and n.begin <= current_date() and current_date <= n.end
+	]]></query>
+
+	<query name="Apartment.readFull">
+		SELECT DISTINCT a
+		FROM Apartment a
+			LEFT JOIN FETCH a.apartmentNumbers
+			LEFT JOIN FETCH a.personRegistrations r
+		WHERE a.id=?
+	</query>
+
+	<query name="Apartment.findObjects.count">
+		SELECT count(*) FROM Apartment o WHERE o.status=0 and o.building.id=?
+	</query>
+
+	<query name="Apartment.findByNumber">
+		FROM Apartment a
+			LEFT JOIN FETCH a.apartmentNumbers
+		WHERE a.building.id=? AND
+			EXISTS (FROM ApartmentNumber n WHERE n.apartment.id=a.id AND n.value=? and n.end>? )
+	</query>
+	
+	<query name="Apartment.findWithPersonsFull">
+		SELECT DISTINCT a
+		FROM Apartment a
+			LEFT JOIN FETCH a.apartmentNumbers
+			LEFT JOIN FETCH a.personRegistrations r
+			LEFT JOIN FETCH r.person p
+			LEFT JOIN FETCH p.personAttributes pa
+			LEFT JOIN FETCH pa.lang pal
+			LEFT JOIN FETCH pal.translations tr
+			LEFT JOIN FETCH p.personIdentities pi
+			LEFT JOIN FETCH pi.identityType it
+			LEFT JOIN FETCH it.translations ittr
+			LEFT JOIN FETCH ittr.lang lang
+			LEFT JOIN FETCH lang.translations
+		WHERE a.id=?
+	</query>
+
+</hibernate-mapping>

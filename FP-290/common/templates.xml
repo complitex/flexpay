@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay_templates" basedir="..">
+
+	<property name="common.dir" value="${basedir}/common" />
+	<property file="common/common_build.properties" />
+
+	<!-- Define classpath libraries -->
+	<path id="commons.lib">
+		<fileset dir="${common.dir}/lib/commons">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="hibernate.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="hibernate3/*.jar" />
+			<include name="antlr/*.jar" />
+			<include name="log4j/*.jar" />
+            <include name="logging/*.jar" />
+            <include name="freemarker/*.jar" />
+		</fileset>
+		<path refid="commons.lib" />
+	</path>
+
+	<path id="spring.lib">
+		<fileset dir="${common.dir}/lib/spring2">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+    <path id="freemarker.lib">
+        <fileset dir="${common.dir}/lib/freemarker">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+
+	<path id="struts.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="struts2/*.jar" />
+			<include name="antlr/*.jar" />
+            <include name="freemarker/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="log4j.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="log4j/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="j2ee.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="j2ee/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="junit.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="junit/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="javadbf.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="javadbf/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="ajax.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="ajax/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="jbpm_jpdl.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="jbpm/*.jar" />
+			<include name="jbpm/*.txt" />
+		</fileset>
+	</path>
+
+	<path id="itext.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="itext/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="jasperreports.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="jasperreports/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="quartz.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="quartz/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="jetbrains.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="jetbrains/annotations.jar" />
+			<include name="jetbrains/javac2.jar" />
+		</fileset>
+	</path>
+
+	<path id="jetbrains.compile.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="jetbrains/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="jdbc.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="jdbc/*.jar" />
+			<!-- log4jdbc used in tests depends on slf4j -->
+			<include name="logging/*.jar" />
+		</fileset>
+	</path>
+
+	<!-- NotNull instrumentation javac task -->
+	<taskdef name="javac2"
+			 classname="com.intellij.ant.Javac2"
+			 classpathref="jetbrains.compile.lib" />
+
+	<!-- Build templates -->
+	<target name="template.compile.production" depends="init.build">
+		<javac2 srcdir="${sources.dir}" includes="**/*.java"
+				destdir="${build.dir}/classes"
+				deprecation="on" source="1.5" target="1.5" debug="on" encoding="utf8"
+				classpathref="classpath" />
+	</target>
+
+	<target name="template.compile.test" depends="init.build">
+		<javac2 srcdir="${sources.dir}" includes="**/*.java"
+				destdir="${build.dir}/classes"
+				debug="on" deprecation="on" source="1.5" target="1.5" encoding="utf8"
+				classpathref="classpath" />
+	</target>
+
+	<target name="init.build">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dir}/classes" />
+		<mkdir dir="${build.dir}/lib" />
+		<mkdir dir="${build.dir}/web" />
+		<mkdir dir="${build.dir}/docs" />
+		<mkdir dir="${build.dir}/src" />
+		<mkdir dir="${build.dir}/empty" />
+	</target>
+
+	<target name="clean.build">
+		<delete dir="${build.dir}/classes" includes="**/*" includeemptydirs="true" />
+		<delete dir="${build.dir}/web" includes="**/*" />
+		<delete dir="${build.dir}/docs" includes="**/*" />
+	</target>
+
+	<target name="clean.all">
+		<delete dir="${build.dir}/classes" />
+		<delete dir="${build.dir}/web" />
+		<delete dir="${build.dir}/docs" />
+		<delete dir="${build.dir}/lib" />
+	</target>
+
+	<target name="init.distr">
+		<mkdir dir="${distr.dir}" />
+	</target>
+
+	<target name="template.docs" depends="init.build,init.distr,clean.build">
+		<javadoc sourcepath="${sources.dir}" destdir="${build.dir}/docs/api"
+				 windowtitle="FlexPay ${module_name} API" encoding="UTF-8"
+				 defaultexcludes="yes" author="true" version="true" use="true"
+				 classpathref="classpath">
+			<bottom>
+				<![CDATA[<i>Copyright &#169; 2008 FlexPay. All Rights Reserved.</i>]]></bottom>
+		</javadoc>
+		<copy todir="${build.dir}/docs">
+			<fileset refid="resources" />
+		</copy>
+		<zip basedir="${build.dir}/docs" destfile="${distr.dir}/${docs.file}" />
+	</target>
+
+	<target name="template.prepare.war" depends="init.build">
+		<copy todir="${build.dir}/web${to_dir}" overwrite="true">
+			<fileset refid="resources" />
+		</copy>
+		<native2ascii encoding="utf-8" src="${src.i18n.dir}"
+					  dest="${build.dir}/src"
+					  includes="**/*.properties" />
+	</target>
+
+	<target name="template.copy.classes">
+		<copy todir="${build.dir}/web/WEB-INF/classes" overwrite="true">
+			<fileset dir="${build.dir}/src" />
+			<fileset dir="${build.dir}/classes" />
+		</copy>
+	</target>
+
+	<target name="template.prepare.war.classes"
+			description="Add all compiled classes to WEB-INF/classes">
+		<copy todir="${build.dir}/web/WEB-INF/classes" overwrite="true">
+			<fileset dir="${build.dir}/classes" />
+		</copy>
+	</target>
+
+	<target name="common.war.include.libs">
+		<war destfile="${warfile}" update="true">
+			<lib dir="${common.dir}/lib/antlr" />
+			<lib dir="${common.dir}/lib/hibernate3" />
+			<lib dir="${common.dir}/lib/spring2" />
+			<lib dir="${common.dir}/lib/commons" />
+			<lib dir="${common.dir}/lib/struts2" />
+			<lib dir="${common.dir}/lib/log4j" />
+			<lib dir="${common.dir}/lib/jbpm" />
+			<lib dir="${common.dir}/lib/javadbf" />
+			<lib dir="${common.dir}/lib/ajax" />
+			<lib dir="${common.dir}/lib/itext" />
+			<lib dir="${common.dir}/lib/quartz" />
+			<lib dir="${common.dir}/lib/jasperreports" />
+            <lib dir="${common.dir}/lib/freemarker" />
+            <lib dir="${common.dir}/lib/logging" />
+			<lib dir="${build.dir}/lib" />
+		</war>
+	</target>
+
+	<target name="template.exploded.include.libs">
+		<copy todir="${build.dir}/web/WEB-INF/lib" flatten="true" overwrite="false">
+			<path refid="libs" />
+		</copy>
+	</target>
+
+	<target name="template.run.tests">
+		<junit printsummary="yes" haltonfailure="yes" fork="yes" forkmode="once"
+			   dir="${build.dir}/web">
+			<classpath>
+				<path refid="classpath" />
+			</classpath>
+			<sysproperty key="log4j.configuration" value="org/flexpay/common/log4j.xml" />
+			<sysproperty key="java.naming.factory.initial"
+						 value="org.flexpay.common.test.MockInitialContextFactory" />
+			<sysproperty key="java.awt.headless" value="true" />
+			<jvmarg value="-Xmx1000m" />
+			<test name="${test_name}" haltonfailure="yes">
+				<formatter type="brief" usefile="false" />
+			</test>
+		</junit>
+	</target>
+
+	<target name="template.run.standalone">
+		<java classpathref="classpath"
+			  classname="org.flexpay.common.util.standalone.ApplicationRunner"
+			  dir="${build.dir}/web" fork="yes">
+			<jvmarg value="-Xmx350m" />
+			<sysproperty key="log4j.configuration"
+						 value="WEB-INF/common/configs/log4j.xml" />
+			<sysproperty key="java.naming.factory.initial"
+						 value="org.flexpay.common.test.MockInitialContextFactory" />
+		</java>
+	</target>
+
+	<target name="template.profile.standalone">
+		<fail unless="netbeans.home">This target can only run inside the NetBeans IDE.
+		</fail>
+
+		<nbprofiledirect>
+			<classpath refid="classpath" />
+		</nbprofiledirect>
+
+		<java classpathref="classpath"
+			  classname="org.flexpay.common.util.standalone.ApplicationRunner"
+			  dir="${build.dir}/web" fork="yes">
+			<jvmarg value="${profiler.info.jvmargs.agent}" />
+			<jvmarg value="-Xmx150m" />
+			<sysproperty key="log4j.configuration"
+						 value="WEB-INF/common/configs/log4j.xml" />
+			<sysproperty key="java.naming.factory.initial"
+						 value="org.flexpay.common.test.MockInitialContextFactory" />
+		</java>
+	</target>
+
+	<property
+			file="${common.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+	<target name="template.mysql.run">
+		<exec executable="mysql" failonerror="true" input="${src.sql}">
+			<arg value="--user=${mysql.username}" />
+			<arg value="--password=${mysql.password}" />
+			<arg value="--default-character-set=utf8" />
+		</exec>
+	</target>
+
+</project>

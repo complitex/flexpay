@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:jee="http://www.springframework.org/schema/jee"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+	       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+
+	<bean id="propertyConfigurer"
+		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/common/configs/spring/data_source.properties</value>
+				<value>/WEB-INF/common/configs/spring/hibernate.properties</value>
+				<value>/WEB-INF/common/configs/spring/app_server.properties</value>
+				<value>/WEB-INF/common/configs/spring/managers.properties</value>
+				<value>/WEB-INF/common/module.properties</value>
+			</list>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
+
+	<!-- Add hibernate statistics capablities -->
+	<bean id="hibernateStatistics" class="org.hibernate.jmx.StatisticsService"
+		  p:sessionFactory-ref="flexpaySessionFactory" />
+
+	<!--
+		this bean needs to be eagerly pre-instantiated in order for the exporting to occur;
+		this means that it must not be marked as lazily initialized
+  	-->
+	<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
+		<property name="beans">
+			<map>
+				<entry key="bean:name=hibernateStatistics${flexpay.module.name}" value-ref="hibernateStatistics" />
+			</map>
+		</property>
+		<property name="assembler">
+			<bean class="org.springframework.jmx.export.assembler.MethodNameBasedMBeanInfoAssembler">
+				<property name="methodMappings">
+					<props>
+						<prop key="bean:name=hibernateStatsMBean">
+						</prop>
+					</props>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- Create transaction manager  -->
+	<bean id="transactionManager"
+		  class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sessionFactory" ref="flexpaySessionFactory" />
+	</bean>
+
+	<!--
+		Indicates that transaction
+		configuration is defined by Java5 annotations on bean classes, and
+		that proxies are automatically to be created for the relevant
+		annotated beans.
+
+		Transaction semantics such as propagation settings, the isolation level,
+		the rollback rules, etc are all defined in the annotation metadata.
+	-->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="hibernateTemplate"
+		  class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="flexpaySessionFactory" />
+	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="dataSource" />
+	</bean>
+
+	<!--  Dao Layer generic config-->
+	<bean id="namingStrategy"
+		  class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
+		<property name="staticField" value="${namingStrategy.staticField}" />
+	</bean>
+
+	<bean id="extendedFinderNamingStrategy"
+		  class="org.flexpay.common.dao.finder.impl.ExtendedFinderNamingStrategy" />
+	<bean id="finderIntroductionAdvisor"
+		  class="org.flexpay.common.dao.finder.impl.FinderIntroductionAdvisor" />
+
+	<bean id="abstractDaoTarget"
+		  class="org.flexpay.common.dao.impl.GenericDaoHibernateImpl" abstract="true">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+		<property name="namingStrategy" ref="extendedFinderNamingStrategy" />
+	</bean>
+
+	<bean id="abstractDao" abstract="true"
+		  class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interceptorNames">
+			<list>
+				<value>finderIntroductionAdvisor</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="LockManager" class="org.flexpay.common.locking.LockManager"
+		  destroy-method="releaseAll">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+
+	<bean id="jbpmConfiguration"
+		  class="org.springmodules.workflow.jbpm31.LocalJbpmConfigurationFactoryBean">
+		<property name="sessionFactory" ref="flexpaySessionFactory" />
+		<property name="configuration" value="WEB-INF/common/configs/jbpm/jbpm.cfg.xml" />
+	</bean>
+
+	<bean name="jobManager" class="org.flexpay.common.process.job.JobManager"
+		  factory-method="getInstance" destroy-method="unload"
+		  p:processManager-ref="processManager"
+		  p:maximumRunningJobs="${job_manager.maximumRunningJobs}" />
+
+	<bean name="processManager" class="org.flexpay.common.process.ProcessManagerImpl"
+		  destroy-method="stop" init-method="start" factory-method="getInstance"
+		  p:jbpmConfiguration-ref="jbpmConfiguration"
+		  p:rescanFrequency="${process_manager.rescanFrequency}"
+		  p:taskRepeatLimit="${process_manager.startTaskLimit}" />
+
+</beans>

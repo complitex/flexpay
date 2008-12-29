@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sun-web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Application Server 9.0 Servlet 2.5//EN"
+        "http://www.sun.com/software/dtd/appserver/sun-web-app_2_5-0.dtd">
+<sun-web-app>
+
+	<security-role-mapping>
+		<role-name>ROLE_BASIC</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Country -->
+	<security-role-mapping>
+		<role-name>ROLE_AB_COUNTRY_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_COUNTRY_CHANGE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_COUNTRY_ADD</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_COUNTRY_DELETE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Region -->
+	<security-role-mapping>
+		<role-name>ROLE_AB_REGION_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_REGION_CHANGE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_REGION_ADD</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_REGION_DELETE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Town -->
+	<security-role-mapping>
+		<role-name>ROLE_AB_TOWN_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_TOWN_CHANGE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_TOWN_ADD</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_TOWN_DELETE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Town type -->
+	<security-role-mapping>
+		<role-name>ROLE_AB_TOWN_TYPE_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_TOWN_TYPE_CHANGE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_TOWN_TYPE_ADD</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_TOWN_TYPE_DELETE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- District -->
+	<security-role-mapping>
+		<role-name>ROLE_AB_DISTRICT_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_DISTRICT_CHANGE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_DISTRICT_ADD</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_DISTRICT_DELETE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Street -->
+	<security-role-mapping>
+		<role-name>ROLE_AB_STREET_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_STREET_CHANGE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_STREET_ADD</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_STREET_DELETE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Street type -->
+	<security-role-mapping>
+		<role-name>ROLE_AB_STREET_TYPE_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_STREET_TYPE_CHANGE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_STREET_TYPE_ADD</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_STREET_TYPE_DELETE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Building attribute type -->
+	<security-role-mapping>
+		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_CHANGE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_ADD</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_DELETE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Building -->
+	<security-role-mapping>
+		<role-name>ROLE_AB_BUILDING_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_BUILDING_CHANGE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_BUILDING_ADD</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_BUILDING_DELETE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Apartment -->
+	<security-role-mapping>
+		<role-name>ROLE_AB_APARTMENT_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_APARTMENT_CHANGE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_APARTMENT_ADD</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_APARTMENT_DELETE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Identity type -->
+	<security-role-mapping>
+		<role-name>ROLE_AB_IDENTITY_TYPE_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_IDENTITY_TYPE_CHANGE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_IDENTITY_TYPE_ADD</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_IDENTITY_TYPE_DELETE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Identity -->
+	<security-role-mapping>
+		<role-name>ROLE_AB_IDENTITY_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_IDENTITY_CHANGE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_IDENTITY_ADD</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_IDENTITY_DELETE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Person -->
+	<security-role-mapping>
+		<role-name>ROLE_AB_PERSON_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_PERSON_CHANGE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_PERSON_ADD</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_PERSON_DELETE</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+
+	<security-role-mapping>
+		<role-name>ROLE_BASIC</role-name>
+		<group-name>VIEW_ONLY</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_COUNTRY_READ</role-name>
+		<group-name>VIEW_ONLY</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_REGION_READ</role-name>
+		<group-name>VIEW_ONLY</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_TOWN_READ</role-name>
+		<group-name>VIEW_ONLY</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_TOWN_TYPE_READ</role-name>
+		<group-name>VIEW_ONLY</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_DISTRICT_READ</role-name>
+		<group-name>VIEW_ONLY</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_STREET_READ</role-name>
+		<group-name>VIEW_ONLY</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_STREET_TYPE_READ</role-name>
+		<group-name>VIEW_ONLY</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_READ</role-name>
+		<group-name>VIEW_ONLY</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_BUILDING_READ</role-name>
+		<group-name>VIEW_ONLY</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_APARTMENT_READ</role-name>
+		<group-name>VIEW_ONLY</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_IDENTITY_TYPE_READ</role-name>
+		<group-name>VIEW_ONLY</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_IDENTITY_READ</role-name>
+		<group-name>VIEW_ONLY</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_AB_PERSON_READ</role-name>
+		<group-name>VIEW_ONLY</group-name>
+	</security-role-mapping>
+
+	<!-- Organizations -->
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_ORGANIZATION_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_ORGANIZATION_CHANGE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_ORGANIZATION_ADD</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_ORGANIZATION_DELETE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_ORGANIZATION_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+	<!-- Banks -->
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_BANK_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_BANK_CHANGE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_BANK_ADD</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_BANK_DELETE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_BANK_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+    <!-- Service organizations -->
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_CHANGE</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_DELETE</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
+        <group-name>EIRC_READ_ONLY</group-name>
+    </security-role-mapping>
+
+	<!-- Service providers -->
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_PROVIDER_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_PROVIDER_CHANGE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_PROVIDER_ADD</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_PROVIDER_DELETE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_PROVIDER_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+	<!-- EIRC accounts -->
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_ACCOUNT_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_ACCOUNT_CHANGE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_ACCOUNT_ADD</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_ACCOUNT_DELETE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_ACCOUNT_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+	<!-- EIRC services -->
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_ADD</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_CHANGE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_DELETE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+	<!-- EIRC Service types -->
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_TYPE_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_TYPE_ADD</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_TYPE_CHANGE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_TYPE_DELETE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_TYPE_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+	<!-- EIRC Registries -->
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_FILE_UPLOAD</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_FILE_IMPORT</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_REGISTRY_PROCESS</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_REGISTRY_SET_CORRESPONDENCE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Processes -->
+	<security-role-mapping>
+		<role-name>ROLE_COMMON_PROCESS_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_COMMON_PROCESS_DELETE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_COMMON_PROCESS_DEFINITION_UPLOAD_NEW</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_COMMON_PROCESS_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+	<!-- Quittances -->
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_QUITTANCE_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_QUITTANCE_CREATE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_QUITTANCE_CREATE_PRINT_FILE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_QUITTANCE_RECEIVE</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_QUITTANCE_READ</role-name>
+		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+</sun-web-app>

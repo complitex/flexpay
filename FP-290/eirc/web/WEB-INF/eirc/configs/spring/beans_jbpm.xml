@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean name="fileParserJob" class="org.flexpay.eirc.process.registry.FileParserJob" scope="prototype"
+		  p:parser-ref="registryFileParser"
+		  p:fpFileService-ref="fpFileService" />
+
+	<bean name="registryProcessJob" class="org.flexpay.eirc.process.registry.RegistryProcessJob" scope="prototype"
+		  p:registryProcessor-ref="registryProcessor"
+		  p:registryService-ref="registryService" />
+
+	<bean name="registryRecordsProcessJob" class="org.flexpay.eirc.process.registry.RegistryRecordsProcessJob" scope="prototype"
+		  p:registryProcessor-ref="registryProcessor"
+		  p:registryService-ref="registryService" />
+
+	<bean name="generateQuittancesPDFJob" scope="prototype"
+		  class="org.flexpay.eirc.process.quittance.GenerateQuittancesPDFJasperJob"
+		  p:jrDataSource-ref="jrQuittanceDataSource"
+		  p:quittanceService-ref="quittanceService"
+		  p:reportUtil-ref="reportUtil" />
+
+	<bean name="generateQuittancesJob" class="org.flexpay.eirc.process.quittance.GenerateQuittanceJob" scope="prototype"
+		  p:quittanceService-ref="quittanceService" />
+</beans>

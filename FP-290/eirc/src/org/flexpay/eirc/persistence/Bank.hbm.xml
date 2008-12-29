@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.eirc.persistence">
+
+	<class name="Bank" table="eirc_banks_tbl" optimistic-lock="version">
+		<comment>Banks</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled/Disabled status</comment>
+			</column>
+		</property>
+		<property name="bankIdentifierCode">
+			<column name="bank_identifier_code" not-null="true">
+				<comment>Bank identifier code (BIK)</comment>
+			</column>
+		</property>
+		<property name="correspondingAccount">
+			<column name="corresponding_account" not-null="true">
+				<comment>Corresponding Central Bank account</comment>
+			</column>
+		</property>
+		<many-to-one name="organization" class="Organization" foreign-key="FK_eirc_banks_tbl_organization_id">
+			<column name="organization_id" not-null="true">
+				<comment>Organization reference</comment>
+			</column>
+		</many-to-one>
+		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
+			<key column="bank_id" not-null="true" />
+			<one-to-many class="BankDescription" />
+		</set>
+		<set name="accounts" inverse="true">
+			<key column="bank_id" not-null="true" />
+			<one-to-many class="BankAccount" />
+		</set>
+	</class>
+
+	<class name="BankDescription" table="eirc_bank_descriptions_tbl">
+		<comment>Bank desriptions</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Description value</comment>
+			</column>
+		</property>
+		<properties name="lang_service_provider_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_eirc_bank_descriptions_tbl_language_id"
+						 class="org.flexpay.common.persistence.Language">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" class="Bank"
+						 foreign-key="FK_eirc_bank_descriptions_tbl_bank_id">
+				<column name="bank_id" not-null="true">
+					<comment>Bank reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<class name="BankAccount" table="eirc_bank_accounts_tbl" optimistic-lock="version">
+		<comment>Bank accounts</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optiomistic lock version</comment>
+			</column>
+		</version>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled/Disabled status</comment>
+			</column>
+		</property>
+		<property name="accountNumber">
+			<column name="account_number" not-null="true">
+				<comment>Bank account number</comment>
+			</column>
+		</property>
+		<property name="default">
+			<column name="is_default" not-null="true">
+				<comment>Juridical person default account flag</comment>
+			</column>
+		</property>
+		<many-to-one name="bank" class="Bank" foreign-key="FK_eirc_bank_accounts_tbl_bank_id">
+			<column name="bank_id" not-null="true">
+				<comment>Bank reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="juridicalPerson" class="Organization" foreign-key="FK_eirc_bank_accounts_tbl_organization_id">
+			<column name="organization_id" not-null="true">
+				<comment>Juridical person (organization) reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<query name="Bank.readFull">
+		select distinct b
+		from Bank b
+		left outer join fetch b.descriptions
+		inner join fetch b.organization
+		where b.id=?
+	</query>
+
+	<query name="Bank.findInstances">
+		select distinct b
+		from Bank b
+			left outer join fetch b.descriptions
+			inner join fetch b.organization
+		where b.status=0
+	</query>
+
+	<query name="Bank.findOrganizationInstances">
+		from Bank
+		where status=0 and organization.id=?
+	</query>
+
+	<query name="Bank.findInstancelessOrganizations">
+		select distinct o
+		from Organization o
+		left join fetch o.names
+		left join fetch o.descriptions
+		left join o.banks b
+		where o.status = 0 and o.id not in (select b1.organization.id from Bank b1 where b1.status = 0) or b.id = ?
+	</query>
+
+</hibernate-mapping>

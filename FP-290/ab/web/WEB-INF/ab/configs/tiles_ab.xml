@@ -1,0 +1,245 @@
+<!DOCTYPE tiles-definitions PUBLIC
+		"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="ab.layout.standart" template="/WEB-INF/jsp/ab/layouts/standart.jsp">
+		<put-attribute name="title" value="ab.main.title" />
+		<put-attribute name="header" value="/WEB-INF/jsp/common/header.jsp" />
+		<put-attribute name="menu1" value="/WEB-INF/jsp/ab/menu/menu1.jsp" />
+		<put-attribute name="menu2" value="/WEB-INF/jsp/ab/menu/menu2.jsp" />
+		<put-attribute name="menu34"
+					   value="/WEB-INF/jsp/ab/menu/menu34_dictionaries.jsp" />
+		<put-attribute name="gradusnik" value="/WEB-INF/jsp/ab/menu/gradusnik.jsp" />
+		<!--<put-attribute name="body" value="/WEB-INF/jsp/ab/main.jsp" />-->
+		<put-attribute name="tip" value="/WEB-INF/jsp/ab/menu/tip.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp" />
+	</definition>
+
+	<definition name="ab.layout.content" template="/WEB-INF/jsp/ab/layouts/content_only.jsp">
+		<!--<put-attribute name="body" value="/WEB-INF/jsp/ab/main.jsp" />-->
+	</definition>
+
+	<definition name="ab.main" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.main.title" />
+	</definition>
+
+	<definition name="ab.country.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.country.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/countries_list.jsp" />
+	</definition>
+
+	<definition name="ab.country.create" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.country.create.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/country_create.jsp" />
+	</definition>
+
+	<!-- Regions -->
+	<definition name="ab.region.create" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.region.create.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/region_create.jsp" />
+	</definition>
+
+	<definition name="ab.region.view" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.region.view.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/region_view.jsp" />
+	</definition>
+
+	<definition name="ab.region.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.region.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/region_edit.jsp" />
+	</definition>
+
+	<definition name="ab.regions.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.region.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/regions_list.jsp" />
+	</definition>
+
+	<!-- Towns -->
+	<definition name="ab.town.view" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.town.view.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_view.jsp" />
+	</definition>
+
+	<definition name="ab.town.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.town.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_edit.jsp" />
+	</definition>
+
+	<definition name="ab.towns.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.town.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/towns_list.jsp" />
+	</definition>
+
+	<!-- Town Districts -->
+	<definition name="ab.district.create" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.district.create.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/district_create.jsp" />
+	</definition>
+
+	<definition name="ab.district.view" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.district.view.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/district_view.jsp" />
+	</definition>
+
+	<definition name="ab.district.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.district.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/district_edit.jsp" />
+	</definition>
+
+	<definition name="ab.districts.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.district.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/districts_list.jsp" />
+	</definition>
+
+	<!-- Streets -->
+	<definition name="ab.street.create" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.street.create.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_create.jsp" />
+	</definition>
+
+	<definition name="ab.street.view" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.street.view.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_view.jsp" />
+	</definition>
+
+	<definition name="ab.street.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.street.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_edit.jsp" />
+	</definition>
+
+	<definition name="ab.street.edit.type" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.street.edit.type.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_edit_type.jsp" />
+	</definition>
+
+	<definition name="ab.street.edit.districts" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.street.edit.districts.title" />
+		<put-attribute name="body"
+					   value="/WEB-INF/jsp/ab/street_edit_districts_list.jsp" />
+	</definition>
+
+	<definition name="ab.streets.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.street.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/streets_list.jsp" />
+	</definition>
+
+	<!-- Town types -->
+	<definition name="ab.town_type.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.town_type.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_type_list.jsp" />
+	</definition>
+	<definition name="ab.town_type.view" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.town_type.view.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_type_view.jsp" />
+	</definition>
+	<definition name="ab.town_type.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.town_type.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/town_type_edit.jsp" />
+	</definition>
+
+	<!-- Street types -->
+	<definition name="ab.street_type.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.street_type.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_type_list.jsp" />
+	</definition>
+	<definition name="ab.street_type.view" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.street_type.view.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_type_view.jsp" />
+	</definition>
+	<definition name="ab.street_type.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.street_type.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_type_edit.jsp" />
+	</definition>
+
+	<!-- Identity types -->
+	<definition name="ab.identity_type.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.identity_type.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/identity_type_list.jsp" />
+	</definition>
+	<definition name="ab.identity_type.view" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.identity_type.view.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/identity_type_view.jsp" />
+	</definition>
+	<definition name="ab.identity_type.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.identity_type.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/identity_type_edit.jsp" />
+	</definition>
+
+	<!-- Persons -->
+	<definition name="ab.person.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.persons.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/person_list.jsp" />
+	</definition>
+	<definition name="ab.person.view" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.person.view.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/person_view.jsp" />
+	</definition>
+	<definition name="ab.person.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.person.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/person_edit.jsp" />
+	</definition>
+	<definition name="ab.person.set_registration_form" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.person.registration_address" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/person_set_registration_form.jsp" />
+	</definition>
+
+	<!-- Buildings -->
+	<definition name="ab.building.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.buildings.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings_list.jsp" />
+	</definition>
+	<definition name="ab.buildings.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.buildings.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings_edit.jsp" />
+	</definition>
+	<definition name="ab.buildings.create" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.buildings.create.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings_create.jsp" />
+	</definition>
+	<!-- BuildingAttributeTypes -->
+	<definition name="ab.buildings.attribute_types.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.buildings.attribute_types.list" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings_attribute_types_list.jsp" />
+	</definition>
+	<definition name="ab.buildings.attribute_types.create" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.buildings.attribute_types.create" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings_attribute_types_create.jsp" />
+	</definition>
+	<definition name="ab.buildings.attribute_types.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.buildings.attribute_types.edit" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings_attribute_types_edit.jsp" />
+	</definition>
+	
+
+	<!-- Apartments -->
+	<definition name="ab.apartment.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.apartments.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/apartments_list.jsp" />
+	</definition>
+	<definition name="ab.apartment.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.apartment.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/apartment_edit.jsp" />
+	</definition>
+	<definition name="ab.apartment.registrations" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.apartment.registrations.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/apartment_registrations.jsp" />
+	</definition>
+	<definition name="ab.apartment.registrations_history" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.apartment.registrations_history.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/apartment_registrations_history.jsp" />
+	</definition>
+
+	<!-- Measure units -->
+	<definition name="ab.measure_unit.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="common.measure_units.list.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/measure_unit/list_measure_units.jsp" />
+	</definition>
+	<definition name="ab.measure_unit.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="common.measure_units.edit.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/measure_unit/edit_measure_unit.jsp" />
+	</definition>
+
+
+</tiles-definitions>

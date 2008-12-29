@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="identity_types" namespace="/dicts" extends="common">
+
+		<action name="identityTypeView" class="identityTypeViewAction">
+			<result name="success" type="tiles">ab.identity_type.view</result>
+		</action>
+
+		<action name="identityTypesList" class="identityTypesListAction">
+			<result name="success" type="tiles">ab.identity_type.list</result>
+		</action>
+
+		<action name="identityTypeEdit" class="identityTypeEditAction">
+			<result name="input" type="tiles">ab.identity_type.edit</result>
+			<result name="redirectSuccess" type="redirect-action">identityTypesList</result>
+		</action>
+
+		<action name="identityTypeDelete" class="identityTypeDeleteAction">
+			<result name="afterSubmit" type="redirect">identityTypesList.action</result>
+		</action>
+
+	</package>
+
+</struts>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="buildings" namespace="/dicts" extends="common">
+
+		<action name="buildingsList" class="buildingsListAction">
+			<result type="tiles">ab.building.list</result>
+		</action>
+
+		<action name="buildingCreate" class="buildingCreateAction">
+			<result name="input" type="tiles">ab.buildings.create</result>
+			<result name="redirectSuccess" type="redirect-action">buildingsList</result>
+			<result name="edit" type="redirect-action">
+				<param name="actionName">buildingEdit</param>
+				<param name="parse">true</param>
+				<param name="buildings.id">${buildings.id}</param>
+			</result>
+		</action>
+
+		<action name="buildingEdit" class="buildingEditAction">
+			<result name="input" type="tiles">ab.buildings.edit</result>
+			<result name="redirectSuccess" type="redirect-action">buildingsList</result>
+		</action>
+
+		<action name="buildingDelete" class="buildingDeleteAction">
+			<result name="redirectSuccess" type="redirect-action">buildingsList</result>
+			<result name="redirectInput" type="redirect-action">
+				<param name="actionName">buildingEdit</param>
+				<param name="parse">true</param>
+				<param name="buildings.id">${redirectBuildingsId}</param>
+			</result>
+		</action>
+
+		<action name="buildingSetPrimaryStatus" class="buildingSetPrimaryStatusAction">
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">buildingEdit</param>
+				<param name="parse">true</param>
+				<param name="buildings.id">${redirectBuildingsId!=null ? redirectBuildingsId : buildings.id}</param>
+			</result>
+		</action>
+
+		<action name="buildingAttributeTypesList" class="buildingAttributeTypesListAction">
+			<result name="success" type="tiles">ab.buildings.attribute_types.list</result>
+		</action>
+
+		<action name="buildingAttributeTypeEdit" class="buildingAttributeTypeEditAction">
+			<result name="input" type="tiles">ab.buildings.attribute_types.edit</result>
+			<result name="redirectSuccess" type="redirect-action">buildingAttributeTypesList</result>
+		</action>
+
+	</package>
+
+</struts>

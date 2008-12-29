@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.ab.persistence">
+
+	<class name="Region" table="ab_regions_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="parent" column="country_id" class="Country" not-null="true" />
+		<property name="status" not-null="true" />
+
+		<set name="nameTemporals" inverse="true" sort="natural" cascade="all"
+			  where="invalid_date='2100-12-31'">
+			<key column="region_id" not-null="true" />
+			<one-to-many class="RegionNameTemporal" />
+		</set>
+	</class>
+
+	<class name="RegionNameTemporal" table="ab_region_names_temporal_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="begin" column="begin_date" type="date" not-null="true" />
+		<property name="end" column="end_date" type="date" not-null="true" />
+		<property name="createDate" column="create_date" type="date" not-null="true" />
+		<property name="invalidDate" column="invalid_date" type="date" not-null="true" />
+		<many-to-one name="object" class="Region" column="region_id" not-null="true"/>
+		<many-to-one name="value" class="RegionName" column="region_name_id" cascade="all"/>
+	</class>
+
+	<class name="RegionName" table="ab_region_names_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="object" column="region_id" class="Region" not-null="true" />
+
+		<set name="translations" inverse="true" cascade="all-delete-orphan">
+			<key column="region_name_id" not-null="true" />
+			<one-to-many class="RegionNameTranslation" />
+		</set>
+	</class>
+
+	<class name="RegionNameTranslation" table="ab_region_name_translations_tbl"
+		   optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<properties name="lang_region_name_pair" unique="true">
+			<many-to-one name="translatable" column="region_name_id"
+						 not-null="true" class="RegionName" />
+			<many-to-one name="lang" column="language_id" not-null="true"
+						 class="org.flexpay.common.persistence.Language" />
+		</properties>
+	</class>
+
+	<query name="Region.findObjects">
+		FROM Region r
+		WHERE r.status=? and r.parent.id=?
+	</query>
+
+	<query name="Region.findObjects.count">
+		select count(*) from Region r where r.status=? and r.parent.id=?
+	</query>
+
+	<query name="Region.readFull">
+		SELECT DISTINCT r
+		FROM Region r
+			LEFT JOIN FETCH r.nameTemporals t
+			LEFT JOIN FETCH t.value v
+			LEFT JOIN FETCH v.translations tr
+			LEFT JOIN FETCH tr.lang l
+			LEFT JOIN FETCH l.translations
+		WHERE r.id=? and t.invalidDate='2100-12-31'
+	</query>
+
+	<query name="RegionNameTemporal.readFull">
+		SELECT DISTINCT t
+		FROM RegionNameTemporal t
+			LEFT JOIN FETCH t.value v
+			LEFT JOIN FETCH v.translations tr
+			LEFT JOIN FETCH tr.lang l
+			LEFT JOIN FETCH l.translations
+		WHERE t.id=?
+	</query>
+
+	<query name="RegionName.readFull">
+		SELECT DISTINCT n
+		FROM RegionName n
+			LEFT JOIN FETCH n.object
+			LEFT JOIN FETCH n.translations tr
+			LEFT JOIN FETCH tr.lang l
+			LEFT JOIN FETCH l.translations
+		WHERE n.id=?
+	</query>
+
+</hibernate-mapping>

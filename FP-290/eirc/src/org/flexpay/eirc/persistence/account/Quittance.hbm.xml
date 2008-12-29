@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.eirc.persistence.account">
+
+	<class name="QuittanceDetails" table="eirc_quittance_details_tbl">
+		<comment>Service provider quittance details</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="consumer" class="org.flexpay.eirc.persistence.Consumer"
+					 foreign-key="FK_eirc_quittance_details_tbl_consumer_id">
+			<column name="consumer_id" not-null="true">
+				<comment>Consumer reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="registryRecord" class="org.flexpay.eirc.persistence.RegistryRecord"
+					 foreign-key="FK_eirc_quittance_details_tbl_registry_record_id">
+			<column name="registry_record_id" not-null="true">
+				<comment>Source registry record reference</comment>
+			</column>
+		</many-to-one>
+		<property name="incomingBalance">
+			<column name="incoming_balance" not-null="false">
+				<comment>incoming balance</comment>
+			</column>
+		</property>
+		<property name="outgoingBalance">
+			<column name="outgoing_balance" not-null="false">
+				<comment>Outgoing balance</comment>
+			</column>
+		</property>
+		<property name="amount">
+			<column name="amount" not-null="false" scale="5">
+				<comment>Amount</comment>
+			</column>
+		</property>
+		<property name="expence">
+			<column name="expence" not-null="false" scale="5">
+				<comment>Expence</comment>
+			</column>
+		</property>
+		<property name="rate">
+			<column name="rate" not-null="false" scale="5">
+				<comment>Rate</comment>
+			</column>
+		</property>
+		<property name="recalculation">
+			<column name="recalculation" not-null="false" scale="5">
+				<comment>Recalculation</comment>
+			</column>
+		</property>
+		<property name="benifit">
+			<column name="benefit" not-null="false" scale="5">
+				<comment>Benefits amount</comment>
+			</column>
+		</property>
+		<property name="subsidy">
+			<column name="subsidy" not-null="false" scale="5">
+				<comment>Subsidy amount</comment>
+			</column>
+		</property>
+		<property name="payment">
+			<column name="payment" not-null="false" scale="5">
+				<comment>Payments amount for previous period</comment>
+			</column>
+		</property>
+		<property name="month" type="timestamp">
+			<column name="month" not-null="true">
+				<comment>Quittance month</comment>
+			</column>
+		</property>
+	</class>
+
+	<class name="Quittance" table="eirc_quittances_tbl">
+		<comment>Quittance</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<set name="quittanceDetailsQuittances" inverse="true" lazy="false" cascade="all">
+			<key column="quittance_id" not-null="true" />
+			<one-to-many class="QuittanceDetailsQuittance" />
+		</set>
+		<many-to-one name="serviceOrganization" foreign-key="FK_eirc_quittances_service_organization"
+					 class="org.flexpay.eirc.persistence.ServiceOrganization">
+			<column name="service_organization_id" not-null="true">
+				<comment>Service organization reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="eircAccount" foreign-key="FK_eirc_quittance_services_eirc_account"
+					 class="org.flexpay.eirc.persistence.EircAccount">
+			<column name="eirc_account_id" not-null="true">
+				<comment>Eirc account reference</comment>
+			</column>
+		</many-to-one>
+		<property name="orderNumber">
+			<column name="order_number" not-null="true">
+				<comment>quittance order number for date till</comment>
+			</column>
+		</property>
+		<property name="dateFrom" type="timestamp">
+			<column name="date_from" not-null="true">
+				<comment>Quittance date from</comment>
+			</column>
+		</property>
+		<property name="dateTill" type="timestamp">
+			<column name="date_till" not-null="true">
+				<comment>Quittance date till</comment>
+			</column>
+		</property>
+		<property name="creationDate" type="timestamp">
+			<column name="creation_date" not-null="true">
+				<comment>Quittance creation date</comment>
+			</column>
+		</property>
+	</class>
+
+	<class name="QuittanceDetailsQuittance" table="eirc_quittance_details_quittances_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="quittanceDetails" class="QuittanceDetails"
+					 foreign-key="FP_eirc_quittance_details_quittances_quittance_details">
+			<column name="quittance_details_id" not-null="true">
+				<comment>QuittanceDetails reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="quittance" foreign-key="FP_eirc_quittance_details_quittances_quittance" class="Quittance">
+			<column name="quittance_id" not-null="true">
+				<comment>Quittance reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<query name="QuittanceDetails.findByEircAccountAndDateTill"><![CDATA[
+		SELECT DISTINCT d
+		FROM QuittanceDetails d
+			LEFT JOIN d.consumer c
+			LEFT JOIN c.eircAccount ea
+		WHERE ea.id=? and d.month >= ? and d.month < ?
+	]]></query>
+
+	<query name="Quittance.findObjectsByEircAccountAndDateTill">
+		FROM Quittance q
+		WHERE q.eircAccount.id=? and q.dateTill=?
+	</query>
+
+	<query name="Quittance.findObjectsByEircAccountAndDateTill.count">
+		select count(*) from Quittance q where q.eircAccount.id=? AND q.dateTill=?
+	</query>
+
+	<query name="Quittance.listQuittancesForPrinting"><![CDATA[
+		select distinct q
+		from Quittance q
+			inner join fetch q.eircAccount a
+			inner join fetch a.apartment ap
+			inner join fetch ap.building b
+		where q.serviceOrganization.id=? and q.dateFrom>=? and q.dateTill<=?
+		order by b.id, a.id, a.accountNumber, q.orderNumber desc
+	]]></query>
+
+	<query name="Quittance.findQuittanceByNumber"><![CDATA[
+		select distinct q
+		from Quittance q
+			inner join q.eircAccount a
+		where a.accountNumber=? and month(q.dateTill)=? and q.orderNumber=? 
+	]]></query>
+
+	<query name="Quittance.readFull"><![CDATA[
+		select distinct q
+		from Quittance q
+			inner join fetch q.eircAccount a
+			left join fetch a.consumerInfo ci
+			left join fetch a.person p
+			left join fetch p.personIdentities pi
+			inner join fetch a.apartment ap
+			inner join fetch ap.building
+			left join fetch ap.personRegistrations pr
+			left join fetch q.quittanceDetailsQuittances qdq
+			left join fetch qdq.quittanceDetails qd
+			left join fetch qd.consumer c
+			left join fetch c.service
+		where q.id=?
+			and (pr is null or (pr.beginDate<=current_date() and pr.endDate>=current_date()))
+	]]></query>
+
+</hibernate-mapping>

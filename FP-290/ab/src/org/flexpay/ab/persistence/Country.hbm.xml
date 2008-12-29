@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.ab.persistence">
+
+	<class name="Country" table="ab_countries_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status" not-null="true" />
+		<set name="countryNames" inverse="true" cascade="all">
+			<key column="country_id" not-null="true" />
+			<one-to-many class="CountryNameTranslation" />
+		</set>
+		<set name="regions" inverse="true">
+			<key column="country_id" not-null="true" />
+			<one-to-many class="Region" />
+		</set>
+	</class>
+
+	<class name="CountryNameTranslation" table="ab_country_name_translations_tbl"
+		   optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<property name="shortName" column="short_name" length="5" />
+		<properties name="lang_country_pair" unique="true">
+			<many-to-one name="translatable" class="Country" column="country_id"
+						 not-null="true" />
+			<many-to-one name="lang" column="language_id" not-null="true" />
+		</properties>
+	</class>
+
+	<query name="Country.listCountries">
+		FROM Country c
+	</query>
+
+	<query name="Country.readFull">
+		SELECT DISTINCT c
+		FROM Country c
+		LEFT JOIN FETCH c.countryNames tr
+		LEFT JOIN FETCH tr.lang l
+		LEFT JOIN FETCH l.translations
+		WHERE c.id=?
+	</query>
+
+</hibernate-mapping>

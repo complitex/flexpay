@@ -1,0 +1,258 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.ab.persistence">
+
+	<class name="Person" table="ab_persons_tbl">
+		<comment>Natural persons</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled-Disabled status</comment>
+			</column>
+		</property>
+		<set name="personAttributes" inverse="true" cascade="all">
+			<key column="person_id" not-null="true" />
+			<one-to-many class="PersonAttribute" />
+		</set>
+		<set name="personIdentities" inverse="true" lazy="false" cascade="all">
+			<key column="person_id" not-null="true" />
+			<one-to-many class="PersonIdentity" />
+		</set>
+		<set name="personRegistrations" inverse="true" lazy="false" cascade="all">
+			<key column="person_id" not-null="true" />
+			<one-to-many class="PersonRegistration" />
+		</set>
+	</class>
+
+	<class name="PersonAttribute" table="ab_person_attributes_tbl">
+		<comment>Person attributes</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name">
+			<column name="name" not-null="true" length="50">
+				<comment>Attribute name</comment>
+			</column>
+		</property>
+		<property name="value">
+			<column name="value" not-null="false" length="255">
+				<comment>Attribute value</comment>
+			</column>
+		</property>
+		<many-to-one name="lang" foreign-key="ab_person_attributes_tbl_language_id"
+					 class="org.flexpay.common.persistence.Language">
+			<column name="language_id" not-null="true">
+				<comment>Language reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="translatable" class="Person" foreign-key="ab_person_attributes_tbl_person_id">
+			<column name="person_id" not-null="true">
+				<comment>Person reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<class name="PersonIdentity" table="ab_person_identities_tbl">
+		<comment>Person documents</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled-Disabled status</comment>
+			</column>
+		</property>
+		<property name="beginDate" type="date">
+			<column name="begin_date" not-null="true">
+				<comment>Begin of document valid interval</comment>
+			</column>
+		</property>
+		<property name="endDate" type="date">
+			<column name="end_date" not-null="true">
+				<comment>End of document valid interval</comment>
+			</column>
+		</property>
+		<property name="birthDate">
+			<column name="birth_date" not-null="true">
+				<comment>Person birth date</comment>
+			</column>
+		</property>
+		<property name="serialNumber">
+			<column name="serial_number" length="10" not-null="true">
+				<comment>Document serial number</comment>
+			</column>
+		</property>
+		<property name="documentNumber">
+			<column name="document_number" length="20" not-null="true">
+				<comment>Document number</comment>
+			</column>
+		</property>
+		<property name="firstName" index="data_index">
+			<column name="first_name" not-null="true" length="255">
+				<comment>Person first name</comment>
+			</column>
+		</property>
+		<property name="middleName" index="data_index">
+			<column name="middle_name" not-null="true" length="255">
+				<comment>Person middle name</comment>
+			</column>
+		</property>
+		<property name="lastName" index="data_index">
+			<column name="last_name" not-null="true" length="255">
+				<comment>Person last name</comment>
+			</column>
+		</property>
+		<property name="organization" length="4000" not-null="true">
+			<column name="organization" not-null="true" length="4000">
+				<comment>Organization gave document</comment>
+			</column>
+		</property>
+		<property name="default" type="boolean">
+			<column name="is_default" not-null="true">
+				<comment>Default document flag</comment>
+			</column>
+		</property>
+		<property name="sex">
+			<column name="sex" not-null="true">
+				<comment>Person sex type</comment>
+			</column>
+		</property>
+		<many-to-one name="identityType" foreign-key="ab_person_identities_tbl_identity_type_id"
+					 class="IdentityType">
+			<column name="identity_type_id" not-null="true">
+				<comment>Identity document type reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="person" class="Person" foreign-key="ab_person_identities_tbl_person_id">
+			<column name="person_id" not-null="true">
+				<comment>Person reference</comment>
+			</column>
+		</many-to-one>
+		<set name="personIdentityAttributes" inverse="true">
+			<key column="person_identity_id" not-null="true" />
+			<one-to-many class="PersonIdentityAttribute" />
+		</set>
+	</class>
+
+	<class name="PersonIdentityAttribute" table="ab_person_identity_attributes_tbl">
+		<comment>Person document additional attributes</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name">
+			<column name="name" not-null="true" length="50">
+				<comment>Attribute name</comment>
+			</column>
+		</property>
+		<property name="value">
+			<column name="value" not-null="false" length="255">
+				<comment>Attribute value</comment>
+			</column>
+		</property>
+		<many-to-one name="lang" foreign-key="ab_person_identity_attributes_tbl_language_id"
+					 class="org.flexpay.common.persistence.Language">
+			<column name="language_id" not-null="true">
+				<comment>Language reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="translatable" class="PersonIdentity"
+					 foreign-key="ab_person_identity_attributes_tbl_person_identity_id">
+			<column name="person_identity_id" not-null="true">
+				<comment>Person identity reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<class name="PersonRegistration" table="ab_person_registrations_tbl">
+		<comment>Person registrations</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="beginDate" type="date">
+			<column name="begin_date" not-null="true">
+				<comment>Registration begin date</comment>
+			</column>
+		</property>
+		<property name="endDate" type="date">
+			<column name="end_date" not-null="true">
+				<comment>Registration end date</comment>
+			</column>
+		</property>
+		<many-to-one name="person" foreign-key="FP_ab_person_registrations_person" class="Person">
+			<column name="person_id" not-null="true">
+				<comment>Registered person reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="apartment" foreign-key="FP_ab_person_registrations_apartment" class="Apartment">
+			<column name="apartment_id" not-null="true">
+				<comment>Registered to apartment reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<query name="PersonRegistration.listRegistrants"><![CDATA[
+		select distinct p
+		from Person p
+			left join fetch p.personIdentities pi
+			inner join fetch pi.identityType
+			inner join p.personRegistrations r
+		where r.apartment.id=? and r.beginDate <= current_date() and current_date() <= r.endDate
+	]]></query>
+
+	<query name="Person.findObjects">
+		FROM Person o
+		WHERE o.status=?
+	</query>
+
+	<query name="Person.findObjects.count">
+		select count(*) from Person o where o.status=?
+	</query>
+
+	<query name="Person.readFull">
+		select distinct o
+		from Person o
+		left join fetch o.personIdentities pi
+		inner join fetch pi.identityType it
+		left join fetch pi.personIdentityAttributes
+		left join fetch o.personAttributes pa
+		where o.id=? and pi.status=0
+	</query>
+
+	<query name="Person.findByFIO">
+		SELECT DISTINCT o
+		FROM Person o
+		LEFT JOIN FETCH o.personIdentities pi
+		LEFT JOIN FETCH pi.identityType it
+		LEFT JOIN FETCH it.translations ittr
+		LEFT JOIN FETCH o.personRegistrations r
+		WHERE o.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName like ?
+	</query>
+
+	<query name="Person.findByFIO.count">
+		SELECT count(*)
+		FROM Person o
+		LEFT JOIN o.personIdentities pi
+		WHERE o.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName like ?
+	</query>
+
+	<query name="PersonAttribute.listAttributes">
+		FROM PersonAttribute o
+		WHERE o.translatable.id=?
+	</query>
+
+	<query name="PersonRegistration.listRegistrations"><![CDATA[
+		FROM PersonRegistration o
+		WHERE o.person.id=? and o.beginDate <= current_date() and current_date() < o.endDate 
+	]]></query>
+
+	<query name="PersonRegistration.listRegistrationHistory">
+		FROM PersonRegistration o
+		WHERE o.person.id=?
+	</query>
+
+</hibernate-mapping>

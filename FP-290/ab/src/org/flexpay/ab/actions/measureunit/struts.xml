@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="measure_units" namespace="/dicts" extends="common">
+
+		<action name="measureUnitsList" class="measureUnitsListAction">
+			<result name="success" type="tiles">ab.measure_unit.list</result>
+		</action>
+
+		<action name="measureUnitEdit" class="measureUnitEditAction">
+			<result name="input" type="tiles">ab.measure_unit.edit</result>
+			<result name="redirectSuccess" type="redirect-action">measureUnitsList</result>
+		</action>
+
+		<action name="measureUnitDelete" class="measureUnitDeleteAction">
+			<result name="redirectSuccess" type="redirect-action">measureUnitsList</result>
+		</action>
+
+	</package>
+
+</struts>

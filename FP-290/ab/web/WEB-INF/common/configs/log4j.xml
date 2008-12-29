@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="flexpay" class="org.apache.log4j.RollingFileAppender">
+		<param name="MaxFileSize" value="52428800" />
+		<param name="MaxBackupIndex" value="3" />
+		<param name="Append" value="false" />
+		<param name="File" value="${java.io.tmpdir}/logs/flexpay_log_ab.txt" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				   value="%d %5p [%t] (%c %F:%L) - %m%n" />
+		</layout>
+	</appender>
+
+	<category name="org.flexpay" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+    <category name="org.hibernate" additivity="false">
+        <priority value="info" />
+        <appender-ref ref="flexpay" />
+    </category>
+
+    <root>
+		<priority value="info" />
+		<appender-ref ref="flexpay" />
+	</root>
+
+</log4j:configuration>
+    

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="towns" namespace="/dicts" extends="common">
+
+		<action name="townsList" class="townsListAction">
+			<result type="tiles">ab.towns.list</result>
+		</action>
+
+		<action name="townView" class="townViewAction">
+			<result type="tiles">ab.town.view</result>
+			<result type="redirect" name="redirectError">townsList.action</result>
+		</action>
+
+		<action name="townEdit" class="townEditAction">
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">townView</param>
+				<param name="parse">true</param>
+				<param name="object.id">${town.id}</param>
+			</result>
+			<result type="tiles" name="input">ab.town.edit</result>
+		</action>
+
+		<action name="townDelete" class="townDeleteAction">
+			<result name="redirectSuccess" type="redirect">townsList.action</result>
+		</action>
+
+	</package>
+
+	<package name="town_types" namespace="/dicts" extends="common">
+
+		<action name="townTypeView" class="townTypeViewAction">
+			<result name="success" type="tiles">ab.town_type.view</result>
+		</action>
+
+		<action name="townTypesList" class="townTypesListAction">
+			<result name="success" type="tiles">ab.town_type.list</result>
+		</action>
+
+		<action name="editTownType" class="townTypeEditAction">
+			<result name="input" type="tiles">ab.town_type.edit</result>
+			<result name="redirectSuccess" type="redirect-action">townTypesList</result>
+		</action>
+
+		<action name="townTypeDelete" class="townTypeDeleteAction">
+			<result name="afterSubmit" type="redirect">townTypesList.action</result>
+		</action>
+
+	</package>
+
+</struts>
