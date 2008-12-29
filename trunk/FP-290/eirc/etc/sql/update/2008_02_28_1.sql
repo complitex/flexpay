@@ -1,1 +1,0 @@
-alter table sp_files_tbl rename to eirc_sp_files_tbl;

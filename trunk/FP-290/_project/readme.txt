@@ -1,1 +1,0 @@
-There should be placed various IDEs configuration files for project.
