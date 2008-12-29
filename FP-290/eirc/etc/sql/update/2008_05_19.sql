@@ -1,1 +1,0 @@
-ALTER TABLE eirc_registries_tbl ADD COLUMN version INTEGER NOT NULL;
