@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay_ab" basedir=".." default="ab.help">
+
+	<import file="../common/common_build.xml" />
+	<import file="../common/hibernate_build.xml" />
+
+	<property file="ab/ab_build.properties" />
+	<property file="common/common_build.properties" />
+
+	<property name="ab.dir" value="${basedir}/ab" />
+
+	<path id="ab.lib">
+		<fileset dir="${ab.dir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<fileset id="ab.libraries" dir="${ab.dir}/lib">
+		<include name="**/*" />
+	</fileset>
+
+	<path id="ab.jar" location="${build.dir}/lib/${ab.jar.name}" />
+	<path id="ab.test.jar" location="${build.dir}/lib/${ab.tests.jar.name}" />
+
+	<path id="ab.production.classpath">
+		<path refid="common.production.classpath" />
+		<path refid="ab.lib" />
+		<path refid="common.jar" />
+	</path>
+
+	<path id="ab.test.classpath">
+		<path refid="common.test.classpath" />
+		<path refid="ab.jar" />
+		<path refid="ab.test.jar" />
+		<path refid="ab.production.classpath" />
+	</path>
+
+	<path id="ab.runtests.classpath">
+		<path refid="common.runtests.classpath" />
+		<path refid="ab.test.classpath" />
+		<path location="${build.dir}/web" />
+		<path location="ab/src" />
+		<path location="ab/tests/data" />
+	</path>
+
+	<target name="ab.help" description="Print ab module build script options">
+		<echo>
+	Ab module build script
+	Usage:
+	ant -f ab_build.xml [target_name [target_options]]
+
+	Available targets are:
+		ab.db - Initialize database
+		ab.exportschema.mysql5 - Generate DDL of module for MySQL5
+		ab.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
+			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.ab.service.TestStreetService
+		ab.runtests.nobuild - Run all module tests but skip build steps (added to speed up development process)
+			same test.class.name option applies to this target
+		ab.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
+		ab.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		</echo>
+	</target>
+
+	<target name="ab.clean.build">
+		<antcall target="clean.build" />
+	</target>
+
+	<property name="ab.src.production" value="${ab.dir}/${src.dir};${common.src.production}" />
+	<target name="ab.compile.production">
+		<antcall target="template.compile.production">
+			<param name="sources.dir" value="${ab.src.production}" />
+			<reference refid="ab.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<property name="ab.src.test" value="${ab.src.production};${ab.dir}/${tests.src.dir};${common.src.test}" />
+	<target name="ab.compile.test">
+		<antcall target="template.compile.test">
+			<param name="sources.dir" value="${ab.src.test}" />
+			<reference refid="ab.test.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<!-- Build targets -->
+	<target name="ab.docs" depends="ab.compile.production">
+		<fileset id="ab.docs.resources" dir="${ab.dir}/docs" />
+		<antcall target="template.docs">
+			<param name="sources.dir" value="${ab.src.production}" />
+			<param name="module_name" value="Address Bureau" />
+			<param name="docs.file" value="${ab.docs.name}" />
+			<reference refid="ab.docs.resources" torefid="resources" />
+			<reference refid="ab.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="ab.war.production.tomcat_mysql5">
+		<antcall target="clean.all" />
+		<antcall target="template.ab.war.production">
+			<param name="app_server.properties" value="app_server_tomcat.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+			<param name="beans-data-source.xml" value="beans-data-source_c3p0.xml.txt" />
+		</antcall>
+	</target>
+
+	<target name="ab.war.production.glassfish_mysql5">
+		<antcall target="template.ab.war.production">
+			<param name="app_server.properties" value="app_server_glassfish.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+			<param name="beans-data-source.xml" value="beans-data-source_c3p0.xml.txt" />
+		</antcall>
+	</target>
+
+	<target name="ab.exploded.production.glassfish_mysql5">
+		<antcall target="template.ab.exploded.production">
+			<param name="app_server.properties" value="app_server_glassfish.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+			<param name="beans-data-source.xml" value="beans-data-source_jndi.xml.txt" />
+		</antcall>
+	</target>
+
+	<target name="ab.prepare.war">
+		<antcall target="ab.prepare.war.internal" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+	<target name="ab.prepare.test.war">
+		<antcall target="ab.prepare.war.internal" />
+		<antcall target="common.test.war.data-source" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+	<target name="ab.prepare.war.internal" depends="common.prepare.war.internal">
+		<fileset id="ab.web.resources" dir="${ab.dir}/web" />
+		<antcall target="template.prepare.war">
+			<param name="to_dir" value="" />
+			<param name="src.i18n.dir" value="${build.dir}/empty" />
+			<reference refid="ab.web.resources" torefid="resources" />
+		</antcall>
+
+		<fileset dir="${ab.dir}/${src.dir}" id="ab.classes.resources">
+			<patternset refid="resources_pattern" />
+		</fileset>
+
+		<antcall target="template.prepare.war">
+			<param name="to_dir" value="/WEB-INF/classes" />
+			<param name="src.i18n.dir" value="${ab.dir}/${src.dir}" />
+			<reference refid="ab.classes.resources" torefid="resources" />
+		</antcall>
+	</target>
+
+	<!-- Build production web-archive -->
+	<target name="template.ab.war.production"
+			depends="clean.all,ab.compile.production,ab.prepare.war,init.distr">
+
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+
+		<war destfile="${distr.dir}/${ab.war.name}" needxmlfile="false">
+			<fileset dir="${build.dir}/web" />
+			<lib refid="ab.libraries" />
+		</war>
+
+		<antcall target="common.war.include.libs">
+			<param name="warfile" value="${distr.dir}/${ab.war.name}" />
+		</antcall>
+
+		<antcall target="template.prepare.war.classes" />
+	</target>
+
+	<target name="template.ab.exploded.production"
+			depends="clean.all,ab.compile.production,ab.prepare.war">
+
+		<copy overwrite="true"
+			  file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
+		<copy overwrite="true"
+			  file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+		<copy overwrite="true"
+			  file="${build.dir}/web/WEB-INF/common/configs/ps/${beans-data-source.xml}"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/beans-data-source.xml" />
+
+		<antcall target="template.exploded.include.libs">
+			<reference refid="ab.production.classpath" torefid="libs" />
+		</antcall>
+
+		<antcall target="template.prepare.war.classes" />
+	</target>
+
+	<target name="ab.exportschema.mysql5" depends="clean.build,ab.compile.production">
+		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+		<antcall target="template.schemaexport">
+			<param name="file_name" value="flexpay_ab.ddl.sql" />
+			<param name="src.dir" value="${ab.src.production}" />
+			<param name="hibernate.cfg"
+				   value="${ab.dir}/web/WEB-INF/hibernate.cfg.xml" />
+			<param name="hibernate.properties"
+				   value="${common.dir}/web/WEB-INF/common/configs/ps/data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="ab.runtests" depends="ab.compile.test,ab.prepare.test.war">
+		<condition property="class.name" value="${test.class.name}" else="org.flexpay.ab.AllTests">
+			<isset property="test.class.name" />
+		</condition>
+		<antcall target="template.run.tests">
+			<param name="test_name" value="${class.name}" />
+			<reference refid="ab.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="ab.run.standalone" depends="ab.prepare.war">
+		<antcall target="template.run.standalone">
+			<reference refid="ab.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="ab.profile.standalone" depends="ab.prepare.war">
+		<antcall target="template.profile.standalone">
+			<reference refid="ab.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="ab.sql.init-db">
+		<antcall target="common.sql.init-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${ab.dir}/etc/sql/init_db.sql" />
+		</concat>
+	</target>
+
+	<target name="ab.sql.all">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${ab.dir}/etc/sql/flexpay_ab.ddl.sql" />
+		</concat>
+		<antcall target="ab.sql.init-db" />
+	</target>
+
+	<target name="ab.sql.all-test">
+		<antcall target="common.sql.create-test-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${ab.dir}/etc/sql/flexpay_ab.ddl.sql" />
+		</concat>
+		<antcall target="ab.sql.init-db" />
+	</target>
+
+	<target name="ab.db-test" description="create ab db">
+		<antcall target="ab.sql.all-test" />
+		<antcall target="template.mysql.run">
+			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
+		</antcall>
+	</target>
+
+</project>

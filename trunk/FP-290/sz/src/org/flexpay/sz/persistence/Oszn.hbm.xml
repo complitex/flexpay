@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.sz.persistence">
+
+	<class name="Oszn" table="sz_oszns_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+        <property name="description" not-null="true" />
+		<many-to-one name="district" class="org.flexpay.ab.persistence.District" foreign-key="FK_sz_oszns_tbl_district_id">
+            <column name="district_id" not-null="true">
+                <comment>District reference</comment>
+            </column>
+        </many-to-one>
+	</class>
+	
+	<query name="Oszn.listOszn">
+		from Oszn
+	</query>
+
+</hibernate-mapping>

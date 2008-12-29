@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="townProcessor" class="org.flexpay.ab.service.imp.TownProcessor">
+		<property name="townDao" ref="townDAO" />
+	</bean>
+
+	<bean id="streetTypeProcessor" class="org.flexpay.ab.service.imp.StreetTypeProcessor">
+		<property name="streetTypeDao" ref="streetTypeDAO" />
+		<property name="streetTypeService" ref="streetTypeService" />
+	</bean>
+
+	<bean id="streetProcessor" class="org.flexpay.ab.service.imp.StreetProcessor">
+		<property name="streetDao" ref="streetDAO" />
+		<property name="streetService" ref="streetService" />
+	</bean>
+
+	<bean id="districtProcessor" class="org.flexpay.ab.service.imp.DistrictProcessor">
+		<property name="districtDao" ref="districtDAO" />
+		<property name="districtService" ref="districtService" />
+	</bean>
+
+	<bean id="buildingProcessor" class="org.flexpay.ab.service.imp.BuildingProcessor">
+		<property name="streetDao" ref="streetDAO" />
+		<property name="districtDao" ref="districtDAO" />
+		<property name="buildingsDao" ref="buildingsDao" />
+		<property name="buildingDao" ref="buildingDao" />
+		<property name="buildingService" ref="buildingService" />
+	</bean>
+
+	<bean id="apartmentProcessor" class="org.flexpay.ab.service.imp.ApartmentProcessor">
+		<property name="apartmentDao" ref="apartmentDao" />
+		<property name="buildingsDao" ref="buildingsDao" />
+		<property name="apartmentService" ref="apartmentService" />
+	</bean>
+
+	<bean id="personProcessor" class="org.flexpay.ab.service.imp.PersonProcessor">
+		<property name="personService" ref="personService" />
+		<property name="identityTypeService" ref="identityTypeService" />
+	</bean>
+
+
+	<bean id="abSyncService" class="org.flexpay.ab.service.imp.SyncServiceImpl">
+		<property name="correctionsService" ref="correctionsServiceAb" />
+		<property name="historyDao" ref="historyDaoJdbc" />
+		<property name="townProcessor" ref="townProcessor" />
+		<property name="buildingProcessor" ref="buildingProcessor" />
+		<property name="apartmentProcessor" ref="apartmentProcessor" />
+		<property name="streetProcessor" ref="streetProcessor" />
+		<property name="districtProcessor" ref="districtProcessor" />
+		<property name="streetTypeProcessor" ref="streetTypeProcessor" />
+		<property name="personProcessor" ref="personProcessor" />
+		<property name="lockManager" ref="LockManager" />
+		<property name="sd">
+			<bean class="org.flexpay.common.persistence.DataSourceDescription">
+				<constructor-arg index="0" value="${ab.sync.data.source.id}" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="historyDumpService" class="org.flexpay.ab.service.imp.HistoryDumpServiceImpl">
+		<property name="historyDao" ref="historyDaoJdbc" />
+		<property name="historySourceDao" ref="historySourceDao" />
+		<property name="updateConfigDao" ref="syncConfigDaoJdbc" />
+		<property name="lockManager" ref="LockManager" />
+	</bean>
+
+</beans>

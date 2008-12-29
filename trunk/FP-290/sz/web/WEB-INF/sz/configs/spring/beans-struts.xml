@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<!-- Define struts actions beans -->
+
+	<bean id="importFileAction" class="org.flexpay.sz.actions.ImportFileAction"
+          p:osznService-ref="osznService"
+		  scope="prototype" />
+
+    <bean id="szFileUploadAjaxAction" class="org.flexpay.sz.actions.UploadFileAction"
+          p:osznService-ref="osznService"
+          p:szFileService-ref="szFileService"
+          p:fpFileService-ref="fpFileService"
+          p:moduleName="${flexpay.module.name}"
+          scope="prototype" />
+
+    <bean id="importFilesListAction" class="org.flexpay.sz.actions.ImportFilesListAction"
+          p:szFileService-ref="szFileService"
+		  scope="prototype" />
+
+	<bean id="loadSzFileToDBAction" class="org.flexpay.sz.actions.LoadToDBAction"
+          p:szFileService-ref="szFileService"
+		  scope="prototype" />
+
+	<bean id="loadSzFileFromDBAction" class="org.flexpay.sz.actions.LoadFromDBAction"
+          p:szFileService-ref="szFileService"
+		  scope="prototype" />
+
+</beans>

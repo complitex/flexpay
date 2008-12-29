@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay_eirc" basedir=".." default="eirc.help">
+
+	<import file="../bti/bti_build.xml" />
+
+	<property file="eirc/eirc_build.properties" />
+	<property file="bti/bti_build.properties" />
+	<property file="ab/ab_build.properties" />
+	<property file="common/common_build.properties" />
+
+	<property name="eirc.dir" value="${basedir}/eirc" />
+
+	<path id="eirc.lib">
+		<fileset dir="${eirc.dir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<fileset id="eirc.libraries" dir="${eirc.dir}/lib">
+		<include name="**/*" />
+	</fileset>
+
+	<path id="eirc.jar" location="${build.dir}/lib/${eirc.jar.name}" />
+	<path id="eirc.test.jar" location="${build.dir}/lib/${eirc.tests.jar.name}" />
+
+	<path id="eirc.production.classpath">
+		<path refid="bti.production.classpath" />
+		<path refid="eirc.lib" />
+		<path refid="bti.jar" />
+	</path>
+
+	<path id="eirc.test.classpath">
+		<path refid="bti.test.classpath" />
+		<path refid="eirc.jar" />
+		<path refid="eirc.test.jar" />
+		<path refid="eirc.production.classpath" />
+	</path>
+
+    <path id="eirc.runtests.classpath">
+        <path refid="bti.runtests.classpath" />
+        <path refid="eirc.test.classpath" />
+        <path location="${build.dir}/web" />
+        <path location="eirc/src" />
+        <path location="${eirc.dir}/tests/data" />
+    </path>
+
+	<target name="eirc.help" description="Print eirc build script options">
+		<echo>
+	Eirc module build script
+	Usage:
+	ant -f eirc_build.xml [target_name [target_options]]
+
+	Available targets are:
+		eirc.db - Initialize database
+		eirc.exportschema.mysql5 - Generate DDL of module for MySQL5
+		eirc.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
+			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.eirc.process.quittance.TestGenerateQuittancesPDFJob
+		eirc.runtests.nobuild - Run all module tests but skip build steps (added to speed up development process)
+			same test.class.name option applies to this target
+		eirc.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
+		eirc.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		</echo>
+	</target>
+
+    <target name="eirc.clean.build">
+		<antcall target="clean.build" />
+	</target>
+
+	<property name="eirc.src.production" value="${eirc.dir}/${src.dir};${bti.src.production}" />
+	<target name="eirc.compile.production">
+		<antcall target="template.compile.production">
+			<param name="sources.dir" value="${eirc.src.production}" />
+			<reference refid="eirc.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<property name="eirc.src.test" value="${eirc.src.production};${eirc.dir}/${tests.src.dir};${bti.src.test}" />
+	<target name="eirc.compile.test">
+		<antcall target="template.compile.test">
+			<param name="sources.dir" value="${eirc.src.test}" />
+			<reference refid="eirc.test.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<!-- Build targets -->
+	<target name="eirc.docs" depends="eirc.compile.production">
+		<fileset id="eirc.docs.resources" dir="${eirc.dir}/docs" />
+		<antcall target="template.docs">
+			<param name="sources.dir" value="${eirc.src.production}" />
+			<param name="module_name" value="EIRC" />
+			<param name="docs.file" value="${eirc.docs.name}" />
+			<reference refid="eirc.docs.resources" torefid="resources" />
+			<reference refid="eirc.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="eirc.war.production.tomcat_mysql5">
+		<antcall target="clean.all" />
+		<antcall target="template.eirc.war.production">
+			<param name="app_server.properties" value="app_server_tomcat.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="eirc.war.production.glassfish_mysql5">
+		<antcall target="clean.all" />
+		<antcall target="template.eirc.war.production">
+			<param name="app_server.properties" value="app_server_glassfish.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+    <target name="eirc.prepare.war">
+		<antcall target="eirc.prepare.war.internal" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+    <target name="eirc.prepare.test.war">
+		<antcall target="eirc.prepare.war.internal" />
+		<antcall target="common.test.war.data-source" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+    <target name="eirc.prepare.war.internal" depends="eirc.compile.production,bti.prepare.war.internal">
+        <fileset id="eirc.web.resources" dir="${eirc.dir}/web" />
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="" />
+            <param name="src.i18n.dir" value="${build.dir}/empty" />
+            <reference refid="eirc.web.resources" torefid="resources" />
+        </antcall>
+
+        <fileset dir="${eirc.dir}/${src.dir}" id="eirc.classes.resources">
+            <patternset refid="resources_pattern" />
+        </fileset>
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="/WEB-INF/classes" />
+            <param name="src.i18n.dir" value="${eirc.dir}/${src.dir}" />
+            <reference refid="eirc.classes.resources" torefid="resources" />
+        </antcall>
+    </target>
+
+    <!-- Build production web-archive -->
+	<target name="template.eirc.war.production"
+			depends="clean.all,eirc.compile.production,eirc.prepare.war,init.distr">
+
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+
+		<war destfile="${distr.dir}/${eirc.war.name}" needxmlfile="false">
+			<fileset dir="${build.dir}/web" />
+			<lib refid="eirc.libraries" />
+		</war>
+
+		<antcall target="common.war.include.libs">
+			<param name="warfile" value="${distr.dir}/${eirc.war.name}" />
+		</antcall>
+	</target>
+
+	<target name="eirc.exportschema.mysql5" depends="clean.build,eirc.compile.production">
+		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+		<antcall target="template.schemaexport">
+			<param name="file_name" value="flexpay_eirc.ddl.sql" />
+			<param name="src.dir" value="${eirc.src.production}" />
+			<param name="hibernate.cfg"
+				   value="${eirc.dir}/web/WEB-INF/hibernate.cfg.xml" />
+			<param name="hibernate.properties"
+				   value="${common.dir}/web/WEB-INF/common/configs/ps/data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="eirc.runtests" depends="clean.build,eirc.compile.test,eirc.prepare.test.war">
+		<antcall target="eirc.runtests.nobuild" />
+	</target>
+
+	<target name="eirc.runtests.nobuild">
+		<condition property="class.name" value="${test.class.name}" else="org.flexpay.eirc.AllTests">
+			<isset property="test.class.name" />
+		</condition>
+		<antcall target="template.run.tests">
+			<param name="test_name" value="${class.name}" />
+			<reference refid="eirc.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="eirc.run.standalone" depends="eirc.prepare.war">
+		<antcall target="template.run.standalone">
+			<reference refid="eirc.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="eirc.profile.standalone" depends="eirc.prepare.war">
+		<antcall target="template.profile.standalone">
+			<reference refid="eirc.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="eirc.sql.init-db">
+		<antcall target="bti.sql.init-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${eirc.dir}/etc/sql/init_db.sql" />
+		</concat>
+	</target>
+
+	<target name="eirc.sql.all">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${eirc.dir}/etc/sql/flexpay_eirc.ddl.sql" />
+		</concat>
+		<antcall target="eirc.sql.init-db" />
+	</target>
+
+	<target name="eirc.sql.all-test">
+		<antcall target="common.sql.create-test-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${eirc.dir}/etc/sql/flexpay_eirc.ddl.sql" />
+		</concat>
+		<antcall target="eirc.sql.init-db" />
+	</target>
+
+	<target name="eirc.db-test" description="create eirc test db">
+		<antcall target="eirc.sql.all-test" />
+		<antcall target="template.mysql.run">
+			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
+		</antcall>
+	</target>
+
+</project>

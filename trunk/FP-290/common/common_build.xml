@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay_common" basedir=".." default="common.help">
+
+	<property name="common.dir" value="${basedir}/common" />
+
+	<import file="hibernate_build.xml" />
+	<import file="templates.xml" />
+
+	<path id="common.production.classpath">
+		<path refid="commons.lib" />
+		<path refid="spring.lib" />
+		<path refid="struts.lib" />
+		<path refid="hibernate.lib" />
+        <path refid="freemarker.lib" />
+		<path refid="log4j.lib" />
+		<path refid="j2ee.lib" />
+		<path refid="javadbf.lib" />
+		<path refid="jbpm_jpdl.lib" />
+		<path refid="ajax.lib" />
+		<path refid="itext.lib" />
+		<path refid="jasperreports.lib" />
+		<path refid="quartz.lib" />
+		<path refid="jetbrains.lib" />
+	</path>
+
+	<patternset id="empty_pattern" excludes="**/*.*" />
+	<patternset id="resources_pattern">
+		<include name="**/*.xml" />
+		<include name="**/*.properties" />
+	</patternset>
+
+	<!-- Build properties -->
+	<property file="common/common_build.properties" />
+
+	<path id="common.jar" location="${build.dir}/lib/${common.jar.name}" />
+	<path id="common.test.jar" location="${build.dir}/lib/${common.tests.jar.name}" />
+
+	<path id="common.test.classpath">
+		<path refid="common.production.classpath" />
+		<path refid="common.jar" />
+		<path refid="common.test.jar" />
+		<path refid="jdbc.lib" />
+		<path refid="junit.lib" />
+	</path>
+
+	<path id="common.runtests.classpath">
+		<path location="${build.dir}/classes" />
+		<path refid="common.test.classpath" />
+		<path location="${build.dir}/web" />
+		<path location="common/src" />
+		<path location="${common.dir}/tests/data" />
+	</path>
+
+	<target name="common.help" description="Print common module build script options">
+		<echo>
+	Common module build script
+	Usage:
+	ant -f common_build.xml [target_name [target_options]]
+
+	Available targets are:
+		common.db - Initialize database
+		common.exportschema.mysql5 - Generate DDL of module for MySQL5
+		common.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
+			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.common.test.TestStringUtil
+		common.runtests.nobuild - Run all module tests but skip build steps (added to speed up development process)
+			same test.class.name option applies to this target
+		</echo>
+	</target>
+
+	<target name="common.clean.build">
+		<antcall target="clean.build" />
+	</target>
+
+	<property name="common.src.production" value="${common.dir}/${src.dir}" />
+	<target name="common.compile.production">
+		<antcall target="template.compile.production">
+			<param name="sources.dir" value="${common.dir}/${src.dir}" />
+			<reference refid="common.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<property name="common.src.test" value="${common.src.production};${common.dir}/${tests.src.dir}" />
+	<target name="common.compile.test">
+		<antcall target="template.compile.test">
+			<param name="sources.dir" value="${common.src.test}" />
+			<reference refid="common.test.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="common.docs" depends="common.compile.production">
+		<fileset id="common.docs.resources" dir="${common.dir}/docs" />
+		<antcall target="template.docs">
+			<param name="sources.dir" value="${common.dir}/src" />
+			<param name="module_name" value="Common" />
+			<param name="docs.file" value="${common.docs.name}" />
+			<reference refid="common.docs.resources" torefid="resources" />
+			<reference refid="common.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="common.runtests" depends="common.compile.test,common.prepare.test.war">
+		<antcall target="common.runtests.nobuild" />
+	</target>
+
+	<target name="common.runtests.nobuild">
+		<condition property="class.name" value="${test.class.name}" else="org.flexpay.common.AllTests">
+			<isset property="test.class.name" />
+		</condition>
+		<antcall target="template.run.tests">
+			<param name="test_name" value="${class.name}" />
+			<reference refid="common.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="common.prepare.war">
+		<antcall target="common.prepare.war.internal" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+	<target name="common.prepare.test.war" description="Prepare test war data">
+		<antcall target="common.prepare.war.internal" />
+		<antcall target="common.test.war.data-source" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+	<target name="common.prepare.war.internal">
+		<fileset id="common.web.resources" dir="${common.dir}/web" />
+		<antcall target="template.prepare.war">
+			<param name="to_dir" value="" />
+			<param name="src.i18n.dir" value="${build.dir}/empty" />
+			<reference refid="common.web.resources" torefid="resources" />
+		</antcall>
+
+		<!-- Put classpath resources to /WEB-INF/classes -->
+		<fileset dir="${common.dir}/${src.dir}" id="common.classes.resources">
+			<patternset refid="resources_pattern" />
+		</fileset>
+		<antcall target="template.prepare.war">
+			<param name="to_dir" value="/WEB-INF/classes" />
+			<param name="src.i18n.dir" value="${common.dir}/${src.dir}" />
+			<reference refid="common.classes.resources" torefid="resources" />
+		</antcall>
+	</target>
+
+	<target name="common.exportschema.mysql5" depends="clean.build,common.compile.production">
+		<antcall target="template.schemaexport">
+			<param name="file_name" value="flexpay_common.ddl.sql" />
+			<param name="src.dir" value="${common.src.production}" />
+			<param name="hibernate.cfg"
+				   value="${common.dir}/web/WEB-INF/hibernate.cfg.xml" />
+			<param name="hibernate.properties"
+				   value="${common.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+		</antcall>
+	</target>
+
+	<target name="common.test.war.data-source" description="Copy test data source properties">
+		<echo>Overwriting data source properties</echo>
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/data_source_mysql5_test.properties"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+	</target>
+
+	<target name="common.sql.create-db">
+		<concat destfile="${build.dir}/sql/init_db.sql" append="false" encoding="UTF-8">
+			<fileset file="${common.dir}/etc/sql/create_db.sql" />
+			<fileset file="${common.dir}/etc/sql/jbpm.jpdl.mysql.create.sql" />
+		</concat>
+	</target>
+
+	<target name="common.sql.create-test-db">
+		<concat destfile="${build.dir}/sql/init_db.sql" append="false" encoding="UTF-8">
+			<fileset file="${common.dir}/etc/sql/create_tests_db.sql" />
+			<fileset file="${common.dir}/etc/sql/jbpm.jpdl.mysql.create.sql" />
+		</concat>
+	</target>
+
+	<target name="common.sql.init-db">
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${common.dir}/etc/sql/init_db.sql" />
+		</concat>
+	</target>
+
+	<target name="common.sql.all">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${common.dir}/etc/sql/flexpay_common.ddl.sql" />
+		</concat>
+		<antcall target="common.sql.init-db" />
+	</target>
+
+	<target name="common.sql.all-test">
+		<antcall target="common.sql.create-test-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${common.dir}/etc/sql/flexpay_common.ddl.sql" />
+		</concat>
+		<antcall target="common.sql.init-db" />
+	</target>
+
+	<target name="common.db-test" description="create common test db">
+		<antcall target="common.sql.all-test" />
+		<antcall target="template.mysql.run">
+			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
+		</antcall>
+	</target>
+
+</project>

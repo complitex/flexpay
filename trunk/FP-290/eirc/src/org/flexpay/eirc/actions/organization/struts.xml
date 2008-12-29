@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="organizations" namespace="/eirc" extends="common">
+
+		<!-- Organizations -->
+		<action name="organizationsList" class="organizationsListAction">
+			<result type="tiles">eirc.organizations.list</result>
+		</action>
+
+		<action name="organizationDelete" class="organizationDeleteAction">
+			<result name="redirectSuccess" type="redirect-action">organizationsList</result>
+		</action>
+
+		<action name="organizationEdit" class="organizationEditAction">
+			<result name="input" type="tiles">eirc.organization.edit</result>
+			<result name="redirectSuccess" type="redirect-action">organizationsList</result>
+		</action>
+
+		<!-- Subdivisions -->
+		<action name="subdivisionsList" class="subdivisionsListAction">
+			<result type="tiles">eirc.organization.subdivisions.list</result>
+			<result name="redirectSuccess" type="redirect-action">organizationsList</result>
+		</action>
+
+		<action name="subdivisionDelete" class="subdivisionDeleteAction">
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">subdivisionsList</param>
+				<param name="parse">true</param>
+				<param name="organization.id">${organization.id}</param>
+			</result>
+			<result name="redirectError" type="redirect-action">organizationsList</result>
+		</action>
+
+		<action name="subdivisionEdit" class="subdivisionEditAction">
+			<result name="input" type="tiles">eirc.organization.subdivision.edit</result>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">subdivisionsList</param>
+				<param name="parse">true</param>
+				<param name="organization.id">${headOrganization.id}</param>
+			</result>
+		</action>
+
+		<!-- Banks -->
+		<action name="banksList" class="banksListAction">
+			<result type="tiles">eirc.organization.banks.list</result>
+		</action>
+
+		<action name="bankDelete" class="bankDeleteAction">
+			<result name="redirectSuccess" type="redirect-action">banksList</result>
+		</action>
+
+		<action name="bankEdit" class="bankEditAction">
+			<result name="input" type="tiles">eirc.organization.bank.edit</result>
+			<result name="redirectSuccess" type="redirect-action">banksList</result>
+		</action>
+
+		<!-- Payments Collectors -->
+		<action name="paymentsCollectorsList" class="paymentsCollectorsListAction">
+			<result type="tiles">eirc.organization.payments_collectors.list</result>
+		</action>
+
+		<action name="paymentsCollectorsDelete" class="paymentsCollectorsDeleteAction">
+			<result name="redirectSuccess" type="redirect-action">paymentsCollectorsList</result>
+		</action>
+
+		<action name="paymentsCollectorEdit" class="paymentsCollectorEditAction">
+			<result name="input" type="tiles">eirc.organization.payments_collector.edit</result>
+			<result name="redirectSuccess" type="redirect-action">paymentsCollectorsList</result>
+		</action>
+
+		<!-- Payment points -->
+		<action name="paymentPointsList" class="paymentPointsListAction">
+			<result type="tiles">eirc.organization.payment_points.list</result>
+		</action>
+
+		<action name="paymentPointsDelete" class="paymentPointsDeleteAction">
+			<result name="redirectSuccess" type="redirect-action">paymentPointsList</result>
+		</action>
+
+		<action name="paymentPointEdit" class="paymentPointEditAction">
+			<result name="input" type="tiles">eirc.organization.payment_point.edit</result>
+			<result name="redirectSuccess" type="redirect-action">paymentPointsList</result>
+		</action>
+
+        <!-- Service organizations -->
+        <action name="serviceOrganizationsList" class="serviceOrganizationsListAction">
+            <result type="tiles">eirc.organization.service_organizations.list</result>
+        </action>
+
+        <action name="serviceOrganizationDelete" class="serviceOrganizationDeleteAction">
+            <result name="redirectSuccess" type="redirect-action">serviceOrganizationsList</result>
+        </action>
+
+        <action name="serviceOrganizationEdit" class="serviceOrganizationEditAction">
+            <result name="input" type="tiles">eirc.organization.service_organization.edit</result>
+            <result name="redirectSuccess" type="redirect-action">serviceOrganizationsList</result>
+        </action>
+
+        <action name="serviceOrganizationListServedBuildings" class="serviceOrganizationListServedBuildingsAction">
+            <result type="tiles">eirc.organization.service_organization.list_served_buildings</result>
+        </action>
+
+        <action name="serviceOrganizationAddServedBuilding" class="serviceOrganizationAddServedBuildingAction">
+            <result name="input" type="tiles">eirc.organization.service_organization.add_served_building</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">serviceOrganizationListServedBuildings</param>
+                <param name="parse">true</param>
+                <param name="serviceOrganization.id">${serviceOrganization.id}</param>
+            </result>
+        </action>
+
+        <action name="serviceOrganizationRemoveServedBuildings" class="serviceOrganizationRemoveServedBuildingsAction">
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">serviceOrganizationListServedBuildings</param>
+                <param name="parse">true</param>
+                <param name="serviceOrganization.id">${serviceOrganization.id}</param>
+            </result>
+        </action>
+
+	</package>
+
+</struts>

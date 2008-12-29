@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay-deploy">
+
+	<import file="sz/sz_build.xml" />
+	<import file="ab_sync/ab_sync_build.xml" />
+
+	<target name="sz.deploy.sjsas" depends="sz.war.production.glassfish_mysql5">
+		<antcall target="template.deploy.sjsas">
+			<param name="application_archive" value="${distr.dir}/${sz.war.name}" />
+		</antcall>
+	</target>
+
+	<target name="ab.deploy.sjsas" depends="ab.war.production.glassfish_mysql5">
+		<antcall target="ab.deploy.sjsas.nobuild" />
+	</target>
+
+	<target name="ab.deploy.sjsas.nobuild">
+		<antcall target="template.deploy.sjsas">
+			<param name="application_archive" value="${distr.dir}/${ab.war.name}" />
+		</antcall>
+	</target>
+
+	<target name="ab_sync.deploy.sjsas" depends="ab_sync.war.production.glassfish_mysql5">
+		<antcall target="ab_sync.deploy.sjsas.nobuild" />
+	</target>
+
+	<target name="ab_sync.deploy.sjsas.nobuild">
+		<antcall target="template.deploy.sjsas">
+			<param name="application_archive" value="${distr.dir}/${ab_sync.war.name}" />
+		</antcall>
+	</target>
+
+	<target name="eirc.deploy.sjsas" depends="eirc.war.production.glassfish_mysql5">
+		<antcall target="eirc.deploy.sjsas.nobuild" />
+	</target>
+
+	<target name="eirc.deploy.sjsas.nobuild">
+		<antcall target="template.deploy.sjsas">
+			<param name="application_archive" value="${distr.dir}/${eirc.war.name}" />
+		</antcall>
+	</target>
+
+	<taskdef name="sun-appserv-deploy"
+			 classname="org.apache.tools.ant.taskdefs.optional.sun.appserv.DeployTask"
+			 classpath="${sjsas.root}/lib/sun-appserv-ant.jar" />
+
+	<target name="template.deploy.sjsas">
+		<sun-appserv-deploy user="${sjsas.username}" passwordfile="${sjsas.password.file}" upload="false"
+							file="${application_archive}" asinstalldir="${sjsas.root}" />
+	</target>
+
+	<target name="template.deploy.exploded.sjsas">
+		<sun-appserv-deploy user="${sjsas.username}" passwordfile="${sjsas.password.file}" upload="false"
+							file="${application_archive}" asinstalldir="${sjsas.root}" />
+	</target>
+
+
+</project>

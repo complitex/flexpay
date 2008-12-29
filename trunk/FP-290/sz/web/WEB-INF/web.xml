@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+		 version="2.5">
+    <!--ab-->
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>FlexPay SZ Module</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+            /WEB-INF/applicationContext.xml
+            /WEB-INF/applicationContext-security.xml
+        </param-value>
+	</context-param>
+
+	<!--
+		- Location of the Log4J config file, for initialization and refresh checks.
+		- Applied by Log4jConfigListener.
+	-->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/common/configs/log4j.xml</param-value>
+	</context-param>
+	<context-param>
+		<param-name>definitions-config</param-name>
+		<param-value>
+            /WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/eirc/configs/tiles_eirc.xml,/WEB-INF/sz/configs/tiles_sz.xml
+        </param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+    <listener>
+        <listener-class>org.springframework.security.ui.session.HttpSessionEventPublisher</listener-class>
+    </listener>
+
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+	<filter>
+		<filter-name>actionFilter</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+        <init-param>
+			<param-name>config</param-name>
+			<param-value>struts-default.xml,struts-plugin.xml,org/flexpay/common/common_struts_config.xml,org/flexpay/ab/ab_struts_config.xml,org/flexpay/eirc/struts_config.xml,org/flexpay/sz/struts_config.xml</param-value>
+		</init-param>
+    </filter>
+	<filter-mapping>
+		<filter-name>actionFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+	
+	<servlet>
+        <servlet-name>szFileDownloadServlet</servlet-name>
+        <servlet-class>org.flexpay.sz.actions.SzFileDownloadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>szFileDownloadServlet</servlet-name>
+        <url-pattern>/szFileDownloadServlet</url-pattern>
+    </servlet-mapping>
+
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>secure-resource</web-resource-name>
+            <url-pattern>*.action</url-pattern>
+            <http-method>POST</http-method>
+            <http-method>GET</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+
+    </security-constraint>
+
+
+	<security-role>
+		<role-name>ROLE_BASIC</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_COMMON_PROCESS_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_COMMON_PROCESS_DELETE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_COMMON_PROCESS_DEFINITION_UPLOAD_NEW</role-name>
+	</security-role>
+
+	<!-- Country roles -->
+	<security-role>
+		<role-name>ROLE_AB_COUNTRY_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_COUNTRY_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_COUNTRY_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_COUNTRY_DELETE</role-name>
+	</security-role>
+	<!-- Region roles -->
+	<security-role>
+		<role-name>ROLE_AB_REGION_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_REGION_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_REGION_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_REGION_DELETE</role-name>
+	</security-role>
+	<!-- Town roles -->
+	<security-role>
+		<role-name>ROLE_AB_TOWN_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_TOWN_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_TOWN_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_TOWN_DELETE</role-name>
+	</security-role>
+	<!-- Town type roles -->
+	<security-role>
+		<role-name>ROLE_AB_TOWN_TYPE_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_TOWN_TYPE_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_TOWN_TYPE_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_TOWN_TYPE_DELETE</role-name>
+	</security-role>
+	<!-- District roles -->
+	<security-role>
+		<role-name>ROLE_AB_DISTRICT_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_DISTRICT_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_DISTRICT_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_DISTRICT_DELETE</role-name>
+	</security-role>
+	<!-- Street roles -->
+	<security-role>
+		<role-name>ROLE_AB_STREET_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_STREET_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_STREET_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_STREET_DELETE</role-name>
+	</security-role>
+	<!-- Street type roles -->
+	<security-role>
+		<role-name>ROLE_AB_STREET_TYPE_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_STREET_TYPE_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_STREET_TYPE_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_STREET_TYPE_DELETE</role-name>
+	</security-role>
+	<!-- Building attribute type roles -->
+	<security-role>
+		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_BUILDING_ATTRIBUTE_TYPE_DELETE</role-name>
+	</security-role>
+	<!-- Building roles -->
+	<security-role>
+		<role-name>ROLE_AB_BUILDING_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_BUILDING_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_BUILDING_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_BUILDING_DELETE</role-name>
+	</security-role>
+	<!-- Apartment roles -->
+	<security-role>
+		<role-name>ROLE_AB_APARTMENT_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_APARTMENT_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_APARTMENT_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_APARTMENT_DELETE</role-name>
+	</security-role>
+	<!-- Identity type roles -->
+	<security-role>
+		<role-name>ROLE_AB_IDENTITY_TYPE_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_IDENTITY_TYPE_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_IDENTITY_TYPE_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_IDENTITY_TYPE_DELETE</role-name>
+	</security-role>
+	<!-- Identity roles -->
+	<security-role>
+		<role-name>ROLE_AB_IDENTITY_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_IDENTITY_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_IDENTITY_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_IDENTITY_DELETE</role-name>
+	</security-role>
+	<!-- Person roles -->
+	<security-role>
+		<role-name>ROLE_AB_PERSON_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_PERSON_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_PERSON_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_AB_PERSON_DELETE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_EIRC_ORGANIZATION_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_ORGANIZATION_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_ORGANIZATION_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_ORGANIZATION_DELETE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_EIRC_BANK_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_BANK_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_BANK_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_BANK_DELETE</role-name>
+	</security-role>
+
+    <security-role>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_DELETE</role-name>
+    </security-role>
+
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_PROVIDER_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_PROVIDER_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_PROVIDER_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_PROVIDER_DELETE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_EIRC_ACCOUNT_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_ACCOUNT_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_ACCOUNT_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_ACCOUNT_DELETE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_DELETE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_TYPE_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_TYPE_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_TYPE_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_TYPE_DELETE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_EIRC_FILE_UPLOAD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_FILE_IMPORT</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_REGISTRY_PROCESS</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_REGISTRY_SET_CORRESPONDENCE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_EIRC_QUITTANCE_CREATE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_QUITTANCE_CREATE_PRINT_FILE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_QUITTANCE_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_QUITTANCE_RECEIVE</role-name>
+	</security-role>
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/resources/common/jsp/login.jsp</form-login-page>
+            <form-error-page>/resources/common/jsp/login.jsp</form-error-page>
+        </form-login-config>
+    </login-config>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/resources/common/jsp/forbidden.jsp</location>
+    </error-page>
+
+    <welcome-file-list>
+		<welcome-file>/resources/sz/jsp/index.jsp</welcome-file>
+	</welcome-file-list>
+
+</web-app>

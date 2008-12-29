@@ -1,0 +1,33 @@
+<!DOCTYPE tiles-definitions PUBLIC
+		"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+    <definition name="sz.dictionaries" extends="ab.layout.standart">
+        <put-attribute name="title" value="sz.menu2.dictionaries" />
+        <put-attribute name="menu1" value="/WEB-INF/sz/jsp/menu/menu1.jsp" />
+        <put-attribute name="menu2" value="/WEB-INF/sz/jsp/menu/menu2.jsp" />
+        <put-attribute name="menu34" value="/WEB-INF/sz/jsp/menu/menu34_dictionaries.jsp" />
+    </definition>
+    <definition name="sz.import" extends="sz.dictionaries">
+        <put-attribute name="title" value="sz.menu2.import" />
+        <put-attribute name="menu34" value="/WEB-INF/sz/jsp/menu/menu34_import.jsp" />
+    </definition>
+    <definition name="sz.processing" extends="sz.dictionaries">
+        <put-attribute name="title" value="sz.menu2.processing" />
+        <put-attribute name="menu34" value="/WEB-INF/sz/jsp/menu/menu34_processing.jsp" />
+    </definition>
+
+    <definition name="sz.import.file.upload.form" extends="sz.import">
+        <put-attribute name="body" value="/WEB-INF/sz/jsp/upload_file.jsp" />
+    </definition>
+    <definition name="sz.import.file.upload.oszn_absent" extends="sz.import.file.upload.form">
+        <put-attribute name="body" value="/WEB-INF/sz/jsp/upload_file_oszn_absent.jsp" />
+    </definition>
+
+    <definition name="sz.import_file.list" extends="sz.dictionaries">
+        <put-attribute name="body" value="/WEB-INF/sz/jsp/import_file_list.jsp" />
+    </definition>
+
+</tiles-definitions>

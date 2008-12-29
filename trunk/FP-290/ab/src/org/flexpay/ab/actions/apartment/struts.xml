@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<package name="apartments" namespace="/dicts" extends="common">
+
+		<action name="apartmentsList" class="apartmentsListAction">
+			<result type="tiles">ab.apartment.list</result>
+		</action>
+
+		<action name="apartmentEdit" class="apartmentEditAction">
+			<result name="input" type="tiles">ab.apartment.edit</result>
+			<result name="redirectSuccess" type="redirect-action">apartmentsList</result>
+		</action>
+
+		<action name="apartmentDelete" class="apartmentDeleteAction">
+			<result name="redirectSuccess" type="redirect-action">apartmentsList</result>
+		</action>
+
+		<action name="apartmentRegistration" class="apartmentRegistrationAction">
+			<result name="success" type="tiles">ab.apartment.registrations</result>
+		</action>
+
+		<action name="apartmentRegistrationsHistory" class="apartmentRegistrationAction">
+			<result name="success" type="tiles">ab.apartment.registrations_history</result>
+		</action>
+
+	</package>
+
+</struts>

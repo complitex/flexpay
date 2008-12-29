@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+	       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean id="sequenceService" class="org.flexpay.common.service.imp.SequenceServiceImpl"
+		  p:sequenceDao-ref="sequenceDao" />
+
+	<bean id="importErrorSupport"
+		  class="org.flexpay.common.service.importexport.ImportErrorsSupport" />
+
+	<bean class="org.flexpay.common.service.importexport.imp.ImportErrorServiceImpl"
+		  abstract="true" id="importErrorServiceTemplate"
+		  p:errorDao-ref="importErrorDao" />
+
+	<bean class="org.flexpay.common.service.imp.LanguageServiceImpl" id="languageServiceTarget"
+		  p:languageDao-ref="languageDAO" />
+
+    <bean class="org.flexpay.common.service.imp.FPFileServiceImpl" id="fpFileService"
+          p:fpFileDao-ref="fpFileDao"
+          p:fpFileStatusDao-ref="fpFileStatusDao"
+          p:fpFileTypeDao-ref="fpFileTypeDao"
+          p:fpModuleDao-ref="fpModuleDao" />
+
+	<bean class="org.flexpay.common.service.imp.MeasureUnitServiceImpl" id="measureUnitServiceTarget"
+		  p:measureUnitDao-ref="measureUnitDao" />
+
+	<bean class="org.flexpay.common.service.internal.SessionUtils" id="sessionUtils"
+		  p:hibernateTemplate-ref="hibernateTemplate" />
+
+	<bean class="org.flexpay.common.service.reporting.ReportUtil" id="reportUtil"
+		  p:sessionFactory-ref="flexpaySessionFactory"
+		  p:dataSource-ref="dataSource" />
+
+	<bean class="org.flexpay.common.process.ProcessHelper" id="processHelper"
+		  p:processManager-ref="processManager" />
+
+</beans>

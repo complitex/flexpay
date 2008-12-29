@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flexpay>
+
+	<!--
+	 	WARN! default names just a reference, check ids with your data base
+		TODO: implement find by name lookup
+	-->
+	<organization id="1">Единый информационный центр</organization>
+	
+	<eircDataRoot>/eirc</eircDataRoot> <!-- задаётся относительно dataRoot -->
+	<eircId>090</eircId> <!-- должен состоять из цифр -->
+
+	<!-- Code of kvarplata service type -->
+	<eirc-main-service-code>1</eirc-main-service-code>
+</flexpay>
