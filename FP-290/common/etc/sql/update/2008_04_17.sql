@@ -1,1 +1,0 @@
-ALTER TABLE common_import_errors_tbl ADD COLUMN error_key VARCHAR(255);
