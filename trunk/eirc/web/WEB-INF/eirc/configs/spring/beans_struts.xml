@@ -9,26 +9,24 @@
 	<bean id="spFileCreateAction" class="org.flexpay.eirc.actions.SpFileCreateAction"
 		  scope="prototype" />
 
-    <bean id="spFileUploadAjaxAction" class="org.flexpay.eirc.actions.UploadFileAction"
-          p:fpFileService-ref="fpFileService"
-          p:moduleName="${flexpay.module.name}"
-          scope="prototype" />
-
-	<bean id="spFilesListAction" class="org.flexpay.eirc.actions.SpFilesListAction"
-          p:fpFileService-ref="fpFileService"
-          p:registryFileService-ref="registryFileService"
-          p:moduleName="${flexpay.module.name}"
+	<bean id="spFileUploadAjaxAction" class="org.flexpay.eirc.actions.UploadFileAction"
+		  p:fpFileService-ref="fpFileService"
+		  p:moduleName="${flexpay.module.name}"
 		  scope="prototype" />
 
-	<bean id="spFileAction" class="org.flexpay.eirc.actions.SpFileAction"
-		  scope="prototype">
-		<property name="processManager" ref="processManager" />
-	</bean>
+	<bean id="spFilesListAction" class="org.flexpay.eirc.actions.SpFilesListAction"
+		  p:fpFileService-ref="fpFileService"
+		  p:registryFileService-ref="registryFileService"
+		  p:moduleName="${flexpay.module.name}"
+		  scope="prototype" />
 
-	<bean id="buildingAjaxAction" class="org.flexpay.eirc.actions.BuildingAjaxAction"
-		  scope="prototype">
-		<property name="buildingService" ref="buildingService" />
-	</bean>
+	<bean id="spFileAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.SpFileAction"
+		  p:processManager-ref="processManager" />
+
+	<bean id="buildingAjaxAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.BuildingAjaxAction"
+		  p:buildingService-ref="buildingService" />
 
 	<bean id="quittanceGenerateAction"
 		  class="org.flexpay.eirc.actions.quittance.QuittanceGenerateAction"
@@ -51,16 +49,23 @@
 		  class="org.flexpay.eirc.actions.quittance.QuittancePayFormAction"
 		  scope="prototype" />
 
-	<bean id="quittancePayAction"
-		  class="org.flexpay.eirc.actions.quittance.QuittancePayAction"
-		  scope="prototype" />
+	<!-- Quittance packets -->
+	<bean id="quittancePacketsListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.quittance.QuittancePacketListAction"
+		  p:quittancePacketService-ref="quittancePacketService" />
 
+	<bean id="quittancePacketEditAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.quittance.QuittancePacketEditAction"
+		  p:paymentPointHelper-ref="paymentPointHelper"
+		  p:paymentPointService-ref="paymentPointService"
+		  p:quittancePacketService-ref="quittancePacketService" />
+
+	<!-- Registries -->
 	<bean id="registriesListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.RegistriesListAction">
-		<property name="registryService" ref="registryService" />
-		<property name="organizationService" ref="organizationService" />
-		<property name="registryTypeService" ref="registryTypeService" />
-	</bean>
+		  class="org.flexpay.eirc.actions.registry.RegistriesListAction"
+		  p:registryService-ref="registryService"
+		  p:organizationService-ref="organizationService"
+		  p:registryTypeService-ref="registryTypeService" />
 
 	<bean id="registriesProcessAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.RegistriesProcessAction"
@@ -94,6 +99,10 @@
 	<bean id="organizationHelper" scope="prototype"
 		  class="org.flexpay.eirc.actions.organization.OrganizationHelper"
 		  p:organizationService-ref="organizationService" />
+
+	<bean id="paymentPointHelper" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.PaymentPointHelper"
+		  p:paymentPointService-ref="paymentPointService" />
 
 	<!-- Bank actions -->
 	<bean id="banksListAction" scope="prototype"
@@ -141,34 +150,34 @@
 		  p:paymentPointService-ref="paymentPointService"
 		  p:paymentsCollectorService-ref="paymentsCollectorService" />
 
-    <!-- Service organization actions -->
-    <bean id="serviceOrganizationsListAction" scope="prototype"
-          class="org.flexpay.eirc.actions.organization.ServiceOrganizationsListAction"
-          p:serviceOrganizationService-ref="serviceOrganizationService" />
+	<!-- Service organization actions -->
+	<bean id="serviceOrganizationsListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationsListAction"
+		  p:serviceOrganizationService-ref="serviceOrganizationService" />
 
-    <bean id="serviceOrganizationDeleteAction" scope="prototype"
-          class="org.flexpay.eirc.actions.organization.ServiceOrganizationDeleteAction"
-          p:serviceOrganizationService-ref="serviceOrganizationService" />
+	<bean id="serviceOrganizationDeleteAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationDeleteAction"
+		  p:serviceOrganizationService-ref="serviceOrganizationService" />
 
-    <bean id="serviceOrganizationEditAction" scope="prototype"
-          class="org.flexpay.eirc.actions.organization.ServiceOrganizationEditAction"
-          p:organizationService-ref="organizationService"
-          p:serviceOrganizationService-ref="serviceOrganizationService" />
+	<bean id="serviceOrganizationEditAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationEditAction"
+		  p:organizationService-ref="organizationService"
+		  p:serviceOrganizationService-ref="serviceOrganizationService" />
 
-    <bean id="serviceOrganizationListServedBuildingsAction" scope="prototype"
-          class="org.flexpay.eirc.actions.organization.ServiceOrganizationListServedBuildingsAction"
-          p:serviceOrganizationService-ref="serviceOrganizationService"
-          p:addressService-ref="addressService" />
+	<bean id="serviceOrganizationListServedBuildingsAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationListServedBuildingsAction"
+		  p:serviceOrganizationService-ref="serviceOrganizationService"
+		  p:addressService-ref="addressService" />
 
-    <bean id="serviceOrganizationAddServedBuildingAction" scope="prototype"
-          class="org.flexpay.eirc.actions.organization.ServiceOrganizationAddServedBuildingAction"
-          p:parentService-ref="streetService"
-          p:buildingService-ref="buildingService"
-          p:serviceOrganizationService-ref="serviceOrganizationService" />
+	<bean id="serviceOrganizationAddServedBuildingAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationAddServedBuildingAction"
+		  p:parentService-ref="streetService"
+		  p:buildingService-ref="buildingService"
+		  p:serviceOrganizationService-ref="serviceOrganizationService" />
 
-    <bean id="serviceOrganizationRemoveServedBuildingsAction" scope="prototype"
-          class="org.flexpay.eirc.actions.organization.ServiceOrganizationRemoveServedBuildingsAction"
-          p:serviceOrganizationService-ref="serviceOrganizationService" />
+	<bean id="serviceOrganizationRemoveServedBuildingsAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationRemoveServedBuildingsAction"
+		  p:serviceOrganizationService-ref="serviceOrganizationService" />
 
 	<!-- Subdivision actions -->
 	<bean id="subdivisionsListAction" scope="prototype"

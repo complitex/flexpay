@@ -111,7 +111,7 @@
 
 	<bean id="organisationInstanceService" class="org.flexpay.eirc.service.imp.OrganisationInstanceServiceImpl"
 		  abstract="true"
-		  p:sessionUtils-ref="sessionUtils"/>
+		  p:sessionUtils-ref="sessionUtils" />
 
 	<bean id="bankService" class="org.flexpay.eirc.service.imp.BankServiceImpl"
 		  parent="organisationInstanceService"
@@ -123,10 +123,10 @@
 		  p:instanceDao-ref="paymentsCollectorDao"
 		  p:collectorDao-ref="paymentsCollectorDao" />
 
-    <bean id="serviceOrganizationService" class="org.flexpay.eirc.service.imp.ServiceOrganizationServiceImpl"
-          p:sessionUtils-ref="sessionUtils"
-          p:serviceOrganizationDao-ref="serviceOrganizationDao"
-          p:servedBuildingDao-ref="servedBuildingDao" />
+	<bean id="serviceOrganizationService" class="org.flexpay.eirc.service.imp.ServiceOrganizationServiceImpl"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:serviceOrganizationDao-ref="serviceOrganizationDao"
+		  p:servedBuildingDao-ref="servedBuildingDao" />
 
 	<bean id="serviceTypeService" class="org.flexpay.eirc.service.imp.ServiceTypeServiceImpl"
 		  p:serviceDaoExt-ref="serviceDaoExt"
@@ -136,6 +136,10 @@
 		  p:quittanceDetailsDao-ref="quittanceDetailsDao"
 		  p:quittanceDaoExt-ref="quittanceDaoExt"
 		  p:quittanceDao-ref="quittanceDao" />
+
+	<bean id="quittancePacketService" class="org.flexpay.eirc.service.imp.QuittancePacketServiceImpl"
+		  p:quittancePacketDaoExt-ref="quittancePacketDaoExt"
+		  p:quittancePacketDao-ref="quittancePacketDao" />
 
 	<bean id="paymentPointService" class="org.flexpay.eirc.service.imp.PaymentPointServiceImpl"
 		  p:paymentPointDao-ref="paymentPointDao" />
