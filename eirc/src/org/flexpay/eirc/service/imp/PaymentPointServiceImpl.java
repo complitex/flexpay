@@ -6,16 +6,20 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.dao.PaymentPointDao;
 import org.flexpay.eirc.persistence.PaymentPoint;
 import org.flexpay.eirc.persistence.PaymentsCollector;
 import org.flexpay.eirc.persistence.filters.PaymentsCollectorFilter;
+import org.flexpay.eirc.persistence.filters.PaymentPointsFilter;
 import org.flexpay.eirc.service.PaymentPointService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.collections.ArrayStack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Set;
@@ -26,10 +30,12 @@ import java.util.Set;
 @Transactional (readOnly = true)
 public class PaymentPointServiceImpl implements PaymentPointService {
 
+	private Logger log = LoggerFactory.getLogger(getClass());
+
 	private PaymentPointDao paymentPointDao;
 
 	/**
-	 * List available payment paints
+	 * List available payment points
 	 *
 	 * @param townStub Town stub to lookup points in
 	 * @param pager	Pager
@@ -41,7 +47,7 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 	}
 
 	/**
-	 * List available payment paints
+	 * List available payment points
 	 *
 	 * @param filters Filters stack
 	 * @param pager   Pager
@@ -157,6 +163,20 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 		if (ex.isNotEmpty()) {
 			throw ex;
 		}
+	}
+
+	/**
+	 * Initialize payment points filter
+	 *
+	 * @param filter PaymentPointsFilter to initialize
+	 * @return filter back
+	 */
+	@NotNull
+	public PaymentPointsFilter initFilter(@NotNull PaymentPointsFilter filter) {
+
+		log.debug("Initializing filter");
+		filter.setPoints(listPoints(CollectionUtils.arrayStack(), new Page<PaymentPoint>(10000, 1)));
+		return filter;
 	}
 
 	public void setPaymentPointDao(PaymentPointDao paymentPointDao) {

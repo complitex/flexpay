@@ -36,7 +36,7 @@ public class ObjectFilter implements Serializable {
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+		return new ToStringBuilder(this)
 				.append("readOnly", readOnly)
 				.toString();
 	}

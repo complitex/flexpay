@@ -19,6 +19,15 @@
 			<result type="tiles">eirc.tickets.print_tickets</result>
 		</action>
 
+		<action name="quittancePacketList" class="quittancePacketsListAction">
+			<result name="success" type="tiles">eirc.quittance.packets_list</result>
+		</action>
+
+		<action name="quittancePacketEdit" class="quittancePacketEditAction">
+			<result name="input" type="tiles">eirc.quittance.packet_edit</result>
+			<result name="redirectSuccess" type="redirect-action">quittancePacketList</result>
+		</action>
+
 		<action name="quittanceSearch" class="quittanceSearchAction">
 			<result name="input" type="tiles">eirc.quittances.find_quittance</result>
 			<result name="redirectSuccess" type="tiles">
@@ -30,10 +39,6 @@
 
 		<action name="quittancePayForm" class="quittancePayFormAction">
 			<result name="input" type="tiles">eirc.tickets.ticket_find</result>
-			<result name="success" type="tiles">eirc.tickets.ticket_pay_form</result>
-		</action>
-
-		<action name="quittancePay" class="quittancePayAction">
 			<result name="success" type="tiles">eirc.tickets.ticket_pay_form</result>
 		</action>
 

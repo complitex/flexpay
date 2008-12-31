@@ -5,6 +5,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.eirc.persistence.PaymentPoint;
+import org.flexpay.eirc.persistence.filters.PaymentPointsFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.apache.commons.collections.ArrayStack;
@@ -15,7 +16,7 @@ import java.util.Set;
 public interface PaymentPointService {
 
 	/**
-	 * List available payment paints
+	 * List available payment points
 	 *
 	 * @param townStub Town stub to lookup points in
 	 * @param pager	Pager
@@ -25,7 +26,7 @@ public interface PaymentPointService {
 	List<PaymentPoint> listPoints(@NotNull Stub<Town> townStub, @NotNull Page<PaymentPoint> pager);
 
 	/**
-	 * List available payment paints
+	 * List available payment points
 	 *
 	 * @param filters Filters stack
 	 * @param pager	Pager
@@ -69,4 +70,13 @@ public interface PaymentPointService {
 	 */
 	@NotNull
 	PaymentPoint update(@NotNull PaymentPoint point) throws FlexPayExceptionContainer;
+
+	/**
+	 * Initialize payment points filter
+	 *
+	 * @param filter PaymentPointsFilter to initialize
+	 * @return filter back
+	 */
+	@NotNull
+	PaymentPointsFilter initFilter(@NotNull PaymentPointsFilter filter);
 }
