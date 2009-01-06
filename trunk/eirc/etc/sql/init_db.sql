@@ -780,9 +780,9 @@ select @quittance_2:=2;
 insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
 	values (@quittance_details_1, @quittance_2);
 
-insert into eirc_quittance_payment_statuses_tbl (id, code, i18n_name)
-	values (1, 1, 'eirc.quittance.payment.status.full');
+insert into eirc_quittance_payment_statuses_tbl (id, version, code, i18n_name)
+	values (1, 1, 1, 'eirc.quittance.payment.status.full');
 select @payment_status_full:=1;
-insert into eirc_quittance_payment_statuses_tbl (id, code, i18n_name)
-	values (2, 2, 'eirc.quittance.payment.status.partially');
+insert into eirc_quittance_payment_statuses_tbl (id, version, code, i18n_name)
+	values (2, 1, 2, 'eirc.quittance.payment.status.partially');
 select @payment_status_full:=2;

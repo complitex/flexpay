@@ -8,4 +8,6 @@
     <import resource="beans-services.xml" />
     <import resource="beans-struts.xml" />
 
+    <import resource="beans-jbpm.xml" />
+
 </beans>

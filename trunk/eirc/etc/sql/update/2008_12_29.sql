@@ -93,11 +93,11 @@ alter table eirc_quittance_payments_tbl
 	foreign key (packet_id)
 	references eirc_quittance_packets_tbl (id);
 
-insert into eirc_quittance_payment_statuses_tbl (id, code, i18n_name)
-	values (1, 1, 'eirc.quittance.payment.status.full');
+insert into eirc_quittance_payment_statuses_tbl (id, version, code, i18n_name)
+	values (1, 1, 1, 'eirc.quittance.payment.status.full');
 select @payment_status_full:=1;
-insert into eirc_quittance_payment_statuses_tbl (id, code, i18n_name)
-	values (2, 2, 'eirc.quittance.payment.status.partially');
+insert into eirc_quittance_payment_statuses_tbl (id, version, code, i18n_name)
+	values (2, 1, 2, 'eirc.quittance.payment.status.partially');
 select @payment_status_full:=2;
 
 

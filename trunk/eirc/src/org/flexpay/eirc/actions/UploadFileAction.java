@@ -48,7 +48,7 @@ public class UploadFileAction implements UserPreferencesAware, SessionAware {
 			spFile.setNameOnServer(fileOnSystem.getName());
 			spFile.setSize(fileOnSystem.length());
 
-			log.debug("Creating RegistryFile: {}", spFile);
+			log.debug("Creating FlexPayFile: {}", spFile);
 			fpFileService.create(spFile);
 			log.info("file uploaded {}", spFile);
 		} catch (Exception e) {

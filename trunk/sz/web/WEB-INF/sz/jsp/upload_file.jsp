@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
 <div id="mainBlock">
@@ -31,6 +32,11 @@
 
     </div>
 
+</div>
+
+<div>
+    <input type="button" value="<s:text name="common.upload" />" class="btn-exit" onclick="submitAll();" />
+    <input type="button" value="<s:text name="add_block" />" class="btn-exit" onclick="addBlock();" />
 </div>
 
 <script type="text/javascript">
@@ -113,10 +119,10 @@
     var xmlHttp = newXMLHttpRequest();
 
     function getProgress(id) {
-      var url = "/sz/common/fileUploadProgress.action";
-      xmlHttp.open("POST", url, true);
-      xmlHttp.onreadystatechange = updatePage(id);
-      xmlHttp.send(null);
+        var url = "/sz/common/fileUploadProgress.action";
+        xmlHttp.open("POST", url, true);
+        xmlHttp.onreadystatechange = updatePage(id);
+        xmlHttp.send(null);
     }
 
     function updatePage(id) {

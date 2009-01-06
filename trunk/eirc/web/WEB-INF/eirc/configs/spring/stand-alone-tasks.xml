@@ -7,7 +7,7 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean class="org.flexpay.eirc.util.standalone.RunSpFileProcessing" id="spFileProcessingRunner"
-          p:moduleName="${flexpay.module.name}"
+          p:moduleName="${flexpay.module.name.eirc}"
 		  p:fileAction-ref="spFileAction"
 		  p:spFileUploadAjaxAction-ref="spFileUploadAjaxAction"
 		  p:fileService-ref="registryFileService"
