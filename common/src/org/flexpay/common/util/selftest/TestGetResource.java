@@ -9,7 +9,7 @@ public class TestGetResource {
 
 	public void doSelfTesting() throws Exception {
 
-		validateResourceAvailable("WEB-INF/common/module.properties");
+		validateResourceAvailable("WEB-INF/common/configs/module.properties");
 		validateResourceAvailable("resources/common/style/fp.css");
 	}
 

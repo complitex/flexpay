@@ -1,6 +1,5 @@
 package org.flexpay.sz.convert;
 
-import com.linuxense.javadbf.DBFException;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.util.FPFileUtil;
@@ -15,7 +14,6 @@ import org.flexpay.sz.service.SzFileService;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Date;
 import java.util.List;
 
@@ -26,79 +24,6 @@ public class SzFileUtil {
 	private static RecordService<ServiceTypeRecord> serviceTypeRecordService;
 
 	private static SzFileService szFileService;
-
-	public static void delete(SzFile szFile) {
-		// delete records
-		try {
-			deleteRecords(szFile);
-		} catch (NotSupportedOperationException e) {
-			// ignore
-		}
-
-		// delete response file
-		if (szFile.getFileToDownload() != null) {
-			File responseFile = FPFileUtil.getFileOnServer(szFile.getFileToDownload());
-			responseFile.delete();
-		}
-
-		// delete request file and parent dir if no more files in this dir
-		File requestFile = FPFileUtil.getFileOnServer(szFile.getUploadedFile());
-		requestFile.delete();
-
-		// delete SzFile
-		szFileService.delete(szFile);
-	}
-
-	public static void loadToDb(SzFile szFile) throws FileNotFoundException,
-													  DBFException, NotSupportedOperationException {
-
-		deleteRecords(szFile);
-
-		File file = FPFileUtil.getFileOnServer(szFile.getUploadedFile());
-		Long szFileTypeCode = szFile.getType().getCode();
-		if (SzFile.CHARACTERISTIC_FILE_TYPE.equals(szFileTypeCode)) {
-			CharacteristicDBFInfo dbfInfo = new CharacteristicDBFInfo(file);
-			SzDbfReader<CharacteristicRecord, CharacteristicDBFInfo> reader =
-					new SzDbfReader<CharacteristicRecord, CharacteristicDBFInfo>(dbfInfo, file);
-			try {
-				CharacteristicRecord record;
-				while ((record = reader.read()) != null) {
-					record.setSzFile(szFile);
-					characteristicRecordService.create(record);
-				}
-			} finally {
-				reader.close();
-			}
-		} else if (SzFile.SUBSIDY_FILE_TYPE.equals(szFileTypeCode)) {
-			SubsidyRecordDBFInfo dbfInfo = new SubsidyRecordDBFInfo(file);
-			SzDbfReader<SubsidyRecord, SubsidyRecordDBFInfo> reader =
-					new SzDbfReader<SubsidyRecord, SubsidyRecordDBFInfo>(dbfInfo, file);
-			try {
-				SubsidyRecord record;
-				while ((record = reader.read()) != null) {
-					record.setSzFile(szFile);
-					subsidyRecordService.create(record);
-				}
-			} finally {
-				reader.close();
-			}
-		} else if (SzFile.SRV_TYPES_FILE_TYPE.equals(szFileTypeCode)) {
-			ServiceTypeRecordDBFInfo dbfInfo = new ServiceTypeRecordDBFInfo(file);
-			SzDbfReader<ServiceTypeRecord, ServiceTypeRecordDBFInfo> reader =
-					new SzDbfReader<ServiceTypeRecord, ServiceTypeRecordDBFInfo>(dbfInfo, file);
-			try {
-				ServiceTypeRecord record;
-				while ((record = reader.read()) != null) {
-					record.setSzFile(szFile);
-					serviceTypeRecordService.create(record);
-				}
-			} finally {
-				reader.close();
-			}
-		} else {
-			throw new NotSupportedOperationException();
-		}
-	}
 
 	@SuppressWarnings ({"unchecked"})
 	public static void loadFromDbGeneric(

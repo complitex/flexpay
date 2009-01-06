@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
 	   xsi:schemaLocation="
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- Define struts actions beans -->
+
+    <bean id="propertyConfigurerSz"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:location="/WEB-INF/sz/configs/module.properties"
+          p:fileEncoding="UTF-8"
+          p:ignoreUnresolvablePlaceholders="true" />
 
 	<bean id="importFileAction" class="org.flexpay.sz.actions.ImportFileAction"
           p:osznService-ref="osznService"
@@ -16,7 +23,7 @@
           p:osznService-ref="osznService"
           p:szFileService-ref="szFileService"
           p:fpFileService-ref="fpFileService"
-          p:moduleName="${flexpay.module.name}"
+          p:moduleName="${flexpay.module.name.sz}"
           scope="prototype" />
 
     <bean id="importFilesListAction" class="org.flexpay.sz.actions.ImportFilesListAction"
@@ -25,6 +32,7 @@
 
 	<bean id="loadSzFileToDBAction" class="org.flexpay.sz.actions.LoadToDBAction"
           p:szFileService-ref="szFileService"
+          p:processManager-ref="processManager"
 		  scope="prototype" />
 
 	<bean id="loadSzFileFromDBAction" class="org.flexpay.sz.actions.LoadFromDBAction"

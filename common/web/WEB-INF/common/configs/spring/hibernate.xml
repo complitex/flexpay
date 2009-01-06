@@ -21,10 +21,11 @@
 				<value>/WEB-INF/common/configs/spring/hibernate.properties</value>
 				<value>/WEB-INF/common/configs/spring/app_server.properties</value>
 				<value>/WEB-INF/common/configs/spring/managers.properties</value>
-				<value>/WEB-INF/common/module.properties</value>
+				<value>/WEB-INF/common/configs/module.properties</value>
 			</list>
 		</property>
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="fileEncoding" value="UTF-8"/>
 	</bean>
 
 	<!-- Add hibernate statistics capablities -->
@@ -38,7 +39,7 @@
 	<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
 		<property name="beans">
 			<map>
-				<entry key="bean:name=hibernateStatistics${flexpay.module.name}" value-ref="hibernateStatistics" />
+				<entry key="bean:name=hibernateStatistics${flexpay.module.name.common}" value-ref="hibernateStatistics" />
 			</map>
 		</property>
 		<property name="assembler">

@@ -30,4 +30,12 @@
 		<property name="streetCorrectionDao" ref="streetCorrectionDao" />
 	</bean>
 
+    <bean parent="processManager">
+        <property name="definitionPaths">
+            <list>
+                <value>WEB-INF/sz/process</value>
+            </list>
+        </property>
+    </bean>
+
 </beans>
