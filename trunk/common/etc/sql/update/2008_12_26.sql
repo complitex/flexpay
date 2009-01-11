@@ -21,3 +21,5 @@ alter table common_file_types_tbl
     MODIFY COLUMN description varchar(255) COMMENT 'Filetype description',
     add column code bigint not null comment 'Unique filetype code',
     add unique index code using btree(code, module_id);
+
+update common_version_tbl set last_modified_date='2008-12-26', date_version=0;
