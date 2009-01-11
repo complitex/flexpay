@@ -1,6 +1,6 @@
 package org.flexpay.common.persistence.filter;
 
-import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.util.Date;
 
@@ -24,6 +24,6 @@ public class CloseDateFilter extends DateFilterBase {
 	}
 
 	protected Date getEmptyDate() {
-		return DateUtil.now();
+		return ApplicationConfig.getFutureInfinite();
 	}
 }

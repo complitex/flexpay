@@ -11,7 +11,7 @@
 			<td class="col"><s:textfield name="packet.packetNumber" /></td>
 		</tr>
 		<tr valign="middle" class="col">
-			<td class="col"><s:text name="eirc.quittance.packet.create_date"/>:</td>
+			<td class="col"><s:text name="eirc.quittance.packet.creation_date"/>:</td>
 			<td class="col"><%@include file="/WEB-INF/jsp/common/filter/create_date_filter.jsp" %></td>
 		</tr>
 		<tr valign="middle" class="col">
@@ -28,7 +28,7 @@
 		</tr>
 		<tr valign="middle" class="col">
 			<td class="col"><s:text name="eirc.quittance.packet.control_quittances_number"/>:</td>
-			<td class="col"><s:textfield name="packet.controlQuittancesNumber" /></td>
+			<td class="col"><s:textfield name="packet.controlQuittanciesNumber" /></td>
 		</tr>
 		<tr valign="middle" class="col">
 			<td class="col"><s:text name="eirc.quittance.packet.control_overall_summ"/>:</td>
@@ -37,8 +37,8 @@
 		<tr valign="middle" class="col">
 			<td class="col"><s:text name="eirc.quittance.packet.quittances_number"/>:</td>
 			<td class="col">
-				<s:hidden name="packet.quittancesNumber" />
-				<s:property value="packet.quittancesNumber" /></td>
+				<s:hidden name="packet.quittanciesNumber" />
+				<s:property value="packet.quittanciesNumber" /></td>
 		</tr>
 		<tr valign="middle" class="col">
 			<td class="col"><s:text name="eirc.quittance.packet.overall_summ"/>:</td>
@@ -47,16 +47,16 @@
 				<s:property value="packet.overallSumm" /></td>
 		</tr>
 		<tr valign="middle" class="col">
-			<td class="col"><s:text name="eirc.quittance.packet.creator_user"/>:</td>
+			<td class="col"><s:text name="eirc.quittance.packet.opener_user"/>:</td>
 			<td class="col">
-				<s:hidden name="packet.creatorUser" />
-				<s:property value="packet.creatorUser" /></td>
+				<s:hidden name="packet.creatorUserName" />
+				<s:property value="packet.creatorUserName" /></td>
 		</tr>
 		<tr valign="middle" class="col">
 			<td class="col"><s:text name="eirc.quittance.packet.closer_user"/>:</td>
 			<td class="col">
-				<s:hidden name="packet.closerUser" />
-				<s:property value="packet.closerUser" /></td>
+				<s:hidden name="packet.closerUserName" />
+				<s:property value="packet.closerUserName" /></td>
 		</tr>
 		<tr valign="middle">
 			<td colspan="2"><input type="submit" class="btn-exit" name="submitted"

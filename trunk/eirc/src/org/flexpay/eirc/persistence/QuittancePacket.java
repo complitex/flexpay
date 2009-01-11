@@ -1,7 +1,9 @@
 package org.flexpay.eirc.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
@@ -13,13 +15,13 @@ public class QuittancePacket extends DomainObjectWithStatus {
 
 	private Long packetNumber;
 	private Date creationDate;
-	private Date beginDate;
-	private Date closeDate;
+	private Date beginDate = ApplicationConfig.getFutureInfinite();
+	private Date closeDate = ApplicationConfig.getFutureInfinite();
 	private PaymentPoint paymentPoint;
 	private Integer controlQuittanciesNumber;
 	private BigDecimal controlOverallSumm;
-	private Integer quittanciesNumber;
-	private BigDecimal overallSumm;
+	private Integer quittanciesNumber = 0;
+	private BigDecimal overallSumm = BigDecimal.ZERO;
 	private String creatorUserName;
 	private String closerUserName;
 
@@ -133,5 +135,22 @@ public class QuittancePacket extends DomainObjectWithStatus {
 
 	public void setPayments(Set<QuittancePayment> payments) {
 		this.payments = payments;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).
+				append("packetNumber", packetNumber).
+				append("creationDate", creationDate).
+				append("beginDate", beginDate).
+				append("closeDate", closeDate).
+				append("paymentPoint", paymentPoint).
+				append("controlQuittanciesNumber", controlQuittanciesNumber).
+				append("controlOverallSumm", controlOverallSumm).
+				append("quittanciesNumber", quittanciesNumber).
+				append("overallSumm", overallSumm).
+				append("creatorUserName", creatorUserName).
+				append("closerUserName", closerUserName).
+				toString();
 	}
 }

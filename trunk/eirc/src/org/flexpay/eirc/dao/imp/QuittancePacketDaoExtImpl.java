@@ -9,10 +9,15 @@ import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.dao.support.DataAccessUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class QuittancePacketDaoExtImpl extends HibernateDaoSupport implements QuittancePacketDaoExt {
+
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	@NotNull
 	@SuppressWarnings ({"unchecked"})
@@ -36,5 +41,18 @@ public class QuittancePacketDaoExtImpl extends HibernateDaoSupport implements Qu
 						.list();
 			}
 		});
+	}
+
+	@NotNull
+	public Long nextPacketNumber() {
+		Object[] result = (Object[]) DataAccessUtils.uniqueResult(
+				getHibernateTemplate().findByNamedQuery("QuittancePacket.nextPacketNumber"));
+
+		log.debug("Next packet result: {}, {}", result);
+
+		Long maxId = result[0] == null ? 0L : (Long) result[0];
+		Long maxNumber = result[1] == null ? 0L : (Long) result[1];
+
+		return maxId.compareTo(maxNumber) > 0 ? maxId + 1L : maxNumber + 1L;
 	}
 }

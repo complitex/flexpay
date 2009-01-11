@@ -11,4 +11,7 @@ public interface QuittancePacketDaoExt {
 
 	@NotNull
 	List<QuittancePacket> findPackets(ArrayStack filters, Page<QuittancePacket> pager);
+
+	@NotNull
+	Long nextPacketNumber();
 }

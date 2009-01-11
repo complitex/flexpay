@@ -9,10 +9,12 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.dao.paging.Page;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.security.context.SecurityContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.commons.collections.ArrayStack;
@@ -51,6 +53,16 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 	}
 
 	/**
+	 * Suggest new quittance packet number
+	 *
+	 * @return new packet number
+	 */
+	@NotNull
+	public Long suggestPacketNumber() {
+		return quittancePacketDaoExt.nextPacketNumber();
+	}
+
+	/**
 	 * Create a new Quittance packet
 	 *
 	 * @param packet QuittancePacket to create
@@ -63,6 +75,8 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 	public QuittancePacket create(@NotNull QuittancePacket packet) throws FlexPayExceptionContainer {
 		validate(packet);
 
+		packet.setCreatorUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+		packet.setCloserUserName("");
 		log.debug("Creating a new packet {}", packet);
 
 		quittancePacketDao.create(packet);
@@ -92,8 +106,22 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 	private void validate(QuittancePacket packet) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
 
+		QuittancePacket persistent = packet.isNotNew() ? read(stub(packet)) : null;
+
 		Date creationDate = packet.getCreationDate();
-		if (creationDate == null || creationDate.before(DateUtil.now())) {
+		if (creationDate == null) {
+			ex.addException(new FlexPayException(
+					"Invalid creation date", "eirc.error.quittance.packet.invalid_creation_date"));
+		}
+		if (creationDate != null && packet.isNew() && creationDate.before(DateUtil.now())) {
+			ex.addException(new FlexPayException(
+					"Invalid creation date", "eirc.error.quittance.packet.invalid_creation_date"));
+		}
+		if (creationDate != null && packet.isNew() && creationDate.before(DateUtil.now())) {
+			ex.addException(new FlexPayException(
+					"Invalid creation date", "eirc.error.quittance.packet.invalid_creation_date"));
+		}
+		if (creationDate != null && persistent != null && creationDate.before(persistent.getCreationDate())) {
 			ex.addException(new FlexPayException(
 					"Invalid creation date", "eirc.error.quittance.packet.invalid_creation_date"));
 		}

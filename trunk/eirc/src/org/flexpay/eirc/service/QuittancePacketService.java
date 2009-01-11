@@ -48,4 +48,12 @@ public interface QuittancePacketService {
 	 */
 	@NotNull
 	List<QuittancePacket> listPackets(ArrayStack filters, Page<QuittancePacket> pager);
+
+	/**
+	 * Suggest new quittance packet number
+	 *
+	 * @return new packet number
+	 */
+	@NotNull
+	Long suggestPacketNumber();
 }

@@ -22,6 +22,7 @@ public class PaymentPointEditAction extends FPActionSupport {
 
 	public PaymentPointEditAction() {
 		paymentsCollectorFilter.setAllowEmpty(false);
+		paymentsCollectorFilter.setNeedAutoChange(false);
 	}
 
 	/**
