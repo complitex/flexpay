@@ -237,4 +237,9 @@
 		where o.id=?
 	</query>
 
+	<query name="QuittancePacket.nextPacketNumber">
+		select max(id) as maxId, max(packetNumber) as maxPacket 
+		from QuittancePacket
+	</query>
+
 </hibernate-mapping>

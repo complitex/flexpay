@@ -20,11 +20,11 @@
 		</action>
 
 		<action name="quittancePacketList" class="quittancePacketsListAction">
-			<result name="success" type="tiles">eirc.quittance.packets_list</result>
+			<result name="success" type="tiles">eirc.quittances.packets_list</result>
 		</action>
 
 		<action name="quittancePacketEdit" class="quittancePacketEditAction">
-			<result name="input" type="tiles">eirc.quittance.packet_edit</result>
+			<result name="input" type="tiles">eirc.quittances.packet_edit</result>
 			<result name="redirectSuccess" type="redirect-action">quittancePacketList</result>
 		</action>
 

@@ -224,7 +224,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		while (!isStopped()) {
 			try {
 				//write tick-tack message
-				log.debug("Collecting task instances to run.");
+				log.trace("Collecting task instances to run.");
 
 				//find not runningTasks task instances and run
 				execute(new ContextCallback<Void>() {

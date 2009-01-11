@@ -6,6 +6,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.CloseDateFilter;
 import org.flexpay.common.persistence.filter.CreateDateFilter;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.eirc.actions.organization.PaymentPointHelper;
 import org.flexpay.eirc.persistence.PaymentPoint;
 import org.flexpay.eirc.persistence.QuittancePacket;
@@ -26,6 +27,13 @@ public class QuittancePacketEditAction extends FPActionSupport {
 	private CloseDateFilter closeDateFilter = new CloseDateFilter();
 	private PaymentPointsFilter paymentPointsFilter = new PaymentPointsFilter();
 	private QuittancePacket packet = new QuittancePacket();
+
+	public QuittancePacketEditAction() {
+		beginDateFilter.setReadOnly(true);
+		closeDateFilter.setReadOnly(true);
+
+		paymentPointsFilter.setAllowEmpty(false);
+	}
 
 	/**
 	 * Perform action execution.
@@ -50,19 +58,38 @@ public class QuittancePacketEditAction extends FPActionSupport {
 		}
 
 		paymentPointService.initFilter(paymentPointsFilter);
-		paymentPointsFilter.setAllowEmpty(false);
 		if (pckt.isNotNew()) {
 			paymentPointsFilter.setSelectedId(pckt.getPaymentPoint().getId());
 		}
 
-		createDateFilter.setDate(pckt.getCreationDate());
-		beginDateFilter.setDate(pckt.getBeginDate());
-		closeDateFilter.setDate(pckt.getCloseDate());
-
 		if (!isSubmit()) {
+
+			if (pckt.isNew()) {
+				createDateFilter.setDate(DateUtil.now());
+				pckt.setPacketNumber(quittancePacketService.suggestPacketNumber());
+			} else {
+				createDateFilter.setDate(pckt.getCreationDate());
+			}
+
+			beginDateFilter.setDate(pckt.getBeginDate());
+			closeDateFilter.setDate(pckt.getCloseDate());
 			packet = pckt;
 			return INPUT;
 		}
+
+		// setup properties
+		pckt.setPacketNumber(packet.getPacketNumber());
+		pckt.setPaymentPoint(paymentPointService.read(paymentPointsFilter.getSelectedStub()));
+		pckt.setCreationDate(createDateFilter.getDate());
+		pckt.setControlQuittanciesNumber(packet.getControlQuittanciesNumber());
+		pckt.setControlOverallSumm(packet.getControlOverallSumm());
+
+//		pckt.setBeginDate(beginDateFilter.getDate());
+//		pckt.setCloseDate(closeDateFilter.getDate());
+//		pckt.setQuittanciesNumber(packet.getQuittanciesNumber());
+//		pckt.setOverallSumm(packet.getOverallSumm());
+//		pckt.setCreatorUserName(packet.getCreatorUserName());
+//		pckt.setCloserUserName(packet.getCloserUserName());
 
 		if (pckt.isNew()) {
 			quittancePacketService.create(pckt);

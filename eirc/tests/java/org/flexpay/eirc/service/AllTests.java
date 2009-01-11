@@ -11,7 +11,9 @@ import org.junit.runners.Suite;
 		TestBuildingService.class,
 		TestEircAccountService.class,
 		TestSpFileService.class,
-		TestServiceDao.class
+		TestServiceDao.class,
+		TestQuittanceService.class,
+		TestQuittancePacketService.class
 		})
 public class AllTests {
 

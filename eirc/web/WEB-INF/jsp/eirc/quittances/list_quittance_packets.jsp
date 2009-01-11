@@ -26,8 +26,8 @@
 				</td>
 				<td class="col"><s:property value="packetNumber" /></td>
 				<td class="col"><s:date format="yyyy/MM/dd" name="creationDate" /></td>
-				<td class="col"><s:date format="yyyy/MM/dd" name="beginDate" /></td>
-				<td class="col"><s:date format="yyyy/MM/dd" name="closeDate" /></td>
+				<td class="col"><s:property value="%{format(beginDate)}" /></td>
+				<td class="col"><s:property value="%{format(closeDate)}" /></td>
 				<td class="col"><s:property value="controlOverallSumm" /></td>
 				<td class="col"><s:property value="overallSumm" /></td>
 				<td class="col"><a
