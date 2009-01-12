@@ -3,6 +3,7 @@
 
 	<import file="sz/sz_build.xml" />
 	<import file="ab_sync/ab_sync_build.xml" />
+	<import file="tc/tc_build.xml" />
 
 	<target name="sz.deploy.sjsas" depends="sz.war.production.glassfish_mysql5">
 		<antcall target="template.deploy.sjsas">
@@ -27,6 +28,16 @@
 	<target name="ab_sync.deploy.sjsas.nobuild">
 		<antcall target="template.deploy.sjsas">
 			<param name="application_archive" value="${distr.dir}/${ab_sync.war.name}" />
+		</antcall>
+	</target>
+
+	<target name="tc.deploy.sjsas" depends="tc.war.production.glassfish_mysql5">
+		<antcall target="tc.deploy.sjsas.nobuild" />
+	</target>
+
+	<target name="tc.deploy.sjsas.nobuild">
+		<antcall target="template.deploy.sjsas">
+			<param name="application_archive" value="${distr.dir}/${tc.war.name}" />
 		</antcall>
 	</target>
 

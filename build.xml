@@ -2,6 +2,7 @@
 <project name="flexpay" default="build.all">
 
 	<import file="ab_sync/ab_sync_build.xml" />
+	<import file="tc/tc_build.xml" />
 	<import file="sz/sz_build.xml" />
 
 	<target name="build.all" depends="build.ddls,build.docs,build.wars,run.tests" />
@@ -12,6 +13,7 @@
 		<antcall target="sz.war.production.glassfish_mysql5" />
 		<antcall target="eirc.war.production.glassfish_mysql5" />
 		<antcall target="bti.war.production.glassfish_mysql5" />
+		<antcall target="tc.war.production.glassfish_mysql5" />
 		<antcall target="ab_sync.war.production.glassfish_mysql5" />
 		<antcall target="ab.war.production.glassfish_mysql5" />
 	</target>
@@ -22,6 +24,7 @@
 		<antcall target="ab.exportschema.mysql5" />
 		<antcall target="ab_sync.exportschema.mysql5" />
 		<antcall target="bti.exportschema.mysql5" />
+		<antcall target="tc.exportschema.mysql5" />
 		<antcall target="eirc.exportschema.mysql5" />
 		<antcall target="sz.exportschema.mysql5" />
 	</target>
@@ -37,6 +40,9 @@
 		<antcall target="bti.db-test" />
 		<antcall target="bti.runtests" />
 
+		<antcall target="tc.db-test" />
+		<antcall target="tc.runtests" />
+
 		<antcall target="eirc.db-test" />
 		<antcall target="eirc.runtests" />
 
@@ -50,6 +56,7 @@
 		<antcall target="ab.docs" />
 		<antcall target="ab_sync.docs" />
 		<antcall target="bti.docs" />
+		<antcall target="tc.docs" />
 		<antcall target="eirc.docs" />
 		<antcall target="sz.docs" />
 	</target>
