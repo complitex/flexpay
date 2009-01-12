@@ -165,7 +165,7 @@
 		select distinct q
 		from Quittance q
 			inner join q.eircAccount a
-		where a.accountNumber=? and month(q.dateTill)=? and q.orderNumber=? 
+		where a.accountNumber=? and month(q.dateTill)=month(?) and q.orderNumber=? 
 	]]></query>
 
 	<query name="Quittance.readFull"><![CDATA[

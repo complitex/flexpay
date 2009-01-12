@@ -233,6 +233,16 @@
 	<bean id="quittancePacketDaoExt" class="org.flexpay.eirc.dao.imp.QuittancePacketDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
+	<bean id="quittancePaymentDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.eirc.dao.QuittancePaymentDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.eirc.persistence.QuittancePayment" />
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="paymentPointDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.PaymentPointDao" />

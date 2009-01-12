@@ -620,7 +620,7 @@
         creation_date datetime not null comment 'Creation date',
         begin_date datetime comment 'First quittance added date',
         close_date datetime comment 'Packet close date',
-        payment_id bigint not null comment 'Payment point reference',
+        payment_point_id bigint not null comment 'Payment point reference',
         control_quittances_number integer not null comment 'Control quittances number',
         control_overall_summ decimal(19,2) not null comment 'Control overall summ',
         quittances_number integer not null comment 'Inputed quittances number',
@@ -1605,9 +1605,9 @@
         references eirc_consumers_tbl (id);
 
     alter table eirc_quittance_packets_tbl 
-        add index eirc_quittance_packets_tbl_payment_id (payment_id), 
+        add index eirc_quittance_packets_tbl_payment_id (payment_point_id), 
         add constraint eirc_quittance_packets_tbl_payment_id 
-        foreign key (payment_id) 
+        foreign key (payment_point_id) 
         references eirc_payment_points_tbl (id);
 
     alter table eirc_quittance_payments_tbl 

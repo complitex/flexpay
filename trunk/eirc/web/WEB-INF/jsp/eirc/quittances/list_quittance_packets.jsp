@@ -24,7 +24,7 @@
 				<td class="col" width="1%"><input type="checkbox" name="objectIds"
 												  value="<s:property value="%{id}"/>" />
 				</td>
-				<td class="col"><s:property value="packetNumber" /></td>
+				<td class="col"><a href="<s:url action="quittancePacketView"><s:param name="packet.id" value="id"/></s:url>"><s:property value="packetNumber" /></a></td>
 				<td class="col"><s:date format="yyyy/MM/dd" name="creationDate" /></td>
 				<td class="col"><s:property value="%{format(beginDate)}" /></td>
 				<td class="col"><s:property value="%{format(closeDate)}" /></td>

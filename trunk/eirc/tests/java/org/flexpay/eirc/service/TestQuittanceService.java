@@ -1,8 +1,11 @@
 package org.flexpay.eirc.service;
 
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.QuittanceNumberService;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,9 +15,10 @@ public class TestQuittanceService extends SpringBeanAwareTestCase {
 
 	@Autowired
 	private QuittanceService quittanceService;
-
 	@Autowired
 	private QuittanceNumberService quittanceNumberService;
+
+	private static final Stub<Quittance> quittanceStub = new Stub<Quittance>(1L);
 
 	@Test
 	public void testParseNumber() throws Exception {
@@ -27,5 +31,26 @@ public class TestQuittanceService extends SpringBeanAwareTestCase {
 		assertEquals("Invalid number", 1, info.getNumber());
 	}
 
-	// todo test fetch quittance by number
+	@Test
+	public void testGetInvalidQuittanceByNumber() throws Exception {
+		assertNull("Found invalid quittance", quittanceService.findByNumber("09002311489-10/2008-012"));
+	}
+
+	@Test (expected = FlexPayException.class)
+	public void testGetInvalidQuittance() throws Exception {
+		quittanceService.findByNumber("-----------------");
+	}
+
+	@Test
+	public void testGetQuittanceByNumber() throws Exception {
+
+		Quittance q = quittanceService.readFull(quittanceStub);
+		assertNotNull("Not found quittance: " + quittanceStub, q);
+
+		String number = quittanceNumberService.getNumber(q);
+		Quittance qByNumber = quittanceService.findByNumber(number);
+		assertNotNull("Not found valid quittance", qByNumber);
+
+		assertEquals("Found quittance is not same", q, qByNumber);
+	}
 }

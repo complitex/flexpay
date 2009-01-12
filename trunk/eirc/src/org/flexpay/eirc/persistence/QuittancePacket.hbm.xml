@@ -31,6 +31,10 @@
 				<comment>Payments collector reference</comment>
 			</column>
 		</many-to-one>
+		<set name="quittancePackets" inverse="true" cascade="none">
+			<key column="payment_point_id" not-null="true" />
+			<one-to-many class="QuittancePacket" />
+		</set>
 	</class>
 
 	<class name="QuittancePacket" table="eirc_quittance_packets_tbl" optimistic-lock="version">
@@ -70,7 +74,7 @@
 		</property>
 		<many-to-one name="paymentPoint" foreign-key="eirc_quittance_packets_tbl_payment_id"
 					 class="PaymentPoint">
-			<column name="payment_id" not-null="true">
+			<column name="payment_point_id" not-null="true">
 				<comment>Payment point reference</comment>
 			</column>
 		</many-to-one>
@@ -240,6 +244,20 @@
 	<query name="QuittancePacket.nextPacketNumber">
 		select max(id) as maxId, max(packetNumber) as maxPacket 
 		from QuittancePacket
+	</query>
+
+	<query name="QuittancePayment.findPacketPayments.count">
+		select count(*)
+		from QuittancePayment
+		where packet.id=?
+	</query>
+
+	<query name="QuittancePayment.findPacketPayments">
+		from QuittancePayment o
+			left join fetch o.paymentStatus
+			left join fetch o.quittance q
+			left join fetch q.eircAccount 
+		where o.packet.id=?
 	</query>
 
 </hibernate-mapping>

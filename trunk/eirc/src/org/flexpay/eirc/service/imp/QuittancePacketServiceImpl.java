@@ -3,8 +3,10 @@ package org.flexpay.eirc.service.imp;
 import org.flexpay.eirc.service.QuittancePacketService;
 import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.eirc.persistence.PaymentPoint;
+import org.flexpay.eirc.persistence.QuittancePayment;
 import org.flexpay.eirc.dao.QuittancePacketDao;
 import org.flexpay.eirc.dao.QuittancePacketDaoExt;
+import org.flexpay.eirc.dao.QuittancePaymentDao;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.DateUtil;
@@ -29,6 +31,7 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 
 	private QuittancePacketDao quittancePacketDao;
 	private QuittancePacketDaoExt quittancePacketDaoExt;
+	private QuittancePaymentDao quittancePaymentDao;
 
 	/**
 	 * Read full quittance packet details
@@ -60,6 +63,18 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 	@NotNull
 	public Long suggestPacketNumber() {
 		return quittancePacketDaoExt.nextPacketNumber();
+	}
+
+	/**
+	 * List registered quittance payments of a packet
+	 *
+	 * @param stub  Packet stub
+	 * @param pager Page
+	 * @return list of payments
+	 */
+	@NotNull
+	public List<QuittancePayment> listPayments(@NotNull Stub<QuittancePacket> stub, @NotNull Page<QuittancePayment> pager) {
+		return quittancePaymentDao.findPacketPayments(stub.getId(), pager);
 	}
 
 	/**
@@ -160,5 +175,10 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 	@Required
 	public void setQuittancePacketDaoExt(QuittancePacketDaoExt quittancePacketDaoExt) {
 		this.quittancePacketDaoExt = quittancePacketDaoExt;
+	}
+
+	@Required
+	public void setQuittancePaymentDao(QuittancePaymentDao quittancePaymentDao) {
+		this.quittancePaymentDao = quittancePaymentDao;
 	}
 }
