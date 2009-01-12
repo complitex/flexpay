@@ -83,6 +83,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/edit_quittance_packet.jsp" />
 	</definition>
 
+	<definition name="eirc.quittances.packet_view" extends="eirc.quittances">
+		<put-attribute name="title" value="eirc.quittance.packet" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/view_quittance_packet.jsp" />
+	</definition>
+
 	<!-- Organizations -->
 	<definition name="eirc.organizations.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.organizations" />

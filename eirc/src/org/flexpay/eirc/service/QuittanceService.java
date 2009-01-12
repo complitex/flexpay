@@ -32,8 +32,6 @@ public interface QuittanceService {
 	 */
 	void generateForServiceOrganization(Stub<ServiceOrganization> stub, Date dateFrom, Date dateTill);
 
-	String getPayer(Quittance quittance);
-
 	/**
 	 * Get a list of Quittances separated with addresses, used to divide quittances by bulks
 	 *

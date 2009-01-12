@@ -1,6 +1,7 @@
 package org.flexpay.eirc.service;
 
 import org.flexpay.eirc.persistence.QuittancePacket;
+import org.flexpay.eirc.persistence.QuittancePayment;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.dao.paging.Page;
@@ -56,4 +57,14 @@ public interface QuittancePacketService {
 	 */
 	@NotNull
 	Long suggestPacketNumber();
+
+	/**
+	 * List registered quittance payments of a packet
+	 *
+	 * @param stub Packet stub
+	 * @param pager Page
+	 * @return list of payments
+	 */
+	@NotNull
+	List<QuittancePayment> listPayments(@NotNull Stub<QuittancePacket> stub, @NotNull Page<QuittancePayment> pager);
 }

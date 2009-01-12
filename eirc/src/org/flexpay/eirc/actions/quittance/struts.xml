@@ -28,18 +28,28 @@
 			<result name="redirectSuccess" type="redirect-action">quittancePacketList</result>
 		</action>
 
+		<action name="quittancePacketView" class="quittancePacketViewAction">
+			<result name="success" type="tiles">eirc.quittances.packet_view</result>
+			<result name="redirectError" type="redirect-action">quittancePacketList</result>
+		</action>
+
 		<action name="quittanceSearch" class="quittanceSearchAction">
 			<result name="input" type="tiles">eirc.quittances.find_quittance</result>
-			<result name="redirectSuccess" type="tiles">
-				<param name="actionName">quittancePayForm</param>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">quittancePay</param>
 				<param name="parse">true</param>
 				<param name="quittance.id">${quittance.id}</param>
+				<param name="packet.id">${packet.id}</param>
 			</result>
 		</action>
 
-		<action name="quittancePayForm" class="quittancePayFormAction">
-			<result name="input" type="tiles">eirc.tickets.ticket_find</result>
-			<result name="success" type="tiles">eirc.tickets.ticket_pay_form</result>
+		<action name="quittancePay" class="quittancePayAction">
+			<result name="input" type="tiles">eirc.quittances.pay_quittance</result>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">quittancePacketView</param>
+				<param name="parse">true</param>
+				<param name="packet.id">${packet.id}</param>
+			</result>
 		</action>
 
 	</package>

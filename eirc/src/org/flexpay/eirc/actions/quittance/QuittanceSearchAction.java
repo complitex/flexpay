@@ -3,6 +3,7 @@ package org.flexpay.eirc.actions.quittance;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.persistence.QuittancePacket;
 import org.jetbrains.annotations.NotNull;
 import org.apache.commons.lang.StringUtils;
 
@@ -12,6 +13,7 @@ public class QuittanceSearchAction extends FPActionSupport {
 
 	private String quittanceNumber;
 	private Quittance quittance = new Quittance();
+	private QuittancePacket packet = new QuittancePacket();
 
 	/**
 	 * Perform action execution.
@@ -62,6 +64,14 @@ public class QuittanceSearchAction extends FPActionSupport {
 
 	public void setQuittanceNumber(String quittanceNumber) {
 		this.quittanceNumber = quittanceNumber;
+	}
+
+	public QuittancePacket getPacket() {
+		return packet;
+	}
+
+	public void setPacket(QuittancePacket packet) {
+		this.packet = packet;
 	}
 
 	public void setQuittanceService(QuittanceService quittanceService) {

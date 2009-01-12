@@ -1,8 +1,7 @@
 package org.flexpay.eirc.service.imp;
 
-import org.flexpay.ab.persistence.PersonIdentity;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.dao.QuittanceDao;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
@@ -10,13 +9,14 @@ import org.flexpay.eirc.dao.QuittanceDetailsDao;
 import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
-import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.process.QuittanceNumberService;
+import org.flexpay.eirc.service.QuittanceService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.transaction.annotation.Transactional;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -66,25 +66,6 @@ public class QuittanceServiceImpl implements QuittanceService {
 		}
 	}
 
-	public String getPayer(Quittance quittance) {
-		quittance = quittanceDao.read(quittance.getId());
-		PersonIdentity personIdentity = quittance.getEircAccount().getPerson().getPassportIdentity();
-		if (personIdentity == null) {
-			quittance.getEircAccount().getPerson().getForeignPassportIdentity();
-		}
-		if (personIdentity == null) {
-			quittance.getEircAccount().getPerson().getDefaultIdentity();
-		}
-
-		if (personIdentity != null) {
-			return personIdentity.getFirstName() + " "
-				   + personIdentity.getMiddleName() + " "
-				   + personIdentity.getLastName();
-		} else {
-			return null;
-		}
-	}
-
 	@NotNull
 	public List<Quittance> getQuittances(Stub<ServiceOrganization> stub, Date dateFrom, Date dateTill) {
 		return quittanceDao.listQuittancesForPrinting(stub.getId(), dateFrom, dateTill);
@@ -125,18 +106,23 @@ public class QuittanceServiceImpl implements QuittanceService {
 		return quittances.get(0);
 	}
 
-	/**
-	 * @param quittanceDao the quittanceDao to set
-	 */
+	@Required
 	public void setQuittanceDao(QuittanceDao quittanceDao) {
 		this.quittanceDao = quittanceDao;
 	}
 
+	@Required
 	public void setQuittanceDetailsDao(QuittanceDetailsDao quittanceDetailsDao) {
 		this.quittanceDetailsDao = quittanceDetailsDao;
 	}
 
+	@Required
 	public void setQuittanceDaoExt(QuittanceDaoExt quittanceDaoExt) {
 		this.quittanceDaoExt = quittanceDaoExt;
+	}
+
+	@Required
+	public void setQuittanceNumberService(QuittanceNumberService quittanceNumberService) {
+		this.quittanceNumberService = quittanceNumberService;
 	}
 }

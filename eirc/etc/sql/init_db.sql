@@ -218,6 +218,36 @@ INSERT INTO eirc_service_organization_descriptions_tbl (name, language_id, servi
 -- Setup service organization
 update ab_buildings_tbl set eirc_service_organization_id=@service_org_1 where id=@building_ivanova_27_id;
 
+-- Payment collectors
+insert into eirc_payments_collectors_tbl (id, status, version, organization_id)
+	values (1, 0, 0, @organization_cn);
+select @collector_1:=1;
+insert into eirc_payments_collectors_descriptions_tbl (language_id, collector_id, name)
+	values (@ru_id, @collector_1, "Сборщик ЦН");
+insert into eirc_payments_collectors_descriptions_tbl (language_id, collector_id, name)
+	values (@en_id, @collector_1, "Collector CN");
+
+insert into eirc_payments_collectors_tbl (id, status, version, organization_id)
+	values (2, 0, 0, @organization_tszh);
+select @collector_2:=2;
+insert into eirc_payments_collectors_descriptions_tbl (language_id, collector_id, name)
+	values (@ru_id, @collector_2, "Сборщик ТСЖ");
+insert into eirc_payments_collectors_descriptions_tbl (language_id, collector_id, name)
+	values (@en_id, @collector_2, "Collector TSZH");
+
+-- Payment points
+insert into eirc_payment_points_tbl (id, status, version, collector_id, address)
+	values (1, 0, 0, @collector_1, "сборщик ЦН адрес");
+select @payment_point_1:=1;
+insert into eirc_payment_points_tbl (id, status, version, collector_id, address)
+	values (2, 0, 0, @collector_1, "сборщик ЦН #2");
+select @payment_point_2:=2;
+
+insert into eirc_payment_points_tbl (id, status, version, collector_id, address)
+	values (3, 0, 0, @collector_2, "сборщик ТСЖ #1");
+select @payment_point_3:=3;
+
+
 -- Init service types
 INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 12);
 SELECT @service_t_vodosnabzhenie:=last_insert_id();
@@ -786,3 +816,11 @@ select @payment_status_full:=1;
 insert into eirc_quittance_payment_statuses_tbl (id, version, code, i18n_name)
 	values (2, 1, 2, 'eirc.quittance.payment.status.partially');
 select @payment_status_full:=2;
+
+-- Quittance packets
+insert into eirc_quittance_packets_tbl (id, status, version, payment_point_id,
+		creation_date, begin_date, close_date, creator_user_name, closer_user_name,
+		control_quittances_number, control_overall_summ, quittances_number, overall_summ)
+	values (1, 0, 0, @payment_point_1,
+		'2009-01-12', '2100-12-31', '2100-12-31', 'test user', '',
+		2, 123.45, 1, 12.21);
