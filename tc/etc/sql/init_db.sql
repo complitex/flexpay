@@ -1,0 +1,1 @@
+-- Tarif calculation module init data

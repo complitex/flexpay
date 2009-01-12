@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay_tc" basedir=".." default="tc.help">
+
+	<import file="../bti/bti_build.xml" />
+
+	<property file="tc/tc_build.properties" />
+	<property file="bti/bti_build.properties" />
+	<property file="ab/ab_build.properties" />
+	<property file="common/common_build.properties" />
+
+	<property name="tc.dir" value="${basedir}/tc" />
+
+	<path id="tc.lib">
+		<fileset dir="${tc.dir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<fileset id="tc.libraries" dir="${tc.dir}/lib">
+		<include name="**/*" />
+	</fileset>
+
+	<path id="tc.jar" location="${build.dir}/lib/${tc.jar.name}" />
+	<path id="tc.test.jar" location="${build.dir}/lib/${tc.tests.jar.name}" />
+
+	<path id="tc.production.classpath">
+		<path refid="bti.production.classpath" />
+		<path refid="tc.lib" />
+		<path refid="bti.jar" />
+	</path>
+
+	<path id="tc.test.classpath">
+		<path refid="bti.test.classpath" />
+		<path refid="tc.jar" />
+		<path refid="tc.test.jar" />
+		<path refid="tc.production.classpath" />
+	</path>
+
+    <path id="tc.runtests.classpath">
+        <path refid="bti.runtests.classpath" />
+        <path refid="tc.test.classpath" />
+        <path location="${build.dir}/web" />
+        <path location="tc/src" />
+        <path location="${tc.dir}/tests/data" />
+    </path>
+
+	<target name="tc.help" description="Print tc build script options">
+		<echo>
+	tc module build script
+	Usage:
+	ant -f tc_build.xml [target_name [target_options]]
+
+	Available targets are:
+		tc.db - Initialize database
+		tc.exportschema.mysql5 - Generate DDL of module for MySQL5
+		tc.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
+			for example ant -f tc_build.xml tc.runtests -Dtest.class.name=org.flexpay.tc.process.quittance.TestGenerateQuittancesPDFJob
+		tc.runtests.nobuild - Run all module tests but skip build steps (added to speed up development process)
+			same test.class.name option applies to this target
+		tc.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
+		tc.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		</echo>
+	</target>
+
+    <target name="tc.clean.build">
+		<antcall target="clean.build" />
+	</target>
+
+	<property name="tc.src.production" value="${tc.dir}/${src.dir};${bti.src.production}" />
+	<target name="tc.compile.production">
+		<antcall target="template.compile.production">
+			<param name="sources.dir" value="${tc.src.production}" />
+			<reference refid="tc.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<property name="tc.src.test" value="${tc.src.production};${tc.dir}/${tests.src.dir};${bti.src.test}" />
+	<target name="tc.compile.test">
+		<antcall target="template.compile.test">
+			<param name="sources.dir" value="${tc.src.test}" />
+			<reference refid="tc.test.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<!-- Build targets -->
+	<target name="tc.docs" depends="tc.compile.production">
+		<fileset id="tc.docs.resources" dir="${tc.dir}/docs" />
+		<antcall target="template.docs">
+			<param name="sources.dir" value="${tc.src.production}" />
+			<param name="module_name" value="Tarif calculations" />
+			<param name="docs.file" value="${tc.docs.name}" />
+			<reference refid="tc.docs.resources" torefid="resources" />
+			<reference refid="tc.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="tc.war.production.tomcat_mysql5">
+		<antcall target="clean.all" />
+		<antcall target="template.tc.war.production">
+			<param name="app_server.properties" value="app_server_tomcat.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="tc.war.production.glassfish_mysql5">
+		<antcall target="clean.all" />
+		<antcall target="template.tc.war.production">
+			<param name="app_server.properties" value="app_server_glassfish.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+    <target name="tc.prepare.war">
+		<antcall target="tc.prepare.war.internal" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+    <target name="tc.prepare.test.war">
+		<antcall target="tc.prepare.war.internal" />
+		<antcall target="common.test.war.data-source" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+    <target name="tc.prepare.war.internal" depends="tc.compile.production,bti.prepare.war.internal">
+        <fileset id="tc.web.resources" dir="${tc.dir}/web" />
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="" />
+            <param name="src.i18n.dir" value="${build.dir}/empty" />
+            <reference refid="tc.web.resources" torefid="resources" />
+        </antcall>
+
+        <fileset dir="${tc.dir}/${src.dir}" id="tc.classes.resources">
+            <patternset refid="resources_pattern" />
+        </fileset>
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="/WEB-INF/classes" />
+            <param name="src.i18n.dir" value="${tc.dir}/${src.dir}" />
+            <reference refid="tc.classes.resources" torefid="resources" />
+        </antcall>
+    </target>
+
+    <!-- Build production web-archive -->
+	<target name="template.tc.war.production"
+			depends="clean.all,tc.compile.production,tc.prepare.war,init.distr">
+
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+
+		<war destfile="${distr.dir}/${tc.war.name}" needxmlfile="false">
+			<fileset dir="${build.dir}/web" />
+			<lib refid="tc.libraries" />
+		</war>
+
+		<antcall target="common.war.include.libs">
+			<param name="warfile" value="${distr.dir}/${tc.war.name}" />
+		</antcall>
+	</target>
+
+	<target name="tc.exportschema.mysql5" depends="clean.build,tc.compile.production">
+		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+		<antcall target="template.schemaexport">
+			<param name="file_name" value="flexpay_tc.ddl.sql" />
+			<param name="src.dir" value="${tc.src.production}" />
+			<param name="hibernate.cfg"
+				   value="${tc.dir}/web/WEB-INF/hibernate.cfg.xml" />
+			<param name="hibernate.properties"
+				   value="${common.dir}/web/WEB-INF/common/configs/ps/data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="tc.runtests" depends="clean.build,tc.compile.test,tc.prepare.test.war">
+		<antcall target="tc.runtests.nobuild" />
+	</target>
+
+	<target name="tc.runtests.nobuild">
+		<condition property="class.name" value="${test.class.name}" else="org.flexpay.tc.AllTests">
+			<isset property="test.class.name" />
+		</condition>
+		<antcall target="template.run.tests">
+			<param name="test_name" value="${class.name}" />
+			<reference refid="tc.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="tc.run.standalone" depends="tc.prepare.war">
+		<antcall target="template.run.standalone">
+			<reference refid="tc.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="tc.profile.standalone" depends="tc.prepare.war">
+		<antcall target="template.profile.standalone">
+			<reference refid="tc.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="tc.sql.init-db">
+		<antcall target="bti.sql.init-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${tc.dir}/etc/sql/init_db.sql" />
+		</concat>
+	</target>
+
+	<target name="tc.sql.all">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${tc.dir}/etc/sql/flexpay_tc.ddl.sql" />
+		</concat>
+		<antcall target="tc.sql.init-db" />
+	</target>
+
+	<target name="tc.sql.all-test">
+		<antcall target="common.sql.create-test-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${tc.dir}/etc/sql/flexpay_tc.ddl.sql" />
+		</concat>
+		<antcall target="tc.sql.init-db" />
+	</target>
+
+	<target name="tc.db-test" description="create tc test db">
+		<antcall target="tc.sql.all-test" />
+		<antcall target="template.mysql.run">
+			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
+		</antcall>
+	</target>
+
+</project>
