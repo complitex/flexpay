@@ -127,29 +127,33 @@
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/person/struts.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/street/struts.xml</file>
             <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/common_struts_config.xml</file>
-            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/organisation/struts.xml</file>
             <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/serviceprovider/struts.xml</file>
             <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/registry/struts.xml</file>
             <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/service/struts.xml</file>
             <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/processing/struts.xml</file>
             <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/struts_config.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-config-browser-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-sitemesh-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jsf-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-tiles-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jfreechart-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-codebehind-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/xwork-2.0.5.jar!/xwork-default.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-plexus-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-pell-multipart-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-struts1-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-core-2.0.11.2.jar!/struts-default.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-core-2.0.11.2.jar!/struts-portlet-default.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-spring-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
-            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jasperreports-plugin-2.0.11.2.jar!/struts-plugin.xml</file>
             <file>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/struts-plugin.xml</file>
             <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/quittance/struts.xml</file>
             <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/eirc_account/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/organization/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/town/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/measureunit/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/district/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/identity/struts.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-config-browser-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/xwork-2.0.7.jar!/xwork-default.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-codebehind-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-plexus-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-spring-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-tiles-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jasperreports-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jsf-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-sitemesh-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-struts1-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jfreechart-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-core-2.0.14.jar!/struts-default.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-core-2.0.14.jar!/struts-portlet-default.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-pell-multipart-plugin-2.0.14.jar!/struts-plugin.xml</file>
           </fileset>
         </configuration>
       </facet>
