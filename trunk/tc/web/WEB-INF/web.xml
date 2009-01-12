@@ -7,7 +7,7 @@
     <!--ab-->
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>FlexPay BTI module</param-value>
+		<param-value>FlexPay Tarif Calculation  module</param-value>
 	</context-param>
 
 	<context-param>
@@ -25,7 +25,7 @@
 	</context-param>
 	<context-param>
 		<param-name>definitions-config</param-name>
-		<param-value>/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/common/configs/tiles_bti.xml</param-value>
+		<param-value>/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/common/configs/tiles_bti.xml,/WEB-INF/common/configs/tiles_tc.xml</param-value>
 	</context-param>
 
 	<listener>
@@ -271,7 +271,7 @@
     </login-config>
 
     <welcome-file-list>
-		<welcome-file>/bti_index.jsp</welcome-file>
+		<welcome-file>/resources/tc/jsp/index.jsp</welcome-file>
 	</welcome-file-list>
 
 </web-app>

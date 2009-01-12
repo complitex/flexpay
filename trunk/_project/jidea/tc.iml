@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module relativePaths="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset1" name="My Fileset" removed="false">
+          <file>file://$MODULE_DIR$/../../tc/web/WEB-INF/applicationContext.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+    <facet type="hibernate" name="Hibernate">
+      <configuration>
+        <datasource-map>
+          <unit-entry name="flexpay" />
+        </datasource-map>
+        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../tc/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
+      </configuration>
+    </facet>
+    <facet type="web" name="Web">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="sun-web.xml" url="file://$MODULE_DIR$/../../tc/web/WEB-INF/sun-web.xml" optional="false" version="2.5.0" />
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../tc/web/WEB-INF/web.xml" optional="false" version="2.5" />
+        </descriptors>
+        <webroots>
+          <root url="file://$MODULE_DIR$/../../tc/web" relative="/" />
+        </webroots>
+        <building>
+          <setting name="EXPLODED_URL" value="file://" />
+          <setting name="EXPLODED_ENABLED" value="false" />
+          <setting name="JAR_URL" value="file://" />
+          <setting name="JAR_ENABLED" value="false" />
+          <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
+        </building>
+        <packaging>
+          <containerElement type="module" name="tc">
+            <attribute name="method" value="1" />
+            <attribute name="URI" value="/WEB-INF/classes" />
+          </containerElement>
+        </packaging>
+      </configuration>
+      <facet type="Struts2" name="Struts 2">
+        <configuration>
+          <fileset id="s2fileset1" name="My Fileset" removed="false">
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-config-browser-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/xwork-2.0.7.jar!/xwork-default.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-codebehind-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-plexus-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-spring-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-tiles-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jasperreports-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jsf-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-sitemesh-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-struts1-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-core-2.0.14.jar!/struts-default.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-core-2.0.14.jar!/struts-portlet-default.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-jfreechart-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-pell-multipart-plugin-2.0.14.jar!/struts-plugin.xml</file>
+            <file>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/struts-plugin.xml</file>
+            <file>file://$MODULE_DIR$/../../tc/src/org/flexpay/tc/struts_config.xml</file>
+          </fileset>
+        </configuration>
+      </facet>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../tc">
+      <sourceFolder url="file://$MODULE_DIR$/../../tc/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../tc/tests/java" isTestSource="true" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Spring" level="application" />
+    <orderEntry type="library" name="spring2" level="project" />
+    <orderEntry type="library" name="logging" level="project" />
+    <orderEntry type="library" name="hibernate3" level="project" />
+    <orderEntry type="library" name="Commons" level="project" />
+    <orderEntry type="library" name="Jetbrains" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/j2ee.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="bti" />
+    <orderEntry type="module" module-name="ab" />
+    <orderEntry type="module" module-name="common" />
+    <orderEntry type="library" name="Struts2" level="project" />
+  </component>
+</module>
+
