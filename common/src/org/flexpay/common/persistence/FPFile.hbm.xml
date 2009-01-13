@@ -123,7 +123,7 @@
         select distinct f
         from FPFile f
         left join fetch f.module
-        WHERE f.id = ?
+        where f.id = ?
     </query>
 
     <query name="FPFile.listFilesByModuleName">
@@ -146,6 +146,18 @@
     <query name="FPFileStatus.listStatusesByCode">
         from FPFileStatus f
         where f.code = ?
+    </query>
+
+    <query name="FPFileStatus.listStatusesByCodeAndModule">
+        from FPFileStatus f
+        left outer join fetch f.module
+        where f.code = ? and f.module.name = ?
+    </query>
+
+    <query name="FPFileStatus.listTypesByCodeAndModule">
+        from FPFileType f
+        left outer join fetch f.module
+        where f.code = ? and f.module.name = ?
     </query>
 
 </hibernate-mapping>

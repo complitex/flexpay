@@ -1,13 +1,17 @@
 package org.flexpay.sz.service.imp;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.FPFileStatus;
 import org.flexpay.sz.dao.SzFileDao;
+import org.flexpay.sz.dao.SzFileDaoExt;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
@@ -16,6 +20,7 @@ public class SzFileServiceImpl implements SzFileService {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private SzFileDao szFileDao;
+	private SzFileDaoExt szFileDaoExt;
 
 	/**
 	 * Create SzFile
@@ -62,8 +67,12 @@ public class SzFileServiceImpl implements SzFileService {
 	@Transactional (readOnly = false)
 	public SzFile update(SzFile importFile) throws FlexPayException {
 		szFileDao.update(importFile);
-
 		return importFile;
+	}
+
+	@Transactional (readOnly = false)
+	public void updateStatus(Collection<Long> fileIds, FPFileStatus status) throws FlexPayException {
+		szFileDaoExt.updateStatus(fileIds, status);
 	}
 
 	/**
@@ -80,8 +89,14 @@ public class SzFileServiceImpl implements SzFileService {
 		szFileDao.delete(szFile);
 	}
 
+	@Required
 	public void setSzFileDao(SzFileDao szFileDao) {
 		this.szFileDao = szFileDao;
+	}
+
+	@Required
+	public void setSzFileDaoExt(SzFileDaoExt szFileDaoExt) {
+		this.szFileDaoExt = szFileDaoExt;
 	}
 
 }

@@ -33,4 +33,8 @@ public interface FPFileService {
 
     FPFileStatus getStatusByCode(Long code);
 
+	FPFileType getTypeByCodeAndModule(Long code, String moduleName);
+
+	FPFileStatus getStatusByCodeAndModule(Long code, String moduleName);
+
 }

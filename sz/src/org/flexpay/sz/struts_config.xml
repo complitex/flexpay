@@ -34,7 +34,7 @@
 			<result name="success" type="tiles">sz.import_file.list</result>
 		</action>
 
-		<action name="loadSzFileToDB" class="loadSzFileToDBAction">
+		<action name="szFileOperation" class="szFileOperationAction">
 			<result name="success" type="redirect">importFilesList.action</result>
 		</action>
 

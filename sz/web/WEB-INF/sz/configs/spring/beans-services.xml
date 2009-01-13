@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="szFileService" class="org.flexpay.sz.service.imp.SzFileServiceImpl">
-		<property name="szFileDao" ref="szFileDAO" />
-	</bean>
+	<bean id="szFileService" class="org.flexpay.sz.service.imp.SzFileServiceImpl"
+        p:szFileDao-ref="szFileDAO"
+        p:szFileDaoExt-ref="szFileDAOExt" />
 
-	<bean id="osznService" class="org.flexpay.sz.service.imp.OsznServiceImpl">
-		<property name="osznDao" ref="osznDAO" />
-	</bean>
+	<bean id="osznService" class="org.flexpay.sz.service.imp.OsznServiceImpl"
+		p:osznDao-ref="osznDAO" />
 
-	<bean id="characteristicRecordService" class="org.flexpay.sz.service.imp.CharacteristicRecordServiceImpl">
-		<property name="characteristicRecordDao" ref="characteristicRecordDAO" />
-	</bean>
+	<bean id="characteristicRecordService" class="org.flexpay.sz.service.imp.CharacteristicRecordServiceImpl"
+		p:characteristicRecordDao-ref="characteristicRecordDAO" />
 
-	<bean id="subsidyRecordService" class="org.flexpay.sz.service.imp.SubsidyRecordServiceImpl">
-		<property name="subsidyRecordDao" ref="subsidyRecordDAO" />
-	</bean>
+	<bean id="subsidyRecordService" class="org.flexpay.sz.service.imp.SubsidyRecordServiceImpl"
+		p:subsidyRecordDao-ref="subsidyRecordDAO" />
 
-	<bean id="serviceTypeRecordService" class="org.flexpay.sz.service.imp.ServiceTypeRecordServiceImpl">
-		<property name="serviceTypeRecordDao" ref="serviceTypeRecordDAO" />
-	</bean>
+	<bean id="serviceTypeRecordService" class="org.flexpay.sz.service.imp.ServiceTypeRecordServiceImpl"
+		p:serviceTypeRecordDao-ref="serviceTypeRecordDAO" />
 
-	<bean id="correctionsService" class="org.flexpay.sz.service.imp.CorrectionsServiceImpl">
-		<property name="apartmentCorrectionDao" ref="apartmentCorrectionDao" />
-		<property name="buildingCorrectionDao" ref="buildingCorrectionDao" />
-		<property name="districtCorrectionDao" ref="districtCorrectionDao" />
-		<property name="streetCorrectionDao" ref="streetCorrectionDao" />
-	</bean>
+	<bean id="correctionsService" class="org.flexpay.sz.service.imp.CorrectionsServiceImpl"
+		p:apartmentCorrectionDao-ref="apartmentCorrectionDao"
+		p:buildingCorrectionDao-ref="buildingCorrectionDao"
+		p:districtCorrectionDao-ref="districtCorrectionDao"
+		p:streetCorrectionDao-ref="streetCorrectionDao" />
 
     <bean parent="processManager">
         <property name="definitionPaths">

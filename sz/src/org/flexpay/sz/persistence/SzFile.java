@@ -13,10 +13,11 @@ public class SzFile extends DomainObject {
 
 	public static final Long IMPORTING_FILE_STATUS = 0L;
 	public static final Long IMPORTED_FILE_STATUS = 1L;
-	public static final Long MARKED_FOR_PROCESSING_FILE_STATUS = 2L;
-	public static final Long PROCESSING_FILE_STATUS = 3L;
-	public static final Long PROCESSED_FILE_STATUS = 4L;
-	public static final Long MARK_AS_DELETED_FILE_STATUS = 5L;
+	public static final Long PROCESSING_FILE_STATUS = 2L;
+	public static final Long PROCESSED_FILE_STATUS = 3L;
+	public static final Long PROCESSED_WITH_ERRORS_FILE_STATUS = 4L;
+	public static final Long DELETING_FILE_STATUS = 5L;
+	public static final Long DELETING_FROM_DB_FILE_STATUS = 6L;
 
 	public static final Long TARIFF_FILE_TYPE = 1L;
 	public static final Long CHARACTERISTIC_FILE_TYPE = 2L;

@@ -1,9 +1,11 @@
 package org.flexpay.sz.service;
 
-import java.util.List;
-
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.FPFileStatus;
 import org.flexpay.sz.persistence.SzFile;
+
+import java.util.Collection;
+import java.util.List;
 
 public interface SzFileService {
 	/**
@@ -43,6 +45,8 @@ public interface SzFileService {
 	 *             if SzFile object is invalid
 	 */
 	SzFile update(SzFile importFile) throws FlexPayException;
+
+	void updateStatus(Collection<Long> fileIds, FPFileStatus status) throws FlexPayException;
 
 	/**
 	 * Get a list of available SzFile

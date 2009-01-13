@@ -30,7 +30,9 @@
           p:szFileService-ref="szFileService"
 		  scope="prototype" />
 
-	<bean id="loadSzFileToDBAction" class="org.flexpay.sz.actions.LoadToDBAction"
+	<bean id="szFileOperationAction" class="org.flexpay.sz.actions.SzFileOperationAction"
+          p:fpFileService-ref="fpFileService"
+          p:moduleName="${flexpay.module.name.sz}"
           p:szFileService-ref="szFileService"
           p:processManager-ref="processManager"
 		  scope="prototype" />
