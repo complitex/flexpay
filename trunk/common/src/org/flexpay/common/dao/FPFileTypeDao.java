@@ -10,4 +10,6 @@ public interface FPFileTypeDao extends GenericDao<FPFileType, Long> {
 
     List<FPFileType> listTypesByCode(Long code);
 
+	List<FPFileType> listTypesByCodeAndModule(Long code, String moduleName);
+
 }

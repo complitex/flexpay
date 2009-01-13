@@ -126,6 +126,16 @@ public class FPFileServiceImpl implements FPFileService {
         return l.isEmpty() ? null : l.get(0);
     }
 
+	public FPFileType getTypeByCodeAndModule(Long code, String moduleName) {
+		List<FPFileType> l = fpFileTypeDao.listTypesByCodeAndModule(code, moduleName);
+		return l.isEmpty() ? null : l.get(0);
+	}
+
+	public FPFileStatus getStatusByCodeAndModule(Long code, String moduleName) {
+		List<FPFileStatus> l = fpFileStatusDao.listStatusesByCodeAndModule(code, moduleName);
+		return l.isEmpty() ? null : l.get(0);
+	}
+
 	@Required
 	public void setFpFileDao(FPFileDao fpFileDao) {
 		this.fpFileDao = fpFileDao;

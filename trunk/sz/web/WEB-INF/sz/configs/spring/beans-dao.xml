@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 	<bean id="osznDAO" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.sz.dao.OsznDao" />
+		<property name="proxyInterfaces" value="org.flexpay.sz.dao.OsznDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.sz.persistence.Oszn" />
@@ -14,8 +13,7 @@
 	</bean>
 
 	<bean id="szFileDAO" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.sz.dao.SzFileDao" />
+		<property name="proxyInterfaces" value="org.flexpay.sz.dao.SzFileDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.sz.persistence.SzFile" />
@@ -23,9 +21,12 @@
 		</property>
 	</bean>
 
+    <bean id="szFileDAOExt" class="org.flexpay.sz.dao.impl.SzFileDaoExtImpl">
+        <property name="hibernateTemplate" ref="hibernateTemplate" />
+    </bean>
+
 	<bean id="characteristicRecordDAO" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.sz.dao.CharacteristicRecordDao" />
+		<property name="proxyInterfaces" value="org.flexpay.sz.dao.CharacteristicRecordDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.sz.persistence.CharacteristicRecord" />
@@ -34,8 +35,7 @@
 	</bean>
 
 	<bean id="subsidyRecordDAO" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.sz.dao.SubsidyRecordDao" />
+		<property name="proxyInterfaces" value="org.flexpay.sz.dao.SubsidyRecordDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.sz.persistence.SubsidyRecord" />
@@ -44,8 +44,7 @@
 	</bean>
 
 	<bean id="serviceTypeRecordDAO" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.sz.dao.ServiceTypeRecordDao" />
+		<property name="proxyInterfaces" value="org.flexpay.sz.dao.ServiceTypeRecordDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.sz.persistence.ServiceTypeRecord" />
@@ -54,8 +53,7 @@
 	</bean>
 
 	<bean id="apartmentCorrectionDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.sz.dao.ApartmentCorrectionDao" />
+		<property name="proxyInterfaces" value="org.flexpay.sz.dao.ApartmentCorrectionDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.sz.persistence.corrections.ApartmentNumberCorrection" />
@@ -64,8 +62,7 @@
 	</bean>
 
 	<bean id="buildingCorrectionDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.sz.dao.BuildingCorrectionDao" />
+		<property name="proxyInterfaces" value="org.flexpay.sz.dao.BuildingCorrectionDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.sz.persistence.corrections.BuildingNumberCorrection" />
@@ -74,8 +71,7 @@
 	</bean>
 
 	<bean id="districtCorrectionDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.sz.dao.DistrictCorrectionDao" />
+		<property name="proxyInterfaces" value="org.flexpay.sz.dao.DistrictCorrectionDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.sz.persistence.corrections.DistrictCorrection" />
@@ -84,8 +80,7 @@
 	</bean>
 
 	<bean id="streetCorrectionDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.sz.dao.StreetCorrectionDao" />
+		<property name="proxyInterfaces" value="org.flexpay.sz.dao.StreetCorrectionDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.sz.persistence.corrections.StreetCorrection" />

@@ -1,11 +1,11 @@
 package org.flexpay.sz.dao;
 
-import java.util.List;
-
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.sz.persistence.SzFile;
 
-public interface SzFileDao extends GenericDao<SzFile, Long>{
+import java.util.List;
+
+public interface SzFileDao extends GenericDao<SzFile, Long> {
 	
 	List<SzFile> listSzFiles();
 

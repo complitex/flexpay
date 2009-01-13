@@ -2,7 +2,9 @@ package org.flexpay.sz.process.szfile;
 
 import com.linuxense.javadbf.DBFException;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.FPFileStatus;
 import org.flexpay.common.process.job.Job;
+import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.sz.convert.NotSupportedOperationException;
 import org.flexpay.sz.convert.SzFileUtil;
@@ -25,10 +27,12 @@ import java.util.Map;
 
 public class FileParserJob extends Job {
 
+	private String moduleName;
 	private RecordService<CharacteristicRecord> characteristicRecordService;
 	private RecordService<ServiceTypeRecord> serviceTypeRecordService;
 	private RecordService<SubsidyRecord> subsidyRecordService;
 	private SzFileService szFileService;
+	private FPFileService fpFileService;
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
@@ -55,9 +59,10 @@ public class FileParserJob extends Job {
 
 		SzDbfReader reader = null;
 
+		FPFileStatus status = fpFileService.getStatusByCodeAndModule(SzFile.PROCESSED_FILE_STATUS, moduleName);
 		try {
-
 			if (SzFile.CHARACTERISTIC_FILE_TYPE.equals(szFileTypeCode)) {
+
 				CharacteristicDBFInfo dbfInfo = new CharacteristicDBFInfo(file);
 				reader = new SzDbfReader<CharacteristicRecord, CharacteristicDBFInfo>(dbfInfo, file);
 				CharacteristicRecord record;
@@ -94,9 +99,17 @@ public class FileParserJob extends Job {
 			}
 		}
 
+		szFile.setStatus(status);
+		szFileService.update(szFile);
+
 		log.debug("Process szFile parser for fileId = {} finished", fileId);
 
 		return RESULT_NEXT;
+	}
+
+	@Required
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
 	}
 
 	@Required
@@ -117,6 +130,11 @@ public class FileParserJob extends Job {
 	@Required
 	public void setSzFileService(SzFileService szFileService) {
 		this.szFileService = szFileService;
+	}
+
+	@Required
+	public void setFpFileService(FPFileService fpFileService) {
+		this.fpFileService = fpFileService;
 	}
 
 }

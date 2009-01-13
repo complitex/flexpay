@@ -56,7 +56,7 @@ public class UploadFileAction implements UserPreferencesAware, SessionAware {
 		try {
 			SzFile szFile = new SzFile();
 			szFile.setType(fileType);
-			szFile.setStatus(fpFileService.getStatusByCode(SzFile.IMPORTED_FILE_STATUS));
+			szFile.setStatus(fpFileService.getStatusByCodeAndModule(SzFile.IMPORTED_FILE_STATUS, moduleName));
 			FPFile fileOnServer = new FPFile();
 			fileOnServer.setModule(fpFileService.getModuleByName(moduleName));
 			fileOnServer.setOriginalName(uploadFileName);
@@ -72,9 +72,9 @@ public class UploadFileAction implements UserPreferencesAware, SessionAware {
 			szFile.setFileMonth(month);
 
 			szFileService.create(szFile);
-			log.info("file uploaded {}", szFile);
+			log.info("File uploaded {}", szFile);
 		} catch (Exception e) {
-			log.error("unknown file type", e);
+			log.error("Unknown file type", e);
 		}
 
 		return ActionSupport.SUCCESS;
