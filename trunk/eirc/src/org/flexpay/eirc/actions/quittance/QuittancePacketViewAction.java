@@ -1,26 +1,24 @@
 package org.flexpay.eirc.actions.quittance;
 
+import org.flexpay.ab.service.AddressService;
 import org.flexpay.common.actions.FPActionSupport;
-import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.dao.paging.Page;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.eirc.persistence.QuittancePayment;
 import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.QuittancePacketService;
-import org.flexpay.ab.service.AddressService;
-import org.flexpay.ab.service.PersonService;
-import org.flexpay.ab.persistence.Person;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 public class QuittancePacketViewAction extends FPActionSupport {
 
 	private AddressService addressService;
-	private PersonService personService;
+	private EircAccountService eircAccountService;
 	private QuittancePacketService quittancePacketService;
 
 	private QuittancePacket packet = new QuittancePacket();
@@ -72,17 +70,7 @@ public class QuittancePacketViewAction extends FPActionSupport {
 
 	public String getPersonFIO(@NotNull Quittance quittance) {
 
-		Stub<Person> personStub = quittance.getEircAccount().getPersonStub();
-		if (personStub == null) {
-			return quittance.getEircAccount().getConsumerInfo().getFIO();
-		}
-
-		Person person = personService.read(personStub);
-		if (person == null) {
-			log.error("No person found {}", personStub);
-			return "ERROR";
-		}
-		return person.getFIO();
+		return eircAccountService.getPersonFIO(quittance.getEircAccount());
 	}
 
 	public QuittancePacket getPacket() {
@@ -106,13 +94,13 @@ public class QuittancePacketViewAction extends FPActionSupport {
 	}
 
 	@Required
-	public void setAddressService(AddressService addressService) {
-		this.addressService = addressService;
+	public void setEircAccountService(EircAccountService eircAccountService) {
+		this.eircAccountService = eircAccountService;
 	}
 
 	@Required
-	public void setPersonService(PersonService personService) {
-		this.personService = personService;
+	public void setAddressService(AddressService addressService) {
+		this.addressService = addressService;
 	}
 
 	@Required

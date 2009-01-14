@@ -1,5 +1,6 @@
 package org.flexpay.eirc.service;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.dao.paging.Page;
@@ -8,7 +9,6 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.apache.commons.collections.ArrayStack;
 import org.springframework.security.annotation.Secured;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public interface EircAccountService {
 	 * Find EircAccounts
 	 *
 	 * @param filters Filters stack
-	 * @param pager Accounts pager
+	 * @param pager   Accounts pager
 	 * @return List of EircAccount
 	 */
 	@Secured (Roles.ACCOUNT_READ)
@@ -53,4 +53,14 @@ public interface EircAccountService {
 	@Secured (Roles.ACCOUNT_READ)
 	@Nullable
 	EircAccount readFull(@NotNull Stub<EircAccount> stub);
+
+	/**
+	 * Get person FIO that account was created for
+	 *
+	 * @param account EircAccount to get person last-first-middle names for
+	 * @return person last-first-middle names if found, or <code>null</code> otherwise
+	 */
+	@Secured (Roles.ACCOUNT_READ)
+	@Nullable
+	String getPersonFIO(@NotNull EircAccount account);
 }

@@ -92,6 +92,8 @@ public class ReportUtil {
 	 */
 	public void uploadReportTemplate(InputStream is, String name) throws Exception {
 		ensureDirsExist();
+
+		@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
 		OutputStream os = new FileOutputStream(getTemplateFile(name));
 
 		try {
@@ -107,6 +109,7 @@ public class ReportUtil {
 		}
 	}
 
+	@SuppressWarnings ({"ResultOfMethodCallIgnored"})
 	private void ensureDirsExist() {
 		File templatesDir = getReportTemplatesDir();
 		if (!templatesDir.exists()) {
@@ -209,7 +212,9 @@ public class ReportUtil {
 	}
 
 	/**
-	 * Export filled report to csv format
+	 * Export filled report to csv format../../eirc/src/org/flexpay/eirc/i18n
+ messages_ru.properties (1)
+134: Inconsistent property 'eirc.service_organization.served_buildings'. Must be defined in the parent file 'messages.properties'.
 	 *
 	 * @param name Report name
 	 * @return Result CSV file
@@ -268,8 +273,7 @@ public class ReportUtil {
 	 * @throws Exception if failure occurs
 	 */
 	@SuppressWarnings ({"unchecked"})
-	public String runReport(@NotNull String name, @Nullable Map parameters)
-			throws Exception {
+	public String runReport(@NotNull String name, @Nullable Map<?, ?> parameters) throws Exception {
 		return runReport(name, parameters, null);
 	}
 
@@ -296,7 +300,7 @@ public class ReportUtil {
 	 * @return Filled report name
 	 * @throws Exception if failure occurs
 	 */
-	@SuppressWarnings ({"unchecked"})
+	@SuppressWarnings ({"unchecked", "RawUseOfParameterizedType"})
 	public String runReport(@NotNull String name, @Nullable Map parameters, @Nullable JRDataSource jrDataSource)
 			throws Exception {
 
@@ -341,6 +345,7 @@ public class ReportUtil {
 	 * Setup styles fonts to point to valid fonts location
 	 *
 	 * @param report JasperReport that styles are to be updated
+	 * @throws Exception if failure occurs
 	 */
 	private void adjustFontsPath(@NotNull JasperReport report) throws Exception {
 
@@ -359,7 +364,7 @@ public class ReportUtil {
 		}
 	}
 
-	@SuppressWarnings ({"unchecked"})
+	@SuppressWarnings ({"unchecked", "RawUseOfParameterizedType"})
 	private Collection<String> fillParameters(JasperReport report, Map parameters) {
 
 		Collection<String> resourceNames = new ArrayList<String>();
@@ -397,6 +402,7 @@ public class ReportUtil {
 		return report.getQuery() != null && "sql".equalsIgnoreCase(report.getQuery().getLanguage());
 	}
 
+	@SuppressWarnings ({"RawUseOfParameterizedType"})
 	private void cleanup(Map parameters, Collection<String> resourceNames) {
 		for (String resourceName : resourceNames) {
 			Object resource = parameters.get(resourceName);
@@ -483,6 +489,7 @@ public class ReportUtil {
 				// do copying
 				OutputStream os = null;
 				try {
+					//noinspection IOResourceOpenedButNotSafelyClosed
 					os = new BufferedOutputStream(new FileOutputStream(fontFile));
 
 					IOUtils.copyLarge(is, os);
@@ -590,6 +597,7 @@ public class ReportUtil {
 			if (reportFile.isDirectory()) {
 				FileUtils.deleteDirectory(reportFile);
 			} else {
+				//noinspection ResultOfMethodCallIgnored
 				reportFile.delete();
 			}
 			++n;
