@@ -69,14 +69,13 @@
 		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
 		  p:sessionUtils-ref="sessionUtils" />
 
-	<bean id="eircAccountService"
-		  class="org.flexpay.eirc.service.imp.EircAccountServiceImpl"
+	<bean id="eircAccountService" class="org.flexpay.eirc.service.imp.EircAccountServiceImpl"
+		  p:personService-ref="personService"
 		  p:sequenceService-ref="sequenceService"
 		  p:eircAccountDao-ref="eircAccountDao"
 		  p:eircAccountDaoExt-ref="eircAccountDaoExt" />
 
-	<bean id="serviceOperationsFactory"
-		  class="org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory"
+	<bean id="serviceOperationsFactory" class="org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory"
 		  p:conditionsFactory-ref="conditionsFactory"
 		  p:importErrorService-ref="importErrorServiceEirc"
 		  p:registry-ref="typeRegistryEirc"
@@ -141,6 +140,9 @@
 	<bean id="quittancePacketService" class="org.flexpay.eirc.service.imp.QuittancePacketServiceImpl"
 		  p:quittancePacketDaoExt-ref="quittancePacketDaoExt"
 		  p:quittancePacketDao-ref="quittancePacketDao"
+		  p:quittancePaymentDao-ref="quittancePaymentDao" />
+
+	<bean id="quittancePaymentService" class="org.flexpay.eirc.service.imp.QuittancePaymentServiceImpl"
 		  p:quittancePaymentDao-ref="quittancePaymentDao" />
 
 	<bean id="paymentPointService" class="org.flexpay.eirc.service.imp.PaymentPointServiceImpl"

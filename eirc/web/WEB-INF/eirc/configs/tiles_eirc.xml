@@ -72,6 +72,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/find_quittance.jsp" />
 	</definition>
 
+	<definition name="eirc.quittances.pay_quittance" extends="eirc.quittances">
+		<put-attribute name="title" value="eirc.menu34.quittances.pay_quittance" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/quittance_pay_form.jsp" />
+	</definition>
+
 	<!-- Quittance packets -->
 	<definition name="eirc.quittances.packets_list" extends="eirc.quittances">
 		<put-attribute name="title" value="eirc.quittance.packets" />

@@ -6,11 +6,11 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <bean id="propertyConfigurerEirc"
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-          p:location="/WEB-INF/eirc/configs/module.properties"
-          p:fileEncoding="UTF-8"
-          p:ignoreUnresolvablePlaceholders="true" />
+	<bean id="propertyConfigurerEirc"
+		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		  p:location="/WEB-INF/eirc/configs/module.properties"
+		  p:fileEncoding="UTF-8"
+		  p:ignoreUnresolvablePlaceholders="true" />
 
 	<bean id="spFileCreateAction" class="org.flexpay.eirc.actions.SpFileCreateAction"
 		  scope="prototype" />
@@ -46,14 +46,18 @@
 		  p:processManager-ref="processManager"
 		  p:serviceOrganizationService-ref="serviceOrganizationService" />
 
-	<bean id="quittanceSearchAction"
+	<bean id="quittanceSearchAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.quittance.QuittanceSearchAction"
-		  scope="prototype"
 		  p:quittanceService-ref="quittanceService" />
 
-	<bean id="quittancePayAction"
+	<bean id="quittancePayAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.quittance.QuittancePayAction"
-		  scope="prototype" />
+		  p:addressService-ref="addressService"
+		  p:eircAccountService-ref="eircAccountService"
+		  p:quittanceNumberService-ref="quittanceNumberService"
+		  p:quittanceService-ref="quittanceService"
+		  p:quittancePacketService-ref="quittancePacketService"
+		  p:quittancePaymentService-ref="quittancePaymentService" />
 
 	<!-- Quittance packets -->
 	<bean id="quittancePacketsListAction" scope="prototype"
@@ -69,7 +73,7 @@
 	<bean id="quittancePacketViewAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.quittance.QuittancePacketViewAction"
 		  p:addressService-ref="addressService"
-		  p:personService-ref="personService"
+		  p:eircAccountService-ref="eircAccountService"
 		  p:quittancePacketService-ref="quittancePacketService" />
 
 	<!-- Registries -->

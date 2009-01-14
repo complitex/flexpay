@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.filters.ApartmentFilter;
 import org.flexpay.ab.persistence.filters.PersonSearchFilter;
+import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -19,6 +20,9 @@ import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -26,9 +30,12 @@ import java.util.List;
 @Transactional (readOnly = true)
 public class EircAccountServiceImpl implements EircAccountService {
 
+	private final Logger log = LoggerFactory.getLogger(getClass());
+
 	private EircAccountDaoExt eircAccountDaoExt;
 	private EircAccountDao eircAccountDao;
 
+	private PersonService personService;
 	private SequenceService sequenceService;
 
 	/**
@@ -88,18 +95,6 @@ public class EircAccountServiceImpl implements EircAccountService {
 		return result;
 	}
 
-	public void setEircAccountDaoExt(EircAccountDaoExt eircAccountDaoExt) {
-		this.eircAccountDaoExt = eircAccountDaoExt;
-	}
-
-	public void setEircAccountDao(EircAccountDao eircAccountDao) {
-		this.eircAccountDao = eircAccountDao;
-	}
-
-	public void setSequenceService(SequenceService sequenceService) {
-		this.sequenceService = sequenceService;
-	}
-
 	/**
 	 * Find EircAccounts
 	 *
@@ -144,5 +139,47 @@ public class EircAccountServiceImpl implements EircAccountService {
 	@Nullable
 	public EircAccount readFull(@NotNull Stub<EircAccount> stub) {
 		return eircAccountDao.readFull(stub.getId());
+	}
+
+	/**
+	 * Get person FIO that account was created for
+	 *
+	 * @param account EircAccount to get person last-first-middle names for
+	 * @return person last-first-middle names if found, or <code>null</code> otherwise
+	 */
+	public String getPersonFIO(@NotNull EircAccount account) {
+
+		Stub<Person> personStub = account.getPersonStub();
+		if (personStub == null) {
+			return account.getConsumerInfo().getFIO();
+		}
+
+		Person person = personService.read(personStub);
+		if (person == null) {
+			log.error("No person found {}", personStub);
+			return null;
+		}
+
+		return person.getFIO();
+	}
+
+	@Required
+	public void setEircAccountDaoExt(EircAccountDaoExt eircAccountDaoExt) {
+		this.eircAccountDaoExt = eircAccountDaoExt;
+	}
+
+	@Required
+	public void setEircAccountDao(EircAccountDao eircAccountDao) {
+		this.eircAccountDao = eircAccountDao;
+	}
+
+	@Required
+	public void setSequenceService(SequenceService sequenceService) {
+		this.sequenceService = sequenceService;
+	}
+
+	@Required
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
 	}
 }

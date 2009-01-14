@@ -260,4 +260,11 @@
 		where o.packet.id=?
 	</query>
 
+	<query name="QuittancePayment.findQuittancePayedPackets">
+		from QuittancePayment o
+			left join fetch o.paymentStatus
+			left join o.quittance q
+		where q.id=?
+	</query>
+
 </hibernate-mapping>
