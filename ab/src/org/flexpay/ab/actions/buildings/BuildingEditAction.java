@@ -3,14 +3,16 @@ package org.flexpay.ab.actions.buildings;
 import org.flexpay.ab.persistence.BuildingAttribute;
 import org.flexpay.ab.persistence.BuildingAttributeType;
 import org.flexpay.ab.persistence.Buildings;
-import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.AddressService;
+import org.flexpay.ab.service.BuildingAttributeTypeService;
+import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.Map;
 public class BuildingEditAction extends FPActionSupport {
 
 	private BuildingService buildingService;
+	private BuildingAttributeTypeService buildingAttributeTypeService;
 	private AddressService addressService;
 
 	private Buildings buildings = new Buildings();
@@ -30,7 +33,7 @@ public class BuildingEditAction extends FPActionSupport {
 		buildings = buildingService.readFull(stub(buildings));
 		if (isNotSubmit()) {
 
-			for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
+			for (BuildingAttributeType type : buildingAttributeTypeService.getAttributeTypes()) {
 				BuildingAttribute attr = buildings.getAttribute(type);
 				String value = "";
 				if (attr != null) {
@@ -59,7 +62,7 @@ public class BuildingEditAction extends FPActionSupport {
 
 		if (isSubmit()) {
 			for (Long typeId : attributeMap.keySet()) {
-				BuildingAttributeType type = buildingService.read(new Stub<BuildingAttributeType>(typeId));
+				BuildingAttributeType type = buildingAttributeTypeService.read(new Stub<BuildingAttributeType>(typeId));
 				buildings.setBuildingAttribute(attributeMap.get(typeId), type);
 			}
 
@@ -74,13 +77,13 @@ public class BuildingEditAction extends FPActionSupport {
 	}
 
 	public String getTypeName(Long typeId) throws FlexPayException {
-		BuildingAttributeType type = buildingService.read(new Stub<BuildingAttributeType>(typeId));
+		BuildingAttributeType type = buildingAttributeTypeService.read(new Stub<BuildingAttributeType>(typeId));
 		if (type == null) {
 			throw new RuntimeException("Unknown type id: " + typeId);
 		}
 		return getTranslation(type.getTranslations()).getName();
 	}
-	
+
 	/**
 	 * Get default error execution result
 	 * <p/>
@@ -128,12 +131,18 @@ public class BuildingEditAction extends FPActionSupport {
 		this.attributeMap = attributeMap;
 	}
 
+	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
 
+	@Required
 	public void setAddressService(AddressService addressService) {
 		this.addressService = addressService;
 	}
 
+	@Required
+	public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
+		this.buildingAttributeTypeService = buildingAttributeTypeService;
+	}
 }

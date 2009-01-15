@@ -144,6 +144,7 @@
 	<bean id="buildingEditAction" scope="prototype"
 		  class="org.flexpay.ab.actions.buildings.BuildingEditAction"
 		  p:buildingService-ref="buildingService"
+		  p:buildingAttributeTypeService-ref="buildingAttributeTypeService"
 		  p:addressService-ref="addressService" />
 
 	<bean id="buildingDeleteAction" scope="prototype"
