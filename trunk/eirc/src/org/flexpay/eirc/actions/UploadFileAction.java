@@ -50,9 +50,9 @@ public class UploadFileAction implements UserPreferencesAware, SessionAware {
 
 			log.debug("Creating FlexPayFile: {}", spFile);
 			fpFileService.create(spFile);
-			log.info("file uploaded {}", spFile);
+			log.info("File uploaded {}", spFile);
 		} catch (Exception e) {
-			log.error("unknown file type", e);
+			log.error("Unknown file type", e);
 		}
 
 		return ActionSupport.SUCCESS;

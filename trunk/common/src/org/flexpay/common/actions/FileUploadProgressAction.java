@@ -3,10 +3,16 @@ package org.flexpay.common.actions;
 import com.davidjc.ajaxfileupload.multipart.ProgressMonitor;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.SessionAware;
+import org.jetbrains.annotations.NonNls;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
 public class FileUploadProgressAction implements SessionAware {
+
+	@NonNls
+	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	private Map sessionMap;
 	private String rnd;
@@ -16,6 +22,7 @@ public class FileUploadProgressAction implements SessionAware {
 		Object mon_obj = sessionMap.get("com.davidjc.ajaxfileupload.multipart.ProgressMonitor");
 		ProgressMonitor monitor = (ProgressMonitor) mon_obj;
 		String progressInfo = monitor == null ? "" : monitor.percentComplete();
+		log.debug("progressInfo = {}", progressInfo);
 		setStringResult(progressInfo);
 
 		return ActionSupport.SUCCESS;

@@ -5,7 +5,7 @@ SELECT @module_sz:=last_insert_id();
 
 -- Init Sz file types
 INSERT INTO common_file_types_tbl (name, file_mask, code, module_id)
-	VALUES ('sz.file_type.tariff', '(t|T)(a|A)(R|R)(i|I)(f|F)\\u002E(d|D)(b|B)(f|F)', 1, @module_sz);
+	VALUES ('sz.file_type.tariff', '(t|T)(a|A)(r|R)(i|I)(f|F)\\u002E(d|D)(b|B)(f|F)', 1, @module_sz);
 SELECT @tariff_type_id:=last_insert_id();
 INSERT INTO common_file_types_tbl (name, file_mask, code, module_id)
 	VALUES ('sz.file_type.characteristics', '\\d{8}\\u002E(a|A)\\d{2}', 2, @module_sz);
@@ -17,17 +17,14 @@ INSERT INTO common_file_types_tbl (name, file_mask, code, module_id)
 	VALUES ('sz.file_type.form2', '\\d{8}\\u002E(e|E)\\d{2}', 4, @module_sz);
 SELECT @form2_type_id:=last_insert_id();
 INSERT INTO common_file_types_tbl (name, file_mask, code, module_id)
-	VALUES ('sz.file_type.characteristics', '\\d{8}\\u002E(c|C)\\d{2}', 5, @module_sz);
+	VALUES ('sz.file_type.characteristics_response', '\\d{8}\\u002E(c|C)\\d{2}', 5, @module_sz);
 SELECT @characteristics_response_type_id:=last_insert_id();
 INSERT INTO common_file_types_tbl (name, file_mask, code, module_id)
-	VALUES ('sz.file_type.srv_types', '\\d{8}\\u002E(d|D)\\d{2}', 6, @module_sz);
+	VALUES ('sz.file_type.srv_types_response', '\\d{8}\\u002E(d|D)\\d{2}', 6, @module_sz);
 SELECT @srv_types_response_type_id:=last_insert_id();
 INSERT INTO common_file_types_tbl (name, file_mask, code, module_id)
 	VALUES ('sz.file_type.subsidy', '.*\\d{4}\\u002E(d|D)(b|B)(f|F)', 7, @module_sz);
 SELECT @subsidy_type_id:=last_insert_id();
-INSERT INTO common_file_types_tbl (name, file_mask, code, module_id)
-	VALUES ('sz.file_type.subsidy', '\\d{8}\\u002E(a|A)\\d{2}', 8, @module_sz);
-SELECT @subsidy_type_id2:=last_insert_id();
 
 -- Init Sz file statuses
 INSERT INTO common_file_statuses_tbl (name, code, module_id)

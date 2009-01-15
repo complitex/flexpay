@@ -45,11 +45,13 @@ public class UploadFileAction implements UserPreferencesAware, SessionAware {
 	@NotNull
 	public String execute() {
 		if (uploadFileName == null) {
+			setStringResult(ActionSupport.ERROR);
 			return ActionSupport.SUCCESS;
 		}
 		FPFileType fileType = fpFileService.getTypeByFileName(uploadFileName, moduleName);
 		if (fileType == null) {
 			log.warn("Unknown file type");
+			setStringResult(ActionSupport.ERROR);
 			return ActionSupport.SUCCESS;
 		}
 
@@ -60,21 +62,23 @@ public class UploadFileAction implements UserPreferencesAware, SessionAware {
 			FPFile fileOnServer = new FPFile();
 			fileOnServer.setModule(fpFileService.getModuleByName(moduleName));
 			fileOnServer.setOriginalName(uploadFileName);
-			fileOnServer.setUserName("test");
+			fileOnServer.setUserName(getUserPreferences().getUserName());
 			File fileOnSystem = FPFileUtil.saveToFileSystem(fileOnServer, upload);
 			fileOnServer.setNameOnServer(fileOnSystem.getName());
 			fileOnServer.setSize(fileOnSystem.length());
 			szFile.setUploadedFile(fileOnServer);
 			Oszn oszn = osznService.read(osznId);
 			szFile.setOszn(oszn);
-			szFile.setUserName("test");
+			szFile.setUserName(getUserPreferences().getUserName());
 			szFile.setFileYear(year);
 			szFile.setFileMonth(month);
 
 			szFileService.create(szFile);
 			log.info("File uploaded {}", szFile);
+			setStringResult(ActionSupport.SUCCESS);
 		} catch (Exception e) {
 			log.error("Unknown file type", e);
+			setStringResult(ActionSupport.ERROR);
 		}
 
 		return ActionSupport.SUCCESS;
