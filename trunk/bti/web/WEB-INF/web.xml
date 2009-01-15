@@ -261,6 +261,19 @@
 	<security-role>
 		<role-name>ROLE_AB_PERSON_DELETE</role-name>
 	</security-role>
+    <!-- Sewer types roles -->
+    <security-role>
+        <role-name>ROLE_TC_SEWER_TYPE_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_TC_SEWER_TYPE_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_TC_SEWER_TYPE_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_TC_SEWER_TYPE_DELETE</role-name>
+    </security-role>
 
     <login-config>
         <auth-method>FORM</auth-method>
@@ -270,8 +283,13 @@
         </form-login-config>
     </login-config>
 
+    <error-page>
+        <error-code>403</error-code>
+        <location>/resources/common/jsp/forbidden.jsp</location>
+    </error-page>
+
     <welcome-file-list>
-		<welcome-file>/bti_index.jsp</welcome-file>
+		<welcome-file>/resources/bti/index.jsp</welcome-file>
 	</welcome-file-list>
 
 </web-app>

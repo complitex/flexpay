@@ -14,9 +14,11 @@
 	<package name="tc" namespace="/tc" extends="common">
 
 		<action name="main">
-			<result type="tiles">eirc.import</result>
+			<result type="tiles">tc.dictionaries</result>
 		</action>
 
 	</package>
+
+    <include file="org/flexpay/tc/actions/sewertype/struts.xml" />
 
 </struts>

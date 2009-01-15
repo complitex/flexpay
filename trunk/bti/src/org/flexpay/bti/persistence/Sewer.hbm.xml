@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.bti.persistence">
+
+	<class name="SewerType" table="bti_sewer_types_tbl">
+        <comment>Table, where store information about sewer types</comment>
+		<id name="id">
+            <column name="id">
+                <comment>Primary key</comment>
+            </column>
+			<generator class="native" />
+		</id>
+        <property name="status">
+            <column name="status" not-null="true">
+                <comment>Enabled/Disabled status</comment>
+            </column>
+        </property>
+
+        <set name="translations" inverse="true" cascade="all-delete-orphan">
+            <key column="sewer_type_id" not-null="true" />
+            <one-to-many class="SewerTypeTranslation" />
+        </set>
+	</class>
+
+    <class name="SewerTypeTranslation" table="bti_sewer_type_translations_tbl">
+        <comment>Sewer type translations</comment>
+        <id name="id">
+            <column name="id">
+                <comment>Primary key</comment>
+            </column>
+            <generator class="native" />
+        </id>
+        <property name="name">
+            <column name="name" not-null="true">
+                <comment>Sewer type name translation</comment>
+            </column>
+        </property>
+        <property name="description">
+            <column name="description" not-null="false">
+                <comment>Optional description translation</comment>
+            </column>
+        </property>
+
+        <properties name="lang_sewer_type_pair" unique="true">
+            <many-to-one name="translatable" class="SewerType"
+                         foreign-key="bti_sewer_type_translations_tbl_sewer_type_id">
+                <column name="sewer_type_id" not-null="true">
+                    <comment>Sewer type reference</comment>
+                </column>
+            </many-to-one>
+            <many-to-one name="lang" class="org.flexpay.common.persistence.Language"
+                         foreign-key="lang_sewer_type_pair_language_id">
+                <column name="language_id" not-null="true">
+                    <comment>Language reference</comment>
+                </column>
+            </many-to-one>
+        </properties>
+    </class>
+
+    <query name="SewerType.findSewerTypes">
+        select distinct st
+        from SewerType st
+        left outer join fetch st.translations stTr
+        where st.status = 0
+    </query>
+
+    <query name="SewerType.findSewerTypes.count">
+        select count(*)
+        from SewerType st
+        where st.status = 0
+    </query>
+
+    <query name="SewerType.readFull">
+        select distinct st
+        from SewerType st
+        left outer join fetch st.translations stTr
+        where st.id=?
+    </query>
+
+</hibernate-mapping>

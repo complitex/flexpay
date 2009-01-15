@@ -1,4 +1,4 @@
-package org.flexpay.bti.service.importexport.imp;
+package org.flexpay.bti.service.importexport.impl;
 
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.bti.persistence.Apartment;
@@ -12,4 +12,5 @@ public class ClassToTypeRegistry extends org.flexpay.ab.service.importexport.imp
 
 		return super.getType(clazz);
 	}
+
 }

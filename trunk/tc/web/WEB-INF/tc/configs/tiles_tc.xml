@@ -4,8 +4,21 @@
 
 <tiles-definitions>
 
-	<definition name="tc.main" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.main.title" />
-	</definition>
+    <definition name="tc.dictionaries" extends="ab.layout.standart">
+        <put-attribute name="title" value="tc.menu2.dictionaries" />
+        <put-attribute name="menu1" value="/WEB-INF/jsp/tc/menu/menu1.jsp" />
+        <put-attribute name="menu2" value="/WEB-INF/jsp/tc/menu/menu2.jsp" />
+        <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_dictionaries.jsp" />
+    </definition>
+
+    <definition name="tc.sewer_types.list" extends="tc.dictionaries">
+        <put-attribute name="title" value="tc.sewer_types" />
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/sewers/sewer_types_list.jsp" />
+    </definition>
+
+    <definition name="tc.sewer_type.edit" extends="tc.dictionaries">
+        <put-attribute name="title" value="tc.sewer_type" />
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/sewers/sewer_type_edit.jsp" />
+    </definition>
 
 </tiles-definitions>
