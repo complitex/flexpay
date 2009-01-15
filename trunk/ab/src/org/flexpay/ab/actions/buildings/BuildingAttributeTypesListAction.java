@@ -1,22 +1,23 @@
 package org.flexpay.ab.actions.buildings;
 
-import java.util.List;
-
 import org.flexpay.ab.persistence.BuildingAttributeType;
-import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.BuildingAttributeTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
+
+import java.util.List;
 
 public class BuildingAttributeTypesListAction extends FPActionSupport {
-	
-	private BuildingService buildingService;
-	
+
+	private BuildingAttributeTypeService buildingAttributeTypeService;
+
 	private List<BuildingAttributeType> types;
-	
+
 	@NotNull
 	public String doExecute() {
-		types = buildingService.getAttributeTypes();
-		
+		types = buildingAttributeTypeService.getAttributeTypes();
+
 		return SUCCESS;
 	}
 
@@ -34,16 +35,14 @@ public class BuildingAttributeTypesListAction extends FPActionSupport {
 	}
 
 	/**
-	 * @param buildingService the biuldingService to set
-	 */
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
-	}
-
-	/**
 	 * @return the types
 	 */
 	public List<BuildingAttributeType> getTypes() {
 		return types;
+	}
+
+	@Required
+	public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
+		this.buildingAttributeTypeService = buildingAttributeTypeService;
 	}
 }

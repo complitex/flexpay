@@ -2,9 +2,6 @@ package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.flexpay.ab.dao.BuildingAttributeTypeDao;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.dao.BuildingsDaoExt;
@@ -16,7 +13,6 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
@@ -25,6 +21,8 @@ import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -40,7 +38,6 @@ public class BuildingServiceImpl implements BuildingService {
 	private BuildingDao buildingDao;
 	private BuildingsDao buildingsDao;
 	private BuildingsDaoExt buildingsDaoExt;
-	private BuildingAttributeTypeDao buildingAttributeTypeDao;
 
 	private ParentService<StreetFilter> parentService;
 	private ParentService<DistrictFilter> districtParentService;
@@ -171,16 +168,6 @@ public class BuildingServiceImpl implements BuildingService {
 		}
 
 		return buildingFilter;
-	}
-
-	/**
-	 * Get building attribute types
-	 *
-	 * @return BuildingAttributeType list
-	 */
-	public List<BuildingAttributeType> getAttributeTypes() {
-
-		return buildingAttributeTypeDao.findAttributeTypes();
 	}
 
 	/**
@@ -418,17 +405,6 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 	/**
-	 * Get building attribute type
-	 *
-	 * @param stub BuildingAttributeType stub
-	 * @return Attribute type if found, or <code>null</code> otherwise
-	 */
-	@Nullable
-	public BuildingAttributeType read(@NotNull Stub<BuildingAttributeType> stub) {
-		return buildingAttributeTypeDao.readFull(stub.getId());
-	}
-
-	/**
 	 * Update buildings
 	 *
 	 * @param buildings Buildings
@@ -449,54 +425,8 @@ public class BuildingServiceImpl implements BuildingService {
 		return buildingsDao.findBuildingBuildings(stub.getId());
 	}
 
-	public Building readBuilding(Long id) {
-		return buildingDao.read(id);
-	}
-
-	/**
-	 * Create or update building attribute type
-	 *
-	 * @param type AttributeType to save
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
-	 */
-	@Transactional (readOnly = false)
-	public void save(@NotNull BuildingAttributeType type) throws FlexPayExceptionContainer {
-		validate(type);
-		if (type.isNew()) {
-			type.setId(null);
-			buildingAttributeTypeDao.create(type);
-		} else {
-			buildingAttributeTypeDao.update(type);
-		}
-	}
-
-	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(@NotNull BuildingAttributeType type) throws FlexPayExceptionContainer {
-		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
-
-		boolean defaultLangTranslationFound = false;
-		for (BuildingAttributeTypeTranslation translation : type.getTranslations()) {
-			if (translation.getLang().isDefault() && StringUtils.isNotEmpty(translation.getName())) {
-				defaultLangTranslationFound = true;
-			}
-		}
-
-		if (!defaultLangTranslationFound) {
-			container.addException(new FlexPayException(
-					"No default translation", "error.no_default_translation"));
-		}
-
-		// todo check if there is already a type with a specified name
-
-		if (container.isNotEmpty()) {
-			throw container;
-		}
-
-	}
-
-	public void setBuildingAttributeTypeDao(BuildingAttributeTypeDao buildingAttributeTypeDao) {
-		this.buildingAttributeTypeDao = buildingAttributeTypeDao;
+	public Building read(@NotNull Stub<Building> stub) {
+		return buildingDao.read(stub.getId());
 	}
 
 	public void setBuildingDao(BuildingDao buildingDao) {

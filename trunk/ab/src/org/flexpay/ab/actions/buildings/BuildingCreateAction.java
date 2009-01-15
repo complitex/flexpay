@@ -6,6 +6,7 @@ import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAttributeType;
 import org.flexpay.ab.persistence.Buildings;
 import org.flexpay.ab.persistence.filters.*;
+import org.flexpay.ab.service.BuildingAttributeTypeService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.common.actions.FPActionSupport;
@@ -15,13 +16,15 @@ import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
 public class BuildingCreateAction extends FPActionSupport {
 
-	private ParentService parentService;
+	private ParentService<StreetFilter> parentService;
 	private BuildingService buildingService;
+	private BuildingAttributeTypeService buildingAttributeTypeService;
 	private DistrictService districtService;
 
 	private CountryFilter countryFilter = new CountryFilter();
@@ -42,7 +45,7 @@ public class BuildingCreateAction extends FPActionSupport {
 		districtFilter.setNeedAutoChange(false);
 	}
 
-    @NotNull
+	@NotNull
 	public String doExecute() throws FlexPayException {
 
 		setupAttributes();
@@ -85,13 +88,13 @@ public class BuildingCreateAction extends FPActionSupport {
 	private void setupFilters() throws FlexPayException {
 		ArrayStack filterArrayStack = getFilters();
 		for (Object filter : filterArrayStack) {
-			((PrimaryKeyFilter) filter).initFilter(session);
+			((PrimaryKeyFilter<?>) filter).initFilter(session);
 		}
 		ArrayStack filters = parentService.initFilters(filterArrayStack, getUserPreferences().getLocale());
 		setFilters(filters);
 
 		if (buildingId != null) {
-			Building building = buildingService.readBuilding(buildingId);
+			Building building = buildingService.read(new Stub<Building>(buildingId));
 			districtFilter.setSelectedId(building.getDistrict().getId());
 			districtFilter.setReadOnly(true);
 		}
@@ -102,7 +105,7 @@ public class BuildingCreateAction extends FPActionSupport {
 
 		log.debug("Attributes: {}", attributeMap);
 
-		for (BuildingAttributeType type : buildingService.getAttributeTypes()) {
+		for (BuildingAttributeType type : buildingAttributeTypeService.getAttributeTypes()) {
 			String value = attributeMap.get(type.getId());
 			if (StringUtils.isNotBlank(value)) {
 				buildings.setBuildingAttribute(value, type);
@@ -124,7 +127,7 @@ public class BuildingCreateAction extends FPActionSupport {
 	}
 
 	public String getTypeName(Long typeId) throws FlexPayException {
-		BuildingAttributeType type = buildingService.read(new Stub<BuildingAttributeType>(typeId));
+		BuildingAttributeType type = buildingAttributeTypeService.read(new Stub<BuildingAttributeType>(typeId));
 		if (type == null) {
 			throw new RuntimeException("Unknown type id: " + typeId);
 		}
@@ -213,18 +216,6 @@ public class BuildingCreateAction extends FPActionSupport {
 		this.townFilter = townFilter;
 	}
 
-	public void setParentService(ParentService parentService) {
-		this.parentService = parentService;
-	}
-
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
-	}
-
-	public void setDistrictService(DistrictService districtService) {
-		this.districtService = districtService;
-	}
-
 	/**
 	 * @param buildingId the buildingId to set
 	 */
@@ -274,5 +265,25 @@ public class BuildingCreateAction extends FPActionSupport {
 
 	public void setDistrictFilter(DistrictFilter districtFilter) {
 		this.districtFilter = districtFilter;
+	}
+
+	@Required
+	public void setParentService(ParentService<StreetFilter> parentService) {
+		this.parentService = parentService;
+	}
+
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
+	}
+
+	@Required
+	public void setDistrictService(DistrictService districtService) {
+		this.districtService = districtService;
+	}
+
+	@Required
+	public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
+		this.buildingAttributeTypeService = buildingAttributeTypeService;
 	}
 }

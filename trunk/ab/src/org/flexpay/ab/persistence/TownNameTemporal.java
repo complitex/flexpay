@@ -16,6 +16,9 @@ public class TownNameTemporal extends NameDateInterval<TownName, TownNameTempora
 
 	/**
 	 * Constructs a new RegionNameTemporal.
+	 *
+	 * @param beginDate temporal begin date
+	 * @param townName Town name to setup
 	 */
 	public TownNameTemporal(Date beginDate, TownName townName) {
 		super(beginDate, ApplicationConfig.getFutureInfinite(), townName);

@@ -137,6 +137,7 @@
 	<bean id="buildingCreateAction" scope="prototype"
 		  class="org.flexpay.ab.actions.buildings.BuildingCreateAction"
 		  p:buildingService-ref="buildingService"
+		  p:buildingAttributeTypeService-ref="buildingAttributeTypeService"
 		  p:parentService-ref="streetService"
 		  p:districtService-ref="districtService" />
 
@@ -156,11 +157,11 @@
 	<!-- BuildingAttributeTypes -->
 	<bean id="buildingAttributeTypesListAction" scope="prototype"
 		  class="org.flexpay.ab.actions.buildings.BuildingAttributeTypesListAction"
-		  p:buildingService-ref="buildingService" />
+		  p:buildingAttributeTypeService-ref="buildingAttributeTypeService" />
 
 	<bean id="buildingAttributeTypeEditAction" scope="prototype"
 		  class="org.flexpay.ab.actions.buildings.BuildingAttributeTypeEditAction"
-		  p:buildingService-ref="buildingService" />
+		  p:buildingAttributeTypeService-ref="buildingAttributeTypeService" />
 
 	<!-- Apartments -->
 	<bean id="apartmentsListAction" scope="prototype"
