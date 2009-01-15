@@ -1,0 +1,25 @@
+package org.flexpay.common.persistence.history;
+
+import org.flexpay.common.persistence.DomainObject;
+import org.jetbrains.annotations.NotNull;
+
+public interface HistoryBuilder<T extends DomainObject> {
+
+	/**
+	 * Create diff from t1 to t2
+	 *
+	 * @param t1 First object
+	 * @param t2 Second object
+	 * @return Diff object
+	 */
+	@NotNull
+	Diff diff(@NotNull T t1, @NotNull T t2);
+
+	/**
+	 * Apply diff to an object
+	 *
+	 * @param t	Object to apply diff to
+	 * @param diff Diff to apply
+	 */
+	void patch(@NotNull T t, @NotNull Diff diff);
+}
