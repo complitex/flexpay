@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.buildings;
 import org.flexpay.ab.persistence.BuildingAttributeType;
 import org.flexpay.ab.persistence.BuildingAttributeTypeTranslation;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.BuildingAttributeTypeService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
@@ -11,13 +12,14 @@ import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
 
 public class BuildingAttributeTypeEditAction extends FPActionSupport {
 
-	private BuildingService buildingService;
+	private BuildingAttributeTypeService buildingAttributeTypeService;
 
 	private BuildingAttributeType attributeType = new BuildingAttributeType();
 	private Map<Long, String> names = treeMap();
@@ -32,7 +34,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 
 		BuildingAttributeType type = attributeType.isNew() ?
 									 attributeType :
-									 buildingService.read(stub(attributeType));
+									 buildingAttributeTypeService.read(stub(attributeType));
 
 		if (!isSubmit()) {
 			attributeType = type;
@@ -50,7 +52,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 			type.setTranslation(translation);
 		}
 
-		buildingService.save(type);
+		buildingAttributeTypeService.save(type);
 
 		return REDIRECT_SUCCESS;
 	}
@@ -96,10 +98,8 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 		this.names = names;
 	}
 
-	/**
-	 * @param buildingService the buildingService to set
-	 */
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
+	@Required
+	public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
+		this.buildingAttributeTypeService = buildingAttributeTypeService;
 	}
 }

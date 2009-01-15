@@ -5,7 +5,6 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
@@ -14,8 +13,8 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
 import java.util.List;
-import java.util.Set;
 import java.util.Locale;
+import java.util.Set;
 
 public interface BuildingService extends ParentService<BuildingsFilter> {
 
@@ -50,22 +49,16 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	List<Buildings> getBuildings(ArrayStack filters, Page pager);
 
 	/**
-	 * @param streetId
-	 * @param pager
-	 * @return
+	 * Get buildings of a street
+	 *
+	 * @param streetId Street key
+	 * @param pager	Page
+	 * @return List of buildingses
 	 * @deprecated use {@link #getBuildings(org.apache.commons.collections.ArrayStack, org.flexpay.common.dao.paging.Page)}
 	 *             instead
 	 */
 	@Secured (Roles.BUILDING_READ)
 	List<Buildings> getBuildings(Long streetId, Page pager);
-
-	/**
-	 * Get building attribute types
-	 *
-	 * @return BuildingAttributeType list
-	 */
-	@Secured (Roles.BUILDING_ATTRIBUTE_TYPE_READ)
-	List<BuildingAttributeType> getAttributeTypes();
 
 	/**
 	 * Find buildings by attributes
@@ -190,35 +183,14 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 * @throws FlexPayException if building does not have any buildingses
 	 */
 	@Secured (Roles.BUILDING_READ)
-	List<Buildings> getBuildingBuildings(Stub<Building> stub)
-			throws FlexPayException;
+	List<Buildings> getBuildingBuildings(Stub<Building> stub) throws FlexPayException;
 
 	/**
+	 * Read building info
 	 *
-	 * @param id
-	 * @return
-	 * @deprecated refactor me
+	 * @param stub Building stub
+	 * @return Building if found
 	 */
 	@Secured (Roles.BUILDING_READ)
-	Building readBuilding(Long id);
-
-	/**
-	 * Get building attribute type
-	 *
-	 * @param stub BuildingAttributeType stub
-	 * @return Attribute type if found, or <code>null</code> otherwise
-	 */
-	@Secured (Roles.BUILDING_READ)
-	@Nullable
-	BuildingAttributeType read(@NotNull Stub<BuildingAttributeType> stub);
-
-	/**
-	 * Create or update building attribute type
-	 *
-	 * @param type AttributeType to save
-	 * @throws FlexPayExceptionContainer if validation fails
-	 */
-	@Secured ({Roles.BUILDING_ATTRIBUTE_TYPE_ADD, Roles.BUILDING_ATTRIBUTE_TYPE_CHANGE})
-	void save(@NotNull BuildingAttributeType type) throws FlexPayExceptionContainer;
-
+	Building read(@NotNull Stub<Building> stub);
 }
