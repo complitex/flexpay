@@ -49,7 +49,7 @@ public class TestApartmentService extends SpringBeanAwareTestCase {
 	public void testFindApartment() throws Throwable {
 
 		// See init_db script
-		Stub<Apartment> apartment = apartmentService.findApartmentStub(new Building(26L), "31");
+		Stub<Apartment> apartment = apartmentService.findApartmentStub(new Building(1L), "31");
 
 		assertNotNull("Apartment find faild", apartment);
 	}
