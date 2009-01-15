@@ -14,12 +14,12 @@ public class TestCorrectionsService extends SpringBeanAwareTestCase {
 	private CorrectionsService service;
 
 	@Autowired
-	public void setService(@Qualifier("correctionsService") CorrectionsService service) {
+	public void setService(@Qualifier ("correctionsService") CorrectionsService service) {
 		this.service = service;
 	}
 
 	@Test
-	@ExpectedException(FlexPayException.class)
+	@ExpectedException (FlexPayException.class)
 	public void testGetDistrictCorrections() throws Exception {
 
 		Oszn oszn = new Oszn();

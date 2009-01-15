@@ -6,6 +6,7 @@ import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.BuildingAttributeType;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.jetbrains.annotations.NotNull;
 
 public class ApplicationConfig extends org.flexpay.common.util.config.ApplicationConfig {
 
@@ -24,6 +25,7 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 		return stub(getInstance().defaultTown);
 	}
 
+	@NotNull
 	public static Country getDefaultCountry() {
 		return getInstance().defaultCountry;
 	}
