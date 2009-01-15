@@ -8,4 +8,16 @@
 
 	<!-- Define struts actions beans -->
 
+    <bean id="sewerTypeEditAction" class="org.flexpay.tc.actions.sewertype.SewerTypeEditAction"
+          p:sewerTypesService-ref="sewerTypesService"
+		  scope="prototype" />
+
+    <bean id="sewerTypeDeleteAction" class="org.flexpay.tc.actions.sewertype.SewerTypeDeleteAction"
+          p:sewerTypesService-ref="sewerTypesService"
+		  scope="prototype" />
+
+    <bean id="sewerTypesListAction" class="org.flexpay.tc.actions.sewertype.SewerTypesListAction"
+          p:sewerTypesService-ref="sewerTypesService"
+		  scope="prototype" />
+
 </beans>

@@ -15,7 +15,7 @@ public interface SzFileService {
 	 *            SzFile
 	 * @return created SzFile object
 	 */
-	public SzFile create(SzFile szFile) throws FlexPayException;
+	SzFile create(SzFile szFile) throws FlexPayException;
 
 	/**
 	 * Read SzFile object by its unique id

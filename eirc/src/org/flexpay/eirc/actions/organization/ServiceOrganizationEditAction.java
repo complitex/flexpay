@@ -72,12 +72,6 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
             oldServiceOrganization.setDescription(description);
         }
 
-        log.info("--------------------------------");
-        for (ServiceOrganizationDescription d : oldServiceOrganization.getDescriptions()) {
-            log.info("{} - {}", d.getLang(), d.getName());
-        }
-        log.info("--------------------------------");
-
         serviceOrganizationService.save(oldServiceOrganization);
 
 		return REDIRECT_SUCCESS;

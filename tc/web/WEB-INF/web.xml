@@ -7,7 +7,7 @@
     <!--ab-->
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>FlexPay Tarif Calculation  module</param-value>
+		<param-value>FlexPay Tariff Calculation  module</param-value>
 	</context-param>
 
 	<context-param>
@@ -25,7 +25,7 @@
 	</context-param>
 	<context-param>
 		<param-name>definitions-config</param-name>
-		<param-value>/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/common/configs/tiles_bti.xml,/WEB-INF/common/configs/tiles_tc.xml</param-value>
+		<param-value>/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/bti/configs/tiles_bti.xml,/WEB-INF/tc/configs/tiles_tc.xml</param-value>
 	</context-param>
 
 	<listener>
@@ -62,7 +62,9 @@
 		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
         <init-param>
 			<param-name>config</param-name>
-			<param-value>struts-default.xml,struts-plugin.xml,org/flexpay/common/common_struts_config.xml,org/flexpay/ab/ab_struts_config.xml,org/flexpay/bti/bti_struts_config.xml</param-value>
+			<param-value>
+                struts-default.xml,struts-plugin.xml,org/flexpay/common/common_struts_config.xml,org/flexpay/ab/ab_struts_config.xml,org/flexpay/bti/bti_struts_config.xml,org/flexpay/tc/tc_struts_config.xml
+            </param-value>
 		</init-param>
     </filter>
 	<filter-mapping>
@@ -261,6 +263,19 @@
 	<security-role>
 		<role-name>ROLE_AB_PERSON_DELETE</role-name>
 	</security-role>
+    <!-- Sewer types roles -->
+    <security-role>
+        <role-name>ROLE_TC_SEWER_TYPE_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_TC_SEWER_TYPE_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_TC_SEWER_TYPE_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_TC_SEWER_TYPE_DELETE</role-name>
+    </security-role>
 
     <login-config>
         <auth-method>FORM</auth-method>
@@ -270,8 +285,13 @@
         </form-login-config>
     </login-config>
 
+    <error-page>
+        <error-code>403</error-code>
+        <location>/resources/common/jsp/forbidden.jsp</location>
+    </error-page>
+
     <welcome-file-list>
-		<welcome-file>/resources/tc/jsp/index.jsp</welcome-file>
+		<welcome-file>/resources/tc/index.jsp</welcome-file>
 	</welcome-file-list>
 
 </web-app>
