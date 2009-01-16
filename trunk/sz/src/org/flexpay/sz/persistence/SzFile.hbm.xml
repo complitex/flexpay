@@ -29,6 +29,21 @@
         </many-to-one>
 	</class>
 
+    <query name="SzFile.findSzFiles">
+        select distinct s
+        from SzFile s
+        left join fetch s.oszn
+        left join fetch s.uploadedFile
+        left join fetch s.fileToDownload
+        left join fetch s.status
+        left join fetch s.type
+    </query>
+
+    <query name="SzFile.findSzFiles.count">
+        select count(*)
+        from SzFile s
+    </query>
+
     <query name="SzFile.readFull">
 		select distinct s
 		from SzFile s

@@ -1,5 +1,6 @@
 package org.flexpay.sz.service;
 
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFileStatus;
 import org.flexpay.sz.persistence.SzFile;
@@ -47,6 +48,8 @@ public interface SzFileService {
 	SzFile update(SzFile importFile) throws FlexPayException;
 
 	void updateStatus(Collection<Long> fileIds, FPFileStatus status) throws FlexPayException;
+
+	List<SzFile> listSzFiles(Page<SzFile> pager);
 
 	/**
 	 * Get a list of available SzFile

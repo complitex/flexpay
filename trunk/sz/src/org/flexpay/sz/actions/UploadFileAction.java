@@ -45,14 +45,15 @@ public class UploadFileAction implements UserPreferencesAware, SessionAware {
 	@NotNull
 	public String execute() {
 		if (uploadFileName == null) {
+			log.warn("Error: uploadFileName is null");
 			setStringResult(ActionSupport.ERROR);
-			return ActionSupport.SUCCESS;
+			return ActionSupport.ERROR;
 		}
 		FPFileType fileType = fpFileService.getTypeByFileName(uploadFileName, moduleName);
 		if (fileType == null) {
 			log.warn("Unknown file type");
 			setStringResult(ActionSupport.ERROR);
-			return ActionSupport.SUCCESS;
+			return ActionSupport.ERROR;
 		}
 
 		try {

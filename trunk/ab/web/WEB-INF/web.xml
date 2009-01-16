@@ -77,7 +77,7 @@
 		<init-param>
 			<param-name>config</param-name>
 			<param-value>
-				struts-default.xml,struts-plugin.xml,org/flexpay/common/common_struts_config.xml,org/flexpay/ab/ab_struts_config.xml
+				struts-default.xml,struts-plugin.xml,org/flexpay/common/struts_config.xml,org/flexpay/ab/struts_config.xml
 			</param-value>
 		</init-param>
 	</filter>

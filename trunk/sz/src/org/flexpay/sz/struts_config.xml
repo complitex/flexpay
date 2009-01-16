@@ -17,10 +17,6 @@
 			<result type="tiles">sz.import</result>
 		</action>
 
-		<action name="processing">
-			<result type="tiles">sz.processing</result>
-		</action>
-
         <action name="doSzFileUploadAjax" class="szFileUploadAjaxAction">
             <result name="success" type="rawtext"/>
         </action>

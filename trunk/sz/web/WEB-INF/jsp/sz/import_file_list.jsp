@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
-<form id="fobjects" method="post" action="<s:url action="szFileOperation" />">
+<s:form id="fobjects" method="post">
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
     <tr>
@@ -39,13 +39,13 @@
             &nbsp;
         </td>
     </tr>
-        <s:iterator value="szFileWrapperList" status="rowstatus">
+        <s:iterator value="szFileWrapperList" status="status">
             <tr valign="middle" class="cols_1">
                 <td class="col_1s">
                     <input type="checkbox" value="<s:property value="szFile.id" />" name="szFileIds" />
                 </td>
                 <td class="col_1s">
-                    <s:property value="#rowstatus.index + 1" />
+                    <s:property value="%{#status.index + pager.thisPageFirstElementNumber + 1}" />
                 </td>
                 <td class="col">
                     <s:property value="szFile.oszn.description"/>
@@ -97,7 +97,7 @@
     <tr>
 
     <tr>
-        <td colspan="9">
+        <td colspan="5">
             <input type="button" class="btn-exit" onclick="doAction('loadToDB');" value="<s:text name="sz.file_list.action.load_to_db" />" />
             &nbsp;
             <input type="button" class="btn-exit" onclick="doAction('fullDelete');" value="<s:text name="sz.file_list.action.full_delete" />" />
@@ -107,19 +107,24 @@
         <td>
             <input type="button" class="btn-exit" onclick="location.reload(true);" value="<s:text name="sz.file_list.refresh_list" />" />
         </td>
+        <td colspan="5">
+            <%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+        </td>
     </tr>
 
     </table>
-</form>
+</s:form>
 
 <script type="text/javascript">
 
     function doAction(action) {
+        $('fObjects').action = '<s:url action="szFileOperation"/>';
         $('action1').value = action;
         $('fobjects').submit();
     }
 
     function doActionId(action, id) {
+        $('fObjects').action = '<s:url action="szFileOperation"/>';
         $('szFileId').value = id;
         doAction(action);
     }

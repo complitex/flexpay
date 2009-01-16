@@ -1,6 +1,7 @@
 package org.flexpay.sz.actions;
 
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.sz.convert.NotSupportedOperationException;
 import org.flexpay.sz.convert.SzFileUtil;
@@ -15,14 +16,15 @@ import java.util.List;
 
 public class ImportFilesListAction extends FPActionSupport {
 
-	private SzFileService szFileService;
-
+	private Page<SzFile> pager = new Page<SzFile>();
 	private List<SzFileWrapper> szFileWrapperList;
+
+	private SzFileService szFileService;
 
 	@NotNull
 	public String doExecute() throws FlexPayException {
 
-		List<SzFile> szFileList = szFileService.getEntities();
+		List<SzFile> szFileList = szFileService.listSzFiles(pager);
 		szFileWrapperList = new ArrayList<SzFileWrapper>();
 		for (SzFile szFile : szFileList) {
 			SzFileWrapper wrapper = new SzFileWrapper();
@@ -53,6 +55,14 @@ public class ImportFilesListAction extends FPActionSupport {
 
 	public String getSeparator() {
 		return File.separator;
+	}
+
+	public Page<SzFile> getPager() {
+		return pager;
+	}
+
+	public void setPager(Page<SzFile> pager) {
+		this.pager = pager;
 	}
 
 	public static class SzFileWrapper {

@@ -2,6 +2,7 @@ package org.flexpay.sz.service.imp;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFileStatus;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.sz.dao.SzFileDao;
 import org.flexpay.sz.dao.SzFileDaoExt;
 import org.flexpay.sz.persistence.SzFile;
@@ -73,6 +74,10 @@ public class SzFileServiceImpl implements SzFileService {
 	@Transactional (readOnly = false)
 	public void updateStatus(Collection<Long> fileIds, FPFileStatus status) throws FlexPayException {
 		szFileDaoExt.updateStatus(fileIds, status);
+	}
+
+	public List<SzFile> listSzFiles(Page<SzFile> pager) {
+		return szFileDao.findSzFiles(pager);
 	}
 
 	/**
