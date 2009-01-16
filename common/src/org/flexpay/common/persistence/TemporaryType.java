@@ -3,6 +3,8 @@ package org.flexpay.common.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.util.TranslationUtil;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Set;
@@ -10,7 +12,7 @@ import java.util.Set;
 /**
  * Temporary object name having reference to object and a collection of translations
  */
-public abstract class TemporaryType<TV extends TemporaryValue, T extends Translation>
+public abstract class TemporaryType<TV extends TemporaryValue<TV>, T extends Translation>
 		extends TemporaryValue<TV> implements ObjectWithStatus {
 
 	private Set<T> translations = Collections.emptySet();
@@ -60,6 +62,15 @@ public abstract class TemporaryType<TV extends TemporaryValue, T extends Transla
 	}
 
 	/**
+	 * Check if object is active
+	 *
+	 * @return <code>true</code> if object status is active, or <code>false</code> otherwise
+	 */
+	public boolean isActive() {
+		return status == ObjectWithStatus.STATUS_ACTIVE;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -95,5 +106,23 @@ public abstract class TemporaryType<TV extends TemporaryValue, T extends Transla
 	 */
 	public boolean isEmpty() {
 		return translations == Collections.EMPTY_SET;
+	}
+
+
+	/**
+	 * Get type translation in a specified language
+	 *
+	 * @param lang Language to get translation in
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public T getTranslation(@NotNull Language lang) {
+		for (T translation : getTranslations()) {
+			if (lang.equals(translation.getLang())) {
+				return translation;
+			}
+		}
+
+		return null;
 	}
 }

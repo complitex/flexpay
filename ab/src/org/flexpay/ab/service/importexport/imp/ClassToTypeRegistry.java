@@ -27,6 +27,9 @@ public class ClassToTypeRegistry implements org.flexpay.common.service.importexp
 		if (Town.class.isAssignableFrom(clazz)) {
 			return 0x03;
 		}
+		if (TownType.class.isAssignableFrom(clazz)) {
+			return 0x10;
+		}
 		if (Region.class.isAssignableFrom(clazz)) {
 			return 0x02;
 		}

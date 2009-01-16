@@ -2,6 +2,7 @@ package org.flexpay.common.persistence.history;
 
 import org.flexpay.common.persistence.DomainObject;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface HistoryBuilder<T extends DomainObject> {
 
@@ -13,7 +14,7 @@ public interface HistoryBuilder<T extends DomainObject> {
 	 * @return Diff object
 	 */
 	@NotNull
-	Diff diff(@NotNull T t1, @NotNull T t2);
+	Diff diff(@Nullable T t1, @NotNull T t2);
 
 	/**
 	 * Apply diff to an object

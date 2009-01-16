@@ -7,10 +7,9 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="countryServiceTarget" class="org.flexpay.ab.service.imp.CountryServiceImpl">
-		<property name="countryDao" ref="countryDAO" />
-		<property name="countryNameDao" ref="countryNameDAO" />
-	</bean>
+	<bean id="countryServiceTarget" class="org.flexpay.ab.service.imp.CountryServiceImpl"
+		  p:countryDao-ref="countryDAO"
+		  p:countryNameDao-ref="countryNameDAO" />
 
 	<bean id="regionServiceTarget" class="org.flexpay.ab.service.imp.RegionServiceImpl">
 		<property name="parentService" ref="countryService" />
@@ -67,16 +66,14 @@
 		  p:buildingService-ref="buildingService"
 		  p:streetService-ref="streetService" />
 
-	<bean id="apartmentService" class="org.flexpay.ab.service.imp.ApartmentServiceImpl">
-		<property name="apartmentDao" ref="apartmentDao" />
-		<property name="apartmentDaoExt" ref="apartmentDaoExt" />
-		<property name="parentService" ref="buildingService" />
-	</bean>
+	<bean id="apartmentService" class="org.flexpay.ab.service.imp.ApartmentServiceImpl"
+		  p:apartmentDao-ref="apartmentDao"
+		  p:apartmentDaoExt-ref="apartmentDaoExt"
+		  p:parentService-ref="buildingService" />
 
-	<bean id="townTypeService" class="org.flexpay.ab.service.imp.TownTypeServiceImpl">
-		<property name="townTypeDao" ref="townTypeDAO" />
-		<property name="townTypeTranslationDao" ref="townTypeTranslationDao" />
-	</bean>
+	<bean id="townTypeService" class="org.flexpay.ab.service.imp.TownTypeServiceImpl"
+		  p:townTypeDao-ref="townTypeDAO"
+		  p:townTypeTranslationDao-ref="townTypeTranslationDao" />
 
 	<bean id="streetTypeServiceTarget"
 		  class="org.flexpay.ab.service.imp.StreetTypeServiceImpl"
@@ -85,17 +82,18 @@
 		  p:correctionsService-ref="correctionsServiceAb" />
 
 	<bean id="identityTypeService"
-		  class="org.flexpay.ab.service.imp.IdentityTypeServiceImpl">
-		<property name="identityTypeDao" ref="identityTypeDAO" />
-		<property name="identityTypeTranslationDao" ref="identityTypeTranslationDao" />
-	</bean>
+		  class="org.flexpay.ab.service.imp.IdentityTypeServiceImpl"
+		  p:identityTypeDao-ref="identityTypeDAO"
+		  p:identityTypeTranslationDao-ref="identityTypeTranslationDao" />
 
-	<bean id="personService" class="org.flexpay.ab.service.imp.PersonServiceImpl">
-		<property name="personDao" ref="personDao" />
-		<property name="personDaoExt" ref="personDaoExt" />
-		<property name="personAttributeDao" ref="personAttributeDao" />
-		<property name="personRegistrationDao" ref="personRegistrationDao" />
-		<property name="identityTypeService" ref="identityTypeService" />
-	</bean>
+	<bean id="personService" class="org.flexpay.ab.service.imp.PersonServiceImpl"
+		  p:personAttributeDao-ref="personAttributeDao"
+		  p:identityTypeService-ref="identityTypeService"
+		  p:personRegistrationDao-ref="personRegistrationDao"
+		  p:personDao-ref="personDao"
+		  p:personDaoExt-ref="personDaoExt" />
+
+	<bean id="townTypeHistoryBuilder" class="org.flexpay.ab.service.history.TownTypeHistoryBuilder"
+		  p:typeRegistry-ref="typeRegistryAb" />
 
 </beans>

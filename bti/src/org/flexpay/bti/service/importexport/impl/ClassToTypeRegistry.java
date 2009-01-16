@@ -7,7 +7,7 @@ public class ClassToTypeRegistry extends org.flexpay.ab.service.importexport.imp
 
 	public int getType(Class<? extends DomainObject> clazz) {
 		if (Apartment.class.isAssignableFrom(clazz)) {
-			return 0x0011;
+			return 0x0031;
 		}
 
 		return super.getType(clazz);
