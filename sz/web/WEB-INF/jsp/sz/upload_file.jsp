@@ -4,25 +4,28 @@
 <div id="mainBlock">
 
     <s:form id="inputForm" onsubmit="return false;">
-        <div>
-            <span>
-                <s:text name="year" />
-                <s:select name="year" list="years" value="year" required="true" />
-            </span>
-            <span>
-                <s:text name="month" />
-                <s:select name="month" list="months" required="true" />
-            </span>
-            <span>
-                <s:text name="sz.oszn" />
-                <s:select name="osznId" list="osznList" listKey="id" listValue="description" required="true" />
-            </span>
-            <span>
-                <s:text name="sz.file" />
-                <s:file name="upload" label="File" />
-            </span>
-        </div>
-
+        <table cellspacing="2" cellpadding="2" width="80%">
+            <tr>
+                <td width="30%">
+                    <s:text name="year" />
+                    <s:select name="year" list="years" value="year" required="true" />
+                </td>
+                <td width="30%">
+                    <s:text name="month" />
+                    <s:select name="month" list="months" required="true" />
+                </td>
+                <td align="right">
+                    <s:text name="sz.oszn" />
+                    <s:select name="osznId" list="osznList" listKey="id" listValue="description" required="true" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <s:text name="sz.file" />
+                    <s:file name="upload" label="File" required="true" size="75" />
+                </td>
+            </tr>
+        </table>
         <input id="uploadBtn" type="button" value="<s:text name="common.upload" />" class="btn-exit" onclick="submitForm();" />
 
     </s:form>
@@ -79,6 +82,19 @@
         newBlocks++;
     }
 
+    function eraseForm() {
+        $("inputForm").elements["upload"].value = "";
+    }
+
+    function validateForm() {
+        var fileEl = $("inputForm").elements["upload"];
+        if (fileEl.value == null || fileEl.value == "") {
+            alert("<s:text name="error.sz_file.upload.empty_file_field" />");
+            return false;
+        }
+        return true;
+    }
+
     function newXMLHttpRequest() {
         var xmlreq = false;
         if (window.XMLHttpRequest) {
@@ -103,14 +119,21 @@
     var stack = new Array();
     var uploadingId = -1;
     var started = false;
+    var wait = false;
 
     function submitForm() {
 
+        if (!validateForm()) {
+            return;
+        }
+
         stack.push(newBlocks);
         addBlock();
+        eraseForm();
 
         if (!uploaded) {
-            $("ajaxResponse" + (newBlocks - 1)).innerHTML = "File " + (newBlocks - 1) + ": Waiting...";
+            var fileValue = $("uploadForm" + (newBlocks - 1)).elements["upload"].value;
+            $("ajaxResponse" + (newBlocks - 1)).innerHTML = "File \"" + fileValue.substring(fileValue.lastIndexOf("\\")) + "\": Waiting...";
         }
         if (!started) {
             started = true;
@@ -120,12 +143,17 @@
 
     }
 
+    var uploadingFilename;
+
     function upload() {
-        if (uploaded) {
+        if (uploaded && !wait) {
+            uploaded = false;
             uploadingId = stack[0];
+            var fileValue = $("uploadForm" + uploadingId).elements["upload"].value;
+            uploadingFilename = "File \"" + fileValue.substring(fileValue.lastIndexOf("\\")) + "\": ";
             stack.remove(0);
             $("uploadForm" + uploadingId).submit();
-            startUpload();
+            setTimeout(getProgress, 500);
         }
     }
 
@@ -135,26 +163,63 @@
         xmlHttp.send(null);
     }
 
-    function updatePage() {
-        if (xmlHttp.readyState == 4 && xmlHttp.responseText != null && xmlHttp.responseText != "") {
-            $("ajaxResponse" + uploadingId).innerHTML = 'File ' + uploadingId + ': Loading ' + xmlHttp.responseText + '%';
-            if (xmlHttp.responseText == "100") {
-                $("ajaxResponse" + uploadingId).style.color = "#008000";
-                $("ajaxResponse" + uploadingId).innerHTML = "File " + uploadingId + ": Loaded";
-                uploaded = true;
-                if (stack.length > 0) {
-                    $("ajaxResponse" + stack[0]).innerHTML = "File " + stack[0] + ": Preparing...";
-                    setTimeout(upload, 2000);
+    var retries = 3;
+    var curRetry = 0;
+
+    function waiting() {
+        if (!wait) {
+            return;
+        }
+        curRetry++;
+        var uploadFrame = window.frames["uploadFrame" + uploadingId].document.body;
+        var ajaxResponse = $("ajaxResponse" + uploadingId);
+        if (curRetry <= retries) {
+            if (uploadFrame.innerHTML == "") {
+                console.debug("wait");
+            } else {
+                if (uploadFrame.innerHTML == "<pre>success</pre>") {
+                    console.debug("succ");
+                    ajaxResponse.style.color = "#008000";
+                    ajaxResponse.innerHTML = uploadingFilename + "Loaded";
+                    wait = false;
+                } else if (uploadFrame.innerHTML == "<pre>error</pre>") {
+                    console.debug("error");
+                    ajaxResponse.innerHTML = uploadingFilename + "Error!";
+                    wait = false;
                 }
-                return true;
             }
-            setTimeout(getProgress, 500);
+        }
+        uploadWait();
+    }
+
+    function uploadWait() {
+        if (stack.length > 0) {
+            if (wait) {
+                setTimeout(waiting, 5000);
+            } else {
+                upload();
+            }
+        } else {
+            if (wait) {
+                setTimeout(waiting, 5000);
+            }
         }
     }
 
-    function startUpload() {
-        uploaded = false;
-        setTimeout(getProgress, 500);
+    function updatePage() {
+        if (xmlHttp.readyState == 4 && xmlHttp.responseText != null && xmlHttp.responseText != "") {
+            var ajaxResponse = $("ajaxResponse" + uploadingId);
+            ajaxResponse.innerHTML = uploadingFilename + "Loading " + xmlHttp.responseText + "%";
+            if (xmlHttp.responseText == "100") {
+                uploaded = true;
+                wait = true;
+                ajaxResponse.innerHTML = uploadingFilename + "Uploaded, processing...";
+                curRetry = 0;
+                setTimeout(uploadWait, 100);;
+                return true;
+            }
+            setTimeout(getProgress, 1000);
+        }
     }
-	
+
 </script>
