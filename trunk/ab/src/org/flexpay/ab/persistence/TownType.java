@@ -3,6 +3,9 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.TemporaryType;
+import org.flexpay.common.persistence.Language;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * TownType entity class holds a general representation of various types of localities,
@@ -19,7 +22,6 @@ public class TownType extends TemporaryType<TownType, TownTypeTranslation> {
 	public TownType(Long id) {
 		super(id);
 	}
-
 
 	/**
 	 * Returns a string representation of the object.
@@ -40,15 +42,8 @@ public class TownType extends TemporaryType<TownType, TownTypeTranslation> {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (!(obj instanceof TownType)) {
-			return false;
-		}
 
-		TownType that = (TownType) obj;
-
-		return super.equals(that);
+		return obj instanceof TownType && super.equals(obj);
 	}
 
 	/**

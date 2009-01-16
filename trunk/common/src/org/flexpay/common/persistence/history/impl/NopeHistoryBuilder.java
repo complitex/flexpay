@@ -4,6 +4,7 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.history.HistoryBuilder;
 import org.flexpay.common.persistence.history.Diff;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class NopeHistoryBuilder <T extends DomainObject> implements HistoryBuilder<T> {
 
@@ -15,7 +16,7 @@ public class NopeHistoryBuilder <T extends DomainObject> implements HistoryBuild
 	 * @return Diff object
 	 */
 	@NotNull
-	public Diff diff(@NotNull T t1, @NotNull T t2) {
+	public Diff diff(@Nullable T t1, @NotNull T t2) {
 		return new Diff();
 	}
 
