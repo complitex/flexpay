@@ -37,7 +37,7 @@ public class ActionUtil {
 	 * @return map of language ids to translations
 	 */
 	@NotNull
-	public static <TV extends TemporaryValue, T extends Translation>
+	public static <TV extends TemporaryValue<TV>, T extends Translation>
 	Map<Long, String> getLangIdsToTranslations(@NotNull TemporaryType<TV, T> temporaryType) {
 
 		return getLangIdsToTranslations(temporaryType.getTranslations());
