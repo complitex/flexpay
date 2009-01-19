@@ -3,6 +3,9 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.ab.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * TownTypeTranslation is a trnaslation of TownType to particular language
@@ -16,7 +19,15 @@ public class TownTypeTranslation extends Translation {
 	 */
 	public TownTypeTranslation() {
 	}
-	
+
+	public TownTypeTranslation(@NotNull String name) {
+		super(name, ApplicationConfig.getDefaultLanguage());
+	}
+
+	public TownTypeTranslation(@NotNull String name, @NotNull Language lang) {
+		super(name, lang);
+	}
+
 	/**
 	 * Getter for property 'shortName'.
 	 *

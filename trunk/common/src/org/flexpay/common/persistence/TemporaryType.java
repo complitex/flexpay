@@ -3,6 +3,7 @@ package org.flexpay.common.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
 
@@ -124,5 +125,15 @@ public abstract class TemporaryType<TV extends TemporaryValue<TV>, T extends Tra
 		}
 
 		return null;
+	}
+
+	/**
+	 * Get type translation in a default language
+	 *
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public T getDefaultTranslation() {
+		return getTranslation(ApplicationConfig.getDefaultLanguage());
 	}
 }
