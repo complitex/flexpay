@@ -21,7 +21,7 @@
 
 <div>
 	<s:if test="%{pager.totalNumberOfElements > 0}">
-	<span style="float:right;" class="text">
+	<span style="float:right;" class="text-small">
 		&nbsp;<s:text name="common.show_by"/>&nbsp;
 		<select name="pager.pageSize" class="form-select" onchange="submitForm(this);">
 			<option value="10"
@@ -33,7 +33,7 @@
 			<option value="30"
 					<s:if test="%{pager.pageSize == 30}">selected</s:if> >30
 			</option>
-		</select>
+		</select>&nbsp;
 		<s:text name="common.pages"/>:&nbsp;
 		<s:if test="%{pager.isFirstPage() == false}">
 			<input type="submit" name="pager.pageNumber" value="1" class="btn-link"/>&nbsp;
