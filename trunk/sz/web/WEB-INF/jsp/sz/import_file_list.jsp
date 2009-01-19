@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
-<s:form id="fobjects" method="post">
+<s:form id="fObjects" method="post">
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
     <tr>
@@ -120,7 +120,7 @@
     function doAction(action) {
         $('fObjects').action = '<s:url action="szFileOperation"/>';
         $('action1').value = action;
-        $('fobjects').submit();
+        $('fObjects').submit();
     }
 
     function doActionId(action, id) {
