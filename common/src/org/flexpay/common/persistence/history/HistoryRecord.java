@@ -28,6 +28,7 @@ public class HistoryRecord extends DomainObject {
 	private Language language;
 	private Date beginDate;
 	private Date endDate;
+	private Diff diff;
 
 	/**
 	 * Constructs a new DomainObject.
@@ -163,6 +164,14 @@ public class HistoryRecord extends DomainObject {
 		this.endDate = endDate;
 	}
 
+	public Diff getDiff() {
+		return diff;
+	}
+
+	public void setDiff(Diff diff) {
+		this.diff = diff;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).
@@ -181,6 +190,7 @@ public class HistoryRecord extends DomainObject {
 				append("language", language).
 				append("beginDate", beginDate).
 				append("endDate", endDate).
+				append("diff", diff).
 				toString();
 	}
 }

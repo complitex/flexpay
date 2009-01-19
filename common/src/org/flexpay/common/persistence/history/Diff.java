@@ -114,14 +114,18 @@ public class Diff extends DomainObjectWithStatus {
 	public void addRecord(@NotNull HistoryRecord rec) {
 		if (historyRecords == Collections.EMPTY_LIST) {
 			historyRecords = CollectionUtils.list();
-			return;
 		}
 
 		rec.setOperationOrder(historyRecords.size());
+		rec.setDiff(this);
 		historyRecords.add(rec);
 	}
 
 	public boolean isEmpty() {
 		return historyRecords.isEmpty();
+	}
+
+	public int size() {
+		return historyRecords.size();
 	}
 }
