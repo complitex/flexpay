@@ -1,9 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <s:form id="fObjects" method="post">
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
+    <tr>
+        <td colspan="9">
+            <%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+        </td>
+    <tr>
     <tr>
         <td class="th">
             <input type="checkbox" onclick="FP.setCheckboxes(this.checked, 'szFileIds');" />
@@ -15,13 +21,10 @@
             <s:text name="sz.oszn" />
         </td>
         <td class="th">
-            <s:text name="sz.original_file_name" />
+            <s:text name="sz.input_file" />
         </td>
         <td class="th">
             <s:text name="sz.file_type" />
-        </td>
-        <td class="th">
-            <s:text name="sz.year" />
         </td>
         <td class="th">
             <s:text name="sz.month" />
@@ -51,16 +54,15 @@
                     <s:property value="szFile.oszn.description"/>
                 </td>
                 <td class="col">
-                    <s:property value="szFile.uploadedFile.originalName"/>
+                    <a href="<s:url value='/szFileDownloadServlet'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="req" value="true" /></s:url>">
+                        <s:property value="szFile.uploadedFile.originalName"/>
+                    </a>
                 </td>
                 <td class="col">
-                    <s:text name="%{szFile.type.name}"/>
+                    <s:text name="%{szFile.type.name}" />
                 </td>
                 <td class="col">
-                    <s:property value="szFile.fileYear"/>
-                </td>
-                <td class="col">
-                    <s:property value="szFile.fileMonth + 1"/>
+                    <fmt:formatNumber value="${szFile.fileMonth + 1}" pattern="00" /> <s:property value="szFile.fileYear"/>
                 </td>
                 <td class="col">
                     <s:date name="szFile.importDate" format="dd.MM.yyyy hh:mm:ss" />
@@ -93,7 +95,7 @@
         </s:iterator>
 
     <tr>
-        <td colspan="10" height="3" bgcolor="#4a4f4f"/>
+        <td colspan="9" height="3" bgcolor="#4a4f4f"/>
     <tr>
 
     <tr>
@@ -104,13 +106,15 @@
             <input id="action1" type="hidden" name="action1" value="loadToDB" />
             <input id="szFileId" type="hidden" name="szFileId" value="" />
         </td>
-        <td>
+        <td colspan="4">
             <input type="button" class="btn-exit" onclick="location.reload(true);" value="<s:text name="sz.file_list.refresh_list" />" />
         </td>
-        <td colspan="5">
+    </tr>
+    <tr>
+        <td colspan="9">
             <%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
         </td>
-    </tr>
+    <tr>
 
     </table>
 </s:form>

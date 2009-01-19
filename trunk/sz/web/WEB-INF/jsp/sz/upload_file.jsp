@@ -133,7 +133,7 @@
 
         if (!uploaded) {
             var fileValue = $("uploadForm" + (newBlocks - 1)).elements["upload"].value;
-            $("ajaxResponse" + (newBlocks - 1)).innerHTML = "File \"" + fileValue.substring(fileValue.lastIndexOf("\\")) + "\": Waiting...";
+            $("ajaxResponse" + (newBlocks - 1)).innerHTML = "<s:text name="sz.file" /> \"" + fileValue.substring(fileValue.lastIndexOf("\\")) + "\": <s:text name="sz.file_upload.progress_bar.waiting" />";
         }
         if (!started) {
             started = true;
@@ -150,10 +150,10 @@
             uploaded = false;
             uploadingId = stack[0];
             var fileValue = $("uploadForm" + uploadingId).elements["upload"].value;
-            uploadingFilename = "File \"" + fileValue.substring(fileValue.lastIndexOf("\\")) + "\": ";
+            uploadingFilename = "<s:text name="sz.file" /> \"" + fileValue.substring(fileValue.lastIndexOf("\\")) + "\": ";
             stack.remove(0);
             $("uploadForm" + uploadingId).submit();
-            setTimeout(getProgress, 500);
+            setTimeout(getProgress, 1000);
         }
     }
 
@@ -180,11 +180,11 @@
                 if (uploadFrame.innerHTML == "<pre>success</pre>") {
                     console.debug("succ");
                     ajaxResponse.style.color = "#008000";
-                    ajaxResponse.innerHTML = uploadingFilename + "Loaded";
+                    ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.loaded" />";
                     wait = false;
                 } else if (uploadFrame.innerHTML == "<pre>error</pre>") {
                     console.debug("error");
-                    ajaxResponse.innerHTML = uploadingFilename + "Error!";
+                    ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.error" />";
                     wait = false;
                 }
             }
@@ -195,13 +195,13 @@
     function uploadWait() {
         if (stack.length > 0) {
             if (wait) {
-                setTimeout(waiting, 5000);
+                setTimeout(waiting, 4000);
             } else {
                 upload();
             }
         } else {
             if (wait) {
-                setTimeout(waiting, 5000);
+                setTimeout(waiting, 4000);
             }
         }
     }
@@ -209,11 +209,11 @@
     function updatePage() {
         if (xmlHttp.readyState == 4 && xmlHttp.responseText != null && xmlHttp.responseText != "") {
             var ajaxResponse = $("ajaxResponse" + uploadingId);
-            ajaxResponse.innerHTML = uploadingFilename + "Loading " + xmlHttp.responseText + "%";
+            ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.loading" /> " + xmlHttp.responseText + "%";
             if (xmlHttp.responseText == "100") {
                 uploaded = true;
                 wait = true;
-                ajaxResponse.innerHTML = uploadingFilename + "Uploaded, processing...";
+                ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.processing" />";
                 curRetry = 0;
                 setTimeout(uploadWait, 100);;
                 return true;
