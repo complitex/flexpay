@@ -1,10 +1,10 @@
 package org.flexpay.sz.actions;
 
 import org.apache.commons.io.IOUtils;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
-import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.sz.persistence.SzFile;
+import org.flexpay.sz.service.SzFileService;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,38 +24,45 @@ public class SzFileDownloadServlet extends HttpServlet {
 	public void doGet(@NonNls HttpServletRequest request, @NonNls HttpServletResponse response) throws IOException {
 
 		Long fileId = Long.parseLong(request.getParameter("szFileId"));
+		Boolean isReq = Boolean.parseBoolean(request.getParameter("req"));
 
-        FPFileService fpFileService = getFpFileService();
+		SzFileService szFileService = getSzFileService();
         @NonNls OutputStream os = response.getOutputStream();
 
-        FPFile fpFile;
+        SzFile szFile;
 
-        try {
-            fpFile = fpFileService.read(fileId);
-        } catch (FlexPayException e) {
-            log.error("Can't get file with id " + fileId, e);
-            os.write(("Can't get file with id " + fileId).getBytes());
-            IOUtils.closeQuietly(os);
-            return;
-        }
+		szFile = szFileService.readFull(fileId);
 
-        File file;
+		if (szFile == null) {
+			log.error("File not found: id = {}", fileId);
+			os.write(("File not found: id = " + fileId).getBytes());
+			IOUtils.closeQuietly(os);
+			return;
+		}
+
+		FPFile fpFile;
+		if (isReq) {
+			fpFile = szFile.getUploadedFile();
+		} else {
+			fpFile = szFile.getFileToDownload();
+		}
+
         if (fpFile == null) {
             log.error("File not found: id = {}", fileId);
             os.write(("File not found: id = " + fileId).getBytes());
             IOUtils.closeQuietly(os);
             return;
-        } else {
-            file = FPFileUtil.getFileOnServer(fpFile);
         }
 
-		response.setContentType("application/octet-stream");
+		File file = FPFileUtil.getFileOnServer(fpFile);
+
+		response.setContentType("multipart/form-data");
 		response.setContentLength((int) file.length());
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + fpFile.getOriginalName() + "\"");
 
 		InputStream is = null;
 		try {
-			is = new DataInputStream(new FileInputStream(file));
+			is = new FileInputStream(file);
 			IOUtils.copyLarge(is, os);
 		} catch (IOException e) {
 			log.error("Error getting file " + file, e);
@@ -65,9 +72,9 @@ public class SzFileDownloadServlet extends HttpServlet {
 		}
 	}
 
-	private FPFileService getFpFileService() {
+	private SzFileService getSzFileService() {
 		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-		return (FPFileService) context.getBean("fpFileService");
+		return (SzFileService) context.getBean("szFileService");
 	}
 
 }
