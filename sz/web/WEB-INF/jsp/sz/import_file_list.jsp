@@ -108,7 +108,7 @@
             &nbsp;
             <input type="button" class="btn-exit" onclick="doAction('fullDelete');" value="<s:text name="sz.file_list.action.full_delete" />" />
             &nbsp;
-            <input type="submit" class="btn-exit" <%--onclick="alert(location.pathname);"--%> value="<s:text name="sz.file_list.refresh_list" />" />
+            <input type="button" class="btn-exit" onclick="location.reload();" value="<s:text name="sz.file_list.refresh_list" />" />
             <input id="action1" type="hidden" name="action1" value="loadToDB" />
             <input id="szFileId" type="hidden" name="szFileId" value="" />
         </td>
