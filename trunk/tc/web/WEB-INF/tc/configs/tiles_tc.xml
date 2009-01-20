@@ -1,24 +1,39 @@
 <!DOCTYPE tiles-definitions PUBLIC
-		"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
-		"http://struts.apache.org/dtds/tiles-config_2_0.dtd">
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/tiles-config_2_0.dtd">
 
 <tiles-definitions>
 
+
     <definition name="tc.dictionaries" extends="ab.layout.standart">
-        <put-attribute name="title" value="tc.menu2.dictionaries" />
-        <put-attribute name="menu1" value="/WEB-INF/jsp/tc/menu/menu1.jsp" />
-        <put-attribute name="menu2" value="/WEB-INF/jsp/tc/menu/menu2.jsp" />
-        <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_dictionaries.jsp" />
+        <put-attribute name="title" value="tc.menu2.dictionaries"/>
+        <put-attribute name="menu1" value="/WEB-INF/jsp/tc/menu/menu1.jsp"/>
+        <put-attribute name="menu2" value="/WEB-INF/jsp/tc/menu/menu2.jsp"/>
+        <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_dictionaries.jsp"/>
     </definition>
 
+    <!-- sewer type related pages -->
     <definition name="tc.sewer_types.list" extends="tc.dictionaries">
-        <put-attribute name="title" value="tc.sewer_types" />
-        <put-attribute name="body" value="/WEB-INF/jsp/tc/sewers/sewer_types_list.jsp" />
+        <put-attribute name="title" value="tc.sewer_types"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/sewers/sewer_types_list.jsp"/>
     </definition>
 
     <definition name="tc.sewer_type.edit" extends="tc.dictionaries">
-        <put-attribute name="title" value="tc.sewer_type" />
-        <put-attribute name="body" value="/WEB-INF/jsp/tc/sewers/sewer_type_edit.jsp" />
+        <put-attribute name="title" value="tc.sewer_type"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/sewers/sewer_type_edit.jsp"/>
     </definition>
+    <!-- end of sewer type related pages -->
+
+    <!-- sewer material type related pages -->
+    <definition name="tc.sewer_material_types.list" extends="tc.dictionaries">
+        <put-attribute name="title" value="tc.sewer_material_types"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/sewers/sewer_material_types_list.jsp"/>
+    </definition>
+
+    <definition name="tc.sewer_material_type.edit" extends="tc.dictionaries">
+        <put-attribute name="title" value="tc.sewer_material_type"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/sewers/sewer_material_type_edit.jsp"/>
+    </definition>
+    <!-- end of sewer material type re;ated pages -->
 
 </tiles-definitions>

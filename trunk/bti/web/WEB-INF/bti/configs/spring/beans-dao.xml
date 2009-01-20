@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-	<!--  Dao Layer instances -->
+    <!--  Dao Layer instances -->
 
     <bean id="sewerTypeDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.bti.dao.SewerTypeDao" />
+        <property name="proxyInterfaces" value="org.flexpay.bti.dao.SewerTypeDao"/>
         <property name="target">
             <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.bti.persistence.SewerType" />
+                <constructor-arg value="org.flexpay.bti.persistence.SewerType"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="sewerMaterialTypeDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.bti.dao.SewerMaterialTypeDAO"/>
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.bti.persistence.SewerMaterialType"/>
             </bean>
         </property>
     </bean>
