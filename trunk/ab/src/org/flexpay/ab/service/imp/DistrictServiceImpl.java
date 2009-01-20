@@ -292,16 +292,12 @@ public class DistrictServiceImpl extends
 			// the second and all next names should have default lang translation
 			if (!first || temporals.size() == 1) {
 				DistrictName name = object.getNameForDate(DateUtil.now());
-				try {
-					if (name == null || StringUtils.isBlank(name.getDefaultNameTranslation())) {
-						FlexPayException e = new FlexPayException("No translation", "error.ab.district.no_default_translation",
-								temporal.getBegin(), temporal.getEnd());
-						ex.addException(e);
-
-						log.debug("Period: {} - {} is empty ", temporal.getBegin(), temporal.getEnd());
-					}
-				} catch (FlexPayException e) {
+				if (name == null || StringUtils.isBlank(name.getDefaultNameTranslation())) {
+					FlexPayException e = new FlexPayException("No translation", "error.ab.district.no_default_translation",
+							temporal.getBegin(), temporal.getEnd());
 					ex.addException(e);
+
+					log.debug("Period: {} - {} is empty ", temporal.getBegin(), temporal.getEnd());
 				}
 			}
 
