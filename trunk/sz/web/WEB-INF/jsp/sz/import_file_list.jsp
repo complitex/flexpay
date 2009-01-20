@@ -6,7 +6,7 @@
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
     <tr>
-        <td colspan="9">
+        <td colspan="10">
             <%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
         </td>
     <tr>
@@ -22,6 +22,9 @@
         </td>
         <td class="th">
             <s:text name="sz.input_file" />
+        </td>
+        <td class="th">
+            <s:text name="sz.output_file" />
         </td>
         <td class="th">
             <s:text name="sz.file_type" />
@@ -59,10 +62,17 @@
                     </a>
                 </td>
                 <td class="col">
+                    <s:if test="szFile.fileToDownload">
+                        <a href="<s:url value='/szFileDownloadServlet'><s:param name="szFileId" value="%{szFile.id}"/></s:url>">
+                            <s:property value="szFile.fileToDownload.originalName"/>
+                        </a>
+                    </s:if>
+                </td>
+                <td class="col">
                     <s:text name="%{szFile.type.name}" />
                 </td>
                 <td class="col">
-                    <fmt:formatNumber value="${szFile.fileMonth + 1}" pattern="00" /> <s:property value="szFile.fileYear"/>
+                    <fmt:formatNumber value="${szFile.fileMonth + 1}" pattern="00" />&nbsp;<s:property value="szFile.fileYear"/>
                 </td>
                 <td class="col">
                     <s:date name="szFile.importDate" format="dd.MM.yyyy hh:mm:ss" />
@@ -84,34 +94,25 @@
                             <s:text name="sz.file_list.action.load_from_db" />
                         </a>
                     </s:if>
-                    &nbsp;
-                    <s:if test="szFile.fileToDownload != null">
-                        <a href="<s:url value='/szFileDownloadServlet'><s:param name="szFileId" value="%{szFile.id}"/></s:url>">
-                            <s:property value="szFile.fileOnServer.originalName"/>
-                        </a>
-                    </s:if>
                 </td>
             </tr>
         </s:iterator>
 
     <tr>
-        <td colspan="9" height="3" bgcolor="#4a4f4f"/>
+        <td colspan="10" height="3" bgcolor="#4a4f4f"/>
     <tr>
 
     <tr>
-        <td colspan="5">
+        <td colspan="6">
             <input type="button" class="btn-exit" onclick="doAction('loadToDB');" value="<s:text name="sz.file_list.action.load_to_db" />" />
             &nbsp;
             <input type="button" class="btn-exit" onclick="doAction('fullDelete');" value="<s:text name="sz.file_list.action.full_delete" />" />
+            &nbsp;
+            <input type="submit" class="btn-exit" <%--onclick="alert(location.pathname);"--%> value="<s:text name="sz.file_list.refresh_list" />" />
             <input id="action1" type="hidden" name="action1" value="loadToDB" />
             <input id="szFileId" type="hidden" name="szFileId" value="" />
         </td>
         <td colspan="4">
-            <input type="button" class="btn-exit" onclick="location.reload(true);" value="<s:text name="sz.file_list.refresh_list" />" />
-        </td>
-    </tr>
-    <tr>
-        <td colspan="9">
             <%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
         </td>
     <tr>
@@ -122,13 +123,13 @@
 <script type="text/javascript">
 
     function doAction(action) {
-        $('fObjects').action = '<s:url action="szFileOperation"/>';
         $('action1').value = action;
-        $('fObjects').submit();
+        var form = $('fObjects');
+        form.action = "<s:url action="/szFileOperation" />";
+        form.submit();
     }
 
     function doActionId(action, id) {
-        $('fObjects').action = '<s:url action="szFileOperation"/>';
         $('szFileId').value = id;
         doAction(action);
     }

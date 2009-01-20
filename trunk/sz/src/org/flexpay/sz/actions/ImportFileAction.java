@@ -1,46 +1,19 @@
 package org.flexpay.sz.actions;
 
 import org.flexpay.common.actions.FPActionSupport;
-import static org.flexpay.common.util.CollectionUtils.treeMap;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.sz.persistence.Oszn;
 import org.flexpay.sz.service.OsznService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class ImportFileAction extends FPActionSupport {
 
-	private static final Map<Integer, String> months = treeMap();
-	private static final Integer[] years;
-
-	static {
-		months.put(0, "01");
-		months.put(1, "02");
-		months.put(2, "03");
-		months.put(3, "04");
-		months.put(4, "05");
-		months.put(5, "06");
-		months.put(6, "07");
-		months.put(7, "08");
-		months.put(8, "09");
-		months.put(9, "10");
-		months.put(10, "11");
-		months.put(11, "12");
-
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(ApplicationConfig.getPastInfinite());
-		int yearFrom = cal.get(Calendar.YEAR);
-		cal.setTime(ApplicationConfig.getFutureInfinite());
-		int yearTill = cal.get(Calendar.YEAR);
-		years = new Integer[yearTill - yearFrom + 1];
-		for (int i = 0; i <= yearTill - yearFrom; i++) {
-			years[i] = yearFrom + i;
-		}
-	}
+	private Integer curYear;
+	private Integer curMonth;
 
 	private List<Oszn> osznList;
 
@@ -48,6 +21,11 @@ public class ImportFileAction extends FPActionSupport {
 
 	@NotNull
 	public String doExecute() {
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		curMonth = c.get(Calendar.MONTH);
+		curYear = c.get(Calendar.YEAR);
 
 		osznList = osznService.getEntities();
 		if (osznList.isEmpty()) {
@@ -73,14 +51,13 @@ public class ImportFileAction extends FPActionSupport {
 		return osznList;
 	}
 
-
-	public static Integer[] getYears() {
-		return years;
+	public Integer getCurYear() {
+		return curYear;
 	}
 
-    public static Map<Integer, String> getMonths() {
-        return months;
-    }
+	public Integer getCurMonth() {
+		return curMonth;
+	}
 
 	@Required
     public void setOsznService(OsznService osznService) {
