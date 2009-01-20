@@ -28,13 +28,6 @@ public class TestTownTypeHistoryBuilder extends SpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testBuildDiff3() {
-
-		Diff diff = historyBuilder.diff(null, new TownType());
-		assertTrue("Diff of two empty types is not empty", diff.isEmpty());
-	}
-
-	@Test
 	public void testBuildDiff4() {
 
 		TownType townType = new TownType(123L);

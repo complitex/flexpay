@@ -96,4 +96,8 @@
 	<bean id="townTypeHistoryBuilder" class="org.flexpay.ab.service.history.TownTypeHistoryBuilder"
 		  p:typeRegistry-ref="typeRegistryAb" />
 
+	<bean id="townHistoryBuilder" class="org.flexpay.ab.service.history.TownHistoryBuilder"
+		  p:typeRegistry-ref="typeRegistryAb"
+		  p:correctionsService-ref="correctionsServiceAb" />
+
 </beans>

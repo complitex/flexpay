@@ -65,4 +65,8 @@ public abstract class TypeDateInterval<T extends TemporaryValue<T>, DI extends T
 	 * @return a copy
 	 */
 	protected abstract TypeDateInterval<T, DI> doGetCopy(TypeDateInterval<T, DI> di);
+
+	public boolean isValueEmpty() {
+		return getValue() == null || getValue().isEmpty();
+	}
 }

@@ -11,6 +11,8 @@ public class RegionNameTemporal extends NameDateInterval<RegionName, RegionNameT
 		super(new RegionName());
 	}
 
+
+
 	/**
 	 * Copy constructs a new RegionNameTemporal.
 	 *
@@ -18,6 +20,11 @@ public class RegionNameTemporal extends NameDateInterval<RegionName, RegionNameT
 	 */
 	private RegionNameTemporal(NameDateInterval<RegionName, RegionNameTemporal> di) {
 		super(di.getBegin(), di.getEnd(), di.getValue());
+	}
+
+	public RegionNameTemporal(Region region) {
+		this();
+		setObject(region);
 	}
 
 	/**

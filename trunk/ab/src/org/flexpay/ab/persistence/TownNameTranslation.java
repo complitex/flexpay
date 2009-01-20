@@ -14,11 +14,11 @@ public class TownNameTranslation extends Translation {
 	public TownNameTranslation() {
 	}
 
-	public TownNameTranslation(String name) throws Exception {
+	public TownNameTranslation(String name) {
 		super(name, ApplicationConfig.getDefaultLanguage());
 	}
 
-	public TownNameTranslation(String name, Language language) throws Exception {
+	public TownNameTranslation(String name, Language language) {
 		super(name, language);
 	}
 

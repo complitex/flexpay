@@ -20,6 +20,11 @@ public class DistrictNameTemporal extends NameDateInterval<DistrictName, Distric
 		super(di.getBegin(), di.getEnd(), di.getValue());
 	}
 
+	public DistrictNameTemporal(District district) {
+		this();
+		setObject(district);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */

@@ -3,6 +3,7 @@ package org.flexpay.common.persistence.history;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,6 +22,8 @@ public class Diff extends DomainObjectWithStatus {
 	private int operationType;
 	private String userName;
 	private boolean processed;
+
+	private DataSourceDescription dataSourceDescription;
 
 	private List<HistoryRecord> historyRecords = Collections.emptyList();
 
@@ -94,6 +97,14 @@ public class Diff extends DomainObjectWithStatus {
 		this.operationType = operationType;
 	}
 
+	public DataSourceDescription getDataSourceDescription() {
+		return dataSourceDescription;
+	}
+
+	public void setDataSourceDescription(DataSourceDescription dataSourceDescription) {
+		this.dataSourceDescription = dataSourceDescription;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).
@@ -103,6 +114,7 @@ public class Diff extends DomainObjectWithStatus {
 				append("objectType", objectType).
 				append("objectId", objectId).
 				append("userName", userName).
+				append("sourceDescription", dataSourceDescription).
 				toString();
 	}
 
@@ -112,6 +124,7 @@ public class Diff extends DomainObjectWithStatus {
 	 * @param rec HistoryRecord to add
 	 */
 	public void addRecord(@NotNull HistoryRecord rec) {
+		//noinspection CollectionsFieldAccessReplaceableByMethodCall
 		if (historyRecords == Collections.EMPTY_LIST) {
 			historyRecords = CollectionUtils.list();
 		}

@@ -33,6 +33,11 @@ public class TownNameTemporal extends NameDateInterval<TownName, TownNameTempora
 		super(di.getBegin(), di.getEnd(), di.getValue());
 	}
 
+	public TownNameTemporal(Town town) {
+		this();
+		setObject(town);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */

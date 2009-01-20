@@ -3,7 +3,7 @@ package org.flexpay.common.persistence;
 /**
  * Object which name is time dependent and having upper level parent
  */
-public class NameTimeDependentChild<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
+public abstract class NameTimeDependentChild<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
 		extends NameTimeDependent<T, DI> {
 
 	private DomainObject parent;

@@ -1,6 +1,5 @@
 package org.flexpay.ab.service.history;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.common.persistence.Language;
@@ -43,11 +42,11 @@ public class TownTypeHistoryBuilder extends HistoryBuilderBase<TownType> {
 
 			// no translation, check other languages
 			if (tr1 == null && tr2 == null) {
-				log.debug("Not translations for lang {}", lang);
+				log.debug("No translations for lang {}", lang);
 				continue;
 			}
 
-			boolean nameDiffer = !strEquals(
+			boolean nameDiffer = !EqualsHelper.strEquals(
 					tr1 == null ? null : tr1.getName(),
 					tr2 == null ? null : tr2.getName());
 
@@ -61,7 +60,7 @@ public class TownTypeHistoryBuilder extends HistoryBuilderBase<TownType> {
 				diff.addRecord(rec);
 			}
 
-			boolean shortNameDiffer = !strEquals(
+			boolean shortNameDiffer = !EqualsHelper.strEquals(
 					tr1 == null ? null : tr1.getShortName(),
 					tr2 == null ? null : tr2.getShortName());
 
@@ -77,12 +76,6 @@ public class TownTypeHistoryBuilder extends HistoryBuilderBase<TownType> {
 
 			log.debug("Colpleted Diff for lang {}", lang);
 		}
-	}
-
-	private boolean strEquals(String str1, String str2) {
-		boolean s1Blank = StringUtils.isBlank(str1);
-		boolean s2Blank = StringUtils.isBlank(str2);
-		return (s1Blank && s2Blank) || (!s1Blank && str1.equals(str2));
 	}
 
 	/**

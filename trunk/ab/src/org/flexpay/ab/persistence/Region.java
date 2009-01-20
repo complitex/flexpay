@@ -26,6 +26,15 @@ public class Region extends NameTimeDependentChild<RegionName, RegionNameTempora
 	}
 
 	/**
+	 * Create a new empty temporal
+	 *
+	 * @return empty temporal
+	 */
+	protected RegionNameTemporal getEmptyTemporal() {
+		return new RegionNameTemporal(this);
+	}
+
+	/**
 	 * Getter for property 'towns'.
 	 *
 	 * @return Value for property 'towns'.

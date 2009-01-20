@@ -2,14 +2,12 @@ package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.TemporaryType;
-import org.flexpay.common.persistence.Language;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
- * TownType entity class holds a general representation of various types of localities,
- * such as towns, villages, etc.
+ * TownType entity class holds a general representation of various types of localities, such as towns, villages, etc.
  */
 public class TownType extends TemporaryType<TownType, TownTypeTranslation> {
 
@@ -18,9 +16,13 @@ public class TownType extends TemporaryType<TownType, TownTypeTranslation> {
 	 */
 	public TownType() {
 	}
-	
+
 	public TownType(Long id) {
 		super(id);
+	}
+
+	public TownType(@NotNull Stub<TownType> stub) {
+		super(stub.getId());
 	}
 
 	/**
