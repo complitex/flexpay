@@ -1,11 +1,10 @@
 package org.flexpay.common.persistence;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
-import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -91,8 +90,35 @@ public abstract class TemporaryName<TV extends TemporaryValue, T extends Transla
 		return obj instanceof TemporaryName && super.equals(obj);
 	}
 
+	/**
+	 * Get type translation in a specified language
+	 *
+	 * @param lang Language to get translation in
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
 	@Nullable
-	public String getDefaultNameTranslation() throws FlexPayException {
+	public T getTranslation(@NotNull Language lang) {
+		for (T translation : getTranslations()) {
+			if (lang.equals(translation.getLang())) {
+				return translation;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get type translation in a default language
+	 *
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public T getDefaultTranslation() {
+		return getTranslation(ApplicationConfig.getDefaultLanguage());
+	}
+
+	@Nullable
+	public String getDefaultNameTranslation() {
 		T t = TranslationUtil.getTranslation(translations);
 		return t == null ? null : t.getName();
 	}

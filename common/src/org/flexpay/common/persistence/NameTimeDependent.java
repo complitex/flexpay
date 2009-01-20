@@ -13,9 +13,10 @@ import java.util.*;
 /**
  * Base class for objects that has time-dependent name
  */
-public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
+public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
 		extends DomainObjectWithStatus {
 
+	@SuppressWarnings ({"RawUseOfParameterizedType", "unchecked"})
 	private static final SortedSet EMPTY_SORTED_SET =
 			Collections.unmodifiableSortedSet(new TreeSet());
 
@@ -30,11 +31,24 @@ public class NameTimeDependent<T extends TemporaryValue<T>, DI extends DateInter
 	}
 
 	/**
+	 * Create a new empty temporal
+	 *
+	 * @return empty temporal
+	 */
+	protected abstract DI getEmptyTemporal();
+
+	/**
 	 * Getter for property 'namesTimeLine'.
 	 *
 	 * @return Value for property 'namesTimeLine'.
 	 */
+	@NotNull
 	public TimeLine<T, DI> getNamesTimeLine() {
+
+		if (namesTimeLine == null) {
+			return new TimeLine<T, DI>(getEmptyTemporal());
+		}
+
 		return namesTimeLine;
 	}
 

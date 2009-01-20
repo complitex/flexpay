@@ -31,6 +31,15 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 	}
 
 	/**
+	 * Create a new empty temporal
+	 *
+	 * @return empty temporal
+	 */
+	protected DistrictNameTemporal getEmptyTemporal() {
+		return new DistrictNameTemporal(this);
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public String toString() {

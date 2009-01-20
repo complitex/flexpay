@@ -1,6 +1,10 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.TemporaryName;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Set;
+import java.util.Collections;
 
 /**
  * TownName
@@ -8,6 +12,21 @@ import org.flexpay.common.persistence.TemporaryName;
 public class TownName extends TemporaryName<TownName, TownNameTranslation> {
 
 	public TownName() {
+	}
+
+	/**
+	 * Copy constructor
+	 *
+	 * @param townName Town name to copy from
+	 */
+	@SuppressWarnings ({"unchecked"})
+	public TownName(@Nullable TownName townName) {
+		Set<TownNameTranslation> translations = townName != null ? townName.getTranslations() : Collections.EMPTY_SET;
+		for (TownNameTranslation translation : translations) {
+			TownNameTranslation copy = new TownNameTranslation(
+					translation.getName(), translation.getLang());
+			addNameTranslation(copy);
+		}
 	}
 
 	/**

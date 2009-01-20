@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -18,7 +19,7 @@ public class DateIntervalUtil {
 	 * @param di2 the second date interval
 	 * @return <code>true</code> if intervals are intersecting, or <code>false</code> otherwise
 	 */
-	public static boolean areIntersecting(DateInterval di1, DateInterval di2) {
+	public static boolean areIntersecting(DateInterval<?, ?> di1, DateInterval<?, ?> di2) {
 		return !(di1.getEnd().compareTo(di2.getBegin()) < 0
 				 || di1.getBegin().compareTo(di2.getEnd()) > 0);
 	}
@@ -30,7 +31,7 @@ public class DateIntervalUtil {
 	 * @param di2 the second interval
 	 * @return <code>true</code> if the first lays in second one, or <code>false</code> otherwise
 	 */
-	public static boolean isInside(DateInterval di1, DateInterval di2) {
+	public static boolean isInside(DateInterval<?, ?> di1, DateInterval<?, ?> di2) {
 		return di1.getBegin().compareTo(di2.getBegin()) >= 0
 			   && di1.getEnd().compareTo(di2.getEnd()) <= 0;
 	}
@@ -60,7 +61,7 @@ public class DateIntervalUtil {
 	 * @param di DateInterval to check
 	 * @return <code>true</code> if interval is valid, or <code>false</code> otherwise
 	 */
-	public static boolean isValid(DateInterval di) {
+	public static boolean isValid(DateInterval<?, ?> di) {
 		return di.getBegin().compareTo(di.getEnd()) <= 0;
 	}
 
@@ -71,7 +72,7 @@ public class DateIntervalUtil {
 	 * @param di   DateInterval
 	 * @return <code>true</code> if date is inside interval, or <code>false</code> otherwise
 	 */
-	public static boolean includes(Date date, DateInterval di) {
+	public static boolean includes(Date date, DateInterval<?, ?> di) {
 		return di.getBegin().compareTo(date) <= 0 && di.getEnd().compareTo(date) >= 0;
 	}
 
@@ -105,7 +106,7 @@ public class DateIntervalUtil {
 	 *         and end equals {@link org.flexpay.common.util.config.ApplicationConfig#getFutureInfinite()}, or <code>false</code>
 	 *         otherwise
 	 */
-	public static boolean coversTimeLine(DateInterval di) {
+	public static boolean coversTimeLine(DateInterval<?, ?> di) {
 		return di.getBegin().equals(ApplicationConfig.getPastInfinite()) &&
 			   di.getEnd().equals(ApplicationConfig.getFutureInfinite());
 	}
@@ -295,7 +296,7 @@ public class DateIntervalUtil {
 	 * @return intervals pairs of time line having no intersections
 	 */
 	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-	Pair<TimeLine<T, DI>, TimeLine<T, DI>> split(TimeLine<T, DI> oldTl, TimeLine<T, DI> newTl) {
+	Pair<TimeLine<T, DI>, TimeLine<T, DI>> split(@NotNull TimeLine<T, DI> oldTl, @NotNull TimeLine<T, DI> newTl) {
 		List<DI> disOld = new ArrayList<DI>();
 		List<DI> disNew = new ArrayList<DI>();
 
@@ -350,7 +351,7 @@ public class DateIntervalUtil {
 	 * @return List if different interval pairs
 	 */
 	public static <T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
-	List<Pair<DI, DI>> diff(TimeLine<T, DI> oldTl, TimeLine<T, DI> newTl) {
+	List<Pair<DI, DI>> diff(@NotNull TimeLine<T, DI> oldTl, @NotNull TimeLine<T, DI> newTl) {
 		Pair<TimeLine<T, DI>, TimeLine<T, DI>> splittedPair = split(oldTl, newTl);
 		List<Pair<DI, DI>> diffs = new ArrayList<Pair<DI, DI>>();
 		Iterator<DI> itOld = splittedPair.getFirst().getIntervals().iterator();
@@ -388,7 +389,7 @@ public class DateIntervalUtil {
 	 * @return Array of two strings date representations
 	 */
 	@NotNull
-	public static String[] format(@NotNull DateInterval di) {
+	public static String[] format(@NotNull DateInterval<?, ?> di) {
 		return new String[]{DateUtil.format(di.getBegin()), DateUtil.format(di.getEnd())};
 	}
 }

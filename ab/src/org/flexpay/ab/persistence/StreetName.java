@@ -44,8 +44,4 @@ public class StreetName extends TemporaryName<StreetName, StreetNameTranslation>
 		empty.setObject(getObject());
 		return empty;
 	}
-
-	public StreetNameTranslation getTranslation(Language lang) throws FlexPayException {
-		return TranslationUtil.getTranslation(getTranslations(), lang);
-	}
 }

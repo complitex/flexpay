@@ -121,7 +121,7 @@ public class TimeLine<T extends TemporaryValue<T>, DI extends DateInterval<T, DI
 	public String toString() {
 		StringBuilder builder = new StringBuilder(super.toString());
 		builder.append(" {\n");
-		for (DateInterval di : getIntervals()) {
+		for (DateInterval<T, DI> di : getIntervals()) {
 			String[] dates = DateIntervalUtil.format(di);
 			builder.append(dates[0]).append(" : ").append(dates[1])
 					.append(", ").append(di.getValue()).append("\n");

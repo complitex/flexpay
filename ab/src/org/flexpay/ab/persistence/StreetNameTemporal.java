@@ -20,6 +20,11 @@ public class StreetNameTemporal extends NameDateInterval<StreetName, StreetNameT
 		super(di.getBegin(), di.getEnd(), di.getValue());
 	}
 
+	public StreetNameTemporal(Street street) {
+		this();
+		setObject(street);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */

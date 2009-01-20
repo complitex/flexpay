@@ -41,6 +41,15 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	}
 
 	/**
+	 * Create a new empty temporal
+	 *
+	 * @return empty temporal
+	 */
+	protected StreetNameTemporal getEmptyTemporal() {
+		return new StreetNameTemporal(this);
+	}
+
+	/**
 	 * Getter for property 'districts'.
 	 *
 	 * @return Value for property 'districts'.
@@ -239,7 +248,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	}
 
 	@Nullable
-	private StreetNameTranslation getNameTranslation(@NotNull Locale locale) throws FlexPayException {
+	private StreetNameTranslation getNameTranslation(@NotNull Locale locale) {
 		StreetName name = getCurrentName();
 		StreetNameTranslation nameTranslation = null;
 		if (name != null) {
@@ -249,7 +258,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	}
 
 	@Nullable
-	private StreetTypeTranslation getTypeTranslation(@NotNull Locale locale) throws FlexPayException {
+	private StreetTypeTranslation getTypeTranslation(@NotNull Locale locale) {
 		StreetType type = getCurrentType();
 		StreetTypeTranslation typeTanslation = null;
 		if (type != null) {

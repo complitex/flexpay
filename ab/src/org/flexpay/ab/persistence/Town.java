@@ -45,6 +45,15 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	}
 
 	/**
+	 * Create a new empty temporal
+	 *
+	 * @return empty temporal
+	 */
+	protected TownNameTemporal getEmptyTemporal() {
+		return new TownNameTemporal(this);
+	}
+
+	/**
 	 * Getter for property 'districts'.
 	 *
 	 * @return Value for property 'districts'.
@@ -76,7 +85,15 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	 *
 	 * @return Value for property 'typesTimeLine'.
 	 */
+	@NotNull
 	public TimeLine<TownType, TownTypeTemporal> getTypesTimeLine() {
+
+		if (typesTimeLine == null) {
+			TownTypeTemporal temporal = new TownTypeTemporal();
+			temporal.setTown(this);
+			return new TimeLine<TownType, TownTypeTemporal>(temporal);
+		}
+
 		return typesTimeLine;
 	}
 
