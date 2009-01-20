@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <div id="mainBlock">
 
@@ -8,11 +9,17 @@
             <tr>
                 <td width="30%">
                     <s:text name="year" />
-                    <s:select name="year" list="years" value="year" required="true" />
+                    <s:select name="year"
+                              required="true"
+                              list="#{(curYear - 1):(curYear - 1),curYear:curYear}"
+                              value="curYear" />
                 </td>
                 <td width="30%">
                     <s:text name="month" />
-                    <s:select name="month" list="months" required="true" />
+                    <s:select name="month"
+                              required="true"
+                              list="#{'0':'01','1':'02','2':'03','3':'04','4':'05','5':'06','6':'07','7':'08','8':'09','9':'10','10':'11','11':'12'}"
+                              value="curMonth" />
                 </td>
                 <td align="right">
                     <s:text name="sz.oszn" />
@@ -131,7 +138,7 @@
         addBlock();
         eraseForm();
 
-        if (!uploaded) {
+        if (!uploaded || (uploaded && wait)) {
             var fileValue = $("uploadForm" + (newBlocks - 1)).elements["upload"].value;
             $("ajaxResponse" + (newBlocks - 1)).innerHTML = "<s:text name="sz.file" /> \"" + fileValue.substring(fileValue.lastIndexOf("\\")) + "\": <s:text name="sz.file_upload.progress_bar.waiting" />";
         }

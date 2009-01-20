@@ -33,9 +33,9 @@ public class SzFileUtil {
 		SzDbfWriter writer = new SzDbfWriter(dbfInfo, targetFile, getDbfEncoding(), true);
 
 		try {
-			Page pager = new Page(100, 1);
+			Page<Object> pager = new Page<Object>(100, 1);
 
-			List recordList;
+			List<Object> recordList;
 			while (!(recordList = recordService.findObjects(pager, szFile.getId())).isEmpty()) {
 				writer.write(recordList);
 				if (pager.hasNextPage()) {
