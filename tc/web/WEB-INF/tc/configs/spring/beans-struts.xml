@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-	   xsi:schemaLocation="
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<!-- Define struts actions beans -->
+    <!-- Define struts actions beans -->
 
+    <!-- sewer types section -->
     <bean id="sewerTypeEditAction" class="org.flexpay.tc.actions.sewertype.SewerTypeEditAction"
           p:sewerTypesService-ref="sewerTypesService"
-		  scope="prototype" />
+          scope="prototype"/>
 
     <bean id="sewerTypeDeleteAction" class="org.flexpay.tc.actions.sewertype.SewerTypeDeleteAction"
           p:sewerTypesService-ref="sewerTypesService"
-		  scope="prototype" />
+          scope="prototype"/>
 
     <bean id="sewerTypesListAction" class="org.flexpay.tc.actions.sewertype.SewerTypesListAction"
           p:sewerTypesService-ref="sewerTypesService"
-		  scope="prototype" />
+          scope="prototype"/>
+    <!-- end of sewer types section -->
+
+    <!-- sewer material types section -->
+    <bean id="sewerMaterialTypeEditAction" class="org.flexpay.tc.actions.sewermaterialtype.SewerMaterialTypeEditAction"
+          p:sewerMaterialTypeService-ref="sewerMaterialTypeService"
+          scope="prototype"/>
+
+    <bean id="sewerMaterialTypeDeleteAction"
+          class="org.flexpay.tc.actions.sewermaterialtype.SewerMaterialTypeDeleteAction"
+          p:sewerMaterialTypeService-ref="sewerMaterialTypeService"
+          scope="prototype"/>
+
+    <bean id="sewerMaterialTypesListAction"
+          class="org.flexpay.tc.actions.sewermaterialtype.SewerMaterialTypesListAction"
+          p:sewerMaterialTypeService-ref="sewerMaterialTypeService"
+          scope="prototype"/>
+    <!-- end of sewer material types section -->
+
 
 </beans>

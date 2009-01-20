@@ -1,18 +1,21 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="org.flexpay.bti.persistence">
 
-	<class name="SewerType" table="bti_sewer_types_tbl">
+    <!-- sewer type secrion -->
+    <class name="SewerType" table="bti_sewer_types_tbl">
         <comment>Table, where store information about sewer types</comment>
-		<id name="id">
+
+        <id name="id">
             <column name="id">
                 <comment>Primary key</comment>
             </column>
-			<generator class="native" />
-		</id>
+            <generator class="native"/>
+        </id>
+
         <property name="status">
             <column name="status" not-null="true">
                 <comment>Enabled/Disabled status</comment>
@@ -20,10 +23,10 @@
         </property>
 
         <set name="translations" inverse="true" cascade="all-delete-orphan">
-            <key column="sewer_type_id" not-null="true" />
-            <one-to-many class="SewerTypeTranslation" />
+            <key column="sewer_type_id" not-null="true"/>
+            <one-to-many class="SewerTypeTranslation"/>
         </set>
-	</class>
+    </class>
 
     <class name="SewerTypeTranslation" table="bti_sewer_type_translations_tbl">
         <comment>Sewer type translations</comment>
@@ -31,7 +34,7 @@
             <column name="id">
                 <comment>Primary key</comment>
             </column>
-            <generator class="native" />
+            <generator class="native"/>
         </id>
         <property name="name">
             <column name="name" not-null="true">
@@ -59,7 +62,71 @@
             </many-to-one>
         </properties>
     </class>
+    <!-- end of sewer type section -->
 
+    <!-- sewer material type section -->
+    <class name="SewerMaterialType" table="bti_sewer_material_types_tbl">
+        <comment>Table contains sewer material types information</comment>
+
+        <id name="id">
+            <column name="id">
+                <comment>Primary key identifier</comment>
+            </column>
+            <generator class="native"/>
+        </id>
+
+        <property name="status">
+            <column name="status" not-null="true">
+                <comment>Shows whether entity is active or disabled</comment>
+            </column>
+        </property>
+
+        <set name="translations" inverse="true" cascade="all-delete-orphan">
+            <key column="sewer_material_type_id" not-null="true"/>
+            <one-to-many class="SewerMaterialTypeTranslation"/>
+        </set>
+    </class>
+
+    <class name="SewerMaterialTypeTranslation" table="bti_sewer_material_type_translations_tbl">
+        <comment>Sewer material type translations</comment>
+
+        <id name="id">
+            <column name="id">
+                <comment>Primary key identifier</comment>
+            </column>
+            <generator class="native"/>
+        </id>
+
+        <property name="name">
+            <column name="name" not-null="true">
+                <comment>Type name translation</comment>
+            </column>
+        </property>
+
+        <property name="description">
+            <column name="description" not-null="false">
+                <comment>Type description translation</comment>
+            </column>
+        </property>
+
+        <properties name="lang_sewer_material_type_pair" unique="true">
+            <many-to-one name="translatable" class="SewerMaterialType"
+                         foreign-key="bti_sewer_material_type_tbl_sewer_material_type_id">
+                <column name="sewer_material_type_id" not-null="true">
+                    <comment>Sewer material type reference</comment>
+                </column>
+            </many-to-one>
+            <many-to-one name="lang" class="org.flexpay.common.persistence.Language"
+                         foreign-key="lang_sewer_material_type_pair_language_id">
+                <column name="language_id" not-null="true">
+                    <comment>Language reference</comment>
+                </column>
+            </many-to-one>
+        </properties>
+    </class>
+    <!-- end of sewer material type section -->
+
+    <!-- sewer type queries -->
     <query name="SewerType.findSewerTypes">
         select distinct st
         from SewerType st
@@ -79,5 +146,28 @@
         left outer join fetch st.translations stTr
         where st.id=?
     </query>
+    <!-- end of sewer type queries -->
+
+    <!-- sewer material type queries -->
+    <query name="SewerMaterialType.findSewerMaterialTypes">
+        select distinct smt
+        from SewerMaterialType smt
+        left outer join fetch smt.translations smtTr
+        where smt.status = 0
+    </query>
+
+    <query name="SewerMaterialType.findSewerMaterialTypes.count">
+        select count(*)
+        from SewerMaterialType smt
+        where smt.status = 0
+    </query>
+
+    <query name="SewerMaterialType.readFull">
+        select distinct smt
+        from SewerMaterialType smt
+        left outer join fetch smt.translations smtTr
+        where smt.id=?
+    </query>
+    <!-- end of sewer material type queries -->
 
 </hibernate-mapping>
