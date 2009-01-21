@@ -108,3 +108,5 @@ SELECT @processed_with_warnings_status_id:=last_insert_id();
 INSERT INTO common_file_statuses_tbl (name, code, module_id)
 	VALUES ('Помечен на удаление', 6, @module_sz);
 SELECT @marked_as_deleted_status_id:=last_insert_id();
+
+update common_version_tbl set last_modified_date='2008-12-26', date_version=3;

@@ -25,3 +25,5 @@ alter table bti_sewer_type_translations_tbl
     add constraint lang_sewer_type_pair_language_id
     foreign key (language_id)
     references common_languages_tbl (id);
+
+update common_version_tbl set last_modified_date='2009-01-15', date_version=0;

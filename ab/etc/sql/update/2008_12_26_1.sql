@@ -21,3 +21,5 @@ ALTER TABLE `flexpay_db`.`ab_street_types_temporal_tbl`
 
 INSERT INTO common_flexpay_modules_tbl (name) VALUES ('ab');
 SELECT @module_ab:=last_insert_id();
+
+update common_version_tbl set last_modified_date='2008-12-26', date_version=1;
