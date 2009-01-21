@@ -79,6 +79,12 @@
 		</antcall>
 	</target>
 
+	<target name="bti.jar.production" depends="bti.compile.production">
+		<antcall target="template.jar">
+			<param name="jar.name" value="${bti.jar.name}" /> 
+		</antcall>
+	</target>
+
 	<!-- Build targets -->
 	<target name="bti.docs" depends="bti.compile.production">
 		<fileset id="bti.docs.resources" dir="${bti.dir}/docs" />

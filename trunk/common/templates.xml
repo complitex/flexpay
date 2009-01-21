@@ -222,6 +222,10 @@
 		</war>
 	</target>
 
+	<target name="template.jar">
+		<jar basedir="${build.dir}/classes" destfile="${build.dir}/lib/${jar.name}" />
+	</target>
+
 	<target name="template.exploded.include.libs">
 		<copy todir="${build.dir}/web/WEB-INF/lib" flatten="true" overwrite="false">
 			<path refid="libs" />
@@ -277,8 +281,7 @@
 		</java>
 	</target>
 
-	<property
-			file="${common.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+	<property file="${common.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
 	<target name="template.mysql.run">
 		<exec executable="mysql" failonerror="true" input="${src.sql}">
 			<arg value="--user=${mysql.username}" />

@@ -81,6 +81,12 @@
 		</antcall>
 	</target>
 
+	<target name="sz.jar.production" depends="sz.compile.production">
+		<antcall target="template.jar">
+			<param name="jar.name" value="${sz.jar.name}" /> 
+		</antcall>
+	</target>
+
 	<!-- Build targets -->
 	<target name="sz.docs" depends="sz.compile.production">
 		<fileset id="sz.docs.resources" dir="${sz.dir}/docs" />

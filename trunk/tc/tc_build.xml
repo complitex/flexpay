@@ -82,6 +82,12 @@
 		</antcall>
 	</target>
 
+	<target name="tc.jar.production" depends="tc.compile.production">
+		<antcall target="template.jar">
+			<param name="jar.name" value="${tc.jar.name}" /> 
+		</antcall>
+	</target>
+
 	<!-- Build targets -->
 	<target name="tc.docs" depends="tc.compile.production">
 		<fileset id="tc.docs.resources" dir="${tc.dir}/docs" />

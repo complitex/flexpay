@@ -78,6 +78,12 @@
 		</antcall>
 	</target>
 
+	<target name="ab_sync.jar.production" depends="ab_sync.compile.production">
+		<antcall target="template.jar">
+			<param name="jar.name" value="${ab_sync.jar.name}" /> 
+		</antcall>
+	</target>
+
 	<!-- Build targets -->
 	<target name="ab_sync.docs" depends="ab_sync.compile.production">
 		<fileset id="ab_sync.docs.resources" dir="${ab_sync.dir}/docs" />

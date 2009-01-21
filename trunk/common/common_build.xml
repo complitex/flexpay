@@ -87,6 +87,12 @@
 		</antcall>
 	</target>
 
+	<target name="common.jar.production" depends="common.compile.production">
+		<antcall target="template.jar">
+			<param name="jar.name" value="${common.jar.name}" /> 
+		</antcall>
+	</target>
+
 	<target name="common.docs" depends="common.compile.production">
 		<fileset id="common.docs.resources" dir="${common.dir}/docs" />
 		<antcall target="template.docs">

@@ -82,6 +82,12 @@
 		</antcall>
 	</target>
 
+	<target name="eirc.jar.production" depends="eirc.compile.production">
+		<antcall target="template.jar">
+			<param name="jar.name" value="${eirc.jar.name}" /> 
+		</antcall>
+	</target>
+
 	<!-- Build targets -->
 	<target name="eirc.docs" depends="eirc.compile.production">
 		<fileset id="eirc.docs.resources" dir="${eirc.dir}/docs" />

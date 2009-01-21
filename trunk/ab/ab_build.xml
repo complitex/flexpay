@@ -81,6 +81,12 @@
 		</antcall>
 	</target>
 
+	<target name="ab.jar.production" depends="ab.compile.production">
+		<antcall target="template.jar">
+			<param name="jar.name" value="${ab.jar.name}" /> 
+		</antcall>
+	</target>
+
 	<!-- Build targets -->
 	<target name="ab.docs" depends="ab.compile.production">
 		<fileset id="ab.docs.resources" dir="${ab.dir}/docs" />
