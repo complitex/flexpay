@@ -47,7 +47,7 @@ public class SewerMaterialTypeServiceImpl implements SewerMaterialTypeService {
     }
 
     @Required
-    public void setSewerMaterialTypeDAO(SewerMaterialTypeDao sewerMaterialTypeDao) {
+    public void setSewerMaterialTypeDao(SewerMaterialTypeDao sewerMaterialTypeDao) {
         this.sewerMaterialTypeDao = sewerMaterialTypeDao;
     }
 }
