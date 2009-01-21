@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.tc.persistence">
+
+    <!-- tariff secrion -->
+    <class name="Tariff" table="tc_tariff_tbl">
+        <comment>Table, where store information about tariffs</comment>
+
+        <id name="id">
+            <column name="id">
+                <comment>Primary key</comment>
+            </column>
+            <generator class="native"/>
+        </id>
+
+        <property name="status">
+            <column name="status" not-null="true">
+                <comment>Enabled/Disabled status</comment>
+            </column>
+        </property>
+
+        <property name="subServiceCode">
+            <column name="subservice_code" not-null="true" unique="true">
+                <comment>Subservice code</comment>
+            </column>
+        </property>
+
+        <set name="translations" inverse="true" cascade="all-delete-orphan">
+            <key column="tariff_id" not-null="true"/>
+            <one-to-many class="TariffTranslation"/>
+        </set>
+    </class>
+
+    <class name="TariffTranslation" table="tc_tariff_translations_tbl">
+        <comment>Tariff translations</comment>
+        <id name="id">
+            <column name="id">
+                <comment>Primary key</comment>
+            </column>
+            <generator class="native"/>
+        </id>
+        <property name="name">
+            <column name="name" not-null="true">
+                <comment>Tariff name translation</comment>
+            </column>
+        </property>
+
+        <properties name="lang_tariff_pair" unique="true">
+            <many-to-one name="translatable" class="Tariff"
+                         foreign-key="tc_tariff_translations_tbl_tariff_id">
+                <column name="tariff_id" not-null="true">
+                    <comment>Tariff reference</comment>
+                </column>
+            </many-to-one>
+            <many-to-one name="lang" class="org.flexpay.common.persistence.Language"
+                         foreign-key="lang_tariff_pair_language_id">
+                <column name="language_id" not-null="true">
+                    <comment>Language reference</comment>
+                </column>
+            </many-to-one>
+        </properties>
+    </class>
+    <!-- end of tariff section -->
+
+    <!-- tariff calculation result section -->
+    <class name="TariffCalculationResult" table="tc_tariff_calculation_result_tbl">
+        <comment>Table contains tariff calculation results information</comment>
+
+        <id name="id">
+            <column name="id">
+                <comment>Primary key identifier</comment>
+            </column>
+            <generator class="native"/>
+        </id>
+
+        <property name="value">
+            <column name="value" not-null="true" sql-type="decimal(19,4)">
+                <comment>Result value</comment>
+            </column>
+        </property>
+
+        <property name="creationDate">
+            <column name="creation_date" not-null="true">
+                <comment>Calculation result creation date</comment>
+            </column>
+        </property>
+
+        <property name="calculationDate">
+            <column name="calculation_date" not-null="true">
+                <comment>Calculation result calculation date</comment>
+            </column>
+        </property>
+
+        <many-to-one name="building" class="org.flexpay.ab.persistence.Building" foreign-key="FK_tc_tariff_calculation_result_tbl_building_id">
+            <column name="building_id" not-null="true">
+                <comment>Building reference</comment>
+            </column>
+        </many-to-one>
+
+        <many-to-one name="tariff" class="Tariff" foreign-key="FK_tc_tariff_calculation_result_tbl_tariff_id">
+            <column name="tariff_id" not-null="true">
+                <comment>Tariff reference</comment>
+            </column>
+        </many-to-one>
+
+    </class>
+    <!-- end of tariff calculation result section -->
+
+    <!-- tariff queries -->
+    <query name="Tariff.readFull">
+        select distinct t
+        from Tariff t
+        left outer join fetch t.translations tTr
+        where t.id=?
+    </query>
+    <!-- end of tariff queries -->
+
+    <!-- tariff calculation result queries -->
+    <query name="TariffCalculationResult.readFull">
+        select distinct tcr
+        from TariffCalculationResult tcr
+        inner join fetch tcr.building
+        inner join fetch tcr.tariff
+        where tcr.id=?
+    </query>
+    <!-- end of tariff calculation result queries -->
+
+</hibernate-mapping>
