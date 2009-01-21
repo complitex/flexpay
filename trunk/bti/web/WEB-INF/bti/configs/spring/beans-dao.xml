@@ -15,7 +15,7 @@
     </bean>
 
     <bean id="sewerMaterialTypeDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.bti.dao.SewerMaterialTypeDAO"/>
+        <property name="proxyInterfaces" value="org.flexpay.bti.dao.SewerMaterialTypeDao"/>
         <property name="target">
             <bean parent="abstractDaoTarget">
                 <constructor-arg value="org.flexpay.bti.persistence.SewerMaterialType"/>
