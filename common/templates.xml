@@ -79,6 +79,13 @@
 		</fileset>
 	</path>
 
+	<path id="drools.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="drools/*.jar" />
+			<include name="drools/*.txt" />
+		</fileset>
+	</path>
+
 	<path id="itext.lib">
 		<fileset dir="${common.dir}/lib">
 			<include name="itext/*.jar" />
