@@ -63,6 +63,8 @@
 
         <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
 
+        <mapping resource="org/flexpay/tc/persistence/Tariff.hbm.xml" />
+
 	</session-factory>
 
 </hibernate-configuration>

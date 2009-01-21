@@ -3,6 +3,24 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-	<!--  Dao Layer instances -->
+    <!--  Dao Layer instances -->
+
+    <bean id="tariffDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.tc.dao.TariffDao"/>
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.tc.persistence.Tariff"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="tariffCalculationResultDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.tc.dao.TariffCalculationResultDao"/>
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.tc.persistence.TariffCalculationResult"/>
+            </bean>
+        </property>
+    </bean>
 
 </beans>
