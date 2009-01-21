@@ -1,3 +1,4 @@
+
     create table common_data_corrections_tbl (
         id bigint not null auto_increment,
         internal_object_id bigint not null,
@@ -86,6 +87,23 @@
         primary key (id)
     );
 
+    create table common_master_index_bounds_tbl (
+        id bigint not null auto_increment,
+        version integer not null comment 'Optimistic lock version',
+        object_type integer not null comment 'Type of objects index is used for',
+        lower_bound bigint not null comment 'Lower index bound',
+        upper_bound bigint not null comment 'Upper index bound',
+        primary key (id)
+    ) comment='Master index bounds got from external source';
+
+    create table common_master_index_tbl (
+        id bigint not null auto_increment,
+        version integer not null comment 'Optimistic lock version',
+        object_type integer not null comment 'Type of objects index is used for',
+        index_value bigint not null comment 'Index value',
+        primary key (id)
+    ) comment='Master index, unique value among integrated systems';
+
     create table common_measure_units_tbl (
         id bigint not null auto_increment comment 'Primary key',
         status integer not null comment 'Enabled - disabled status',
@@ -108,56 +126,56 @@
         primary key (id)
     );
 
-    alter table common_data_corrections_tbl
-        add index FKF86BDC935BA789BB (data_source_description_id),
-        add constraint FKF86BDC935BA789BB
-        foreign key (data_source_description_id)
+    alter table common_data_corrections_tbl 
+        add index FKF86BDC935BA789BB (data_source_description_id), 
+        add constraint FKF86BDC935BA789BB 
+        foreign key (data_source_description_id) 
         references common_data_source_descriptions_tbl (id);
 
-    alter table common_file_statuses_tbl
-        add index common_file_statuses_tbl_module_id (module_id),
-        add constraint common_file_statuses_tbl_module_id
-        foreign key (module_id)
+    alter table common_file_statuses_tbl 
+        add index common_file_statuses_tbl_module_id (module_id), 
+        add constraint common_file_statuses_tbl_module_id 
+        foreign key (module_id) 
         references common_flexpay_modules_tbl (id);
 
-    alter table common_file_types_tbl
-        add index common_file_types_tbl_module_id (module_id),
-        add constraint common_file_types_tbl_module_id
-        foreign key (module_id)
+    alter table common_file_types_tbl 
+        add index common_file_types_tbl_module_id (module_id), 
+        add constraint common_file_types_tbl_module_id 
+        foreign key (module_id) 
         references common_flexpay_modules_tbl (id);
 
-    alter table common_files_tbl
-        add index common_files_tbl_module_id (module_id),
-        add constraint common_files_tbl_module_id
-        foreign key (module_id)
+    alter table common_files_tbl 
+        add index common_files_tbl_module_id (module_id), 
+        add constraint common_files_tbl_module_id 
+        foreign key (module_id) 
         references common_flexpay_modules_tbl (id);
 
-    alter table common_import_errors_tbl
-        add index FKBAEED8705355D490 (source_description_id),
-        add constraint FKBAEED8705355D490
-        foreign key (source_description_id)
+    alter table common_import_errors_tbl 
+        add index FKBAEED8705355D490 (source_description_id), 
+        add constraint FKBAEED8705355D490 
+        foreign key (source_description_id) 
         references common_data_source_descriptions_tbl (id);
 
-    alter table common_language_names_tbl
-        add index FK85F168F48626C2BC (translation_from_language_id),
-        add constraint FK85F168F48626C2BC
-        foreign key (translation_from_language_id)
+    alter table common_language_names_tbl 
+        add index FK85F168F48626C2BC (translation_from_language_id), 
+        add constraint FK85F168F48626C2BC 
+        foreign key (translation_from_language_id) 
         references common_languages_tbl (id);
 
-    alter table common_language_names_tbl
-        add index FK85F168F461F37403 (language_id),
-        add constraint FK85F168F461F37403
-        foreign key (language_id)
+    alter table common_language_names_tbl 
+        add index FK85F168F461F37403 (language_id), 
+        add constraint FK85F168F461F37403 
+        foreign key (language_id) 
         references common_languages_tbl (id);
 
-    alter table common_mesuare_unit_names_tbl
-        add index common_mesuare_unit_names_tbl_measure_unit_id (measure_unit_id),
-        add constraint common_mesuare_unit_names_tbl_measure_unit_id
-        foreign key (measure_unit_id)
+    alter table common_mesuare_unit_names_tbl 
+        add index common_mesuare_unit_names_tbl_measure_unit_id (measure_unit_id), 
+        add constraint common_mesuare_unit_names_tbl_measure_unit_id 
+        foreign key (measure_unit_id) 
         references common_measure_units_tbl (id);
 
-    alter table common_mesuare_unit_names_tbl
-        add index common_mesuare_unit_names_tbl_language_id (language_id),
-        add constraint common_mesuare_unit_names_tbl_language_id
-        foreign key (language_id)
-        references common_languages_tbl (id);  
+    alter table common_mesuare_unit_names_tbl 
+        add index common_mesuare_unit_names_tbl_language_id (language_id), 
+        add constraint common_mesuare_unit_names_tbl_language_id 
+        foreign key (language_id) 
+        references common_languages_tbl (id);

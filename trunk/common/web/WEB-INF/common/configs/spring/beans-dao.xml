@@ -37,6 +37,26 @@
 		</property>
 	</bean>
 
+	<bean id="masterIndexBoundsDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.common.dao.MasterIndexBoundsDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.common.persistence.MasterIndexBounds" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="masterIndexDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.common.dao.MasterIndexDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.common.persistence.MasterIndex" />
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="dataSourceDescriptionDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.common.dao.DataSourceDescriptionDao" />

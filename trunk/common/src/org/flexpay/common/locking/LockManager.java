@@ -13,7 +13,6 @@ import java.util.Map;
 
 public class LockManager {
 
-	@NonNls
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private HibernateTemplate hibernateTemplate;
@@ -31,7 +30,7 @@ public class LockManager {
 	 * @param semaphoreID String for semaphore ID
 	 * @return true if semaphore lock obtained, false if semaphore already locked
 	 */
-	public synchronized boolean lock(@NonNls String semaphoreID) {
+	public synchronized boolean lock(String semaphoreID) {
 
 		StatelessSession session = lockedSessions.get(semaphoreID);
 		if (session != null) {
@@ -54,7 +53,7 @@ public class LockManager {
 
 		if (list.size() == 0) {
 			// create semaphore
-			@NonNls SQLQuery semQuery = session.createSQLQuery("insert into common_semaphores_tbl (semaphoreID) values (:semaphoreID)");
+			SQLQuery semQuery = session.createSQLQuery("insert into common_semaphores_tbl (semaphoreID) values (:semaphoreID)");
 			semQuery.setString("semaphoreID", semaphoreID);
 			semQuery.executeUpdate();
 			transaction.commit();
@@ -76,9 +75,9 @@ public class LockManager {
 		return isLocked;
 	}
 
-	private List acquireLock(@NonNls StatelessSession session, String semaphoreID) {
+	private List acquireLock(StatelessSession session, String semaphoreID) {
 
-		@NonNls SQLQuery sqlQuery = session.createSQLQuery(
+		SQLQuery sqlQuery = session.createSQLQuery(
 				"select semaphoreID from common_semaphores_tbl where semaphoreID=:semaphoreID for update");
 		sqlQuery.addScalar("semaphoreID", Hibernate.STRING).setString("semaphoreID", semaphoreID);
 		List list;
@@ -96,7 +95,7 @@ public class LockManager {
 	 *
 	 * @param semaphoreID Semaphore for release
 	 */
-	public synchronized void releaseLock(@NonNls String semaphoreID) {
+	public synchronized void releaseLock(String semaphoreID) {
 
 		log.debug("Releasing lock: {}", semaphoreID);
 
