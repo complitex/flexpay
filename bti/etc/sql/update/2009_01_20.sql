@@ -36,3 +36,6 @@ add constraint
         lang_sewer_material_type_pair_language_id
 foreign key (language_id)
 references common_languages_tbl (id);
+
+update common_version_tbl
+        set last_modified_date='2009-01-20', date_version=0;
