@@ -7,6 +7,15 @@
 
 	<target name="build.all" depends="build.ddls,build.docs,build.wars,run.tests" />
 
+        <target name="build.jars">
+                <antcall target="sz.jar.production" />
+                <antcall target="eirc.jar.production" />
+                <antcall target="bti.jar.production" />
+                <antcall target="tc.jar.production" />
+                <antcall target="ab_sync.jar.production" />
+                <antcall target="ab.jar.production" />
+                <antcall target="common.jar.production" />
+        </target>
 
 	<!-- Build wars -->
 	<target name="build.wars">
