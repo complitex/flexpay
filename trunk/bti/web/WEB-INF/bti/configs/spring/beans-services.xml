@@ -11,6 +11,6 @@
           p:sewerTypeDao-ref="sewerTypeDao"/>
 
     <bean id="sewerMaterialTypeService" class="org.flexpay.bti.service.impl.SewerMaterialTypeServiceImpl"
-          p:sewerMaterialTypeDAO-ref="sewerMaterialTypeDao"/>
+          p:sewerMaterialTypeDao-ref="sewerMaterialTypeDao"/>
 
 </beans>
