@@ -5,5 +5,8 @@
 	 	WARN! default names just a reference, check ids with your data base
 		TODO: implement find by name lookup
 	-->
-
+    <tcDataRoot>/tc</tcDataRoot>
+    <tcMaximumFloors>16</tcMaximumFloors>
+    <tcMaximumPorches>16</tcMaximumPorches>
+    <tcMaximumAppartments>1000</tcMaximumAppartments>
 </flexpay>
