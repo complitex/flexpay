@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence">
+
+	<class name="MasterIndex" table="common_master_index_tbl" optimistic-lock="version">
+		<comment>Master index, unique value among integrated systems</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="objectType">
+			<column name="object_type" not-null="true">
+				<comment>Type of objects index is used for</comment>
+			</column>
+		</property>
+		<property name="index">
+			<column name="index_value" not-null="true">
+				<comment>Index value</comment>
+			</column>
+		</property>
+	</class>
+
+	<class name="MasterIndexBounds" table="common_master_index_bounds_tbl" optimistic-lock="version">
+		<comment>Master index bounds got from external source</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="objectType">
+			<column name="object_type" not-null="true">
+				<comment>Type of objects index is used for</comment>
+			</column>
+		</property>
+		<property name="lowerBound">
+			<column name="lower_bound" not-null="true">
+				<comment>Lower index bound</comment>
+			</column>
+		</property>
+		<property name="upperBound">
+			<column name="upper_bound" not-null="true">
+				<comment>Upper index bound</comment>
+			</column>
+		</property>
+	</class>
+
+	<query name="MasterIndex.findIndexes">
+		from MasterIndex
+		where objectType=?
+	</query>
+
+	<query name="MasterIndex.findIndexBoundses">
+		from MasterIndexBounds 
+		where objectType=?
+	</query>
+
+</hibernate-mapping>

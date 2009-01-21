@@ -39,4 +39,14 @@
 	<bean class="org.flexpay.common.process.ProcessHelper" id="processHelper"
 		  p:processManager-ref="processManager" />
 
+	<bean id="masterIndexProvider" class="org.flexpay.common.service.importexport.imp.MasterIndexProviderDBImpl"
+			p:lockManager-ref="LockManager"
+			p:masterIndexDao-ref="masterIndexDao"/>
+
+	<bean id="masterIndexService" class="org.flexpay.common.service.importexport.imp.MasterIndexServiceImpl"
+			p:lockManager-ref="LockManager"
+			p:masterIndexBoundsDao-ref="masterIndexBoundsDao"
+			p:masterIndexProvider-ref="masterIndexProvider" />
+
+
 </beans>
