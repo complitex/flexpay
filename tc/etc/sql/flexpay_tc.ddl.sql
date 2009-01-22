@@ -340,6 +340,16 @@
         primary key (id)
     );
 
+    create table bti_building_temp_attributes_tbl (
+        id bigint not null auto_increment,
+        begin_date datetime not null comment 'Value begin date',
+        end_date datetime not null comment 'Value end date',
+        attribute_name varchar(255) not null comment 'Attribute name',
+        attribute_value varchar(255) not null comment 'Attribute value',
+        building_id bigint not null comment 'Building reference',
+        primary key (id)
+    ) comment='Building time-dependent attributes';
+
     create table bti_sewer_material_type_translations_tbl (
         id bigint not null auto_increment comment 'Primary key identifier',
         name varchar(255) not null comment 'Type name translation',
@@ -834,10 +844,16 @@
         foreign key (region_id)
         references ab_regions_tbl (id);
 
-    alter table bti_sewer_material_type_translations_tbl
-        add index bti_sewer_material_type_tbl_sewer_material_type_id (sewer_material_type_id),
-        add constraint bti_sewer_material_type_tbl_sewer_material_type_id
-        foreign key (sewer_material_type_id)
+    alter table bti_building_temp_attributes_tbl 
+        add index FK_bti_building_attributes_tbl_building_id (building_id), 
+        add constraint FK_bti_building_attributes_tbl_building_id 
+        foreign key (building_id) 
+        references ab_buildings_tbl (id);
+
+    alter table bti_sewer_material_type_translations_tbl 
+        add index bti_sewer_material_type_tbl_sewer_material_type_id (sewer_material_type_id), 
+        add constraint bti_sewer_material_type_tbl_sewer_material_type_id 
+        foreign key (sewer_material_type_id) 
         references bti_sewer_material_types_tbl (id);
 
     alter table bti_sewer_material_type_translations_tbl

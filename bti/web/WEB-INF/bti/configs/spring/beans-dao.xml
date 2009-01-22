@@ -23,4 +23,13 @@
         </property>
     </bean>
 
+    <bean id="buildingTempAttributeDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingTempAttributeDao"/>
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.bti.persistence.BuildingTempAttribute"/>
+            </bean>
+        </property>
+    </bean>
+
 </beans>

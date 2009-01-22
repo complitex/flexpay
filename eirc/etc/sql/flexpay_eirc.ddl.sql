@@ -342,6 +342,48 @@
         primary key (id)
     );
 
+    create table bti_building_temp_attributes_tbl (
+        id bigint not null auto_increment,
+        begin_date datetime not null comment 'Value begin date',
+        end_date datetime not null comment 'Value end date',
+        attribute_name varchar(255) not null comment 'Attribute name',
+        attribute_value varchar(255) not null comment 'Attribute value',
+        building_id bigint not null comment 'Building reference',
+        primary key (id)
+    ) comment='Building time-dependent attributes';
+
+    create table bti_sewer_material_type_translations_tbl (
+        id bigint not null auto_increment comment 'Primary key identifier',
+        name varchar(255) not null comment 'Type name translation',
+        description varchar(255) comment 'Type description translation',
+        sewer_material_type_id bigint not null comment 'Sewer material type reference',
+        language_id bigint not null comment 'Language reference',
+        primary key (id),
+        unique (sewer_material_type_id, language_id)
+    ) comment='Sewer material type translations';
+
+    create table bti_sewer_material_types_tbl (
+        id bigint not null auto_increment comment 'Primary key identifier',
+        status integer not null comment 'Shows whether entity is active or disabled',
+        primary key (id)
+    ) comment='Table contains sewer material types information';
+
+    create table bti_sewer_type_translations_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        name varchar(255) not null comment 'Sewer type name translation',
+        description varchar(255) comment 'Optional description translation',
+        sewer_type_id bigint not null comment 'Sewer type reference',
+        language_id bigint not null comment 'Language reference',
+        primary key (id),
+        unique (sewer_type_id, language_id)
+    ) comment='Sewer type translations';
+
+    create table bti_sewer_types_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        status integer not null comment 'Enabled/Disabled status',
+        primary key (id)
+    ) comment='Table, where store information about sewer types';
+
     create table common_data_corrections_tbl (
         id bigint not null auto_increment,
         internal_object_id bigint not null,
@@ -1235,6 +1277,36 @@
         add constraint FK23FDF002458E164D 
         foreign key (region_id) 
         references ab_regions_tbl (id);
+
+    alter table bti_building_temp_attributes_tbl 
+        add index FK_bti_building_attributes_tbl_building_id (building_id), 
+        add constraint FK_bti_building_attributes_tbl_building_id 
+        foreign key (building_id) 
+        references ab_buildings_tbl (id);
+
+    alter table bti_sewer_material_type_translations_tbl 
+        add index bti_sewer_material_type_tbl_sewer_material_type_id (sewer_material_type_id), 
+        add constraint bti_sewer_material_type_tbl_sewer_material_type_id 
+        foreign key (sewer_material_type_id) 
+        references bti_sewer_material_types_tbl (id);
+
+    alter table bti_sewer_material_type_translations_tbl 
+        add index lang_sewer_material_type_pair_language_id (language_id), 
+        add constraint lang_sewer_material_type_pair_language_id 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table bti_sewer_type_translations_tbl 
+        add index bti_sewer_type_translations_tbl_sewer_type_id (sewer_type_id), 
+        add constraint bti_sewer_type_translations_tbl_sewer_type_id 
+        foreign key (sewer_type_id) 
+        references bti_sewer_types_tbl (id);
+
+    alter table bti_sewer_type_translations_tbl 
+        add index lang_sewer_type_pair_language_id (language_id), 
+        add constraint lang_sewer_type_pair_language_id 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
 
     alter table common_data_corrections_tbl 
         add index FKF86BDC935BA789BB (data_source_description_id), 

@@ -27,7 +27,6 @@
 
 		<!-- Buildings -->
 		<mapping resource="org/flexpay/ab/persistence/Building.hbm.xml" />
-		<mapping resource="org/flexpay/ab/persistence/BuildingBase.hbm.xml" />
 
 		<!-- Apartments -->
 		<mapping resource="org/flexpay/ab/persistence/Apartment.hbm.xml" />
@@ -43,6 +42,10 @@
 
         <!-- Sewer types -->
         <mapping resource="org/flexpay/bti/persistence/Sewer.hbm.xml" />
+
+		<!-- Buildings -->
+		<mapping resource="org/flexpay/bti/persistence/BuildingBase.hbm.xml" />
+        <mapping resource="org/flexpay/bti/persistence/BuildingAttribute.hbm.xml" />
 
 		<!-- common.Languages -->
 		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />

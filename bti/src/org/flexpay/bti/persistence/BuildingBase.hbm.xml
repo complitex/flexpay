@@ -6,7 +6,7 @@
 <!-- Map all class hierarchy to single table -->
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
-	<class name="Building" table="ab_buildings_tbl" discriminator-value="eirc">
+	<class name="Building" table="ab_buildings_tbl" discriminator-value="bti">
 
 		<comment>Buildings</comment>
 		<id name="id" column="id">
@@ -29,32 +29,23 @@
 			<key column="building_id" not-null="true" />
 			<one-to-many class="Buildings" />
 		</set>
+
 		<set name="buildingStatuses" inverse="true">
 			<key column="building_id" not-null="true" />
 			<one-to-many class="BuildingStatus" />
 		</set>
+
 		<set name="apartments" inverse="true">
 			<key column="building_id" not-null="true" />
 			<one-to-many class="Apartment" />
 		</set>
 
-		<subclass name="org.flexpay.bti.persistence.BtiBuilding" discriminator-value="bti">
+		<subclass name="org.flexpay.bti.persistence.BtiBuilding" discriminator-value="ab">
 
 			<set name="attributes" cascade="all-delete-orphan" inverse="true">
 				<key column="building_id" not-null="true" />
 				<one-to-many class="org.flexpay.bti.persistence.BuildingTempAttribute" />
 			</set>
-
-
-			<subclass name="org.flexpay.eirc.persistence.ServedBuilding" discriminator-value="ab">
-				<many-to-one name="serviceOrganization"
-							 foreign-key="FK_eirc_building_service_organization"
-							 class="org.flexpay.eirc.persistence.ServiceOrganization">
-					<column name="eirc_service_organization_id">
-						<comment>Service organization reference</comment>
-					</column>
-				</many-to-one>
-			</subclass>
 
 		</subclass>
 

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- Map all class hierarchy to single table -->
+<hibernate-mapping package="org.flexpay.bti.persistence">
+
+	<class name="org.flexpay.bti.persistence.BuildingTempAttribute" table="bti_building_temp_attributes_tbl">
+		<comment>Building time-dependent attributes</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+
+		<property name="begin">
+			<column name="begin_date" not-null="true">
+				<comment>Value begin date</comment>
+			</column>
+		</property>
+
+		<property name="end">
+			<column name="end_date" not-null="true">
+				<comment>Value end date</comment>
+			</column>
+		</property>
+
+		<property name="name">
+			<column name="attribute_name" not-null="true">
+				<comment>Attribute name</comment>
+			</column>
+		</property>
+
+		<property name="value">
+			<column name="attribute_value" not-null="true">
+				<comment>Attribute value</comment>
+			</column>
+		</property>
+
+		<many-to-one name="building" foreign-key="FK_bti_building_attributes_tbl_building_id"
+				class="org.flexpay.bti.persistence.BtiBuilding">
+			<column name="building_id" not-null="true">
+				<comment>Building reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<query name="BuildingTempAttribute.findAttributes">
+		from BuildingTempAttribute
+		where building.id=? 
+	</query>
+
+</hibernate-mapping>

@@ -13,4 +13,7 @@
     <bean id="sewerMaterialTypeService" class="org.flexpay.bti.service.impl.SewerMaterialTypeServiceImpl"
           p:sewerMaterialTypeDao-ref="sewerMaterialTypeDao"/>
 
+    <bean id="buildingTempAttributeService" class="org.flexpay.bti.service.impl.BuildingTempAttributeServiceImpl"
+          p:attributeDao-ref="buildingTempAttributeDao"/>
+
 </beans>
