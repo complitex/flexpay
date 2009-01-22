@@ -13,4 +13,7 @@
     <bean id="tariffCalculationResultService" class="org.flexpay.tc.service.impl.TariffCalculationResultServiceImpl"
           p:tariffCalculationResultDao-ref="tariffCalculationResultDao" />
 
+    <bean id="tariffCalcRegulationService" class="org.flexpay.tc.service.impl.TariffCalcRegulationServiceImpl"
+          p:tariffCalcRegulationDao-ref="tariffCalcRegulationDao" />
+
 </beans>

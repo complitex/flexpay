@@ -109,6 +109,67 @@
     </class>
     <!-- end of tariff calculation result section -->
 
+    <!-- tariff calculation regulations section -->
+    <class name="TariffCalcRegulation" table="tc_tariff_calc_regulations_tbl">
+        <comment>Table, where store information about tariff calculation regulations</comment>
+
+        <id name="id">
+            <column name="id">
+                <comment>Primary key</comment>
+            </column>
+            <generator class="native"/>
+        </id>
+
+        <property name="status">
+            <column name="status" not-null="true">
+                <comment>Enabled/Disabled status</comment>
+            </column>
+        </property>
+
+        <many-to-one name="file" class="org.flexpay.common.persistence.FPFile" column="file_id" unique="true" cascade="all" />
+
+        <set name="translations" inverse="true" cascade="all-delete-orphan">
+            <key column="tariff_calc_regulation_id" not-null="true"/>
+            <one-to-many class="TariffCalcRegulationTranslation"/>
+        </set>
+    </class>
+
+    <class name="TariffCalcRegulationTranslation" table="tc_tariff_calc_regulation_translations_tbl">
+        <comment>Tariff calculation regulation translations</comment>
+        <id name="id">
+            <column name="id">
+                <comment>Primary key</comment>
+            </column>
+            <generator class="native"/>
+        </id>
+        <property name="name">
+            <column name="name" not-null="true">
+                <comment>Tariff calculation regulation name translation</comment>
+            </column>
+        </property>
+        <property name="description">
+            <column name="description" not-null="false">
+                <comment>Optional description translation</comment>
+            </column>
+        </property>
+
+        <properties name="lang_tariff_calc_regulation_pair" unique="true">
+            <many-to-one name="translatable" class="TariffCalcRegulation"
+                         foreign-key="tc_tariff_calc_regulation_translations_tbl_tariff_calc_regulation_id">
+                <column name="tariff_calc_regulation_id" not-null="true">
+                    <comment>Tariff calculation regulation reference</comment>
+                </column>
+            </many-to-one>
+            <many-to-one name="lang" class="org.flexpay.common.persistence.Language"
+                         foreign-key="lang_tariff_calc_regulation_pair_language_id">
+                <column name="language_id" not-null="true">
+                    <comment>Language reference</comment>
+                </column>
+            </many-to-one>
+        </properties>
+    </class>
+    <!-- end of tariff calculation regulations section -->
+
     <!-- tariff queries -->
     <query name="Tariff.readFull">
         select distinct t
@@ -127,5 +188,16 @@
         where tcr.id=?
     </query>
     <!-- end of tariff calculation result queries -->
+
+    <!-- tariff calculation regulation queries -->
+    <query name="TariffCalculationResult.readFull">
+        select distinct tcr
+        from TariffCalcRegulation tcr
+        left outer join fetch tcr.translations tcrTr
+        left join fetch tcr.file
+        left join fetch tcr.file.module
+        where tcr.id=?
+    </query>
+    <!-- end of tariff calculation regulation queries -->
 
 </hibernate-mapping>

@@ -309,6 +309,19 @@
     <security-role>
         <role-name>ROLE_TC_TARIFF_CALCULATION_RESULT_ADD</role-name>
     </security-role>
+    <!-- Tariff calculation regulations roles -->
+    <security-role>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_DELETE</role-name>
+    </security-role>
 
     <login-config>
         <auth-method>FORM</auth-method>

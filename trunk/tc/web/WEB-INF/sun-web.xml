@@ -307,6 +307,24 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
+    <!-- Tariff calculation regulations -->
+    <security-role-mapping>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_ADD</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_CHANGE</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_DELETE</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_READ</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
+
 	<security-role-mapping>
 		<role-name>ROLE_BASIC</role-name>
 		<group-name>VIEW_ONLY</group-name>
@@ -377,6 +395,10 @@
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_TARIFF_CALCULATION_RESULT_READ</role-name>
+        <group-name>VIEW_ONLY</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_READ</role-name>
         <group-name>VIEW_ONLY</group-name>
     </security-role-mapping>
 
