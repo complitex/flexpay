@@ -7,76 +7,51 @@
 	<!-- a SessionFactory instance listed as /jndi/name -->
 	<session-factory name="flexpay">
 
-		<!-- Countries -->
-		<mapping resource="org/flexpay/ab/persistence/Country.hbm.xml" />
-
-		<!-- Regions -->
-		<mapping resource="org/flexpay/ab/persistence/Region.hbm.xml" />
-
-		<!-- Town types -->
-		<mapping resource="org/flexpay/ab/persistence/TownType.hbm.xml" />
-
-		<!-- Town types -->
-		<mapping resource="org/flexpay/ab/persistence/Town.hbm.xml" />
-
-		<!-- Town districts -->
-		<mapping resource="org/flexpay/ab/persistence/District.hbm.xml" />
-
-		<!-- Town districts -->
-		<mapping resource="org/flexpay/ab/persistence/Street.hbm.xml" />
-
-		<!-- Buildings -->
-		<mapping resource="org/flexpay/ab/persistence/Building.hbm.xml" />
-		<mapping resource="org/flexpay/eirc/persistence/BuildingBase.hbm.xml" />
-
-		<!-- Apartments -->
-		<mapping resource="org/flexpay/ab/persistence/Apartment.hbm.xml" />
-
-		<!-- Street types -->
-		<mapping resource="org/flexpay/ab/persistence/StreetType.hbm.xml" />
-
-		<!-- Identity types -->
-		<mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml" />
-
-		<!-- Persons -->
-		<mapping resource="org/flexpay/ab/persistence/Person.hbm.xml" />
-
 		<!-- common.Languages -->
 		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
-		
 		<!-- common.Sequences -->
 		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/MasterIndex.hbm.xml" />
-		
-        <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
-        <mapping resource="org/flexpay/common/persistence/FPFile.hbm.xml" />
-
+		<mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/FPFile.hbm.xml" />
 		<!-- common.ImportErrors -->
 		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
-
 		<!-- Dual virtual table -->
 		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
-
 		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
 
-		<!-- SZ File -->
-		<mapping resource="org/flexpay/sz/persistence/SzFile.hbm.xml" />
-		
-		<!-- SZ CharacteristicRecord -->
-		<mapping resource="org/flexpay/sz/persistence/CharacteristicRecord.hbm.xml" />
-		
-		<!-- SZ Oszn -->
-		<mapping resource="org/flexpay/sz/persistence/Oszn.hbm.xml" />
-		
-        <!-- SZ  SubsidyRecord-->
-        <mapping resource="org/flexpay/sz/persistence/SubsidyRecord.hbm.xml" />
+		<!-- Countries -->
+		<mapping resource="org/flexpay/ab/persistence/Country.hbm.xml" />
+		<!-- Regions -->
+		<mapping resource="org/flexpay/ab/persistence/Region.hbm.xml" />
+		<!-- Town types -->
+		<mapping resource="org/flexpay/ab/persistence/TownType.hbm.xml" />
+		<!-- Town types -->
+		<mapping resource="org/flexpay/ab/persistence/Town.hbm.xml" />
+		<!-- Town districts -->
+		<mapping resource="org/flexpay/ab/persistence/District.hbm.xml" />
+		<!-- Town districts -->
+		<mapping resource="org/flexpay/ab/persistence/Street.hbm.xml" />
+		<!-- Buildings -->
+		<mapping resource="org/flexpay/ab/persistence/Building.hbm.xml" />
+		<!-- Apartments -->
+		<mapping resource="org/flexpay/ab/persistence/Apartment.hbm.xml" />
+		<!-- Street types -->
+		<mapping resource="org/flexpay/ab/persistence/StreetType.hbm.xml" />
+		<!-- Identity types -->
+		<mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml" />
+		<!-- Persons -->
+		<mapping resource="org/flexpay/ab/persistence/Person.hbm.xml" />
 
-		<!-- SZ corrections -->
-		<mapping resource="org/flexpay/sz/persistence/corrections/Corrections.hbm.xml" />
 
-		<mapping resource="org/flexpay/sz/persistence/ServiceTypeRecord.hbm.xml" />
+		<!-- Sewer types -->
+		<mapping resource="org/flexpay/bti/persistence/Sewer.hbm.xml" />
+		<!-- Buildings -->
+		<mapping resource="org/flexpay/bti/persistence/BuildingAttribute.hbm.xml" />
 
+
+		<mapping resource="org/flexpay/eirc/persistence/BuildingBase.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/Organization.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/QuittancePacket.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/Subdivision.hbm.xml" />
@@ -84,13 +59,24 @@
 		<mapping resource="org/flexpay/eirc/persistence/PaymentsCollector.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/Service.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/PersonalAccount.hbm.xml" />
-		
 		<mapping resource="org/flexpay/eirc/persistence/SpFile.hbm.xml" />
-		
 		<mapping resource="org/flexpay/eirc/persistence/Ticket.hbm.xml" />
-
 		<!-- Eirc accounts -->
 		<mapping resource="org/flexpay/eirc/persistence/account/Quittance.hbm.xml" />
+
+
+		<!-- SZ File -->
+		<mapping resource="org/flexpay/sz/persistence/SzFile.hbm.xml" />
+		<!-- SZ CharacteristicRecord -->
+		<mapping resource="org/flexpay/sz/persistence/CharacteristicRecord.hbm.xml" />
+		<!-- SZ Oszn -->
+		<mapping resource="org/flexpay/sz/persistence/Oszn.hbm.xml" />
+		<!-- SZ  SubsidyRecord-->
+		<mapping resource="org/flexpay/sz/persistence/SubsidyRecord.hbm.xml" />
+		<!-- SZ corrections -->
+		<mapping resource="org/flexpay/sz/persistence/corrections/Corrections.hbm.xml" />
+		<mapping resource="org/flexpay/sz/persistence/ServiceTypeRecord.hbm.xml" />
+
 
 	</session-factory>
 

@@ -1,10 +1,10 @@
 package org.flexpay.eirc.persistence;
 
-import org.flexpay.ab.persistence.Building;
+import org.flexpay.bti.persistence.BtiBuilding;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 
-public class ServedBuilding extends Building {
+public class ServedBuilding extends BtiBuilding {
 
 	private ServiceOrganization serviceOrganization;
 
