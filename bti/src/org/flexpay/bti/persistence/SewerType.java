@@ -25,7 +25,6 @@ public class SewerType extends DomainObjectWithStatus {
 		super(stub.getId());
 	}
 
-
 	public Set<SewerTypeTranslation> getTranslations() {
 		return translations;
 	}
