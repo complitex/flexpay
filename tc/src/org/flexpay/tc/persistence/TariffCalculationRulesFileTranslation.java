@@ -6,14 +6,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class TariffCalcRegulationTranslation extends Translation {
+public class TariffCalculationRulesFileTranslation extends Translation {
 
 	private String description;
 
-	public TariffCalcRegulationTranslation() {
+	public TariffCalculationRulesFileTranslation() {
 	}
 
-	public TariffCalcRegulationTranslation(String name, Language lang) {
+	public TariffCalculationRulesFileTranslation(String name, Language lang) {
 		super(name, lang);
 	}
 
@@ -31,13 +31,13 @@ public class TariffCalcRegulationTranslation extends Translation {
 
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof TariffCalcRegulationTranslation && super.equals(o);
+		return o instanceof TariffCalculationRulesFileTranslation && super.equals(o);
 	}
 
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("TariffCalcRegulationTranslation {").
+				append("TariffCalculationRulesFileTranslation {").
 				append("id", getId()).
 				append("name", getName()).
 				append("lang", getLang()).

@@ -30,6 +30,8 @@ public class TCConfigLoader extends AbConfigLoader {
 	protected void addRules(Digester d) {
 		super.addRules(d);
 
+		d.addCallMethod("flexpay/tcDataRoot", "setTcDataRoot", 0);
+
 		d.addCallMethod("flexpay/tcMaximumFloors", "setMaximumFloors", 16);
 		d.addCallMethod("flexpay/tcMaximumPorches", "setMaximuPporches", 16);
 

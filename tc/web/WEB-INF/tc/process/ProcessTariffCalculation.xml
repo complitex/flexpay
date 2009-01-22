@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<process-definition name="ProceessTariffCalculation"
+<process-definition name="ProcessTariffCalculation"
 					xmlns="http://jbpm.org/3/jpdl"
 					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 					xsi:schemaLocation="http://jbpm.org/3/jpdl http://jbpm.org/xsd/jpdl-3.0.xsd">
@@ -9,13 +9,12 @@
 		<assignment class="org.flexpay.common.process.JobManagerAssignmentHandler" />
 	</swimlane>
 
-
 	<start-state name="start">
-		<transition to="proceessTariffCalculationJob" />
+		<transition to="processTariffCalculationJob" />
 	</start-state>
 
 	<!-- task node name defines Spring bean name to use as a task -->
-	<task-node name="proceessTariffCalculationJob">
+	<task-node name="processTariffCalculationJob">
 		<task swimlane="worker" blocking="yes" />
 		<transition name="next" to="end" />
 		<transition name="error" to="end" />

@@ -5,8 +5,8 @@
     <li class="open"><b><s:text name="tc.menu2.dictionaries"/></b>
         <ul class="docs">
             <li><a href="<c:url value='/tc/sewerTypesList.action' />"><s:text name="tc.menu34.sewer_types"/></a></li>
-            <li><a href="<c:url value='/tc/sewerMaterialTypesList.action' />"><s:text
-                    name="tc.menu34.sewer_material_types"/></a></li>
+            <li><a href="<c:url value='/tc/sewerMaterialTypesList.action' />"><s:text name="tc.menu34.sewer_material_types"/></a></li>
+            <li><a href="<c:url value='/tc/rulesFilesList.action' />"><s:text name="tc.menu34.rules_files"/></a></li>
         </ul>
     </li>
 

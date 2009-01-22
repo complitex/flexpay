@@ -6,6 +6,12 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+    <bean id="propertyConfigurerTc"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:location="/WEB-INF/tc/configs/module.properties"
+          p:fileEncoding="UTF-8"
+          p:ignoreUnresolvablePlaceholders="true" />
+
     <!-- Define struts actions beans -->
 
     <!-- sewer types section -->
@@ -38,5 +44,19 @@
           scope="prototype"/>
     <!-- end of sewer material types section -->
 
+    <!-- tariff calculation rules files section -->
+    <bean id="tariffCalcRulesFileImportAction" class="org.flexpay.tc.actions.tariff.TariffCalcRulesFileImportAction"
+          scope="prototype"/>
+
+    <bean id="tariffCalcRulesFilesListAction" class="org.flexpay.tc.actions.tariff.TariffCalcRulesFilesListAction"
+          p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
+          scope="prototype"/>
+
+    <bean id="tariffCalcRulesFileUploadAjaxAction" class="org.flexpay.tc.actions.tariff.TariffCalcRulesFileUploadAction"
+          p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
+          p:fpFileService-ref="fpFileService"
+          p:moduleName="${flexpay.module.name.tc}"
+          scope="prototype"/>
+    <!-- end of tariff calculation rules files section -->
 
 </beans>

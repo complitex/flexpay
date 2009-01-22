@@ -7,65 +7,49 @@
 	<!-- a SessionFactory instance listed as /jndi/name -->
 	<session-factory name="flexpay">
 
+        <!-- common.Languages -->
+        <mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
+        <!-- common.Sequences -->
+        <mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
+        <mapping resource="org/flexpay/common/persistence/MasterIndex.hbm.xml" />
+        <!-- common.ImportErrors -->
+        <mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
+        <mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
+        <!-- FPFiles, FPFileTypes, FPFileStatuses, FPModules -->
+        <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
+        <mapping resource="org/flexpay/common/persistence/FPFile.hbm.xml" />
+        <!-- Dual virtual table -->
+        <mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
+        <mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
+
 		<!-- Countries -->
 		<mapping resource="org/flexpay/ab/persistence/Country.hbm.xml" />
-
 		<!-- Regions -->
 		<mapping resource="org/flexpay/ab/persistence/Region.hbm.xml" />
-
 		<!-- Town types -->
 		<mapping resource="org/flexpay/ab/persistence/TownType.hbm.xml" />
-
 		<!-- Town types -->
 		<mapping resource="org/flexpay/ab/persistence/Town.hbm.xml" />
-
 		<!-- Town districts -->
 		<mapping resource="org/flexpay/ab/persistence/District.hbm.xml" />
-
 		<!-- Town districts -->
 		<mapping resource="org/flexpay/ab/persistence/Street.hbm.xml" />
-
 		<!-- Buildings -->
 		<mapping resource="org/flexpay/ab/persistence/Building.hbm.xml" />
-
 		<!-- Apartments -->
 		<mapping resource="org/flexpay/ab/persistence/Apartment.hbm.xml" />
-
 		<!-- Street types -->
 		<mapping resource="org/flexpay/ab/persistence/StreetType.hbm.xml" />
-
 		<!-- Identity types -->
 		<mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml" />
-
 		<!-- Persons -->
 		<mapping resource="org/flexpay/ab/persistence/Person.hbm.xml" />
 
         <!-- Sewer types -->
         <mapping resource="org/flexpay/bti/persistence/Sewer.hbm.xml" />
-
 		<!-- Buildings -->
 		<mapping resource="org/flexpay/bti/persistence/BuildingBase.hbm.xml" />
         <mapping resource="org/flexpay/bti/persistence/BuildingAttribute.hbm.xml" />
-
-		<!-- common.Languages -->
-		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
-
-		<!-- common.Sequences -->
-		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
-		<mapping resource="org/flexpay/common/persistence/MasterIndex.hbm.xml" />
-
-		<!-- common.ImportErrors -->
-		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
-
-		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
-
-		<!-- Dual virtual table -->
-		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
-
-		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
-
-        <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
-        <mapping resource="org/flexpay/common/persistence/FPFile.hbm.xml" />
 
         <mapping resource="org/flexpay/tc/persistence/Tariff.hbm.xml" />
 

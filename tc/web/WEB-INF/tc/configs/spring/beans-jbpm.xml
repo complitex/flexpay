@@ -7,10 +7,10 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="generateQuittancesJob" class="org.flexpay.tc.process.ProceessTariffCalculationJob" scope="prototype"
+	<bean name="processTariffCalculationJob" class="org.flexpay.tc.process.ProcessTariffCalculationJob" scope="prototype"
 		  p:tariffCalculationResultService-ref="tariffCalculationResultService"
           p:buildingService-ref="buildingService"
-          p:tariffCalcRegulationService-ref="tariffCalcRegulationService"
+          p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
           />
 
 </beans>

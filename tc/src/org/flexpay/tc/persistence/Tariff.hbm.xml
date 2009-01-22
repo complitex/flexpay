@@ -109,9 +109,9 @@
     </class>
     <!-- end of tariff calculation result section -->
 
-    <!-- tariff calculation regulations section -->
-    <class name="TariffCalcRegulation" table="tc_tariff_calc_regulations_tbl">
-        <comment>Table, where store information about tariff calculation regulations</comment>
+    <!-- tariff calculation rules files section -->
+    <class name="TariffCalculationRulesFile" table="tc_tariff_calc_rules_files_tbl">
+        <comment>Tariff calculation rules files information</comment>
 
         <id name="id">
             <column name="id">
@@ -126,16 +126,39 @@
             </column>
         </property>
 
+        <property name="creationDate">
+            <column name="creation_date" not-null="true">
+                <comment>File creation date</comment>
+            </column>
+        </property>
+
+        <property name="userName">
+            <column name="user_name" not-null="true">
+                <comment>User name, which created this file</comment>
+            </column>
+        </property>
+
         <many-to-one name="file" class="org.flexpay.common.persistence.FPFile" column="file_id" unique="true" cascade="all" />
 
+        <many-to-one name="type" class="org.flexpay.common.persistence.FPFileType" not-null="true">
+            <column name="type_id">
+                <comment>Tariff calculation rules file type reference</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fileStatus" class="org.flexpay.common.persistence.FPFileStatus" not-null="true">
+            <column name="status_id">
+                <comment>Tariff calculation rules file status reference</comment>
+            </column>
+        </many-to-one>
+
         <set name="translations" inverse="true" cascade="all-delete-orphan">
-            <key column="tariff_calc_regulation_id" not-null="true"/>
-            <one-to-many class="TariffCalcRegulationTranslation"/>
+            <key column="tariff_calc_rules_file_id" not-null="true"/>
+            <one-to-many class="TariffCalculationRulesFileTranslation"/>
         </set>
     </class>
 
-    <class name="TariffCalcRegulationTranslation" table="tc_tariff_calc_regulation_translations_tbl">
-        <comment>Tariff calculation regulation translations</comment>
+    <class name="TariffCalculationRulesFileTranslation" table="tc_tariff_calc_rules_file_translations_tbl">
+        <comment>Tariff calculation rules file translations</comment>
         <id name="id">
             <column name="id">
                 <comment>Primary key</comment>
@@ -144,7 +167,7 @@
         </id>
         <property name="name">
             <column name="name" not-null="true">
-                <comment>Tariff calculation regulation name translation</comment>
+                <comment>Tariff calculation rules file name translation</comment>
             </column>
         </property>
         <property name="description">
@@ -153,29 +176,29 @@
             </column>
         </property>
 
-        <properties name="lang_tariff_calc_regulation_pair" unique="true">
-            <many-to-one name="translatable" class="TariffCalcRegulation"
-                         foreign-key="tc_tariff_calc_regulation_translations_tbl_tariff_calc_regulation_id">
-                <column name="tariff_calc_regulation_id" not-null="true">
-                    <comment>Tariff calculation regulation reference</comment>
+        <properties name="lang_tariff_calc_rules_file_pair" unique="true">
+            <many-to-one name="translatable" class="TariffCalculationRulesFile"
+                         foreign-key="tc_calc_rules_file_translations_tbl_calc_rules_file_id">
+                <column name="tariff_calc_rules_file_id" not-null="true">
+                    <comment>Tariff calculation rules file reference</comment>
                 </column>
             </many-to-one>
             <many-to-one name="lang" class="org.flexpay.common.persistence.Language"
-                         foreign-key="lang_tariff_calc_regulation_pair_language_id">
+                         foreign-key="lang_calc_rules_file_pair_language_id">
                 <column name="language_id" not-null="true">
                     <comment>Language reference</comment>
                 </column>
             </many-to-one>
         </properties>
     </class>
-    <!-- end of tariff calculation regulations section -->
+    <!-- end of tariff calculation rules files section -->
 
     <!-- tariff queries -->
     <query name="Tariff.readFull">
         select distinct t
         from Tariff t
         left outer join fetch t.translations tTr
-        where t.id=?
+        where t.id = ?
     </query>
     <!-- end of tariff queries -->
 
@@ -185,19 +208,37 @@
         from TariffCalculationResult tcr
         inner join fetch tcr.building
         inner join fetch tcr.tariff
-        where tcr.id=?
+        where tcr.id = ?
     </query>
     <!-- end of tariff calculation result queries -->
 
-    <!-- tariff calculation regulation queries -->
-    <query name="TariffCalculationResult.readFull">
+    <!-- tariff calculation rules file queries -->
+    <query name="TariffCalculationRulesFile.findTariffCalculationRulesFiles">
         select distinct tcr
-        from TariffCalcRegulation tcr
+        from TariffCalculationRulesFile tcr
+        left outer join fetch tcr.translations tcrTr
+        left join fetch tcr.file
+        left join fetch tcr.fileStatus
+        left join fetch tcr.type
+        left join fetch tcr.fileStatus.module
+        left join fetch tcr.type.module
+        where tcr.status = 0
+    </query>
+
+    <query name="TariffCalculationRulesFile.findTariffCalculationRulesFiles.count">
+        select count(*)
+        from TariffCalculationRulesFile tcr
+        where tcr.status = 0
+    </query>
+
+    <query name="TariffCalculationRulesFile.readFull">
+        select distinct tcr
+        from TariffCalculationRulesFile tcr
         left outer join fetch tcr.translations tcrTr
         left join fetch tcr.file
         left join fetch tcr.file.module
-        where tcr.id=?
+        where tcr.id = ?
     </query>
-    <!-- end of tariff calculation regulation queries -->
+    <!-- end of tariff calculation rules file queries -->
 
 </hibernate-mapping>

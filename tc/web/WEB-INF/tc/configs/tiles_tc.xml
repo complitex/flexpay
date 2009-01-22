@@ -12,6 +12,11 @@
         <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_dictionaries.jsp"/>
     </definition>
 
+    <definition name="tc.import" extends="tc.dictionaries">
+        <put-attribute name="title" value="tc.menu2.import" />
+        <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_import.jsp" />
+    </definition>
+
     <!-- sewer type related pages -->
     <definition name="tc.sewer_types.list" extends="tc.dictionaries">
         <put-attribute name="title" value="tc.sewer_types"/>
@@ -34,6 +39,17 @@
         <put-attribute name="title" value="tc.sewer_material_type"/>
         <put-attribute name="body" value="/WEB-INF/jsp/tc/sewers/sewer_material_type_edit.jsp"/>
     </definition>
-    <!-- end of sewer material type re;ated pages -->
+    <!-- end of sewer material type related pages -->
+
+    <!-- tariff calculation rules file related pages -->
+    <definition name="tc.rules_files.list" extends="tc.dictionaries">
+        <put-attribute name="title" value="tc.rules_files"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_rules_files_list.jsp"/>
+    </definition>
+
+    <definition name="tc.rules_file.upload_form" extends="tc.import">
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_rules_file_upload.jsp" />
+    </definition>
+   <!-- end of tariff calculation rules file related pages -->
 
 </tiles-definitions>
