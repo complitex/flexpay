@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="tc-rules-files" namespace="/tc" extends="common">
+
+		<!-- Tariffs -->
+        <action name="doRulesFileUploadAjax" class="szFileUploadAjaxAction">
+            <result name="success" type="rawtext"/>
+        </action>
+
+		<action name="rulesFilesList" class="tariffCalcRulesFilesListAction">
+			<result type="tiles">tc.rules_files.list</result>
+		</action>
+
+<!--
+		<action name="rulesFileDelete" class="tariffCalcRulesFileDeleteAction">
+			<result name="redirectSuccess" type="redirect-action">rulesFilesList</result>
+		</action>
+-->
+
+        <action name="doUpload" class="tariffCalcRulesFileImportAction">
+            <result name="input" type="tiles">tc.rules_file.upload_form</result>
+        </action>
+
+        <action name="doRulesFileUploadAjax" class="tariffCalcRulesFileUploadAjaxAction">
+            <result name="success" type="rawtext"/>
+        </action>
+
+	</package>
+
+</struts>

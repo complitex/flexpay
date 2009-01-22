@@ -76,6 +76,15 @@
         <dispatcher>ERROR</dispatcher>
 	</filter-mapping>
 
+    <servlet>
+        <servlet-name>rulesFileDownloadServlet</servlet-name>
+        <servlet-class>org.flexpay.tc.actions.tariff.TariffCalcRulesFileDownloadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>rulesFileDownloadServlet</servlet-name>
+        <url-pattern>/rulesFileDownloadServlet</url-pattern>
+    </servlet-mapping>
+
 
     <security-constraint>
         <web-resource-collection>
@@ -309,18 +318,18 @@
     <security-role>
         <role-name>ROLE_TC_TARIFF_CALCULATION_RESULT_ADD</role-name>
     </security-role>
-    <!-- Tariff calculation regulations roles -->
+    <!-- Tariff calculation rules files roles -->
     <security-role>
-        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_READ</role-name>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_RULES_FILE_READ</role-name>
     </security-role>
     <security-role>
-        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_CHANGE</role-name>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_RULES_FILE_CHANGE</role-name>
     </security-role>
     <security-role>
-        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_ADD</role-name>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_RULES_FILE_ADD</role-name>
     </security-role>
     <security-role>
-        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_DELETE</role-name>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_RULES_FILE_DELETE</role-name>
     </security-role>
 
     <login-config>

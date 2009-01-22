@@ -4,13 +4,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 	<!-- ConfigLoader is a subject to replace in dependent modules -->
-	<bean id="tcConfigLoader" class="org.flexpay.ab.util.config.AbConfigLoader"
-		  init-method="loadConfig" depends-on="languageDAO" >
+	<bean id="tcConfigLoader" class="org.flexpay.tc.util.config.TCConfigLoader"
+		  init-method="loadConfig" depends-on="languageDao" >
 		<constructor-arg index="0">
 			<list>
 				<value>classpath:org/flexpay/common/application_config.xml</value>
 				<value>classpath:org/flexpay/ab/application_config.xml</value>
-				<value>classpath:org/flexpay/common/application_config_test.xml</value>
+                <value>classpath:org/flexpay/tc/application_config.xml</value>
+                <value>classpath:org/flexpay/common/application_config_test.xml</value>
 			</list>
 		</constructor-arg>
 		<property name="languageService" ref="languageService" />

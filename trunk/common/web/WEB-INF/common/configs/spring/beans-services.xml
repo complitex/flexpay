@@ -18,7 +18,7 @@
 		  p:errorDao-ref="importErrorDao" />
 
 	<bean class="org.flexpay.common.service.imp.LanguageServiceImpl" id="languageServiceTarget"
-		  p:languageDao-ref="languageDAO" />
+		  p:languageDao-ref="languageDao" />
 
     <bean class="org.flexpay.common.service.imp.FPFileServiceImpl" id="fpFileService"
           p:fpFileDao-ref="fpFileDao"

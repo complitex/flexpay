@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="flexpay_sz" basedir="..">
+<project name="flexpay_sz" basedir=".." default="sz.help">
 
 	<import file="../eirc/eirc_build.xml" />
 

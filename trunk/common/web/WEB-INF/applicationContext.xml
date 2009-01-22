@@ -5,7 +5,7 @@
 
 	<!-- ConfigLoader is a subject to replace in dependent modules -->
 	<bean id="commonConfigLoader" class="org.flexpay.common.util.config.CommonConfigLoader"
-		  init-method="loadConfig" depends-on="languageDAO" >
+		  init-method="loadConfig" depends-on="languageDao" >
 		<constructor-arg index="0">
 			<list>
 				<value>classpath:org/flexpay/common/application_config.xml</value>

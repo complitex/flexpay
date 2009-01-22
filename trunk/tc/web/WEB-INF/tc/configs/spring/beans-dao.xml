@@ -23,11 +23,11 @@
         </property>
     </bean>
 
-    <bean id="tariffCalcRegulationDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.tc.dao.TariffCalcRegulationDao"/>
+    <bean id="tariffCalculationRulesFileDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.tc.dao.TariffCalculationRulesFileDao"/>
         <property name="target">
             <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.tc.persistence.TariffCalcRegulation"/>
+                <constructor-arg value="org.flexpay.tc.persistence.TariffCalculationRulesFile"/>
             </bean>
         </property>
     </bean>

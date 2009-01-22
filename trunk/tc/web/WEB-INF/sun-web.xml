@@ -307,21 +307,21 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- Tariff calculation regulations -->
+    <!-- Tariff calculation rules files -->
     <security-role-mapping>
-        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_ADD</role-name>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_RULES_FILE_ADD</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
-        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_CHANGE</role-name>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_RULES_FILE_CHANGE</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
-        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_DELETE</role-name>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_RULES_FILE_DELETE</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
-        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_READ</role-name>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_RULES_FILE_READ</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
 
@@ -398,7 +398,7 @@
         <group-name>VIEW_ONLY</group-name>
     </security-role-mapping>
     <security-role-mapping>
-        <role-name>ROLE_TC_TARIFF_CALCULATION_REGULATION_READ</role-name>
+        <role-name>ROLE_TC_TARIFF_CALCULATION_RULES_FILE_READ</role-name>
         <group-name>VIEW_ONLY</group-name>
     </security-role-mapping>
 

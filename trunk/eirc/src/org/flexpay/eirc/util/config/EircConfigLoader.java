@@ -38,4 +38,5 @@ public class EircConfigLoader extends AbConfigLoader {
 		// setup main service code
 		d.addCallMethod("flexpay/eirc-main-service-code", "setEircMainServiceCode", 0);
 	}
+
 }

@@ -5,7 +5,7 @@
 
 	<!-- ConfigLoader is a subject to replace in dependent modules -->
 	<bean id="btiConfigLoader" class="org.flexpay.ab.util.config.AbConfigLoader"
-		  init-method="loadConfig" depends-on="languageDAO" >
+		  init-method="loadConfig" depends-on="languageDao" >
 		<constructor-arg index="0">
 			<list>
 				<value>classpath:org/flexpay/common/application_config.xml</value>
