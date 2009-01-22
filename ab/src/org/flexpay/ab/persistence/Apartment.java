@@ -178,7 +178,7 @@ public class Apartment extends DomainObjectWithStatus {
 	 *
 	 * @return Buildings
 	 */
-	public Buildings getDefaultBuildings() {
+	public BuildingAddress getDefaultBuildings() {
 		return building.getDefaultBuildings();
 	}
 

@@ -1,7 +1,7 @@
 package org.flexpay.ab.action;
 
 import org.flexpay.ab.actions.buildings.BuildingsActionsBase;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
@@ -33,13 +33,13 @@ public class TestBuildingsActionsBase extends SpringBeanAwareTestCase {
 	@Test
 	public void testGetBuildingNumber() throws Exception {
 
-		Buildings buildings = buildingService.readFull(new Stub<Buildings>(1L));
-		if (buildings == null) {
+		BuildingAddress buildingAddress = buildingService.readFull(new Stub<BuildingAddress>(1L));
+		if (buildingAddress == null) {
 			fail("No building found with id=1");
 			return;
 		}
 
-		String number = base.getBuildingNumber(buildings.getBuildingAttributes());
+		String number = base.getBuildingNumber(buildingAddress.getBuildingAttributes());
 
 		assertNotNull("Number is not defined", number);
 	}

@@ -27,7 +27,7 @@
 
 		<set name="buildingses" inverse="true" cascade="all">
 			<key column="building_id" not-null="true" />
-			<one-to-many class="Buildings" />
+			<one-to-many class="org.flexpay.ab.persistence.BuildingAddress" />
 		</set>
 
 		<set name="buildingStatuses" inverse="true">

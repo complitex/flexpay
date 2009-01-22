@@ -1,8 +1,8 @@
 package org.flexpay.ab.actions.buildings;
 
-import org.flexpay.ab.persistence.BuildingAttribute;
-import org.flexpay.ab.persistence.BuildingAttributeType;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.AddressAttributeType;
+import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.persistence.AddressAttribute;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.BuildingAttributeTypeService;
 import org.flexpay.ab.service.BuildingService;
@@ -24,8 +24,8 @@ public class BuildingEditAction extends FPActionSupport {
 	private BuildingAttributeTypeService buildingAttributeTypeService;
 	private AddressService addressService;
 
-	private Buildings buildings = new Buildings();
-	private List<Buildings> alternateBuildingsList = new ArrayList<Buildings>();
+	private BuildingAddress buildings = new BuildingAddress();
+	private List<BuildingAddress> alternateBuildingsList = new ArrayList<BuildingAddress>();
 	private Map<Long, String> attributeMap = CollectionUtils.treeMap();
 
 	public void prepareAttributes() {
@@ -33,8 +33,8 @@ public class BuildingEditAction extends FPActionSupport {
 		buildings = buildingService.readFull(stub(buildings));
 		if (isNotSubmit()) {
 
-			for (BuildingAttributeType type : buildingAttributeTypeService.getAttributeTypes()) {
-				BuildingAttribute attr = buildings.getAttribute(type);
+			for (AddressAttributeType type : buildingAttributeTypeService.getAttributeTypes()) {
+				AddressAttribute attr = buildings.getAttribute(type);
 				String value = "";
 				if (attr != null) {
 					value = attr.getValue();
@@ -54,7 +54,7 @@ public class BuildingEditAction extends FPActionSupport {
 
 		prepareAttributes();
 
-		for (Buildings current : buildingService.getBuildingBuildings(buildings.getBuildingStub())) {
+		for (BuildingAddress current : buildingService.getBuildingBuildings(buildings.getBuildingStub())) {
 			if (!buildings.equals(current)) {
 				alternateBuildingsList.add(buildingService.readFull(stub(current)));
 			}
@@ -62,7 +62,7 @@ public class BuildingEditAction extends FPActionSupport {
 
 		if (isSubmit()) {
 			for (Long typeId : attributeMap.keySet()) {
-				BuildingAttributeType type = buildingAttributeTypeService.read(new Stub<BuildingAttributeType>(typeId));
+				AddressAttributeType type = buildingAttributeTypeService.read(new Stub<AddressAttributeType>(typeId));
 				buildings.setBuildingAttribute(attributeMap.get(typeId), type);
 			}
 
@@ -73,11 +73,11 @@ public class BuildingEditAction extends FPActionSupport {
 	}
 
 	public String getAddress(@NotNull Long buildingsId) throws Exception {
-		return addressService.getBuildingsAddress(new Stub<Buildings>(buildingsId), getUserPreferences().getLocale());
+		return addressService.getBuildingsAddress(new Stub<BuildingAddress>(buildingsId), getUserPreferences().getLocale());
 	}
 
 	public String getTypeName(Long typeId) throws FlexPayException {
-		BuildingAttributeType type = buildingAttributeTypeService.read(new Stub<BuildingAttributeType>(typeId));
+		AddressAttributeType type = buildingAttributeTypeService.read(new Stub<AddressAttributeType>(typeId));
 		if (type == null) {
 			throw new RuntimeException("Unknown type id: " + typeId);
 		}
@@ -99,21 +99,21 @@ public class BuildingEditAction extends FPActionSupport {
 	/**
 	 * @return the buildings
 	 */
-	public Buildings getBuildings() {
+	public BuildingAddress getBuildings() {
 		return buildings;
 	}
 
 	/**
-	 * @param buildings the buildings to set
+	 * @param buildingAddress the buildings to set
 	 */
-	public void setBuildings(Buildings buildings) {
-		this.buildings = buildings;
+	public void setBuildings(BuildingAddress buildingAddress) {
+		this.buildings = buildingAddress;
 	}
 
 	/**
 	 * @return the alternateBuildingsList
 	 */
-	public List<Buildings> getAlternateBuildingsList() {
+	public List<BuildingAddress> getAlternateBuildingsList() {
 		return alternateBuildingsList;
 	}
 

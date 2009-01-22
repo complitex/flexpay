@@ -1,6 +1,6 @@
 package org.flexpay.ab.actions.buildings;
 
-import org.flexpay.ab.persistence.BuildingAttributeType;
+import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.service.BuildingAttributeTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +12,7 @@ public class BuildingAttributeTypesListAction extends FPActionSupport {
 
 	private BuildingAttributeTypeService buildingAttributeTypeService;
 
-	private List<BuildingAttributeType> types;
+	private List<AddressAttributeType> types;
 
 	@NotNull
 	public String doExecute() {
@@ -37,7 +37,7 @@ public class BuildingAttributeTypesListAction extends FPActionSupport {
 	/**
 	 * @return the types
 	 */
-	public List<BuildingAttributeType> getTypes() {
+	public List<AddressAttributeType> getTypes() {
 		return types;
 	}
 

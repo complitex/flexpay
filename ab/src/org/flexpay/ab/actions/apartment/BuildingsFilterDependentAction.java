@@ -1,9 +1,9 @@
 package org.flexpay.ab.actions.apartment;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.persistence.BuildingAttribute;
-import org.flexpay.ab.persistence.BuildingAttributeTypeTranslation;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.AddressAttributeTypeTranslation;
+import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.persistence.AddressAttribute;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
@@ -60,20 +60,20 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 		return filters;
 	}
 
-	public String getBuildingNumber(@Nullable Buildings buildings) throws Exception {
-		if (buildings != null) {
-			return getBuildingNumber(buildings.getBuildingAttributes());
+	public String getBuildingNumber(@Nullable BuildingAddress buildingAddress) throws Exception {
+		if (buildingAddress != null) {
+			return getBuildingNumber(buildingAddress.getBuildingAttributes());
 		}
 
 		return null;
 	}
 
-	public String getBuildingNumber(Collection<BuildingAttribute> attributes) throws Exception {
+	public String getBuildingNumber(Collection<AddressAttribute> attributes) throws Exception {
 
 		StringBuilder number = new StringBuilder();
-		for (BuildingAttribute attribute : attributes) {
+		for (AddressAttribute attribute : attributes) {
 
-			BuildingAttributeTypeTranslation typeTranslation =
+			AddressAttributeTypeTranslation typeTranslation =
 					getTranslation(attribute.getBuildingAttributeType().getTranslations());
 			if (typeTranslation.getShortName() != null) {
 				number.append(typeTranslation.getShortName()).append(' ');

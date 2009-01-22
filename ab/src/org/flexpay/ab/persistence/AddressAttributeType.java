@@ -9,16 +9,16 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * BuildingAttributeType
+ * Building address attribute type
  */
-public class BuildingAttributeType extends DomainObjectWithStatus {
+public class AddressAttributeType extends DomainObjectWithStatus {
 
-	private Set<BuildingAttributeTypeTranslation> translations = Collections.emptySet();
+	private Set<AddressAttributeTypeTranslation> translations = Collections.emptySet();
 
-	public BuildingAttributeType() {
+	public AddressAttributeType() {
 	}
 
-	public BuildingAttributeType(Long id) {
+	public AddressAttributeType(Long id) {
 		super(id);
 	}
 
@@ -27,7 +27,7 @@ public class BuildingAttributeType extends DomainObjectWithStatus {
 	 *
 	 * @return Value for property 'translations'.
 	 */
-	public Set<BuildingAttributeTypeTranslation> getTranslations() {
+	public Set<AddressAttributeTypeTranslation> getTranslations() {
 		return translations;
 	}
 
@@ -36,7 +36,7 @@ public class BuildingAttributeType extends DomainObjectWithStatus {
 	 *
 	 * @param translations Value to set for property 'translations'.
 	 */
-	public void setTranslations(Set<BuildingAttributeTypeTranslation> translations) {
+	public void setTranslations(Set<AddressAttributeTypeTranslation> translations) {
 		this.translations = translations;
 	}
 
@@ -55,11 +55,11 @@ public class BuildingAttributeType extends DomainObjectWithStatus {
 	 * @return <code>true</code> if attribute type is a bulk number
 	 */
 	public boolean isBulkNumber() {
-		BuildingAttributeType type = ApplicationConfig.getBuildingAttributeTypeBulk();
+		AddressAttributeType type = ApplicationConfig.getBuildingAttributeTypeBulk();
 		return equals(type);
 	}
 
-	public void setTranslation(@NotNull BuildingAttributeTypeTranslation translation) {
+	public void setTranslation(@NotNull AddressAttributeTypeTranslation translation) {
 		translations = TranslationUtil.setTranslation(translations, this, translation);
 	}
 }

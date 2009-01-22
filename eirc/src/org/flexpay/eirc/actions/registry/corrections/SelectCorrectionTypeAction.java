@@ -1,6 +1,6 @@
 package org.flexpay.eirc.actions.registry.corrections;
 
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.common.actions.FPActionSupport;
@@ -37,7 +37,7 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
 					typeRegistry.getType(Street.class) == objectType) {
 				return "street";
 			}
-			if (typeRegistry.getType(Buildings.class) == objectType) {
+			if (typeRegistry.getType(BuildingAddress.class) == objectType) {
 				return "building";
 			}
 			if (typeRegistry.getType(org.flexpay.ab.persistence.Apartment.class) == objectType ||

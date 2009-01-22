@@ -2,7 +2,7 @@ package org.flexpay.ab.dao.imp;
 
 import org.flexpay.ab.dao.BuildingsDaoExt;
 import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,10 +22,10 @@ public class BuildingsDaoExtImpl extends HibernateDaoSupport implements Building
 	 */
 	@SuppressWarnings ({"unchecked"})
 	@NotNull
-	public List<Buildings> findBuildings(@NotNull Long streetId, @NotNull Long districtId, @NotNull String number) {
+	public List<BuildingAddress> findBuildings(@NotNull Long streetId, @NotNull Long districtId, @NotNull String number) {
 		Object[] params = {districtId, streetId,
 						   ApplicationConfig.getBuildingAttributeTypeNumber().getId(), number};
-		return getHibernateTemplate().findByNamedQuery("Buildings.findByNumberWithDistrict", params);
+		return getHibernateTemplate().findByNamedQuery("BuildingAddress.findByNumberWithDistrict", params);
 	}
 
 	/**
@@ -37,10 +37,10 @@ public class BuildingsDaoExtImpl extends HibernateDaoSupport implements Building
 	 */
 	@SuppressWarnings ({"unchecked"})
 	@NotNull
-	public List<Buildings> findBuildings(@NotNull Long streetId, @NotNull String number) {
+	public List<BuildingAddress> findBuildings(@NotNull Long streetId, @NotNull String number) {
 		Object[] params = {streetId,
 						   ApplicationConfig.getBuildingAttributeTypeNumber().getId(), number};
-		return getHibernateTemplate().findByNamedQuery("Buildings.findByNumber", params);
+		return getHibernateTemplate().findByNamedQuery("BuildingAddress.findByNumber", params);
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class BuildingsDaoExtImpl extends HibernateDaoSupport implements Building
 	@SuppressWarnings ({"unchecked"})
 	@Nullable
 	public Building findBuilding(@NotNull Long buildingsId) {
-		List<Building> buildings = getHibernateTemplate().findByNamedQuery("Buildings.findBuilding", buildingsId);
+		List<Building> buildings = getHibernateTemplate().findByNamedQuery("BuildingAddress.findBuilding", buildingsId);
 		if (buildings.isEmpty()) {
 			return null;
 		}

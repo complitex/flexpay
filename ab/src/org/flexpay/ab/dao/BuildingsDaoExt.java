@@ -1,7 +1,7 @@
 package org.flexpay.ab.dao;
 
 import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,7 +18,7 @@ public interface BuildingsDaoExt {
 	 * @return Buildingses list
 	 */
 	@NotNull
-	List<Buildings> findBuildings(@NotNull Long streetId, @NotNull Long districtId, @NotNull String number);
+	List<BuildingAddress> findBuildings(@NotNull Long streetId, @NotNull Long districtId, @NotNull String number);
 
 	/**
 	 * Find building by number
@@ -28,7 +28,7 @@ public interface BuildingsDaoExt {
 	 * @return Buildingses list
 	 */
 	@NotNull
-	List<Buildings> findBuildings(@NotNull Long streetId, @NotNull String number);
+	List<BuildingAddress> findBuildings(@NotNull Long streetId, @NotNull String number);
 
 	/**
 	 * Find Building stub by Buildings stub (i.e. object that does not have reference to its building)

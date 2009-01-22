@@ -3,14 +3,12 @@ package org.flexpay.ab.persistence;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Building
@@ -19,7 +17,7 @@ public class Building extends DomainObjectWithStatus {
 
 	private District district;
 	private Set<BuildingStatus> buildingStatuses = Collections.emptySet();
-	private Set<Buildings> buildingses = Collections.emptySet();
+	private Set<BuildingAddress> buildingses = Collections.emptySet();
 	private Set<Apartment> apartments = Collections.emptySet();
 
 	public Building() {
@@ -52,11 +50,11 @@ public class Building extends DomainObjectWithStatus {
 	}
 
 	@NotNull
-	public Set<Buildings> getBuildingses() {
+	public Set<BuildingAddress> getBuildingses() {
 		return buildingses;
 	}
 
-	public void setBuildingses(@NotNull Set<Buildings> buildingses) {
+	public void setBuildingses(@NotNull Set<BuildingAddress> buildingses) {
 		this.buildingses = buildingses;
 	}
 
@@ -69,36 +67,23 @@ public class Building extends DomainObjectWithStatus {
 		this.apartments = apartments;
 	}
 
-	public void addBuildings(@NotNull Buildings buildings) {
+	public void addBuildings(@NotNull BuildingAddress buildingAddress) {
 		if (Collections.emptySet().equals(buildingses)) {
-			buildingses = new HashSet<Buildings>();
+			buildingses = new HashSet<BuildingAddress>();
 		}
 
-		buildings.setBuilding(this);
-		buildingses.add(buildings);
+		buildingAddress.setBuilding(this);
+		buildingses.add(buildingAddress);
 	}
 
 	@Nullable
-	public Buildings getDefaultBuildings() {
-		for(Buildings buildings : buildingses) {
-			if(buildings.isPrimary()) {
-				return buildings;
+	public BuildingAddress getDefaultBuildings() {
+		for (BuildingAddress buildingAddress : buildingses) {
+			if (buildingAddress.isPrimary()) {
+				return buildingAddress;
 			}
 		}
-		
+
 		return buildingses.isEmpty() ? null : buildingses.iterator().next();
 	}
-
-	/**
-	 * Returns a string representation of the object.
-	 *
-	 * @return a string representation of the object.
-	 */
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("id", getId())
-				.toString();
-	}
-
 }

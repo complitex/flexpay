@@ -15,7 +15,31 @@
         primary key (id)
     );
 
-    create table ab_building_attribute_type_translations_tbl (
+    create table ab_building_address_attribute_types_tbl (
+        id bigint not null auto_increment,
+        status integer not null comment 'Enabled/Disabled status',
+        primary key (id)
+    ) comment='Building attribute type (number, bulk, etc.)';
+
+    create table ab_building_address_attributes_tbl (
+        id bigint not null auto_increment,
+        status integer not null comment 'Enabled/Disabled status',
+        value varchar(255) not null comment 'Building attribute value',
+        attribute_type_id bigint not null comment 'Attribute type reference',
+        buildings_id bigint not null comment 'Building address reference',
+        primary key (id)
+    ) comment='Building address attributes';
+
+    create table ab_building_addresses_tbl (
+        id bigint not null auto_increment,
+        status integer not null comment 'Enabled/Disabled status',
+        primary_status bit not null comment 'Flag of primary building address',
+        street_id bigint not null comment 'Street reference',
+        building_id bigint not null comment 'Building reference this address belongs to',
+        primary key (id)
+    ) comment='Building addresses';
+
+    create table ab_building_adress_attribute_type_translations_tbl (
         id bigint not null auto_increment,
         name varchar(255) not null comment 'Type translation',
         short_name varchar(255) comment 'Optional short translation',
@@ -24,21 +48,6 @@
         primary key (id),
         unique (attribute_type_id, language_id)
     ) comment='Building attribute type translations';
-
-    create table ab_building_attribute_types_tbl (
-        id bigint not null auto_increment,
-        status integer not null comment 'Enabled/Disabled status',
-        primary key (id)
-    ) comment='Building attribute type (number, bulk, etc.)';
-
-    create table ab_building_attributes_tbl (
-        id bigint not null auto_increment,
-        status integer not null comment 'Enabled/Disabled status',
-        value varchar(255) not null comment 'Building attribute value',
-        attribute_type_id bigint not null comment 'Attribute type reference',
-        buildings_id bigint not null comment 'Building address reference',
-        primary key (id)
-    ) comment='Building address attributes';
 
     create table ab_building_statuses_tbl (
         id bigint not null auto_increment,
@@ -56,15 +65,6 @@
         eirc_service_organization_id bigint comment 'Service organization reference',
         primary key (id)
     ) comment='Buildings';
-
-    create table ab_buildingses_tbl (
-        id bigint not null auto_increment,
-        status integer not null comment 'Enabled/Disabled status',
-        primary_status bit not null comment 'Flag of primary building address',
-        street_id bigint not null comment 'Street reference',
-        building_id bigint not null comment 'Building reference this address belongs to',
-        primary key (id)
-    ) comment='Building addresses';
 
     create table ab_countries_tbl (
         id bigint not null auto_increment,
@@ -944,31 +944,43 @@
         foreign key (building_id) 
         references ab_buildings_tbl (id);
 
-    alter table ab_building_attribute_type_translations_tbl 
+    create index indx_value on ab_building_address_attributes_tbl (value);
+
+    alter table ab_building_address_attributes_tbl 
+        add index ab_building_attributes_tbl_buildings_id (buildings_id), 
+        add constraint ab_building_attributes_tbl_buildings_id 
+        foreign key (buildings_id) 
+        references ab_building_addresses_tbl (id);
+
+    alter table ab_building_address_attributes_tbl 
+        add index ab_building_attributes_tbl_attribute_type_id (attribute_type_id), 
+        add constraint ab_building_attributes_tbl_attribute_type_id 
+        foreign key (attribute_type_id) 
+        references ab_building_address_attribute_types_tbl (id);
+
+    alter table ab_building_addresses_tbl 
+        add index ab_buildingses_tbl_street_id (street_id), 
+        add constraint ab_buildingses_tbl_street_id 
+        foreign key (street_id) 
+        references ab_streets_tbl (id);
+
+    alter table ab_building_addresses_tbl 
+        add index ab_buildingses_tbl_building_id (building_id), 
+        add constraint ab_buildingses_tbl_building_id 
+        foreign key (building_id) 
+        references ab_buildings_tbl (id);
+
+    alter table ab_building_adress_attribute_type_translations_tbl 
         add index ab_building_attribute_type_translations_tbl_attribute_type_id (attribute_type_id), 
         add constraint ab_building_attribute_type_translations_tbl_attribute_type_id 
         foreign key (attribute_type_id) 
-        references ab_building_attribute_types_tbl (id);
+        references ab_building_address_attribute_types_tbl (id);
 
-    alter table ab_building_attribute_type_translations_tbl 
+    alter table ab_building_adress_attribute_type_translations_tbl 
         add index lang_building_attribute_type_pair_language_id (language_id), 
         add constraint lang_building_attribute_type_pair_language_id 
         foreign key (language_id) 
         references common_languages_tbl (id);
-
-    create index indx_value on ab_building_attributes_tbl (value);
-
-    alter table ab_building_attributes_tbl 
-        add index ab_building_attributes_tbl_buildings_id (buildings_id), 
-        add constraint ab_building_attributes_tbl_buildings_id 
-        foreign key (buildings_id) 
-        references ab_buildingses_tbl (id);
-
-    alter table ab_building_attributes_tbl 
-        add index ab_building_attributes_tbl_attribute_type_id (attribute_type_id), 
-        add constraint ab_building_attributes_tbl_attribute_type_id 
-        foreign key (attribute_type_id) 
-        references ab_building_attribute_types_tbl (id);
 
     alter table ab_building_statuses_tbl 
         add index ab_building_statuses_tbl_building_id (building_id), 
@@ -987,18 +999,6 @@
         add constraint ab_buildings_tbl_district_id 
         foreign key (district_id) 
         references ab_districts_tbl (id);
-
-    alter table ab_buildingses_tbl 
-        add index ab_buildingses_tbl_street_id (street_id), 
-        add constraint ab_buildingses_tbl_street_id 
-        foreign key (street_id) 
-        references ab_streets_tbl (id);
-
-    alter table ab_buildingses_tbl 
-        add index ab_buildingses_tbl_building_id (building_id), 
-        add constraint ab_buildingses_tbl_building_id 
-        foreign key (building_id) 
-        references ab_buildings_tbl (id);
 
     alter table ab_country_name_translations_tbl 
         add index FK31EC318E9E89EB47 (country_id), 

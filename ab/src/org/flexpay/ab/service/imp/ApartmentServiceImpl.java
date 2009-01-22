@@ -7,7 +7,7 @@ import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.ApartmentDaoExt;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.service.ApartmentService;
@@ -46,17 +46,17 @@ public class ApartmentServiceImpl implements ApartmentService {
 		}
 
 		Building building = apartment.getBuilding();
-		Buildings buildings = building.getDefaultBuildings();
-		if (buildings == null) {
+		BuildingAddress buildingAddress = building.getDefaultBuildings();
+		if (buildingAddress == null) {
 			throw new FlexPayException("No building attributes",
 					"error.ab.building.no_attributes", apartment.getBuilding().getId());
 		}
-		Street street = buildings.getStreet();
+		Street street = buildingAddress.getStreet();
 		String streetNameStr = getNameTranslation(street);
 		String streetTypeStr = getTypeTranslation(street);
 
 		return streetTypeStr + " " + streetNameStr + ", д."
-			   + buildings.getNumber() + ", кв." + apartment.getNumber();
+			   + buildingAddress.getNumber() + ", кв." + apartment.getNumber();
 	}
 
 	/**

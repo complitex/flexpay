@@ -37,8 +37,8 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	private Street street = new Street(2L);
 	private District district = new District(9L);
 
-	private BuildingAttributeType numberType;
-	private BuildingAttributeType bulkType;
+	private AddressAttributeType numberType;
+	private AddressAttributeType bulkType;
 
 	private Building newBuilding() {
 
@@ -47,12 +47,12 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 		return building;
 	}
 
-	private Buildings newBuildings(Building building) {
+	private BuildingAddress newBuildings(Building building) {
 
-		Buildings buildings = new Buildings();
-		buildings.setStreet(street);
-		building.addBuildings(buildings);
-		return buildings;
+		BuildingAddress buildingAddress = new BuildingAddress();
+		buildingAddress.setStreet(street);
+		building.addBuildings(buildingAddress);
+		return buildingAddress;
 	}
 
 	@NotTransactional
@@ -60,23 +60,23 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
     public void testDeleteAttributeNotTx() throws Throwable {
 
 		Building building = newBuilding();
-		Buildings buildings = newBuildings(building);
+		BuildingAddress buildingAddress = newBuildings(building);
 
-		buildings.setBuildingAttribute("#123", numberType);
-		buildings.setBuildingAttribute("#1", bulkType);
+		buildingAddress.setBuildingAttribute("#123", numberType);
+		buildingAddress.setBuildingAttribute("#1", bulkType);
 
 		buildingDao.create(building);
 
 		try {
-			BuildingAttribute bulk = buildings.setBuildingAttribute(null, bulkType);
+			AddressAttribute bulk = buildingAddress.setBuildingAttribute(null, bulkType);
 			assertNotNull("Bulk is NULL!", bulk);
 //			buildingsDao.update(buildings);
 			buildingAttributeDao.delete(bulk);
 
-			buildings = buildingsDao.readFull(buildings.getId());
-			assertEquals("Buildings attribute delete method failed", 1, buildings.getBuildingAttributes().size());
+			buildingAddress = buildingsDao.readFull(buildingAddress.getId());
+			assertEquals("BuildingAddress attribute delete method failed", 1, buildingAddress.getBuildingAttributes().size());
 
-			assertTrue("Buildings attribute delete persistence failed", StringUtils.isEmpty(buildings.getBulk()));
+			assertTrue("BuildingAddress attribute delete persistence failed", StringUtils.isEmpty(buildingAddress.getBulk()));
 		} finally {
 			buildingDao.delete(buildingDao.readFull(building.getId()));
 		}
@@ -88,21 +88,21 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
     public void testDeleteAttributeTx() throws Throwable {
 
 		Building building = newBuilding();
-		Buildings buildings = newBuildings(building);
+		BuildingAddress buildingAddress = newBuildings(building);
 
-		buildings.setBuildingAttribute("#123", numberType);
-		buildings.setBuildingAttribute("#1", bulkType);
+		buildingAddress.setBuildingAttribute("#123", numberType);
+		buildingAddress.setBuildingAttribute("#1", bulkType);
 
 		buildingDao.create(building);
 
 		try {
-			BuildingAttribute bulk = buildings.setBuildingAttribute(null, bulkType);
-			buildingsDao.update(buildings);
+			AddressAttribute bulk = buildingAddress.setBuildingAttribute(null, bulkType);
+			buildingsDao.update(buildingAddress);
 
-			buildings = buildingsDao.readFull(buildings.getId());
-			assertEquals("Buildings attribute delete method failed", 1, buildings.getBuildingAttributes().size());
+			buildingAddress = buildingsDao.readFull(buildingAddress.getId());
+			assertEquals("BuildingAddress attribute delete method failed", 1, buildingAddress.getBuildingAttributes().size());
 
-			assertTrue("Buildings attribute delete persistence failed", StringUtils.isEmpty(buildings.getBulk()));
+			assertTrue("BuildingAddress attribute delete persistence failed", StringUtils.isEmpty(buildingAddress.getBulk()));
 		} finally {
 			buildingDao.delete(buildingDao.readFull(building.getId()));
 		}
@@ -113,18 +113,18 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	public void testCreateBuilding() throws Throwable {
 
 		Building building = newBuilding();
-		Buildings buildings = newBuildings(building);
+		BuildingAddress buildingAddress = newBuildings(building);
 
-		BuildingAttribute number = buildings.setBuildingAttribute("Test number #123", numberType);
-		BuildingAttribute bulk = buildings.setBuildingAttribute("Test bulk number #1", bulkType);
+		AddressAttribute number = buildingAddress.setBuildingAttribute("Test number #123", numberType);
+		AddressAttribute bulk = buildingAddress.setBuildingAttribute("Test bulk number #1", bulkType);
 
 		buildingDao.create(building);
 
 		try {
 			assertNotNull("Building create failed", building.getId());
-			assertNotNull("Buildings create failed", buildings.getId());
-			assertNotNull("Buildings number create failed", number.getId());
-			assertNotNull("Buildings bulk number create failed", bulk.getId());
+			assertNotNull("BuildingAddress create failed", buildingAddress.getId());
+			assertNotNull("BuildingAddress number create failed", number.getId());
+			assertNotNull("BuildingAddress bulk number create failed", bulk.getId());
 		} finally {
 			buildingDao.delete(building);
 		}
@@ -136,13 +136,13 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	public void testFindBulkBuildings() throws Throwable {
 
 		// See init_db script
-		BuildingAttribute number = Buildings.numberAttribute("31");
-		BuildingAttribute bulk = Buildings.bulkAttribute("2");
-		Buildings buildings = buildingService.findBuildings(stub(street), stub(district), set(number, bulk));
+		AddressAttribute number = BuildingAddress.numberAttribute("31");
+		AddressAttribute bulk = BuildingAddress.bulkAttribute("2");
+		BuildingAddress buildingAddress = buildingService.findBuildings(stub(street), stub(district), set(number, bulk));
 
-		assertNotNull("Building find with bulk number faild", buildings);
-		assertEquals("Invalid number", "31", buildings.getNumber());
-		assertEquals("Invalid number", "2", buildings.getBulk());
+		assertNotNull("Building find with bulk number faild", buildingAddress);
+		assertEquals("Invalid number", "31", buildingAddress.getNumber());
+		assertEquals("Invalid number", "2", buildingAddress.getBulk());
 	}
 
 	@Test
@@ -150,12 +150,12 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	public void testFindBuildings() throws Throwable {
 
 		// See init_db script
-		BuildingAttribute number = Buildings.numberAttribute("31");
-		Buildings buildings = buildingService.findBuildings(stub(street), stub(district), set(number));
+		AddressAttribute number = BuildingAddress.numberAttribute("31");
+		BuildingAddress buildingAddress = buildingService.findBuildings(stub(street), stub(district), set(number));
 
-		assertNotNull("Building find faild", buildings);
-		assertEquals("Invalid building number", "31", buildings.getNumber());
-		assertTrue("Not empty bulk number", StringUtils.isEmpty(buildings.getBulk()));
+		assertNotNull("Building find faild", buildingAddress);
+		assertEquals("Invalid building number", "31", buildingAddress.getNumber());
+		assertTrue("Not empty bulk number", StringUtils.isEmpty(buildingAddress.getBulk()));
 	}
 
 	@Test

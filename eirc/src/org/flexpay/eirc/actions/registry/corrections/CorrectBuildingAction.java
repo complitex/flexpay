@@ -1,7 +1,7 @@
 package org.flexpay.eirc.actions.registry.corrections;
 
 import org.flexpay.ab.actions.buildings.BuildingsListAction;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 public class CorrectBuildingAction extends BuildingsListAction {
 
 	private String setupType;
-	private Buildings object = new Buildings();
+	private BuildingAddress object = new BuildingAddress();
 	private RegistryRecord record = new RegistryRecord();
 
 	private RawConsumersDataSource consumersDataSource;
@@ -78,11 +78,11 @@ public class CorrectBuildingAction extends BuildingsListAction {
 		this.setupType = setupType;
 	}
 
-	public Buildings getObject() {
+	public BuildingAddress getObject() {
 		return object;
 	}
 
-	public void setObject(Buildings object) {
+	public void setObject(BuildingAddress object) {
 		this.object = object;
 	}
 

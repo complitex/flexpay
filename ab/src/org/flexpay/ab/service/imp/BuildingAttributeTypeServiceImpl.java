@@ -2,8 +2,8 @@ package org.flexpay.ab.service.imp;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.BuildingAttributeTypeDao;
-import org.flexpay.ab.persistence.BuildingAttributeType;
-import org.flexpay.ab.persistence.BuildingAttributeTypeTranslation;
+import org.flexpay.ab.persistence.AddressAttributeType;
+import org.flexpay.ab.persistence.AddressAttributeTypeTranslation;
 import org.flexpay.ab.service.BuildingAttributeTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -20,11 +20,11 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	private BuildingAttributeTypeDao buildingAttributeTypeDao;
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(@NotNull BuildingAttributeType type) throws FlexPayExceptionContainer {
+	private void validate(@NotNull AddressAttributeType type) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		boolean defaultLangTranslationFound = false;
-		for (BuildingAttributeTypeTranslation translation : type.getTranslations()) {
+		for (AddressAttributeTypeTranslation translation : type.getTranslations()) {
 			if (translation.getLang().isDefault() && StringUtils.isNotEmpty(translation.getName())) {
 				defaultLangTranslationFound = true;
 			}
@@ -51,7 +51,7 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	 *          if validation fails
 	 */
 	@Transactional (readOnly = false)
-	public void save(@NotNull BuildingAttributeType type) throws FlexPayExceptionContainer {
+	public void save(@NotNull AddressAttributeType type) throws FlexPayExceptionContainer {
 		validate(type);
 		if (type.isNew()) {
 			type.setId(null);
@@ -68,7 +68,7 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	 * @return Attribute type if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	public BuildingAttributeType read(@NotNull Stub<BuildingAttributeType> stub) {
+	public AddressAttributeType read(@NotNull Stub<AddressAttributeType> stub) {
 		return buildingAttributeTypeDao.readFull(stub.getId());
 	}
 
@@ -77,7 +77,7 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	 *
 	 * @return BuildingAttributeType list
 	 */
-	public List<BuildingAttributeType> getAttributeTypes() {
+	public List<AddressAttributeType> getAttributeTypes() {
 
 		return buildingAttributeTypeDao.findAttributeTypes();
 	}

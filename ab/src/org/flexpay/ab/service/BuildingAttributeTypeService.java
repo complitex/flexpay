@@ -3,7 +3,7 @@ package org.flexpay.ab.service;
 import org.springframework.security.annotation.Secured;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
-import org.flexpay.ab.persistence.BuildingAttributeType;
+import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 
@@ -19,7 +19,7 @@ public interface BuildingAttributeTypeService {
 	 */
 	@Secured (Roles.BUILDING_READ)
 	@Nullable
-	BuildingAttributeType read(@NotNull Stub<BuildingAttributeType> stub);
+	AddressAttributeType read(@NotNull Stub<AddressAttributeType> stub);
 
 	/**
 	 * Get building attribute types
@@ -27,7 +27,7 @@ public interface BuildingAttributeTypeService {
 	 * @return BuildingAttributeType list
 	 */
 	@Secured (Roles.BUILDING_ATTRIBUTE_TYPE_READ)
-	List<BuildingAttributeType> getAttributeTypes();
+	List<AddressAttributeType> getAttributeTypes();
 
 	/**
 	 * Create or update building attribute type
@@ -36,5 +36,5 @@ public interface BuildingAttributeTypeService {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer if validation fails
 	 */
 	@Secured ({Roles.BUILDING_ATTRIBUTE_TYPE_ADD, Roles.BUILDING_ATTRIBUTE_TYPE_CHANGE})
-	void save(@NotNull BuildingAttributeType type) throws FlexPayExceptionContainer;
+	void save(@NotNull AddressAttributeType type) throws FlexPayExceptionContainer;
 }

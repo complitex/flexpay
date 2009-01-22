@@ -5,7 +5,7 @@ import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ApartmentNumber;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.HistoryRecord;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.util.config.ApplicationConfig;
@@ -78,20 +78,20 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	private void setBuildingId(@NotNull Apartment apartment, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 
-		Stub<Buildings> stub = cs.findCorrection(record.getCurrentValue(), Buildings.class, sd);
+		Stub<BuildingAddress> stub = cs.findCorrection(record.getCurrentValue(), BuildingAddress.class, sd);
 		if (stub == null) {
-			log.error("No correction for buildings #{} DataSourceDescription {}, cannot set up building reference for apartment",
+			log.error("No correction for buildingAddress #{} DataSourceDescription {}, cannot set up building reference for apartment",
 					record.getCurrentValue(), sd.getId());
 			return;
 		}
 
-		Buildings buildings = buildingsDao.read(stub.getId());
-		if (buildings == null) {
-			log.error("Correction for buildings #{} DataSourceDescription {} is invalid, no buildings with id {}, cannot set up building reference for apartment",
+		BuildingAddress buildingAddress = buildingsDao.read(stub.getId());
+		if (buildingAddress == null) {
+			log.error("Correction for buildingAddress #{} DataSourceDescription {} is invalid, no buildingAddress with id {}, cannot set up building reference for apartment",
 					new Object[] {record.getCurrentValue(), sd.getId(), stub.getId()});
 			return;
 		}
-		apartment.setBuilding(buildings.getBuilding());
+		apartment.setBuilding(buildingAddress.getBuilding());
 	}
 
 	private void setNumber(@NotNull Apartment apartment, @NotNull HistoryRecord record) {

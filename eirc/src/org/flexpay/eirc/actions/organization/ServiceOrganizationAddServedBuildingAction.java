@@ -2,7 +2,7 @@ package org.flexpay.eirc.actions.organization;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.actions.buildings.BuildingsActionsBase;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.filters.StreetNameFilter;
@@ -34,7 +34,7 @@ public class ServiceOrganizationAddServedBuildingAction extends BuildingsActions
     private Page pager = new Page();
 
     private ServiceOrganization serviceOrganization = new ServiceOrganization();
-    private List<Buildings> buildingsList = list();
+    private List<BuildingAddress> buildingsList = list();
     private Set<Long> objectIds = new HashSet<Long>();
 
     public ServiceOrganizationAddServedBuildingAction() {
@@ -139,7 +139,7 @@ public class ServiceOrganizationAddServedBuildingAction extends BuildingsActions
         this.objectIds = objectIds;
     }
 
-    public List<Buildings> getBuildingsList() {
+    public List<BuildingAddress> getBuildingsList() {
         return buildingsList;
     }
 

@@ -9,14 +9,14 @@ import org.flexpay.common.persistence.Translation;
 /**
  * BuildingAttributeTypeTranslation
  */
-public class BuildingAttributeTypeTranslation extends Translation {
+public class AddressAttributeTypeTranslation extends Translation {
 
 	private String shortName;
 
-	public BuildingAttributeTypeTranslation() {
+	public AddressAttributeTypeTranslation() {
 	}
 
-	public BuildingAttributeTypeTranslation(String name, Language lang) {
+	public AddressAttributeTypeTranslation(String name, Language lang) {
 		super(name, lang);
 	}
 
@@ -31,7 +31,7 @@ public class BuildingAttributeTypeTranslation extends Translation {
 	@Override
 	public boolean equals(Object o) {
 
-		return o instanceof BuildingAttributeTypeTranslation && super.equals(o);
+		return o instanceof AddressAttributeTypeTranslation && super.equals(o);
 	}
 
 	@Override

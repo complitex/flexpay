@@ -281,7 +281,7 @@
 				  value="org.flexpay.ab.dao.BuildingsDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.Buildings" />
+				<constructor-arg value="org.flexpay.ab.persistence.BuildingAddress" />
 			</bean>
 		</property>
 	</bean>
@@ -291,7 +291,7 @@
 				  value="org.flexpay.ab.dao.BuildingAttributeDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.BuildingAttribute" />
+				<constructor-arg value="org.flexpay.ab.persistence.AddressAttribute" />
 			</bean>
 		</property>
 	</bean>
@@ -302,7 +302,7 @@
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg
-						value="org.flexpay.ab.persistence.BuildingAttributeType" />
+						value="org.flexpay.ab.persistence.AddressAttributeType" />
 			</bean>
 		</property>
 	</bean>
@@ -329,7 +329,7 @@
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg
-						value="org.flexpay.ab.persistence.BuildingAttributeTypeTranslation" />
+						value="org.flexpay.ab.persistence.AddressAttributeTypeTranslation" />
 			</bean>
 		</property>
 	</bean>

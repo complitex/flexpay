@@ -26,7 +26,7 @@
 		</set>
 		<set name="buildingses" inverse="true">
 			<key column="street_id" />
-			<one-to-many class="Buildings" />
+			<one-to-many class="org.flexpay.ab.persistence.BuildingAddress" />
 		</set>
 	</class>
 

@@ -11,18 +11,18 @@ import org.flexpay.common.util.TranslationUtil;
 import java.util.Locale;
 
 /**
- * BuildingAttribute
+ * Building address attribute
  */
-public class BuildingAttribute extends DomainObjectWithStatus {
+public class AddressAttribute extends DomainObjectWithStatus {
 
-	private Buildings buildings;
-	private BuildingAttributeType buildingAttributeType;
+	private BuildingAddress buildingAddress;
+	private AddressAttributeType addressAttributeType;
 	private String value;
 
 	/**
 	 * Constructs a new BuildingAttribute.
 	 */
-	public BuildingAttribute() {
+	public AddressAttribute() {
 	}
 
 	/**
@@ -30,17 +30,17 @@ public class BuildingAttribute extends DomainObjectWithStatus {
 	 *
 	 * @return Value for property 'buildings'.
 	 */
-	public Buildings getBuildings() {
-		return this.buildings;
+	public BuildingAddress getBuildings() {
+		return this.buildingAddress;
 	}
 
 	/**
 	 * Setter for property 'buildings'.
 	 *
-	 * @param buildings Value to set for property 'buildings'.
+	 * @param buildingAddress Value to set for property 'buildings'.
 	 */
-	public void setBuildings(Buildings buildings) {
-		this.buildings = buildings;
+	public void setBuildings(BuildingAddress buildingAddress) {
+		this.buildingAddress = buildingAddress;
 	}
 
 	/**
@@ -48,17 +48,17 @@ public class BuildingAttribute extends DomainObjectWithStatus {
 	 *
 	 * @return Value for property 'buildingAttributeType'.
 	 */
-	public BuildingAttributeType getBuildingAttributeType() {
-		return this.buildingAttributeType;
+	public AddressAttributeType getBuildingAttributeType() {
+		return this.addressAttributeType;
 	}
 
 	/**
 	 * Setter for property 'buildingAttributeType'.
 	 *
-	 * @param buildingAttributeType Value to set for property 'buildingAttributeType'.
+	 * @param addressAttributeType Value to set for property 'buildingAttributeType'.
 	 */
-	public void setBuildingAttributeType(BuildingAttributeType buildingAttributeType) {
-		this.buildingAttributeType = buildingAttributeType;
+	public void setBuildingAttributeType(AddressAttributeType addressAttributeType) {
+		this.addressAttributeType = addressAttributeType;
 	}
 
 	/**
@@ -86,21 +86,21 @@ public class BuildingAttribute extends DomainObjectWithStatus {
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (!(obj instanceof BuildingAttribute)) {
+		} else if (!(obj instanceof AddressAttribute)) {
 			return false;
 		}
 
-		BuildingAttribute that = (BuildingAttribute) obj;
+		AddressAttribute that = (AddressAttribute) obj;
 		return new EqualsBuilder()
 				.append(value, that.getValue())
-				.append(buildingAttributeType, that.getBuildingAttributeType())
+				.append(addressAttributeType, that.getBuildingAttributeType())
 				.isEquals();
 	}
 
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(value).append(buildingAttributeType)
-				.append(buildingAttributeType)
+				.append(value).append(addressAttributeType)
+				.append(addressAttributeType)
 				.toHashCode();
 	}
 
@@ -112,15 +112,15 @@ public class BuildingAttribute extends DomainObjectWithStatus {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("id", getId())
 				.append("value", value)
-				.append("type", buildingAttributeType)
+				.append("type", addressAttributeType)
 				.toString();
 	}
 
 	public String format(Locale locale, boolean shortMode) throws FlexPayException {
 
 		StringBuilder result = new StringBuilder();
-		BuildingAttributeTypeTranslation typeTranslation = TranslationUtil
-				.getTranslation(buildingAttributeType.getTranslations(), locale);
+		AddressAttributeTypeTranslation typeTranslation = TranslationUtil
+				.getTranslation(addressAttributeType.getTranslations(), locale);
 
 		result.append(typeTranslation == null ? ""
 											  : (shortMode ? typeTranslation.getShortName() + ". "

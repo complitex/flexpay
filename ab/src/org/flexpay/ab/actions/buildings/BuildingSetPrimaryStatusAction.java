@@ -1,6 +1,6 @@
 package org.flexpay.ab.actions.buildings;
 
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -11,13 +11,13 @@ public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 
 	private BuildingService buildingService;
 
-	private Buildings buildings;
+	private BuildingAddress buildings;
 	private Long redirectBuildingsId;
 
 	@NotNull
 	public String doExecute() throws FlexPayException {
 		buildings = buildingService.readFull(stub(buildings));
-		for (Buildings current : buildingService.getBuildingBuildings(buildings.getBuildingStub())) {
+		for (BuildingAddress current : buildingService.getBuildingBuildings(buildings.getBuildingStub())) {
 			current.setPrimaryStatus(buildings.equals(current));
 			buildingService.update(current);
 		}
@@ -48,16 +48,16 @@ public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 	/**
 	 * @return the buildings
 	 */
-	public Buildings getBuildings() {
+	public BuildingAddress getBuildings() {
 		return buildings;
 	}
 
 	/**
-	 * @param buildings
+	 * @param buildingAddress
 	 *            the buildings to set
 	 */
-	public void setBuildings(Buildings buildings) {
-		this.buildings = buildings;
+	public void setBuildings(BuildingAddress buildingAddress) {
+		this.buildings = buildingAddress;
 	}
 
 	/**

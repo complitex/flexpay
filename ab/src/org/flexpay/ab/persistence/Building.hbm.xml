@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
-	<class name="Buildings" table="ab_buildingses_tbl">
+	<class name="BuildingAddress" table="ab_building_addresses_tbl">
 
 		<comment>Building addresses</comment>
 		<id name="id" column="id">
@@ -38,12 +38,12 @@
 
 		<set name="buildingAttributes" inverse="true" cascade="all-delete-orphan">
 			<key column="buildings_id" not-null="true" />
-			<one-to-many class="BuildingAttribute" />
+			<one-to-many class="AddressAttribute" />
 		</set>
 
 	</class>
 
-	<class name="BuildingAttribute" table="ab_building_attributes_tbl">
+	<class name="AddressAttribute" table="ab_building_address_attributes_tbl">
 
 		<comment>Building address attributes</comment>
 		<id name="id" column="id">
@@ -72,7 +72,7 @@
 		</many-to-one>
 	</class>
 
-	<class name="BuildingAttributeType" table="ab_building_attribute_types_tbl">
+	<class name="AddressAttributeType" table="ab_building_address_attribute_types_tbl">
 
 		<comment>Building attribute type (number, bulk, etc.)</comment>
 		<id name="id" column="id">
@@ -86,11 +86,11 @@
 
 		<set name="translations" inverse="true" cascade="all-delete-orphan">
 			<key column="attribute_type_id" not-null="true" />
-			<one-to-many class="BuildingAttributeTypeTranslation" />
+			<one-to-many class="AddressAttributeTypeTranslation" />
 		</set>
 	</class>
 
-	<class name="BuildingAttributeTypeTranslation" table="ab_building_attribute_type_translations_tbl">
+	<class name="AddressAttributeTypeTranslation" table="ab_building_adress_attribute_type_translations_tbl">
 
 		<comment>Building attribute type translations</comment>
 		<id name="id" column="id">
@@ -109,7 +109,7 @@
 		</property>
 
 		<properties name="lang_building_attribute_type_pair" unique="true">
-			<many-to-one name="translatable" class="BuildingAttributeType"
+			<many-to-one name="translatable" class="AddressAttributeType"
 						 foreign-key="ab_building_attribute_type_translations_tbl_attribute_type_id">
 				<column name="attribute_type_id" not-null="true">
 					<comment>Building attribute type reference</comment>
@@ -163,9 +163,9 @@
 		where b.id=?
 	</query>
 
-	<query name="Buildings.readFull">
+	<query name="BuildingAddress.readFull">
 		select distinct o
-		FROM Buildings o
+		FROM BuildingAddress o
 		inner join fetch o.street street
 		LEFT JOIN FETCH o.buildingAttributes attrs
 		LEFT JOIN FETCH attrs.buildingAttributeType attrType
@@ -173,13 +173,13 @@
 		WHERE o.id=? and o.status=0
 	</query>
 
-	<query name="Buildings.findBuildings.count">
-		select count(*) from Buildings o where o.status=0 and o.street.id=?
+	<query name="BuildingAddress.findBuildings.count">
+		select count(*) from BuildingAddress o where o.status=0 and o.street.id=?
 	</query>
 
-	<query name="Buildings.findBuildings">
+	<query name="BuildingAddress.findBuildings">
 		SELECT DISTINCT o
-		FROM Buildings o
+		FROM BuildingAddress o
 		LEFT JOIN FETCH o.buildingAttributes attrs
 		LEFT JOIN FETCH attrs.buildingAttributeType attrType
 		LEFT JOIN FETCH attrType.translations attrTypeTr
@@ -188,69 +188,69 @@
 		WHERE o.status = 0 AND o.street.id = ?
 	</query>
 
-	<query name="Buildings.findBuilding">
+	<query name="BuildingAddress.findBuilding">
 		select o.building
-		from Buildings o
+		from BuildingAddress o
 		where o.id=?
 	</query>
 
-	<query name="Buildings.findStreetDistrictBuildings.count">
+	<query name="BuildingAddress.findStreetDistrictBuildings.count">
 		select count(*)
-		from Buildings o
+		from BuildingAddress o
 		where o.status=0 and o.street.id=? and o.building.district.id=?
 	</query>
 
-	<query name="Buildings.findStreetDistrictBuildings">
+	<query name="BuildingAddress.findStreetDistrictBuildings">
 		select distinct o
-		from Buildings o
+		from BuildingAddress o
 		left join fetch o.buildingAttributes attrs
 		inner join fetch attrs.buildingAttributeType attrType
 		left join fetch attrType.translations
 		WHERE o.status = 0 and o.street.id=? and o.building.district.id=?
 	</query>
 
-	<query name="BuildingAttributeType.readFull">
+	<query name="AddressAttributeType.readFull">
 		select distinct type
-		from BuildingAttributeType type
+		from AddressAttributeType type
 		left join fetch type.translations typeTr
 		where type.id=?
 	</query>
 
-	<query name="BuildingAttributeType.findAttributeTypes">
+	<query name="AddressAttributeType.findAttributeTypes">
 		select distinct type
-		from BuildingAttributeType type
+		from AddressAttributeType type
 		left join fetch type.translations typeTr
 	</query>
 
-	<query name="Buildings.findByNumberWithDistrict">
+	<query name="BuildingAddress.findByNumberWithDistrict">
 		select distinct b
-		from Buildings b
+		from BuildingAddress b
 		inner join fetch b.buildingAttributes a
 		inner join fetch a.buildingAttributeType t
 		where b.building.district.id=? and b.street.id=?
-		and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
+		and exists ( from AddressAttribute ba where ba.buildings.id=b.id and
 		ba.buildingAttributeType.id=? and ba.value=?)
 	</query>
 
-	<query name="Buildings.findByNumber">
+	<query name="BuildingAddress.findByNumber">
 		select distinct b
-		from Buildings b
+		from BuildingAddress b
 		inner join fetch b.buildingAttributes a
 		inner join fetch a.buildingAttributeType t
 		where b.street.id=?
-		and exists ( from BuildingAttribute ba where ba.buildings.id=b.id and
+		and exists ( from AddressAttribute ba where ba.buildings.id=b.id and
 		ba.buildingAttributeType.id=? and ba.value=?)
 	</query>
 
-	<query name="Buildings.findBuildingBuildings.count">
+	<query name="BuildingAddress.findBuildingBuildings.count">
 		select count(b)
-		from Buildings b
+		from BuildingAddress b
 		where b.building.id=? and b.status=0
 	</query>
 
-	<query name="Buildings.findBuildingBuildings">
+	<query name="BuildingAddress.findBuildingBuildings">
 		select distinct b
-		from Buildings b
+		from BuildingAddress b
 			left join fetch b.buildingAttributes a
 			left join fetch a.buildingAttributeType t
 		where b.building.id=? and b.status=0

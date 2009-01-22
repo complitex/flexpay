@@ -2,7 +2,7 @@ package org.flexpay.ab.service.importexport;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.exception.FlexPayException;
@@ -12,7 +12,7 @@ import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
 
 public class RawBuildingsDataConverter implements
-		DataConverter<Buildings, RawBuildingsData> {
+		DataConverter<BuildingAddress, RawBuildingsData> {
 
 	/**
 	 * Convert raw data to domain object
@@ -23,7 +23,7 @@ public class RawBuildingsDataConverter implements
 	 * @return DomainObject
 	 * @throws FlexPayException if failure occurs
 	 */
-	public Buildings fromRawData(RawBuildingsData rawData,
+	public BuildingAddress fromRawData(RawBuildingsData rawData,
 								 DataSourceDescription dataSourceDescription,
 								 CorrectionsService correctionsService) throws FlexPayException {
 
@@ -42,16 +42,16 @@ public class RawBuildingsDataConverter implements
 		Building building = new Building();
 		building.setDistrict(new District(district));
 
-		Buildings buildings = new Buildings();
-		buildings.setStreet(new Street(street));
-		building.addBuildings(buildings);
+		BuildingAddress buildingAddress = new BuildingAddress();
+		buildingAddress.setStreet(new Street(street));
+		building.addBuildings(buildingAddress);
 
-		buildings.setBuildingAttribute(Buildings.numberAttribute(rawData.getNumber()));
+		buildingAddress.setBuildingAttribute(BuildingAddress.numberAttribute(rawData.getNumber()));
 
 		if (StringUtils.isNotBlank(rawData.getBulkNumber())) {
-			buildings.setBuildingAttribute(Buildings.bulkAttribute(rawData.getBulkNumber()));
+			buildingAddress.setBuildingAttribute(BuildingAddress.bulkAttribute(rawData.getBulkNumber()));
 		}
 
-		return buildings;
+		return buildingAddress;
 	}
 }

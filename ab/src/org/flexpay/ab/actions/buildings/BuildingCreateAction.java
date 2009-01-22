@@ -3,8 +3,8 @@ package org.flexpay.ab.actions.buildings;
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.BuildingAttributeType;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.AddressAttributeType;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.service.BuildingAttributeTypeService;
 import org.flexpay.ab.service.BuildingService;
@@ -34,7 +34,7 @@ public class BuildingCreateAction extends FPActionSupport {
 	private DistrictFilter districtFilter = new DistrictFilter();
 
 	private Long buildingId;
-	private Buildings buildings = new Buildings();
+	private BuildingAddress buildings = new BuildingAddress();
 
 	// type id to value mapping
 	private Map<Long, String> attributeMap = CollectionUtils.treeMap();
@@ -105,7 +105,7 @@ public class BuildingCreateAction extends FPActionSupport {
 
 		log.debug("Attributes: {}", attributeMap);
 
-		for (BuildingAttributeType type : buildingAttributeTypeService.getAttributeTypes()) {
+		for (AddressAttributeType type : buildingAttributeTypeService.getAttributeTypes()) {
 			String value = attributeMap.get(type.getId());
 			if (StringUtils.isNotBlank(value)) {
 				buildings.setBuildingAttribute(value, type);
@@ -127,7 +127,7 @@ public class BuildingCreateAction extends FPActionSupport {
 	}
 
 	public String getTypeName(Long typeId) throws FlexPayException {
-		BuildingAttributeType type = buildingAttributeTypeService.read(new Stub<BuildingAttributeType>(typeId));
+		AddressAttributeType type = buildingAttributeTypeService.read(new Stub<AddressAttributeType>(typeId));
 		if (type == null) {
 			throw new RuntimeException("Unknown type id: " + typeId);
 		}
@@ -233,7 +233,7 @@ public class BuildingCreateAction extends FPActionSupport {
 	/**
 	 * @return the createdBuildings
 	 */
-	public Buildings getBuildings() {
+	public BuildingAddress getBuildings() {
 		return buildings;
 	}
 

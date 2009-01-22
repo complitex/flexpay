@@ -1,6 +1,6 @@
 package org.flexpay.eirc.service.registry;
 
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
@@ -74,7 +74,7 @@ public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
 
 	@Test
 	public void testFilterBuildingErrors() {
-		errorTypeFilter.setSelectedType(classToTypeRegistry.getType(Buildings.class));
+		errorTypeFilter.setSelectedType(classToTypeRegistry.getType(BuildingAddress.class));
 		recordStatusFilter.setSelectedStatus(ImportErrorTypeFilter.TYPE_ALL);
 
 		List<RegistryRecord> records = recordDaoExt.filterRecords(

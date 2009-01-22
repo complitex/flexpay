@@ -222,12 +222,12 @@ public class EircImportServiceTx extends ImportService {
 		}
 
 		// try to find building and later apartment in it
-		Stub<Buildings> buildingsById = correctionsService.findCorrection(
-				data.getBuildingId(), Buildings.class, sd);
+		Stub<BuildingAddress> buildingsById = correctionsService.findCorrection(
+				data.getBuildingId(), BuildingAddress.class, sd);
 		if (buildingsById != null) {
-			log.info("Found buildings correction: {}", data.getBuildingId());
-			Buildings buildings = buildingService.readFull(buildingsById);
-			return findApartment(data, buildings, sd, dataSource);
+			log.info("Found buildingAddress correction: {}", data.getBuildingId());
+			BuildingAddress buildingAddress = buildingService.readFull(buildingsById);
+			return findApartment(data, buildingAddress, sd, dataSource);
 		}
 
 		// try to find street by correction
@@ -329,26 +329,26 @@ public class EircImportServiceTx extends ImportService {
 
 	private Apartment findApartment(RawConsumerData data, Street street, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
 			throws Exception {
-		Buildings buildings = buildingService.findBuildings(stub(street), data.getAddressHouse(), data.getAddressBulk());
-		if (buildings == null) {
+		BuildingAddress buildingAddress = buildingService.findBuildings(stub(street), data.getAddressHouse(), data.getAddressBulk());
+		if (buildingAddress == null) {
 			log.warn("Failed getting building for consumer, Street({}, {}), Building({}, {}) ",
 					new Object[] {street.getId(), data.getAddressStreet(), data.getAddressHouse(), data.getAddressBulk()});
-			ImportError error = addImportError(sd, data.getExternalSourceId(), Buildings.class, dataSource);
+			ImportError error = addImportError(sd, data.getExternalSourceId(), BuildingAddress.class, dataSource);
 			error.setErrorId("error.eirc.import.building_not_found");
 			setConsumerError(data, error);
 			return null;
 		}
 
-		DataCorrection corr = correctionsService.getStub(data.getBuildingId(), buildings, sd);
-		log.info("Adding buildings correction: {}", data.getBuildingId());
+		DataCorrection corr = correctionsService.getStub(data.getBuildingId(), buildingAddress, sd);
+		log.info("Adding buildingAddress correction: {}", data.getBuildingId());
 		addToStack(corr);
 
-		return findApartment(data, buildings, sd, dataSource);
+		return findApartment(data, buildingAddress, sd, dataSource);
 	}
 
-	private Apartment findApartment(RawConsumerData data, Buildings buildings, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
+	private Apartment findApartment(RawConsumerData data, BuildingAddress buildingAddress, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
 			throws Exception {
-		Building building = buildings.getBuilding();
+		Building building = buildingAddress.getBuilding();
 
 		Stub<Apartment> stub = apartmentService.findApartmentStub(building, data.getAddressApartment());
 		if (stub == null) {

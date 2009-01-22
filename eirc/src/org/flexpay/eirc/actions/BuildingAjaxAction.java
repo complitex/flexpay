@@ -2,7 +2,7 @@ package org.flexpay.eirc.actions;
 
 import java.util.List;
 
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
@@ -13,7 +13,7 @@ public class BuildingAjaxAction {
 	private BuildingService buildingService;
 
 	private Long streetId;
-	private List<Buildings> buildingsList;
+	private List<BuildingAddress> buildingsList;
 
 	public String execute() throws FlexPayException {
 		buildingsList = getBuildingListByStreetId(streetId);
@@ -21,9 +21,9 @@ public class BuildingAjaxAction {
 		return ActionSupport.SUCCESS;
 	}
 
-	List<Buildings> getBuildingListByStreetId(Long streetId) {
+	List<BuildingAddress> getBuildingListByStreetId(Long streetId) {
 		Page pager = new Page(200, 1);
-		List<Buildings> buildingses = null;
+		List<BuildingAddress> buildingses = null;
 		while (true) {
 			if (buildingses == null) {
 				buildingses = buildingService.getBuildings(streetId, pager);
@@ -60,7 +60,7 @@ public class BuildingAjaxAction {
 	/**
 	 * @return the buildingsList
 	 */
-	public List<Buildings> getBuildingsList() {
+	public List<BuildingAddress> getBuildingsList() {
 		return buildingsList;
 	}
 

@@ -3,7 +3,7 @@ package org.flexpay.eirc.actions.registry.corrections;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.actions.apartment.ApartmentsListAction;
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.common.exception.FlexPayException;
@@ -143,7 +143,7 @@ public class CorrectAddressAction extends ApartmentsListAction {
 
 	public boolean getCanCreateBuilding() {
 		ImportError error = record.getImportError();
-		return error != null && typeRegistry.getType(Buildings.class) == error.getObjectType();
+		return error != null && typeRegistry.getType(BuildingAddress.class) == error.getObjectType();
 
 	}
 
