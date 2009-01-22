@@ -1,7 +1,7 @@
 package org.flexpay.ab.actions.buildings;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.filters.StreetNameFilter;
@@ -26,7 +26,7 @@ public class BuildingsListAction extends BuildingsActionsBase {
 	private StreetNameFilter streetNameFilter = new StreetNameFilter();
 	private Page pager = new Page();
 
-	private List<Buildings> buildingsList = list();
+	private List<BuildingAddress> buildingsList = list();
 
 	public BuildingsListAction() {
 		streetNameFilter.setShowSearchString(true);
@@ -160,7 +160,7 @@ public class BuildingsListAction extends BuildingsActionsBase {
 	 *
 	 * @return Value for property 'buildingsList'.
 	 */
-	public List<Buildings> getBuildingsList() {
+	public List<BuildingAddress> getBuildingsList() {
 		return buildingsList;
 	}
 

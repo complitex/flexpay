@@ -1,16 +1,16 @@
 package org.flexpay.ab.persistence.filters;
 
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Collections;
 
-public class BuildingsFilter extends PrimaryKeyFilter<Buildings> {
+public class BuildingsFilter extends PrimaryKeyFilter<BuildingAddress> {
 
-	private List<Buildings> buildingses = Collections.emptyList();
+	private List<BuildingAddress> buildingses = Collections.emptyList();
 
 	/**
 	 * Getter for property 'buildingses'.
@@ -18,7 +18,7 @@ public class BuildingsFilter extends PrimaryKeyFilter<Buildings> {
 	 * @return Value for property 'buildingses'.
 	 */
 	@NotNull
-	public List<Buildings> getBuildingses() {
+	public List<BuildingAddress> getBuildingses() {
 		return buildingses;
 	}
 
@@ -27,16 +27,16 @@ public class BuildingsFilter extends PrimaryKeyFilter<Buildings> {
 	 *
 	 * @param buildingses Value to set for property 'buildingses'.
 	 */
-	public void setBuildingses(@NotNull List<Buildings> buildingses) {
+	public void setBuildingses(@NotNull List<BuildingAddress> buildingses) {
 		this.buildingses = buildingses;
 	}
 
 	@Nullable
-	public Buildings getSelected() {
+	public BuildingAddress getSelected() {
 		if (needFilter()) {
-			for (Buildings buildings : buildingses) {
-				if (getSelectedId().equals(buildings.getId())) {
-					return buildings;
+			for (BuildingAddress buildingAddress : buildingses) {
+				if (getSelectedId().equals(buildingAddress.getId())) {
+					return buildingAddress;
 				}
 			}
 		}

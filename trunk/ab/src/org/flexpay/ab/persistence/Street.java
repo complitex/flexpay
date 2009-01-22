@@ -27,7 +27,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	private Set<District> districts = Collections.emptySet();
 	private SortedSet<StreetTypeTemporal> typeTemporals = EMPTY_SORTED_SET;
 	private TimeLine<StreetType, StreetTypeTemporal> typesTimeLine;
-	private Set<Buildings> buildingses = Collections.emptySet();
+	private Set<BuildingAddress> buildingses = Collections.emptySet();
 
 	public Street() {
 	}
@@ -72,7 +72,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 *
 	 * @return Value for property 'buildingses'.
 	 */
-	public Set<Buildings> getBuildingses() {
+	public Set<BuildingAddress> getBuildingses() {
 		return buildingses;
 	}
 
@@ -81,7 +81,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 *
 	 * @param buildingses Value to set for property 'buildingses'.
 	 */
-	public void setBuildingses(Set<Buildings> buildingses) {
+	public void setBuildingses(Set<BuildingAddress> buildingses) {
 		this.buildingses = buildingses;
 	}
 

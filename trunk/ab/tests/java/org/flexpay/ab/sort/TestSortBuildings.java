@@ -30,6 +30,6 @@ public class TestSortBuildings extends SpringBeanAwareTestCase {
 		int size = result.size();
 		watch.stop();
 
-		assertNotSame("Buildings not found.", 0, size);
+		assertNotSame("BuildingAddress not found.", 0, size);
 	}
 }

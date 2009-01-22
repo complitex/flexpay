@@ -1,7 +1,7 @@
 package org.flexpay.ab.actions.buildings;
 
-import org.flexpay.ab.persistence.BuildingAttributeType;
-import org.flexpay.ab.persistence.BuildingAttributeTypeTranslation;
+import org.flexpay.ab.persistence.AddressAttributeType;
+import org.flexpay.ab.persistence.AddressAttributeTypeTranslation;
 import org.flexpay.ab.service.BuildingAttributeTypeService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
@@ -18,7 +18,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 
 	private BuildingAttributeTypeService buildingAttributeTypeService;
 
-	private BuildingAttributeType attributeType = new BuildingAttributeType();
+	private AddressAttributeType attributeType = new AddressAttributeType();
 	private Map<Long, String> names = treeMap();
 
 	@NotNull
@@ -29,7 +29,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		BuildingAttributeType type = attributeType.isNew() ?
+		AddressAttributeType type = attributeType.isNew() ?
 									 attributeType :
 									 buildingAttributeTypeService.read(stub(attributeType));
 
@@ -43,7 +43,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			BuildingAttributeTypeTranslation translation = new BuildingAttributeTypeTranslation();
+			AddressAttributeTypeTranslation translation = new AddressAttributeTypeTranslation();
 			translation.setLang(lang);
 			translation.setName(value);
 			type.setTranslation(translation);
@@ -56,7 +56,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 
 	private void initTranslations() {
 
-		for (BuildingAttributeTypeTranslation translation : attributeType.getTranslations()) {
+		for (AddressAttributeTypeTranslation translation : attributeType.getTranslations()) {
 			names.put(translation.getLang().getId(), translation.getName());
 		}
 
@@ -79,11 +79,11 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 		return INPUT;
 	}
 
-	public BuildingAttributeType getAttributeType() {
+	public AddressAttributeType getAttributeType() {
 		return attributeType;
 	}
 
-	public void setAttributeType(BuildingAttributeType attributeType) {
+	public void setAttributeType(AddressAttributeType attributeType) {
 		this.attributeType = attributeType;
 	}
 

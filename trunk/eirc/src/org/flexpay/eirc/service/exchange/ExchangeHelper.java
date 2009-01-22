@@ -29,11 +29,11 @@ public class ExchangeHelper {
 	public String getAddressGroup(Apartment apartment) throws FlexPayException {
 		String apartmentNumber = apartmentService.getApartmentNumber(stub(apartment));
 
-		Buildings buildings = buildingService.getFirstBuildings(apartment.getBuildingStub());
-		String buildingNumber = buildings.getNumber();
-		String bulkNumber = buildings.getBulk();
+		BuildingAddress buildingAddress = buildingService.getFirstBuildings(apartment.getBuildingStub());
+		String buildingNumber = buildingAddress.getNumber();
+		String bulkNumber = buildingAddress.getBulk();
 
-		Street street = streetService.readFull(buildings.getStreetStub());
+		Street street = streetService.readFull(buildingAddress.getStreetStub());
 
 		StreetName streetNameObj = street.getCurrentName();
 		StreetNameTranslation nameTranslation = TranslationUtil

@@ -2,7 +2,7 @@ package org.flexpay.ab.service;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -42,5 +42,5 @@ public interface AddressService {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
-	String getBuildingsAddress(@NotNull Stub<Buildings> stub, @Nullable Locale locale) throws Exception;
+	String getBuildingsAddress(@NotNull Stub<BuildingAddress> stub, @Nullable Locale locale) throws Exception;
 }

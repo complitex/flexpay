@@ -18,7 +18,7 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 	private CountryService countryService;
 
 	private Apartment apartment = new Apartment();
-	private Buildings buildings;
+	private BuildingAddress buildings;
 	private Street street;
 	private Town town;
 	private Region region;
@@ -28,7 +28,7 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 	public String doExecute() throws FlexPayException {
 
 		apartment = apartmentService.readWithPersons(stub(apartment));
-		List<Buildings> buildingses = buildingService.getBuildingBuildings(apartment.getBuildingStub());
+		List<BuildingAddress> buildingses = buildingService.getBuildingBuildings(apartment.getBuildingStub());
 		buildings = buildingService.readFull(stub(buildingses.get(0)));
 		street = streetService.readFull(buildings.getStreetStub());
 		town = townService.readFull(street.getTownStub());
@@ -83,7 +83,7 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 	/**
 	 * @return the buildings
 	 */
-	public Buildings getBuildings() {
+	public BuildingAddress getBuildings() {
 		return buildings;
 	}
 
@@ -109,10 +109,10 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 	}
 
 	/**
-	 * @param buildings the buildings to set
+	 * @param buildingAddress the buildings to set
 	 */
-	public void setBuildings(Buildings buildings) {
-		this.buildings = buildings;
+	public void setBuildings(BuildingAddress buildingAddress) {
+		this.buildings = buildingAddress;
 	}
 
 	/**

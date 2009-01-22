@@ -19,21 +19,21 @@ import java.util.Set;
 /**
  * Buildings is a logical relation between building and several street addresses
  */
-public class Buildings extends DomainObjectWithStatus {
+public class BuildingAddress extends DomainObjectWithStatus {
 
 	private Street street;
 	private Building building;
-	private Set<BuildingAttribute> buildingAttributes = Collections.emptySet();
+	private Set<AddressAttribute> addressAttributes = Collections.emptySet();
 	private boolean primaryStatus;
 
-	public Buildings() {
+	public BuildingAddress() {
 	}
 
-	public Buildings(Long id) {
+	public BuildingAddress(Long id) {
 		super(id);
 	}
 
-	public Buildings(Stub<Buildings> stub) {
+	public BuildingAddress(Stub<BuildingAddress> stub) {
 		super(stub.getId());
 	}
 
@@ -56,17 +56,17 @@ public class Buildings extends DomainObjectWithStatus {
 	}
 
 	@NotNull
-	public Set<BuildingAttribute> getBuildingAttributes() {
-		return this.buildingAttributes;
+	public Set<AddressAttribute> getBuildingAttributes() {
+		return this.addressAttributes;
 	}
 
-	public void setBuildingAttributes(Set<BuildingAttribute> buildingAttributes) {
-		this.buildingAttributes = buildingAttributes;
+	public void setBuildingAttributes(Set<AddressAttribute> addressAttributes) {
+		this.addressAttributes = addressAttributes;
 	}
 
 	@Nullable
-	public BuildingAttribute getAttribute(BuildingAttributeType type) {
-		for (BuildingAttribute attribute : buildingAttributes) {
+	public AddressAttribute getAttribute(AddressAttributeType type) {
+		for (AddressAttribute attribute : addressAttributes) {
 			if (attribute.getBuildingAttributeType().equals(type)) {
 				return attribute;
 			}
@@ -81,8 +81,8 @@ public class Buildings extends DomainObjectWithStatus {
 	 * @return BuildingAttribute number if attribute specified, or <code>null</code> otherwise
 	 */
 	@Nullable
-	public BuildingAttribute getNumberAttribute() {
-		for (BuildingAttribute attribute : buildingAttributes) {
+	public AddressAttribute getNumberAttribute() {
+		for (AddressAttribute attribute : addressAttributes) {
 			if (attribute.getBuildingAttributeType().isBuildingNumber()) {
 				return attribute;
 			}
@@ -97,8 +97,8 @@ public class Buildings extends DomainObjectWithStatus {
 	 * @return BuildingAttribute bulk if attribute specified, or <code>null</code> otherwise
 	 */
 	@Nullable
-	public BuildingAttribute getBulkAttribute() {
-		for (BuildingAttribute attribute : buildingAttributes) {
+	public AddressAttribute getBulkAttribute() {
+		for (AddressAttribute attribute : addressAttributes) {
 			if (attribute.getBuildingAttributeType().isBulkNumber()) {
 				return attribute;
 			}
@@ -114,7 +114,7 @@ public class Buildings extends DomainObjectWithStatus {
 	 */
 	@Nullable
 	public String getNumber() {
-		BuildingAttribute attribute = getNumberAttribute();
+		AddressAttribute attribute = getNumberAttribute();
 		return attribute == null ? null : attribute.getValue();
 	}
 
@@ -125,18 +125,18 @@ public class Buildings extends DomainObjectWithStatus {
 	 */
 	@Nullable
 	public String getBulk() {
-		BuildingAttribute attribute = getBulkAttribute();
+		AddressAttribute attribute = getBulkAttribute();
 		return attribute == null ? null : attribute.getValue();
 	}
 
-	public BuildingAttribute setBuildingAttribute(@NotNull BuildingAttribute attribute) {
+	public AddressAttribute setBuildingAttribute(@NotNull AddressAttribute attribute) {
 		return setBuildingAttribute(
 				attribute.getValue(), attribute.getBuildingAttributeType());
 	}
 
-	public BuildingAttribute setBuildingAttribute(String value, BuildingAttributeType type) {
-		BuildingAttribute attribute = null;
-		for (BuildingAttribute attr : buildingAttributes) {
+	public AddressAttribute setBuildingAttribute(String value, AddressAttributeType type) {
+		AddressAttribute attribute = null;
+		for (AddressAttribute attr : addressAttributes) {
 			if (type.equals(attr.getBuildingAttributeType())) {
 				attribute = attr;
 				break;
@@ -145,19 +145,19 @@ public class Buildings extends DomainObjectWithStatus {
 
 		if (StringUtils.isEmpty(value)) {
 			if (attribute != null) {
-				buildingAttributes.remove(attribute);
+				addressAttributes.remove(attribute);
 			}
 			return attribute;
 		}
 
 		if (attribute == null) {
-			attribute = new BuildingAttribute();
+			attribute = new AddressAttribute();
 			attribute.setBuildingAttributeType(type);
 			attribute.setBuildings(this);
-			if (Collections.emptySet().equals(buildingAttributes)) {
-				buildingAttributes = new HashSet<BuildingAttribute>();
+			if (Collections.emptySet().equals(addressAttributes)) {
+				addressAttributes = new HashSet<AddressAttribute>();
 			}
-			buildingAttributes.add(attribute);
+			addressAttributes.add(attribute);
 		}
 		attribute.setValue(value);
 		return attribute;
@@ -167,14 +167,14 @@ public class Buildings extends DomainObjectWithStatus {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("Building id", building.getId())
 				.append("Street id", street.getId())
-				.append("attributes: ", buildingAttributes.toArray())
+				.append("attributes: ", addressAttributes.toArray())
 				.toString();
 	}
 
 	public String format(Locale locale, boolean shortMode) throws FlexPayException {
 
 		StringBuilder result = new StringBuilder();
-		BuildingAttribute attribute = getNumberAttribute();
+		AddressAttribute attribute = getNumberAttribute();
 		if (attribute != null) {
 			result.append(attribute.format(locale, shortMode));
 		}
@@ -216,12 +216,12 @@ public class Buildings extends DomainObjectWithStatus {
 	 * @param attrs Set of attributes
 	 * @return <code>true</code> if all of attrs has the same value in attributes
 	 */
-	public boolean hasSameAttributes(Set<BuildingAttribute> attrs) {
-		if (buildingAttributes.size() != attrs.size()) {
+	public boolean hasSameAttributes(Set<AddressAttribute> attrs) {
+		if (addressAttributes.size() != attrs.size()) {
 			return false;
 		}
 
-		for (BuildingAttribute attr : attrs) {
+		for (AddressAttribute attr : attrs) {
 			if (!hasSameAttributeValue(attr)) {
 				return false;
 			}
@@ -236,8 +236,8 @@ public class Buildings extends DomainObjectWithStatus {
 	 * @param attr Attribute to check
 	 * @return <code>true</code> if there is an attribute having the same value
 	 */
-	public boolean hasSameAttributeValue(@NotNull BuildingAttribute attr) {
-		for (BuildingAttribute attribute : buildingAttributes) {
+	public boolean hasSameAttributeValue(@NotNull AddressAttribute attr) {
+		for (AddressAttribute attribute : addressAttributes) {
 			if (attr.equals(attribute)) {
 				return true;
 			}
@@ -262,16 +262,16 @@ public class Buildings extends DomainObjectWithStatus {
 	}
 
 	@NotNull
-	public static BuildingAttribute numberAttribute(@NotNull String value) {
-		BuildingAttribute attribute = new BuildingAttribute();
+	public static AddressAttribute numberAttribute(@NotNull String value) {
+		AddressAttribute attribute = new AddressAttribute();
 		attribute.setValue(value);
 		attribute.setBuildingAttributeType(ApplicationConfig.getBuildingAttributeTypeNumber());
 		return attribute;
 	}
 
 	@NotNull
-	public static BuildingAttribute bulkAttribute(@NotNull String value) {
-		BuildingAttribute attribute = new BuildingAttribute();
+	public static AddressAttribute bulkAttribute(@NotNull String value) {
+		AddressAttribute attribute = new AddressAttribute();
 		attribute.setValue(value);
 		attribute.setBuildingAttributeType(ApplicationConfig.getBuildingAttributeTypeBulk());
 		return attribute;

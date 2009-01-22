@@ -46,7 +46,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
 
 	@Secured (Roles.BUILDING_READ)
-	List<Buildings> getBuildings(ArrayStack filters, Page pager);
+	List<BuildingAddress> getBuildings(ArrayStack filters, Page pager);
 
 	/**
 	 * Get buildings of a street
@@ -58,7 +58,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 *             instead
 	 */
 	@Secured (Roles.BUILDING_READ)
-	List<Buildings> getBuildings(Long streetId, Page pager);
+	List<BuildingAddress> getBuildings(Long streetId, Page pager);
 
 	/**
 	 * Find buildings by attributes
@@ -71,8 +71,8 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	@Secured (Roles.BUILDING_READ)
 	@Nullable
-	Buildings findBuildings(@NotNull Stub<Street> street, @Nullable Stub<District> district,
-							@NotNull Set<BuildingAttribute> attributes)
+	BuildingAddress findBuildings(@NotNull Stub<Street> street, @Nullable Stub<District> district,
+							@NotNull Set<AddressAttribute> attributes)
 			throws FlexPayException;
 
 	/**
@@ -89,7 +89,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	@Secured (Roles.BUILDING_READ)
 	@Nullable
-	Buildings findBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district,
+	BuildingAddress findBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district,
 							String number, String bulk) throws FlexPayException;
 
 	/**
@@ -105,7 +105,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	@Secured (Roles.BUILDING_READ)
 	@Nullable
-	Buildings findBuildings(@NotNull Stub<Street> streetStub, String number, String bulk) throws FlexPayException;
+	BuildingAddress findBuildings(@NotNull Stub<Street> streetStub, String number, String bulk) throws FlexPayException;
 
 	/**
 	 * Find building by buildings stub
@@ -115,7 +115,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	@Secured (Roles.BUILDING_READ)
 	@Nullable
-	Building findBuilding(@NotNull Stub<Buildings> stub);
+	Building findBuilding(@NotNull Stub<BuildingAddress> stub);
 
 	/**
 	 * Find single Building relation for building stub
@@ -125,7 +125,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 * @throws FlexPayException if building does not have any buildingses
 	 */
 	@Secured (Roles.BUILDING_READ)
-	Buildings getFirstBuildings(Stub<Building> stub) throws FlexPayException;
+	BuildingAddress getFirstBuildings(Stub<Building> stub) throws FlexPayException;
 
 	/**
 	 * Read full buildings info
@@ -135,15 +135,15 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	@Secured (Roles.BUILDING_READ)
 	@Nullable
-	Buildings readFull(@NotNull Stub<Buildings> stub);
+	BuildingAddress readFull(@NotNull Stub<BuildingAddress> stub);
 
 	/**
 	 * Update buildings
 	 *
-	 * @param buildings Buildings
+	 * @param buildingAddress Buildings
 	 */
 	@Secured (Roles.BUILDING_CHANGE)
-	void update(Buildings buildings);
+	void update(BuildingAddress buildingAddress);
 
 	/**
 	 * Create a new Buildings
@@ -156,8 +156,8 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	@Secured (Roles.BUILDING_ADD)
 	@NotNull
-	Buildings createStreetDistrictBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district,
-											@NotNull Set<BuildingAttribute> attrs)
+	BuildingAddress createStreetDistrictBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district,
+											@NotNull Set<AddressAttribute> attrs)
 			throws FlexPayException;
 
 	/**
@@ -171,8 +171,8 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	@Secured (Roles.BUILDING_ADD)
 	@NotNull
-	Buildings createStreetBuildings(@NotNull Stub<Building> building, @NotNull Stub<Street> street,
-									@NotNull Set<BuildingAttribute> attrs)
+	BuildingAddress createStreetBuildings(@NotNull Stub<Building> building, @NotNull Stub<Street> street,
+									@NotNull Set<AddressAttribute> attrs)
 			throws FlexPayException;
 
 	/**
@@ -183,7 +183,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 * @throws FlexPayException if building does not have any buildingses
 	 */
 	@Secured (Roles.BUILDING_READ)
-	List<Buildings> getBuildingBuildings(Stub<Building> stub) throws FlexPayException;
+	List<BuildingAddress> getBuildingBuildings(Stub<Building> stub) throws FlexPayException;
 
 	/**
 	 * Read building info

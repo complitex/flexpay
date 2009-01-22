@@ -100,8 +100,8 @@ public class ImportService {
 
 				// Save building itself instead of its buildings address
 				log.debug("Saving object: {}", object);
-				if (object instanceof Buildings) {
-					allObjectsDao.saveOrUpdate(((Buildings) object).getBuilding());
+				if (object instanceof BuildingAddress) {
+					allObjectsDao.saveOrUpdate(((BuildingAddress) object).getBuilding());
 				} else if (object instanceof DataCorrection) {
 					correctionsService.save((DataCorrection) object);
 				} else {
@@ -442,26 +442,26 @@ public class ImportService {
 				RawBuildingsData data = buildingsDataSource.next(typeHolder);
 
 				try {
-					Stub<Buildings> correction = correctionsService.findCorrection(
-							data.getExternalSourceId(), Buildings.class, sourceDescription);
+					Stub<BuildingAddress> correction = correctionsService.findCorrection(
+							data.getExternalSourceId(), BuildingAddress.class, sourceDescription);
 
 					if (correction != null) {
 						log.info("Found correction for building #{}", data.getExternalSourceId());
 						continue;
 					}
 
-					Buildings buildings = buildingsDataConverter.fromRawData(
+					BuildingAddress buildingAddress = buildingsDataConverter.fromRawData(
 							data, sourceDescription, correctionsService);
 
-					Buildings persistent = buildingService.findBuildings(
-							buildings.getStreetStub(), buildings.getDistrictStub(),
-							buildings.getBuildingAttributes());
+					BuildingAddress persistent = buildingService.findBuildings(
+							buildingAddress.getStreetStub(), buildingAddress.getDistrictStub(),
+							buildingAddress.getBuildingAttributes());
 					if (persistent == null) {
 						// TODO: return back
-						addToStack(buildings);
+						addToStack(buildingAddress);
 //						addToStack(buildings.getBuilding());
-						persistent = buildings;
-						log.info("Creating new building: {} - {}", buildings.getNumber(), buildings.getBulk());
+						persistent = buildingAddress;
+						log.info("Creating new building: {} - {}", buildingAddress.getNumber(), buildingAddress.getBulk());
 					}
 
 					DataCorrection corr = correctionsService.getStub(

@@ -18,10 +18,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BuildingProcessor extends AbstractProcessor<Buildings> {
+public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 
 	public BuildingProcessor() {
-		super(Buildings.class);
+		super(BuildingAddress.class);
 	}
 
 	private BuildingDao buildingDao;
@@ -34,18 +34,18 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	 * Create new DomainObject from HistoryRecord
 	 */
 	@NotNull
-	protected Buildings doCreateObject() throws Exception {
+	protected BuildingAddress doCreateObject() throws Exception {
 
 		Building building = new Building();
 
-		Buildings buildings = new Buildings();
-		buildings.setBuilding(building);
+		BuildingAddress buildingAddress = new BuildingAddress();
+		buildingAddress.setBuilding(building);
 
-		Set<Buildings> buildingses = new HashSet<Buildings>();
-		buildingses.add(buildings);
+		Set<BuildingAddress> buildingses = new HashSet<BuildingAddress>();
+		buildingses.add(buildingAddress);
 		building.setBuildingses(buildingses);
 
-		return buildings;
+		return buildingAddress;
 	}
 
 	/**
@@ -54,18 +54,18 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
-	protected Buildings readObject(@NotNull Stub<Buildings> stub) {
-		Buildings buildings = buildingsDao.readFull(stub.getId());
-		Set<Buildings> buildingses = new HashSet<Buildings>();
-		buildingses.add(buildings);
+	protected BuildingAddress readObject(@NotNull Stub<BuildingAddress> stub) {
+		BuildingAddress buildingAddress = buildingsDao.readFull(stub.getId());
+		Set<BuildingAddress> buildingses = new HashSet<BuildingAddress>();
+		buildingses.add(buildingAddress);
 
-		Building building = buildingDao.read(buildings.getBuilding().getId());
-		buildings.setBuilding(building);
+		Building building = buildingDao.read(buildingAddress.getBuilding().getId());
+		buildingAddress.setBuilding(building);
 		building.setBuildingses(buildingses);
 
 		log.debug("Read building: {}", building);
 
-		return buildings;
+		return buildingAddress;
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
-	protected void doSaveObject(Buildings object, String externalId) {
+	protected void doSaveObject(BuildingAddress object, String externalId) {
 		Building building = object.getBuilding();
 		if (object.getId() == null) {
 			buildingDao.create(building);
@@ -95,51 +95,51 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	 */
 	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record,
 							DataSourceDescription sd, CorrectionsService cs) throws Exception {
-		Buildings buildings = (Buildings) object;
+		BuildingAddress buildingAddress = (BuildingAddress) object;
 		switch (record.getFieldType()) {
 			case DistrictId:
-				setDistrictId(buildings.getBuilding(), record, sd, cs);
+				setDistrictId(buildingAddress.getBuilding(), record, sd, cs);
 				break;
 			case StreetId:
-				setStreetId(buildings, record, sd, cs);
+				setStreetId(buildingAddress, record, sd, cs);
 				break;
 			case HouseNumber:
-				setBuildingNumber(buildings, record);
+				setBuildingNumber(buildingAddress, record);
 				break;
 			case Bulk:
-				setBuildingBulk(buildings, record);
+				setBuildingBulk(buildingAddress, record);
 				break;
 			default:
 				log.debug("Unknown building property type: {}", record.getFieldType());
 		}
 	}
 
-	private void setBuildingNumber(Buildings buildings, HistoryRecord record)
+	private void setBuildingNumber(BuildingAddress buildingAddress, HistoryRecord record)
 			throws Exception {
 
 		log.info("Setting building number");
 
-		String value = buildings.getNumber();
+		String value = buildingAddress.getNumber();
 		if (value != null && !value.equals(record.getCurrentValue())) {
 			log.warn("Building renumber, history loss");
 		}
 
-		buildings.setBuildingAttribute(record.getCurrentValue(), ApplicationConfig.getBuildingAttributeTypeNumber());
+		buildingAddress.setBuildingAttribute(record.getCurrentValue(), ApplicationConfig.getBuildingAttributeTypeNumber());
 
-		log.info("Building number to set: {}, actual number: {}", record.getCurrentValue(), buildings.getNumber());
+		log.info("Building number to set: {}, actual number: {}", record.getCurrentValue(), buildingAddress.getNumber());
 	}
 
-	private void setBuildingBulk(Buildings buildings, HistoryRecord record)
+	private void setBuildingBulk(BuildingAddress buildingAddress, HistoryRecord record)
 			throws Exception {
 
-		String value = buildings.getBulk();
+		String value = buildingAddress.getBulk();
 		if (value != null && !value.equals(record.getCurrentValue())) {
 			log.warn("Building bulk renumber, history loss. Object id: {}", record.getObjectId());
 		}
 
-		buildings.setBuildingAttribute(record.getCurrentValue(), ApplicationConfig.getBuildingAttributeTypeBulk());
+		buildingAddress.setBuildingAttribute(record.getCurrentValue(), ApplicationConfig.getBuildingAttributeTypeBulk());
 
-		log.info("Building bulk to set: {}, actual value: {}", record.getCurrentValue(), buildings.getBulk());
+		log.info("Building bulk to set: {}, actual value: {}", record.getCurrentValue(), buildingAddress.getBulk());
 	}
 
 	private void setDistrictId(Building building, HistoryRecord record,
@@ -161,7 +161,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 		building.setDistrict(new District(stub));
 	}
 
-	private void setStreetId(Buildings building, HistoryRecord record,
+	private void setStreetId(BuildingAddress building, HistoryRecord record,
 							 DataSourceDescription sd, CorrectionsService cs) {
 		Stub<Street> stub = cs.findCorrection(record.getCurrentValue(), Street.class, sd);
 		if (stub == null) {
@@ -188,7 +188,7 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
-	protected Stub<Buildings> findPersistentObject(Buildings object,
+	protected Stub<BuildingAddress> findPersistentObject(BuildingAddress object,
 												   DataSourceDescription sd, CorrectionsService cs) throws FlexPayException {
 		String number = object.getNumber();
 		String bulk = object.getBulk();
@@ -196,8 +196,8 @@ public class BuildingProcessor extends AbstractProcessor<Buildings> {
 			return null;
 		}
 
-		Buildings buildings = buildingService.findBuildings(stub(object.getStreet()), number, bulk);
-		return buildings != null ? stub(buildings) : null;
+		BuildingAddress buildingAddress = buildingService.findBuildings(stub(object.getStreet()), number, bulk);
+		return buildingAddress != null ? stub(buildingAddress) : null;
 	}
 
 	public void setBuildingDao(BuildingDao buildingDao) {

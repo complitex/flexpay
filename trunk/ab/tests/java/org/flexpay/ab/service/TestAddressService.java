@@ -2,7 +2,7 @@ package org.flexpay.ab.service;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class TestAddressService extends SpringBeanAwareTestCase {
 	@Test
 	public void testGetBuildingsAddress() throws Throwable {
 
-		addressService.getBuildingsAddress(new Stub<Buildings>(1L), null);
+		addressService.getBuildingsAddress(new Stub<BuildingAddress>(1L), null);
 	}
 
 	@Test

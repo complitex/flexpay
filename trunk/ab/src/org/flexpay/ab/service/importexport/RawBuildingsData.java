@@ -1,12 +1,12 @@
 package org.flexpay.ab.service.importexport;
 
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.common.service.importexport.RawData;
 
 import java.util.Collection;
 import java.util.HashSet;
 
-public class RawBuildingsData extends RawData<Buildings> {
+public class RawBuildingsData extends RawData<BuildingAddress> {
 
 	private static final Collection<String> possibleNames = new HashSet<String>();
 

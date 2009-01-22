@@ -3,7 +3,7 @@ package org.flexpay.ab.util.config;
 import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.Town;
-import org.flexpay.ab.persistence.BuildingAttributeType;
+import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
@@ -14,8 +14,8 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 	private Region defaultRegion;
 	private Town defaultTown;
 
-	private BuildingAttributeType buildingAttributeTypeNumber;
-	private BuildingAttributeType buildingAttributeTypeBulk;
+	private AddressAttributeType addressAttributeTypeNumber;
+	private AddressAttributeType addressAttributeTypeBulk;
 
 	public static Town getDefaultTown() {
 		return getInstance().defaultTown;
@@ -34,12 +34,12 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 		return getInstance().defaultRegion;
 	}
 
-	public static BuildingAttributeType getBuildingAttributeTypeNumber() {
-		return getInstance().buildingAttributeTypeNumber;
+	public static AddressAttributeType getBuildingAttributeTypeNumber() {
+		return getInstance().addressAttributeTypeNumber;
 	}
 
-	public static BuildingAttributeType getBuildingAttributeTypeBulk() {
-		return getInstance().buildingAttributeTypeBulk;
+	public static AddressAttributeType getBuildingAttributeTypeBulk() {
+		return getInstance().addressAttributeTypeBulk;
 	}
 
 	/**
@@ -70,11 +70,11 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 	}
 
 	public void setBuildingAttributeTypeNumberId(String numberTypeId) {
-		buildingAttributeTypeNumber = new BuildingAttributeType(Long.valueOf(numberTypeId));
+		addressAttributeTypeNumber = new AddressAttributeType(Long.valueOf(numberTypeId));
 	}
 
 	public void setBuildingAttributeTypeBulkId(String bulkTypeId) {
-		buildingAttributeTypeBulk = new BuildingAttributeType(Long.valueOf(bulkTypeId));
+		addressAttributeTypeBulk = new AddressAttributeType(Long.valueOf(bulkTypeId));
 	}
 
 	protected static ApplicationConfig getInstance() {

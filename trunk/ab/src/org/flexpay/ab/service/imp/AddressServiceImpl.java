@@ -1,7 +1,7 @@
 package org.flexpay.ab.service.imp;
 
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.AddressService;
@@ -50,32 +50,32 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@NotNull
-	public String getBuildingsAddress(@NotNull Stub<Buildings> stub, @Nullable Locale locale) throws Exception {
+	public String getBuildingsAddress(@NotNull Stub<BuildingAddress> stub, @Nullable Locale locale) throws Exception {
 
 		if (locale == null) {
 			locale = ApplicationConfig.getDefaultLocale();
 		}
 
-		Buildings buildings = buildingService.readFull(stub);
-		if (buildings == null) {
+		BuildingAddress buildingAddress = buildingService.readFull(stub);
+		if (buildingAddress == null) {
 			throw new Exception("No buildingses in building: " + stub);
 		}
-		Street street = streetService.readFull(buildings.getStreetStub());
+		Street street = streetService.readFull(buildingAddress.getStreetStub());
 		if (street == null) {
 			throw new Exception("No street found for building: " + stub);
 		}
 
-		return street.format(locale, true) + ", " + buildings.format(locale, true);
+		return street.format(locale, true) + ", " + buildingAddress.format(locale, true);
 	}
 
 	@NotNull
 	public String getBuildingAddress(@NotNull Stub<Building> stub, @Nullable Locale locale) throws Exception {
 
-		List<Buildings> buildingses = buildingService.getBuildingBuildings(stub);
-		Buildings candidate = null;
-		for (Buildings buildings : buildingses) {
-			if (buildings.isPrimary()) {
-				candidate = buildings;
+		List<BuildingAddress> buildingses = buildingService.getBuildingBuildings(stub);
+		BuildingAddress candidate = null;
+		for (BuildingAddress buildingAddress : buildingses) {
+			if (buildingAddress.isPrimary()) {
+				candidate = buildingAddress;
 			}
 		}
 		if (candidate == null){

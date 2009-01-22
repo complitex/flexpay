@@ -1,13 +1,13 @@
 package org.flexpay.ab.dao;
 
-import org.flexpay.ab.persistence.Buildings;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public interface BuildingsDao extends GenericDao<Buildings, Long> {
+public interface BuildingsDao extends GenericDao<BuildingAddress, Long> {
 
 	/**
 	 * Find buildings in the street
@@ -16,7 +16,7 @@ public interface BuildingsDao extends GenericDao<Buildings, Long> {
 	 * @param pager Page instance
 	 * @return list of buildings for the street
 	 */
-	List<Buildings> findBuildings(Long streetId, Page pager);
+	List<BuildingAddress> findBuildings(Long streetId, Page pager);
 
 	/**
 	 * Find buildings in the street and district
@@ -26,7 +26,7 @@ public interface BuildingsDao extends GenericDao<Buildings, Long> {
 	 * @param pager Page instance
 	 * @return list of buildings for the street
 	 */
-	List<Buildings> findStreetDistrictBuildings(Long streetId, Long districtId, Page pager);
+	List<BuildingAddress> findStreetDistrictBuildings(Long streetId, Long districtId, Page pager);
 
 	/**
 	 * Find buildings relations for building
@@ -34,5 +34,5 @@ public interface BuildingsDao extends GenericDao<Buildings, Long> {
 	 * @param buildingId Building identifier
 	 * @return list of buildings for the building
 	 */
-	List<Buildings> findBuildingBuildings(@NotNull Long buildingId);
+	List<BuildingAddress> findBuildingBuildings(@NotNull Long buildingId);
 }
