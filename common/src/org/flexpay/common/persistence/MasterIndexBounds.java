@@ -1,6 +1,7 @@
 package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Master index bounds represents available system indexes for specified object type, when lowerBound became greater
@@ -11,6 +12,16 @@ public class MasterIndexBounds extends DomainObject {
 	private Long lowerBound = 0L;
 	private Long upperBound = 0L;
 	private int objectType;
+
+	/**
+	 * Constructs a new DomainObject.
+	 */
+	public MasterIndexBounds() {
+	}
+
+	public MasterIndexBounds(@NotNull Long id) {
+		super(id);
+	}
 
 	public MasterIndexBounds(int type) {
 		this.objectType = type;
