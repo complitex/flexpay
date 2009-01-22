@@ -107,7 +107,7 @@
 		</property>
 	</bean>
 
-	<bean name="LockManager" class="org.flexpay.common.locking.LockManager"
+	<bean name="lockManager" class="org.flexpay.common.locking.LockManager"
 		  destroy-method="releaseAll">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>

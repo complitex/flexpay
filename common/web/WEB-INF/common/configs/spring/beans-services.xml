@@ -40,11 +40,11 @@
 		  p:processManager-ref="processManager" />
 
 	<bean id="masterIndexProvider" class="org.flexpay.common.service.importexport.imp.MasterIndexProviderDBImpl"
-			p:lockManager-ref="LockManager"
+			p:lockManager-ref="lockManager"
 			p:masterIndexDao-ref="masterIndexDao"/>
 
 	<bean id="masterIndexService" class="org.flexpay.common.service.importexport.imp.MasterIndexServiceImpl"
-			p:lockManager-ref="LockManager"
+			p:lockManager-ref="lockManager"
 			p:masterIndexBoundsDao-ref="masterIndexBoundsDao"
 			p:masterIndexProvider-ref="masterIndexProvider" />
 

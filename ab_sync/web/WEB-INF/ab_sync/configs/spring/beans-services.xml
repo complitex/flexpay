@@ -52,7 +52,7 @@
 		<property name="districtProcessor" ref="districtProcessor" />
 		<property name="streetTypeProcessor" ref="streetTypeProcessor" />
 		<property name="personProcessor" ref="personProcessor" />
-		<property name="lockManager" ref="LockManager" />
+		<property name="lockManager" ref="lockManager" />
 		<property name="sd">
 			<bean class="org.flexpay.common.persistence.DataSourceDescription">
 				<constructor-arg index="0" value="${ab.sync.data.source.id}" />
@@ -64,7 +64,7 @@
 		<property name="historyDao" ref="historyDaoJdbc" />
 		<property name="historySourceDao" ref="historySourceDao" />
 		<property name="updateConfigDao" ref="syncConfigDaoJdbc" />
-		<property name="lockManager" ref="LockManager" />
+		<property name="lockManager" ref="lockManager" />
 	</bean>
 
 </beans>
