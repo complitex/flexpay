@@ -99,6 +99,8 @@ public class CommonConfigLoader implements ResourceLoaderAware {
 		d.addCallMethod("flexpay/szDefaultDbfFileEncoding", "setSzDefaultDbfFileEncoding", 0);
 
 		d.addCallMethod("flexpay/testprop", "setTestProp", 0);
+
+        d.addCallMethod("flexpay/logPreviewLinesNumber", "setLogPreviewLinesNumber", 0);
 	}
 
 	/**

@@ -36,6 +36,8 @@ public class ApplicationConfig {
 	private String szDataRoot;
 	private String szDefaultDbfFileEncoding;
 
+    private int logPreviewLinesNumber;
+
 	private String testProp;
 
 	public static Date getPastInfinite() {
@@ -214,4 +216,13 @@ public class ApplicationConfig {
 		log.debug("Setting resource loader");
 		ApplicationConfig.resourceLoader = resourceLoader;
 	}
+
+
+    public static int getLogPreviewLinesNumber() {
+        return getInstance().logPreviewLinesNumber;
+    }
+
+    public void setLogPreviewLinesNumber(String logPreviewLinesNumber) {
+        this.logPreviewLinesNumber = Integer.valueOf(logPreviewLinesNumber);
+    }
 }

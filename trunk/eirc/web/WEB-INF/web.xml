@@ -46,6 +46,18 @@
 		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
 	</listener>
 
+    <!-- Log file download servlet -->
+    <servlet>
+        <servlet-name>processLogDownloadServlet</servlet-name>
+        <servlet-class>org.flexpay.common.actions.ProcessLogDownloadServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>        
+        <servlet-name>processLogDownloadServlet</servlet-name>
+        <url-pattern>/processLogDownloadServlet</url-pattern>
+    </servlet-mapping>
+
+
     <!--
         - Loads the menu-config.xml for struts-menu at startup,
         - by default from "/WEB-INF/menu-config.xml".

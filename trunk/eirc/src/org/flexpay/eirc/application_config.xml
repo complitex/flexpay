@@ -11,5 +11,5 @@
 	<eircId>090</eircId> <!-- должен состоять из цифр -->
 
 	<!-- Code of kvarplata service type -->
-	<eirc-main-service-code>1</eirc-main-service-code>
+	<eirc-main-service-code>1</eirc-main-service-code>    
 </flexpay>
