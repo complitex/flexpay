@@ -12,16 +12,11 @@ import java.util.Set;
 
 public class TariffCalculationRulesFile extends DomainObjectWithStatus {
 
-	public static final Long IMPORTING_FILE_STATUS = 0L;
-	public static final Long IMPORTED_FILE_STATUS = 1L;
-	public static final Long DELETING_FILE_STATUS = 2L;
-
 	public static final Long TARIFF_CALCULATION_RULES_FILE_TYPE = 1L;
 
 	private Date creationDate = new Date();
 	private String userName;
 	private FPFileType type;
-	private FPFileStatus fileStatus;
 	private FPFile file;
 	private Set<TariffCalculationRulesFileTranslation> translations = Collections.emptySet();
 
@@ -60,14 +55,6 @@ public class TariffCalculationRulesFile extends DomainObjectWithStatus {
 		this.type = type;
 	}
 
-	public FPFileStatus getFileStatus() {
-		return fileStatus;
-	}
-
-	public void setFileStatus(FPFileStatus fileStatus) {
-		this.fileStatus = fileStatus;
-	}
-
 	public FPFile getFile() {
 		return file;
 	}
@@ -97,7 +84,6 @@ public class TariffCalculationRulesFile extends DomainObjectWithStatus {
 				append("creationDate", creationDate).
 				append("userName", userName).
 				append("type", type).
-				append("fileStatus", fileStatus).
 				append("file", file).
 				append("}").toString();
 	}

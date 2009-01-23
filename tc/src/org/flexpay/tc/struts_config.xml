@@ -17,10 +17,6 @@
             <result type="tiles">tc.dictionaries</result>
         </action>
 
-        <action name="import">
-            <result type="tiles">tc.import</result>
-        </action>
-
     </package>
 
     <include file="org/flexpay/tc/actions/sewertype/struts.xml"/>

@@ -145,11 +145,6 @@
                 <comment>Tariff calculation rules file type reference</comment>
             </column>
         </many-to-one>
-        <many-to-one name="fileStatus" class="org.flexpay.common.persistence.FPFileStatus" not-null="true">
-            <column name="status_id">
-                <comment>Tariff calculation rules file status reference</comment>
-            </column>
-        </many-to-one>
 
         <set name="translations" inverse="true" cascade="all-delete-orphan">
             <key column="tariff_calc_rules_file_id" not-null="true"/>
@@ -218,9 +213,7 @@
         from TariffCalculationRulesFile tcr
         left outer join fetch tcr.translations tcrTr
         left join fetch tcr.file
-        left join fetch tcr.fileStatus
         left join fetch tcr.type
-        left join fetch tcr.fileStatus.module
         left join fetch tcr.type.module
         where tcr.status = 0
     </query>

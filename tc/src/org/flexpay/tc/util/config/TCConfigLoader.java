@@ -32,11 +32,12 @@ public class TCConfigLoader extends AbConfigLoader {
 
 		d.addCallMethod("flexpay/tcDataRoot", "setTcDataRoot", 0);
 
+/*
 		d.addCallMethod("flexpay/tcMaximumFloors", "setMaximumFloors", 16);
-		d.addCallMethod("flexpay/tcMaximumPorches", "setMaximuPporches", 16);
-
-		// setup main service code
+		d.addCallMethod("flexpay/tcMaximumPorches", "setMaximumPporches", 16);
 		d.addCallMethod("flexpay/tcMaximumAppartments", "setMaximumAppartments", 1000);
+*/
+
 	}
 
 }

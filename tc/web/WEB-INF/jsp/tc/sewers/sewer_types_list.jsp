@@ -39,7 +39,7 @@
 			</tr>
 		</s:iterator>
 		<tr>
-			<td colspan="10">
+			<td colspan="5">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit" onclick="$('fSewerTypes').action='<s:url action="sewerTypeDelete"/>';" />
 				<input type="button" class="btn-exit" onclick="location.href='<s:url action="sewerTypeEdit"><s:param name="sewerType.id" value="0" /></s:url>';" value="<s:text name="common.new"/>" />

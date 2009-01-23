@@ -16,7 +16,7 @@ import java.io.InputStream;
 
 public class ProcessLogDownloadServlet extends HttpServlet {
 
-    private Logger log = LoggerFactory.getLogger(ProcessLogDownloadServlet.class);
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     /**
      * Writes contents of log file with given process id to http response
@@ -40,15 +40,15 @@ public class ProcessLogDownloadServlet extends HttpServlet {
 
             File logFile = ProcessLogger.getLogFile(processId);
             if (null == logFile) {
-                log.warn("No log file was found for process#" + processId);
+                log.warn("No log file was found for process#{}", processId);
                 return;
             }
 
-            log.info("Sending log file for process #" + processId + " to client");
+            log.info("Sending log file for process #{} to client", processId);
 
             writeFileToResponse(response, logFile);
 
-            log.info("Log file for process #" + processId + " was successfully sent to client");
+            log.info("Log file for process #{} was successfully sent to client", processId);
 
         } finally {
             IOUtils.closeQuietly(response.getOutputStream());
@@ -67,4 +67,5 @@ public class ProcessLogDownloadServlet extends HttpServlet {
         IOUtils.copyLarge(in, response.getOutputStream());
         IOUtils.closeQuietly(in);
     }
+
 }

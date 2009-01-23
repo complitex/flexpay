@@ -47,8 +47,9 @@
         <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_rules_files_list.jsp"/>
     </definition>
 
-    <definition name="tc.rules_file.upload_form" extends="tc.import">
-        <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_rules_file_upload.jsp" />
+    <definition name="tc.rules_file.edit" extends="tc.dictionaries">
+        <put-attribute name="title" value="tc.rules_file"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_rules_file_edit.jsp" />
     </definition>
    <!-- end of tariff calculation rules file related pages -->
 

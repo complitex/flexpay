@@ -64,4 +64,4 @@ INSERT INTO common_file_statuses_tbl (name, code, module_id)
 	VALUES ('tc.file_status.deleting', 2, @module_tc);
 SELECT @tc_deleting_status_id:=last_insert_id();
 
-update common_version_tbl set last_modified_date='2009-01-22', date_version=1; 
+update common_version_tbl set last_modified_date='2009-01-22', date_version=1;
