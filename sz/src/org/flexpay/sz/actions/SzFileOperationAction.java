@@ -34,8 +34,14 @@ public class SzFileOperationAction extends FPActionSupport {
 
 		if ("loadFromDB".equals(action1)) {
 			SzFileUtil.loadFromDb(szFileService.readFull(szFileId));
+			return SUCCESS;
 		} else if ("deleteFromDB".equals(action1)) {
 			SzFileUtil.deleteRecords(szFileService.readFull(szFileId));
+			return SUCCESS;
+		}
+
+		if (szFileIds == null || szFileIds.isEmpty()) {
+			return SUCCESS;
 		}
 
 		String processName = null;

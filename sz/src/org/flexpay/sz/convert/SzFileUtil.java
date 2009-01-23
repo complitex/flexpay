@@ -2,8 +2,11 @@ package org.flexpay.sz.convert;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.FPModule;
+import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.sz.dbf.*;
 import org.flexpay.sz.persistence.CharacteristicRecord;
 import org.flexpay.sz.persistence.ServiceTypeRecord;
@@ -11,24 +14,28 @@ import org.flexpay.sz.persistence.SubsidyRecord;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.RecordService;
 import org.flexpay.sz.service.SzFileService;
+import org.jetbrains.annotations.NonNls;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 
 public class SzFileUtil {
+
+	@NonNls
+	protected static Logger log = LoggerFactory.getLogger(SzFileUtil.class);
 
 	private static RecordService<CharacteristicRecord> characteristicRecordService;
 	private static RecordService<SubsidyRecord> subsidyRecordService;
 	private static RecordService<ServiceTypeRecord> serviceTypeRecordService;
 
+	private static FPFileService fpFileService;
 	private static SzFileService szFileService;
 
 	@SuppressWarnings ({"unchecked"})
-	public static void loadFromDbGeneric(
-			SzFile szFile, File targetFile, DBFInfo dbfInfo, RecordService recordService)
-			throws Exception {
+	public static void loadFromDbGeneric(SzFile szFile, File targetFile, DBFInfo dbfInfo, RecordService recordService) throws Exception {
 
 		SzDbfWriter writer = new SzDbfWriter(dbfInfo, targetFile, getDbfEncoding(), true);
 
@@ -52,51 +59,60 @@ public class SzFileUtil {
 
 	public static void loadFromDb(SzFile szFile) throws Exception {
 
-		File oldFileToDownload = FPFileUtil.getFileOnServer(szFile.getFileToDownload());
-		FPFile newFileToDownload;
-		if (oldFileToDownload != null) {
-			oldFileToDownload.delete();
-			szFile.getFileToDownload().setCreationDate(new Date());
-		} else {
-			newFileToDownload = new FPFile();
-			newFileToDownload.setUserName(szFile.getUserName());
-			newFileToDownload.setOriginalName(szFile.getUploadedFile().getOriginalName());
-			newFileToDownload.setModule(szFile.getUploadedFile().getModule());
-			szFile.setFileToDownload(newFileToDownload);
+		FPFile fileToDownload = szFile.getFileToDownload();
+		FPFile uploadedFile = szFile.getUploadedFile();
+		FPModule module = uploadedFile.getModule();
+
+		if (fileToDownload != null) {
+			szFile.setFileToDownload(null);
+			szFile.setStatus(fpFileService.getStatusByCodeAndModule(SzFile.PROCESSING_FILE_STATUS, module.getName()));
+			szFileService.update(szFile);
+			fpFileService.delete(fileToDownload);
 		}
-		File targetFile = FPFileUtil.saveToFileSystem(szFile.getFileToDownload(), new File(szFile.getUploadedFile().getOriginalName()));
+
+		fileToDownload = new FPFile();
+		fileToDownload.setUserName(szFile.getUserName());
+		fileToDownload.setOriginalName(uploadedFile.getOriginalName());
+		fileToDownload.setModule(module);
+		szFile.setFileToDownload(fileToDownload);
+
+		File targetFile = FPFileUtil.saveToFileSystem(fileToDownload, new File(uploadedFile.getOriginalName()));
+		fileToDownload.setNameOnServer(targetFile.getName());
 
 		Long szFileTypeCode = szFile.getType().getCode();
-		File uploadedFile = FPFileUtil.getFileOnServer(szFile.getUploadedFile());
+		File uploadedFileOnSystem = FPFileUtil.getFileOnServer(uploadedFile);
 
 		try {
 			if (SzFile.CHARACTERISTIC_FILE_TYPE.equals(szFileTypeCode)) {
-				DBFInfo dbfInfo = new CharacteristicDBFInfo(uploadedFile);
+				DBFInfo dbfInfo = new CharacteristicDBFInfo(uploadedFileOnSystem);
 				loadFromDbGeneric(szFile, targetFile, dbfInfo, characteristicRecordService);
 			} else if (SzFile.SUBSIDY_FILE_TYPE.equals(szFileTypeCode)) {
-				DBFInfo dbfInfo = new SubsidyRecordDBFInfo(uploadedFile);
+				DBFInfo dbfInfo = new SubsidyRecordDBFInfo(uploadedFileOnSystem);
 				loadFromDbGeneric(szFile, targetFile, dbfInfo, subsidyRecordService);
 			} else if (SzFile.SRV_TYPES_FILE_TYPE.equals(szFileTypeCode)) {
-				DBFInfo dbfInfo = new ServiceTypeRecordDBFInfo(uploadedFile);
+				DBFInfo dbfInfo = new ServiceTypeRecordDBFInfo(uploadedFileOnSystem);
 				loadFromDbGeneric(szFile, targetFile, dbfInfo, serviceTypeRecordService);
 			} else {
 				throw new NotSupportedOperationException();
 			}
 
-			szFile.getFileToDownload().setNameOnServer(targetFile.getName());
-			szFile.getFileToDownload().setSize(targetFile.length());
+			fileToDownload.setSize(targetFile.length());
+			szFile.setStatus(fpFileService.getStatusByCodeAndModule(SzFile.PROCESSED_FILE_STATUS, module.getName()));
 			szFileService.update(szFile);
-		} catch (Exception t) {
+		} catch (Exception e) {
+			log.error("Error loading data fro DB and creating file to download", e);
+			szFile.setStatus(fpFileService.getStatusByCodeAndModule(SzFile.PROCESSED_WITH_ERRORS_FILE_STATUS, module.getName()));
 			szFile.setFileToDownload(null);
+			szFileService.update(szFile);
 			targetFile.delete();
-			throw t;
+			throw e;
 		}
 	}
 
 	private static String getDbfEncoding() {
 		return ApplicationConfig.getSzDefaultDbfFileEncoding();
 	}
-
+	                                     	
 	public static Integer getNumberOfRecord(SzFile szFile) throws NotSupportedOperationException {
 
         Long szFileTypeCode = szFile.getType().getCode();
@@ -136,11 +152,28 @@ public class SzFileUtil {
 		} else {
 			throw new NotSupportedOperationException();
 		}
+
+		FPFile file = szFile.getFileToDownload();
+		try {
+			if (file != null) {
+				szFile.setFileToDownload(null);
+				szFileService.update(szFile);
+				fpFileService.delete(file);
+			}
+		} catch (FlexPayException e) {
+			log.error("Error deleting file with id " + file.getId(), e);
+		}
+
 	}
 
 	@Required
 	public void setSzFileService(SzFileService szFileService) {
 		SzFileUtil.szFileService = szFileService;
+	}
+
+	@Required
+	public void setFpFileService(FPFileService fpFileService) {
+		SzFileUtil.fpFileService = fpFileService;
 	}
 
 	@Required

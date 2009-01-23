@@ -27,7 +27,6 @@ import java.util.Map;
 
 public class FileParserJob extends Job {
 
-	private String moduleName;
 	private RecordService<CharacteristicRecord> characteristicRecordService;
 	private RecordService<ServiceTypeRecord> serviceTypeRecordService;
 	private RecordService<SubsidyRecord> subsidyRecordService;
@@ -58,6 +57,8 @@ public class FileParserJob extends Job {
 		Long szFileTypeCode = szFile.getType().getCode();
 
 		SzDbfReader reader = null;
+
+		String moduleName = szFile.getUploadedFile().getModule().getName();
 
 		FPFileStatus status = fpFileService.getStatusByCodeAndModule(SzFile.PROCESSED_FILE_STATUS, moduleName);
 		try {
@@ -105,11 +106,6 @@ public class FileParserJob extends Job {
 		log.debug("Process szFile parser for fileId = {} finished", fileId);
 
 		return RESULT_NEXT;
-	}
-
-	@Required
-	public void setModuleName(String moduleName) {
-		this.moduleName = moduleName;
 	}
 
 	@Required

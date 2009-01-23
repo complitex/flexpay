@@ -37,8 +37,4 @@
           p:processManager-ref="processManager"
 		  scope="prototype" />
 
-	<bean id="loadSzFileFromDBAction" class="org.flexpay.sz.actions.LoadFromDBAction"
-          p:szFileService-ref="szFileService"
-		  scope="prototype" />
-
 </beans>
