@@ -154,7 +154,7 @@
         where f.code = ? and f.module.name = ?
     </query>
 
-    <query name="FPFileStatus.listTypesByCodeAndModule">
+    <query name="FPFileType.listTypesByCodeAndModule">
         from FPFileType f
         left outer join fetch f.module
         where f.code = ? and f.module.name = ?

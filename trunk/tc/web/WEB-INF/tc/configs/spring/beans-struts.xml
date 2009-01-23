@@ -33,26 +33,21 @@
           p:sewerMaterialTypeService-ref="sewerMaterialTypeService"
           scope="prototype"/>
 
-    <bean id="sewerMaterialTypeDeleteAction"
-          class="org.flexpay.tc.actions.sewermaterialtype.SewerMaterialTypeDeleteAction"
+    <bean id="sewerMaterialTypeDeleteAction" class="org.flexpay.tc.actions.sewermaterialtype.SewerMaterialTypeDeleteAction"
           p:sewerMaterialTypeService-ref="sewerMaterialTypeService"
           scope="prototype"/>
 
-    <bean id="sewerMaterialTypesListAction"
-          class="org.flexpay.tc.actions.sewermaterialtype.SewerMaterialTypesListAction"
+    <bean id="sewerMaterialTypesListAction" class="org.flexpay.tc.actions.sewermaterialtype.SewerMaterialTypesListAction"
           p:sewerMaterialTypeService-ref="sewerMaterialTypeService"
           scope="prototype"/>
     <!-- end of sewer material types section -->
 
     <!-- tariff calculation rules files section -->
-    <bean id="tariffCalcRulesFileImportAction" class="org.flexpay.tc.actions.tariff.TariffCalcRulesFileImportAction"
-          scope="prototype"/>
-
     <bean id="tariffCalcRulesFilesListAction" class="org.flexpay.tc.actions.tariff.TariffCalcRulesFilesListAction"
           p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
           scope="prototype"/>
 
-    <bean id="tariffCalcRulesFileUploadAjaxAction" class="org.flexpay.tc.actions.tariff.TariffCalcRulesFileUploadAction"
+    <bean id="tariffCalcRulesFileEditAction" class="org.flexpay.tc.actions.tariff.TariffCalcRulesFileEditAction"
           p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
           p:fpFileService-ref="fpFileService"
           p:moduleName="${flexpay.module.name.tc}"
