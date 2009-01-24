@@ -1,7 +1,27 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <script type="text/javascript" src="<c:url value="/resources/common/js/prototype.js" />"></script>
-<script type="text/javascript" src="<c:url value="/resources/eirc/js/flexpay_eirc.js" />"></script>
+<%--<script type="text/javascript" src="<c:url value="/resources/eirc/js/flexpay_eirc.js" />"></script>--%>
+
+<script type="text/javascript">
+    /*
+     * Hides process variables section content
+     */
+    function hideProcessVariables() {
+        $('hideProcessVariablesDiv').hide();
+        $('showProcessVariablesDiv').show();
+        $('processVariables').hide();
+    }
+
+    /**
+     * Shows process variables section
+     */
+    function showProcessVariables() {
+        $('hideProcessVariablesDiv').show();
+        $('showProcessVariablesDiv').hide();
+        $('processVariables').show();
+    }
+</script>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
@@ -61,10 +81,10 @@
     <tr>
         <td class="th" colspan="2">
             <s:text name="eirc.processing.process.context_variables"/>
-            <a id="hideProcessVariablesDiv" onclick="hideProcessVariables();">
+            <a id="hideProcessVariablesDiv" href="#" onclick="hideProcessVariables();">
                 <s:text name="eirc.processing.process.hide_variables"/>
             </a>
-            <a id="showProcessVariablesDiv" onclick="showProcessVariables();" style="display: none;">
+            <a id="showProcessVariablesDiv" href="#" onclick="showProcessVariables();" style="display: none;">
                 <s:text name="eirc.processing.process.show_variables"/>
             </a>
         </td>

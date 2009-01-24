@@ -52,7 +52,7 @@ public class LogPreviewUtil {
 
             return result.toString();
         } catch (IOException e) {
-            log.warn("Error opening log file " + logFile.getAbsolutePath() + " for process #" + processId + ". Log preview will not be shown." );
+            log.warn("Error opening log file {} for process #{}. Log preview will not be shown.", logFile.getAbsolutePath(), processId);
             return null;
         }
     }
