@@ -1,7 +1,7 @@
 package org.flexpay.ab.actions.buildings;
 
 import org.flexpay.ab.persistence.AddressAttributeType;
-import org.flexpay.ab.service.BuildingAttributeTypeService;
+import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -10,13 +10,13 @@ import java.util.List;
 
 public class BuildingAttributeTypesListAction extends FPActionSupport {
 
-	private BuildingAttributeTypeService buildingAttributeTypeService;
+	private AddressAttributeTypeService addressAttributeTypeService;
 
 	private List<AddressAttributeType> types;
 
 	@NotNull
 	public String doExecute() {
-		types = buildingAttributeTypeService.getAttributeTypes();
+		types = addressAttributeTypeService.getAttributeTypes();
 
 		return SUCCESS;
 	}
@@ -42,7 +42,7 @@ public class BuildingAttributeTypesListAction extends FPActionSupport {
 	}
 
 	@Required
-	public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
-		this.buildingAttributeTypeService = buildingAttributeTypeService;
+	public void setBuildingAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
+		this.addressAttributeTypeService = addressAttributeTypeService;
 	}
 }

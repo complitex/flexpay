@@ -102,7 +102,7 @@
 		<property name="target" ref="buildingServiceTarget" />
 	</bean>
 
-	<bean id="buildingAttributeTypeService"
+	<bean id="addressAttributeTypeService"
 		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
@@ -118,7 +118,7 @@
 				<prop key="save*">cacheNames=commonFlexpayCache</prop>
 			</props>
 		</property>
-		<property name="target" ref="buildingAttributeTypeServiceTarget" />
+		<property name="target" ref="addressAttributeTypeServiceTarget" />
 	</bean>
 
 </beans>

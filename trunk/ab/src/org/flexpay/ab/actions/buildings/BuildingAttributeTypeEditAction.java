@@ -2,7 +2,7 @@ package org.flexpay.ab.actions.buildings;
 
 import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.persistence.AddressAttributeTypeTranslation;
-import org.flexpay.ab.service.BuildingAttributeTypeService;
+import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class BuildingAttributeTypeEditAction extends FPActionSupport {
 
-	private BuildingAttributeTypeService buildingAttributeTypeService;
+	private AddressAttributeTypeService addressAttributeTypeService;
 
 	private AddressAttributeType attributeType = new AddressAttributeType();
 	private Map<Long, String> names = treeMap();
@@ -31,7 +31,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 
 		AddressAttributeType type = attributeType.isNew() ?
 									 attributeType :
-									 buildingAttributeTypeService.read(stub(attributeType));
+									 addressAttributeTypeService.read(stub(attributeType));
 
 		if (!isSubmit()) {
 			attributeType = type;
@@ -49,7 +49,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 			type.setTranslation(translation);
 		}
 
-		buildingAttributeTypeService.save(type);
+		addressAttributeTypeService.save(type);
 
 		return REDIRECT_SUCCESS;
 	}
@@ -96,7 +96,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 	}
 
 	@Required
-	public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
-		this.buildingAttributeTypeService = buildingAttributeTypeService;
+	public void setBuildingAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
+		this.addressAttributeTypeService = addressAttributeTypeService;
 	}
 }

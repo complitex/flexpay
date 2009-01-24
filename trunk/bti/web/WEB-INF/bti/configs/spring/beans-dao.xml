@@ -1,35 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <!--  Dao Layer instances -->
+	<!--  Dao Layer instances -->
 
-    <bean id="sewerTypeDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.bti.dao.SewerTypeDao"/>
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.bti.persistence.SewerType"/>
-            </bean>
-        </property>
-    </bean>
+	<bean id="sewerTypeDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.bti.dao.SewerTypeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.bti.persistence.SewerType" />
+			</bean>
+		</property>
+	</bean>
 
-    <bean id="sewerMaterialTypeDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.bti.dao.SewerMaterialTypeDao"/>
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.bti.persistence.SewerMaterialType"/>
-            </bean>
-        </property>
-    </bean>
+	<bean id="sewerMaterialTypeDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.bti.dao.SewerMaterialTypeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.bti.persistence.SewerMaterialType" />
+			</bean>
+		</property>
+	</bean>
 
-    <bean id="buildingTempAttributeDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingTempAttributeDao"/>
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.bti.persistence.BuildingTempAttribute"/>
-            </bean>
-        </property>
-    </bean>
+	<bean id="buildingAttributeTypeDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeTypeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.bti.persistence.BuildingAttributeType" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="buildingAttributeTypeEnumDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeTypeEnumDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.bti.persistence.BuildingAttributeTypeEnum" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="attributeTypeDaoExt" class="org.flexpay.bti.dao.impl.BuidingAttributeTypeDaoExtImpl"
+		  p:attributeTypeDao-ref="buildingAttributeTypeDao"
+		  p:attributeTypeEnumDao-ref="buildingAttributeTypeEnumDao" />
+
+	<bean id="buildingAttributeDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.bti.persistence.BuildingAttribute" />
+			</bean>
+		</property>
+	</bean>
 
 </beans>

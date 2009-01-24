@@ -9,7 +9,7 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 
 import java.util.List;
 
-public interface BuildingAttributeTypeService {
+public interface AddressAttributeTypeService {
 
 	/**
 	 * Get building attribute type

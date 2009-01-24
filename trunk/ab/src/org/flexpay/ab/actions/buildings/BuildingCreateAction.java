@@ -6,7 +6,7 @@ import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.filters.*;
-import org.flexpay.ab.service.BuildingAttributeTypeService;
+import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.common.actions.FPActionSupport;
@@ -24,7 +24,7 @@ public class BuildingCreateAction extends FPActionSupport {
 
 	private ParentService<StreetFilter> parentService;
 	private BuildingService buildingService;
-	private BuildingAttributeTypeService buildingAttributeTypeService;
+	private AddressAttributeTypeService addressAttributeTypeService;
 	private DistrictService districtService;
 
 	private CountryFilter countryFilter = new CountryFilter();
@@ -105,7 +105,7 @@ public class BuildingCreateAction extends FPActionSupport {
 
 		log.debug("Attributes: {}", attributeMap);
 
-		for (AddressAttributeType type : buildingAttributeTypeService.getAttributeTypes()) {
+		for (AddressAttributeType type : addressAttributeTypeService.getAttributeTypes()) {
 			String value = attributeMap.get(type.getId());
 			if (StringUtils.isNotBlank(value)) {
 				buildings.setBuildingAttribute(value, type);
@@ -127,7 +127,7 @@ public class BuildingCreateAction extends FPActionSupport {
 	}
 
 	public String getTypeName(Long typeId) throws FlexPayException {
-		AddressAttributeType type = buildingAttributeTypeService.read(new Stub<AddressAttributeType>(typeId));
+		AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(typeId));
 		if (type == null) {
 			throw new RuntimeException("Unknown type id: " + typeId);
 		}
@@ -283,7 +283,7 @@ public class BuildingCreateAction extends FPActionSupport {
 	}
 
 	@Required
-	public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
-		this.buildingAttributeTypeService = buildingAttributeTypeService;
+	public void setBuildingAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
+		this.addressAttributeTypeService = addressAttributeTypeService;
 	}
 }

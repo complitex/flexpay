@@ -1,8 +1,7 @@
 package org.flexpay.bti.service;
 
-import org.flexpay.bti.dao.BuildingTempAttributeDao;
-import org.flexpay.bti.persistence.BtiBuilding;
-import org.flexpay.bti.persistence.BuildingTempAttribute;
+import org.flexpay.bti.dao.BuildingAttributeDao;
+import org.flexpay.bti.persistence.*;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
@@ -18,11 +17,12 @@ import java.util.List;
 public class TestBuildingService extends SpringBeanAwareTestCase {
 
 	@Autowired
-	private BuildingTempAttributeService attributeService;
+	private BuildingAttributeService attributeService;
 	@Autowired
-	private BuildingTempAttributeDao attributeDao;
+	private BuildingAttributeDao attributeDao;
 
 	public static final Stub<BtiBuilding> BUILDING_STUB = new Stub<BtiBuilding>(1L);
+	public static final Stub<BuildingAttributeType> ATTRIBUTE_TYPE_STUB = new Stub<BuildingAttributeType>(1L);
 
 	@Test
 	public void testAllBuildingsAreValid() throws Throwable {
@@ -33,8 +33,8 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 
 	@Test
 	public void testListAttributes() {
-		List<BuildingTempAttribute> attributes = attributeService.listAttributes(
-				BUILDING_STUB, new Page<BuildingTempAttribute>());
+		List<BuildingAttribute> attributes = attributeService.listAttributes(
+				BUILDING_STUB, new Page<BuildingAttribute>());
 
 		assertFalse("No attributes found", attributes.isEmpty());
 	}
@@ -48,7 +48,7 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 
 		attribute.setBuilding(new BtiBuilding(BUILDING_STUB));
 
-		attribute.setName("Test attribute");
+		attribute.setAttributeType(new BuildingAttributeTypeSimple(ATTRIBUTE_TYPE_STUB));
 		attribute.setValue("Test attribute value");
 
 		try {

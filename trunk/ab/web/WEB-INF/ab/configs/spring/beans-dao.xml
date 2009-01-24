@@ -286,9 +286,9 @@
 		</property>
 	</bean>
 
-	<bean id="buildingAttributeDao" parent="abstractDao">
+	<bean id="addressAttributeDao" parent="abstractDao">
 		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.BuildingAttributeDao" />
+				  value="org.flexpay.ab.dao.AddressAttributeDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.ab.persistence.AddressAttribute" />
@@ -296,9 +296,9 @@
 		</property>
 	</bean>
 
-	<bean id="buildingAttributeTypeDao" parent="abstractDao">
+	<bean id="addressAttributeTypeDao" parent="abstractDao">
 		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.BuildingAttributeTypeDao" />
+				  value="org.flexpay.ab.dao.AddressAttributeTypeDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg
@@ -321,17 +321,6 @@
 
 	<bean id="personDaoExt" class="org.flexpay.ab.dao.imp.PersonDaoExtImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
-	</bean>
-
-	<bean id="buildingAttributeTypeTranslationDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.BuildingAttributeTypeTranslationDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg
-						value="org.flexpay.ab.persistence.AddressAttributeTypeTranslation" />
-			</bean>
-		</property>
 	</bean>
 
 	<!-- Apartments -->

@@ -1,7 +1,7 @@
 package org.flexpay.ab.service;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.dao.BuildingAttributeDao;
+import org.flexpay.ab.dao.AddressAttributeDao;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.*;
@@ -25,7 +25,7 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	@Autowired
 	protected BuildingsDao buildingsDao;
 	@Autowired
-	protected BuildingAttributeDao buildingAttributeDao;
+	protected AddressAttributeDao addressAttributeDao;
 	protected BuildingService buildingService;
 
 	@Autowired
@@ -71,7 +71,7 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 			AddressAttribute bulk = buildingAddress.setBuildingAttribute(null, bulkType);
 			assertNotNull("Bulk is NULL!", bulk);
 //			buildingsDao.update(buildings);
-			buildingAttributeDao.delete(bulk);
+			addressAttributeDao.delete(bulk);
 
 			buildingAddress = buildingsDao.readFull(buildingAddress.getId());
 			assertEquals("BuildingAddress attribute delete method failed", 1, buildingAddress.getBuildingAttributes().size());
