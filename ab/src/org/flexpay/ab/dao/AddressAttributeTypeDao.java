@@ -5,7 +5,7 @@ import org.flexpay.common.dao.GenericDao;
 
 import java.util.List;
 
-public interface BuildingAttributeTypeDao extends GenericDao<AddressAttributeType, Long> {
+public interface AddressAttributeTypeDao extends GenericDao<AddressAttributeType, Long> {
 
 	/**
 	 * Get available attribute types

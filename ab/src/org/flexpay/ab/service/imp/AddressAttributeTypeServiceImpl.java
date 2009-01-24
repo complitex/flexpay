@@ -1,10 +1,10 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.dao.BuildingAttributeTypeDao;
+import org.flexpay.ab.dao.AddressAttributeTypeDao;
 import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.persistence.AddressAttributeTypeTranslation;
-import org.flexpay.ab.service.BuildingAttributeTypeService;
+import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeService {
+public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeService {
 
-	private BuildingAttributeTypeDao buildingAttributeTypeDao;
+	private AddressAttributeTypeDao addressAttributeTypeDao;
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(@NotNull AddressAttributeType type) throws FlexPayExceptionContainer {
@@ -55,9 +55,9 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 		validate(type);
 		if (type.isNew()) {
 			type.setId(null);
-			buildingAttributeTypeDao.create(type);
+			addressAttributeTypeDao.create(type);
 		} else {
-			buildingAttributeTypeDao.update(type);
+			addressAttributeTypeDao.update(type);
 		}
 	}
 
@@ -69,7 +69,7 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	 */
 	@Nullable
 	public AddressAttributeType read(@NotNull Stub<AddressAttributeType> stub) {
-		return buildingAttributeTypeDao.readFull(stub.getId());
+		return addressAttributeTypeDao.readFull(stub.getId());
 	}
 
 	/**
@@ -79,11 +79,11 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	 */
 	public List<AddressAttributeType> getAttributeTypes() {
 
-		return buildingAttributeTypeDao.findAttributeTypes();
+		return addressAttributeTypeDao.findAttributeTypes();
 	}
 
 	@Required
-	public void setBuildingAttributeTypeDao(BuildingAttributeTypeDao buildingAttributeTypeDao) {
-		this.buildingAttributeTypeDao = buildingAttributeTypeDao;
+	public void setBuildingAttributeTypeDao(AddressAttributeTypeDao addressAttributeTypeDao) {
+		this.addressAttributeTypeDao = addressAttributeTypeDao;
 	}
 }

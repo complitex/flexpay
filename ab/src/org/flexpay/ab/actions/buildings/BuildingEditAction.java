@@ -4,7 +4,7 @@ import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.AddressAttribute;
 import org.flexpay.ab.service.AddressService;
-import org.flexpay.ab.service.BuildingAttributeTypeService;
+import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
@@ -21,7 +21,7 @@ import java.util.Map;
 public class BuildingEditAction extends FPActionSupport {
 
 	private BuildingService buildingService;
-	private BuildingAttributeTypeService buildingAttributeTypeService;
+	private AddressAttributeTypeService addressAttributeTypeService;
 	private AddressService addressService;
 
 	private BuildingAddress buildings = new BuildingAddress();
@@ -33,7 +33,7 @@ public class BuildingEditAction extends FPActionSupport {
 		buildings = buildingService.readFull(stub(buildings));
 		if (isNotSubmit()) {
 
-			for (AddressAttributeType type : buildingAttributeTypeService.getAttributeTypes()) {
+			for (AddressAttributeType type : addressAttributeTypeService.getAttributeTypes()) {
 				AddressAttribute attr = buildings.getAttribute(type);
 				String value = "";
 				if (attr != null) {
@@ -62,7 +62,7 @@ public class BuildingEditAction extends FPActionSupport {
 
 		if (isSubmit()) {
 			for (Long typeId : attributeMap.keySet()) {
-				AddressAttributeType type = buildingAttributeTypeService.read(new Stub<AddressAttributeType>(typeId));
+				AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(typeId));
 				buildings.setBuildingAttribute(attributeMap.get(typeId), type);
 			}
 
@@ -77,7 +77,7 @@ public class BuildingEditAction extends FPActionSupport {
 	}
 
 	public String getTypeName(Long typeId) throws FlexPayException {
-		AddressAttributeType type = buildingAttributeTypeService.read(new Stub<AddressAttributeType>(typeId));
+		AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(typeId));
 		if (type == null) {
 			throw new RuntimeException("Unknown type id: " + typeId);
 		}
@@ -142,7 +142,7 @@ public class BuildingEditAction extends FPActionSupport {
 	}
 
 	@Required
-	public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
-		this.buildingAttributeTypeService = buildingAttributeTypeService;
+	public void setBuildingAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
+		this.addressAttributeTypeService = addressAttributeTypeService;
 	}
 }

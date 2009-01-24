@@ -58,8 +58,8 @@
 		  p:parentService-ref="streetService"
 		  p:districtParentService-ref="districtService" />
 
-	<bean id="buildingAttributeTypeServiceTarget" class="org.flexpay.ab.service.imp.BuildingAttributeTypeServiceImpl"
-		  p:buildingAttributeTypeDao-ref="buildingAttributeTypeDao" />
+	<bean id="addressAttributeTypeServiceTarget" class="org.flexpay.ab.service.imp.AddressAttributeTypeServiceImpl"
+		  p:buildingAttributeTypeDao-ref="addressAttributeTypeDao" />
 
 	<bean id="addressService" class="org.flexpay.ab.service.imp.AddressServiceImpl"
 		  p:apartmentService-ref="apartmentService"
