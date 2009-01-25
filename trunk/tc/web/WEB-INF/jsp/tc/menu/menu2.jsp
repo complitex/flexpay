@@ -3,7 +3,7 @@
 
 <table cellpadding="0" cellspacing="0" border="0" width="100%" height="30">
 	<tr class="secondtop">
-		<td class="second-padding"><a href="<c:url value='/tc/main.action' />" class="menu2"><s:text name="tc.menu2.dictionaries"/></a></td>
+		<td class="second-padding"><a href="<s:url action="main" namespace="/tc" includeParams="none" />" class="menu2"><s:text name="tc.menu2.dictionaries"/></a></td>
 		<td width="100%">&nbsp;</td>
 	</tr>
 </table>

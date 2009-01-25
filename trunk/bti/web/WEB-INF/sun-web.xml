@@ -9,6 +9,24 @@
 		<group-name>FULL_ACCESS</group-name>
 	</security-role-mapping>
 
+    <!-- Processes -->
+    <security-role-mapping>
+        <role-name>ROLE_COMMON_PROCESS_READ</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_COMMON_PROCESS_DELETE</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_COMMON_PROCESS_DEFINITION_UPLOAD_NEW</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_COMMON_PROCESS_READ</role-name>
+        <group-name>READ_ONLY</group-name>
+    </security-role-mapping>
+
 	<!-- Country -->
 	<security-role-mapping>
 		<role-name>ROLE_AB_COUNTRY_READ</role-name>
@@ -319,6 +337,10 @@
 	</security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_SEWER_TYPE_READ</role-name>
+        <group-name>VIEW_ONLY</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_TC_SEWER_MATERIAL_TYPE_READ</role-name>
         <group-name>VIEW_ONLY</group-name>
     </security-role-mapping>
 

@@ -4,16 +4,19 @@
 		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		 version="2.5">
-    <!--ab-->
+    <!--bti-->
 	<context-param>
 		<param-name>webAppRootKey</param-name>
 		<param-value>FlexPay BTI module</param-value>
 	</context-param>
 
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/applicationContext.xml</param-value>
-	</context-param>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/applicationContext.xml
+            /WEB-INF/applicationContext-security.xml
+        </param-value>
+    </context-param>
 
 	<!--
 		- Location of the Log4J config file, for initialization and refresh checks.
@@ -25,20 +28,23 @@
 	</context-param>
 	<context-param>
 		<param-name>definitions-config</param-name>
-		<param-value>/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/common/configs/tiles_bti.xml</param-value>
+		<param-value>
+            /WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/bti/configs/tiles_bti.xml
+        </param-value>
 	</context-param>
 
-	<listener>
-		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>
-			org.springframework.web.context.ContextLoaderListener
-		</listener-class>
-	</listener>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.security.ui.session.HttpSessionEventPublisher</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
+    </listener>
 
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
@@ -57,12 +63,23 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
 	<filter>
 		<filter-name>actionFilter</filter-name>
 		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
         <init-param>
 			<param-name>config</param-name>
-			<param-value>struts-default.xml,struts-plugin.xml,org/flexpay/common/struts_config.xml,org/flexpay/ab/struts_config.xml,org/flexpay/bti/struts_config.xml</param-value>
+			<param-value>
+                struts-default.xml,struts-plugin.xml,org/flexpay/common/struts_config.xml,org/flexpay/ab/struts_config.xml,org/flexpay/bti/struts_config.xml
+            </param-value>
 		</init-param>
     </filter>
 	<filter-mapping>
@@ -92,6 +109,17 @@
 	<security-role>
 		<role-name>ROLE_BASIC</role-name>
 	</security-role>
+
+    <security-role>
+        <role-name>ROLE_COMMON_PROCESS_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_COMMON_PROCESS_DELETE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_COMMON_PROCESS_DEFINITION_UPLOAD_NEW</role-name>
+    </security-role>
+
 	<!-- Country roles -->
 	<security-role>
 		<role-name>ROLE_AB_COUNTRY_READ</role-name>
@@ -274,12 +302,25 @@
     <security-role>
         <role-name>ROLE_TC_SEWER_TYPE_DELETE</role-name>
     </security-role>
+    <!-- Sewer material types roles -->
+    <security-role>
+        <role-name>ROLE_TC_SEWER_MATERIAL_TYPE_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_TC_SEWER_MATERIAL_TYPE_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_TC_SEWER_MATERIAL_TYPE_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_TC_SEWER_MATERIAL_TYPE_DELETE</role-name>
+    </security-role>
 
     <login-config>
         <auth-method>FORM</auth-method>
         <form-login-config>
             <form-login-page>/resources/common/jsp/login.jsp</form-login-page>
-            <form-error-page>/resources/common/jsp/login.jsp</form-error-page>
+            <form-error-page>/resources/common/jsp/login-failed.jsp</form-error-page>
         </form-login-config>
     </login-config>
 

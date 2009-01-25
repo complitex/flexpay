@@ -14,6 +14,7 @@ import org.flexpay.tc.persistence.TariffCalculationRulesFileTranslation;
 import org.flexpay.tc.service.TariffCalculationRulesFileService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.File;
 import java.util.Map;
@@ -76,13 +77,14 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 			file.setTranslation(translation);
 		}
 
+		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 		if (rulesFile.isNew()) {
 
 			file.setType(fileType);
 			FPFile fileOnServer = new FPFile();
 			fileOnServer.setModule(fpFileService.getModuleByName(moduleName));
 			fileOnServer.setOriginalName(uploadFileName);
-			fileOnServer.setUserName(getUserPreferences().getUserName());
+			fileOnServer.setUserName(userName);
 			try {
 				File fileOnSystem = FPFileUtil.saveToFileSystem(fileOnServer, upload);
 				fileOnServer.setNameOnServer(fileOnSystem.getName());
@@ -93,7 +95,7 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 				return INPUT;
 			}
 			file.setFile(fileOnServer);
-			file.setUserName(getUserPreferences().getUserName());
+			file.setUserName(userName);
 
 		}
 
