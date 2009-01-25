@@ -8,33 +8,28 @@
         <table cellspacing="2" cellpadding="2" width="80%">
             <tr>
                 <td width="30%">
-                    <s:text name="year" />
-                    <s:select name="year"
+                    <s:text name="year" />&nbsp;<s:select name="year"
                               required="true"
                               list="#{(curYear - 1):(curYear - 1),curYear:curYear}"
                               value="curYear" />
                 </td>
                 <td width="30%">
-                    <s:text name="month" />
-                    <s:select name="month"
+                    <s:text name="month" />&nbsp;<s:select name="month"
                               required="true"
                               list="#{'0':'01','1':'02','2':'03','3':'04','4':'05','5':'06','6':'07','7':'08','8':'09','9':'10','10':'11','11':'12'}"
                               value="curMonth" />
                 </td>
                 <td align="right">
-                    <s:text name="sz.oszn" />
-                    <s:select name="osznId" list="osznList" listKey="id" listValue="description" required="true" />
+                    <s:text name="sz.oszn" />&nbsp;<s:select name="osznId" list="osznList" listKey="id" listValue="description" required="true" />
                 </td>
             </tr>
             <tr>
                 <td colspan="3">
-                    <s:text name="sz.file" />
-                    <s:file name="upload" label="File" required="true" size="75" />
+                    <s:text name="sz.file" />&nbsp;<s:file name="upload" label="File" required="true" size="75" />
                 </td>
             </tr>
         </table>
-        <input id="uploadBtn" type="button" value="<s:text name="common.upload" />" class="btn-exit" onclick="submitForm();" />
-
+        <input id="uploadBtn" type="button" value="<s:text name="common.add_to_upload" />" class="btn-exit" onclick="submitForm();" />
     </s:form>
 
     <div id="mainBlock">

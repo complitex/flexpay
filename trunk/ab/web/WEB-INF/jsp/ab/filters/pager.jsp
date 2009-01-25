@@ -48,7 +48,7 @@
 				   class="btn-link"/>&nbsp;
 		</s:if>
 
-		<b><s:property value="%{pager.pageNumber}"/></b>&nbsp;
+		<strong><s:property value="%{pager.pageNumber}"/></strong>&nbsp;
 
 		<s:if test="%{pager.hasNextPage() && pager.nextPageNumber < pager.lastPageNumber}">
 			<input type="submit" name="pager.pageNumber" value="<s:property value="%{pager.nextPageNumber}"/>"
