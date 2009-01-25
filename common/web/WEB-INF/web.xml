@@ -93,7 +93,7 @@
 
 
 	<security-role>
-		<role-name>BASIC_ROLE</role-name>
+		<role-name>ROLE_BASIC</role-name>
 	</security-role>
 
 	<login-config>

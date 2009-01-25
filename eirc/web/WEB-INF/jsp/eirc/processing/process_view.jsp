@@ -84,7 +84,7 @@
             <a id="hideProcessVariablesDiv" href="#" onclick="hideProcessVariables();">
                 <s:text name="eirc.processing.process.hide_variables"/>
             </a>
-            <a id="showProcessVariablesDiv" href="#" onclick="showProcessVariables();" style="display: none;">
+            <a id="showProcessVariablesDiv" href="#" onclick="showProcessVariables();" style="display:none;">
                 <s:text name="eirc.processing.process.show_variables"/>
             </a>
         </td>

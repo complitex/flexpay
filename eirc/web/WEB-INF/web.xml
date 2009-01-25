@@ -4,7 +4,7 @@
 		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		 version="2.5">
-	<!--ab-->
+	<!--eirc-->
 	<context-param>
 		<param-name>webAppRootKey</param-name>
 		<param-value>FlexPay EIRC module</param-value>
@@ -46,30 +46,6 @@
 		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
 	</listener>
 
-    <!-- Log file download servlet -->
-    <servlet>
-        <servlet-name>processLogDownloadServlet</servlet-name>
-        <servlet-class>org.flexpay.common.actions.ProcessLogDownloadServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>        
-        <servlet-name>processLogDownloadServlet</servlet-name>
-        <url-pattern>/processLogDownloadServlet</url-pattern>
-    </servlet-mapping>
-
-
-    <!--
-        - Loads the menu-config.xml for struts-menu at startup,
-        - by default from "/WEB-INF/menu-config.xml".
-        - To override this, add a context-param named "menuConfigLocation"
-        - web.xml file.
-    -->
-<!--
-    <listener>
-        <listener-class>net.sf.navigator.menu.MenuContextListener</listener-class>
-    </listener>
--->
-
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -91,7 +67,6 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
-
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
@@ -116,6 +91,15 @@
 		<dispatcher>ERROR</dispatcher>
 	</filter-mapping>
 
+    <!-- Log file download servlet -->
+    <servlet>
+        <servlet-name>processLogDownloadServlet</servlet-name>
+        <servlet-class>org.flexpay.common.actions.ProcessLogDownloadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>processLogDownloadServlet</servlet-name>
+        <url-pattern>/processLogDownloadServlet</url-pattern>
+    </servlet-mapping>
 
 	<security-constraint>
 		<web-resource-collection>

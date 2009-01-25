@@ -9,6 +9,24 @@
 		<group-name>FULL_ACCESS</group-name>
 	</security-role-mapping>
 
+    <!-- Processes -->
+    <security-role-mapping>
+        <role-name>ROLE_COMMON_PROCESS_READ</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_COMMON_PROCESS_DELETE</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_COMMON_PROCESS_DEFINITION_UPLOAD_NEW</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_COMMON_PROCESS_READ</role-name>
+        <group-name>READ_ONLY</group-name>
+    </security-role-mapping>
+
 	<!-- Country -->
 	<security-role-mapping>
 		<role-name>ROLE_AB_COUNTRY_READ</role-name>
@@ -246,83 +264,83 @@
     <!-- Sewer Types -->
     <security-role-mapping>
         <role-name>ROLE_TC_SEWER_TYPE_ADD</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_SEWER_TYPE_CHANGE</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_SEWER_TYPE_DELETE</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_SEWER_TYPE_READ</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
 
     <!-- Sewer Material Types -->
     <security-role-mapping>
         <role-name>ROLE_TC_SEWER_MATERIAL_TYPE_ADD</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_SEWER_MATERIAL_TYPE_CHANGE</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_SEWER_MATERIAL_TYPE_DELETE</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_SEWER_MATERIAL_TYPE_READ</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
 
     <!-- Tariffs -->
     <security-role-mapping>
         <role-name>ROLE_TC_TARIFF_ADD</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_TARIFF_CHANGE</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_TARIFF_DELETE</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_TARIFF_READ</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
 
     <!-- Tariff Calculation Results -->
     <security-role-mapping>
         <role-name>ROLE_TC_TARIFF_CALCULATION_RESULT_ADD</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_TARIFF_CALCULATION_RESULT_READ</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
 
     <!-- Tariff calculation rules files -->
     <security-role-mapping>
         <role-name>ROLE_TC_TARIFF_CALCULATION_RULES_FILE_ADD</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_TARIFF_CALCULATION_RULES_FILE_CHANGE</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_TARIFF_CALCULATION_RULES_FILE_DELETE</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_TARIFF_CALCULATION_RULES_FILE_READ</role-name>
-        <group-name>FULL_ACCESS</group-name>
+        <group-name>TC_FULL_ACCESS</group-name>
     </security-role-mapping>
 
 	<security-role-mapping>
