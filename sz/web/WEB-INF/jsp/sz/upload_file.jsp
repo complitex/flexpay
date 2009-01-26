@@ -2,30 +2,32 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
+<script type="text/javascript" src="<c:url value="/resources/common/js/prototype.js" />"></script>
+
 <div id="mainBlock">
 
     <s:form id="inputForm" onsubmit="return false;">
         <table cellspacing="2" cellpadding="2" width="80%">
             <tr>
-                <td width="30%">
+                <td width="30%" nowrap="nowrap">
                     <s:text name="year" />&nbsp;<s:select name="year"
                               required="true"
                               list="#{(curYear - 1):(curYear - 1),curYear:curYear}"
                               value="curYear" />
                 </td>
-                <td width="30%">
+                <td width="30%" nowrap="nowrap">
                     <s:text name="month" />&nbsp;<s:select name="month"
                               required="true"
                               list="months"
                               value="curMonth" />
                 </td>
-                <td align="right">
+                <td align="right" nowrap="nowrap">
                     <s:text name="sz.oszn" />&nbsp;<s:select name="osznId" list="osznList" listKey="id" listValue="description" required="true" />
                 </td>
             </tr>
             <tr>
-                <td colspan="3">
-                    <s:text name="sz.file" />&nbsp;<s:file name="upload" label="File" required="true" size="75" />
+                <td colspan="3" id="fileRaw">
+                    <s:text name="sz.file" />&nbsp;<s:file id="" name="upload" label="File" required="true" size="75" onchange="setFile(this);" />
                 </td>
             </tr>
         </table>
@@ -53,12 +55,17 @@
     var newBlocks = 0;
     var mainBlock = "mainBlock";
     var copyBlock = "copyBlock";
+    var file = null;
+
+    function setFile(obj) {
+        file = obj;
+    }
 
     function addBlock() {
 
         var block = $(copyBlock);
 
-        var clone = block.cloneNode(1);
+        var clone = block.cloneNode(true);
         clone.id = copyBlock + newBlocks;
         $(mainBlock).appendChild(clone);
 
@@ -70,16 +77,23 @@
         uploadForm.elements["year"].value = inputForm.elements["year"].value;
         uploadForm.elements["month"].value = inputForm.elements["month"].value;
         uploadForm.elements["osznId"].value = inputForm.elements["osznId"].value;
-        uploadForm.appendChild(inputForm.elements["upload"].cloneNode(1));
-
-        var iframe = document.createElement("iframe");
-        iframe.id = "uploadFrame" + newBlocks;
-        iframe.name = "uploadFrame" + newBlocks;
-        $("uploadDiv").appendChild(iframe);
+        uploadForm.appendChild(file);
+        $("fileRaw").appendChild(file.cloneNode(true));
 
         var ajaxResponse = $$("div[id=ajaxResponse]")[1];
         ajaxResponse.id = "ajaxResponse" + newBlocks;
         ajaxResponse.innerHTML = "";
+
+        var iframe;
+        if (Prototype.Browser.IE) {
+            iframe = document.createElement('<iframe id="uploadFrame' + newBlocks + '" name="uploadFrame' + newBlocks + '"></iframe>');
+        } else {
+            iframe = document.createElement("iframe");
+            iframe.id = "uploadFrame" + newBlocks;
+            iframe.name = "uploadFrame" + newBlocks;
+        }
+        iframe.style.display = "none";
+        $("mainBlock").appendChild(iframe);
 
         newBlocks++;
     }
@@ -108,7 +122,6 @@
                 try {
                     xmlreq = new ActiveXObject("Microsoft.XMLHTTP");
                 } catch (e2) {
-                    console.debug("Can't create http request for ajax");
                 }
             }
         }
@@ -135,7 +148,9 @@
 
         if (!uploaded || (uploaded && wait)) {
             var fileValue = $("uploadForm" + (newBlocks - 1)).elements["upload"].value;
-            $("ajaxResponse" + (newBlocks - 1)).innerHTML = "<s:text name="sz.file" /> \"" + fileValue.substring(fileValue.lastIndexOf("\\")) + "\": <s:text name="sz.file_upload.progress_bar.waiting" />";
+            var index = fileValue.lastIndexOf("\\") + (Prototype.Browser.IE ? 1 : 0);
+            $("ajaxResponse" + (newBlocks - 1)).innerHTML = "<s:text name="sz.file" /> \"" + fileValue.substring(index)
+                    + "\": <s:text name="sz.file_upload.progress_bar.waiting" />";
         }
         if (!started) {
             started = true;
@@ -152,7 +167,8 @@
             uploaded = false;
             uploadingId = stack[0];
             var fileValue = $("uploadForm" + uploadingId).elements["upload"].value;
-            uploadingFilename = "<s:text name="sz.file" /> \"" + fileValue.substring(fileValue.lastIndexOf("\\")) + "\": ";
+            var index = fileValue.lastIndexOf("\\") + (Prototype.Browser.IE ? 1 : 0);
+            uploadingFilename = "<s:text name="sz.file" /> \"" + fileValue.substring(index) + "\": ";
             stack.remove(0);
             $("uploadForm" + uploadingId).submit();
             setTimeout(getProgress, 1000);
@@ -173,21 +189,20 @@
             return;
         }
         curRetry++;
-        var uploadFrame = window.frames["uploadFrame" + uploadingId].document.body;
-        var ajaxResponse = $("ajaxResponse" + uploadingId);
-        if (curRetry <= retries) {
-            if (uploadFrame.innerHTML == "") {
-                console.debug("wait");
-            } else {
-                if (uploadFrame.innerHTML == "success") {
-                    console.debug("succ");
-                    ajaxResponse.style.color = "#008000";
-                    ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.loaded" />";
-                    wait = false;
-                } else if (uploadFrame.innerHTML == "error") {
-                    console.debug("error");
-                    ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.error" />";
-                    wait = false;
+        var frame = window.frames["uploadFrame" + uploadingId];
+        if (frame != null) {
+            var bodyFrame = frame.document.body;
+            var ajaxResponse = $("ajaxResponse" + uploadingId);
+            if (curRetry <= retries) {
+                if (bodyFrame != null && bodyFrame.innerHTML != null && bodyFrame.innerHTML != "") {
+                    if (bodyFrame.innerHTML == "success") {
+                        ajaxResponse.style.color = "#008000";
+                        ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.loaded" />";
+                        wait = false;
+                    } else if (uploadFrame.innerHTML == "error") {
+                        ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.error" />";
+                        wait = false;
+                    }
                 }
             }
         }
