@@ -24,7 +24,7 @@ public class ImportFileAction extends FPActionSupport {
 
 		String[] ms = new DateFormatSymbols(getLocale()).getMonths();
 
-		for (int i = 0; i < ms.length; i++) {
+		for (int i = 0; i < ms.length - 1; i++) {
 			months.put(i, ms[i]);
 		}
 

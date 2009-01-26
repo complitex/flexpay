@@ -38,6 +38,7 @@ public class UploadFileAction extends ActionSupport {
 
 	@NotNull
 	public String execute() {
+
 		if (uploadFileName == null) {
 			log.warn("Error: uploadFileName is null");
 			setMessage(ERROR);
@@ -50,6 +51,7 @@ public class UploadFileAction extends ActionSupport {
 			return ERROR;
 		}
 
+//		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 		try {
 			SzFile szFile = new SzFile();
 			szFile.setType(fileType);
@@ -58,7 +60,7 @@ public class UploadFileAction extends ActionSupport {
 			fileOnServer.setModule(fpFileService.getModuleByName(moduleName));
 			fileOnServer.setOriginalName(uploadFileName);
 			fileOnServer.setUserName("f");
-//			fileOnServer.setUserName(getUserPreferences().getUserName());
+//			fileOnServer.setUserName(userName);
 			File fileOnSystem = FPFileUtil.saveToFileSystem(fileOnServer, upload);
 			fileOnServer.setNameOnServer(fileOnSystem.getName());
 			fileOnServer.setSize(fileOnSystem.length());
@@ -66,7 +68,7 @@ public class UploadFileAction extends ActionSupport {
 			Oszn oszn = osznService.read(osznId);
 			szFile.setOszn(oszn);
 			szFile.setUserName("f");
-//			szFile.setUserName(getUserPreferences().getUserName());
+//			szFile.setUserName(userName);
 			szFile.setFileYear(year);
 			szFile.setFileMonth(month);
 
