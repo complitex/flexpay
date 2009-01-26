@@ -6,21 +6,27 @@ import org.flexpay.sz.service.OsznService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.text.DateFormatSymbols;
+import java.util.*;
 
 public class ImportFileAction extends FPActionSupport {
 
 	private Integer curYear;
 	private Integer curMonth;
 
+	private Map<Integer, String> months = new HashMap<Integer, String>();
 	private List<Oszn> osznList;
 
 	private OsznService osznService;
 
 	@NotNull
 	public String doExecute() {
+
+		String[] ms = new DateFormatSymbols(getLocale()).getMonths();
+
+		for (int i = 0; i < ms.length; i++) {
+			months.put(i, ms[i]);
+		}
 
 		Calendar c = Calendar.getInstance();
 		c.setTime(new Date());
@@ -45,6 +51,10 @@ public class ImportFileAction extends FPActionSupport {
 	@NotNull
 	protected String getErrorResult() {
 		return osznList.isEmpty() ? "oszn_absent" : INPUT;
+	}
+
+	public Map<Integer, String> getMonths() {
+		return months;
 	}
 
 	public List<Oszn> getOsznList() {

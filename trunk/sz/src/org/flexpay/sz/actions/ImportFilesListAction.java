@@ -11,8 +11,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class ImportFilesListAction extends FPActionSupport {
 
@@ -27,7 +28,7 @@ public class ImportFilesListAction extends FPActionSupport {
 		List<SzFile> szFileList = szFileService.listSzFiles(pager);
 		szFileWrapperList = new ArrayList<SzFileWrapper>();
 		for (SzFile szFile : szFileList) {
-			SzFileWrapper wrapper = new SzFileWrapper();
+			SzFileWrapper wrapper = new SzFileWrapper(getLocale());
 			wrapper.setSzFile(szFile);
 			try {
 				wrapper.setLoadedToDb(SzFileUtil.isLoadedToDb(szFile));
@@ -65,10 +66,20 @@ public class ImportFilesListAction extends FPActionSupport {
 		this.pager = pager;
 	}
 
+	public List<SzFileWrapper> getSzFileWrapperList() {
+		return szFileWrapperList;
+	}
+
 	public static class SzFileWrapper {
 
 		private SzFile szFile;
 		private boolean isLoadedToDb;
+		private String fileMonth;
+		private Locale locale;
+
+		public SzFileWrapper(Locale locale) {
+			this.locale = locale;
+		}
 
 		public SzFile getSzFile() {
 			return szFile;
@@ -86,10 +97,24 @@ public class ImportFilesListAction extends FPActionSupport {
 			this.isLoadedToDb = isLoadedToDb;
 		}
 
-	}
+		public String getFileMonth() {
+			if (szFile == null) {
+				return null;
+			}
+			Calendar c = Calendar.getInstance();
+			c.set(Calendar.MONTH, szFile.getFileMonth());
+			DateFormat df = new SimpleDateFormat("MMMMM", getLocale());
+			return df.format(c.getTime());
+		}
 
-	public List<SzFileWrapper> getSzFileWrapperList() {
-		return szFileWrapperList;
+		public Locale getLocale() {
+			return locale;
+		}
+
+		public void setLocale(Locale locale) {
+			this.locale = locale;
+		}
+
 	}
 
 	@Required

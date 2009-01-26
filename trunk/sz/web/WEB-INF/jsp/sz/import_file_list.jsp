@@ -72,7 +72,7 @@
                     <s:text name="%{szFile.type.name}" />
                 </td>
                 <td class="col">
-                    <fmt:formatNumber value="${szFile.fileMonth + 1}" pattern="00" />&nbsp;<s:property value="szFile.fileYear"/>
+                    <s:property value="fileMonth" />&nbsp;<s:property value="szFile.fileYear"/>
                 </td>
                 <td class="col">
                     <s:date name="szFile.importDate" format="dd.MM.yyyy hh:mm:ss" />
