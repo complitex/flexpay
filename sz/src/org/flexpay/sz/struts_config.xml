@@ -32,7 +32,12 @@
 		</action>
 
 		<action name="szFileOperation" class="szFileOperationAction">
-			<result name="success" type="redirect">importFilesList.action</result>
+			<result name="success" type="redirect-action">
+                <param name="actionName">importFilesList.action</param>
+                <param name="parse">true</param>
+                <param name="pager.pageNumber">${pager.pageNumber}</param>
+                <param name="pager.pageSize">${pager.pageSize}</param>
+            </result>
 		</action>
 
 	</package>

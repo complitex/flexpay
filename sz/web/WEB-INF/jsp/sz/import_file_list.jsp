@@ -96,6 +96,7 @@
                 &nbsp;
                 <input type="button" class="btn-exit" onclick="location.reload();" value="<s:text name="sz.file_list.refresh_list" />" />
                 <input id="action1" type="hidden" name="action1" value="loadToDB" />
+                <input type="hidden" name="pager.pageNumber" value="<s:property value="%{pager.pageNumber}"/>"/>
             </td>
         </tr>
         <tr>
