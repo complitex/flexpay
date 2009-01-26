@@ -16,7 +16,7 @@
                 <td width="30%">
                     <s:text name="month" />&nbsp;<s:select name="month"
                               required="true"
-                              list="#{'0':'01','1':'02','2':'03','3':'04','4':'05','5':'06','6':'07','7':'08','8':'09','9':'10','10':'11','11':'12'}"
+                              list="months"
                               value="curMonth" />
                 </td>
                 <td align="right">
@@ -165,7 +165,7 @@
         xmlHttp.send(null);
     }
 
-    var retries = 3;
+    var retries = 5;
     var curRetry = 0;
 
     function waiting() {
@@ -179,12 +179,12 @@
             if (uploadFrame.innerHTML == "") {
                 console.debug("wait");
             } else {
-                if (uploadFrame.innerHTML == "<pre>success</pre>") {
+                if (uploadFrame.innerHTML == "success") {
                     console.debug("succ");
                     ajaxResponse.style.color = "#008000";
                     ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.loaded" />";
                     wait = false;
-                } else if (uploadFrame.innerHTML == "<pre>error</pre>") {
+                } else if (uploadFrame.innerHTML == "error") {
                     console.debug("error");
                     ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.error" />";
                     wait = false;
@@ -197,13 +197,13 @@
     function uploadWait() {
         if (stack.length > 0) {
             if (wait) {
-                setTimeout(waiting, 4000);
+                setTimeout(waiting, 1500);
             } else {
                 upload();
             }
         } else {
             if (wait) {
-                setTimeout(waiting, 4000);
+                setTimeout(waiting, 1500);
             }
         }
     }

@@ -18,7 +18,8 @@
 		</action>
 
         <action name="doSzFileUploadAjax" class="szFileUploadAjaxAction">
-            <result name="success" type="rawtext"/>
+            <result>/WEB-INF/jsp/sz/response.jsp</result>
+            <result name="error">/WEB-INF/jsp/sz/response.jsp</result>
         </action>
 
 		<action name="doUpload" class="importFileAction">

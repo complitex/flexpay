@@ -1,13 +1,10 @@
 package org.flexpay.sz.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
-import org.apache.struts2.interceptor.SessionAware;
-import org.flexpay.common.actions.interceptor.UserPreferencesAware;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.FPFileType;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
-import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.sz.persistence.Oszn;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.OsznService;
@@ -19,16 +16,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
-import java.util.Map;
 
-public class UploadFileAction implements UserPreferencesAware, SessionAware {
+public class UploadFileAction extends ActionSupport {
 
 	@NonNls
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
-	private Map sessionMap;
-	private String rnd;
-	private String stringResult;
+	String message = "success";
+
 	private File upload;
 	private String uploadFileName;
 	private String uploadContentType;
@@ -40,20 +35,19 @@ public class UploadFileAction implements UserPreferencesAware, SessionAware {
 	private OsznService osznService;
 	private SzFileService szFileService;
     private FPFileService fpFileService;
-	protected UserPreferences userPreferences;
 
 	@NotNull
 	public String execute() {
 		if (uploadFileName == null) {
 			log.warn("Error: uploadFileName is null");
-			setStringResult(ActionSupport.ERROR);
-			return ActionSupport.ERROR;
+			setMessage(ERROR);
+			return ERROR;
 		}
 		FPFileType fileType = fpFileService.getTypeByFileName(uploadFileName, moduleName);
 		if (fileType == null) {
 			log.warn("Unknown file type");
-			setStringResult(ActionSupport.ERROR);
-			return ActionSupport.ERROR;
+			setMessage(ERROR);
+			return ERROR;
 		}
 
 		try {
@@ -63,26 +57,36 @@ public class UploadFileAction implements UserPreferencesAware, SessionAware {
 			FPFile fileOnServer = new FPFile();
 			fileOnServer.setModule(fpFileService.getModuleByName(moduleName));
 			fileOnServer.setOriginalName(uploadFileName);
-			fileOnServer.setUserName(getUserPreferences().getUserName());
+			fileOnServer.setUserName("f");
+//			fileOnServer.setUserName(getUserPreferences().getUserName());
 			File fileOnSystem = FPFileUtil.saveToFileSystem(fileOnServer, upload);
 			fileOnServer.setNameOnServer(fileOnSystem.getName());
 			fileOnServer.setSize(fileOnSystem.length());
 			szFile.setUploadedFile(fileOnServer);
 			Oszn oszn = osznService.read(osznId);
 			szFile.setOszn(oszn);
-			szFile.setUserName(getUserPreferences().getUserName());
+			szFile.setUserName("f");
+//			szFile.setUserName(getUserPreferences().getUserName());
 			szFile.setFileYear(year);
 			szFile.setFileMonth(month);
 
 			szFileService.create(szFile);
 			log.info("File uploaded {}", szFile);
-			setStringResult(ActionSupport.SUCCESS);
 		} catch (Exception e) {
 			log.error("Unknown file type", e);
-			setStringResult(ActionSupport.ERROR);
+			setMessage(ERROR);
+			return ERROR;
 		}
 
-		return ActionSupport.SUCCESS;
+		return SUCCESS;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	public void setUpload(File upload) {
@@ -111,34 +115,6 @@ public class UploadFileAction implements UserPreferencesAware, SessionAware {
 
 	public void setOsznId(Long osznId) {
 		this.osznId = osznId;
-	}
-
-	public void setUserPreferences(UserPreferences userPreferences) {
-		this.userPreferences = userPreferences;
-	}
-
-	public UserPreferences getUserPreferences() {
-		return userPreferences;
-	}
-
-	public void setSession(Map sessionMap) {
-		this.sessionMap = sessionMap;
-	}
-
-	public String getRnd() {
-		return rnd;
-	}
-
-	public void setRnd(String rnd) {
-		this.rnd = rnd;
-	}
-
-	public String getStringResult() {
-		return stringResult;
-	}
-
-	public void setStringResult(String stringResult) {
-		this.stringResult = stringResult;
 	}
 
 	@Required
