@@ -3,8 +3,6 @@ package org.flexpay.sz.actions;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.sz.convert.NotSupportedOperationException;
-import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +11,10 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class ImportFilesListAction extends FPActionSupport {
 
@@ -30,11 +31,6 @@ public class ImportFilesListAction extends FPActionSupport {
 		for (SzFile szFile : szFileList) {
 			SzFileWrapper wrapper = new SzFileWrapper(getLocale());
 			wrapper.setSzFile(szFile);
-			try {
-				wrapper.setLoadedToDb(SzFileUtil.isLoadedToDb(szFile));
-			} catch (NotSupportedOperationException e) {
-				wrapper.setLoadedToDb(false);
-			}
 			szFileWrapperList.add(wrapper);
 		}
 
@@ -73,7 +69,6 @@ public class ImportFilesListAction extends FPActionSupport {
 	public static class SzFileWrapper {
 
 		private SzFile szFile;
-		private boolean isLoadedToDb;
 		private String fileMonth;
 		private Locale locale;
 
@@ -87,14 +82,6 @@ public class ImportFilesListAction extends FPActionSupport {
 
 		public void setSzFile(SzFile szFile) {
 			this.szFile = szFile;
-		}
-
-		public boolean isLoadedToDb() {
-			return isLoadedToDb;
-		}
-
-		public void setLoadedToDb(boolean isLoadedToDb) {
-			this.isLoadedToDb = isLoadedToDb;
 		}
 
 		public String getFileMonth() {
