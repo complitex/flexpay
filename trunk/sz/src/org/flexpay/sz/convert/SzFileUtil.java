@@ -1,13 +1,13 @@
 package org.flexpay.sz.convert;
 
+import com.linuxense.javadbf.DBFException;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.FPFile;
-import org.flexpay.common.persistence.FPModule;
-import org.flexpay.common.service.FPFileService;
-import org.flexpay.common.util.FPFileUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.sz.dbf.*;
+import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.service.FPFileService;
+import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.sz.dbf.DBFInfo;
+import org.flexpay.sz.dbf.SzDbfWriter;
 import org.flexpay.sz.persistence.CharacteristicRecord;
 import org.flexpay.sz.persistence.ServiceTypeRecord;
 import org.flexpay.sz.persistence.SubsidyRecord;
@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public class SzFileUtil {
@@ -35,7 +36,7 @@ public class SzFileUtil {
 	private static SzFileService szFileService;
 
 	@SuppressWarnings ({"unchecked"})
-	public static void loadFromDbGeneric(SzFile szFile, File targetFile, DBFInfo dbfInfo, RecordService recordService) throws Exception {
+	public static void loadFromDbGeneric(SzFile szFile, File targetFile, DBFInfo dbfInfo, RecordService recordService) throws DBFException, FileNotFoundException {
 
 		SzDbfWriter writer = new SzDbfWriter(dbfInfo, targetFile, getDbfEncoding(), true);
 
@@ -55,58 +56,6 @@ public class SzFileUtil {
 			writer.close();
 		}
 
-	}
-
-	public static void loadFromDb(SzFile szFile) throws Exception {
-
-		FPFile fileToDownload = szFile.getFileToDownload();
-		FPFile uploadedFile = szFile.getUploadedFile();
-		FPModule module = uploadedFile.getModule();
-
-		if (fileToDownload != null) {
-			szFile.setFileToDownload(null);
-			szFile.setStatus(fpFileService.getStatusByCodeAndModule(SzFile.PROCESSING_FILE_STATUS, module.getName()));
-			szFileService.update(szFile);
-			fpFileService.delete(fileToDownload);
-		}
-
-		fileToDownload = new FPFile();
-		fileToDownload.setUserName(szFile.getUserName());
-		fileToDownload.setOriginalName(uploadedFile.getOriginalName());
-		fileToDownload.setModule(module);
-		szFile.setFileToDownload(fileToDownload);
-
-		File targetFile = FPFileUtil.saveToFileSystem(fileToDownload, new File(uploadedFile.getOriginalName()));
-		fileToDownload.setNameOnServer(targetFile.getName());
-
-		Long szFileTypeCode = szFile.getType().getCode();
-		File uploadedFileOnSystem = FPFileUtil.getFileOnServer(uploadedFile);
-
-		try {
-			if (SzFile.CHARACTERISTIC_FILE_TYPE.equals(szFileTypeCode)) {
-				DBFInfo dbfInfo = new CharacteristicDBFInfo(uploadedFileOnSystem);
-				loadFromDbGeneric(szFile, targetFile, dbfInfo, characteristicRecordService);
-			} else if (SzFile.SUBSIDY_FILE_TYPE.equals(szFileTypeCode)) {
-				DBFInfo dbfInfo = new SubsidyRecordDBFInfo(uploadedFileOnSystem);
-				loadFromDbGeneric(szFile, targetFile, dbfInfo, subsidyRecordService);
-			} else if (SzFile.SRV_TYPES_FILE_TYPE.equals(szFileTypeCode)) {
-				DBFInfo dbfInfo = new ServiceTypeRecordDBFInfo(uploadedFileOnSystem);
-				loadFromDbGeneric(szFile, targetFile, dbfInfo, serviceTypeRecordService);
-			} else {
-				throw new NotSupportedOperationException();
-			}
-
-			fileToDownload.setSize(targetFile.length());
-			szFile.setStatus(fpFileService.getStatusByCodeAndModule(SzFile.PROCESSED_FILE_STATUS, module.getName()));
-			szFileService.update(szFile);
-		} catch (Exception e) {
-			log.error("Error loading data fro DB and creating file to download", e);
-			szFile.setStatus(fpFileService.getStatusByCodeAndModule(SzFile.PROCESSED_WITH_ERRORS_FILE_STATUS, module.getName()));
-			szFile.setFileToDownload(null);
-			szFileService.update(szFile);
-			targetFile.delete();
-			throw e;
-		}
 	}
 
 	private static String getDbfEncoding() {

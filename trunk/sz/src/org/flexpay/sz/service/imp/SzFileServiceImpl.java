@@ -32,10 +32,13 @@ public class SzFileServiceImpl implements SzFileService {
 	@Transactional (readOnly = false)
 	public SzFile create(SzFile importFile) throws FlexPayException {
 		szFileDao.create(importFile);
-
 		log.debug("Created ImportFile: {}", importFile);
-
 		return importFile;
+	}
+
+	@Transactional (readOnly = false)
+	public void delete(SzFile szFile) {
+		szFileDao.delete(szFile);
 	}
 
 	/**
@@ -80,18 +83,8 @@ public class SzFileServiceImpl implements SzFileService {
 		return szFileDao.findSzFiles(pager);
 	}
 
-	/**
-	 * Get a list of available identity types
-	 *
-	 * @return List of SzFile
-	 */
-	public List<SzFile> getEntities() {
-		return szFileDao.listSzFiles();
-	}
-
-	@Transactional (readOnly = false)
-	public void delete(SzFile szFile) {
-		szFileDao.delete(szFile);
+	public List<SzFile> listSzFilesByIds(Collection<Long> fileIds) {
+		return szFileDao.findSzFilesByIds(fileIds);
 	}
 
 	@Required

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<process-definition name="ParseSzFileProcess"
+<process-definition name="SzFileLoadToDbProcess"
 					xmlns="http://jbpm.org/3/jpdl"
 					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 					xsi:schemaLocation="http://jbpm.org/3/jpdl http://jbpm.org/xsd/jpdl-3.0.xsd">
@@ -10,10 +10,10 @@
 	</swimlane>
 
 	<start-state name="start">
-		<transition to="szFileParserJob" />
+		<transition to="szFileLoadToDbJob" />
 	</start-state>
 
-	<task-node name="szFileParserJob">
+	<task-node name="szFileLoadToDbJob">
 		<task swimlane="worker" blocking="yes" />
 		<transition name="next" to="end" />
 		<transition name="error" to="end" />

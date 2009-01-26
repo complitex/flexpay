@@ -5,21 +5,20 @@ import org.flexpay.common.persistence.FPFileStatus;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class SzFileOperationAction extends FPActionSupport {
 
-	private Collection<Long> szFileIds;
+	private Set<Long> szFileIds = new HashSet<Long>();
 	private String action1;
-	private Long szFileId;
 
 	private ProcessManager processManager;
 
@@ -32,39 +31,38 @@ public class SzFileOperationAction extends FPActionSupport {
 
 		log.debug("Action - {}; SzFileIds - {}", action1, szFileIds);
 
-		if ("loadFromDB".equals(action1)) {
-			SzFileUtil.loadFromDb(szFileService.readFull(szFileId));
-			return SUCCESS;
-		} else if ("deleteFromDB".equals(action1)) {
-			SzFileUtil.deleteRecords(szFileService.readFull(szFileId));
-			return SUCCESS;
-		}
-
 		if (szFileIds == null || szFileIds.isEmpty()) {
 			return SUCCESS;
 		}
 
-		String processName = null;
-		FPFileStatus status = null;
+		String processName;
+		Long statusCode;
 
 		if ("loadToDB".equals(action1)) {
-			processName = "ParseSzFileProcess";
-			status = fpFileService.getStatusByCodeAndModule(SzFile.PROCESSING_FILE_STATUS, moduleName);
+			processName = "SzFileLoadToDbProcess";
+			statusCode = SzFile.PROCESSING_FILE_STATUS;
 		} else if ("fullDelete".equals(action1)) {
-			processName = "DeleteSzFileProcess";
-			status = fpFileService.getStatusByCodeAndModule(SzFile.DELETING_FILE_STATUS, moduleName);
+			processName = "SzFileFullDeleteProcess";
+			statusCode = SzFile.DELETING_FILE_STATUS;
+		} else if ("loadFromDB".equals(action1)) {
+			processName = "SzFileLoadFromDbProcess";
+			statusCode = SzFile.PROCESSING_FILE_STATUS;
+		} else if ("deleteFromDB".equals(action1)) {
+			processName = "SzFileDeleteFromDbProcess";
+			statusCode = SzFile.DELETING_FILE_STATUS;
+		} else {
+			log.warn("Incorrect action parameter - {}", action1);
+			return SUCCESS;
 		}
+		FPFileStatus status = fpFileService.getStatusByCodeAndModule(statusCode, moduleName);
 
-		if (processName != null) {
+		szFileService.updateStatus(szFileIds, status);
 
-			szFileService.updateStatus(szFileIds, status);
+		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+		contextVariables.put("fileIds", (Serializable) szFileIds);
+		processManager.createProcess(processName, contextVariables);
 
-			for (Long szFileId : szFileIds) {
-				Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
-				contextVariables.put("fileId", szFileId);
-				processManager.createProcess(processName, contextVariables);
-			}
-		}
+		log.debug("Process for operation \"{}\" and fileIds={} started", action1, szFileIds);
 
 		return SUCCESS;
 	}
@@ -86,12 +84,8 @@ public class SzFileOperationAction extends FPActionSupport {
 		this.action1 = action1;
 	}
 
-	public void setSzFileIds(Collection<Long> szFileIds) {
+	public void setSzFileIds(Set<Long> szFileIds) {
 		this.szFileIds = szFileIds;
-	}
-
-	public void setSzFileId(Long szFileId) {
-		this.szFileId = szFileId;
 	}
 
 	@Required
