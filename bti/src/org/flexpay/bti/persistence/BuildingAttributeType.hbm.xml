@@ -110,4 +110,11 @@
 		where v.typeEnum.id=?
 	</query>
 
+	<query name="BuildingAttributeType.checkUniqueName"><![CDATA[
+		select 1
+		from Dual
+		where exists(from BuildingAttributeTypeName where name=? and (translatable.id<>? or 1=?))
+		]]>
+	</query>
+
 </hibernate-mapping>

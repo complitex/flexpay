@@ -30,7 +30,16 @@ public class BuildingAttributeTypeSimple extends BuildingAttributeType {
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if validation fails
 	 */
-	void validate(String value) throws FlexPayException {
+	public void validate(String value) throws FlexPayException {
 		// do nothing, every value is OK
+	}
+
+	/**
+	 * Get type name code
+	 *
+	 * @return type name code
+	 */
+	public String getI18nTitle() {
+		return "bti.building.attribute.type.simple";
 	}
 }

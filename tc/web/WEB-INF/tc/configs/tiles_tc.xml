@@ -12,6 +12,13 @@
         <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_dictionaries.jsp"/>
     </definition>
 
+    <definition name="tc.configuration" extends="ab.layout.standart">
+        <put-attribute name="title" value="tc.menu2.configuration"/>
+        <put-attribute name="menu1" value="/WEB-INF/jsp/tc/menu/menu1.jsp"/>
+        <put-attribute name="menu2" value="/WEB-INF/jsp/tc/menu/menu2.jsp"/>
+        <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_configuration.jsp"/>
+    </definition>
+
     <definition name="tc.import" extends="tc.dictionaries">
         <put-attribute name="title" value="tc.menu2.import" />
         <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_import.jsp" />
@@ -51,6 +58,20 @@
         <put-attribute name="title" value="tc.rules_file"/>
         <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_rules_file_edit.jsp" />
     </definition>
+
    <!-- end of tariff calculation rules file related pages -->
+
+	<!-- Building attributes-->
+	<definition name="bti.buildings.attribute_types.list" extends="tc.configuration">
+		<put-attribute name="title" value="bti.building.attribute.types"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/bti/buildings/building_attribute_type_list.jsp" />
+	</definition>
+
+	<definition name="bti.buildings.attribute_type.edit" extends="tc.configuration">
+		<put-attribute name="title" value="bti.building.attribute.type"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/bti/buildings/building_attribute_type_edit.jsp" />
+	</definition>
+
+
 
 </tiles-definitions>

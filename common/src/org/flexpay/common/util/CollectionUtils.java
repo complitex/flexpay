@@ -47,6 +47,19 @@ public class CollectionUtils {
 	}
 
 	/**
+	 * Create a instance of HashMap from existing map
+	 *
+	 * @param values Initial map data
+	 * @param <K> key type
+	 * @param <V> value type
+	 * @return Map
+	 */
+	@NotNull
+	public static <K, V> Map<K, V> map(Map<K, V> values) {
+		return new HashMap<K,V>(values);
+	}
+
+	/**
 	 * Create a instance of TreeMap
 	 *
 	 * @param <K> key type

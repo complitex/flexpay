@@ -46,6 +46,7 @@
 	</bean>
 
 	<bean id="attributeTypeDaoExt" class="org.flexpay.bti.dao.impl.BuidingAttributeTypeDaoExtImpl"
+		  p:sessionFactory-ref="flexpaySessionFactory"
 		  p:attributeTypeDao-ref="buildingAttributeTypeDao"
 		  p:attributeTypeEnumDao-ref="buildingAttributeTypeEnumDao" />
 

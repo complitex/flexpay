@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class BuildingAttributeTypesListAction extends FPActionSupport {
+public class AddressAttributeTypesListAction extends FPActionSupport {
 
 	private AddressAttributeTypeService addressAttributeTypeService;
 

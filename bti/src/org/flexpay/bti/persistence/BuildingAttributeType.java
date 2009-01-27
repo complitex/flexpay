@@ -3,6 +3,7 @@ package org.flexpay.bti.persistence;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -43,5 +44,16 @@ public abstract class BuildingAttributeType extends DomainObjectWithStatus {
 	 * @param value Attribute value to validate
 	 * @throws FlexPayException if validation fails
 	 */
-	abstract void validate(String value) throws FlexPayException;
+	abstract public void validate(String value) throws FlexPayException;
+
+	/**
+	 * Get type name code
+	 *
+	 * @return type name code
+	 */
+	abstract public String getI18nTitle();
+
+	public void setTranslation(BuildingAttributeTypeName name) {
+		translations = TranslationUtil.setTranslation(translations, this, name);
+	}
 }

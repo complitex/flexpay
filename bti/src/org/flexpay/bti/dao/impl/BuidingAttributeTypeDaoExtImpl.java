@@ -8,11 +8,12 @@ import org.flexpay.bti.persistence.BuildingAttributeTypeEnum;
 import org.flexpay.bti.persistence.BuildingAttributeTypeEnumValue;
 import org.flexpay.common.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.List;
 import java.util.Set;
 
-public class BuidingAttributeTypeDaoExtImpl implements BuildingAttributeTypeDaoExt {
+public class BuidingAttributeTypeDaoExtImpl extends HibernateDaoSupport implements BuildingAttributeTypeDaoExt {
 
 	private BuildingAttributeTypeDao attributeTypeDao;
 	private BuildingAttributeTypeEnumDao attributeTypeEnumDao;
@@ -23,12 +24,24 @@ public class BuidingAttributeTypeDaoExtImpl implements BuildingAttributeTypeDaoE
 		// fetch necessary values for enum
 		if (type instanceof BuildingAttributeTypeEnum) {
 			List<BuildingAttributeTypeEnumValue> values = attributeTypeEnumDao.findValues(type.getId());
-			Set<BuildingAttributeTypeEnumValue> valuesSet = CollectionUtils.set(values);
 			BuildingAttributeTypeEnum enumType = (BuildingAttributeTypeEnum) type;
-			enumType.setValues(valuesSet);
+			enumType.getValues().addAll(values);
 		}
 
 		return type;
+	}
+
+	/**
+	 * Check if there is only
+	 *
+	 * @param name   Translation to check
+	 * @param typeId Type key
+	 * @return <code>true</code> if this name is unique, or <code>false</code> otherwise
+	 */
+	public boolean isUniqueTypeName(String name, Long typeId) {
+		Object[] params = {name, typeId, typeId == null || typeId.equals(0L) ? 1 : 0};
+		List<?> result = getHibernateTemplate().findByNamedQuery("BuildingAttributeType.checkUniqueName", params);
+		return result.isEmpty();
 	}
 
 	@Required

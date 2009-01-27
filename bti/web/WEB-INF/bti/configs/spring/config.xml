@@ -6,5 +6,6 @@
     <import resource="beans-dao.xml" />
     <import resource="beans-services.xml" />
     <import resource="beans-cache.xml" />
+    <import resource="beans-actions.xml" />
 
 </beans>

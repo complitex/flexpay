@@ -156,12 +156,12 @@
 		  p:buildingService-ref="buildingService" />
 
 	<!-- BuildingAttributeTypes -->
-	<bean id="buildingAttributeTypesListAction" scope="prototype"
-		  class="org.flexpay.ab.actions.buildings.BuildingAttributeTypesListAction"
+	<bean id="addressAttributeTypesListAction" scope="prototype"
+		  class="org.flexpay.ab.actions.buildings.AddressAttributeTypesListAction"
 		  p:buildingAttributeTypeService-ref="addressAttributeTypeService" />
 
-	<bean id="buildingAttributeTypeEditAction" scope="prototype"
-		  class="org.flexpay.ab.actions.buildings.BuildingAttributeTypeEditAction"
+	<bean id="addressAttributeTypeEditAction" scope="prototype"
+		  class="org.flexpay.ab.actions.buildings.AddressAttributeTypeEditAction"
 		  p:buildingAttributeTypeService-ref="addressAttributeTypeService" />
 
 	<!-- Apartments -->

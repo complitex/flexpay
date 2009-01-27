@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.Map;
 
 
-public class BuildingAttributeTypeEditAction extends FPActionSupport {
+public class AddressAttributeTypeEditAction extends FPActionSupport {
 
 	private AddressAttributeTypeService addressAttributeTypeService;
 
@@ -32,6 +32,10 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 		AddressAttributeType type = attributeType.isNew() ?
 									 attributeType :
 									 addressAttributeTypeService.read(stub(attributeType));
+		if (type == null) {
+			addActionError(getText("error.invalid_id"));
+			return REDIRECT_SUCCESS;
+		}
 
 		if (!isSubmit()) {
 			attributeType = type;

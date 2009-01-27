@@ -84,7 +84,6 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 
 	@Transactional
 	@Test
-    @Ignore
     public void testDeleteAttributeTx() throws Throwable {
 
 		Building building = newBuilding();

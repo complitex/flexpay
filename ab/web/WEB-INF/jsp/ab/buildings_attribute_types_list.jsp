@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror />
-<s:form action="buildingAttributeTypesList">
+<s:form action="addressAttributeTypesList">
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
 		<tr>
@@ -14,7 +14,7 @@
 				<td class="col_1s"><s:property value="%{#status.index + 1}" /></td>
 				<td class="col_1s"><s:property value="%{getTranslation(translations).name}" /></td>
 				<td class="col_1s">
-					<a href="<s:url action='buildingAttributeTypeEdit'><s:param name="attributeType.id" value="%{id}"/></s:url>">
+					<a href="<s:url action='addressAttributeTypeEdit'><s:param name="attributeType.id" value="%{id}"/></s:url>">
 						<s:text name="ab.edit" />
 					</a>
 				</td>
@@ -24,7 +24,7 @@
 		<tr>
 			<td colspan="3">
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="buildingAttributeTypeEdit"><s:param name="attributeType.id" value="0" /></s:url>'"
+					   onclick="window.location='<s:url action="addressAttributeTypeEdit"><s:param name="attributeType.id" value="0" /></s:url>'"
 					   value="<s:text name="common.new"/>" />
 			</td>
 		</tr>
