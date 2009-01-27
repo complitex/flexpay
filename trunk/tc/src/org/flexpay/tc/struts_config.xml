@@ -6,10 +6,9 @@
 
     <constant name="struts.custom.i18n.resources"
               value="org/flexpay/common/i18n/common-messages,
-			         org/flexpay/ab/i18n/errors,
-			         org/flexpay/ab/i18n/messages,
-			         org/flexpay/tc/i18n/errors,
-			         org/flexpay/tc/i18n/messages"/>
+			         org/flexpay/ab/i18n/errors,org/flexpay/ab/i18n/messages,
+			         org/flexpay/bti/i18n/errors,org/flexpay/bti/i18n/messages,
+			         org/flexpay/tc/i18n/errors,org/flexpay/tc/i18n/messages"/>
 
     <package name="tc" namespace="/tc" extends="common">
 
@@ -17,7 +16,25 @@
             <result type="tiles">tc.dictionaries</result>
         </action>
 
+        <action name="configuration">
+            <result type="tiles">tc.configuration</result>
+        </action>
+
     </package>
+
+	<package name="building_attributes" namespace="/tc" extends="common">
+
+		<action name="buildingAttributeTypesList" class="buildingAttributeTypesListAction">
+			<result name="success" type="tiles">bti.buildings.attribute_types.list</result>
+		</action>
+
+		<action name="buildingAttributeTypeEdit" class="buildingAttributeTypeEditAction">
+			<result name="input" type="tiles">bti.buildings.attribute_type.edit</result>
+			<result name="redirectSuccess" type="redirect-action">buildingAttributeTypesList</result>
+		</action>
+
+	</package>
+
 
     <include file="org/flexpay/tc/actions/sewertype/struts.xml"/>
     <include file="org/flexpay/tc/actions/sewermaterialtype/struts.xml"/>

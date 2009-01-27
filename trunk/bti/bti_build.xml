@@ -176,8 +176,11 @@
 	</target>
 
 	<target name="bti.runtests" depends="bti.compile.test,bti.prepare.test.war">
+		<condition property="class.name" value="${test.class.name}" else="org.flexpay.bti.AllTests">
+			<isset property="test.class.name" />
+		</condition>
 		<antcall target="template.run.tests">
-			<param name="test_name" value="org.flexpay.bti.AllTests" />
+			<param name="test_name" value="${class.name}" />
 			<reference refid="bti.runtests.classpath" torefid="classpath" />
 		</antcall>
 	</target>

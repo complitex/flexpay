@@ -43,13 +43,13 @@
 			</result>
 		</action>
 
-		<action name="buildingAttributeTypesList" class="buildingAttributeTypesListAction">
+		<action name="addressAttributeTypesList" class="addressAttributeTypesListAction">
 			<result name="success" type="tiles">ab.buildings.attribute_types.list</result>
 		</action>
 
-		<action name="buildingAttributeTypeEdit" class="buildingAttributeTypeEditAction">
+		<action name="addressAttributeTypeEdit" class="addressAttributeTypeEditAction">
 			<result name="input" type="tiles">ab.buildings.attribute_types.edit</result>
-			<result name="redirectSuccess" type="redirect-action">buildingAttributeTypesList</result>
+			<result name="redirectSuccess" type="redirect-action">addressAttributeTypesList</result>
 		</action>
 
 	</package>

@@ -4,7 +4,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.persistence.DomainObject;
 import org.jetbrains.annotations.NotNull;
 
-public class BuildingAttributeTypeEnumValue extends DomainObject {
+public class BuildingAttributeTypeEnumValue extends DomainObject implements Comparable<BuildingAttributeTypeEnumValue>{
 
 	private BuildingAttributeTypeEnum typeEnum;
 	private String value;
@@ -51,5 +51,9 @@ public class BuildingAttributeTypeEnumValue extends DomainObject {
 				append("value", value).
 				append("order", order).
 				toString();
+	}
+
+	public int compareTo(BuildingAttributeTypeEnumValue o) {
+		return order - o.order;
 	}
 }
