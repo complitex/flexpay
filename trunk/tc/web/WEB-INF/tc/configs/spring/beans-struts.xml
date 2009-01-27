@@ -10,7 +10,7 @@
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
           p:location="/WEB-INF/tc/configs/module.properties"
           p:fileEncoding="UTF-8"
-          p:ignoreUnresolvablePlaceholders="true" />
+          p:ignoreUnresolvablePlaceholders="true"/>
 
     <!-- Define struts actions beans -->
 
@@ -33,11 +33,13 @@
           p:sewerMaterialTypeService-ref="sewerMaterialTypeService"
           scope="prototype"/>
 
-    <bean id="sewerMaterialTypeDeleteAction" class="org.flexpay.tc.actions.sewermaterialtype.SewerMaterialTypeDeleteAction"
+    <bean id="sewerMaterialTypeDeleteAction"
+          class="org.flexpay.tc.actions.sewermaterialtype.SewerMaterialTypeDeleteAction"
           p:sewerMaterialTypeService-ref="sewerMaterialTypeService"
           scope="prototype"/>
 
-    <bean id="sewerMaterialTypesListAction" class="org.flexpay.tc.actions.sewermaterialtype.SewerMaterialTypesListAction"
+    <bean id="sewerMaterialTypesListAction"
+          class="org.flexpay.tc.actions.sewermaterialtype.SewerMaterialTypesListAction"
           p:sewerMaterialTypeService-ref="sewerMaterialTypeService"
           scope="prototype"/>
     <!-- end of sewer material types section -->
@@ -53,5 +55,13 @@
           p:moduleName="${flexpay.module.name.tc}"
           scope="prototype"/>
     <!-- end of tariff calculation rules files section -->
+
+    <!-- building attributes section -->
+    <bean id="buildingsListAction" class="org.flexpay.tc.actions.buildingattributes.BuildingsListAction"
+          p:buildingService-ref="buildingService"
+          p:parentService-ref="streetService"/>
+
+    <bean id="buildingAttributesEditAction" class="org.flexpay.tc.actions.buildingattributes.BuildingAttributesEditAction"/>
+    <!-- end of building attributes section -->
 
 </beans>

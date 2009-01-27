@@ -58,7 +58,6 @@
         <put-attribute name="title" value="tc.rules_file"/>
         <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_rules_file_edit.jsp" />
     </definition>
-
    <!-- end of tariff calculation rules file related pages -->
 
 	<!-- Building attributes-->
@@ -72,6 +71,16 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/bti/buildings/building_attribute_type_edit.jsp" />
 	</definition>
 
+    <!-- building attributes related pages -->
+    <definition name="tc.building_attributes.list" extends="tc.dictionaries">
+        <put-attribute name="title" value="tc.buildings_list"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/buildings_list.jsp"/>
+    </definition>
 
+    <definition name="tc.building_attributes.edit" extends="tc.dictionaries">
+        <put-attribute name="title" value="tc.building_attributes"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_attributes_edit.jsp"/>
+    </definition>
+    <!-- end of building attributes related pages -->
 
 </tiles-definitions>
