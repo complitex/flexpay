@@ -3,16 +3,16 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -60,7 +60,8 @@ public class BuildingAddress extends DomainObjectWithStatus {
 		return this.addressAttributes;
 	}
 
-	public void setBuildingAttributes(Set<AddressAttribute> addressAttributes) {
+	@SuppressWarnings ({"UnusedDeclaration"})
+	private void setBuildingAttributes(Set<AddressAttribute> addressAttributes) {
 		this.addressAttributes = addressAttributes;
 	}
 
@@ -154,8 +155,9 @@ public class BuildingAddress extends DomainObjectWithStatus {
 			attribute = new AddressAttribute();
 			attribute.setBuildingAttributeType(type);
 			attribute.setBuildings(this);
-			if (Collections.emptySet().equals(addressAttributes)) {
-				addressAttributes = new HashSet<AddressAttribute>();
+			//noinspection CollectionsFieldAccessReplaceableByMethodCall
+			if (addressAttributes == Collections.EMPTY_SET) {
+				addressAttributes = CollectionUtils.set();
 			}
 			addressAttributes.add(attribute);
 		}
