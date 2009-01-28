@@ -77,7 +77,7 @@
                     <s:text name="%{szFile.status.name}"/>
                 </td>
                 <td class="col">
-                    <s:property value="userName"/>
+                    <s:property value="szFile.userName"/>
                 </td>
             </tr>
         </s:iterator>

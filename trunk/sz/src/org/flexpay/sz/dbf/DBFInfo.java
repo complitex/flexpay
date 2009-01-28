@@ -4,7 +4,7 @@ import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
 import org.apache.commons.io.IOUtils;
-import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.sz.util.config.ApplicationConfig;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -3,9 +3,6 @@
 
 	<dataRoot>flexpay_data</dataRoot>
 	
-	<szDataRoot>/sz</szDataRoot> <!-- задаётся относительно dataRoot -->
-	<szDefaultDbfFileEncoding>Cp866</szDefaultDbfFileEncoding>
-
     <!-- Number of lines of log to be shown on process details view page-->
     <logPreviewLinesNumber>100</logPreviewLinesNumber>
 

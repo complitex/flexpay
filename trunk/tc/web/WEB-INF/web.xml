@@ -372,7 +372,7 @@
     </error-page>
 
     <welcome-file-list>
-		<welcome-file>/resources/tc/index.jsp</welcome-file>
+		<welcome-file>/resources/tc/jsp/index.jsp</welcome-file>
 	</welcome-file-list>
 
 </web-app>
