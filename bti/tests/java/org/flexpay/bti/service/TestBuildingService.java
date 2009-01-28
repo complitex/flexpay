@@ -33,8 +33,8 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 
 	@Test
 	public void testListAttributes() {
-		List<BuildingAttribute> attributes = attributeService.listAttributes(
-				BUILDING_STUB, new Page<BuildingAttribute>());
+		List<BuildingAttributeBase> attributes = attributeService.listAttributes(
+				BUILDING_STUB, new Page<BuildingAttributeBase>());
 
 		assertFalse("No attributes found", attributes.isEmpty());
 	}
