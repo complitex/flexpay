@@ -15,4 +15,12 @@
     <bean id="tariffCalculationRulesFileService" class="org.flexpay.tc.service.impl.TariffCalculationRulesFileServiceImpl"
           p:tariffCalculationRulesFileDao-ref="tariffCalculationRulesFileDao" />
 
+    <bean parent="processManager">
+        <property name="definitionPaths">
+            <list>
+                <value>WEB-INF/sz/process</value>
+            </list>
+        </property>
+    </bean>
+
 </beans>

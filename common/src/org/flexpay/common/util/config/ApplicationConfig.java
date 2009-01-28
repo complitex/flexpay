@@ -33,9 +33,6 @@ public class ApplicationConfig {
 
 	private String dataRoot;
 
-	private String szDataRoot;
-	private String szDefaultDbfFileEncoding;
-
     private int logPreviewLinesNumber;
 
 	private String testProp;
@@ -156,31 +153,6 @@ public class ApplicationConfig {
 			root.mkdirs();
 		}
 	}
-
-	public static File getSzDataRoot() {
-		return getInstance().getSzDataRootInternal();
-	}
-
-	private File getSzDataRootInternal() {
-		return new File(getDataRootInternal(), szDataRoot);
-	}
-
-	public void setSzDataRoot(String szDataRoot) {
-		this.szDataRoot = szDataRoot;
-		File szRoot = getSzDataRootInternal();
-		if (!szRoot.exists()) {
-			szRoot.mkdirs();
-		}
-	}
-
-	public static String getSzDefaultDbfFileEncoding() {
-		return getInstance().szDefaultDbfFileEncoding;
-	}
-
-	public void setSzDefaultDbfFileEncoding(String szDefaultDbfFileEncoding) {
-		this.szDefaultDbfFileEncoding = szDefaultDbfFileEncoding;
-	}
-
 
 	public static String getTestProp() {
 		return getInstance().testProp;

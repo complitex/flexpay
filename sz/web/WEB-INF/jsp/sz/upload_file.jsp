@@ -199,7 +199,7 @@
                         ajaxResponse.style.color = "#008000";
                         ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.loaded" />";
                         wait = false;
-                    } else if (uploadFrame.innerHTML == "error") {
+                    } else if (bodyFrame.innerHTML == "error") {
                         ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.error" />";
                         wait = false;
                     }

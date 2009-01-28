@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.File;
 
@@ -51,7 +52,7 @@ public class UploadFileAction extends ActionSupport {
 			return ERROR;
 		}
 
-//		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 		try {
 			SzFile szFile = new SzFile();
 			szFile.setType(fileType);
@@ -59,16 +60,14 @@ public class UploadFileAction extends ActionSupport {
 			FPFile fileOnServer = new FPFile();
 			fileOnServer.setModule(fpFileService.getModuleByName(moduleName));
 			fileOnServer.setOriginalName(uploadFileName);
-			fileOnServer.setUserName("f");
-//			fileOnServer.setUserName(userName);
+			fileOnServer.setUserName(userName);
 			File fileOnSystem = FPFileUtil.saveToFileSystem(fileOnServer, upload);
 			fileOnServer.setNameOnServer(fileOnSystem.getName());
 			fileOnServer.setSize(fileOnSystem.length());
 			szFile.setUploadedFile(fileOnServer);
 			Oszn oszn = osznService.read(osznId);
 			szFile.setOszn(oszn);
-			szFile.setUserName("f");
-//			szFile.setUserName(userName);
+			szFile.setUserName(userName);
 			szFile.setFileYear(year);
 			szFile.setFileMonth(month);
 
