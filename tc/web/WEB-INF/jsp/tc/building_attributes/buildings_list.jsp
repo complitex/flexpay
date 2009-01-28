@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror/>
@@ -8,13 +7,13 @@
 
         <tr>
             <td colspan="4">
-                <%@ include file="../filters/groups/country_region_town_streetname.jsp" %>
+                <%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname.jsp" %>
             </td>
         </tr>
 
         <tr>
             <td colspan="4">
-                <%@ include file="../filters/pager.jsp" %>                
+                <%@ include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
             </td>
         </tr>
 
@@ -57,7 +56,7 @@
 
         <tr>
             <td colspan="4">
-                <%@ include file="../filters/pager.jsp" %>
+                <%@ include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
             </td>
         </tr>
 
