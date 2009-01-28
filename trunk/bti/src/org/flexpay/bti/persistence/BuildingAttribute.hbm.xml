@@ -5,7 +5,8 @@
 
 <hibernate-mapping package="org.flexpay.bti.persistence">
 
-	<class name="BuildingAttribute" table="bti_building_attributes_tbl" discriminator-value="normal">
+	<class name="BuildingAttributeBase" abstract="true" table="bti_building_attributes_tbl"
+		   discriminator-value="normal">
 		<comment>Building attributes</comment>
 		<id name="id" column="id">
 			<generator class="native" />
@@ -16,12 +17,6 @@
 				<comment>Class hierarchy descriminator</comment>
 			</column>
 		</discriminator>
-
-		<property name="value">
-			<column name="attribute_value" not-null="true">
-				<comment>Attribute value</comment>
-			</column>
-		</property>
 
 		<many-to-one name="building" class="BtiBuilding"
 					 foreign-key="FK_bti_building_attributes_tbl_building_id">
@@ -37,25 +32,53 @@
 			</column>
 		</many-to-one>
 
-		<!-- map temp attributes to the same table -->
-		<subclass name="BuildingTempAttribute" discriminator-value="tmp">
-
-			<property name="begin">
-				<column name="begin_date">
-					<comment>Value begin date</comment>
-				</column>
-			</property>
-
-			<property name="end">
-				<column name="end_date">
-					<comment>Value end date</comment>
+		<subclass name="BuildingAttribute" discriminator-value="normal">
+			<property name="value">
+				<column name="normal_attribute_value">
+					<comment>Attribute value</comment>
 				</column>
 			</property>
 		</subclass>
 
+		<!-- map temp attributes to the same table -->
+		<subclass name="BuildingTempAttribute" discriminator-value="tmp">
+			<set name="values" inverse="true" cascade="all-delete-orphan">
+				<key column="attribute_id" not-null="true" />
+				<one-to-many class="BuildingTempAttributeValue" />
+			</set>
+		</subclass>
+
 	</class>
 
-	<query name="BuildingAttribute.findAttributes">
+	<class name="BuildingTempAttributeValue" table="bti_building_attribute_temp_values_tbl">
+		<comment>Temporal values for building attributes</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="value">
+			<column name="attribute_value">
+				<comment>Attribute value</comment>
+			</column>
+		</property>
+		<property name="begin">
+			<column name="begin_date" not-null="true">
+				<comment>Value begin date</comment>
+			</column>
+		</property>
+		<property name="end">
+			<column name="end_date" not-null="true">
+				<comment>Value end date</comment>
+			</column>
+		</property>
+		<many-to-one name="attribute" class="BuildingTempAttribute"
+					 foreign-key="FK_bti_building_attribute_temp_values_tbl_attr_id">
+			<column name="attribute_id" not-null="true">
+				<comment>Temporal attribute reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<query name="BuildingAttributeBase.findAttributes">
 		from BuildingAttribute
 		where building.id=?
 	</query>

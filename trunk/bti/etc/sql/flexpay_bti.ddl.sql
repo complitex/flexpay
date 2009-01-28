@@ -341,6 +341,15 @@
         primary key (id)
     );
 
+    create table bti_building_attribute_temp_values_tbl (
+        id bigint not null auto_increment,
+        attribute_value varchar(255) comment 'Attribute value',
+        begin_date datetime not null comment 'Value begin date',
+        end_date datetime not null comment 'Value end date',
+        attribute_id bigint not null comment 'Temporal attribute reference',
+        primary key (id)
+    ) comment='Temporal values for building attributes';
+
     create table bti_building_attribute_type_enum_values_tbl (
         id bigint not null auto_increment,
         order_value integer not null comment 'Relatiove order value',
@@ -367,11 +376,9 @@
     create table bti_building_attributes_tbl (
         id bigint not null auto_increment,
         discriminator varchar(255) not null comment 'Class hierarchy descriminator',
-        attribute_value varchar(255) not null comment 'Attribute value',
         building_id bigint not null comment 'Building reference',
         attribute_type_id bigint not null comment 'Attribute type reference',
-        begin_date datetime comment 'Value begin date',
-        end_date datetime comment 'Value end date',
+        normal_attribute_value varchar(255) comment 'Attribute value',
         primary key (id)
     ) comment='Building attributes';
 
@@ -842,6 +849,12 @@
         add constraint FK23FDF002458E164D 
         foreign key (region_id) 
         references ab_regions_tbl (id);
+
+    alter table bti_building_attribute_temp_values_tbl 
+        add index FK_bti_building_attribute_temp_values_tbl_attr_id (attribute_id), 
+        add constraint FK_bti_building_attribute_temp_values_tbl_attr_id 
+        foreign key (attribute_id) 
+        references bti_building_attributes_tbl (id);
 
     alter table bti_building_attribute_type_enum_values_tbl 
         add index bti_building_attribute_type_enum_values_tbl_enum_id (attribute_type_enum_id), 

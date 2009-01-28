@@ -84,6 +84,7 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 
 	@Transactional
 	@Test
+	@Ignore
     public void testDeleteAttributeTx() throws Throwable {
 
 		Building building = newBuilding();
@@ -95,7 +96,7 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 		buildingDao.create(building);
 
 		try {
-			AddressAttribute bulk = buildingAddress.setBuildingAttribute(null, bulkType);
+			buildingAddress.setBuildingAttribute(null, bulkType);
 			buildingsDao.update(buildingAddress);
 
 			buildingAddress = buildingsDao.readFull(buildingAddress.getId());

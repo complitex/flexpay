@@ -6,7 +6,6 @@ import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -22,6 +21,19 @@ public class DateIntervalUtil {
 	public static boolean areIntersecting(DateInterval<?, ?> di1, DateInterval<?, ?> di2) {
 		return !(di1.getEnd().compareTo(di2.getBegin()) < 0
 				 || di1.getBegin().compareTo(di2.getEnd()) > 0);
+	}
+
+	/**
+	 * Check if two date intervals intersect
+	 *
+	 * @param i1Begin the first Date interval begin date
+	 * @param i1End   the first Date interval end date
+	 * @param i2Begin the second Date interval begin date
+	 * @param i2End   the second Date interval end date
+	 * @return <code>true</code> if intervals are intersecting, or <code>false</code> otherwise
+	 */
+	public static boolean areIntersecting(Date i1Begin, Date i1End, Date i2Begin, Date i2End) {
+		return !(i1End.compareTo(i2Begin) < 0 || i1Begin.compareTo(i2End) > 0);
 	}
 
 	/**
@@ -77,6 +89,18 @@ public class DateIntervalUtil {
 	}
 
 	/**
+	 * Check if date interval includes specified date
+	 *
+	 * @param date  Date
+	 * @param begin Interval begin date
+	 * @param end   Interval end date
+	 * @return <code>true</code> if date is inside interval, or <code>false</code> otherwise
+	 */
+	public static boolean includes(Date date, Date begin, Date end) {
+		return begin.compareTo(date) <= 0 && end.compareTo(date) >= 0;
+	}
+
+	/**
 	 * Check if time line is consistent: <ol> <li>All time line is covered</li> <li>No gaps in intervals</li> </ol>
 	 *
 	 * @param tl TimeLine to check
@@ -103,8 +127,8 @@ public class DateIntervalUtil {
 	 *
 	 * @param di Date interval
 	 * @return <code>true</code> if interval begin equals {@link org.flexpay.common.util.config.ApplicationConfig#getPastInfinite()}
-	 *         and end equals {@link org.flexpay.common.util.config.ApplicationConfig#getFutureInfinite()}, or <code>false</code>
-	 *         otherwise
+	 *         and end equals {@link org.flexpay.common.util.config.ApplicationConfig#getFutureInfinite()}, or
+	 *         <code>false</code> otherwise
 	 */
 	public static boolean coversTimeLine(DateInterval<?, ?> di) {
 		return di.getBegin().equals(ApplicationConfig.getPastInfinite()) &&
@@ -223,7 +247,8 @@ public class DateIntervalUtil {
 	/**
 	 * Create new TimeLine with new added interval.
 	 * <p/>
-	 * If begin or end bound of <code>di</code> is inside of some interval in time line the old interval should be shorthanded
+	 * If begin or end bound of <code>di</code> is inside of some interval in time line the old interval should be
+	 * shorthanded
 	 *
 	 * @param tl TimeLine
 	 * @param di DateInterval to add

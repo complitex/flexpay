@@ -43,13 +43,11 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	public void testCreateAttribute() {
 
 		BuildingTempAttribute attribute = new BuildingTempAttribute();
-		attribute.setBegin(ApplicationConfig.getPastInfinite());
-		attribute.setEnd(ApplicationConfig.getFutureInfinite());
 
 		attribute.setBuilding(new BtiBuilding(BUILDING_STUB));
-
 		attribute.setAttributeType(new BuildingAttributeTypeSimple(ATTRIBUTE_TYPE_STUB));
-		attribute.setValue("Test attribute value");
+		attribute.setValueForDates("Test attribute value",
+				ApplicationConfig.getPastInfinite(), ApplicationConfig.getPastInfinite());
 
 		try {
 			attributeDao.create(attribute);

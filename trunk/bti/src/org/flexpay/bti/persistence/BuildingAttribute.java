@@ -1,12 +1,8 @@
 package org.flexpay.bti.persistence;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.flexpay.common.persistence.DomainObject;
+import java.util.Date;
 
-public class BuildingAttribute extends DomainObject {
-
-	private BtiBuilding building;
-	private BuildingAttributeType attributeType;
+public class BuildingAttribute extends BuildingAttributeBase {
 
 	private String value;
 
@@ -18,28 +14,11 @@ public class BuildingAttribute extends DomainObject {
 		this.value = value;
 	}
 
-	public BtiBuilding getBuilding() {
-		return building;
+	public String getValueForDate(Date td) {
+		return value;
 	}
 
-	public void setBuilding(BtiBuilding building) {
-		this.building = building;
+	public void setValueForDates(String value, Date beginDt, Date endDt) {
+		this.value = value;
 	}
-
-	public BuildingAttributeType getAttributeType() {
-		return attributeType;
-	}
-
-	public void setAttributeType(BuildingAttributeType attributeType) {
-		this.attributeType = attributeType;
-	}
-
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).
-				append("building", building).
-				append("value", value).
-				toString();
-	}
-
 }
