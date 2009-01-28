@@ -57,7 +57,7 @@
     <!-- end of tariff calculation rules files section -->
 
     <!-- building attributes section -->
-    <bean id="buildingsListAction" class="org.flexpay.tc.actions.buildingattributes.BuildingsListAction"
+    <bean id="tcBuildingsListAction" class="org.flexpay.tc.actions.buildingattributes.BuildingsListAction"
           p:buildingService-ref="buildingService"
           p:parentService-ref="streetService"/>
 
