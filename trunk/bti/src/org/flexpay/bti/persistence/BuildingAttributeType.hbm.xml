@@ -105,6 +105,10 @@
 		from BuildingAttributeType
 	</query>
 
+    <query name="BuildingAttributeType.findAllTypes">
+        from BuildingAttributeType
+    </query>
+
 	<query name="BuildingAttributeTypeEnum.findValues">
 		from BuildingAttributeTypeEnumValue v
 		where v.typeEnum.id=?

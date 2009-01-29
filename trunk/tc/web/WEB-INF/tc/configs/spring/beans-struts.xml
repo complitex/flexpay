@@ -61,7 +61,10 @@
           p:buildingService-ref="buildingService"
           p:parentService-ref="streetService"/>
 
-    <bean id="buildingAttributesEditAction" class="org.flexpay.tc.actions.buildingattributes.BuildingAttributesEditAction"/>
+    <bean id="buildingAttributesEditAction" class="org.flexpay.tc.actions.buildingattributes.BuildingAttributesEditAction"
+            p:addressService-ref="addressService"
+            p:buildingService-ref="buildingService"
+            p:buildingAttributeTypeService-ref="buildingAttributeTypeService"/>
     <!-- end of building attributes section -->
 
 </beans>

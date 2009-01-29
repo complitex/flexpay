@@ -27,6 +27,16 @@ public class BtiBuilding extends Building {
 		return attributes;
 	}
 
+    public BuildingAttributeBase getAttribute(BuildingAttributeType attributeType) {
+        for (BuildingAttributeBase attribute : attributes) {
+            if (attribute.getAttributeType().equals(attributeType)) {
+                return attribute;
+            }
+        }
+
+        return null;
+    }
+
 	@SuppressWarnings ({"UnusedDeclaration"})
 	private void setAttributes(Set<BuildingAttributeBase> attributes) {
 		this.attributes = attributes;

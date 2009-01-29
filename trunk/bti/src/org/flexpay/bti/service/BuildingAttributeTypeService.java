@@ -45,4 +45,11 @@ public interface BuildingAttributeTypeService {
 	 * @return list of building attributes
 	 */
 	List<BuildingAttributeType> listTypes(@NotNull Page<BuildingAttributeType> pager);
+
+    /**
+	 * Find building attribute types
+	 *
+	 * @return list of building attributes
+	 */
+	List<BuildingAttributeType> listTypes();
 }
