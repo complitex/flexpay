@@ -125,6 +125,12 @@
 		</fileset>
 	</path>
 
+	<path id="csv.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="csv/*.jar" />
+		</fileset>
+	</path>
+
 	<!-- NotNull instrumentation javac task -->
 	<taskdef name="javac2"
 			 classname="com.intellij.ant.Javac2"
@@ -225,6 +231,7 @@
 			<lib dir="${common.dir}/lib/jasperreports" />
             <lib dir="${common.dir}/lib/freemarker" />
             <lib dir="${common.dir}/lib/logging" />
+            <lib dir="${common.dir}/lib/csv" />
 			<lib dir="${build.dir}/lib" />
 		</war>
 	</target>
@@ -295,6 +302,26 @@
 			<arg value="--password=${mysql.password}" />
 			<arg value="--default-character-set=utf8" />
 		</exec>
+	</target>
+
+	<target name="template.set_db_name">
+		<condition property="prop.target_db" value="${target.db.name}" else="flexpay_db">
+			<isset property="target.db.name" />
+		</condition>
+		<antcall target="template.switch_db">
+			<param name="oldDbName" value="flexpay_db" />
+			<param name="newDbName" value="${prop.target_db}" />
+		</antcall>
+	</target>
+
+	<target name="template.switch_db">
+		<replaceregexp encoding="UTF-8" flags="g"
+					   match="${oldDbName}" replace="${newDbName}">
+			<fileset dir="${build.dir}">
+				<include name="sql/init_db.sql" />
+				<include name="web/WEB-INF/common/configs/spring/data_source.properties" />
+			</fileset>
+		</replaceregexp>
 	</target>
 
 </project>
