@@ -9,4 +9,6 @@ import java.util.List;
 public interface BuildingAttributeTypeDao extends GenericDao<BuildingAttributeType, Long> {
 
 	List<BuildingAttributeType> findTypes(Page<BuildingAttributeType> pager);
+
+    List<BuildingAttributeType> findAllTypes();
 }

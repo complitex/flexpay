@@ -26,7 +26,6 @@
             <td class="th">&nbsp;</td>
         </tr>
 
-        <%-- TODO change processing actions--%>
         <s:iterator value="%{buildingsList}" status="status">
             <tr valign="middle" class="cols_1">
 
@@ -39,14 +38,13 @@
                 </td>
 
                 <td class="col">
-                    <a href="<s:url value="/tc/buildingAttributesEdit.action"/>">
+                    <a href="<s:url action="buildingAttributesEdit"><s:param name="building.id" value="%{id}"/></s:url>">
                         <s:property value="%{getBuildingNumber(buildingAttributes)}"/>
-                        <s:text name="To fix"/>
                     </a>
                 </td>
 
                 <td class="col">
-                    <a href="<s:url value="/tc/buildingAttributesEdit.action"/>">
+                    <a href="<s:url action="buildingAttributesEdit"><s:param name="building.id" value="%{id}"/></s:url>">
                         <s:text name="tc.edit_building_attributes"/>
                     </a>
                 </td>

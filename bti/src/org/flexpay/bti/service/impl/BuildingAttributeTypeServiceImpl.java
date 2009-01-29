@@ -125,7 +125,11 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 		return attributeTypeDao.findTypes(pager);
 	}
 
-	@Required
+    public List<BuildingAttributeType> listTypes() {
+        return attributeTypeDao.findAllTypes();
+    }
+
+    @Required
 	public void setAttributeTypeDao(BuildingAttributeTypeDao attributeTypeDao) {
 		this.attributeTypeDao = attributeTypeDao;
 	}

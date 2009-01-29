@@ -13,12 +13,13 @@ import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.persistence.filters.StreetNameFilter;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.actions.buildings.BuildingsActionsBase;
 import org.jetbrains.annotations.NotNull;
 import org.apache.commons.collections.ArrayStack;
 
 import java.util.List;
 
-public class BuildingsListAction extends FPActionSupport {
+public class BuildingsListAction extends BuildingsActionsBase {
     
     private ParentService parentService;
 	private BuildingService buildingService;
@@ -46,12 +47,11 @@ public class BuildingsListAction extends FPActionSupport {
 
 		buildingsList = buildingService.getBuildings(filters, pager);
 
-        // TODO processing
-
 		return SUCCESS;
 	}
 
     private ArrayStack initFilters() throws FlexPayException {
+
         ArrayStack filterArrayStack = getFilters();
         for (Object filter : filterArrayStack) {
             ((PrimaryKeyFilter) filter).initFilter(session);
@@ -59,6 +59,7 @@ public class BuildingsListAction extends FPActionSupport {
 
         ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
         setFilters(filters);
+        
         return filters;
     }
 
