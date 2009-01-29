@@ -22,6 +22,7 @@
 		<path refid="jasperreports.lib" />
 		<path refid="quartz.lib" />
 		<path refid="jetbrains.lib" />
+		<path refid="csv.lib" />
 	</path>
 
 	<patternset id="empty_pattern" excludes="**/*.*" />
