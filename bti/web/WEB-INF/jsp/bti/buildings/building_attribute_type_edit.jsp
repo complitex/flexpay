@@ -32,6 +32,16 @@
 			$(s2).innerHTML = tmp;
 		},
 
+		editEnumValue : function(i) {
+			$("enumValueDisp_"+i).hide();
+			$("enumValue_"+i).show();
+			$("enumValue_"+i).focus();
+		},
+		stopEditEnumValue : function(i) {
+			$("enumValueDisp_"+i).update($F("enumValue_"+i));
+			$("enumValueDisp_"+i).show();
+			$("enumValue_"+i).hide();
+		},
 		moveEnumValueUp : function(i) {
 			if (i <= 0)
 				return;
@@ -44,11 +54,16 @@
 			this.swapFields("enumValue_"+i, "enumValue_"+(i+1));
 			this.swapContents("enumValueDisp_"+i, "enumValueDisp_"+(i+1));
 		},
-		addNewEnumFieldValue : function() {
-			this.addNewEnumValue($F('newEnumValue'));
+		addNewEnumFieldValues : function() {
+			var text = $F('newEnumValue');
+			var fields = text.split("\n");
+			for(i = 0; i < fields.length; i++)
+				this.addNewEnumValue(fields[i]);
+			$('newEnumValue').value = "";
 		},
 		addNewEnumValue : function(value) {
-			if (value == '')
+			value = value.trim();
+			if (value.empty())
 				return;
 			// ok, do some magick
 			// hide previous element delete button and show move down button
@@ -57,8 +72,7 @@
 			if ($("enumMvDwnBtn_"+this.maxIndex))
 				$("enumMvDwnBtn_"+this.maxIndex).show();
 			++this.maxIndex;
-			var html = '<td width="1%"><input type="hidden" name="enumValues['+this.maxIndex+']" id="enumValue_'+
-					   this.maxIndex+'" value="'+value+'" />'+this.maxIndex+'</td>'+
+			var html = '<td width="1%">'+this.maxIndex+'</td>'+
 						'<td width="1%">'+
 						 (this.maxIndex > 1 ?
 							'<a href="javascript:FPINT.moveEnumValueUp('+this.maxIndex+');" id="enumMvUpBtn_'+this.maxIndex+'"><img '+
@@ -69,12 +83,13 @@
 					   '</td><td width="1%">'+
 							'<a href="javascript:FPINT.deleteEnumValue();" id="enumDeleteBtn_'+this.maxIndex+'"><img ' +
 								'src="<s:url value="/resources/common/img/i_delete.gif" includeParams="none"/>" alt="" /></a></td>'+
-					   '<td width="98%"><span  id="enumValueDisp_'+this.maxIndex+ '">'+value+'</span></td>';
-;
+					   '<td width="98%">'+'<input type="text" style="display:none" name="enumValues['+this.maxIndex+']" id="enumValue_'+
+					   this.maxIndex+'" value="'+value+'" onblur="FPINT.stopEditEnumValue('+this.maxIndex+')"/>'+
+					'<span id="enumValueDisp_'+this.maxIndex+ '" onclick="FPINT.editEnumValue('+this.maxIndex+')">'+value+'</span></td>';
+
 			var newTR = new Element('tr', {id: 'enum_value_'+this.maxIndex});
 			$('newEnumValueRow').insert({'before' : newTR});
 			newTR.insert(html);
-			$('newEnumValue').value = '';
 		},
 		deleteEnumValue : function() {
 			$('enum_value_'+this.maxIndex).remove();
@@ -123,8 +138,8 @@
 				<!-- All table build is done in JavaScript -->
 				<table border="0" width="100%">
 					<tr id="newEnumValueRow">
-						<td colspan="5"><input type="text" id="newEnumValue" value="test"/>&nbsp;
-							<input type="button" onclick="FPINT.addNewEnumFieldValue();" value="<s:text name="common.add"/>" />
+						<td colspan="5"><textarea type="text" id="newEnumValue" cols="35" rows="20">&nbsp;</textarea>
+							<input type="button" onclick="FPINT.addNewEnumFieldValues();" value="<s:text name="common.add"/>" />
 						</td>
 					</tr>
 				</table>
