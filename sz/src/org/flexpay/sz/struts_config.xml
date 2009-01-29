@@ -6,12 +6,10 @@
 
 	<constant name="struts.custom.i18n.resources"
 			  value="org/flexpay/common/i18n/common-messages,
-			  org/flexpay/ab/i18n/errors,
-			  org/flexpay/ab/i18n/messages,
-			  org/flexpay/eirc/i18n/errors,
-			  org/flexpay/eirc/i18n/messages,
-			  org/flexpay/sz/i18n/errors,
-			  org/flexpay/sz/i18n/messages" />
+                     org/flexpay/ab/i18n/errors,org/flexpay/ab/i18n/messages,
+			         org/flexpay/bti/i18n/errors,org/flexpay/bti/i18n/messages,
+                     org/flexpay/eirc/i18n/errors,org/flexpay/eirc/i18n/messages,
+                     org/flexpay/sz/i18n/errors,org/flexpay/sz/i18n/messages" />
 
 	<package name="sz" namespace="/sz" extends="common">
 

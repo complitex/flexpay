@@ -4,7 +4,7 @@
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-	<package name="tc-rules-files" namespace="/tc" extends="common">
+	<package name="tc-tariffs" namespace="/tc" extends="common">
 
 		<!-- Tariffs -->
 		<action name="rulesFilesList" class="tariffCalcRulesFilesListAction">
@@ -14,6 +14,11 @@
         <action name="rulesFileEdit" class="tariffCalcRulesFileEditAction">
             <result name="input" type="tiles">tc.rules_file.edit</result>
             <result name="redirectSuccess" type="redirect-action">rulesFilesList</result>
+        </action>
+
+        <action name="calcResultExport" class="tariffCalcResultExportAction">
+            <result name="input" type="tiles">tc.calc_results.export</result>
+            <result name="redirectSuccess" type="redirect-action">calcResultExport</result>
         </action>
 
 	</package>

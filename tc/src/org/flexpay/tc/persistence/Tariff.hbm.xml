@@ -88,7 +88,7 @@
             </column>
         </property>
 
-        <property name="calculationDate">
+        <property name="calculationDate" type="date">
             <column name="calculation_date" not-null="true">
                 <comment>Calculation result calculation date</comment>
             </column>
@@ -205,6 +205,43 @@
         inner join fetch tcr.tariff
         where tcr.id = ?
     </query>
+
+    <query name="TariffCalculationResult.findUniqueDates">
+        select tcr.calculationDate
+        from TariffCalculationResult tcr
+        group by tcr.calculationDate
+        order by tcr.calculationDate
+    </query>
+
+    <query name="TariffCalculationResult.findBuildingsByCalcDate">
+        select b
+        from TariffCalculationResult tcr
+        inner join fetch tcr.building b
+        inner join fetch b.buildingses a
+        where tcr.calculationDate = ?
+    </query>
+
+    <query name="TariffCalculationResult.findBuildingsByCalcDate.count">
+        select count(*)
+        from TariffCalculationResult tcr
+        inner join fetch tcr.building b
+        where tcr.calculationDate = ?
+    </query>
+
+    <query name="TariffCalculationResult.findExternalId">
+        select c.externalId 
+        from DataCorrection c
+        inner join fetch c.dataSourceDescription ds
+        where c.internalObjectId = ? and c.objectType = ? and ds.id = ?
+    </query>
+
+    <query name="TariffCalculationResult.findByCalcDateAndBuildingId">
+        select distinct tcr
+        from TariffCalculationResult tcr
+        inner join fetch tcr.building b
+        where tcr.calculationDate = ? and b.id = ?
+    </query>
+
     <!-- end of tariff calculation result queries -->
 
     <!-- tariff calculation rules file queries -->

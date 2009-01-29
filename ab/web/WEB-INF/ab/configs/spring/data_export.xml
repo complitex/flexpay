@@ -70,8 +70,7 @@
 		<property name="identityTypeService" ref="identityTypeService" />
 	</bean>
 
-	<bean id="typeRegistryAb"
-		  class="org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry" />
+	<bean id="typeRegistryAb" class="org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry" />
 
 	<bean id="correctionsServiceAb"
 		  class="org.flexpay.common.service.importexport.imp.CorrectionsServiceImpl">

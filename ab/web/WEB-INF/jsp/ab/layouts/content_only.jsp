@@ -17,7 +17,7 @@
 	<script type="text/javascript" src="<c:url value="/resources/common/js/flexpay_common.js" />"></script>
 
 	<!-- main calendar program -->
-	<script type="text/javascript" src="<c:url value="/resources/common/js/jscalendar/calendar.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/common/js/jscalendar/calendar_stripped.js" />"></script>
 
 	<!-- language for the calendar -->
 	<!-- TODO: set language selector switchable -->
@@ -25,7 +25,7 @@
 
 	<!-- the following script defines the Calendar.setup helper function, which makes
 		 adding a calendar a matter of 1 or 2 lines of code. -->
-	<script type="text/javascript" src="<c:url value="/resources/common/js/jscalendar/calendar-setup.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/common/js/jscalendar/calendar-setup_stripped.js" />"></script>
 
 	<!-- Text field autocomplete script -->
 	<link rel="stylesheet" type="text/css"

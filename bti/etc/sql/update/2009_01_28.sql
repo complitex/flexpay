@@ -18,4 +18,4 @@ alter table bti_building_attribute_temp_values_tbl
 	foreign key (attribute_id)
 	references bti_building_attributes_tbl (id);
 
-update common_version_tbl set last_modified_date='2009-01-29', date_version=0;
+update common_version_tbl set last_modified_date='2009-01-28', date_version=0;

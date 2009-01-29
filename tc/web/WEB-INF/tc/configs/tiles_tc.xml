@@ -24,6 +24,11 @@
         <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_import.jsp" />
     </definition>
 
+    <definition name="tc.data" extends="tc.dictionaries">
+        <put-attribute name="title" value="tc.menu2.data" />
+        <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_data.jsp" />
+    </definition>
+
     <!-- sewer type related pages -->
     <definition name="tc.sewer_types.list" extends="tc.dictionaries">
         <put-attribute name="title" value="tc.sewer_types"/>
@@ -82,5 +87,10 @@
         <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_attributes_edit.jsp"/>
     </definition>
     <!-- end of building attributes related pages -->
+
+    <definition name="tc.calc_results.export" extends="tc.data">
+        <put-attribute name="title" value="tc.calc_result.export"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_result_export.jsp" />
+    </definition>
 
 </tiles-definitions>

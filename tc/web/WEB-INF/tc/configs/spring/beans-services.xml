@@ -18,7 +18,7 @@
     <bean parent="processManager">
         <property name="definitionPaths">
             <list>
-                <value>WEB-INF/sz/process</value>
+                <value>WEB-INF/tc/process</value>
             </list>
         </property>
     </bean>
