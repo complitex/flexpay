@@ -29,30 +29,30 @@
 	</bean>
 
 	<!-- Add hibernate statistics capablities -->
-	<bean id="hibernateStatistics" class="org.hibernate.jmx.StatisticsService"
-		  p:sessionFactory-ref="flexpaySessionFactory" />
+	<!--<bean id="hibernateStatistics" class="org.hibernate.jmx.StatisticsService"-->
+		  <!--p:sessionFactory-ref="flexpaySessionFactory" />-->
 
 	<!--
 		this bean needs to be eagerly pre-instantiated in order for the exporting to occur;
 		this means that it must not be marked as lazily initialized
   	-->
-	<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
-		<property name="beans">
-			<map>
-				<entry key="bean:name=hibernateStatistics${flexpay.module.name.common}" value-ref="hibernateStatistics" />
-			</map>
-		</property>
-		<property name="assembler">
-			<bean class="org.springframework.jmx.export.assembler.MethodNameBasedMBeanInfoAssembler">
-				<property name="methodMappings">
-					<props>
-						<prop key="bean:name=hibernateStatsMBean">
-						</prop>
-					</props>
-				</property>
-			</bean>
-		</property>
-	</bean>
+	<!--<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">-->
+		<!--<property name="beans">-->
+			<!--<map>-->
+				<!--<entry key="bean:name=hibernateStatistics${flexpay.module.name.common}" value-ref="hibernateStatistics" />-->
+			<!--</map>-->
+		<!--</property>-->
+		<!--<property name="assembler">-->
+			<!--<bean class="org.springframework.jmx.export.assembler.MethodNameBasedMBeanInfoAssembler">-->
+				<!--<property name="methodMappings">-->
+					<!--<props>-->
+						<!--<prop key="bean:name=hibernateStatsMBean">-->
+						<!--</prop>-->
+					<!--</props>-->
+				<!--</property>-->
+			<!--</bean>-->
+		<!--</property>-->
+	<!--</bean>-->
 
 	<!-- Create transaction manager  -->
 	<bean id="transactionManager"
