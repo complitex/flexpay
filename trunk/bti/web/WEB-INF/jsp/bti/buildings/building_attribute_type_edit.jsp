@@ -61,14 +61,25 @@
 				this.addNewEnumValue(fields[i]);
 			$('newEnumValue').value = "";
 		},
+		hasDuplicate : function(val) {
+			var values = this.getAllValues();
+			for (var i = 0; i < values.length; ++i) {
+				if (val == values[i]) {
+					return true;
+				}
+			}
+			return false;
+		},
 		addNewEnumValue : function(value) {
 			value = value.trim();
 			if (value.empty())
 				return;
+			if (this.hasDuplicate(value)) {
+				alert("<s:text name="common.diplicate"/>: " + value);
+				return;
+			}
 			// ok, do some magick
-			// hide previous element delete button and show move down button
-			if ($("enumDeleteBtn_"+this.maxIndex))
-				$("enumDeleteBtn_"+this.maxIndex).hide();
+			// show move down button
 			if ($("enumMvDwnBtn_"+this.maxIndex))
 				$("enumMvDwnBtn_"+this.maxIndex).show();
 			++this.maxIndex;
@@ -81,7 +92,7 @@
 							'<a href="javascript:FPINT.moveEnumValueDown('+this.maxIndex+');" style="display:none;" id="enumMvDwnBtn_'+this.maxIndex+'"><img ' +
 								'src="<s:url value="/resources/common/img/i_arrow_down.gif" includeParams="none"/>" alt="" /></a>'+
 					   '</td><td width="1%">'+
-							'<a href="javascript:FPINT.deleteEnumValue();" id="enumDeleteBtn_'+this.maxIndex+'"><img ' +
+							'<a href="javascript:FPINT.deleteEnumValue('+this.maxIndex+');" id="enumDeleteBtn_'+this.maxIndex+'"><img ' +
 								'src="<s:url value="/resources/common/img/i_delete.gif" includeParams="none"/>" alt="" /></a></td>'+
 					   '<td width="98%">'+'<input type="text" style="display:none" name="enumValues['+this.maxIndex+']" id="enumValue_'+
 					   this.maxIndex+'" value="'+value+'" onblur="FPINT.stopEditEnumValue('+this.maxIndex+')"/>'+
@@ -91,7 +102,11 @@
 			$('newEnumValueRow').insert({'before' : newTR});
 			newTR.insert(html);
 		},
-		deleteEnumValue : function() {
+		deleteEnumValue : function(i) {
+			while (i <= this.maxIndex) {
+				this.moveEnumValueDown(i);
+				++i;
+			}
 			$('enum_value_'+this.maxIndex).remove();
 			--this.maxIndex;
 			// hide previous element move down button and show delete button
@@ -99,6 +114,24 @@
 				$("enumDeleteBtn_"+this.maxIndex).show();
 			if ($("enumMvDwnBtn_"+this.maxIndex))
 				$("enumMvDwnBtn_"+this.maxIndex).hide();
+		},
+		setEnumValue : function (value, i) {
+			$("enumValue_"+i).value = value;
+			$("enumValueDisp_"+i).update(value);
+		},
+		getAllValues : function() {
+			var values = [];
+			for (var i = 1; i <= this.maxIndex; ++i) {
+				values.push($F("enumValue_"+i));
+			}
+			return values;
+		},
+		sortEnumValues : function() {
+			var values = this.getAllValues();
+			values.sort();
+			for (var j = 1; j <= this.maxIndex; ++j) {
+				this.setEnumValue(values[j-1], j);
+			}
 		}
 	};
 </script>
@@ -140,6 +173,7 @@
 					<tr id="newEnumValueRow">
 						<td colspan="5"><textarea type="text" id="newEnumValue" cols="35" rows="20">&nbsp;</textarea>
 							<input type="button" onclick="FPINT.addNewEnumFieldValues();" value="<s:text name="common.add"/>" />
+							<input type="button" onclick="FPINT.sortEnumValues();" value="<s:text name="common.sort"/>" />
 						</td>
 					</tr>
 				</table>
