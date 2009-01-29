@@ -20,6 +20,10 @@
             <result type="tiles">tc.configuration</result>
         </action>
 
+        <action name="data">
+            <result type="tiles">tc.data</result>
+        </action>
+
     </package>
 
 	<package name="building_attributes" namespace="/tc" extends="common">

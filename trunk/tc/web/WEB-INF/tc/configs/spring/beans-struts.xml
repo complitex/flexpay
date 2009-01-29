@@ -67,4 +67,9 @@
             p:buildingAttributeTypeService-ref="buildingAttributeTypeService"/>
     <!-- end of building attributes section -->
 
+    <bean id="tariffCalcResultExportAction" class="org.flexpay.tc.actions.tariff.TariffCalcResultExportAction"
+          p:tariffCalculationResultService-ref="tariffCalculationResultService"
+          p:processManager-ref="processManager"
+          scope="prototype"/>
+
 </beans>

@@ -7,10 +7,16 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="processTariffCalculationJob" class="org.flexpay.tc.process.ProcessTariffCalculationJob" scope="prototype"
+	<bean name="processTariffCalculationJob" class="org.flexpay.tc.process.ProcessTariffCalculationJob"
 		  p:tariffCalculationResultService-ref="tariffCalculationResultService"
           p:buildingService-ref="buildingService"
           p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
-          />
+          scope="prototype" />
+
+    <bean name="tariffCalcResultExportJob" class="org.flexpay.tc.process.TariffCalcResultExportJob"
+          p:dataSourceDescriptionId="${datasource.id}"
+          p:lockManager-ref="lockManager"
+          p:tariffCalculationResultsExportService-ref="tariffCalculationResultsExportService"
+          scope="prototype" />
 
 </beans>

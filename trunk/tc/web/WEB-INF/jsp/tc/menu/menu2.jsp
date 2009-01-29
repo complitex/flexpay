@@ -5,6 +5,7 @@
 	<tr class="secondtop">
 		<td class="second-padding"><a href="<s:url action="main" namespace="/tc" includeParams="none" />" class="menu2"><s:text name="tc.menu2.dictionaries"/></a></td>
 		<td class="second-padding"><a href="<s:url action="configuration" namespace="/tc" includeParams="none" />" class="menu2"><s:text name="tc.menu2.configuration"/></a></td>
+        <td class="second-padding"><a href="<s:url action="data" namespace="/tc" includeParams="none" />" class="menu2"><s:text name="tc.menu2.data"/></a></td>
 		<td width="100%">&nbsp;</td>
 	</tr>
 </table>
