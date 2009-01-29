@@ -21,7 +21,7 @@ public class RawBuildingsData extends RawData<BuildingAddress> {
 		possibleNames.add(FIELD_NUMBER);
 		possibleNames.add(FIELD_NUMBER_BULK);
 		possibleNames.add(FIELD_STREET);
-		possibleNames.add(FIELD_STREET);
+		possibleNames.add(FIELD_DISTRICT);
 	}
 
 	/**
