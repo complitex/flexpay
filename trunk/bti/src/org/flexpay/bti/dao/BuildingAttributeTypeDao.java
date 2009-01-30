@@ -11,4 +11,6 @@ public interface BuildingAttributeTypeDao extends GenericDao<BuildingAttributeTy
 	List<BuildingAttributeType> findTypes(Page<BuildingAttributeType> pager);
 
     List<BuildingAttributeType> findAllTypes();
+
+	List<BuildingAttributeType> findTypesByName(String typeName, String code);
 }

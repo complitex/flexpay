@@ -39,7 +39,7 @@ public class BuidingAttributeTypeDaoExtImpl extends HibernateDaoSupport implemen
 	 * @return <code>true</code> if this name is unique, or <code>false</code> otherwise
 	 */
 	public boolean isUniqueTypeName(String name, Long typeId) {
-		Object[] params = {name, typeId, typeId == null || typeId.equals(0L) ? 1 : 0};
+		Object[] params = {name, name, typeId, typeId == null || typeId.equals(0L) ? 1 : 0};
 		List<?> result = getHibernateTemplate().findByNamedQuery("BuildingAttributeType.checkUniqueName", params);
 		return result.isEmpty();
 	}

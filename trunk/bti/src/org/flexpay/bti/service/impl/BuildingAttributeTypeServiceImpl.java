@@ -13,12 +13,16 @@ import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Set;
 
 @Transactional (readOnly = true)
 public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeService {
+
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private BuildingAttributeTypeDao attributeTypeDao;
 	private BuildingAttributeTypeDaoExt attributeTypeDaoExt;
@@ -86,6 +90,16 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 			ex.addException(new FlexPayException("No default translation", "error.no_default_translation"));
 		}
 
+		if (type.getUniqueCode() != null) {
+			// check if the name is unique
+			boolean isUnique = attributeTypeDaoExt.isUniqueTypeName(type.getUniqueCode(), type.getId());
+			if (!isUnique) {
+				ex.addException(new FlexPayException(
+						"Not unique name", "bti.error.building.attribute.type.not_unique_code", type.getUniqueCode()));
+			}
+
+		}
+
 		// check enum type
 		if (type instanceof BuildingAttributeTypeEnum) {
 			// check if there is any values
@@ -132,7 +146,26 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
         return attributeTypeDao.findAllTypes();
     }
 
-    @Required
+	/**
+	 * Find attribute type by name
+	 *
+	 * @param typeName Type name to look up
+	 * @return type if found, or <code>null</code> otherwise
+	 */
+	public BuildingAttributeType findTypeByName(String typeName) {
+		List<BuildingAttributeType> types = attributeTypeDao.findTypesByName(typeName, typeName);
+		if (types.isEmpty()) {
+			return null;
+		}
+		if (types.size() > 1) {
+			log.error("Internal error, several attribute types found for name '{}'", typeName);
+			throw new IllegalStateException("Internal error, several attribute types found for name " + typeName);
+		}
+
+		return types.get(0);
+	}
+
+	@Required
 	public void setAttributeTypeDao(BuildingAttributeTypeDao attributeTypeDao) {
 		this.attributeTypeDao = attributeTypeDao;
 	}

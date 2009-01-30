@@ -50,7 +50,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
         building = buildingService.readFull(stub(building));
 
-        // alternatuve addresses loading
+        // alternative addresses loading
         for (BuildingAddress address : buildingService.getBuildingBuildings(building.getBuildingStub())) {
             if (!building.equals(address)) {
                 alternateBuildingsList.add(buildingService.readFull(stub(address)));

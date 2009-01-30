@@ -14,6 +14,7 @@ import java.util.Set;
  */
 public abstract class BuildingAttributeType extends DomainObjectWithStatus {
 
+	private String uniqueCode;
 	private BuildingAttributeGroup group;
 	private Set<BuildingAttributeTypeName> translations = Collections.emptySet();
 
@@ -43,8 +44,17 @@ public abstract class BuildingAttributeType extends DomainObjectWithStatus {
 		return translations;
 	}
 
+	@SuppressWarnings ({"UnusedDeclaration"})
 	private void setTranslations(Set<BuildingAttributeTypeName> translations) {
 		this.translations = translations;
+	}
+
+	public String getUniqueCode() {
+		return uniqueCode;
+	}
+
+	public void setUniqueCode(String uniqueCode) {
+		this.uniqueCode = uniqueCode;
 	}
 
 	/**

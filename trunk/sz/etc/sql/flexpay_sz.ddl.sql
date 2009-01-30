@@ -388,6 +388,7 @@
         id bigint not null auto_increment,
         discriminator varchar(255) not null comment 'Class hierarchy descriminator',
         group_id bigint not null comment 'Attribute group reference',
+        unique_code varchar(255) comment 'Internal unique code',
         primary key (id)
     ) comment='Building attribute types';
 

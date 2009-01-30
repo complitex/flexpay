@@ -27,6 +27,12 @@
 			</column>
 		</many-to-one>
 
+		<property name="uniqueCode">
+			<column name="unique_code" not-null="false">
+				<comment>Internal unique code</comment>
+			</column>
+		</property>
+
 		<set name="translations" inverse="true" cascade="all-delete-orphan">
 			<key column="attribute_type_id" not-null="true" />
 			<one-to-many class="BuildingAttributeTypeName" />
@@ -114,6 +120,13 @@
 
 	<query name="BuildingAttributeType.findAllTypes">
 		from BuildingAttributeType
+			left join fetch translations
+	</query>
+
+	<query name="BuildingAttributeType.findTypesByName">
+		from BuildingAttributeType t
+			left join translations n
+		where n.name=? or t.uniqueCode=?
 	</query>
 
 	<query name="BuildingAttributeTypeEnum.findValues">
@@ -124,7 +137,9 @@
 	<query name="BuildingAttributeType.checkUniqueName"><![CDATA[
 		select 1
 		from Dual
-		where exists(from BuildingAttributeTypeName where name=? and (translatable.id<>? or 1=?))
+		where exists(
+			from BuildingAttributeType t
+				left join t.translations tn where (tn.name=? or t.uniqueCode=?) and (t.id<>? or 1=?))
 		]]>
 	</query>
 
