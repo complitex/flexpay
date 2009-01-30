@@ -13,6 +13,7 @@
 
 	<bean id="buildingAttributeTypeEditAction" scope="prototype"
 		  class="org.flexpay.bti.actions.buildings.BuildingAttributeTypeEditAction"
+		  p:attributeGroupService-ref="buildingAttributeGroupService"
 		  p:attributeTypeService-ref="buildingAttributeTypeService" />
 
 </beans>

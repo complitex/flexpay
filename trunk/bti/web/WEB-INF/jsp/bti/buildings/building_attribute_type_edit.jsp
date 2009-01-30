@@ -162,6 +162,12 @@
 				</s:iterator>
 			</td>
 		</tr>
+		<tr valign="top" class="cols_1">
+			<td class="col"><s:text name="bti.building.attribute.type.group" />:</td>
+			<td class="col">
+				<%@ include file="../filters/building_attribute_group_filter.jsp" %>
+			</td>
+		</tr>
 		<tr valign="middle" class="cols_1" id="simple_fields"
 			<s:if test="typeName != 'simple'">style="display:none;"</s:if>>
 			<td class="col" colspan="2">&nbsp;</td>
@@ -170,14 +176,19 @@
 			<s:if test="typeName != 'enum'">style="display:none;"</s:if>>
 			<td class="col" colspan="2">
 				<table border="0" width="100%">
-					<tr><td width="60%"><s:text name="bti.building.attribute.type.enum.values" /></td>
-					<td width="64%" align="right"><input type="button" align="right" onclick="FPINT.sortEnumValues();"
-					   value="<s:text name="common.sort"/>" class="btn-exit" /></tr></table>
+					<tr>
+						<td width="60%"><s:text name="bti.building.attribute.type.enum.values" /></td>
+						<td width="64%" align="right"><input type="button" align="right"
+															 onclick="FPINT.sortEnumValues();"
+															 value="<s:text name="common.sort"/>" class="btn-exit" />
+					</tr>
+				</table>
 
 				<!-- All table build is done in JavaScript -->
 				<table border="0" width="100%">
 					<tr id="newEnumValueRow">
 						<td colspan="5">
+							<%--suppress CheckTagEmptyBody --%>
 							<textarea type="text" id="newEnumValue" class="form-textarea" cols="35"
 									  rows="15"></textarea>
 

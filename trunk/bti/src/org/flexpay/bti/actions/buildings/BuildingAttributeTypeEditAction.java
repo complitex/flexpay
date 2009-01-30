@@ -2,7 +2,9 @@ package org.flexpay.bti.actions.buildings;
 
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.bti.persistence.*;
+import org.flexpay.bti.persistence.filters.BuildingAttributeGroupFilter;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
+import org.flexpay.bti.service.BuildingAttributeGroupService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -18,8 +20,10 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 	private static final String TYPE_ENUM = "enum";
 
 	private BuildingAttributeTypeService attributeTypeService;
+	private BuildingAttributeGroupService attributeGroupService;
 
 	private BuildingAttributeType attributeType = new BuildingAttributeTypeSimple();
+	private BuildingAttributeGroupFilter buildingAttributeGroupFilter = new BuildingAttributeGroupFilter();
 	private Map<Long, String> names = treeMap();
 	private Map<Integer, String> enumValues = treeMap();
 
@@ -48,12 +52,17 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
+		attributeGroupService.initFilter(buildingAttributeGroupFilter);
+
 		if (!isSubmit()) {
 			attributeType = type;
 			if (type instanceof BuildingAttributeTypeSimple) {
 				typeName = TYPE_SIMPLE;
 			} else if (type instanceof BuildingAttributeTypeEnum) {
 				typeName = TYPE_ENUM;
+			}
+			if (type.isNotNew()) {
+				buildingAttributeGroupFilter.setSelectedId(type.getGroup().getId());
 			}
 			initEnumValues();
 			initTranslations();
@@ -67,6 +76,10 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 			} else if (TYPE_ENUM.equals(typeName)){
 				type = new BuildingAttributeTypeEnum(0L);
 			}
+		}
+
+		if (buildingAttributeGroupFilter.needFilter()) {
+			type.setGroup(new BuildingAttributeGroup(buildingAttributeGroupFilter.getSelectedStub()));
 		}
 
 		// init translations
@@ -163,8 +176,21 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 		this.enumValues = enumValues;
 	}
 
+	public BuildingAttributeGroupFilter getBuildingAttributeGroupFilter() {
+		return buildingAttributeGroupFilter;
+	}
+
+	public void setBuildingAttributeGroupFilter(BuildingAttributeGroupFilter buildingAttributeGroupFilter) {
+		this.buildingAttributeGroupFilter = buildingAttributeGroupFilter;
+	}
+
 	@Required
 	public void setAttributeTypeService(BuildingAttributeTypeService attributeTypeService) {
 		this.attributeTypeService = attributeTypeService;
+	}
+
+	@Required
+	public void setAttributeGroupService(BuildingAttributeGroupService attributeGroupService) {
+		this.attributeGroupService = attributeGroupService;
 	}
 }

@@ -3,10 +3,7 @@ package org.flexpay.bti.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.bti.dao.BuildingAttributeTypeDao;
 import org.flexpay.bti.dao.BuildingAttributeTypeDaoExt;
-import org.flexpay.bti.persistence.BuildingAttributeType;
-import org.flexpay.bti.persistence.BuildingAttributeTypeEnum;
-import org.flexpay.bti.persistence.BuildingAttributeTypeEnumValue;
-import org.flexpay.bti.persistence.BuildingAttributeTypeName;
+import org.flexpay.bti.persistence.*;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
@@ -108,6 +105,12 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 					values.add(value.getValue());
 				}
 			}
+		}
+
+		BuildingAttributeGroup group = type.getGroup();
+		if (group == null || group.isNew()) {
+			ex.addException(new FlexPayException(
+					"no group", "bti.error.building.attribute.type.no_group"));
 		}
 
 		if (ex.isNotEmpty()) {

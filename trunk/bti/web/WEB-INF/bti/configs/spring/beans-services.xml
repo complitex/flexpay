@@ -17,6 +17,9 @@
 		  p:attributeTypeDao-ref="buildingAttributeTypeDao"
 		  p:attributeTypeDaoExt-ref="attributeTypeDaoExt" />
 
+	<bean id="buildingAttributeGroupService" class="org.flexpay.bti.service.impl.BuildingAttributeGroupServiceImpl"
+		  p:groupDao-ref="buildingAttributeGroupDao" />
+
 	<bean id="buildingAttributeService" class="org.flexpay.bti.service.impl.BuildingAttributeServiceImpl"
 		  p:attributeDao-ref="buildingAttributeDao" />
 

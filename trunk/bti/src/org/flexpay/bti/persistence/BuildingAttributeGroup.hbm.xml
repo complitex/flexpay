@@ -64,16 +64,24 @@
 	<query name="BuildingAttributeGroup.readFull">
 		from BuildingAttributeGroup t
 			left join fetch t.translations
-		where t.id=?
+		where t.status=0 and t.id=?
+	</query>
+
+	<query name="BuildingAttributeGroup.findAllGroups">
+		from BuildingAttributeGroup t
+			left join fetch t.translations
+		where t.status=0
 	</query>
 
 	<query name="BuildingAttributeGroup.findGroups.count">
 		select count(t)
 		from BuildingAttributeGroup t
+		where t.status=0
 	</query>
 
 	<query name="BuildingAttributeGroup.findGroups">
-		from BuildingAttributeGroup
+		from BuildingAttributeGroup t
+		where t.status=0
 	</query>
 
 </hibernate-mapping>
