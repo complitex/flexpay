@@ -52,4 +52,13 @@ public interface BuildingAttributeTypeService {
 	 * @return list of building attributes
 	 */
 	List<BuildingAttributeType> listTypes();
+
+	/**
+	 * Find attribute type by name
+	 * 
+	 * @param typeName Type name to look up
+	 * @return type if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	BuildingAttributeType findTypeByName(String typeName);
 }

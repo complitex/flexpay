@@ -68,6 +68,7 @@
 	</query>
 
 	<query name="BuildingAttributeGroup.findAllGroups">
+		select distinct t
 		from BuildingAttributeGroup t
 			left join fetch t.translations
 		where t.status=0
