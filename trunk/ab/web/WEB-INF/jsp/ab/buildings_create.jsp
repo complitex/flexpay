@@ -34,17 +34,6 @@
 			</tr>
 		</s:iterator>
 
-        <tr valign="middle" class="cols_1">
-            <td class="col">
-                Обслуживающая организация
-            </td>
-            <td class="col">
-                
-                <s:select list="organizations" />
-                
-            </td>
-        </tr>
-
         <tr>
 			<td colspan="2">
 				<input type="submit" class="btn-exit" name="submitted" value="<s:text name="common.save"/>" />
