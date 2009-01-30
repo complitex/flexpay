@@ -359,6 +359,22 @@
         primary key (id)
     ) comment='Values for enumeration attribute types';
 
+    create table bti_building_attribute_type_group_names_tbl (
+        id bigint not null auto_increment,
+        name varchar(255) not null comment 'Translation value',
+        language_id bigint not null comment 'Language reference',
+        group_id bigint not null comment 'Building attribute type group reference',
+        primary key (id),
+        unique (language_id, group_id)
+    ) comment='Building attribute type translations';
+
+    create table bti_building_attribute_type_groups_tbl (
+        id bigint not null auto_increment,
+        version integer not null comment 'Optimistic lock version',
+        status integer not null comment 'Enabled/disabled status',
+        primary key (id)
+    ) comment='Building attribute type groups';
+
     create table bti_building_attribute_type_names_tbl (
         id bigint not null auto_increment,
         name varchar(255) not null comment 'Translation value',
@@ -371,6 +387,7 @@
     create table bti_building_attribute_types_tbl (
         id bigint not null auto_increment,
         discriminator varchar(255) not null comment 'Class hierarchy descriminator',
+        group_id bigint not null comment 'Attribute group reference',
         primary key (id)
     ) comment='Building attribute types';
 
@@ -1476,6 +1493,18 @@
         foreign key (attribute_type_enum_id) 
         references bti_building_attribute_types_tbl (id);
 
+    alter table bti_building_attribute_type_group_names_tbl 
+        add index FK_bti_building_attribute_type_group_names_tbl_group_id (group_id), 
+        add constraint FK_bti_building_attribute_type_group_names_tbl_group_id 
+        foreign key (group_id) 
+        references bti_building_attribute_type_groups_tbl (id);
+
+    alter table bti_building_attribute_type_group_names_tbl 
+        add index FK_bti_building_attribute_type_names_tbl_language_id (language_id), 
+        add constraint FK_bti_building_attribute_type_names_tbl_language_id 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
     alter table bti_building_attribute_type_names_tbl 
         add index bti_building_attribute_type_names_tbl_attribute_type_id (attribute_type_id), 
         add constraint bti_building_attribute_type_names_tbl_attribute_type_id 
@@ -1487,6 +1516,12 @@
         add constraint bti_building_attribute_type_names_tbl_language_id 
         foreign key (language_id) 
         references common_languages_tbl (id);
+
+    alter table bti_building_attribute_types_tbl 
+        add index bti_building_attribute_types_tbl (group_id), 
+        add constraint bti_building_attribute_types_tbl 
+        foreign key (group_id) 
+        references bti_building_attribute_type_groups_tbl (id);
 
     alter table bti_building_attributes_tbl 
         add index bti_building_attributes_tbl_attribute_type_id (attribute_type_id), 

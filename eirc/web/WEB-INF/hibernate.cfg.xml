@@ -49,6 +49,7 @@
 		<mapping resource="org/flexpay/bti/persistence/Sewer.hbm.xml" />
 		<mapping resource="org/flexpay/bti/persistence/BuildingAttribute.hbm.xml" />
 		<mapping resource="org/flexpay/bti/persistence/BuildingAttributeType.hbm.xml" />
+		<mapping resource="org/flexpay/bti/persistence/BuildingAttributeGroup.hbm.xml" />
 
 		<mapping resource="org/flexpay/eirc/persistence/BuildingBase.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/ServedBuilding.hbm.xml" />

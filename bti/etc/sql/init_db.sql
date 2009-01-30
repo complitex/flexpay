@@ -1,6 +1,15 @@
 INSERT INTO common_flexpay_modules_tbl (name) VALUES ('bti');
 SELECT @module_bti:=last_insert_id();
 
+-- init building attribute group
+insert into bti_building_attribute_type_groups_tbl (id, version, status)
+	values (1, 0, 0);
+select @attribute_group_1:=1;
+insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
+	values ('Другие', @ru_id, @attribute_group_1);
+insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
+	values ('Other', @en_id, @attribute_group_1);
+
 -- init simple building attributes
 insert into bti_building_attribute_types_tbl (id, discriminator) values (1, 'simple');
 select @attr_type_color:=1;
