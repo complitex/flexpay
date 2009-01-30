@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		org.flexpay.common.dao.paging.AllTests.class,
 		TestCorrectionsDao.class,
-		TestMeasureUnitDao.class
+		TestMeasureUnitDao.class,
+		TestCountOptimize.class
 		})
 public class AllTests {
 

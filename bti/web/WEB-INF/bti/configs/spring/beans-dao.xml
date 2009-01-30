@@ -50,6 +50,15 @@
 		  p:attributeTypeDao-ref="buildingAttributeTypeDao"
 		  p:attributeTypeEnumDao-ref="buildingAttributeTypeEnumDao" />
 
+	<bean id="buildingAttributeGroupDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeGroupDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.bti.persistence.BuildingAttributeGroup" />
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="buildingAttributeDao" parent="abstractDao">
 		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeDao" />
 		<property name="target">
