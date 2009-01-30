@@ -224,6 +224,7 @@
     <query name="TariffCalculationResult.findByCalcDateAndAddressId">
         select distinct tcr
         from TariffCalculationResult tcr
+        inner join fetch tcr.tariff
         inner join tcr.building b
         left join b.buildingses a
         where tcr.calculationDate = ? and a.id = ?

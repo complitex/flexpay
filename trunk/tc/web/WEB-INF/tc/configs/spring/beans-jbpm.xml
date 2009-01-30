@@ -14,6 +14,11 @@
           scope="prototype" />
 
     <bean name="tariffCalcResultExportJob" class="org.flexpay.tc.process.TariffCalcResultExportJob"
+          p:jdbcDriverClassName="${jdbc.export.driverClassName}"
+          p:jdbcUrl="${jdbc.export.url}"
+          p:jdbcUsername="${jdbc.export.username}"
+          p:jdbcPassword="${jdbc.export.password}"
+          p:procedure="${stored-procedure}"
           p:dataSourceDescriptionId="${datasource.id}"
           p:lockManager-ref="lockManager"
           p:classToTypeRegistry-ref="typeRegistryAb"
