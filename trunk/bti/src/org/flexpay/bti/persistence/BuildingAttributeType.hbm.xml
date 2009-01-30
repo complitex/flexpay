@@ -20,6 +20,13 @@
 			</column>
 		</discriminator>
 
+		<many-to-one name="group" foreign-key="bti_building_attribute_types_tbl"
+					 class="BuildingAttributeGroup">
+			<column name="group_id" not-null="true">
+				<comment>Attribute group reference</comment>
+			</column>
+		</many-to-one>
+
 		<set name="translations" inverse="true" cascade="all-delete-orphan">
 			<key column="attribute_type_id" not-null="true" />
 			<one-to-many class="BuildingAttributeTypeName" />
@@ -92,7 +99,7 @@
 
 	<query name="BuildingAttributeType.readFull">
 		from BuildingAttributeType t
-			left join fetch t.translations
+		left join fetch t.translations
 		where t.id=?
 	</query>
 
@@ -105,9 +112,9 @@
 		from BuildingAttributeType
 	</query>
 
-    <query name="BuildingAttributeType.findAllTypes">
-        from BuildingAttributeType
-    </query>
+	<query name="BuildingAttributeType.findAllTypes">
+		from BuildingAttributeType
+	</query>
 
 	<query name="BuildingAttributeTypeEnum.findValues">
 		from BuildingAttributeTypeEnumValue v

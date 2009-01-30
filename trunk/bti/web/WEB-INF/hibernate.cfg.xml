@@ -47,6 +47,7 @@
 		<mapping resource="org/flexpay/bti/persistence/BuildingBase.hbm.xml" />
         <mapping resource="org/flexpay/bti/persistence/BuildingAttribute.hbm.xml" />
         <mapping resource="org/flexpay/bti/persistence/BuildingAttributeType.hbm.xml" />
+        <mapping resource="org/flexpay/bti/persistence/BuildingAttributeGroup.hbm.xml" />
 
 		<!-- common.Languages -->
 		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />

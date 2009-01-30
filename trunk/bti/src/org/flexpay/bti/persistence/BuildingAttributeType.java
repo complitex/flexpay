@@ -14,7 +14,8 @@ import java.util.Set;
  */
 public abstract class BuildingAttributeType extends DomainObjectWithStatus {
 
-	Set<BuildingAttributeTypeName> translations = Collections.emptySet();
+	private BuildingAttributeGroup group;
+	private Set<BuildingAttributeTypeName> translations = Collections.emptySet();
 
 	/**
 	 * Constructs a new DomainObject.
@@ -30,11 +31,19 @@ public abstract class BuildingAttributeType extends DomainObjectWithStatus {
 		super(stub.getId());
 	}
 
+	public BuildingAttributeGroup getGroup() {
+		return group;
+	}
+
+	public void setGroup(BuildingAttributeGroup group) {
+		this.group = group;
+	}
+
 	public Set<BuildingAttributeTypeName> getTranslations() {
 		return translations;
 	}
 
-	public void setTranslations(Set<BuildingAttributeTypeName> translations) {
+	private void setTranslations(Set<BuildingAttributeTypeName> translations) {
 		this.translations = translations;
 	}
 
