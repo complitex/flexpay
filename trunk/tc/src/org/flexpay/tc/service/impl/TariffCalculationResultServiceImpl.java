@@ -2,7 +2,6 @@ package org.flexpay.tc.service.impl;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.tc.dao.TariffCalculationResultDao;
-import org.flexpay.tc.dao.TariffCalculationResultDaoExt;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.jetbrains.annotations.NotNull;
@@ -27,12 +26,16 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 		return tariffCalculationResultDao.readFull(stub.getId());
 	}
 
-	public List<TariffCalculationResult> getTariffCalcResultsByCalcDateAndBuildingId(@NotNull Date calcDate, @NotNull Long buildingId) {
-		return tariffCalculationResultDao.findByCalcDateAndBuildingId(calcDate, buildingId);
+	public List<TariffCalculationResult> getTariffCalcResultsByCalcDateAndAddressId(@NotNull Date calcDate, @NotNull Long addressId) {
+		return tariffCalculationResultDao.findByCalcDateAndAddressId(calcDate, addressId);
 	}
 
 	public List<Date> getUniqueDates() {
 		return tariffCalculationResultDao.findUniqueDates();
+	}
+
+	public List<Long> getAddressIds(Date calcDate) {
+		return tariffCalculationResultDao.findBuildingAddressIdsByCalcDate(calcDate);
 	}
 
 	@Required

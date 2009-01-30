@@ -207,39 +207,26 @@
     </query>
 
     <query name="TariffCalculationResult.findUniqueDates">
-        select tcr.calculationDate
+        select distinct tcr.calculationDate
         from TariffCalculationResult tcr
         group by tcr.calculationDate
         order by tcr.calculationDate
     </query>
 
-    <query name="TariffCalculationResult.findBuildingsByCalcDate">
-        select b
+    <query name="TariffCalculationResult.findBuildingAddressIdsByCalcDate">
+        select distinct a.id
         from TariffCalculationResult tcr
-        inner join fetch tcr.building b
-        inner join fetch b.buildingses a
+        inner join tcr.building b
+        left join b.buildingses a
         where tcr.calculationDate = ?
     </query>
 
-    <query name="TariffCalculationResult.findBuildingsByCalcDate.count">
-        select count(*)
-        from TariffCalculationResult tcr
-        inner join fetch tcr.building b
-        where tcr.calculationDate = ?
-    </query>
-
-    <query name="TariffCalculationResult.findExternalId">
-        select c.externalId 
-        from DataCorrection c
-        inner join fetch c.dataSourceDescription ds
-        where c.internalObjectId = ? and c.objectType = ? and ds.id = ?
-    </query>
-
-    <query name="TariffCalculationResult.findByCalcDateAndBuildingId">
+    <query name="TariffCalculationResult.findByCalcDateAndAddressId">
         select distinct tcr
         from TariffCalculationResult tcr
-        inner join fetch tcr.building b
-        where tcr.calculationDate = ? and b.id = ?
+        inner join tcr.building b
+        left join b.buildingses a
+        where tcr.calculationDate = ? and a.id = ?
     </query>
 
     <!-- end of tariff calculation result queries -->

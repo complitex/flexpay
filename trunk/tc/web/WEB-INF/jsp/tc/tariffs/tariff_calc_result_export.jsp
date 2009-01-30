@@ -16,7 +16,7 @@
         </tr>
         <tr valign="middle">
             <td colspan="2">
-                <input type="submit" id="submitted" name="submitted" value="<s:text name="tc.calc_result.export" />" />
+                <input type="submit" id="submitted" name="submitted" value="<s:text name="tc.calc_result.export" />" class="btn-exit" />
             </td>
         </tr>
     </table>

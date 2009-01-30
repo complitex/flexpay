@@ -108,6 +108,10 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 		return correction;
 	}
 
+	public String getExternalId(@NonNls Long internalId, int type, Long dataSourceDescriptionId) {
+		return correctionsDao.getExternalId(internalId, type, dataSourceDescriptionId);
+	}
+
 	/**
 	 * Setter for property 'typeRegistry'.
 	 *

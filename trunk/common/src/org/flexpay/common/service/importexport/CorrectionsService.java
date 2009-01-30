@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.NonNls;
 
 public interface CorrectionsService {
 
@@ -47,6 +48,8 @@ public interface CorrectionsService {
 	 */
 	@NotNull
 	DataCorrection getStub(String externalId, DomainObject obj, DataSourceDescription sourceDescription);
+
+	String getExternalId(@NonNls Long internalId, int type, Long dataSourceDescriptionId);
 
 	/**
 	 * Delete correction

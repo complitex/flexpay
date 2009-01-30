@@ -36,7 +36,4 @@
         </property>
     </bean>
 
-    <bean id="tariffCalculationResultDaoExt" class="org.flexpay.tc.dao.impl.TariffCalculationResultDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
-
 </beans>
