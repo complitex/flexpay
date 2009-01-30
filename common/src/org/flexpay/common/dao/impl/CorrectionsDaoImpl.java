@@ -114,6 +114,18 @@ public class CorrectionsDaoImpl extends SimpleJdbcDaoSupport implements Correcti
 		return result.isEmpty() ? null : (Long) result.get(0);
 	}
 
+	@Nullable
+	public String getExternalId(final Long internalId, final int type,
+							  final Long dataSourceDescriptionId) {
+
+		Object[] params = {internalId, type, dataSourceDescriptionId};
+		List result = getJdbcTemplate().query("select external_object_id from common_data_corrections_tbl " +
+											  "where internal_object_id=? and object_type=? and data_source_description_id=?",
+				params, new SingleColumnRowMapper(String.class));
+
+		return result.isEmpty() ? null : (String) result.get(0);
+	}
+
 	private Long getInternalCommonId(final String externalId, final int type) {
 		Object[] params = {externalId, type};
 		List result = getJdbcTemplate().query("select internal_object_id from common_data_corrections_tbl " +

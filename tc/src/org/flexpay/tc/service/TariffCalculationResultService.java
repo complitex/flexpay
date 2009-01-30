@@ -17,9 +17,12 @@ public interface TariffCalculationResultService {
 	TariffCalculationResult read(@NotNull Stub<TariffCalculationResult> stub);
 
 	@Secured(Roles.TARIFF_CALCULATION_RESULT_READ)
-	List<TariffCalculationResult> getTariffCalcResultsByCalcDateAndBuildingId(@NotNull Date calcDate, @NotNull Long buildingId);
+	List<TariffCalculationResult> getTariffCalcResultsByCalcDateAndAddressId(@NotNull Date calcDate, @NotNull Long buildingId);
 
 	@Secured(Roles.TARIFF_CALCULATION_RESULT_READ)
 	List<Date> getUniqueDates();
+
+	@Secured(Roles.TARIFF_CALCULATION_RESULT_READ)
+	List<Long> getAddressIds(Date calcDate);
 
 }

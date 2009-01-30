@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class Tariff extends DomainObjectWithStatus {
 
-	private Long subServiceCode;
+	private String subServiceCode;
 	private Set<TariffTranslation> translations = Collections.emptySet();
 
 	public Tariff() {
@@ -26,11 +26,11 @@ public class Tariff extends DomainObjectWithStatus {
 		super(stub.getId());
 	}
 
-	public Long getSubServiceCode() {
+	public String getSubServiceCode() {
 		return subServiceCode;
 	}
 
-	public void setSubServiceCode(Long subServiceCode) {
+	public void setSubServiceCode(String subServiceCode) {
 		this.subServiceCode = subServiceCode;
 	}
 

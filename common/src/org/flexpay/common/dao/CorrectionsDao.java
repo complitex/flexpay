@@ -35,6 +35,9 @@ public interface CorrectionsDao {
 	@Nullable
 	<T extends DomainObject> Stub<T> findCorrection(@NonNls String externalId, int type, Class<T> cls, DataSourceDescription sd);
 
+	@Nullable
+	String getExternalId(@NonNls Long internalId, int type, Long dataSourceDescriptionId);
+
 	/**
 	 * Check if correction exists
 	 *

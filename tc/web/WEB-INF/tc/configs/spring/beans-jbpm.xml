@@ -16,7 +16,9 @@
     <bean name="tariffCalcResultExportJob" class="org.flexpay.tc.process.TariffCalcResultExportJob"
           p:dataSourceDescriptionId="${datasource.id}"
           p:lockManager-ref="lockManager"
-          p:tariffCalculationResultsExportService-ref="tariffCalculationResultsExportService"
+          p:classToTypeRegistry-ref="typeRegistryAb"
+          p:correctionsService-ref="correctionsServiceAb"
+          p:tariffCalculationResultService-ref="tariffCalculationResultService"
           scope="prototype" />
 
 </beans>
