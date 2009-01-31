@@ -1,6 +1,12 @@
 package org.flexpay.bti.persistence;
 
+import org.flexpay.common.util.CollectionUtils;
+
+import java.util.Map;
+
 public class BuildingAttributeConfig {
+
+	private static final Map<String, Boolean> temporalFlags = CollectionUtils.map();
 
 	// 7 G	№ участка
 	public static final String ATTR_SECTION_NUMBER = "building_attribute_section_number";
@@ -45,7 +51,7 @@ public class BuildingAttributeConfig {
 	// 27 AA площадь крови (шифер)
 	public static final String ATTR_HARD_SLATE_ROOF_SQUARE = "";
 	// 28 AB площадь крови (металлическая)
-	public static final String ATTR_HARD_METAL_ROOF_SQUARE  = "";
+	public static final String ATTR_HARD_METAL_ROOF_SQUARE = "";
 	// 29 AC площадь подвалов
 	public static final String ATTR_BASEMENT_SQUARE = "";
 	// 30 AD площадь тех.этажей
@@ -229,5 +235,9 @@ public class BuildingAttributeConfig {
 	public static final String ATTR_COMMON_PLACES_LIGHTENING_WITHOUT_ONEFLOOR_HOUSES = "";
 	// 121 DQ кол-во контейнеров для сбора ТБО
 	public static final String ATTR_TBO_CONTAINER_NUMBER = "";
+
+	static {
+		temporalFlags.put(ATTR_SECTION_NUMBER, false);
+	}
 
 }
