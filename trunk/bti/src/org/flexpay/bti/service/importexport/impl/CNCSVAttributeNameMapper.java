@@ -1,8 +1,11 @@
 package org.flexpay.bti.service.importexport.impl;
 
 import org.flexpay.bti.service.importexport.AttributeNameMapper;
+import static org.flexpay.bti.persistence.BuildingAttributeConfig.*;
 
 public class CNCSVAttributeNameMapper implements AttributeNameMapper {
+
+
 
 	/**
 	 * Get name of the n-th attribute, returned <code>null</code> is for unknown position of attribute
@@ -11,7 +14,9 @@ public class CNCSVAttributeNameMapper implements AttributeNameMapper {
 	 * @return Attribute name
 	 */
 	public String getName(int n) {
-		// todo implement me using config
-		return null;
+
+		switch(n) {
+			default: return null;
+		}
 	}
 }

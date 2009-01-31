@@ -119,13 +119,13 @@
 	</query>
 
 	<query name="BuildingAttributeType.findAllTypes">
-		from BuildingAttributeType
-			left join fetch translations
+		from BuildingAttributeType t
+			left join fetch t.translations
 	</query>
 
 	<query name="BuildingAttributeType.findTypesByName">
 		from BuildingAttributeType t
-			left join translations n
+			left join t.translations n
 		where n.name=? or t.uniqueCode=?
 	</query>
 
