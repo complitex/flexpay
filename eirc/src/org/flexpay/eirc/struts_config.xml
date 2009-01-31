@@ -19,7 +19,8 @@
 		</action>
 
         <action name="doSpFileUploadAjax" class="spFileUploadAjaxAction">
-            <result name="success" type="rawtext"/>
+            <result>/WEB-INF/jsp/eirc/import/response.jsp</result>
+            <result name="error">/WEB-INF/jsp/eirc/import/response.jsp</result>
         </action>
 
 		<action name="spFileCreate" class="spFileCreateAction">

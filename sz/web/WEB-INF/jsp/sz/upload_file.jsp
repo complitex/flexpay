@@ -27,7 +27,7 @@
             </tr>
             <tr>
                 <td colspan="3" id="fileRaw">
-                    <s:text name="sz.file" />&nbsp;<s:file id="" name="upload" label="File" required="true" size="75" onchange="setFile(this);" />
+                    <s:text name="common.file" />&nbsp;<s:file id="" name="upload" label="File" required="true" size="75" onchange="setFile(this);" />
                 </td>
             </tr>
         </table>
@@ -105,7 +105,7 @@
     function validateForm() {
         var fileEl = $("inputForm").elements["upload"];
         if (fileEl.value == null || fileEl.value == "") {
-            alert("<s:text name="error.sz_file.upload.empty_file_field" />");
+            alert("<s:text name="common.file.upload.error.empty_file_field" />");
             return false;
         }
         return true;
@@ -149,8 +149,8 @@
         if (!uploaded || (uploaded && wait)) {
             var fileValue = $("uploadForm" + (newBlocks - 1)).elements["upload"].value;
             var index = fileValue.lastIndexOf("\\") + (Prototype.Browser.IE ? 1 : 0);
-            $("ajaxResponse" + (newBlocks - 1)).innerHTML = "<s:text name="sz.file" /> \"" + fileValue.substring(index)
-                    + "\": <s:text name="sz.file_upload.progress_bar.waiting" />";
+            $("ajaxResponse" + (newBlocks - 1)).innerHTML = "<s:text name="common.file" /> \"" + fileValue.substring(index)
+                    + "\": <s:text name="common.file_upload.progress_bar.waiting" />";
         }
         if (!started) {
             started = true;
@@ -168,7 +168,7 @@
             uploadingId = stack[0];
             var fileValue = $("uploadForm" + uploadingId).elements["upload"].value;
             var index = fileValue.lastIndexOf("\\") + (Prototype.Browser.IE ? 1 : 0);
-            uploadingFilename = "<s:text name="sz.file" /> \"" + fileValue.substring(index) + "\": ";
+            uploadingFilename = "<s:text name="common.file" /> \"" + fileValue.substring(index) + "\": ";
             stack.remove(0);
             $("uploadForm" + uploadingId).submit();
             setTimeout(getProgress, 1000);
@@ -197,10 +197,10 @@
                 if (bodyFrame != null && bodyFrame.innerHTML != null && bodyFrame.innerHTML != "") {
                     if (bodyFrame.innerHTML == "success") {
                         ajaxResponse.style.color = "#008000";
-                        ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.loaded" />";
+                        ajaxResponse.innerHTML = uploadingFilename + "<s:text name="common.file_upload.progress_bar.loaded" />";
                         wait = false;
                     } else if (bodyFrame.innerHTML == "error") {
-                        ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.error" />";
+                        ajaxResponse.innerHTML = uploadingFilename + "<s:text name="common.file_upload.progress_bar.error" />";
                         wait = false;
                     }
                 }
@@ -226,11 +226,11 @@
     function updatePage() {
         if (xmlHttp.readyState == 4 && xmlHttp.responseText != null && xmlHttp.responseText != "") {
             var ajaxResponse = $("ajaxResponse" + uploadingId);
-            ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.loading" /> " + xmlHttp.responseText + "%";
+            ajaxResponse.innerHTML = uploadingFilename + "<s:text name="common.file_upload.progress_bar.loading" /> " + xmlHttp.responseText + "%";
             if (xmlHttp.responseText == "100") {
                 uploaded = true;
                 wait = true;
-                ajaxResponse.innerHTML = uploadingFilename + "<s:text name="sz.file_upload.progress_bar.processing" />";
+                ajaxResponse.innerHTML = uploadingFilename + "<s:text name="common.file_upload.progress_bar.processing" />";
                 curRetry = 0;
                 setTimeout(uploadWait, 100);;
                 return true;

@@ -1,8 +1,6 @@
 package org.flexpay.eirc.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
-import org.apache.struts2.interceptor.SessionAware;
-import org.flexpay.common.actions.interceptor.UserPreferencesAware;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
@@ -12,22 +10,20 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.File;
-import java.util.Map;
 
-public class UploadFileAction implements UserPreferencesAware, SessionAware {
+public class UploadFileAction extends ActionSupport {
 
 	@NonNls
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
-	private Map sessionMap;
-	private String rnd;
-	private String stringResult;
+	String message = "success";
+
 	private File upload;
 	private String uploadFileName;
 	private String uploadContentType;
-	private FPFile spFile;
 
     private String moduleName;
     private FPFileService fpFileService;
@@ -35,39 +31,56 @@ public class UploadFileAction implements UserPreferencesAware, SessionAware {
 
 	@NotNull
 	public String execute() {
-		if (uploadFileName == null) {
-			return ActionSupport.SUCCESS;
-		}
 
+		if (uploadFileName == null) {
+			log.warn("Error: uploadFileName is null");
+			setMessage(ERROR);
+			return ERROR;
+		}
+/*
+		FPFileType fileType = fpFileService.getTypeByFileName(uploadFileName, moduleName);
+		if (fileType == null) {
+			log.warn("Unknown file type");
+			setMessage(ERROR);
+			return ERROR;
+		}
+*/
+
+		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 		try {
-			spFile = new FPFile();
+			FPFile spFile = new FPFile();
 			spFile.setModule(fpFileService.getModuleByName(moduleName));
 			spFile.setOriginalName(uploadFileName);
-			spFile.setUserName(getUserPreferences().getUserName());
+			spFile.setUserName(userName);
 			File fileOnSystem = FPFileUtil.saveToFileSystem(spFile, upload);
 			spFile.setNameOnServer(fileOnSystem.getName());
 			spFile.setSize(fileOnSystem.length());
 
-			log.debug("Creating FlexPayFile: {}", spFile);
 			fpFileService.create(spFile);
 			log.info("File uploaded {}", spFile);
 		} catch (Exception e) {
 			log.error("Unknown file type", e);
+			setMessage(ERROR);
+			return ERROR;
 		}
 
-		return ActionSupport.SUCCESS;
+		return SUCCESS;
 	}
 
-	public FPFile getSpFile() {
-		return spFile;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setUpload(File upload) {
-		this.upload = upload;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	public File getUpload() {
 		return upload;
+	}
+
+	public void setUpload(File upload) {
+		this.upload = upload;
 	}
 
 	public void setUploadFileName(String uploadFileName) {
@@ -80,34 +93,6 @@ public class UploadFileAction implements UserPreferencesAware, SessionAware {
 
 	public String getUploadContentType() {
 		return uploadContentType;
-	}
-
-	public void setUserPreferences(UserPreferences userPreferences) {
-		this.userPreferences = userPreferences;
-	}
-
-	public UserPreferences getUserPreferences() {
-		return userPreferences;
-	}
-
-	public void setSession(Map sessionMap) {
-		this.sessionMap = sessionMap;
-	}
-
-	public String getRnd() {
-		return rnd;
-	}
-
-	public void setRnd(String rnd) {
-		this.rnd = rnd;
-	}
-
-	public String getStringResult() {
-		return stringResult;
-	}
-
-	public void setStringResult(String stringResult) {
-		this.stringResult = stringResult;
 	}
 
 	@Required
