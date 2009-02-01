@@ -1,10 +1,10 @@
 package org.flexpay.bti.service;
 
-import com.sun.istack.internal.Nullable;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.bti.persistence.BtiBuilding;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface BtiBuildingService {
 
