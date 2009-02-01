@@ -23,4 +23,8 @@
 	<bean id="buildingAttributeService" class="org.flexpay.bti.service.impl.BuildingAttributeServiceImpl"
 		  p:attributeDao-ref="buildingAttributeDao" />
 
+	<bean id="btiBuildingService" class="org.flexpay.bti.service.impl.BtiBuildingServiceImpl"
+		  p:buildingDao-ref="buildingDao"
+		  p:btiBuildingDaoExt-ref="btiBuildingDaoExt" />
+
 </beans>

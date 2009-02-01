@@ -8,4 +8,7 @@
     <import resource="beans-cache.xml" />
     <import resource="beans-actions.xml" />
 
+	<import resource="beans-importexport.xml" />
+	<import resource="beans-jobs.xml" />
+
 </beans>

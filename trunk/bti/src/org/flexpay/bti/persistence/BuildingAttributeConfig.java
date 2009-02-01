@@ -240,4 +240,15 @@ public class BuildingAttributeConfig {
 		temporalFlags.put(ATTR_SECTION_NUMBER, false);
 	}
 
+	/**
+	 * Check if attribute type with this name is configured to be temporal, unknown attribute types are considered to be
+	 * simple
+	 *
+	 * @param attributeName Attribute type to check
+	 * @return <code>true</code> if attribute with this name should be temporal, or <code>false</code> otherwise
+	 */
+	public static boolean isTemporal(String attributeName) {
+		Boolean value = temporalFlags.get(attributeName);
+		return value != null && value;
+	}
 }

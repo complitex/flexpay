@@ -85,4 +85,14 @@ public class BtiBuilding extends Building {
 		attribute.setValueForDates(value, begin, end);
 		setAttribute(attribute);
 	}
+
+	public void addAttribute(BuildingAttributeBase attribute) {
+		//noinspection CollectionsFieldAccessReplaceableByMethodCall
+		if (attributes == Collections.EMPTY_SET) {
+			attributes = CollectionUtils.set();
+		}
+
+		attribute.setBuilding(this);
+		attributes.add(attribute);
+	}
 }
