@@ -1,14 +1,19 @@
 package org.flexpay.bti.service.importexport.impl;
 
 import au.com.bytecode.opencsv.CSVReader;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.bti.service.importexport.AttributeDataValidator;
 import org.flexpay.bti.service.importexport.AttributeNameMapper;
 import org.flexpay.bti.service.importexport.BuildingAttributeData;
+import org.flexpay.bti.service.importexport.BuildingAttributesImporter;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,10 +21,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class CSVBuildingAttributesImporter {
+public class CSVBuildingAttributesImporter implements BuildingAttributesImporter {
 
 	private AttributeNameMapper attributeNameMapper;
 	private CorrectionsService correctionsService;
+	private DataSourceDescription sourceDescription;
 
 	private Set<AttributeDataValidator> validators = Collections.emptySet();
 
@@ -45,6 +51,11 @@ public class CSVBuildingAttributesImporter {
 			data.setBuildingNumber(values[indx++]);
 			data.setExternalId(values[indx++]);
 
+			findBuilding(data, plog);
+			if (!data.isBuildingFound()) {
+				continue;
+			}
+
 			for (int n = indx; n < values.length; ++n) {
 				String attrName = attributeNameMapper.getName(n);
 				if (attrName != null) {
@@ -52,13 +63,28 @@ public class CSVBuildingAttributesImporter {
 				}
 			}
 
-			if (validate(data, plog)) {
-				datum.add(data);
+			if (!validate(data, plog)) {
+				continue;
 			}
+
+			datum.add(data);
 		}
 
 		plog.debug("Ended importing building attributes");
 		return datum;
+	}
+
+	private void findBuilding(BuildingAttributeData data, Logger plog) {
+
+		Stub<BuildingAddress> addressStub = correctionsService.findCorrection(
+				data.getExternalId(), BuildingAddress.class, sourceDescription);
+		if (addressStub != null) {
+			data.setBuildingAddress(addressStub);
+			return;
+		}
+
+		plog.info("Building not found by external id {}", data.getExternalId());
+		// todo find building by address
 	}
 
 	private boolean validate(BuildingAttributeData data, Logger plog) {
@@ -76,4 +102,18 @@ public class CSVBuildingAttributesImporter {
 		return result;
 	}
 
+	@Required
+	public void setAttributeNameMapper(AttributeNameMapper attributeNameMapper) {
+		this.attributeNameMapper = attributeNameMapper;
+	}
+
+	@Required
+	public void setCorrectionsService(CorrectionsService correctionsService) {
+		this.correctionsService = correctionsService;
+	}
+
+	@Required
+	public void setSourceDescription(DataSourceDescription sourceDescription) {
+		this.sourceDescription = sourceDescription;
+	}
 }

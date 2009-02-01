@@ -1,14 +1,14 @@
 package org.flexpay.bti.service.importexport;
 
-import org.flexpay.bti.persistence.BtiBuilding;
+import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 
-import java.util.Set;
 import java.util.Map;
 
 public class BuildingAttributeData implements Cloneable {
 
-	private BtiBuilding building;
+	private Stub<BuildingAddress> buildingAddress;
 
 	private String rowNum;
 	private String streetName;
@@ -19,12 +19,12 @@ public class BuildingAttributeData implements Cloneable {
 	private String externalId;
 	private Map<String, String> name2Values = CollectionUtils.map();
 
-	public BtiBuilding getBuilding() {
-		return building;
+	public Stub<BuildingAddress> getBuildingAddress() {
+		return buildingAddress;
 	}
 
-	public void setBuilding(BtiBuilding building) {
-		this.building = building;
+	public void setBuildingAddress(Stub<BuildingAddress> buildingAddress) {
+		this.buildingAddress = buildingAddress;
 	}
 
 	public String getRowNum() {
@@ -98,5 +98,9 @@ public class BuildingAttributeData implements Cloneable {
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
+	}
+
+	public boolean isBuildingFound() {
+		return buildingAddress != null;
 	}
 }

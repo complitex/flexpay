@@ -68,4 +68,7 @@
 		</property>
 	</bean>
 
+	<bean id="btiBuildingDaoExt" class="org.flexpay.bti.dao.impl.BtiBuildingDaoExtImpl"
+		  p:sessionFactory-ref="flexpaySessionFactory" />
+
 </beans>

@@ -48,5 +48,11 @@
 			p:masterIndexBoundsDao-ref="masterIndexBoundsDao"
 			p:masterIndexProvider-ref="masterIndexProvider" />
 
+	<bean id="cnDataSourceDescription" class="org.flexpay.common.persistence.DataSourceDescription">
+		<!-- TODO Here put the CN data source ID -->
+		<constructor-arg index="0" value="${cn.data.source.description.id}" />
+	</bean>
+
+
 
 </beans>

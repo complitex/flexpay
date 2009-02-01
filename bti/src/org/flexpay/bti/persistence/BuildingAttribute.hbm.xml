@@ -83,4 +83,26 @@
 		where building.id=?
 	</query>
 
+	<query name="BuildingAttributeBase.readSimpleAttributes">
+		from BuildingAttribute a
+		where a.building.id=?
+	</query>
+
+	<query name="BuildingAttributeBase.readTmpAttributes">
+		from BuildingTempAttribute a
+			left join fetch a.values
+		where a.building.id=?
+	</query>
+
+	<query name="BtiBuilding.find">
+		from BtiBuilding
+		where id=?
+	</query>
+
+	<query name="BtiBuilding.findByAddress">
+		from BtiBuilding b
+			left join b.buildingses addr
+		where addr.id=?
+	</query>
+
 </hibernate-mapping>
