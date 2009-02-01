@@ -105,7 +105,8 @@
 
 	<query name="BuildingAttributeType.readFull">
 		from BuildingAttributeType t
-		left join fetch t.translations
+			left join fetch t.translations
+			left join fetch t.group 
 		where t.id=?
 	</query>
 
