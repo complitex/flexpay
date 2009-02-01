@@ -68,7 +68,7 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 		uploadFileAction.setUploadFileName(name);
 
 		assertEquals("Invalid Struts action result", ActionSupport.SUCCESS, uploadFileAction.execute());
-		return uploadFileAction.getSpFile();
+		return uploadFileAction.getFpFile();
 	}
 
 	protected void deleteFile(FPFile file) {

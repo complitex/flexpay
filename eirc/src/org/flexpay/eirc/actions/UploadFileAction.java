@@ -1,36 +1,29 @@
 package org.flexpay.eirc.actions;
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
-import org.flexpay.common.util.config.UserPreferences;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.File;
 
-public class UploadFileAction extends ActionSupport {
-
-	@NonNls
-	protected Logger log = LoggerFactory.getLogger(getClass());
+public class UploadFileAction extends FPActionSupport {
 
 	String message = "success";
 
+	private FPFile fpFile;
 	private File upload;
 	private String uploadFileName;
 	private String uploadContentType;
 
-    private String moduleName;
-    private FPFileService fpFileService;
-	protected UserPreferences userPreferences;
+	private String moduleName;
+	private FPFileService fpFileService;
 
 	@NotNull
-	public String execute() {
+	public String doExecute() {
 
 		if (uploadFileName == null) {
 			log.warn("Error: uploadFileName is null");
@@ -48,16 +41,16 @@ public class UploadFileAction extends ActionSupport {
 
 		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 		try {
-			FPFile spFile = new FPFile();
-			spFile.setModule(fpFileService.getModuleByName(moduleName));
-			spFile.setOriginalName(uploadFileName);
-			spFile.setUserName(userName);
-			File fileOnSystem = FPFileUtil.saveToFileSystem(spFile, upload);
-			spFile.setNameOnServer(fileOnSystem.getName());
-			spFile.setSize(fileOnSystem.length());
+			fpFile = new FPFile();
+			fpFile.setModule(fpFileService.getModuleByName(moduleName));
+			fpFile.setOriginalName(uploadFileName);
+			fpFile.setUserName(userName);
+			File fileOnSystem = FPFileUtil.saveToFileSystem(fpFile, upload);
+			fpFile.setNameOnServer(fileOnSystem.getName());
+			fpFile.setSize(fileOnSystem.length());
 
-			fpFileService.create(spFile);
-			log.info("File uploaded {}", spFile);
+			fpFileService.create(fpFile);
+			log.info("File uploaded {}", fpFile);
 		} catch (Exception e) {
 			log.error("Unknown file type", e);
 			setMessage(ERROR);
@@ -65,6 +58,18 @@ public class UploadFileAction extends ActionSupport {
 		}
 
 		return SUCCESS;
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@NotNull
+	protected String getErrorResult() {
+		return ERROR;
 	}
 
 	public String getMessage() {
@@ -95,10 +100,14 @@ public class UploadFileAction extends ActionSupport {
 		return uploadContentType;
 	}
 
+	public FPFile getFpFile() {
+		return fpFile;
+	}
+
 	@Required
-    public void setModuleName(String moduleName) {
-        this.moduleName = moduleName;
-    }
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
 
 	@Required
 	public void setFpFileService(FPFileService fpFileService) {
