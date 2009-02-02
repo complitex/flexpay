@@ -94,7 +94,10 @@ public class FPFileUtil {
 		String name = fpFile.getOriginalName();
 		String localPath = getLocalDirPath(fpFile.getModule().getName(), fpFile.getCreationDate());
 		File localDir = new File(localPath);
-		localDir.mkdirs();
+		if (!localDir.exists() && !localDir.mkdirs()) {
+			throw new IOException("Failed creating localDir: " + localDir);
+		}
+
 		File fileOnServer = File.createTempFile(getFileNameWithoutExtension(name) + "_", StringUtil.getFileExtension(name), localDir);
 
 		OutputStream os = new BufferedOutputStream(new FileOutputStream(fileOnServer));

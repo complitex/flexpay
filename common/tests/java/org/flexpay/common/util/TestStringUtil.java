@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
-import java.util.List;
 import java.math.BigDecimal;
+import java.util.List;
 
 public class TestStringUtil {
 
@@ -76,5 +76,12 @@ public class TestStringUtil {
 		assertEquals("Invalid digit 1", "0", StringUtil.getDigit(BigDecimal.ZERO, -3));
 		assertEquals("Invalid digit 1", "0", StringUtil.getDigit(BigDecimal.ZERO, 0));
 		assertEquals("Invalid digit 1", "0", StringUtil.getDigit(BigDecimal.ZERO, 123));
+	}
+
+	@Test
+	public void testGetFileName() {
+		String fName = "/org/flexpay/bti/service/importexport/26.12.2008.csv";
+		assertEquals("invalid getFileName ", "26.12.2008.csv", StringUtil.getFileName(fName));
+		assertEquals("invalid getExtension ", ".csv", StringUtil.getFileExtension(fName));
 	}
 }
