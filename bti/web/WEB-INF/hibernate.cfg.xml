@@ -7,6 +7,20 @@
 	<!-- a SessionFactory instance listed as /jndi/name -->
 	<session-factory name="flexpay">
 
+		<!-- common.Languages -->
+		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
+		<!-- common.Sequences -->
+		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/MasterIndex.hbm.xml" />
+		<!-- common.ImportErrors -->
+		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
+		<!-- Dual virtual table -->
+		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
+        <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
+        <mapping resource="org/flexpay/common/persistence/FPFile.hbm.xml" />
+
 		<!-- Countries -->
 		<mapping resource="org/flexpay/ab/persistence/Country.hbm.xml" />
 
@@ -48,25 +62,6 @@
         <mapping resource="org/flexpay/bti/persistence/BuildingAttribute.hbm.xml" />
         <mapping resource="org/flexpay/bti/persistence/BuildingAttributeType.hbm.xml" />
         <mapping resource="org/flexpay/bti/persistence/BuildingAttributeGroup.hbm.xml" />
-
-		<!-- common.Languages -->
-		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
-
-		<!-- common.Sequences -->
-		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
-		<mapping resource="org/flexpay/common/persistence/MasterIndex.hbm.xml" />
-
-		<!-- common.ImportErrors -->
-		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
-
-		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
-
-		<!-- Dual virtual table -->
-		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
-
-		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
-
-        <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
 
 	</session-factory>
 

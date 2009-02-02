@@ -9,12 +9,14 @@ import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.junit.Test;
+import static org.junit.Assert.assertFalse;
 import org.apache.commons.io.IOUtils;
 
 import java.util.Date;
 import java.util.Map;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.io.File;
 
 public class TestImportBuildingAttributes extends SpringBeanAwareTestCase {
 
@@ -36,7 +38,13 @@ public class TestImportBuildingAttributes extends SpringBeanAwareTestCase {
 		InputStream is = getFileStream("org/flexpay/bti/service/importexport/26.12.2008.csv");
 
 		try {
-			fpFile = FPFileUtil.saveToFileSystem(fpFile, is);
+			File serverFile = FPFileUtil.saveToFileSystem(fpFile, is);
+			fpFile.setNameOnServer(serverFile.getPath());
+			fpFile.setSize(serverFile.length());
+			fileService.create(fpFile);
+			log.info("File uploaded {}", fpFile);
+
+			assertFalse("saveToFileSystem failed, file is still new", fpFile.isNew());
 		} finally {
 			IOUtils.closeQuietly(is);
 		}
