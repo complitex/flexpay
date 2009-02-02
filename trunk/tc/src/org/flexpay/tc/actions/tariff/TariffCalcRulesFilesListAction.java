@@ -1,7 +1,6 @@
 package org.flexpay.tc.actions.tariff;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.tc.persistence.TariffCalculationRulesFile;
 import org.flexpay.tc.service.TariffCalculationRulesFileService;
 import org.jetbrains.annotations.NotNull;
@@ -10,9 +9,8 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.Collections;
 import java.util.List;
 
-public class TariffCalcRulesFilesListAction extends FPActionSupport {
+public class TariffCalcRulesFilesListAction extends FPActionWithPagerSupport<TariffCalculationRulesFile> {
 
-	private Page<TariffCalculationRulesFile> pager = new Page<TariffCalculationRulesFile>();
 	private List<TariffCalculationRulesFile> rulesFiles = Collections.emptyList();
 
 	private TariffCalculationRulesFileService tariffCalculationRulesFileService;
@@ -20,7 +18,7 @@ public class TariffCalcRulesFilesListAction extends FPActionSupport {
 	@NotNull
 	public String doExecute() {
 
-		rulesFiles = tariffCalculationRulesFileService.listTariffCalculationRulesFiles(pager);
+		rulesFiles = tariffCalculationRulesFileService.listTariffCalculationRulesFiles(getPager());
 
 		return SUCCESS;
 	}
@@ -40,14 +38,6 @@ public class TariffCalcRulesFilesListAction extends FPActionSupport {
 
 	public List<TariffCalculationRulesFile> getRulesFiles() {
 		return rulesFiles;
-	}
-
-	public Page<TariffCalculationRulesFile> getPager() {
-		return pager;
-	}
-
-	public void setPager(Page<TariffCalculationRulesFile> pager) {
-		this.pager = pager;
 	}
 
 	@Required

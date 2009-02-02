@@ -4,13 +4,15 @@ import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
 public class StreetTypesListAction extends FPActionSupport {
 
-	private StreetTypeService streetTypeService;
 	private List<StreetTypeTranslation> translationList;
+
+	private StreetTypeService streetTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -32,16 +34,13 @@ public class StreetTypesListAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	/**
-	 * Setter for property 'streetTypeService'.
-	 *
-	 * @param streetTypeService Value to set for property 'streetTypeService'.
-	 */
+	public List<StreetTypeTranslation> getTranslationList() {
+		return translationList;
+	}
+
+	@Required
 	public void setStreetTypeService(StreetTypeService streetTypeService) {
 		this.streetTypeService = streetTypeService;
 	}
 
-	public List<StreetTypeTranslation> getTranslationList() {
-		return translationList;
-	}
 }

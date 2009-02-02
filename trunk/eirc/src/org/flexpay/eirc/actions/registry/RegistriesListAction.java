@@ -1,7 +1,7 @@
 package org.flexpay.eirc.actions.registry;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
+import org.apache.commons.lang.time.DateUtils;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
@@ -9,20 +9,19 @@ import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.flexpay.eirc.service.OrganizationService;
 import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.SpRegistryTypeService;
-import org.apache.commons.lang.time.DateUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 import java.util.List;
 
-public class RegistriesListAction extends FPActionSupport {
+public class RegistriesListAction extends FPActionWithPagerSupport {
 
 	private OrganizationFilter senderOrganizationFilter = new OrganizationFilter();
 	private OrganizationFilter recipientOrganizationFilter = new OrganizationFilter();
 	private RegistryTypeFilter registryTypeFilter = new RegistryTypeFilter();
 	private Date fromDate = DateUtils.addMonths(DateUtil.currentMonth(), -2);
 	private Date tillDate = new Date();
-	private Page pager = new Page();
 
 	private List<SpRegistry> registries;
 
@@ -39,7 +38,7 @@ public class RegistriesListAction extends FPActionSupport {
 		registryTypeService.initFilter(registryTypeFilter);
 
 		registries = registryService.findObjects(senderOrganizationFilter, recipientOrganizationFilter,
-				registryTypeFilter, fromDate, tillDate, pager);
+				registryTypeFilter, fromDate, tillDate, getPager());
 
 		return SUCCESS;
 	}
@@ -105,23 +104,19 @@ public class RegistriesListAction extends FPActionSupport {
 		tillDate = DateUtil.parseDate(dt, DateUtil.now());
 	}
 
+	@Required
 	public void setRegistryService(RegistryService registryService) {
 		this.registryService = registryService;
 	}
 
+	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
 	}
 
+	@Required
 	public void setRegistryTypeService(SpRegistryTypeService registryTypeService) {
 		this.registryTypeService = registryTypeService;
 	}
 
-	public Page getPager() {
-		return pager;
-	}
-
-	public void setPager(Page pager) {
-		this.pager = pager;
-	}
 }

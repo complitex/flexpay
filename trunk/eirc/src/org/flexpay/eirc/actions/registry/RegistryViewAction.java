@@ -1,7 +1,6 @@
 package org.flexpay.eirc.actions.registry;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
@@ -15,23 +14,23 @@ import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
 
-public class RegistryViewAction extends FPActionSupport {
+public class RegistryViewAction extends FPActionWithPagerSupport<RegistryRecord> {
+
+	private SpRegistry registry = new SpRegistry();
+	private List<RegistryRecord> records = Collections.emptyList();
+
+	private ImportErrorTypeFilter importErrorTypeFilter = new ImportErrorTypeFilter();
+	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
 
 	private RegistryService registryService;
 	private ServiceTypeService serviceTypeService;
 	private RegistryRecordService registryRecordService;
 	private ClassToTypeRegistry classToTypeRegistry;
-
-	private SpRegistry registry = new SpRegistry();
-	private List<RegistryRecord> records = Collections.emptyList();
-	private Page<RegistryRecord> pager = new Page<RegistryRecord>();
-
-	private ImportErrorTypeFilter importErrorTypeFilter = new ImportErrorTypeFilter();
-	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -41,10 +40,10 @@ public class RegistryViewAction extends FPActionSupport {
 		}
 		importErrorTypeFilter.init(classToTypeRegistry);
 		registry = registryService.read(stub(registry));
-		records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, pager);
+		records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, getPager());
 
 		log.info(String.format("pager: size %d, total %d, first %d",
-				pager.getPageSize(), pager.getTotalNumberOfElements(), pager.getThisPageFirstElementNumber()));
+				getPager().getPageSize(), getPager().getTotalNumberOfElements(), getPager().getThisPageFirstElementNumber()));
 
 		return SUCCESS;
 	}
@@ -75,14 +74,6 @@ public class RegistryViewAction extends FPActionSupport {
 		this.registry = registry;
 	}
 
-	public Page<RegistryRecord> getPager() {
-		return pager;
-	}
-
-	public void setPager(Page<RegistryRecord> pager) {
-		this.pager = pager;
-	}
-
 	public ImportErrorTypeFilter getImportErrorTypeFilter() {
 		return importErrorTypeFilter;
 	}
@@ -107,19 +98,24 @@ public class RegistryViewAction extends FPActionSupport {
 		this.records = records;
 	}
 
+	@Required
 	public void setRegistryService(RegistryService registryService) {
 		this.registryService = registryService;
 	}
 
+	@Required
 	public void setRegistryRecordService(RegistryRecordService registryRecordService) {
 		this.registryRecordService = registryRecordService;
 	}
 
+	@Required
 	public void setClassToTypeRegistry(ClassToTypeRegistry classToTypeRegistry) {
 		this.classToTypeRegistry = classToTypeRegistry;
 	}
 
+	@Required
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
 		this.serviceTypeService = serviceTypeService;
 	}
+
 }

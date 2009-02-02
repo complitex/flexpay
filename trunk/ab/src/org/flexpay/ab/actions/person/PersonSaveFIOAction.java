@@ -1,12 +1,12 @@
 package org.flexpay.ab.actions.person;
 
-import org.flexpay.common.actions.FPActionSupport;
-import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
-import org.flexpay.ab.persistence.IdentityType;
-import org.flexpay.ab.service.PersonService;
 import org.flexpay.ab.service.IdentityTypeService;
+import org.flexpay.ab.service.PersonService;
+import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 
 public class PersonSaveFIOAction extends FPActionSupport {

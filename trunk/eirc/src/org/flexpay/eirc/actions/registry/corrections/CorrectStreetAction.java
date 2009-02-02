@@ -7,13 +7,14 @@ import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.service.RegistryRecordService;
+import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class CorrectStreetAction extends StreetsListAction {
 
@@ -94,19 +95,24 @@ public class CorrectStreetAction extends StreetsListAction {
 		this.record = record;
 	}
 
+	@Required
 	public void setConsumersDataSource(RawConsumersDataSource consumersDataSource) {
 		this.consumersDataSource = consumersDataSource;
 	}
 
+	@Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
 	}
 
+	@Required
 	public void setRecordService(RegistryRecordService recordService) {
 		this.recordService = recordService;
 	}
 
+	@Required
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
 		this.serviceTypeService = serviceTypeService;
 	}
+
 }

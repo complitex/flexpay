@@ -1,7 +1,6 @@
 package org.flexpay.eirc.actions.organization;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.eirc.service.BankService;
 import org.flexpay.eirc.service.PaymentPointService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;

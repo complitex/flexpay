@@ -5,7 +5,6 @@ import org.flexpay.ab.actions.buildings.BuildingsActionsBase;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.service.ApartmentService;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.util.CollectionUtils;
@@ -23,7 +22,6 @@ public class ApartmentsListAction extends BuildingsActionsBase {
 	protected TownFilter townFilter = new TownFilter();
 	protected StreetNameFilter streetNameFilter = new StreetNameFilter();
 	protected BuildingsFilter buildingsFilter = new BuildingsFilter();
-	private Page pager = new Page();
 
 	private List<Apartment> apartments = CollectionUtils.list();
 
@@ -46,7 +44,7 @@ public class ApartmentsListAction extends BuildingsActionsBase {
 		filters = parentService.initFilters(filters, userPreferences.getLocale());
 		setFilters(filters);
 
-		apartments = apartmentService.getApartments(filters, pager);
+		apartments = apartmentService.getApartments(filters, getPager());
 
 		return SUCCESS;
 	}
@@ -181,24 +179,6 @@ public class ApartmentsListAction extends BuildingsActionsBase {
 	 */
 	public List<Apartment> getApartments() {
 		return apartments;
-	}
-
-	/**
-	 * Getter for property 'pager'.
-	 *
-	 * @return Value for property 'pager'.
-	 */
-	public Page getPager() {
-		return pager;
-	}
-
-	/**
-	 * Setter for property 'pager'.
-	 *
-	 * @param pager Value to set for property 'pager'.
-	 */
-	public void setPager(Page pager) {
-		this.pager = pager;
 	}
 
 	public void setApartmentService(ApartmentService apartmentService) {

@@ -2,27 +2,26 @@ package org.flexpay.eirc.actions.organization;
 
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.AddressService;
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ServiceOrganizationListServedBuildingsAction extends FPActionSupport {
-
-	private ServiceOrganizationService serviceOrganizationService;
-    private AddressService addressService;
+public class ServiceOrganizationListServedBuildingsAction extends FPActionWithPagerSupport<ServedBuilding> {
 
 	private ServiceOrganization serviceOrganization = new ServiceOrganization();
-    private Page<ServedBuilding> pager = new Page<ServedBuilding>();
 	private List<ServedBuilding> buildings = Collections.emptyList();
     private List<String> addresses = Collections.emptyList();
+
+	private AddressService addressService;
+	private ServiceOrganizationService serviceOrganizationService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -38,7 +37,7 @@ public class ServiceOrganizationListServedBuildingsAction extends FPActionSuppor
             return SUCCESS;
         }
 
-		buildings = serviceOrganizationService.findServedBuildings(new Stub<ServiceOrganization>(serviceOrganization.getId()), pager);
+		buildings = serviceOrganizationService.findServedBuildings(new Stub<ServiceOrganization>(serviceOrganization.getId()), getPager());
 
         if (buildings == null || buildings.size() == 0) {
             return SUCCESS;
@@ -74,14 +73,6 @@ public class ServiceOrganizationListServedBuildingsAction extends FPActionSuppor
         return buildings;
     }
 
-    public Page<ServedBuilding> getPager() {
-        return pager;
-    }
-
-    public void setPager(Page<ServedBuilding> pager) {
-        this.pager = pager;
-    }
-
     public ServiceOrganization getServiceOrganization() {
         return serviceOrganization;
     }
@@ -90,10 +81,12 @@ public class ServiceOrganizationListServedBuildingsAction extends FPActionSuppor
         this.serviceOrganization = serviceOrganization;
     }
 
+	@Required
     public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
         this.serviceOrganizationService = serviceOrganizationService;
     }
 
+	@Required
     public void setAddressService(AddressService addressService) {
         this.addressService = addressService;
     }

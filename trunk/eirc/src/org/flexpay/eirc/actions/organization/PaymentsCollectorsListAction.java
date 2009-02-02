@@ -1,13 +1,12 @@
 package org.flexpay.eirc.actions.organization;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.eirc.persistence.PaymentsCollector;
 import org.flexpay.eirc.persistence.Organization;
-import org.flexpay.eirc.service.PaymentsCollectorService;
+import org.flexpay.eirc.persistence.PaymentsCollector;
 import org.flexpay.eirc.service.OrganizationService;
+import org.flexpay.eirc.service.PaymentsCollectorService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
@@ -15,18 +14,17 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.Collections;
 import java.util.List;
 
-public class PaymentsCollectorsListAction extends FPActionSupport {
+public class PaymentsCollectorsListAction extends FPActionWithPagerSupport<PaymentsCollector> {
+
+	private List<PaymentsCollector> instances = Collections.emptyList();
 
 	private OrganizationService organizationService;
 	private PaymentsCollectorService collectorService;
 
-	private Page<PaymentsCollector> pager = new Page<PaymentsCollector>();
-	private List<PaymentsCollector> instances = Collections.emptyList();
-
 	@NotNull
 	public String doExecute() throws Exception {
 
-		instances = collectorService.listInstances(pager);
+		instances = collectorService.listInstances(getPager());
 
 		return SUCCESS;
 	}
@@ -55,15 +53,6 @@ public class PaymentsCollectorsListAction extends FPActionSupport {
 		return getTranslation(persistent.getNames()).getName();
 	}
 	
-
-	public Page<PaymentsCollector> getPager() {
-		return pager;
-	}
-
-	public void setPager(Page<PaymentsCollector> pager) {
-		this.pager = pager;
-	}
-
 	public List<PaymentsCollector> getInstances() {
 		return instances;
 	}
@@ -77,4 +66,5 @@ public class PaymentsCollectorsListAction extends FPActionSupport {
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
 	}
+
 }

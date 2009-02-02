@@ -95,7 +95,7 @@
                 <input type="button" class="btn-exit" onclick="doAction('deleteFromDB');" value="<s:text name="sz.file_list.action.delete_from_db" />" />
                 &nbsp;
                 <input type="button" class="btn-exit" onclick="location.reload();" value="<s:text name="sz.file_list.refresh_list" />" />
-                <input id="action1" type="hidden" name="action1" value="loadToDB" />
+                <input id="action1" type="hidden" name="" value="loadToDB" />
                 <input type="hidden" name="pager.pageNumber" value="<s:property value="%{pager.pageNumber}"/>"/>
             </td>
         </tr>
@@ -110,6 +110,7 @@
 <script type="text/javascript">
 
     function doAction(action) {
+        $('action1').name = "action1";
         $('action1').value = action;
         var form = $('fObjects');
         form.action = "<s:url action="/szFileOperation" />";

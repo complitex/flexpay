@@ -5,23 +5,23 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.dao.paging.Page;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
 
 public class EircAccountCreateForm1Action extends BuildingsFilterDependentAction {
 
-	private ApartmentService apartmentService;
-
 	private List<Apartment> apartments = Collections.emptyList();
+
+	private ApartmentService apartmentService;
 
 	@NotNull
 	public String doExecute() {
 
 		initFilters();
 		if (getFiltersError() == null) {
-			Page pager = new Page();
-			pager.setPageSize(10000);
+			Page pager = new Page(10000);
 			apartments = apartmentService.getApartments(getFilters(), pager);
 		}
 
@@ -41,16 +41,15 @@ public class EircAccountCreateForm1Action extends BuildingsFilterDependentAction
 	}
 
 	/**
-	 * @param apartmentService the apartmentService to set
-	 */
-	public void setApartmentService(ApartmentService apartmentService) {
-		this.apartmentService = apartmentService;
-	}
-
-	/**
 	 * @return the apartments
 	 */
 	public List<Apartment> getApartments() {
 		return apartments;
 	}
+
+	@Required
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
+	}
+
 }

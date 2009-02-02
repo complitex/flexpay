@@ -1,25 +1,24 @@
 package org.flexpay.eirc.actions.service;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
 
-public class ServiceTypesListAction extends FPActionSupport {
+public class ServiceTypesListAction extends FPActionWithPagerSupport<ServiceType> {
+
+	private List<ServiceType> serviceTypes = Collections.emptyList();
 
 	private ServiceTypeService serviceTypeService;
-
-	private Page<ServiceType> pager = new Page<ServiceType>();
-	private List<ServiceType> serviceTypes = Collections.emptyList();
 
 	@NotNull
 	public String doExecute() throws Exception {
 
-		serviceTypes = serviceTypeService.listServiceTypes(pager);
+		serviceTypes = serviceTypeService.listServiceTypes(getPager());
 
 		return SUCCESS;
 	}
@@ -40,15 +39,9 @@ public class ServiceTypesListAction extends FPActionSupport {
 		return serviceTypes;
 	}
 
-	public Page<ServiceType> getPager() {
-		return pager;
-	}
-
-	public void setPager(Page<ServiceType> pager) {
-		this.pager = pager;
-	}
-
+	@Required
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
 		this.serviceTypeService = serviceTypeService;
 	}
+
 }

@@ -2,9 +2,9 @@ package org.flexpay.eirc.actions.organization;
 
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.PaymentPoint;
 import org.flexpay.eirc.persistence.PaymentsCollector;
-import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.filters.PaymentsCollectorFilter;
 import org.flexpay.eirc.service.PaymentPointService;
 import org.flexpay.eirc.service.PaymentsCollectorService;

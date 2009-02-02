@@ -1,9 +1,9 @@
 package org.flexpay.eirc.actions.registry;
 
 import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.jetbrains.annotations.NotNull;
 

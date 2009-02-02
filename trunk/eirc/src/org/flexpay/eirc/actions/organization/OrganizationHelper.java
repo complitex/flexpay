@@ -1,12 +1,12 @@
 package org.flexpay.eirc.actions.organization;
 
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.OrganizationInstance;
 import org.flexpay.eirc.service.OrganizationService;
-import static org.flexpay.common.persistence.Stub.stub;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Locale;

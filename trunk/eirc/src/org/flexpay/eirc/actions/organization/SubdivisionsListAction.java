@@ -1,14 +1,14 @@
 package org.flexpay.eirc.actions.organization;
 
 import org.flexpay.common.actions.FPActionSupport;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.exception.FlexPayException;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.Subdivision;
-import org.flexpay.eirc.service.SubdivisionService;
 import org.flexpay.eirc.service.OrganizationService;
-import org.jetbrains.annotations.Nullable;
+import org.flexpay.eirc.service.SubdivisionService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;

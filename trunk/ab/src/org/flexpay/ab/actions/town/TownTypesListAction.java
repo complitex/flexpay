@@ -4,12 +4,15 @@ import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
 public class TownTypesListAction extends FPActionSupport {
-	private TownTypeService townTypeService;
+
 	private List<TownTypeTranslation> translationList;
+
+	private TownTypeService townTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -31,16 +34,13 @@ public class TownTypesListAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	/**
-	 * Setter for property 'townTypeService'.
-	 *
-	 * @param townTypeService Value to set for property 'townTypeService'.
-	 */
+	public List<TownTypeTranslation> getTranslationList() {
+		return translationList;
+	}
+
+	@Required
 	public void setTownTypeService(TownTypeService townTypeService) {
 		this.townTypeService = townTypeService;
 	}
 
-	public List<TownTypeTranslation> getTranslationList() {
-		return translationList;
-	}
 }

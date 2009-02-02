@@ -2,11 +2,11 @@ package org.flexpay.eirc.actions.quittance;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.filter.BeginDateFilter;
+import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.persistence.filter.BeginDateFilter;
-import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.eirc.persistence.filters.ServiceOrganizationFilter;
 import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;

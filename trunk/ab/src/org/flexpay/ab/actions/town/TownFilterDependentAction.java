@@ -1,10 +1,12 @@
 package org.flexpay.ab.actions.town;
 
 import org.apache.commons.collections.ArrayStack;
+import org.flexpay.ab.persistence.AddressAttribute;
 import org.flexpay.ab.persistence.AddressAttributeTypeTranslation;
 import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.persistence.AddressAttribute;
-import org.flexpay.ab.persistence.filters.*;
+import org.flexpay.ab.persistence.filters.CountryFilter;
+import org.flexpay.ab.persistence.filters.RegionFilter;
+import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.ObjectFilter;

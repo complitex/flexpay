@@ -6,11 +6,11 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.eirc.persistence.QuittancePayment;
 import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.QuittancePacketService;
 import org.flexpay.eirc.service.QuittancePaymentService;
 import org.flexpay.eirc.service.QuittanceService;
-import org.flexpay.eirc.process.QuittanceNumberService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 

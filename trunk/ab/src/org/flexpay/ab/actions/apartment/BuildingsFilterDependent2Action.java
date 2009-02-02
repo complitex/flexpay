@@ -1,11 +1,11 @@
 package org.flexpay.ab.actions.apartment;
 
 import org.apache.commons.collections.ArrayStack;
+import org.flexpay.ab.persistence.AddressAttribute;
 import org.flexpay.ab.persistence.AddressAttributeTypeTranslation;
 import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.persistence.AddressAttribute;
 import org.flexpay.ab.persistence.filters.*;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.service.ParentService;
@@ -16,7 +16,7 @@ import java.util.Collection;
 /**
  * Same as {@link BuildingsFilterDependentAction} but uses StreetNameFilter
  */
-public abstract class BuildingsFilterDependent2Action extends FPActionSupport {
+public abstract class BuildingsFilterDependent2Action extends FPActionWithPagerSupport {
 
 	private ParentService parentService;
 

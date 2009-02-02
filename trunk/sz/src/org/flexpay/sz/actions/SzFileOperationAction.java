@@ -1,11 +1,10 @@
 package org.flexpay.sz.actions;
 
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.FPFileStatus;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 import org.jetbrains.annotations.NotNull;
@@ -16,14 +15,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class SzFileOperationAction extends FPActionSupport {
+public class SzFileOperationAction extends FPActionWithPagerSupport<SzFile> {
 
-	private Page<SzFile> pager = new Page<SzFile>();
 	private Set<Long> szFileIds = new HashSet<Long>();
 	private String action1;
 
 	private ProcessManager processManager;
-
 	private String moduleName;
 	private SzFileService szFileService;
 	private FPFileService fpFileService;
@@ -80,14 +77,6 @@ public class SzFileOperationAction extends FPActionSupport {
 	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
-	}
-
-	public Page<SzFile> getPager() {
-		return pager;
-	}
-
-	public void setPager(Page<SzFile> pager) {
-		this.pager = pager;
 	}
 
 	public void setAction1(String action1) {

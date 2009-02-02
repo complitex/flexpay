@@ -1,36 +1,33 @@
 package org.flexpay.tc.actions.buildingattributes;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.service.ParentService;
-import org.flexpay.common.dao.paging.Page;
-import static org.flexpay.common.util.CollectionUtils.list;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.ab.service.BuildingService;
+import org.apache.commons.collections.ArrayStack;
+import org.flexpay.ab.actions.buildings.BuildingsActionsBase;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
-import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.persistence.filters.StreetNameFilter;
-import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.actions.buildings.BuildingsActionsBase;
+import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.ab.service.BuildingService;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.service.ParentService;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
-import org.apache.commons.collections.ArrayStack;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
 public class BuildingsListAction extends BuildingsActionsBase {
     
-    private ParentService parentService;
-	private BuildingService buildingService;
-
 	private CountryFilter countryFilter = new CountryFilter();
 	private RegionFilter regionFilter = new RegionFilter();
 	private TownFilter townFilter = new TownFilter();
 	private StreetNameFilter streetNameFilter = new StreetNameFilter();
-	private Page pager = new Page();
 
 	private List<BuildingAddress> buildingsList = list();
+
+	private ParentService parentService;
+	private BuildingService buildingService;
 
 	public BuildingsListAction() {
 		streetNameFilter.setShowSearchString(true);
@@ -45,7 +42,7 @@ public class BuildingsListAction extends BuildingsActionsBase {
 
         ArrayStack filters = initFilters();
 
-		buildingsList = buildingService.getBuildings(filters, pager);
+		buildingsList = buildingService.getBuildings(filters, getPager());
 
 		return SUCCESS;
 	}
@@ -175,29 +172,12 @@ public class BuildingsListAction extends BuildingsActionsBase {
 		return buildingsList;
 	}
 
-	/**
-	 * Getter for property 'pager'.
-	 *
-	 * @return Value for property 'pager'.
-	 */
-	public Page getPager() {
-		return pager;
-	}
-
-	/**
-	 * Setter for property 'pager'.
-	 *
-	 * @param pager Value to set for property 'pager'.
-	 */
-	public void setPager(Page pager) {
-		this.pager = pager;
-	}
-
     /**
      * Setter for property 'buildingsService'.
      *
      * @param buildingService Value to set for property 'buildingsService'.
      */
+	@Required
     public void setBuildingService(BuildingService buildingService) {
         this.buildingService = buildingService;
     }
@@ -207,7 +187,9 @@ public class BuildingsListAction extends BuildingsActionsBase {
      *
      * @param parentService Value to set for property 'parentService'.
      */
+	@Required
     public void setParentService(ParentService parentService) {
         this.parentService = parentService;
     }
+
 }

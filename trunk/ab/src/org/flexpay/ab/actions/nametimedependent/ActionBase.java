@@ -1,7 +1,7 @@
 package org.flexpay.ab.actions.nametimedependent;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.TemporaryValue;
@@ -13,7 +13,7 @@ public abstract class ActionBase<
 		TV extends TemporaryValue<TV>,
 		DI extends NameDateInterval<TV, DI>,
 		NTD extends NameTimeDependentChild<TV, DI>,
-		T extends Translation> extends FPActionSupport {
+		T extends Translation> extends FPActionWithPagerSupport {
 
 	protected NameTimeDependentService<TV, DI, NTD, T> nameTimeDependentService;
 	protected ParentService parentService;

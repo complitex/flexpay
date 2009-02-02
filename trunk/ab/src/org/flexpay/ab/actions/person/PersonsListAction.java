@@ -4,15 +4,14 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.ab.service.PersonService;
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonsListAction extends FPActionSupport {
+public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 
 	private ParentService parentService;
 	private PersonService personService;
@@ -22,8 +21,6 @@ public class PersonsListAction extends FPActionSupport {
 
 	private PersonSearchFilter personSearchFilter = new PersonSearchFilter();
 
-	private Page pager = new Page();
-
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
@@ -32,9 +29,9 @@ public class PersonsListAction extends FPActionSupport {
 			ArrayStack filters = parentService == null ? null :
 								 parentService.initFilters(getFilters(), userPreferences.getLocale());
 
-			persons = personService.findPersons(filters, pager);
+			persons = personService.findPersons(filters, getPager());
 		} else {
-			persons = personService.findByFIO(pager, "%" + personSearchFilter.getSearchString() + "%");
+			persons = personService.findByFIO(getPager(), "%" + personSearchFilter.getSearchString() + "%");
 		}
 
 		return SUCCESS;
@@ -53,26 +50,7 @@ public class PersonsListAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	/**
-	 * Getter for property 'pager'.
-	 *
-	 * @return Value for property 'pager'.
-	 */
-	public Page getPager() {
-		return pager;
-	}
-
-	/**
-	 * Setter for property 'pager'.
-	 *
-	 * @param pager Value to set for property 'pager'.
-	 */
-	public void setPager(Page pager) {
-		this.pager = pager;
-	}
-
 	private ArrayStack getFilters() {
-
 		return new ArrayStack();
 	}
 
@@ -110,4 +88,5 @@ public class PersonsListAction extends FPActionSupport {
 	public void setPersonSearchFilter(PersonSearchFilter personSearchFilter) {
 		this.personSearchFilter = personSearchFilter;
 	}
+
 }

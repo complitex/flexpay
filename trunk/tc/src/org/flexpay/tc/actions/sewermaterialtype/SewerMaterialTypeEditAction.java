@@ -15,13 +15,11 @@ import java.util.Map;
 
 public class SewerMaterialTypeEditAction extends FPActionSupport {
 
-    private SewerMaterialTypeService sewerMaterialTypeService;
-
     private SewerMaterialType sewerMaterialType = new SewerMaterialType();
-
     private Map<Long, String> names = CollectionUtils.treeMap();
-
     private Map<Long, String> descriptions = CollectionUtils.treeMap();
+
+	private SewerMaterialTypeService sewerMaterialTypeService;
 
     @NotNull
     protected String doExecute() throws Exception {
@@ -76,11 +74,6 @@ public class SewerMaterialTypeEditAction extends FPActionSupport {
         return SUCCESS;
     }
 
-    @Required
-    public void setSewerMaterialTypeService(SewerMaterialTypeService sewerMaterialTypeService) {
-        this.sewerMaterialTypeService = sewerMaterialTypeService;
-    }
-
     public SewerMaterialType getSewerMaterialType() {
         return sewerMaterialType;
     }
@@ -104,4 +97,10 @@ public class SewerMaterialTypeEditAction extends FPActionSupport {
     public void setDescriptions(Map<Long, String> descriptions) {
         this.descriptions = descriptions;
     }
+
+	@Required
+	public void setSewerMaterialTypeService(SewerMaterialTypeService sewerMaterialTypeService) {
+		this.sewerMaterialTypeService = sewerMaterialTypeService;
+	}
+
 }

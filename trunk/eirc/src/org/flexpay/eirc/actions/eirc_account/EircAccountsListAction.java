@@ -1,5 +1,6 @@
 package org.flexpay.eirc.actions.eirc_account;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.actions.apartment.ApartmentFilterDependent2Action;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
@@ -7,25 +8,23 @@ import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.PersonService;
-import org.flexpay.common.dao.paging.Page;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.service.EircAccountService;
 import org.jetbrains.annotations.NotNull;
-import org.apache.commons.collections.ArrayStack;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
 public class EircAccountsListAction extends ApartmentFilterDependent2Action {
 
-	private EircAccountService eircAccountService;
-	private PersonService personService;
-	private AddressService addressService;
-
 	private List<EircAccount> eircAccountsList;
 
 	private PersonSearchFilter personSearchFilter = new PersonSearchFilter();
-	private Page<EircAccount> pager = new Page<EircAccount>();
+
+	private EircAccountService eircAccountService;
+	private PersonService personService;
+	private AddressService addressService;
 
 	public EircAccountsListAction() {
 		apartmentFilter.setAllowEmpty(true);
@@ -38,8 +37,7 @@ public class EircAccountsListAction extends ApartmentFilterDependent2Action {
 
 		initFilters();
 
-		eircAccountsList = eircAccountService.findAccounts(getFilters(), pager);
-
+		eircAccountsList = eircAccountService.findAccounts(getFilters(), getPager());
 
 		return SUCCESS;
 	}
@@ -64,7 +62,6 @@ public class EircAccountsListAction extends ApartmentFilterDependent2Action {
 	 */
 	@Override
 	public void setFilters(ArrayStack filters) {
-
 		setFilters(filters, 7);
 	}
 
@@ -111,20 +108,6 @@ public class EircAccountsListAction extends ApartmentFilterDependent2Action {
 	}
 
 	/**
-	 * @return the pager
-	 */
-	public Page<EircAccount> getPager() {
-		return pager;
-	}
-
-	/**
-	 * @param pager the pager to set
-	 */
-	public void setPager(Page<EircAccount> pager) {
-		this.pager = pager;
-	}
-
-	/**
 	 * @return the eircAccountsList
 	 */
 	public List<EircAccount> getEircAccountList() {
@@ -139,15 +122,19 @@ public class EircAccountsListAction extends ApartmentFilterDependent2Action {
 		this.personSearchFilter = personSearchFilter;
 	}
 
+	@Required
 	public void setEircAccountService(EircAccountService eircAccountService) {
 		this.eircAccountService = eircAccountService;
 	}
 
+	@Required
 	public void setAddressService(AddressService addressService) {
 		this.addressService = addressService;
 	}
 
+	@Required
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
 	}
+
 }

@@ -1,25 +1,24 @@
 package org.flexpay.eirc.actions.serviceprovider;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.service.SPService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
 
-public class ServiceProvidersListAction extends FPActionSupport {
+public class ServiceProvidersListAction extends FPActionWithPagerSupport<ServiceProvider> {
+
+	private List<ServiceProvider> providers = Collections.emptyList();
 
 	private SPService spService;
-
-	private Page<ServiceProvider> pager = new Page<ServiceProvider>();
-	private List<ServiceProvider> providers = Collections.emptyList();
 
 	@NotNull
 	public String doExecute() throws Exception {
 
-		providers = spService.listProviders(pager);
+		providers = spService.listProviders(getPager());
 
 		return SUCCESS;
 	}
@@ -41,14 +40,7 @@ public class ServiceProvidersListAction extends FPActionSupport {
 		return providers;
 	}
 
-	public Page<ServiceProvider> getPager() {
-		return pager;
-	}
-
-	public void setPager(Page<ServiceProvider> pager) {
-		this.pager = pager;
-	}
-
+	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
 	}

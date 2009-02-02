@@ -1,7 +1,7 @@
 package org.flexpay.ab.actions.apartment;
 
-import org.flexpay.ab.persistence.filters.*;
 import org.apache.commons.collections.ArrayStack;
+import org.flexpay.ab.persistence.filters.ApartmentFilter;
 
 public abstract class ApartmentFilterDependentAction extends BuildingsFilterDependentAction {
 

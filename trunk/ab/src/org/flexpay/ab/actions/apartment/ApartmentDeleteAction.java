@@ -1,8 +1,8 @@
 package org.flexpay.ab.actions.apartment;
 
+import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
-import org.flexpay.ab.service.ApartmentService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;

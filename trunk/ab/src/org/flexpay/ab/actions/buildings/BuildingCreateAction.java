@@ -2,8 +2,8 @@ package org.flexpay.ab.actions.buildings;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.AddressAttributeType;
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.service.AddressAttributeTypeService;

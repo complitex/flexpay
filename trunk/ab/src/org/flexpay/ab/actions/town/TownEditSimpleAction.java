@@ -1,21 +1,21 @@
 package org.flexpay.ab.actions.town;
 
+import org.apache.commons.collections.ArrayStack;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.filters.TownTypeFilter;
-import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.service.TownService;
 import org.flexpay.ab.service.RegionService;
+import org.flexpay.ab.service.TownService;
 import org.flexpay.ab.service.TownTypeService;
-import org.flexpay.common.actions.ActionUtil;
 import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.common.actions.ActionUtil;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.filter.BeginDateFilter;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
-import org.apache.commons.collections.ArrayStack;
 
 import java.util.Map;
 

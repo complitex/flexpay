@@ -1,28 +1,27 @@
 package org.flexpay.eirc.actions.service;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.filter.EndDateFilter;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
+import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
-import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
+import org.flexpay.eirc.service.SPService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-public class ServicesListAction extends FPActionSupport {
-
-	private SPService spService;
+public class ServicesListAction extends FPActionWithPagerSupport<Service> {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();
 	private ServiceProviderFilter serviceProviderFilter = new ServiceProviderFilter();
-	private Page<Service> pager = new Page<Service>();
 
 	private List<Service> services;
+
+	private SPService spService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -34,7 +33,7 @@ public class ServicesListAction extends FPActionSupport {
 		filters.add(endDateFilter);
 		filters.add(serviceProviderFilter);
 
-		services = spService.listServices(filters, pager);
+		services = spService.listServices(filters, getPager());
 
 		return SUCCESS;
 	}
@@ -79,15 +78,9 @@ public class ServicesListAction extends FPActionSupport {
 		this.serviceProviderFilter = serviceProviderFilter;
 	}
 
-	public Page<Service> getPager() {
-		return pager;
-	}
-
-	public void setPager(Page<Service> pager) {
-		this.pager = pager;
-	}
-
+	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
 	}
+
 }

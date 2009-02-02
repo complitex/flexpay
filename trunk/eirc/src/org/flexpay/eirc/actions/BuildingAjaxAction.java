@@ -1,19 +1,20 @@
 package org.flexpay.eirc.actions;
 
-import java.util.List;
-
+import com.opensymphony.xwork2.ActionSupport;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import com.opensymphony.xwork2.ActionSupport;
+import org.springframework.beans.factory.annotation.Required;
+
+import java.util.List;
 
 public class BuildingAjaxAction {
 
-	private BuildingService buildingService;
-
 	private Long streetId;
 	private List<BuildingAddress> buildingsList;
+
+	private BuildingService buildingService;
 
 	public String execute() throws FlexPayException {
 		buildingsList = getBuildingListByStreetId(streetId);
@@ -28,8 +29,7 @@ public class BuildingAjaxAction {
 			if (buildingses == null) {
 				buildingses = buildingService.getBuildings(streetId, pager);
 			} else {
-				buildingses.addAll(buildingService.getBuildings(streetId,
-						pager));
+				buildingses.addAll(buildingService.getBuildings(streetId, pager));
 			}
 			if (pager.hasNextPage()) {
 				pager.setPageNumber(pager.getNextPageNumber());
@@ -50,18 +50,15 @@ public class BuildingAjaxAction {
 	}
 
 	/**
-	 * @param buildingService
-	 *            the buildingService to set
-	 */
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
-	}
-
-	/**
 	 * @return the buildingsList
 	 */
 	public List<BuildingAddress> getBuildingsList() {
 		return buildingsList;
+	}
+
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
 	}
 
 }

@@ -137,4 +137,5 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
         this.buildingAttributeTypeService = buildingAttributeTypeService;
     }
+
 }

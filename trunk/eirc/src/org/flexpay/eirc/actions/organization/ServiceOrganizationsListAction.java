@@ -1,25 +1,24 @@
 package org.flexpay.eirc.actions.organization;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
 
-public class ServiceOrganizationsListAction extends FPActionSupport {
+public class ServiceOrganizationsListAction extends FPActionWithPagerSupport<ServiceOrganization> {
+
+	private List<ServiceOrganization> serviceOrganizations = Collections.emptyList();
 
 	private ServiceOrganizationService serviceOrganizationService;
-
-	private Page<ServiceOrganization> pager = new Page<ServiceOrganization>();
-	private List<ServiceOrganization> serviceOrganizations = Collections.emptyList();
 
 	@NotNull
 	public String doExecute() throws Exception {
 
-		serviceOrganizations = serviceOrganizationService.listServiceOrganizations(pager);
+		serviceOrganizations = serviceOrganizationService.listServiceOrganizations(getPager());
 
 		return SUCCESS;
 	}
@@ -41,14 +40,7 @@ public class ServiceOrganizationsListAction extends FPActionSupport {
         return serviceOrganizations;
     }
 
-    public Page<ServiceOrganization> getPager() {
-        return pager;
-    }
-
-    public void setPager(Page<ServiceOrganization> pager) {
-        this.pager = pager;
-    }
-
+	@Required
     public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
         this.serviceOrganizationService = serviceOrganizationService;
     }

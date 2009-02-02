@@ -14,9 +14,9 @@ import java.util.Map;
 
 public class BuildingAttributesImportAction extends FPFileActionSupport {
 
-	private ProcessManager processManager;
-
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
+
+	private ProcessManager processManager;
 
 	/**
 	 * Perform action execution.
@@ -71,4 +71,5 @@ public class BuildingAttributesImportAction extends FPFileActionSupport {
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
 	}
+
 }

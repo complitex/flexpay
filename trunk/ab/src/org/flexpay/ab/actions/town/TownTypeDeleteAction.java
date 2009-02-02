@@ -1,10 +1,10 @@
 package org.flexpay.ab.actions.town;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.service.TownTypeService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TownTypeDeleteAction {
 	private TownTypeService townTypeService;

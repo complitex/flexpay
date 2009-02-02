@@ -11,6 +11,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -81,24 +82,6 @@ public class StreetDistrictEditAction extends FPActionSupport {
 		return objectIds.contains(id);
 	}
 
-	/**
-	 * Setter for property 'streetService'.
-	 *
-	 * @param streetService Value to set for property 'streetService'.
-	 */
-	public void setStreetService(StreetService streetService) {
-		this.streetService = streetService;
-	}
-
-	/**
-	 * Setter for property 'districtService'.
-	 *
-	 * @param districtService Value to set for property 'districtService'.
-	 */
-	public void setDistrictService(DistrictService districtService) {
-		this.districtService = districtService;
-	}
-
 	public Street getStreet() {
 		return street;
 	}
@@ -114,4 +97,15 @@ public class StreetDistrictEditAction extends FPActionSupport {
 	public void setObjectIds(Set<Long> objectIds) {
 		this.objectIds = objectIds;
 	}
+
+	@Required
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
+	}
+
+	@Required
+	public void setDistrictService(DistrictService districtService) {
+		this.districtService = districtService;
+	}
+
 }
