@@ -37,6 +37,10 @@
 			<result name="redirectSuccess" type="redirect-action">buildingAttributeTypesList</result>
 		</action>
 
+		<action name="buildingAttributesImport" class="buildingAttributesImportAction">
+			<result name="success" type="tiles">bti.buildings.attribute.import</result>
+		</action>
+
 	</package>
 
 

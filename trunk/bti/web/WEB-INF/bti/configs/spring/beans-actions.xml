@@ -16,4 +16,9 @@
 		  p:attributeGroupService-ref="buildingAttributeGroupService"
 		  p:attributeTypeService-ref="buildingAttributeTypeService" />
 
+	<bean id="buildingAttributesImportAction" scope="prototype"
+		  class="org.flexpay.bti.actions.buildings.BuildingAttributesImportAction"
+		  p:fpFileService-ref="fpFileService"
+		  p:processManager-ref="processManager" />
+
 </beans>
