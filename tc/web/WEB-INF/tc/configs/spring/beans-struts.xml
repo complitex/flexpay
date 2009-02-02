@@ -54,6 +54,15 @@
           p:fpFileService-ref="fpFileService"
           p:moduleName="${flexpay.module.name.tc}"
           scope="prototype"/>
+
+    <bean id="tariffCalcRulesFileDeleteAction" class="org.flexpay.tc.actions.tariff.TariffCalcRulesFileDeleteAction"
+          p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
+          scope="prototype"/>
+
+    <bean id="tariffCalculateAction" class="org.flexpay.tc.actions.tariff.TariffCalculateAction"
+          p:processManager-ref="processManager"
+          scope="prototype"/>
+
     <!-- end of tariff calculation rules files section -->
 
     <!-- building attributes section -->

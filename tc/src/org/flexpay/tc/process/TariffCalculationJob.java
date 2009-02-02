@@ -14,11 +14,15 @@ import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.service.TariffCalculationRulesFileService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
+import org.jetbrains.annotations.NonNls;
 
 import java.io.*;
 import java.util.Map;
 
-public class ProcessTariffCalculationJob extends Job {
+public class TariffCalculationJob extends Job {
+
+	@NonNls
+	private Logger pLog = ProcessLogger.getLogger(getClass());
 
 	private TariffCalculationResultService tariffCalculationResultService;
 	private BuildingService buildingService;
@@ -27,7 +31,8 @@ public class ProcessTariffCalculationJob extends Job {
 	public static final String RULES_ID = "RULE_ID";
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
-		Logger processLogger = ProcessLogger.getLogger(getClass());
+
+		pLog.debug("Tariff calculation procces started");
 
 		//get rules file
 
@@ -35,7 +40,7 @@ public class ProcessTariffCalculationJob extends Job {
 				tariffCalculationRulesFileService.read(new Stub<TariffCalculationRulesFile>(Long.valueOf((String) parameters.get(RULES_ID))));
 
 		if (rulesFile == null){
-			processLogger.error("Tariff calculation rules for id {} not found. Exiting.", parameters.get(RULES_ID));
+			pLog.error("Tariff calculation rules for id {} not found. Exiting.", parameters.get(RULES_ID));
 			return RESULT_ERROR;
 		}
 
@@ -49,19 +54,21 @@ public class ProcessTariffCalculationJob extends Job {
 			ruleBase = RuleBaseFactory.newRuleBase();
 			ruleBase.addPackage(pkg);
 		} catch (FileNotFoundException ex){
-			processLogger.error("Rules file not found.", ex);
+			pLog.error("Rules file not found", ex);
 			return RESULT_ERROR;
 		} catch (IOException ex){
-			processLogger.error("Can't read rules file.", ex);
+			pLog.error("Can't read rules file", ex);
 			return RESULT_ERROR;
 		} catch (DroolsParserException ex){
-			processLogger.error("Can't parse rules.", ex);
+			pLog.error("Can't parse rules", ex);
 			return RESULT_ERROR;
 		} catch (Exception ex){
-			processLogger.error("Drools internal error.", ex);
+			pLog.error("Drools internal error", ex);
 			return RESULT_ERROR;
 		}
 
+
+		pLog.debug("Tariff calculation procces finished");
 
 		//get building list
 //		buildingService.

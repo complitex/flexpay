@@ -75,4 +75,5 @@ public abstract class BuildingAttributeType extends DomainObjectWithStatus {
 	public void setTranslation(BuildingAttributeTypeName name) {
 		translations = TranslationUtil.setTranslation(translations, this, name);
 	}
+
 }

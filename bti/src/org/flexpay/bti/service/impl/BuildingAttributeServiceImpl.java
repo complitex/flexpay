@@ -30,4 +30,5 @@ public class BuildingAttributeServiceImpl implements BuildingAttributeService {
 	public void setAttributeDao(BuildingAttributeDao attributeDao) {
 		this.attributeDao = attributeDao;
 	}
+
 }
