@@ -30,8 +30,6 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		log.debug("Date - {}", date);
-
 		if (date == null) {
 			addActionError(getText("tc.error.date_must_be_set"));
 			return REDIRECT_SUCCESS;

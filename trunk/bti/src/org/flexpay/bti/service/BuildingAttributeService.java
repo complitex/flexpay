@@ -18,4 +18,5 @@ public interface BuildingAttributeService {
 	 * @return list of building attributes
 	 */
 	List<BuildingAttributeBase> listAttributes(@NotNull Stub<BtiBuilding> stub, Page<BuildingAttributeBase> pager);
+
 }

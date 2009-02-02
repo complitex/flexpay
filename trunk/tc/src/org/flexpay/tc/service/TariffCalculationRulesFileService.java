@@ -20,6 +20,12 @@ public interface TariffCalculationRulesFileService {
 	@Secured({Roles.TARIFF_CALCULATION_RULES_FILE_DELETE})
 	void disable(@NotNull Set<Long> objectIds);
 
+	@Secured({Roles.TARIFF_CALCULATION_RULES_FILE_DELETE})
+	void delete(TariffCalculationRulesFile file);
+
+	@Secured({Roles.TARIFF_CALCULATION_RULES_FILE_DELETE})
+	void delete(@NotNull Long fileId);
+
 	@Secured({Roles.TARIFF_CALCULATION_RULES_FILE_READ})
 	List<TariffCalculationRulesFile> listTariffCalculationRulesFiles(Page<TariffCalculationRulesFile> pager);
 

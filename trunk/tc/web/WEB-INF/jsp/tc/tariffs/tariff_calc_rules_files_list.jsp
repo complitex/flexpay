@@ -56,6 +56,10 @@
             </td>
             <td class="col">
                 <a href="<s:url action="rulesFileEdit"><s:param name="rulesFile.id" value="%{id}" /></s:url>"><s:text name="common.edit"/></a>
+                &nbsp;
+                <a href="<s:url action="rulesFileDelete"><s:param name="id" value="%{id}" /></s:url>"><s:text name="common.delete_selected"/></a>
+                &nbsp;
+                <a href="<s:url action="tariffCalculate"><s:param name="ruleId" value="%{id}" /></s:url>"><s:text name="tc.calculate"/></a>
             </td>
         </tr>
     </s:iterator>

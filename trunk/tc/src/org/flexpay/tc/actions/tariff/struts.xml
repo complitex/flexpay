@@ -16,6 +16,30 @@
             <result name="redirectSuccess" type="redirect-action">rulesFilesList</result>
         </action>
 
+        <action name="rulesFileDelete" class="tariffCalcRulesFileDeleteAction">
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">rulesFilesList.action</param>
+                <param name="parse">true</param>
+                <param name="pager.pageNumber">${pager.pageNumber}</param>
+            </result>
+        </action>
+
+        <action name="rulesFileDelete" class="tariffCalcRulesFileDeleteAction">
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">rulesFilesList.action</param>
+                <param name="parse">true</param>
+                <param name="pager.pageNumber">${pager.pageNumber}</param>
+            </result>
+        </action>
+
+        <action name="tariffCalculate" class="tariffCalculateAction">
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">rulesFilesList.action</param>
+                <param name="parse">true</param>
+                <param name="pager.pageNumber">${pager.pageNumber}</param>
+            </result>
+        </action>
+
         <action name="calcResultExport" class="tariffCalcResultExportAction">
             <result name="input" type="tiles">tc.calc_results.export</result>
             <result name="redirectSuccess" type="redirect-action">calcResultExport</result>

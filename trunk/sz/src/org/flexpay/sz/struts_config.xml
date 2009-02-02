@@ -40,7 +40,6 @@
                 <param name="actionName">importFilesList.action</param>
                 <param name="parse">true</param>
                 <param name="pager.pageNumber">${pager.pageNumber}</param>
-                <param name="pager.pageSize">${pager.pageSize}</param>
             </result>
 		</action>
 
