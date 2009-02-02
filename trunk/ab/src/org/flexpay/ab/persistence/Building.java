@@ -3,6 +3,7 @@ package org.flexpay.ab.persistence;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -86,5 +87,14 @@ public class Building extends DomainObjectWithStatus {
 		}
 
 		return buildingses.isEmpty() ? null : buildingses.iterator().next();
+	}
+
+	@SuppressWarnings ({"CollectionsFieldAccessReplaceableByMethodCall"})
+	public void addAll(Set<BuildingAddress> buildingses) {
+		if (this.buildingses == Collections.EMPTY_SET) {
+			this.buildingses = CollectionUtils.set();
+		}
+
+		this.buildingses.addAll(buildingses);
 	}
 }
