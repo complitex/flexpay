@@ -11,6 +11,8 @@
                     name="tc.menu34.rules_files"/></a></li>
             <li><a href="<s:url action="buildingsList" namespace="/tc" includeParams="none" /> "><s:text
                     name="tc.menu34.building_attributes"/></a></li>
+            <li><a href="<s:url action="buildingAttributesImport" namespace="/tc" includeParams="none" /> "><s:text
+                    name="bti.building.attribute.import"/></a></li>
         </ul>
     </li>
 

@@ -29,6 +29,10 @@ public class BuildingAttributesImportAction extends FPFileActionSupport {
 	@NotNull
 	protected String doExecute() throws Exception {
 
+		if (!isSubmit()) {
+			return SUCCESS;
+		}
+
 		if (fpFile.isNew()) {
 			addActionError(getText("bti.error.building.attribute.import.no_file"));
 			return SUCCESS;

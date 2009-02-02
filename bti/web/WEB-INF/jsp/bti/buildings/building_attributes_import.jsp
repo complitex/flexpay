@@ -19,6 +19,7 @@
 			</td>
 			<td>
 				<s:file name="upload" required="true" size="75" accept="*.csv" />
+				<s:hidden name="moduleName" value="tc" />
 			</td>
 		</tr>
 		<tr>

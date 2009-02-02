@@ -76,6 +76,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/bti/buildings/building_attribute_type_edit.jsp" />
 	</definition>
 
+	<definition name="bti.buildings.attribute.import" extends="tc.dictionaries">
+		<put-attribute name="title" value="bti.building.attribute.import"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/bti/buildings/building_attributes_import.jsp" />
+	</definition>
+
     <!-- building attributes related pages -->
     <definition name="tc.building_attributes.list" extends="tc.dictionaries">
         <put-attribute name="title" value="tc.buildings_list"/>

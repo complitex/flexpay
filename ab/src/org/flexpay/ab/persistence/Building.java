@@ -54,7 +54,8 @@ public class Building extends DomainObjectWithStatus {
 		return buildingses;
 	}
 
-	public void setBuildingses(@NotNull Set<BuildingAddress> buildingses) {
+	@SuppressWarnings ({"UnusedDeclaration"})
+	private void setBuildingses(@NotNull Set<BuildingAddress> buildingses) {
 		this.buildingses = buildingses;
 	}
 
