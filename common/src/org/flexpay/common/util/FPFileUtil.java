@@ -4,12 +4,16 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.Calendar;
 import java.util.Date;
 
 public class FPFileUtil {
+
+	private static final Logger LOG = LoggerFactory.getLogger(FPFileUtil.class);
 
 	public static String getLocalDirPath(String moduleName, Date creationDate) {
 		File root = ApplicationConfig.getDataRoot();
@@ -34,24 +38,6 @@ public class FPFileUtil {
      */
     public static String getFileLocalPath(FPFile file) {
         return getLocalDirPath(file.getModule().getName(), file.getCreationDate()) + file.getNameOnServer();
-    }
-
-    /**
-     * Returns file name
-     *
-     * @param name full file name
-     * @return file name without extension
-     */
-    public static String getFileNameWithoutExtension(String name) {
-        if (null == name) {
-            return "";
-        }
-        String fileNameWithoutExtension = "";
-        int pos = name.lastIndexOf('.');
-        if (pos > 0) {
-            fileNameWithoutExtension = name.substring(0, pos);
-        }
-        return fileNameWithoutExtension;
     }
 
     /**
@@ -81,7 +67,9 @@ public class FPFileUtil {
         String localPath = getLocalDirPath(fpFile.getModule().getName(), fpFile.getCreationDate());
         File localDir = new File(localPath);
         localDir.mkdirs();
-        File fileOnServer = File.createTempFile(getFileNameWithoutExtension(name) + "_", StringUtil.getFileExtension(name), localDir);
+        File fileOnServer = File.createTempFile(
+				StringUtil.getFileNameWithoutExtension(name) + "_",
+				StringUtil.getFileExtension(name), localDir);
 
 		if (file != null && file.length() > 0) {
         	FileUtils.copyFile(file, fileOnServer);
@@ -98,7 +86,13 @@ public class FPFileUtil {
 			throw new IOException("Failed creating localDir: " + localDir);
 		}
 
-		File fileOnServer = File.createTempFile(getFileNameWithoutExtension(name) + "_", StringUtil.getFileExtension(name), localDir);
+		LOG.debug("File: {}", StringUtil.getFileNameWithoutExtension(name));
+		LOG.debug("File name: {}", StringUtil.getFileName(name));
+		LOG.debug("Extension: {}", StringUtil.getFileExtension(name));
+
+		File fileOnServer = File.createTempFile(
+				StringUtil.getFileNameWithoutExtension(name) + "_",
+				StringUtil.getFileExtension(name), localDir);
 
 		OutputStream os = new BufferedOutputStream(new FileOutputStream(fileOnServer));
 		try {
