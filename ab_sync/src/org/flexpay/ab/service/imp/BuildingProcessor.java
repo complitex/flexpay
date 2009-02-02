@@ -43,7 +43,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 
 		Set<BuildingAddress> buildingses = new HashSet<BuildingAddress>();
 		buildingses.add(buildingAddress);
-		building.setBuildingses(buildingses);
+		building.addAll(buildingses);
 
 		return buildingAddress;
 	}
@@ -61,7 +61,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 
 		Building building = buildingDao.read(buildingAddress.getBuilding().getId());
 		buildingAddress.setBuilding(building);
-		building.setBuildingses(buildingses);
+		building.addAll(buildingses);
 
 		log.debug("Read building: {}", building);
 
