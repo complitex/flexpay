@@ -12,6 +12,7 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -78,10 +79,6 @@ public class CountryCreateAction extends FPActionSupport implements ServletReque
 		return countryNames;
 	}
 
-	public void setCountryService(CountryService countryService) {
-		this.countryService = countryService;
-	}
-
 	/**
 	 * Sets the HTTP request object in implementing classes.
 	 *
@@ -90,4 +87,10 @@ public class CountryCreateAction extends FPActionSupport implements ServletReque
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
+
+	@Required
+	public void setCountryService(CountryService countryService) {
+		this.countryService = countryService;
+	}
+
 }

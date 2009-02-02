@@ -1,12 +1,16 @@
 package org.flexpay.common.actions;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.util.config.UserPreferences;
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.jetbrains.annotations.NonNls;
 
-public abstract class FPActionWithPagerSupport<T> extends FPActionSupport {
+import javax.servlet.http.HttpServletRequest;
+
+public abstract class FPActionWithPagerSupport<T> extends FPActionSupport implements ServletRequestAware {
 
 	@NonNls
-	private static final String PAGE_SIZE_SESSION_ATTRIBUTE = FPActionWithPagerSupport.class.getName() + ".PAGE_SIZE";
+	private HttpServletRequest request;
 
 	private Page<T> pager = new Page<T>();
 	private boolean pageSizeChanged = false;
@@ -34,13 +38,13 @@ public abstract class FPActionWithPagerSupport<T> extends FPActionSupport {
 		this.pageSizeChanged = pageSizeChanged;
 	}
 
-	@SuppressWarnings({"unchecked"})
 	public void setPageSize(Integer pageSize) {
-		session.put(PAGE_SIZE_SESSION_ATTRIBUTE, pageSize);
+		getUserPreferences().setPageSize(pageSize);
+		UserPreferences.setPreferences(request, getUserPreferences());
 	}
 
 	public Integer getPageSize() {
-		return (Integer) session.get(PAGE_SIZE_SESSION_ATTRIBUTE);
+		return getUserPreferences().getPageSize();
 	}
 
 	public Page<T> getPager() {
@@ -49,6 +53,10 @@ public abstract class FPActionWithPagerSupport<T> extends FPActionSupport {
 
 	public void setPager(Page<T> pager) {
 		this.pager = pager;
+	}
+
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
 	}
 
 }
