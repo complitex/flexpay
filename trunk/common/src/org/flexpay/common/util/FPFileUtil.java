@@ -78,7 +78,7 @@ public class FPFileUtil {
         return fileOnServer;
 	}
 
-	public static FPFile saveToFileSystem(FPFile fpFile, InputStream is) throws IOException {
+	public static File saveToFileSystem(FPFile fpFile, InputStream is) throws IOException {
 		String name = fpFile.getOriginalName();
 		String localPath = getLocalDirPath(fpFile.getModule().getName(), fpFile.getCreationDate());
 		File localDir = new File(localPath);
@@ -101,6 +101,6 @@ public class FPFileUtil {
 			IOUtils.closeQuietly(os);
 		}
 
-		return fpFile;
+		return fileOnServer;
 	}
 }
