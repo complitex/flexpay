@@ -1,12 +1,12 @@
 package org.flexpay.tc.actions.sewertype;
 
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.bti.service.SewerTypesService;
+import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 public class SewerTypeDeleteAction extends FPActionSupport {
 

@@ -9,8 +9,8 @@ import java.util.List;
  */
 public class Page<E> implements Serializable {
 
-	private int pageSize;
-	private int pageNumber;
+	private int pageSize = 20;
+	private int pageNumber = 0;
 
 	private transient int totalElements;
 	private transient List<E> elements = Collections.emptyList();
@@ -19,8 +19,12 @@ public class Page<E> implements Serializable {
 	 * Constructs a new Page.
 	 */
 	public Page() {
-		this.pageSize = 20;
-		this.pageNumber = 0;
+	}
+
+	public Page(Integer pageSize) {
+		if (pageSize != null && pageSize > 0) {
+			this.pageSize = pageSize;
+		}
 	}
 
 	public Page(int pageSize, int pageNumber) {

@@ -5,9 +5,8 @@ import org.flexpay.ab.persistence.IdentityTypeTranslation;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayException;
-import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;

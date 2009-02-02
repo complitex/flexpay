@@ -7,8 +7,8 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
-import org.flexpay.ab.service.TownService;
 import org.flexpay.ab.service.DistrictService;
+import org.flexpay.ab.service.TownService;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.jetbrains.annotations.NotNull;
 

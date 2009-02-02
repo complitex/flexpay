@@ -7,8 +7,8 @@ import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.util.DateUtil;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 
 public class StreetEditTypeAction extends FPActionSupport {

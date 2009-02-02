@@ -1,22 +1,20 @@
 package org.flexpay.bti.actions.buildings;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.bti.persistence.BuildingAttributeType;
+import org.flexpay.bti.service.BuildingAttributeTypeService;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
 
-public class BuildingAttributeTypesListAction extends FPActionSupport {
-
-	private BuildingAttributeTypeService attributeTypeService;
+public class BuildingAttributeTypesListAction extends FPActionWithPagerSupport<BuildingAttributeType> {
 
 	private List<BuildingAttributeType> types = Collections.emptyList();
-	private Page<BuildingAttributeType> pager = new Page<BuildingAttributeType>();
+
+	private BuildingAttributeTypeService attributeTypeService;
 
 	/**
 	 * Perform action execution.
@@ -29,7 +27,7 @@ public class BuildingAttributeTypesListAction extends FPActionSupport {
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		types = attributeTypeService.listTypes(pager);
+		types = attributeTypeService.listTypes(getPager());
 
 		return SUCCESS;
 	}
@@ -60,16 +58,9 @@ public class BuildingAttributeTypesListAction extends FPActionSupport {
 		return types;
 	}
 
-	public Page<BuildingAttributeType> getPager() {
-		return pager;
-	}
-
-	public void setPager(Page<BuildingAttributeType> pager) {
-		this.pager = pager;
-	}
-
 	@Required
 	public void setAttributeTypeService(BuildingAttributeTypeService attributeTypeService) {
 		this.attributeTypeService = attributeTypeService;
 	}
+
 }

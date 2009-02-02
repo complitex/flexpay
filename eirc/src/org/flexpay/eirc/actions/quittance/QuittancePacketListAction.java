@@ -1,27 +1,25 @@
 package org.flexpay.eirc.actions.quittance;
 
-import org.flexpay.common.actions.FPActionSupport;
+import org.apache.commons.collections.ArrayStack;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
-import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.eirc.service.QuittancePacketService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.collections.ArrayStack;
 
 import java.util.Collections;
 import java.util.List;
 
-public class QuittancePacketListAction extends FPActionSupport {
-
-	private QuittancePacketService quittancePacketService;
+public class QuittancePacketListAction extends FPActionWithPagerSupport<QuittancePacket> {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.currentMonth());
-	private Page<QuittancePacket> pager = new Page<QuittancePacket>();
 
 	private List<QuittancePacket> packets = Collections.emptyList();
+
+	private QuittancePacketService quittancePacketService;
 
 	/**
 	 * Perform action execution.
@@ -34,8 +32,8 @@ public class QuittancePacketListAction extends FPActionSupport {
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		ArrayStack filters = CollectionUtils.arrayStack(beginDateFilter, pager);
-		packets = quittancePacketService.listPackets(filters, pager);
+		ArrayStack filters = CollectionUtils.arrayStack(beginDateFilter, getPager());
+		packets = quittancePacketService.listPackets(filters, getPager());
 
 		return SUCCESS;
 	}
@@ -60,14 +58,6 @@ public class QuittancePacketListAction extends FPActionSupport {
 		this.beginDateFilter = beginDateFilter;
 	}
 
-	public Page<QuittancePacket> getPager() {
-		return pager;
-	}
-
-	public void setPager(Page<QuittancePacket> pager) {
-		this.pager = pager;
-	}
-
 	public List<QuittancePacket> getPackets() {
 		return packets;
 	}
@@ -76,4 +66,5 @@ public class QuittancePacketListAction extends FPActionSupport {
 	public void setQuittancePacketService(QuittancePacketService quittancePacketService) {
 		this.quittancePacketService = quittancePacketService;
 	}
+
 }

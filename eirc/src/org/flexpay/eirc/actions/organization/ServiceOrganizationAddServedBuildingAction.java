@@ -8,7 +8,6 @@ import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.filters.StreetNameFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.BuildingService;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import static org.flexpay.common.util.CollectionUtils.list;
@@ -16,6 +15,7 @@ import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.HashSet;
 import java.util.List;
@@ -23,19 +23,18 @@ import java.util.Set;
 
 public class ServiceOrganizationAddServedBuildingAction extends BuildingsActionsBase {
 
-    private ServiceOrganizationService serviceOrganizationService;
-    private BuildingService buildingService;
-    private ParentService<?> parentService;
-
     private CountryFilter countryFilter = new CountryFilter();
     private RegionFilter regionFilter = new RegionFilter();
     private TownFilter townFilter = new TownFilter();
     private StreetNameFilter streetNameFilter = new StreetNameFilter();
-    private Page pager = new Page();
 
     private ServiceOrganization serviceOrganization = new ServiceOrganization();
     private List<BuildingAddress> buildingsList = list();
     private Set<Long> objectIds = new HashSet<Long>();
+
+	private ServiceOrganizationService serviceOrganizationService;
+	private BuildingService buildingService;
+	private ParentService<?> parentService;
 
     public ServiceOrganizationAddServedBuildingAction() {
         streetNameFilter.setShowSearchString(true);
@@ -66,7 +65,7 @@ public class ServiceOrganizationAddServedBuildingAction extends BuildingsActions
             ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
             setFilters(filters);
 
-            buildingsList = buildingService.getBuildings(filters, pager);
+            buildingsList = buildingService.getBuildings(filters, getPager());
 
             return INPUT;
         }
@@ -175,22 +174,17 @@ public class ServiceOrganizationAddServedBuildingAction extends BuildingsActions
         this.streetNameFilter = streetNameFilter;
     }
 
-    public Page getPager() {
-        return pager;
-    }
-
-    public void setPager(Page pager) {
-        this.pager = pager;
-    }
-
+	@Required
     public void setParentService(ParentService parentService) {
         this.parentService = parentService;
     }
 
+	@Required
     public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
         this.serviceOrganizationService = serviceOrganizationService;
     }
 
+	@Required
     public void setBuildingService(BuildingService buildingService) {
         this.buildingService = buildingService;
     }

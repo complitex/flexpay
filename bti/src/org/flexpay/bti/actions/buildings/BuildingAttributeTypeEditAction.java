@@ -19,15 +19,15 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 	private static final String TYPE_SIMPLE = "simple";
 	private static final String TYPE_ENUM = "enum";
 
-	private BuildingAttributeTypeService attributeTypeService;
-	private BuildingAttributeGroupService attributeGroupService;
-
 	private BuildingAttributeType attributeType = new BuildingAttributeTypeSimple();
 	private BuildingAttributeGroupFilter buildingAttributeGroupFilter = new BuildingAttributeGroupFilter();
 	private Map<Long, String> names = treeMap();
 	private Map<Integer, String> enumValues = treeMap();
 
 	private String typeName = TYPE_SIMPLE;
+
+	private BuildingAttributeTypeService attributeTypeService;
+	private BuildingAttributeGroupService attributeGroupService;
 
 	/**
 	 * Perform action execution.
@@ -193,4 +193,5 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 	public void setAttributeGroupService(BuildingAttributeGroupService attributeGroupService) {
 		this.attributeGroupService = attributeGroupService;
 	}
+
 }

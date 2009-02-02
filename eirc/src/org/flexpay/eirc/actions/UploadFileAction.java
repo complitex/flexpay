@@ -6,8 +6,8 @@ import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.Authentication;
+import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.File;
 

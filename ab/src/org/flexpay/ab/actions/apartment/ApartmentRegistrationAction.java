@@ -3,7 +3,8 @@ package org.flexpay.ab.actions.apartment;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.*;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayException;import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.exception.FlexPayException;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;

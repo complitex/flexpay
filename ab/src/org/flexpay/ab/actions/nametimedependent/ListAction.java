@@ -1,7 +1,6 @@
 package org.flexpay.ab.actions.nametimedependent;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
@@ -18,7 +17,6 @@ public abstract class ListAction<
 		NTD extends NameTimeDependentChild<TV, DI>,
 		T extends Translation> extends ActionBase<TV, DI, NTD, T> {
 
-	protected Page pager = new Page();
 	protected List objectNames;
 
 	/**
@@ -60,25 +58,7 @@ public abstract class ListAction<
 	}
 
 	protected void initObjects(ArrayStack filters) throws FlexPayException {
-		objectNames = nameTimeDependentService.findNames(filters, pager);
-	}
-
-	/**
-	 * Getter for property 'pager'.
-	 *
-	 * @return Value for property 'pager'.
-	 */
-	public Page getPager() {
-		return pager;
-	}
-
-	/**
-	 * Setter for property 'pager'.
-	 *
-	 * @param pager Value to set for property 'pager'.
-	 */
-	public void setPager(Page pager) {
-		this.pager = pager;
+		objectNames = nameTimeDependentService.findNames(filters, getPager());
 	}
 
 	/**
@@ -89,4 +69,5 @@ public abstract class ListAction<
 	public List getObjectNames() {
 		return objectNames;
 	}
+
 }

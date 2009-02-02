@@ -13,11 +13,11 @@ import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
+import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.service.RegistryRecordService;
+import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.jetbrains.annotations.NotNull;
 

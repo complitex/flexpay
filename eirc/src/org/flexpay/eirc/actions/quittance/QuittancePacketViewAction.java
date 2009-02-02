@@ -1,8 +1,7 @@
 package org.flexpay.eirc.actions.quittance;
 
 import org.flexpay.ab.service.AddressService;
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.eirc.persistence.QuittancePayment;
@@ -15,15 +14,14 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.Collections;
 import java.util.List;
 
-public class QuittancePacketViewAction extends FPActionSupport {
+public class QuittancePacketViewAction extends FPActionWithPagerSupport<QuittancePayment> {
+
+	private QuittancePacket packet = new QuittancePacket();
+	private List<QuittancePayment> payments = Collections.emptyList();
 
 	private AddressService addressService;
 	private EircAccountService eircAccountService;
 	private QuittancePacketService quittancePacketService;
-
-	private QuittancePacket packet = new QuittancePacket();
-	private List<QuittancePayment> payments = Collections.emptyList();
-	private Page<QuittancePayment> pager = new Page<QuittancePayment>();
 
 	/**
 	 * Perform action execution.
@@ -47,7 +45,7 @@ public class QuittancePacketViewAction extends FPActionSupport {
 			return REDIRECT_ERROR;
 		}
 
-		payments = quittancePacketService.listPayments(stub(packet), pager);
+		payments = quittancePacketService.listPayments(stub(packet), getPager());
 
 		return SUCCESS;
 	}
@@ -85,14 +83,6 @@ public class QuittancePacketViewAction extends FPActionSupport {
 		return payments;
 	}
 
-	public Page<QuittancePayment> getPager() {
-		return pager;
-	}
-
-	public void setPager(Page<QuittancePayment> pager) {
-		this.pager = pager;
-	}
-
 	@Required
 	public void setEircAccountService(EircAccountService eircAccountService) {
 		this.eircAccountService = eircAccountService;
@@ -107,4 +97,5 @@ public class QuittancePacketViewAction extends FPActionSupport {
 	public void setQuittancePacketService(QuittancePacketService quittancePacketService) {
 		this.quittancePacketService = quittancePacketService;
 	}
+
 }

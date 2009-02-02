@@ -17,8 +17,7 @@ public class TownsListAction extends ListAction<
 	private RegionFilter regionFilter = new RegionFilter();
 
 	protected void initObjects(ArrayStack filters) throws FlexPayException {
-
-		objectNames = nameTimeDependentService.find(filters, pager);
+		objectNames = nameTimeDependentService.find(filters, getPager());
 	}
 
 	/**
@@ -78,4 +77,5 @@ public class TownsListAction extends ListAction<
 		regionFilter = (RegionFilter) filters.peek(0);
 		countryFilter = (CountryFilter) filters.peek(1);
 	}
+
 }

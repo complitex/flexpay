@@ -1,13 +1,13 @@
 package org.flexpay.ab.actions.buildings;
 
-import org.flexpay.ab.persistence.AddressAttributeTypeTranslation;
 import org.flexpay.ab.persistence.AddressAttribute;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.ab.persistence.AddressAttributeTypeTranslation;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
-public abstract class BuildingsActionsBase extends FPActionSupport {
+public abstract class BuildingsActionsBase extends FPActionWithPagerSupport {
 
 	public String getBuildingNumber(@Nullable Collection<AddressAttribute> attributes) {
 

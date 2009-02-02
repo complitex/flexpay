@@ -51,7 +51,6 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	@NonNls
 	private static final String METHOD_POST = "post";
 
-
 	protected UserPreferences userPreferences;
 	protected Map session = CollectionUtils.map();
 	protected String submitted;
@@ -68,7 +67,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	 * @return Execution result
 	 * @throws Exception if failure occurs
 	 */
-	public final String execute() throws Exception {
+	public String execute() throws Exception {
 		String result;
 		try {
 			result = doExecute();
@@ -243,4 +242,5 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	public void setSession(Map session) {
 		this.session = session;
 	}
+
 }

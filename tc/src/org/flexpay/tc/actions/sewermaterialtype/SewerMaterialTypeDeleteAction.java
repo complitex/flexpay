@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SewerMaterialTypeDeleteAction extends FPActionSupport {
+
     private Set<Long> objectIds = new HashSet<Long>();
 
     private SewerMaterialTypeService sewerMaterialTypeService;
@@ -27,11 +28,6 @@ public class SewerMaterialTypeDeleteAction extends FPActionSupport {
         return REDIRECT_SUCCESS;
     }
 
-    @Required
-    public void setSewerMaterialTypeService(SewerMaterialTypeService sewerMaterialTypeService) {
-        this.sewerMaterialTypeService = sewerMaterialTypeService;
-    }
-
     public Set<Long> getObjectIds() {
         return objectIds;
     }
@@ -39,4 +35,10 @@ public class SewerMaterialTypeDeleteAction extends FPActionSupport {
     public void setObjectIds(Set<Long> objectIds) {
         this.objectIds = objectIds;
     }
+
+	@Required
+	public void setSewerMaterialTypeService(SewerMaterialTypeService sewerMaterialTypeService) {
+		this.sewerMaterialTypeService = sewerMaterialTypeService;
+	}
+
 }

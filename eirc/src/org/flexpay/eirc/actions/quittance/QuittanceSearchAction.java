@@ -1,11 +1,11 @@
 package org.flexpay.eirc.actions.quittance;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.eirc.service.QuittanceService;
-import org.flexpay.eirc.persistence.account.Quittance;
-import org.flexpay.eirc.persistence.QuittancePacket;
-import org.jetbrains.annotations.NotNull;
 import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.eirc.persistence.QuittancePacket;
+import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.service.QuittanceService;
+import org.jetbrains.annotations.NotNull;
 
 public class QuittanceSearchAction extends FPActionSupport {
 

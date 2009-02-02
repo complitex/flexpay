@@ -1,12 +1,12 @@
 package org.flexpay.ab.actions.measureunit;
 
-import org.flexpay.common.service.MeasureUnitService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.MeasureUnit;
+import org.flexpay.common.service.MeasureUnitService;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 public class MeasureUnitsListAction extends FPActionSupport {
 

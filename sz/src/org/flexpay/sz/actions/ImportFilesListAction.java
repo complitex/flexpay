@@ -1,7 +1,6 @@
 package org.flexpay.sz.actions;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
@@ -16,9 +15,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class ImportFilesListAction extends FPActionSupport {
+public class ImportFilesListAction extends FPActionWithPagerSupport<SzFile> {
 
-	private Page<SzFile> pager = new Page<SzFile>();
 	private List<SzFileWrapper> szFileWrapperList;
 
 	private SzFileService szFileService;
@@ -26,7 +24,7 @@ public class ImportFilesListAction extends FPActionSupport {
 	@NotNull
 	public String doExecute() throws FlexPayException {
 
-		List<SzFile> szFileList = szFileService.listSzFiles(pager);
+		List<SzFile> szFileList = szFileService.listSzFiles(getPager());
 		szFileWrapperList = new ArrayList<SzFileWrapper>();
 		for (SzFile szFile : szFileList) {
 			SzFileWrapper wrapper = new SzFileWrapper(getLocale());
@@ -52,14 +50,6 @@ public class ImportFilesListAction extends FPActionSupport {
 
 	public String getSeparator() {
 		return File.separator;
-	}
-
-	public Page<SzFile> getPager() {
-		return pager;
-	}
-
-	public void setPager(Page<SzFile> pager) {
-		this.pager = pager;
 	}
 
 	public List<SzFileWrapper> getSzFileWrapperList() {

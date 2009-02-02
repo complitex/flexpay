@@ -1,12 +1,12 @@
 package org.flexpay.eirc.actions.organization;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.flexpay.eirc.persistence.ServiceOrganization;
+import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 public class ServiceOrganizationRemoveServedBuildingsAction extends FPActionSupport {
 

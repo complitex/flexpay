@@ -2,17 +2,15 @@ package org.flexpay.tc.actions.sewertype;
 
 import org.flexpay.bti.persistence.SewerType;
 import org.flexpay.bti.service.SewerTypesService;
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
 
-public class SewerTypesListAction extends FPActionSupport {
+public class SewerTypesListAction extends FPActionWithPagerSupport<SewerType> {
 
-	private Page<SewerType> pager = new Page<SewerType>();
 	private List<SewerType> sewerTypes = Collections.emptyList();
 
 	private SewerTypesService sewerTypesService;
@@ -20,7 +18,7 @@ public class SewerTypesListAction extends FPActionSupport {
 	@NotNull
 	public String doExecute() {
 
-		sewerTypes = sewerTypesService.listSewerTypes(pager);
+		sewerTypes = sewerTypesService.listSewerTypes(getPager());
 
 		return SUCCESS;
 	}
@@ -40,14 +38,6 @@ public class SewerTypesListAction extends FPActionSupport {
 
 	public List<SewerType> getSewerTypes() {
 		return sewerTypes;
-	}
-
-	public Page<SewerType> getPager() {
-		return pager;
-	}
-
-	public void setPager(Page<SewerType> pager) {
-		this.pager = pager;
 	}
 
 	@Required

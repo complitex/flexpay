@@ -1,10 +1,10 @@
 package org.flexpay.ab.actions.identity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.service.IdentityTypeService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class IdentityTypeDeleteAction {
 	private IdentityTypeService identityTypeService;

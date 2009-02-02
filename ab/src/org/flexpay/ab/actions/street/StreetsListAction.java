@@ -11,20 +11,20 @@ import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.persistence.sorter.StreetSorterByName;
 import org.flexpay.ab.persistence.sorter.StreetSorterByType;
 import org.flexpay.ab.service.StreetService;
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.common.persistence.sorter.ObjectSorter;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.LanguageUtil;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
 
-public class StreetsListAction extends FPActionSupport {
+public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 
 	private StreetService streetService;
 
@@ -38,7 +38,6 @@ public class StreetsListAction extends FPActionSupport {
 	private StreetSorterByName streetSorterByName = new StreetSorterByName();
 	private StreetSorterByType streetSorterByType = new StreetSorterByType();
 
-	protected Page<Street> pager = new Page<Street>();
 	protected List<Street> streets = Collections.emptyList();
 
 	public StreetsListAction() {
@@ -86,7 +85,7 @@ public class StreetsListAction extends FPActionSupport {
 
 	private void initObjects(ArrayStack filters, List<ObjectSorter> sorters) {
 
-		List<Street> streetStubs = streetService.find(filters, sorters, pager);
+		List<Street> streetStubs = streetService.find(filters, sorters, getPager());
 		streets = CollectionUtils.list();
 		for (Street street : streetStubs) {
 			streets.add(streetService.readFull(stub(street)));
@@ -215,14 +214,6 @@ public class StreetsListAction extends FPActionSupport {
 		countryFilter = (CountryFilter) filters.peek(n);
 	}
 
-	public Page<Street> getPager() {
-		return pager;
-	}
-
-	public void setPager(Page<Street> pager) {
-		this.pager = pager;
-	}
-
 	public List<Street> getStreets() {
 		return streets;
 	}
@@ -243,7 +234,9 @@ public class StreetsListAction extends FPActionSupport {
 		this.streetSorterByType = streetSorterByType;
 	}
 
+	@Required
 	public void setStreetService(StreetService streetService) {
 		this.streetService = streetService;
 	}
+
 }

@@ -1,10 +1,10 @@
 package org.flexpay.ab.actions.buildings;
 
+import org.flexpay.ab.persistence.AddressAttribute;
 import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.persistence.AddressAttribute;
-import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.AddressAttributeTypeService;
+import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
