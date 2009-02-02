@@ -112,11 +112,12 @@ public class StringUtil {
 	 */
 	@NotNull
 	public static String getFileExtension(@NotNull String path) {
-		int slashPos = getFileName(path).lastIndexOf('.');
+		String fileName = getFileName(path);
+		int slashPos = fileName.lastIndexOf('.');
 		if (slashPos == -1) {
 			return "";
 		}
-		return path.substring(slashPos);
+		return fileName.substring(slashPos);
 	}
 
 	/**
