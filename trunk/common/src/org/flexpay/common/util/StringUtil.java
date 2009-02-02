@@ -121,6 +121,22 @@ public class StringUtil {
 	}
 
 	/**
+	 * Returns file name without extension
+	 *
+	 * @param path full file name
+	 * @return file name without extension
+	 */
+	public static String getFileNameWithoutExtension(@NotNull String path) {
+		String fName = getFileName(path);
+		String fileNameWithoutExtension = "";
+		int pos = fName.lastIndexOf('.');
+		if (pos > 0) {
+			fileNameWithoutExtension = fName.substring(0, pos);
+		}
+		return fileNameWithoutExtension;
+	}
+
+	/**
 	 * Parse digits of a <code>bd</code> at specified position
 	 * <p/>
 	 * For example the digit <i>10.03</i> at position 0 is 0, at position -1 is 0, at
