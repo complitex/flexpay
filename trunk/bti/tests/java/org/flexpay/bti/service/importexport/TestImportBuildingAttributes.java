@@ -34,12 +34,13 @@ public class TestImportBuildingAttributes extends SpringBeanAwareTestCase {
 		fpFile.setCreationDate(new Date());
 		fpFile.setDescription("Building attributes file");
 		fpFile.setOriginalName("/org/flexpay/bti/service/importexport/26.12.2008.csv");
+		fpFile.setUserName("--TEST USER--");
 
 		InputStream is = getFileStream("org/flexpay/bti/service/importexport/26.12.2008.csv");
 
 		try {
 			File serverFile = FPFileUtil.saveToFileSystem(fpFile, is);
-			fpFile.setNameOnServer(serverFile.getPath());
+			fpFile.setNameOnServer(serverFile.getName());
 			fpFile.setSize(serverFile.length());
 			fileService.create(fpFile);
 			log.info("File uploaded {}", fpFile);
