@@ -10,6 +10,7 @@ public class UserPreferences {
 
 	private String userName = "";
 	private Locale locale;
+	private Integer pageSize = 20;
 
 	private static final String WW_TRANS_I18_N_LOCALE = "WW_TRANS_I18N_LOCALE";
 
@@ -65,4 +66,13 @@ public class UserPreferences {
 	public void setLocale(Locale locale) {
 		this.locale = locale;
 	}
+
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+
 }
