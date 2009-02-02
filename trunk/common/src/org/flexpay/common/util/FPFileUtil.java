@@ -1,11 +1,11 @@
 package org.flexpay.common.util;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.util.config.ApplicationConfig;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -90,4 +90,20 @@ public class FPFileUtil {
         return fileOnServer;
 	}
 
+	public static FPFile saveToFileSystem(FPFile fpFile, InputStream is) throws IOException {
+		String name = fpFile.getOriginalName();
+		String localPath = getLocalDirPath(fpFile.getModule().getName(), fpFile.getCreationDate());
+		File localDir = new File(localPath);
+		localDir.mkdirs();
+		File fileOnServer = File.createTempFile(getFileNameWithoutExtension(name) + "_", StringUtil.getFileExtension(name), localDir);
+
+		OutputStream os = new BufferedOutputStream(new FileOutputStream(fileOnServer));
+		try {
+			IOUtils.copyLarge(is, os);
+		} finally {
+			IOUtils.closeQuietly(os);
+		}
+
+		return fpFile;
+	}
 }

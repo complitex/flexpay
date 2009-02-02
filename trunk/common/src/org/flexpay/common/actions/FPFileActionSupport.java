@@ -1,6 +1,7 @@
 package org.flexpay.common.actions;
 
 import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.springframework.beans.factory.annotation.Required;
@@ -30,7 +31,11 @@ public abstract class FPFileActionSupport extends FPActionSupport implements Pre
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String userName = auth != null ? auth.getName() : null;
 		try {
-			fpFile.setModule(fpFileService.getModuleByName(moduleName));
+			FPModule module = fpFileService.getModuleByName(moduleName);
+			if (module == null) {
+				throw new Exception("Unknown module " + moduleName);
+			}
+			fpFile.setModule(module);
 			fpFile.setOriginalName(uploadFileName);
 			fpFile.setUserName(userName);
 			File fileOnSystem = FPFileUtil.saveToFileSystem(fpFile, upload);
