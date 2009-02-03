@@ -8,29 +8,18 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class ImportFilesListAction extends FPActionWithPagerSupport<SzFile> {
 
-	private List<SzFileWrapper> szFileWrapperList;
+	private List<SzFile> szFiles;
 
 	private SzFileService szFileService;
 
 	@NotNull
 	public String doExecute() throws FlexPayException {
 
-		List<SzFile> szFileList = szFileService.listSzFiles(getPager());
-		szFileWrapperList = new ArrayList<SzFileWrapper>();
-		for (SzFile szFile : szFileList) {
-			SzFileWrapper wrapper = new SzFileWrapper(getLocale());
-			wrapper.setSzFile(szFile);
-			szFileWrapperList.add(wrapper);
-		}
+		szFiles = szFileService.listSzFiles(getPager());
 
 		return SUCCESS;
 	}
@@ -52,46 +41,8 @@ public class ImportFilesListAction extends FPActionWithPagerSupport<SzFile> {
 		return File.separator;
 	}
 
-	public List<SzFileWrapper> getSzFileWrapperList() {
-		return szFileWrapperList;
-	}
-
-	public static class SzFileWrapper {
-
-		private SzFile szFile;
-		private String fileMonth;
-		private Locale locale;
-
-		public SzFileWrapper(Locale locale) {
-			this.locale = locale;
-		}
-
-		public SzFile getSzFile() {
-			return szFile;
-		}
-
-		public void setSzFile(SzFile szFile) {
-			this.szFile = szFile;
-		}
-
-		public String getFileMonth() {
-			if (szFile == null) {
-				return null;
-			}
-			Calendar c = Calendar.getInstance();
-			c.set(Calendar.MONTH, szFile.getFileMonth());
-			DateFormat df = new SimpleDateFormat("MMMMM", getLocale());
-			return df.format(c.getTime());
-		}
-
-		public Locale getLocale() {
-			return locale;
-		}
-
-		public void setLocale(Locale locale) {
-			this.locale = locale;
-		}
-
+	public List<SzFile> getSzFiles() {
+		return szFiles;
 	}
 
 	@Required

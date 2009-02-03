@@ -7,7 +7,9 @@ import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.FPFileStatus;
 import org.flexpay.common.persistence.FPFileType;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class SzFile extends DomainObject {
 
@@ -27,10 +29,8 @@ public class SzFile extends DomainObject {
 	public static final Long SRV_TYPES_RESPONSE_FILE_TYPE = 6L;
 	public static final Long SUBSIDY_FILE_TYPE = 7L;
 
-	private Integer fileYear;
-	private Integer fileMonth;
+	private Date date;
 	private Date importDate = new Date();
-	private Boolean isActually = true;
 	private String userName;
 	private Oszn oszn;
 	private FPFile uploadedFile;
@@ -38,36 +38,20 @@ public class SzFile extends DomainObject {
 	private FPFileType type;
 	private FPFileStatus status;
 
-    public Integer getFileYear() {
-        return fileYear;
-    }
+	public Date getDate() {
+		return date;
+	}
 
-    public void setFileYear(Integer fileYear) {
-        this.fileYear = fileYear;
-    }
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
-    public Integer getFileMonth() {
-        return fileMonth;
-    }
-
-    public void setFileMonth(Integer fileMonth) {
-        this.fileMonth = fileMonth;
-    }
-
-    public Date getImportDate() {
+	public Date getImportDate() {
         return importDate;
     }
 
     public void setImportDate(Date importDate) {
         this.importDate = importDate;
-    }
-
-    public Boolean getIsActually() {
-        return isActually;
-    }
-
-    public void setIsActually(Boolean isActually) {
-        this.isActually = isActually;
     }
 
     public String getUserName() {
@@ -118,15 +102,20 @@ public class SzFile extends DomainObject {
 		this.status = status;
 	}
 
+	public String format(String pattern, Locale locale) {
+		if (date == null) {
+			return null;
+		}
+		return new SimpleDateFormat("MMMMM yyyy", locale).format(date);
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("SzFile {").
-				append("idr", getId()).
-				append("fileYear", fileYear).
-				append("fileMonth", fileMonth).
+				append("id", getId()).
+				append("date", date).
 				append("importDate", importDate).
-				append("isActually", isActually).
 				append("userName", userName).
 				append("uploadedFile", uploadedFile).
 				append("fileToDownload", fileToDownload).

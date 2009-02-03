@@ -6,24 +6,49 @@
 <hibernate-mapping package="org.flexpay.sz.persistence">
 
 	<class name="SzFile" table="sz_files_tbl">
-		<id name="id" column="id">
+		<id name="id">
+            <column name="id">
+                <comment>Primary key identifier</comment>
+            </column>
 			<generator class="native" />
 		</id>
-		<property name="fileYear" column="file_year" not-null="true" />
-		<property name="fileMonth" column="file_month" not-null="true" />
-        <property name="importDate" column="import_date" not-null="true" />
-        <property name="isActually" column="is_actually" not-null="true" />
-		<property name="userName" column="user_name" not-null="true" />
-        <many-to-one name="oszn" class="Oszn" column="oszn_id" not-null="true" />
-        <many-to-one name="uploadedFile" column="uploaded_file_id" unique="true" not-null="true" cascade="all" />
-        <many-to-one name="fileToDownload" column="file_to_download_id" unique="true" cascade="all" />
-        <many-to-one name="type" class="org.flexpay.common.persistence.FPFileType" foreign-key="sz_files_tbl_type_id" not-null="true">
-            <column name="type_id">
+        <property name="date" type="date">
+            <column name="file_date" not-null="true">
+                <comment>File date</comment>
+            </column>
+        </property>
+        <property name="importDate">
+            <column name="import_date" not-null="true">
+                <comment>Import date</comment>
+            </column>
+        </property>
+        <property name="userName">
+            <column name="user_name" not-null="true">
+                <comment>Author of this file</comment>
+            </column>
+        </property>
+        <many-to-one name="oszn" class="Oszn">
+            <column name="oszn_id" not-null="true">
+                <comment>OSZN reference</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="uploadedFile" cascade="all">
+            <column name="uploaded_file_id" unique="true" not-null="true">
+                <comment>Uploaded file reference</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="fileToDownload" cascade="all">
+            <column name="file_to_download_id" unique="true">
+                <comment>File to download reference</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="type" class="org.flexpay.common.persistence.FPFileType" foreign-key="sz_files_tbl_type_id">
+            <column name="type_id" not-null="true">
                 <comment>SZ file type reference</comment>
             </column>
         </many-to-one>
-        <many-to-one name="status" class="org.flexpay.common.persistence.FPFileStatus" foreign-key="sz_files_tbl_status_id" not-null="true">
-            <column name="status_id">
+        <many-to-one name="status" class="org.flexpay.common.persistence.FPFileStatus" foreign-key="sz_files_tbl_status_id">
+            <column name="status_id" not-null="true">
                 <comment>SZ file status reference</comment>
             </column>
         </many-to-one>

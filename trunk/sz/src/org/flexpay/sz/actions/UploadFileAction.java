@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.File;
+import java.util.Calendar;
 
 public class UploadFileAction extends ActionSupport {
 
@@ -68,8 +69,10 @@ public class UploadFileAction extends ActionSupport {
 			Oszn oszn = osznService.read(osznId);
 			szFile.setOszn(oszn);
 			szFile.setUserName(userName);
-			szFile.setFileYear(year);
-			szFile.setFileMonth(month);
+			Calendar c = Calendar.getInstance();
+			c.set(Calendar.YEAR, year);
+			c.set(Calendar.MONTH, month);
+			szFile.setDate(c.getTime());
 
 			szFileService.create(szFile);
 			log.info("File uploaded {}", szFile);
