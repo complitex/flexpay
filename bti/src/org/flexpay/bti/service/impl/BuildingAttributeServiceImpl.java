@@ -27,7 +27,11 @@ public class BuildingAttributeServiceImpl implements BuildingAttributeService {
 		return attributeDao.findAttributes(stub.getId(), pager);
 	}
 
-	public void setAttributeDao(BuildingAttributeDao attributeDao) {
+    public List<BuildingAttributeBase> listAttributes(@NotNull Stub<BtiBuilding> stub) {
+        return attributeDao.findAttributes(stub.getId());
+    }
+
+    public void setAttributeDao(BuildingAttributeDao attributeDao) {
 		this.attributeDao = attributeDao;
 	}
 

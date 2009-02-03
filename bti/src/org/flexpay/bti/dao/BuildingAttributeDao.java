@@ -10,4 +10,5 @@ public interface BuildingAttributeDao extends GenericDao<BuildingAttributeBase, 
 
 	List<BuildingAttributeBase> findAttributes(Long buildingId, Page<BuildingAttributeBase> pager);
 
+    List<BuildingAttributeBase> findAttributes(Long buildingId);
 }

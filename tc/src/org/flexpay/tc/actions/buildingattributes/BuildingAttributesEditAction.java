@@ -13,6 +13,7 @@ import org.flexpay.bti.persistence.BuildingAttributeType;
 import org.flexpay.bti.persistence.BtiBuilding;
 import org.flexpay.bti.persistence.BuildingAttributeBase;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
+import org.flexpay.bti.service.BuildingAttributeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -26,21 +27,22 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     private BuildingAddress building = new BuildingAddress();
     private List<BuildingAddress> alternateBuildingsList = new ArrayList<BuildingAddress>();
     private Date attributeDate = DateUtil.now();
-    private Map<Long, String> attributeMap = CollectionUtils.treeMap();
+    private Map<String, String> attributeMap = CollectionUtils.treeMap();
 
     private AddressService addressService;
     private BuildingService buildingService;
+    private BuildingAttributeService buildingAttributeService;
     private BuildingAttributeTypeService buildingAttributeTypeService;
 
     @NotNull
     protected String doExecute() throws Exception {
 
         if (!isSubmit()) {
-            // TODO PROCESSING
+            loadBuildingWithAttributes();
 
 
         } else {
-            loadBuildingWithAttributes();
+
         }
 
         return INPUT;
@@ -50,7 +52,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
         building = buildingService.readFull(stub(building));
 
-        // alternative addresses loading
+        // alternatuve addresses loading
         for (BuildingAddress address : buildingService.getBuildingBuildings(building.getBuildingStub())) {
             if (!building.equals(address)) {
                 alternateBuildingsList.add(buildingService.readFull(stub(address)));
@@ -60,16 +62,31 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         // loading bti building and it's attributes
         BtiBuilding btiBuilding = (BtiBuilding) buildingService.findBuilding(stub(building));
 
-        for (BuildingAttributeType attributeType : buildingAttributeTypeService.listTypes()) {
-            BuildingAttributeBase attribute = btiBuilding.getAttribute(attributeType);
+        List<BuildingAttributeBase> attrs = buildingAttributeService.listAttributes(stub(btiBuilding));
+        for (BuildingAttributeBase attr : attrs) {
+            log.debug(attr.getAttributeType().toString());
 
-            String value = "";
-            if (null != attribute) {
-                value = attribute.getValueForDate(attributeDate);
-            }
+            String key = attr.getAttributeType().getI18nTitle();
+            String value = attr.getValueForDate(attributeDate);
 
-            attributeMap.put(attributeType.getId(), value);
+            attributeMap.put(key, value);
+
+            // TODO remove
+            log.debug("MapEntry [{}, {}]", key, value);
         }
+
+//        for (BuildingAttributeType attributeType : buildingAttributeTypeService.listTypes()) {
+//            BuildingAttributeBase attribute = btiBuilding.getAttribute(attributeType);
+//
+//            String value = "";
+//            if (null != attribute) {
+//                value = attribute.getValueForDate(attributeDate);
+//            }
+//
+//            attributeMap.put(attributeType.getId(), value);
+//
+
+//        }
     }
 
     @NotNull
@@ -79,6 +96,16 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
         return INPUT;
     }
+
+    /*
+     public String getTypeName(Long typeId) throws FlexPayException {
+		AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(typeId));
+		if (type == null) {
+			throw new RuntimeException("Unknown type id: " + typeId);
+		}
+		return getTranslation(type.getTranslations()).getName();
+	}
+     */
 
     /**
      * Returns building primary address by id
@@ -115,11 +142,11 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         this.attributeDate = attributeDate;
     }
 
-    public Map<Long, String> getAttributeMap() {
+    public Map<String, String> getAttributeMap() {
         return attributeMap;
     }
 
-    public void setAttributeMap(Map<Long, String> attributeMap) {
+    public void setAttributeMap(Map<String, String> attributeMap) {
         this.attributeMap = attributeMap;
     }
 
@@ -138,4 +165,8 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         this.buildingAttributeTypeService = buildingAttributeTypeService;
     }
 
+    @Required
+    public void setBuildingAttributeService(BuildingAttributeService buildingAttributeService) {
+        this.buildingAttributeService = buildingAttributeService;
+    }
 }
