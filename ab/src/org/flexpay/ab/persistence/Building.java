@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Collection;
 
 /**
  * Building
@@ -90,7 +91,7 @@ public class Building extends DomainObjectWithStatus {
 	}
 
 	@SuppressWarnings ({"CollectionsFieldAccessReplaceableByMethodCall"})
-	public void addAll(Set<BuildingAddress> buildingses) {
+	public void addAll(Collection<BuildingAddress> buildingses) {
 		if (this.buildingses == Collections.EMPTY_SET) {
 			this.buildingses = CollectionUtils.set();
 		}
