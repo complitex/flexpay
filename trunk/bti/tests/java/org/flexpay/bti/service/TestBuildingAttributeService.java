@@ -6,6 +6,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.bti.persistence.BtiBuilding;
 import org.flexpay.bti.persistence.BuildingAttributeBase;
 import org.junit.Test;
+import org.junit.Ignore;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class TestBuildingAttributeService extends SpringBeanAwareTestCase {
 	private BuildingAttributeService attributeService;
 
 	@Test
+	@Ignore
 	public void testGetAttributes() {
 
 		List<BuildingAttributeBase> attributes = attributeService.listAttributes(

@@ -5,8 +5,7 @@
 
 <hibernate-mapping package="org.flexpay.bti.persistence">
 
-    <class name="BuildingAttributeBase" abstract="true" table="bti_building_attributes_tbl"
-           discriminator-value="normal">
+    <class name="BuildingAttributeBase" abstract="true" table="bti_building_attributes_tbl">
         <comment>Building attributes</comment>
         <id name="id" column="id">
             <generator class="native"/>
@@ -79,19 +78,21 @@
     </class>
 
     <query name="BuildingAttributeBase.findAttributes">
+		select distinct b
         from BuildingAttributeBase b
-        inner join b.attributeType
-        inner join b.building bb where bb.id = ?
+        where b.building.id = ?
     </query>
 
     <query name="BuildingAttributeBase.readSimpleAttributes">
+		select distinct a
         from BuildingAttribute a
         where a.building.id=?
     </query>
 
     <query name="BuildingAttributeBase.readTmpAttributes">
+		select distinct a
         from BuildingTempAttribute a
-        left join fetch a.values
+        	left join fetch a.values
         where a.building.id=?
     </query>
 
