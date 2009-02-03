@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
-<%@ taglib prefix="s" uri="/struts-tags" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <s:form id="fObjects" method="post">
@@ -41,43 +40,43 @@
                 <s:text name="sz.user_name" />
             </td>
         </tr>
-        <s:iterator value="szFileWrapperList" status="status">
+        <s:iterator value="szFiles" status="status">
             <tr valign="middle" class="cols_1">
                 <td class="col_1s">
-                    <input type="checkbox" value="<s:property value="szFile.id" />" name="szFileIds" />
+                    <input type="checkbox" value="<s:property value="id" />" name="szFileIds" />
                 </td>
                 <td class="col_1s">
                     <s:property value="%{#status.index + pager.thisPageFirstElementNumber + 1}" />
                 </td>
                 <td class="col">
-                    <s:property value="szFile.oszn.description"/>
+                    <s:property value="oszn.description"/>
                 </td>
                 <td class="col">
-                    <a href="<s:url value='/szFileDownloadServlet'><s:param name="szFileId" value="%{szFile.id}"/><s:param name="req" value="true" /></s:url>">
-                        <s:property value="szFile.uploadedFile.originalName"/>
+                    <a href="<s:url value='/szFileDownloadServlet'><s:param name="szFileId" value="%{id}"/><s:param name="req" value="true" /></s:url>">
+                        <s:property value="uploadedFile.originalName"/>
                     </a>
                 </td>
                 <td class="col">
-                    <s:if test="szFile.fileToDownload">
-                        <a href="<s:url value='/szFileDownloadServlet'><s:param name="szFileId" value="%{szFile.id}"/></s:url>">
-                            <s:property value="szFile.fileToDownload.originalName"/>
+                    <s:if test="fileToDownload">
+                        <a href="<s:url value='/szFileDownloadServlet'><s:param name="szFileId" value="%{id}"/></s:url>">
+                            <s:property value="fileToDownload.originalName"/>
                         </a>
                     </s:if>
                 </td>
                 <td class="col">
-                    <s:text name="%{szFile.type.name}" />
+                    <s:text name="%{type.name}" />
                 </td>
                 <td class="col">
-                    <s:property value="fileMonth" />&nbsp;<s:property value="szFile.fileYear"/>
+                    <s:property value="%{format('MMMMM yyyy', getLocale())}" />
                 </td>
                 <td class="col">
-                    <s:date name="szFile.importDate" format="dd.MM.yyyy hh:mm:ss" />
+                    <s:date name="importDate" format="dd.MM.yyyy hh:mm:ss" />
                 </td>
                 <td class="col">
-                    <s:text name="%{szFile.status.name}"/>
+                    <s:text name="%{status.name}"/>
                 </td>
                 <td class="col">
-                    <s:property value="szFile.userName"/>
+                    <s:property value="userName"/>
                 </td>
             </tr>
         </s:iterator>
