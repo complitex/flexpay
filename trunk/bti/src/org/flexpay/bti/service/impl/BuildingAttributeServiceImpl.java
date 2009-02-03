@@ -1,7 +1,6 @@
 package org.flexpay.bti.service.impl;
 
 import org.flexpay.bti.dao.BtiBuildingDaoExt;
-import org.flexpay.bti.dao.BuildingAttributeDao;
 import org.flexpay.bti.persistence.BtiBuilding;
 import org.flexpay.bti.persistence.BuildingAttributeBase;
 import org.flexpay.bti.service.BuildingAttributeService;
@@ -18,7 +17,6 @@ import java.util.List;
 public class BuildingAttributeServiceImpl implements BuildingAttributeService {
 
 	private BtiBuildingDaoExt buildingDaoExt;
-	private BuildingAttributeDao attributeDao;
 
 	/**
 	 * Find temp attributes of a building
@@ -28,17 +26,15 @@ public class BuildingAttributeServiceImpl implements BuildingAttributeService {
 	 * @return list of building attributes
 	 */
 	public List<BuildingAttributeBase> listAttributes(@NotNull Stub<BtiBuilding> stub, Page<BuildingAttributeBase> pager) {
-		return attributeDao.findAttributes(stub.getId(), pager);
+		List<BuildingAttributeBase> attributes = listAttributes(stub);
+		pager.setTotalElements(attributes.size());
+		return CollectionUtils.listSlice(attributes,
+				pager.getThisPageFirstElementNumber(), pager.getThisPageLastElementNumber());
 	}
 
 	public List<BuildingAttributeBase> listAttributes(@NotNull Stub<BtiBuilding> stub) {
 		BtiBuilding building = buildingDaoExt.readBuildinWithAttributes(stub.getId());
 		return CollectionUtils.list(building.getAttributes());
-	}
-
-	@Required
-	public void setAttributeDao(BuildingAttributeDao attributeDao) {
-		this.attributeDao = attributeDao;
 	}
 
 	@Required

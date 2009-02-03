@@ -1,14 +1,13 @@
 package org.flexpay.bti.service;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.bti.persistence.BtiBuilding;
 import org.flexpay.bti.persistence.BuildingAttributeBase;
-import org.junit.Test;
-import org.junit.Ignore;
+import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.test.SpringBeanAwareTestCase;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -19,7 +18,6 @@ public class TestBuildingAttributeService extends SpringBeanAwareTestCase {
 	private BuildingAttributeService attributeService;
 
 	@Test
-	@Ignore
 	public void testGetAttributes() {
 
 		List<BuildingAttributeBase> attributes = attributeService.listAttributes(
