@@ -25,6 +25,7 @@ public class BtiBuildingDaoExtImpl extends HibernateDaoSupport implements BtiBui
 	}
 
 	private BtiBuilding setupAttributes(BtiBuilding building) {
+
 		if (building == null) {
 			return null;
 		}

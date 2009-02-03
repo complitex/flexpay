@@ -25,6 +25,16 @@ public class CollectionUtils {
 	}
 
 	@NotNull
+	public static <T> List<T> listSlice(@NotNull List<T> ts, int first, int last) {
+		List<T> list = list();
+		for (int n = first; n < last && n < ts.size(); ++n) {
+			list.add(ts.get(n));
+		}
+
+		return list;
+	}
+
+	@NotNull
 	public static <T> Set<T> set(@NonNls T... ts) {
 		return new HashSet<T>(Arrays.asList(ts));
 	}
