@@ -1732,7 +1732,7 @@ SELECT @person_id:=last_insert_id();
 INSERT INTO ab_person_attributes_tbl (name, value, language_id, person_id)
 	VALUES('Кол-во детей', '12', @ru_id, @person_id);
 INSERT INTO ab_person_attributes_tbl (name, value, language_id, person_id)
-	VALUES('Аттрибут', 'значение', @ru_id, @person_id);
+	VALUES('Атрибут', 'значение', @ru_id, @person_id);
 INSERT INTO ab_person_attributes_tbl (name, value, language_id, person_id)
 	VALUES('Children number', '13', @en_id, @person_id);
 
@@ -1764,7 +1764,7 @@ INSERT INTO ab_person_identity_attributes_tbl (name, value, language_id, person_
 	VALUES ('INN', 'NONE', @en_id, @person_identity_id);
 
 INSERT INTO ab_person_identity_attributes_tbl (name, value, language_id, person_identity_id)
-	VALUES ('Аттрибут', 'Значение', @ru_id, @person_identity_id);
+	VALUES ('Атрибут', 'Значение', @ru_id, @person_identity_id);
 
 -- Init Buildings attribute types
 INSERT INTO ab_building_address_attribute_types_tbl (id, status) VALUES (1, 0);
