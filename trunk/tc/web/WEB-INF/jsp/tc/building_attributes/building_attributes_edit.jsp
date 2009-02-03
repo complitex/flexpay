@@ -51,69 +51,17 @@
         <%-- attribute groups (+misc) --%>
         <tr>
             <td class="th" colspan="2">
-                Группа атрибутов 1
+                Группа атрибутов
             </td>
         </tr>
 
-        <tr class="cols_1">
-            <td class="col">
-                Атрибут 1
-            </td>
-            <td class="col">
-                Значение 1
-            </td>
-        </tr>
-
-        <tr class="cols_1">
-            <td class="col">
-                Атрибут 2
-            </td>
-            <td class="col">
-                Значение 2
-            </td>
-        </tr>
-
-        <tr class="cols_1">
-            <td class="col">
-                Атрибут 3
-            </td>
-            <td class="col">
-                Значение 3
-            </td>
-        </tr>
-
-        <tr>
-            <td class="th" colspan="2">
-                Группа атрибутов 2
-            </td>
-        </tr>
-
-        <tr class="cols_1">
-            <td class="col">
-                Атрибут 1
-            </td>
-            <td class="col">
-                Значение 1
-            </td>
-        </tr>
-
-        <tr class="cols_1">
-            <td class="col">
-                Атрибут 2
-            </td>
-            <td class="col">
-                Значение 2
-            </td>
-        </tr>
-
-        <tr class="cols_1">
-            <td class="col">
-                Атрибут 3
-            </td>
-            <td class="col">
-                Значение 3
-            </td>
-        </tr>
+        <s:iterator value="attributeMap">
+            <tr valign="middle" class="cols_1">
+				<%--<td class="col"><s:property value="%{getTypeName(key)}" /></td>--%>
+                <td class="col"><s:property value="%{key}" /></td>
+				<td class="col"><s:textfield name="attributeMap[%{key}]" value="%{value}" /></td>
+			</tr>            
+        </s:iterator>
 
         <%-- submit button --%>
         <tr>

@@ -73,6 +73,7 @@
     <bean id="buildingAttributesEditAction" class="org.flexpay.tc.actions.buildingattributes.BuildingAttributesEditAction"
             p:addressService-ref="addressService"
             p:buildingService-ref="buildingService"
+            p:buildingAttributeService-ref="buildingAttributeService"
             p:buildingAttributeTypeService-ref="buildingAttributeTypeService"/>
     <!-- end of building attributes section -->
 
