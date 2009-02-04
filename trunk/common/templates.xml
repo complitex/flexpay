@@ -224,6 +224,7 @@
 			<lib dir="${common.dir}/lib/struts2" />
 			<lib dir="${common.dir}/lib/log4j" />
 			<lib dir="${common.dir}/lib/jbpm" />
+			<lib dir="${common.dir}/lib/drools" />
 			<lib dir="${common.dir}/lib/javadbf" />
 			<lib dir="${common.dir}/lib/ajax" />
 			<lib dir="${common.dir}/lib/itext" />
