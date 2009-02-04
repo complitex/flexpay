@@ -104,6 +104,7 @@
 	</class>
 
 	<query name="BuildingAttributeType.readFull">
+		select distinct t
 		from BuildingAttributeType t
 			left join fetch t.translations
 			left join fetch t.group 
@@ -120,11 +121,13 @@
 	</query>
 
 	<query name="BuildingAttributeType.findAllTypes">
+		select distinct t
 		from BuildingAttributeType t
 			left join fetch t.translations
 	</query>
 
 	<query name="BuildingAttributeType.findTypesByName">
+		select distinct t
 		from BuildingAttributeType t
 			left join t.translations n
 		where n.name=? or t.uniqueCode=?

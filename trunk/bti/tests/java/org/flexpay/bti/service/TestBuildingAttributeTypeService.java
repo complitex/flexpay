@@ -50,6 +50,15 @@ public class TestBuildingAttributeTypeService extends SpringBeanAwareTestCase {
 		assertTrue("Enum type is empty", enumType.getValues().size() > 0);
 	}
 
+	public void testFindType() {
+
+		assertNotNull("Color attribute not found", attributeTypeService.findTypeByName("Building color"));
+		assertNotNull("Color attribute not found", attributeTypeService.findTypeByName("Цвет здания"));
+		assertNotNull("Color attribute not found", attributeTypeService.findTypeByName("Wall material"));
+		assertNotNull("Build date attribute not found", attributeTypeService.findTypeByName("Build date"));
+		assertNotNull("ATTR_HOUSE_TYPE not found", attributeTypeService.findTypeByName("ATTR_HOUSE_TYPE"));
+	}
+
 	@Test
 	public void testCheckUnique() {
 

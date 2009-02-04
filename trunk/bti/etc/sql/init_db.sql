@@ -205,3 +205,6 @@ INSERT INTO `bti_building_attribute_type_enum_values_tbl` (id, order_value, valu
 
 
 
+-- initialize correction for a test attributes of CN building
+insert into common_data_corrections_tbl(external_object_id, internal_object_id, object_type, data_source_description_id)
+	values ('105471645', @buildings_ivanova_27, 0x07, @source_description_test_data);

@@ -102,6 +102,7 @@
     </query>
 
     <query name="BtiBuilding.findByAddress">
+		select distinct b
         from BtiBuilding b
         left join b.buildingses addr
         where addr.id=?

@@ -42,6 +42,8 @@ public class BuildingAttributeDataProcessorImpl implements BuildingAttributeData
 			}
 			if (BuildingAttributeConfig.isTemporal(pair.getKey())) {
 				building.setTmpAttributeForDates(type, pair.getValue(), begin, end);
+			} else {
+				building.setNormalAttribute(type, pair.getValue());
 			}
 		}
 

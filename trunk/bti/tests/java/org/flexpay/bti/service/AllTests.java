@@ -8,7 +8,8 @@ import org.junit.runners.Suite;
 		org.flexpay.bti.service.importexport.AllTests.class,
 		TestBuildingAttributeTypeService.class,
 		TestBuildingAttributeService.class,
-		TestBuildingService.class
+		TestBuildingService.class,
+		TestBtiBuildingService.class
 		})
 public class AllTests {
 

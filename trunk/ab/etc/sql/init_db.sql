@@ -1784,11 +1784,11 @@ INSERT INTO ab_building_adress_attribute_type_translations_tbl (name, short_name
 -- Init Buildings
 INSERT INTO ab_buildings_tbl (id, building_type, district_id) VALUES (1, 'ab', @district_id_nsk_sovetskiy);
 SELECT @building_ivanova_27_id:=1;
-INSERT INTO ab_building_addresses_tbl (status, primary_status, street_id, building_id)
-	VALUES (0, b'1', @street_id_ivanova, @building_ivanova_27_id);
-SELECT @buildings_id:=last_insert_id();
+INSERT INTO ab_building_addresses_tbl (id, status, primary_status, street_id, building_id)
+	VALUES (1, 0, b'1', @street_id_ivanova, @building_ivanova_27_id);
+SELECT @buildings_ivanova_27:=1;
 INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id, buildings_id)
-	VALUES ('27', 0, @attr_type_home_number_id, @buildings_id);
+	VALUES ('27', 0, @attr_type_home_number_id, @buildings_ivanova_27);
 
 INSERT INTO ab_buildings_tbl (building_type, district_id) VALUES ('ab', @district_id_nsk_sovetskiy);
 SELECT @building_id:=last_insert_id();
