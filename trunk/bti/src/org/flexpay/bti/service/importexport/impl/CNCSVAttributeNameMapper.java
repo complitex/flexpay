@@ -58,7 +58,7 @@ public class CNCSVAttributeNameMapper implements AttributeNameMapper {
 			// 22 V общая площадь жилого фонда, оборудованного мусоропроводами
 			ATTR_TOTAL_SQUARE_WITH_REFUSE_CHUTES,
 			// 23 W общая площадь жилого фонда
-			ATTR_TOTAL_SQUARE_WITH,
+			ATTR_TOTAL_SQUARE,
 			// 24 X общая площадь жилых помещений в домах, где вода подается при помощи насосов подкчки
 			ATTR_TOTAL_SQUARE_WITH_WATER_PUMPS,
 			// 25 Y кол-во квартир гостинничного типа
