@@ -13,6 +13,7 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.InputStream;
@@ -20,8 +21,11 @@ import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.Arrays;
 
 public class CSVBuildingAttributesImporter implements BuildingAttributesImporter {
+
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private AttributeNameMapper attributeNameMapper;
 	private CorrectionsService correctionsService;
@@ -36,12 +40,14 @@ public class CSVBuildingAttributesImporter implements BuildingAttributesImporter
 
 		plog.debug("Starting importing building attributes");
 
-		CSVReader csvReader = new CSVReader(new InputStreamReader(is));
+		CSVReader csvReader = new CSVReader(new InputStreamReader(is, "UTF-8"), ';');
 		List<BuildingAttributeData> datum = CollectionUtils.list();
 		String[] values;
 
 		// fetch properties and dump 'em to datum list
 		while ((values = csvReader.readNext()) != null) {
+
+			log.debug("Next row: {}", Arrays.asList(values));
 
 			BuildingAttributeData data = new BuildingAttributeData();
 			int indx = 0;
