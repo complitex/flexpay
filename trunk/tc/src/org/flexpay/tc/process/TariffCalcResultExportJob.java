@@ -10,7 +10,6 @@ import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.tc.locking.Resources;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.service.TariffCalculationResultService;
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -21,9 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 public class TariffCalcResultExportJob extends Job {
-
-	@NonNls
-	private Logger pLog = ProcessLogger.getLogger(getClass());
 
 	private String jdbcDriverClassName;
 	private String jdbcUrl;
@@ -38,6 +34,8 @@ public class TariffCalcResultExportJob extends Job {
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
+		Logger pLog = ProcessLogger.getLogger(getClass());
+		
 		pLog.debug("Tariff calculation result export procces started");
 
 		if (!lockManager.lock(Resources.BUILDING_ATTRIBUTES)) {
@@ -122,9 +120,9 @@ public class TariffCalcResultExportJob extends Job {
 			} catch (SQLException e) {
 				// do nothing
 			}
-		}
 
-		lockManager.releaseLock(Resources.BUILDING_ATTRIBUTES);
+			lockManager.releaseLock(Resources.BUILDING_ATTRIBUTES);
+		}
 
 		pLog.debug("Tariff calculation result export procces finished");
 

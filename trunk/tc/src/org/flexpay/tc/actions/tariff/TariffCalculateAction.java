@@ -9,27 +9,34 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Map;
 
 public class TariffCalculateAction extends FPActionWithPagerSupport<TariffCalculationRulesFile> {
 
-	private Long ruleId;
+	private Long id;
+	private Date calcDate;
 
 	private ProcessManager processManager;
 
 	@NotNull
 	public String doExecute() throws Exception {
 
-		if (ruleId == null || ruleId <= 0) {
+		if (id == null || id <= 0) {
 			addActionError(getText("tc.error.incorrect_rule_id"));
 			return REDIRECT_SUCCESS;
 		}
 
+		if (isNotSubmit()) {
+			return INPUT;
+		}
+
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
-		contextVariables.put(TariffCalculationJob.RULES_ID, ruleId);
+		contextVariables.put(TariffCalculationJob.RULES_ID, id);
+		contextVariables.put(TariffCalculationJob.CALC_DATE, calcDate);
 		processManager.createProcess("TariffCalculationProcess", contextVariables);
 
-		log.debug("Calculation tariff process for rules with id {} started succesfully");
+		log.debug("Calculation tariff process for rules with id {} for date {} started succesfully", id, calcDate);
 
 		return REDIRECT_SUCCESS;
 	}
@@ -47,8 +54,16 @@ public class TariffCalculateAction extends FPActionWithPagerSupport<TariffCalcul
 		return REDIRECT_SUCCESS;
 	}
 
-	public void setRuleId(Long ruleId) {
-		this.ruleId = ruleId;
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setCalcDate(Date calcDate) {
+		this.calcDate = calcDate;
 	}
 
 	@Required

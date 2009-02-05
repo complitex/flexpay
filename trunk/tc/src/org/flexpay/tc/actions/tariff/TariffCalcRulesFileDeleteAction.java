@@ -15,6 +15,11 @@ public class TariffCalcRulesFileDeleteAction extends FPActionWithPagerSupport<Ta
 	@NotNull
 	public String doExecute() {
 
+		if (id == null || id <= 0) {
+			addActionError(getText("tc.error.incorrect_rule_id"));
+			return REDIRECT_SUCCESS;
+		}
+
 		tariffCalculationRulesFileService.delete(id);
 
 		return REDIRECT_SUCCESS;

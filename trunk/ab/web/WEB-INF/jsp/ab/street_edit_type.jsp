@@ -20,8 +20,7 @@
 						inputField	 : "date",
 						ifFormat	 : "%Y/%m/%d",
 						button		 : "trigger_from",
-						align		 : "Tl",
-						singleClick  : true
+						align		 : "Tl"
 					});
 				</script>
 				&nbsp;

@@ -78,8 +78,10 @@
 				<%--<td class="col"><s:text name="%{importError.errorId}"/></td>--%>
 				<td class="col"><s:property value="%{importError.errorId}"/></td>
 				<td class="col"><s:text name="%{recordStatus.i18nName}"/></td>
-				<td class="col"><a href="javascript: correspondenceScreen(<s:property value="%{id}" />)">
-					<s:text name="common.edit"/></a>
+				<td class="col">
+                    <a href="javascript:correspondenceScreen(<s:property value="%{id}" />)">
+					    <s:text name="common.edit"/>
+                    </a>
 				</td>
 			</tr>
 		</s:iterator>

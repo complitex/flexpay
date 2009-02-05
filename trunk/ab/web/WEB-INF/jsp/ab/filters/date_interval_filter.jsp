@@ -24,14 +24,12 @@ Calendar.setup({
 	inputField	 : "dateInterval.begin",
 	ifFormat	 : "%Y/%m/%d",
 	button		 : "trigger_dateInterval.begin",
-	align		 : "Tl",
-	singleClick  : true
+	align		 : "Tl"
 });
 Calendar.setup({
 	inputField	 : "dateInterval.end",
 	ifFormat	 : "%Y/%m/%d",
 	button		 : "trigger_dateInterval.end",
-	align		 : "Tl",
-	singleClick	 : true
+	align		 : "Tl"
 });
 </script>
