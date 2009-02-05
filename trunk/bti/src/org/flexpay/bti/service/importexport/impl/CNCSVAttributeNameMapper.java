@@ -13,6 +13,7 @@ public class CNCSVAttributeNameMapper implements AttributeNameMapper {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private static final List<String> attributeNames = CollectionUtils.list(
+			null,
 			// 1
 			null,
 			// 2
@@ -258,7 +259,7 @@ public class CNCSVAttributeNameMapper implements AttributeNameMapper {
 	);
 
 	static {
-		if (attributeNames.size() != 121) {
+		if (attributeNames.size() != 122) {
 			throw new IllegalStateException("Invalid mapping configuration, expected 121 attribute names");
 		}
 	}
@@ -266,16 +267,16 @@ public class CNCSVAttributeNameMapper implements AttributeNameMapper {
 	/**
 	 * Get name of the n-th attribute, returned <code>null</code> is for unknown position of attribute
 	 *
-	 * @param n Order of attribute to get name for
+	 * @param n Order of attribute to get name for, 1-based
 	 * @return Attribute name
 	 */
 	public String getName(int n) {
 
-		if (n < 1 || n > attributeNames.size()) {
-			log.warn("Illegal attribute position requested {}, max is {}", n, attributeNames.size());
+		if (n < 1 || n >= attributeNames.size()) {
+			log.warn("Illegal attribute position requested {}, max is {}", n, attributeNames.size()-1);
 			return null;
 		}
 
-		return attributeNames.get(n-1);
+		return attributeNames.get(n);
 	}
 }
