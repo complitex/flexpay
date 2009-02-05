@@ -3,6 +3,8 @@ package org.flexpay.bti.dao.impl;
 import org.flexpay.bti.dao.BtiBuildingDaoExt;
 import org.flexpay.bti.persistence.BtiBuilding;
 import org.flexpay.bti.persistence.BuildingAttributeBase;
+import org.flexpay.ab.persistence.Town;
+import org.flexpay.common.persistence.Stub;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -46,5 +48,14 @@ public class BtiBuildingDaoExtImpl extends HibernateDaoSupport implements BtiBui
 			BuildingAttributeBase attribute = (BuildingAttributeBase) obj;
 			building.addAttribute(attribute);
 		}
+	}
+
+	/**
+	 * Find all BtiBuilding in the town
+	 * @param town town to search
+	 * @return BtiBuilding list in town
+	 */
+	public List<BtiBuilding> findByTown(Stub<Town> town) {
+		return  (List<BtiBuilding>) getHibernateTemplate().findByNamedQuery("BtiBuilding.findByTown", town.getId());
 	}
 }

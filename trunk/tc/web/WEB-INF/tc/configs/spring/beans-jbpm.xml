@@ -9,8 +9,9 @@
 
 	<bean name="tariffCalculationJob" class="org.flexpay.tc.process.TariffCalculationJob"
 		  p:tariffCalculationResultService-ref="tariffCalculationResultService"
-          p:buildingService-ref="buildingService"
+          p:btiBuildingService-ref="btiBuildingService"
           p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
+          p:lockManager-ref="lockManager"
           scope="prototype" />
 
     <bean name="tariffCalcResultExportJob" class="org.flexpay.tc.process.TariffCalcResultExportJob"

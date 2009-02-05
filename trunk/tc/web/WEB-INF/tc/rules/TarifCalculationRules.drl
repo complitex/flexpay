@@ -1,0 +1,16 @@
+package org.flexpay.tc
+dialect "java" 
+import org.flexpay.bti.persistence.BtiBuilding;
+
+global org.flexpay.bti.service.BtiBuildingService btiBuildingService;
+global org.slf4j.Logger logger;
+global org.flexpay.tc.service.TariffCalculationRulesFileService tarifCalculationResultService;
+
+rule "TestRule"
+	
+	when
+		 b : BtiBuilding (id!=null)
+	then 
+		logger.info("building with id ="+b.getId()+" processed");
+		
+end
