@@ -67,7 +67,7 @@ public class BuildingAttributeConfig {
 	// 35 AI общая площадь квартир, оборудованных лифтами
 	public static final String ATTR_LIFTED_APARTMENTS_TOTAL_SQUARE = "ATTR_LIFTED_APARTMENTS_TOTAL_SQUARE";
 	// 36 AJ кол-во лифтов
-	public static final String ATTR_LISTS_NUMBER = "ATTR_LISTS_NUMBER";
+	public static final String ATTR_LIFTS_NUMBER = "ATTR_LIFTS_NUMBER";
 	// 37 AK тип лифта
 	public static final String ATTR_LIFT_TYPE = "ATTR_LIFT_TYPE";
 	// 38 AL тип лифта
@@ -235,6 +235,22 @@ public class BuildingAttributeConfig {
 	public static final String ATTR_COMMON_PLACES_LIGHTENING_WITHOUT_ONEFLOOR_HOUSES = "ATTR_COMMON_PLACES_LIGHTENING_WITHOUT_ONEFLOOR_HOUSES";
 	// 121 DQ кол-во контейнеров для сбора ТБО
 	public static final String ATTR_TBO_CONTAINER_NUMBER = "ATTR_TBO_CONTAINER_NUMBER";
+	// 122 DR площадь, оборудованная дворовыми туалетами ????
+	public static final String ATTR_TOTAL_SQUARE_EQUIPPED_COURT_TOILETS = "ATTR_TOTAL_SQUARE_EQUIPPED_COURT_TOILETS";
+	// 123 DS ???? ЕСЛИ(V = W; 1; 0)
+	public static final String ATTR_DS = "ATTR_DS";
+	// 124 DT тех.обслуживание лифтов в месяц, грн.
+	public static final String ATTR_COST_LIFT_TECHNICAL_SUPPORT = "ATTR_COST_LIFT_TECHNICAL_SUPPORT";
+	// 125 DU тех.обслуживание лифтов в месяц с КП «Жилкомсервис», грн. DT * 1.214263
+	public static final String ATTR_COST_LIFT_TECHNICAL_SUPPORT_ZHILKOMSERVIS = "ATTR_COST_LIFT_TECHNICAL_SUPPORT_ZHILKOMSERVIS";
+	// 126 DV диспетчеризация в месяц, грн.
+	public static final String ATTR_COST_DISPETCHERING = "ATTR_COST_DISPETCHERING";
+	// 127 DW диспетчеризация в месяц с КП «Жилкомсервис», грн. DV * 1.214263
+	public static final String ATTR_COST_DISPETCHIRING_ZHILKOMSERVIS = "ATTR_COST_DISPETCHIRING_ZHILKOMSERVIS";
+	// 128 DX освещение мест общего пользования (в части КСП «Харьковгорлифт»), грн.
+	public static final String ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT = "ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT";
+	// 129 DY освещение мест общего пользования (в части КСП «Харьковгорлифт») с КП «Жилкомсервис», грн. DX * 1.214263
+	public static final String ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT_ZHILKOMSERVIS = "ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT_ZHILKOMSERVIS";
 
 	static {
 		temporalFlags.put(ATTR_SECTION_NUMBER, false);

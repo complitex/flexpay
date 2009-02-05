@@ -12,16 +12,17 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.IntegerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.Arrays;
 
 public class CSVBuildingAttributesImporter implements BuildingAttributesImporter {
 
@@ -64,8 +65,12 @@ public class CSVBuildingAttributesImporter implements BuildingAttributesImporter
 			}
 
 			for (int n = indx; n < values.length; ++n) {
-				String attrName = attributeNameMapper.getName(n);
+				String attrName = attributeNameMapper.getName(n+1);
 				if (attrName != null) {
+					if (log.isDebugEnabled()) {
+						log.debug("Found attribute: #{} ({}). {} - {}",
+								new Object[]{n+1, IntegerUtil.toXLSColumnNumber(n+1), attrName, values[n]});
+					}
 					data.addValue(attrName, values[n]);
 				}
 			}
@@ -90,7 +95,7 @@ public class CSVBuildingAttributesImporter implements BuildingAttributesImporter
 			return;
 		}
 
-		plog.info("Building not found by external id {}", data.getExternalId());
+		plog.debug("Building not found by external id {}", data.getExternalId());
 		// todo find building by address
 	}
 
