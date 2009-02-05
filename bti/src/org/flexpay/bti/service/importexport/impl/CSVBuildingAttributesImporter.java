@@ -40,6 +40,7 @@ public class CSVBuildingAttributesImporter implements BuildingAttributesImporter
 
 		plog.debug("Starting importing building attributes");
 
+		@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
 		CSVReader csvReader = new CSVReader(new InputStreamReader(is, "UTF-8"), ';');
 		List<BuildingAttributeData> datum = CollectionUtils.list();
 		String[] values;
