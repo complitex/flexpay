@@ -67,7 +67,7 @@
                     <s:text name="%{type.name}" />
                 </td>
                 <td class="col">
-                    <s:property value="%{format('MMMMM yyyy', getLocale())}" />
+                    <s:property value="%{format('MMMMM yyyy', userPreferences.locale)}" />
                 </td>
                 <td class="col">
                     <s:date name="importDate" format="dd.MM.yyyy hh:mm:ss" />

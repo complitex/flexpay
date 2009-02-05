@@ -58,7 +58,7 @@
     function validateForm() {
         var fileEl = $("inputForm").elements["upload"];
         if (fileEl.value == null || fileEl.value == "") {
-            alert("<s:text name="tc.error.rules_file_field_cant_be_null" />");
+            alert('<s:text name="tc.error.rules_file_field_cant_be_null" />');
             return false;
         }
         return true;

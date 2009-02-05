@@ -3,9 +3,9 @@
 
 <table cellpadding="0" cellspacing="0" border="0" width="100%" height="30">
 	<tr class="secondtop">
-		<td class="second-padding"><a href="<c:url value='/sz/main.action' />" class="menu2"><s:text name="sz.menu2.dictionaries"/></a></td>
-        <td><img src="<c:url value="/resources/common/img/separator1.gif" />" hspace="12"/></td>
-        <td class="second-padding"><a href="<c:url value='/sz/import.action' />" class="menu2"><s:text name="sz.menu2.import"/></a></td>
+		<td class="second-padding"><a href="<s:url action="main" namespace="/sz" />" class="menu2"><s:text name="sz.menu2.dictionaries"/></a></td>
+        <td><img src="<c:url value="/resources/common/img/separator1.gif" />" hspace="12" alt="" /></td>
+        <td class="second-padding"><a href="<s:url action="import" namespace="/sz" />" class="menu2"><s:text name="sz.menu2.import"/></a></td>
 		<td width="100%">&nbsp;</td>
 	</tr>
 </table>

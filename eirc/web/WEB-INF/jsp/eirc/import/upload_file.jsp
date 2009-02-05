@@ -28,10 +28,13 @@
 
 <script type="text/javascript">
 
-    var newBlocks = 0;
     var mainBlock = "mainBlock";
     var copyBlock = "copyBlock";
     var file = null;
+
+    var unsuccess = 0;
+    var success = 0;
+    var total = 0;
 
     function setFile(obj) {
         file = obj;
@@ -42,33 +45,33 @@
         var block = $(copyBlock);
 
         var clone = block.cloneNode(true);
-        clone.id = copyBlock + newBlocks;
+        clone.id = copyBlock + total;
         $(mainBlock).appendChild(clone);
 
         var uploadForm = $$("form[id=uploadForm]")[1];
-        uploadForm.id = "uploadForm" + newBlocks;
-        uploadForm.target = "uploadFrame" + newBlocks;
+        uploadForm.id = "uploadForm" + total;
+        uploadForm.target = "uploadFrame" + total;
 
         var inputForm = $("inputForm");
         uploadForm.appendChild(file);
         $("fileRaw").appendChild(file.cloneNode(true));
 
         var ajaxResponse = $$("div[id=ajaxResponse]")[1];
-        ajaxResponse.id = "ajaxResponse" + newBlocks;
+        ajaxResponse.id = "ajaxResponse" + total;
         ajaxResponse.innerHTML = "";
 
         var iframe;
         if (Prototype.Browser.IE) {
-            iframe = document.createElement('<iframe id="uploadFrame' + newBlocks + '" name="uploadFrame' + newBlocks + '"></iframe>');
+            iframe = document.createElement('<iframe id="uploadFrame' + total + '" name="uploadFrame' + total + '"></iframe>');
         } else {
             iframe = document.createElement("iframe");
-            iframe.id = "uploadFrame" + newBlocks;
-            iframe.name = "uploadFrame" + newBlocks;
+            iframe.id = "uploadFrame" + total;
+            iframe.name = "uploadFrame" + total;
         }
         iframe.style.display = "none";
         $("mainBlock").appendChild(iframe);
 
-        newBlocks++;
+        total++;
     }
 
     function eraseForm() {
@@ -115,14 +118,14 @@
             return;
         }
 
-        stack.push(newBlocks);
+        stack.push(total);
         addBlock();
         eraseForm();
 
         if (!uploaded || (uploaded && wait)) {
-            var fileValue = $("uploadForm" + (newBlocks - 1)).elements["upload"].value;
+            var fileValue = $("uploadForm" + (total - 1)).elements["upload"].value;
             var index = fileValue.lastIndexOf("\\") + (Prototype.Browser.IE ? 1 : 0);
-            $("ajaxResponse" + (newBlocks - 1)).innerHTML = "<s:text name="common.file" /> \"" + fileValue.substring(index)
+            $("ajaxResponse" + (total - 1)).innerHTML = "<s:text name="common.file" /> \"" + fileValue.substring(index)
                     + "\": <s:text name="common.file_upload.progress_bar.waiting" />";
         }
         if (!started) {
@@ -171,13 +174,19 @@
                     if (bodyFrame.innerHTML == "success") {
                         ajaxResponse.style.color = "#008000";
                         ajaxResponse.innerHTML = uploadingFilename + "<s:text name="common.file_upload.progress_bar.loaded" />";
+                        success++;
                         wait = false;
                     } else if (bodyFrame.innerHTML == "error") {
                         ajaxResponse.innerHTML = uploadingFilename + "<s:text name="common.file_upload.progress_bar.error" />";
                         wait = false;
+                        unsuccess++;
                     }
                 }
             }
+        }
+        if (stack.length == 0 && !wait) {
+            started = false;
+            window.onbeforeunload = "";
         }
         uploadWait();
     }
@@ -210,6 +219,18 @@
             }
             setTimeout(getProgress, 1000);
         }
+    }
+
+    function f() {
+        if (!started) {
+            started = true;
+            window.onbeforeunload = closeIt;
+            upload();
+        }
+    }
+
+    function closeIt() {
+        return FP.formatI18nMessage("<s:text name="common.file_upload.confirm_exit" />", [success, unsuccess, total - success - unsuccess - 1]);
     }
 
 </script>

@@ -1,61 +1,56 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
-<%@ taglib prefix="s" uri="/struts-tags" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <script type="text/javascript" src="<c:url value="/resources/common/js/prototype.js" />"></script>
 
+<s:form id="inputForm">
+    <table cellspacing="2" cellpadding="2" width="80%">
+        <tr>
+            <td width="30%" nowrap="nowrap">
+                <s:text name="year" />&nbsp;<s:select name="year"
+                          required="true"
+                          list="#{(curYear - 1):(curYear - 1),curYear:curYear}"
+                          value="curYear" />
+            </td>
+            <td width="30%" nowrap="nowrap">
+                <s:text name="month" />&nbsp;<s:select name="month" list="months" value="curMonth" required="true" />
+            </td>
+            <td align="right" nowrap="nowrap">
+                <s:text name="sz.oszn" />&nbsp;<s:select name="osznId" list="osznList" listKey="id" listValue="description" required="true" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" id="fileRaw">
+                <s:text name="common.file" />&nbsp;<s:file id="" name="upload" label="File" required="true" size="75" onchange="setFile(this);" />
+            </td>
+        </tr>
+    </table>
+    <input id="uploadBtn" type="button" value="<s:text name="common.add_to_upload" />" class="btn-exit" onclick="submitForm();" />
+</s:form>
+
 <div id="mainBlock">
-
-    <s:form id="inputForm" onsubmit="return false;">
-        <table cellspacing="2" cellpadding="2" width="80%">
-            <tr>
-                <td width="30%" nowrap="nowrap">
-                    <s:text name="year" />&nbsp;<s:select name="year"
-                              required="true"
-                              list="#{(curYear - 1):(curYear - 1),curYear:curYear}"
-                              value="curYear" />
-                </td>
-                <td width="30%" nowrap="nowrap">
-                    <s:text name="month" />&nbsp;<s:select name="month"
-                              required="true"
-                              list="months"
-                              value="curMonth" />
-                </td>
-                <td align="right" nowrap="nowrap">
-                    <s:text name="sz.oszn" />&nbsp;<s:select name="osznId" list="osznList" listKey="id" listValue="description" required="true" />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3" id="fileRaw">
-                    <s:text name="common.file" />&nbsp;<s:file id="" name="upload" label="File" required="true" size="75" onchange="setFile(this);" />
-                </td>
-            </tr>
-        </table>
-        <input id="uploadBtn" type="button" value="<s:text name="common.add_to_upload" />" class="btn-exit" onclick="submitForm();" />
-    </s:form>
-
-    <div id="mainBlock">
-        <div id="copyBlock">
-            <div id="uploadDiv" style="display:none;">
-                <form id="uploadForm" action="<s:url action="doSzFileUploadAjax" namespace="/sz" includeParams="none" />"
-                      method="POST" enctype="multipart/form-data" target="uploadFrame" onsubmit="return false;">
-                    <input type="hidden" name="year" value="" />
-                    <input type="hidden" name="month" value="" />
-                    <input type="hidden" name="osznId" value="" />
-                </form>
-            </div>
-            <div id="ajaxResponse" style="color:#ff0000;"></div>
+    <div id="copyBlock">
+        <div id="uploadDiv" style="display:none;">
+            <form id="uploadForm" action="<s:url action="doSzFileUploadAjax" namespace="/sz" includeParams="none" />"
+                  method="POST" enctype="multipart/form-data" target="uploadFrame">
+                <input type="hidden" name="year" value="" />
+                <input type="hidden" name="month" value="" />
+                <input type="hidden" name="osznId" value="" />
+            </form>
         </div>
+        <div id="ajaxResponse" style="color:#ff0000;"></div>
     </div>
-
 </div>
 
 <script type="text/javascript">
 
-    var newBlocks = 0;
     var mainBlock = "mainBlock";
     var copyBlock = "copyBlock";
     var file = null;
+
+    var unsuccess = 0;
+    var success = 0;
+    var total = 0;
 
     function setFile(obj) {
         file = obj;
@@ -66,12 +61,12 @@
         var block = $(copyBlock);
 
         var clone = block.cloneNode(true);
-        clone.id = copyBlock + newBlocks;
+        clone.id = copyBlock + total;
         $(mainBlock).appendChild(clone);
 
         var uploadForm = $$("form[id=uploadForm]")[1];
-        uploadForm.id = "uploadForm" + newBlocks;
-        uploadForm.target = "uploadFrame" + newBlocks;
+        uploadForm.id = "uploadForm" + total;
+        uploadForm.target = "uploadFrame" + total;
 
         var inputForm = $("inputForm");
         uploadForm.elements["year"].value = inputForm.elements["year"].value;
@@ -81,21 +76,21 @@
         $("fileRaw").appendChild(file.cloneNode(true));
 
         var ajaxResponse = $$("div[id=ajaxResponse]")[1];
-        ajaxResponse.id = "ajaxResponse" + newBlocks;
+        ajaxResponse.id = "ajaxResponse" + total;
         ajaxResponse.innerHTML = "";
 
         var iframe;
         if (Prototype.Browser.IE) {
-            iframe = document.createElement('<iframe id="uploadFrame' + newBlocks + '" name="uploadFrame' + newBlocks + '"></iframe>');
+            iframe = document.createElement('<iframe id="uploadFrame' + total + '" name="uploadFrame' + total + '"></iframe>');
         } else {
             iframe = document.createElement("iframe");
-            iframe.id = "uploadFrame" + newBlocks;
-            iframe.name = "uploadFrame" + newBlocks;
+            iframe.id = "uploadFrame" + total;
+            iframe.name = "uploadFrame" + total;
         }
         iframe.style.display = "none";
         $("mainBlock").appendChild(iframe);
 
-        newBlocks++;
+        total++;
     }
 
     function eraseForm() {
@@ -142,21 +137,18 @@
             return;
         }
 
-        stack.push(newBlocks);
+        stack.push(total);
         addBlock();
         eraseForm();
 
         if (!uploaded || (uploaded && wait)) {
-            var fileValue = $("uploadForm" + (newBlocks - 1)).elements["upload"].value;
+            var fileValue = $("uploadForm" + (total - 1)).elements["upload"].value;
             var index = fileValue.lastIndexOf("\\") + (Prototype.Browser.IE ? 1 : 0);
-            $("ajaxResponse" + (newBlocks - 1)).innerHTML = "<s:text name="common.file" /> \"" + fileValue.substring(index)
+            $("ajaxResponse" + (total - 1)).innerHTML = "<s:text name="common.file" /> \"" + fileValue.substring(index)
                     + "\": <s:text name="common.file_upload.progress_bar.waiting" />";
         }
-        if (!started) {
-            started = true;
-            upload();
-            started = false;
-        }
+
+        f();
 
     }
 
@@ -184,7 +176,7 @@
     var retries = 5;
     var curRetry = 0;
 
-    function waiting() {
+    function waitFunction() {
         if (!wait) {
             return;
         }
@@ -198,13 +190,19 @@
                     if (bodyFrame.innerHTML == "success") {
                         ajaxResponse.style.color = "#008000";
                         ajaxResponse.innerHTML = uploadingFilename + "<s:text name="common.file_upload.progress_bar.loaded" />";
+                        success++;
                         wait = false;
                     } else if (bodyFrame.innerHTML == "error") {
                         ajaxResponse.innerHTML = uploadingFilename + "<s:text name="common.file_upload.progress_bar.error" />";
                         wait = false;
+                        unsuccess++;
                     }
                 }
             }
+        }
+        if (stack.length == 0 && !wait) {
+            started = false;
+            window.onbeforeunload = "";
         }
         uploadWait();
     }
@@ -212,13 +210,13 @@
     function uploadWait() {
         if (stack.length > 0) {
             if (wait) {
-                setTimeout(waiting, 1500);
+                setTimeout(waitFunction, 1500);
             } else {
                 upload();
             }
         } else {
             if (wait) {
-                setTimeout(waiting, 1500);
+                setTimeout(waitFunction, 1500);
             }
         }
     }
@@ -237,6 +235,18 @@
             }
             setTimeout(getProgress, 1000);
         }
+    }
+
+    function f() {
+        if (!started) {
+            started = true;
+            window.onbeforeunload = closeIt;
+            upload();
+        }
+    }
+
+    function closeIt() {
+        return FP.formatI18nMessage("<s:text name="common.file_upload.confirm_exit" />", [success, unsuccess, total - success - unsuccess - 1]);
     }
 
 </script>

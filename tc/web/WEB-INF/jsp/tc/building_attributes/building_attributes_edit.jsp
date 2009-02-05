@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
@@ -38,11 +39,10 @@
                      onmouseout="this.style.background='';"/>
                 <script type="text/javascript">
                     Calendar.setup({
-                        inputField     : "attribute.date",
-                        ifFormat     : "%Y/%m/%d",
-                        button         : "trigger_attribute.date",
-                        align         : "Tl",
-                        singleClick  : true
+                        inputField : "attribute.date",
+                        ifFormat   : "%Y/%m/%d",
+                        button     : "trigger_attribute.date",
+                        align      : "Tl"
                     });
                 </script>
             </td>
@@ -51,7 +51,7 @@
         <%-- attribute groups (+misc) --%>
         <tr>
             <td class="th" colspan="2">
-                Группа атрибутов
+                пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             </td>
         </tr>
 

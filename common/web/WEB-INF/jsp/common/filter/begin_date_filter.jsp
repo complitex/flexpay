@@ -14,7 +14,6 @@ Calendar.setup({
 	inputField	 : "beginDateFilter",
 	ifFormat	 : "%Y/%m/%d",
 	button		 : "trigger_beginDateFilter",
-	align		 : "Tl",
-	singleClick  : true
+	align		 : "Tl"
 });
 </script></s:else>

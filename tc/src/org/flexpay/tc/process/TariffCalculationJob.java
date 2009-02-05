@@ -5,27 +5,22 @@ import org.drools.RuleBaseFactory;
 import org.drools.WorkingMemory;
 import org.drools.compiler.DroolsParserException;
 import org.drools.compiler.PackageBuilder;
-import org.flexpay.ab.service.BuildingService;
+import org.flexpay.bti.persistence.BtiBuilding;
+import org.flexpay.bti.service.BtiBuildingService;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.ProcessLogger;
-import org.flexpay.common.process.job.Job;
 import org.flexpay.common.locking.LockManager;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.process.job.Job;
+import org.flexpay.tc.locking.Resources;
 import org.flexpay.tc.persistence.TariffCalculationRulesFile;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.service.TariffCalculationRulesFileService;
-import org.flexpay.tc.locking.Resources;
 import org.flexpay.tc.util.config.ApplicationConfig;
-import org.flexpay.bti.service.BtiBuildingService;
-import org.flexpay.bti.persistence.BtiBuilding;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.jetbrains.annotations.NonNls;
 
 import java.io.*;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 public class TariffCalculationJob extends Job {
 
@@ -35,8 +30,10 @@ public class TariffCalculationJob extends Job {
 	private LockManager lockManager;
 
 	public static final String RULES_ID = "RULE_ID";
+	public static final String CALC_DATE = "CALC_DATE";
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
+
 		if (lockManager.lock(Resources.BUILDING_ATTRIBUTES)) {
 			//get rules file
 			try {
@@ -114,4 +111,5 @@ public class TariffCalculationJob extends Job {
 	public void setLockManager(LockManager lockManager) {
 		this.lockManager = lockManager;
 	}
+
 }
