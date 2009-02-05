@@ -12,6 +12,7 @@ import org.junit.runners.Suite;
 		org.flexpay.common.util.AllTests.class,
 		org.flexpay.common.service.AllTests.class,
 		org.flexpay.common.dao.AllTests.class,
+		org.flexpay.common.drools.AllTests.class,
 		org.flexpay.common.locking.AllTests.class,
 		org.flexpay.common.actions.AllTests.class,
 		org.flexpay.common.reporting.AllTests.class,

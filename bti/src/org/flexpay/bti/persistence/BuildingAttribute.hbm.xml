@@ -108,4 +108,9 @@
         where addr.id=?
     </query>
 
+    <query name="BtiBuilding.findByTown">
+        from BtiBuilding b
+        where b.district.parent.id = ?
+    </query>
+
 </hibernate-mapping>
