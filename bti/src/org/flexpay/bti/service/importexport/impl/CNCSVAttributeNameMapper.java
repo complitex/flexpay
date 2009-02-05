@@ -85,7 +85,7 @@ public class CNCSVAttributeNameMapper implements AttributeNameMapper {
 			// 35 AI общая площадь квартир, оборудованных лифтами
 			ATTR_LIFTED_APARTMENTS_TOTAL_SQUARE,
 			// 36 AJ кол-во лифтов
-			ATTR_LISTS_NUMBER,
+			ATTR_LIFTS_NUMBER,
 			// 37 AK тип лифта
 			ATTR_LIFT_TYPE,
 			// 38 AL тип лифта
@@ -255,12 +255,28 @@ public class CNCSVAttributeNameMapper implements AttributeNameMapper {
 			// 120 DP освещение мест общего пользования без одноэтажных домов
 			ATTR_COMMON_PLACES_LIGHTENING_WITHOUT_ONEFLOOR_HOUSES,
 			// 121 DQ кол-во контейнеров для сбора ТБО
-			ATTR_TBO_CONTAINER_NUMBER
+			ATTR_TBO_CONTAINER_NUMBER,
+			// 122 DR площадь, оборудованная дворовыми туалетами ????
+			ATTR_TOTAL_SQUARE_EQUIPPED_COURT_TOILETS,
+			// 123 DS ???? ЕСЛИ(V = W; 1; 0)
+			ATTR_DS,
+			// 124 DT тех.обслуживание лифтов в месяц, грн.
+			ATTR_COST_LIFT_TECHNICAL_SUPPORT,
+			// 125 DU тех.обслуживание лифтов в месяц с КП «Жилкомсервис», грн. DT * 1.214263
+			ATTR_COST_LIFT_TECHNICAL_SUPPORT_ZHILKOMSERVIS,
+			// 126 DV диспетчеризация в месяц, грн.
+			ATTR_COST_DISPETCHERING,
+			// 127 DW диспетчеризация в месяц с КП «Жилкомсервис», грн. DV * 1.214263
+			ATTR_COST_DISPETCHIRING_ZHILKOMSERVIS,
+			// 128 DX освещение мест общего пользования (в части КСП «Харьковгорлифт»), грн.
+			ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT,
+			// 129 DY освещение мест общего пользования (в части КСП «Харьковгорлифт») с КП «Жилкомсервис», грн. DX * 1.214263
+			ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT_ZHILKOMSERVIS
 	);
 
 	static {
-		if (attributeNames.size() != 122) {
-			throw new IllegalStateException("Invalid mapping configuration, expected 121 attribute names");
+		if (attributeNames.size() != 130) {
+			throw new IllegalStateException("Invalid mapping configuration, expected 129 attribute names");
 		}
 	}
 
