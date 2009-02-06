@@ -45,8 +45,6 @@
 		<!-- Persons -->
 		<mapping resource="org/flexpay/ab/persistence/Person.hbm.xml" />
 
-        <!-- Sewer types -->
-        <mapping resource="org/flexpay/bti/persistence/Sewer.hbm.xml" />
 		<!-- Buildings -->
 		<mapping resource="org/flexpay/bti/persistence/BuildingBase.hbm.xml" />
         <mapping resource="org/flexpay/bti/persistence/BuildingAttribute.hbm.xml" />

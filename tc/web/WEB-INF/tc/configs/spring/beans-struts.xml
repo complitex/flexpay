@@ -14,36 +14,6 @@
 
     <!-- Define struts actions beans -->
 
-    <!-- sewer types section -->
-    <bean id="sewerTypeEditAction" class="org.flexpay.tc.actions.sewertype.SewerTypeEditAction"
-          p:sewerTypesService-ref="sewerTypesService"
-          scope="prototype"/>
-
-    <bean id="sewerTypeDeleteAction" class="org.flexpay.tc.actions.sewertype.SewerTypeDeleteAction"
-          p:sewerTypesService-ref="sewerTypesService"
-          scope="prototype"/>
-
-    <bean id="sewerTypesListAction" class="org.flexpay.tc.actions.sewertype.SewerTypesListAction"
-          p:sewerTypesService-ref="sewerTypesService"
-          scope="prototype"/>
-    <!-- end of sewer types section -->
-
-    <!-- sewer material types section -->
-    <bean id="sewerMaterialTypeEditAction" class="org.flexpay.tc.actions.sewermaterialtype.SewerMaterialTypeEditAction"
-          p:sewerMaterialTypeService-ref="sewerMaterialTypeService"
-          scope="prototype"/>
-
-    <bean id="sewerMaterialTypeDeleteAction"
-          class="org.flexpay.tc.actions.sewermaterialtype.SewerMaterialTypeDeleteAction"
-          p:sewerMaterialTypeService-ref="sewerMaterialTypeService"
-          scope="prototype"/>
-
-    <bean id="sewerMaterialTypesListAction"
-          class="org.flexpay.tc.actions.sewermaterialtype.SewerMaterialTypesListAction"
-          p:sewerMaterialTypeService-ref="sewerMaterialTypeService"
-          scope="prototype"/>
-    <!-- end of sewer material types section -->
-
     <!-- tariff calculation rules files section -->
     <bean id="tariffCalcRulesFilesListAction" class="org.flexpay.tc.actions.tariff.TariffCalcRulesFilesListAction"
           p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
