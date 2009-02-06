@@ -63,7 +63,7 @@ var FP = {
             return null;
         }
         var len = radioObj.length;
-        if (radioLength == undefined) {
+        if (len == undefined) {
             return radioObj.checked ? radioObj.value : null;
         }
         for(var i = 0; i < len; i++) {
