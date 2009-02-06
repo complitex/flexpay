@@ -66,14 +66,6 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
         BtiBuilding btiBuilding = btiBuildingService.readWithAttributesByAddress(stub(building));
 
-        for (BuildingAttributeBase attr : btiBuilding.getAttributes()) {
-            BuildingAttributeType type = attr.getAttributeType();
-
-            BuildingAttributeBase attributeBase = btiBuilding.getAttribute(type);
-
-            log.debug("{}", attributeBase);
-        }
-
         for (Long id : attributeMap.keySet()) {
 
             String value = attributeMap.get(id);

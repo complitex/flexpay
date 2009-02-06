@@ -78,21 +78,23 @@
     </class>
 
     <query name="BuildingAttributeBase.findAttributes">
-		select distinct b
+        select distinct b
         from BuildingAttributeBase b
         where b.building.id = ?
     </query>
 
     <query name="BuildingAttributeBase.readSimpleAttributes">
-		select distinct a
+        select distinct a
         from BuildingAttribute a
+        inner join fetch a.attributeType
         where a.building.id=?
     </query>
 
     <query name="BuildingAttributeBase.readTmpAttributes">
-		select distinct a
+        select distinct a
         from BuildingTempAttribute a
-        	left join fetch a.values
+        left join fetch a.values
+        inner join fetch a.attributeType
         where a.building.id=?
     </query>
 
@@ -102,7 +104,7 @@
     </query>
 
     <query name="BtiBuilding.findByAddress">
-		select distinct b
+        select distinct b
         from BtiBuilding b
         left join b.buildingses addr
         where addr.id=?
