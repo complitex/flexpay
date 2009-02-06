@@ -10,12 +10,10 @@ import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.File;
 
-import com.opensymphony.xwork2.Preparable;
-
 /**
  * FPAction that have file uploaded
  */
-public abstract class FPFileActionSupport extends FPActionSupport implements Preparable {
+public abstract class FPFileActionSupport extends FPActionSupport {
 
 	private FPFileService fpFileService;
 
@@ -26,11 +24,15 @@ public abstract class FPFileActionSupport extends FPActionSupport implements Pre
 
 	private String moduleName;
 
-	public void prepare() throws Exception {
+	public String execute() throws Exception {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String userName = auth != null ? auth.getName() : null;
 		try {
+
+			log.debug("Preparing file action, params: FileName - {}, ContentType - {}, ModuleName - {}",
+					new String[]{uploadFileName, uploadContentType, moduleName});
+
 			FPModule module = fpFileService.getModuleByName(moduleName);
 			if (module == null) {
 				throw new Exception("Unknown module " + moduleName);
@@ -47,6 +49,8 @@ public abstract class FPFileActionSupport extends FPActionSupport implements Pre
 		} catch (Exception e) {
 			log.error("Unknown file type", e);
 		}
+
+		return super.execute();
 	}
 
 	public File getUpload() {
@@ -63,6 +67,14 @@ public abstract class FPFileActionSupport extends FPActionSupport implements Pre
 
 	public void setUploadContentType(String uploadContentType) {
 		this.uploadContentType = uploadContentType;
+	}
+
+	public String getUploadFileName() {
+		return uploadFileName;
+	}
+
+	public String getModuleName() {
+		return moduleName;
 	}
 
 	public void setModuleName(String moduleName) {
