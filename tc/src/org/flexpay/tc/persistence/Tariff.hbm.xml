@@ -253,6 +253,8 @@
         select distinct tcr
         from TariffCalculationRulesFile tcr
         left outer join fetch tcr.translations tcrTr
+        left join fetch tcr.type
+        left join fetch tcr.type.module
         left join fetch tcr.file
         left join fetch tcr.file.module
         where tcr.id = ?

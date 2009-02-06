@@ -53,19 +53,6 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		if (uploadFileName == null) {
-			log.warn("Error: uploadFileName is null");
-			addActionError(getText("tc.error.upload_file_name_is_null"));
-			return INPUT;
-		}
-
-		FPFileType fileType = fpFileService.getTypeByFileName(uploadFileName, moduleName);
-		if (fileType == null) {
-			log.warn("Unknown file type");
-			addActionError(getText("tc.error.unknown_file_type"));
-			return INPUT;
-		}
-
 		// init translations
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
@@ -79,6 +66,19 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 
 		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 		if (rulesFile.isNew()) {
+
+			if (uploadFileName == null) {
+				log.warn("Error: uploadFileName is null");
+				addActionError(getText("tc.error.upload_file_name_is_null"));
+				return INPUT;
+			}
+
+			FPFileType fileType = fpFileService.getTypeByFileName(uploadFileName, moduleName);
+			if (fileType == null) {
+				log.warn("Unknown file type");
+				addActionError(getText("tc.error.unknown_file_type"));
+				return INPUT;
+			}
 
 			file.setType(fileType);
 			FPFile fileOnServer = new FPFile();
