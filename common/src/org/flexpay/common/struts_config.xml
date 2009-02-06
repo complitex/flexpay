@@ -21,9 +21,8 @@
 			<interceptor name="userPreferences"
 						 class="org.flexpay.common.actions.interceptor.UserPreferencesInterceptor"/>
 			<interceptor-stack name="commonDefaultStack">
-				<!-- TODO find out why is it going before the default stack-->
-				<interceptor-ref name="userPreferences"/>
 				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="userPreferences"/>
 			</interceptor-stack>
 		</interceptors>
 		<default-interceptor-ref name="commonDefaultStack"/>
