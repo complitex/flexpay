@@ -40,8 +40,7 @@ public class BtiBuilding extends Building {
         return null;
     }
 
-	@SuppressWarnings ({"UnusedDeclaration"})
-	private void setAttributes(Set<BuildingAttributeBase> attributes) {
+	public void setAttributes(Set<BuildingAttributeBase> attributes) {
 		this.attributes = attributes;
 	}
 

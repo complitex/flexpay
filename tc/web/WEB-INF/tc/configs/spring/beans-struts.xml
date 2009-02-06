@@ -38,13 +38,16 @@
     <!-- building attributes section -->
     <bean id="tcBuildingsListAction" class="org.flexpay.tc.actions.buildingattributes.BuildingsListAction"
           p:buildingService-ref="buildingService"
-          p:parentService-ref="streetService"/>
+          p:parentService-ref="streetService"
+          scope="prototype"/>
 
-    <bean id="buildingAttributesEditAction" class="org.flexpay.tc.actions.buildingattributes.BuildingAttributesEditAction"
-            p:addressService-ref="addressService"
-            p:buildingService-ref="buildingService"
-            p:buildingAttributeService-ref="buildingAttributeService"
-            p:buildingAttributeTypeService-ref="buildingAttributeTypeService"/>
+    <bean id="buildingAttributesEditAction"
+          class="org.flexpay.tc.actions.buildingattributes.BuildingAttributesEditAction"
+          p:addressService-ref="addressService"
+          p:buildingService-ref="buildingService"
+          p:btiBuildingService-ref="btiBuildingService"
+          p:buildingAttributeTypeService-ref="buildingAttributeTypeService"
+          scope="prototype"/>
     <!-- end of building attributes section -->
 
     <bean id="tariffCalcResultExportAction" class="org.flexpay.tc.actions.tariff.TariffCalcResultExportAction"
