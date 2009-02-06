@@ -2,7 +2,7 @@
 
 <s:actionerror />
 
-<s:form id="fObjects" method="post">
+<s:form id="fObjects" method="post" enctype="multipart/form-data">
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
 		<tr>

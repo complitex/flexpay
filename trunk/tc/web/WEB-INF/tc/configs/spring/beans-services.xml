@@ -19,6 +19,7 @@
         <property name="definitionPaths">
             <list>
                 <value>WEB-INF/tc/process</value>
+                <value>WEB-INF/bti/process</value>
             </list>
         </property>
     </bean>
