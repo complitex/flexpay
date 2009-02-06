@@ -9,24 +9,6 @@
 
 	<!--  Dao Layer instances -->
 
-	<bean id="sewerTypeDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.bti.dao.SewerTypeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.SewerType" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="sewerMaterialTypeDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.bti.dao.SewerMaterialTypeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.SewerMaterialType" />
-			</bean>
-		</property>
-	</bean>
-
 	<bean id="buildingAttributeTypeDao" parent="abstractDao">
 		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeTypeDao" />
 		<property name="target">

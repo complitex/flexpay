@@ -261,42 +261,6 @@
 		<group-name>FULL_ACCESS</group-name>
 	</security-role-mapping>
 
-    <!-- Sewer Types -->
-    <security-role-mapping>
-        <role-name>ROLE_TC_SEWER_TYPE_ADD</role-name>
-        <group-name>TC_FULL_ACCESS</group-name>
-    </security-role-mapping>
-    <security-role-mapping>
-        <role-name>ROLE_TC_SEWER_TYPE_CHANGE</role-name>
-        <group-name>TC_FULL_ACCESS</group-name>
-    </security-role-mapping>
-    <security-role-mapping>
-        <role-name>ROLE_TC_SEWER_TYPE_DELETE</role-name>
-        <group-name>TC_FULL_ACCESS</group-name>
-    </security-role-mapping>
-    <security-role-mapping>
-        <role-name>ROLE_TC_SEWER_TYPE_READ</role-name>
-        <group-name>TC_FULL_ACCESS</group-name>
-    </security-role-mapping>
-
-    <!-- Sewer Material Types -->
-    <security-role-mapping>
-        <role-name>ROLE_TC_SEWER_MATERIAL_TYPE_ADD</role-name>
-        <group-name>TC_FULL_ACCESS</group-name>
-    </security-role-mapping>
-    <security-role-mapping>
-        <role-name>ROLE_TC_SEWER_MATERIAL_TYPE_CHANGE</role-name>
-        <group-name>TC_FULL_ACCESS</group-name>
-    </security-role-mapping>
-    <security-role-mapping>
-        <role-name>ROLE_TC_SEWER_MATERIAL_TYPE_DELETE</role-name>
-        <group-name>TC_FULL_ACCESS</group-name>
-    </security-role-mapping>
-    <security-role-mapping>
-        <role-name>ROLE_TC_SEWER_MATERIAL_TYPE_READ</role-name>
-        <group-name>TC_FULL_ACCESS</group-name>
-    </security-role-mapping>
-
     <!-- Tariffs -->
     <security-role-mapping>
         <role-name>ROLE_TC_TARIFF_ADD</role-name>
@@ -403,14 +367,6 @@
 		<role-name>ROLE_AB_PERSON_READ</role-name>
 		<group-name>VIEW_ONLY</group-name>
 	</security-role-mapping>
-    <security-role-mapping>
-        <role-name>ROLE_TC_SEWER_TYPE_READ</role-name>
-        <group-name>VIEW_ONLY</group-name>
-    </security-role-mapping>
-    <security-role-mapping>
-        <role-name>ROLE_TC_SEWER_MATERIAL_TYPE_READ</role-name>
-        <group-name>VIEW_ONLY</group-name>
-    </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_TC_TARIFF_READ</role-name>
         <group-name>VIEW_ONLY</group-name>

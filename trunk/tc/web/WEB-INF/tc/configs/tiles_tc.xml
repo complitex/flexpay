@@ -29,30 +29,6 @@
         <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_data.jsp" />
     </definition>
 
-    <!-- sewer type related pages -->
-    <definition name="tc.sewer_types.list" extends="tc.dictionaries">
-        <put-attribute name="title" value="tc.sewer_types"/>
-        <put-attribute name="body" value="/WEB-INF/jsp/tc/sewers/sewer_types_list.jsp"/>
-    </definition>
-
-    <definition name="tc.sewer_type.edit" extends="tc.dictionaries">
-        <put-attribute name="title" value="tc.sewer_type"/>
-        <put-attribute name="body" value="/WEB-INF/jsp/tc/sewers/sewer_type_edit.jsp"/>
-    </definition>
-    <!-- end of sewer type related pages -->
-
-    <!-- sewer material type related pages -->
-    <definition name="tc.sewer_material_types.list" extends="tc.dictionaries">
-        <put-attribute name="title" value="tc.sewer_material_types"/>
-        <put-attribute name="body" value="/WEB-INF/jsp/tc/sewers/sewer_material_types_list.jsp"/>
-    </definition>
-
-    <definition name="tc.sewer_material_type.edit" extends="tc.dictionaries">
-        <put-attribute name="title" value="tc.sewer_material_type"/>
-        <put-attribute name="body" value="/WEB-INF/jsp/tc/sewers/sewer_material_type_edit.jsp"/>
-    </definition>
-    <!-- end of sewer material type related pages -->
-
     <!-- tariff calculation rules file related pages -->
     <definition name="tc.rules_files.list" extends="tc.dictionaries">
         <put-attribute name="title" value="tc.rules_files"/>

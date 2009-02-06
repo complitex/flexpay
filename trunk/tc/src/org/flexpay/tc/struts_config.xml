@@ -43,9 +43,6 @@
 
 	</package>
 
-
-    <include file="org/flexpay/tc/actions/sewertype/struts.xml"/>
-    <include file="org/flexpay/tc/actions/sewermaterialtype/struts.xml"/>
     <include file="org/flexpay/tc/actions/tariff/struts.xml"/>
     <include file="org/flexpay/tc/actions/buildingattributes/struts.xml"/>
 
