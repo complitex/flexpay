@@ -9,7 +9,7 @@
         <s:hidden name="building.id" value="%{building.id}"/>
 
         <%-- main address + alternatives --%>
-        <s:iterator value="%{alternateBuildingsList}">
+        <s:iterator value="%{alternateAddresses}">
             <tr valign="middle" class="cols_1">
                 <td class="col" colspan="2">
                     <s:property value="%{getAddress(id)}"/>
@@ -30,7 +30,7 @@
         <tr>
             <td>
                 <s:text name="tc.edit_building_attributes.date"/>
-                <input type="text" name="attributeDate" id="attribute.date"
+                <input type="text" name="attributeDate" id="attribute.date" readonly="true"
                        value="<s:property value="%{attributeDate}"/>"/>
                 <img src="<c:url value="/resources/common/js/jscalendar/img.gif"/>" alt=""
                      id="trigger_attribute.date"
@@ -71,7 +71,7 @@
                     <s:if test="%{isBuildingAttributeTypeEnum(key)}">
                         <s:select name="attributeMap[%{key}]"
                                   value="%{value}"
-                                  list="%{key.values}"
+                                  list="%{getTypeValues(key)}"
                                   listKey="order"
                                   listValue="value"/>
                     </s:if>

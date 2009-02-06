@@ -5,12 +5,13 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.bti.persistence.*;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
-import org.flexpay.bti.service.BuildingAttributeService;
+import org.flexpay.bti.service.BtiBuildingService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -19,30 +20,25 @@ import java.util.*;
 public class BuildingAttributesEditAction extends FPActionSupport {
 
     private BuildingAddress building = new BuildingAddress();
-    private List<BuildingAddress> alternateBuildingsList = new ArrayList<BuildingAddress>();
+    private List<BuildingAddress> alternateAddresses = CollectionUtils.list();
     private Date attributeDate = DateUtil.now();
-    private Map<BuildingAttributeType, String> attributeMap = new HashMap<BuildingAttributeType, String>();
+    private Map<Long, String> attributeMap = new HashMap<Long, String>();
 
     private AddressService addressService;
     private BuildingService buildingService;
-    private BuildingAttributeService buildingAttributeService;
+    private BtiBuildingService btiBuildingService;
     private BuildingAttributeTypeService buildingAttributeTypeService;
 
     @NotNull
     protected String doExecute() throws Exception {
 
-        loadBuildingAttributes();
-
-        if (!isSubmit()) {
-
+        if (isNotSubmit()) {
+            loadBuildingAttributes();
             return INPUT;
+        } else {
+            updateBuildingAttributes();
+            return REDIRECT_SUCCESS;
         }
-
-        log.debug("Submit!");
-        updateBuildingAttirbutes();
-        
-        return REDIRECT_SUCCESS;
-
     }
 
     private void loadBuildingAttributes() throws FlexPayException {
@@ -52,51 +48,80 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         // alternatuve addresses loading
         for (BuildingAddress address : buildingService.getBuildingBuildings(building.getBuildingStub())) {
             if (!building.equals(address)) {
-                alternateBuildingsList.add(buildingService.readFull(stub(address)));
+                alternateAddresses.add(buildingService.readFull(stub(address)));
             }
         }
 
         // loading bti building and it's attributes
-        BtiBuilding btiBuilding = (BtiBuilding) buildingService.findBuilding(stub(building));
-        List<BuildingAttributeBase> attrs = buildingAttributeService.listAttributes(stub(btiBuilding));
+        BtiBuilding btiBuilding = btiBuildingService.readWithAttributesByAddress(stub(building));
 
-        for (BuildingAttributeBase attr : attrs) {
+        //for (BuildingAttributeBase attr : attrs) {
+        for (BuildingAttributeBase attr : btiBuilding.getAttributes()) {
             BuildingAttributeType type = buildingAttributeTypeService.readFull(attr.getAttributeTypeStub());
-            attributeMap.put(type, attr.getValueForDate(attributeDate));
+            attributeMap.put(type.getId(), attr.getValueForDate(attributeDate));
         }
     }
 
-    private void updateBuildingAttirbutes() {
+    private void updateBuildingAttributes() {
 
-        building = buildingService.readFull(stub(building));
-        BtiBuilding btiBuilding = (BtiBuilding) buildingService.findBuilding(stub(building));
+        BtiBuilding btiBuilding = btiBuildingService.readWithAttributesByAddress(stub(building));
 
-        for (BuildingAttributeType type : attributeMap.keySet()) {
+        for (BuildingAttributeBase attr : btiBuilding.getAttributes()) {
+            BuildingAttributeType type = attr.getAttributeType();
+
+            BuildingAttributeBase attributeBase = btiBuilding.getAttribute(type);
+
+            log.debug("{}", attributeBase);
+        }
+
+        for (Long id : attributeMap.keySet()) {
+
+            String value = attributeMap.get(id);
+
+            BuildingAttributeType type = getAttributeTypeById(id);
 
             if (type instanceof BuildingAttributeTypeSimple) {
+                BuildingAttribute newAttribute = new BuildingAttribute();
+                newAttribute.setAttributeType(type);
+                newAttribute.setValueForDate(value, attributeDate);
 
-                log.debug("Simple");
-            }
+                btiBuilding.setAttribute(newAttribute);
+            } else if (type instanceof BuildingAttributeTypeEnum) {
 
-            if (type instanceof BuildingAttributeTypeEnum) {
-
-                log.debug("Enum");
+                // TODO implement
+                log.debug(" !!!!! Enum attribute processing is still not implemented");
             }
 
         }
+
+        btiBuildingService.updateAttributes(btiBuilding);
     }
 
-    public String getAttributeTypeName(BuildingAttributeType type) {
+    public String getAttributeTypeName(Long id) {
+        BuildingAttributeType type = getAttributeTypeById(id);
         return getTranslation(type.getTranslations()).getName();
     }
 
-    public boolean isBuildingAttributeTypeSimple(BuildingAttributeType type) {
-        return type instanceof BuildingAttributeTypeSimple;
+    public boolean isBuildingAttributeTypeSimple(Long id) {
+
+        return getAttributeTypeById(id) instanceof BuildingAttributeTypeSimple;
     }
 
-    public boolean isBuildingAttributeTypeEnum(BuildingAttributeType type) {
-        return type instanceof BuildingAttributeTypeEnum;
+    public boolean isBuildingAttributeTypeEnum(Long id) {
+
+        return getAttributeTypeById(id) instanceof BuildingAttributeTypeEnum;
     }
+
+    public SortedSet<BuildingAttributeTypeEnumValue> getTypeValues(Long id) {
+        BuildingAttributeTypeEnum type = (BuildingAttributeTypeEnum) getAttributeTypeById(id);
+        return type.getSortedValues();
+    }
+
+    // TODO move to proper class
+    private BuildingAttributeType getAttributeTypeById(Long id) {
+        return buildingAttributeTypeService.readFull(new Stub<BuildingAttributeType>(id));
+    }
+
 
     @NotNull
     protected String getErrorResult() {
@@ -122,12 +147,12 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         this.building = building;
     }
 
-    public List<BuildingAddress> getAlternateBuildingsList() {
-        return alternateBuildingsList;
+    public List<BuildingAddress> getAlternateAddresses() {
+        return alternateAddresses;
     }
 
-    public void setAlternateBuildingsList(List<BuildingAddress> alternateBuildingsList) {
-        this.alternateBuildingsList = alternateBuildingsList;
+    public void setAlternateAddresses(List<BuildingAddress> alternateAddresses) {
+        this.alternateAddresses = alternateAddresses;
     }
 
     public String getAttributeDate() {
@@ -138,11 +163,11 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         this.attributeDate = DateUtil.parseBeginDate(attributeDate);
     }
 
-    public Map<BuildingAttributeType, String> getAttributeMap() {
+    public Map<Long, String> getAttributeMap() {
         return attributeMap;
     }
 
-    public void setAttributeMap(Map<BuildingAttributeType, String> attributeMap) {
+    public void setAttributeMap(Map<Long, String> attributeMap) {
         this.attributeMap = attributeMap;
     }
 
@@ -157,12 +182,12 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     }
 
     @Required
-    public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
-        this.buildingAttributeTypeService = buildingAttributeTypeService;
+    public void setBtiBuildingService(BtiBuildingService btiBuildingService) {
+        this.btiBuildingService = btiBuildingService;
     }
 
     @Required
-    public void setBuildingAttributeService(BuildingAttributeService buildingAttributeService) {
-        this.buildingAttributeService = buildingAttributeService;
+    public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
+        this.buildingAttributeTypeService = buildingAttributeTypeService;
     }
 }
