@@ -4,6 +4,9 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+
 import java.util.Date;
 
 public abstract class BuildingAttributeBase extends DomainObject {
@@ -16,6 +19,10 @@ public abstract class BuildingAttributeBase extends DomainObject {
 	}
 
 	public abstract String getValueForDate(Date td);
+
+    public Stub<BuildingAttributeType> getAttributeTypeStub() {
+        return stub(attributeType);
+    }
 
 	public void setCurrentValue(String value) {
 		setValueForDate(value, DateUtil.now());
