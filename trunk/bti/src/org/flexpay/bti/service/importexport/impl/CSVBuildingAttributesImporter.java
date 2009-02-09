@@ -95,7 +95,7 @@ public class CSVBuildingAttributesImporter implements BuildingAttributesImporter
 			return;
 		}
 
-		plog.warn("Building not found by external id {}", data.getExternalId());
+		plog.warn("Building not found by external id {} in row #{}", data.getExternalId(), data.getRowNum());
 		// todo find building by address
 	}
 
