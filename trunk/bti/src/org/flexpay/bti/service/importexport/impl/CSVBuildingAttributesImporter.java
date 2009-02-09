@@ -39,7 +39,7 @@ public class CSVBuildingAttributesImporter implements BuildingAttributesImporter
 		// process log
 		Logger plog = ProcessLogger.getLogger(getClass());
 
-		plog.debug("Starting importing building attributes");
+		plog.info("Starting importing building attributes");
 
 		@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
 		CSVReader csvReader = new CSVReader(new InputStreamReader(is, "UTF-8"), ';');
@@ -82,7 +82,7 @@ public class CSVBuildingAttributesImporter implements BuildingAttributesImporter
 			datum.add(data);
 		}
 
-		plog.debug("Ended importing building attributes");
+		plog.info("Ended importing building attributes");
 		return datum;
 	}
 
@@ -95,7 +95,7 @@ public class CSVBuildingAttributesImporter implements BuildingAttributesImporter
 			return;
 		}
 
-		plog.debug("Building not found by external id {}", data.getExternalId());
+		plog.warn("Building not found by external id {}", data.getExternalId());
 		// todo find building by address
 	}
 
