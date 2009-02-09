@@ -16,6 +16,12 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.NotTransactional;
+import org.springframework.security.Authentication;
+import org.springframework.security.GrantedAuthority;
+import org.springframework.security.GrantedAuthorityImpl;
+import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
+import org.springframework.security.userdetails.User;
+import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -44,6 +50,11 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 
 	protected FPFile createSpFile(@NotNull @NonNls String spFile) throws Throwable {
 
+		GrantedAuthority[] authorities = {new GrantedAuthorityImpl("ROLE_TEST")};
+		User user = new User("test", "test", true, true, true, true, authorities);
+		Authentication auth = new AnonymousAuthenticationToken("key", user, authorities);
+		SecurityContextHolder.getContext().setAuthentication(auth);
+		
 		String name = StringUtil.getFileName(spFile);
 		String extension = StringUtil.getFileExtension(name);
 		File tmpDataFile = File.createTempFile(name, extension);
