@@ -72,18 +72,11 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
             BuildingAttributeType type = getAttributeTypeById(id);
 
-            if (type instanceof BuildingAttributeTypeSimple) {
-                BuildingAttribute newAttribute = new BuildingAttribute();
-                newAttribute.setAttributeType(type);
-                newAttribute.setValueForDate(value, attributeDate);
+            BuildingAttributeBase attribute = btiBuilding.getAttribute(type);
+            attribute.setAttributeType(type);
+            attribute.setValueForDate(value, attributeDate);
 
-                btiBuilding.setAttribute(newAttribute);
-            } else if (type instanceof BuildingAttributeTypeEnum) {
-
-                // TODO implement
-                log.debug(" !!!!! Enum attribute processing is still not implemented");
-            }
-
+            btiBuilding.setAttribute(attribute);
         }
 
         btiBuildingService.updateAttributes(btiBuilding);
@@ -104,6 +97,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         return getAttributeTypeById(id) instanceof BuildingAttributeTypeEnum;
     }
 
+    //// TODO move to proper class
     public SortedSet<BuildingAttributeTypeEnumValue> getTypeValues(Long id) {
         BuildingAttributeTypeEnum type = (BuildingAttributeTypeEnum) getAttributeTypeById(id);
         return type.getSortedValues();
