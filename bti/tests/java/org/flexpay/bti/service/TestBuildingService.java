@@ -8,6 +8,7 @@ import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.ApplicationConfig;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.dao.support.DataAccessUtils.intResult;
@@ -20,6 +21,10 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	private BuildingAttributeService attributeService;
 	@Autowired
 	private BuildingAttributeDao attributeDao;
+	@Autowired
+	private BtiBuildingService buildingService;
+	@Autowired
+	private BuildingAttributeTypeService attributeTypeService;
 
 	public static final Stub<BtiBuilding> BUILDING_STUB = new Stub<BtiBuilding>(1L);
 	public static final Stub<BuildingAttributeType> ATTRIBUTE_TYPE_STUB = new Stub<BuildingAttributeType>(1L);
@@ -54,5 +59,29 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 		} finally {
 			attributeDao.delete(attribute);
 		}
+	}
+
+	@Test
+	public void setSimpleAttribute() {
+
+		BtiBuilding building = buildingService.readWithAttributes(BUILDING_STUB);
+		assertNotNull("Building not found", building);
+
+		BuildingAttributeType type = attributeTypeService.findTypeByName("Building color");
+		building.setNormalAttribute(type, "Розовая волна");
+
+		buildingService.updateAttributes(building);
+	}
+
+	@Test
+	public void setTemporalAttribute() {
+
+		BtiBuilding building = buildingService.readWithAttributes(BUILDING_STUB);
+		assertNotNull("Building not found", building);
+
+		BuildingAttributeType type = attributeTypeService.findTypeByName("Building color");
+		building.setCurrentTmpAttribute(type, "Розовая волна");
+
+		buildingService.updateAttributes(building);
 	}
 }
