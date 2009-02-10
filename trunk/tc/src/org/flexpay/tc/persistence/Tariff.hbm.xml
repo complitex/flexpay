@@ -195,6 +195,13 @@
         left outer join fetch t.translations tTr
         where t.id = ?
     </query>
+
+    <query name="Tariff.getByCode">
+        select distinct t
+        from Tariff t
+        left outer join fetch t.translations tTr
+        where t.subServiceCode = ?
+    </query>
     <!-- end of tariff queries -->
 
     <!-- tariff calculation result queries -->

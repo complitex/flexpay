@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.common.persistence.DomainObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,6 +16,17 @@ public class TariffCalculationResult extends DomainObject {
 	private Date calculationDate;
 	private Building building;
 	private Tariff tariff;
+
+	public TariffCalculationResult(){
+	}
+
+	public TariffCalculationResult(@NotNull BigDecimal value, @NotNull Date creationDate, @NotNull Date calculationDate, @NotNull Building building, @NotNull Tariff tariff) {
+		this.value = value;
+		this.creationDate = creationDate;
+		this.calculationDate = calculationDate;
+		this.building = building;
+		this.tariff = tariff;
+	}
 
 	public BigDecimal getValue() {
 		return value;
