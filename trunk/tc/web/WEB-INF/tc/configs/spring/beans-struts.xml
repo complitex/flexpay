@@ -47,6 +47,7 @@
           p:buildingService-ref="buildingService"
           p:btiBuildingService-ref="btiBuildingService"
           p:buildingAttributeTypeService-ref="buildingAttributeTypeService"
+          p:buildingAttributeGroupService-ref="buildingAttributeGroupService"
           scope="prototype"/>
     <!-- end of building attributes section -->
 

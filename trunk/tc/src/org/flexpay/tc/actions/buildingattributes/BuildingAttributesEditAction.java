@@ -12,6 +12,7 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.bti.persistence.*;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.bti.service.BtiBuildingService;
+import org.flexpay.bti.service.BuildingAttributeGroupService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.apache.commons.lang.StringUtils;
@@ -24,11 +25,13 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     private List<BuildingAddress> alternateAddresses = CollectionUtils.list();
     private Date attributeDate = DateUtil.now();
     private Map<Long, String> attributeMap = new HashMap<Long, String>();
+    private Map<String, Map<Long, String>> attributeGroups = new HashMap<String, Map<Long, String>>();
 
     private AddressService addressService;
     private BuildingService buildingService;
     private BtiBuildingService btiBuildingService;
     private BuildingAttributeTypeService buildingAttributeTypeService;
+    private BuildingAttributeGroupService buildingAttributeGroupService;
 
     @NotNull
     protected String doExecute() throws Exception {
@@ -51,12 +54,8 @@ public class BuildingAttributesEditAction extends FPActionSupport {
             throw new FlexPayException("No building with id " + buildingId + " can be retrieved");
         }
 
-        // alternatuve addresses loading
-        for (BuildingAddress address : buildingService.getBuildingBuildings(building.getBuildingStub())) {
-            if (!building.equals(address)) {
-                alternateAddresses.add(buildingService.readFull(stub(address)));
-            }
-        }
+        // alternative addresses loading
+        loadAlternativeAddresses();
 
         // loading bti building and it's attributes
         BtiBuilding btiBuilding = btiBuildingService.readWithAttributesByAddress(stub(building));
@@ -66,12 +65,41 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
         List<BuildingAttributeType> attributeTypes = buildingAttributeTypeService.listTypes();
         for (BuildingAttributeType type : attributeTypes) {
+
             BuildingAttributeBase attribute = btiBuilding.getAttribute(type);
 
-            if (attribute != null) {
-                attributeMap.put(type.getId(), attribute.getValueForDate(attributeDate));
-            } else {
-                attributeMap.put(type.getId(), "");
+            putAttribute(type, attribute);
+        }
+    }
+
+    private void putAttribute(BuildingAttributeType type, BuildingAttributeBase attribute) throws FlexPayException {
+        BuildingAttributeGroup group = buildingAttributeGroupService.readFull(stub(type.getGroup()));
+
+        String groupName = getAttributeGroupName(group);
+        if (group == null) {
+            throw new FlexPayException("No group was found with name " + groupName);
+        }
+
+        // put attribute into proper group
+        Map<Long, String> attributeGroup = attributeGroups.get(groupName);
+        if (attributeGroup == null) {
+            attributeGroup = new HashMap<Long, String>();
+            attributeGroups.put(groupName, attributeGroup);
+        }
+
+        if (attribute != null) {
+            attributeGroup.put(type.getId(), attribute.getValueForDate(attributeDate));
+            attributeMap.put(type.getId(), attribute.getValueForDate(attributeDate));
+        } else {
+            attributeGroup.put(type.getId(), "");
+            attributeMap.put(type.getId(), "");
+        }
+    }
+
+    private void loadAlternativeAddresses() throws FlexPayException {
+        for (BuildingAddress address : buildingService.getBuildingBuildings(building.getBuildingStub())) {
+            if (!building.equals(address)) {
+                alternateAddresses.add(buildingService.readFull(stub(address)));
             }
         }
     }
@@ -110,9 +138,14 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     }
 
     public String getAttributeTypeName(Long id) {
-        
+
         BuildingAttributeType type = getAttributeTypeById(id);
         return getTranslation(type.getTranslations()).getName();
+    }
+
+    public String getAttributeGroupName(BuildingAttributeGroup group) {
+
+        return getTranslation(group.getTranslations()).getName();
     }
 
     public boolean isBuildingAttributeTypeSimple(Long id) {
@@ -132,7 +165,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     }
 
     private BuildingAttributeType getAttributeTypeById(Long id) {
-        
+
         return buildingAttributeTypeService.readFull(new Stub<BuildingAttributeType>(id));
     }
 
@@ -185,6 +218,14 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         this.attributeMap = attributeMap;
     }
 
+    public Map<String, Map<Long, String>> getAttributeGroups() {
+        return attributeGroups;
+    }
+
+    public void setAttributeGroups(Map<String, Map<Long, String>> attributeGroups) {
+        this.attributeGroups = attributeGroups;
+    }
+
     @Required
     public void setAddressService(AddressService addressService) {
         this.addressService = addressService;
@@ -203,5 +244,10 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     @Required
     public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
         this.buildingAttributeTypeService = buildingAttributeTypeService;
+    }
+
+    @Required
+    public void setBuildingAttributeGroupService(BuildingAttributeGroupService buildingAttributeGroupService) {
+        this.buildingAttributeGroupService = buildingAttributeGroupService;
     }
 }
