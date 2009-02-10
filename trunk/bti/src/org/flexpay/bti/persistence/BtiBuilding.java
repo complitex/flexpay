@@ -92,4 +92,31 @@ public class BtiBuilding extends Building {
 		attribute.setBuilding(this);
 		attributes.add(attribute);
 	}
+
+    public void removeAttribute(BuildingAttributeType type) {
+        if (attributes == Collections.EMPTY_SET) {
+			return;
+		}
+
+        BuildingAttributeBase theAttribute = null;
+        for (BuildingAttributeBase attribute : attributes) {
+            BuildingAttributeType attributeType = attribute.getAttributeType();
+
+            if (attributeType != null && attributeType.equals(type)) {
+                theAttribute = attribute;
+            }
+        }
+
+        if (theAttribute != null) {
+            attributes.remove(theAttribute);
+        }
+    }
+
+    public void removeAttribute(BuildingAttributeBase attribute) {
+        if (attributes == Collections.EMPTY_SET) {
+			return;
+		}
+
+        attributes.remove(attribute);
+    }
 }
