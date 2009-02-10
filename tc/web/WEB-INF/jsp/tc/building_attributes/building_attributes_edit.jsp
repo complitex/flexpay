@@ -51,35 +51,40 @@
         </tr>
 
         <%-- attribute groups (+misc) --%>
-        <tr>
-            <td class="th" colspan="2">
-                Group 1 Savsem adin
-            </td>
-        </tr>
 
-        <s:iterator value="attributeMap">
-            <tr valign="middle" class="cols_1">
 
-                <td class="col"><s:property value="%{getAttributeTypeName(key)}"/></td>
+        <s:iterator value="attributeGroups">
 
-                <td class="col">
-
-                    <s:if test="%{isBuildingAttributeTypeSimple(key)}">
-                        <s:textfield name="attributeMap[%{key}]" value="%{value}"/>
-                    </s:if>
-
-                    <s:if test="%{isBuildingAttributeTypeEnum(key)}">
-                        <s:select name="attributeMap[%{key}]"
-                                  value="%{value}"
-                                  list="%{getTypeValues(key)}"
-                                  listKey="order"
-                                  listValue="value"
-                                  emptyOption="true"/>
-                    </s:if>
-
+            <tr>
+                <td class="th" colspan="2">
+                    <s:property value="%{key}"/>
                 </td>
-
             </tr>
+
+            <s:iterator value="%{value}">
+                <tr valign="middle" class="cols_1">
+
+                    <td class="col"><s:property value="%{getAttributeTypeName(key)}"/></td>
+
+                    <td class="col">
+
+                        <s:if test="%{isBuildingAttributeTypeSimple(key)}">
+                            <s:textfield name="attributeMap[%{key}]" value="%{value}"/>
+                        </s:if>
+
+                        <s:if test="%{isBuildingAttributeTypeEnum(key)}">
+                            <s:select name="attributeMap[%{key}]"
+                                      value="%{value}"
+                                      list="%{getTypeValues(key)}"
+                                      listKey="order"
+                                      listValue="value"
+                                      emptyOption="true"/>
+                        </s:if>
+
+                    </td>
+
+                </tr>
+            </s:iterator>
         </s:iterator>
 
         <%-- submit button --%>
