@@ -73,7 +73,8 @@
                                   value="%{value}"
                                   list="%{getTypeValues(key)}"
                                   listKey="order"
-                                  listValue="value"/>
+                                  listValue="value"
+                                  emptyOption="true"/>
                     </s:if>
 
                 </td>

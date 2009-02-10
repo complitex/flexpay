@@ -14,6 +14,7 @@ import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.bti.service.BtiBuildingService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
 
@@ -43,7 +44,12 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
     private void loadBuildingAttributes() throws FlexPayException {
 
+        Long buildingId = building.getId();
+
         building = buildingService.readFull(stub(building));
+        if (building == null) {
+            throw new FlexPayException("No building with id " + buildingId + " can be retrieved");
+        }
 
         // alternatuve addresses loading
         for (BuildingAddress address : buildingService.getBuildingBuildings(building.getBuildingStub())) {
@@ -54,27 +60,48 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
         // loading bti building and it's attributes
         BtiBuilding btiBuilding = btiBuildingService.readWithAttributesByAddress(stub(building));
+        if (btiBuilding == null) {
+            throw new FlexPayException("No bti building with id " + building.getId() + " can be retrieved");
+        }
 
-        //for (BuildingAttributeBase attr : attrs) {
-        for (BuildingAttributeBase attr : btiBuilding.getAttributes()) {
-            BuildingAttributeType type = buildingAttributeTypeService.readFull(attr.getAttributeTypeStub());
-            attributeMap.put(type.getId(), attr.getValueForDate(attributeDate));
+        List<BuildingAttributeType> attributeTypes = buildingAttributeTypeService.listTypes();
+        for (BuildingAttributeType type : attributeTypes) {
+            BuildingAttributeBase attribute = btiBuilding.getAttribute(type);
+
+            if (attribute != null) {
+                attributeMap.put(type.getId(), attribute.getValueForDate(attributeDate));
+            } else {
+                attributeMap.put(type.getId(), "");
+            }
         }
     }
 
-    private void updateBuildingAttributes() {
+    private void updateBuildingAttributes() throws FlexPayException {
 
         BtiBuilding btiBuilding = btiBuildingService.readWithAttributesByAddress(stub(building));
+        if (btiBuilding == null) {
+            throw new FlexPayException("No bti building with id " + building.getId() + " can be retrieved");
+        }
 
         for (Long id : attributeMap.keySet()) {
 
             String value = attributeMap.get(id);
-
             BuildingAttributeType type = getAttributeTypeById(id);
 
+            if (StringUtils.isEmpty(value)) {
+                btiBuilding.removeAttribute(type);
+                continue;
+            }
+
             BuildingAttributeBase attribute = btiBuilding.getAttribute(type);
-            attribute.setAttributeType(type);
-            attribute.setValueForDate(value, attributeDate);
+
+            if (attribute != null) {
+                attribute.setValueForDate(value, attributeDate);
+            } else {
+                attribute = new BuildingTempAttribute();
+                attribute.setAttributeType(type);
+                attribute.setValueForDate(value, attributeDate);
+            }
 
             btiBuilding.setAttribute(attribute);
         }
@@ -83,6 +110,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     }
 
     public String getAttributeTypeName(Long id) {
+        
         BuildingAttributeType type = getAttributeTypeById(id);
         return getTranslation(type.getTranslations()).getName();
     }
@@ -97,14 +125,14 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         return getAttributeTypeById(id) instanceof BuildingAttributeTypeEnum;
     }
 
-    //// TODO move to proper class
     public SortedSet<BuildingAttributeTypeEnumValue> getTypeValues(Long id) {
+
         BuildingAttributeTypeEnum type = (BuildingAttributeTypeEnum) getAttributeTypeById(id);
         return type.getSortedValues();
     }
 
-    // TODO move to proper class
     private BuildingAttributeType getAttributeTypeById(Long id) {
+        
         return buildingAttributeTypeService.readFull(new Stub<BuildingAttributeType>(id));
     }
 
