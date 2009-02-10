@@ -6,9 +6,11 @@ import org.flexpay.bti.service.importexport.BuildingAttributeDataProcessor;
 import org.flexpay.bti.service.importexport.BuildingAttributesImporter;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.job.Job;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.beans.factory.annotation.Required;
+import org.slf4j.Logger;
 
 import java.io.*;
 import java.util.List;
@@ -33,16 +35,19 @@ public class BuildingAttributesImportJob extends Job {
 			return RESULT_ERROR;
 		}
 
+		Logger plog = ProcessLogger.getLogger(getClass());
+		plog.info("Starting dumping attributes");
 		List<BuildingAttributeData> datas = fetchData(file, parameters);
 		for (BuildingAttributeData data : datas) {
 
 			try {
 				attributeDataProcessor.processData(beginDate, ApplicationConfig.getFutureInfinite(), data);
 			} catch (Exception e) {
-				log.warn("Failed importing building attributes", e);
+				plog.warn("Failed importing building attributes", e);
 			}
 		}
 
+		plog.info("End dumping attributes");
 		return RESULT_NEXT;
 	}
 
