@@ -1,16 +1,21 @@
 package org.flexpay.tc
 dialect "java" 
 import org.flexpay.bti.persistence.BtiBuilding;
+import java.math.BigDecimal;
+import java.util.Date;
 
 global org.flexpay.bti.service.BtiBuildingService btiBuildingService;
 global org.slf4j.Logger logger;
-global org.flexpay.tc.service.TariffCalculationRulesFileService tarifCalculationResultService;
+global org.flexpay.tc.service.TariffCalculationResultService tarifCalculationResultService;
+global org.flexpay.tc.service.TariffServiceExt tariffServiceExt;
+global java.util.Date creationDate;
+global java.util.Date calculationDate;
 
 rule "TestRule"
 	
 	when
-		 b : BtiBuilding (id!=null)
-	then 
+		 building : BtiBuilding (id!=null)
+	then
+	 	tarifCalculationResultService.add(new BigDecimal(10), creationDate, calculationDate, building, tariffServiceExt.getTariffByCode("010"));
 		logger.info("building with id ="+b.getId()+" processed");
-		
 end

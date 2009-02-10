@@ -12,6 +12,7 @@
           p:btiBuildingService-ref="btiBuildingService"
           p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
           p:lockManager-ref="lockManager"
+          p:tariffServiceExt-ref="tariffServiceExt"
           scope="prototype" />
 
     <bean name="tariffCalcResultExportJob" class="org.flexpay.tc.process.TariffCalcResultExportJob"

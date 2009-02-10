@@ -9,6 +9,9 @@
     <bean id="tariffService" class="org.flexpay.tc.service.impl.TariffServiceImpl"
           p:tariffDao-ref="tariffDao" />
 
+    <bean id="tariffServiceExt" class="org.flexpay.tc.service.impl.TariffServiceExtImpl"
+          p:tariffServiceDaoExt-ref="tariffDaoExt"/>
+    
     <bean id="tariffCalculationResultService" class="org.flexpay.tc.service.impl.TariffCalculationResultServiceImpl"
           p:tariffCalculationResultDao-ref="tariffCalculationResultDao" />
 
