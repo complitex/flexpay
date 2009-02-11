@@ -163,6 +163,13 @@
 			</td>
 		</tr>
 		<tr valign="top" class="cols_1">
+			<td class="col"><s:text name="bti.building.attribute.type.time_dependent" />:</td>
+			<td class="col">
+				<input type="radio" name="temporal" value="0" <s:if test="temporal == 0" >checked="checked"</s:if>/><s:text name="common.no" />
+				<input type="radio" name="temporal" value="1" <s:if test="temporal == 1" >checked="checked"</s:if>/><s:text name="common.yes" /><br />
+			</td>
+		</tr>
+		<tr valign="top" class="cols_1">
 			<td class="col"><s:text name="bti.building.attribute.type.group" />:</td>
 			<td class="col">
 				<%@ include file="../filters/building_attribute_group_filter.jsp" %>
