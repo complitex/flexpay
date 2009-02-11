@@ -70,16 +70,33 @@
                     <td class="col">
 
                         <s:if test="%{isBuildingAttributeTypeSimple(key)}">
-                            <s:textfield name="attributeMap[%{key}]" value="%{value}"/>
+                            <nobr>
+                                <s:textfield name="attributeMap[%{key}]" value="%{value}"/>
+
+                                <s:if test="%{isTempAttribute(key)}">
+
+                                    <img src="<s:url value="/resources/common/img/i_clock.gif"/>"
+                                         alt="<s:text name="tc.temp_attribute"/>"
+                                         style="vertical-align: middle;"/>
+                                </s:if>
+                            </nobr>
                         </s:if>
 
                         <s:if test="%{isBuildingAttributeTypeEnum(key)}">
-                            <s:select name="attributeMap[%{key}]"
-                                      value="%{value}"
-                                      list="%{getTypeValues(key)}"
-                                      listKey="order"
-                                      listValue="value"
-                                      emptyOption="true"/>
+                            <nobr>
+                                <s:select name="attributeMap[%{key}]"
+                                          value="%{value}"
+                                          list="%{getTypeValues(key)}"
+                                          listKey="order"
+                                          listValue="value"
+                                          emptyOption="true"/>
+
+                                <s:if test="%{isTempAttribute(key)}">
+                                    <img src="<s:url value="/resources/common/img/i_clock.gif"/>"
+                                         alt="<s:text name="tc.temp_attribute"/>"
+                                         style="vertical-align: middle;"/>
+                                </s:if>
+                            </nobr>
                         </s:if>
 
                     </td>
