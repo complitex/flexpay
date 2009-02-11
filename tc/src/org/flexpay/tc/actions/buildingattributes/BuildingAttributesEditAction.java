@@ -28,19 +28,14 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     private BuildingAddress building = new BuildingAddress();
     private List<BuildingAddress> alternateAddresses = CollectionUtils.list();
 
-    // for this date attribute values are loaded/saved
+    // for this date attribute values are loaded/saved (current date by default)
     private Date attributeDate = DateUtil.now();
 
-    // Map (Attribute type id -> Attribute value )
-    // This map is used for saving attributes and is bound to UI form
-    private Map<Long, String> attributeMap = new HashMap<Long, String>();
+    // This map (Attribute type id -> Attribute value) is used for saving attributes and is bound to UI form
+    private Map<Long, String> attributeMap = CollectionUtils.map();
 
-    // Map (Attribyte type id -> Boolean which is true if the attribute is a temporal one)
-    private Map<Long, Boolean> attributeTempMap = new HashMap<Long, Boolean>();
-
-    // Map (Attribute type group name -> Map (Attribute type id -> Attribute value ))
-    // This map is used for rendering attributes by their groups and is NOT bound to GUI
-    private Map<String, Map<Long, String>> attributeGroups = new HashMap<String, Map<Long, String>>();
+    // This list contains idattribute group identifiers
+    private List<Long> attributeGroups = CollectionUtils.list();
 
     // date submission button
     private String dateSubmitted;
@@ -98,31 +93,27 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     }
 
     private void putAttribute(BuildingAttributeType type, BuildingAttributeBase attribute) throws FlexPayException {
-        BuildingAttributeGroup group = buildingAttributeGroupService.readFull(stub(type.getGroup()));
 
-        String groupName = getAttributeGroupName(group);
+        BuildingAttributeGroup group = buildingAttributeGroupService.readFull(stub(type.getGroup()));
         if (group == null) {
-            throw new FlexPayException("No group was found with name " + groupName);
+            throw new FlexPayException("No group was found with name " + type.getGroup().getId());
         }
 
         // put attribute into proper group
-        Map<Long, String> attributeGroup = attributeGroups.get(groupName);
-        if (attributeGroup == null) {
-            attributeGroup = new HashMap<Long, String>();
-            attributeGroups.put(groupName, attributeGroup);
+        Long groupId = group.getId();
+        if (!attributeGroups.contains(groupId)) {
+            attributeGroups.add(groupId);
         }
 
         if (attribute != null) {
-            attributeGroup.put(type.getId(), attribute.getValueForDate(attributeDate));
             attributeMap.put(type.getId(), attribute.getValueForDate(attributeDate));
-            attributeTempMap.put(type.getId(), attribute instanceof BuildingTempAttribute);
         } else {
-            attributeGroup.put(type.getId(), "");
             attributeMap.put(type.getId(), "");
         }
     }
 
     private void loadAlternativeAddresses() throws FlexPayException {
+
         for (BuildingAddress address : buildingService.getBuildingBuildings(building.getBuildingStub())) {
             if (!building.equals(address)) {
                 alternateAddresses.add(buildingService.readFull(stub(address)));
@@ -137,10 +128,10 @@ public class BuildingAttributesEditAction extends FPActionSupport {
             throw new FlexPayException("No bti building with id " + building.getId() + " can be retrieved");
         }
 
-        for (Long id : attributeMap.keySet()) {
+        for (Long typeId : attributeMap.keySet()) {
 
-            String value = attributeMap.get(id);
-            BuildingAttributeType type = getAttributeTypeById(id);
+            String value = attributeMap.get(typeId);
+            BuildingAttributeType type = getAttributeTypeById(typeId);
 
             if (StringUtils.isEmpty(value)) {
                 btiBuilding.removeAttribute(type);
@@ -163,36 +154,51 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         btiBuildingService.updateAttributes(btiBuilding);
     }
 
-    public String getAttributeTypeName(Long id) {
+    public String getAttributeTypeName(Long typeId) {
 
-        BuildingAttributeType type = getAttributeTypeById(id);
+        BuildingAttributeType type = getAttributeTypeById(typeId);
         return getTranslation(type.getTranslations()).getName();
     }
 
-    public String getAttributeGroupName(BuildingAttributeGroup group) {
+    public String getGroupName(Long groupId) {
 
+        BuildingAttributeGroup group = buildingAttributeGroupService.readFull(new Stub<BuildingAttributeGroup>(groupId));
         return getTranslation(group.getTranslations()).getName();
     }
 
-    public boolean isBuildingAttributeTypeSimple(Long id) {
+    public boolean isBuildingAttributeTypeSimple(Long typeId) {
 
-        return getAttributeTypeById(id) instanceof BuildingAttributeTypeSimple;
+        return getAttributeTypeById(typeId) instanceof BuildingAttributeTypeSimple;
     }
 
-    public boolean isBuildingAttributeTypeEnum(Long id) {
+    public boolean isBuildingAttributeTypeEnum(Long typeId) {
 
-        return getAttributeTypeById(id) instanceof BuildingAttributeTypeEnum;
+        return getAttributeTypeById(typeId) instanceof BuildingAttributeTypeEnum;
     }
 
-    public SortedSet<BuildingAttributeTypeEnumValue> getTypeValues(Long id) {
+    public SortedSet<BuildingAttributeTypeEnumValue> getTypeValues(Long typeId) {
 
-        BuildingAttributeTypeEnum type = (BuildingAttributeTypeEnum) getAttributeTypeById(id);
+        BuildingAttributeTypeEnum type = (BuildingAttributeTypeEnum) getAttributeTypeById(typeId);
         return type.getSortedValues();
     }
 
-    private BuildingAttributeType getAttributeTypeById(Long id) {
+    private BuildingAttributeType getAttributeTypeById(Long typeId) {
 
-        return buildingAttributeTypeService.readFull(new Stub<BuildingAttributeType>(id));
+        return buildingAttributeTypeService.readFull(new Stub<BuildingAttributeType>(typeId));
+    }
+
+    public Map<Long, String> getGroupAttributes(Long groupId) {
+        Map<Long, String> resultMap = CollectionUtils.map();
+
+        for (Long typeId : attributeMap.keySet()) {
+            BuildingAttributeType type = getAttributeTypeById(typeId);
+
+            if (type.getGroup().getId().equals(groupId)) {
+                resultMap.put(typeId, attributeMap.get(typeId));
+            }
+        }
+
+        return resultMap;
     }
 
     @NotNull
@@ -206,12 +212,8 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
     public boolean isTempAttribute(Long typeId) {
 
-        Boolean isTemp = attributeTempMap.get(typeId);
-        if (isTemp == null) {
-            return false;
-        }
-
-        return isTemp;
+        BuildingAttributeType type = getAttributeTypeById(typeId);
+        return type.getTemporal() != 0;
     }
 
     /**
@@ -237,10 +239,6 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         return alternateAddresses;
     }
 
-    public void setAlternateAddresses(List<BuildingAddress> alternateAddresses) {
-        this.alternateAddresses = alternateAddresses;
-    }
-
     public String getAttributeDate() {
         return format(attributeDate);
     }
@@ -257,12 +255,8 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         this.attributeMap = attributeMap;
     }
 
-    public Map<String, Map<Long, String>> getAttributeGroups() {
+    public List<Long> getAttributeGroups() {
         return attributeGroups;
-    }
-
-    public void setAttributeGroups(Map<String, Map<Long, String>> attributeGroups) {
-        this.attributeGroups = attributeGroups;
     }
 
     public void setDateSubmitted(String dateSubmitted) {
