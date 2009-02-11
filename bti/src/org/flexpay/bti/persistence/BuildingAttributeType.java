@@ -14,6 +14,7 @@ import java.util.Set;
  */
 public abstract class BuildingAttributeType extends DomainObjectWithStatus {
 
+	private int isTemporal;
 	private String uniqueCode;
 	private BuildingAttributeGroup group;
 	private Set<BuildingAttributeTypeName> translations = Collections.emptySet();
@@ -30,6 +31,14 @@ public abstract class BuildingAttributeType extends DomainObjectWithStatus {
 
 	public BuildingAttributeType(@NotNull Stub<BuildingAttributeType> stub) {
 		super(stub.getId());
+	}
+
+	public int getTemporal() {
+		return isTemporal;
+	}
+
+	public void setTemporal(int temporal) {
+		isTemporal = temporal;
 	}
 
 	public BuildingAttributeGroup getGroup() {
