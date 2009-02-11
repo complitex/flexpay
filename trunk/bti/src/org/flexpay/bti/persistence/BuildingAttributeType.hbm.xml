@@ -33,6 +33,12 @@
 			</column>
 		</property>
 
+		<property name="isTemporal">
+			<column name="is_temporal" not-null="true">
+				<comment>Temporal flag</comment>
+			</column>
+		</property>
+
 		<set name="translations" inverse="true" cascade="all-delete-orphan">
 			<key column="attribute_type_id" not-null="true" />
 			<one-to-many class="BuildingAttributeTypeName" />
