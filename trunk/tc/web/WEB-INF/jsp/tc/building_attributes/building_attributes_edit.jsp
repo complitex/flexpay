@@ -54,15 +54,15 @@
         <%-- attribute groups (+misc) --%>
 
 
-        <s:iterator value="attributeGroups">
+        <s:iterator value="attributeGroups" id="groupId">
 
             <tr>
                 <td class="th" colspan="2">
-                    <s:property value="%{key}"/>
+                    <s:property value="%{getGroupName(#groupId)}"/>
                 </td>
             </tr>
 
-            <s:iterator value="%{value}">
+            <s:iterator value="%{getGroupAttributes(#groupId)}">
                 <tr valign="middle" class="cols_1">
 
                     <td class="col"><s:property value="%{getAttributeTypeName(key)}"/></td>
