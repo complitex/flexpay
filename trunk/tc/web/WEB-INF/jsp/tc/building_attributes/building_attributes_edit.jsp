@@ -47,6 +47,7 @@
                         singleClick  : true
                     });
                 </script>
+                <s:submit name="dateSubmitted" value="%{getText('tc.show_attribute_values')}" cssClass="btn-exit"/>
             </td>
         </tr>
 

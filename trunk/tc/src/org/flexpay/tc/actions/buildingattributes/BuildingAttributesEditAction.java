@@ -26,6 +26,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     private Date attributeDate = DateUtil.now();
     private Map<Long, String> attributeMap = new HashMap<Long, String>();
     private Map<String, Map<Long, String>> attributeGroups = new HashMap<String, Map<Long, String>>();
+    private String dateSubmitted;
 
     private AddressService addressService;
     private BuildingService buildingService;
@@ -36,13 +37,19 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     @NotNull
     protected String doExecute() throws Exception {
 
-        if (isNotSubmit()) {
-            loadBuildingAttributes();
-            return INPUT;
-        } else {
+        if (isSubmit()) {
             updateBuildingAttributes();
             return REDIRECT_SUCCESS;
         }
+
+        if (isDateSubmit()) {
+            // load attributes for date
+            loadBuildingAttributes();
+            return INPUT;
+        }
+
+        loadBuildingAttributes();
+        return INPUT;
     }
 
     private void loadBuildingAttributes() throws FlexPayException {
@@ -169,10 +176,13 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         return buildingAttributeTypeService.readFull(new Stub<BuildingAttributeType>(id));
     }
 
-
     @NotNull
     protected String getErrorResult() {
         return INPUT;
+    }
+
+    public boolean isDateSubmit() {
+        return dateSubmitted != null;
     }
 
     /**
@@ -224,6 +234,14 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
     public void setAttributeGroups(Map<String, Map<Long, String>> attributeGroups) {
         this.attributeGroups = attributeGroups;
+    }
+
+    public String getDateSubmitted() {
+        return dateSubmitted;
+    }
+
+    public void setDateSubmitted(String dateSubmitted) {
+        this.dateSubmitted = dateSubmitted;
     }
 
     @Required
