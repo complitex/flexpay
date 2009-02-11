@@ -19,15 +19,33 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
 
+/**
+ * Action for updating building attributes
+ */
 public class BuildingAttributesEditAction extends FPActionSupport {
 
+    // building primary and alternative addresses
     private BuildingAddress building = new BuildingAddress();
     private List<BuildingAddress> alternateAddresses = CollectionUtils.list();
+
+    // for this date attribute values are loaded/saved
     private Date attributeDate = DateUtil.now();
+
+    // Map (Attribute type id -> Attribute value )
+    // This map is used for saving attributes and is bound to UI form
     private Map<Long, String> attributeMap = new HashMap<Long, String>();
+
+    // Map (Attribyte type id -> Boolean which is true if the attribute is a temporal one)
+    private Map<Long, Boolean> attributeTempMap = new HashMap<Long, Boolean>();
+
+    // Map (Attribute type group name -> Map (Attribute type id -> Attribute value ))
+    // This map is used for rendering attributes by their groups and is NOT bound to GUI
     private Map<String, Map<Long, String>> attributeGroups = new HashMap<String, Map<Long, String>>();
+
+    // date submission button
     private String dateSubmitted;
 
+    // required services
     private AddressService addressService;
     private BuildingService buildingService;
     private BtiBuildingService btiBuildingService;
@@ -97,6 +115,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         if (attribute != null) {
             attributeGroup.put(type.getId(), attribute.getValueForDate(attributeDate));
             attributeMap.put(type.getId(), attribute.getValueForDate(attributeDate));
+            attributeTempMap.put(type.getId(), attribute instanceof BuildingTempAttribute);
         } else {
             attributeGroup.put(type.getId(), "");
             attributeMap.put(type.getId(), "");
@@ -185,6 +204,16 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         return dateSubmitted != null;
     }
 
+    public boolean isTempAttribute(Long typeId) {
+
+        Boolean isTemp = attributeTempMap.get(typeId);
+        if (isTemp == null) {
+            return false;
+        }
+
+        return isTemp;
+    }
+
     /**
      * Returns building primary address by id
      *
@@ -234,10 +263,6 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
     public void setAttributeGroups(Map<String, Map<Long, String>> attributeGroups) {
         this.attributeGroups = attributeGroups;
-    }
-
-    public String getDateSubmitted() {
-        return dateSubmitted;
     }
 
     public void setDateSubmitted(String dateSubmitted) {
