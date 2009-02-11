@@ -33,7 +33,7 @@
 			</column>
 		</property>
 
-		<property name="temporal">
+		<property name="isTemporal" access="field">
 			<column name="is_temporal" not-null="true">
 				<comment>Temporal flag</comment>
 			</column>

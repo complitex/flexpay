@@ -33,12 +33,17 @@ public abstract class BuildingAttributeType extends DomainObjectWithStatus {
 		super(stub.getId());
 	}
 
-	public int getTemporal() {
-		return isTemporal;
+	/**
+	 * Check if this attribute type is for temporal attributes
+	 *
+	 * @return <code>true</code> if type is temporal, or <code>false</code> otherwise
+	 */
+	public boolean isTemp() {
+		return isTemporal != 0;
 	}
 
-	public void setTemporal(int temporal) {
-		isTemporal = temporal;
+	public void setTemp(boolean tmp) {
+		isTemporal = tmp ? 1 : 0;
 	}
 
 	public BuildingAttributeGroup getGroup() {

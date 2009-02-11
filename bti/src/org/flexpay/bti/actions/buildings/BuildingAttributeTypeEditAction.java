@@ -25,6 +25,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 	private Map<Integer, String> enumValues = treeMap();
 
 	private String typeName = TYPE_SIMPLE;
+	private int temporal;
 
 	private BuildingAttributeTypeService attributeTypeService;
 	private BuildingAttributeGroupService attributeGroupService;
@@ -64,6 +65,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 			if (type.isNotNew()) {
 				buildingAttributeGroupFilter.setSelectedId(type.getGroup().getId());
 			}
+			temporal = attributeType.isTemp() ? 1 : 0;
 			initEnumValues();
 			initTranslations();
 			return INPUT;
@@ -98,6 +100,8 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 			typeEnum.setRawValues(enumValues);
 			log.debug("After setting values: {}", typeEnum.getValues());
 		}
+
+		type.setTemp(temporal != 0);
 
 		if (type.isNew()) {
 			attributeTypeService.create(type);
@@ -182,6 +186,14 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 
 	public void setBuildingAttributeGroupFilter(BuildingAttributeGroupFilter buildingAttributeGroupFilter) {
 		this.buildingAttributeGroupFilter = buildingAttributeGroupFilter;
+	}
+
+	public int getTemporal() {
+		return temporal;
+	}
+
+	public void setTemporal(int temporal) {
+		this.temporal = temporal;
 	}
 
 	@Required

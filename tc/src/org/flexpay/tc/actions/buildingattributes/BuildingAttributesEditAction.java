@@ -213,7 +213,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     public boolean isTempAttribute(Long typeId) {
 
         BuildingAttributeType type = getAttributeTypeById(typeId);
-        return type.getTemporal() != 0;
+        return type.isTemp();
     }
 
     /**
