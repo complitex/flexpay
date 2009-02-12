@@ -43,6 +43,9 @@ public class BtiBuildingDaoExtImpl extends HibernateDaoSupport implements BtiBui
 	}
 
 	private void addAttributes(BtiBuilding building, List<?> attributes) {
+        if (attributes == null || attributes.isEmpty()) {
+            return;
+        }
 
 		for (Object obj : attributes) {
 			BuildingAttributeBase attribute = (BuildingAttributeBase) obj;
