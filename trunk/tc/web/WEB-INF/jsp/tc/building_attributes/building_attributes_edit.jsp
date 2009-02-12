@@ -2,6 +2,39 @@
 <%@ page import="org.flexpay.bti.persistence.BuildingAttributeTypeEnum" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
+<script type="text/javascript" src="<c:url value="/resources/common/js/prototype.js"/>"></script>
+
+<script type="text/javascript">
+
+    var attributeGroups = new Array();
+    // TODO make proper values
+    <s:iterator value="attributeGroups" id="groupId">
+    attributeGroups[<s:property value="#groupId"/>] = new Array(
+            <s:iterator value="%{getGroupAttributes(#groupId)}" status="status">
+            "attr_<s:property value="%{key}"/>_id"
+            <s:if test="!#status.last">, </s:if>
+            </s:iterator>
+            );
+    </s:iterator>
+
+    function hideAttributesGroup(groupId) {
+        for (var i = 0; i < attributeGroups[groupId].length; i++) {
+            $(attributeGroups[groupId][i]).hide();
+        }
+        $('show_group_' + groupId).show();
+        $('hide_group_' + groupId).hide();
+    }
+
+    function showAttributesGroup(groupId) {
+        for (var i = 0; i < attributeGroups[groupId].length; i++) {
+            $(attributeGroups[groupId][i]).show();
+        }
+        $('show_group_' + groupId).hide();
+        $('hide_group_' + groupId).show();
+    }
+
+</script>
+
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
     <s:form action="buildingAttributesEdit">
@@ -51,27 +84,40 @@
             </td>
         </tr>
 
-        <%-- attribute groups (+misc) --%>
-
-
+        <%-- attribute groups --%>
         <s:iterator value="attributeGroups" id="groupId">
-
             <tr>
-                <td class="th" colspan="2">
-                    <s:property value="%{getGroupName(#groupId)}"/>
+                <td class="th" colspan="2" style="padding: 0px;">
+                    <table style="width: 100%; font-size: 100%; font-weight: bold;">
+                        <tr>
+                            <td>
+                                <s:property value="%{getGroupName(#groupId)}"/>
+                            </td>
+                            <td style="text-align: right;">
+                                <a href="#" id="show_group_<s:property value="#groupId"/>"
+                                   onclick="showAttributesGroup(<s:property value="#groupId"/>);"
+                                   style="display: none;">
+                                    <s:text name="tc.show_group"/>
+                                </a>
+                                <a href="#" id="hide_group_<s:property value="#groupId"/>"
+                                   onclick="hideAttributesGroup(<s:property value="#groupId"/>);">
+                                    <s:text name="tc.hide_group"/>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
             </tr>
 
             <s:iterator value="%{getGroupAttributes(#groupId)}">
-                <tr valign="middle" class="cols_1">
+                <tr id="attr_<s:property value="%{key}"/>_id" valign="middle" class="cols_1">
 
                     <td class="col"><s:property value="%{getAttributeTypeName(key)}"/></td>
 
                     <td class="col">
-
                         <s:if test="%{isBuildingAttributeTypeSimple(key)}">
                             <nobr>
-                                <s:textfield name="attributeMap[%{key}]" value="%{value}"/>
+                                <s:textfield name="attributeMap[%{key}]" value="%{value}" cssStyle="width: 140px;"/>
 
                                 <s:if test="%{isTempAttribute(key)}">
 
@@ -89,7 +135,8 @@
                                           list="%{getTypeValues(key)}"
                                           listKey="order"
                                           listValue="value"
-                                          emptyOption="true"/>
+                                          emptyOption="true"
+                                          cssStyle="width: 140px;"/>
 
                                 <s:if test="%{isTempAttribute(key)}">
                                     <img src="<s:url value="/resources/common/img/i_clock.gif"/>"
@@ -98,9 +145,7 @@
                                 </s:if>
                             </nobr>
                         </s:if>
-
                     </td>
-
                 </tr>
             </s:iterator>
         </s:iterator>
