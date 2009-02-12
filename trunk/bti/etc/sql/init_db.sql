@@ -130,24 +130,6 @@ insert into bti_building_attribute_type_group_names_tbl (name, language_id, grou
 insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
 	values ('Common places lighting', @en_id, @attribute_group_16);
 
-
--- init simple building attributes
-insert into bti_building_attribute_types_tbl (id, discriminator, group_id) values (2, 'simple', @attribute_group_1);
-select @attr_type_build_date:=2;
-insert into bti_building_attribute_type_names_tbl (name, attribute_type_id, language_id)
-	values ('Дата постройки', @attr_type_build_date, @ru_id);
-insert into bti_building_attribute_type_names_tbl (name, attribute_type_id, language_id)
-	values ('Build date', @attr_type_build_date, @en_id);
-
--- init some building attributes
-select @building_attr_1:=1;
-insert into bti_building_attributes_tbl (id, discriminator, building_id, attribute_type_id)
-	values (2, 'tmp', @building_ivanova_27_id, @attr_type_build_date);
-select @building_attr_2:=2;
-insert into bti_building_attribute_temp_values_tbl (attribute_id, begin_date, end_date, attribute_value)
-	values (@building_attr_2, '1900-01-01', '2100-12-31', '1989/06/25');
-
-
 INSERT INTO `bti_building_attribute_types_tbl` (id, discriminator, group_id, unique_code, is_temporal)
 VALUES (4,'simple',@attribute_group_1,'ATTR_SECTION_NUMBER', 0),
 		(5,'simple',@attribute_group_3,'ATTR_HABITANTS_NUMBER', 0),

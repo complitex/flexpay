@@ -31,6 +31,10 @@ public class BtiBuilding extends Building {
 
 	@Nullable
     public BuildingAttributeBase getAttribute(BuildingAttributeType attributeType) {
+        if (attributes == Collections.EMPTY_SET) {
+            return null;
+        }
+
         for (BuildingAttributeBase attribute : attributes) {
             if (attribute.getAttributeType().equals(attributeType)) {
                 return attribute;
