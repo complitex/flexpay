@@ -7,97 +7,97 @@ INSERT INTO common_file_types_tbl (name, file_mask, code, module_id)
 	VALUES ('tc.file_type.tariff_rules', '.*\\u002E(d|D)(r|R)(l|L)', 1, @module_tc);
 
 -- Init TC Tariffs
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 10);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "010");
 SELECT @tariff_10:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('Уборка территории', @tariff_10, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 20);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "020");
 SELECT @tariff_20:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('Очистка мусоросборников', @tariff_20, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 30);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "030");
 SELECT @tariff_30:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('Уборка подвалов, тех.этажей, крыш', @tariff_30, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 40);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "040");
 SELECT @tariff_40:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('Вывоз и утилизация ТБО', @tariff_40, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 50);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "050");
 SELECT @tariff_50:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('ТО лифтов', @tariff_50, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 60);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "060");
 SELECT @tariff_60:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('ТО систем диспетчеризации', @tariff_60, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 70);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "070");
 SELECT @tariff_70:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('ТО систем водоснабжения', @tariff_70, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 80);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "080");
 SELECT @tariff_80:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('ТО систем водоотведения', @tariff_80, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 90);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "090");
 SELECT @tariff_90:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('ТО систем теплоснабжения', @tariff_90, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 100);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "100");
 SELECT @tariff_100:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('ТО систем горячего водоснабжения', @tariff_100, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 110);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "110");
 SELECT @tariff_110:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('ТО бойлеров', @tariff_110, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 120);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "120");
 SELECT @tariff_120:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('Обслуживание дымоотв. каналов', @tariff_120, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 130);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "130");
 SELECT @tariff_130:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('Очистка дворовых туалетов', @tariff_130, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 140);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "140");
 SELECT @tariff_140:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('Освещение мест общего пльзования', @tariff_140, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 150);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "150");
 SELECT @tariff_150:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('Энергоснабж. для подкачки воды', @tariff_150, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 160);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "160");
 SELECT @tariff_160:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('Энергоснабжение для лифтов', @tariff_160, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 170);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "170");
 SELECT @tariff_170:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('Уборка лестничных клеток', @tariff_170, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 180);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "180");
 SELECT @tariff_180:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('Дератизация и дезинфекция', @tariff_180, @ru_id);
 
-INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, 190);
+INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "190");
 SELECT @tariff_190:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('ТО бытовых электроплит', @tariff_190, @ru_id);
