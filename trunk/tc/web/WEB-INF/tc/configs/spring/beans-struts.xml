@@ -48,7 +48,14 @@
           p:btiBuildingService-ref="btiBuildingService"
           p:buildingAttributeTypeService-ref="buildingAttributeTypeService"
           p:buildingAttributeGroupService-ref="buildingAttributeGroupService"
+          p:tariffCalculationResultService-ref="tariffCalculationResultService"
+          p:tariffService-ref="tariffService"
           scope="prototype"/>
+
+    <bean id="uploadTCResultsAction" class="org.flexpay.tc.actions.buildingattributes.UploadTCResultsAction"
+          p:processManager-ref="processManager"
+          scope="prototype"/>
+
     <!-- end of building attributes section -->
 
     <bean id="tariffCalcResultExportAction" class="org.flexpay.tc.actions.tariff.TariffCalcResultExportAction"
