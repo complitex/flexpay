@@ -1,23 +1,34 @@
 package org.flexpay.tc.actions.buildingattributes;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.FastDateFormat;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.bti.persistence.*;
-import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.bti.service.BtiBuildingService;
 import org.flexpay.bti.service.BuildingAttributeGroupService;
+import org.flexpay.bti.service.BuildingAttributeTypeService;
+import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.DateUtil;
+import org.flexpay.tc.persistence.TariffCalculationResult;
+import org.flexpay.tc.persistence.Tariff;
+import org.flexpay.tc.service.TariffCalculationResultService;
+import org.flexpay.tc.service.TariffService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.lang.StringUtils;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.math.BigDecimal;
+
+// TODO the class is too big. Need to split it down into workers (delegates)
 
 /**
  * Action for updating building attributes
@@ -40,12 +51,21 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     // date submission button
     private String dateSubmitted;
 
+    // This list contains dates of tariff calculation
+    private List<String> tariffCalculationDates = CollectionUtils.list();
+
+    // This map (tariff calculation date -> map (tariff_name -> tariff value)
+    // FIXME eliminate map-o-map ;)
+    private Map<String, Map<Long, BigDecimal>> tcResultsMap = CollectionUtils.treeMap();
+
     // required services
     private AddressService addressService;
     private BuildingService buildingService;
     private BtiBuildingService btiBuildingService;
     private BuildingAttributeTypeService buildingAttributeTypeService;
     private BuildingAttributeGroupService buildingAttributeGroupService;
+    private TariffCalculationResultService tariffCalculationResultService;
+    private TariffService tariffService;
 
     @NotNull
     protected String doExecute() throws Exception {
@@ -58,10 +78,12 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         if (isDateSubmit()) {
             // load attributes for date
             loadBuildingAttributes();
+            loadTariffCalculationResults();
             return INPUT;
         }
 
         loadBuildingAttributes();
+        loadTariffCalculationResults();
         return INPUT;
     }
 
@@ -152,6 +174,33 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         }
 
         btiBuildingService.updateAttributes(btiBuilding);
+    }
+
+    private void loadTariffCalculationResults() {
+        List<Date> calculationDates = tariffCalculationResultService.getUniqueDates();
+
+        for (Date calculationDate : calculationDates) {
+
+            String calcDateString = FastDateFormat.getInstance("dd.MM.yyyy").format(calculationDate);
+
+            List<TariffCalculationResult> calculationResults = tariffCalculationResultService.
+                    getTariffCalcResultsByCalcDateAndAddressId(calculationDate, building.getId());
+
+            Map<Long, BigDecimal> resultMap = CollectionUtils.treeMap();
+            for (TariffCalculationResult result : calculationResults) {
+
+                resultMap.put(result.getTariff().getId(), result.getValue());
+            }
+
+            if (resultMap.size() > 0) {
+                tariffCalculationDates.add(calcDateString);
+                tcResultsMap.put(calcDateString, resultMap);
+            }
+        }
+    }
+
+    private void uploadTariffCalculationResults() {
+        // TODO pick up data from form and upload it
     }
 
     public String getAttributeTypeName(Long typeId) {
@@ -259,6 +308,23 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         return attributeGroups;
     }
 
+    public List<String> getTariffCalculationDates() {
+        return tariffCalculationDates;
+    }
+
+    public Map<Long, BigDecimal> getTcResults(String calcDate) {
+        return tcResultsMap.get(calcDate);
+    }
+
+    public String getTariffTranslation(Long tariffId) {
+        Tariff tariff = tariffService.getTariff(new Stub<Tariff>(tariffId));
+        return getTranslation(tariff.getTranslations()).getName();
+    }
+
+    public boolean tariffCalculationDatesIsEmpty() {
+        return tcResultsMap.isEmpty();
+    }
+
     public void setDateSubmitted(String dateSubmitted) {
         this.dateSubmitted = dateSubmitted;
     }
@@ -286,5 +352,15 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     @Required
     public void setBuildingAttributeGroupService(BuildingAttributeGroupService buildingAttributeGroupService) {
         this.buildingAttributeGroupService = buildingAttributeGroupService;
+    }
+
+    @Required
+    public void setTariffCalculationResultService(TariffCalculationResultService tariffCalculationResultService) {
+        this.tariffCalculationResultService = tariffCalculationResultService;
+    }
+
+    @Required
+    public void setTariffService(TariffService tariffService) {
+        this.tariffService = tariffService;
     }
 }

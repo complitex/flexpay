@@ -33,6 +33,11 @@
         $('hide_group_' + groupId).show();
     }
 
+    function uploadSubmit(calcDate) {
+        $('uploadTCResults_calculationDate').value = calcDate;
+        $('uploadTCResults').submit();
+        return false;
+    }
 </script>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
@@ -82,6 +87,21 @@
                 </script>
                 <s:submit name="dateSubmitted" value="%{getText('tc.show_attribute_values')}" cssClass="btn-exit"/>
             </td>
+            <td style="text-align: right;">
+                <s:submit name="submitted" value="%{getText('common.save')}" cssClass="btn-exit"/>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" class="cols_1"/>
+        </tr>
+        <tr>
+            <td class="th_s" colspan="2">
+                <s:text name="tc.building_attributes"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="cols_1"/>
         </tr>
 
         <%-- attribute groups --%>
@@ -150,14 +170,59 @@
                 </tr>
             </s:iterator>
         </s:iterator>
+    </s:form>
+</table>
 
-        <%-- submit button --%>
+<br/>
+<br/>
+
+<table cellpadding="3" cellspacing="1" border="0" width="100%">
+
+    <s:form action="uploadTCResults">
+
+        <s:hidden name="buildingId" value="%{building.id}"/>
+        <s:hidden name="calculationDate"/>
+
         <tr>
-            <td colspan="2">
-                <s:submit name="submitted" value="%{getText('common.save')}" cssClass="btn-exit"/>
+            <td class="th_s" colspan="2">
+                <s:text name="tc.tariffs_calculated"/>
             </td>
         </tr>
+        <tr>
+            <td colspan="2" class="cols_1"/>
+        </tr>
 
+        <s:if test="%{tariffCalculationDatesIsEmpty()}">
+            <tr class="cols_1">
+                <td class="col" colspan="2">
+                    <s:text name="tc.no_tariff_results"/>
+                </td>
+            </tr>
+        </s:if>
+        <s:else>
+            <s:iterator value="tariffCalculationDates" id="calcDate">
+                <tr>
+                    <td colspan="2" class="th" style="padding: 0;">
+                        <table style="width: 100%; font-size: 100%; font-weight: bold;">
+                            <tr>
+                                <td><s:text name="tc.tariffs_calculated_on"><s:param value="#calcDate"/></s:text></td>
+                                <td style="text-align: right;">
+                                    <input type="button" class="btn-exit" value="<s:property value="%{getText('tc.upload')}"/>"
+                                           onclick="uploadSubmit('<s:property value="#calcDate"/>');"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <s:iterator value="%{getTcResults(#calcDate)}">
+                    <tr class="cols_1">
+                        <td class="col"><s:property value="%{getTariffTranslation(key)}"/></td>
+                        <td class="col"><s:property value="%{value}"/></td>
+                    </tr>
+                </s:iterator>
+            </s:iterator>
+        </s:else>
     </s:form>
 
 </table>
