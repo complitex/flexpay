@@ -177,7 +177,7 @@ VALUES (4,'simple',@attribute_group_1,'ATTR_SECTION_NUMBER', 0),
 		(48,'simple',@attribute_group_16,'ATTR_COMMON_PLACES_LIGHTENING', 0);
 
 INSERT INTO `bti_building_attribute_type_names_tbl` (id, name, language_id, attribute_type_id) VALUES
-		(7,'Номер участка ',@ru_id,4),
+		(7,'Номер участка',@ru_id,4),
 		(8,'Habitans count',@en_id,5),
 		(9,'Количество жителей',@ru_id,5),
 		(10,'Overall flat square',@en_id,6),

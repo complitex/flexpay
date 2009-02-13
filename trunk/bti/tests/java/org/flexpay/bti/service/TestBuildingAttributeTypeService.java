@@ -31,20 +31,20 @@ public class TestBuildingAttributeTypeService extends SpringBeanAwareTestCase {
 	@Test
 	public void testReadType() {
 
-		BuildingAttributeType type = attributeTypeService.readFull(new Stub<BuildingAttributeType>(1L));
-		assertNotNull("Attribute type #1 not found", type);
-		assertTrue("type #1 no translations", type.getTranslations().size() > 0);
+		BuildingAttributeType type = attributeTypeService.readFull(new Stub<BuildingAttributeType>(4L));
+		assertNotNull("Attribute type #4 not found", type);
+		assertTrue("Type #4 has no translations", type.getTranslations().size() > 0);
 
 
-		type = attributeTypeService.readFull(new Stub<BuildingAttributeType>(2L));
-		assertNotNull("Attribute type #2 not found", type);
-		assertTrue("Type #2 has invalid type", type instanceof BuildingAttributeTypeSimple);
-		assertTrue("type #2 no translations", type.getTranslations().size() > 0);
+		type = attributeTypeService.readFull(new Stub<BuildingAttributeType>(5L));
+		assertNotNull("Attribute type #5 not found", type);
+		assertTrue("Type #5 has invalid type", type instanceof BuildingAttributeTypeSimple);
+		assertTrue("type #5 has no translations", type.getTranslations().size() > 0);
 
-		type = attributeTypeService.readFull(new Stub<BuildingAttributeType>(3L));
-		assertNotNull("Attribute type #3 not found", type);
-		assertTrue("Type #3 has invalid type", type instanceof BuildingAttributeTypeEnum);
-		assertTrue("type #3 no translations", type.getTranslations().size() > 0);
+		type = attributeTypeService.readFull(new Stub<BuildingAttributeType>(9L));
+		assertNotNull("Attribute type #9 not found", type);
+		assertTrue("Type #9 has invalid type", type instanceof BuildingAttributeTypeEnum);
+		assertTrue("type #9 no translations", type.getTranslations().size() > 0);
 
 		BuildingAttributeTypeEnum enumType = (BuildingAttributeTypeEnum) type;
 		assertTrue("Enum type is empty", enumType.getValues().size() > 0);
@@ -52,10 +52,9 @@ public class TestBuildingAttributeTypeService extends SpringBeanAwareTestCase {
 
 	public void testFindType() {
 
-		assertNotNull("Color attribute not found", attributeTypeService.findTypeByName("Building color"));
-		assertNotNull("Color attribute not found", attributeTypeService.findTypeByName("Цвет здания"));
-		assertNotNull("Color attribute not found", attributeTypeService.findTypeByName("Wall material"));
-		assertNotNull("Build date attribute not found", attributeTypeService.findTypeByName("Build date"));
+		assertNotNull("Section number attribute not found", attributeTypeService.findTypeByName("Номер участка"));
+		assertNotNull("Habitans count attribute not found", attributeTypeService.findTypeByName("Habitans count"));
+		assertNotNull("Habitans count attribute not found", attributeTypeService.findTypeByName("Количество жителей"));
 		assertNotNull("ATTR_HOUSE_TYPE not found", attributeTypeService.findTypeByName("ATTR_HOUSE_TYPE"));
 	}
 
@@ -66,25 +65,25 @@ public class TestBuildingAttributeTypeService extends SpringBeanAwareTestCase {
 		assertTrue("Not existing name not unique #2", attributeTypeDaoExt.isUniqueTypeName("-----------", 0L));
 		assertTrue("Not existing name not unique #3", attributeTypeDaoExt.isUniqueTypeName("-----------", 1L));
 
-		assertFalse("Existing name not unique #4", attributeTypeDaoExt.isUniqueTypeName("Цвет здания", null));
-		assertFalse("Existing name not unique #5", attributeTypeDaoExt.isUniqueTypeName("Цвет здания", 0L));
-		assertFalse("Existing name not unique #6", attributeTypeDaoExt.isUniqueTypeName("Цвет здания", 2L));
-		assertTrue("Existing name not unique #7", attributeTypeDaoExt.isUniqueTypeName("Цвет здания", 1L));
+		assertFalse("Existing name not unique #4", attributeTypeDaoExt.isUniqueTypeName("Номер участка", null));
+		assertFalse("Existing name not unique #5", attributeTypeDaoExt.isUniqueTypeName("Номер участка", 0L));
+		assertFalse("Existing name not unique #6", attributeTypeDaoExt.isUniqueTypeName("Номер участка", 5L));
+		assertTrue("Existing name not unique #7", attributeTypeDaoExt.isUniqueTypeName("Номер участка", 4L));
 	}
 
 	@Test
 	public void testUpdateEnum() throws Exception {
 
-		BuildingAttributeType type = attributeTypeService.readFull(new Stub<BuildingAttributeType>(3L));
+		BuildingAttributeType type = attributeTypeService.readFull(new Stub<BuildingAttributeType>(9L));
 		BuildingAttributeTypeEnum enumType = (BuildingAttributeTypeEnum) type;
 
-		Map<Integer, String> newValues = map(ar(0, 1), ar("Фанера", "Пенопласт"));
+		Map<Integer, String> newValues = map(ar(0, 1), ar("Пермский", "Московский"));
 		enumType.setRawValues(newValues);
 
 		assertEquals("Invalid set raw values", 2, enumType.getValues().size());
 
 		attributeTypeService.update(enumType);
-		enumType = (BuildingAttributeTypeEnum) attributeTypeService.readFull(new Stub<BuildingAttributeType>(3L));
+		enumType = (BuildingAttributeTypeEnum) attributeTypeService.readFull(new Stub<BuildingAttributeType>(9L));
 		assertEquals("Invalid update", 2, enumType.getValues().size());
 	}
 }

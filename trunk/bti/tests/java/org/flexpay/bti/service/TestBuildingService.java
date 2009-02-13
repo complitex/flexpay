@@ -27,7 +27,7 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	private BuildingAttributeTypeService attributeTypeService;
 
 	public static final Stub<BtiBuilding> BUILDING_STUB = new Stub<BtiBuilding>(1L);
-	public static final Stub<BuildingAttributeType> ATTRIBUTE_TYPE_STUB = new Stub<BuildingAttributeType>(1L);
+	public static final Stub<BuildingAttributeType> ATTRIBUTE_TYPE_STUB = new Stub<BuildingAttributeType>(4L);
 
 	@Test
 	public void testAllBuildingsAreValid() throws Throwable {
@@ -67,8 +67,8 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 		BtiBuilding building = buildingService.readWithAttributes(BUILDING_STUB);
 		assertNotNull("Building not found", building);
 
-		BuildingAttributeType type = attributeTypeService.findTypeByName("Building color");
-		building.setNormalAttribute(type, "Розовая волна");
+		BuildingAttributeType type = attributeTypeService.findTypeByName("Habitans count");
+		building.setNormalAttribute(type, "4");
 
 		buildingService.updateAttributes(building);
 	}
@@ -79,8 +79,8 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 		BtiBuilding building = buildingService.readWithAttributes(BUILDING_STUB);
 		assertNotNull("Building not found", building);
 
-		BuildingAttributeType type = attributeTypeService.findTypeByName("Building color");
-		building.setCurrentTmpAttribute(type, "Розовая волна");
+		BuildingAttributeType type = attributeTypeService.findTypeByName("Habitans count");
+		building.setCurrentTmpAttribute(type, "4");
 
 		buildingService.updateAttributes(building);
 	}
