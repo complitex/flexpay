@@ -43,4 +43,6 @@ public interface TariffCalculationResultService {
 	@Secured(Roles.TARIFF_CALCULATION_RESULT_READ)
 	List<Long> getAddressIds(Date calcDate);
 
+
+
 }

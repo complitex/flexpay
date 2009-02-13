@@ -42,6 +42,7 @@ public class TariffCalculationJob extends Job {
 		Logger pLogger = ProcessLogger.getLogger(getClass());
 
 		if (lockManager.lock(Resources.BUILDING_ATTRIBUTES)) {
+			//@todo clear all calculated tariff to CALC_DATE
 			Date date = new Date();
 			Date calculationDate = (Date)parameters.get(CALC_DATE);
 			//get rules file
