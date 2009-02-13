@@ -85,9 +85,9 @@
         </tr>
 
         <%-- attribute groups --%>
-        <s:iterator value="attributeGroups" id="groupId">
+        <s:iterator value="attributeGroups" id="groupId" status="groupStatus">
             <tr>
-                <td class="th" colspan="2" style="padding: 0px;">
+                <td class="th" colspan="2" style="padding: 0;">
                     <table style="width: 100%; font-size: 100%; font-weight: bold;">
                         <tr>
                             <td>
@@ -96,11 +96,12 @@
                             <td style="text-align: right;">
                                 <a href="#" id="show_group_<s:property value="#groupId"/>"
                                    onclick="showAttributesGroup(<s:property value="#groupId"/>);"
-                                   style="display: none;">
+                                        <s:if test="#groupStatus.first"> style="display: none;"</s:if>>
                                     <s:text name="tc.show_group"/>
                                 </a>
                                 <a href="#" id="hide_group_<s:property value="#groupId"/>"
-                                   onclick="hideAttributesGroup(<s:property value="#groupId"/>);">
+                                   onclick="hideAttributesGroup(<s:property value="#groupId"/>);"
+                                        <s:if test="!#groupStatus.first"> style="display: none;"</s:if>>
                                     <s:text name="tc.hide_group"/>
                                 </a>
                             </td>
@@ -110,17 +111,17 @@
             </tr>
 
             <s:iterator value="%{getGroupAttributes(#groupId)}">
-                <tr id="attr_<s:property value="%{key}"/>_id" valign="middle" class="cols_1">
+                <tr id="attr_<s:property value="%{key}"/>_id" valign="middle" class="cols_1"
+                        <s:if test="!#groupStatus.first"> style="display: none;"</s:if>>
 
-                    <td class="col"><s:property value="%{getAttributeTypeName(key)}"/></td>
+                    <td class="col" style="width: 80%;"><s:property value="%{getAttributeTypeName(key)}"/></td>
 
-                    <td class="col">
+                    <td class="col" style="width: 20%;">
                         <s:if test="%{isBuildingAttributeTypeSimple(key)}">
                             <nobr>
                                 <s:textfield name="attributeMap[%{key}]" value="%{value}" cssStyle="width: 140px;"/>
 
                                 <s:if test="%{isTempAttribute(key)}">
-
                                     <img src="<s:url value="/resources/common/img/i_clock.gif"/>"
                                          alt="<s:text name="tc.temp_attribute"/>"
                                          style="vertical-align: middle;"/>
