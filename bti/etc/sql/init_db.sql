@@ -159,7 +159,7 @@ VALUES (4,'simple',@attribute_group_1,'ATTR_SECTION_NUMBER', 0),
 		(22,'simple',@attribute_group_6,'ATTR_TOTAL_SQUARE_WITH_SEWER', 0),
 		(23,'simple',@attribute_group_7,'ATTR_TOTAL_SQUARE_WITH_REFUSE_CHUTES', 0),
 		(24,'simple',@attribute_group_5,'ATTR_TOTAL_SQUARE_WITH_WATER_PUMPS', 0),
-		(25,'simple',@attribute_group_2,'ATTR_ADS_SUITED_APARTMENTS_TOTAL_SQUARE', 0),
+		(25,'simple',@attribute_group_11,'ATTR_ADS_SUITED_APARTMENTS_TOTAL_SQUARE', 0),
 		(26,'simple',@attribute_group_6,'ATTR_GUTTER_EQUIPPED_TOTAL_SQUARE', 0),
 		(27,'simple',@attribute_group_6,'ATTR_TOILETS_WITH_CENTRAL_SEWER_TOTAL_SQUARE', 0),
 		(28,'simple',@attribute_group_2,'ATTR_SOFT_ROOF_SQUARE', 0),
@@ -199,7 +199,10 @@ VALUES (4,'simple',@attribute_group_1,'ATTR_SECTION_NUMBER', 0),
         (61,'simple',@attribute_group_17,'ATTR_COURT_TOILETS_CLEANUP_TARIF', 1),
         (62,'simple',@attribute_group_17,'ATTR_COMMON_PLACES_LIGHTENING_TARIF', 1),
         (63,'simple',@attribute_group_17,'ATTR_WATER_PUMPS_ELECTRICITY_TARIF', 1),
-        (64,'simple',@attribute_group_17,'ATTR_LIFT_ENERGYSAVE_TARIF', 1);
+        (64,'simple',@attribute_group_17,'ATTR_LIFT_ENERGYSAVE_TARIF', 1),
+        
+        (65,'simple',@attribute_group_2,'ATTR_OPEN_ELECTRIC_WIRING_APARTMENT_NUMBER', 0),
+        (66,'simple',@attribute_group_2,'ATTR_OPEN_ELECTRIC_WIRING_APARTMENT_NUMBER_2', 0);
 
 INSERT INTO `bti_building_attribute_type_names_tbl` (id, name, language_id, attribute_type_id) VALUES
 		(7,'Номер участка',@ru_id,4),
@@ -264,7 +267,9 @@ INSERT INTO `bti_building_attribute_type_names_tbl` (id, name, language_id, attr
 		(66,'Тариф за очистку дворовых туалетов ',@ru_id,61),
 		(67,'тариф за освещение мест общего пользования ',@ru_id,62),
 		(68,'Тариф за энергоснабжение насосов подкачки воды ',@ru_id,63),
-		(69,'Тариф за энергоснабжение лифтов ',@ru_id,64);
+		(69,'Тариф за энергоснабжение лифтов ',@ru_id,64),
+		(69,'Количество квартир со скрытой электропроводкой ',@ru_id,65),
+		(69,'Количество квартир с открытой электропроводкой ',@ru_id,66);
 
 INSERT INTO `bti_building_attribute_type_enum_values_tbl` (id, order_value, value , attribute_type_enum_id)  VALUES
 (7,296,'№163',9),(8,295,'эксперим.',9),(9,294,'эксперем.',9),(10,293,'экспер',9),
