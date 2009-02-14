@@ -9,7 +9,7 @@
 
 	<bean id="buildingAttributesImportJob" class="org.flexpay.bti.process.BuildingAttributesImportJob"
 		  p:fileService-ref="fpFileService"
-		  p:attributeDataProcessor-ref="buildingAttributeDataProcessor"
+		  p:attributeDataProcessor-ref="buildingAttributeDataProcessorsChain"
 		  p:attributesImporter-ref="csvBuildingAttributesImporter" />
 
 

@@ -317,7 +317,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     }
 
     public String getTariffTranslation(Long tariffId) {
-        Tariff tariff = tariffService.getTariff(new Stub<Tariff>(tariffId));
+        Tariff tariff = tariffService.readFull(new Stub<Tariff>(tariffId));
         return getTranslation(tariff.getTranslations()).getName();
     }
 

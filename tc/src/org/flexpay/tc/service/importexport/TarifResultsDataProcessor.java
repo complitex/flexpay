@@ -1,0 +1,110 @@
+package org.flexpay.tc.service.importexport;
+
+import org.apache.commons.lang.StringUtils;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.service.BuildingService;
+import org.flexpay.bti.service.importexport.BuildingAttributeData;
+import org.flexpay.bti.service.importexport.BuildingAttributeDataProcessor;
+import org.flexpay.common.util.DateUtil;
+import org.flexpay.tc.persistence.Tariff;
+import org.flexpay.tc.service.TariffCalculationResultService;
+import org.flexpay.tc.service.TariffServiceExt;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Map;
+
+
+@Transactional
+public class TarifResultsDataProcessor implements BuildingAttributeDataProcessor {
+
+	private Logger log = LoggerFactory.getLogger(getClass());
+
+	private TarifToAttributeNameMapper tarifToAttributeNameMapper;
+	private TariffServiceExt tariffService;
+	private BuildingService buildingService;
+	private TariffCalculationResultService calculationResultService;
+
+	/**
+	 * Process attribute data for specified time interval
+	 *
+	 * @param begin Interval begin date
+	 * @param end   Interval end date
+	 * @param data  Attributes data
+	 */
+	public void processData(Date begin, Date end, BuildingAttributeData data) {
+
+		for (Map.Entry<String, String> entry : data.getName2Values().entrySet()) {
+			String attributeName = entry.getKey();
+
+			// get tariff code
+			String tarifCode = tarifToAttributeNameMapper.getTarifCodeByAttributeName(attributeName);
+			if (StringUtils.isBlank(tarifCode)) {
+				log.debug("No tarif code for attribute: {}", attributeName);
+				continue;
+			}
+
+			// extract value
+			String attributeValue = entry.getValue();
+			if (StringUtils.isBlank(attributeValue)) {
+				log.debug("No value for attribute: {}", attributeName);
+				continue;
+			}
+			BigDecimal amount = getValue(attributeValue);
+			if (amount == null) {
+				log.debug("Expected decimal, found '{}' for attribute {}", attributeValue, attributeName);
+				continue;
+			}
+
+			// get tariff and building
+			Tariff tariff = tariffService.getTariffByCode(tarifCode);
+			if (tariff == null) {
+				log.info("No tarif found by code: {}", tarifCode);
+				continue;
+			}
+
+			Building building = buildingService.findBuilding(data.getBuildingAddress());
+			if (building == null) {
+				log.warn("No building found by address: {}", data.getBuildingAddress());
+				continue;
+			}
+
+			calculationResultService.add(amount, DateUtil.now(), begin, building, tariff);
+		}
+	}
+
+	@Nullable
+	private BigDecimal getValue(@NotNull String value) {
+		try {
+			return new BigDecimal(value.replaceAll(",", "."));
+		} catch (NumberFormatException ex) {
+			return null;
+		}
+	}
+
+	@Required
+	public void setCalculationResultService(TariffCalculationResultService calculationResultService) {
+		this.calculationResultService = calculationResultService;
+	}
+
+	@Required
+	public void setTarifToAttributeNameMapper(TarifToAttributeNameMapper tarifToAttributeNameMapper) {
+		this.tarifToAttributeNameMapper = tarifToAttributeNameMapper;
+	}
+
+	@Required
+	public void setTariffService(TariffServiceExt tariffService) {
+		this.tariffService = tariffService;
+	}
+
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
+	}
+}

@@ -37,18 +37,20 @@ public class BuildingAttributesImportJob extends Job {
 
 		Logger plog = ProcessLogger.getLogger(getClass());
 		plog.info("Starting dumping attributes");
+
+		String result = RESULT_NEXT;
 		List<BuildingAttributeData> datas = fetchData(file, parameters);
 		for (BuildingAttributeData data : datas) {
-
 			try {
 				attributeDataProcessor.processData(beginDate, ApplicationConfig.getFutureInfinite(), data);
 			} catch (Exception e) {
 				plog.warn("Failed importing building attributes", e);
+				result = RESULT_ERROR;
 			}
 		}
 
 		plog.info("End dumping attributes");
-		return RESULT_NEXT;
+		return result;
 	}
 
 	private List<BuildingAttributeData> fetchData(File file, Map<Serializable, Serializable> parameters)

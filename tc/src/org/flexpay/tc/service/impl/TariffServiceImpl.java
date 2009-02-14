@@ -25,7 +25,7 @@ public class TariffServiceImpl implements TariffService {
 		}
 	}
 
-	public Tariff getTariff(@NotNull Stub<Tariff> stub) {
+	public Tariff readFull(@NotNull Stub<Tariff> stub) {
 		return tariffDao.readFull(stub.getId());
 	}
 

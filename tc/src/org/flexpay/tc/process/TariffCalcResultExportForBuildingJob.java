@@ -5,22 +5,15 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry;
 import org.flexpay.ab.service.BuildingService;
-import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.persistence.Building;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.locking.Resources;
-import org.flexpay.tc.persistence.TariffCalculationResult;
-import org.flexpay.bti.persistence.BtiBuilding;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Date;
-import java.util.List;
 import java.sql.*;
 
 public class TariffCalcResultExportForBuildingJob extends Job {
@@ -94,7 +87,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 						try {
 							cs.registerOutParameter(1, Types.INTEGER);
 							cs.setInt(2, intExtId);
-							cs.setString(3, tcr.getTariff().getSubServiceCode());
+							cs.setString(3, tcr.readFull().getSubServiceCode());
 							cs.setBigDecimal(4, tcr.getValue());
 							cs.setDate(5, sqlCalcDate);
 							cs.executeUpdate();
@@ -102,7 +95,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 							int exportResult = cs.getInt(1);
 
 							if (exportResult == 0) {
-								pLog.warn("Tariff {} for building with id={} not exists", tcr.getTariff(), tcr.getBuilding().getId());
+								pLog.warn("Tariff {} for building with id={} not exists", tcr.readFull(), tcr.getBuilding().getId());
 							} else if (exportResult == -1) {
 								pLog.warn("Building with id={} for caluculation result {} not found", tcr.getBuilding().getId(), tcr);
 							} else if (exportResult == -2) {

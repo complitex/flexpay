@@ -8,10 +8,12 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="countryServiceTarget" class="org.flexpay.ab.service.imp.CountryServiceImpl"
+		  autowire-candidate="false"
 		  p:countryDao-ref="countryDAO"
 		  p:countryNameDao-ref="countryNameDAO" />
 
-	<bean id="regionServiceTarget" class="org.flexpay.ab.service.imp.RegionServiceImpl">
+	<bean id="regionServiceTarget" class="org.flexpay.ab.service.imp.RegionServiceImpl"
+		  autowire-candidate="false">
 		<property name="parentService" ref="countryService" />
 		<property name="townTypeService" ref="townTypeService" />
 		<property name="regionDao" ref="regionDAO" />
@@ -42,6 +44,7 @@
 	</bean>
 
 	<bean id="streetServiceTarget" class="org.flexpay.ab.service.imp.StreetServiceImpl"
+		  autowire-candidate="false"
 		  p:parentService-ref="townService"
 		  p:townDao-ref="townDAO"
 		  p:streetDao-ref="streetDAO"
@@ -52,6 +55,7 @@
 		  p:streetNameTranslationDao-ref="streetNameTranslationDAO" />
 
 	<bean id="buildingServiceTarget" class="org.flexpay.ab.service.imp.BuildingServiceImpl"
+		  autowire-candidate="false"
 		  p:buildingDao-ref="buildingDao"
 		  p:buildingsDao-ref="buildingsDao"
 		  p:buildingsDaoExt-ref="buildingsDaoExt"
@@ -59,6 +63,7 @@
 		  p:districtParentService-ref="districtService" />
 
 	<bean id="addressAttributeTypeServiceTarget" class="org.flexpay.ab.service.imp.AddressAttributeTypeServiceImpl"
+		  autowire-candidate="false"
 		  p:buildingAttributeTypeDao-ref="addressAttributeTypeDao" />
 
 	<bean id="addressService" class="org.flexpay.ab.service.imp.AddressServiceImpl"
@@ -76,6 +81,7 @@
 		  p:townTypeTranslationDao-ref="townTypeTranslationDao" />
 
 	<bean id="streetTypeServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.ab.service.imp.StreetTypeServiceImpl"
 		  p:streetTypeDao-ref="streetTypeDAO"
 		  p:streetTypeTranslationDao-ref="streetTypeTranslationDao"

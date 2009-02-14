@@ -13,9 +13,8 @@ public interface TariffService {
 	void save(@NotNull Tariff tariff);
 
 	@Secured(Roles.TARIFF_READ)
-	Tariff getTariff(@NotNull Stub<Tariff> stub);
+	Tariff readFull(@NotNull Stub<Tariff> stub);
 
 	@Secured({Roles.TARIFF_DELETE})
 	void disable(@NotNull Set<Long> objectIds);
-
 }

@@ -18,6 +18,7 @@
 		  p:errorDao-ref="importErrorDao" />
 
 	<bean class="org.flexpay.common.service.imp.LanguageServiceImpl" id="languageServiceTarget"
+		  autowire-candidate="false"
 		  p:languageDao-ref="languageDao" />
 
     <bean class="org.flexpay.common.service.imp.FPFileServiceImpl" id="fpFileService"
@@ -27,6 +28,7 @@
           p:fpModuleDao-ref="fpModuleDao" />
 
 	<bean class="org.flexpay.common.service.imp.MeasureUnitServiceImpl" id="measureUnitServiceTarget"
+		  autowire-candidate="false"
 		  p:measureUnitDao-ref="measureUnitDao" />
 
 	<bean class="org.flexpay.common.service.internal.SessionUtils" id="sessionUtils"
