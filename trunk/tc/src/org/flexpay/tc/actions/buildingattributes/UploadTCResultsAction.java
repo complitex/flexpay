@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class UploadTCResultsAction extends FPActionSupport {
 
     private String buildingId;
-    private String calculationDate;    
+    private Date calculationDate;
 
     private ProcessManager processManager;
 
@@ -41,7 +43,7 @@ public class UploadTCResultsAction extends FPActionSupport {
         this.buildingId = buildingId;
     }
 
-    public void setCalculationDate(String calculationDate) {
+    public void setCalculationDate(Date calculationDate) {
         this.calculationDate = calculationDate;
     }
 

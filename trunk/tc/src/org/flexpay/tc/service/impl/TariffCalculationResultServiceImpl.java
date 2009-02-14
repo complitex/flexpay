@@ -42,6 +42,18 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 		TariffCalculationResult tariffCalculationResult = new TariffCalculationResult(value, creationDate, calculationDate, building, tariff);
 		add(tariffCalculationResult);
 	}
+
+	/**
+	 * Get tariff calculation result list for calculation date and building
+	 *
+	 * @param calcDate	 tariff calculation result date
+	 * @param buildingStub tariff calculation result building
+	 * @return tariff calculation result list
+	 */
+	public List<TariffCalculationResult> getTariffCalcResultsByCalcDateAndBuilding(@NotNull Date calcDate, @NotNull Stub<Building> buildingStub) {
+		return tariffCalculationResultDao.findByCalcDateAndBuilding(calcDate, buildingStub.getId());
+	}
+
 	public TariffCalculationResult read(@NotNull Stub<TariffCalculationResult> stub) {
 		return tariffCalculationResultDao.readFull(stub.getId());
 	}

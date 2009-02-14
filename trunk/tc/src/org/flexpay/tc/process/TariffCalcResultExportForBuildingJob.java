@@ -5,24 +5,26 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.locking.Resources;
+import org.flexpay.tc.process.exporters.Exporter;
+import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.sql.*;
+import java.util.Date;
+import java.util.List;
 
 public class TariffCalcResultExportForBuildingJob extends Job {
 
-	private String jdbcDriverClassName;
-	private String jdbcUrl;
-	private String jdbcUsername;
-	private String jdbcPassword;
-	private String procedure;
 	private Long dataSourceDescriptionId;
 	private LockManager lockManager;
 	private ClassToTypeRegistry classToTypeRegistry;
@@ -30,6 +32,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 	private TariffCalculationResultService tariffCalculationResultService;
 	private BuildingService buildingService;
 
+	private Exporter exporter;
 	/**
 	 * Building ID
 	 */
@@ -42,134 +45,56 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
-		Logger pLog = ProcessLogger.getLogger(getClass());
-
-		pLog.debug("Tariff calculation result export procces started");
-
-		if (!lockManager.lock(Resources.BUILDING_ATTRIBUTES)) {
-			log.info("Another process has already requested a lock and is working");
-			return RESULT_NEXT;
-		}
-/*
-		Connection conn = null;
+//		Logger pLog = ProcessLogger.getLogger(getClass());
 		try {
-			conn = getConnection();
-			pLog.info("Connection with DB (url - {}) created successfully", jdbcUrl);
-			conn.setAutoCommit(false);
 
-			Date calcDate = (Date) parameters.get("date");
-			Stub<BtiBuilding> buildingStub = new Stub<BtiBuilding>(Long.valueOf((String)parameters.get(BUILDING_ID)));
+			Date calculationDate = (Date) parameters.get(CALCULATION_DATE);
+			Stub<Building> buildingStub = new Stub<Building>(Long.parseLong((String)parameters.get(BUILDING_ID)));
 
-			Building building = buildingService.read(new Stub<Building>(Long.valueOf((String)parameters.get(BUILDING_ID))));
-			building.getBuildingses().iterator().next().getId();
+			log.info("Tariff calculation result export procces started");
+			log.info("Calculation date := {} building id := {}", new Object[]{calculationDate, buildingStub.getId()});
 
-//			java.sql.Date sqlCalcDate = new java.sql.Date(calcDate.getTime());
-//
-			List<Long> addressIds = tariffCalculationResultService.getAddressIds(calcDate);
-
-			for (Long addressId : addressIds) {
-
-				String externalId = correctionsService.getExternalId(addressId, classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionId);
-				if (externalId == null) {
-					pLog.debug("ExternalId for building address with id={} not found", addressId);
-					continue;
-				}
-
-				Integer intExtId = Integer.parseInt(externalId);
-
-				List<TariffCalculationResult> tcrs = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndAddressId(calcDate, addressId);
-
-				try {
-
-					for (TariffCalculationResult tcr : tcrs) {
-
-						CallableStatement cs = conn.prepareCall(procedure);
-						try {
-							cs.registerOutParameter(1, Types.INTEGER);
-							cs.setInt(2, intExtId);
-							cs.setString(3, tcr.readFull().getSubServiceCode());
-							cs.setBigDecimal(4, tcr.getValue());
-							cs.setDate(5, sqlCalcDate);
-							cs.executeUpdate();
-
-							int exportResult = cs.getInt(1);
-
-							if (exportResult == 0) {
-								pLog.warn("Tariff {} for building with id={} not exists", tcr.readFull(), tcr.getBuilding().getId());
-							} else if (exportResult == -1) {
-								pLog.warn("Building with id={} for caluculation result {} not found", tcr.getBuilding().getId(), tcr);
-							} else if (exportResult == -2) {
-								pLog.warn("Error: Can't create record in history for calculation result {}", tcr);
-							} else if (exportResult == -3) {
-								pLog.warn("Locking exception: Can't export calculcation result {}", tcr);
-							} else {
-								pLog.debug("Tariff calculation result {} exported succesfully", tcr);
-							}
-						} finally {
-							cs.close();
-						}
-					}
-
-
-					conn.commit();
-				} catch (Exception e) {
-					pLog.error("SQL error for adressId=" + addressId, e);
-					try {
-						conn.rollback();
-					} catch (SQLException e1) {
-						// do nothing
-					}
-				}
-
+			if (!lockManager.lock(Resources.BUILDING_ATTRIBUTES)) {
+				log.info("Another process has already requested a lock and is working");
+				return RESULT_NEXT;
 			}
 
-		} catch (Exception e) {
-			pLog.error("SQL error", e);
-		} finally {
-			try {
-				if (conn != null && !conn.isClosed()) {
-					conn.close();
+			List<TariffCalculationResult> tariffCalcResultList = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndBuilding(
+					calculationDate, buildingStub);
+			//find external id
+
+			if (tariffCalcResultList.size() > 0) {
+				exporter.beginExport();
+				String externalId = getExternalId(buildingStub);
+				for (TariffCalculationResult trc : tariffCalcResultList) {
+					exporter.export(new Object[]{trc, externalId});
 				}
-			} catch (SQLException e) {
-				// do nothing
+			}else{
+				log.info("No Tariff calculation results found.");
 			}
-*/
+			exporter.commit();
+		} catch (Exception e){
+			e.printStackTrace();
+		}finally {
+			exporter.endExport();
 			lockManager.releaseLock(Resources.BUILDING_ATTRIBUTES);
-//		}
+		}
 
-		pLog.debug("Tariff calculation result export procces finished");
+		log.info("Tariff calculation result export procces finished");
 
 		return RESULT_NEXT;
 	}
 
-	private Connection getConnection() throws Exception {
-		Class.forName(jdbcDriverClassName);
-		return DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
-	}
+	private String getExternalId(@NotNull Stub<Building> buildingStub) throws FlexPayException {
 
-	@Required
-	public void setJdbcDriverClassName(String jdbcDriverClassName) {
-		this.jdbcDriverClassName = jdbcDriverClassName;
-	}
-
-	@Required
-	public void setJdbcUrl(String jdbcUrl) {
-		this.jdbcUrl = jdbcUrl;
-	}
-
-	@Required
-	public void setJdbcUsername(String jdbcUsername) {
-		this.jdbcUsername = jdbcUsername;
-	}
-
-	@Required
-	public void setJdbcPassword(String jdbcPassword) {
-		this.jdbcPassword = jdbcPassword;
-	}
-
-	@Required
-	public void setProcedure(String procedure) {
-		this.procedure = procedure;
+		List<BuildingAddress> buildingAddressList = buildingService.getBuildingBuildings(buildingStub);
+		for (BuildingAddress buildingAddress : buildingAddressList) {
+			String externalId = correctionsService.getExternalId(buildingAddress.getId(), classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionId);
+			if (externalId != null) {
+				return externalId;
+			}
+		}
+		throw new FlexPayException("Building adress not found for building.id=" + buildingStub.getId());
 	}
 
 	@Required
@@ -196,6 +121,14 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 	public void setLockManager(LockManager lockManager) {
 		this.lockManager = lockManager;
 	}
-	
 
+	@Required
+	public void setExporter(Exporter exporter) {
+		this.exporter = exporter;
+	}
+
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
+	}
 }
