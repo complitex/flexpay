@@ -7,11 +7,14 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="buildingAttributeTypeService" class="org.flexpay.bti.service.impl.BuildingAttributeTypeServiceImpl"
+	<bean id="buildingAttributeTypeServiceTarget" class="org.flexpay.bti.service.impl.BuildingAttributeTypeServiceImpl"
+		  autowire-candidate="false"
 		  p:attributeTypeDao-ref="buildingAttributeTypeDao"
 		  p:attributeTypeDaoExt-ref="attributeTypeDaoExt" />
 
-	<bean id="buildingAttributeGroupService" class="org.flexpay.bti.service.impl.BuildingAttributeGroupServiceImpl"
+	<bean id="buildingAttributeGroupServiceTarget"
+		  class="org.flexpay.bti.service.impl.BuildingAttributeGroupServiceImpl"
+		  autowire-candidate="false"
 		  p:groupDao-ref="buildingAttributeGroupDao" />
 
 	<bean id="buildingAttributeService" class="org.flexpay.bti.service.impl.BuildingAttributeServiceImpl"

@@ -8,8 +8,10 @@ import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.process.job.Job;
 import org.junit.Test;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 import org.apache.commons.io.IOUtils;
 
 import java.util.Date;
@@ -54,6 +56,6 @@ public class TestImportBuildingAttributes extends SpringBeanAwareTestCase {
 		params.put(BuildingAttributesImportJob.PARAM_FILE_ID, fpFile.getId());
 		params.put(BuildingAttributesImportJob.PARAM_IMPORT_DATE, DateUtil.parseBeginDate("2008/12/26"));
 
-		job.execute(params);
+		assertEquals("Import failed", Job.RESULT_NEXT, job.execute(params));
 	}
 }

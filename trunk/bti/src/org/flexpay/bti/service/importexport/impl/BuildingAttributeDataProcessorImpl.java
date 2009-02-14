@@ -2,20 +2,17 @@ package org.flexpay.bti.service.importexport.impl;
 
 import org.flexpay.bti.persistence.BtiBuilding;
 import org.flexpay.bti.persistence.BuildingAttributeType;
-import org.flexpay.bti.persistence.BuildingAttributeConfig;
-import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.bti.service.BtiBuildingService;
+import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.bti.service.importexport.BuildingAttributeData;
 import org.flexpay.bti.service.importexport.BuildingAttributeDataProcessor;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Required;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 import java.util.Map;
 
-@Transactional
 public class BuildingAttributeDataProcessorImpl implements BuildingAttributeDataProcessor {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -33,6 +30,10 @@ public class BuildingAttributeDataProcessorImpl implements BuildingAttributeData
 	public void processData(Date begin, Date end, BuildingAttributeData data) {
 
 		BtiBuilding building = buildingService.readWithAttributesByAddress(data.getBuildingAddress());
+		if (building == null) {
+			throw new RuntimeException("Building not found, id=" + data.getBuildingAddress()
+									   + ", row=" + data.getRowNum());
+		}
 
 		for (Map.Entry<String, String> pair : data.getName2Values().entrySet()) {
 			BuildingAttributeType type = attributeTypeService.findTypeByName(pair.getKey());
@@ -40,7 +41,7 @@ public class BuildingAttributeDataProcessorImpl implements BuildingAttributeData
 				log.info("No attribute type found by name {}, skipping", pair.getKey());
 				continue;
 			}
-			if (BuildingAttributeConfig.isTemporal(pair.getKey())) {
+			if (type.isTemp()) {
 				building.setTmpAttributeForDates(type, pair.getValue(), begin, end);
 			} else {
 				building.setNormalAttribute(type, pair.getValue());

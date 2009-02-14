@@ -8,8 +8,7 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="cncsvAttributeNameMapper"
-		  class="org.flexpay.bti.service.importexport.impl.CNCSVAttributeNameMapper"
-		  />
+		  class="org.flexpay.bti.service.importexport.impl.CNCSVAttributeNameMapper" />
 
 	<bean id="csvBuildingAttributesImporter"
 		  class="org.flexpay.bti.service.importexport.impl.CSVBuildingAttributesImporter"
@@ -21,5 +20,17 @@
 		  class="org.flexpay.bti.service.importexport.impl.BuildingAttributeDataProcessorImpl"
 		  p:attributeTypeService-ref="buildingAttributeTypeService"
 		  p:buildingService-ref="btiBuildingService" />
+
+	<bean id="buildingAttributeDataProcessorsChainFactory"
+		  class="org.flexpay.bti.service.importexport.impl.ChainAttributeDataProcessorFactory" />
+
+	<bean id="buildingAttributeDataProcessorsChain"
+		  factory-bean="buildingAttributeDataProcessorsChainFactory" factory-method="getInstance">
+		<property name="processors">
+			<set>
+				<ref bean="buildingAttributeDataProcessor" />
+			</set>
+		</property>
+	</bean>
 
 </beans>
