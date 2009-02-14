@@ -6,4 +6,18 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+
+    <bean name="jdbcCNexporter" class="org.flexpay.tc.process.exporters.JDBCCNExporter"
+          p:jdbcDriverClassName="${jdbc.export.driverClassName}"
+          p:jdbcUrl="${jdbc.export.url}"
+          p:jdbcUsername="${jdbc.export.username}"
+          p:jdbcPassword="${jdbc.export.password}"
+          p:procedure="${stored-procedure}"
+          destroy-method="endExport"
+          scope="prototype"
+          />
+
+    <bean name="fileCnExporter" class="org.flexpay.tc.process.exporters.FileCNExporter"
+          destroy-method="endExport"
+            />
 </beans>

@@ -16,28 +16,21 @@
           scope="prototype" />
 
     <bean name="tariffCalcResultExportJob" class="org.flexpay.tc.process.TariffCalcResultExportJob"
-          p:jdbcDriverClassName="${jdbc.export.driverClassName}"
-          p:jdbcUrl="${jdbc.export.url}"
-          p:jdbcUsername="${jdbc.export.username}"
-          p:jdbcPassword="${jdbc.export.password}"
-          p:procedure="${stored-procedure}"
           p:dataSourceDescriptionId="${datasource.id}"
           p:lockManager-ref="lockManager"
           p:classToTypeRegistry-ref="typeRegistryAb"
           p:correctionsService-ref="correctionsServiceAb"
           p:tariffCalculationResultService-ref="tariffCalculationResultService"
+          p:exporter-ref="fileCnExporter"
           scope="prototype" />
 
     <bean name="tariffCalcResultExportForBuildingJob" class="org.flexpay.tc.process.TariffCalcResultExportForBuildingJob"
-          p:jdbcDriverClassName="${jdbc.export.driverClassName}"
-          p:jdbcUrl="${jdbc.export.url}"
-          p:jdbcUsername="${jdbc.export.username}"
-          p:jdbcPassword="${jdbc.export.password}"
-          p:procedure="${stored-procedure}"
           p:dataSourceDescriptionId="${datasource.id}"
           p:lockManager-ref="lockManager"
           p:classToTypeRegistry-ref="typeRegistryAb"
           p:correctionsService-ref="correctionsServiceAb"
           p:tariffCalculationResultService-ref="tariffCalculationResultService"
+          p:buildingService-ref="buildingServiceTarget"
+          p:exporter-ref="fileCnExporter"
           scope="prototype" />
 </beans>
