@@ -5,6 +5,7 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.util.JDBCUtils;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
@@ -17,6 +18,7 @@ public class JDBCCNExporter implements Exporter {
 	private String jdbcUsername;
 	private String jdbcPassword;
 	private String procedure;
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * Begin export procedure
@@ -28,9 +30,13 @@ public class JDBCCNExporter implements Exporter {
 			conn = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
 			conn.setAutoCommit(false);
 		}catch(ClassNotFoundException e){
-			throw new FlexPayException("Can't load driver for JDBC connection",e);
+			FlexPayException fe = new FlexPayException("Can't load driver for JDBC connection",e);
+			log.error(fe.getMessage(),e);
+			throw fe;
 		}catch(SQLException e){
-			throw new FlexPayException("Can't accure connection",e);
+			FlexPayException fe = new FlexPayException("Can't accure connection",e);
+			log.error(fe.getMessage(),e);
+			throw fe;
 		}
 	}
 
@@ -40,7 +46,7 @@ public class JDBCCNExporter implements Exporter {
 	 * @throws FlexPayException throws flexpay exception when can't export data
 	 */
 	public void export(@NotNull Object[] params) throws FlexPayException {
-		Logger pLog = ProcessLogger.getLogger(getClass());
+//		Logger pLog = ProcessLogger.getLogger(getClass());
 
 		try {
 			TariffCalculationResult tariffCalculationResult = (TariffCalculationResult) params[0];
@@ -58,15 +64,15 @@ public class JDBCCNExporter implements Exporter {
 				int exportResult = cs.getInt(1);
 
 				if (exportResult == 0) {
-					pLog.warn("Tariff {} for building with id={} not exists", tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId());
+					log.warn("Tariff {} for building with id={} not exists", tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId());
 				} else if (exportResult == -1) {
-					pLog.warn("Building with id={} for caluculation result {} not found", tariffCalculationResult.getBuilding().getId(), tariffCalculationResult);
+					log.warn("Building with id={} for caluculation result {} not found", tariffCalculationResult.getBuilding().getId(), tariffCalculationResult);
 				} else if (exportResult == -2) {
-					pLog.warn("Error: Can't create record in history for calculation result {}", tariffCalculationResult);
+					log.warn("Error: Can't create record in history for calculation result {}", tariffCalculationResult);
 				} else if (exportResult == -3) {
-					pLog.warn("Locking exception: Can't export calculcation result {}", tariffCalculationResult);
+					log.warn("Locking exception: Can't export calculcation result {}", tariffCalculationResult);
 				} else {
-					pLog.debug("Tariff calculation result {} exported succesfully", tariffCalculationResult);
+					log.debug("Tariff calculation result {} exported succesfully", tariffCalculationResult);
 				}
 			} finally {
 				cs.close();
@@ -85,7 +91,9 @@ public class JDBCCNExporter implements Exporter {
 		try {
 			conn.commit();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			FlexPayException fe = new FlexPayException("Can't commit transaction",e);
+			log.error(fe.getMessage(),e);
+			throw fe;
 		}
 	}
 
@@ -99,7 +107,9 @@ public class JDBCCNExporter implements Exporter {
 		try{
 			conn.rollback();
 		}catch(SQLException e){
-			throw new FlexPayException("");
+			FlexPayException fe = new FlexPayException("Can't rollback tarnsaction",e);
+			log.error(fe.getMessage(),e);
+			throw fe;
 		}
 	}
 
