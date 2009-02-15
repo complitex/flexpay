@@ -12,6 +12,7 @@
       <configuration>
         <datasource-map>
           <unit-entry name="flexpay" />
+          <unit-entry name="flexpaySessionFactory" value="1cbbd1b0-185e-4357-955d-ff0dac282ef8" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../tc/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
       </configuration>
@@ -58,6 +59,8 @@
             <file>jar://$MODULE_DIR$/../../common/lib/struts2/struts2-pell-multipart-plugin-2.0.14.jar!/struts-plugin.xml</file>
             <file>jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/struts-plugin.xml</file>
             <file>file://$MODULE_DIR$/../../tc/src/org/flexpay/tc/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../tc/src/org/flexpay/tc/actions/tariff/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../tc/src/org/flexpay/tc/actions/buildingattributes/struts.xml</file>
           </fileset>
         </configuration>
       </facet>
@@ -71,7 +74,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Spring" level="application" />
+    <orderEntry type="module" module-name="common" />
+    <orderEntry type="module" module-name="ab" />
+    <orderEntry type="module" module-name="bti" />
     <orderEntry type="library" name="spring2" level="project" />
     <orderEntry type="library" name="logging" level="project" />
     <orderEntry type="library" name="hibernate3" level="project" />
@@ -86,10 +91,8 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="bti" />
-    <orderEntry type="module" module-name="ab" />
-    <orderEntry type="module" module-name="common" />
     <orderEntry type="library" name="Struts2" level="project" />
+    <orderEntry type="library" name="Drools" level="project" />
   </component>
 </module>
 

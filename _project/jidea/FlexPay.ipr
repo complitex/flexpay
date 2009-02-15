@@ -2,14 +2,6 @@
 <project relativePaths="true" version="4">
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
-    <buildFile url="file://$PROJECT_DIR$/../../common/common_build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
-      <maximumStackSize value="32" />
-      <properties />
-    </buildFile>
     <buildFile url="file://$PROJECT_DIR$/../../ab/ab_build.xml">
       <additionalClassPath />
       <antReference projectDefault="true" />
@@ -60,6 +52,22 @@
       <properties />
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/../../tc/tc_build.xml">
+      <additionalClassPath />
+      <antReference projectDefault="true" />
+      <customJdkName value="" />
+      <maximumHeapSize value="128" />
+      <maximumStackSize value="32" />
+      <properties />
+    </buildFile>
+    <buildFile url="file://$PROJECT_DIR$/../../build.xml">
+      <additionalClassPath />
+      <antReference projectDefault="true" />
+      <customJdkName value="" />
+      <maximumHeapSize value="128" />
+      <maximumStackSize value="32" />
+      <properties />
+    </buildFile>
+    <buildFile url="file://$PROJECT_DIR$/../../deploy.xml">
       <additionalClassPath />
       <antReference projectDefault="true" />
       <customJdkName value="" />
@@ -11598,8 +11606,8 @@
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" defaultCharsetForPropertiesFiles="UTF-8">
-    <file url="file://$PROJECT_DIR$/../../eirc/tests/data/org/flexpay/eirc/actions/sp/ree_open_2_small.txt" charset="windows-1251" />
-    <file url="file://$PROJECT_DIR$/../../eirc/tests/data/org/flexpay/eirc/actions/sp/ree_open_small_unknown_service.txt" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/../../bti/etc/sql/update/2009_02_14.sql" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../bti/etc/sql/update/2009_02_15_1.sql" charset="UTF-8" />
   </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
@@ -12679,6 +12687,19 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../tc">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://flexpay.googlecode.com/svn/branches" />
+                  <option value="https://flexpay.googlecode.com/svn/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://flexpay.googlecode.com/svn/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
       </map>
     </option>
     <option name="myVersion" value="124" />
@@ -12921,6 +12942,15 @@
       <JAVADOC>
         <root url="file:///windows/D/media/fiction/Programming/Java/docs/jee 5_03/docs/api" />
       </JAVADOC>
+      <SOURCES />
+    </library>
+    <library name="Drools">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../common/lib/drools/antlr-runtime-3.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/drools/drools-compiler-4.0.7.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/drools/drools-core-4.0.7.jar!/" />
+      </CLASSES>
+      <JAVADOC />
       <SOURCES />
     </library>
   </component>
