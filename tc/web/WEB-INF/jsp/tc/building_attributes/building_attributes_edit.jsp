@@ -205,10 +205,10 @@
                     <td colspan="2" class="th" style="padding: 0;">
                         <table style="width: 100%; font-size: 100%; font-weight: bold;">
                             <tr>
-                                <td><s:text name="tc.tariffs_calculated_on"><s:param value="#calcDate"/></s:text></td>
+                                <td><s:text name="tc.tariffs_calculated_on"><s:param value="%{formatDate(#calcDate)}"/></s:text></td>
                                 <td style="text-align: right;">
                                     <input type="button" class="btn-exit" value="<s:property value="%{getText('tc.upload')}"/>"
-                                           onclick="uploadSubmit('<s:date name="#calcDate" format="yyyy/MM/dd"/>');"/>
+                                           onclick="uploadSubmit('<s:property value="%{formatDate(#calcDate)}"/>');"/>
                                 </td>
                             </tr>
                         </table>
