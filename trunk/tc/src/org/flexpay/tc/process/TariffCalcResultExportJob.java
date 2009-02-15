@@ -4,22 +4,21 @@ import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.locking.LockManager;
-import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.tc.locking.Resources;
 import org.flexpay.tc.persistence.TariffCalculationResult;
+import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.process.exporters.Exporter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
-import java.sql.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.math.BigDecimal;
 
 public class TariffCalcResultExportJob extends Job {
 
@@ -31,6 +30,7 @@ public class TariffCalcResultExportJob extends Job {
 	private Exporter exporter;
 	public final static String CALCULATION_DATE = "CALCULATION_DATE";
 	public final static String PERIOD_BEGIN_DATE = "PERIOD_BEGIN_DATE";
+	private List<String> subServiceExportCodes;
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
@@ -61,10 +61,20 @@ public class TariffCalcResultExportJob extends Job {
 
 				Integer intExtId = Integer.parseInt(externalId);
 				List<TariffCalculationResult> tcrs = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndAddressId(calcDate, addressId);
-
+				List<String> addressSubServiceexportCodes = CollectionUtils.list();
+				addressSubServiceexportCodes.addAll(subServiceExportCodes);
 				try {
 					for (TariffCalculationResult tcr : tcrs) {
 						exporter.export(new Object[]{tcr, intExtId});
+						addressSubServiceexportCodes.remove(tcr.getTariff().getSubServiceCode());
+					}
+					for(String code : addressSubServiceexportCodes){
+						TariffCalculationResult tcr = new TariffCalculationResult();
+						Tariff tariff = new Tariff(); tariff.setSubServiceCode(code);
+						tcr.setTariff(tariff);
+						tcr.setCalculationDate(calcDate);
+						tcr.setValue(new BigDecimal(0));
+						exporter.export(new Object[]{tcr,intExtId});
 					}
 					exporter.commit();
 				} catch (FlexPayException  e) {
@@ -116,5 +126,10 @@ public class TariffCalcResultExportJob extends Job {
 	@Required
 	public void setExporter(Exporter exporter) {
 		this.exporter = exporter;
+	}
+	
+	@Required
+	public void setSubServiceExportCodes(List<String> subServiceExportCodes) {
+		this.subServiceExportCodes = subServiceExportCodes;
 	}
 }

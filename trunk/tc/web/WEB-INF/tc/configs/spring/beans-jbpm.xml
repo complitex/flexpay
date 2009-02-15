@@ -22,7 +22,28 @@
           p:correctionsService-ref="correctionsServiceAb"
           p:tariffCalculationResultService-ref="tariffCalculationResultService"
           p:exporter-ref="fileCNExporter"
-          scope="prototype" />
+          scope="prototype">
+        <property name="subServiceExportCodes">
+            <list>
+                <value>"010"</value>
+                <value>"020"</value>
+                <value>"030"</value>
+                <value>"040"</value>
+                <value>"050"</value>
+                <value>"060"</value>
+                <value>"070"</value>
+                <value>"080"</value>
+                <value>"090"</value>
+                <value>"100"</value>
+                <value>"110"</value>
+                <value>"120"</value>
+                <value>"130"</value>
+                <value>"140"</value>
+                <value>"150"</value>
+                <value>"160"</value>
+            </list>
+        </property>
+    </bean>
 
     <bean name="tariffCalcResultExportForBuildingJob" class="org.flexpay.tc.process.TariffCalcResultExportForBuildingJob"
           p:dataSourceDescriptionId="${datasource.id}"
@@ -32,5 +53,26 @@
           p:tariffCalculationResultService-ref="tariffCalculationResultService"
           p:buildingService-ref="buildingServiceTarget"
           p:exporter-ref="fileCNExporter"
-          scope="prototype" />
+          scope="prototype">
+        <property name="subServiceExportCodes">
+            <list>
+                <value>"010"</value>
+                <value>"020"</value>
+                <value>"030"</value>
+                <value>"040"</value>
+                <value>"050"</value>
+                <value>"060"</value>
+                <value>"070"</value>
+                <value>"080"</value>
+                <value>"090"</value>
+                <value>"100"</value>
+                <value>"110"</value>
+                <value>"120"</value>
+                <value>"130"</value>
+                <value>"140"</value>
+                <value>"150"</value>
+                <value>"160"</value>
+            </list>
+        </property>
+    </bean>
 </beans>
