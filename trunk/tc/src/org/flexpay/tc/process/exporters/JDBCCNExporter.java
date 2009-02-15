@@ -53,7 +53,7 @@ public class JDBCCNExporter implements Exporter {
 
 		try {
 			TariffCalculationResult tariffCalculationResult = (TariffCalculationResult) params[0];
-			Integer externalId = (Integer) params[1];
+			Integer externalId = Integer.parseInt((String) params[1]);
 
 			CallableStatement cs = conn.prepareCall(procedure);
 			try {
