@@ -21,7 +21,7 @@
           p:classToTypeRegistry-ref="typeRegistryAb"
           p:correctionsService-ref="correctionsServiceAb"
           p:tariffCalculationResultService-ref="tariffCalculationResultService"
-          p:exporter-ref="fileCnExporter"
+          p:exporter-ref="fileCNExporter"
           scope="prototype" />
 
     <bean name="tariffCalcResultExportForBuildingJob" class="org.flexpay.tc.process.TariffCalcResultExportForBuildingJob"
@@ -31,6 +31,6 @@
           p:correctionsService-ref="correctionsServiceAb"
           p:tariffCalculationResultService-ref="tariffCalculationResultService"
           p:buildingService-ref="buildingServiceTarget"
-          p:exporter-ref="fileCnExporter"
+          p:exporter-ref="fileCNExporter"
           scope="prototype" />
 </beans>
