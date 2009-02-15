@@ -62,7 +62,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 			List<TariffCalculationResult> tariffCalcResultList = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndBuilding(
 					calculationDate, buildingStub);
 			//find external id
-
+			log.info("{} tarif calculation result(s) founded for building with id := {} on date := {}", new Object[]{tariffCalcResultList.size(), buildingStub.getId(), calculationDate});
 			if (tariffCalcResultList.size() > 0) {
 				exporter.beginExport();
 				String externalId = getExternalId(buildingStub);
@@ -74,7 +74,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 			}
 			exporter.commit();
 		} catch (Exception e){
-			e.printStackTrace();
+			log.error("Exception occured", e);
 		}finally {
 			exporter.endExport();
 			lockManager.releaseLock(Resources.BUILDING_ATTRIBUTES);
