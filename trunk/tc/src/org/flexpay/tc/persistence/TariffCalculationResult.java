@@ -76,6 +76,7 @@ public class TariffCalculationResult extends DomainObject {
 				append("value", value).
 				append("creationDate", creationDate).
 				append("calculationDate", calculationDate).
+				append("tariff",tariff.toString()).
 				append("}").toString();
 	}
 

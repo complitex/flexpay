@@ -66,7 +66,6 @@ public class JDBCCNExporter implements Exporter {
 				cs.executeUpdate();
 
 				int exportResult = cs.getInt(1);
-
 				if (exportResult == 0) {
 					log.warn("Tariff {} for building with id={} not exists", tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId());
 				} else if (exportResult == -1) {
@@ -75,6 +74,10 @@ public class JDBCCNExporter implements Exporter {
 					log.warn("Error: Can't create record in history for calculation result {}", tariffCalculationResult);
 				} else if (exportResult == -3) {
 					log.warn("Locking exception: Can't export calculcation result {}", tariffCalculationResult);
+				} else if (exportResult == -4) {
+					log.warn("Tariff value is negative {}", tariffCalculationResult);
+				} else if (exportResult == -5) {
+					log.warn("Tariff begin date is null {}", tariffCalculationResult);
 				} else {
 					log.debug("Tariff calculation result {} exported succesfully", tariffCalculationResult);
 				}
