@@ -14,6 +14,7 @@ import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.locking.Resources;
 import org.flexpay.tc.process.exporters.Exporter;
 import org.flexpay.tc.persistence.TariffCalculationResult;
+import org.flexpay.tc.persistence.Tariff;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +23,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Date;
 import java.util.List;
+import java.math.BigDecimal;
 
 public class TariffCalcResultExportForBuildingJob extends Job {
 
@@ -31,7 +33,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 	private CorrectionsService correctionsService;
 	private TariffCalculationResultService tariffCalculationResultService;
 	private BuildingService buildingService;
-
+	private List<String> subServiceExportCodes;
 	private Exporter exporter;
 	/**
 	 * Building ID
@@ -66,9 +68,19 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 			if (tariffCalcResultList.size() > 0) {
 				exporter.beginExport();
 				String externalId = getExternalId(buildingStub);
-				for (TariffCalculationResult trc : tariffCalcResultList) {
-					exporter.export(new Object[]{trc, externalId});
+				for (TariffCalculationResult tcr : tariffCalcResultList) {
+					exporter.export(new Object[]{tcr, externalId});
+					subServiceExportCodes.remove(tcr.getTariff().getSubServiceCode());
 				}
+				for(String code : subServiceExportCodes){
+					TariffCalculationResult tcr = new TariffCalculationResult();
+					Tariff tariff = new Tariff(); tariff.setSubServiceCode(code);
+					tcr.setTariff(tariff);
+					tcr.setCalculationDate(calculationDate);
+					tcr.setValue(new BigDecimal(0));
+					exporter.export(new Object[]{tcr,externalId});
+				}
+
 			}else{
 				log.info("No Tariff calculation results found.");
 			}
@@ -130,5 +142,10 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
+	}
+
+	@Required
+	public void setSubServiceExportCodes(List<String> subServiceExportCodes) {
+		this.subServiceExportCodes = subServiceExportCodes;
 	}
 }
