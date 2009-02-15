@@ -86,7 +86,9 @@ public class JDBCCNExporter implements Exporter {
 				cs.close();
 			}
 		} catch (SQLException e) {
-
+			FlexPayException fe = new FlexPayException("Exception accured",e);
+			log.error(fe.getMessage(),e);
+			throw fe;
 		}
 
 	}
