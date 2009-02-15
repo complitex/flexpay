@@ -208,7 +208,7 @@
                                 <td><s:text name="tc.tariffs_calculated_on"><s:param value="#calcDate"/></s:text></td>
                                 <td style="text-align: right;">
                                     <input type="button" class="btn-exit" value="<s:property value="%{getText('tc.upload')}"/>"
-                                           onclick="uploadSubmit('<s:property value="#calcDate"/>');"/>
+                                           onclick="uploadSubmit('<s:date name="#calcDate" format="yyyy/MM/dd"/>');"/>
                                 </td>
                             </tr>
                         </table>
