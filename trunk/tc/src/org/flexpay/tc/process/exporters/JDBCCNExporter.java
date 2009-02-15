@@ -7,8 +7,11 @@ import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
+import org.apache.commons.lang.time.FastDateFormat;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 public class JDBCCNExporter implements Exporter {
 
@@ -58,7 +61,8 @@ public class JDBCCNExporter implements Exporter {
 				cs.setInt(2, externalId);
 				cs.setString(3, tariffCalculationResult.getTariff().getSubServiceCode());
 				cs.setBigDecimal(4, tariffCalculationResult.getValue());
-				cs.setDate(5, new java.sql.Date(tariffCalculationResult.getCalculationDate().getTime()));
+//				cs.setDate(5, new java.sql.Date(tariffCalculationResult.getCalculationDate().getTime()));
+				cs.setDate(5, new java.sql.Date((new SimpleDateFormat("yyyy/MM/dd")).parse("2009/02/01").getTime()));
 				cs.executeUpdate();
 
 				int exportResult = cs.getInt(1);
@@ -74,6 +78,10 @@ public class JDBCCNExporter implements Exporter {
 				} else {
 					log.debug("Tariff calculation result {} exported succesfully", tariffCalculationResult);
 				}
+			} catch(ParseException e){
+				FlexPayException fe = new FlexPayException("Can't parse export date",e);
+				log.error(fe.getMessage(),e);
+				throw fe;
 			} finally {
 				cs.close();
 			}
