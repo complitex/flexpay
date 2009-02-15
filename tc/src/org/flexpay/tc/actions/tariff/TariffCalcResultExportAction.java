@@ -4,7 +4,10 @@ import org.apache.commons.lang.time.FastDateFormat;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.tc.service.TariffCalculationResultService;
+import org.flexpay.tc.process.TariffCalcResultExportJob;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -16,7 +19,7 @@ import java.util.Map;
 
 public class TariffCalcResultExportAction extends FPActionSupport {
 
-	private Date date;
+	private String date;
 	private List<String> allDates;
 
 	private ProcessManager processManager;
@@ -36,7 +39,7 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 		}
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
-		contextVariables.put("date", date);
+		contextVariables.put(TariffCalcResultExportJob.CALCULATION_DATE, DateUtil.parseDate(date, ApplicationConfig.getFutureInfinite()));
 		processManager.createProcess("TariffCalcResultExportProcess", contextVariables);
 
 		log.debug("Export tariff calculation result process started succesfully");
@@ -46,7 +49,7 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 
 	private List<String> formatDates(List<Date> dates) {
 		List<String> formattedDates = new ArrayList<String>();
-		FastDateFormat df = FastDateFormat.getInstance("dd.MM.yyyy");
+		FastDateFormat df = FastDateFormat.getInstance("yyyy/MM/dd");
 		for (Date date : dates) {
 			formattedDates.add(df.format(date));
 		}
@@ -59,7 +62,7 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 		return INPUT;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 

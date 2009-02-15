@@ -12,6 +12,7 @@ import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.process.exporters.Exporter;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
@@ -28,12 +29,14 @@ public class TariffCalcResultExportJob extends Job {
 	private CorrectionsService correctionsService;
 	private TariffCalculationResultService tariffCalculationResultService;
 	private Exporter exporter;
+	public final static String CALCULATION_DATE = "CALCULATION_DATE";
+	public final static String PERIOD_BEGIN_DATE = "PERIOD_BEGIN_DATE";
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
-		Logger pLog = ProcessLogger.getLogger(getClass());
-		
-		pLog.debug("Tariff calculation result export procces started");
+//		Logger pLog = ProcessLogger.getLogger(getClass());
+
+		log.debug("Tariff calculation result export procces started");
 
 		if (!lockManager.lock(Resources.BUILDING_ATTRIBUTES)) {
 			log.info("Another process has already requested a lock and is working");
@@ -44,7 +47,7 @@ public class TariffCalcResultExportJob extends Job {
 		try {
 			exporter.beginExport();
 
-			Date calcDate = (Date) parameters.get("date");
+			Date calcDate = (Date) parameters.get(CALCULATION_DATE);
 
 			List<Long> addressIds = tariffCalculationResultService.getAddressIds(calcDate);
 
@@ -52,7 +55,7 @@ public class TariffCalcResultExportJob extends Job {
 				
 				String externalId = correctionsService.getExternalId(addressId, classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionId);
 				if (externalId == null) {
-					pLog.debug("ExternalId for building address with id={} not found", addressId);
+					log.debug("ExternalId for building address with id={} not found", addressId);
 					continue;
 				}
 
@@ -65,7 +68,7 @@ public class TariffCalcResultExportJob extends Job {
 					}
 					exporter.commit();
 				} catch (FlexPayException  e) {
-					pLog.error("SQL error for adressId=" + addressId, e);
+					log.error("SQL error for adressId=" + addressId, e);
 					try {
 						exporter.rollback();
 					} catch (FlexPayException ex) {
@@ -75,16 +78,12 @@ public class TariffCalcResultExportJob extends Job {
 				}
 			}
 		} catch (Exception e) {
-			pLog.error("Exporter exception", e);
+			log.error("Exporter exception", e);
 		} finally {
-			try{
-				exporter.endExport();
-			}catch(Exception e){
-				e.printStackTrace();
-			}
+			exporter.endExport();
 			lockManager.releaseLock(Resources.BUILDING_ATTRIBUTES);
 		}
-		pLog.debug("Tariff calculation result export procces finished");
+		log.debug("Tariff calculation result export procces finished");
 		return RESULT_NEXT;
 	}
 
