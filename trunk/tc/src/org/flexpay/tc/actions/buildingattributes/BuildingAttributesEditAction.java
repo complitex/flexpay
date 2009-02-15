@@ -199,6 +199,9 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         }
     }
 
+	public String formatDate(Date date){
+		return DateUtil.format(date);
+	}
     private void uploadTariffCalculationResults() {
         // TODO pick up data from form and upload it
     }
