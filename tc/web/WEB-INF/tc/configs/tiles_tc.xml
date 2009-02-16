@@ -75,6 +75,10 @@
         <put-attribute name="title" value="tc.building_attributes"/>
         <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_attributes_edit.jsp"/>
     </definition>
+
+    <definition name="tc.building_attributes.upload" extends="ab.layout.content">
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/result_export_modalbox.jsp" />
+    </definition>
     <!-- end of building attributes related pages -->
 
     <definition name="tc.calc_results.export" extends="tc.data">
