@@ -3,19 +3,20 @@ package org.flexpay.tc.actions.tariff;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.tc.persistence.TariffCalculationRulesFile;
 import org.flexpay.tc.process.TariffCalculationJob;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Map;
 
 public class TariffCalculateAction extends FPActionWithPagerSupport<TariffCalculationRulesFile> {
 
 	private Long id;
-	private Date calcDate;
+	private String calcDate;
 
 	private ProcessManager processManager;
 
@@ -33,7 +34,7 @@ public class TariffCalculateAction extends FPActionWithPagerSupport<TariffCalcul
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 		contextVariables.put(TariffCalculationJob.RULES_ID, id);
-		contextVariables.put(TariffCalculationJob.CALC_DATE, calcDate);
+		contextVariables.put(TariffCalculationJob.CALC_DATE, DateUtil.parseDate(calcDate, ApplicationConfig.getFutureInfinite()));
 		processManager.createProcess("TariffCalculationProcess", contextVariables);
 
 		log.debug("Calculation tariff process for rules with id {} for date {} started succesfully", id, calcDate);
@@ -62,7 +63,7 @@ public class TariffCalculateAction extends FPActionWithPagerSupport<TariffCalcul
 		this.id = id;
 	}
 
-	public void setCalcDate(Date calcDate) {
+	public void setCalcDate(String calcDate) {
 		this.calcDate = calcDate;
 	}
 

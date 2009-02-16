@@ -26,7 +26,7 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 	private String date;
 	private List<String> allDates;
 	private String tariffBegin;
-	private String modal = "";
+	private Integer modal = 0;
 
 	private ProcessManager processManager;
 	private TariffCalculationResultService tariffCalculationResultService;
@@ -34,11 +34,7 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		log.debug("modal = {}", modal);
-		log.debug("date = {}", date);
-		log.debug("tariffBegin = {}", tariffBegin);
-
-		if (hisModal()) {
+		if (modal == 1) {
 			return MODAL;
 		}
 
@@ -54,6 +50,7 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 		contextVariables.put(TariffCalcResultExportJob.CALCULATION_DATE, DateUtil.parseDate(date, ApplicationConfig.getFutureInfinite()));
+		contextVariables.put(TariffCalcResultExportJob.PERIOD_BEGIN_DATE, DateUtil.parseDate(tariffBegin, ApplicationConfig.getFutureInfinite()));
 		processManager.createProcess("TariffCalcResultExportProcess", contextVariables);
 
 		log.debug("Export tariff calculation result process started succesfully");
@@ -76,15 +73,11 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 		return INPUT;
 	}
 
-	public boolean hisModal() {
-		return modal != null && !modal.equals("");
-	}
-
-	public String getModal() {
+	public Integer getModal() {
 		return modal;
 	}
 
-	public void setModal(String modal) {
+	public void setModal(Integer modal) {
 		this.modal = modal;
 	}
 
