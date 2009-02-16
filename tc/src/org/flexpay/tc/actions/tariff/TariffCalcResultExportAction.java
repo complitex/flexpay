@@ -9,6 +9,7 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.process.TariffCalcResultExportJob;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.NonNls;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
@@ -19,8 +20,13 @@ import java.util.Map;
 
 public class TariffCalcResultExportAction extends FPActionSupport {
 
+	@NonNls
+	protected static final String MODAL = "modal";
+
 	private String date;
 	private List<String> allDates;
+	private String tariffBegin;
+	private String modal = "";
 
 	private ProcessManager processManager;
 	private TariffCalculationResultService tariffCalculationResultService;
@@ -28,7 +34,15 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		if (!isSubmit()) {
+		log.debug("modal = {}", modal);
+		log.debug("date = {}", date);
+		log.debug("tariffBegin = {}", tariffBegin);
+
+		if (hisModal()) {
+			return MODAL;
+		}
+
+		if (isNotSubmit()) {
 			allDates = formatDates(tariffCalculationResultService.getUniqueDates());
 			return INPUT;
 		}
@@ -62,12 +76,32 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 		return INPUT;
 	}
 
+	public boolean hisModal() {
+		return modal != null && !modal.equals("");
+	}
+
+	public String getModal() {
+		return modal;
+	}
+
+	public void setModal(String modal) {
+		this.modal = modal;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
 	public void setDate(String date) {
 		this.date = date;
 	}
 
 	public List<String> getAllDates() {
 		return allDates;
+	}
+
+	public void setTariffBegin(String tariffBegin) {
+		this.tariffBegin = tariffBegin;
 	}
 
 	@Required
