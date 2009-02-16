@@ -16,10 +16,9 @@
         </action>
 
         <action name="uploadTCResults" class="uploadTCResultsAction">
-            <result name="input" type="tiles">tc.building_attributes.edit</result>
+            <result name="input" type="tiles">tc.building_attributes.upload</result>
             <result name="redirectSuccess" type="redirect-action">buildingsList</result>
         </action>
-
     </package>
 
 </struts>

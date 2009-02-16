@@ -2,12 +2,14 @@
 <%@ page import="org.flexpay.bti.persistence.BuildingAttributeTypeEnum" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<script type="text/javascript" src="<c:url value="/resources/common/js/prototype.js"/>"></script>
+<script type="text/javascript" src="<s:url value="/resources/common/js/prototype.js"/>"></script>
+<script type="text/javascript"
+        src="<s:url value="/resources/common/js/windows_js_1.3/javascripts/window.js"/>"></script>
 
 <script type="text/javascript">
 
     var attributeGroups = new Array();
-    // TODO make proper values
+
     <s:iterator value="attributeGroups" id="groupId">
     attributeGroups[<s:property value="#groupId"/>] = new Array(
             <s:iterator value="%{getGroupAttributes(#groupId)}" status="status">
@@ -33,10 +35,42 @@
         $('hide_group_' + groupId).show();
     }
 
+    var x = 0;
+    var y = 0;
+
+    function getXY(e) {
+        var left = document.documentElement.scrollLeft;
+        var top = document.documentElement.scrollTop;
+        if (Prototype.Browser.IE) {
+            x = event.clientX + left;
+            y = event.clientY + top;
+        } else {
+            x = e.clientX + left;
+            y = e.clientY + top;
+        }
+    }
+
+    document.onmousemove = getXY;
+
     function uploadSubmit(calcDate) {
-        $('uploadTCResults_calculationDate').value = calcDate;
-        $('uploadTCResults').submit();
+        showBeginDateWindow(calcDate);
         return false;
+    }
+
+    function showBeginDateWindow(calcDate) {
+        var win = new Window({
+            className: "spread",
+            title: "<s:text name="tc.upload_tc_results" />",
+            url: "<s:url action="uploadTCResults" includeParams="none"><s:param name="buildingId" value="%{building.id}"/></s:url>&calculationDate=" + calcDate,
+            width: 300,
+            height: 200,
+            resizable: false,
+            minimizable: false,
+            maximizable: false,
+            destroyOnClose: true
+        });
+
+        win.showCenter(true, y, x);
     }
 </script>
 
@@ -181,7 +215,6 @@
     <s:form action="uploadTCResults">
 
         <s:hidden name="buildingId" value="%{building.id}"/>
-        <s:hidden name="calculationDate"/>
 
         <tr>
             <td class="th_s" colspan="2">
@@ -207,7 +240,8 @@
                             <tr>
                                 <td><s:text name="tc.tariffs_calculated_on"><s:param value="%{formatDate(#calcDate)}"/></s:text></td>
                                 <td style="text-align: right;">
-                                    <input type="button" class="btn-exit" value="<s:property value="%{getText('tc.upload')}"/>"
+                                    <input type="button" class="btn-exit"
+                                           value="<s:property value="%{getText('tc.upload')}"/>"
                                            onclick="uploadSubmit('<s:property value="%{formatDate(#calcDate)}"/>');"/>
                                 </td>
                             </tr>
