@@ -20,7 +20,7 @@
     document.onmousemove = getXY;
 
     function validateFrom() {
-        var v = $("beginDate").value;
+        var v = $("tariffBegin").value;
         if (v == null || v == "") {
             alert('<s:text name="tc.error.field_calc_date_required" />');
             return false;
@@ -43,15 +43,15 @@
 <s:form id="form" action="calcResultExport" target="_parent">
 
     <s:hidden name="date" />
-    <s:hidden name="isModal" value="false" />
+    <s:hidden name="modal" value="0" />
 
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr valign="top" class="cols_1">
             <td class="col">
-                <s:text name="tc.calc_result.calc_date" />
+                <s:text name="tc.calc_result.ariff_action_begin_date" />
             </td>
             <td class="col">
-                <s:textfield id="beginDate" name="beginDate" readonly="true" size="10" required="true" />
+                <s:textfield id="tariffBegin" name="tariffBegin" readonly="true" size="10" required="true" />
                 <img id="calcDate" src="<c:url value="/resources/common/js/jscalendar/img.gif"/>"
                      style="cursor:pointer;border:1px solid red;"
                      alt="<s:text name="common.calendar"/>"
@@ -59,7 +59,7 @@
                      onmouseout="this.style.background='';" />
                 <script type="text/javascript">
                     Calendar.setup({
-                        inputField	 : "beginDate",
+                        inputField	 : "tariffBegin",
                         ifFormat	 : "%d.%m.%Y",
                         button		 : "calcDate",
                         align		 : "Tl",

@@ -44,16 +44,15 @@
 
             var win = new Window({
                 className: "spread",
-                title: "<s:text name="tc.calculate.window_title" />",
+                title: "<s:text name="tc.export.window_title" />",
                 url: "<s:url action="calcResultExport"><s:param name="modal" value="1" /></s:url>&date=" + $("date").value,
-                width:250,
+                width:350,
                 height:250,
                 resizable: false,
                 minimizable: false,
                 maximizable: false,
                 destroyOnClose: true
             });
-            alert(win.getURL());
 
             win.showCenter(true, y, x);
         }
