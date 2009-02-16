@@ -49,20 +49,18 @@ public class JDBCCNExporter implements Exporter {
 	 * @throws FlexPayException throws flexpay exception when can't export data
 	 */
 	public void export(@NotNull Object[] params) throws FlexPayException {
-//		Logger pLog = ProcessLogger.getLogger(getClass());
 
 		try {
 			TariffCalculationResult tariffCalculationResult = (TariffCalculationResult) params[0];
 			Integer externalId = Integer.parseInt((String) params[1]);
-
+			Date periodBeginDate = (Date) params[2];
 			CallableStatement cs = conn.prepareCall(procedure);
 			try {
 				cs.registerOutParameter(1, Types.INTEGER);
 				cs.setInt(2, externalId);
 				cs.setString(3, tariffCalculationResult.getTariff().getSubServiceCode());
 				cs.setBigDecimal(4, tariffCalculationResult.getValue());
-//				cs.setDate(5, new java.sql.Date(tariffCalculationResult.getCalculationDate().getTime()));
-				cs.setDate(5, new java.sql.Date((new SimpleDateFormat("yyyy/MM/dd")).parse("2009/02/01").getTime()));
+				cs.setDate(5, periodBeginDate);
 				cs.executeUpdate();
 
 				int exportResult = cs.getInt(1);
@@ -81,10 +79,6 @@ public class JDBCCNExporter implements Exporter {
 				} else {
 					log.debug("Tariff calculation result {} exported succesfully", tariffCalculationResult);
 				}
-			} catch(ParseException e){
-				FlexPayException fe = new FlexPayException("Can't parse export date",e);
-				log.error(fe.getMessage(),e);
-				throw fe;
 			} finally {
 				cs.close();
 			}

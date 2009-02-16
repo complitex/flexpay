@@ -44,6 +44,10 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 	 * Tarif calculation date
 	 */
 	public final static String CALCULATION_DATE = "date";
+	/**
+	 * Period begin date
+	 */
+	public final static String PERIOD_BEGIN_DATE = "PERIOD_BEGIN_DATE";
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
@@ -51,6 +55,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 		try {
 
 			Date calculationDate = (Date) parameters.get(CALCULATION_DATE);
+			Date periodBeginDate = (Date) parameters.get(PERIOD_BEGIN_DATE);
 			Stub<Building> buildingStub = new Stub<Building>(Long.parseLong((String)parameters.get(BUILDING_ID)));
 
 			log.info("Tariff calculation result export procces started");
@@ -69,7 +74,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 				exporter.beginExport();
 				String externalId = getExternalId(buildingStub);
 				for (TariffCalculationResult tcr : tariffCalcResultList) {
-					exporter.export(new Object[]{tcr, externalId});
+					exporter.export(new Object[]{tcr, externalId, periodBeginDate});
 					subServiceExportCodes.remove(tcr.getTariff().getSubServiceCode());
 				}
 				for(String code : subServiceExportCodes){
@@ -78,7 +83,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 					tcr.setTariff(tariff);
 					tcr.setCalculationDate(calculationDate);
 					tcr.setValue(new BigDecimal(0));
-					exporter.export(new Object[]{tcr,externalId});
+					exporter.export(new Object[]{tcr,externalId, periodBeginDate});
 				}
 
 			}else{
