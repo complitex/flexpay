@@ -48,6 +48,7 @@ public class TariffCalcResultExportJob extends Job {
 			exporter.beginExport();
 
 			Date calcDate = (Date) parameters.get(CALCULATION_DATE);
+			Date periodBeginDate = (Date) parameters.get(PERIOD_BEGIN_DATE);
 
 			List<Long> addressIds = tariffCalculationResultService.getAddressIds(calcDate);
 
@@ -64,7 +65,7 @@ public class TariffCalcResultExportJob extends Job {
 				addressSubServiceexportCodes.addAll(subServiceExportCodes);
 				try {
 					for (TariffCalculationResult tcr : tcrs) {
-						exporter.export(new Object[]{tcr, externalId});
+						exporter.export(new Object[]{tcr, externalId, periodBeginDate});
 						addressSubServiceexportCodes.remove(tcr.getTariff().getSubServiceCode());
 					}
 					for(String code : addressSubServiceexportCodes){
@@ -73,7 +74,7 @@ public class TariffCalcResultExportJob extends Job {
 						tcr.setTariff(tariff);
 						tcr.setCalculationDate(calcDate);
 						tcr.setValue(new BigDecimal(0));
-						exporter.export(new Object[]{tcr,externalId});
+						exporter.export(new Object[]{tcr,externalId, periodBeginDate});
 					}
 					exporter.commit();
 				} catch (FlexPayException  e) {
