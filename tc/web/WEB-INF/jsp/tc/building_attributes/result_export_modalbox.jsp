@@ -21,7 +21,6 @@
     document.onmousemove = getXY;
 
     function uploadResults() {
-        //$('uploadTCResults_submitted').value = 'true';
         $('uploadTCResults').submit();
         parent.Windows.closeAll();
     }
