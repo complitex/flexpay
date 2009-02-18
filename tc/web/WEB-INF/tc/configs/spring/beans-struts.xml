@@ -56,6 +56,10 @@
           p:processManager-ref="processManager"
           scope="prototype"/>
 
+    <bean id="tcResultsEditAction" class="org.flexpay.tc.actions.buildingattributes.TCResultsEditAction"
+          p:tariffCalculationResultService-ref="tariffCalculationResultService"
+          scope="prototype"/>
+
     <!-- end of building attributes section -->
 
     <bean id="tariffCalcResultExportAction" class="org.flexpay.tc.actions.tariff.TariffCalcResultExportAction"

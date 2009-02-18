@@ -1,9 +1,7 @@
 package org.flexpay.tc.dao;
 
 import org.flexpay.common.dao.GenericDao;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.tc.persistence.TariffCalculationResult;
-import org.flexpay.ab.persistence.Building;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
@@ -25,4 +23,6 @@ public interface TariffCalculationResultDao extends GenericDao<TariffCalculation
 	 * @return tariff calculation result list
 	 */
 	List<TariffCalculationResult> findByCalcDateAndBuilding(@NotNull Date calcDate, @NotNull Long buildingId);
+
+    List<TariffCalculationResult> findByCalcDateTariffAndBuilding(@NotNull Date calcDate, @NotNull Long tariffId, @NotNull Long buildingId);
 }

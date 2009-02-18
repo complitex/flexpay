@@ -94,7 +94,8 @@
             </column>
         </property>
 
-        <many-to-one name="building" class="org.flexpay.ab.persistence.Building" foreign-key="FK_tc_tariff_calculation_result_tbl_building_id">
+        <many-to-one name="building" class="org.flexpay.ab.persistence.Building"
+                     foreign-key="FK_tc_tariff_calculation_result_tbl_building_id">
             <column name="building_id" not-null="true">
                 <comment>Building reference</comment>
             </column>
@@ -138,7 +139,8 @@
             </column>
         </property>
 
-        <many-to-one name="file" class="org.flexpay.common.persistence.FPFile" column="file_id" unique="true" cascade="all" />
+        <many-to-one name="file" class="org.flexpay.common.persistence.FPFile" column="file_id" unique="true"
+                     cascade="all"/>
 
         <many-to-one name="type" class="org.flexpay.common.persistence.FPFileType" not-null="true">
             <column name="type_id">
@@ -196,6 +198,11 @@
         where t.id = ?
     </query>
 
+    <query name="Tariff.listTariffs">
+        select distinct t
+        from Tariff t
+    </query>
+
     <query name="Tariff.getByCode">
         select distinct t
         from Tariff t
@@ -245,6 +252,13 @@
         where tcr.calculationDate = ? and a.id = ?
     </query>
 
+    <query name="TariffCalculationResult.findByCalcDateTariffAndBuilding">
+        select distinct tcr
+        from TariffCalculationResult tcr
+        inner join fetch tcr.building
+        inner join fetch tcr.tariff
+        where tcr.calculationDate = ? and tcr.tariff.id = ? and tcr.building.id = ?
+    </query>
     <!-- end of tariff calculation result queries -->
 
     <!-- tariff calculation rules file queries -->
