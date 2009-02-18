@@ -1,6 +1,7 @@
 package org.flexpay.tc.service.impl;
 
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.tc.dao.TariffCalculationResultDao;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.Tariff;
@@ -43,7 +44,18 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 		add(tariffCalculationResult);
 	}
 
-	/**
+    /**
+     * Update tariff calculation result
+     * @param result result to be updated
+     * @return updated instance
+     */
+    @Transactional(readOnly = false)
+    public TariffCalculationResult update(TariffCalculationResult result) {
+        tariffCalculationResultDao.update(result);
+        return result;
+    }
+
+    /**
 	 * Get tariff calculation result list for calculation date and building
 	 *
 	 * @param calcDate	 tariff calculation result date
@@ -54,7 +66,17 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 		return tariffCalculationResultDao.findByCalcDateAndBuilding(calcDate, buildingStub.getId());
 	}
 
-	public TariffCalculationResult read(@NotNull Stub<TariffCalculationResult> stub) {
+    public TariffCalculationResult findTariffCalcResults(@NotNull Date calcDate, @NotNull Long tariffId, @NotNull Long buildingId) throws FlexPayException {
+        List<TariffCalculationResult> results = tariffCalculationResultDao.findByCalcDateTariffAndBuilding(calcDate, tariffId, buildingId);
+
+        if (results.size() > 1) {
+            throw new FlexPayException("Unexpected data fetch result. There should be only one tariff calculation result for calculation date, tariff and building");
+        }
+
+        return results.get(0); 
+    }
+
+    public TariffCalculationResult read(@NotNull Stub<TariffCalculationResult> stub) {
 		return tariffCalculationResultDao.readFull(stub.getId());
 	}
 

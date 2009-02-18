@@ -6,11 +6,15 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.security.annotation.Secured;
 
 import java.util.Set;
+import java.util.List;
 
 public interface TariffService {
 
 	@Secured({Roles.TARIFF_ADD, Roles.TARIFF_CHANGE})
 	void save(@NotNull Tariff tariff);
+
+    @Secured(Roles.TARIFF_READ)
+    List<Tariff> listTariffs();
 
 	@Secured(Roles.TARIFF_READ)
 	Tariff readFull(@NotNull Stub<Tariff> stub);

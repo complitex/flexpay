@@ -13,6 +13,8 @@ public abstract class Roles {
     private static final String TARIFF_CALCULATION_RESULT_PREFIX = "ROLE_TC_TARIFF_CALCULATION_RESULT_";
     public static final String TARIFF_CALCULATION_RESULT_READ = TARIFF_CALCULATION_RESULT_PREFIX + "READ";
     public static final String TARIFF_CALCULATION_RESULT_ADD = TARIFF_CALCULATION_RESULT_PREFIX + "ADD";
+    public static final String TARIFF_CALCULATION_RESULT_UPDATE = TARIFF_CALCULATION_RESULT_PREFIX + "UPDATE";
+
 
 	// tariff calculation rules file related permissions
 	private static final String TARIFF_CALCULATION_RULES_FILE_PREFIX = "ROLE_TC_TARIFF_CALCULATION_RULES_FILE_";

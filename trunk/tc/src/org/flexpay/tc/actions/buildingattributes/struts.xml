@@ -19,6 +19,15 @@
             <result name="input" type="tiles">tc.building_attributes.upload</result>
             <result name="redirectSuccess" type="redirect-action">buildingsList</result>
         </action>
+
+        <action name="tcResultsEdit" class="tcResultsEditAction">
+            <result name="input" type="tiles">tc.building_attributes.edit</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">buildingAttributesEdit</param>
+                <param name="parse">true</param>
+                <param name="building.id">${buildingId}</param>
+            </result>
+        </action>
     </package>
 
 </struts>

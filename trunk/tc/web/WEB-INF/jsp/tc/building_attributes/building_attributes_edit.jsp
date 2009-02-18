@@ -72,6 +72,21 @@
 
         win.showCenter(true, y, x);
     }
+
+    function saveSubmit(calcDate) {
+        var elements = $$('input[id$="'+ calcDate + '"]');
+
+        for (var i = 0; i < elements.length; i++) {
+            var parts = elements[i].id.split("_");
+            var tariffId = parts[1];
+
+            $('tcResultsEdit_tariffMap_' + tariffId + '_').value = elements[i].value;
+        }
+
+        $('tcResultsEdit_calculationDate').value = calcDate;
+        $('tcResultsEdit').submit();
+    }
+
 </script>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
@@ -211,28 +226,32 @@
 <br/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
+    <tr>
+        <td class="th_s" colspan="2">
+            <s:text name="tc.tariffs_calculated"/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="cols_1"/>
+    </tr>
 
-    <s:form action="uploadTCResults">
-
-        <s:hidden name="buildingId" value="%{building.id}"/>
-
-        <tr>
-            <td class="th_s" colspan="2">
-                <s:text name="tc.tariffs_calculated"/>
+    <s:if test="%{tariffCalculationDatesIsEmpty()}">
+        <tr class="cols_1">
+            <td class="col" colspan="2">
+                <s:text name="tc.no_tariff_results"/>
             </td>
         </tr>
-        <tr>
-            <td colspan="2" class="cols_1"/>
-        </tr>
+    </s:if>
+    <s:else>
+        <s:form action="tcResultsEdit">
 
-        <s:if test="%{tariffCalculationDatesIsEmpty()}">
-            <tr class="cols_1">
-                <td class="col" colspan="2">
-                    <s:text name="tc.no_tariff_results"/>
-                </td>
-            </tr>
-        </s:if>
-        <s:else>
+            <s:iterator value="%{listTariffIds()}" id="tariffId">
+                <s:hidden name="tariffMap[%{tariffId}]"/>
+            </s:iterator>
+
+            <s:hidden name="buildingId" value="%{building.id}"/>
+            <s:hidden name="calculationDate" />
+
             <s:iterator value="tariffCalculationDates" id="calcDate">
                 <tr>
                     <td colspan="2" class="th" style="padding: 0;">
@@ -240,6 +259,12 @@
                             <tr>
                                 <td><s:text name="tc.tariffs_calculated_on"><s:param value="%{formatDate(#calcDate)}"/></s:text></td>
                                 <td style="text-align: right;">
+                                        <%-- TODO folding--%>
+
+                                    <input type="button" class="btn-exit"
+                                           value="<s:property value="%{getText('common.save')}"/>"
+                                           onclick="saveSubmit('<s:property value="%{formatDate(#calcDate)}"/>');"/>
+
                                     <input type="button" class="btn-exit"
                                            value="<s:property value="%{getText('tc.upload')}"/>"
                                            onclick="uploadSubmit('<s:property value="%{formatDate(#calcDate)}"/>');"/>
@@ -251,12 +276,15 @@
 
                 <s:iterator value="%{getTcResults(#calcDate)}">
                     <tr class="cols_1">
-                        <td class="col"><s:property value="%{getTariffTranslation(key)}"/></td>
-                        <td class="col"><s:property value="%{value}"/></td>
+                        <td class="col" style="width: 80%;"><s:property value="%{getTariffTranslation(key)}"/></td>
+                        <td class="col" style="width: 20%;">
+                            <input id="tariff_<s:property value="%{key}"/>_<s:property value="%{formatDate(#calcDate)}"/>"
+                                   type="text" value="<s:property value="%{value}"/>"/>
+                        </td>
                     </tr>
                 </s:iterator>
             </s:iterator>
-        </s:else>
-    </s:form>
+        </s:form>
+    </s:else>
 
 </table>

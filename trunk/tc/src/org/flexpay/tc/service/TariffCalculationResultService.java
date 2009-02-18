@@ -1,6 +1,7 @@
 package org.flexpay.tc.service;
 
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.ab.persistence.Building;
@@ -31,11 +32,17 @@ public interface TariffCalculationResultService {
 	@Secured({Roles.TARIFF_CALCULATION_RESULT_ADD})
 	void add(@NotNull BigDecimal value, Date creationDate, Date calculationDate, @NotNull Building building, @NotNull Tariff tariff);
 
+    @Secured({Roles.TARIFF_CALCULATION_RESULT_UPDATE})
+    TariffCalculationResult update(TariffCalculationResult result);
+
 	@Secured(Roles.TARIFF_CALCULATION_RESULT_READ)
 	TariffCalculationResult read(@NotNull Stub<TariffCalculationResult> stub);
 
 	@Secured(Roles.TARIFF_CALCULATION_RESULT_READ)
 	List<TariffCalculationResult> getTariffCalcResultsByCalcDateAndAddressId(@NotNull Date calcDate, @NotNull Long addressId);
+
+    @Secured(Roles.TARIFF_CALCULATION_RESULT_READ)
+    TariffCalculationResult findTariffCalcResults(@NotNull Date calcDate, @NotNull Long tariffId, @NotNull Long buildingId) throws FlexPayException;
 
 	/**
 	 * Get tariff calculation result list for calculation date and building id

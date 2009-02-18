@@ -22,10 +22,7 @@ import org.flexpay.tc.service.TariffService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
+import java.util.*;
 import java.math.BigDecimal;
 
 // TODO the class is too big. Need to split it down into workers (delegates)
@@ -202,10 +199,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 	public String formatDate(Date date){
 		return DateUtil.format(date);
 	}
-    private void uploadTariffCalculationResults() {
-        // TODO pick up data from form and upload it
-    }
-
+    
     public String getAttributeTypeName(Long typeId) {
 
         BuildingAttributeType type = getAttributeTypeById(typeId);
@@ -326,6 +320,21 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
     public boolean tariffCalculationDatesIsEmpty() {
         return tcResultsMap.isEmpty();
+    }
+
+    public List<Long> listTariffIds() {
+        List<Tariff> tariffs = tariffService.listTariffs();
+
+        if (tariffs.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Long> result = CollectionUtils.list();
+        for (Tariff t : tariffService.listTariffs()) {
+            result.add(t.getId());
+        }
+
+        return result;
     }
 
     public void setDateSubmitted(String dateSubmitted) {

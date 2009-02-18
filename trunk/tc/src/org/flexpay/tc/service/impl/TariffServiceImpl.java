@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
+import java.util.List;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class TariffServiceImpl implements TariffService {
@@ -29,7 +30,11 @@ public class TariffServiceImpl implements TariffService {
 		return tariffDao.readFull(stub.getId());
 	}
 
-	@Transactional (readOnly = false)
+    public List<Tariff> listTariffs() {
+        return tariffDao.listTariffs();
+    }
+
+    @Transactional (readOnly = false)
 	public void disable(@NotNull Set<Long> objectIds) {
 		for (Long id : objectIds) {
 			Tariff tariff = tariffDao.read(id);
