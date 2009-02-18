@@ -60,7 +60,7 @@
                 <script type="text/javascript">
                     Calendar.setup({
                         inputField	 : "tariffBegin",
-                        ifFormat	 : "%d.%m.%Y",
+                        ifFormat	 : "%Y/%m/%d",
                         button		 : "calcDate",
                         align		 : "Tl",
                         position : [x, y]
