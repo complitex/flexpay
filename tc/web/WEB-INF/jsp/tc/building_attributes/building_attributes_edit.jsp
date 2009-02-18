@@ -184,16 +184,17 @@
                                 <s:property value="%{getGroupName(#groupId)}"/>
                             </td>
                             <td style="text-align: right;">
-                                <a href="#" id="show_group_<s:property value="#groupId"/>"
-                                   onclick="showAttributesGroup(<s:property value="#groupId"/>);"
-                                        <s:if test="#groupStatus.first"> style="display: none;"</s:if>>
-                                    <s:text name="tc.show_group"/>
-                                </a>
-                                <a href="#" id="hide_group_<s:property value="#groupId"/>"
-                                   onclick="hideAttributesGroup(<s:property value="#groupId"/>);"
-                                        <s:if test="!#groupStatus.first"> style="display: none;"</s:if>>
-                                    <s:text name="tc.hide_group"/>
-                                </a>
+                                 <input type="button" class="btn-exit"
+                                           id="show_group_<s:property value="#groupId"/>"
+                                           onclick="showAttributesGroup(<s:property value="#groupId"/>);"
+                                           <s:if test="#groupStatus.first"> style="display: none;"</s:if>
+                                           value="<s:text name="tc.show_group"/>"/>
+
+                                    <input type="button" class="btn-exit"
+                                           id="hide_group_<s:property value="#groupId"/>"
+                                           onclick="hideAttributesGroup(<s:property value="#groupId"/>);"
+                                           <s:if test="!#groupStatus.first"> style="display: none;"</s:if>
+                                           value="<s:text name="tc.hide_group"/>"/>
                             </td>
                         </tr>
                     </table>
