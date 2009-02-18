@@ -282,11 +282,11 @@
                                 <td><s:text name="tc.tariffs_calculated_on"><s:param value="%{formatDate(#calcDate)}"/></s:text></td>
                                 <td style="text-align: right;">
                                     <input type="button" class="btn-exit"
-                                           value="<s:property value="%{getText('common.save')}"/>"
+                                           value="<s:text name="common.save"/>"
                                            onclick="saveSubmit('<s:property value="%{formatDate(#calcDate)}"/>');"/>
 
                                     <input type="button" class="btn-exit"
-                                           value="<s:property value="%{getText('tc.upload')}"/>"
+                                           value="<s:text name="tc.upload"/>"
                                            onclick="uploadSubmit('<s:property value="%{formatDate(#calcDate)}"/>');"/>
 
                                     <input type="button" class="btn-exit" style="display: none;"
