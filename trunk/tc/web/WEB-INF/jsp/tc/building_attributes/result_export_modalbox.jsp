@@ -56,7 +56,7 @@
                         });
                     </script>
 
-                    <input type="button" class="btn-exit" value="<s:text name="%{getText('tc.upload')}"/>"
+                    <input type="button" class="btn-exit" value="<s:text name="tc.upload"/>"
                            onclick="uploadResults();"/>
                 </nobr>
             </td>
