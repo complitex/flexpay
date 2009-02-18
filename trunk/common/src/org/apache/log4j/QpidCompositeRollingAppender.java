@@ -207,7 +207,7 @@ public class QpidCompositeRollingAppender extends FileAppender
     }
 
     /**
-     * The <b>DatePattern</b> takes a string in the same format as expected by {@link java.text.SimpleDateFormat}. This
+     * The <strong>DatePattern</strong> takes a string in the same format as expected by {@link java.text.SimpleDateFormat}. This
      * options determines the rollover schedule.
      */
     public void setDatePattern(String pattern)
@@ -215,13 +215,13 @@ public class QpidCompositeRollingAppender extends FileAppender
         datePattern = pattern;
     }
 
-    /** Returns the value of the <b>DatePattern</b> option. */
+    /** Returns the value of the <strong>DatePattern</strong> option. */
     public String getDatePattern()
     {
         return datePattern;
     }
 
-    /** Returns the value of the <b>maxSizeRollBackups</b> option. */
+    /** Returns the value of the <strong>maxSizeRollBackups</strong> option. */
     public int getMaxSizeRollBackups()
     {
         return maxSizeRollBackups;
@@ -240,7 +240,7 @@ public class QpidCompositeRollingAppender extends FileAppender
     /**
      * <p>Set the maximum number of backup files to keep around based on file size.
      *
-     * <p>The <b>MaxSizeRollBackups</b> option determines how many backup files are kept before the oldest is erased.
+     * <p>The <strong>MaxSizeRollBackups</strong> option determines how many backup files are kept before the oldest is erased.
      * This option takes an integer value. If set to zero, then there will be no backup files and the log file will be
      * truncated when it reaches <code>MaxFileSize</code>.  If a negative number is supplied then no deletions will be
      * made.  Note that this could result in very slow performance as a large number of files are rolled over unless
@@ -285,7 +285,7 @@ public class QpidCompositeRollingAppender extends FileAppender
     /**
      * Set the maximum size that the output file is allowed to reach before being rolled over to backup files.
      *
-     * <p>In configuration files, the <b>MaxFileSize</b> option takes an long integer in the range 0 - 2^63. You can
+     * <p>In configuration files, the <strong>MaxFileSize</strong> option takes an long integer in the range 0 - 2^63. You can
      * specify the value with the suffixes "KB", "MB" or "GB" so that the integer is interpreted being expressed
      * respectively in kilobytes, megabytes or gigabytes. For example, the value "10KB" will be interpreted as 10240.
      */

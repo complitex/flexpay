@@ -35,7 +35,7 @@ public interface Exporter {
 
 	/**
 	 * End export procedure
-	 * @throws FlexPayException throws flexpay exception when filed to end export process
 	 */
 	public void endExport();
+
 }

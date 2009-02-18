@@ -4,7 +4,7 @@
 
 	<s:set name="fio" value="%{person.FIOIdentity}"/>
 	<tr class="cols_1">
-		<td class="col_1s" colspan="4"><b><s:text name="ab.person.fio"/></b></td>
+		<td class="col_1s" colspan="4"><strong><s:text name="ab.person.fio"/></strong></td>
 	</tr>
 	<tr class="cols_1">
 		<td class="col_1"><s:text name="ab.person.last_name"/></td>

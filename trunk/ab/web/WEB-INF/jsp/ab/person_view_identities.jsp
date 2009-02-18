@@ -2,7 +2,7 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<tr class="cols_1">
-		<td class="col_1s" colspan="14"><b><s:text name="ab.person.documents"/></b></td>
+		<td class="col_1s" colspan="14"><strong><s:text name="ab.person.documents"/></strong></td>
 	</tr>
 	<tr class="cols_1">
 		<td class="th">&nbsp;</td>

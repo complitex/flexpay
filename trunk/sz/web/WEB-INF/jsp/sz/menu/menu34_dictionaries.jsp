@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <ul class="folders">
-	<li class="open"><b><s:text name="sz.menu2.dictionaries"/></b>
+	<li class="open"><strong><s:text name="sz.menu2.dictionaries"/></strong>
 		<ul class="docs">
 			<li><a href="<s:url action="importFilesList" namespace="/sz" />" ><s:text name="sz.menu34.files"/></a></li>
 		</ul>

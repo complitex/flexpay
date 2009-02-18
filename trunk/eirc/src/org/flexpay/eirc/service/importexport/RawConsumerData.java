@@ -178,7 +178,7 @@ public class RawConsumerData extends RawData<Consumer> {
 	}
 
 	/**
-	 * Check if personal information is empty, i.e. first-last-maddle names and adress information was not specified
+	 * Check if personal information is empty, i.e. first-last-maddle names and address information was not specified
 	 * To find a consumer it is necessary to use short consimer id ({@link #getShortConsumerId()})
 	 *
 	 * @return <code

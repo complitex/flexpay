@@ -3,7 +3,7 @@
 
 <ul class="folders">
 	<li class="open">
-        <b><s:text name="eirc.organizations"/></b>
+        <strong><s:text name="eirc.organizations"/></strong>
 		<ul class="docs">
 			<li>
                 <a href="<s:url action='organizationsList' includeParams="none" namespace="/eirc" />">
@@ -43,7 +43,7 @@
 		</ul>
 	</li>
 	<li class="open">
-        <b><s:text name="eirc.services"/></b>
+        <strong><s:text name="eirc.services"/></strong>
 		<ul class="docs">
 			<li>
                 <a href="<s:url action='serviceTypesList' includeParams="none" namespace="/eirc" />">

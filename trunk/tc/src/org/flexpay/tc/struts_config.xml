@@ -16,8 +16,8 @@
             <result type="tiles">tc.dictionaries</result>
         </action>
 
-        <action name="configuration">
-            <result type="tiles">tc.configuration</result>
+        <action name="importexport">
+            <result type="tiles">tc.importexport</result>
         </action>
 
         <action name="data">

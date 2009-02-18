@@ -193,7 +193,7 @@ public class BuildingServiceImpl implements BuildingService {
 			return null;
 		}
 		if (buildingses.size() > 1) {
-			throw new FlexPayException("Adress duplicates",
+			throw new FlexPayException("Address duplicates",
 					"error.ab.address_duplicates", street.getId(), findNumber(attributes));
 		}
 
@@ -343,7 +343,7 @@ public class BuildingServiceImpl implements BuildingService {
 				buildingsDaoExt.findBuildings(street.getId(), district.getId(), findNumber(attrs));
 		buildingses = filter(buildingses, attrs);
 		if (!buildingses.isEmpty()) {
-			throw new FlexPayException("Address alredy exists", "error.ab.adress_alredy_exist");
+			throw new FlexPayException("Address alredy exists", "error.ab.address_alredy_exist");
 		}
 
 		BuildingAddress buildingAddress = new BuildingAddress();

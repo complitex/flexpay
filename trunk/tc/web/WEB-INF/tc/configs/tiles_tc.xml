@@ -12,27 +12,58 @@
         <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_dictionaries.jsp"/>
     </definition>
 
-    <definition name="tc.configuration" extends="ab.layout.standart">
-        <put-attribute name="title" value="tc.menu2.configuration"/>
+    <definition name="tc.importexport" extends="ab.layout.standart">
+        <put-attribute name="title" value="tc.menu2.import_export"/>
         <put-attribute name="menu1" value="/WEB-INF/jsp/tc/menu/menu1.jsp"/>
         <put-attribute name="menu2" value="/WEB-INF/jsp/tc/menu/menu2.jsp"/>
-        <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_configuration.jsp"/>
+        <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_importexport.jsp"/>
     </definition>
 
-    <definition name="tc.import" extends="tc.dictionaries">
-        <put-attribute name="title" value="tc.menu2.import" />
-        <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_import.jsp" />
-    </definition>
-
-    <definition name="tc.data" extends="tc.dictionaries">
+    <definition name="tc.data" extends="ab.layout.standart">
         <put-attribute name="title" value="tc.menu2.data" />
+        <put-attribute name="menu1" value="/WEB-INF/jsp/tc/menu/menu1.jsp"/>
+        <put-attribute name="menu2" value="/WEB-INF/jsp/tc/menu/menu2.jsp"/>
         <put-attribute name="menu34" value="/WEB-INF/jsp/tc/menu/menu34_data.jsp" />
     </definition>
 
-    <!-- tariff calculation rules file related pages -->
     <definition name="tc.rules_files.list" extends="tc.dictionaries">
         <put-attribute name="title" value="tc.rules_files"/>
         <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_rules_files_list.jsp"/>
+    </definition>
+
+    <definition name="tc.rules_file.edit" extends="tc.dictionaries">
+        <put-attribute name="title" value="tc.rules_file"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_rules_file_edit.jsp" />
+    </definition>
+
+	<definition name="bti.buildings.attribute_types.list" extends="tc.dictionaries">
+		<put-attribute name="title" value="bti.building.attribute.types"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/bti/buildings/building_attribute_type_list.jsp" />
+	</definition>
+
+	<definition name="bti.buildings.attribute_type.edit" extends="tc.dictionaries">
+		<put-attribute name="title" value="bti.building.attribute.type"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/bti/buildings/building_attribute_type_edit.jsp" />
+	</definition>
+
+    <definition name="bti.buildings.attribute.import" extends="tc.importexport">
+        <put-attribute name="title" value="bti.building.attribute.import"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/bti/buildings/building_attributes_import.jsp" />
+    </definition>
+
+    <definition name="tc.calc_results.export" extends="tc.importexport">
+        <put-attribute name="title" value="tc.calc_result.export"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_result_export.jsp" />
+    </definition>
+
+    <definition name="tc.building_attributes.list" extends="tc.data">
+        <put-attribute name="title" value="tc.buildings_list"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/buildings_list.jsp"/>
+    </definition>
+
+    <definition name="tc.building_attributes.edit" extends="tc.data">
+        <put-attribute name="title" value="tc.building_attributes"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_attributes_edit.jsp"/>
     </definition>
 
     <definition name="tc.rules_file.calculate" extends="ab.layout.content">
@@ -43,47 +74,8 @@
         <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_result_export_modalbox.jsp" />
     </definition>
 
-    <definition name="tc.rules_file.edit" extends="tc.dictionaries">
-        <put-attribute name="title" value="tc.rules_file"/>
-        <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_rules_file_edit.jsp" />
-    </definition>
-   <!-- end of tariff calculation rules file related pages -->
-
-	<!-- Building attributes-->
-	<definition name="bti.buildings.attribute_types.list" extends="tc.configuration">
-		<put-attribute name="title" value="bti.building.attribute.types"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/bti/buildings/building_attribute_type_list.jsp" />
-	</definition>
-
-	<definition name="bti.buildings.attribute_type.edit" extends="tc.configuration">
-		<put-attribute name="title" value="bti.building.attribute.type"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/bti/buildings/building_attribute_type_edit.jsp" />
-	</definition>
-
-	<definition name="bti.buildings.attribute.import" extends="tc.dictionaries">
-		<put-attribute name="title" value="bti.building.attribute.import"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/bti/buildings/building_attributes_import.jsp" />
-	</definition>
-
-    <!-- building attributes related pages -->
-    <definition name="tc.building_attributes.list" extends="tc.dictionaries">
-        <put-attribute name="title" value="tc.buildings_list"/>
-        <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/buildings_list.jsp"/>
-    </definition>
-
-    <definition name="tc.building_attributes.edit" extends="tc.dictionaries">
-        <put-attribute name="title" value="tc.building_attributes"/>
-        <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_attributes_edit.jsp"/>
-    </definition>
-
     <definition name="tc.building_attributes.upload" extends="ab.layout.content">
         <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/result_export_modalbox.jsp" />
-    </definition>
-    <!-- end of building attributes related pages -->
-
-    <definition name="tc.calc_results.export" extends="tc.data">
-        <put-attribute name="title" value="tc.calc_result.export"/>
-        <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_result_export.jsp" />
     </definition>
 
 </tiles-definitions>
