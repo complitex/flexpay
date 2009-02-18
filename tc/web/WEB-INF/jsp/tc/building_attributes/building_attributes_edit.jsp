@@ -184,17 +184,17 @@
                                 <s:property value="%{getGroupName(#groupId)}"/>
                             </td>
                             <td style="text-align: right;">
-                                 <input type="button" class="btn-exit"
-                                           id="show_group_<s:property value="#groupId"/>"
-                                           onclick="showAttributesGroup(<s:property value="#groupId"/>);"
-                                           <s:if test="#groupStatus.first"> style="display: none;"</s:if>
-                                           value="<s:text name="tc.show_group"/>"/>
+                                <input type="button" class="btn-exit"
+                                       id="show_group_<s:property value="#groupId"/>"
+                                       onclick="showAttributesGroup(<s:property value="#groupId"/>);"
+                                        <s:if test="#groupStatus.first"> style="display: none;"</s:if>
+                                       value="<s:text name="tc.show_group"/>"/>
 
-                                    <input type="button" class="btn-exit"
-                                           id="hide_group_<s:property value="#groupId"/>"
-                                           onclick="hideAttributesGroup(<s:property value="#groupId"/>);"
-                                           <s:if test="!#groupStatus.first"> style="display: none;"</s:if>
-                                           value="<s:text name="tc.hide_group"/>"/>
+                                <input type="button" class="btn-exit"
+                                       id="hide_group_<s:property value="#groupId"/>"
+                                       onclick="hideAttributesGroup(<s:property value="#groupId"/>);"
+                                        <s:if test="!#groupStatus.first"> style="display: none;"</s:if>
+                                       value="<s:text name="tc.hide_group"/>"/>
                             </td>
                         </tr>
                     </table>
@@ -281,6 +281,13 @@
                             <tr>
                                 <td><s:text name="tc.tariffs_calculated_on"><s:param value="%{formatDate(#calcDate)}"/></s:text></td>
                                 <td style="text-align: right;">
+                                    <input type="button" class="btn-exit"
+                                           value="<s:property value="%{getText('common.save')}"/>"
+                                           onclick="saveSubmit('<s:property value="%{formatDate(#calcDate)}"/>');"/>
+
+                                    <input type="button" class="btn-exit"
+                                           value="<s:property value="%{getText('tc.upload')}"/>"
+                                           onclick="uploadSubmit('<s:property value="%{formatDate(#calcDate)}"/>');"/>
 
                                     <input type="button" class="btn-exit" style="display: none;"
                                            id="show_group_<s:property value="%{formatDate(#calcDate)}"/>"
@@ -291,14 +298,6 @@
                                            id="hide_group_<s:property value="%{formatDate(#calcDate)}"/>"
                                            onclick="hideTCResultsGroup('<s:property value="%{formatDate(#calcDate)}"/>');"
                                            value="<s:text name="tc.hide_group"/>"/>
-
-                                    <input type="button" class="btn-exit"
-                                           value="<s:property value="%{getText('common.save')}"/>"
-                                           onclick="saveSubmit('<s:property value="%{formatDate(#calcDate)}"/>');"/>
-
-                                    <input type="button" class="btn-exit"
-                                           value="<s:property value="%{getText('tc.upload')}"/>"
-                                           onclick="uploadSubmit('<s:property value="%{formatDate(#calcDate)}"/>');"/>
                                 </td>
                             </tr>
                         </table>
@@ -315,6 +314,10 @@
                         </td>
                     </tr>
                 </s:iterator>
+                <tr class="cols_1">
+                    <td class="col" style="width: 80%; font-weight: bold;"><s:text name="tc.total_tariff"/></td>
+                    <td class="col" style="width: 20%; font-weight: bold;"><s:property value="%{getTotalTariff(#calcDate)}"/></td>
+                </tr>
             </s:iterator>
         </s:form>
     </s:else>
