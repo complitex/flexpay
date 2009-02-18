@@ -74,17 +74,38 @@
     }
 
     function saveSubmit(calcDate) {
-        var elements = $$('input[id$="'+ calcDate + '"]');
+        var elements = $$('input[id^="tariff_value_"][id$="' + calcDate + '"]');
 
         for (var i = 0; i < elements.length; i++) {
             var parts = elements[i].id.split("_");
-            var tariffId = parts[1];
-
+            var tariffId = parts[2];
             $('tcResultsEdit_tariffMap_' + tariffId + '_').value = elements[i].value;
         }
 
         $('tcResultsEdit_calculationDate').value = calcDate;
         $('tcResultsEdit').submit();
+    }
+
+    function hideTCResultsGroup(calcDate) {
+        var elements = $$('tr[id^="tariff_row_"][id$="' + calcDate + '"]');
+
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].hide();
+        }
+
+        $('hide_group_' + calcDate).hide();
+        $('show_group_' + calcDate).show();
+    }
+
+    function showTCResultsGroup(calcDate) {
+        var elements = $$('tr[id$="' + calcDate + '"]');
+
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].show();
+        }
+
+        $('hide_group_' + calcDate).show();
+        $('show_group_' + calcDate).hide();
     }
 
 </script>
@@ -250,7 +271,7 @@
             </s:iterator>
 
             <s:hidden name="buildingId" value="%{building.id}"/>
-            <s:hidden name="calculationDate" />
+            <s:hidden name="calculationDate"/>
 
             <s:iterator value="tariffCalculationDates" id="calcDate">
                 <tr>
@@ -259,7 +280,16 @@
                             <tr>
                                 <td><s:text name="tc.tariffs_calculated_on"><s:param value="%{formatDate(#calcDate)}"/></s:text></td>
                                 <td style="text-align: right;">
-                                        <%-- TODO folding--%>
+
+                                    <input type="button" class="btn-exit" style="display: none;"
+                                           id="show_group_<s:property value="%{formatDate(#calcDate)}"/>"
+                                           onclick="showTCResultsGroup('<s:property value="%{formatDate(#calcDate)}"/>');"
+                                           value="<s:text name="tc.show_group"/>"/>
+
+                                    <input type="button" class="btn-exit"
+                                           id="hide_group_<s:property value="%{formatDate(#calcDate)}"/>"
+                                           onclick="hideTCResultsGroup('<s:property value="%{formatDate(#calcDate)}"/>');"
+                                           value="<s:text name="tc.hide_group"/>"/>
 
                                     <input type="button" class="btn-exit"
                                            value="<s:property value="%{getText('common.save')}"/>"
@@ -275,10 +305,11 @@
                 </tr>
 
                 <s:iterator value="%{getTcResults(#calcDate)}">
-                    <tr class="cols_1">
+                    <tr class="cols_1"
+                        id="tariff_row_<s:property value="%{key}"/>_<s:property value="%{formatDate(#calcDate)}"/>">
                         <td class="col" style="width: 80%;"><s:property value="%{getTariffTranslation(key)}"/></td>
                         <td class="col" style="width: 20%;">
-                            <input id="tariff_<s:property value="%{key}"/>_<s:property value="%{formatDate(#calcDate)}"/>"
+                            <input id="tariff_value_<s:property value="%{key}"/>_<s:property value="%{formatDate(#calcDate)}"/>"
                                    type="text" value="<s:property value="%{value}"/>"/>
                         </td>
                     </tr>
