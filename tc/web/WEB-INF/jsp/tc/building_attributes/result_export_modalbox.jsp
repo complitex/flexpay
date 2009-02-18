@@ -21,11 +21,10 @@
     document.onmousemove = getXY;
 
     function uploadResults() {
-        $('uploadTCResults').submit();
         $('uploadTCResults_submitted').value = 'true';
+        $('uploadTCResults').submit();
         parent.Windows.closeAll();
     }
-
 </script>
 
 
@@ -58,9 +57,8 @@
                         });
                     </script>
 
-                    <input type="button" class="btn-exit" value="<s:property value="%{getText('tc.upload')}"/>" onclick="uploadResults();"/>
-
-                    <s:submit name="submitted" cssStyle="display: none;"/>
+                    <input type="button" class="btn-exit" value="<s:property value="%{getText('tc.upload')}"/>"
+                           onclick="uploadResults();"/>
                 </nobr>
             </td>
         </tr>
