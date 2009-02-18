@@ -337,6 +337,17 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         return result;
     }
 
+    public BigDecimal getTotalTariff(String calcDate) {
+        Map<Long, BigDecimal> tcResults = tcResultsMap.get(calcDate);
+
+        BigDecimal total = new BigDecimal(0);
+        for (BigDecimal tariff : tcResults.values()) {
+            total = total.add(tariff);
+        }
+
+        return total;
+    }
+
     public void setDateSubmitted(String dateSubmitted) {
         this.dateSubmitted = dateSubmitted;
     }
