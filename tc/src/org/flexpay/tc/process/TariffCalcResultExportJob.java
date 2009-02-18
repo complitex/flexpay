@@ -78,7 +78,7 @@ public class TariffCalcResultExportJob extends Job {
 					}
 					exporter.commit();
 				} catch (FlexPayException  e) {
-					log.error("SQL error for adressId=" + addressId, e);
+					log.error("SQL error for addressId=" + addressId, e);
 					try {
 						exporter.rollback();
 					} catch (FlexPayException ex) {

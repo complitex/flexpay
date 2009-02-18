@@ -1,17 +1,13 @@
 package org.flexpay.tc.process.exporters;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.util.JDBCUtils;
 import org.flexpay.tc.persistence.TariffCalculationResult;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.jetbrains.annotations.NotNull;
-import org.apache.commons.lang.time.FastDateFormat;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 
 public class JDBCCNExporter implements Exporter {
 
@@ -122,7 +118,6 @@ public class JDBCCNExporter implements Exporter {
 
 	/**
 	 * End export procedure
-	 * @throws FlexPayException throws flexpay exception when filed to end export process
 	 */
 	public void endExport() {
 		JDBCUtils.closeQuitly(conn);

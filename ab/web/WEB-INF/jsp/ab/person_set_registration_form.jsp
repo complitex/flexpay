@@ -9,7 +9,7 @@
 		<s:hidden name="editType" value="registration" />
 
 		<tr class="cols_1">
-			<td class="col_1s" colspan="4"><b><s:text name="ab.person.registration_address"/></b></td>
+			<td class="col_1s" colspan="4"><strong><s:text name="ab.person.registration_address"/></strong></td>
 		</tr>
 		<tr>
 			<td class="filter"><s:text name="ab.country"/></td>

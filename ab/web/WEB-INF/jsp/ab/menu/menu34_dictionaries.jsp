@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <ul class="folders">
-	<li class="open"><b><s:text name="menu2.adress_dictionaries" /></b>
+	<li class="open"><strong><s:text name="menu2.address_dictionaries" /></strong>
 		<ul class="docs">
 			<li>
 				<a href="<s:url namespace="/dicts" action='countriesList' includeParams="none" />"><s:text
@@ -26,14 +26,14 @@
 						name="menu34.dictionaries.apartments" /></a></li>
 		</ul>
 	</li>
-	<li class="open"><b><s:text name="menu2.person_dictionaries" /></b>
+	<li class="open"><strong><s:text name="menu2.person_dictionaries" /></strong>
 		<ul class="docs">
 			<li>
 				<a href="<s:url namespace="/dicts" action='personsList' includeParams="none" />"><s:text
 						name="menu34.dictionaries.persons" /></a></li>
 		</ul>
 	</li>
-	<li class="open"><b><s:text name="menu2.type_dictionaries" /></b>
+	<li class="open"><strong><s:text name="menu2.type_dictionaries" /></strong>
 		<ul class="docs">
 			<li>
 				<a href="<s:url namespace="/dicts" action='townTypesList' includeParams="none" />"><s:text
@@ -49,7 +49,7 @@
 						name="ab.buildings.attribute_types" /></a></li>
 		</ul>
 	</li>
-	<li class="open"><b><s:text name="menu2.other_dictionaries" /></b>
+	<li class="open"><strong><s:text name="menu2.other_dictionaries" /></strong>
 		<ul class="docs">
 			<li>
 				<a href="<s:url namespace="/dicts" action='measureUnitsList' includeParams="none" />"><s:text

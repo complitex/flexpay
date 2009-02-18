@@ -6,7 +6,7 @@
 			<table border="0">
 				<tr>
 					<td colspan="2">
-						<div align="center" class="text"><b><s:text name="login.failure" /></b></div>
+						<div align="center" class="text"><strong><s:text name="login.failure" /></strong></div>
 					</td>
 				</tr>
 				<tr>
@@ -18,7 +18,7 @@
 				</tr>
 				<tr>
 					<td width="50%">
-						<div class="text"><b><s:text name="login.username" />:</b></div>
+						<div class="text"><strong><s:text name="login.username" />:</strong></div>
 					</td>
 					<td width="50%">
 						<input class="form-input-txt" type='text' name='j_username' />
@@ -26,7 +26,7 @@
 				</tr>
 				<tr>
 					<td>
-						<div class="text"><b><s:text name="login.password" />:</b></div>
+						<div class="text"><strong><s:text name="login.password" />:</strong></div>
 					</td>
 					<td>
 						<input class="form-input-txt" type="password" name="j_password" />

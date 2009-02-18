@@ -33,15 +33,17 @@ public class FileCNExporter implements Exporter{
 	 * @throws FlexPayException throws flexpay exception when can't export data
 	 */
 	public void export(@NotNull Object[] params) throws FlexPayException {
-		if (exportPrintStream != null){
-			for (Object o : params){
-				exportPrintStream.print(o);
-				exportPrintStream.print(" : ");
-			}
-			exportPrintStream.println();
-		}else{
+
+		if (exportPrintStream == null) {
 			throw new FlexPayException("File Exporter is not ready");
 		}
+
+		for (Object o : params) {
+			exportPrintStream.print(o);
+			exportPrintStream.print(" : ");
+		}
+		exportPrintStream.println();
+
 	}
 
 	/**
@@ -49,9 +51,9 @@ public class FileCNExporter implements Exporter{
 	 * @throws FlexPayException throws flexpay exception when filed to commit transaction
 	 */
 	public void commit() throws FlexPayException {
-		if (exportPrintStream == null){
+		if (exportPrintStream == null) {
 			throw new FlexPayException("File Exporter is not ready");
-		}else{
+		} else {
 			exportPrintStream.flush();
 		}
 	}
@@ -68,12 +70,12 @@ public class FileCNExporter implements Exporter{
 
 	/**
 	 * End export procedure
-	 * @throws FlexPayException throws flexpay exception when filed to end export process
 	 */
 	public void endExport() {
-		if (exportPrintStream != null){
+		if (exportPrintStream != null) {
 			exportPrintStream.flush();
 			IOUtils.closeQuietly(exportPrintStream);
 		}
 	}
+
 }

@@ -1,29 +1,27 @@
 package org.flexpay.tc.process;
 
-import org.flexpay.common.process.job.Job;
-import org.flexpay.common.process.ProcessLogger;
-import org.flexpay.common.locking.LockManager;
-import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry;
-import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.tc.service.TariffCalculationResultService;
+import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.locking.LockManager;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.process.job.Job;
+import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.tc.locking.Resources;
-import org.flexpay.tc.process.exporters.Exporter;
-import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.Tariff;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Required;
+import org.flexpay.tc.persistence.TariffCalculationResult;
+import org.flexpay.tc.process.exporters.Exporter;
+import org.flexpay.tc.service.TariffCalculationResultService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
-import java.util.Map;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.math.BigDecimal;
+import java.util.Map;
 
 public class TariffCalcResultExportForBuildingJob extends Job {
 
@@ -111,7 +109,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 				return externalId;
 			}
 		}
-		throw new FlexPayException("Building adress not found for building.id=" + buildingStub.getId());
+		throw new FlexPayException("Building address not found for building.id=" + buildingStub.getId());
 	}
 
 	@Required

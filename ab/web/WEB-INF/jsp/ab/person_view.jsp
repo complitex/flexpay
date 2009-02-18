@@ -12,4 +12,4 @@
 <%@include file="person_view_identities.jsp" %>
 
 <br />
-<%@include file="person_view_atributes.jsp" %>
+<%@include file="person_view_attributes.jsp" %>
