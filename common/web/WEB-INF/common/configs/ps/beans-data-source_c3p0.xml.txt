@@ -29,6 +29,7 @@
 				<prop key="hibernate.c3p0.idle_test_period">
 					${hibernate.c3p0.idle_test_period}
 				</prop>
+				<prop key="hibernate.c3p0.timeout">${hibernate.c3p0.timeout}</prop>
 				<prop key="hibernate.c3p0.max_size">${hibernate.c3p0.max_size}</prop>
 				<prop key="hibernate.c3p0.min_size">${hibernate.c3p0.min_size}</prop>
 				<prop key="hibernate.c3p0.preferredTestQuery">
