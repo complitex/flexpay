@@ -21,7 +21,7 @@
     document.onmousemove = getXY;
 
     function uploadResults() {
-        $('uploadTCResults_submitted').value = 'true';
+        //$('uploadTCResults_submitted').value = 'true';
         $('uploadTCResults').submit();
         parent.Windows.closeAll();
     }
@@ -36,7 +36,7 @@
 
                     <s:hidden name="buildingId" value="%{buildingId}"/>
                     <s:hidden name="calculationDate" value="%{calculationDate}"/>
-                    <s:hidden name="submitted"/>
+                    <s:hidden name="submitted" value="true"/>
 
                     <s:text name="tc.upload_tc_results.date"/>
                     <s:textfield name="date" id="date" readonly="true" value="%{date}"/>
@@ -57,7 +57,7 @@
                         });
                     </script>
 
-                    <input type="button" class="btn-exit" value="<s:property value="%{getText('tc.upload')}"/>"
+                    <input type="button" class="btn-exit" value="<s:text name="%{getText('tc.upload')}"/>"
                            onclick="uploadResults();"/>
                 </nobr>
             </td>
