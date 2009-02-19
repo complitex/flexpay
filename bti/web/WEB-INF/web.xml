@@ -304,7 +304,7 @@
     </error-page>
 
     <welcome-file-list>
-		<welcome-file>/resources/bti/index.jsp</welcome-file>
+		<welcome-file>/resources/bti/jsp/index.jsp</welcome-file>
 	</welcome-file-list>
 
 </web-app>

@@ -50,4 +50,5 @@ public abstract class BuildingAttributeBase extends DomainObject {
 	public void setAttributeType(BuildingAttributeType attributeType) {
 		this.attributeType = attributeType;
 	}
+
 }

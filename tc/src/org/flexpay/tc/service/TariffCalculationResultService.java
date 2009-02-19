@@ -16,6 +16,7 @@ public interface TariffCalculationResultService {
 
 	/**
 	 * Save tariff calculation results for building
+	 *
 	 * @param tariffCalculationResult calculated result
 	 */	
 	@Secured({Roles.TARIFF_CALCULATION_RESULT_ADD})
@@ -23,6 +24,7 @@ public interface TariffCalculationResultService {
 
 	/**
 	 * Save tariff calculation results for building
+	 *
 	 * @param value calculated value
 	 * @param creationDate record creation date
 	 * @param calculationDate record calculation date
@@ -46,6 +48,7 @@ public interface TariffCalculationResultService {
 
 	/**
 	 * Get tariff calculation result list for calculation date and building id
+	 *
 	 * @param calcDate  tariff calculation result date
 	 * @param buildingStub tariff calculation result building
 	 * @return tariff calculation result list

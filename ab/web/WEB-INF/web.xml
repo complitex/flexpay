@@ -291,7 +291,7 @@
 	</error-page>
 
 	<welcome-file-list>
-		<welcome-file>/resources/ab/index.jsp</welcome-file>
+		<welcome-file>/resources/ab/jsp/index.jsp</welcome-file>
 	</welcome-file-list>
 
 </web-app>

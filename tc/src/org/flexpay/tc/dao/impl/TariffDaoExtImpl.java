@@ -13,16 +13,11 @@ public class TariffDaoExtImpl extends HibernateDaoSupport implements TariffDaoEx
 	 * Find tariff by code
 	 *
 	 * @param code tariff code
-	 * @return tarif
+	 * @return tariff
 	 */
-	@SuppressWarnings ({"unchecked"})
 	public Tariff getTariffByCode(@NotNull String code) {
-		List<Tariff> tariffs = (List<Tariff>) getHibernateTemplate().findByNamedQuery("Tariff.getByCode", code);
-		if (tariffs.size() == 0) {
-			return null;
-		} else {
-			return tariffs.get(0);
-		}
+		List<?> tariffs = (List<?>) getHibernateTemplate().findByNamedQuery("Tariff.getByCode", code);
+		return tariffs.isEmpty() ? null : (Tariff) tariffs.get(0);
 	}
 
 }

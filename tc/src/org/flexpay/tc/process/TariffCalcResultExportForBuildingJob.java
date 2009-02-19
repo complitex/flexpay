@@ -39,7 +39,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 	public final static String BUILDING_ID = "BUILDING_ID";
 
 	/**
-	 * Tarif calculation date
+	 * Tariff calculation date
 	 */
 	public final static String CALCULATION_DATE = "date";
 	/**
@@ -67,7 +67,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 			List<TariffCalculationResult> tariffCalcResultList = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndBuilding(
 					calculationDate, buildingStub);
 			//find external id
-			log.info("{} tarif calculation result(s) founded for building with id := {} on date := {}", new Object[]{tariffCalcResultList.size(), buildingStub.getId(), calculationDate});
+			log.info("{} tariff calculation result(s) founded for building with id := {} on date := {}", new Object[] {tariffCalcResultList.size(), buildingStub.getId(), calculationDate});
 			if (tariffCalcResultList.size() > 0) {
 				exporter.beginExport();
 				String externalId = getExternalId(buildingStub);
@@ -80,7 +80,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 					Tariff tariff = new Tariff(); tariff.setSubServiceCode(code);
 					tcr.setTariff(tariff);
 					tcr.setCalculationDate(calculationDate);
-					tcr.setValue(new BigDecimal(0));
+					tcr.setValue(BigDecimal.ZERO);
 					exporter.export(new Object[]{tcr,externalId, periodBeginDate});
 				}
 
@@ -151,4 +151,5 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 	public void setSubServiceExportCodes(List<String> subServiceExportCodes) {
 		this.subServiceExportCodes = subServiceExportCodes;
 	}
+
 }

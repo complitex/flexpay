@@ -21,4 +21,5 @@ public interface TariffService {
 
 	@Secured({Roles.TARIFF_DELETE})
 	void disable(@NotNull Set<Long> objectIds);
+
 }

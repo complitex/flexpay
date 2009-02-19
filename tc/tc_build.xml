@@ -93,7 +93,7 @@
 		<fileset id="tc.docs.resources" dir="${tc.dir}/docs" />
 		<antcall target="template.docs">
 			<param name="sources.dir" value="${tc.src.production}" />
-			<param name="module_name" value="Tarif calculations" />
+			<param name="module_name" value="Tariff calculations" />
 			<param name="docs.file" value="${tc.docs.name}" />
 			<reference refid="tc.docs.resources" torefid="resources" />
 			<reference refid="tc.production.classpath" torefid="classpath" />

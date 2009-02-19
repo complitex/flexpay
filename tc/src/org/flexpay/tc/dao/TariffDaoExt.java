@@ -10,8 +10,9 @@ public interface TariffDaoExt {
 	 * Find tariff by code
 	 *
 	 * @param code tariff code
-	 * @return tarif
+	 * @return tariff
 	 */
 	@Nullable
 	Tariff getTariffByCode(@NotNull String code);
+
 }

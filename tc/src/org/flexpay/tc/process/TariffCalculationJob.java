@@ -7,36 +7,39 @@ import org.drools.compiler.DroolsParserException;
 import org.drools.compiler.PackageBuilder;
 import org.flexpay.bti.persistence.BtiBuilding;
 import org.flexpay.bti.service.BtiBuildingService;
+import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.ProcessLogger;
+import org.flexpay.common.process.job.Job;
 import org.flexpay.tc.locking.Resources;
 import org.flexpay.tc.persistence.TariffCalculationRulesFile;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.service.TariffCalculationRulesFileService;
 import org.flexpay.tc.service.TariffServiceExt;
 import org.flexpay.tc.util.config.ApplicationConfig;
-import org.springframework.beans.factory.annotation.Required;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.*;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Date;
 
 public class TariffCalculationJob extends Job {
-
-	private TariffCalculationResultService tariffCalculationResultService;
-	private BtiBuildingService btiBuildingService;
-	private TariffCalculationRulesFileService tariffCalculationRulesFileService;
-	private TariffServiceExt tariffServiceExt;
-	private LockManager lockManager;
 
 	public static final String RULES_ID = "RULE_ID";
 	public static final String CALC_DATE = "CALC_DATE";
 
+	private LockManager lockManager;
+	private BtiBuildingService btiBuildingService;
+	private TariffCalculationResultService tariffCalculationResultService;
+	private TariffCalculationRulesFileService tariffCalculationRulesFileService;
+	private BuildingAttributeTypeService buildingAttributeTypeService;
+	private TariffServiceExt tariffServiceExt;
+
+	@SuppressWarnings({"IOResourceOpenedButNotSafelyClosed"})
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		Logger pLogger = ProcessLogger.getLogger(getClass());
@@ -48,7 +51,6 @@ public class TariffCalculationJob extends Job {
 			//get rules file
 			try {
 				TariffCalculationRulesFile rulesFile = tariffCalculationRulesFileService.read(new Stub<TariffCalculationRulesFile>((Long) parameters.get(RULES_ID)));
-
 				if (rulesFile == null) {
 					pLogger.error("Tariff calculation rules for id {} not found. Exiting.", parameters.get(RULES_ID));
 					return RESULT_ERROR;
@@ -56,32 +58,36 @@ public class TariffCalculationJob extends Job {
 
 				//initialize rules
 				RuleBase ruleBase;
+				Reader source = null;
+				InputStream fis = null;
 				try {
-					Reader source = new InputStreamReader(new FileInputStream(rulesFile.getFile().getFile()));
+					fis = new FileInputStream(rulesFile.getFile().getFile());
+					source = new InputStreamReader(fis);
 					PackageBuilder builder = new PackageBuilder();
 					builder.addPackageFromDrl(source);
 					org.drools.rule.Package pkg = builder.getPackage();
 					ruleBase = RuleBaseFactory.newRuleBase();
 					ruleBase.addPackage(pkg);
 					List<BtiBuilding> btiBuildingList = btiBuildingService.findByTown(ApplicationConfig.getDefaultTownStub());
-					pLogger.info("Found " + btiBuildingList.size() + " buildings");
+					pLogger.info("Found {} buildings", btiBuildingList.size());
 					int cnt = 0;
-					for (BtiBuilding btiBuilding : btiBuildingList) {
-						WorkingMemory workingMemory = ruleBase.newStatefulSession();
-						workingMemory.setGlobal("btiBuildingService", btiBuildingService);
-						workingMemory.setGlobal("tarifCalculationResultService", tariffCalculationResultService);
-						workingMemory.setGlobal("logger", log);
-						workingMemory.setGlobal("tariffServiceExt", tariffServiceExt);
 
+					for (BtiBuilding btiBuilding : btiBuildingList) {
+
+						WorkingMemory workingMemory = ruleBase.newStatefulSession();
+						workingMemory.setGlobal("log", log);
 						workingMemory.setGlobal("creationDate", date);
 						workingMemory.setGlobal("calculationDate", calculationDate);
+						workingMemory.setGlobal("buildingAttributeTypeService", buildingAttributeTypeService);
+						workingMemory.setGlobal("tariffCalculationResultService", tariffCalculationResultService);
+						workingMemory.setGlobal("tariffServiceExt", tariffServiceExt);
 
 						workingMemory.insert(btiBuildingService.readWithAttributes(new Stub<BtiBuilding>(btiBuilding)));
 						workingMemory.fireAllRules();
 						workingMemory.clearAgenda();
 						cnt++;
 						if (cnt % 100 == 0) {
-							pLogger.info(cnt + " buildings processed.");
+							pLogger.info("{} buildings processed.", cnt);
 						}
 					}
 				} catch (FileNotFoundException ex) {
@@ -96,6 +102,17 @@ public class TariffCalculationJob extends Job {
 				} catch (Exception ex) {
 					log.error("Drools internal error.", ex);
 					return RESULT_ERROR;
+				} finally {
+					try {
+						if (fis != null) {
+							fis.close();
+						}
+						if (source != null) {
+							source.close();
+						}
+					} catch (IOException e) {
+						// do nothing
+					}
 				}
 			} finally {
 				lockManager.releaseLock(Resources.BUILDING_ATTRIBUTES);
@@ -130,4 +147,10 @@ public class TariffCalculationJob extends Job {
 	public void setTariffServiceExt(TariffServiceExt tariffServiceExt) {
 		this.tariffServiceExt = tariffServiceExt;
 	}
+
+	@Required
+	public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
+		this.buildingAttributeTypeService = buildingAttributeTypeService;
+	}
+
 }

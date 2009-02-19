@@ -46,7 +46,7 @@ public class TarifResultsDataProcessor implements BuildingAttributeDataProcessor
 			// get tariff code
 			String tarifCode = tarifToAttributeNameMapper.getTarifCodeByAttributeName(attributeName);
 			if (StringUtils.isBlank(tarifCode)) {
-				log.debug("No tarif code for attribute: {}", attributeName);
+				log.debug("No tariff code for attribute: {}", attributeName);
 				continue;
 			}
 
@@ -65,7 +65,7 @@ public class TarifResultsDataProcessor implements BuildingAttributeDataProcessor
 			// get tariff and building
 			Tariff tariff = tariffService.getTariffByCode(tarifCode);
 			if (tariff == null) {
-				log.info("No tarif found by code: {}", tarifCode);
+				log.info("No tariff found by code: {}", tarifCode);
 				continue;
 			}
 

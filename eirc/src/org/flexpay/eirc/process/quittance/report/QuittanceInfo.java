@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 /**
  * Container for all necessary Quittance information with calculated summs, service
- * tarifs, subsidies, etc
+ * tariffs, subsidies, etc
  */
 public class QuittanceInfo implements Cloneable, Serializable {
 

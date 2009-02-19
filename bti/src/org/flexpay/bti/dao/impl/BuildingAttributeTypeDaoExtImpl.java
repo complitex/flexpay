@@ -53,4 +53,5 @@ public class BuildingAttributeTypeDaoExtImpl extends HibernateDaoSupport impleme
 	public void setAttributeTypeEnumDao(BuildingAttributeTypeEnumDao attributeTypeEnumDao) {
 		this.attributeTypeEnumDao = attributeTypeEnumDao;
 	}
+
 }

@@ -39,7 +39,7 @@
         primary key (id)
     ) comment='Building addresses';
 
-    create table ab_building_adress_attribute_type_translations_tbl (
+    create table ab_building_address_attribute_type_translations_tbl (
         id bigint not null auto_increment,
         name varchar(255) not null comment 'Type translation',
         short_name varchar(255) comment 'Optional short translation',
@@ -988,13 +988,13 @@
         foreign key (building_id) 
         references ab_buildings_tbl (id);
 
-    alter table ab_building_adress_attribute_type_translations_tbl 
+    alter table ab_building_address_attribute_type_translations_tbl
         add index ab_building_attribute_type_translations_tbl_attribute_type_id (attribute_type_id), 
         add constraint ab_building_attribute_type_translations_tbl_attribute_type_id 
         foreign key (attribute_type_id) 
         references ab_building_address_attribute_types_tbl (id);
 
-    alter table ab_building_adress_attribute_type_translations_tbl 
+    alter table ab_building_address_attribute_type_translations_tbl
         add index lang_building_attribute_type_pair_language_id (language_id), 
         add constraint lang_building_attribute_type_pair_language_id 
         foreign key (language_id) 

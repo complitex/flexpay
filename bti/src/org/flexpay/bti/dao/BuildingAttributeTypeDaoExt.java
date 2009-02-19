@@ -14,4 +14,5 @@ public interface BuildingAttributeTypeDaoExt {
 	 * @return <code>true</code> if this name is unique, or <code>false</code> otherwise
 	 */
 	boolean isUniqueTypeName(String name, Long typeId);
+
 }
