@@ -1,4 +1,4 @@
--- Tarif calculation module init data
+-- Tariff calculation module init data
 INSERT INTO common_flexpay_modules_tbl (name) VALUES ('tc');
 SELECT @module_tc:=last_insert_id();
 
@@ -75,12 +75,12 @@ INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
 INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "140");
 SELECT @tariff_140:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
-    VALUES ('Освещение мест общего пльзования', @tariff_140, @ru_id);
+    VALUES ('Освещение мест общего пользования', @tariff_140, @ru_id);
 
 INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "150");
 SELECT @tariff_150:=last_insert_id();
 INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
-    VALUES ('Энергоснабж. для подкачки воды', @tariff_150, @ru_id);
+    VALUES ('Энергоснабжение для подкачки воды', @tariff_150, @ru_id);
 
 INSERT INTO tc_tariff_tbl (status, subservice_code) VALUES (0, "160");
 SELECT @tariff_160:=last_insert_id();
@@ -103,87 +103,46 @@ INSERT INTO tc_tariff_translations_tbl (name, tariff_id, language_id)
     VALUES ('ТО бытовых электроплит', @tariff_190, @ru_id);
 
 -- Init TC Tariff calculation results for tests
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('170.56', '2008-01-30', '2009-01-30', @building_id_1, 1);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('1235.56', '2008-05-30', '2009-01-30', @building_id_1, 2);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('6773.56', '2008-01-30', '2009-01-30', @building_id_1, 3);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('3142.56', '2008-03-30', '2009-01-30', @building_id_1, 4);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('5670.56', '2008-06-30', '2009-01-30', @building_id_2, 1);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('1360.56', '2008-09-23', '2009-01-30', @building_id_2, 4);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('1457470.56', '2008-01-12', '2009-01-30', @building_id_2, 8);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('16766.56', '2008-01-11', '2009-01-30', @building_id_2, 12);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('15346.56', '2008-01-12', '2009-01-30', @building_id_2, 13);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('167.56', '2008-01-23', '2009-01-30', @building_id_3, 10);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('1232365326.56', '2008-01-11', '2009-01-30', @building_id_3, 12);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('8485.575', '2008-01-11', '2009-01-30', @building_id_3, 15);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('32525.678', '2008-01-11', '2009-01-30', @building_id_3, 17);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('2525.437', '2008-01-06', '2009-01-30', @building_id_4, 1);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('1253.56', '2008-01-12', '2009-01-30', @building_id_4, 2);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('2346.56', '2008-01-07', '2009-01-30', @building_id_4, 3);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('3393.56', '2008-01-09', '2009-01-30', @building_id_4, 4);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('12262.56', '2008-01-10', '2009-01-30', @building_id_4, 5);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('23456456.56', '2008-01-10', '2009-01-30', @building_id_4, 6);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('132466.56', '2008-01-10', '2009-01-30', @building_id_4, 7);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('467436.56', '2008-01-10', '2009-01-30', @building_id_4, 8);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('3222.56', '2008-01-10', '2009-01-30', @building_id_4, 9);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('1111.1223', '2008-01-10', '2009-01-30', @building_id_4, 10);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('11251.3257', '2008-01-10', '2009-01-30', @building_id_4, 11);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('34345.56', '2008-05-18', '2009-01-30', @building_id_4, 12);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('345340.56', '2008-05-14', '2009-01-30', @building_id_4, 13);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('245423.56', '2008-05-13', '2009-01-30', @building_id_5, 14);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('1333.56', '2008-06-30', '2009-01-30', @building_id_5, 15);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('25352.56', '2008-06-13', '2009-01-30', @building_id_5, 16);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('456456.56', '2008-06-11', '2009-01-30', @building_id_5, 17);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('29874.56', '2008-06-23', '2009-01-30', @building_id_6, 18);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('4444.56', '2008-06-11', '2009-01-23', @building_id_7, 4);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('83932.56', '2008-01-11', '2009-01-23', @building_id_7, 6);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('9087.56', '2008-01-30', '2009-01-23', @building_id_8, 5);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('789170.56', '2008-01-30', '2009-01-23', @building_id_8, 6);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('1234560.56', '2008-01-30', '2009-01-23', @building_id_8, 7);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('684226.56', '2008-01-30', '2009-01-23', @building_id_8, 18);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('8493.56', '2008-01-30', '2009-01-23', @building_id_8, 19);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('937484.56', '2008-01-30', '2009-01-23', @building_id_9, 2);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('123455.56', '2008-01-30', '2009-01-23', @building_id_9, 3);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('23423.56', '2008-01-30', '2009-01-23', @building_id_9, 4);
-INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id)
-    VALUES ('67382.56', '2008-01-30', '2009-01-23', @building_id_9, 5);
+INSERT INTO tc_tariff_calculation_result_tbl (value, creation_date, calculation_date, building_id, tariff_id) VALUES
+    ('170.56', '2008-01-30', '2009-01-30', @building_id_1, 1),
+    ('1235.56', '2008-05-30', '2009-01-30', @building_id_1, 2),
+    ('6773.56', '2008-01-30', '2009-01-30', @building_id_1, 3),
+    ('3142.56', '2008-03-30', '2009-01-30', @building_id_1, 4),
+    ('5670.56', '2008-06-30', '2009-01-30', @building_id_2, 1),
+    ('1360.56', '2008-09-23', '2009-01-30', @building_id_2, 4),
+    ('1457470.56', '2008-01-12', '2009-01-30', @building_id_2, 8),
+    ('16766.56', '2008-01-11', '2009-01-30', @building_id_2, 12),
+    ('15346.56', '2008-01-12', '2009-01-30', @building_id_2, 13),
+    ('167.56', '2008-01-23', '2009-01-30', @building_id_3, 10),
+    ('1232365326.56', '2008-01-11', '2009-01-30', @building_id_3, 12),
+    ('8485.575', '2008-01-11', '2009-01-30', @building_id_3, 15),
+    ('32525.678', '2008-01-11', '2009-01-30', @building_id_3, 17),
+    ('2525.437', '2008-01-06', '2009-01-30', @building_id_4, 1),
+    ('1253.56', '2008-01-12', '2009-01-30', @building_id_4, 2),
+    ('2346.56', '2008-01-07', '2009-01-30', @building_id_4, 3),
+    ('3393.56', '2008-01-09', '2009-01-30', @building_id_4, 4),
+    ('12262.56', '2008-01-10', '2009-01-30', @building_id_4, 5),
+    ('23456456.56', '2008-01-10', '2009-01-30', @building_id_4, 6),
+    ('132466.56', '2008-01-10', '2009-01-30', @building_id_4, 7),
+    ('467436.56', '2008-01-10', '2009-01-30', @building_id_4, 8),
+    ('3222.56', '2008-01-10', '2009-01-30', @building_id_4, 9),
+    ('1111.1223', '2008-01-10', '2009-01-30', @building_id_4, 10),
+    ('11251.3257', '2008-01-10', '2009-01-30', @building_id_4, 11),
+    ('34345.56', '2008-05-18', '2009-01-30', @building_id_4, 12),
+    ('345340.56', '2008-05-14', '2009-01-30', @building_id_4, 13),
+    ('245423.56', '2008-05-13', '2009-01-30', @building_id_5, 14),
+    ('1333.56', '2008-06-30', '2009-01-30', @building_id_5, 15),
+    ('25352.56', '2008-06-13', '2009-01-30', @building_id_5, 16),
+    ('456456.56', '2008-06-11', '2009-01-30', @building_id_5, 17),
+    ('29874.56', '2008-06-23', '2009-01-30', @building_id_6, 18),
+    ('4444.56', '2008-06-11', '2009-01-23', @building_id_7, 4),
+    ('83932.56', '2008-01-11', '2009-01-23', @building_id_7, 6),
+    ('9087.56', '2008-01-30', '2009-01-23', @building_id_8, 5),
+    ('789170.56', '2008-01-30', '2009-01-23', @building_id_8, 6),
+    ('1234560.56', '2008-01-30', '2009-01-23', @building_id_8, 7),
+    ('684226.56', '2008-01-30', '2009-01-23', @building_id_8, 18),
+    ('8493.56', '2008-01-30', '2009-01-23', @building_id_8, 19),
+    ('937484.56', '2008-01-30', '2009-01-23', @building_id_9, 2),
+    ('123455.56', '2008-01-30', '2009-01-23', @building_id_9, 3),
+    ('23423.56', '2008-01-30', '2009-01-23', @building_id_9, 4),
+    ('67382.56', '2008-01-30', '2009-01-23', @building_id_9, 5);

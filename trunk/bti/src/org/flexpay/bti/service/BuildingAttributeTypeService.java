@@ -61,4 +61,5 @@ public interface BuildingAttributeTypeService {
 	 */
 	@Nullable
 	BuildingAttributeType findTypeByName(String typeName);
+
 }

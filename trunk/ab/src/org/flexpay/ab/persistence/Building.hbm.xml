@@ -90,7 +90,7 @@
 		</set>
 	</class>
 
-	<class name="AddressAttributeTypeTranslation" table="ab_building_adress_attribute_type_translations_tbl">
+	<class name="AddressAttributeTypeTranslation" table="ab_building_address_attribute_type_translations_tbl">
 
 		<comment>Building attribute type translations</comment>
 		<id name="id" column="id">

@@ -1,0 +1,141 @@
+package org.flexpay.tc
+dialect "java" 
+
+import org.drools.WorkingMemory;
+import org.flexpay.bti.persistence.BtiBuilding;
+import org.flexpay.bti.persistence.BuildingAttributeBase;
+import org.flexpay.bti.persistence.BuildingAttributeConfig;
+import org.flexpay.bti.service.BuildingAttributeTypeService;
+import org.flexpay.tc.persistence.TariffConfig;
+import org.flexpay.tc.service.TariffCalculationResultService;
+import org.flexpay.tc.service.TariffServiceExt;
+import java.math.BigDecimal;
+import java.util.Date;
+
+global org.slf4j.Logger log;
+global Date creationDate;
+global Date calculationDate;
+global BuildingAttributeTypeService buildingAttributeTypeService;
+global TariffCalculationResultService tariffCalculationResultService;
+global TariffServiceExt tariffServiceExt;
+
+function void addCalcResult(BtiBuilding building, BigDecimal value, String tariffCode, WorkingMemory wm) {
+    TariffCalculationResultService tariffCalculationResultService = (TariffCalculationResultService) wm.getGlobal("tariffCalculationResultService");
+    TariffServiceExt tariffServiceExt = (TariffServiceExt) wm.getGlobal("tariffServiceExt");
+    Date calcDate = (Date) wm.getGlobal("calculationDate");
+    Date creationDate = (Date) wm.getGlobal("creationDate");
+    tariffCalculationResultService.add(value.setScale(3, BigDecimal.ROUND_HALF_UP), creationDate, calcDate, building, tariffServiceExt.getTariffByCode(tariffCode));
+}
+
+function BigDecimal getAttributeValue(BtiBuilding building, String attributeCode, WorkingMemory wm) {
+    BuildingAttributeTypeService bats = (BuildingAttributeTypeService) wm.getGlobal("buildingAttributeTypeService");
+    BuildingAttributeBase ba = building.getAttribute(bats.findTypeByName(attributeCode));
+    if (ba == null) {
+        return BigDecimal.ZERO;
+    }
+    Date calcDate = (Date) wm.getGlobal("calculationDate");
+    return new BigDecimal(ba.getValueForDate(calcDate));
+}
+
+rule "TestRule"
+	
+	when
+		 building : BtiBuilding (id != null)
+	then
+
+	    WorkingMemory wm = drools.getWorkingMemory();
+
+	    BigDecimal L = getAttributeValue(building, BuildingAttributeConfig.ATTR_APARTMENTS_NUMBER, wm);
+	    BigDecimal N = getAttributeValue(building, BuildingAttributeConfig.ATTR_HABITANTS_NUMBER, wm);
+	    BigDecimal Q = getAttributeValue(building, BuildingAttributeConfig.ATTR_TOTAL_SQUARE_WITH_CENTRAL_WARM, wm);
+	    BigDecimal R = getAttributeValue(building, BuildingAttributeConfig.ATTR_TOTAL_SQUARE_WITH_CENTRAL_HOT_WATER, wm);
+	    BigDecimal S = getAttributeValue(building, BuildingAttributeConfig.ATTR_TOTAL_SQUARE_WITH_BOILER_PLANTS, wm);
+	    BigDecimal T = getAttributeValue(building, BuildingAttributeConfig.ATTR_TOTAL_SQUARE_WITH_WATER, wm);
+	    BigDecimal U = getAttributeValue(building, BuildingAttributeConfig.ATTR_TOTAL_SQUARE_WITH_SEWER, wm);
+	    BigDecimal W = getAttributeValue(building, BuildingAttributeConfig.ATTR_TOTAL_SQUARE, wm);
+	    BigDecimal AF = getAttributeValue(building, BuildingAttributeConfig.ATTR_VENT_CHANNEL_NUMBER, wm);
+	    BigDecimal AG = getAttributeValue(building, BuildingAttributeConfig.ATTR_FLUES_NUMBER, wm);
+	    BigDecimal AI = getAttributeValue(building, BuildingAttributeConfig.ATTR_LIFTED_APARTMENTS_TOTAL_SQUARE, wm);
+	    BigDecimal AS = getAttributeValue(building, BuildingAttributeConfig.ATTR_ADS_SUITED_APARTMENTS_TOTAL_SQUARE, wm);
+	    BigDecimal CM = getAttributeValue(building, BuildingAttributeConfig.ATTR_COMMON_PLACES_LIGHTENING_TARIF_PART_ELECTRICIANS, wm);
+	    BigDecimal CN = getAttributeValue(building, BuildingAttributeConfig.ATTR_COMMON_PLACES_LIGHTENING_TARIF_PART_OBLENERGO, wm);
+	    BigDecimal CO = getAttributeValue(building, BuildingAttributeConfig.ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIF_PART_BASEMENTS, wm);
+	    BigDecimal CP = getAttributeValue(building, BuildingAttributeConfig.ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIF_PART_TECHFLOORS_ROOFS, wm);
+	    BigDecimal DU = getAttributeValue(building, BuildingAttributeConfig.ATTR_COST_LIFT_TECHNICAL_SUPPORT_ZHILKOMSERVIS, wm);
+	    BigDecimal DW = getAttributeValue(building, BuildingAttributeConfig.ATTR_COST_DISPETCHIRING_ZHILKOMSERVIS, wm);
+
+        for (String code : TariffConfig.getAllTariffCodes()) {
+
+            BigDecimal value = BigDecimal.ZERO;
+
+            if (TariffConfig.TARIFF_CLEANING_TERRITORY.equals(code)) {
+                BigDecimal bt = BigDecimal.valueOf(0.418);
+                value = bt.multiply(BigDecimal.valueOf(0.8));
+            } else if (TariffConfig.TARIFF_CLEANING_REFUSE_CHUTES.equals(code)) {
+                BigDecimal bt = BigDecimal.valueOf(0.140);
+                value = bt;
+            } else if (TariffConfig.TARIFF_CLEANING_BASEMENTS.equals(code)) {
+                value = CO.add(CP);
+            } else if (TariffConfig.TARIFF_UTILIZATION_HARD_WASTE.equals(code)) {
+                value = BigDecimal.valueOf(0.045);
+                if (W.signum() != 0 && N.signum() != 0) {
+                    BigDecimal v1 = N.multiply(BigDecimal.valueOf(1.5)).divide(BigDecimal.valueOf(12)).multiply(BigDecimal.valueOf(23.05)).multiply(BigDecimal.valueOf(1.2));
+                    BigDecimal v2 = N.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf(0.1)).divide(BigDecimal.valueOf(12)).multiply(BigDecimal.valueOf(26.342)).multiply(BigDecimal.valueOf(1.2));
+                    BigDecimal v3 = N.multiply(BigDecimal.valueOf(1.5)).divide(BigDecimal.valueOf(12)).multiply(BigDecimal.valueOf(6.3));
+                    BigDecimal v4 = N.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf(0.1)).divide(BigDecimal.valueOf(12)).multiply(BigDecimal.valueOf(6.3));
+                    value = value.add(v1.add(v2).add(v3).add(v4).divide(W));
+                }
+            } else if (TariffConfig.TARIFF_SERVICE_LIFTS.equals(code)) {
+                if (AI.signum() != 0) {
+                    value = DU.divide(AI);
+                }
+            } else if (TariffConfig.TARIFF_SERVICE_PRODUCTION_CONTROL_SYSTEMS.equals(code)) {
+                if (AS.signum() != 0) {
+                    value = DW.divide(AS);
+                }
+            } else if (TariffConfig.TARIFF_SERVICE_WATER_SUPPLY_SYSTEMS.equals(code)) {
+                if (T.signum() != 0) {
+                    value = L.multiply(BigDecimal.valueOf(4.093)).divide(T);
+                }
+            } else if (TariffConfig.TARIFF_SERVICE_WATER.equals(code)) {
+                if (U.signum() != 0) {
+                    value = L.multiply(BigDecimal.valueOf(3.343)).divide(U);
+                }
+            } else if (TariffConfig.TARIFF_SERVICE_HEAT_SUPPLY_SYSTEMS.equals(code)) {
+                if (Q.signum() != 0) {
+                    value = L.multiply(BigDecimal.valueOf(5.500)).divide(Q);
+                }
+            } else if (TariffConfig.TARIFF_SERVICE_HOT_WATER_SUPPLY_SYSTEMS.equals(code)) {
+                if (R.signum() != 0) {
+                    value = L.multiply(BigDecimal.valueOf(2.285)).divide(R);
+                }
+            } else if (TariffConfig.TARIFF_SERVICE_BOILERS.equals(code)) {
+                if (S.signum() != 0) {
+                    value = L.multiply(BigDecimal.valueOf(2.901)).divide(S);
+                }
+            } else if (TariffConfig.TARIFF_SERVICE_OFFTAKES.equals(code)) {
+                if (W.signum() != 0) {
+                    value = AF.add(AG).multiply(BigDecimal.valueOf(0.727).divide(W));
+                }
+            } else if (TariffConfig.TARIFF_CLEANING_YARD_TOILETS.equals(code)) {
+                BigDecimal bt = BigDecimal.valueOf(0.049);
+                value = bt;
+            } else if (TariffConfig.TARIFF_LIGHTING_COMMON_PLACES.equals(code)) {
+                value = CM.add(CN);
+            } else if (TariffConfig.TARIFF_WATER_ENERGY_SUPPLY.equals(code)) {
+                BigDecimal bt = BigDecimal.valueOf(0.049);
+                value = bt.multiply(BigDecimal.valueOf(0.8));
+            } else if (TariffConfig.TARIFF_LIFTS_ENERGY_SUPPLY.equals(code)) {
+                BigDecimal bt = BigDecimal.valueOf(0.063);
+                value = bt;
+            } else if (TariffConfig.TARIFF_CLEANING_STAIRWELLS.equals(code)) {
+            } else if (TariffConfig.TARIFF_DISINFECTION.equals(code)) {
+            } else if (TariffConfig.TARIFF_SERVICE_ELECTRIC_RANGES.equals(code)) {
+            }
+
+            addCalcResult(building, value, code, wm);
+        }
+
+		log.info("Building with id = {} processed", building.getId());
+
+end

@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 
 public class UploadTCResultsAction extends FPActionSupport {
 
@@ -82,4 +80,5 @@ public class UploadTCResultsAction extends FPActionSupport {
     public void setProcessManager(ProcessManager processManager) {
         this.processManager = processManager;
     }
+
 }

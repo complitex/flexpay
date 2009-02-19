@@ -9,7 +9,7 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
-	<bean id="tcTarifToAttributeNameMapper" class="org.flexpay.tc.service.importexport.TarifToAttributeNameMapper">
+	<bean id="tcTariffToAttributeNameMapper" class="org.flexpay.tc.service.importexport.TarifToAttributeNameMapper">
 		<property name="attributeName2tarifCodes">
 			<map>
 				<entry value="010">
@@ -65,7 +65,7 @@
 	</bean>
 
 	<bean id="buildingAttributeDataProcessor2" class="org.flexpay.tc.service.importexport.TarifResultsDataProcessor"
-		  p:tarifToAttributeNameMapper-ref="tcTarifToAttributeNameMapper"
+		  p:tarifToAttributeNameMapper-ref="tcTariffToAttributeNameMapper"
 		  p:tariffService-ref="tariffServiceExt"
 		  p:calculationResultService-ref="tariffCalculationResultService"
 		  p:buildingService-ref="buildingService" />

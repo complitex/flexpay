@@ -13,6 +13,7 @@
           p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
           p:lockManager-ref="lockManager"
           p:tariffServiceExt-ref="tariffServiceExt"
+          p:buildingAttributeTypeService-ref="buildingAttributeTypeService"
           scope="prototype" />
 
     <bean name="tariffCalcResultExportJob" class="org.flexpay.tc.process.TariffCalcResultExportJob"

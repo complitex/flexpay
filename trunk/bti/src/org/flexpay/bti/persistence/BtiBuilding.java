@@ -31,7 +31,7 @@ public class BtiBuilding extends Building {
 
 	@Nullable
     public BuildingAttributeBase getAttribute(BuildingAttributeType attributeType) {
-        if (attributes == Collections.EMPTY_SET) {
+        if (attributes.isEmpty()) {
             return null;
         }
 
@@ -50,7 +50,7 @@ public class BtiBuilding extends Building {
 
 	public void setAttribute(BuildingAttributeBase attribute) {
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (attributes == Collections.EMPTY_SET) {
+		if (attributes.isEmpty()) {
 			attributes = CollectionUtils.set();
 		}
 
@@ -89,7 +89,7 @@ public class BtiBuilding extends Building {
 
 	public void addAttribute(BuildingAttributeBase attribute) {
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (attributes == Collections.EMPTY_SET) {
+		if (attributes.isEmpty()) {
 			attributes = CollectionUtils.set();
 		}
 
@@ -98,7 +98,7 @@ public class BtiBuilding extends Building {
 	}
 
     public void removeAttribute(BuildingAttributeType type) {
-        if (attributes == Collections.EMPTY_SET) {
+        if (attributes.isEmpty()) {
 			return;
 		}
 
@@ -117,10 +117,11 @@ public class BtiBuilding extends Building {
     }
 
     public void removeAttribute(BuildingAttributeBase attribute) {
-        if (attributes == Collections.EMPTY_SET) {
+        if (attributes.isEmpty()) {
 			return;
 		}
 
         attributes.remove(attribute);
     }
+
 }

@@ -50,20 +50,21 @@ INSERT INTO common_file_statuses_tbl (name, code, module_id)
 SELECT @deleting_from_db_status_id:=last_insert_id();
 
 -- Init OSZN orgs
-insert into sz_oszns_tbl (description, district_id) values ('Заельцовский', 1);
-insert into sz_oszns_tbl (description, district_id) values ('Дзержинский', 2);
-insert into sz_oszns_tbl (description, district_id) values ('Железнодорожный', 3);
-insert into sz_oszns_tbl (description, district_id) values ('Калининский', 4);
-insert into sz_oszns_tbl (description, district_id) values ('Кировский', 5);
-insert into sz_oszns_tbl (description, district_id) values ('Лениниский', 6);
-insert into sz_oszns_tbl (description, district_id) values ('Октябрьский', 7);
-insert into sz_oszns_tbl (description, district_id) values ('Первомайский', 8);
-insert into sz_oszns_tbl (description, district_id) values ('Советский', 9);
-insert into sz_oszns_tbl (description, district_id) values ('Центральный', 10);
-insert into sz_oszns_tbl (description, district_id) values ('Дёмский', 11);
-insert into sz_oszns_tbl (description, district_id) values ('Калиниский', 12);
-insert into sz_oszns_tbl (description, district_id) values ('Кировский', 13);
-insert into sz_oszns_tbl (description, district_id) values ('Лениниский', 14);
-insert into sz_oszns_tbl (description, district_id) values ('Октябрьский', 15);
-insert into sz_oszns_tbl (description, district_id) values ('Орджоникидзевский', 16);
-insert into sz_oszns_tbl (description, district_id) values ('Советский', 17);
+insert into sz_oszns_tbl (description, district_id) values
+        ('Заельцовский', 1),
+        ('Дзержинский', 2),
+        ('Железнодорожный', 3),
+        ('Калининский', 4),
+        ('Кировский', 5),
+        ('Лениниский', 6),
+        ('Октябрьский', 7),
+        ('Первомайский', 8),
+        ('Советский', 9),
+        ('Центральный', 10),
+        ('Дёмский', 11),
+        ('Калиниский', 12),
+        ('Кировский', 13),
+        ('Лениниский', 14),
+        ('Октябрьский', 15),
+        ('Орджоникидзевский', 16),
+        ('Советский', 17);

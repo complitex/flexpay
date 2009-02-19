@@ -2,21 +2,17 @@
 <%@ page import="org.flexpay.bti.persistence.BuildingAttributeTypeEnum" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<script type="text/javascript" src="<s:url value="/resources/common/js/prototype.js"/>"></script>
-<script type="text/javascript"
-        src="<s:url value="/resources/common/js/windows_js_1.3/javascripts/window.js"/>"></script>
-
 <script type="text/javascript">
 
     var attributeGroups = new Array();
 
     <s:iterator value="attributeGroups" id="groupId">
-    attributeGroups[<s:property value="#groupId"/>] = new Array(
-            <s:iterator value="%{getGroupAttributes(#groupId)}" status="status">
-            "attr_<s:property value="%{key}"/>_id"
-            <s:if test="!#status.last">, </s:if>
-            </s:iterator>
-            );
+        attributeGroups[<s:property value="#groupId"/>] = new Array(
+                <s:iterator value="%{getGroupAttributes(#groupId)}" status="status">
+                    "attr_<s:property value="%{key}"/>_id"
+                    <s:if test="!#status.last">, </s:if>
+                </s:iterator>
+                );
     </s:iterator>
 
     function hideAttributesGroup(groupId) {
@@ -149,8 +145,7 @@
         <tr>
             <td class="th" colspan="2">
                 <s:property value="%{getAddress(building.id)}"/>
-                <s:if test="%{building.primaryStatus}">(<s:text
-                        name="tc.edit_building_attributes.primary_status"/>)</s:if>
+                <s:if test="%{building.primaryStatus}">(<s:text name="tc.edit_building_attributes.primary_status"/>)</s:if>
             </td>
         </tr>
 
@@ -162,22 +157,22 @@
                        value="<s:property value="%{attributeDate}"/>"/>
                 <img src="<c:url value="/resources/common/js/jscalendar/img.gif"/>" alt=""
                      id="trigger_attribute.date"
-                     style="cursor: pointer; border: 1px solid red;"
+                     style="cursor:pointer;border:1px solid red;"
                      title="<s:text name="common.calendar"/>"
                      onmouseover="this.style.background='red';"
                      onmouseout="this.style.background='';"/>
                 <script type="text/javascript">
                     Calendar.setup({
-                        inputField     : "attribute.date",
+                        inputField   : "attribute.date",
                         ifFormat     : "%Y/%m/%d",
-                        button         : "trigger_attribute.date",
-                        align         : "Tl",
+                        button       : "trigger_attribute.date",
+                        align        : "Tl",
                         singleClick  : true
                     });
                 </script>
                 <s:submit name="dateSubmitted" value="%{getText('tc.show_attribute_values')}" cssClass="btn-exit"/>
             </td>
-            <td style="text-align: right;">
+            <td style="text-align:right;">
                 <s:submit name="submitted" value="%{getText('common.save')}" cssClass="btn-exit"/>
             </td>
         </tr>
@@ -197,13 +192,13 @@
         <%-- attribute groups --%>
         <s:iterator value="attributeGroups" id="groupId" status="groupStatus">
             <tr>
-                <td class="th" colspan="2" style="padding: 0;">
-                    <table style="width: 100%; font-size: 100%; font-weight: bold;">
+                <td class="th" colspan="2" style="padding:0;">
+                    <table style="width:100%;font-size:100%;font-weight: bold;">
                         <tr>
                             <td>
                                 <s:property value="%{getGroupName(#groupId)}"/>
                             </td>
-                            <td style="text-align: right;">
+                            <td style="text-align:right;">
                                 <input type="button" class="btn-exit"
                                        id="show_group_<s:property value="#groupId"/>"
                                        onclick="showAttributesGroup(<s:property value="#groupId"/>);"
@@ -223,14 +218,14 @@
 
             <s:iterator value="%{getGroupAttributes(#groupId)}">
                 <tr id="attr_<s:property value="%{key}"/>_id" valign="middle" class="cols_1"
-                        <s:if test="!#groupStatus.first"> style="display: none;"</s:if>>
+                        <s:if test="!#groupStatus.first"> style="display:none;"</s:if>>
 
-                    <td class="col" style="width: 80%;"><s:property value="%{getAttributeTypeName(key)}"/></td>
+                    <td class="col" style="width:80%;"><s:property value="%{getAttributeTypeName(key)}"/></td>
 
-                    <td class="col" style="width: 20%;">
+                    <td class="col" style="width:20%;">
                         <s:if test="%{isBuildingAttributeTypeSimple(key)}">
                             <nobr>
-                                <s:textfield name="attributeMap[%{key}]" value="%{value}" cssStyle="width: 140px;"/>
+                                <s:textfield name="attributeMap[%{key}]" value="%{value}" cssStyle="width:140px;"/>
 
                                 <s:if test="%{isTempAttribute(key)}">
                                     <img src="<s:url value="/resources/common/img/i_clock.gif"/>"
@@ -248,12 +243,12 @@
                                           listKey="order"
                                           listValue="value"
                                           emptyOption="true"
-                                          cssStyle="width: 140px;"/>
+                                          cssStyle="width:140px;"/>
 
                                 <s:if test="%{isTempAttribute(key)}">
                                     <img src="<s:url value="/resources/common/img/i_clock.gif"/>"
                                          alt="<s:text name="tc.temp_attribute"/>"
-                                         style="vertical-align: middle;"/>
+                                         style="vertical-align:middle;"/>
                                 </s:if>
                             </nobr>
                         </s:if>
@@ -296,8 +291,8 @@
 
             <s:iterator value="tariffCalculationDates" id="calcDate">
                 <tr>
-                    <td colspan="2" class="th" style="padding: 0;">
-                        <table style="width: 100%; font-size: 100%; font-weight: bold;">
+                    <td colspan="2" class="th" style="padding:0;">
+                        <table style="width:100%;font-size:100%;font-weight:bold;">
                             <tr>
                                 <td><s:text name="tc.tariffs_calculated_on"><s:param value="%{formatDate(#calcDate)}"/></s:text></td>
                                 <td style="text-align: right;">

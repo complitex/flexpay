@@ -22,6 +22,7 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 
 	/**
 	 * Save tariff calculation results for building
+	 *
 	 * @param tariffCalculationResult calculated result
 	 */
 	@Transactional (readOnly = false)
@@ -32,6 +33,7 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 
 	/**
 	 * Save tariff calculation results for building
+	 * 
 	 * @param value calculated value
 	 * @param creationDate record creation date
 	 * @param calculationDate record calculation date

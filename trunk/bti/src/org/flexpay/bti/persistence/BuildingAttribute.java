@@ -21,4 +21,5 @@ public class BuildingAttribute extends BuildingAttributeBase {
 	public void setValueForDates(String value, Date beginDt, Date endDt) {
 		this.value = value;
 	}
+
 }

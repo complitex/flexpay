@@ -138,8 +138,8 @@ insert into bti_building_attribute_type_group_names_tbl (name, language_id, grou
 insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
 	values ('Tariff', @en_id, @attribute_group_17);
 
-INSERT INTO `bti_building_attribute_types_tbl` (id, discriminator, group_id, unique_code, is_temporal)
-VALUES (4,'simple',@attribute_group_1,'ATTR_SECTION_NUMBER', 0),
+INSERT INTO `bti_building_attribute_types_tbl` (id, discriminator, group_id, unique_code, is_temporal) VALUES
+        (4,'simple',@attribute_group_1,'ATTR_SECTION_NUMBER', 0),
 		(5,'simple',@attribute_group_3,'ATTR_HABITANTS_NUMBER', 0),
 		(6,'simple',@attribute_group_2,'ATTR_APARTMENTS_TOTAL_SQUARE', 0),
 		(7,'simple',@attribute_group_1,'ATTR_BUILD_YEAR', 0),

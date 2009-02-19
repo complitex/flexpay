@@ -73,7 +73,7 @@ public class TariffCalcResultExportJob extends Job {
 						Tariff tariff = new Tariff(); tariff.setSubServiceCode(code);
 						tcr.setTariff(tariff);
 						tcr.setCalculationDate(calcDate);
-						tcr.setValue(new BigDecimal(0));
+						tcr.setValue(BigDecimal.ZERO);
 						exporter.export(new Object[]{tcr,externalId, periodBeginDate});
 					}
 					exporter.commit();

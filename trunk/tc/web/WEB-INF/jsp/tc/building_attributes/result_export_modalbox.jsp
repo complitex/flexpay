@@ -41,18 +41,17 @@
                     <s:textfield name="date" id="date" readonly="true" value="%{date}"/>
                     <img src="<c:url value="/resources/common/js/jscalendar/img.gif"/>" alt=""
                          id="trigger.date"
-                         style="cursor: pointer; border: 1px solid red;"
+                         style="cursor:pointer;border:1px solid red;"
                          title="<s:text name="common.calendar"/>"
                          onmouseover="this.style.background='red';"
                          onmouseout="this.style.background='';"/>
                     <script type="text/javascript">
                         Calendar.setup({
-                            inputField     : "date",
-                            ifFormat     : "%Y/%m/%d",
-                            button         : "trigger.date",
-                            align         : "Tl",
-                            singleClick  : true,
-                            position: [x, y]
+                            inputField : "date",
+                            ifFormat   : "%Y/%m/%d",
+                            button     : "trigger.date",
+                            align      : "Tl",
+                            position   : [x, y]
                         });
                     </script>
 

@@ -11,9 +11,10 @@ public interface TariffServiceExt {
 	 * Find tariff by code
 	 *
 	 * @param code tariff code
-	 * @return tarif
+	 * @return tariff
 	 */
 	@Secured ({Roles.TARIFF_READ})
 	@Nullable
 	Tariff getTariffByCode(@NotNull String code);
+
 }

@@ -340,7 +340,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     public BigDecimal getTotalTariff(String calcDate) {
         Map<Long, BigDecimal> tcResults = tcResultsMap.get(calcDate);
 
-        BigDecimal total = new BigDecimal(0);
+        BigDecimal total = BigDecimal.ZERO;
         for (BigDecimal tariff : tcResults.values()) {
             total = total.add(tariff);
         }

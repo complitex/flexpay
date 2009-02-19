@@ -251,4 +251,5 @@ public class BuildingAttributeConfig {
 	public static final String ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT = "ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT";
 	// 129 DY освещение мест общего пользования (в части КСП «Харьковгорлифт») с КП «Жилкомсервис», грн. DX * 1.214263
 	public static final String ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT_ZHILKOMSERVIS = "ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT_ZHILKOMSERVIS";
+
 }

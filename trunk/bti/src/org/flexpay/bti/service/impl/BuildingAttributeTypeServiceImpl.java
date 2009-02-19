@@ -174,4 +174,5 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	public void setAttributeTypeDaoExt(BuildingAttributeTypeDaoExt attributeTypeDaoExt) {
 		this.attributeTypeDaoExt = attributeTypeDaoExt;
 	}
+
 }
