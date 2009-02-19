@@ -49,7 +49,7 @@ public class JDBCCNExporter implements Exporter {
 		try {
 			TariffCalculationResult tariffCalculationResult = (TariffCalculationResult) params[0];
 			Integer externalId = Integer.parseInt((String) params[1]);
-			Date periodBeginDate = (Date) params[2];
+			Date periodBeginDate = new Date(((java.util.Date) params[2]).getTime());
 			CallableStatement cs = conn.prepareCall(procedure);
 			try {
 				cs.registerOutParameter(1, Types.INTEGER);
