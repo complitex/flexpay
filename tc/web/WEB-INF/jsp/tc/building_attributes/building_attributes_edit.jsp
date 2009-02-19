@@ -325,7 +325,7 @@
                 </tr>
 
                 <s:iterator value="%{getTcResults(#calcDate)}">
-                    <tr class="cols_1"
+                    <tr <s:if test="%{value < 0}">class="cols_1_highlighted"</s:if><s:else>class="cols_1"</s:else>                             
                         id="tariff_row_<s:property value="%{key}"/>_<s:property value="%{formatDate(#calcDate)}"/>">
                         <td class="col" style="width: 80%;"><s:property value="%{getTariffTranslation(key)}"/></td>
                         <td class="col" style="width: 20%;">
