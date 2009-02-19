@@ -53,7 +53,27 @@
     document.onmousemove = getXY;
 
     function uploadSubmit(calcDate) {
+        if (tcResultsChanged(calcDate)) {
+            alert('<s:text name="tc.must_save_tc_results"/>');
+            return false;
+        }
+
         showBeginDateWindow(calcDate);
+        return false;
+    }
+
+    function tcResultsChanged(calcDate) {
+        var elements = $$('input[id^="tariff_value_"][id$="' + calcDate + '"]');
+
+        for (var i = 0; i < elements.length; i++) {
+            var newValue = elements[i].value;
+            var oldValue = $(elements[i].id + "_old").value;
+
+            if (oldValue != newValue) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -311,12 +331,16 @@
                         <td class="col" style="width: 20%;">
                             <input id="tariff_value_<s:property value="%{key}"/>_<s:property value="%{formatDate(#calcDate)}"/>"
                                    type="text" value="<s:property value="%{value}"/>"/>
+                            <input id="tariff_value_<s:property value="%{key}"/>_<s:property value="%{formatDate(#calcDate)}"/>_old"
+                                   type="hidden" value="<s:property value="%{value}"/>"/>
                         </td>
                     </tr>
                 </s:iterator>
                 <tr class="cols_1">
                     <td class="col" style="width: 80%; font-weight: bold;"><s:text name="tc.total_tariff"/></td>
-                    <td class="col" style="width: 20%; font-weight: bold;"><s:property value="%{getTotalTariff(#calcDate)}"/></td>
+                    <td class="col" style="width: 20%; font-weight: bold;">
+                        <s:property value="%{getTotalTariff(#calcDate)}"/>
+                    </td>
                 </tr>
             </s:iterator>
         </s:form>
