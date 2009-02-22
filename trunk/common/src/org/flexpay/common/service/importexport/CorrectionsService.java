@@ -49,6 +49,14 @@ public interface CorrectionsService {
 	@NotNull
 	DataCorrection getStub(String externalId, DomainObject obj, DataSourceDescription sourceDescription);
 
+	/**
+	 *
+	 * @param internalId
+	 * @param type
+	 * @param dataSourceDescriptionId
+	 * @return
+	 * @deprecated refactor to use Objects instead of Longs
+	 */
 	String getExternalId(@NonNls Long internalId, int type, Long dataSourceDescriptionId);
 
 	/**
