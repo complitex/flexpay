@@ -25,7 +25,6 @@ public class TestDrools extends SpringBeanAwareTestCase {
 									 " TestObject(id!=0);\n" +
 									 " then \n" +
 									 " testFlag.setFlag(true);\n" +
-									 " System.out.println(\"Here is a joke!\");\n" +
 									 " end";
 
 	@Test
