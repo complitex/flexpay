@@ -182,7 +182,7 @@ INSERT INTO `bti_building_attribute_types_tbl` (id, discriminator, group_id, uni
 		(45,'enum',@attribute_group_6,'ATTR_INHOUSE_SEWER_SYSTEM_TYPE', 0),
 		(46,'simple',@attribute_group_10,'ATTR_LIFTS_TECH_SUPPORT', 0),
 		(47,'simple',@attribute_group_11,'ATTR_DISPETCHER_SYSTEMS_TECH_SUPPORT', 0),
-		(48,'simple',@attribute_group_16,'ATTR_COMMON_PLACES_LIGHTENING', 0);
+		(48,'simple',@attribute_group_16,'ATTR_COMMON_PLACES_LIGHTENING', 0),
         (65,'simple',@attribute_group_2,'ATTR_OPEN_ELECTRIC_WIRING_APARTMENT_NUMBER', 0),
         (66,'simple',@attribute_group_2,'ATTR_OPEN_ELECTRIC_WIRING_APARTMENT_NUMBER_2', 0);
 
