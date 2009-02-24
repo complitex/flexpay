@@ -32,8 +32,12 @@ public class ApplicationConfig {
 	private static final Date DATE_FUTURE_INFINITE = new GregorianCalendar(2100, 11, 31).getTime();
 
 	private String dataRoot;
-
     private int logPreviewLinesNumber;
+
+	/**
+	 * Unique instance id
+	 */
+	private String instanceId;
 
 	private String testProp;
 
@@ -197,4 +201,13 @@ public class ApplicationConfig {
     public void setLogPreviewLinesNumber(String logPreviewLinesNumber) {
         this.logPreviewLinesNumber = Integer.valueOf(logPreviewLinesNumber);
     }
+
+	@NotNull
+	public static String getInstanceId() {
+		return getInstance().instanceId;
+	}
+
+	public void setInstanceId(String instanceId) {
+		this.instanceId = instanceId;
+	}
 }

@@ -21,11 +21,11 @@
 		  autowire-candidate="false"
 		  p:languageDao-ref="languageDao" />
 
-    <bean class="org.flexpay.common.service.imp.FPFileServiceImpl" id="fpFileService"
-          p:fpFileDao-ref="fpFileDao"
-          p:fpFileStatusDao-ref="fpFileStatusDao"
-          p:fpFileTypeDao-ref="fpFileTypeDao"
-          p:fpModuleDao-ref="fpModuleDao" />
+	<bean class="org.flexpay.common.service.imp.FPFileServiceImpl" id="fpFileService"
+		  p:fpFileDao-ref="fpFileDao"
+		  p:fpFileStatusDao-ref="fpFileStatusDao"
+		  p:fpFileTypeDao-ref="fpFileTypeDao"
+		  p:fpModuleDao-ref="fpModuleDao" />
 
 	<bean class="org.flexpay.common.service.imp.MeasureUnitServiceImpl" id="measureUnitServiceTarget"
 		  autowire-candidate="false"
@@ -41,20 +41,25 @@
 	<bean class="org.flexpay.common.process.ProcessHelper" id="processHelper"
 		  p:processManager-ref="processManager" />
 
-	<bean id="masterIndexProvider" class="org.flexpay.common.service.importexport.imp.MasterIndexProviderDBImpl"
-			p:lockManager-ref="lockManager"
-			p:masterIndexDao-ref="masterIndexDao"/>
+	<bean id="correctionsServiceFactory"
+		  class="org.flexpay.common.service.importexport.imp.CorrectionsServiceFactory" />
 
-	<bean id="masterIndexService" class="org.flexpay.common.service.importexport.imp.MasterIndexServiceImpl"
-			p:lockManager-ref="lockManager"
-			p:masterIndexBoundsDao-ref="masterIndexBoundsDao"
-			p:masterIndexProvider-ref="masterIndexProvider" />
+	<bean id="classToTypeRegistryCommon" class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryStub" />
+
+	<bean id="correctionsService"
+		  factory-bean="correctionsServiceFactory"
+		  factory-method="getInstance"
+		  p:typeRegistry-ref="classToTypeRegistryCommon"
+		  p:correctionsDao-ref="correctionsDao" />
+
+	<bean id="masterIndexServiceTarget" autowire-candidate="false"
+		  class="org.flexpay.common.service.importexport.imp.MasterIndexServiceImpl"
+		  p:correctionsService-ref="correctionsService"
+		  p:sourceDescriptionDao-ref="dataSourceDescriptionDao" />
 
 	<bean id="cnDataSourceDescription" class="org.flexpay.common.persistence.DataSourceDescription">
 		<!-- TODO Here put the CN data source ID -->
 		<constructor-arg index="0" value="${cn.data.source.description.id}" />
 	</bean>
-
-
 
 </beans>

@@ -11,12 +11,9 @@ import org.springframework.test.annotation.ExpectedException;
 
 public class TestCorrectionsService extends SpringBeanAwareTestCase {
 
-	private CorrectionsService service;
-
 	@Autowired
-	public void setService(@Qualifier ("correctionsService") CorrectionsService service) {
-		this.service = service;
-	}
+	@Qualifier ("szCorrectionsService")
+	private CorrectionsService service;
 
 	@Test
 	@ExpectedException (FlexPayException.class)

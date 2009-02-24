@@ -51,6 +51,7 @@ public class CommonConfigLoader implements ResourceLoaderAware {
 				Digester digester = new Digester();
 				digester.push(config);
 				addRules(digester);
+				//noinspection IOResourceOpenedButNotSafelyClosed
 				is = new InputStreamReader(url.openStream(), "UTF-8");
 				digester.parse(is);
 			} finally {
@@ -97,6 +98,8 @@ public class CommonConfigLoader implements ResourceLoaderAware {
 		d.addCallMethod("flexpay/dataRoot", "setDataRoot", 0);
 
 		d.addCallMethod("flexpay/testprop", "setTestProp", 0);
+
+		d.addCallMethod("flexpay/instanceId", "setInstanceId", 0);
 
         d.addCallMethod("flexpay/logPreviewLinesNumber", "setLogPreviewLinesNumber", 0);
 	}

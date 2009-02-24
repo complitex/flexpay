@@ -1,11 +1,9 @@
 package org.flexpay.common.persistence;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Set;
@@ -69,17 +67,6 @@ public abstract class TemporaryType<TV extends TemporaryValue<TV>, T extends Tra
 	 */
 	public boolean isActive() {
 		return status == ObjectWithStatus.STATUS_ACTIVE;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-				.append("id", getId())
-				.append("Translations", translations.toArray())
-				.toString();
 	}
 
 	/**

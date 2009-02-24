@@ -6,4 +6,7 @@
     <!-- Number of lines of log to be shown on process details view page-->
     <logPreviewLinesNumber>100</logPreviewLinesNumber>
 
+	<!-- Unique instance identifier -->
+	<instanceId>1</instanceId>
+
 </flexpay>

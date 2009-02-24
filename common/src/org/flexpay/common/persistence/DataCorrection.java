@@ -17,6 +17,16 @@ public class DataCorrection extends DomainObject {
 	}
 
 	/**
+	 * Constructs a new DomainObject.
+	 */
+	public DataCorrection(String externalId, Long internalObjectId, int objectType, DataSourceDescription dataSourceDescription) {
+		this.externalId = externalId;
+		this.internalObjectId = internalObjectId;
+		this.objectType = objectType;
+		this.dataSourceDescription = dataSourceDescription;
+	}
+
+	/**
 	 * Getter for property 'externalId'.
 	 *
 	 * @return Value for property 'externalId'.

@@ -31,7 +31,6 @@ public class TestTownTypeHistoryBuilder extends SpringBeanAwareTestCase {
 	public void testBuildDiff4() {
 
 		TownType townType = new TownType(123L);
-		townType.setId(123L);
 		TownTypeTranslation translation = new TownTypeTranslation("Test translation");
 		translation.setShortName("TT");
 
@@ -47,7 +46,6 @@ public class TestTownTypeHistoryBuilder extends SpringBeanAwareTestCase {
 	public void testPatch() {
 
 		TownType townType = new TownType(123L);
-		townType.setId(123L);
 		TownTypeTranslation translation = new TownTypeTranslation("Test translation");
 		translation.setShortName("TT");
 		townType.setTranslation(translation);

@@ -12,7 +12,6 @@
 		
 		<!-- common.Sequences -->
 		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
-		<mapping resource="org/flexpay/common/persistence/MasterIndex.hbm.xml" />
 
 		<!-- Dual virtual table -->
 		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />

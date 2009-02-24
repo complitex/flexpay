@@ -1,21 +1,35 @@
 package org.flexpay.common.service.importexport;
 
+import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.DomainObject;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 public interface MasterIndexService {
 
 	/**
-	 * Get next master index value
+	 * Get new master index value
 	 *
-	 * @param type Objects type to get next index for
-	 * @return next index value
+	 * @param obj Object to get index for
+	 * @return index value, or <code>null</null> if application instance is not intended to generate any shared data
 	 */
-	Long next(int type);
+	@Nullable
+	<T extends DomainObject> String getNewMasterIndex(@NotNull T obj);
 
 	/**
-	 * Get batch of master index values
+	 * Find master index of internal object
 	 *
-	 * @param type Objects type to get next indexes for
-	 * @param number Number of required index values
-	 * @return next index values, minimum-maximum pair
+	 * @param obj internal object to find index for
+	 * @return master index value if available, or <code>null</code> otherwise
 	 */
-	Long[] nextBatch(int type, int number);
+	@Nullable
+	<T extends DomainObject> String getMasterIndex(@NotNull T obj);
+
+	/**
+	 * Get a reference to master data source description
+	 *
+	 * @return DataSourceDescription
+	 */
+	@NotNull
+	DataSourceDescription getMasterSourceDescription();
 }

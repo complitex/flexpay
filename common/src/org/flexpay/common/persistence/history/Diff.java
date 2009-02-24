@@ -22,8 +22,7 @@ public class Diff extends DomainObjectWithStatus {
 	private int operationType;
 	private String userName;
 	private boolean processed;
-
-	private DataSourceDescription dataSourceDescription;
+	private String masterIndex;
 
 	private List<HistoryRecord> historyRecords = Collections.emptyList();
 
@@ -97,12 +96,12 @@ public class Diff extends DomainObjectWithStatus {
 		this.operationType = operationType;
 	}
 
-	public DataSourceDescription getDataSourceDescription() {
-		return dataSourceDescription;
+	public String getMasterIndex() {
+		return masterIndex;
 	}
 
-	public void setDataSourceDescription(DataSourceDescription dataSourceDescription) {
-		this.dataSourceDescription = dataSourceDescription;
+	public void setMasterIndex(String masterIndex) {
+		this.masterIndex = masterIndex;
 	}
 
 	@Override
@@ -114,7 +113,7 @@ public class Diff extends DomainObjectWithStatus {
 				append("objectType", objectType).
 				append("objectId", objectId).
 				append("userName", userName).
-				append("sourceDescription", dataSourceDescription).
+				append("masterIndex", masterIndex).
 				toString();
 	}
 

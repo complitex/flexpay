@@ -22,7 +22,7 @@
 	<bean id="serviceTypeRecordService" class="org.flexpay.sz.service.imp.ServiceTypeRecordServiceImpl"
 		p:serviceTypeRecordDao-ref="serviceTypeRecordDAO" />
 
-	<bean id="correctionsService" class="org.flexpay.sz.service.imp.CorrectionsServiceImpl"
+	<bean id="szCorrectionsService" class="org.flexpay.sz.service.imp.CorrectionsServiceImpl"
 		p:apartmentCorrectionDao-ref="apartmentCorrectionDao"
 		p:buildingCorrectionDao-ref="buildingCorrectionDao"
 		p:districtCorrectionDao-ref="districtCorrectionDao"

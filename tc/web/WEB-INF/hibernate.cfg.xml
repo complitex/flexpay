@@ -11,7 +11,6 @@
         <mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
         <!-- common.Sequences -->
         <mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
-        <mapping resource="org/flexpay/common/persistence/MasterIndex.hbm.xml" />
         <!-- common.ImportErrors -->
         <mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
         <mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />

@@ -99,11 +99,21 @@
 		  p:personDao-ref="personDao"
 		  p:personDaoExt-ref="personDaoExt" />
 
-	<bean id="townTypeHistoryBuilder" class="org.flexpay.ab.service.history.TownTypeHistoryBuilder"
+	<!-- History builders -->
+	<bean id="abHistoryBuilderBase"
+		  abstract="true"
+		  class="org.flexpay.common.persistence.history.impl.HistoryBuilderBase"
+		  p:masterIndexService-ref="masterIndexService"
+		  p:correctionsService-ref="correctionsServiceAb" 
 		  p:typeRegistry-ref="typeRegistryAb" />
 
-	<bean id="townHistoryBuilder" class="org.flexpay.ab.service.history.TownHistoryBuilder"
-		  p:typeRegistry-ref="typeRegistryAb"
-		  p:correctionsService-ref="correctionsServiceAb" />
+	<bean id="townTypeHistoryBuilder"
+		  parent="abHistoryBuilderBase"
+		  class="org.flexpay.ab.service.history.TownTypeHistoryBuilder"
+		  p:masterIndexService-ref="masterIndexService" />
+
+	<bean id="townHistoryBuilder"
+		  parent="abHistoryBuilderBase"
+		  class="org.flexpay.ab.service.history.TownHistoryBuilder" />
 
 </beans>

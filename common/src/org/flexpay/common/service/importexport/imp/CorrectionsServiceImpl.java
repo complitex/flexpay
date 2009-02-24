@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional (readOnly = true)
@@ -84,7 +85,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	}
 
 	/**
-	 * Create stub for new data correction or get existing one 
+	 * Create stub for new data correction or get existing one
 	 *
 	 * @param externalId		External object id
 	 * @param obj			   DomainObject
@@ -113,19 +114,24 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	}
 
 	/**
-	 * Setter for property 'typeRegistry'.
+	 * Find external identifier of internal object
 	 *
-	 * @param typeRegistry Value to set for property 'typeRegistry'.
+	 * @param obj			   Object to get external identifier of
+	 * @param sourceDescription DataSourceDescription to get
+	 * @param <T>               Object type
+	 * @return External id that if found, or <code>null</code> otherwise
 	 */
+	@Nullable
+	public <T extends DomainObject> String getExternalId(@NotNull T obj, DataSourceDescription sourceDescription) {
+		return correctionsDao.getExternalId(obj.getId(), typeRegistry.getType(obj.getClass()), sourceDescription.getId());
+	}
+
+	@Required
 	public void setTypeRegistry(ClassToTypeRegistry typeRegistry) {
 		this.typeRegistry = typeRegistry;
 	}
 
-	/**
-	 * Setter for property 'correctionsDao'.
-	 *
-	 * @param correctionsDao Value to set for property 'correctionsDao'.
-	 */
+	@Required
 	public void setCorrectionsDao(CorrectionsDao correctionsDao) {
 		this.correctionsDao = correctionsDao;
 	}
