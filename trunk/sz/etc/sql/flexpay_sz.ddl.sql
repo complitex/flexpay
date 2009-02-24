@@ -15,6 +15,16 @@
         primary key (id)
     );
 
+    create table ab_building_address_attribute_type_translations_tbl (
+        id bigint not null auto_increment,
+        name varchar(255) not null comment 'Type translation',
+        short_name varchar(255) comment 'Optional short translation',
+        attribute_type_id bigint not null comment 'Building attribute type reference',
+        language_id bigint not null comment 'Language reference',
+        primary key (id),
+        unique (attribute_type_id, language_id)
+    ) comment='Building attribute type translations';
+
     create table ab_building_address_attribute_types_tbl (
         id bigint not null auto_increment,
         status integer not null comment 'Enabled/Disabled status',
@@ -38,16 +48,6 @@
         building_id bigint not null comment 'Building reference this address belongs to',
         primary key (id)
     ) comment='Building addresses';
-
-    create table ab_building_address_attribute_type_translations_tbl (
-        id bigint not null auto_increment,
-        name varchar(255) not null comment 'Type translation',
-        short_name varchar(255) comment 'Optional short translation',
-        attribute_type_id bigint not null comment 'Building attribute type reference',
-        language_id bigint not null comment 'Language reference',
-        primary key (id),
-        unique (attribute_type_id, language_id)
-    ) comment='Building attribute type translations';
 
     create table ab_building_statuses_tbl (
         id bigint not null auto_increment,
@@ -489,23 +489,6 @@
         lang_iso_code varchar(3) not null unique,
         primary key (id)
     );
-
-    create table common_master_index_bounds_tbl (
-        id bigint not null auto_increment,
-        version integer not null comment 'Optimistic lock version',
-        object_type integer not null comment 'Type of objects index is used for',
-        lower_bound bigint not null comment 'Lower index bound',
-        upper_bound bigint not null comment 'Upper index bound',
-        primary key (id)
-    ) comment='Master index bounds got from external source';
-
-    create table common_master_index_tbl (
-        id bigint not null auto_increment,
-        version integer not null comment 'Optimistic lock version',
-        object_type integer not null comment 'Type of objects index is used for',
-        index_value bigint not null comment 'Index value',
-        primary key (id)
-    ) comment='Master index, unique value among integrated systems';
 
     create table common_measure_units_tbl (
         id bigint not null auto_increment comment 'Primary key',
@@ -1115,6 +1098,18 @@
         foreign key (building_id) 
         references ab_buildings_tbl (id);
 
+    alter table ab_building_address_attribute_type_translations_tbl 
+        add index ab_building_attribute_type_translations_tbl_attribute_type_id (attribute_type_id), 
+        add constraint ab_building_attribute_type_translations_tbl_attribute_type_id 
+        foreign key (attribute_type_id) 
+        references ab_building_address_attribute_types_tbl (id);
+
+    alter table ab_building_address_attribute_type_translations_tbl 
+        add index lang_building_attribute_type_pair_language_id (language_id), 
+        add constraint lang_building_attribute_type_pair_language_id 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
     create index indx_value on ab_building_address_attributes_tbl (value);
 
     alter table ab_building_address_attributes_tbl 
@@ -1140,18 +1135,6 @@
         add constraint ab_buildingses_tbl_building_id 
         foreign key (building_id) 
         references ab_buildings_tbl (id);
-
-    alter table ab_building_address_attribute_type_translations_tbl
-        add index ab_building_attribute_type_translations_tbl_attribute_type_id (attribute_type_id), 
-        add constraint ab_building_attribute_type_translations_tbl_attribute_type_id 
-        foreign key (attribute_type_id) 
-        references ab_building_address_attribute_types_tbl (id);
-
-    alter table ab_building_address_attribute_type_translations_tbl
-        add index lang_building_attribute_type_pair_language_id (language_id), 
-        add constraint lang_building_attribute_type_pair_language_id 
-        foreign key (language_id) 
-        references common_languages_tbl (id);
 
     alter table ab_building_statuses_tbl 
         add index ab_building_statuses_tbl_building_id (building_id), 

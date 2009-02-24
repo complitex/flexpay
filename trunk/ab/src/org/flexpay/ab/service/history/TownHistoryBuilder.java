@@ -10,12 +10,10 @@ import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.service.importexport.CorrectionsService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
@@ -25,8 +23,6 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 	public static final int FIELD_TYPE_ID = 2;
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
-
-	private CorrectionsService correctionsService;
 
 	/**
 	 * Build necessary diff records
@@ -110,8 +106,8 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 
 			HistoryRecord rec = new HistoryRecord();
 			rec.setFieldType(FIELD_TYPE_ID);
-			rec.setOldLongValue(tmp1.getValue() != null ? tmp1.getValue().getId() : null);
-			rec.setNewLongValue(tmp2.getValue() != null ? tmp2.getValue().getId() : null);
+			rec.setOldStringValue(tmp1.isValueEmpty() ? null : masterIndexService.getMasterIndex(tmp1.getValue()));
+			rec.setNewStringValue(tmp2.isValueEmpty() ? null : masterIndexService.getMasterIndex(tmp2.getValue()));
 			rec.setBeginDate(tmp2.getBegin());
 			rec.setEndDate(tmp2.getEnd());
 			diff.addRecord(rec);
@@ -169,22 +165,16 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 		log.debug("Patching type {}", record);
 
 		TownType type = null;
-		if (record.getNewLongValue() != null) {
+		if (record.getNewStringValue() != null) {
 
-			String externalId = record.getNewLongValue().toString();
+			String externalId = record.getNewStringValue();
 			Stub<TownType> typeStub = correctionsService.findCorrection(
-					externalId, TownType.class, record.getDiff().getDataSourceDescription());
+					externalId, TownType.class, masterIndexService.getMasterSourceDescription());
 			if (typeStub == null) {
-				log.warn("Cannot find town type by id {}", record);
-				return;
+				throw new IllegalStateException("Cannot find town type by master index: " + externalId);
 			}
 			type = new TownType(typeStub);
 		}
 		town.setTypeForDates(type, record.getBeginDate(), record.getEndDate());
-	}
-
-	@Required
-	public void setCorrectionsService(CorrectionsService correctionsService) {
-		this.correctionsService = correctionsService;
 	}
 }

@@ -61,16 +61,16 @@ public class TariffCalcResultExportJob extends Job {
 				}
 
 				List<TariffCalculationResult> tcrs = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndAddressId(calcDate, addressId);
-				List<String> addressSubServiceexportCodes = CollectionUtils.list();
-				addressSubServiceexportCodes.addAll(subServiceExportCodes);
+				List<String> addressSubServiceExportCodes = CollectionUtils.list(subServiceExportCodes);
 				try {
 					for (TariffCalculationResult tcr : tcrs) {
 						exporter.export(new Object[]{tcr, externalId, periodBeginDate});
-						addressSubServiceexportCodes.remove(tcr.getTariff().getSubServiceCode());
+						addressSubServiceExportCodes.remove(tcr.getTariff().getSubServiceCode());
 					}
-					for(String code : addressSubServiceexportCodes){
+					for(String code : addressSubServiceExportCodes){
 						TariffCalculationResult tcr = new TariffCalculationResult();
-						Tariff tariff = new Tariff(); tariff.setSubServiceCode(code);
+						Tariff tariff = new Tariff();
+						tariff.setSubServiceCode(code);
 						tcr.setTariff(tariff);
 						tcr.setCalculationDate(calcDate);
 						tcr.setValue(BigDecimal.ZERO);

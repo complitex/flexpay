@@ -46,6 +46,9 @@ insert into common_mesuare_unit_names_tbl(name, measure_unit_id, language_id)
 INSERT INTO common_data_source_descriptions_tbl (id, description) VALUES (1, 'Источник - Тестовые данные ПУ из ЦН');
 SELECT @source_description_test_data:=1;
 
+INSERT INTO common_data_source_descriptions_tbl (id, description) VALUES (2002, 'Master-Index');
+SELECT @source_description_master_index:=2002;
+
 -- Init modules
 INSERT INTO common_flexpay_modules_tbl (name) VALUES ('common');
 SELECT @module_common:=last_insert_id();

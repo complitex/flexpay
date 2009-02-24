@@ -72,11 +72,8 @@
 
 	<bean id="typeRegistryAb" class="org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry" />
 
-	<bean id="correctionsServiceAb"
-		  class="org.flexpay.common.service.importexport.imp.CorrectionsServiceImpl">
-		<property name="correctionsDao" ref="correctionsDao" />
-		<property name="typeRegistry" ref="typeRegistryAb" />
-	</bean>
+	<bean id="correctionsServiceAb" parent="correctionsService"
+		  p:typeRegistry-ref="typeRegistryAb" />
 
 	<bean id="importErrorServiceAb" parent="importErrorServiceTemplate">
 		<property name="registry" ref="typeRegistryAb" />

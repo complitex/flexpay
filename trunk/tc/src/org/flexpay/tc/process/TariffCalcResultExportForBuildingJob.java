@@ -57,7 +57,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 			Stub<Building> buildingStub = new Stub<Building>(Long.parseLong((String)parameters.get(BUILDING_ID)));
 
 			log.info("Tariff calculation result export procces started");
-			log.info("Calculation date := {} building id := {}", new Object[]{calculationDate, buildingStub.getId()});
+			log.info("Calculation date := {} building id := {}", calculationDate, buildingStub.getId());
 
 			if (!lockManager.lock(Resources.BUILDING_ATTRIBUTES)) {
 				log.info("Another process has already requested a lock and is working");
@@ -67,7 +67,8 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 			List<TariffCalculationResult> tariffCalcResultList = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndBuilding(
 					calculationDate, buildingStub);
 			//find external id
-			log.info("{} tariff calculation result(s) founded for building with id := {} on date := {}", new Object[] {tariffCalcResultList.size(), buildingStub.getId(), calculationDate});
+			log.info("{} tariff calculation result(s) founded for building with id := {} on date := {}",
+					new Object[] {tariffCalcResultList.size(), buildingStub.getId(), calculationDate});
 			if (tariffCalcResultList.size() > 0) {
 				exporter.beginExport();
 				String externalId = getExternalId(buildingStub);
@@ -104,7 +105,8 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 
 		List<BuildingAddress> buildingAddressList = buildingService.getBuildingBuildings(buildingStub);
 		for (BuildingAddress buildingAddress : buildingAddressList) {
-			String externalId = correctionsService.getExternalId(buildingAddress.getId(), classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionId);
+			String externalId = correctionsService.getExternalId(buildingAddress.getId(),
+					classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionId);
 			if (externalId != null) {
 				return externalId;
 			}

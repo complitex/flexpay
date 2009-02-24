@@ -74,7 +74,7 @@ public class TownTypeHistoryBuilder extends HistoryBuilderBase<TownType> {
 				diff.addRecord(rec);
 			}
 
-			log.debug("Colpleted Diff for lang {}", lang);
+			log.debug("Completed Diff for lang {}", lang);
 		}
 	}
 

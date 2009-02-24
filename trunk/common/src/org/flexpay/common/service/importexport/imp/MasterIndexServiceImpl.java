@@ -1,99 +1,86 @@
 package org.flexpay.common.service.importexport.imp;
 
-import org.flexpay.common.dao.MasterIndexBoundsDao;
-import org.flexpay.common.locking.LockManager;
-import org.flexpay.common.persistence.MasterIndexBounds;
-import org.flexpay.common.service.importexport.MasterIndexProvider;
+import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.dao.DataSourceDescriptionDao;
+import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
-import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Map;
 
 @Transactional
 public class MasterIndexServiceImpl implements MasterIndexService {
 
-	private static final String LOCK_NAME = MasterIndexServiceImpl.class.getName() + ".lock.";
+	private Logger log = LoggerFactory.getLogger(getClass());
 
-	/**
-	 * Number of indexes taken at time from provider
-	 */
-	private static final int DEFAULT_BATCH_SIZE = 1000;
-
-	private LockManager lockManager;
-	private MasterIndexProvider masterIndexProvider;
-	private MasterIndexBoundsDao masterIndexBoundsDao;
-
-	private Map<Integer, MasterIndexBounds> bounds = CollectionUtils.map();
+	private CorrectionsService correctionsService;
+	private DataSourceDescriptionDao sourceDescriptionDao;
 
 	/**
 	 * Get next master index value
 	 *
-	 * @param type Objects type to get next index for
+	 * @param obj Object to get next index for
 	 * @return next index value
 	 */
-	public Long next(int type) {
-		return nextBatch(type, 1)[0];
+	@Nullable
+	public <T extends DomainObject> String getNewMasterIndex(@NotNull T obj) {
+
+		if (obj.isNew()) {
+			throw new IllegalArgumentException("No new object allowed for master index request");
+		}
+		String instanceId = ApplicationConfig.getInstanceId();
+		return StringUtils.isNotBlank(instanceId) ? instanceId + "-" + obj.getId() : null;
 	}
 
 	/**
-	 * Get batch of master index values
+	 * Find master index of internal object
 	 *
-	 * @param type   Objects type to get next indexes for
-	 * @param number Number of required index values
-	 * @return next index values, minimum-maximum pair
+	 * @param obj internal object to find index for
+	 * @return master index value if available, or <code>null</code> otherwise
 	 */
-	public Long[] nextBatch(int type, int number) {
-		try {
-			Long[] minmax = {null, null};
-			lockManager.lock(LOCK_NAME);
-			MasterIndexBounds indexBounds = bounds.get(type);
-			if (indexBounds == null) {
-				List<MasterIndexBounds> boundses = masterIndexBoundsDao.findIndexBoundses(type);
-				if (boundses.isEmpty()) {
-					indexBounds = new MasterIndexBounds(type);
-				} else {
-					indexBounds = boundses.get(0);
-				}
-			}
-
-			// if number of available indexes is not anough, request more from provider
-			if (indexBounds.getSize() < number) {
-				int requestedNumber = Math.max(DEFAULT_BATCH_SIZE, number);
-				MasterIndexBounds requestedBounds = masterIndexProvider.getIndexBatch(type, requestedNumber);
-				indexBounds.setLowerBound(requestedBounds.getLowerBound());
-				indexBounds.setUpperBound(requestedBounds.getUpperBound());
-			}
-
-			minmax[0] = indexBounds.getLowerBound();
-			indexBounds.increment(number);
-			minmax[1] = minmax[0] + number;
-
-			if (indexBounds.isNew()) {
-				masterIndexBoundsDao.create(indexBounds);
-			} else {
-				masterIndexBoundsDao.update(indexBounds);
-			}
-			return minmax;
-		} finally {
-			lockManager.releaseLock(LOCK_NAME);
+	public <T extends DomainObject> String getMasterIndex(@NotNull T obj) {
+		if (obj.isNew()) {
+			throw new IllegalArgumentException("No new object allowed for master index request");
 		}
+
+		String index = correctionsService.getExternalId(obj, getMasterSourceDescription());
+		log.debug("Master index: {} , for object {}", index, obj);
+
+		return index;
+	}
+
+	/**
+	 * Get a reference to master data source description
+	 *
+	 * @return DataSourceDescription
+	 */
+	@NotNull
+	public DataSourceDescription getMasterSourceDescription() {
+		List<DataSourceDescription> descriptions = sourceDescriptionDao.findMasterSourceDescription();
+		if (descriptions.isEmpty()) {
+			throw new IllegalStateException("Master index data source not found");
+		}
+		if (descriptions.size() > 1) {
+			throw new IllegalStateException("Several master indexes found");
+		}
+		return descriptions.get(0);
 	}
 
 	@Required
-	public void setLockManager(LockManager lockManager) {
-		this.lockManager = lockManager;
+	public void setSourceDescriptionDao(DataSourceDescriptionDao sourceDescriptionDao) {
+		this.sourceDescriptionDao = sourceDescriptionDao;
 	}
 
 	@Required
-	public void setMasterIndexProvider(MasterIndexProvider masterIndexProvider) {
-		this.masterIndexProvider = masterIndexProvider;
-	}
-
-	@Required
-	public void setMasterIndexBoundsDao(MasterIndexBoundsDao masterIndexBoundsDao) {
-		this.masterIndexBoundsDao = masterIndexBoundsDao;
+	public void setCorrectionsService(CorrectionsService correctionsService) {
+		this.correctionsService = correctionsService;
 	}
 }

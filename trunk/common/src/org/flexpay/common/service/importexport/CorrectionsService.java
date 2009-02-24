@@ -60,6 +60,17 @@ public interface CorrectionsService {
 	String getExternalId(@NonNls Long internalId, int type, Long dataSourceDescriptionId);
 
 	/**
+	 * Find external identifier of internal object
+	 *
+	 * @param obj Object to get external identifier of
+	 * @param sourceDescription DataSourceDescription to get
+	 * @param <T> Object type
+	 * @return External id that if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	<T extends DomainObject> String getExternalId(@NotNull T obj, DataSourceDescription sourceDescription);
+
+	/**
 	 * Delete correction
 	 * 
 	 * @param correction Data correction to delete
