@@ -1,10 +1,7 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.TownTypeDao;
-import org.flexpay.ab.dao.TownTypeTranslationDao;
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.persistence.filters.TownTypeFilter;
@@ -14,9 +11,15 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 
 @Transactional (readOnly = true)
 public class TownTypeServiceImpl implements TownTypeService {
@@ -25,7 +28,6 @@ public class TownTypeServiceImpl implements TownTypeService {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private TownTypeDao townTypeDao;
-	private TownTypeTranslationDao townTypeTranslationDao;
 
 	/**
 	 * Get TownType translations for specified locale, if translation is not found check for translation in default locale
@@ -159,22 +161,9 @@ public class TownTypeServiceImpl implements TownTypeService {
 		return townTypeDao.listTownTypes(TownType.STATUS_ACTIVE);
 	}
 
-	/**
-	 * Setter for property 'townTypeDao'.
-	 *
-	 * @param townTypeDao Value to set for property 'townTypeDao'.
-	 */
+	@Required
 	public void setTownTypeDao(TownTypeDao townTypeDao) {
 		this.townTypeDao = townTypeDao;
 	}
 
-	/**
-	 * Setter for property 'townTypeTranslationDao'.
-	 *
-	 * @param townTypeTranslationDao Value to set for property 'townTypeTranslationDao'.
-	 */
-	public void setTownTypeTranslationDao(
-			TownTypeTranslationDao townTypeTranslationDao) {
-		this.townTypeTranslationDao = townTypeTranslationDao;
-	}
 }

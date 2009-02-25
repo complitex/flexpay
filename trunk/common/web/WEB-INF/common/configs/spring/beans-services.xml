@@ -13,6 +13,15 @@
 	<bean id="importErrorSupport"
 		  class="org.flexpay.common.service.importexport.ImportErrorsSupport" />
 
+	<bean id="commonServiceFactory"
+		  class="org.flexpay.common.service.imp.ServiceFactory" />
+
+	<bean id="diffService"
+		  factory-bean="commonServiceFactory"
+		  factory-method="getDiffService"
+		  p:diffDao-ref="diffDao"
+		  p:registry-ref="classToTypeRegistryCommon" />
+
 	<bean class="org.flexpay.common.service.importexport.imp.ImportErrorServiceImpl"
 		  abstract="true" id="importErrorServiceTemplate"
 		  p:errorDao-ref="importErrorDao" />

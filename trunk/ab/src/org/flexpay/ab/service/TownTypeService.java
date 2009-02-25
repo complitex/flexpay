@@ -15,8 +15,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Service interface for TownTypes related tasks
  */
-public interface TownTypeService extends
-		MultilangEntityService<TownType, TownTypeTranslation> {
+public interface TownTypeService extends MultilangEntityService<TownType, TownTypeTranslation> {
 
 	/**
 	 * Initialize filter

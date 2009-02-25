@@ -3,7 +3,6 @@ package org.flexpay.common.persistence.history;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +20,7 @@ public class Diff extends DomainObjectWithStatus {
 	private Long objectId;
 	private int operationType;
 	private String userName;
-	private boolean processed;
+	private int processingStatus;
 	private String masterIndex;
 
 	private List<HistoryRecord> historyRecords = Collections.emptyList();
@@ -80,12 +79,12 @@ public class Diff extends DomainObjectWithStatus {
 		this.historyRecords = historyRecords;
 	}
 
-	public boolean isProcessed() {
-		return processed;
+	public int getProcessingStatus() {
+		return processingStatus;
 	}
 
-	public void setProcessed(boolean processed) {
-		this.processed = processed;
+	public void setProcessingStatus(int processingStatus) {
+		this.processingStatus = processingStatus;
 	}
 
 	public int getOperationType() {

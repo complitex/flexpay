@@ -11,7 +11,6 @@ import org.flexpay.common.persistence.FPFileType;
 import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -22,16 +21,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Transactional(readOnly = true)
+@Transactional (readOnly = true)
 public class FPFileServiceImpl implements FPFileService {
 
-    @NonNls
-    private Logger log = LoggerFactory.getLogger(getClass());
+	private Logger log = LoggerFactory.getLogger(getClass());
 
-    private FPFileDao fpFileDao;
-    private FPFileTypeDao fpFileTypeDao;
-    private FPFileStatusDao fpFileStatusDao;
-    private FPModuleDao fpModuleDao;
+	private FPFileDao fpFileDao;
+	private FPFileTypeDao fpFileTypeDao;
+	private FPFileStatusDao fpFileStatusDao;
+	private FPModuleDao fpModuleDao;
 
 	private void deleteFileOnException(FPFile file) throws FlexPayException {
 		String localPath = FPFileUtil.getFileLocalPath(file);
@@ -43,88 +41,88 @@ public class FPFileServiceImpl implements FPFileService {
 		} else {
 			log.warn("No such file {}", localPath);
 		}
-        try {
-            fpFileDao.delete(file);
-        } catch (Exception e) {
-            log.error("Can't delete file with id = " + file.getId() + " from DB", e);
-            throw new FlexPayException(e);
-        }
-    }
+		try {
+			fpFileDao.delete(file);
+		} catch (Exception e) {
+			log.error("Can't delete file with id = " + file.getId() + " from DB", e);
+			throw new FlexPayException(e);
+		}
+	}
 
-    @Transactional (readOnly = false)
-    public FPFile create(FPFile file) throws FlexPayException {
-        fpFileDao.create(file);
+	@Transactional (readOnly = false)
+	public FPFile create(FPFile file) throws FlexPayException {
+		fpFileDao.create(file);
 
 		log.debug("Created new FPFile: {}", file);
 
-        return file;
-    }
+		return file;
+	}
 
-    public FPFile update(FPFile file) throws FlexPayException {
-        fpFileDao.update(file);
-        return file;
-    }
+	public FPFile update(FPFile file) throws FlexPayException {
+		fpFileDao.update(file);
+		return file;
+	}
 
-    @Transactional (readOnly = false)
-    public void delete(FPFile file) {
-        String localPath = FPFileUtil.getFileLocalPath(file);
-        File fileToDelete = new File(localPath);
-        if (!fileToDelete.delete()) {
-            log.error("Error deleting file from server: {}", localPath);
-        }
-        fpFileDao.delete(file);
-    }
+	@Transactional (readOnly = false)
+	public void delete(FPFile file) {
+		String localPath = FPFileUtil.getFileLocalPath(file);
+		File fileToDelete = new File(localPath);
+		if (!fileToDelete.delete()) {
+			log.error("Error deleting file from server: {}", localPath);
+		}
+		fpFileDao.delete(file);
+	}
 
-    public void deleteFromFileSystem(FPFile file) {
-        String localPath = FPFileUtil.getFileLocalPath(file);
-        File fileToDelete = new File(localPath);
-        if (!fileToDelete.delete()) {
-            log.error("Error deleting file from server: {}", localPath);
-        }
-    }
+	public void deleteFromFileSystem(FPFile file) {
+		String localPath = FPFileUtil.getFileLocalPath(file);
+		File fileToDelete = new File(localPath);
+		if (!fileToDelete.delete()) {
+			log.error("Error deleting file from server: {}", localPath);
+		}
+	}
 
-    public FPFile read(Long fileId) throws FlexPayException {
-        FPFile file = fpFileDao.readFull(fileId);
+	public FPFile read(Long fileId) throws FlexPayException {
+		FPFile file = fpFileDao.readFull(fileId);
 		if (file == null) {
 			log.warn("No user with file id {} in database", fileId);
 		}
 		return file;
 	}
 
-    public File getFileFromFileSystem(Long fileId) throws FlexPayException {
-        return FPFileUtil.getFileOnServer(read(fileId));
-    }
+	public File getFileFromFileSystem(Long fileId) throws FlexPayException {
+		return FPFileUtil.getFileOnServer(read(fileId));
+	}
 
-    public List<FPFile> getFilesByModuleName(String moduleName) {
-        return fpFileDao.listFilesByModuleName(moduleName);
-    }
+	public List<FPFile> getFilesByModuleName(String moduleName) {
+		return fpFileDao.listFilesByModuleName(moduleName);
+	}
 
-    public FPModule getModuleByName(String name) {
-        List<FPModule> l = fpModuleDao.listModulesByName(name);
-        return l.isEmpty() ? null : l.get(0);
-    }
+	public FPModule getModuleByName(String name) {
+		List<FPModule> l = fpModuleDao.listModulesByName(name);
+		return l.isEmpty() ? null : l.get(0);
+	}
 
-    public FPFileType getTypeByFileName(String fileName, String moduleName) {
-        List<FPFileType> types = fpFileTypeDao.listFileTypesByModuleName(moduleName);
-        for (FPFileType type : types) {
-            Matcher m = Pattern.compile(type.getFileMask()).matcher(fileName);
-            if (m.matches()) {
-                return type;
-            }
-        }
+	public FPFileType getTypeByFileName(String fileName, String moduleName) {
+		List<FPFileType> types = fpFileTypeDao.listFileTypesByModuleName(moduleName);
+		for (FPFileType type : types) {
+			Matcher m = Pattern.compile(type.getFileMask()).matcher(fileName);
+			if (m.matches()) {
+				return type;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public FPFileType getTypeByCode(Long code) {
-        List<FPFileType> l = fpFileTypeDao.listTypesByCode(code);
-        return l.isEmpty() ? null : l.get(0);
-    }
+	public FPFileType getTypeByCode(Long code) {
+		List<FPFileType> l = fpFileTypeDao.listTypesByCode(code);
+		return l.isEmpty() ? null : l.get(0);
+	}
 
-    public FPFileStatus getStatusByCode(Long code) {
-        List<FPFileStatus> l = fpFileStatusDao.listStatusesByCode(code);
-        return l.isEmpty() ? null : l.get(0);
-    }
+	public FPFileStatus getStatusByCode(Long code) {
+		List<FPFileStatus> l = fpFileStatusDao.listStatusesByCode(code);
+		return l.isEmpty() ? null : l.get(0);
+	}
 
 	public FPFileType getTypeByCodeAndModule(Long code, String moduleName) {
 		List<FPFileType> l = fpFileTypeDao.listTypesByCodeAndModule(code, moduleName);

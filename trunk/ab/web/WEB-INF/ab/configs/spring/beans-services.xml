@@ -7,6 +7,10 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+	<bean parent="diffService"
+		  autowire-candidate="false"
+		  p:registry-ref="typeRegistryAb" />
+
 	<bean id="countryServiceTarget" class="org.flexpay.ab.service.imp.CountryServiceImpl"
 		  autowire-candidate="false"
 		  p:countryDao-ref="countryDAO"
@@ -76,9 +80,10 @@
 		  p:apartmentDaoExt-ref="apartmentDaoExt"
 		  p:parentService-ref="buildingService" />
 
-	<bean id="townTypeService" class="org.flexpay.ab.service.imp.TownTypeServiceImpl"
-		  p:townTypeDao-ref="townTypeDAO"
-		  p:townTypeTranslationDao-ref="townTypeTranslationDao" />
+	<bean id="townTypeServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.ab.service.imp.TownTypeServiceImpl"
+		  p:townTypeDao-ref="townTypeDAO" />
 
 	<bean id="streetTypeServiceTarget"
 		  autowire-candidate="false"
@@ -104,7 +109,7 @@
 		  abstract="true"
 		  class="org.flexpay.common.persistence.history.impl.HistoryBuilderBase"
 		  p:masterIndexService-ref="masterIndexService"
-		  p:correctionsService-ref="correctionsServiceAb" 
+		  p:correctionsService-ref="correctionsServiceAb"
 		  p:typeRegistry-ref="typeRegistryAb" />
 
 	<bean id="townTypeHistoryBuilder"
@@ -115,5 +120,20 @@
 	<bean id="townHistoryBuilder"
 		  parent="abHistoryBuilderBase"
 		  class="org.flexpay.ab.service.history.TownHistoryBuilder" />
+
+	<!-- History generators -->
+	<bean id="townTypeHistoryGenerator"
+		  class="org.flexpay.ab.service.history.TownTypeHistoryGenerator"
+		  p:diffService-ref="diffService"
+		  p:historyBuilder-ref="townTypeHistoryBuilder"
+		  p:townTypeService-ref="townTypeService" />
+
+	<bean id="townHistoryGenerator"
+		  class="org.flexpay.ab.service.history.TownHistoryGenerator"
+		  p:diffService-ref="diffService"
+		  p:historyBuilder-ref="townHistoryBuilder"
+		  p:typeHistoryGenerator-ref="townTypeHistoryGenerator"
+		  p:townService-ref="townService"
+		  p:townTypeService-ref="townTypeService" />
 
 </beans>
