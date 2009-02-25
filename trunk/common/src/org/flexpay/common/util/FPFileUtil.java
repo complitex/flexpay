@@ -1,9 +1,10 @@
 package org.flexpay.common.util;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.util.config.ApplicationConfig;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,15 +20,16 @@ public class FPFileUtil {
 		File root = ApplicationConfig.getDataRoot();
         Calendar c = Calendar.getInstance();
         c.setTime(creationDate);
+		int month = 1 + c.get(Calendar.MONTH);
         return root.getPath() + File.separator
                 + moduleName + File.separator
                 + c.get(Calendar.YEAR) + File.separator
-                + (1 + c.get(Calendar.MONTH)) + File.separator
+                + (month < 10 ? "0" : "") + month + File.separator
                 + c.get(Calendar.DATE) + File.separator;
 	}
 
     public static String getLocalDirPath(FPFile file) {
-        return 	getLocalDirPath(file.getModule().getName(), file.getCreationDate());
+        return getLocalDirPath(file.getModule().getName(), file.getCreationDate());
     }
 
     /**
