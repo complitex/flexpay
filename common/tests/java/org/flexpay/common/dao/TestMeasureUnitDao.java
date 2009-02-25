@@ -1,8 +1,8 @@
 package org.flexpay.common.dao;
 
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.dao.paging.Page;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

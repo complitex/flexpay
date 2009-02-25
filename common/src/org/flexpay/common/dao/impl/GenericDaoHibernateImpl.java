@@ -1,7 +1,5 @@
 package org.flexpay.common.dao.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.finder.FinderArgumentTypeFactory;
 import org.flexpay.common.dao.finder.FinderExecutor;
@@ -16,6 +14,8 @@ import org.hibernate.Session;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;

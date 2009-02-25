@@ -1,8 +1,8 @@
 package org.flexpay.common.process;
 
 import org.flexpay.common.util.CollectionUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jbpm.taskmgmt.exe.TaskInstance;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;

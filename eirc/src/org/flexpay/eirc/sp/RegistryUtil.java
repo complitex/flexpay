@@ -1,9 +1,9 @@
 package org.flexpay.eirc.sp;
 
-import org.flexpay.common.util.StringUtil;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.persistence.exchange.Operation;
 import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.StringUtil;
+import org.flexpay.eirc.persistence.exchange.Operation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

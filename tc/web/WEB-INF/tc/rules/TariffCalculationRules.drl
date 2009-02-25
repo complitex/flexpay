@@ -6,26 +6,27 @@ import org.flexpay.bti.persistence.BtiBuilding;
 import org.flexpay.bti.persistence.BuildingAttributeBase;
 import org.flexpay.bti.persistence.BuildingAttributeConfig;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
+import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.TariffConfig;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.service.TariffServiceExt;
-import java.math.BigDecimal;
-import java.util.Date;
+import org.slf4j.Logger;
 
-global org.slf4j.Logger log;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+
+global Logger log;
+
 global Date creationDate;
 global Date calculationDate;
+
 global BuildingAttributeTypeService buildingAttributeTypeService;
 global TariffCalculationResultService tariffCalculationResultService;
 global TariffServiceExt tariffServiceExt;
-
-function void addCalcResult(BtiBuilding building, BigDecimal value, String tariffCode, WorkingMemory wm) {
-    TariffCalculationResultService tariffCalculationResultService = (TariffCalculationResultService) wm.getGlobal("tariffCalculationResultService");
-    TariffServiceExt tariffServiceExt = (TariffServiceExt) wm.getGlobal("tariffServiceExt");
-    Date calcDate = (Date) wm.getGlobal("calculationDate");
-    Date creationDate = (Date) wm.getGlobal("creationDate");
-    tariffCalculationResultService.add(value.setScale(3, BigDecimal.ROUND_HALF_UP), creationDate, calcDate, building, tariffServiceExt.getTariffByCode(tariffCode));
-}
 
 function BigDecimal getAttributeValue(BtiBuilding building, String attributeCode, WorkingMemory wm) {
     BuildingAttributeTypeService bats = (BuildingAttributeTypeService) wm.getGlobal("buildingAttributeTypeService");
@@ -34,7 +35,8 @@ function BigDecimal getAttributeValue(BtiBuilding building, String attributeCode
         return BigDecimal.ZERO;
     }
     Date calcDate = (Date) wm.getGlobal("calculationDate");
-    return new BigDecimal(ba.getValueForDate(calcDate));
+    String v = ba.getValueForDate(calcDate);
+    return v == null || v.equals("") ? BigDecimal.ZERO : new BigDecimal(v);
 }
 
 rule "TestRule"
@@ -64,13 +66,15 @@ rule "TestRule"
 	    BigDecimal DU = getAttributeValue(building, BuildingAttributeConfig.ATTR_COST_LIFT_TECHNICAL_SUPPORT_ZHILKOMSERVIS, wm);
 	    BigDecimal DW = getAttributeValue(building, BuildingAttributeConfig.ATTR_COST_DISPETCHIRING_ZHILKOMSERVIS, wm);
 
+	    Set<TariffCalculationResult> results = new HashSet<TariffCalculationResult>();
+
         for (String code : TariffConfig.getAllTariffCodes()) {
 
             BigDecimal value = BigDecimal.ZERO;
 
             if (TariffConfig.TARIFF_CLEANING_TERRITORY.equals(code)) {
                 BigDecimal bt = BigDecimal.valueOf(0.418);
-                value = bt.multiply(BigDecimal.valueOf(0.8));
+                value = bt;
             } else if (TariffConfig.TARIFF_CLEANING_REFUSE_CHUTES.equals(code)) {
                 BigDecimal bt = BigDecimal.valueOf(0.140);
                 value = bt;
@@ -79,43 +83,43 @@ rule "TestRule"
             } else if (TariffConfig.TARIFF_UTILIZATION_HARD_WASTE.equals(code)) {
                 value = BigDecimal.valueOf(0.045);
                 if (W.signum() != 0 && N.signum() != 0) {
-                    BigDecimal v1 = N.multiply(BigDecimal.valueOf(1.5)).divide(BigDecimal.valueOf(12)).multiply(BigDecimal.valueOf(23.05)).multiply(BigDecimal.valueOf(1.2));
-                    BigDecimal v2 = N.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf(0.1)).divide(BigDecimal.valueOf(12)).multiply(BigDecimal.valueOf(26.342)).multiply(BigDecimal.valueOf(1.2));
-                    BigDecimal v3 = N.multiply(BigDecimal.valueOf(1.5)).divide(BigDecimal.valueOf(12)).multiply(BigDecimal.valueOf(6.3));
-                    BigDecimal v4 = N.multiply(BigDecimal.valueOf(1.5)).multiply(BigDecimal.valueOf(0.1)).divide(BigDecimal.valueOf(12)).multiply(BigDecimal.valueOf(6.3));
-                    value = value.add(v1.add(v2).add(v3).add(v4).divide(W));
+                    BigDecimal v1 = N.multiply(BigDecimal.valueOf(1.5)).divide(BigDecimal.valueOf(12), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(23.05)).multiply(BigDecimal.valueOf(1.2));
+                    BigDecimal v2 = N.multiply(BigDecimal.valueOf(1.5)).divide(BigDecimal.valueOf(12), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(0.1)).multiply(BigDecimal.valueOf(26.342)).multiply(BigDecimal.valueOf(1.2));
+                    BigDecimal v3 = N.multiply(BigDecimal.valueOf(1.5)).divide(BigDecimal.valueOf(12), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(6.3));
+                    BigDecimal v4 = N.multiply(BigDecimal.valueOf(1.5)).divide(BigDecimal.valueOf(12), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(0.1)).multiply(BigDecimal.valueOf(6.3));
+                    value = value.add(v1.add(v2).add(v3).add(v4).divide(W, 4, RoundingMode.HALF_UP));
                 }
             } else if (TariffConfig.TARIFF_SERVICE_LIFTS.equals(code)) {
-                if (AI.signum() != 0) {
-                    value = DU.divide(AI);
+                if (AI.signum() != 0 && DU.signum() != 0) {
+                    value = DU.divide(AI, 4, RoundingMode.HALF_UP);
                 }
             } else if (TariffConfig.TARIFF_SERVICE_PRODUCTION_CONTROL_SYSTEMS.equals(code)) {
-                if (AS.signum() != 0) {
-                    value = DW.divide(AS);
+                if (AS.signum() != 0 && DW.signum() != 0) {
+                    value = DW.divide(AS, 4, RoundingMode.HALF_UP);
                 }
             } else if (TariffConfig.TARIFF_SERVICE_WATER_SUPPLY_SYSTEMS.equals(code)) {
-                if (T.signum() != 0) {
-                    value = L.multiply(BigDecimal.valueOf(4.093)).divide(T);
+                if (T.signum() != 0 && L.signum() != 0) {
+                    value = L.multiply(BigDecimal.valueOf(4.093)).divide(T, 4, RoundingMode.HALF_UP);
                 }
             } else if (TariffConfig.TARIFF_SERVICE_WATER.equals(code)) {
-                if (U.signum() != 0) {
-                    value = L.multiply(BigDecimal.valueOf(3.343)).divide(U);
+                if (U.signum() != 0 && L.signum() != 0) {
+                    value = L.multiply(BigDecimal.valueOf(3.343)).divide(U, 4, RoundingMode.HALF_UP);
                 }
             } else if (TariffConfig.TARIFF_SERVICE_HEAT_SUPPLY_SYSTEMS.equals(code)) {
-                if (Q.signum() != 0) {
-                    value = L.multiply(BigDecimal.valueOf(5.500)).divide(Q);
+                if (Q.signum() != 0 && L.signum() != 0) {
+                    value = L.multiply(BigDecimal.valueOf(5.500)).divide(Q, 4, RoundingMode.HALF_UP);
                 }
             } else if (TariffConfig.TARIFF_SERVICE_HOT_WATER_SUPPLY_SYSTEMS.equals(code)) {
-                if (R.signum() != 0) {
-                    value = L.multiply(BigDecimal.valueOf(2.285)).divide(R);
+                if (R.signum() != 0 && L.signum() != 0) {
+                    value = L.multiply(BigDecimal.valueOf(2.285)).divide(R, 4, RoundingMode.HALF_UP);
                 }
             } else if (TariffConfig.TARIFF_SERVICE_BOILERS.equals(code)) {
-                if (S.signum() != 0) {
-                    value = L.multiply(BigDecimal.valueOf(2.901)).divide(S);
+                if (S.signum() != 0 && L.signum() != 0) {
+                    value = L.multiply(BigDecimal.valueOf(2.901)).divide(S, 4, RoundingMode.HALF_UP);
                 }
             } else if (TariffConfig.TARIFF_SERVICE_OFFTAKES.equals(code)) {
                 if (W.signum() != 0) {
-                    value = AF.add(AG).multiply(BigDecimal.valueOf(0.727).divide(W));
+                    value = AF.add(AG).multiply(BigDecimal.valueOf(0.727).divide(W, 4, RoundingMode.HALF_UP));
                 }
             } else if (TariffConfig.TARIFF_CLEANING_YARD_TOILETS.equals(code)) {
                 BigDecimal bt = BigDecimal.valueOf(0.049);
@@ -124,7 +128,7 @@ rule "TestRule"
                 value = CM.add(CN);
             } else if (TariffConfig.TARIFF_WATER_ENERGY_SUPPLY.equals(code)) {
                 BigDecimal bt = BigDecimal.valueOf(0.049);
-                value = bt.multiply(BigDecimal.valueOf(0.8));
+                value = bt;
             } else if (TariffConfig.TARIFF_LIFTS_ENERGY_SUPPLY.equals(code)) {
                 BigDecimal bt = BigDecimal.valueOf(0.063);
                 value = bt;
@@ -133,9 +137,12 @@ rule "TestRule"
             } else if (TariffConfig.TARIFF_SERVICE_ELECTRIC_RANGES.equals(code)) {
             }
 
-            addCalcResult(building, value, code, wm);
+            value = value.setScale(3, BigDecimal.ROUND_HALF_UP);
+
+            results.add(new TariffCalculationResult(value, creationDate, calculationDate, building, tariffServiceExt.getTariffByCode(code)));
+
         }
 
-		log.info("Building with id = {} processed", building.getId());
+        tariffCalculationResultService.add(results);
 
 end

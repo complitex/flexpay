@@ -1,8 +1,8 @@
 package org.flexpay.eirc.persistence;
 
-import java.math.BigDecimal;
-
 import org.flexpay.common.persistence.DomainObject;
+
+import java.math.BigDecimal;
 
 public class TicketServiceAmount extends DomainObject {
 	private Ticket ticket;

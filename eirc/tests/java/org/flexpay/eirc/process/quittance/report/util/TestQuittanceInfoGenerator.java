@@ -14,8 +14,8 @@ import org.flexpay.eirc.process.quittance.report.ServiceTotalsBase;
 import org.flexpay.eirc.process.quittance.report.SubServiceTotals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;

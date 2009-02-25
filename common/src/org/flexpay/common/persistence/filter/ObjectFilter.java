@@ -1,10 +1,9 @@
 package org.flexpay.common.persistence.filter;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 
-import java.util.Map;
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * Base class for all filters

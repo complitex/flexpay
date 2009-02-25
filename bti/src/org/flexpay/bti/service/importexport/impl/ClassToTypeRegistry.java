@@ -1,7 +1,7 @@
 package org.flexpay.bti.service.importexport.impl;
 
-import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.bti.persistence.Apartment;
+import org.flexpay.common.persistence.DomainObject;
 
 public class ClassToTypeRegistry extends org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry {
 

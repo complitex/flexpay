@@ -11,9 +11,9 @@ import org.flexpay.eirc.persistence.OrganizationDescription;
 import org.flexpay.eirc.persistence.OrganizationName;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.service.OrganizationService;
-import org.springframework.transaction.annotation.Transactional;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;

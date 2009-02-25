@@ -1,12 +1,12 @@
 package org.flexpay.common.process.job;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.JobClassNotFoundException;
 import org.flexpay.common.process.exception.JobConfigurationNotFoundException;
 import org.flexpay.common.process.exception.JobInstantiationException;
 import org.flexpay.common.util.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;

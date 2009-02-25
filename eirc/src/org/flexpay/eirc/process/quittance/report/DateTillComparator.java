@@ -2,8 +2,8 @@ package org.flexpay.eirc.process.quittance.report;
 
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 
-import java.util.Comparator;
 import java.io.Serializable;
+import java.util.Comparator;
 
 public class DateTillComparator implements Comparator<QuittanceDetails>, Serializable {
 

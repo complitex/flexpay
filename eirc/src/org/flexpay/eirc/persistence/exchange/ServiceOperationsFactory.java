@@ -12,8 +12,8 @@ import org.flexpay.eirc.dao.RegistryRecordDao;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.persistence.exchange.conditions.ConditionsFactory;
 import org.flexpay.eirc.service.*;
-import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.service.importexport.ImportUtil;
+import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistry;
 
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
 package org.flexpay.eirc.persistence.filters;
 
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.Service;
 
 import java.util.List;

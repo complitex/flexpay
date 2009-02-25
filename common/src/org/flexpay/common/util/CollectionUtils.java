@@ -1,9 +1,9 @@
 package org.flexpay.common.util;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.NonNls;
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.collections.ArrayStack;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 

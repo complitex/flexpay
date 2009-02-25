@@ -1,11 +1,11 @@
 package org.flexpay.eirc.service;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.RegistryRecord;
+import org.flexpay.eirc.persistence.SpRegistry;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

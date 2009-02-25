@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
-import java.util.Set;
 import java.util.Locale;
+import java.util.Set;
 
 public class Organization extends DomainObjectWithStatus {
 

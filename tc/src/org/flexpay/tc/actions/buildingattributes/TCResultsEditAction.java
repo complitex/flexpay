@@ -10,9 +10,9 @@ import org.flexpay.tc.service.TariffCalculationResultService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
-import java.math.BigDecimal;
 
 public class TCResultsEditAction extends FPActionSupport {
 

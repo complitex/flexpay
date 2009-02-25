@@ -1,7 +1,7 @@
 package org.flexpay.eirc.process.quittance.report;
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

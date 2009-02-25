@@ -1,13 +1,13 @@
 package org.flexpay.common.util;
 
-import java.io.File;
-import java.io.InputStream;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipEntry;
-import java.util.zip.GZIPInputStream;
+import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * FileSource is a File wrapper that opens a stream from source file.

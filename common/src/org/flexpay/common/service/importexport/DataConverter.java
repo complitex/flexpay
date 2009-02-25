@@ -1,8 +1,8 @@
 package org.flexpay.common.service.importexport;
 
-import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.DomainObject;
 
 /**
  * Converter between Domain objects and external raw data

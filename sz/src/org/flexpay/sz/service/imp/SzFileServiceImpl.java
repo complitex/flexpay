@@ -1,8 +1,8 @@
 package org.flexpay.sz.service.imp;
 
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFileStatus;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.sz.dao.SzFileDao;
 import org.flexpay.sz.dao.SzFileDaoExt;
 import org.flexpay.sz.persistence.SzFile;

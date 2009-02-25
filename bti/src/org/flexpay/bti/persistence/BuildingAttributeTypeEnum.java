@@ -2,8 +2,8 @@ package org.flexpay.bti.persistence;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;

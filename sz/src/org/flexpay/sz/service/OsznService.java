@@ -1,8 +1,8 @@
 package org.flexpay.sz.service;
 
-import java.util.List;
-
 import org.flexpay.sz.persistence.Oszn;
+
+import java.util.List;
 
 public interface OsznService {
 

@@ -1,15 +1,15 @@
 package org.flexpay.eirc.dao;
 
+import org.flexpay.common.dao.paging.Page;
+import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
-import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.common.dao.paging.Page;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.Collection;
 
 public interface RegistryDaoExt {
 

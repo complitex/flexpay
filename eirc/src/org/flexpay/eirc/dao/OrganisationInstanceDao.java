@@ -2,9 +2,9 @@ package org.flexpay.eirc.dao;
 
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.OrganizationInstance;
 import org.flexpay.eirc.persistence.OrganizationInstanceDescription;
-import org.flexpay.eirc.persistence.Organization;
 
 import java.util.List;
 

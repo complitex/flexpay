@@ -1,9 +1,9 @@
 package org.flexpay.eirc.persistence;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.util.TranslationUtil;
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;

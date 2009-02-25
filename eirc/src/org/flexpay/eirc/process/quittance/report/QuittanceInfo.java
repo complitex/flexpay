@@ -1,16 +1,16 @@
 package org.flexpay.eirc.process.quittance.report;
 
-import org.flexpay.common.util.StringUtil;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.Quittance;
 import static org.flexpay.eirc.process.quittance.report.util.SummUtil.addNonNegative;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
-import java.io.Serializable;
 
 /**
  * Container for all necessary Quittance information with calculated summs, service

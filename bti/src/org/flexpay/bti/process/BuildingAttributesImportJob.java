@@ -5,17 +5,17 @@ import org.flexpay.bti.service.importexport.BuildingAttributeData;
 import org.flexpay.bti.service.importexport.BuildingAttributeDataProcessor;
 import org.flexpay.bti.service.importexport.BuildingAttributesImporter;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.ProcessLogger;
+import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.springframework.beans.factory.annotation.Required;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.*;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Date;
 
 public class BuildingAttributesImportJob extends Job {
 

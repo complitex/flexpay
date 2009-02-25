@@ -1,9 +1,9 @@
 package org.flexpay.common.service.reporting;
 
-import net.sourceforge.barbecue.Barcode;
-import net.sourceforge.barbecue.output.OutputException;
 import net.sf.jasperreports.engine.JRAbstractSvgRenderer;
 import net.sf.jasperreports.engine.JRException;
+import net.sourceforge.barbecue.Barcode;
+import net.sourceforge.barbecue.output.OutputException;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;

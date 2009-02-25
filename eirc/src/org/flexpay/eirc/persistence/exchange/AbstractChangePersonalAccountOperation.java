@@ -1,7 +1,7 @@
 package org.flexpay.eirc.persistence.exchange;
 
-import org.flexpay.common.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.util.DateUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

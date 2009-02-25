@@ -6,12 +6,10 @@ import org.flexpay.bti.dao.BuildingAttributeTypeEnumDao;
 import org.flexpay.bti.persistence.BuildingAttributeType;
 import org.flexpay.bti.persistence.BuildingAttributeTypeEnum;
 import org.flexpay.bti.persistence.BuildingAttributeTypeEnumValue;
-import org.flexpay.common.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.List;
-import java.util.Set;
 
 public class BuildingAttributeTypeDaoExtImpl extends HibernateDaoSupport implements BuildingAttributeTypeDaoExt {
 

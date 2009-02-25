@@ -1,8 +1,8 @@
 package org.flexpay.ab.persistence;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;

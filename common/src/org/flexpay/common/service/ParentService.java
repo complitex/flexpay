@@ -2,7 +2,6 @@ package org.flexpay.common.service;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 
 import java.util.Locale;

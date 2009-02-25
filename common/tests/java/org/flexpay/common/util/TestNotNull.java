@@ -1,7 +1,7 @@
 package org.flexpay.common.util;
 
-import org.junit.Test;
 import org.jetbrains.annotations.NotNull;
+import org.junit.Test;
 
 public class TestNotNull {
 

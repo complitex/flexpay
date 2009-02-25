@@ -51,7 +51,7 @@ SELECT @deleting_from_db_status_id:=last_insert_id();
 
 -- Init OSZN orgs
 insert into sz_oszns_tbl (description, district_id) values
-        ('Заельцовский', 1),
+        ('Заельцовский', @district_id_nsk_zaelcovskiy),
         ('Дзержинский', 2),
         ('Железнодорожный', 3),
         ('Калининский', 4),

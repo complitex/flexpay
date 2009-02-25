@@ -3,8 +3,8 @@ package org.flexpay.eirc.service.importexport;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.service.importexport.RawData;
 import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.RegistryRecord;
+import org.flexpay.eirc.persistence.SpRegistry;
 
 import java.util.Collection;
 import java.util.HashSet;

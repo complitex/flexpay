@@ -1,13 +1,13 @@
 package org.flexpay.eirc.service;
 
-import org.flexpay.eirc.persistence.QuittancePacket;
-import org.flexpay.eirc.persistence.QuittancePayment;
+import org.apache.commons.collections.ArrayStack;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.eirc.persistence.QuittancePacket;
+import org.flexpay.eirc.persistence.QuittancePayment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.apache.commons.collections.ArrayStack;
 
 import java.util.List;
 

@@ -1,5 +1,7 @@
 package org.flexpay.eirc.persistence.exchange;
 
+import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataCorrection;
@@ -11,8 +13,6 @@ import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.util.config.ApplicationConfig;
-import org.flexpay.ab.persistence.Person;
-import org.flexpay.ab.persistence.Apartment;
 
 import java.util.List;
 

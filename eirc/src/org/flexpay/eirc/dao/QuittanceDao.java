@@ -1,12 +1,12 @@
 package org.flexpay.eirc.dao;
 
-import java.util.Date;
-import java.util.List;
-
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Date;
+import java.util.List;
 
 public interface QuittanceDao extends GenericDao<Quittance, Long>{
 	List<Quittance> findObjectsByEircAccountAndDateTill(Page<Quittance> pager,

@@ -1,10 +1,10 @@
 package org.flexpay.eirc.service.imp;
 
-import org.flexpay.eirc.service.ReportPeriodService;
 import org.apache.commons.lang.time.DateUtils;
+import org.flexpay.eirc.service.ReportPeriodService;
 
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
 
 public class ReportPeriodServiceImpl implements ReportPeriodService {
 

@@ -5,8 +5,8 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
 import java.util.Collections;
+import java.util.Set;
 
 /**
  * Group of a building attribute types

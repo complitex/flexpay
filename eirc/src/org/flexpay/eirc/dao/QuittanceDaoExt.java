@@ -1,11 +1,6 @@
 package org.flexpay.eirc.dao;
 
 import java.util.Date;
-import java.util.List;
-
-import org.flexpay.common.dao.GenericDao;
-import org.flexpay.common.dao.paging.Page;
-import org.flexpay.eirc.persistence.account.Quittance;
 
 /**
  * Interface provides functionality to prepare quittances

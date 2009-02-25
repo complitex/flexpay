@@ -8,13 +8,13 @@ import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
-import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;

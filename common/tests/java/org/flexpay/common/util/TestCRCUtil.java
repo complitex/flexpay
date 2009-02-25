@@ -1,7 +1,7 @@
 package org.flexpay.common.util;
 
+import static junit.framework.Assert.assertEquals;
 import org.junit.Test;
-import static junit.framework.Assert.*;
 
 public class TestCRCUtil {
 

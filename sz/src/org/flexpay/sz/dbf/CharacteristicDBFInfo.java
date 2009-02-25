@@ -1,11 +1,10 @@
 package org.flexpay.sz.dbf;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
+import com.linuxense.javadbf.DBFException;
 import org.flexpay.sz.persistence.CharacteristicRecord;
 
-import com.linuxense.javadbf.DBFException;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class CharacteristicDBFInfo extends DBFInfo<CharacteristicRecord> {
 

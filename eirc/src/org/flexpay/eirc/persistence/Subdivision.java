@@ -1,11 +1,11 @@
 package org.flexpay.eirc.persistence;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.Collections;
 import java.util.Set;

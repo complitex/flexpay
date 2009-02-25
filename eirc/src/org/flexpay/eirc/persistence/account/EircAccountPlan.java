@@ -2,8 +2,8 @@ package org.flexpay.eirc.persistence.account;
 
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 
-import java.util.Set;
 import java.util.Collections;
+import java.util.Set;
 
 public class EircAccountPlan extends DomainObjectWithStatus {
 

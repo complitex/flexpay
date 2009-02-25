@@ -4,8 +4,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.eirc.persistence.ServiceType;
-import static org.flexpay.eirc.process.quittance.report.util.SummUtil.addNonNegative;
 import static org.flexpay.eirc.process.quittance.report.util.SummUtil.addNegative;
+import static org.flexpay.eirc.process.quittance.report.util.SummUtil.addNonNegative;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;

@@ -1,12 +1,12 @@
 package org.flexpay.eirc.service;
 
-import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.eirc.persistence.ServiceProvider;
-import org.flexpay.eirc.persistence.Service;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.jetbrains.annotations.Nullable;
+import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.Service;
+import org.flexpay.eirc.persistence.ServiceProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface ConsumerService {
 

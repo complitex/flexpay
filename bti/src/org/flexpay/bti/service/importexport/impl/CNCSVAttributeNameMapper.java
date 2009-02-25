@@ -1,7 +1,7 @@
 package org.flexpay.bti.service.importexport.impl;
 
-import org.flexpay.bti.service.importexport.AttributeNameMapper;
 import static org.flexpay.bti.persistence.BuildingAttributeConfig.*;
+import org.flexpay.bti.service.importexport.AttributeNameMapper;
 import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

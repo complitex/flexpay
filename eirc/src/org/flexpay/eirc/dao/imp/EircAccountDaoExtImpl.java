@@ -2,8 +2,8 @@ package org.flexpay.eirc.dao.imp;
 
 import org.flexpay.eirc.dao.EircAccountDaoExt;
 import org.flexpay.eirc.persistence.EircAccount;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.List;
 

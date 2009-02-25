@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-import java.util.Collection;
 
 public class SzFileFullDeleteJob extends Job {
 

@@ -1,11 +1,11 @@
 package org.flexpay.sz.service.imp;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.sz.dao.ServiceTypeRecordDao;
 import org.flexpay.sz.persistence.ServiceTypeRecord;
 import org.flexpay.sz.service.RecordService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

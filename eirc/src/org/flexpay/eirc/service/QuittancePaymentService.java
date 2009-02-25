@@ -1,8 +1,8 @@
 package org.flexpay.eirc.service;
 
-import org.flexpay.eirc.persistence.account.Quittance;
-import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.eirc.persistence.QuittancePacket;
+import org.flexpay.eirc.persistence.account.Quittance;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

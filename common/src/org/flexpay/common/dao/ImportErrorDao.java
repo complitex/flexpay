@@ -1,8 +1,8 @@
 package org.flexpay.common.dao;
 
-import org.flexpay.common.persistence.ImportError;
-import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.ImportError;
 
 import java.util.List;
 

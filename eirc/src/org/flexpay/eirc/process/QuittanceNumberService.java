@@ -1,7 +1,7 @@
 package org.flexpay.eirc.process;
 
-import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.eirc.persistence.account.Quittance;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
