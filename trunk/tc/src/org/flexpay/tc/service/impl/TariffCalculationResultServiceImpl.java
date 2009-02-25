@@ -1,12 +1,14 @@
 package org.flexpay.tc.service.impl;
 
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.tc.dao.TariffCalculationResultDao;
 import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.service.TariffCalculationResultService;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,8 +78,8 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 		return tariffCalculationResultDao.findByCalcDateAndBuilding(calcDate, buildingStub.getId());
 	}
 
-    public TariffCalculationResult findTariffCalcResults(@NotNull Date calcDate, @NotNull Long tariffId, @NotNull Long buildingId) throws FlexPayException {
-        List<TariffCalculationResult> results = tariffCalculationResultDao.findByCalcDateTariffAndBuilding(calcDate, tariffId, buildingId);
+    public TariffCalculationResult findTariffCalcResults(@NotNull Date calcDate, @NotNull Stub<Tariff> tariffStub, @NotNull Stub<Building> buildingStub) throws FlexPayException {
+        List<TariffCalculationResult> results = tariffCalculationResultDao.findByCalcDateTariffAndBuilding(calcDate, tariffStub.getId(), buildingStub.getId());
 
         if (results.size() > 1) {
             throw new FlexPayException("Unexpected data fetch result. There should be only one tariff calculation result for calculation date, tariff and building");
@@ -90,8 +92,8 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 		return tariffCalculationResultDao.readFull(stub.getId());
 	}
 
-	public List<TariffCalculationResult> getTariffCalcResultsByCalcDateAndAddressId(@NotNull Date calcDate, @NotNull Long addressId) {
-		return tariffCalculationResultDao.findByCalcDateAndAddressId(calcDate, addressId);
+	public List<TariffCalculationResult> getTariffCalcResultsByCalcDateAndAddressId(@NotNull Date calcDate, @NotNull Stub<BuildingAddress> addressStub) {
+		return tariffCalculationResultDao.findByCalcDateAndAddressId(calcDate, addressStub.getId());
 	}
 
 	public List<Date> getUniqueDates() {

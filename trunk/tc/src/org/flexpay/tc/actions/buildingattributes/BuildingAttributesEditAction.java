@@ -1,7 +1,5 @@
 package org.flexpay.tc.actions.buildingattributes;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.FastDateFormat;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.BuildingService;
@@ -19,6 +17,9 @@ import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.service.TariffService;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.FastDateFormat;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -176,12 +177,14 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     private void loadTariffCalculationResults() {
         List<Date> calculationDates = tariffCalculationResultService.getUniqueDates();
 
+		Stub<BuildingAddress> buildingStub = stub(building);
+
         for (Date calculationDate : calculationDates) {
 
             String calcDateString = FastDateFormat.getInstance("dd.MM.yyyy").format(calculationDate);
 
             List<TariffCalculationResult> calculationResults = tariffCalculationResultService.
-                    getTariffCalcResultsByCalcDateAndAddressId(calculationDate, building.getId());
+                    getTariffCalcResultsByCalcDateAndAddressId(calculationDate, buildingStub);
 
             Map<Long, BigDecimal> resultMap = CollectionUtils.treeMap();
             for (TariffCalculationResult result : calculationResults) {
@@ -201,13 +204,11 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 	}
     
     public String getAttributeTypeName(Long typeId) {
-
         BuildingAttributeType type = getAttributeTypeById(typeId);
         return getTranslation(type.getTranslations()).getName();
     }
 
     public String getGroupName(Long groupId) {
-
         BuildingAttributeGroup group = buildingAttributeGroupService.readFull(new Stub<BuildingAttributeGroup>(groupId));
         return getTranslation(group.getTranslations()).getName();
     }
@@ -257,7 +258,6 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     }
 
     public boolean isTempAttribute(Long typeId) {
-
         BuildingAttributeType type = getAttributeTypeById(typeId);
         return type.isTemp();
     }
@@ -386,4 +386,5 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     public void setTariffService(TariffService tariffService) {
         this.tariffService = tariffService;
     }
+
 }

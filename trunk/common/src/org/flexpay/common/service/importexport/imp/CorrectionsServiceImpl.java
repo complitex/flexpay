@@ -109,8 +109,8 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 		return correction;
 	}
 
-	public String getExternalId(@NonNls Long internalId, int type, Long dataSourceDescriptionId) {
-		return correctionsDao.getExternalId(internalId, type, dataSourceDescriptionId);
+	public String getExternalId(@NonNls Long internalId, int type, Stub<DataSourceDescription> dataSourceDescriptionStub) {
+		return correctionsDao.getExternalId(internalId, type, dataSourceDescriptionStub.getId());
 	}
 
 	/**
@@ -135,4 +135,5 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	public void setCorrectionsDao(CorrectionsDao correctionsDao) {
 		this.correctionsDao = correctionsDao;
 	}
+
 }

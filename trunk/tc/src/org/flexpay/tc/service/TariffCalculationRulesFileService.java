@@ -24,7 +24,7 @@ public interface TariffCalculationRulesFileService {
 	void delete(TariffCalculationRulesFile file);
 
 	@Secured({Roles.TARIFF_CALCULATION_RULES_FILE_DELETE})
-	void delete(@NotNull Long fileId);
+	void delete(@NotNull Stub<TariffCalculationRulesFile> fileStub);
 
 	@Secured({Roles.TARIFF_CALCULATION_RULES_FILE_READ})
 	List<TariffCalculationRulesFile> listTariffCalculationRulesFiles(Page<TariffCalculationRulesFile> pager);
