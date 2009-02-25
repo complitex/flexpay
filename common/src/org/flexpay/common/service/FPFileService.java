@@ -15,8 +15,8 @@ import java.util.List;
  *
  * FPModule - simple entity with one field - moduleName.
  * 
- * FPFile have a reference on FPModule, in which it was create.
- * FpFile have a string-path to file on file system.
+ * FPFile has a reference on FPModule, in which it was create.
+ * FpFile has a string-path to file on file system.
  * One file on file system - one FPFile in database.
  *
  * FPFileStatus and FPFileType - entities for defining type and
@@ -94,7 +94,7 @@ public interface FPFileService {
 
 	/**
 	 * Get FPFileType by name and module name.
-	 * FPFileType have s file-mask and by file name
+	 * FPFileType has unique file-mask and by file name
 	 * we can define type. Module name come out as second criterion
 	 *
 	 * @param fileName name of file
@@ -121,7 +121,7 @@ public interface FPFileService {
 
 	/**
 	 * Get FPFileType by unique code and module name.
-	 * Each FPFileType have a unique (only for module!) code and
+	 * Each FPFileType has a unique (only for module!) code and
 	 * by this code we can find types for some modules.
 	 * Module name come out as second criterion
 	 *
@@ -133,7 +133,7 @@ public interface FPFileService {
 
 	/**
 	 * Get FPFileStatus by unique code and module name.
-	 * Each FPFileStatus have a unique (only for module!) code and
+	 * Each FPFileStatus has a unique (only for module!) code and
 	 * by this code we can find statuses for some modules.
 	 * Module name come out as second criterion
 	 *
