@@ -47,6 +47,16 @@
 		</property>
 	</bean>
 
+	<bean id="diffDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.common.dao.DiffDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.common.persistence.history.Diff" />
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="importErrorDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.common.dao.ImportErrorDao" />

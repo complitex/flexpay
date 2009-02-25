@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence.history">
+
+	<class name="HistoryConsumer" table="common_history_consumers_tbl">
+		<comment>Some abstract history records consumer</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status">
+			<column name="active" not-null="true">
+				<comment>Enabled-disabled status</comment>
+			</column>
+		</property>
+		<property name="name" unique="true">
+			<column name="name" not-null="false">
+				<comment>Consumer name</comment>
+			</column>
+		</property>
+		<property name="description">
+			<column name="description" not-null="false">
+				<comment>Optional consumer description</comment>
+			</column>
+		</property>
+	</class>
+
+	<class name="HistoryConsumption" table="common_history_consumptions_tbl">
+		<comment>Consumption of single history record</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="historyRecord" foreign-key="FK_common_history_consumptions_tbl_record_id"
+					 class="HistoryRecord">
+			<column name="record_id" not-null="true">
+				<comment>History record reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="historyConsumer" foreign-key="FK_common_history_consumptions_tbl_consumer_id"
+					 class="HistoryConsumer">
+			<column name="consumer_id" not-null="true">
+				<comment>History consumer reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+
+</hibernate-mapping>

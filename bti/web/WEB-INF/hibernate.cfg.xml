@@ -14,6 +14,8 @@
 		<!-- common.ImportErrors -->
 		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/history/Diff.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/history/HistoryConsumer.hbm.xml" />
 		<!-- Dual virtual table -->
 		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />

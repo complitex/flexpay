@@ -10,6 +10,8 @@
 		<!-- common.Languages -->
 		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/history/Diff.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/history/HistoryConsumer.hbm.xml" />
 		<!-- common.Sequences -->
 		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
 		<!-- common.ImportErrors -->

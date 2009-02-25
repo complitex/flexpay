@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence.history">
+
+	<class name="Diff" table="common_diffs_tbl">
+		<comment>Set of history records for single object</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="operationTime">
+			<column name="operation_time" not-null="true" sql-type="datetime">
+				<comment>Operation timestamp</comment>
+			</column>
+		</property>
+		<property name="objectType">
+			<column name="object_type" not-null="true">
+				<comment>Object type</comment>
+			</column>
+		</property>
+		<property name="objectId">
+			<column name="object_id" not-null="true">
+				<comment>Internal object reference</comment>
+			</column>
+		</property>
+		<property name="operationType">
+			<column name="operation_type" not-null="true">
+				<comment>Operation type (create-update-delete)</comment>
+			</column>
+		</property>
+		<property name="userName">
+			<column name="user_name" not-null="true">
+				<comment>User name performed operation</comment>
+			</column>
+		</property>
+		<property name="processingStatus">
+			<column name="processing_status" not-null="true" default="0">
+				<comment>Processing status</comment>
+			</column>
+		</property>
+		<property name="masterIndex">
+			<column name="master_index" not-null="true">
+				<comment>Unique among several installations object id</comment>
+			</column>
+		</property>
+		<list name="historyRecords" cascade="all-delete-orphan" inverse="true">
+			<key column="diff_id" not-null="true" />
+			<index column="operation_order" />
+			<one-to-many class="HistoryRecord" />
+		</list>
+	</class>
+
+	<class name="HistoryRecord" table="common_history_records_tbl">
+		<comment>Single field update record</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="oldDateValue">
+			<column name="old_date_value" not-null="false" sql-type="datetime">
+				<comment>Optional old date value</comment>
+			</column>
+		</property>
+		<property name="newDateValue">
+			<column name="new_date_value" not-null="false" sql-type="datetime">
+				<comment>Optional new date value</comment>
+			</column>
+		</property>
+		<property name="oldIntValue">
+			<column name="old_int_value" not-null="false">
+				<comment>Optional old int value</comment>
+			</column>
+		</property>
+		<property name="newIntValue">
+			<column name="new_int_value" not-null="false">
+				<comment>Optional new int value</comment>
+			</column>
+		</property>
+		<property name="oldLongValue">
+			<column name="old_long_value" not-null="false">
+				<comment>Optional old long value</comment>
+			</column>
+		</property>
+		<property name="newLongValue">
+			<column name="new_long_value" not-null="false">
+				<comment>Optional new long value</comment>
+			</column>
+		</property>
+		<property name="oldStringValue">
+			<column name="old_string_value" not-null="false">
+				<comment>Optional old string value</comment>
+			</column>
+		</property>
+		<property name="newStringValue">
+			<column name="new_string_value" not-null="false">
+				<comment>Optional new string value</comment>
+			</column>
+		</property>
+		<property name="oldDoubleValue">
+			<column name="old_double_value" not-null="false">
+				<comment>Optional old double value</comment>
+			</column>
+		</property>
+		<property name="newDoubleValue">
+			<column name="new_double_value" not-null="false">
+				<comment>Optional new double value</comment>
+			</column>
+		</property>
+		<property name="fieldType">
+			<column name="field_type" not-null="true">
+				<comment>Field type value is modified for</comment>
+			</column>
+		</property>
+		<property name="operationOrder">
+			<column name="operation_order" not-null="true">
+				<comment>Object modification operation order</comment>
+			</column>
+		</property>
+		<many-to-one name="language" foreign-key="FK_common_history_records_tbl_language_id"
+					 class="org.flexpay.common.persistence.Language">
+			<column name="language_id" not-null="false">
+				<comment>Optional language reference for multilang fields</comment>
+			</column>
+		</many-to-one>
+		<property name="beginDate">
+			<column name="begin_date" not-null="false" sql-type="date">
+				<comment>Optional begin date for temporal fields</comment>
+			</column>
+		</property>
+		<property name="endDate">
+			<column name="end_date" not-null="false" sql-type="date">
+				<comment>Optional end date for temporal fields</comment>
+			</column>
+		</property>
+		<property name="fieldKey">
+			<column name="field_key" not-null="false">
+				<comment>Optional key for field value</comment>
+			</column>
+		</property>
+		<property name="processingStatus">
+			<column name="processing_status" not-null="true" default="0">
+				<comment>Processing status</comment>
+			</column>
+		</property>
+		<many-to-one name="diff" foreign-key="FK_common_history_records_tbl_diff_id" class="Diff">
+			<column name="diff_id" not-null="true">
+				<comment>Diff (set of records) reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<query name="Diff.readFull">
+		select distinct d
+		from Diff d
+			left join fetch d.historyRecords
+		where d.id=?
+	</query>
+
+	<query name="Diff.findDiffs">
+		from Diff d
+		where d.objectId=? and d.objectType=?
+	</query>
+
+</hibernate-mapping>
