@@ -51,13 +51,12 @@ public interface CorrectionsService {
 
 	/**
 	 *
-	 * @param internalId
-	 * @param type
-	 * @param dataSourceDescriptionId
-	 * @return
-	 * @deprecated refactor to use Objects instead of Longs
+	 * @param internalId internalId
+	 * @param type type
+	 * @param dataSourceDescriptionStub dataSourceDescriptionStub
+	 * @return externalId
 	 */
-	String getExternalId(@NonNls Long internalId, int type, Long dataSourceDescriptionId);
+	String getExternalId(@NonNls Long internalId, int type, Stub<DataSourceDescription> dataSourceDescriptionStub);
 
 	/**
 	 * Find external identifier of internal object

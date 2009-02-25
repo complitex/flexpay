@@ -4,6 +4,8 @@ import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.locking.LockManager;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.CollectionUtils;
@@ -12,6 +14,7 @@ import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.process.exporters.Exporter;
 import org.flexpay.tc.service.TariffCalculationResultService;
+
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
@@ -52,15 +55,17 @@ public class TariffCalcResultExportJob extends Job {
 
 			List<Long> addressIds = tariffCalculationResultService.getAddressIds(calcDate);
 
+			Stub<DataSourceDescription> dataSourceDescriptionStub = new Stub<DataSourceDescription>(dataSourceDescriptionId);
+
 			for (Long addressId : addressIds) {
 				
-				String externalId = correctionsService.getExternalId(addressId, classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionId);
+				String externalId = correctionsService.getExternalId(addressId, classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionStub);
 				if (externalId == null) {
 					log.debug("ExternalId for building address with id={} not found", addressId);
 					continue;
 				}
 
-				List<TariffCalculationResult> tcrs = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndAddressId(calcDate, addressId);
+				List<TariffCalculationResult> tcrs = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndAddressId(calcDate, new Stub<BuildingAddress>(addressId));
 				List<String> addressSubServiceExportCodes = CollectionUtils.list(subServiceExportCodes);
 				try {
 					for (TariffCalculationResult tcr : tcrs) {

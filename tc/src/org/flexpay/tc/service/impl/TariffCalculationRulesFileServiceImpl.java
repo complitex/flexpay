@@ -55,12 +55,13 @@ public class TariffCalculationRulesFileServiceImpl implements TariffCalculationR
 		tariffCalculationRulesFileDao.delete(file);
 	}
 
+	@SuppressWarnings({"ResultOfMethodCallIgnored"})
 	@Transactional (readOnly = false)
-	public void delete(@NotNull Long fileId) {
-		TariffCalculationRulesFile rulesFile = tariffCalculationRulesFileDao.read(fileId);
+	public void delete(@NotNull Stub<TariffCalculationRulesFile> fileStub) {
+		TariffCalculationRulesFile rulesFile = tariffCalculationRulesFileDao.read(fileStub.getId());
 
 		if (rulesFile == null) {
-			log.debug("Can't find tariff calculation rules file with id {}", fileId);
+			log.debug("Can't find tariff calculation rules file with id {}", fileStub.getId());
 			return;
 		}
 

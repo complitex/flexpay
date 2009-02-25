@@ -7,6 +7,7 @@ import org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.tc.locking.Resources;
@@ -103,10 +104,12 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 
 	private String getExternalId(@NotNull Stub<Building> buildingStub) throws FlexPayException {
 
+		Stub<DataSourceDescription> dataSourceDescriptionStub = new Stub<DataSourceDescription>(dataSourceDescriptionId);
+
 		List<BuildingAddress> buildingAddressList = buildingService.getBuildingBuildings(buildingStub);
 		for (BuildingAddress buildingAddress : buildingAddressList) {
 			String externalId = correctionsService.getExternalId(buildingAddress.getId(),
-					classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionId);
+					classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionStub);
 			if (externalId != null) {
 				return externalId;
 			}

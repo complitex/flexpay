@@ -1,8 +1,10 @@
 package org.flexpay.tc.actions.tariff;
 
 import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.tc.persistence.TariffCalculationRulesFile;
 import org.flexpay.tc.service.TariffCalculationRulesFileService;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -20,7 +22,7 @@ public class TariffCalcRulesFileDeleteAction extends FPActionWithPagerSupport<Ta
 			return REDIRECT_SUCCESS;
 		}
 
-		tariffCalculationRulesFileService.delete(id);
+		tariffCalculationRulesFileService.delete(new Stub<TariffCalculationRulesFile>(id));
 
 		return REDIRECT_SUCCESS;
 	}

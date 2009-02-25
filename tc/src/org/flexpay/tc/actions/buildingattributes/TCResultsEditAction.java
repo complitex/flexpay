@@ -1,12 +1,15 @@
 package org.flexpay.tc.actions.buildingattributes;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.service.TariffCalculationResultService;
+
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -35,14 +38,14 @@ public class TCResultsEditAction extends FPActionSupport {
                 continue;
             }
 
-            Long tariffIdLong = tariffId.longValue();
-            Long buildingIdLong = Long.parseLong(buildingId);
+            Stub<Tariff> tariffStub = new Stub<Tariff>(tariffId.longValue());
+            Stub<Building> buildingStub = new Stub<Building>(Long.parseLong(buildingId));
 
             TariffCalculationResult result = tariffCalculationResultService.
-                    findTariffCalcResults(calcDate, tariffIdLong, buildingIdLong);
+                    findTariffCalcResults(calcDate, tariffStub, buildingStub);
 
-            BigDecimal value = NumberUtils.createBigDecimal(tariffMap.get(tariffId));
-            result.setValue(value);
+			String valueStr = tariffMap.get(tariffId);
+            result.setValue(valueStr == null || valueStr.equals("") ? BigDecimal.ZERO : new BigDecimal(valueStr));
             tariffCalculationResultService.update(result);
         }
 
@@ -75,9 +78,9 @@ public class TCResultsEditAction extends FPActionSupport {
         this.calculationDate = calculationDate;
     }
 
-    // required services
     @Required
     public void setTariffCalculationResultService(TariffCalculationResultService tariffCalculationResultService) {
         this.tariffCalculationResultService = tariffCalculationResultService;
     }
+
 }
