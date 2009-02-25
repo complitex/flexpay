@@ -1,17 +1,15 @@
 package org.flexpay.bti.dao.impl;
 
+import org.flexpay.ab.persistence.Town;
 import org.flexpay.bti.dao.BtiBuildingDaoExt;
 import org.flexpay.bti.persistence.BtiBuilding;
 import org.flexpay.bti.persistence.BuildingAttributeBase;
-import org.flexpay.ab.persistence.Town;
 import org.flexpay.common.persistence.Stub;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 public class BtiBuildingDaoExtImpl extends HibernateDaoSupport implements BtiBuildingDaoExt {
 

@@ -1,10 +1,9 @@
 package org.flexpay.common.locking;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.common.util.CollectionUtils;
 import org.hibernate.*;
-import org.jetbrains.annotations.NonNls;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import java.util.Collection;

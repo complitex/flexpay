@@ -3,8 +3,8 @@ package org.flexpay.common.process.job;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
 import static org.junit.Assert.assertEquals;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 
 import java.io.Serializable;
 import java.util.HashMap;

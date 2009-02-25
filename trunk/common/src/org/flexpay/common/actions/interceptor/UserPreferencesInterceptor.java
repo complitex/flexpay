@@ -1,12 +1,11 @@
 package org.flexpay.common.actions.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.apache.struts2.ServletActionContext;
 import org.flexpay.common.util.config.UserPreferences;
 
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import javax.servlet.http.HttpServletRequest;
 
 public class UserPreferencesInterceptor extends AbstractInterceptor {
 

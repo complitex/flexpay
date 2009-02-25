@@ -9,8 +9,8 @@ import org.jbpm.JbpmConfiguration;
 import org.jbpm.JbpmContext;
 import org.jbpm.graph.def.ProcessDefinition;
 import static org.junit.Assert.assertEquals;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;

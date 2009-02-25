@@ -1,11 +1,11 @@
 package org.flexpay.eirc.persistence;
 
-import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.DomainObjectWithStatus;
 
-import java.util.Set;
 import java.util.Collections;
+import java.util.Set;
 
 /**
  * Consumer info is a general consumer info given by provider

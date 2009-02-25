@@ -1,24 +1,24 @@
 package org.flexpay.bti.service.importexport;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.io.IOUtils;
 import org.flexpay.bti.process.BuildingAttributesImportJob;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
-import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.process.job.Job;
-import org.junit.Test;
-import static org.junit.Assert.assertFalse;
+import org.flexpay.common.util.FPFileUtil;
 import static org.junit.Assert.assertEquals;
-import org.apache.commons.io.IOUtils;
+import static org.junit.Assert.assertFalse;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
-import java.util.Map;
+import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.io.File;
+import java.util.Date;
+import java.util.Map;
 
 public class TestImportBuildingAttributes extends SpringBeanAwareTestCase {
 

@@ -8,17 +8,17 @@ import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.tc.locking.Resources;
-import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.Tariff;
-import org.flexpay.tc.service.TariffCalculationResultService;
+import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.process.exporters.Exporter;
+import org.flexpay.tc.service.TariffCalculationResultService;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.math.BigDecimal;
 
 public class TariffCalcResultExportJob extends Job {
 
@@ -64,7 +64,7 @@ public class TariffCalcResultExportJob extends Job {
 				List<String> addressSubServiceExportCodes = CollectionUtils.list(subServiceExportCodes);
 				try {
 					for (TariffCalculationResult tcr : tcrs) {
-						exporter.export(new Object[]{tcr, externalId, periodBeginDate});
+						exporter.export(new Object[] {tcr, externalId, periodBeginDate});
 						addressSubServiceExportCodes.remove(tcr.getTariff().getSubServiceCode());
 					}
 					for(String code : addressSubServiceExportCodes){
@@ -74,7 +74,7 @@ public class TariffCalcResultExportJob extends Job {
 						tcr.setTariff(tariff);
 						tcr.setCalculationDate(calcDate);
 						tcr.setValue(BigDecimal.ZERO);
-						exporter.export(new Object[]{tcr,externalId, periodBeginDate});
+						exporter.export(new Object[] {tcr,externalId, periodBeginDate});
 					}
 					exporter.commit();
 				} catch (FlexPayException  e) {
@@ -96,7 +96,6 @@ public class TariffCalcResultExportJob extends Job {
 		log.debug("Tariff calculation result export procces finished");
 		return RESULT_NEXT;
 	}
-
 
 	@Required
 	public void setClassToTypeRegistry(ClassToTypeRegistry classToTypeRegistry) {
@@ -132,4 +131,5 @@ public class TariffCalcResultExportJob extends Job {
 	public void setSubServiceExportCodes(List<String> subServiceExportCodes) {
 		this.subServiceExportCodes = subServiceExportCodes;
 	}
+
 }

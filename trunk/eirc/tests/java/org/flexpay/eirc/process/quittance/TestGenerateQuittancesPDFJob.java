@@ -5,10 +5,10 @@ import org.flexpay.common.process.job.Job;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.ServiceOrganization;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
+import static org.junit.Assert.assertSame;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;

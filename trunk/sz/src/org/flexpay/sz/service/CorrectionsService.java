@@ -1,14 +1,14 @@
 package org.flexpay.sz.service;
 
-import org.flexpay.sz.persistence.corrections.DistrictCorrection;
-import org.flexpay.sz.persistence.corrections.StreetCorrection;
-import org.flexpay.sz.persistence.corrections.BuildingNumberCorrection;
-import org.flexpay.sz.persistence.corrections.ApartmentNumberCorrection;
-import org.flexpay.sz.persistence.Oszn;
-import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.Street;
-import org.flexpay.ab.persistence.Building;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.sz.persistence.Oszn;
+import org.flexpay.sz.persistence.corrections.ApartmentNumberCorrection;
+import org.flexpay.sz.persistence.corrections.BuildingNumberCorrection;
+import org.flexpay.sz.persistence.corrections.DistrictCorrection;
+import org.flexpay.sz.persistence.corrections.StreetCorrection;
 
 /**
  * Service working with corrections data

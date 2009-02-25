@@ -2,7 +2,6 @@ package org.flexpay.ab.dao;
 
 import org.flexpay.ab.persistence.HistoryRecord;
 
-import java.util.List;
 import java.util.Iterator;
 
 public interface HistorySourceDao {

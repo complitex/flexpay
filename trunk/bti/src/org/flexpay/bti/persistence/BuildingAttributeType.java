@@ -1,8 +1,8 @@
 package org.flexpay.bti.persistence;
 
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 

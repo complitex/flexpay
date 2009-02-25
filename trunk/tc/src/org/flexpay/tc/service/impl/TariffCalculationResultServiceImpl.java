@@ -1,19 +1,20 @@
 package org.flexpay.tc.service.impl;
 
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.tc.dao.TariffCalculationResultDao;
-import org.flexpay.tc.persistence.TariffCalculationResult;
-import org.flexpay.tc.persistence.Tariff;
-import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.tc.dao.TariffCalculationResultDao;
+import org.flexpay.tc.persistence.Tariff;
+import org.flexpay.tc.persistence.TariffCalculationResult;
+import org.flexpay.tc.service.TariffCalculationResultService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.math.BigDecimal;
+import java.util.Set;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class TariffCalculationResultServiceImpl implements TariffCalculationResultService {
@@ -29,6 +30,13 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 	public void add(@NotNull TariffCalculationResult tariffCalculationResult) {
 		tariffCalculationResult.setId(null);
 		tariffCalculationResultDao.create(tariffCalculationResult);
+	}
+
+	@Transactional (readOnly = false)
+	public void add(@NotNull Set<TariffCalculationResult> tariffCalculationResults) {
+		for (TariffCalculationResult tcr : tariffCalculationResults) {
+			tariffCalculationResultDao.create(tcr);
+		}
 	}
 
 	/**

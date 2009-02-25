@@ -1,17 +1,17 @@
 package org.flexpay.eirc.service.imp;
 
-import org.flexpay.eirc.process.QuittanceNumberService;
-import org.flexpay.eirc.persistence.account.Quittance;
-import org.flexpay.common.util.Luhn;
-import org.flexpay.common.exception.FlexPayException;
 import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.util.Luhn;
+import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.process.QuittanceNumberService;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class QuittanceNumberServiceImpl implements QuittanceNumberService {
 

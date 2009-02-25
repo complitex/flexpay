@@ -1,8 +1,8 @@
 package org.flexpay.common.persistence.history.impl;
 
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.history.HistoryBuilder;
 import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.HistoryBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

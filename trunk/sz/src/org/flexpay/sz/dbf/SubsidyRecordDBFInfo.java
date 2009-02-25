@@ -1,12 +1,11 @@
 package org.flexpay.sz.dbf;
 
+import com.linuxense.javadbf.DBFException;
 import org.flexpay.sz.persistence.SubsidyRecord;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Date;
-
-import com.linuxense.javadbf.DBFException;
 
 public class SubsidyRecordDBFInfo extends DBFInfo<SubsidyRecord> {
 

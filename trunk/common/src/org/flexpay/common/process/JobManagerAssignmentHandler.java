@@ -1,8 +1,8 @@
 package org.flexpay.common.process;
 
 import org.jbpm.graph.exe.ExecutionContext;
-import org.jbpm.taskmgmt.exe.Assignable;
 import org.jbpm.taskmgmt.def.AssignmentHandler;
+import org.jbpm.taskmgmt.exe.Assignable;
 
 public class JobManagerAssignmentHandler implements AssignmentHandler {
 

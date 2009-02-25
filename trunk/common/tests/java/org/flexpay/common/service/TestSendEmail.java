@@ -1,11 +1,11 @@
 package org.flexpay.common.service;
 
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.junit.Test;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 
 public class TestSendEmail extends SpringBeanAwareTestCase {
 

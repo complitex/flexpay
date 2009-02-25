@@ -1,7 +1,7 @@
 package org.flexpay.common.persistence;
 
-import org.jetbrains.annotations.NotNull;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NotNull;
 
 public class MeasureUnitName extends Translation {
 

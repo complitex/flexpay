@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
-import java.math.BigDecimal;
 
 public class TariffCalcRulesFilesListAction extends FPActionWithPagerSupport<TariffCalculationRulesFile> {
 

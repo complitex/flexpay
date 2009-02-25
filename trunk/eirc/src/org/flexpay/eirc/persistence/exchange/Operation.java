@@ -3,8 +3,8 @@ package org.flexpay.eirc.persistence.exchange;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class Operation {
 

@@ -1,7 +1,7 @@
 package org.flexpay.common.util.selftest;
 
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.apache.commons.io.IOUtils;
+import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.io.InputStream;
 

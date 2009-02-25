@@ -2,8 +2,8 @@ package org.flexpay.eirc.persistence;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.Nullable;
 

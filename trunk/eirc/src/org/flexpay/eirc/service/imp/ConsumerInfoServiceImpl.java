@@ -1,8 +1,8 @@
 package org.flexpay.eirc.service.imp;
 
-import org.flexpay.eirc.service.ConsumerInfoService;
-import org.flexpay.eirc.persistence.ConsumerInfo;
 import org.flexpay.eirc.dao.ConsumerInfoDao;
+import org.flexpay.eirc.persistence.ConsumerInfo;
+import org.flexpay.eirc.service.ConsumerInfoService;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)

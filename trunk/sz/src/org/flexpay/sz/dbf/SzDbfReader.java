@@ -1,16 +1,12 @@
 package org.flexpay.sz.dbf;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import com.linuxense.javadbf.DBFException;
+import com.linuxense.javadbf.DBFReader;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import com.linuxense.javadbf.DBFException;
-import com.linuxense.javadbf.DBFReader;
 
 public class SzDbfReader<E, I extends DBFInfo<E>> {
 

@@ -1,7 +1,7 @@
 package org.flexpay.common.persistence.filter;
 
-import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Translation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;

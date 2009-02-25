@@ -4,9 +4,9 @@ import org.flexpay.eirc.dao.SpRegistryStatusDao;
 import org.flexpay.eirc.persistence.RegistryStatus;
 import org.flexpay.eirc.service.SpRegistryStatusService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 public class SpRegistryStatusServiceImpl implements SpRegistryStatusService {
 

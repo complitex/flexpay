@@ -5,8 +5,8 @@ import org.flexpay.tc.persistence.Tariff;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.annotation.Secured;
 
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 public interface TariffService {
 

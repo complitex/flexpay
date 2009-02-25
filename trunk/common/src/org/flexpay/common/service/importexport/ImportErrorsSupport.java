@@ -4,8 +4,8 @@ import org.flexpay.common.persistence.ImportError;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Helper to work with import errors objects

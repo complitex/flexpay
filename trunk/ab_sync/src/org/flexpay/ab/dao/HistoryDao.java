@@ -4,7 +4,6 @@ import org.flexpay.ab.persistence.HistoryRecord;
 import org.flexpay.common.dao.paging.Page;
 
 import java.util.List;
-import java.util.Date;
 
 public interface HistoryDao {
 

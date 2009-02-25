@@ -1,11 +1,10 @@
 package org.flexpay.bti.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
-
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.util.Date;
 

@@ -1,8 +1,8 @@
 package org.flexpay.common.actions;
 
+import org.apache.struts2.interceptor.ServletRequestAware;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.util.config.UserPreferences;
-import org.apache.struts2.interceptor.ServletRequestAware;
 import org.jetbrains.annotations.NonNls;
 
 import javax.servlet.http.HttpServletRequest;

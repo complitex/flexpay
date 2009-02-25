@@ -4,8 +4,8 @@ import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
-import java.util.*;
 import java.io.Serializable;
+import java.util.*;
 
 /**
  * Storage for a sorted list of intervals covering time line

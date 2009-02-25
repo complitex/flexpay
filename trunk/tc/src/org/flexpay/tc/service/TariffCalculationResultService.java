@@ -1,26 +1,35 @@
 package org.flexpay.tc.service;
 
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.tc.persistence.TariffCalculationResult;
-import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.tc.persistence.Tariff;
+import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.annotation.Secured;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.math.BigDecimal;
+import java.util.Set;
 
 public interface TariffCalculationResultService {
 
 	/**
-	 * Save tariff calculation results for building
+	 * Save tariff calculation result for building
 	 *
 	 * @param tariffCalculationResult calculated result
 	 */	
 	@Secured({Roles.TARIFF_CALCULATION_RESULT_ADD})
 	void add(@NotNull TariffCalculationResult tariffCalculationResult);
+
+	/**
+	 * Save set of tariff calculation results for building
+	 *
+	 * @param tariffCalculationResults calculated results
+	 */
+	@Secured({Roles.TARIFF_CALCULATION_RESULT_ADD})
+	void add(@NotNull Set<TariffCalculationResult> tariffCalculationResults);
 
 	/**
 	 * Save tariff calculation results for building

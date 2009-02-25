@@ -1,25 +1,25 @@
 package org.flexpay.eirc.service.imp;
 
+import org.apache.commons.collections.ArrayStack;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.dao.PaymentPointDao;
 import org.flexpay.eirc.persistence.PaymentPoint;
 import org.flexpay.eirc.persistence.PaymentsCollector;
-import org.flexpay.eirc.persistence.filters.PaymentsCollectorFilter;
 import org.flexpay.eirc.persistence.filters.PaymentPointsFilter;
+import org.flexpay.eirc.persistence.filters.PaymentsCollectorFilter;
 import org.flexpay.eirc.service.PaymentPointService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.transaction.annotation.Transactional;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.collections.ArrayStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;

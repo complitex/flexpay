@@ -2,8 +2,8 @@ package org.flexpay.common.test;
 
 import org.springframework.mock.jndi.SimpleNamingContext;
 
-import javax.naming.spi.InitialContextFactory;
 import javax.naming.Context;
+import javax.naming.spi.InitialContextFactory;
 import java.util.Hashtable;
 
 public class MockInitialContextFactory implements InitialContextFactory {

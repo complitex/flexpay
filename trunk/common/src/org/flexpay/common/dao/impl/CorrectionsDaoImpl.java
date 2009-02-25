@@ -5,16 +5,16 @@ import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
-import org.springframework.jdbc.core.SingleColumnRowMapper;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SingleColumnRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
-import java.util.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class CorrectionsDaoImpl extends SimpleJdbcDaoSupport implements CorrectionsDao {
 

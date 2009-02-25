@@ -74,6 +74,8 @@ public class TariffCalculationJob extends Job {
 
 					for (BtiBuilding btiBuilding : btiBuildingList) {
 
+						cnt++;
+
 						WorkingMemory workingMemory = ruleBase.newStatefulSession();
 						workingMemory.setGlobal("log", log);
 						workingMemory.setGlobal("creationDate", date);
@@ -85,11 +87,11 @@ public class TariffCalculationJob extends Job {
 						workingMemory.insert(btiBuildingService.readWithAttributes(new Stub<BtiBuilding>(btiBuilding)));
 						workingMemory.fireAllRules();
 						workingMemory.clearAgenda();
-						cnt++;
 						if (cnt % 100 == 0) {
-							pLogger.info("{} buildings processed.", cnt);
+							pLogger.info("{} buildings processed", cnt);
 						}
 					}
+
 				} catch (FileNotFoundException ex) {
 					log.error("Rules file not found.", ex);
 					return RESULT_ERROR;

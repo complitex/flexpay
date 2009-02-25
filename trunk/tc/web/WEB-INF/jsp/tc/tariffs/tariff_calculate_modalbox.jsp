@@ -58,7 +58,7 @@
                 <script type="text/javascript">
                     Calendar.setup({
                         inputField	 : "inputCalcDate",
-                        ifFormat	 : "%d.%m.%Y",
+                        ifFormat	 : "%Y/%m/%d",
                         button		 : "calcDate",
                         align		 : "Tl",
                         position : [x, y]

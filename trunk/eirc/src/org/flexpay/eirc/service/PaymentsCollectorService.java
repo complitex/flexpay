@@ -1,14 +1,13 @@
 package org.flexpay.eirc.service;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.eirc.persistence.filters.OrganizationFilter;
-import org.flexpay.eirc.persistence.filters.PaymentsCollectorFilter;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.PaymentsCollector;
 import org.flexpay.eirc.persistence.PaymentsCollectorDescription;
+import org.flexpay.eirc.persistence.filters.OrganizationFilter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Set;

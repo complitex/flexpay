@@ -1,13 +1,13 @@
 package org.flexpay.eirc.service.imp;
 
-import org.flexpay.eirc.service.QuittancePaymentService;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.eirc.dao.QuittancePaymentDao;
 import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.eirc.persistence.account.Quittance;
-import org.flexpay.eirc.dao.QuittancePaymentDao;
-import org.flexpay.common.persistence.Stub;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Required;
+import org.flexpay.eirc.service.QuittancePaymentService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

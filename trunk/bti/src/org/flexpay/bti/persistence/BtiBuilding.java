@@ -8,7 +8,9 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Set;
 
 public class BtiBuilding extends Building {
 

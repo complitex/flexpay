@@ -8,8 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 @Transactional(readOnly = true, rollbackFor = Exception.class)
 public class TariffServiceImpl implements TariffService {

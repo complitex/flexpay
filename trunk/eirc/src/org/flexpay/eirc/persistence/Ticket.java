@@ -1,11 +1,11 @@
 package org.flexpay.eirc.persistence;
 
-import java.util.Date;
-import java.util.Set;
-
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.persistence.DomainObject;
+
+import java.util.Date;
+import java.util.Set;
 
 public class Ticket extends DomainObject {
 	private Date creationDate;

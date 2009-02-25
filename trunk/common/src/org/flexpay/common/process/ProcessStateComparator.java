@@ -1,11 +1,11 @@
 package org.flexpay.common.process;
 
-import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.CollectionUtils.ar;
+import static org.flexpay.common.util.CollectionUtils.map;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Map;
-import java.io.Serializable;
 
 /**
  * ProcessStateComparator adds linear order on processes states 

@@ -1,8 +1,8 @@
 package org.flexpay.eirc.persistence;
 
-import org.flexpay.common.persistence.DomainObject;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.DomainObject;
 
 public class RegistryRecordContainer extends DomainObject {
 

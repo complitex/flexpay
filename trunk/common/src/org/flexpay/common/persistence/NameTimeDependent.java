@@ -2,11 +2,11 @@ package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.CollectionUtils;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 

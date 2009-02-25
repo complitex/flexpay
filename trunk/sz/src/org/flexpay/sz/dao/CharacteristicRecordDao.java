@@ -1,10 +1,10 @@
 package org.flexpay.sz.dao;
 
-import java.util.List;
-
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.sz.persistence.CharacteristicRecord;
+
+import java.util.List;
 
 public interface CharacteristicRecordDao extends GenericDao<CharacteristicRecord, Long>{
 	

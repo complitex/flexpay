@@ -2,143 +2,70 @@ INSERT INTO common_flexpay_modules_tbl (name) VALUES ('bti');
 SELECT @module_bti:=last_insert_id();
 
 -- init building attribute groups
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (1, 0, 0);
-select @attribute_group_1:=1;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Другие', @ru_id, @attribute_group_1);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Other', @en_id, @attribute_group_1);
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_1:=last_insert_id();
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_2:=last_insert_id();
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_3:=last_insert_id();
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_4:=last_insert_id();
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_5:=last_insert_id();
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_6:=last_insert_id();
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_7:=last_insert_id();
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_8:=last_insert_id();
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_9:=last_insert_id();
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_10:=last_insert_id();
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_11:=last_insert_id();
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_12:=last_insert_id();
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_13:=last_insert_id();
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_14:=last_insert_id();
+insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
+select @attribute_group_15:=last_insert_id();
 
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (2, 0, 0);
-select @attribute_group_2:=2;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Архитектурные характеристики', @ru_id, @attribute_group_2);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Architectural characteristics', @en_id, @attribute_group_2);
+insert into bti_building_attribute_type_group_names_tbl (group_id, language_id, name) values 
+	(@attribute_group_1, @ru_id, 'Другие'),
+    (@attribute_group_1, @en_id, 'Other'),
+    (@attribute_group_2, @ru_id, 'Архитектурные характеристики'),
+    (@attribute_group_2, @en_id, 'Architectural characteristics'),
+    (@attribute_group_3, @ru_id, 'Жильцы'),
+    (@attribute_group_3, @en_id, 'Tenants'),
+    (@attribute_group_4, @ru_id, 'Отопление'),
+    (@attribute_group_4, @en_id, 'Heating'),
+    (@attribute_group_5, @ru_id, 'Водоснабжение'),
+    (@attribute_group_5, @en_id, 'Water supply'),
+    (@attribute_group_6, @ru_id, 'Канализация и водосток'),
+    (@attribute_group_6, @en_id, 'Sewer and drain'),
+    (@attribute_group_7, @ru_id, 'Утилизация бытового мусора'),
+    (@attribute_group_7, @en_id, 'Recycling'),
+    (@attribute_group_8, @ru_id, 'Жилой фонд'),
+    (@attribute_group_8, @en_id, 'Housing'),
+    (@attribute_group_9, @ru_id, 'Вентиляция'),
+    (@attribute_group_9, @en_id, 'Ventilation'),
+    (@attribute_group_10, @ru_id, 'Лифтовое оборудование'),
+    (@attribute_group_10, @en_id, 'Elevators'),
+    (@attribute_group_11, @ru_id, 'Аварийно-диспетчерская служба'),
+    (@attribute_group_11, @en_id, 'Emergency-dispatcher service'),
+    (@attribute_group_12, @ru_id, 'Электрооборудование'),
+    (@attribute_group_12, @en_id, 'Electrical equipment'),
+    (@attribute_group_13, @ru_id, 'Придомовая территория'),
+    (@attribute_group_13, @en_id, 'House territory'),
+    (@attribute_group_14, @ru_id, 'Расходы'),
+    (@attribute_group_14, @en_id, 'Costs'),
+    (@attribute_group_15, @ru_id, 'Освещение мест общего пользования'),
+    (@attribute_group_15, @en_id, 'Common places lighting');
 
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (3, 0, 0);
-select @attribute_group_3:=3;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Жильцы', @ru_id, @attribute_group_3);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Tenants', @en_id, @attribute_group_3);
-
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (4, 0, 0);
-select @attribute_group_4:=4;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Отопление', @ru_id, @attribute_group_4);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Heating', @en_id, @attribute_group_4);
-
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (5, 0, 0);
-select @attribute_group_5:=5;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Водоснабжение', @ru_id, @attribute_group_5);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Water supply', @en_id, @attribute_group_5);
-
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (6, 0, 0);
-select @attribute_group_6:=6;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Канализация и водосток', @ru_id, @attribute_group_6);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Sewer and drain', @en_id, @attribute_group_6);
-
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (7, 0, 0);
-select @attribute_group_7:=7;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Утилизация бытового мусора', @ru_id, @attribute_group_7);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Recycling', @en_id, @attribute_group_7);
-
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (8, 0, 0);
-select @attribute_group_8:=8;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Жилой фонд', @ru_id, @attribute_group_8);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Housing', @en_id, @attribute_group_8);
-
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (9, 0, 0);
-select @attribute_group_9:=9;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Вентиляция', @ru_id, @attribute_group_9);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Ventilation', @en_id, @attribute_group_9);
-
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (10, 0, 0);
-select @attribute_group_10:=10;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Лифтовое оборудование', @ru_id, @attribute_group_10);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Elevators', @en_id, @attribute_group_10);
-
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (11, 0, 0);
-select @attribute_group_11:=11;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Аварийно-диспетчерская служба', @ru_id, @attribute_group_11);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Emergency-dispatcher service', @en_id, @attribute_group_11);
-
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (12, 0, 0);
-select @attribute_group_12:=12;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Электрооборудование', @ru_id, @attribute_group_12);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Electrical equipment', @en_id, @attribute_group_12);
-
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (13, 0, 0);
-select @attribute_group_13:=13;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Придомовая территория', @ru_id, @attribute_group_13);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('House territory', @en_id, @attribute_group_13);
-
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (14, 0, 0);
-select @attribute_group_14:=14;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Тарифы', @ru_id, @attribute_group_14);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Tariffs', @en_id, @attribute_group_14);
-
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (15, 0, 0);
-select @attribute_group_15:=15;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Расходы', @ru_id, @attribute_group_15);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Costs', @en_id, @attribute_group_15);
-
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (16, 0, 0);
-select @attribute_group_16:=16;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Освещение мест общего пользования', @ru_id, @attribute_group_16);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Common places lighting', @en_id, @attribute_group_16);
-
-insert into bti_building_attribute_type_groups_tbl (id, version, status)
-	values (17, 0, 0);
-select @attribute_group_17:=17;
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Тарифы', @ru_id, @attribute_group_17);
-insert into bti_building_attribute_type_group_names_tbl (name, language_id, group_id)
-	values ('Tariff', @en_id, @attribute_group_17);
-
-INSERT INTO `bti_building_attribute_types_tbl` (id, discriminator, group_id, unique_code, is_temporal) VALUES
+INSERT INTO bti_building_attribute_types_tbl (id, discriminator, group_id, unique_code, is_temporal) VALUES
         (4,'simple',@attribute_group_1,'ATTR_SECTION_NUMBER', 0),
 		(5,'simple',@attribute_group_3,'ATTR_HABITANTS_NUMBER', 0),
 		(6,'simple',@attribute_group_2,'ATTR_APARTMENTS_TOTAL_SQUARE', 0),
@@ -182,11 +109,11 @@ INSERT INTO `bti_building_attribute_types_tbl` (id, discriminator, group_id, uni
 		(45,'enum',@attribute_group_6,'ATTR_INHOUSE_SEWER_SYSTEM_TYPE', 0),
 		(46,'simple',@attribute_group_10,'ATTR_LIFTS_TECH_SUPPORT', 0),
 		(47,'simple',@attribute_group_11,'ATTR_DISPETCHER_SYSTEMS_TECH_SUPPORT', 0),
-		(48,'simple',@attribute_group_16,'ATTR_COMMON_PLACES_LIGHTENING', 0),
-        (65,'simple',@attribute_group_2,'ATTR_OPEN_ELECTRIC_WIRING_APARTMENT_NUMBER', 0),
-        (66,'simple',@attribute_group_2,'ATTR_OPEN_ELECTRIC_WIRING_APARTMENT_NUMBER_2', 0);
+		(48,'simple',@attribute_group_15,'ATTR_COMMON_PLACES_LIGHTENING', 0),
+        (49,'simple',@attribute_group_2,'ATTR_OPEN_ELECTRIC_WIRING_APARTMENT_NUMBER', 0),
+        (50,'simple',@attribute_group_2,'ATTR_OPEN_ELECTRIC_WIRING_APARTMENT_NUMBER_2', 0);
 
-INSERT INTO `bti_building_attribute_type_names_tbl` (id, name, language_id, attribute_type_id) VALUES
+INSERT INTO bti_building_attribute_type_names_tbl (id, name, language_id, attribute_type_id) VALUES
 		(7,'Номер участка',@ru_id,4),
 		(8,'Habitans count',@en_id,5),
 		(9,'Количество жителей',@ru_id,5),
@@ -233,10 +160,10 @@ INSERT INTO `bti_building_attribute_type_names_tbl` (id, name, language_id, attr
 		(51,'Технологическое обслуживание лифтов в месяц',@ru_id,46),
 		(52,'Диспетчеризация в месяц',@ru_id,47),
 		(53,'Освещение мест общего пользования ',@ru_id,48),
-		(70,'Количество квартир со скрытой электропроводкой ',@ru_id,65),
-		(71,'Количество квартир с открытой электропроводкой ',@ru_id,66);
+		(70,'Количество квартир со скрытой электропроводкой ',@ru_id,49),
+		(71,'Количество квартир с открытой электропроводкой ',@ru_id,50);
 
-INSERT INTO `bti_building_attribute_type_enum_values_tbl` (id, order_value, value , attribute_type_enum_id)  VALUES
+INSERT INTO bti_building_attribute_type_enum_values_tbl (id, order_value, value , attribute_type_enum_id) VALUES
 (7,296,'№163',9),(8,295,'эксперим.',9),(9,294,'эксперем.',9),(10,293,'экспер',9),
 (11,292,'часть частного дома',9),(12,291,'смеш.',9),(13,290,'пан',9),(14,289,'к-23',9),(15,288,'к',9),(16,269,'П57-10А',9),(17,268,'П57-03/9',9),
 (18,271,'П57011-10А',9),(19,270,'П57-70А/9',9),(20,265,'П57-03',9),(21,264,'П57',9),(22,267,'П57-03/3',9),(23,266,'П57-03/12',9),(24,261,'П120/1-10А',9),
@@ -284,8 +211,6 @@ INSERT INTO `bti_building_attribute_type_enum_values_tbl` (id, order_value, valu
 (312,8,'асбест.',44),(313,7,'асбест',44),(314,6,'99',44),(315,5,'66',44),(316,4,'54',44),(317,3,'5',44),(318,2,'280',44),(319,1,'231',44),(320,14,'пласт',44),
 (321,15,'пласт.',44),(322,17,'пластм',44),(323,16,'пластик',44),(324,19,'плат',44),(325,18,'пластмас',44),(326,21,'поастм.',44),(327,20,'плсатм.',44),(328,23,'сталь',44),
 (329,22,'сталева',44),(330,25,'чав/плас',44),(331,24,'ч\\п',44),(332,4,'чавун',45),(333,3,'закрытая',45),(334,2,'відкрита',45),(335,1,'135',45);
-
-
 
 -- initialize correction for a test attributes of CN building
 insert into common_data_corrections_tbl(external_object_id, internal_object_id, object_type, data_source_description_id)

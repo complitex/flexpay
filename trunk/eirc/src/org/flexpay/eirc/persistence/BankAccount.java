@@ -1,10 +1,10 @@
 package org.flexpay.eirc.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 
 public class BankAccount extends DomainObjectWithStatus {
 

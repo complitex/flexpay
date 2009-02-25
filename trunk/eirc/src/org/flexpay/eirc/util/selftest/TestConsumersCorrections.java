@@ -1,9 +1,9 @@
 package org.flexpay.eirc.util.selftest;
 
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.dao.support.DataAccessUtils;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.eirc.persistence.Consumer;
+import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 /**
  * Test application and database for corrections to not existing consumers

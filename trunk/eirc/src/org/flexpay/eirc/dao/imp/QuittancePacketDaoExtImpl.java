@@ -7,11 +7,11 @@ import org.flexpay.eirc.persistence.QuittancePacket;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.dao.support.DataAccessUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.List;
 

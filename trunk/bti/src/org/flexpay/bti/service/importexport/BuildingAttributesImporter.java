@@ -1,7 +1,7 @@
 package org.flexpay.bti.service.importexport;
 
-import java.util.List;
 import java.io.InputStream;
+import java.util.List;
 
 public interface BuildingAttributesImporter {
 

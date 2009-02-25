@@ -1,11 +1,11 @@
 package org.flexpay.eirc.persistence;
 
-import org.flexpay.common.persistence.DomainObject;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.DomainObject;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 public class RegistryType extends DomainObject {
 

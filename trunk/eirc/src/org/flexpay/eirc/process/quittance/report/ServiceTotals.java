@@ -3,7 +3,10 @@ package org.flexpay.eirc.process.quittance.report;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.ServiceType;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class ServiceTotals extends ServiceTotalsBase {
 

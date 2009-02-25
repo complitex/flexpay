@@ -1,10 +1,10 @@
 package org.flexpay.bti.persistence.filters;
 
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.bti.persistence.BuildingAttributeGroup;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 public class BuildingAttributeGroupFilter extends PrimaryKeyFilter<BuildingAttributeGroup> {
 

@@ -1,5 +1,5 @@
 package org.flexpay.sz.convert;
 
-public class NotSupportedOperationException extends Exception{
+public class NotSupportedOperationException extends Exception {
 
 }

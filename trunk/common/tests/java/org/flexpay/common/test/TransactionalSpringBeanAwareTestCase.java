@@ -1,13 +1,13 @@
 package org.flexpay.common.test;
 
+import org.jetbrains.annotations.NonNls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.jetbrains.annotations.NonNls;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import javax.sql.DataSource;
 import java.io.InputStream;

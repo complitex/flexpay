@@ -1,13 +1,13 @@
 package org.flexpay.common.persistence.filter;
 
-import java.util.Map;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
 
 public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 

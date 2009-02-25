@@ -1,10 +1,10 @@
 package org.flexpay.tc.persistence;
 
-import org.flexpay.common.persistence.Translation;
-import org.flexpay.common.persistence.Language;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Translation;
 
 public class TariffCalculationRulesFileTranslation extends Translation {
 

@@ -1,6 +1,7 @@
 package org.flexpay.common.persistence.history;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;

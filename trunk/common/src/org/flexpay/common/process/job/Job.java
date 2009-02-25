@@ -1,11 +1,11 @@
 package org.flexpay.common.process.job;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.util.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
 

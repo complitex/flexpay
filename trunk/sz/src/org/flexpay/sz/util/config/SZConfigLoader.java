@@ -1,8 +1,8 @@
 package org.flexpay.sz.util.config;
 
+import org.apache.commons.digester.Digester;
 import org.flexpay.ab.util.config.AbConfigLoader;
 import org.jetbrains.annotations.NotNull;
-import org.apache.commons.digester.Digester;
 
 import java.net.URL;
 

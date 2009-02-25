@@ -4,8 +4,8 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.eirc.dao.RegistryRecordDao;
 import org.flexpay.eirc.dao.RegistryRecordDaoExt;
-import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.RegistryRecord;
+import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 import java.util.ArrayList;

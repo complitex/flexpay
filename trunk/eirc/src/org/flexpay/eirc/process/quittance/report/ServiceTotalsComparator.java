@@ -1,7 +1,7 @@
 package org.flexpay.eirc.process.quittance.report;
 
-import java.util.Comparator;
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Compares service totals by service type code

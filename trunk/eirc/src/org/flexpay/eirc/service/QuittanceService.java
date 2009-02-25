@@ -1,7 +1,7 @@
 package org.flexpay.eirc.service;
 
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.persistence.account.Quittance;

@@ -1,14 +1,15 @@
 package org.flexpay.common.drools;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.junit.Test;
-import org.drools.compiler.PackageBuilder;
-import org.drools.RuleBaseFactory;
 import org.drools.RuleBase;
+import org.drools.RuleBaseFactory;
 import org.drools.WorkingMemory;
-import static org.junit.Assert.*;
+import org.drools.compiler.PackageBuilder;
+import org.flexpay.common.test.SpringBeanAwareTestCase;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
-import java.io.*;
+import java.io.Reader;
+import java.io.StringReader;
 
 /**
  * Test If drools library configured properly

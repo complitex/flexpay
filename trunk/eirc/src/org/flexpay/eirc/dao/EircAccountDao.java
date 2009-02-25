@@ -1,10 +1,10 @@
 package org.flexpay.eirc.dao;
 
-import java.util.List;
-
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.EircAccount;
+
+import java.util.List;
 
 public interface EircAccountDao extends GenericDao<EircAccount, Long> {
 	

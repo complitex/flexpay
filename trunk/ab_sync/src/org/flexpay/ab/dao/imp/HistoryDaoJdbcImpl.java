@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
-import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

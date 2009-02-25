@@ -1,7 +1,7 @@
 package org.flexpay.eirc.persistence.exchange.conditions;
 
-import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.EircAccount;
 
 /**
  * Condition checks if eirc account responsible person should be changed when recieved

@@ -5,9 +5,9 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Set;
-import java.math.BigDecimal;
 
 public class QuittancePayment extends DomainObject {
 

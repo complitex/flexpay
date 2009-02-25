@@ -1,10 +1,10 @@
 package org.flexpay.common.persistence;
 
-import org.jetbrains.annotations.NotNull;
 import org.flexpay.common.util.TranslationUtil;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
 import java.util.Collections;
+import java.util.Set;
 
 public class MeasureUnit extends DomainObjectWithStatus {
 

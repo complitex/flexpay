@@ -1,13 +1,13 @@
 package org.flexpay.eirc.persistence.exchange;
 
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.RegistryRecord;
 import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.eirc.persistence.RegistryRecord;
+import org.flexpay.eirc.persistence.SpRegistry;
 
-import java.util.List;
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class OperationsChain extends Operation {
 
