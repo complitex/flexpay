@@ -140,6 +140,7 @@ public class Page<E> implements Serializable {
 	 * @return page last element number
 	 */
 	public int getThisPageLastElementNumber() {
+		//noinspection CollectionsFieldAccessReplaceableByMethodCall
 		if (elements == Collections.EMPTY_LIST) {
 			return getThisPageFirstElementNumber() + pageSize;
 		}
@@ -203,5 +204,9 @@ public class Page<E> implements Serializable {
 	@Override
 	public String toString() {
 		return getThisPageFirstElementNumber() + " : " + (getThisPageFirstElementNumber() + pageSize);
+	}
+
+	public void nextPage() {
+		setPageNumber(getPageNumber() + 1);
 	}
 }

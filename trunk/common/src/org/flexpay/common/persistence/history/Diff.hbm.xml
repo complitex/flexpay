@@ -117,12 +117,11 @@
 				<comment>Object modification operation order</comment>
 			</column>
 		</property>
-		<many-to-one name="language" foreign-key="FK_common_history_records_tbl_language_id"
-					 class="org.flexpay.common.persistence.Language">
-			<column name="language_id" not-null="false">
-				<comment>Optional language reference for multilang fields</comment>
+		<property name="language">
+			<column name="language_code" not-null="false">
+				<comment>Optional language iso code for multilang fields</comment>
 			</column>
-		</many-to-one>
+		</property>
 		<property name="beginDate">
 			<column name="begin_date" not-null="false" sql-type="date">
 				<comment>Optional begin date for temporal fields</comment>

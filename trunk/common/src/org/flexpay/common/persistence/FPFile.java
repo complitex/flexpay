@@ -4,7 +4,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.util.FPFileUtil;
 
-import java.io.File;
+import java.io.*;
 import java.util.Date;
 
 public class FPFile extends DomainObject {
@@ -80,14 +80,32 @@ public class FPFile extends DomainObject {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-                append("FPFile {").
                 append("id", getId()).
                 append("nameOnServer", nameOnServer).
                 append("originalName", originalName).
                 append("size", size).
                 append("userName", userName).
                 append("creationDate", creationDate).
-                append("}").toString();
+				toString();
     }
 
+	/**
+	 * Create output stream for this file
+	 *
+	 * @return OutputStream
+	 * @throws IOException if stream open fails
+	 */
+	public OutputStream getOutputStream() throws IOException {
+		return new BufferedOutputStream(new FileOutputStream(FPFileUtil.getFileOnServer(this)));
+	}
+
+	/**
+	 * Create input stream for this file
+	 *
+	 * @return InputStream
+	 * @throws IOException if stream open fails
+	 */
+	public InputStream getInputStream() throws IOException {
+		return new BufferedInputStream(new FileInputStream(FPFileUtil.getFileOnServer(this)));
+	}
 }

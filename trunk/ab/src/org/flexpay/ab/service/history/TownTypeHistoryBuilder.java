@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.HistoryRecord;
+import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
@@ -56,7 +57,7 @@ public class TownTypeHistoryBuilder extends HistoryBuilderBase<TownType> {
 				rec.setFieldType(FIELD_NAME);
 				rec.setOldStringValue(tr1 == null ? null : tr1.getName());
 				rec.setNewStringValue(tr2 == null ? null : tr2.getName());
-				rec.setLanguage(lang);
+				rec.setLanguage(lang.getLangIsoCode());
 				diff.addRecord(rec);
 			}
 
@@ -70,7 +71,7 @@ public class TownTypeHistoryBuilder extends HistoryBuilderBase<TownType> {
 				rec.setFieldType(FIELD_SHORT_NAME);
 				rec.setOldStringValue(tr1 == null ? null : tr1.getShortName());
 				rec.setNewStringValue(tr2 == null ? null : tr2.getShortName());
-				rec.setLanguage(lang);
+				rec.setLanguage(lang.getLangIsoCode());
 				diff.addRecord(rec);
 			}
 
@@ -87,11 +88,19 @@ public class TownTypeHistoryBuilder extends HistoryBuilderBase<TownType> {
 	public void patch(@NotNull TownType t, @NotNull Diff diff) {
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {
-			TownTypeTranslation tr = t.getTranslation(record.getLanguage());
+
+			Language lang = record.getLang();
+			if (lang == null) {
+				log.info("No lang found for record {}", record);
+				record.setProcessingStatus(ProcessingStatus.STATUS_IGNORED);
+				continue;
+			}
+
+			TownTypeTranslation tr = t.getTranslation(lang);
 
 			if (tr == null) {
 				tr = new TownTypeTranslation();
-				tr.setLang(record.getLanguage());
+				tr.setLang(lang);
 			}
 
 			switch (record.getFieldType()) {
@@ -103,10 +112,12 @@ public class TownTypeHistoryBuilder extends HistoryBuilderBase<TownType> {
 					break;
 				default:
 					log.info("Unsupported record: {}", record);
+					record.setProcessingStatus(ProcessingStatus.STATUS_IGNORED);
 					continue;
 			}
 
 			t.setTranslation(tr);
+			record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		}
 	}
 }

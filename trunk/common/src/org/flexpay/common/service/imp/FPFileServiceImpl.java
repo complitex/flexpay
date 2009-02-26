@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.File;
 import java.util.List;
@@ -44,24 +45,6 @@ public class FPFileServiceImpl implements FPFileService {
 	private FPFileStatusDao fpFileStatusDao;
 	private FPModuleDao fpModuleDao;
 
-	private void deleteFileOnException(FPFile file) throws FlexPayException {
-		String localPath = FPFileUtil.getFileLocalPath(file);
-		File fileToDelete = new File(localPath);
-		if (fileToDelete.exists()) {
-			if (!fileToDelete.delete()) {
-				log.warn("File {} exists, but not deleted", localPath);
-			}
-		} else {
-			log.warn("No such file {}", localPath);
-		}
-		try {
-			fpFileDao.delete(file);
-		} catch (Exception e) {
-			log.error("Can't delete file with id = " + file.getId() + " from DB", e);
-			throw new FlexPayException(e);
-		}
-	}
-
 	/**
 	 * Create FPFile entity in database
 	 *
@@ -71,6 +54,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 */
 	@Transactional (readOnly = false)
 	public FPFile create(FPFile file) throws FlexPayException {
+		file.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		fpFileDao.create(file);
 
 		log.debug("Created new FPFile: {}", file);

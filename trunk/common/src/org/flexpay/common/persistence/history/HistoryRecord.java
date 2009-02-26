@@ -4,7 +4,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
@@ -25,7 +27,7 @@ public class HistoryRecord extends DomainObject {
 	private Double newDoubleValue;
 	private int fieldType;
 	private int operationOrder;
-	private Language language;
+	private String language;
 	private Date beginDate;
 	private Date endDate;
 	private String fieldKey;
@@ -142,11 +144,22 @@ public class HistoryRecord extends DomainObject {
 		this.operationOrder = operationOrder;
 	}
 
-	public Language getLanguage() {
+	public String getLanguage() {
 		return language;
 	}
 
-	public void setLanguage(Language language) {
+	@Nullable
+	public Language getLang() {
+		for (Language lang : ApplicationConfig.getLanguages()) {
+			if (lang.getLangIsoCode().equals(language)) {
+				return lang;
+			}
+		}
+
+		return null;
+	}
+
+	public void setLanguage(String language) {
 		this.language = language;
 	}
 

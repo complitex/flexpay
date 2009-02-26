@@ -2,11 +2,28 @@ package org.flexpay.common.persistence.history;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.Stub;
+import org.jetbrains.annotations.NotNull;
 
 public class HistoryConsumer extends DomainObjectWithStatus {
 
 	private String name;
 	private String description;
+	private Diff lastPackedDiff;
+
+	/**
+	 * Constructs a new DomainObject.
+	 */
+	public HistoryConsumer() {
+	}
+
+	public HistoryConsumer(@NotNull Long id) {
+		super(id);
+	}
+
+	public HistoryConsumer(@NotNull Stub<HistoryConsumer> stub) {
+		super(stub.getId());
+	}
 
 	public String getName() {
 		return name;
@@ -22,6 +39,14 @@ public class HistoryConsumer extends DomainObjectWithStatus {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Diff getLastPackedDiff() {
+		return lastPackedDiff;
+	}
+
+	public void setLastPackedDiff(Diff lastPackedDiff) {
+		this.lastPackedDiff = lastPackedDiff;
 	}
 
 	@Override

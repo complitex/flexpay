@@ -107,4 +107,38 @@
         </property>
     </bean>
 
+    <bean id="historyConsumperDao" parent="abstractDao">
+        <property name="proxyInterfaces"
+                  value="org.flexpay.common.dao.HistoryConsumerDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.history.HistoryConsumer" />
+            </bean>
+        </property>
+    </bean>
+
+	<bean id="historyConsumerDaoExt" 
+		  class="org.flexpay.common.dao.impl.HistoryConsumerDaoExtImpl"
+		  p:hibernateTemplate-ref="hibernateTemplate" />
+
+    <bean id="historyConsumptionDao" parent="abstractDao">
+        <property name="proxyInterfaces"
+                  value="org.flexpay.common.dao.HistoryConsumptionDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.history.HistoryConsumption" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="historyConsumptionGroupDao" parent="abstractDao">
+        <property name="proxyInterfaces"
+                  value="org.flexpay.common.dao.HistoryConsumptionGroupDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.history.HistoryConsumptionGroup" />
+            </bean>
+        </property>
+    </bean>
+
 </beans>

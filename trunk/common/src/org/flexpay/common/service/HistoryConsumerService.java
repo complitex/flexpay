@@ -1,0 +1,86 @@
+package org.flexpay.common.service;
+
+import org.flexpay.common.dao.paging.FetchRange;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.HistoryConsumer;
+import org.flexpay.common.persistence.history.HistoryConsumptionGroup;
+import org.flexpay.common.persistence.history.HistoryRecord;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+public interface HistoryConsumerService {
+
+	/**
+	 * Persist a new history consumer
+	 *
+	 * @param consumer history consumer
+	 * @return Consumer object back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@NotNull
+	HistoryConsumer create(@NotNull HistoryConsumer consumer) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update existing history consumer
+	 *
+	 * @param consumer history consumer
+	 * @return Consumer object back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@NotNull
+	HistoryConsumer update(@NotNull HistoryConsumer consumer) throws FlexPayExceptionContainer;
+
+	/**
+	 * Fetch diffs got from last consumer update
+	 *
+	 * @param consumer HistoryConsumer to get records for
+	 * @param range	Fetch range
+	 * @return list of diffs, possibly empty
+	 */
+	@NotNull
+	List<Diff> findNewDiffs(@NotNull HistoryConsumer consumer, FetchRange range);
+
+	/**
+	 * Create new consumption group
+	 *
+	 * @param consumer HistoryConsumer to generate group for
+	 * @return HistoryConsumptionGroup
+	 */
+	@NotNull
+	HistoryConsumptionGroup newGroup(@NotNull HistoryConsumer consumer);
+
+	/**
+	 * Create consumptions for a set of history records
+	 *
+	 * @param group   Consumption group to put new consumptions in
+	 * @param records History records to create consumptions for
+	 */
+	void addConsumptions(HistoryConsumptionGroup group, List<HistoryRecord> records);
+
+	/**
+	 * Delete all history consumer consumptions
+	 *
+	 * @param stub Consumer stub
+	 */
+	void deleteConsumptions(@NotNull Stub<HistoryConsumer> stub);
+
+	/**
+	 * Delete group and all its consumptions
+	 *
+	 * @param group Consumption group to delete
+	 */
+	void deleteConsumptionGroup(HistoryConsumptionGroup group);
+
+	/**
+	 * Read full history consumer info
+	 *
+	 * @param stub Consumer stub
+	 * @return History consumer if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	HistoryConsumer readFull(@NotNull Stub<HistoryConsumer> stub);
+}

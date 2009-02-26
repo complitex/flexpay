@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.HistoryRecord;
+import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -80,7 +81,7 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 					rec.setFieldType(FIELD_NAME);
 					rec.setOldStringValue(tr1 == null ? null : tr1.getName());
 					rec.setNewStringValue(tr2 == null ? null : tr2.getName());
-					rec.setLanguage(lang);
+					rec.setLanguage(lang.getLangIsoCode());
 					rec.setBeginDate(tmp2.getBegin());
 					rec.setEndDate(tmp2.getEnd());
 					diff.addRecord(rec);
@@ -143,21 +144,29 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 
 		log.debug("Patching name {}", record);
 
+		Language lang = record.getLang();
+		if (lang == null) {
+			log.info("No lang found for record {}", record);
+			record.setProcessingStatus(ProcessingStatus.STATUS_IGNORED);
+			return;
+		}
+
 		TownName name = town.getNameForDate(record.getBeginDate());
 		// create a new name object
 		if (name == null || name.isNotNew()) {
 			name = new TownName(name);
 		}
 
-		TownNameTranslation translation = name.getTranslation(record.getLanguage());
+		TownNameTranslation translation = name.getTranslation(lang);
 		if (translation == null) {
 			translation = new TownNameTranslation();
-			translation.setLang(record.getLanguage());
+			translation.setLang(lang);
 		}
 		translation.setName(record.getNewStringValue());
 		name.addNameTranslation(translation);
 
 		town.setNameForDates(name, record.getBeginDate(), record.getEndDate());
+		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 	}
 
 	private void patchType(@NotNull Town town, @NotNull HistoryRecord record) {
@@ -176,5 +185,6 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 			type = new TownType(typeStub);
 		}
 		town.setTypeForDates(type, record.getBeginDate(), record.getEndDate());
+		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 	}
 }
