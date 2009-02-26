@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
 		TestCRCUtil.class,
 		TestNotNull.class,
 		TestDateParser.class,
-		TestIntegerUtil.class
+		TestIntegerUtil.class,
+		TestFPFileUtil.class
 		})
 public class AllTests {
 
