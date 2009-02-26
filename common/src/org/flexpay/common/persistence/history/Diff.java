@@ -1,7 +1,6 @@
 package org.flexpay.common.persistence.history;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
@@ -139,5 +138,23 @@ public class Diff extends DomainObjectWithStatus {
 
 	public int size() {
 		return historyRecords.size();
+	}
+
+	/**
+	 * Create a copy without history records
+	 *
+	 * @return Diff copy
+	 */
+	public Diff copy() {
+		Diff copy = new Diff();
+		copy.setId(getId());
+		copy.setOperationTime(operationTime);
+		copy.setObjectType(objectType);
+		copy.setObjectId(objectId);
+		copy.setOperationType(operationType);
+		copy.setUserName(userName);
+		copy.setProcessingStatus(processingStatus);
+		copy.setMasterIndex(masterIndex);
+		return copy;
 	}
 }

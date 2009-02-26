@@ -9,7 +9,7 @@ import org.flexpay.common.persistence.DomainObject;
 public class HistoryConsumption extends DomainObject {
 
 	private HistoryRecord historyRecord;
-	private HistoryConsumer historyConsumer;
+	private HistoryConsumptionGroup group;
 
 	public HistoryRecord getHistoryRecord() {
 		return historyRecord;
@@ -19,12 +19,12 @@ public class HistoryConsumption extends DomainObject {
 		this.historyRecord = historyRecord;
 	}
 
-	public HistoryConsumer getHistoryConsumer() {
-		return historyConsumer;
+	public HistoryConsumptionGroup getGroup() {
+		return group;
 	}
 
-	public void setHistoryConsumer(HistoryConsumer historyConsumer) {
-		this.historyConsumer = historyConsumer;
+	public void setGroup(HistoryConsumptionGroup group) {
+		this.group = group;
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class HistoryConsumption extends DomainObject {
 		return new ToStringBuilder(this).
 				append("id", getId()).
 				append("record", historyRecord.getId()).
-				append("consumer", historyConsumer.getId()).
+				append("group", group.getId()).
 				toString();
 	}
 

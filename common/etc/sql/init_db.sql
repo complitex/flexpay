@@ -41,3 +41,8 @@ SELECT @source_description_master_index:=2002;
 -- Init modules
 INSERT INTO common_flexpay_modules_tbl (name) VALUES ('common');
 SELECT @module_common:=last_insert_id();
+
+insert into common_history_consumers_tbl (id, active, name, description)
+	values (1, 0, "Test-History-Consumer", "Sample history consumer");
+select @history_consumer_1:=1;
+

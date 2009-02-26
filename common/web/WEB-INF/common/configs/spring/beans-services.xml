@@ -30,6 +30,13 @@
 		  autowire-candidate="false"
 		  p:languageDao-ref="languageDao" />
 
+	<bean id="historyConsumerService"
+		  class="org.flexpay.common.service.imp.HistoryConsumerServiceImpl"
+		  p:consumerDao-ref="historyConsumperDao"
+		  p:consumerDaoExt-ref="historyConsumerDaoExt"
+		  p:consumptionDao-ref="historyConsumptionDao"
+		  p:consumptionGroupDao-ref="historyConsumptionGroupDao" />
+
 	<bean class="org.flexpay.common.service.imp.FPFileServiceImpl" id="fpFileService"
 		  p:fpFileDao-ref="fpFileDao"
 		  p:fpFileStatusDao-ref="fpFileStatusDao"
@@ -65,6 +72,21 @@
 		  class="org.flexpay.common.service.importexport.imp.MasterIndexServiceImpl"
 		  p:correctionsService-ref="correctionsService"
 		  p:sourceDescriptionDao-ref="dataSourceDescriptionDao" />
+
+	<bean id="historyRecordsFilterFactory"
+		  class="org.flexpay.common.persistence.history.impl.HistoryRecordsFilterFactory" />
+
+	<bean id="historyRecordsFiltersChain"
+		  factory-bean="historyRecordsFilterFactory" factory-method="getFilter" />
+
+	<bean id="historyPackerBase" abstract="true" autowire-candidate="false"
+		  p:consumerService-ref="historyConsumerService"
+		  p:fileService-ref="fpFileService"
+		  p:recordsFilter-ref="historyRecordsFiltersChain"
+		  class="org.flexpay.common.persistence.history.impl.HistoryPackerBase" />
+
+	<bean id="xmlHistoryPacker" parent="historyPackerBase"
+		  class="org.flexpay.common.persistence.history.impl.XmlHistoryPacker" />
 
 	<bean id="cnDataSourceDescription" class="org.flexpay.common.persistence.DataSourceDescription">
 		<!-- TODO Here put the CN data source ID -->

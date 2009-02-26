@@ -76,13 +76,22 @@
         active integer not null comment 'Enabled-disabled status',
         name varchar(255) comment 'Consumer name',
         description varchar(255) comment 'Optional consumer description',
+        last_diff_id bigint comment 'Last packed diff reference',
         primary key (id)
     ) comment='Some abstract history records consumer';
+
+    create table common_history_consumption_groups_tbl (
+        id bigint not null auto_increment,
+        consumer_id bigint not null comment 'History consumer reference',
+        creation_date datetime not null comment 'Group creation date',
+        user_name varchar(255) not null comment 'User name created group',
+        primary key (id)
+    ) comment='Group of several consumptions';
 
     create table common_history_consumptions_tbl (
         id bigint not null auto_increment,
         record_id bigint not null comment 'History record reference',
-        consumer_id bigint not null comment 'History consumer reference',
+        group_id bigint not null comment 'History consumption group reference',
         primary key (id)
     ) comment='Consumption of single history record';
 
@@ -100,7 +109,7 @@
         new_double_value double precision comment 'Optional new double value',
         field_type integer not null comment 'Field type value is modified for',
         operation_order integer not null comment 'Object modification operation order',
-        language_id bigint comment 'Optional language reference for multilang fields',
+        language_code varchar(255) comment 'Optional language iso code for multilang fields',
         begin_date date comment 'Optional begin date for temporal fields',
         end_date date comment 'Optional end date for temporal fields',
         field_key varchar(255) comment 'Optional key for field value',
@@ -183,23 +192,29 @@
         foreign key (module_id) 
         references common_flexpay_modules_tbl (id);
 
-    alter table common_history_consumptions_tbl 
-        add index FK_common_history_consumptions_tbl_consumer_id (consumer_id), 
-        add constraint FK_common_history_consumptions_tbl_consumer_id 
+    alter table common_history_consumers_tbl 
+        add index FK_common_history_consumers_tbl_last_diff_id (last_diff_id), 
+        add constraint FK_common_history_consumers_tbl_last_diff_id 
+        foreign key (last_diff_id) 
+        references common_diffs_tbl (id);
+
+    alter table common_history_consumption_groups_tbl 
+        add index FK_common_history_consumption_groups_tbl_consumer_id (consumer_id), 
+        add constraint FK_common_history_consumption_groups_tbl_consumer_id 
         foreign key (consumer_id) 
         references common_history_consumers_tbl (id);
+
+    alter table common_history_consumptions_tbl 
+        add index FK_common_history_consumptions_tbl_group_id (group_id), 
+        add constraint FK_common_history_consumptions_tbl_group_id 
+        foreign key (group_id) 
+        references common_history_consumption_groups_tbl (id);
 
     alter table common_history_consumptions_tbl 
         add index FK_common_history_consumptions_tbl_record_id (record_id), 
         add constraint FK_common_history_consumptions_tbl_record_id 
         foreign key (record_id) 
         references common_history_records_tbl (id);
-
-    alter table common_history_records_tbl 
-        add index FK_common_history_records_tbl_language_id (language_id), 
-        add constraint FK_common_history_records_tbl_language_id 
-        foreign key (language_id) 
-        references common_languages_tbl (id);
 
     alter table common_history_records_tbl 
         add index FK_common_history_records_tbl_diff_id (diff_id), 

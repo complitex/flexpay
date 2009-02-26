@@ -25,6 +25,12 @@
 				<comment>Optional consumer description</comment>
 			</column>
 		</property>
+		<many-to-one name="lastPackedDiff" foreign-key="FK_common_history_consumers_tbl_last_diff_id"
+					 class="Diff">
+			<column name="last_diff_id" not-null="false">
+				<comment>Last packed diff reference</comment>
+			</column>
+		</many-to-one>
 	</class>
 
 	<class name="HistoryConsumption" table="common_history_consumptions_tbl">
@@ -38,13 +44,58 @@
 				<comment>History record reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="historyConsumer" foreign-key="FK_common_history_consumptions_tbl_consumer_id"
+		<many-to-one name="group" foreign-key="FK_common_history_consumptions_tbl_group_id"
+					 class="HistoryConsumptionGroup">
+			<column name="group_id" not-null="true">
+				<comment>History consumption group reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<class name="HistoryConsumptionGroup" table="common_history_consumption_groups_tbl">
+		<comment>Group of several consumptions</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="consumer" foreign-key="FK_common_history_consumption_groups_tbl_consumer_id"
 					 class="HistoryConsumer">
 			<column name="consumer_id" not-null="true">
 				<comment>History consumer reference</comment>
 			</column>
 		</many-to-one>
+		<property name="creationDate">
+			<column name="creation_date" not-null="true">
+				<comment>Group creation date</comment>
+			</column>
+		</property>
+		<property name="userName">
+			<column name="user_name" not-null="true">
+				<comment>User name created group</comment>
+			</column>
+		</property>
 	</class>
 
+	<query name="HistoryConsumptionGroup.findConsumerGroups">
+		from HistoryConsumptionGroup
+		where consumer.id=?
+	</query>
+
+	<query name="HistoryConsumption.deleteGroupConsumptions">
+		delete HistoryConsumption
+		where group.id=?
+	</query>
+
+	<query name="HistoryConsumer.findNewRecords.stats"><![CDATA[
+		select min(d.id), max(d.id), count(d.id)
+		from HistoryConsumer c, Diff d
+		where c.id=? and (c.lastPackedDiff is null or c.lastPackedDiff.id < d.id)
+	]]></query>
+
+	<query name="HistoryConsumer.findNewRecords">
+		select distinct d
+		from Diff d
+			left join fetch d.historyRecords
+		where d.id between ? and ?
+	</query>
 
 </hibernate-mapping>
