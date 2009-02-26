@@ -233,6 +233,8 @@ ul.docs
 	{ background: #ecf6f6; }
 .cols_1_highlighted
     { background: #ccccff; }
+.cols_1_error
+    { background: #ffcccc; }
 .cols_2
 	{ background: #f4fcfc; }
 .col
