@@ -20,12 +20,13 @@ public class FPFileUtil {
 		File root = ApplicationConfig.getDataRoot();
         Calendar c = Calendar.getInstance();
         c.setTime(creationDate);
+		int date = 1 + c.get(Calendar.DATE);
 		int month = 1 + c.get(Calendar.MONTH);
         return root.getPath() + File.separator
                 + moduleName + File.separator
                 + c.get(Calendar.YEAR) + File.separator
                 + (month < 10 ? "0" : "") + month + File.separator
-                + c.get(Calendar.DATE) + File.separator;
+                + (date < 10 ? "0" : "") + date + File.separator;
 	}
 
     public static String getLocalDirPath(FPFile file) {
