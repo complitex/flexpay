@@ -337,6 +337,11 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         return result;
     }
 
+    public String formatDateWithUnderlines(Date date) {
+        String string = formatDate(date);
+        return string.replace("/", "_");
+    }
+
     public BigDecimal getTotalTariff(String calcDate) {
         Map<Long, BigDecimal> tcResults = tcResultsMap.get(calcDate);
 
