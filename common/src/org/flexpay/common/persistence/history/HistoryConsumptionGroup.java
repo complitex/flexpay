@@ -6,6 +6,9 @@ import org.flexpay.common.util.DateUtil;
 
 import java.util.Date;
 
+/**
+ * Consumption group is a set of history records packed in single file
+ */
 public class HistoryConsumptionGroup extends DomainObject {
 
 	private Date creationDate = DateUtil.now();

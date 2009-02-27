@@ -5,10 +5,16 @@ import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * History consumer is some abstract destination for shared history records, used to track which records was delivered
+ */
 public class HistoryConsumer extends DomainObjectWithStatus {
 
+	// unique consumer name
 	private String name;
+	// optional description
 	private String description;
+	// last diff packed
 	private Diff lastPackedDiff;
 
 	/**
