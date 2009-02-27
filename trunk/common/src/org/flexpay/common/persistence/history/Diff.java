@@ -1,7 +1,7 @@
 package org.flexpay.common.persistence.history;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
@@ -11,9 +11,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Diff is a set of history records applyed to a single DomainObject
+ * Diff is a set of history records applied to a single DomainObject
  */
-public class Diff extends DomainObjectWithStatus {
+public class Diff extends DomainObject {
 
 	private Date operationTime;
 	private Integer objectType;
@@ -22,6 +22,7 @@ public class Diff extends DomainObjectWithStatus {
 	private String userName;
 	private int processingStatus;
 	private String masterIndex;
+	private String instanceId;
 
 	private List<HistoryRecord> historyRecords = Collections.emptyList();
 
@@ -101,6 +102,14 @@ public class Diff extends DomainObjectWithStatus {
 
 	public void setMasterIndex(String masterIndex) {
 		this.masterIndex = masterIndex;
+	}
+
+	public String getInstanceId() {
+		return instanceId;
+	}
+
+	public void setInstanceId(String instanceId) {
+		this.instanceId = instanceId;
 	}
 
 	@Override

@@ -11,7 +11,8 @@ import com.thoughtworks.xstream.XStream;
 
 public class XmlHistoryPacker extends HistoryPackerBase {
 
-	XStream xstream = new XStream();
+	private XStream xstream = new XStream();
+	private ObjectOutputStream oos = null;
 
 	/**
 	 * Do optional packing preparations
@@ -27,10 +28,16 @@ public class XmlHistoryPacker extends HistoryPackerBase {
 		xstream.alias("record", HistoryRecord.class);
 
 		xstream.omitField(HistoryRecord.class, "diff");
+		xstream.omitField(HistoryRecord.class, "processingStatus");
 
-		Writer wr = getWriter(os);
-		wr.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<history>\n");
-		wr.flush();
+		xstream.omitField(Diff.class, "userName");
+		xstream.omitField(Diff.class, "processingStatus");
+
+		oos = xstream.createObjectOutputStream(getWriter(os));
+
+//		Writer wr = getWriter(os);
+//		wr.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<history>\n");
+//		wr.flush();
 	}
 
 	/**
@@ -43,9 +50,11 @@ public class XmlHistoryPacker extends HistoryPackerBase {
 	protected void endPacking(OutputStream os, HistoryPackingContext context) throws Exception {
 		super.endPacking(os, context);
 
-		Writer wr = getWriter(os);
-		wr.write("</history>");
-		wr.flush();
+		oos.close();
+		oos = null;
+//		Writer wr = getWriter(os);
+//		wr.write("</history>");
+//		wr.flush();
 	}
 
 	/**
@@ -79,15 +88,11 @@ public class XmlHistoryPacker extends HistoryPackerBase {
 
 			Diff clone = diff.copy();
 			clone.setHistoryRecords(records);
-			writeDiff(clone, os);
+			oos.writeObject(clone);
 			context.addDiff();
 
 			consumerService.addConsumptions(context.getGroup(), records);
 		}
-	}
-
-	private void writeDiff(Diff diff, OutputStream os) throws IOException {
-		xstream.toXML(diff, getWriter(os));
 	}
 
 	private Writer getWriter(OutputStream os) throws IOException {

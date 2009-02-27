@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * History exporters generate {@link org.flexpay.common.persistence.FPFile} with
+ * History packer generates {@link org.flexpay.common.persistence.FPFile} with a set of history records
  */
 public interface HistoryPacker {
 
