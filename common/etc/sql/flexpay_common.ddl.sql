@@ -24,6 +24,7 @@
         user_name varchar(255) not null comment 'User name performed operation',
         processing_status integer default 0 not null comment 'Processing status',
         master_index varchar(255) not null comment 'Unique among several installations object id',
+        instance_id varchar(255) not null comment 'Source application installation identifier',
         primary key (id)
     ) comment='Set of history records for single object';
 

@@ -88,14 +88,14 @@
 	<query name="HistoryConsumer.findNewRecords.stats"><![CDATA[
 		select min(d.id), max(d.id), count(d.id)
 		from HistoryConsumer c, Diff d
-		where c.id=? and (c.lastPackedDiff is null or c.lastPackedDiff.id < d.id)
+		where c.id=? and (c.lastPackedDiff is null or c.lastPackedDiff.id < d.id) and d.instanceId=?
 	]]></query>
 
 	<query name="HistoryConsumer.findNewRecords">
 		select distinct d
 		from Diff d
 			left join fetch d.historyRecords
-		where d.id between ? and ?
+		where d.id between ? and ? and d.instanceId=?
 	</query>
 
 </hibernate-mapping>

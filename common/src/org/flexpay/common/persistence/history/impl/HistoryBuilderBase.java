@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
@@ -40,6 +41,7 @@ public abstract class HistoryBuilderBase<T extends DomainObject> implements Hist
 		diff.setObjectId(t2.getId());
 		diff.setObjectType(typeRegistry.getType(t2.getClass()));
 		diff.setOperationTime(new Date());
+		diff.setInstanceId(ApplicationConfig.getInstanceId());
 
 		if (t1 == null) {
 			diff.setOperationType(HistoryOperationType.TYPE_CREATE);

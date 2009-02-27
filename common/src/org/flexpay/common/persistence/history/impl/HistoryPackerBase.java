@@ -46,6 +46,7 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 		}
 
 		FetchRange range = new FetchRange();
+		range.setPageSize(5);
 		List<Diff> diffs = consumerService.findNewDiffs(consumer, range);
 
 		HistoryPackingContext context = new HistoryPackingContext();
@@ -56,10 +57,8 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 		FPFile file = new FPFile();
 		file.setModule(fileService.getModuleByName("common"));
 
-//		file.setOriginalName("history-" + ApplicationConfig.getInstanceId() + "-" +
-//							 context.getGroup().getId() + getFileExtension());
 		file.setOriginalName("history-" + ApplicationConfig.getInstanceId() + "-" +
-							 context.getGroup().getId() + ".gz");
+							 context.getGroup().getId() + getFileExtension() + ".gz");
 
 		FPFileUtil.createEmptyFile(file);
 		fileService.create(file);

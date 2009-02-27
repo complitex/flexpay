@@ -45,6 +45,11 @@
 				<comment>Unique among several installations object id</comment>
 			</column>
 		</property>
+		<property name="instanceId">
+			<column name="instance_id" not-null="true">
+				<comment>Source application installation identifier</comment>
+			</column>
+		</property>
 		<list name="historyRecords" cascade="all-delete-orphan" inverse="true">
 			<key column="diff_id" not-null="true" />
 			<index column="operation_order" />

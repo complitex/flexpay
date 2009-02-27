@@ -206,6 +206,7 @@ public class HistoryRecord extends DomainObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).
+				append("id", getId()).
 				append("oldIntValue", oldIntValue).
 				append("newIntValue", newIntValue).
 				append("oldLongValue", oldLongValue).
