@@ -1,4 +1,4 @@
-package org.flexpay.tc.actions.buildingattributes;
+package org.flexpay.tc.actions.tcresults;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.process.ProcessManager;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.Serializable;
 import java.util.Map;
 
-public class UploadTCResultsAction extends FPActionSupport {
+public class BuildingTCResultsUploadAction extends FPActionSupport {
 
     private String buildingId;
     private String calculationDate;

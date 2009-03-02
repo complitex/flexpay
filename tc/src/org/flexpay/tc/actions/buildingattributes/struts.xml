@@ -6,7 +6,7 @@
 
     <package name="tc-buildingattributes" namespace="/tc" extends="common">
 
-        <action name="buildingsList" class="buildingsListAction">
+        <action name="buildingsList" class="tcBuildingsListAction">
             <result type="tiles">tc.building_attributes.list</result>
         </action>
 
@@ -19,23 +19,6 @@
             </result>
         </action>
 
-        <action name="uploadTCResults" class="uploadTCResultsAction">
-            <result name="input" type="tiles">tc.building_attributes.upload</result>            
-            <result name="redirectSuccess" type="redirect-action">
-                <param name="actionName">buildingAttributesEdit</param>
-                <param name="parse">true</param>
-                <param name="building.id">${buildingId}</param>
-            </result>
-        </action>
-
-        <action name="tcResultsEdit" class="tcResultsEditAction">
-            <result name="input" type="tiles">tc.building_attributes.edit</result>
-            <result name="redirectSuccess" type="redirect-action">
-                <param name="actionName">buildingAttributesEdit</param>
-                <param name="parse">true</param>
-                <param name="building.id">${buildingId}</param>
-            </result>
-        </action>
     </package>
 
 </struts>

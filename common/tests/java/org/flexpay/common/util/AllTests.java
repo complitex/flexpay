@@ -12,7 +12,8 @@ import org.junit.runners.Suite;
 		TestNotNull.class,
 		TestDateParser.class,
 		TestIntegerUtil.class,
-		TestFPFileUtil.class
+		TestFPFileUtil.class,
+        TestValidationUtil.class
 		})
 public class AllTests {
 

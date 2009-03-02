@@ -7,13 +7,13 @@
     <form id="fobjects" method="post" action="<s:url value="/tc/buildingsList.action" includeParams="none" />">
 
         <tr>
-            <td colspan="4">
+            <td colspan="5">
                 <%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname.jsp" %>
             </td>
         </tr>
 
         <tr>
-            <td colspan="4">
+            <td colspan="5">
                 <%@ include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
             </td>
         </tr>
@@ -24,6 +24,7 @@
                 <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
             </td>
             <td class="th"><s:text name="tc.building_attributes.building"/></td>
+            <td class="th">&nbsp;</td>
             <td class="th">&nbsp;</td>
         </tr>
 
@@ -46,10 +47,16 @@
 
                 <td class="col">
                     <a href="<s:url action="buildingAttributesEdit"><s:param name="building.id" value="%{id}"/></s:url>">
-                        <s:text name="tc.edit_building_attributes"/>
+                        <s:text name="tc.building_attributes"/>
                     </a>
                 </td>
-                
+
+                <td class="col">
+                    <a href="<s:url action="buildingTCResultsList"><s:param name="buildingId" value="%{id}"/></s:url>">
+                        <s:text name="tc.building_tc_results"/>
+                    </a>
+                </td>
+
             </tr>
         </s:iterator>
 
