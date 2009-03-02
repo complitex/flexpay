@@ -45,5 +45,6 @@
 
     <include file="org/flexpay/tc/actions/tariff/struts.xml"/>
     <include file="org/flexpay/tc/actions/buildingattributes/struts.xml"/>
+    <include file="org/flexpay/tc/actions/tcresults/struts.xml"/>
 
 </struts>

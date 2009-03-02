@@ -57,13 +57,23 @@
     </definition>
 
     <definition name="tc.building_attributes.list" extends="tc.data">
-        <put-attribute name="title" value="tc.buildings_list"/>
+        <put-attribute name="title" value="tc.buildings_list.title"/>
         <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/buildings_list.jsp"/>
     </definition>
 
     <definition name="tc.building_attributes.edit" extends="tc.data">
-        <put-attribute name="title" value="tc.building_attributes"/>
+        <put-attribute name="title" value="tc.building_attributes.title"/>
         <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_attributes_edit.jsp"/>
+    </definition>
+
+    <definition name="tc.tc_results.list" extends="tc.data">
+        <put-attribute name="title" value="tc.tc_results_list.title"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_tc_results_list.jsp"/>
+    </definition>
+
+    <definition name="tc.tc_results.edit" extends="tc.data">
+        <put-attribute name="title" value="tc.tc_results_edit.title"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_tc_results_edit.jsp"/>
     </definition>
 
     <definition name="tc.rules_file.calculate" extends="ab.layout.content">
@@ -72,10 +82,6 @@
 
     <definition name="tc.calc_results.export_modal" extends="ab.layout.content">
         <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_result_export_modalbox.jsp" />
-    </definition>
-
-    <definition name="tc.building_attributes.upload" extends="ab.layout.content">
-        <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/result_export_modalbox.jsp" />
     </definition>
 
 </tiles-definitions>

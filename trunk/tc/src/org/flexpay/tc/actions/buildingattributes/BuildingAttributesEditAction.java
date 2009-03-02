@@ -13,20 +13,12 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.tc.persistence.Tariff;
-import org.flexpay.tc.persistence.TariffCalculationResult;
-import org.flexpay.tc.service.TariffCalculationResultService;
-import org.flexpay.tc.service.TariffService;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.FastDateFormat;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.math.BigDecimal;
 import java.util.*;
-
-// TODO the class is too big. Need to split it down into workers (delegates)
 
 /**
  * Action for updating building attributes
@@ -49,21 +41,13 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     // date submission button
     private String dateSubmitted;
 
-    // This list contains dates of tariff calculation
-    private List<String> tariffCalculationDates = CollectionUtils.list();
-
-    // This map (tariff calculation date -> map (tariff_name -> tariff value)
-    // FIXME eliminate map-o-map ;)
-    private Map<String, Map<Long, BigDecimal>> tcResultsMap = CollectionUtils.treeMap();
-
     // required services
     private AddressService addressService;
     private BuildingService buildingService;
     private BtiBuildingService btiBuildingService;
     private BuildingAttributeTypeService buildingAttributeTypeService;
     private BuildingAttributeGroupService buildingAttributeGroupService;
-    private TariffCalculationResultService tariffCalculationResultService;
-    private TariffService tariffService;
+
 
     @NotNull
     protected String doExecute() throws Exception {
@@ -73,18 +57,21 @@ public class BuildingAttributesEditAction extends FPActionSupport {
             return REDIRECT_SUCCESS;
         }
 
-        if (isDateSubmit()) {
-            // load attributes for date
-            loadBuildingAttributes();
-            loadTariffCalculationResults();
-            return INPUT;
-        }
-
         loadBuildingAttributes();
-        loadTariffCalculationResults();
         return INPUT;
     }
 
+    @Override
+    public void validate() {
+        // TODO implement
+    }
+
+    @NotNull
+    protected String getErrorResult() {
+        return SUCCESS;
+    }
+
+    // loading building attributes
     private void loadBuildingAttributes() throws FlexPayException {
 
         Long buildingId = building.getId();
@@ -110,6 +97,11 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
             putAttribute(type, attribute);
         }
+    }
+
+    private BuildingAttributeType getAttributeTypeById(Long typeId) {
+
+        return buildingAttributeTypeService.readFull(new Stub<BuildingAttributeType>(typeId));
     }
 
     private void putAttribute(BuildingAttributeType type, BuildingAttributeBase attribute) throws FlexPayException {
@@ -174,35 +166,19 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         btiBuildingService.updateAttributes(btiBuilding);
     }
 
-    private void loadTariffCalculationResults() {
-        List<Date> calculationDates = tariffCalculationResultService.getUniqueDates();
-
-		Stub<BuildingAddress> buildingStub = stub(building);
-
-        for (Date calculationDate : calculationDates) {
-
-            String calcDateString = FastDateFormat.getInstance("dd.MM.yyyy").format(calculationDate);
-
-            List<TariffCalculationResult> calculationResults = tariffCalculationResultService.
-                    getTariffCalcResultsByCalcDateAndAddressId(calculationDate, buildingStub);
-
-            Map<Long, BigDecimal> resultMap = CollectionUtils.treeMap();
-            for (TariffCalculationResult result : calculationResults) {
-
-                resultMap.put(result.getTariff().getId(), result.getValue());
-            }
-
-            if (resultMap.size() > 0) {
-                tariffCalculationDates.add(calcDateString);
-                tcResultsMap.put(calcDateString, resultMap);
-            }
-        }
+    public boolean isDateSubmit() {
+        return dateSubmitted != null;
     }
 
-	public String formatDate(Date date){
-		return DateUtil.format(date);
-	}
-    
+    // rendering  utility methods
+    public String getAddress(@NotNull Long buildingId) throws Exception {
+        return addressService.getBuildingsAddress(new Stub<BuildingAddress>(buildingId), getUserPreferences().getLocale());
+    }
+
+    public String formatDate(Date date) {
+        return DateUtil.format(date);
+    }
+
     public String getAttributeTypeName(Long typeId) {
         BuildingAttributeType type = getAttributeTypeById(typeId);
         return getTranslation(type.getTranslations()).getName();
@@ -229,11 +205,6 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         return type.getSortedValues();
     }
 
-    private BuildingAttributeType getAttributeTypeById(Long typeId) {
-
-        return buildingAttributeTypeService.readFull(new Stub<BuildingAttributeType>(typeId));
-    }
-
     public Map<Long, String> getGroupAttributes(Long groupId) {
         Map<Long, String> resultMap = CollectionUtils.map();
 
@@ -248,31 +219,12 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         return resultMap;
     }
 
-    @NotNull
-    protected String getErrorResult() {
-        return INPUT;
-    }
-
-    public boolean isDateSubmit() {
-        return dateSubmitted != null;
-    }
-
     public boolean isTempAttribute(Long typeId) {
         BuildingAttributeType type = getAttributeTypeById(typeId);
         return type.isTemp();
     }
 
-    /**
-     * Returns building primary address by id
-     *
-     * @param buildingId building identifier
-     * @return building primary address by id
-     * @throws Exception in case of service error
-     */
-    public String getAddress(@NotNull Long buildingId) throws Exception {
-        return addressService.getBuildingsAddress(new Stub<BuildingAddress>(buildingId), getUserPreferences().getLocale());
-    }
-
+    // set/get form fields
     public BuildingAddress getBuilding() {
         return building;
     }
@@ -305,58 +257,11 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         return attributeGroups;
     }
 
-    public List<String> getTariffCalculationDates() {
-        return tariffCalculationDates;
-    }
-
-    public Map<Long, BigDecimal> getTcResults(String calcDate) {
-        return tcResultsMap.get(calcDate);
-    }
-
-    public String getTariffTranslation(Long tariffId) {
-        Tariff tariff = tariffService.readFull(new Stub<Tariff>(tariffId));
-        return getTranslation(tariff.getTranslations()).getName();
-    }
-
-    public boolean tariffCalculationDatesIsEmpty() {
-        return tcResultsMap.isEmpty();
-    }
-
-    public List<Long> listTariffIds() {
-        List<Tariff> tariffs = tariffService.listTariffs();
-
-        if (tariffs.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        List<Long> result = CollectionUtils.list();
-        for (Tariff t : tariffService.listTariffs()) {
-            result.add(t.getId());
-        }
-
-        return result;
-    }
-
-    public String formatDateWithUnderlines(Date date) {
-        String string = formatDate(date);
-        return string.replace("/", "_");
-    }
-
-    public BigDecimal getTotalTariff(String calcDate) {
-        Map<Long, BigDecimal> tcResults = tcResultsMap.get(calcDate);
-
-        BigDecimal total = BigDecimal.ZERO;
-        for (BigDecimal tariff : tcResults.values()) {
-            total = total.add(tariff);
-        }
-
-        return total;
-    }
-
     public void setDateSubmitted(String dateSubmitted) {
         this.dateSubmitted = dateSubmitted;
     }
 
+    // setters for required services
     @Required
     public void setAddressService(AddressService addressService) {
         this.addressService = addressService;
@@ -381,15 +286,4 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     public void setBuildingAttributeGroupService(BuildingAttributeGroupService buildingAttributeGroupService) {
         this.buildingAttributeGroupService = buildingAttributeGroupService;
     }
-
-    @Required
-    public void setTariffCalculationResultService(TariffCalculationResultService tariffCalculationResultService) {
-        this.tariffCalculationResultService = tariffCalculationResultService;
-    }
-
-    @Required
-    public void setTariffService(TariffService tariffService) {
-        this.tariffService = tariffService;
-    }
-
 }
