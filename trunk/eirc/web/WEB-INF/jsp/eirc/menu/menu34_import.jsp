@@ -1,5 +1,4 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-<%@ taglib prefix="menu" uri="http://struts-menu.sf.net/tag" %>
 
 <ul class="folders">
 	<li class="open"><strong><s:text name="eirc.menu2.import"/></strong>
