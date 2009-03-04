@@ -24,23 +24,7 @@
     function toggleProcessVariables() {
         toggleElements(jQuery('#processVariables'), '#toggle_variables_button');
     }
-    /*
-     * Hides process variables section content
-     */
-    function hideProcessVariables() {
-        $('hideProcessVariablesDiv').hide();
-        $('showProcessVariablesDiv').show();
-        $('processVariables').hide();
-    }
 
-    /**
-     * Shows process variables section
-     */
-    function showProcessVariables() {
-        $('hideProcessVariablesDiv').show();
-        $('showProcessVariablesDiv').hide();
-        $('processVariables').show();
-    }
 </script>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
