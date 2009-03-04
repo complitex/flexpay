@@ -287,15 +287,15 @@
 	</bean>
 
 	<bean id="processesListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.processing.ProcessesListAction"
+		  class="org.flexpay.common.actions.processing.ProcessesListAction"
 		  p:processManager-ref="processManager" />
 
 	<bean id="processViewAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.processing.ProcessViewAction"
+		  class="org.flexpay.common.actions.processing.ProcessViewAction"
 		  p:processManager-ref="processManager" />
 
 	<bean id="processDefinitionDeployAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.processing.ProcessDefinitionDeployAction"
+		  class="org.flexpay.common.actions.processing.ProcessDefinitionDeployAction"
 		  p:processManager-ref="processManager" />
 
 	<bean id="eircAccountsListAction" scope="prototype"
