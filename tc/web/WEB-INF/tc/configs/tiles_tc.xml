@@ -84,4 +84,24 @@
         <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_result_export_modalbox.jsp" />
     </definition>
 
+    <!-- Processing -->
+	<definition name="tc.processing" extends="tc.importexport">
+		<put-attribute name="title" value="tc.menu34.processes" />
+	</definition>
+
+	<definition name="tc.process.list" extends="tc.processing">
+		<put-attribute name="title" value="common.processing.process_list" />
+		<put-attribute name="body" value="/WEB-INF/jsp/common/processing/process_list.jsp" />
+	</definition>
+
+	<definition name="tc.process.view" extends="tc.processing">
+		<put-attribute name="title" value="common.process_view" />
+		<put-attribute name="body" value="/WEB-INF/jsp/common/processing/process_view.jsp" />
+	</definition>
+
+	<definition name="tc.process.deploy_definition" extends="tc.processing">
+		<put-attribute name="title" value="common.processing.deployment" />
+		<put-attribute name="body" value="/WEB-INF/jsp/common/processing/deploy_process_definition.jsp" />
+	</definition>
+    
 </tiles-definitions>

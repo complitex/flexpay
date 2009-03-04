@@ -3,11 +3,11 @@
 <ul class="folders">
 	<li class="open"><strong><s:text name="eirc.menu2.processing"/></strong>
 		<ul class="docs">
-			<li><a href="<s:url action='processesList' namespace="/eirc" includeParams="none" />"><s:text name="eirc.menu34.processing.process_list"/></a></li>
+			<li><a href="<s:url action='processesList' namespace="/eirc" includeParams="none" />"><s:text name="common.processing.process_list"/></a></li>
 		</ul>
 		
 		<ul class="docs">
-			<li><a href="<s:url action='processDefinitionDeploy' namespace="/eirc" includeParams="none" />"><s:text name="eirc.menu34.processing.definition"/></a></li>
+			<li><a href="<s:url action='processDefinitionDeploy' namespace="/eirc" includeParams="none" />"><s:text name="common.processing.definition"/></a></li>
 		</ul>
 	</li>
 </ul>
