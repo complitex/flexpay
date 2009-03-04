@@ -1,4 +1,4 @@
-package org.flexpay.eirc.actions.processing;
+package org.flexpay.common.actions.processing;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.process.Process;
