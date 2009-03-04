@@ -7,6 +7,7 @@
 <script type="text/javascript" src="<c:url value="/resources/common/js/jquery/jquery-ui/i18n/ui.datepicker-ru.js"/>"></script>
 
 <script type="text/javascript">
+
     // folding functions
     function toggleElements(elements, showButton) {
         jQuery.each(elements, function(i, value) {
@@ -19,6 +20,7 @@
             jQuery(showButton).val('<s:text name="common.show"/>');
         }
     }
+    ;
 
     function toggleResultsGroup(calcDate) {
         toggleElements(jQuery('tr[id^="tariff_row_"][id$="' + calcDate + '"]'), '#toggle_result_group_' + calcDate);

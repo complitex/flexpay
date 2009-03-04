@@ -32,7 +32,7 @@ public class ProcessDefinitionDeployAction extends FPActionSupport {
 				//noinspection IOResourceOpenedButNotSafelyClosed
 				is = new FileInputStream(upload);
 				processManager.deployProcessDefinition(is, true);
-				addActionError(getText("eirc.processing.deployment_success"));
+				addActionError(getText("common.processing.deployment_success"));
 				return REDIRECT_SUCCESS;
 			} finally {
 				IOUtils.closeQuietly(is);

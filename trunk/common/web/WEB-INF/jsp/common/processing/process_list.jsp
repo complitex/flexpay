@@ -8,13 +8,13 @@
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
 			</td>
-			<td class="th"><s:text name="eirc.processing.process.id" /></td>
-			<td class="th"><s:text name="eirc.processing.process.name" /></td>
-			<td class="th"><s:text name="eirc.processing.process.start_date" /></td>
-			<td class="th"><s:text name="eirc.processing.process.end_date" /></td>
-			<td class="th"><s:text name="eirc.processing.process.user" /></td>
-			<td class="th"><s:text name="eirc.processing.process.state" /></td>
-			<td class="th"><s:text name="eirc.processing.process.pause" /></td>
+			<td class="th"><s:text name="common.processing.process.id" /></td>
+			<td class="th"><s:text name="common.processing.process.name" /></td>
+			<td class="th"><s:text name="common.processing.process.start_date" /></td>
+			<td class="th"><s:text name="common.processing.process.end_date" /></td>
+			<td class="th"><s:text name="common.processing.process.user" /></td>
+			<td class="th"><s:text name="common.processing.process.state" /></td>
+			<td class="th"><s:text name="common.processing.process.pause" /></td>
 
 			<s:iterator value="processList" status="status">
 		<tr valign="middle" class="cols_1">

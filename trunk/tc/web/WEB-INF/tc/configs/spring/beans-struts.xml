@@ -76,4 +76,17 @@
           p:processManager-ref="processManager"
           scope="prototype"/>
 
+    <!-- processing -->
+    <bean id="processesListAction" scope="prototype"
+		  class="org.flexpay.common.actions.processing.ProcessesListAction"
+		  p:processManager-ref="processManager" />
+
+	<bean id="processViewAction" scope="prototype"
+		  class="org.flexpay.common.actions.processing.ProcessViewAction"
+		  p:processManager-ref="processManager" />
+
+	<bean id="processDefinitionDeployAction" scope="prototype"
+		  class="org.flexpay.common.actions.processing.ProcessDefinitionDeployAction"
+		  p:processManager-ref="processManager" />
+
 </beans>
