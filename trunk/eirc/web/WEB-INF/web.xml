@@ -91,25 +91,35 @@
 		<dispatcher>ERROR</dispatcher>
 	</filter-mapping>
 
-    <!-- Log file download servlet -->
-    <servlet>
-        <servlet-name>processLogDownloadServlet</servlet-name>
-        <servlet-class>org.flexpay.common.actions.ProcessLogDownloadServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>processLogDownloadServlet</servlet-name>
-        <url-pattern>/processLogDownloadServlet</url-pattern>
-    </servlet-mapping>
+	<servlet>
+		<servlet-name>spring-ws</servlet-name>
+		<servlet-class>org.springframework.ws.transport.http.MessageDispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
-    <servlet>
-        <servlet-name>spFileDownloadServlet</servlet-name>
-        <servlet-class>org.flexpay.eirc.actions.SpFileDownloadServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>spFileDownloadServlet</servlet-name>
-        <url-pattern>/spFileDownloadServlet</url-pattern>
-    </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>spring-ws</servlet-name>
+		<url-pattern>/ws/*</url-pattern>
+	</servlet-mapping>
 
+	<!-- Log file download servlet -->
+	<servlet>
+		<servlet-name>processLogDownloadServlet</servlet-name>
+		<servlet-class>org.flexpay.common.actions.ProcessLogDownloadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>processLogDownloadServlet</servlet-name>
+		<url-pattern>/processLogDownloadServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>spFileDownloadServlet</servlet-name>
+		<servlet-class>org.flexpay.eirc.actions.SpFileDownloadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>spFileDownloadServlet</servlet-name>
+		<url-pattern>/spFileDownloadServlet</url-pattern>
+	</servlet-mapping>
 
 	<security-constraint>
 		<web-resource-collection>
@@ -335,27 +345,27 @@
 		<role-name>ROLE_EIRC_BANK_DELETE</role-name>
 	</security-role>
 
-    <security-role>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_CHANGE</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_DELETE</role-name>
-    </security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_DELETE</role-name>
+	</security-role>
 
 	<security-role>
 		<role-name>ROLE_EIRC_SERVICE_PROVIDER_READ</role-name>

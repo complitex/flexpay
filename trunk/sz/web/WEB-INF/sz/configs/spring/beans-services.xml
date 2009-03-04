@@ -28,9 +28,9 @@
 		p:districtCorrectionDao-ref="districtCorrectionDao"
 		p:streetCorrectionDao-ref="streetCorrectionDao" />
 
-    <bean parent="processManager">
+    <bean parent="processManager" autowire-candidate="false">
         <property name="definitionPaths">
-            <list>
+            <list merge="true">
                 <value>WEB-INF/sz/process</value>
             </list>
         </property>

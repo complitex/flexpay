@@ -1,0 +1,8 @@
+<SaveHistoryRequest xmlns="http://flexpay.org/schemas/history"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://flexpay.org/schemas/history ../history-share.xsd">
+	<groupId>123</groupId>
+	<instanceId>1</instanceId>
+	<created>2009-03-02T13:32:00.000+06:00</created>
+	<file>BASE</file>
+</SaveHistoryRequest>

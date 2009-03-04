@@ -4,10 +4,9 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.common.util.SecurityUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.File;
 
@@ -40,8 +39,7 @@ public class UploadFileAction extends FPActionSupport {
 		}
 */
 
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String userName = auth != null ? auth.getName() : null;
+		String userName = SecurityUtil.getUserName();
 		try {
 			fpFile = new FPFile();
 			fpFile.setModule(fpFileService.getModuleByName(moduleName));

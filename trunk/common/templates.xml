@@ -137,6 +137,12 @@
 		</fileset>
 	</path>
 
+	<path id="spring-ws.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="spring-ws/*.jar" />
+		</fileset>
+	</path>
+
 	<!-- NotNull instrumentation javac task -->
 	<taskdef name="javac2"
 			 classname="com.intellij.ant.Javac2"
@@ -240,6 +246,7 @@
             <lib dir="${common.dir}/lib/logging" />
             <lib dir="${common.dir}/lib/csv" />
             <lib dir="${common.dir}/lib/xstream" />
+            <lib dir="${common.dir}/lib/spring-ws" />
 			<lib dir="${build.dir}/lib" />
 		</war>
 	</target>

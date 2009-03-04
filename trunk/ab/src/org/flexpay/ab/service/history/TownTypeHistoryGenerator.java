@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -32,6 +33,7 @@ public class TownTypeHistoryGenerator implements HistoryGenerator<TownType> {
 		}
 
 		Diff diff = historyBuilder.diff(null, obj);
+		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		diffService.create(diff);
 	}
 

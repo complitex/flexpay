@@ -4,9 +4,8 @@ import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.common.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.File;
 
@@ -26,8 +25,7 @@ public abstract class FPFileActionSupport extends FPActionSupport {
 
 	public String execute() throws Exception {
 
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String userName = auth != null ? auth.getName() : null;
+		String userName = SecurityUtil.getUserName();
 		try {
 
 			log.debug("Preparing file action, params: FileName - {}, ContentType - {}, ModuleName - {}",

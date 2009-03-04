@@ -7,6 +7,7 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.eirc.dao.QuittancePacketDao;
 import org.flexpay.eirc.dao.QuittancePacketDaoExt;
 import org.flexpay.eirc.dao.QuittancePaymentDao;
@@ -18,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -90,7 +90,7 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 	public QuittancePacket create(@NotNull QuittancePacket packet) throws FlexPayExceptionContainer {
 		validate(packet);
 
-		packet.setCreatorUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+		packet.setCreatorUserName(SecurityUtil.getUserName());
 		packet.setCloserUserName("");
 		log.debug("Creating a new packet {}", packet);
 

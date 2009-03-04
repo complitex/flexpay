@@ -4,7 +4,7 @@
 		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		 version="2.5">
-    <!--sz-->
+	<!--sz-->
 	<context-param>
 		<param-name>webAppRootKey</param-name>
 		<param-value>FlexPay SZ Module</param-value>
@@ -13,9 +13,9 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-            /WEB-INF/applicationContext.xml
-            /WEB-INF/applicationContext-security.xml
-        </param-value>
+			/WEB-INF/applicationContext.xml
+			/WEB-INF/applicationContext-security.xml
+		</param-value>
 	</context-param>
 
 	<!--
@@ -29,22 +29,22 @@
 	<context-param>
 		<param-name>definitions-config</param-name>
 		<param-value>
-            /WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/bti/configs/tiles_bti.xml,/WEB-INF/eirc/configs/tiles_eirc.xml,/WEB-INF/sz/configs/tiles_sz.xml
-        </param-value>
+			/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/bti/configs/tiles_bti.xml,/WEB-INF/eirc/configs/tiles_eirc.xml,/WEB-INF/sz/configs/tiles_sz.xml
+		</param-value>
 	</context-param>
 
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
-    <listener>
-        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-    </listener>
-    <listener>
-        <listener-class>org.springframework.security.ui.session.HttpSessionEventPublisher</listener-class>
-    </listener>
-    <listener>
-        <listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
-    </listener>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.security.ui.session.HttpSessionEventPublisher</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
+	</listener>
 
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
@@ -63,64 +63,75 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-    <filter>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 	<filter>
 		<filter-name>actionFilter</filter-name>
 		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
-        <init-param>
+		<init-param>
 			<param-name>config</param-name>
 			<param-value>
-                struts-default.xml,struts-plugin.xml,org/flexpay/common/struts_config.xml,org/flexpay/ab/struts_config.xml,org/flexpay/bti/struts_config.xml,org/flexpay/eirc/struts_config.xml,org/flexpay/sz/struts_config.xml
-            </param-value>
+				struts-default.xml,struts-plugin.xml,org/flexpay/common/struts_config.xml,org/flexpay/ab/struts_config.xml,org/flexpay/bti/struts_config.xml,org/flexpay/eirc/struts_config.xml,org/flexpay/sz/struts_config.xml
+			</param-value>
 		</init-param>
-    </filter>
+	</filter>
 	<filter-mapping>
 		<filter-name>actionFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-        <dispatcher>INCLUDE</dispatcher>
-        <dispatcher>ERROR</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
 	</filter-mapping>
-	
+
 	<servlet>
-        <servlet-name>szFileDownloadServlet</servlet-name>
-        <servlet-class>org.flexpay.sz.actions.SzFileDownloadServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>szFileDownloadServlet</servlet-name>
-        <url-pattern>/szFileDownloadServlet</url-pattern>
-    </servlet-mapping>
+		<servlet-name>spring-ws</servlet-name>
+		<servlet-class>org.springframework.ws.transport.http.MessageDispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
-    <servlet>
-        <servlet-name>spFileDownloadServlet</servlet-name>
-        <servlet-class>org.flexpay.eirc.actions.SpFileDownloadServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>spFileDownloadServlet</servlet-name>
-        <url-pattern>/spFileDownloadServlet</url-pattern>
-    </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>spring-ws</servlet-name>
+		<url-pattern>/ws/*</url-pattern>
+	</servlet-mapping>
 
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>secure-resource</web-resource-name>
-            <url-pattern>*.action</url-pattern>
-            <http-method>POST</http-method>
-            <http-method>GET</http-method>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>*</role-name>
-        </auth-constraint>
+	<servlet>
+		<servlet-name>szFileDownloadServlet</servlet-name>
+		<servlet-class>org.flexpay.sz.actions.SzFileDownloadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>szFileDownloadServlet</servlet-name>
+		<url-pattern>/szFileDownloadServlet</url-pattern>
+	</servlet-mapping>
 
-    </security-constraint>
+	<servlet>
+		<servlet-name>spFileDownloadServlet</servlet-name>
+		<servlet-class>org.flexpay.eirc.actions.SpFileDownloadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>spFileDownloadServlet</servlet-name>
+		<url-pattern>/spFileDownloadServlet</url-pattern>
+	</servlet-mapping>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>secure-resource</web-resource-name>
+			<url-pattern>*.action</url-pattern>
+			<http-method>POST</http-method>
+			<http-method>GET</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>*</role-name>
+		</auth-constraint>
+
+	</security-constraint>
 
 
 	<security-role>
@@ -333,27 +344,27 @@
 		<role-name>ROLE_EIRC_BANK_DELETE</role-name>
 	</security-role>
 
-    <security-role>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_CHANGE</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_DELETE</role-name>
-    </security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_DELETE</role-name>
+	</security-role>
 
 	<security-role>
 		<role-name>ROLE_EIRC_SERVICE_PROVIDER_READ</role-name>
@@ -433,42 +444,42 @@
 		<role-name>ROLE_EIRC_QUITTANCE_RECEIVE</role-name>
 	</security-role>
 
-    <security-role>
-        <role-name>ROLE_SZ_SZ_FILE_READ</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_SZ_SZ_FILE_DELETE</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_SZ_SZ_FILE_DOWNLOAD_FILE</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_SZ_SZ_FILE_UPLOAD_FILE</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_SZ_SZ_FILE_LOAD_TO_DB</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_SZ_SZ_FILE_LOAD_FROM_DB</role-name>
-    </security-role>
-    <security-role>
-        <role-name>ROLE_SZ_SZ_FILE_DELETE_FROM_DB</role-name>
-    </security-role>
+	<security-role>
+		<role-name>ROLE_SZ_SZ_FILE_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_SZ_SZ_FILE_DELETE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_SZ_SZ_FILE_DOWNLOAD_FILE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_SZ_SZ_FILE_UPLOAD_FILE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_SZ_SZ_FILE_LOAD_TO_DB</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_SZ_SZ_FILE_LOAD_FROM_DB</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_SZ_SZ_FILE_DELETE_FROM_DB</role-name>
+	</security-role>
 
-    <login-config>
-        <auth-method>FORM</auth-method>
-        <form-login-config>
-            <form-login-page>/resources/common/jsp/login.jsp</form-login-page>
-            <form-error-page>/resources/common/jsp/login.jsp</form-error-page>
-        </form-login-config>
-    </login-config>
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<form-login-config>
+			<form-login-page>/resources/common/jsp/login.jsp</form-login-page>
+			<form-error-page>/resources/common/jsp/login.jsp</form-error-page>
+		</form-login-config>
+	</login-config>
 
-    <error-page>
-        <error-code>403</error-code>
-        <location>/resources/common/jsp/forbidden.jsp</location>
-    </error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/resources/common/jsp/forbidden.jsp</location>
+	</error-page>
 
-    <welcome-file-list>
+	<welcome-file-list>
 		<welcome-file>/resources/sz/jsp/index.jsp</welcome-file>
 	</welcome-file-list>
 

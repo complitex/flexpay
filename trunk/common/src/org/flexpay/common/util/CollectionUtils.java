@@ -45,7 +45,7 @@ public class CollectionUtils {
 	}
 
 	/**
-	 * Create a instance of HashMap
+	 * Create an instance of HashMap
 	 *
 	 * @param <K> key type
 	 * @param <V> value type
@@ -57,7 +57,23 @@ public class CollectionUtils {
 	}
 
 	/**
-	 * Create a instance of HashMap from existing map
+	 * Create an instance of HashMap from single key-value pair 
+	 *
+	 * @param k Single entry key
+	 * @param v Single entry value
+	 * @param <K> key type
+	 * @param <V> value type
+	 * @return Map
+	 */
+	@NotNull
+	public static <K, V> Map<K, V> map(K k, V v) {
+		Map<K, V> map = new HashMap<K,V>();
+		map.put(k, v);
+		return map;
+	}
+
+	/**
+	 * Create an instance of HashMap from existing map
 	 *
 	 * @param values Initial map data
 	 * @param <K> key type

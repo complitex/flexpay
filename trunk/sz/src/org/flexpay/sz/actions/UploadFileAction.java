@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.FPFileType;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.sz.persistence.Oszn;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.OsznService;
@@ -14,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.File;
 import java.util.Calendar;
@@ -33,10 +33,10 @@ public class UploadFileAction extends ActionSupport {
 	private Integer month;
 	private Long osznId;
 
-    private String moduleName;
+	private String moduleName;
 	private OsznService osznService;
 	private SzFileService szFileService;
-    private FPFileService fpFileService;
+	private FPFileService fpFileService;
 
 	@NotNull
 	public String execute() {
@@ -53,7 +53,7 @@ public class UploadFileAction extends ActionSupport {
 			return ERROR;
 		}
 
-		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+		String userName = SecurityUtil.getUserName();
 		try {
 			SzFile szFile = new SzFile();
 			szFile.setType(fileType);
@@ -122,19 +122,19 @@ public class UploadFileAction extends ActionSupport {
 	}
 
 	@Required
-    public void setOsznService(OsznService osznService) {
-        this.osznService = osznService;
-    }
+	public void setOsznService(OsznService osznService) {
+		this.osznService = osznService;
+	}
 
 	@Required
-    public void setSzFileService(SzFileService szFileService) {
-        this.szFileService = szFileService;
-    }
+	public void setSzFileService(SzFileService szFileService) {
+		this.szFileService = szFileService;
+	}
 
 	@Required
-    public void setModuleName(String moduleName) {
-        this.moduleName = moduleName;
-    }
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
 
 	@Required
 	public void setFpFileService(FPFileService fpFileService) {
