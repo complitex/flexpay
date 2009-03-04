@@ -55,7 +55,7 @@
     </tr>
     <tr valign="middle" class="cols_1">
         <td class="col"><s:text name="common.processing.process.definition_name"/></td>
-        <td class="col"><s:property value="process.processDefinitionName"/></td>
+        <td class="col"><s:text name="%{process.processDefinitionName}"/></td>
     </tr>
     <tr valign="middle" class="cols_1">
         <td class="col"><s:text name="common.processing.process.instance_id"/></td>

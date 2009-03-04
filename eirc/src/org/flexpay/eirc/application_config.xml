@@ -5,6 +5,9 @@
 	 	WARN! default names just a reference, check ids with your data base
 		TODO: implement find by name lookup
 	-->
+
+    <applicationName>eirc</applicationName>
+
 	<organization id="1">Единый информационный центр</organization>
 	
 	<eircDataRoot>/eirc</eircDataRoot> <!-- задаётся относительно dataRoot -->

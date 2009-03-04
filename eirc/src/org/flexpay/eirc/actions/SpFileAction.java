@@ -31,7 +31,7 @@ public class SpFileAction extends FPActionSupport {
         if ("loadToDb".equals(action)) {
             Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
             contextVariables.put("FileId", spFileId);
-            processId = processManager.createProcess("ParseRegistryProcess", contextVariables);
+            processId = processManager.createProcess("eirc.ParseRegistryProcess", contextVariables);
         } else if ("loadFromDb".equals(action)) {
             // SzFileUtil.loadFromDb(szFile);
         } else if ("deleteFromDb".equals(action)) {

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <flexpay>
 
+    <applicationName>common</applicationName>
+
 	<dataRoot>flexpay_data</dataRoot>
 	
     <!-- Number of lines of log to be shown on process details view page-->

@@ -165,6 +165,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		ProcessDefinition processDefinition = null;
 		try {
 			processDefinition = ProcessDefinition.parseXmlInputStream(in);
+            processDefinition.setName(ApplicationConfig.getApplicationName() + "." + processDefinition.getName());
 			return deployProcessDefinition(processDefinition, replace);
 		} catch (Exception e) {
 			log.error("deployProcessDefinition: ", e);
