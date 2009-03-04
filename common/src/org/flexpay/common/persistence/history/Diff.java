@@ -108,7 +108,7 @@ public class Diff extends DomainObject {
 		return instanceId;
 	}
 
-	public void setInstanceId(String instanceId) {
+	public void setInstanceId(@NotNull String instanceId) {
 		this.instanceId = instanceId;
 	}
 
@@ -122,6 +122,7 @@ public class Diff extends DomainObject {
 				append("objectId", objectId).
 				append("userName", userName).
 				append("masterIndex", masterIndex).
+				append("instanceId", instanceId).
 				toString();
 	}
 
@@ -164,6 +165,7 @@ public class Diff extends DomainObject {
 		copy.setUserName(userName);
 		copy.setProcessingStatus(processingStatus);
 		copy.setMasterIndex(masterIndex);
+		copy.setInstanceId(instanceId);
 		return copy;
 	}
 }

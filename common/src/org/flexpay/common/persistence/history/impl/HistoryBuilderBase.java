@@ -8,12 +8,11 @@ import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
+import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContextHolder;
 
 import java.util.Date;
 
@@ -34,10 +33,7 @@ public abstract class HistoryBuilderBase<T extends DomainObject> implements Hist
 	public final Diff diff(@Nullable T t1, @NotNull T t2) {
 
 		Diff diff = new Diff();
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication != null) {
-			diff.setUserName(authentication.getName());
-		}
+		diff.setUserName(SecurityUtil.getUserName());
 		diff.setObjectId(t2.getId());
 		diff.setObjectType(typeRegistry.getType(t2.getClass()));
 		diff.setOperationTime(new Date());

@@ -1,21 +1,32 @@
 package org.flexpay.common.test;
 
+import org.flexpay.common.service.Roles;
 import org.jetbrains.annotations.NonNls;
+import org.junit.BeforeClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.security.Authentication;
+import org.springframework.security.GrantedAuthority;
+import org.springframework.security.GrantedAuthorityImpl;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
+import org.springframework.security.userdetails.User;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-import org.springframework.security.GrantedAuthority;import org.springframework.security.GrantedAuthorityImpl;import org.springframework.security.Authentication;import org.springframework.security.context.SecurityContextHolder;import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;import org.springframework.security.userdetails.User;import org.slf4j.Logger;import org.slf4j.LoggerFactory;import org.junit.BeforeClass;
-import org.flexpay.common.service.Roles;
 
 import java.io.InputStream;
 
 /**
  * Base class for all SpringFramework initialised beans aware tests
  */
-@ContextConfiguration (locations = {"file:WEB-INF/applicationContext.xml"})
+@ContextConfiguration (locations = {
+		"file:WEB-INF/applicationContext.xml"
+		, "file:WEB-INF/common/configs/spring/history/beans-ws-server-test.xml"
+})
 public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContextTests {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
@@ -24,7 +35,7 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 	@Qualifier ("hibernateTemplate")
 	protected HibernateTemplate hibernateTemplate;
 	@Autowired
-	@Qualifier("jdbcTemplate")
+	@Qualifier ("jdbcTemplate")
 	protected JdbcTemplate jdbcTemplate;
 
 	protected InputStream getFileStream(@NonNls String relativePath) {

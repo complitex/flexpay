@@ -24,11 +24,13 @@
 		<path refid="jetbrains.lib" />
 		<path refid="csv.lib" />
 		<path refid="xstream.lib" />
+		<path refid="spring-ws.lib" />
 	</path>
 
 	<patternset id="empty_pattern" excludes="**/*.*" />
 	<patternset id="resources_pattern">
 		<include name="**/*.xml" />
+		<include name="**/*.xsd" />
 		<include name="**/*.properties" />
 	</patternset>
 

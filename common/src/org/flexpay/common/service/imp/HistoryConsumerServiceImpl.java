@@ -9,11 +9,11 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.*;
 import org.flexpay.common.service.HistoryConsumerService;
+import org.flexpay.common.util.SecurityUtil;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -87,7 +87,7 @@ public class HistoryConsumerServiceImpl implements HistoryConsumerService {
 	public HistoryConsumptionGroup newGroup(@NotNull HistoryConsumer consumer) {
 
 		HistoryConsumptionGroup group = new HistoryConsumptionGroup();
-		group.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+		group.setUserName(SecurityUtil.getUserName());
 		group.setConsumer(consumer);
 
 		consumptionGroupDao.create(group);

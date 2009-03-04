@@ -25,33 +25,33 @@
 			</list>
 		</property>
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
-        <property name="fileEncoding" value="UTF-8"/>
+		<property name="fileEncoding" value="UTF-8" />
 	</bean>
 
 	<!-- Add hibernate statistics capablities -->
 	<!--<bean id="hibernateStatistics" class="org.hibernate.jmx.StatisticsService"-->
-		  <!--p:sessionFactory-ref="flexpaySessionFactory" />-->
+	<!--p:sessionFactory-ref="flexpaySessionFactory" />-->
 
 	<!--
 		this bean needs to be eagerly pre-instantiated in order for the exporting to occur;
 		this means that it must not be marked as lazily initialized
   	-->
 	<!--<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">-->
-		<!--<property name="beans">-->
-			<!--<map>-->
-				<!--<entry key="bean:name=hibernateStatistics${flexpay.module.name.common}" value-ref="hibernateStatistics" />-->
-			<!--</map>-->
-		<!--</property>-->
-		<!--<property name="assembler">-->
-			<!--<bean class="org.springframework.jmx.export.assembler.MethodNameBasedMBeanInfoAssembler">-->
-				<!--<property name="methodMappings">-->
-					<!--<props>-->
-						<!--<prop key="bean:name=hibernateStatsMBean">-->
-						<!--</prop>-->
-					<!--</props>-->
-				<!--</property>-->
-			<!--</bean>-->
-		<!--</property>-->
+	<!--<property name="beans">-->
+	<!--<map>-->
+	<!--<entry key="bean:name=hibernateStatistics${flexpay.module.name.common}" value-ref="hibernateStatistics" />-->
+	<!--</map>-->
+	<!--</property>-->
+	<!--<property name="assembler">-->
+	<!--<bean class="org.springframework.jmx.export.assembler.MethodNameBasedMBeanInfoAssembler">-->
+	<!--<property name="methodMappings">-->
+	<!--<props>-->
+	<!--<prop key="bean:name=hibernateStatsMBean">-->
+	<!--</prop>-->
+	<!--</props>-->
+	<!--</property>-->
+	<!--</bean>-->
+	<!--</property>-->
 	<!--</bean>-->
 
 	<!-- Create transaction manager  -->
@@ -127,6 +127,12 @@
 		  destroy-method="stop" init-method="start" factory-method="getInstance"
 		  p:jbpmConfiguration-ref="jbpmConfiguration"
 		  p:rescanFrequency="${process_manager.rescanFrequency}"
-		  p:taskRepeatLimit="${process_manager.startTaskLimit}" />
+		  p:taskRepeatLimit="${process_manager.startTaskLimit}">
+		<property name="definitionPaths">
+			<list>
+				<value>WEB-INF/common/process</value>
+			</list>
+		</property>
+	</bean>
 
 </beans>

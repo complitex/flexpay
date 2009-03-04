@@ -6,6 +6,7 @@ import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.ProcessingStatus;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
@@ -56,6 +57,7 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 		}
 
 		Diff diff = historyBuilder.diff(null, town);
+		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		diffService.create(diff);
 
 		log.debug("Ended generating history for town {}", obj);

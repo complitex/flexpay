@@ -98,6 +98,9 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 			return null;
 		}
 
+		// sync file size property
+		fileService.update(file);
+
 		// update last dumped diff
 		consumerService.update(consumer);
 

@@ -8,13 +8,13 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.tc.persistence.TariffCalculationRulesFile;
 import org.flexpay.tc.persistence.TariffCalculationRulesFileTranslation;
 import org.flexpay.tc.service.TariffCalculationRulesFileService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.context.SecurityContextHolder;
 
 import java.io.File;
 import java.util.Map;
@@ -29,9 +29,9 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 	private String uploadFileName;
 	private String uploadContentType;
 
-    private String moduleName;
+	private String moduleName;
 	private TariffCalculationRulesFileService tariffCalculationRulesFileService;
-    private FPFileService fpFileService;
+	private FPFileService fpFileService;
 
 	@NotNull
 	public String doExecute() {
@@ -64,7 +64,7 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 			file.setTranslation(translation);
 		}
 
-		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+		String userName = SecurityUtil.getUserName();
 		if (rulesFile.isNew()) {
 
 			if (uploadFileName == null) {
@@ -173,9 +173,9 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 	}
 
 	@Required
-    public void setModuleName(String moduleName) {
-        this.moduleName = moduleName;
-    }
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
 
 	@Required
 	public void setFpFileService(FPFileService fpFileService) {

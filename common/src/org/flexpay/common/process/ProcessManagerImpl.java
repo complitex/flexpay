@@ -590,13 +590,14 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 				}
 
 				// Init lazy fields
-				List instances = context.getTaskMgmtSession().findTaskInstancesByIds(taskIds);
+				List<?> instances = context.getTaskMgmtSession().findTaskInstancesByIds(taskIds);
 				for (Object obj : instances) {
 					TaskInstance instance = (TaskInstance) obj;
 					instance.getProcessInstance().getContextInstance().getVariables();
 				}
 
-				return instances;
+				//noinspection unchecked
+				return (List<TaskInstance>) instances;
 			}
 		}, true);
 	}
@@ -646,6 +647,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 			process.setLogFileName("");
 		}
 
+		@SuppressWarnings ({"unchecked"})
 		Map<Serializable, Serializable> parameters = processInstance.getContextInstance().getVariables();
 		if (parameters == null) {
 			parameters = CollectionUtils.map();

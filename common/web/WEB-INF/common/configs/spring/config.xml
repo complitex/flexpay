@@ -11,9 +11,12 @@
 	<import resource="beans-cache.xml" />
 	<import resource="beans-dao.xml" />
 	<import resource="beans-services.xml" />
+	<import resource="beans-job.xml" />
 
 	<import resource="stand-alone-tasks.xml" />
 	<import resource="data_export.xml" />
+
+	<import resource="history/config.xml" />
 
 	<import resource="beans_self_testing.xml" />
 

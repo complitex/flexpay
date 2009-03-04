@@ -11,11 +11,12 @@ import org.flexpay.common.persistence.FPFileType;
 import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.common.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.context.SecurityContextHolder;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
@@ -23,17 +24,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * This class need to work with FPFile, FPModule, FPFileType,
- * FPFileStatus entities.
- *
+ * This class need to work with FPFile, FPModule, FPFileType, FPFileStatus entities.
+ * <p/>
  * FPModule - simple entity with one field - moduleName.
- *
- * FPFile has a reference on FPModule, in which it was create.
- * FpFile has a string-path to file on file system.
- * One file on file system - one FPFile in database.
- *
- * FPFileStatus and FPFileType - entities for defining type and
- * current status of file. This entities both references on FPModule.
+ * <p/>
+ * FPFile has a reference on FPModule, in which it was create. FpFile has a string-path to file on file system. One file
+ * on file system - one FPFile in database.
+ * <p/>
+ * FPFileStatus and FPFileType - entities for defining type and current status of file. This entities both references on
+ * FPModule.
  */
 @Transactional (readOnly = true)
 public class FPFileServiceImpl implements FPFileService {
@@ -52,9 +51,11 @@ public class FPFileServiceImpl implements FPFileService {
 	 * @return created file
 	 * @throws FlexPayException
 	 */
+	@NotNull
 	@Transactional (readOnly = false)
-	public FPFile create(FPFile file) throws FlexPayException {
-		file.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+	public FPFile create(@NotNull FPFile file) throws FlexPayException {
+		file.setUserName(SecurityUtil.getUserName());
+		file.updateSize();
 		fpFileDao.create(file);
 
 		log.debug("Created new FPFile: {}", file);
@@ -69,15 +70,16 @@ public class FPFileServiceImpl implements FPFileService {
 	 * @return updated file
 	 * @throws FlexPayException
 	 */
+	@NotNull
 	@Transactional (readOnly = false)
-	public FPFile update(FPFile file) throws FlexPayException {
+	public FPFile update(@NotNull FPFile file) throws FlexPayException {
+		file.updateSize();
 		fpFileDao.update(file);
 		return file;
 	}
 
 	/**
-	 * Delete FPFile entity from database
-	 * and also delete file from file system
+	 * Delete FPFile entity from database and also delete file from file system
 	 *
 	 * @param file file to delete
 	 */
@@ -120,8 +122,7 @@ public class FPFileServiceImpl implements FPFileService {
 	}
 
 	/**
-	 * Get file from file system by FPFile entity id,
-	 * which locating to this file
+	 * Get file from file system by FPFile entity id, which locating to this file
 	 *
 	 * @param fileId FPFile entity id
 	 * @return file on file system
@@ -153,11 +154,10 @@ public class FPFileServiceImpl implements FPFileService {
 	}
 
 	/**
-	 * Get FPFileType by name and module name.
-	 * FPFileType has unique file-mask and by file name
-	 * we can define type. Module name come out as second criterion
+	 * Get FPFileType by name and module name. FPFileType has unique file-mask and by file name we can define type. Module
+	 * name come out as second criterion
 	 *
-	 * @param fileName name of file
+	 * @param fileName   name of file
 	 * @param moduleName name of module
 	 * @return FPFileType
 	 */
@@ -196,12 +196,10 @@ public class FPFileServiceImpl implements FPFileService {
 	}
 
 	/**
-	 * Get FPFileType by unique code and module name.
-	 * Each FPFileType has a unique (only for module!) code and
-	 * by this code we can find types for some modules.
-	 * Module name come out as second criterion
+	 * Get FPFileType by unique code and module name. Each FPFileType has a unique (only for module!) code and by this code
+	 * we can find types for some modules. Module name come out as second criterion
 	 *
-	 * @param code unique code of FPFileType
+	 * @param code	   unique code of FPFileType
 	 * @param moduleName name of module
 	 * @return FPFileType by unique code and module name
 	 */
@@ -211,12 +209,10 @@ public class FPFileServiceImpl implements FPFileService {
 	}
 
 	/**
-	 * Get FPFileStatus by unique code and module name.
-	 * Each FPFileStatus has a unique (only for module!) code and
-	 * by this code we can find statuses for some modules.
-	 * Module name come out as second criterion
+	 * Get FPFileStatus by unique code and module name. Each FPFileStatus has a unique (only for module!) code and by this
+	 * code we can find statuses for some modules. Module name come out as second criterion
 	 *
-	 * @param code unique code of FPFileStatus
+	 * @param code	   unique code of FPFileStatus
 	 * @param moduleName name of module
 	 * @return FPFileStatus by unique code and module name
 	 */
@@ -244,5 +240,4 @@ public class FPFileServiceImpl implements FPFileService {
 	public void setFpModuleDao(FPModuleDao fpModuleDao) {
 		this.fpModuleDao = fpModuleDao;
 	}
-
 }

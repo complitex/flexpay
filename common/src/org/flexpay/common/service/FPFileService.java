@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.FPFileStatus;
 import org.flexpay.common.persistence.FPFileType;
 import org.flexpay.common.persistence.FPModule;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
@@ -29,18 +30,20 @@ public interface FPFileService {
 	 *
 	 * @param file FPFile entity
 	 * @return created file
-	 * @throws FlexPayException
+	 * @throws FlexPayException if failure occurs
 	 */
-    FPFile create(FPFile file) throws FlexPayException;
+	@NotNull
+    FPFile create(@NotNull FPFile file) throws FlexPayException;
 
 	/**
 	 * Update existing file in database
 	 *
 	 * @param file file to update
 	 * @return updated file
-	 * @throws FlexPayException
+	 * @throws FlexPayException if failure occurs
 	 */
-    FPFile update(FPFile file) throws FlexPayException;
+	@NotNull
+    FPFile update(@NotNull FPFile file) throws FlexPayException;
 
 	/**
 	 * Delete FPFile entity from database
@@ -62,7 +65,7 @@ public interface FPFileService {
 	 *
 	 * @param fileId id of FPFile entity
 	 * @return Loaded FPFile
-	 * @throws FlexPayException
+	 * @throws FlexPayException if failure occurs
 	 */
 	FPFile read(Long fileId) throws FlexPayException;
 
@@ -72,7 +75,7 @@ public interface FPFileService {
 	 *
 	 * @param fileId FPFile entity id
 	 * @return file on file system
-	 * @throws FlexPayException
+	 * @throws FlexPayException if failure occurs
 	 */
 	File getFileFromFileSystem(Long fileId) throws FlexPayException;
 
