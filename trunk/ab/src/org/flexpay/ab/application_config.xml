@@ -5,6 +5,9 @@
 	 	WARN! default names just a reference, check ids with your data base
 		TODO: implement find by name lookup
 	-->
+
+    <applicationName>ab</applicationName>
+
 	<defaultCountry id="3">Украина</defaultCountry>
 	<defaultRegion id="1">Харьковская область</defaultRegion>
 	<defaultTown id="1">Харьков</defaultTown>

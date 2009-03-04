@@ -95,6 +95,8 @@ public class CommonConfigLoader implements ResourceLoaderAware {
 	 */
 	protected void addRules(@NonNls Digester d) {
 
+        d.addCallMethod("flexpay/applicationName", "setApplicationName", 0);
+
 		d.addCallMethod("flexpay/dataRoot", "setDataRoot", 0);
 
 		d.addCallMethod("flexpay/testprop", "setTestProp", 0);

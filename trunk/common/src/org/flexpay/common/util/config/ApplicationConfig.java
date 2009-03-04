@@ -31,6 +31,7 @@ public class ApplicationConfig {
 	private static final Date DATE_PAST_INFINITE = new GregorianCalendar(1900, 0, 1).getTime();
 	private static final Date DATE_FUTURE_INFINITE = new GregorianCalendar(2100, 11, 31).getTime();
 
+    private String applicationName;
 	private String dataRoot;
     private int logPreviewLinesNumber;
 
@@ -210,4 +211,12 @@ public class ApplicationConfig {
 	public void setInstanceId(String instanceId) {
 		this.instanceId = instanceId;
 	}
+
+    public static String getApplicationName() {
+        return getInstance().applicationName;
+    }
+
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
 }

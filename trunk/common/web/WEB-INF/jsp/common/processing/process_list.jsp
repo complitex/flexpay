@@ -23,7 +23,7 @@
 			<td class="col"><s:property value="id" /></td>
 			<td class="col">
 				<a href="<s:url action="processView"><s:param name="process.id" value="%{id}" /></s:url>">
-					<s:property value="processDefinitionName" />
+                    <s:text name="%{processDefinitionName}"/>
 				</a>
 			</td>
 			<td class="col"><s:date name="processStartDate" format="yyyy/MM/dd" /></td>
