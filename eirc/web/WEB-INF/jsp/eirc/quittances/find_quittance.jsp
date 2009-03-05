@@ -4,7 +4,7 @@
 <s:actionerror />
 
 <s:form action="quittanceSearch" method="POST">
-
+	<s:hidden name="packet.id" value="%{packet.id}" />
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td><s:text name="eirc.quittance.number" />:</td>
