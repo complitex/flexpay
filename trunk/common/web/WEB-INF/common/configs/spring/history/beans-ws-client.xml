@@ -7,6 +7,6 @@
 	<!-- Client web-service beans definition -->
 	<bean id="soapOutHistoryTransport"
 		  class="org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport"
-		  p:url="http://localhost:8080/ShareHistory" />
+		  p:url="http://localhost:58080/ShareHistory" />
 
 </beans>

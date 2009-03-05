@@ -15,7 +15,10 @@ import java.io.InputStream;
 /**
  * Base class for all SpringFramework initialised beans aware tests
  */
-@ContextConfiguration(locations = {"file:WEB-INF/applicationContext.xml"})
+@ContextConfiguration (locations = {
+		"file:WEB-INF/applicationContext.xml"
+		, "file:WEB-INF/common/configs/spring/history/beans-ws-server-test.xml"
+})
 @TransactionConfiguration(transactionManager="transactionManager")
 public abstract class TransactionalSpringBeanAwareTestCase extends AbstractTransactionalJUnit4SpringContextTests {
 
@@ -43,5 +46,4 @@ public abstract class TransactionalSpringBeanAwareTestCase extends AbstractTrans
 	protected InputStream getFileStream(@NonNls String relativePath) {
 		return getClass().getClassLoader().getResourceAsStream(relativePath);
 	}
-
 }

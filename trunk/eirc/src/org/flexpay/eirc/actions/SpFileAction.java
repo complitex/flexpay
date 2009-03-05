@@ -32,6 +32,10 @@ public class SpFileAction extends FPActionSupport {
             Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
             contextVariables.put("FileId", spFileId);
             processId = processManager.createProcess("eirc.ParseRegistryProcess", contextVariables);
+			log.debug("Load to db process id {}", processId);
+			if (processId == null) {
+				throw new Exception("Failed creating process, unknown reason");
+			}
         } else if ("loadFromDb".equals(action)) {
             // SzFileUtil.loadFromDb(szFile);
         } else if ("deleteFromDb".equals(action)) {
@@ -53,7 +57,7 @@ public class SpFileAction extends FPActionSupport {
     @NotNull
 	@Override
     protected String getErrorResult() {
-        return REDIRECT_SUCCESS;
+        return REDIRECT_ERROR;
     }
 
     /**
@@ -78,5 +82,4 @@ public class SpFileAction extends FPActionSupport {
 	public void setProcessManager(ProcessManager processManager) {
         this.processManager = processManager;
     }
-
 }
