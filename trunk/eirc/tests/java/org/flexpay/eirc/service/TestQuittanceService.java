@@ -51,6 +51,8 @@ public class TestQuittanceService extends SpringBeanAwareTestCase {
 		Quittance qByNumber = quittanceService.findByNumber(number);
 		assertNotNull("Not found valid quittance", qByNumber);
 
+		log.debug("Quittance number: {}", number);
+
 		assertEquals("Found quittance is not same", q, qByNumber);
 	}
 }
