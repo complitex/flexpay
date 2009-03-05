@@ -143,6 +143,8 @@
 			  overwrite="true"
 			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
 
+		<antcall target="template.set_db_name" />
+
 		<war destfile="${distr.dir}/${sz.war.name}" needxmlfile="false">
 			<fileset dir="${build.dir}/web" />
 			<lib refid="sz.libraries" />
@@ -198,12 +200,23 @@
 		</concat>
 	</target>
 
+	<target name="sz.sql.init-db-test">
+		<antcall target="eirc.sql.init-db-test" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${sz.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${sz.dir}/etc/sql/init_db_test.sql" />
+		</concat>
+		<antcall target="template.set_db_name" />
+	</target>
+
 	<target name="sz.sql.all-test">
 		<antcall target="common.sql.create-test-db" />
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${sz.dir}/etc/sql/flexpay_sz.ddl.sql" />
 		</concat>
-		<antcall target="sz.sql.init-db" />
+		<antcall target="sz.sql.init-db-test" />
 	</target>
 
 	<target name="sz.db-test" description="create sz test db">
