@@ -212,6 +212,3 @@ INSERT INTO bti_building_attribute_type_enum_values_tbl (id, order_value, value 
 (321,15,'пласт.',44),(322,17,'пластм',44),(323,16,'пластик',44),(324,19,'плат',44),(325,18,'пластмас',44),(326,21,'поастм.',44),(327,20,'плсатм.',44),(328,23,'сталь',44),
 (329,22,'сталева',44),(330,25,'чав/плас',44),(331,24,'ч\\п',44),(332,4,'чавун',45),(333,3,'закрытая',45),(334,2,'відкрита',45),(335,1,'135',45);
 
--- initialize correction for a test attributes of CN building
-insert into common_data_corrections_tbl(external_object_id, internal_object_id, object_type, data_source_description_id)
-	values ('105471645', @buildings_ivanova_27, 0x07, @source_description_test_data);

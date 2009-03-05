@@ -165,6 +165,8 @@
 			  overwrite="true"
 			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
 
+		<antcall target="template.set_db_name" />
+
 		<war destfile="${distr.dir}/${ab.war.name}" needxmlfile="false">
 			<fileset dir="${build.dir}/web" />
 			<lib refid="ab.libraries" />
@@ -236,6 +238,18 @@
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${ab.dir}/etc/sql/init_db.sql" />
 		</concat>
+		<antcall target="template.set_db_name" />
+	</target>
+
+	<target name="ab.sql.init-db-test">
+		<antcall target="common.sql.init-db-test" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${ab.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${ab.dir}/etc/sql/init_db_test.sql" />
+		</concat>
+		<antcall target="template.set_db_name" />
 	</target>
 
 	<target name="ab.sql.all">
@@ -251,7 +265,7 @@
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${ab.dir}/etc/sql/flexpay_ab.ddl.sql" />
 		</concat>
-		<antcall target="ab.sql.init-db" />
+		<antcall target="ab.sql.init-db-test" />
 	</target>
 
 	<target name="ab.db-test" description="create ab db">

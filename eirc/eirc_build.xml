@@ -214,6 +214,17 @@
 		<antcall target="template.set_db_name" />
 	</target>
 
+	<target name="eirc.sql.init-db-test">
+		<antcall target="bti.sql.init-db-test" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${eirc.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${eirc.dir}/etc/sql/init_db_test.sql" />
+		</concat>
+		<antcall target="template.set_db_name" />
+	</target>
+
 	<target name="eirc.sql.all">
 		<antcall target="common.sql.create-db" />
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
@@ -227,7 +238,7 @@
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${eirc.dir}/etc/sql/flexpay_eirc.ddl.sql" />
 		</concat>
-		<antcall target="eirc.sql.init-db" />
+		<antcall target="eirc.sql.init-db-test" />
 	</target>
 
 	<target name="eirc.db-test" description="create eirc test db">

@@ -214,6 +214,17 @@
 		<antcall target="template.set_db_name" />
 	</target>
 
+	<target name="tc.sql.init-db-test">
+		<antcall target="bti.sql.init-db-test" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${tc.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${tc.dir}/etc/sql/init_db_test.sql" />
+		</concat>
+		<antcall target="template.set_db_name" />
+	</target>
+
 	<target name="tc.sql.all">
 		<antcall target="common.sql.create-db" />
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
@@ -227,7 +238,7 @@
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${tc.dir}/etc/sql/flexpay_tc.ddl.sql" />
 		</concat>
-		<antcall target="tc.sql.init-db" />
+		<antcall target="tc.sql.init-db-test" />
 	</target>
 
 	<target name="tc.db-test" description="create tc test db">
