@@ -52,6 +52,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	private static final String METHOD_POST = "post";
 
 	protected UserPreferences userPreferences;
+	@SuppressWarnings ({"RawUseOfParameterizedType"})
 	protected Map session = CollectionUtils.map();
 	protected String submitted;
 
@@ -67,6 +68,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	 * @return Execution result
 	 * @throws Exception if failure occurs
 	 */
+	@SuppressWarnings ({"RawUseOfParameterizedType"})
 	public String execute() throws Exception {
 		String result;
 		try {
@@ -88,7 +90,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 		String damainName = getDomainName();
 
 		//noinspection unchecked
-		Map<String, Collection> domainNamesToErrors = (Map) session.remove(ERRORS_SESSION_ATTRIBUTE);
+		Map<String, Collection<?>> domainNamesToErrors = (Map) session.remove(ERRORS_SESSION_ATTRIBUTE);
 		if (domainNamesToErrors != null && domainNamesToErrors.containsKey(damainName)) {
 			Collection errors = domainNamesToErrors.remove(damainName);
 			//noinspection unchecked
@@ -99,7 +101,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 
 		// put all errors to session if redirecting
 		if (result.startsWith(PREFIX_REDIRECT)) {
-			Collection errors = getActionErrors();
+			Collection<?> errors = getActionErrors();
 			if (domainNamesToErrors == null) {
 				domainNamesToErrors = CollectionUtils.map();
 			}
@@ -239,6 +241,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	 *
 	 * @param session a Map of HTTP session attribute name/value pairs.
 	 */
+	@SuppressWarnings ({"RawUseOfParameterizedType"})
 	public void setSession(Map session) {
 		this.session = session;
 	}

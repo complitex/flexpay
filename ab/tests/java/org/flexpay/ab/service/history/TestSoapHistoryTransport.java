@@ -34,7 +34,7 @@ public class TestSoapHistoryTransport extends SpringBeanAwareTestCase {
 
 	@Test
 	public void testHttpServerIsUp() throws Exception {
-		URL url = new URL("http://localhost:8080/ShareHistory.wsdl");
+		URL url = new URL("http://localhost:58080/ShareHistory.wsdl");
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.connect();
 		assertTrue("", 200 <= connection.getResponseCode() && connection.getResponseCode() < 400);

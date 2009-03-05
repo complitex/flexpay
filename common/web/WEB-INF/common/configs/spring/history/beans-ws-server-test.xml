@@ -12,6 +12,7 @@
 				<entry key="/ShareHistory" value-ref="soapHandler" />
 			</map>
 		</property>
+		<property name="port" value="58080" />
 	</bean>
 
 </beans>

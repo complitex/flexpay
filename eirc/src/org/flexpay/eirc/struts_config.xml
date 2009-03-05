@@ -33,6 +33,7 @@
 
 		<action name="spFileAction" class="spFileAction">
 			<result name="redirectSuccess" type="redirect-action">spFileList</result>
+			<result name="redirectError" type="redirect-action">spFileList</result>
 		</action>
 
 	</package>
