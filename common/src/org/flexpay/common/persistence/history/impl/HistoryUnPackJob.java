@@ -2,6 +2,7 @@ package org.flexpay.common.persistence.history.impl;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.HistoryUnPacker;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
@@ -23,7 +24,7 @@ public class HistoryUnPackJob extends Job {
 		if (fileId == null) {
 			throw new FlexPayException("No file id");
 		}
-		FPFile file = fileService.read(fileId);
+		FPFile file = fileService.read(new Stub<FPFile>(fileId));
 		try {
 			unPacker.unpackHistory(file);
 		} catch (Exception ex) {

@@ -2,6 +2,7 @@ package org.flexpay.eirc.process.registry;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.eirc.sp.RegistryFileParser;
@@ -18,7 +19,7 @@ public class FileParserJob extends Job {
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 		Long fileId = (Long) parameters.get("FileId");
 
-		FPFile spFile = fpFileService.read(fileId);
+		FPFile spFile = fpFileService.read(new Stub<FPFile>(fileId));
 		if (spFile == null) {
 			log.warn("Invalid File Id");
 			return RESULT_ERROR;

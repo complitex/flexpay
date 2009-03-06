@@ -9,6 +9,8 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.Stub;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -28,7 +30,7 @@ public class BuildingAttributesImportJob extends Job {
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
-		File file = fileService.getFileFromFileSystem((Long) parameters.get(PARAM_FILE_ID));
+		File file = fileService.getFileFromFileSystem(new Stub<FPFile>((Long) parameters.get(PARAM_FILE_ID)));
 		Date beginDate = (Date) parameters.get(PARAM_IMPORT_DATE);
 		if (beginDate == null) {
 			log.error("No import date parameter specified");
