@@ -57,6 +57,18 @@
 		   overflowToDisk="true"
 		   memoryStoreEvictionPolicy="LRU" />
 
+    <cache name="abCountryFlexpayCache"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="abRegionFlexpayCache"
+           maxElementsInMemory="500"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
 	<cache name="fpFileFlexpayCache"
 		   maxElementsInMemory="100"
 		   eternal="true"
