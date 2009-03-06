@@ -4,6 +4,7 @@ import com.linuxense.javadbf.DBFException;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFileStatus;
 import org.flexpay.common.process.job.Job;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.sz.convert.NotSupportedOperationException;
@@ -19,6 +20,7 @@ import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.RecordService;
 import org.flexpay.sz.service.SzFileService;
 import org.springframework.beans.factory.annotation.Required;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,6 +40,8 @@ public class SzFileLoadToDbJob extends Job {
 	@SuppressWarnings({"unchecked"})
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
+		Logger pLogger = ProcessLogger.getLogger(getClass());
+
 		Set<Long> fileIds = (Set<Long>) parameters.get("fileIds");
 
 		log.debug("Process szFile load to DB for fileIds = {} started", fileIds);
@@ -51,7 +55,7 @@ public class SzFileLoadToDbJob extends Job {
 
 		for (SzFile szFile : szFiles) {
 
-			log.debug("Loading to DB szFile with id = {} started", szFile.getId());
+			pLogger.info("Loading to DB szFile with id = {} started", szFile.getId());
 
 			try {
 				SzFileUtil.deleteRecords(szFile);
@@ -106,7 +110,7 @@ public class SzFileLoadToDbJob extends Job {
 			szFile.setStatus(status);
 			szFileService.update(szFile);
 
-			log.debug("Loading to DB szFile with id = {} finished", szFile.getId());
+			pLogger.info("Loading to DB szFile with id = {} finished", szFile.getId());
 		}
 
 		log.debug("Process szFile load to DB for fileIds = {} finished", fileIds);
