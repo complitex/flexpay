@@ -326,4 +326,12 @@
 		<property name="eircAccountService" ref="eircAccountService" />
 	</bean>
 
+    <!-- EIRC Quittance pay DEMO -->
+    <bean id="demoQuittancePaySearchAction" class="org.flexpay.eirc.actions.quittance.demo.QuittancePaySearchAction"
+          scope="prototype"/>
+
+    <bean id="demoQuittancePayAction" class="org.flexpay.eirc.actions.quittance.demo.QuittancePayAction"
+          scope="prototype"/>
+    <!-- end of EIRC Quittance pay DEMO -->
+
 </beans>

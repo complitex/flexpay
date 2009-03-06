@@ -267,4 +267,16 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_create_form2.jsp" />
 	</definition>
 
+    <!-- EIRC Quittance pay DEMO -->
+    <definition name="eirc.quittances.demo.quittance_pay_search" extends="eirc.quittances">
+        <put-attribute name="title" value="eirc.quittances.demo.quittance_pay_search.title"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/demo/quittance_pay_search.jsp"/>
+    </definition>
+    
+    <definition name="eirc.quittances.demo.quittance_pay" extends="eirc.quittances">
+        <put-attribute name="title" value="eirc.quittances.demo.quittance_pay.title"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/demo/quittance_pay.jsp"/>
+    </definition>
+    <!-- end of EIRC Quittance pay DEMO -->
+
 </tiles-definitions>
