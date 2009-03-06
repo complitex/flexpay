@@ -2,12 +2,14 @@ package org.flexpay.sz.process.szfile;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.job.Job;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.sz.convert.NotSupportedOperationException;
 import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 import org.springframework.beans.factory.annotation.Required;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.Serializable;
@@ -22,6 +24,8 @@ public class SzFileFullDeleteJob extends Job {
 	@SuppressWarnings({"unchecked"})
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
+		Logger pLogger = ProcessLogger.getLogger(getClass());
+
 		Set<Long> fileIds = (Set<Long>) parameters.get("fileIds");
 
 		log.debug("Process szFile full delete for fileIds = {} started", fileIds);
@@ -35,7 +39,7 @@ public class SzFileFullDeleteJob extends Job {
 
 		for (SzFile szFile : szFiles) {
 
-			log.debug("Full deleting szFile with id = {} started", szFile.getId());
+			pLogger.info("Full deleting szFile with id = {} started", szFile.getId());
 
 			try {
 				SzFileUtil.deleteRecords(szFile);
@@ -53,7 +57,7 @@ public class SzFileFullDeleteJob extends Job {
 
 			szFileService.delete(szFile);
 
-			log.debug("Full deleting szFile with id = {} finished", szFile.getId());
+			pLogger.info("Full deleting szFile with id = {} finished", szFile.getId());
 		}
 
 		return RESULT_NEXT;

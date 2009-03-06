@@ -4,6 +4,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.FPFileStatus;
 import org.flexpay.common.process.job.Job;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.sz.convert.NotSupportedOperationException;
 import org.flexpay.sz.convert.SzFileUtil;
@@ -14,6 +15,7 @@ import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.RecordService;
 import org.flexpay.sz.service.SzFileService;
 import org.springframework.beans.factory.annotation.Required;
+import org.slf4j.Logger;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -31,6 +33,8 @@ public class SzFileDeleteFromDbJob extends Job {
 	@SuppressWarnings({"unchecked"})
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
+		Logger pLogger = ProcessLogger.getLogger(getClass());
+
 		Set<Long> fileIds = (Set<Long>) parameters.get("fileIds");
 
 		log.debug("Process szFile delete from DB for fileIds = {} started", fileIds);
@@ -44,11 +48,11 @@ public class SzFileDeleteFromDbJob extends Job {
 
 		for (SzFile szFile : szFiles) {
 
-			log.debug("Deleting from DB szFile with id = {} started", szFile.getId());
+			pLogger.info("Deleting from DB szFile with id = {} started", szFile.getId());
 
 			try {
 				if (!SzFileUtil.isLoadedToDb(szFile)) {
-					log.debug("SzFile with id {} not loaded to DB", szFile.getId());
+					pLogger.error("SzFile with id {} not loaded to DB", szFile.getId());
 					continue;
 				}
 			} catch (NotSupportedOperationException e) {
@@ -83,7 +87,7 @@ public class SzFileDeleteFromDbJob extends Job {
 			szFile.setStatus(status);
 			szFileService.update(szFile);
 
-			log.debug("Deleting from DB szFile with id = {} finished", szFile.getId());
+			pLogger.info("Deleting from DB szFile with id = {} finished", szFile.getId());
 		}
 
 		log.debug("Process szFile delete from DB for fileIds = {} finished", fileIds);
