@@ -19,7 +19,7 @@ public class FPFileUtil {
 		File root = ApplicationConfig.getDataRoot();
 		Calendar c = Calendar.getInstance();
 		c.setTime(creationDate);
-		int date = 1 + c.get(Calendar.DATE);
+		int date = c.get(Calendar.DATE);
 		int month = 1 + c.get(Calendar.MONTH);
 		return root.getPath() + File.separator
 			   + moduleName + File.separator
