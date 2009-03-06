@@ -3,6 +3,7 @@ package org.flexpay.eirc.actions;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.jetbrains.annotations.NonNls;
@@ -30,7 +31,7 @@ public class SpFileDownloadServlet extends HttpServlet {
 
 		FPFile fpFile;
 		try {
-			fpFile = fpFileService.read(fileId);
+			fpFile = fpFileService.read(new Stub<FPFile>(fileId));
 			if (fpFile == null) {
 				throw new FlexPayException("Error: file not found on DB");
 			}

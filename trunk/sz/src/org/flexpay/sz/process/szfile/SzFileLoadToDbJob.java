@@ -62,7 +62,7 @@ public class SzFileLoadToDbJob extends Job {
 			File file = FPFileUtil.getFileOnServer(szFile.getUploadedFile());
 			Long szFileTypeCode = szFile.getType().getCode();
 
-			SzDbfReader reader = null;
+			SzDbfReader<?, ?> reader = null;
 
 			String moduleName = szFile.getUploadedFile().getModule().getName();
 

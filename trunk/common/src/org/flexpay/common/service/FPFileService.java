@@ -1,10 +1,7 @@
 package org.flexpay.common.service;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.FPFile;
-import org.flexpay.common.persistence.FPFileStatus;
-import org.flexpay.common.persistence.FPFileType;
-import org.flexpay.common.persistence.FPModule;
+import org.flexpay.common.persistence.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -51,33 +48,33 @@ public interface FPFileService {
 	 *
 	 * @param file file to delete
 	 */
-    void delete(FPFile file);
+    void delete(@NotNull FPFile file);
 
 	/**
 	 * Delete file only from file system
 	 *
 	 * @param file FPFile entity
 	 */
-    void deleteFromFileSystem(FPFile file);
+    void deleteFromFileSystem(@NotNull FPFile file);
 
 	/**
 	 * Load FPFile entity from database by file id
 	 *
-	 * @param fileId id of FPFile entity
+	 * @param stub stub of FPFile entity
 	 * @return Loaded FPFile
 	 * @throws FlexPayException if failure occurs
 	 */
-	FPFile read(Long fileId) throws FlexPayException;
+	FPFile read(@NotNull Stub<FPFile> stub) throws FlexPayException;
 
 	/**
 	 * Get file from file system by FPFile entity id,
 	 * which locating to this file
 	 *
-	 * @param fileId FPFile entity id
+	 * @param stub FPFile entity stub
 	 * @return file on file system
 	 * @throws FlexPayException if failure occurs
 	 */
-	File getFileFromFileSystem(Long fileId) throws FlexPayException;
+	File getFileFromFileSystem(@NotNull Stub<FPFile> stub) throws FlexPayException;
 
 	/**
 	 * Get FPFiles from database by module name,

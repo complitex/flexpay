@@ -5,10 +5,7 @@ import org.flexpay.common.dao.FPFileStatusDao;
 import org.flexpay.common.dao.FPFileTypeDao;
 import org.flexpay.common.dao.FPModuleDao;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.FPFile;
-import org.flexpay.common.persistence.FPFileStatus;
-import org.flexpay.common.persistence.FPFileType;
-import org.flexpay.common.persistence.FPModule;
+import org.flexpay.common.persistence.*;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.SecurityUtil;
@@ -84,7 +81,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 * @param file file to delete
 	 */
 	@Transactional (readOnly = false)
-	public void delete(FPFile file) {
+	public void delete(@NotNull FPFile file) {
 		String localPath = FPFileUtil.getFileLocalPath(file);
 		File fileToDelete = new File(localPath);
 		if (!fileToDelete.delete()) {
@@ -98,7 +95,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 *
 	 * @param file FPFile entity
 	 */
-	public void deleteFromFileSystem(FPFile file) {
+	public void deleteFromFileSystem(@NotNull FPFile file) {
 		String localPath = FPFileUtil.getFileLocalPath(file);
 		File fileToDelete = new File(localPath);
 		if (!fileToDelete.delete()) {
@@ -109,14 +106,14 @@ public class FPFileServiceImpl implements FPFileService {
 	/**
 	 * Load FPFile entity from database by file id
 	 *
-	 * @param fileId id of FPFile entity
+	 * @param stub stub of FPFile entity
 	 * @return Loaded FPFile
 	 * @throws FlexPayException
 	 */
-	public FPFile read(Long fileId) throws FlexPayException {
-		FPFile file = fpFileDao.readFull(fileId);
+	public FPFile read(@NotNull Stub<FPFile> stub) throws FlexPayException {
+		FPFile file = fpFileDao.readFull(stub.getId());
 		if (file == null) {
-			log.warn("No user with file id {} in database", fileId);
+			log.warn("No user with file id {} in database", stub.getId());
 		}
 		return file;
 	}
@@ -124,12 +121,12 @@ public class FPFileServiceImpl implements FPFileService {
 	/**
 	 * Get file from file system by FPFile entity id, which locating to this file
 	 *
-	 * @param fileId FPFile entity id
+	 * @param stub FPFile entity stub
 	 * @return file on file system
 	 * @throws FlexPayException
 	 */
-	public File getFileFromFileSystem(Long fileId) throws FlexPayException {
-		return FPFileUtil.getFileOnServer(read(fileId));
+	public File getFileFromFileSystem(@NotNull Stub<FPFile> stub) throws FlexPayException {
+		return FPFileUtil.getFileOnServer(read(stub));
 	}
 
 	/**
@@ -240,4 +237,5 @@ public class FPFileServiceImpl implements FPFileService {
 	public void setFpModuleDao(FPModuleDao fpModuleDao) {
 		this.fpModuleDao = fpModuleDao;
 	}
+
 }

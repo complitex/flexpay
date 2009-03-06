@@ -82,6 +82,7 @@ public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
 		return uploadFileAction.getFpFile();
 	}
 
+	@SuppressWarnings ({"ResultOfMethodCallIgnored"})
 	protected void deleteFile(FPFile file) {
 
 		log.debug("Deleting registry file: {}", file);
