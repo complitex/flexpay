@@ -184,6 +184,7 @@
 		<delete dir="${build.dir}/web" />
 		<delete dir="${build.dir}/docs" />
 		<delete dir="${build.dir}/lib" />
+		<delete dir="${build.dir}/sql" />
 	</target>
 
 	<target name="init.distr">
@@ -325,6 +326,10 @@
 		</condition>
 		<antcall target="template.switch_db">
 			<param name="oldDbName" value="flexpay_db" />
+			<param name="newDbName" value="${prop.target_db}" />
+		</antcall>
+		<antcall target="template.switch_db">
+			<param name="oldDbName" value="flexpay_test_db" />
 			<param name="newDbName" value="${prop.target_db}" />
 		</antcall>
 	</target>

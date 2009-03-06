@@ -89,7 +89,7 @@ public class SoapInHistoryEndpoint extends AbstractJDomPayloadEndpoint {
 			fileService.create(file);
 
 			log.debug("Creating unpack process");
-			processManager.createProcess("HistoryUnPack",
+			processManager.createProcess("common.HistoryUnPack",
 					CollectionUtils.<Serializable, Serializable>map(HistoryUnPackJob.PARAM_FILE_ID, file.getId()));
 		} catch (Exception ex) {
 			log.error("Failed saving file and creating process", ex);
