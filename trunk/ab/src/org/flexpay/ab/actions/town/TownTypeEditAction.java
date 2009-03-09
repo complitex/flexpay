@@ -46,7 +46,11 @@ public class TownTypeEditAction extends FPActionSupport {
 			type.setTranslation(translation);
 		}
 
-		townTypeService.save(type);
+		if (type.isNew()) {
+			townTypeService.create(type);
+		} else {
+			townTypeService.update(type);
+		}
 
 		return REDIRECT_SUCCESS;
 	}

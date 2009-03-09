@@ -146,6 +146,10 @@ public class Diff extends DomainObject {
 		return historyRecords.isEmpty();
 	}
 
+	public boolean isNotEmpty() {
+		return !isEmpty();
+	}
+
 	public int size() {
 		return historyRecords.size();
 	}

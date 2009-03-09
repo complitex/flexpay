@@ -15,6 +15,7 @@ import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -53,69 +54,6 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 
 	protected RegionNameTemporalDao getNameTemporalDao() {
 		return regionNameTemporalDao;
-	}
-
-	/**
-	 * Setter for property 'parentService'.
-	 *
-	 * @param parentService Value to set for property 'parentService'.
-	 */
-	public void setParentService(ParentService<CountryFilter> parentService) {
-		this.parentService = parentService;
-	}
-
-	/**
-	 * Setter for property 'townTypeService'.
-	 *
-	 * @param townTypeService Value to set for property 'townTypeService'.
-	 */
-	public void setTownTypeService(TownTypeService townTypeService) {
-		this.townTypeService = townTypeService;
-	}
-
-	/**
-	 * Setter for property 'regionDao'.
-	 *
-	 * @param regionDao Value to set for property 'regionDao'.
-	 */
-	public void setRegionDao(RegionDao regionDao) {
-		this.regionDao = regionDao;
-	}
-
-	/**
-	 * Setter for property 'regionNameDao'.
-	 *
-	 * @param regionNameDao Value to set for property 'regionNameDao'.
-	 */
-	public void setRegionNameDao(RegionNameDao regionNameDao) {
-		this.regionNameDao = regionNameDao;
-	}
-
-	/**
-	 * Setter for property 'countryDao'.
-	 *
-	 * @param countryDao Value to set for property 'countryDao'.
-	 */
-	public void setCountryDao(CountryDao countryDao) {
-		this.countryDao = countryDao;
-	}
-
-	/**
-	 * Setter for property 'regionNameTranslationDao'.
-	 *
-	 * @param regionNameTranslationDao Value to set for property 'regionNameTranslationDao'.
-	 */
-	public void setRegionNameTranslationDao(RegionNameTranslationDao regionNameTranslationDao) {
-		this.regionNameTranslationDao = regionNameTranslationDao;
-	}
-
-	/**
-	 * Setter for property 'regionNameTemporalDao'.
-	 *
-	 * @param regionNameTemporalDao Value to set for property 'regionNameTemporalDao'.
-	 */
-	public void setRegionNameTemporalDao(RegionNameTemporalDao regionNameTemporalDao) {
-		this.regionNameTemporalDao = regionNameTemporalDao;
 	}
 
 	/**
@@ -242,5 +180,40 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		}
 
 		return false;
+	}
+
+	@Required
+	public void setParentService(ParentService<CountryFilter> parentService) {
+		this.parentService = parentService;
+	}
+
+	@Required
+	public void setTownTypeService(TownTypeService townTypeService) {
+		this.townTypeService = townTypeService;
+	}
+
+	@Required
+	public void setRegionDao(RegionDao regionDao) {
+		this.regionDao = regionDao;
+	}
+
+	@Required
+	public void setRegionNameDao(RegionNameDao regionNameDao) {
+		this.regionNameDao = regionNameDao;
+	}
+
+	@Required
+	public void setCountryDao(CountryDao countryDao) {
+		this.countryDao = countryDao;
+	}
+
+	@Required
+	public void setRegionNameTranslationDao(RegionNameTranslationDao regionNameTranslationDao) {
+		this.regionNameTranslationDao = regionNameTranslationDao;
+	}
+
+	@Required
+	public void setRegionNameTemporalDao(RegionNameTemporalDao regionNameTemporalDao) {
+		this.regionNameTemporalDao = regionNameTemporalDao;
 	}
 }

@@ -13,13 +13,17 @@ import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.TimeLine;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.ParentService;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
-import org.springframework.transaction.annotation.Transactional;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Date;
@@ -41,76 +45,17 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	private ParentService<RegionFilter> parentService;
 	private TownTypeService townTypeService;
 
-	/**
-	 * Setter for property 'townDao'.
-	 *
-	 * @param townDao Value to set for property 'townDao'.
-	 */
+	private SessionUtils sessionUtils;
+	private ModificationListener<Town> modificationListener;
+
+	@Required
 	public void setTownDao(TownDao townDao) {
 		this.townDao = townDao;
 	}
 
-	/**
-	 * Setter for property 'townNameDao'.
-	 *
-	 * @param townNameDao Value to set for property 'townNameDao'.
-	 */
+	@Required
 	public void setTownNameDao(TownNameDao townNameDao) {
 		this.townNameDao = townNameDao;
-	}
-
-	/**
-	 * Setter for property 'townNameTemporalDao'.
-	 *
-	 * @param townNameTemporalDao Value to set for property 'townNameTemporalDao'.
-	 */
-	public void setTownNameTemporalDao(TownNameTemporalDao townNameTemporalDao) {
-		this.townNameTemporalDao = townNameTemporalDao;
-	}
-
-	/**
-	 * Setter for property 'townNameTranslationDao'.
-	 *
-	 * @param townNameTranslationDao Value to set for property 'townNameTranslationDao'.
-	 */
-	public void setTownNameTranslationDao(TownNameTranslationDao townNameTranslationDao) {
-		this.townNameTranslationDao = townNameTranslationDao;
-	}
-
-	/**
-	 * Setter for property 'regionDao'.
-	 *
-	 * @param regionDao Value to set for property 'regionDao'.
-	 */
-	public void setRegionDao(RegionDao regionDao) {
-		this.regionDao = regionDao;
-	}
-
-	/**
-	 * Setter for property 'parentService'.
-	 *
-	 * @param parentService Value to set for property 'parentService'.
-	 */
-	public void setParentService(ParentService<RegionFilter> parentService) {
-		this.parentService = parentService;
-	}
-
-	/**
-	 * Setter for property 'townTypeTemporalDao'.
-	 *
-	 * @param townTypeTemporalDao Value to set for property 'townTypeTemporalDao'.
-	 */
-	public void setTownTypeTemporalDao(TownTypeTemporalDao townTypeTemporalDao) {
-		this.townTypeTemporalDao = townTypeTemporalDao;
-	}
-
-	/**
-	 * Setter for property 'townTypeService'.
-	 *
-	 * @param townTypeService Value to set for property 'townTypeService'.
-	 */
-	public void setTownTypeService(TownTypeService townTypeService) {
-		this.townTypeService = townTypeService;
 	}
 
 	/**
@@ -278,7 +223,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 
 		// skip unknown filters if any
 		ArrayStack skippedFilters = new ArrayStack();
-		while(!filters.empty()) {
+		while (!filters.empty()) {
 			ObjectFilter filter = (ObjectFilter) filters.peek();
 			if (filter instanceof TownFilter) {
 				break;
@@ -346,20 +291,71 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	/**
-	 * Create or update Town object
+	 * Create Town object
 	 *
 	 * @param town Town object to save
+	 * @return saved object back
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
 	@Transactional (readOnly = false)
-	public void save(@NotNull Town town) throws FlexPayExceptionContainer {
+	public Town create(@NotNull Town town) throws FlexPayExceptionContainer {
+
 		validate(town);
-		if (town.isNew()) {
-			town.setId(null);
-			townDao.create(town);
-		} else {
-			townDao.update(town);
+		town.setId(null);
+		townDao.create(town);
+
+		modificationListener.onCreate(town);
+
+		return town;
+	}
+
+	/**
+	 * Create or update Town object
+	 *
+	 * @param town Town object to save
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@Transactional (readOnly = false)
+	public Town update(@NotNull Town town) throws FlexPayExceptionContainer {
+		validate(town);
+
+		Town old = readFull(stub(town));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + town));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, town);
+
+		townDao.update(town);
+
+		return town;
+	}
+
+	/**
+	 * Disable NTD
+	 *
+	 * @param objects NTDs to disable
+	 */
+	@Override
+	public void disable(Collection<Town> objects) {
+
+		log.info("{} objects to disable", objects.size());
+
+		for (Town town : objects) {
+			Town townPersisted = readFull(stub(town));
+			if (townPersisted == null) {
+				log.info("Requested town delete, but not found {}", town);
+				continue;
+			}
+			townPersisted.disable();
+			townDao.update(townPersisted);
+
+			modificationListener.onDelete(townPersisted);
+
+			log.debug("Disabled town: {}", townPersisted);
 		}
 	}
 
@@ -401,5 +397,45 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		if (!defaultLangTranslationFound) {
 			ex.addException(new FlexPayException("No default translation", "error.no_default_translation"));
 		}
+	}
+
+	@Required
+	public void setTownNameTemporalDao(TownNameTemporalDao townNameTemporalDao) {
+		this.townNameTemporalDao = townNameTemporalDao;
+	}
+
+	@Required
+	public void setTownNameTranslationDao(TownNameTranslationDao townNameTranslationDao) {
+		this.townNameTranslationDao = townNameTranslationDao;
+	}
+
+	@Required
+	public void setRegionDao(RegionDao regionDao) {
+		this.regionDao = regionDao;
+	}
+
+	@Required
+	public void setParentService(ParentService<RegionFilter> parentService) {
+		this.parentService = parentService;
+	}
+
+	@Required
+	public void setTownTypeTemporalDao(TownTypeTemporalDao townTypeTemporalDao) {
+		this.townTypeTemporalDao = townTypeTemporalDao;
+	}
+
+	@Required
+	public void setTownTypeService(TownTypeService townTypeService) {
+		this.townTypeService = townTypeService;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<Town> modificationListener) {
+		this.modificationListener = modificationListener;
+	}
+
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
 	}
 }

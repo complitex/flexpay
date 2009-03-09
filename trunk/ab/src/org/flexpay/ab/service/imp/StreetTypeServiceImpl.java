@@ -1,10 +1,7 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.StreetTypeDao;
-import org.flexpay.ab.dao.StreetTypeTranslationDao;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.persistence.filters.StreetTypeFilter;
@@ -19,9 +16,15 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class StreetTypeServiceImpl implements StreetTypeService {
@@ -30,12 +33,12 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private StreetTypeDao streetTypeDao;
-	private StreetTypeTranslationDao streetTypeTranslationDao;
 
 	private CorrectionsService correctionsService;
 
 	/**
-	 * Get StreetType translations for specified locale, if translation is not found check for translation in default locale
+	 * Get StreetType translations for specified locale, if translation is not found check for translation in default
+	 * locale
 	 *
 	 * @param locale Locale to get translations for
 	 * @return List of StreetTypes
@@ -162,6 +165,24 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	}
 
 	/**
+	 * Create Entity
+	 *
+	 * @param streetType Entity to save
+	 * @return Saved instance
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@Transactional (readOnly = false)
+	public StreetType create(@NotNull StreetType streetType) throws FlexPayExceptionContainer {
+
+		validate(streetType);
+		streetType.setId(null);
+		streetTypeDao.create(streetType);
+
+		return streetType;
+	}
+
+	/**
 	 * Update or create Entity
 	 *
 	 * @param streetType Entity to save
@@ -169,14 +190,10 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
-	public StreetType save(@NotNull StreetType streetType) throws FlexPayExceptionContainer {
+	public StreetType update(@NotNull StreetType streetType) throws FlexPayExceptionContainer {
+
 		validate(streetType);
-		if (streetType.isNew()) {
-			streetType.setId(null);
-			streetTypeDao.create(streetType);
-		} else {
-			streetTypeDao.update(streetType);
-		}
+		streetTypeDao.update(streetType);
 
 		return streetType;
 	}
@@ -214,15 +231,12 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		return streetTypeDao.listStreetTypes(StreetType.STATUS_ACTIVE);
 	}
 
+	@Required
 	public void setStreetTypeDao(StreetTypeDao streetTypeDao) {
 		this.streetTypeDao = streetTypeDao;
 	}
 
-	public void setStreetTypeTranslationDao(
-			StreetTypeTranslationDao streetTypeTranslationDao) {
-		this.streetTypeTranslationDao = streetTypeTranslationDao;
-	}
-
+	@Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
 	}

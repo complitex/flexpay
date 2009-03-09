@@ -95,6 +95,13 @@
 	<bean id="xmlHistoryUnPacker" parent="historyUnPackerBase"
 		  class="org.flexpay.common.persistence.history.impl.XmlHistoryUnPacker" />
 
+	<bean id="historyChangesListenerBase" abstract="true"
+		  class="org.flexpay.common.persistence.history.impl.ModificationListenerImpl"
+		  p:diffService-ref="diffService" />
+
+	<bean id="nopeHistoryChangesListener"
+		  class="org.flexpay.common.persistence.history.impl.NopeModificationListener" />
+
 	<bean id="cnDataSourceDescription" class="org.flexpay.common.persistence.DataSourceDescription">
 		<!-- TODO Here put the CN data source ID -->
 		<constructor-arg index="0" value="${cn.data.source.description.id}" />

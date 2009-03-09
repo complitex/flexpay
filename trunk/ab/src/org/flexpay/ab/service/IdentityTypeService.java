@@ -70,6 +70,17 @@ public interface IdentityTypeService extends
 	void disable(Collection<IdentityType> entity);
 
 	/**
+	 * Create Entity
+	 *
+	 * @param identityType Entity to save
+	 * @return Saved instance
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@Secured (Roles.IDENTITY_TYPE_ADD)
+	IdentityType create(@NotNull IdentityType identityType) throws FlexPayExceptionContainer;
+
+	/**
 	 * Update or create Entity
 	 *
 	 * @param entity Entity to save
@@ -77,6 +88,6 @@ public interface IdentityTypeService extends
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
-	@Secured ({Roles.IDENTITY_TYPE_ADD, Roles.IDENTITY_TYPE_CHANGE})
-	IdentityType save(@NotNull IdentityType entity) throws FlexPayExceptionContainer;
+	@Secured (Roles.IDENTITY_TYPE_CHANGE)
+	IdentityType update(@NotNull IdentityType entity) throws FlexPayExceptionContainer;
 }

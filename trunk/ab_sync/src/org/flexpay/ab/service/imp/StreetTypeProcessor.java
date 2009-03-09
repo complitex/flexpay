@@ -144,7 +144,11 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 */
 	protected void doSaveObject(StreetType object, String externalId) throws Exception {
 
-		streetTypeService.save(object);
+		if (object.isNew()) {
+			streetTypeService.create(object);
+		} else {
+			streetTypeService.update(object);
+		}
 	}
 
 	public void setStreetTypeDao(StreetTypeDao streetTypeDao) {

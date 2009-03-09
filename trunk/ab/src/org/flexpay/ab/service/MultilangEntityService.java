@@ -48,11 +48,20 @@ public interface MultilangEntityService<Entity, T extends Translation> {
 	void disable(Collection<Entity> entity);
 
 	/**
-	 * Update or create Entity
+	 * Create Entity
 	 *
 	 * @param entity Entity to save
 	 * @return Saved instance
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	Entity save(@NotNull Entity entity) throws FlexPayExceptionContainer;
+	Entity create(@NotNull Entity entity) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update Entity
+	 *
+	 * @param entity Entity to save
+	 * @return Saved instance
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	Entity update(@NotNull Entity entity) throws FlexPayExceptionContainer;
 }

@@ -106,7 +106,12 @@ public class TownEditSimpleAction extends FPActionSupport {
 			twn.setRegion(new Region(regionFilter.getSelectedId()));
 		}
 
-		townService.save(twn);
+		if (twn.isNew()) {
+			townService.create(twn);
+		} else {
+			townService.update(twn);
+		}
+
 		return REDIRECT_SUCCESS;
 	}
 

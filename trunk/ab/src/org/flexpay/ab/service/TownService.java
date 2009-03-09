@@ -29,13 +29,24 @@ public interface TownService extends
 		NameTimeDependentService<TownName, TownNameTemporal, Town, TownNameTranslation> {
 
 	/**
+	 * Create Town object
+	 *
+	 * @param town Town object to save
+	 * @return saved object back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.TOWN_ADD)
+	Town create(@NotNull Town town) throws FlexPayExceptionContainer;
+
+	/**
 	 * Create or update Town object
 	 *
 	 * @param town Town object to save
+	 * @return saved object back
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Secured ({Roles.TOWN_ADD, Roles.TOWN_CHANGE})
-	void save(@NotNull Town town) throws FlexPayExceptionContainer;
+	Town update(@NotNull Town town) throws FlexPayExceptionContainer;
 
 	/**
 	 * Initialize parent filter. Possibly taking in account upper level forefather filter
