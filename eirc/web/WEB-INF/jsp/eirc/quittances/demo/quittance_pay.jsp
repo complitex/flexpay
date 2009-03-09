@@ -6,20 +6,22 @@
 
     // summ update
     function updateTotalPay() {
-        var total = 0;
+        var total = 0.00;
         var elements = jQuery('input[id^="demoQuittancePayForm_servicePayValue_"]');
 
         for (var i = 0; i < elements.length; i++) {
             var value = jQuery(elements[i]).val();
 
             if (isValidPayValue(value)) {
+                value = value.replace(",", ".");
                 total += parseFloat(value);
             } else {
                 jQuery('#demoQuittancePayForm_total_pay').val('<s:text name="eirc.quittances.demo.quittance_pay.error.unaccessible"/>');
             }
         }
 
-        jQuery('#demoQuittancePayForm_total_pay').val(total.toFixed(2));
+        var result = total.toFixed(2) + '';
+        jQuery('#demoQuittancePayForm_total_pay').val(result.replace('.', ','));
     }
 
     // validation
@@ -27,6 +29,10 @@
         var pattern = /^(\d)+([\.,]?\d{0,2})$/;
         return value.match(pattern);
     }
+
+    jQuery(function() {
+        updateTotalPay();
+    });
 
     jQuery(function() {
         jQuery.validator.addMethod("validPayValue", function(value, element) {
@@ -62,7 +68,6 @@
                     'validPayValue' : true,
                     'payValue_2_is_not_too_big': true // to be generated
                 },
-                'total_payable': 'required', // covers jquery validation 1.5.1 bug (it doesn't allow form fields without any rules)
                 'total_pay': 'required' // covers jquery validation 1.5.1 bug (it doesn't allow form fields without any rules)
             },
             messages: {
@@ -94,6 +99,8 @@
                 this.defaultShowErrors();
             },
             errorPlacement: function(error, element) {
+                //element.parent().parent().next();
+                //element.parent().parent().prev().html;                
             },
             invalidHandler: function(form, validator) {
                 alert('<s:text name="eirc.quittances.demo.quittance_pay.error.invalid_submit"/>');
@@ -139,32 +146,31 @@
             <td class="col" nowrap="nowrap"><s:text name="eirc.quittances.demo.quittance_pay.data.service1.name"/></td>
             <td class="col"><s:text name="eirc.quittances.demo.quittance_pay.data.service1.supplier"/></td>
             <td class="col"><s:text name="eirc.quittances.demo.quittance_pay.data.service1.payable"/></td>
-            <td class="col"><s:textfield name="servicePayValue[0]"/></td>
+            <td class="col"><s:textfield name="servicePayValue[0]" value="%{getText('eirc.quittances.demo.quittance_pay.data.service1.payable')}"/></td>
         </tr>
+
         <tr class="cols_1">
             <td class="col" nowrap="nowrap"><s:text name="eirc.quittances.demo.quittance_pay.data.service2.name"/></td>
             <td class="col"><s:text name="eirc.quittances.demo.quittance_pay.data.service2.supplier"/></td>
             <td class="col"><s:text name="eirc.quittances.demo.quittance_pay.data.service2.payable"/></td>
-            <td class="col"><s:textfield name="servicePayValue[1]"/></td>
+            <td class="col"><s:textfield name="servicePayValue[1]" value="%{getText('eirc.quittances.demo.quittance_pay.data.service2.payable')}"/></td>
         </tr>
+
         <tr class="cols_1">
             <td class="col" nowrap="nowrap"><s:text name="eirc.quittances.demo.quittance_pay.data.service3.name"/></td>
             <td class="col"><s:text name="eirc.quittances.demo.quittance_pay.data.service3.supplier"/></td>
             <td class="col"><s:text name="eirc.quittances.demo.quittance_pay.data.service3.payable"/></td>
-            <td class="col"><s:textfield name="servicePayValue[2]"/></td>
+            <td class="col"><s:textfield name="servicePayValue[2]" value="%{getText('eirc.quittances.demo.quittance_pay.data.service3.payable')}"/></td>
         </tr>
 
         <tr>
-            <td colspan="2" style="text-align: right;"><s:text
-                    name="eirc.quittances.demo.quittance_pay.total_payable"/></td>
-            <td><s:textfield name="total_payable" readonly="true"
-                             value="%{getText('eirc.quittances.demo.quittance_pay.total_payable.value')}"/></td>
-            <td><s:textfield name="total_pay" readonly="true" value="0.00"/></td>
+            <td colspan="2" style="text-align: right; font-weight: bold;"><s:text name="eirc.quittances.demo.quittance_pay.total_payable"/></td>
+            <td><s:text name="eirc.quittances.demo.quittance_pay.total_payable.value"/></td>
+            <td><s:textfield name="total_pay" readonly="true" value="0,00"/></td>
         </tr>
+        
         <tr>
-            <td colspan="4" style="text-align: right;"><s:submit name="submitted"
-                                                                 value="%{getText('eirc.quittances.demo.quittance_pay.pay')}"
-                                                                 cssClass="btn-exit"/></td>
+            <td colspan="4" style="text-align: right;"><s:submit name="submitted" value="%{getText('eirc.quittances.demo.quittance_pay.pay')}" cssClass="btn-exit"/></td>
         </tr>
     </table>
 

@@ -7,7 +7,7 @@
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td><s:text name="eirc.quittance.number" />:</td>
-			<td><s:textfield name="quittanceNumber" /></td>
+			<td><s:textfield name="quittanceNumber" cssStyle="width: 300px;"/></td>            
 		</tr>
 
 		<tr>
