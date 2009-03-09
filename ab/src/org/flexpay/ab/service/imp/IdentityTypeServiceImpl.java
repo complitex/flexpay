@@ -1,10 +1,7 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.IdentityTypeDao;
-import org.flexpay.ab.dao.IdentityTypeTranslationDao;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.IdentityTypeTranslation;
 import org.flexpay.ab.service.IdentityTypeService;
@@ -17,6 +14,9 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -30,7 +30,6 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private IdentityTypeDao identityTypeDao;
-	private IdentityTypeTranslationDao identityTypeTranslationDao;
 
 	private List<IdentityType> identityTypes;
 
@@ -120,6 +119,24 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	}
 
 	/**
+	 * Create Entity
+	 *
+	 * @param identityType Entity to save
+	 * @return Saved instance
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@Transactional (readOnly = false)
+	public IdentityType create(@NotNull IdentityType identityType) throws FlexPayExceptionContainer {
+
+		validate(identityType);
+		identityType.setId(null);
+		identityTypeDao.create(identityType);
+
+		return identityType;
+	}
+
+	/**
 	 * Update or create Entity
 	 *
 	 * @param identityType Entity to save
@@ -127,14 +144,10 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
-	public IdentityType save(@NotNull IdentityType identityType) throws FlexPayExceptionContainer {
+	public IdentityType update(@NotNull IdentityType identityType) throws FlexPayExceptionContainer {
+
 		validate(identityType);
-		if (identityType.isNew()) {
-			identityType.setId(null);
-			identityTypeDao.create(identityType);
-		} else {
-			identityTypeDao.update(identityType);
-		}
+		identityTypeDao.update(identityType);
 
 		return identityType;
 	}
@@ -217,12 +230,8 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 		return identityTypes;
 	}
 
+	@Required
 	public void setIdentityTypeDao(IdentityTypeDao identityTypeDao) {
 		this.identityTypeDao = identityTypeDao;
-	}
-
-	public void setIdentityTypeTranslationDao(
-			IdentityTypeTranslationDao identityTypeTranslationDao) {
-		this.identityTypeTranslationDao = identityTypeTranslationDao;
 	}
 }

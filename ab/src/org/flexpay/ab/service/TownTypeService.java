@@ -70,13 +70,22 @@ public interface TownTypeService extends MultilangEntityService<TownType, TownTy
 	void disable(Collection<TownType> entity);
 
 	/**
+	 * Create Entity
+	 *
+	 * @param townType Entity to save
+	 * @return Saved instance
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.TOWN_TYPE_ADD)
+	TownType create(@NotNull TownType townType) throws FlexPayExceptionContainer;
+
+	/**
 	 * Update or create Entity
 	 *
 	 * @param entity Entity to save
 	 * @return Saved instance
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	@Secured ({Roles.TOWN_TYPE_READ, Roles.TOWN_TYPE_CHANGE})
-	TownType save(@NotNull TownType entity) throws FlexPayExceptionContainer;
+	@Secured (Roles.TOWN_TYPE_CHANGE)
+	TownType update(@NotNull TownType entity) throws FlexPayExceptionContainer;
 }

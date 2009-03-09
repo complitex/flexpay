@@ -328,6 +328,13 @@
 			<param name="oldDbName" value="flexpay_db" />
 			<param name="newDbName" value="${prop.target_db}" />
 		</antcall>
+	</target>
+
+	<target name="template.set_test_db_name">
+
+		<condition property="prop.target_db" value="${target.db.name}" else="flexpay_test_db">
+			<isset property="target.db.name" />
+		</condition>
 		<antcall target="template.switch_db">
 			<param name="oldDbName" value="flexpay_test_db" />
 			<param name="newDbName" value="${prop.target_db}" />

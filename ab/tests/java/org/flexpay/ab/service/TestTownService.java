@@ -28,7 +28,7 @@ public class TestTownService extends SpringBeanAwareTestCase {
 	public void testCreateEmptyTown() throws Exception {
 
 		Town town = new Town();
-		townService.save(town);
+		townService.create(town);
 	}
 
 	@Test (expected = FlexPayExceptionContainer.class)
@@ -39,7 +39,7 @@ public class TestTownService extends SpringBeanAwareTestCase {
 		TownName townName = new TownName();
 		townName.addNameTranslation(new TownNameTranslation("Тестовый город"));
 		town.setNameForDate(townName, DateUtil.now());
-		townService.save(town);
+		townService.create(town);
 	}
 
 	@Test (expected = FlexPayExceptionContainer.class)
@@ -47,9 +47,10 @@ public class TestTownService extends SpringBeanAwareTestCase {
 
 		Town town = new Town();
 		town.addTypeTemporal(new TownTypeTemporal(DateUtil.now(), new TownType(1L)));
-		townService.save(town);
+		townService.create(town);
 	}
 
+	@SuppressWarnings ({"ConstantConditions"})
 	@Test
 	public void testCreateTown() throws Exception {
 
@@ -70,7 +71,7 @@ public class TestTownService extends SpringBeanAwareTestCase {
 		town.setNameForDate(townName, dt_08_09_08);
 
 		// save and reread object
-		townService.save(town);
+		townService.create(town);
 		town = townService.readFull(stub(town));
 
 		assertEquals("Invalid temporal name setup", "1", town.getNameForDate(dt_08_08_08).getDefaultNameTranslation());
@@ -81,7 +82,7 @@ public class TestTownService extends SpringBeanAwareTestCase {
 		townName.addNameTranslation(new TownNameTranslation("3"));
 		town.setNameForDates(townName, ApplicationConfig.getPastInfinite(), ApplicationConfig.getFutureInfinite());
 
-		townService.save(town);
+		townService.update(town);
 
 		// reread object from db
 		town = townService.readFull(stub(town));

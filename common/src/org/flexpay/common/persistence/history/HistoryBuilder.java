@@ -17,6 +17,15 @@ public interface HistoryBuilder<T extends DomainObject> {
 	Diff diff(@Nullable T t1, @NotNull T t2);
 
 	/**
+	 * Create diff for deleted object
+	 *
+	 * @param obj object to build diff for
+	 * @return Diff object
+	 */
+	@NotNull
+	Diff deleteDiff(@NotNull T obj);
+
+	/**
 	 * Apply diff to an object
 	 *
 	 * @param t	Object to apply diff to

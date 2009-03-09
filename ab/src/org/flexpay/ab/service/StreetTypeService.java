@@ -75,6 +75,17 @@ public interface StreetTypeService extends
 	void disable(Collection<StreetType> entity);
 
 	/**
+	 * Create Entity
+	 *
+	 * @param streetType Entity to save
+	 * @return Saved instance
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@Secured (Roles.STREET_TYPE_ADD)
+	StreetType create(@NotNull StreetType streetType) throws FlexPayExceptionContainer;
+
+	/**
 	 * Update or create Entity
 	 *
 	 * @param entity Entity to save
@@ -82,6 +93,6 @@ public interface StreetTypeService extends
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
-	@Secured ({Roles.STREET_TYPE_ADD, Roles.STREET_TYPE_CHANGE})
-	StreetType save(@NotNull StreetType entity) throws FlexPayExceptionContainer;
+	@Secured (Roles.STREET_TYPE_CHANGE)
+	StreetType update(@NotNull StreetType entity) throws FlexPayExceptionContainer;
 }

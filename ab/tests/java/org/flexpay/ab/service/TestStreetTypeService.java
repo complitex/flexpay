@@ -60,7 +60,7 @@ public class TestStreetTypeService extends SpringBeanAwareTestCase {
 		translations.add(typeTranslation);
 		streetType.setTranslations(translations);
 
-		service.save(streetType);
+		service.create(streetType);
 		streetTypeDao.delete(streetType);
 	}
 
@@ -76,7 +76,7 @@ public class TestStreetTypeService extends SpringBeanAwareTestCase {
 	@Test (expected = FlexPayExceptionContainer.class)
 	public void testSaveEmpty() throws Throwable {
 
-		service.save(new StreetType());
+		service.create(new StreetType());
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class TestStreetTypeService extends SpringBeanAwareTestCase {
 		assertNotNull("Type #13 not found", type);
 
 		type.setTranslation(new StreetTypeTranslation("Тестовый тип"));
-		service.save(type);
+		service.update(type);
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class TestStreetTypeService extends SpringBeanAwareTestCase {
 			StreetType type = new StreetType();
 			type.setTranslation(new StreetTypeTranslation("Тестовый тип"));
 			type.setTranslation(new StreetTypeTranslation("Test type", new Language(2L)));
-			service.save(type);
+			service.create(type);
 
 			assertTrue("Type was not saved", type.isNotNew());
 
@@ -105,7 +105,7 @@ public class TestStreetTypeService extends SpringBeanAwareTestCase {
 
 			log.debug("Translations: {}", type.getTranslations());
 
-			service.save(type);
+			service.update(type);
 
 			streetTypeDao.delete(type);
 		} catch (FlexPayExceptionContainer ex) {

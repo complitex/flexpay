@@ -8,7 +8,9 @@ import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -28,6 +30,9 @@ public class TownTypeServiceImpl implements TownTypeService {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private TownTypeDao townTypeDao;
+
+	private SessionUtils sessionUtils;
+	private ModificationListener<TownType> modificationListener;
 
 	/**
 	 * Get TownType translations for specified locale, if translation is not found check for translation in default locale
@@ -62,6 +67,26 @@ public class TownTypeServiceImpl implements TownTypeService {
 	}
 
 	/**
+	 * Create Entity
+	 *
+	 * @param townType Entity to save
+	 * @return Saved instance
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@Transactional (readOnly = false)
+	public TownType create(@NotNull TownType townType) throws FlexPayExceptionContainer {
+
+		validate(townType);
+		townType.setId(null);
+		townTypeDao.create(townType);
+
+		modificationListener.onCreate(townType);
+
+		return townType;
+	}
+
+	/**
 	 * Update or create Entity
 	 *
 	 * @param type Entity to save
@@ -69,17 +94,17 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
-	public TownType save(@NotNull TownType type) throws FlexPayExceptionContainer {
+	public TownType update(@NotNull TownType type) throws FlexPayExceptionContainer {
+
 		validate(type);
-		if (type.isNew()) {
-			type.setId(null);
-			townTypeDao.create(type);
-		} else {
-			townTypeDao.update(type);
-		}
+
+		TownType oldType = read(type.getId());
+		sessionUtils.evict(oldType);
+		modificationListener.onUpdate(oldType, type);
+
+		townTypeDao.update(type);
 
 		return type;
-
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
@@ -122,10 +147,15 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 */
 	@Transactional (readOnly = false)
 	public void disable(Collection<TownType> townTypes) {
+
 		log.info("{} types to disable", townTypes.size());
 		for (TownType townType : townTypes) {
+
 			townType.setStatus(TownType.STATUS_DISABLED);
 			townTypeDao.update(townType);
+
+			modificationListener.onDelete(townType);
+
 			log.info("Disabled: {}", townType);
 		}
 	}
@@ -166,4 +196,13 @@ public class TownTypeServiceImpl implements TownTypeService {
 		this.townTypeDao = townTypeDao;
 	}
 
+	@Required
+	public void setModificationListener(ModificationListener<TownType> modificationListener) {
+		this.modificationListener = modificationListener;
+	}
+
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
 }

@@ -46,7 +46,11 @@ public class StreetTypeEditAction extends FPActionSupport {
 			type.setTranslation(translation);
 		}
 
-		streetTypeService.save(type);
+		if (type.isNew()) {
+			streetTypeService.create(type);
+		} else {
+			streetTypeService.update(type);
+		}
 
 		return REDIRECT_SUCCESS;
 	}

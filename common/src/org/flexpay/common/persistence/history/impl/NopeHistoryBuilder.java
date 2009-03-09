@@ -21,6 +21,17 @@ public class NopeHistoryBuilder <T extends DomainObject> implements HistoryBuild
 	}
 
 	/**
+	 * Create diff for deleted object
+	 *
+	 * @param obj object to build diff for
+	 * @return Diff object
+	 */
+	@NotNull
+	public Diff deleteDiff(@NotNull T obj) {
+		return new Diff();
+	}
+
+	/**
 	 * Apply diff to an object
 	 *
 	 * @param t	Object to apply diff to

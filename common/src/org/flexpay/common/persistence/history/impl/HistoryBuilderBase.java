@@ -50,9 +50,32 @@ public abstract class HistoryBuilderBase<T extends DomainObject> implements Hist
 			}
 		} else {
 			diff.setOperationType(HistoryOperationType.TYPE_UPDATE);
+			if (t2.isNotNew()) {
+				diff.setMasterIndex(masterIndexService.getMasterIndex(t2));
+			}
 		}
 
 		doDiff(t1, t2, diff);
+
+		return diff;
+	}
+
+	/**
+	 * Create diff for deleted object
+	 *
+	 * @param obj object to build diff for
+	 * @return Diff object
+	 */
+	@NotNull
+	public Diff deleteDiff(@NotNull T obj) {
+
+		Diff diff = new Diff();
+		diff.setUserName(SecurityUtil.getUserName());
+		diff.setObjectId(obj.getId());
+		diff.setObjectType(typeRegistry.getType(obj.getClass()));
+		diff.setOperationTime(new Date());
+		diff.setInstanceId(ApplicationConfig.getInstanceId());
+		diff.setOperationType(HistoryOperationType.TYPE_DELETE);
 
 		return diff;
 	}

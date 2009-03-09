@@ -44,7 +44,11 @@ public class IdentityTypeEditAction extends FPActionSupport {
 			type.setTranslation(translation);
 		}
 
-		identityTypeService.save(type);
+		if (type.isNew()) {
+			identityTypeService.create(type);
+		} else {
+			identityTypeService.update(type);
+		}
 
 		return REDIRECT_SUCCESS;
 	}
