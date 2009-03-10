@@ -62,4 +62,5 @@ public class BuildingAttributeGroupServiceImpl implements BuildingAttributeGroup
 	public void setGroupDao(BuildingAttributeGroupDao groupDao) {
 		this.groupDao = groupDao;
 	}
+
 }

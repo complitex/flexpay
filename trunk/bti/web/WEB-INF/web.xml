@@ -10,13 +10,15 @@
 		<param-value>FlexPay BTI module</param-value>
 	</context-param>
 
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>
-			/WEB-INF/applicationContext.xml
-			/WEB-INF/applicationContext-security.xml
-		</param-value>
-	</context-param>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/applicationContext.xml
+            /WEB-INF/applicationContext-security.xml
+            /WEB-INF/common/configs/menu.cfg.xml
+            /WEB-INF/ab/configs/menu.cfg.xml
+        </param-value>
+    </context-param>
 
 	<!--
 		- Location of the Log4J config file, for initialization and refresh checks.
@@ -45,6 +47,9 @@
 	<listener>
 		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
 	</listener>
+    <listener>
+        <listener-class>net.sf.navigator.menu.MenuContextListener</listener-class>
+    </listener>
 
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
@@ -317,5 +322,12 @@
 	<welcome-file-list>
 		<welcome-file>/resources/bti/jsp/index.jsp</welcome-file>
 	</welcome-file-list>
+
+    <jsp-config>
+        <taglib>
+            <taglib-uri>http://struts-menu.sf.net/tag</taglib-uri>
+            <taglib-location>/WEB-INF/tld/struts-menu.tld</taglib-location>
+        </taglib>
+    </jsp-config>
 
 </web-app>

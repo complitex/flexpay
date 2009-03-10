@@ -5,11 +5,12 @@
 <struts>
 
 	<constant name="struts.custom.i18n.resources"
-			  value="org/flexpay/common/i18n/common-messages,org/flexpay/ab/i18n/errors,org/flexpay/ab/i18n/messages" />
+			  value="org/flexpay/common/i18n/common-messages,
+			  org/flexpay/ab/i18n/errors,org/flexpay/ab/i18n/messages" />
 
 	<package name="ab" namespace="/ab" extends="common">
 
-		<action name="main">
+		<action name="main" class="staticPageAction">
 			<result type="tiles">ab.main</result>
 		</action>
 

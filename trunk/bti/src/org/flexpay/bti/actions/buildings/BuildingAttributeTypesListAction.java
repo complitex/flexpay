@@ -36,7 +36,7 @@ public class BuildingAttributeTypesListAction extends FPActionWithPagerSupport<B
 		BuildingAttributeType type = attributeTypeService.readFull(new Stub<BuildingAttributeType>(typeId));
 		if (type == null) {
 			log.info("No type found #{}", typeId);
-			return "error";
+			return ERROR;
 		}
 
 		return getTranslation(type.getTranslations()).getName();

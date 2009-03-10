@@ -12,7 +12,10 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/applicationContext.xml</param-value>
+        <param-value>
+            /WEB-INF/applicationContext.xml
+            /WEB-INF/common/configs/menu.cfg.xml
+        </param-value>
 	</context-param>
 
 	<!--
@@ -35,6 +38,9 @@
 	<listener>
 		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
 	</listener>
+    <listener>
+        <listener-class>net.sf.navigator.menu.MenuContextListener</listener-class>
+    </listener>
 	<listener>
 		<listener-class>
 			org.springframework.web.context.ContextLoaderListener
@@ -117,5 +123,12 @@
 	<welcome-file-list>
 		<welcome-file>/resources/common/jsp/index.jsp</welcome-file>
 	</welcome-file-list>
+
+    <jsp-config>
+        <taglib>
+            <taglib-uri>http://struts-menu.sf.net/tag</taglib-uri>
+            <taglib-location>/WEB-INF/tld/struts-menu.tld</taglib-location>
+        </taglib>
+    </jsp-config>
 
 </web-app>

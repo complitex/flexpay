@@ -123,8 +123,7 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 
 		BuildingAttributeGroup group = type.getGroup();
 		if (group == null || group.isNew()) {
-			ex.addException(new FlexPayException(
-					"no group", "bti.error.building.attribute.type.no_group"));
+			ex.addException(new FlexPayException("no group", "bti.error.building.attribute.type.no_group"));
 		}
 
 		if (ex.isNotEmpty()) {

@@ -7,7 +7,7 @@
 	<package name="processing" namespace="/eirc" extends="common">
 
 		<!-- Menu item -->
-		<action name="processing">
+		<action name="processing" class="staticPageAction">
 			<result type="tiles">eirc.processing</result>
 		</action>
 

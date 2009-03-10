@@ -12,15 +12,15 @@
 
     <package name="tc" namespace="/tc" extends="common">
 
-        <action name="main">
+        <action name="main" class="staticPageAction">
             <result type="tiles">tc.dictionaries</result>
         </action>
 
-        <action name="importexport">
+        <action name="importexport" class="staticPageAction">
             <result type="tiles">tc.importexport</result>
         </action>
 
-        <action name="data">
+        <action name="data" class="staticPageAction">
             <result type="tiles">tc.data</result>
         </action>
 
