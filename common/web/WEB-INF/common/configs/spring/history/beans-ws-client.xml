@@ -5,8 +5,9 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- Client web-service beans definition -->
+	<!-- http://localhost:8080/ab/ws/ShareHistory -->
 	<bean id="soapOutHistoryTransport"
 		  class="org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport"
-		  p:url="http://localhost:58080/ShareHistory" />
+		  p:url="http://localhost:8080/eirc/ws/ShareHistory" />
 
 </beans>

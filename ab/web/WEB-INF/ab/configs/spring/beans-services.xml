@@ -147,4 +147,28 @@
 		  p:townService-ref="townService"
 		  p:townTypeService-ref="townTypeService" />
 
+	<!-- History handlers -->
+	<bean id="abHistoryHandlerBase" abstract="true" autowire-candidate="false"
+		  parent="historyHandlerBase"
+		  p:typeRegistry-ref="typeRegistryAb" />
+
+	<bean id="townHistoryHandler" parent="abHistoryHandlerBase"
+		  class="org.flexpay.ab.service.history.TownHistoryHandler"
+		  p:townService-ref="townService"
+		  p:historyBuilder-ref="townHistoryBuilder" />
+
+	<bean id="towntypeHistoryHandler" parent="abHistoryHandlerBase"
+		  class="org.flexpay.ab.service.history.TownTypeHistoryHandler"
+		  p:townTypeService-ref="townTypeService"
+		  p:historyBuilder-ref="townTypeHistoryBuilder" />
+
+	<bean id="abObjectsSyncer" parent="objectsSyncer">
+		<property name="handlers">
+			<list merge="true">
+				<ref bean="townHistoryHandler" />
+				<ref bean="towntypeHistoryHandler" />
+			</list>
+		</property>
+	</bean>
+
 </beans>

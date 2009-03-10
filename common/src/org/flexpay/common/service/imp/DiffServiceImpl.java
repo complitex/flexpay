@@ -6,6 +6,8 @@ import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.dao.DiffDao;
+import org.flexpay.common.dao.DiffDaoExt;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
@@ -21,6 +23,7 @@ public class DiffServiceImpl implements DiffService {
 
 	private ClassToTypeRegistry registry;
 	private DiffDao diffDao;
+	private DiffDaoExt diffDaoExt;
 
 	/**
 	 * Persist a new Diff object
@@ -35,6 +38,22 @@ public class DiffServiceImpl implements DiffService {
 		log.debug("Creating a new diff {}", diff);
 
 		diffDao.create(diff);
+		return diff;
+	}
+
+	/**
+	 * Update existing diff
+	 *
+	 * @param diff History records set to update
+	 * @return Diff object back
+	 */
+	@Transactional (readOnly = false)
+	@NotNull
+	public Diff update(@NotNull Diff diff) {
+
+		log.debug("Updating diff {}", diff);
+
+		diffDao.update(diff);
 		return diff;
 	}
 
@@ -61,9 +80,25 @@ public class DiffServiceImpl implements DiffService {
 		return diffDao.findDiffs(obj.getId(), objectType);
 	}
 
+	/**
+	 * Fetch diffs got from last consumer update
+	 *
+	 * @param range Fetch range
+	 * @return list of diffs, possibly empty
+	 */
+	@NotNull
+	public List<Diff> findNewDiffs(@NotNull FetchRange range) {
+		return diffDaoExt.findNewHistoryRecords(range);
+	}
+
 	@Required
 	public void setDiffDao(DiffDao diffDao) {
 		this.diffDao = diffDao;
+	}
+
+	@Required
+	public void setDiffDaoExt(DiffDaoExt diffDaoExt) {
+		this.diffDaoExt = diffDaoExt;
 	}
 
 	@Required
