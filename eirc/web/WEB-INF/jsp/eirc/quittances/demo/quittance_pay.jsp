@@ -184,7 +184,8 @@
         
         <tr>
             <td colspan="3"/>
-            <td style="text-align: right;"><s:submit name="submitted" value="%{getText('eirc.quittances.demo.quittance_pay.pay')}" cssClass="btn-exit" cssStyle="width: 100%;"/></td>
+            <td style="text-align: right;"><input type="submit" name="submitted" value="<s:text name="eirc.quittances.demo.quittance_pay.pay"/>" class="btn-exit" style="width: 100%;"/></td>
+
         </tr>
     </table>
 
