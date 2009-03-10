@@ -93,6 +93,7 @@
     </orderEntry>
     <orderEntry type="library" name="Struts2" level="project" />
     <orderEntry type="library" name="Drools" level="project" />
+    <orderEntry type="library" name="Spring-WS" level="project" />
   </component>
 </module>
 
