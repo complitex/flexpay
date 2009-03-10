@@ -10,7 +10,7 @@ import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.DateIntervalUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -124,6 +124,11 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 	 * @param diff Diff to apply
 	 */
 	public void patch(@NotNull Town town, @NotNull Diff diff) {
+
+		// setup default region if not exists
+		if (town.getRegion() == null) {
+			town.setRegion(ApplicationConfig.getDefaultRegion());
+		}
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {
 

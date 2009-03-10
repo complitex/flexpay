@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.AddressAttributeType;
+import org.flexpay.ab.service.Security;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +17,11 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 
 	private AddressAttributeType addressAttributeTypeNumber;
 	private AddressAttributeType addressAttributeTypeBulk;
+
+	static {
+		// ensure Security fields are initialised
+		Security.touch();
+	}
 
 	public static Town getDefaultTown() {
 		return getInstance().defaultTown;

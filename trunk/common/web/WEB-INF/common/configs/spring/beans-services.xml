@@ -20,6 +20,7 @@
 		  factory-bean="commonServiceFactory"
 		  factory-method="getDiffService"
 		  p:diffDao-ref="diffDao"
+		  p:diffDaoExt-ref="diffDaoExt"
 		  p:registry-ref="classToTypeRegistryCommon" />
 
 	<bean class="org.flexpay.common.service.importexport.imp.ImportErrorServiceImpl"
@@ -91,6 +92,18 @@
 	<bean id="historyUnPackerBase" abstract="true" autowire-candidate="false"
 		  p:diffService-ref="diffService"
 		  class="org.flexpay.common.persistence.history.impl.HistoryUnPackerBase" />
+
+	<bean id="objectsSyncerFactory"
+		  class="org.flexpay.common.persistence.history.impl.ObjectsSyncerFactory" />
+
+	<bean id="objectsSyncer"
+		  factory-bean="objectsSyncerFactory" factory-method="getInstance"
+		  p:diffService-ref="diffService" />
+
+	<bean id="historyHandlerBase" abstract="true" autowire-candidate="false"
+		  class="org.flexpay.common.persistence.history.impl.HistoryHandlerBase"
+		  p:correctionsService-ref="correctionsService"
+		  p:masterIndexService-ref="masterIndexService" />
 
 	<bean id="xmlHistoryUnPacker" parent="historyUnPackerBase"
 		  class="org.flexpay.common.persistence.history.impl.XmlHistoryUnPacker" />

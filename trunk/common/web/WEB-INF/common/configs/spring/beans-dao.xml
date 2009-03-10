@@ -57,6 +57,10 @@
 		</property>
 	</bean>
 
+	<bean id="diffDaoExt"
+		  class="org.flexpay.common.dao.impl.DiffDaoExtImpl"
+		  p:hibernateTemplate-ref="hibernateTemplate" />
+
 	<bean id="importErrorDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.common.dao.ImportErrorDao" />

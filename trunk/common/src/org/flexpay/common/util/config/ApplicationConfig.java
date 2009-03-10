@@ -3,6 +3,7 @@ package org.flexpay.common.util.config;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.service.Security;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,6 +35,11 @@ public class ApplicationConfig {
     private String applicationName;
 	private String dataRoot;
     private int logPreviewLinesNumber;
+
+	static {
+		// ensure Security fields are initialised
+		Security.touch();
+	}
 
 	/**
 	 * Unique instance id

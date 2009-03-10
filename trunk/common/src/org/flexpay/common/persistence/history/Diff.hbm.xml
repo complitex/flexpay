@@ -166,4 +166,17 @@
 		where d.objectId=? and d.objectType=?
 	</query>
 
+	<query name="Diff.findNewRecords.stats"><![CDATA[
+		select min(d.id), max(d.id), count(d.id)
+		from Diff d
+		where d.processingStatus=0
+	]]></query>
+
+	<query name="Diff.findNewRecords">
+		select distinct d
+		from Diff d
+			left join fetch d.historyRecords
+		where d.id between ? and ? and d.processingStatus=0
+	</query>
+
 </hibernate-mapping>
