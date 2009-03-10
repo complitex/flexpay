@@ -1,10 +1,5 @@
 package org.flexpay.common.actions;
 
-import com.opensymphony.xwork2.ActionSupport;
-import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.config.Namespace;
-import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.common.actions.interceptor.UserPreferencesAware;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -16,10 +11,18 @@ import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.config.Namespace;
+import org.apache.struts2.interceptor.SessionAware;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.util.WebUtils;
+
+import com.opensymphony.xwork2.ActionSupport;
 
 import java.util.Collection;
 import java.util.Date;
@@ -55,6 +58,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	@SuppressWarnings ({"RawUseOfParameterizedType"})
 	protected Map session = CollectionUtils.map();
 	protected String submitted;
+    protected String menu;
 
 	public boolean isSubmit() {
 		return submitted != null;
@@ -64,12 +68,21 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 		return !isSubmit();
 	}
 
-	/**
+    public void setMenu(String menu) {
+        this.menu = menu;
+		String activeMenu = (String) WebUtils.getSessionAttribute(ServletActionContext.getRequest(), "activeMenuComponentName");
+		if (StringUtils.isNotEmpty(menu) && !menu.equals(activeMenu)) {
+			WebUtils.setSessionAttribute(ServletActionContext.getRequest(), "activeMenuComponentName", menu);
+		}
+    }
+
+    /**
 	 * @return Execution result
 	 * @throws Exception if failure occurs
 	 */
 	@SuppressWarnings ({"RawUseOfParameterizedType"})
 	public String execute() throws Exception {
+
 		String result;
 		try {
 			result = doExecute();

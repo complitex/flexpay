@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@ taglib prefix="menu" uri="http://struts-menu.sf.net/tag" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
@@ -44,8 +45,28 @@
 <body>
 
 <tiles:insertAttribute name="header"/>
-<tiles:insertAttribute name="menu1"/>
-<tiles:insertAttribute name="menu2"/>
+
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+            <menu:useMenuDisplayer name="fpDisplayer">
+                <menu:displayMenu name="FPMenu" levelBegin="1" levelEnd="1" />
+            </menu:useMenuDisplayer>
+
+            <tiles:insertAttribute name="language"/>
+            <%--<%@ include file="/WEB-INF/jsp/common/layouts/language_switch.jsp" %>--%>
+
+            <!--<form name="search">-->
+            <td class="topmenu_form_search" nowrap="1" >&nbsp;
+                <!--<input type="text" class="form-search">&nbsp;<input type="button" value="Найти" class="btn-search" />-->
+            </td>
+            <!--</form>-->
+        </tr>
+    </table>
+
+    <menu:useMenuDisplayer name="fpDisplayer">
+        <menu:displayMenu name="FPMenu" levelBegin="2" levelEnd="2" />
+    </menu:useMenuDisplayer>
+
 <!--
 <div class="gradusnik">
     <div class="gradusnik-padding">
@@ -54,20 +75,11 @@
 </div>
 -->
 
-<div style="padding-left: 25px; padding-right: 25px;">
-    <h1>
-      <tiles:insertTemplate template="/WEB-INF/jsp/ab/menu/title.jsp" />
-    </h1>
-</div>
-
 <div class="columns">
-    <div class="left">
-        <div class="left-padding">
-            <div class="explorer">
-                <tiles:insertAttribute name="menu34"/>
-            </div>
-        </div>
-    </div>
+
+    <menu:useMenuDisplayer name="fpDisplayer">
+        <menu:displayMenu name="FPMenu" levelBegin="3" />
+    </menu:useMenuDisplayer>
 
     <div class="main">
         <div class="main-content">
@@ -84,7 +96,6 @@
     </div>
 
 </div>
-
 
 <tiles:insertAttribute name="footer"/>
 

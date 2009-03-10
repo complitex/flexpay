@@ -7,7 +7,7 @@
 	<package name="quittances" namespace="/eirc" extends="common">
 
 		<!-- Quittances -->
-		<action name="quittances">
+		<action name="quittances" class="staticPageAction">
 			<result type="tiles">eirc.quittances</result>
 		</action>
 

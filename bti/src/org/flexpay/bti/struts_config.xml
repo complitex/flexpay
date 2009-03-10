@@ -11,7 +11,7 @@
 
 	<package name="bti" namespace="/bti" extends="common">
 
-		<action name="main">
+		<action name="main" class="staticPageAction">
 			<result type="tiles">bti.main</result>
 		</action>
 

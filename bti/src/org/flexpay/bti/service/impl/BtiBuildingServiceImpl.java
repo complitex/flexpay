@@ -70,4 +70,5 @@ public class BtiBuildingServiceImpl implements BtiBuildingService {
 	public void setBuildingDao(BuildingDao buildingDao) {
 		this.buildingDao = buildingDao;
 	}
+
 }

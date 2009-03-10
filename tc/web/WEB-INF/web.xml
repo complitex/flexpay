@@ -12,10 +12,13 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>
-			/WEB-INF/applicationContext.xml
-			/WEB-INF/applicationContext-security.xml
-		</param-value>
+        <param-value>
+            /WEB-INF/applicationContext.xml
+            /WEB-INF/applicationContext-security.xml
+            /WEB-INF/common/configs/menu.cfg.xml
+            /WEB-INF/ab/configs/menu.cfg.xml
+            /WEB-INF/tc/configs/menu.cfg.xml
+        </param-value>
 	</context-param>
 
 	<!--
@@ -26,6 +29,7 @@
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>/WEB-INF/common/configs/log4j.xml</param-value>
 	</context-param>
+
 	<context-param>
 		<param-name>definitions-config</param-name>
 		<param-value>
@@ -45,6 +49,9 @@
 	<listener>
 		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
 	</listener>
+    <listener>
+        <listener-class>net.sf.navigator.menu.MenuContextListener</listener-class>
+    </listener>
 
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
@@ -365,5 +372,12 @@
 	<welcome-file-list>
 		<welcome-file>/resources/tc/jsp/index.jsp</welcome-file>
 	</welcome-file-list>
+
+    <jsp-config>
+        <taglib>
+            <taglib-uri>http://struts-menu.sf.net/tag</taglib-uri>
+            <taglib-location>/WEB-INF/tld/struts-menu.tld</taglib-location>
+        </taglib>
+    </jsp-config>
 
 </web-app>

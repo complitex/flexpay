@@ -41,4 +41,5 @@ public class BuildingAttributeServiceImpl implements BuildingAttributeService {
 	public void setBuildingDaoExt(BtiBuildingDaoExt buildingDaoExt) {
 		this.buildingDaoExt = buildingDaoExt;
 	}
+
 }

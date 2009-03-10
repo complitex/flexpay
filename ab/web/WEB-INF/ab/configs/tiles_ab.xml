@@ -7,12 +7,9 @@
 	<definition name="ab.layout.standart" template="/WEB-INF/jsp/ab/layouts/standart.jsp">
 		<put-attribute name="title" value="ab.main.title" />
 		<put-attribute name="header" value="/WEB-INF/jsp/common/header.jsp" />
-		<put-attribute name="menu1" value="/WEB-INF/jsp/ab/menu/menu1.jsp" />
-		<put-attribute name="menu2" value="/WEB-INF/jsp/ab/menu/menu2.jsp" />
-		<put-attribute name="menu34"
-					   value="/WEB-INF/jsp/ab/menu/menu34_dictionaries.jsp" />
 		<put-attribute name="gradusnik" value="/WEB-INF/jsp/ab/menu/gradusnik.jsp" />
 		<!--<put-attribute name="body" value="/WEB-INF/jsp/ab/main.jsp" />-->
+        <put-attribute name="language" value="/WEB-INF/jsp/common/layouts/language_switch.jsp" />
 		<put-attribute name="tip" value="/WEB-INF/jsp/ab/menu/tip.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp" />
 	</definition>

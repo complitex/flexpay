@@ -1,5 +1,6 @@
 package org.flexpay.common.util.config;
 
+import net.sf.navigator.menu.MenuComponent;
 import org.flexpay.common.persistence.Language;
 import org.springframework.web.util.WebUtils;
 
@@ -11,6 +12,7 @@ public class UserPreferences {
 	private String userName = "";
 	private Locale locale;
 	private Integer pageSize = 20;
+	private MenuComponent menuComponent = new MenuComponent();
 
 	private static final String WW_TRANS_I18_N_LOCALE = "WW_TRANS_I18N_LOCALE";
 
@@ -73,6 +75,14 @@ public class UserPreferences {
 
 	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
+	}
+
+	public MenuComponent getMenuComponent() {
+		return menuComponent;
+	}
+
+	public void setMenuComponent(MenuComponent menuComponent) {
+		this.menuComponent = menuComponent;
 	}
 
 }

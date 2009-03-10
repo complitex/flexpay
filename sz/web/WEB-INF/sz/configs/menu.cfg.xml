@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+    <!--level1-->
+    <bean name="sz" class="net.sf.navigator.menu.MenuComponent"
+            p:name="sz"
+            p:title="sz.menu1.title"
+            p:action="/sz/main.action?menu=sz"
+            p:parent-ref="fpMenu"
+            p:userRole="ROLE_BASIC"
+            />
+
+    <!--level2-->
+    <bean name="sz_dicts" class="net.sf.navigator.menu.MenuComponent"
+            p:name="sz.dicts"
+            p:title="sz.menu2.dictionaries"
+            p:action="/sz/main.action?menu=sz.dicts"
+            p:parent-ref="sz"
+            p:userRole="ROLE_BASIC"
+            />
+    <bean name="sz_import" class="net.sf.navigator.menu.MenuComponent"
+            p:name="sz.import"
+            p:title="sz.menu2.import"
+            p:action="/sz/import.action?menu=sz.import"
+            p:parent-ref="sz"
+            p:userRole="ROLE_BASIC"
+            />
+
+    <!--level3-->
+    <bean name="sz_dicts_otherDictionaries" class="net.sf.navigator.menu.MenuComponent"
+            p:name="sz.other_dicts"
+            p:title="sz.menu2.dictionaries"
+            p:parent-ref="sz_dicts"
+            p:userRole="ROLE_BASIC"
+            />
+    <bean name="sz_import_import" class="net.sf.navigator.menu.MenuComponent"
+            p:name="sz.import2"
+            p:title="sz.menu2.import"
+            p:parent-ref="sz_import"
+            p:userRole="ROLE_BASIC"
+            />
+
+    <!--level4-->
+    <bean name="sz_dicts_otherDictionaries_importFilesList" class="net.sf.navigator.menu.MenuComponent"
+            p:name="sz.import_files_list"
+            p:title="sz.menu34.files"
+            p:action="/sz/importFilesList.action?menu=sz.import_files_list"
+            p:parent-ref="sz_dicts_otherDictionaries"
+            p:userRole="ROLE_SZ_SZ_FILE_READ"
+            />
+    <bean name="sz_import_import_upload" class="net.sf.navigator.menu.MenuComponent"
+            p:name="sz.upload"
+            p:title="sz.menu34.files.upload"
+            p:action="/sz/doUpload.action?menu=sz.upload"
+            p:parent-ref="sz_import_import"
+            p:userRole="ROLE_SZ_SZ_FILE_UPLOAD_FILE"
+            />
+
+</beans>
