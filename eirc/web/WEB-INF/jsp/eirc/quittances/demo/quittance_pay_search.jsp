@@ -12,7 +12,7 @@
 
 		<tr>
 			<td colspan="2">
-                <s:submit name="submitted" value="%{getText('common.search')}" cssClass="btn-exit" />
+                <input type="submit" name="submitted" value="<s:text name="common.search" />" class="btn-exit" />
 			</td>
 		</tr>
 
