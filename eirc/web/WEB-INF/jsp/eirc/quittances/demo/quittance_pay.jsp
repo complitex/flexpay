@@ -44,53 +44,33 @@
             return isValidPayValue(value);
         }, '<s:text name="eirc.quittances.demo.quittance_pay.error.invalid_pay_value"/>');
 
-        // special rules to be generated
-        jQuery.validator.addMethod('payValue_0_is_not_too_big', function(value, element) {
-            value = replaceCommaWithDot(value);
-            return parseFloat(value) <= 0.29;
-        }, '<s:text name="eirc.quittances.demo.quittance_pay.error.pay_value_too_big"/>');
 
-        jQuery.validator.addMethod('payValue_1_is_not_too_big', function(value, element) {
+        <s:iterator value="%{quittance.quittanceDetails}" id="qd">
+        jQuery.validator.addMethod('payValue_<s:property value="%{#qd.id}"/>_is_not_too_big', function(value, element) {
             value = replaceCommaWithDot(value);
-            return parseFloat(value) <= 1.42;
+            return parseFloat(value) <= <s:property value="%{getPayable(#qd)}"/>;
         }, '<s:text name="eirc.quittances.demo.quittance_pay.error.pay_value_too_big"/>');
-
-        jQuery.validator.addMethod('payValue_2_is_not_too_big', function(value, element) {
-            value = replaceCommaWithDot(value);
-            return parseFloat(value) <= 59.02;
-        }, '<s:text name="eirc.quittances.demo.quittance_pay.error.pay_value_too_big"/>');
+        </s:iterator>
     });
 
     jQuery(function() {
         var validator = jQuery('#demoQuittancePayForm').validate({
             rules: {
-                'servicePayValue[0]' : {
+                <s:iterator value="%{quittance.quittanceDetails}" id="qd">
+                'servicePayValue[<s:property value="%{#qd.id}"/>]' : {
                     'validPayValue': true,
-                    'payValue_0_is_not_too_big': true // to be generated
+                    'payValue_<s:property value="%{#qd.id}"/>_is_not_too_big': true
                 },
-                'servicePayValue[1]' : {
-                    'validPayValue' : true,
-                    'payValue_1_is_not_too_big': true // to be generated
-                },
-                'servicePayValue[2]' : {
-                    'validPayValue' : true,
-                    'payValue_2_is_not_too_big': true // to be generated
-                },
+                </s:iterator>                
                 'total_pay': 'required' // covers jquery validation 1.5.1 bug (it doesn't allow form fields without any rules)
             },
             messages: {
-                'servicePayValue[0]' : {
+                <s:iterator value="%{quittance.quittanceDetails}" id="qd" status="status">
+                'servicePayValue[<s:property value="%{#qd.id}"/>]' : {
                     'validPayValue': '<s:text name="eirc.quittances.demo.quittance_pay.error.invalid_pay_value"/>',
-                    'payValue_0_is_not_too_big': '<s:text name="eirc.quittances.demo.quittance_pay.error.pay_value_too_big"/>'
-                },
-                'servicePayValue[1]' : {
-                    'validPayValue' : '<s:text name="eirc.quittances.demo.quittance_pay.error.invalid_pay_value"/>',
-                    'payValue_1_is_not_too_big': '<s:text name="eirc.quittances.demo.quittance_pay.error.pay_value_too_big"/>'
-                },
-                'servicePayValue[2]' : {
-                    'validPayValue' : '<s:text name="eirc.quittances.demo.quittance_pay.error.invalid_pay_value"/>',
-                    'payValue_2_is_not_too_big': '<s:text name="eirc.quittances.demo.quittance_pay.error.pay_value_too_big"/>'
-                }
+                    'payValue_<s:property value="%{#qd.id}"/>_is_not_too_big': '<s:text name="eirc.quittances.demo.quittance_pay.error.pay_value_too_big"/>'
+                }<s:if test="!#status.last">, </s:if>
+                </s:iterator>
             },
             errorClass: 'cols_1_error',
             errorElement: 'span',
@@ -127,22 +107,24 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
-        <td><s:text name="eirc.quittances.demo.quittance_pay.data.quittance_number"/>:</td>
-        <td><s:text name="eirc.quittances.demo.quittance_pay.data.quittance_number.value"/></td>
+        <td><s:text name="eirc.quittances.demo.quittance_pay.quittance_number"/>:</td>
+        <td><s:property value="%{quittanceNumber}"/></td>
     </tr>
     <tr>
-        <td><s:text name="eirc.quittances.demo.quittance_pay.data.fio"/>:</td>
-        <td><s:text name="eirc.quittances.demo.quittance_pay.data.fio.value"/></td>
+        <td><s:text name="eirc.quittances.demo.quittance_pay.fio"/>:</td>
+        <td><s:property value="%{getFIO()}"/></td>
     </tr>
     <tr>
-        <td><s:text name="eirc.quittances.demo.quittance_pay.data.address"/>:</td>
-        <td><s:text name="eirc.quittances.demo.quittance_pay.data.address.value"/></td>
+        <td><s:text name="eirc.quittances.demo.quittance_pay.address"/>:</td>
+        <td><s:property value="%{getAddress()}"/></td>
     </tr>
 </table>
 
 <br/>
 
 <s:form id="demoQuittancePayForm" action="demoQuittancePay">
+
+    <s:hidden name="quittanceNumber" value="%{quittanceNumber}"/>
 
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr>
@@ -152,41 +134,29 @@
             <td class="th" style="width: 20%;"><s:text name="eirc.quittances.demo.quittance_pay.pay"/></td>
         </tr>
 
-        <tr class="cols_1_error" style="display: none;"><td colspan="4"/></tr>
-        <tr class="cols_1">
-            <td class="col" nowrap="nowrap"><s:text name="eirc.quittances.demo.quittance_pay.data.service1.name"/></td>
-            <td class="col"><s:text name="eirc.quittances.demo.quittance_pay.data.service1.supplier"/></td>
-            <td class="col"><s:text name="eirc.quittances.demo.quittance_pay.data.service1.payable"/></td>
-            <td class="col"><s:textfield name="servicePayValue[0]" value="%{getText('eirc.quittances.demo.quittance_pay.data.service1.payable')}" cssStyle="width: 100%;"/></td>
-        </tr>
-
-        <tr class="cols_1_error" style="display: none;"><td colspan="4"/></tr>
-        <tr class="cols_1">
-            <td class="col" nowrap="nowrap"><s:text name="eirc.quittances.demo.quittance_pay.data.service2.name"/></td>
-            <td class="col"><s:text name="eirc.quittances.demo.quittance_pay.data.service2.supplier"/></td>
-            <td class="col"><s:text name="eirc.quittances.demo.quittance_pay.data.service2.payable"/></td>
-            <td class="col"><s:textfield name="servicePayValue[1]" value="%{getText('eirc.quittances.demo.quittance_pay.data.service2.payable')}" cssStyle="width: 100%;"/></td>
-        </tr>
-
-        <tr class="cols_1_error" style="display: none;"><td colspan="4"/></tr>
-        <tr class="cols_1">
-            <td class="col" nowrap="nowrap"><s:text name="eirc.quittances.demo.quittance_pay.data.service3.name"/></td>
-            <td class="col"><s:text name="eirc.quittances.demo.quittance_pay.data.service3.supplier"/></td>
-            <td class="col"><s:text name="eirc.quittances.demo.quittance_pay.data.service3.payable"/></td>
-            <td class="col"><s:textfield name="servicePayValue[2]" value="%{getText('eirc.quittances.demo.quittance_pay.data.service3.payable')}" cssStyle="width: 100%;"/></td>
-        </tr>
+        <s:iterator value="%{quittance.quittanceDetails}" id="qd">
+            <tr class="cols_1_error" style="display: none;">
+                <td colspan="4"/>
+            </tr>
+            <tr class="cols_1">
+                <td class="col" nowrap="nowrap"><s:property value="%{getServiceName(#qd)}"/></td>
+                <td class="col"><s:property value="%{getServiceProviderName(#qd)}"/></td>
+                <td class="col"><s:property value="%{getPayable(#qd)}"/></td>
+                <td class="col"><s:textfield name="servicePayValue[%{#qd.id}]" value="%{getPayable(#qd)}" cssStyle="width: 100%;"/></td>
+            </tr>
+        </s:iterator>
 
         <tr>
             <td colspan="2" style="text-align: right; font-weight: bold;"><s:text name="eirc.quittances.demo.quittance_pay.total_payable"/></td>
-            <td style="font-weight: bold;"><s:text name="eirc.quittances.demo.quittance_pay.total_payable.value"/></td>
-            <td><s:textfield name="total_pay" readonly="true" value="0,00"/></td>
+            <td style="font-weight: bold;"><s:property value="%{getTotalPayable()}"/></td>
+            <td><s:textfield name="total_pay" readonly="true"/></td>
         </tr>
-        
+
         <tr>
             <td colspan="3"/>
             <td style="text-align: right;"><input type="submit" name="submitted" value="<s:text name="eirc.quittances.demo.quittance_pay.pay"/>" class="btn-exit" style="width: 100%;"/></td>
-
         </tr>
+
     </table>
 
 </s:form>

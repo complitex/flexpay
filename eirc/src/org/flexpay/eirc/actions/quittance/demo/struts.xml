@@ -10,6 +10,9 @@
             <result name="input" type="tiles">eirc.quittances.demo.quittance_pay_search</result>
             <result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">demoQuittancePay</param>
+                <param name="parse">true</param>
+                <param name="quittance.id">${quittanceId}</param>
+                <param name="quittanceNumber">${quittanceNumber}</param>
             </result>
         </action>
 

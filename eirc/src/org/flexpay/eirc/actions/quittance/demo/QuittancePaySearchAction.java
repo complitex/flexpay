@@ -1,36 +1,47 @@
 package org.flexpay.eirc.actions.quittance.demo;
 
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.service.QuittanceService;
 import org.jetbrains.annotations.NotNull;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Required;
 
 public class QuittancePaySearchAction extends FPActionSupport {
 
+    // form data
     private String quittanceNumber;
+    private Long quittanceId;
+
+    // required services
+    private QuittanceService quittanceService;
 
     @NotNull
     protected String doExecute() throws Exception {
 
         if (isSubmit()) {
 
-            // chechking whether quittance number is proper
-            if (quittanceNumber.equals("09002311489-10/2008-012")) {
+            Quittance quittance = quittanceService.findByNumber(quittanceNumber);
 
-                String flag = (String) session.get("demoQuittancePayPerformed");
-
-                if (flag != null && flag.equals("true")) {
-                    addActionError(getText("eirc.quittances.demo.quittance_pay_search.already_payed"));
-                    return INPUT;
-                }
-
-                return REDIRECT_SUCCESS;
-            } else {
+            if (quittance == null) {
                 addActionError(getText("eirc.error.quittance.no_quittance_found"));
                 return INPUT;
             }
+
+            if (alreadyPayed(quittanceNumber)) {
+                addActionError(getText("eirc.quittances.demo.quittance_pay_search.already_payed"));
+                return INPUT;
+            }
+
+            quittanceId = quittance.getId();
+            return REDIRECT_SUCCESS;
         }
 
         return INPUT;
+    }
+
+    private boolean alreadyPayed(String quittanceNumber) {
+        return session.get(quittanceNumber) != null;
     }
 
     @Override
@@ -48,7 +59,22 @@ public class QuittancePaySearchAction extends FPActionSupport {
         return INPUT;
     }
 
+    // get/set form data
     public void setQuittanceNumber(String quittanceNumber) {
         this.quittanceNumber = quittanceNumber;
+    }
+
+    public String getQuittanceNumber() {
+        return quittanceNumber;
+    }
+
+    public Long getQuittanceId() {
+        return quittanceId;
+    }
+
+    // required services setters
+    @Required
+    public void setQuittanceService(QuittanceService quittanceService) {
+        this.quittanceService = quittanceService;
     }
 }

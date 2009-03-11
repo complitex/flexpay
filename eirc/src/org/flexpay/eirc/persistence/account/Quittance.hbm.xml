@@ -181,7 +181,12 @@
 			left join fetch q.quittanceDetailsQuittances qdq
 			left join fetch qdq.quittanceDetails qd
 			left join fetch qd.consumer c
-			left join fetch c.service
+			left join fetch c.service serv
+			left join fetch serv.serviceProvider prov
+			left join fetch prov.organization org
+			left join fetch org.names
+			left join fetch serv.serviceType servtype
+			left join fetch servtype.typeNames 
 		where q.id=?
 			and (pr is null or (pr.beginDate<=current_date() and pr.endDate>=current_date()))
 	]]></query>
