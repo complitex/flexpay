@@ -12,11 +12,7 @@
 
         <action name="buildingAttributesEdit" class="buildingAttributesEditAction">
             <result name="input" type="tiles">tc.building_attributes.edit</result>
-            <result name="redirectSuccess" type="redirect-action">
-                <param name="actionName">buildingAttributesEdit</param>
-                <param name="parse">true</param>
-                <param name="building.id">${building.id}</param>
-            </result>
+            <result name="success" type="tiles">tc.building_attributes.edit</result>
         </action>
 
     </package>

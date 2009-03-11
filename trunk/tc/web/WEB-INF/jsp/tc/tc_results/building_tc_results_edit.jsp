@@ -11,7 +11,7 @@
         return value.match(pattern);
     }
 
-    jQuery(document).ready(function() {
+    jQuery(function() {
         jQuery.validator.addMethod("tcResultValue", function(value, element) {
             return isValidTcResultValue(value);
         }, '<s:text name="tc.error.bad.tc.result.value"/>');
