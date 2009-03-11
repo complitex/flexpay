@@ -106,7 +106,11 @@ public class QuittanceServiceImpl implements QuittanceService {
 		return quittances.get(0);
 	}
 
-	@Required
+    public List<Quittance> findAllQuittances() {
+        return quittanceDao.findAllQuittances();
+    }
+
+    @Required
 	public void setQuittanceDao(QuittanceDao quittanceDao) {
 		this.quittanceDao = quittanceDao;
 	}

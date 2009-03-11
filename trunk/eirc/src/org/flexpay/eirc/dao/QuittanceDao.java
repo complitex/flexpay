@@ -24,4 +24,10 @@ public interface QuittanceDao extends GenericDao<Quittance, Long>{
 	 */
 	@NotNull
 	List<Quittance> findQuittanceByNumber(String accountNumber, Date month, Integer number);
+
+    /**
+     * Returns list of all quitances
+     * @return list of all quitances
+     */
+    List<Quittance> findAllQuittances();
 }

@@ -63,4 +63,10 @@ public interface QuittanceService {
 	@Secured (Roles.QUITTANCE_READ)
 	@Nullable
 	Quittance findByNumber(@NotNull String quittanceNumber) throws FlexPayException;
+
+    /**
+     * Returns list of all quittances
+     * @return list of all quittances
+     */
+    List<Quittance> findAllQuittances();
 }
