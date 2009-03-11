@@ -328,9 +328,11 @@
 
     <!-- EIRC Quittance pay DEMO -->
     <bean id="demoQuittancePaySearchAction" class="org.flexpay.eirc.actions.quittance.demo.QuittancePaySearchAction"
+          p:quittanceService-ref="quittanceService"
           scope="prototype"/>
 
     <bean id="demoQuittancePayAction" class="org.flexpay.eirc.actions.quittance.demo.QuittancePayAction"
+          p:quittanceService-ref="quittanceService"
           scope="prototype"/>
     <!-- end of EIRC Quittance pay DEMO -->
 

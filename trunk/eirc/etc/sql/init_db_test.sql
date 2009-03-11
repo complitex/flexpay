@@ -295,13 +295,19 @@ SELECT @service_250:=last_insert_id();
 INSERT INTO eirc_service_descriptions_tbl (name, language_id, service_id)
 		VALUES ('Содержание животных', @ru_id, @service_250);
 
+-- Init Consumer infos
+insert into eirc_consumer_infos_tbl (id, status, first_name, middle_name, last_name,
+	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
+	values (1, 0, 'М', 'А', 'Иванофф',
+	'Н-ск', 'ул', 'ИВОНОВА', '27', '', '330');
+select @consumer_info:=1;
 
 -- Init EIRC accounts
-INSERT INTO eirc_eirc_accounts_tbl (id, version, status, apartment_id, person_id, account_number)
-	VALUES (1, 0, 0, @apartment_ivanova_329_id, @person_id, '09012345067');
+INSERT INTO eirc_eirc_accounts_tbl (id, version, status, apartment_id, person_id, account_number, consumer_info_id)
+	VALUES (1, 0, 0, @apartment_ivanova_329_id, @person_id, '09012345067', @consumer_info);
 SELECT @account_id_1:=1;
-INSERT INTO eirc_eirc_accounts_tbl (id, version, status, apartment_id, person_id, account_number)
-	VALUES (2, 0, 0, @apartment_ivanova_330_id, @person_id, '09076543021');
+INSERT INTO eirc_eirc_accounts_tbl (id, version, status, apartment_id, person_id, account_number, consumer_info_id)
+	VALUES (2, 0, 0, @apartment_ivanova_330_id, @person_id, '09076543021', @consumer_info);
 SELECT @account_id_2:=2;
 
 -- Init registry
@@ -313,13 +319,6 @@ select @eirc_registry:=1;
 INSERT INTO eirc_registry_records_tbl (id, version, service_code, registry_id, operation_date, personal_account_ext)
 	values (1, 0, '', @eirc_registry, '2008-01-01', '123456');
 select @eirc_registry_rec:=1;
-
--- Init Consumer infos
-insert into eirc_consumer_infos_tbl (id, status, first_name, middle_name, last_name,
-	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
-	values (1, 0, 'М', 'А', 'Иванофф',
-	'Н-ск', 'ул', 'ИВОНОВА', '27-', '', '330');
-select @consumer_info:=1;
 
 -- Init consumers
 insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
