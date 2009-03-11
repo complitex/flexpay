@@ -191,4 +191,11 @@
 			and (pr is null or (pr.beginDate<=current_date() and pr.endDate>=current_date()))
 	]]></query>
 
+    <query name="Quittance.findAllQuittances">
+        select distinct q
+        from Quittance q
+        inner join fetch q.eircAccount a
+    </query>
+
+
 </hibernate-mapping>

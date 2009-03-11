@@ -37,11 +37,6 @@ public class QuittancePayAction extends FPActionSupport {
         return INPUT;
     }
 
-    @Override
-    public void validate() {
-
-    }
-
     @NotNull
     protected String getErrorResult() {
         return INPUT;
