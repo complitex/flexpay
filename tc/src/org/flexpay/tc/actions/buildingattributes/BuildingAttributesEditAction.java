@@ -1,5 +1,6 @@
 package org.flexpay.tc.actions.buildingattributes;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.BuildingService;
@@ -13,12 +14,14 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
-
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.*;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
 
 /**
  * Action for updating building attributes
@@ -34,6 +37,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
     // This map (Attribute type id -> Attribute value) is used for saving attributes and is bound to UI form
     private Map<Long, String> attributeMap = CollectionUtils.map();
+    private Map<Long, String> attributeMapDBValues = CollectionUtils.map();
 
     // This list contains idattribute group identifiers
     private List<Long> attributeGroups = CollectionUtils.list();
@@ -48,31 +52,49 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     private BuildingAttributeTypeService buildingAttributeTypeService;
     private BuildingAttributeGroupService buildingAttributeGroupService;
 
-
     @NotNull
     protected String doExecute() throws Exception {
 
+        loadAttributeTypes();
+
         if (isSubmit()) {
+            if (!doValidate()) {
+                return INPUT;
+            }
             updateBuildingAttributes();
-            return REDIRECT_SUCCESS;
+            return SUCCESS;
         }
 
-        loadBuildingAttributes();
+        if (isDateSubmit()) {
+            loadAttributeValues();
+            return INPUT;
+        }
+
+        loadAttributeValues();
         return INPUT;
     }
 
-    @Override
-    public void validate() {
-        // TODO implement
+    private void loadAttributeTypes() throws FlexPayException {
+
+        loadBuildingWithAttributes();
+    }
+
+    private void loadAttributeValues() {
+
+        for (Long typeId : attributeMapDBValues.keySet()) {
+            attributeMap.put(typeId, attributeMapDBValues.get(typeId));
+        }
     }
 
     @NotNull
     protected String getErrorResult() {
-        return SUCCESS;
+
+        return INPUT;
     }
 
+
     // loading building attributes
-    private void loadBuildingAttributes() throws FlexPayException {
+    private void loadBuildingWithAttributes() throws FlexPayException {
 
         Long buildingId = building.getId();
 
@@ -94,14 +116,8 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         for (BuildingAttributeType type : attributeTypes) {
 
             BuildingAttributeBase attribute = btiBuilding.getAttribute(type);
-
             putAttribute(type, attribute);
         }
-    }
-
-    private BuildingAttributeType getAttributeTypeById(Long typeId) {
-
-        return buildingAttributeTypeService.readFull(new Stub<BuildingAttributeType>(typeId));
     }
 
     private void putAttribute(BuildingAttributeType type, BuildingAttributeBase attribute) throws FlexPayException {
@@ -118,9 +134,9 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         }
 
         if (attribute != null) {
-            attributeMap.put(type.getId(), attribute.getValueForDate(attributeDate));
+            attributeMapDBValues.put(type.getId(), attribute.getValueForDate(attributeDate));
         } else {
-            attributeMap.put(type.getId(), "");
+            attributeMapDBValues.put(type.getId(), "");
         }
     }
 
@@ -170,23 +186,29 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         return dateSubmitted != null;
     }
 
-    // rendering  utility methods
-    public String getAddress(@NotNull Long buildingId) throws Exception {
-        return addressService.getBuildingsAddress(new Stub<BuildingAddress>(buildingId), getUserPreferences().getLocale());
+    public List<Long> getGroupAttributeTypes(Long groupId) {
+
+        List<Long> result = CollectionUtils.list();
+
+        for (Long typeId : attributeMapDBValues.keySet()) {
+            BuildingAttributeType type = getAttributeTypeById(typeId);
+
+            if (type.getGroup().getId().equals(groupId)) {
+                result.add(typeId);
+            }
+        }
+
+        return result;
     }
 
-    public String formatDate(Date date) {
-        return DateUtil.format(date);
+    public String getAttributeValue(Long typeId) {
+        return attributeMap.get(typeId);
     }
 
-    public String getAttributeTypeName(Long typeId) {
+    // rendering utility methods
+    public boolean isTempAttribute(Long typeId) {
         BuildingAttributeType type = getAttributeTypeById(typeId);
-        return getTranslation(type.getTranslations()).getName();
-    }
-
-    public String getGroupName(Long groupId) {
-        BuildingAttributeGroup group = buildingAttributeGroupService.readFull(new Stub<BuildingAttributeGroup>(groupId));
-        return getTranslation(group.getTranslations()).getName();
+        return type.isTemp();
     }
 
     public boolean isBuildingAttributeTypeSimple(Long typeId) {
@@ -205,23 +227,39 @@ public class BuildingAttributesEditAction extends FPActionSupport {
         return type.getSortedValues();
     }
 
-    public Map<Long, String> getGroupAttributes(Long groupId) {
-        Map<Long, String> resultMap = CollectionUtils.map();
-
-        for (Long typeId : attributeMap.keySet()) {
-            BuildingAttributeType type = getAttributeTypeById(typeId);
-
-            if (type.getGroup().getId().equals(groupId)) {
-                resultMap.put(typeId, attributeMap.get(typeId));
-            }
-        }
-
-        return resultMap;
+    public String getAddress(@NotNull Long buildingId) throws Exception {
+        return addressService.getBuildingsAddress(new Stub<BuildingAddress>(buildingId), getUserPreferences().getLocale());
     }
 
-    public boolean isTempAttribute(Long typeId) {
+    public String formatDate(Date date) {
+        return DateUtil.format(date);
+    }
+
+    public String getAttributeTypeName(Long typeId) {
         BuildingAttributeType type = getAttributeTypeById(typeId);
-        return type.isTemp();
+        return getTranslation(type.getTranslations()).getName();
+    }
+
+    public String getGroupName(Long groupId) {
+        BuildingAttributeGroup group = buildingAttributeGroupService.readFull(new Stub<BuildingAttributeGroup>(groupId));
+        return getTranslation(group.getTranslations()).getName();
+    }
+
+    // utility methods
+    private BuildingAttributeType getAttributeTypeById(Long typeId) {
+
+        return buildingAttributeTypeService.readFull(new Stub<BuildingAttributeType>(typeId));
+    }
+
+    private String getAttributeNewValueByTypeName(String uniqueCode) throws FlexPayException {
+
+        BuildingAttributeType type = buildingAttributeTypeService.findTypeByName(uniqueCode);
+
+        if (type == null) {
+            throw new FlexPayException("Can't resolve building attribute type with unique code " + uniqueCode);
+        }
+
+        return attributeMap.get(type.getId());
     }
 
     // set/get form fields
@@ -285,5 +323,148 @@ public class BuildingAttributesEditAction extends FPActionSupport {
     @Required
     public void setBuildingAttributeGroupService(BuildingAttributeGroupService buildingAttributeGroupService) {
         this.buildingAttributeGroupService = buildingAttributeGroupService;
+    }
+
+    // validation
+    public boolean doValidate() {
+
+        BuildingAttributesValidator validator = new BuildingAttributesValidator();
+
+        try {
+            // checking number of floors
+            String floorsNumber = getAttributeNewValueByTypeName("ATTR_FLOORS_NUMBER");
+            if (!validator.checkFloorsNumber(floorsNumber)) {
+                addActionError(getText(validator.getErrorMessageCode()));
+            }
+
+            // checking porches
+            String porchesNumber = getAttributeNewValueByTypeName("ATTR_DOORWAYS_NUMBER");
+            if (!validator.checkPorchesNumber(porchesNumber)) {
+                addActionError(getText(validator.getErrorMessageCode()));
+            }
+
+            // checking  appartments
+            String appartmentsNumber = getAttributeNewValueByTypeName("ATTR_APARTMENTS_NUMBER");
+            if (!validator.checkAppartmentsNumber(appartmentsNumber)) {
+                addActionError(getText(validator.getErrorMessageCode()));
+            }
+
+            // checking year of building construction
+            String constructionYear = getAttributeNewValueByTypeName("ATTR_BUILD_YEAR");
+            if (!validator.checkConstructionYear(constructionYear)) {
+                addActionError(getText(validator.getErrorMessageCode()));
+            }
+
+            // checking living area
+            String livingArea = getAttributeNewValueByTypeName("ATTR_LIVE_SQUARE");
+            if (!validator.checkArea(livingArea)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_living_square"));
+            }
+
+            // checking area values
+            String softRoofSquare = getAttributeNewValueByTypeName("ATTR_SOFT_ROOF_SQUARE");
+            if (!validator.checkArea(softRoofSquare)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_soft_roof_square"));
+            }
+
+            String hardSlateRoofSquare = getAttributeNewValueByTypeName("ATTR_HARD_SLATE_ROOF_SQUARE");
+            if (!validator.checkArea(hardSlateRoofSquare)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_hard_slate_roof_square"));
+            }
+
+            String hardMetalRoofSquare = getAttributeNewValueByTypeName("ATTR_HARD_METAL_ROOF_SQUARE");
+            if (!validator.checkArea(hardMetalRoofSquare)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_hard_metal_roof_square"));
+            }
+
+            String basementSquare = getAttributeNewValueByTypeName("ATTR_BASEMENT_SQUARE");
+            if (!validator.checkArea(basementSquare)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_basement_square"));
+            }
+
+            String technicalFloorsSquare = getAttributeNewValueByTypeName("ATTR_TECHNICAL_FLOORS_SQUARE");
+            if (!validator.checkArea(technicalFloorsSquare)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_technical_floor_square"));
+            }
+
+            String arretSquare = getAttributeNewValueByTypeName("ATTR_ARRET_SQUARE");
+            if (!validator.checkArea(arretSquare)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_arret_square"));
+            }
+
+            String firstFloorTotalSquare = getAttributeNewValueByTypeName("ATTR_FIRST_FLOORS_TOTAL_SQUARE");
+            if (!validator.checkArea(firstFloorTotalSquare)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_first_floor_total_square"));
+            }
+
+            String liftedAppartmentsTotalSquare = getAttributeNewValueByTypeName("ATTR_LIFTED_APARTMENTS_TOTAL_SQUARE");
+            if (!validator.checkArea(liftedAppartmentsTotalSquare)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_lifted_appartments_total_square"));
+            }
+
+            String adsSuitedAppartmentsTotalSquare = getAttributeNewValueByTypeName("ATTR_ADS_SUITED_APARTMENTS_TOTAL_SQUARE");
+            if (!validator.checkArea(adsSuitedAppartmentsTotalSquare)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_ads_suited_appartments_total_square"));
+            }
+
+            // checking near house territory area
+            String nearHouseNonCategorySquare = getAttributeNewValueByTypeName("ATTR_NEAR_HOUSE_NONCATEGORY_TERRITORY_TOTAL_SQUARE");
+            if (!validator.checkArea(nearHouseNonCategorySquare)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_non_category_square"));
+            }
+
+            String nearHouse1stCategorySquare = getAttributeNewValueByTypeName("ATTR_NEAR_HOUSE_1ST_CATEGORY_TERRITORY_TOTAL_SQUARE");
+            if (!validator.checkArea(nearHouse1stCategorySquare)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_1st_category_square"));
+            }
+
+            String nearHouse2ndCategorySquare = getAttributeNewValueByTypeName("ATTR_NEAR_HOUSE_2ND_CATEGORY_TERRITORY_TOTAL_SQUARE");
+            if (!validator.checkArea(nearHouse2ndCategorySquare)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_2nd_category_square"));
+            }
+
+            String nearHouse3rdCategorySquare = getAttributeNewValueByTypeName("ATTR_NEAR_HOUSE_3D_CATEGORY_TERRITORY_TOTAL_SQUARE");
+            if (!validator.checkArea(nearHouse3rdCategorySquare)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_3rd_category_square"));
+            }
+
+            String nearHouseTotalSquare = getAttributeNewValueByTypeName("ATTR_NEAR_HOUSE_TERRITORY_TOTAL_SQUARE");
+            if (!validator.checkArea(nearHouseTotalSquare)) {
+                addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_total_square"));
+            }
+
+            // checking summ
+            if (StringUtils.isNotEmpty(nearHouseNonCategorySquare)
+                    && StringUtils.isNotEmpty(nearHouse1stCategorySquare)
+                    && StringUtils.isNotEmpty(nearHouse2ndCategorySquare)
+                    && StringUtils.isNotEmpty(nearHouse3rdCategorySquare)
+                    && StringUtils.isNotEmpty(nearHouseTotalSquare)
+                    ) {
+                try {
+                    BigDecimal nonCategory = new BigDecimal(nearHouseNonCategorySquare);
+                    BigDecimal firstCategory = new BigDecimal(nearHouse1stCategorySquare);
+                    BigDecimal secondCategory = new BigDecimal(nearHouse2ndCategorySquare);
+                    BigDecimal thirdCategory = new BigDecimal(nearHouse3rdCategorySquare);
+                    BigDecimal userTotal = new BigDecimal(nearHouseTotalSquare);
+                    BigDecimal realTotal = BigDecimal.ZERO;
+                    realTotal = realTotal.add(nonCategory);
+                    realTotal = realTotal.add(firstCategory);
+                    realTotal = realTotal.add(secondCategory);
+                    realTotal = realTotal.add(thirdCategory);
+
+                    if (realTotal.compareTo(userTotal) != 0) {
+                        addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_total_square_bad_summ"));
+                    }
+                } catch (NumberFormatException nfe) {
+                    log.info("Not all near house squares are valid. Total summ check is skipped.");
+                }
+            } else {
+                log.info("Not all near house squares are present. Total summ check is skipped.");
+            }
+        } catch (FlexPayException e) {
+            log.error("Building attributes validation error: " + e.getMessage(), e);
+        }
+
+        return !hasActionErrors();
     }
 }

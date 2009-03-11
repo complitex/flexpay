@@ -59,12 +59,12 @@
 
     <definition name="tc.tc_results.list" extends="tc.data">
         <put-attribute name="title" value="tc.tc_results_list.title"/>
-        <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_tc_results_list.jsp"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/tc_results/building_tc_results_list.jsp"/>
     </definition>
 
     <definition name="tc.tc_results.edit" extends="tc.data">
         <put-attribute name="title" value="tc.tc_results_edit.title"/>
-        <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_tc_results_edit.jsp"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/tc_results/building_tc_results_edit.jsp"/>
     </definition>
 
     <definition name="tc.rules_file.calculate" extends="ab.layout.content">

@@ -9,10 +9,10 @@
     <applicationName>tc</applicationName>
 
     <tcDataRoot>/tc</tcDataRoot>
-<!--
+
     <tcMaximumFloors>16</tcMaximumFloors>
     <tcMaximumPorches>16</tcMaximumPorches>
     <tcMaximumAppartments>1000</tcMaximumAppartments>
--->
+
 
 </flexpay>

@@ -24,8 +24,8 @@
 
     // defining attribute groups
     var attributeGroups = new Array();
-    <s:iterator value="attributeGroups" id="groupId">
-    attributeGroups[<s:property value="#groupId"/>] = new Array(<s:iterator value="%{getGroupAttributes(#groupId)}" status="status">"#attr_<s:property value="%{key}"/>_id"<s:if test="!#status.last">, </s:if></s:iterator>);
+    <s:iterator value="%{getAttributeGroups()}" id="groupId">
+    attributeGroups[<s:property value="#groupId"/>] = new Array(<s:iterator value="%{getGroupAttributeTypes(#groupId)}" id="typeId" status="status">"#attr_<s:property value="%{#typeId}"/>_id"<s:if test="!#status.last">, </s:if></s:iterator>);
     </s:iterator>
 
     function toggleAttributesGroup(groupId) {
@@ -65,14 +65,10 @@
             <td style="text-align:right;"><s:submit name="submitted" value="%{getText('common.save')}" cssClass="btn-exit"/></td>
         </tr>
 
-        <tr><td colspan="2" class="cols_1"/></tr>
-
         <tr><td class="th_s" colspan="2"><s:text name="tc.building_attributes"/></td></tr>
 
-        <tr><td colspan="2" class="cols_1"/></tr>
-
         <%-- attribute groups --%>
-        <s:iterator value="attributeGroups" id="groupId" status="groupStatus">
+        <s:iterator value="%{getAttributeGroups()}" id="groupId" status="groupStatus">
             <tr>
                 <td class="th" colspan="2" style="padding:0;">
                     <table style="width:100%;font-size:100%;font-weight: bold;">
@@ -86,21 +82,20 @@
                 </td>
             </tr>
 
-            <s:iterator value="%{getGroupAttributes(#groupId)}">
-                <tr id="attr_<s:property value="%{key}"/>_id" valign="middle" class="cols_1" <s:if test="!#groupStatus.first"> style="display:none;"</s:if>>
-                    <td class="col" style="width:80%;"><s:property value="%{getAttributeTypeName(key)}"/></td>
+            <s:iterator value="%{getGroupAttributeTypes(#groupId)}" id="typeId">
+                <tr id="attr_<s:property value="%{#typeId}"/>_id" valign="middle" class="cols_1" <s:if test="!#groupStatus.first"> style="display:none;"</s:if>>
+                    <td class="col" style="width:80%;"><s:property value="%{getAttributeTypeName(#typeId)}"/></td>
                     <td class="col" style="width:20%;">
-                        <s:if test="%{isBuildingAttributeTypeSimple(key)}">
+                        <s:if test="%{isBuildingAttributeTypeSimple(#typeId)}">
                             <nobr>
-                                <s:textfield name="attributeMap[%{key}]" value="%{value}" cssStyle="width:140px;"/>
-                                <s:if test="%{isTempAttribute(key)}"><img src="<s:url value="/resources/common/img/i_clock.gif"/>" alt="<s:text name="tc.temp_attribute"/>" style="vertical-align: middle;"/></s:if>
+                                <s:textfield name="attributeMap[%{#typeId}]" value="%{getAttributeValue(#typeId)}" cssStyle="width:140px;"/>
+                                <s:if test="%{isTempAttribute(#typeId)}"><img src="<s:url value="/resources/common/img/i_clock.gif"/>" alt="<s:text name="tc.temp_attribute"/>" style="vertical-align: middle;"/></s:if>
                             </nobr>
                         </s:if>
-
-                        <s:if test="%{isBuildingAttributeTypeEnum(key)}">
+                        <s:if test="%{isBuildingAttributeTypeEnum(#typeId)}">
                             <nobr>
-                                <s:select name="attributeMap[%{key}]" value="%{value}" list="%{getTypeValues(key)}" listKey="order" listValue="value" emptyOption="true" cssStyle="width:140px;"/>
-                                <s:if test="%{isTempAttribute(key)}"><img src="<s:url value="/resources/common/img/i_clock.gif"/>" alt="<s:text name="tc.temp_attribute"/>" style="vertical-align:middle;"/></s:if>
+                                <s:select name="attributeMap[%{#typeId}]" value="%{getAttributeValue(#typeId)}" list="%{getTypeValues(#typeId)}" listKey="order" listValue="value" emptyOption="true" cssStyle="width:140px;"/>
+                                <s:if test="%{isTempAttribute(#typeId)}"><img src="<s:url value="/resources/common/img/i_clock.gif"/>" alt="<s:text name="tc.temp_attribute"/>" style="vertical-align:middle;"/></s:if>
                             </nobr>
                         </s:if>
                     </td>

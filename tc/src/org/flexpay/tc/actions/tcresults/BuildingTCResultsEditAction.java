@@ -5,6 +5,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.ValidationUtil;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.service.TariffCalculationResultService;
@@ -25,7 +26,9 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
     // form data
     private String buildingId;
     private String calculationDate;
+
     private Map<Long, String> tariffMap = CollectionUtils.map();
+    private Map<Long, String> tariffMapDBValues = CollectionUtils.map();
 
     // required services
     private TariffService tariffService;
@@ -34,49 +37,67 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
     @NotNull
     protected String doExecute() throws Exception {
 
+        loadTCResults();
+
         if (isSubmit()) {
-            Date calcDate = DateUtil.parseBeginDate(calculationDate);
-
-            for (Long tariffId : tariffMap.keySet()) {
-                String value = tariffMap.get(tariffId);
-                if (value.contains(",")) {
-                    value = value.replace(",", ".");
-                }
-
-                Stub<Tariff> tariffStub = new Stub<Tariff>(tariffId.longValue());
-                Stub<Building> buildingStub = new Stub<Building>(Long.parseLong(buildingId));
-                TariffCalculationResult result = tariffCalculationResultService.findTariffCalcResults(calcDate, tariffStub, buildingStub);
-
-                result.setValue(StringUtils.isEmpty(value) ? BigDecimal.ZERO : new BigDecimal(value));
-
-                tariffCalculationResultService.update(result);
+            if (!doValidate()) {
+                return INPUT;
             }
-
+            updateTCResults();
             return REDIRECT_SUCCESS;
-        } else {
-            loadTCResults();
-            return INPUT;
         }
+
+        loadTCResultsValues();
+        return INPUT;
+    }
+
+    @NotNull
+    protected String getErrorResult() {
+
+        return INPUT;
     }
 
     private void loadTCResults() {
+
         Date calcDate = DateUtil.parseBeginDate(calculationDate);
 
         Stub<BuildingAddress> buildingAddressStub = new Stub<BuildingAddress>(Long.parseLong(buildingId));
         List<TariffCalculationResult> calculationResults = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndAddressId(calcDate, buildingAddressStub);
 
         for (TariffCalculationResult result : calculationResults) {
-            tariffMap.put(result.getTariff().getId(), result.getValue().toString());
+            tariffMapDBValues.put(result.getTariff().getId(), result.getValue().toString());
         }
     }
 
-    @NotNull
-    protected String getErrorResult() {
-        return REDIRECT_SUCCESS;
+    private void loadTCResultsValues() {
+
+        for (Long typeId : tariffMapDBValues.keySet()) {
+            tariffMap.put(typeId, tariffMapDBValues.get(typeId));
+        }
     }
 
-    @Override
-    public void validate() {
+    private void updateTCResults() throws FlexPayException {
+
+        Date calcDate = DateUtil.parseBeginDate(calculationDate);
+
+        for (Long tariffId : tariffMap.keySet()) {
+            String value = tariffMap.get(tariffId);
+            if (value.contains(",")) {
+                value = value.replace(",", ".");
+            }
+
+            Stub<Tariff> tariffStub = new Stub<Tariff>(tariffId);
+            Stub<Building> buildingStub = new Stub<Building>(Long.parseLong(buildingId));
+            TariffCalculationResult result = tariffCalculationResultService.findTariffCalcResults(calcDate, tariffStub, buildingStub);
+
+            result.setValue(StringUtils.isEmpty(value) ? BigDecimal.ZERO : new BigDecimal(value));
+
+            tariffCalculationResultService.update(result);
+        }
+    }
+
+    public boolean doValidate() {
+
         for (Long tariffId : tariffMap.keySet()) {
             String valueString = tariffMap.get(tariffId);
 
@@ -86,9 +107,11 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
 
             if (!ValidationUtil.checkTariffCalculationResultValue(valueString)) {
                 addActionError(getText("tc.error.tc.results.form.contains.errors"));
-                return;
+                return false;
             }
         }
+
+        return true;
     }
 
     // rendering utility methods
@@ -104,7 +127,7 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
     public BigDecimal getTotalTariff() {
 
         BigDecimal total = BigDecimal.ZERO;
-        for (String tariffValue : tariffMap.values()) {
+        for (String tariffValue : tariffMapDBValues.values()) {
             total = total.add(new BigDecimal(tariffValue));
         }
 
@@ -112,7 +135,6 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
     }
 
     // get/set form data
-
     public String getBuildingId() {
         return buildingId;
     }
