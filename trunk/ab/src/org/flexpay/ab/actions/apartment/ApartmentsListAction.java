@@ -9,13 +9,11 @@ import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
 public class ApartmentsListAction extends BuildingsActionsBase {
-
-	private ParentService<BuildingsFilter> parentService;
-	protected ApartmentService apartmentService;
 
 	protected CountryFilter countryFilter = new CountryFilter();
 	protected RegionFilter regionFilter = new RegionFilter();
@@ -24,6 +22,9 @@ public class ApartmentsListAction extends BuildingsActionsBase {
 	protected BuildingsFilter buildingsFilter = new BuildingsFilter();
 
 	private List<Apartment> apartments = CollectionUtils.list();
+
+	private ParentService<BuildingsFilter> parentService;
+	protected ApartmentService apartmentService;
 
 	public ApartmentsListAction() {
 		streetNameFilter.setShowSearchString(true);
@@ -92,56 +93,26 @@ public class ApartmentsListAction extends BuildingsActionsBase {
 		buildingsFilter = (BuildingsFilter) filters.peek(0);
 	}
 
-	/**
-	 * Getter for property 'countryFilter'.
-	 *
-	 * @return Value for property 'countryFilter'.
-	 */
 	public CountryFilter getCountryFilter() {
 		return countryFilter;
 	}
 
-	/**
-	 * Setter for property 'countryFilter'.
-	 *
-	 * @param countryFilter Value to set for property 'countryFilter'.
-	 */
 	public void setCountryFilter(CountryFilter countryFilter) {
 		this.countryFilter = countryFilter;
 	}
 
-	/**
-	 * Getter for property 'regionFilter'.
-	 *
-	 * @return Value for property 'regionFilter'.
-	 */
 	public RegionFilter getRegionFilter() {
 		return regionFilter;
 	}
 
-	/**
-	 * Setter for property 'regionFilter'.
-	 *
-	 * @param regionFilter Value to set for property 'regionFilter'.
-	 */
 	public void setRegionFilter(RegionFilter regionFilter) {
 		this.regionFilter = regionFilter;
 	}
 
-	/**
-	 * Getter for property 'townFilter'.
-	 *
-	 * @return Value for property 'townFilter'.
-	 */
 	public TownFilter getTownFilter() {
 		return townFilter;
 	}
 
-	/**
-	 * Setter for property 'townFilter'.
-	 *
-	 * @param townFilter Value to set for property 'townFilter'.
-	 */
 	public void setTownFilter(TownFilter townFilter) {
 		this.townFilter = townFilter;
 	}
@@ -154,38 +125,26 @@ public class ApartmentsListAction extends BuildingsActionsBase {
 		this.streetNameFilter = streetNameFilter;
 	}
 
-	/**
-	 * Getter for property 'buildingsFilter'.
-	 *
-	 * @return Value for property 'buildingsFilter'.
-	 */
 	public BuildingsFilter getBuildingsFilter() {
 		return buildingsFilter;
 	}
 
-	/**
-	 * Setter for property 'buildingsFilter'.
-	 *
-	 * @param buildingsFilter Value to set for property 'buildingsFilter'.
-	 */
 	public void setBuildingsFilter(BuildingsFilter buildingsFilter) {
 		this.buildingsFilter = buildingsFilter;
 	}
 
-	/**
-	 * Getter for property 'buildingsList'.
-	 *
-	 * @return Value for property 'buildingsList'.
-	 */
 	public List<Apartment> getApartments() {
 		return apartments;
 	}
 
+	@Required
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
 	}
 
+	@Required
 	public void setParentService(ParentService<BuildingsFilter> parentService) {
 		this.parentService = parentService;
 	}
+
 }

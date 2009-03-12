@@ -11,7 +11,7 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fregions').action='<s:url action="regionDelete"/>';$('fregions').submit();"
+					   onclick="jQuery('#fregions').attr('action','<s:url action="regionDelete"/>');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="regionCreate"/>';"
@@ -21,7 +21,7 @@
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%"><input type="checkbox"
-											 onchange="FP.setCheckboxes(this.checked, 'objectIds')">
+											 onchange="FP.setCheckboxes(this.checked, 'objectIds');">
 			</td>
 			<td class="th" width="63%"><s:text name="ab.region"/></td>
 			<td class="th" width="35%">&nbsp;</td>
@@ -49,10 +49,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fregions').action='<s:url action="regionDelete"/>';$('fregions').submit()"
+					   onclick="jQuery('#fregions').attr('action','<s:url action="regionDelete"/>');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="regionCreate"/>'"
+					   onclick="window.location='<s:url action="regionCreate"/>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

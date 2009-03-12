@@ -5,8 +5,9 @@ import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +17,25 @@ import java.util.List;
  */
 public class StreetSearchAjaxAction extends FPActionSupport {
 
-	private StreetService streetService;
+	private String q;
+	private String townId;
 	private List<StreetVis> streetVisList;
-	private String searchString;
-	private Town town = new Town();
+
+	private StreetService streetService;
 
 	@NotNull
 	public String doExecute() throws FlexPayException {
 
-		log.debug("Searching streets: {}, town: {}", searchString, town.getId());
+		Long townIdLong;
 
-		List<Street> streets = streetService.findByTownAndName(
-				stub(town), "%" + searchString + "%");
+		try {
+			townIdLong = Long.parseLong(townId);
+		} catch (Exception e) {
+			log.warn("Incorrect town id in filter ({})", townId);
+			return SUCCESS;
+		}
+
+		List<Street> streets = streetService.findByTownAndQuery(new Stub<Town>(townIdLong), "%" + q + "%");
 
 		log.debug("Found streets: {}", streets);
 
@@ -35,10 +43,8 @@ public class StreetSearchAjaxAction extends FPActionSupport {
 		for (Street street : streets) {
 			StreetVis streetVis = new StreetVis();
 			streetVis.setId(street.getId());
-			streetVis.setName(getTranslation(
-					street.getCurrentName().getTranslations()).getName());
-			streetVis.setType(getTranslation(
-					street.getCurrentType().getTranslations()).getShortName());
+			streetVis.setName(getTranslation(street.getCurrentName().getTranslations()).getName());
+			streetVis.setType(getTranslation(street.getCurrentType().getTranslations()).getName());
 			streetVisList.add(streetVis);
 		}
 
@@ -57,81 +63,53 @@ public class StreetSearchAjaxAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	/**
-	 * @param searchString the streetVar to set
-	 */
-	public void setSearchString(String searchString) {
-		this.searchString = searchString;
+	public void setQ(String q) {
+		this.q = q;
 	}
 
-	public Town getTown() {
-		return town;
+	public void setTownId(String townId) {
+		this.townId = townId;
 	}
 
-	public void setTown(Town town) {
-		this.town = town;
-	}
-
-	/**
-	 * @param streetService the streetService to set
-	 */
-	public void setStreetService(StreetService streetService) {
-		this.streetService = streetService;
+	public List<StreetVis> getStreetVisList() {
+		return streetVisList;
 	}
 
 	public static class StreetVis {
+
 		private Long id;
 		private String name;
 		private String type;
 
-		/**
-		 * @return the id
-		 */
 		public Long getId() {
 			return id;
 		}
 
-		/**
-		 * @param id the id to set
-		 */
 		public void setId(Long id) {
 			this.id = id;
 		}
 
-		/**
-		 * @return the name
-		 */
 		public String getName() {
 			return name;
 		}
 
-		/**
-		 * @param name the name to set
-		 */
 		public void setName(String name) {
 			this.name = name;
 		}
 
-		/**
-		 * @return the type
-		 */
 		public String getType() {
 			return type;
 		}
 
-		/**
-		 * @param type the type to set
-		 */
 		public void setType(String type) {
 			this.type = type;
 		}
+
 	}
 
-	/**
-	 * @return the streetVisList
-	 */
-	public List<StreetVis> getStreetVisList() {
-		return streetVisList;
+	@Required
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
 	}
 
 }

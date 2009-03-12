@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <td class="topmenu_form" nowrap="1">
     <table cellpadding="0" cellspacing="0" border="0">

@@ -10,11 +10,15 @@
     <tiles:importAttribute ignore="true" name="title" scope="request" />
     <title><s:text name="%{#attr.title}" /></title>
     <link rel="stylesheet" type="text/css" href="<s:url value="/resources/common/style/fp.css" includeParams="none"/>"/>
+    <link rel="stylesheet" type="text/css" href="<s:url value="/resources/common/js/jquery/autocomplete/jquery.autocomplete.css" includeParams="none"/>" />
 
 	<!-- calendar stylesheet -->
 	<link rel="stylesheet" type="text/css" href="<s:url value="/resources/common/js/jscalendar/calendar-blue.css" includeParams="none"/>" />
 
 	<script type="text/javascript" src="<s:url value="/resources/common/js/prototype.js" includeParams="none"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/common/js/jquery/jquery-1.3.2.js"/>"></script>
+    <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/autocomplete/jquery.autocomplete.js" includeParams="none"/>"></script>
+    <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery.protify-0.2.js" includeParams="none"/>"></script>
 	<script type="text/javascript" src="<s:url value="/resources/common/js/flexpay_common.js" includeParams="none"/>"></script>
 
 	<!-- main calendar program -->
@@ -27,10 +31,6 @@
 	<!-- the following script defines the Calendar.setup helper function, which makes
 		 adding a calendar a matter of 1 or 2 lines of code. -->
 	<script type="text/javascript" src="<s:url value="/resources/common/js/jscalendar/calendar-setup.js" includeParams="none"/>"></script>
-
-	<!-- Text field autocomplete script -->
-	<link rel="stylesheet" type="text/css" href="<s:url value="/resources/common/js/autosuggest/autosuggest_inquisitor.css" includeParams="none"/>" />
-	<script type="text/javascript" src="<s:url value="/resources/common/js/autosuggest/bsn.AutoSuggest_2.1.3.js" includeParams="none"/>"></script>
 
 	<!-- Window script -->
 	<script type="text/javascript" src="<s:url value="/resources/common/js/windows_js_1.3/javascripts/window.js" includeParams="none"/>"></script>

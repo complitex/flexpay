@@ -12,7 +12,7 @@
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%"><input type="checkbox"
-											 onchange="FP.setCheckboxes(this.checked, 'objectIds')">
+											 onchange="FP.setCheckboxes(this.checked, 'objectIds');">
 			</td>
 			<td class="th" width="20%"><s:text name="ab.person.last_name"/></td>
 			<td class="th" width="20%"><s:text name="ab.person.first_name"/></td>
@@ -40,11 +40,11 @@
 			<td colspan="7">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-				<%-- onclick="$('fobjects').action='<s:url action="delete_persons"/>';$('fobjects').submit()" --%>
-					   onclick="alert('<s:text name="error.not_implemented" />')"
+				<%-- onclick="jQuery('#fobjects').action='<s:url action="delete_persons"/>';jQuery('#fobjects').submit();" --%>
+					   onclick="alert('<s:text name="error.not_implemented" />');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="personEdit"><s:param name="person.id" value="0"/></s:url>'"
+					   onclick="window.location='<s:url action="personEdit"><s:param name="person.id" value="0"/></s:url>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

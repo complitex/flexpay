@@ -85,6 +85,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 *
 	 * @param objectIds Apartments identifiers
 	 */
+	@Transactional (readOnly = false)
 	public void disable(@NotNull Set<Long> objectIds) {
 		for (Long id : objectIds) {
 			Apartment apartment = apartmentDao.read(id);

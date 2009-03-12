@@ -14,8 +14,8 @@
 		<tr>
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
-				<input type="button" class="btn-exit"
-				       onclick="$('fobjects').action='<s:url action="buildingDelete" />';$('fobjects').submit();"
+				<input type="submit" class="btn-exit"
+				       onclick="jQuery('#fobjects').attr('action','<s:url action="buildingDelete" />');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 				       onclick="window.location='<s:url action="buildingCreate"/>';"
@@ -25,8 +25,8 @@
 
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
-			<td class="th" width="1%"><input type="checkbox"
-											 onchange="FP.setCheckboxes(this.checked, 'objectIds');">
+			<td class="th" width="1%">
+                <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
 			</td>
 			<td class="th" ><s:text name="ab.building"/></td>
 			<td class="th">&nbsp;</td>
@@ -54,11 +54,11 @@
 		<tr>
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
-				<input type="button" class="btn-exit"
-				       onclick="$('fobjects').action='<s:url action="buildingDelete" />';$('fobjects').submit();"
+				<input type="submit" class="btn-exit"
+				       onclick="jQuery('#fobjects').attr('action','<s:url action="buildingDelete" />');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="submit" class="btn-exit"
-				       onclick="$('fobjects').action='<s:url action="buildingCreate"/>';"
+				       onclick="jQuery('#fobjects').attr('action','<s:url action="buildingCreate"/>');"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

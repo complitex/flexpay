@@ -216,4 +216,5 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	public void setRegionNameTemporalDao(RegionNameTemporalDao regionNameTemporalDao) {
 		this.regionNameTemporalDao = regionNameTemporalDao;
 	}
+
 }

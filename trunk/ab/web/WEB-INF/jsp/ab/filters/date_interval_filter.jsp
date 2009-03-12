@@ -8,7 +8,7 @@
 	 style="cursor: pointer; border: 1px solid red;"
 	 title="<s:text name="common.calendar"/>"
 	 onmouseover="this.style.background='red';"
-	 onmouseout="this.style.background=''"/>
+	 onmouseout="this.style.background='';"/>
 &nbsp;&nbsp;
 <s:text name="ab.till"/>
 <input type="text" name="dateInterval_end" id="dateInterval.end"
@@ -18,7 +18,7 @@
 	 style="cursor: pointer; border: 1px solid red;"
 	 title="<s:text name="common.calendar"/>"
 	 onmouseover="this.style.background='red';"
-	 onmouseout="this.style.background=''"/>
+	 onmouseout="this.style.background='';"/>
 <script type="text/javascript">
 Calendar.setup({
 	inputField	 : "dateInterval.begin",

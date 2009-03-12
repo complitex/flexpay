@@ -14,6 +14,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 import java.util.Locale;
@@ -88,15 +89,19 @@ public class AddressServiceImpl implements AddressService {
 		return getBuildingsAddress(stub(candidate), locale);
 	}
 
+	@Required
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
 	}
 
+	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
 
+	@Required
 	public void setStreetService(StreetService streetService) {
 		this.streetService = streetService;
 	}
+
 }

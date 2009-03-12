@@ -42,6 +42,20 @@ public interface StreetService extends
 	List<Street> findByTownAndName(@NotNull Stub<Town> stub, @NotNull String name);
 
 	/**
+	 * Lookup streets by query and town id. Query is a string
+	 * which may contains in folow string:
+	 *
+	 * street_type street_name
+	 *
+	 * @param stub TownStub
+	 * @param query searching string
+	 * @return List of founded streets
+	 */
+	@Secured (Roles.STREET_READ)
+	@NotNull
+	List<Street> findByTownAndQuery(@NotNull Stub<Town> stub, @NotNull String query);
+
+	/**
 	 * Save Street types timeline
 	 *
 	 * @param object Street to update

@@ -239,6 +239,12 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return streetDao.findByTownAndName(stub.getId(), name);
 	}
 
+	@NotNull
+	@Transactional (readOnly = true)
+	public List<Street> findByTownAndQuery(@NotNull Stub<Town> stub, @NotNull String query) {
+		return streetDao.findByTownAndQuery(stub.getId(), query);
+	}
+
 	/**
 	 * Save Street types timeline
 	 *
@@ -361,4 +367,5 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	public void setStreetTypeTemporalDao(StreetTypeTemporalDao streetTypeTemporalDao) {
 		this.streetTypeTemporalDao = streetTypeTemporalDao;
 	}
+
 }

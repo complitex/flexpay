@@ -57,7 +57,7 @@
 		</action>
 
 		<action name="streetSearchAjax" class="streetSearchAjaxAction">
-			<result type="dispatcher">/WEB-INF/jsp/ab/streets_list_ajax.jsp</result>
+            <result type="dispatcher">/WEB-INF/jsp/ab/filters/streets_search_response.jsp</result>
 		</action>
 
 		<!--<action name="building_ajax" class="buildingAjaxAction">-->

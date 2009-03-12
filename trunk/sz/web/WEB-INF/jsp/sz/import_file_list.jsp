@@ -85,13 +85,13 @@
         </tr>
         <tr>
             <td colspan="10">
-                <input type="button" class="btn-exit" onclick="doAction('loadToDB');" value="<s:text name="sz.file_list.action.load_to_db" />" />
+                <input type="submit" class="btn-exit" onclick="doAction('loadToDB');" value="<s:text name="sz.file_list.action.load_to_db" />" />
                 &nbsp;
-                <input type="button" class="btn-exit" onclick="doAction('fullDelete');" value="<s:text name="sz.file_list.action.full_delete" />" />
+                <input type="submit" class="btn-exit" onclick="doAction('fullDelete');" value="<s:text name="sz.file_list.action.full_delete" />" />
                 &nbsp;
-                <input type="button" class="btn-exit" onclick="doAction('loadFromDB');" value="<s:text name="sz.file_list.action.load_from_db" />" />
+                <input type="submit" class="btn-exit" onclick="doAction('loadFromDB');" value="<s:text name="sz.file_list.action.load_from_db" />" />
                 &nbsp;
-                <input type="button" class="btn-exit" onclick="doAction('deleteFromDB');" value="<s:text name="sz.file_list.action.delete_from_db" />" />
+                <input type="submit" class="btn-exit" onclick="doAction('deleteFromDB');" value="<s:text name="sz.file_list.action.delete_from_db" />" />
                 &nbsp;
                 <input type="button" class="btn-exit" onclick="location.reload();" value="<s:text name="sz.file_list.refresh_list" />" />
                 <input id="action1" type="hidden" name="" value="loadToDB" />
@@ -109,11 +109,9 @@
 <script type="text/javascript">
 
     function doAction(action) {
-        $('action1').name = "action1";
-        $('action1').value = action;
-        var form = $('fObjects');
-        form.action = "<s:url action="/szFileOperation" />";
-        form.submit();
+        jQuery("#action1").attr("name", "action1");
+        jQuery("#action1").val(action);
+        jQuery("#fObjects").attr("action", "<s:url action="szFileOperation" />");
     }
 
 </script>

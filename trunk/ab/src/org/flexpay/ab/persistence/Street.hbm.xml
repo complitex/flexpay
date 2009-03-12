@@ -172,4 +172,19 @@
 		WHERE s.parent.id=? AND t.invalidDate='2100-12-31' AND lower(tr.name) like ?
 	</query>
 
+    <query name="Street.findByTownAndQuery">
+        select distinct s
+        from Street s
+            left join fetch s.nameTemporals t
+            left join fetch t.value v
+            left join fetch v.translations tr
+            left join fetch tr.lang l
+            left join fetch s.typeTemporals tt
+            left join fetch tt.value tv
+            left join fetch tv.translations ttr
+        where s.parent.id=?
+              and t.invalidDate='2100-12-31'
+              and lower(concat(ttr.name, ' ', tr.name)) like ?
+    </query>
+
 </hibernate-mapping>
