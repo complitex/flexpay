@@ -2,6 +2,7 @@ package org.flexpay.common.persistence.history.impl;
 
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryRecord;
+import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.util.CollectionUtils;
 
 import java.io.*;
@@ -68,6 +69,9 @@ public class XmlHistoryPacker extends HistoryPackerBase {
 	protected void packBatch(List<Diff> diffs, OutputStream os, HistoryPackingContext context) throws Exception {
 
 		for (Diff diff : diffs) {
+
+			log.debug("Packing diff #{}", diff.getId());
+
 			context.getConsumer().setLastPackedDiff(diff);
 			List<HistoryRecord> records = CollectionUtils.list();
 			for (HistoryRecord record : diff.getHistoryRecords()) {
@@ -81,7 +85,7 @@ public class XmlHistoryPacker extends HistoryPackerBase {
 				context.addRecord();
 			}
 
-			if (records.isEmpty()) {
+			if (records.isEmpty() && diff.getOperationType() != HistoryOperationType.TYPE_DELETE) {
 				log.debug("no records in diff to pack: {}", diff);
 				continue;
 			}

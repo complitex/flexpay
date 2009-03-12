@@ -157,6 +157,7 @@
 			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
 
 		<antcall target="template.set_db_name" />
+		<antcall target="template.switch_instance_id" />
 
 		<war destfile="${distr.dir}/${tc.war.name}" needxmlfile="false">
 			<fileset dir="${build.dir}/web" />

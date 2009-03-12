@@ -9,6 +9,6 @@
     <logPreviewLinesNumber>100</logPreviewLinesNumber>
 
 	<!-- Unique instance identifier -->
-	<instanceId>1</instanceId>
+	<instanceId>COMMON_INSTANCE</instanceId>
 
 </flexpay>

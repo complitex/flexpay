@@ -1,8 +1,8 @@
 package org.flexpay.common.persistence.history.impl;
 
-import org.flexpay.common.persistence.history.ObjectsSyncer;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryHandler;
+import org.flexpay.common.persistence.history.ObjectsSyncer;
 import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 public class ObjectsSyncerImpl implements ObjectsSyncer {
 
@@ -27,24 +27,34 @@ public class ObjectsSyncerImpl implements ObjectsSyncer {
 	 */
 	public void processHistory(@NotNull List<Diff> diffs) {
 
+		log.info("About to process {} diffs", diffs.size());
+
 		for (Diff diff : diffs) {
+
+			log.info("Processing history diff: {}", diff);
+
 			try {
+				boolean processed = true;
 				for (HistoryHandler handler : handlers) {
 					if (handler.supports(diff)) {
 						handler.process(diff);
-						diffService.update(diff);
+						diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 						break;
 					}
 				}
 
-				// no handler found, setting diff to ignored
-				log.warn("No handler found to process diff {}", diff);
-				diff.setProcessingStatus(ProcessingStatus.STATUS_IGNORED);
+				if (!processed) {
+					// no handler found, setting diff to ignored
+					log.warn("No handler found to process diff {}", diff);
+					diff.setProcessingStatus(ProcessingStatus.STATUS_IGNORED);
+				}
 				diffService.update(diff);
 			} catch (Exception e) {
 				log.error("Failed processing diff " + diff, e);
 			}
 		}
+
+		log.info("Ended processing diffs");
 	}
 
 	@Required

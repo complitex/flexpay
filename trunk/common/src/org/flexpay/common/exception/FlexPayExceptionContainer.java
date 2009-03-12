@@ -1,5 +1,7 @@
 package org.flexpay.common.exception;
 
+import org.slf4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -86,5 +88,13 @@ public class FlexPayExceptionContainer extends Exception {
 
 	public FlexPayException getFirstException() {
 		return exceptions.iterator().next();
+	}
+
+	public void debug(Logger log) {
+		if (log.isDebugEnabled()) {
+			for (FlexPayException exception : exceptions) {
+				log.debug("Internal exception", exception);
+			}
+		}
 	}
 }
