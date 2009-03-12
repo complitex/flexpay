@@ -53,7 +53,7 @@
 					 style="cursor: pointer; border: 1px solid red;"
 					 title="<s:text name="common.calendar"/>"
 					 onmouseover="this.style.background='red';"
-					 onmouseout="this.style.background=''"/>
+					 onmouseout="this.style.background='';"/>
 				<script type="text/javascript">
 				Calendar.setup({
 					inputField	 : "beginDate",
@@ -74,7 +74,7 @@
 					 style="cursor: pointer; border: 1px solid red;"
 					 title="<s:text name="common.calendar"/>"
 					 onmouseover="this.style.background='red';"
-					 onmouseout="this.style.background=''"/>
+					 onmouseout="this.style.background='';"/>
 				<script type="text/javascript">
 				Calendar.setup({
 					inputField	 : "endDate",

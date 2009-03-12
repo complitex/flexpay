@@ -10,21 +10,20 @@
 	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/common/style/fp.css"/>"/>
 </head>
 <body>
-<table cellpadding="0" cellspacing="0" border="0" width="100%">
-    <%--<tr>--%>
-        <%--<td>--%>
-            <%--<tiles:insertAttribute name="header" />--%>
-        <%--</td>--%>
-    <%--</tr>--%>
-    <tr>
-        <td>
-            <tiles:insertAttribute name="body" />
-        </td>
-    </tr>
-</table>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <%--<tr>--%>
+            <%--<td>--%>
+                <%--<tiles:insertAttribute name="header" />--%>
+            <%--</td>--%>
+        <%--</tr>--%>
+        <tr>
+            <td>
+                <tiles:insertAttribute name="body" />
+            </td>
+        </tr>
+    </table>
 
-<tiles:insertAttribute name="footer" />
-
+    <tiles:insertAttribute name="footer" />
 
 </body>
 </html>

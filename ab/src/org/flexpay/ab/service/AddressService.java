@@ -43,4 +43,5 @@ public interface AddressService {
 	 */
 	@NotNull
 	String getBuildingsAddress(@NotNull Stub<BuildingAddress> stub, @Nullable Locale locale) throws Exception;
+
 }

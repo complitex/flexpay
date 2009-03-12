@@ -11,7 +11,7 @@
 			<td colspan="5">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="townDelete"/>';"
+					   onclick="jQuery('#fobjects').attr('action','<s:url action="townDelete"/>');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="townEdit"><s:param name="town.id" value="0" /></s:url>';"
@@ -55,7 +55,7 @@
 			<td colspan="5">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="townDelete"/>';"
+					   onclick="jQuery('#fobjects').attr('action','<s:url action="townDelete"/>');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="townEdit"><s:param name="town.id" value="0" /></s:url>';"

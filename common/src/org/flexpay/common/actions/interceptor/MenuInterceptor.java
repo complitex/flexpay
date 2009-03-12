@@ -10,11 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public class MenuInterceptor extends AbstractInterceptor {
 
-	protected Logger log = LoggerFactory.getLogger(getClass());
-
 	public String intercept(ActionInvocation actionInvocation) throws Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		log.debug("!!!!!!request.getServletPath() = {}", request.getServletPath());
 		request.getSession().setAttribute("currentAction", request.getServletPath());
 		return actionInvocation.invoke();
 	}

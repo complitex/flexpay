@@ -31,7 +31,7 @@
 		<tr>
 			<td colspan="4">
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="identityTypeDelete"/>';$('fobjects').submit();"
+					   onclick="jQuery('#fobjects').attr('action','<s:url action="identityTypeDelete"/>');"
 					   value="<s:text name="common.delete_selected"/>" />
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="identityTypeEdit"><s:param name="identityType.id" value="0" /></s:url>';"

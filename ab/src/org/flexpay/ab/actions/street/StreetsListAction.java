@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 
@@ -55,15 +56,17 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 	@NotNull
 	protected String doExecute() throws Exception {
 
+		Locale locale = userPreferences.getLocale();
+
 		ArrayStack filterArrayStack = getFilters();
 		for (Object filter : filterArrayStack) {
 			((PrimaryKeyFilter<?>) filter).initFilter(session);
 		}
-		ArrayStack filters = streetService.initFilters(filterArrayStack, userPreferences.getLocale());
+		ArrayStack filters = streetService.initFilters(filterArrayStack, locale);
 		setFilters(filters);
 
-		streetSorterByName.setLang(LanguageUtil.getLanguage(userPreferences.getLocale()));
-		streetSorterByType.setLang(LanguageUtil.getLanguage(userPreferences.getLocale()));
+		streetSorterByName.setLang(LanguageUtil.getLanguage(locale));
+		streetSorterByType.setLang(LanguageUtil.getLanguage(locale));
 
 		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(streetSorterByName, streetSorterByType);
 
@@ -125,56 +128,26 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 		return getTranslation(type.getTranslations()).getName();
 	}
 
-	/**
-	 * Getter for property 'countryFilter'.
-	 *
-	 * @return Value for property 'countryFilter'.
-	 */
 	public CountryFilter getCountryFilter() {
 		return countryFilter;
 	}
 
-	/**
-	 * Setter for property 'countryFilter'.
-	 *
-	 * @param countryFilter Value to set for property 'countryFilter'.
-	 */
 	public void setCountryFilter(CountryFilter countryFilter) {
 		this.countryFilter = countryFilter;
 	}
 
-	/**
-	 * Getter for property 'regionFilter'.
-	 *
-	 * @return Value for property 'regionFilter'.
-	 */
 	public RegionFilter getRegionFilter() {
 		return regionFilter;
 	}
 
-	/**
-	 * Setter for property 'regionFilter'.
-	 *
-	 * @param regionFilter Value to set for property 'regionFilter'.
-	 */
 	public void setRegionFilter(RegionFilter regionFilter) {
 		this.regionFilter = regionFilter;
 	}
 
-	/**
-	 * Getter for property 'townFilter'.
-	 *
-	 * @return Value for property 'townFilter'.
-	 */
 	public TownFilter getTownFilter() {
 		return townFilter;
 	}
 
-	/**
-	 * Setter for property 'townFilter'.
-	 *
-	 * @param townFilter Value to set for property 'townFilter'.
-	 */
 	public void setTownFilter(TownFilter townFilter) {
 		this.townFilter = townFilter;
 	}

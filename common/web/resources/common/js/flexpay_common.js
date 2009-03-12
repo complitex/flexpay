@@ -1,24 +1,20 @@
 var FP = {
     // Set checkboxes group (names starts with prefix) state to checked
     setCheckboxes : function (checked, prefix) {
-        var boxes = $$('input[type="checkbox"]');
-        boxes.each(function(inp) {
-            if (inp.name.startsWith(prefix)) {
-                inp.checked = checked;
-            }
+        jQuery('input[type="checkbox"][name^="' + prefix + '"]').each(function(el) {
+            this.checked = checked;
         });
     },
 
     sorters : [],
 
     activateSorter : function (sorter) {
-
         // disable all sorters
-        this.sorters.each(function (field) {
-            $(field).value = 0;
+        $.protify(this.sorters).each(function (field) {
+            jQuery("#" + field).val(0);
         });
         // set active passed sorter
-        $(sorter).value = 1;
+        jQuery("#" + sorter).val(1);
     },
 
     /**
@@ -52,7 +48,7 @@ var FP = {
     },
 
     /**
-     *  This fuction for get checked radio value
+     *  This function for get checked radio value
      *
      * @param radioObj radio button elements array
      * @return  the value of the radio button that is checked
@@ -84,9 +80,9 @@ Array.prototype.remove = function(from, to) {
 
 // add trim() to strings (http://blog.stevenlevithan.com/archives/faster-trim-javascript)
 String.prototype.trim = function() {
-    var str = this.replace(/^\s\s*/, ''),
-            ws = /\s/,
-            i = this.length;
-    while (ws.test(str.charAt(--i)));
+    var str = this.replace(/^\s\s*/, ''), ws = /\s/, i = this.length;
+    while (ws.test(str.charAt(--i))) {
+
+    }
     return str.slice(0, i + 1);
 };

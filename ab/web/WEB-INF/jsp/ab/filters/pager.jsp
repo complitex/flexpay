@@ -5,16 +5,13 @@
 
 	if (typeof(submitForm) == 'undefined') {
 		function submitForm(select) {
-
-			var elms = document.getElementsByName('pager.pageSize');
-			for (var i = 0; i < elms.length; ++i ) {
-				var el = elms[i];
-				if (el != select && el != null) {
-					el.name = null;
-				}
-			}
+			var elms = jQuery('select[name="pager.pageSize"]').each(function(el) {
+                if (el != select && el != null) {
+                    el.attr("name", null);
+                }
+            });
 			select.name = 'pager.pageSize';
-            $("pageSizeChanged").value = true;
+            jQuery("#pageSizeChanged").val(true);
 			select.form.submit();
 		}
 	}

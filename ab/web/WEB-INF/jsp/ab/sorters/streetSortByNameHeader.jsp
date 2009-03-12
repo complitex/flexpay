@@ -1,8 +1,8 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-<s:hidden name="streetSorterByName.active" id="streetSorterByName.active" />
-<s:hidden name="streetSorterByName.order" id="streetSorterByName.order" />
-<script type="text/javascript">FP.sorters[FP.sorters.length] = 'streetSorterByName.active';</script>
-<input type="submit" class="btn-link" onclick="<s:if test="streetSorterByName.activated">$('streetSorterByName.order').value='<s:property value="%{streetSorterByName.oppositeOrder}" />';</s:if>FP.activateSorter('streetSorterByName.active');" value="<s:text name="ab.street"/>"/>
+<s:hidden name="streetSorterByName.active" id="streetSorterByNameActive" />
+<s:hidden name="streetSorterByName.order" id="streetSorterByNameOrder" />
+<script type="text/javascript">FP.sorters[FP.sorters.length] = 'streetSorterByNameActive';</script>
+<input type="submit" class="btn-link" onclick="<s:if test="streetSorterByName.activated">jQuery('#streetSorterByNameOrder').val('<s:property value="%{streetSorterByName.oppositeOrder}" />');</s:if>FP.activateSorter('streetSorterByNameActive');" value="<s:text name="ab.street"/>"/>
 <s:if test="streetSorterByName.activated">
 	<s:if test="streetSorterByName.desc"><img
 			src="<s:url value="/resources/common/img/i_arrow_up.gif" includeParams="none" />"

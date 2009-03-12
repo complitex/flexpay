@@ -14,18 +14,18 @@
 		<tr>
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
-				<input type="button" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="apartmentDelete"/>';"
+				<input type="submit" class="btn-exit"
+					   onclick="jQuery('#fobjects').attr('action','<s:url action="apartmentDelete"/>');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action='apartmentEdit'><s:param name="apartment.id" value="0"/></s:url>';"
+					   onclick="jQuery('#fobjects').attr('action','<s:url action='apartmentEdit'><s:param name="apartment.id" value="0"/></s:url>');"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
-			<td class="th" width="1%"><input type="checkbox"
-											 onchange="FP.setCheckboxes(this.checked, 'objectIds');">
+			<td class="th" width="1%">
+                <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
 			</td>
 			<td colspan="2" class="th" width="98%"><s:text name="ab.apartment"/></td>
 		</tr>
@@ -53,10 +53,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="apartmentDelete"/>';"
+					   onclick="jQuery('#fobjects').attr('action','<s:url action="apartmentDelete"/>');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action='apartmentEdit'><s:param name="apartment.id" value="0"/></s:url>';"
+					   onclick="jQuery('#fobjects').attr('action','<s:url action='apartmentEdit'><s:param name="apartment.id" value="0"/></s:url>');"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

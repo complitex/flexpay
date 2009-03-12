@@ -3,10 +3,8 @@
 
 <s:i18n name="/i18n/common-messages">
 
-<p>
-<center>
+<p style="text-align:center;">
     <h1><s:text name="common.welcome.title" /></h1>
-</center>
 <p>
 
 </s:i18n>

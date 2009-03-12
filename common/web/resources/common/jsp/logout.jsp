@@ -2,8 +2,7 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <%
-    if(session != null)
-    {
+    if (session != null) {
         session.invalidate();
     }
 %>

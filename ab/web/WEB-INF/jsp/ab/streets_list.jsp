@@ -10,8 +10,8 @@
 		<tr>
 			<td colspan="5">
 				<%@ include file="filters/pager.jsp" %>
-				<input type="button" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="streetDelete"/>';$('fobjects').submit();"
+				<input type="submit" class="btn-exit"
+					   onclick="jQuery('#fobjects').attr('action','<s:url action="streetDelete"/>');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="streetCreate"/>';"
@@ -57,8 +57,8 @@
 		<tr>
 			<td colspan="5">
 				<%@ include file="filters/pager.jsp" %>
-				<input type="button" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="streetDelete"/>';$('fobjects').submit();"
+				<input type="submit" class="btn-exit"
+					   onclick="jQuery('#fobjects').attr('action','<s:url action="streetDelete"/>');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="streetCreate"/>';"

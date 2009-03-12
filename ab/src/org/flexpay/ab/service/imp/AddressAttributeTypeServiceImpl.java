@@ -86,4 +86,5 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 	public void setBuildingAttributeTypeDao(AddressAttributeTypeDao addressAttributeTypeDao) {
 		this.addressAttributeTypeDao = addressAttributeTypeDao;
 	}
+
 }

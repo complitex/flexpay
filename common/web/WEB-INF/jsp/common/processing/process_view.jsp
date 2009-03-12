@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <script type="text/javascript" src="<c:url value="/resources/common/js/prototype.js" />"></script>
@@ -72,14 +73,13 @@
                 <table style="width:100%;font-size:100%;font-weight:bold;">
                     <tr>
                         <td><s:text name="common.processing.process.process_log_file"/></td>
-                        <td style="text-align: right;">
+                        <td style="text-align:right;">
                             <a href="<s:url value='/processLogDownloadServlet'><s:param name="processId" value="%{process.id}"/></s:url>">
                                 <s:text name="common.processing.process.process_download_log_file"/>
                             </a>
                         </td>
                     </tr>
                 </table>
-
             </td>
         </tr>
         <tr>

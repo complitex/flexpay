@@ -35,7 +35,7 @@
 		<tr>
 			<td colspan="5">
 				<input type="submit" class="btn-exit"
-					   onclick="$('fobjects').action='<s:url action="streetTypeDelete"/>';$('fobjects').submit();"
+					   onclick="jQuery('#fobjects').attr('action','<s:url action="streetTypeDelete"/>');"
 					   value="<s:text name="common.delete_selected"/>" />
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="editStreetType"><s:param name="streetType.id" value="0" /></s:url>';"
