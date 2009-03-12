@@ -25,6 +25,13 @@
         jQuery("#streetFilter")[0].form.submit();
     }
 
+    function formatItem(row) {
+        var street = row[0].toLowerCase();
+        var value = jQuery("#streetFilter").val();
+        var i = street.indexOf(value);
+        return street.substr(0, i) + "<strong>" + value + "</strong>" + street.substr(i + value.length);
+    }
+
     function selectItem(li) {
         findValue(li);
     }
@@ -38,6 +45,7 @@
             selectOnly:true,
   			matchContains:1,
   			cacheLength:10,
+            formatItem:formatItem,
   			onItemSelect:selectItem,
   			onFindValue:findValue,
             extraParams: {"townId":jQuery("#townFilter").val()}
