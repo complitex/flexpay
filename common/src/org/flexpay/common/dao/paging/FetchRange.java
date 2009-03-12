@@ -69,8 +69,8 @@ public class FetchRange implements Serializable {
 	public void moveBounds(int pageSize) {
 
 		if (lowerBound != null && upperBound != null) {
-			lowerBound += pageSize;
-			upperBound += pageSize;
+			lowerBound = upperBound + 1;
+			upperBound = lowerBound + pageSize;
 		}
 	}
 

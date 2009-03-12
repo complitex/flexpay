@@ -339,6 +339,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @param objects NTDs to disable
 	 */
+	@Transactional (readOnly = false)
 	@Override
 	public void disable(Collection<Town> objects) {
 
@@ -380,6 +381,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		}
 
 		if (ex.isNotEmpty()) {
+			ex.debug(log);
 			throw ex;
 		}
 	}

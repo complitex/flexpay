@@ -11,10 +11,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="$('fregions').action='<s:url action="regionDelete"/>';$('fregions').submit()"
+					   onclick="$('fregions').action='<s:url action="regionDelete"/>';$('fregions').submit();"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="regionCreate"/>'"
+					   onclick="window.location='<s:url action="regionCreate"/>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

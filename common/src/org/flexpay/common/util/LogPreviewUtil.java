@@ -32,10 +32,11 @@ public class LogPreviewUtil {
 
         int logPreviewLinesNumber = ApplicationConfig.getLogPreviewLinesNumber();
         try {
-            List<String> lines = (List<String>) FileUtils.readLines(logFile);
+            @SuppressWarnings ({"unchecked"})
+			List<String> lines = (List<String>) FileUtils.readLines(logFile);
             int linesCount = lines.size();
 
-            if (0 == linesCount) {
+            if (linesCount == 0) {
                 return "";
             }
 

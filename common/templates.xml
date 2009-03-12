@@ -351,4 +351,16 @@
 		</replaceregexp>
 	</target>
 
+	<target name="template.switch_instance_id">
+		<condition property="newInstanceId" value="${target.instance.id}" else="COMMON_INSTANCE">
+			<isset property="target.instance.id" />
+		</condition>
+		<replaceregexp encoding="UTF-8" flags="g"
+					   match="COMMON_INSTANCE" replace="${newInstanceId}">
+			<fileset dir="${build.dir}">
+				<include name="web/WEB-INF/classes/org/flexpay/common/application_config.xml" />
+			</fileset>
+		</replaceregexp>
+	</target>
+
 </project>
