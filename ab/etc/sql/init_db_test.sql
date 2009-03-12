@@ -1724,6 +1724,13 @@ INSERT INTO ab_building_address_attribute_type_translations_tbl (name, short_nam
 INSERT INTO ab_building_address_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
 	VALUES ('Bulk', '', @attr_type_bulk_id, @en_id);
 
+INSERT INTO ab_building_address_attribute_types_tbl (id, status) VALUES (3, 0);
+SELECT @attr_type_part_id:=3;
+INSERT INTO ab_building_address_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
+	VALUES ('Часть', 'ч', @attr_type_part_id, @ru_id);
+INSERT INTO ab_building_address_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
+	VALUES ('Part', 'p', @attr_type_part_id, @en_id);
+
 -- Init Buildings
 INSERT INTO ab_buildings_tbl (id, building_type, district_id) VALUES (1, 'ab', @district_id_nsk_sovetskiy);
 SELECT @building_ivanova_27_id:=1;
