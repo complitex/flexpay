@@ -36,7 +36,6 @@ public class StreetSearchAjaxAction extends FPActionSupport {
 		}
 
 		List<Street> streets = streetService.findByTownAndQuery(new Stub<Town>(townIdLong), "%" + q + "%");
-
 		log.debug("Found streets: {}", streets);
 
 		streetVisList = new ArrayList<StreetVis>();

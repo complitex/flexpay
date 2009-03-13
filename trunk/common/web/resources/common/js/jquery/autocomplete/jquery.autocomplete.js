@@ -323,10 +323,15 @@ jQuery.autocomplete = function(input, options) {
 			receiveData(q, data);
 		// if an AJAX url has been supplied, try loading the data now
 		} else if( (typeof options.url == "string") && (options.url.length > 0) ){
-			$.get(makeUrl(q), function(data) {
-				data = parseData(data);
-				addToCache(q, data);
-				receiveData(q, data);
+			$.ajax({
+                type: "POST",
+                url : options.url,
+                data: setParams(q),
+                success: function(data) {
+                    data = parseData(data);
+                    addToCache(q, data);
+                    receiveData(q, data);
+                }
 			});
 		// if there's been no data found, remove the loading class
 		} else {
@@ -334,6 +339,15 @@ jQuery.autocomplete = function(input, options) {
 		}
 	};
 
+    function setParams(q) {
+        var url = "q=" + q;
+        for (var i in options.extraParams) {
+            url  += "&" + i + "=" + encodeURI(options.extraParams[i]);
+        }
+        return url;
+    };
+
+/*
 	function makeUrl(q) {
 		var url = options.url + "?q=" + encodeURI(q);
 		for (var i in options.extraParams) {
@@ -341,6 +355,7 @@ jQuery.autocomplete = function(input, options) {
 		}
 		return url;
 	};
+*/
 
 	function loadFromCache(q) {
 		if (!q) return null;
@@ -388,11 +403,23 @@ jQuery.autocomplete = function(input, options) {
 		if (data) {
 			findValueCallback(q, data);
 		} else if( (typeof options.url == "string") && (options.url.length > 0) ){
-			$.get(makeUrl(q), function(data) {
+/*
+			$.post(makeUrl(q), function(data) {
 				data = parseData(data)
 				addToCache(q, data);
 				findValueCallback(q, data);
 			});
+*/
+            $.ajax({
+                type: "POST",
+                url : options.url,
+                data: setParams(q),
+                success: function(data) {
+                    data = parseData(data);
+                    addToCache(q, data);
+                    findValueCallback(q, data);
+                }
+            });
 		} else {
 			// no matches
 			findValueCallback(q, null);
@@ -446,8 +473,8 @@ jQuery.autocomplete = function(input, options) {
 		var curleft = obj.offsetLeft || 0;
 		var curtop = obj.offsetTop || 0;
 		while (obj = obj.offsetParent) {
-			curleft += obj.offsetLeft
-			curtop += obj.offsetTop
+			curleft += obj.offsetLeft;
+			curtop += obj.offsetTop;
 		}
 		return {x:curleft,y:curtop};
 	}

@@ -5,11 +5,13 @@
 
 	if (typeof(submitForm) == 'undefined') {
 		function submitForm(select) {
-			var elms = jQuery('select[name="pager.pageSize"]').each(function(el) {
+            var elms = document.getElementsByName('pager.pageSize');
+            for (var i = 0; i < elms.length; ++i ) {
+                var el = elms[i];
                 if (el != select && el != null) {
-                    el.attr("name", null);
+                    el.name = null;
                 }
-            });
+            }
 			select.name = 'pager.pageSize';
             jQuery("#pageSizeChanged").val(true);
 			select.form.submit();
