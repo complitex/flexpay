@@ -13,11 +13,13 @@
           p:jdbcUsername="${jdbc.export.username}"
           p:jdbcPassword="${jdbc.export.password}"
           p:procedure="${stored-procedure}"
+          p:tariffCalculationResultService-ref="tariffCalculationResultService"
           destroy-method="endExport"
           scope="prototype"
           />
 
     <bean name="fileCNExporter" class="org.flexpay.tc.process.exporters.FileCNExporter"
           destroy-method="endExport"
+          p:tariffCalculationResultService-ref="tariffCalculationResultService"
             />
 </beans>

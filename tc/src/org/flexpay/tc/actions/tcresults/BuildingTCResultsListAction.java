@@ -31,7 +31,8 @@ public class BuildingTCResultsListAction extends FPActionSupport {
     private List<String> tariffCalculationDates = CollectionUtils.list();
 
     // This map (tariff calculation date -> map (tariff_name -> tariff value)    
-    private Map<String, Map<Long, BigDecimal>> tcResultsMap = CollectionUtils.treeMap(); // FIXME eliminate map-o-map ;)
+//    private Map<String, Map<Long, BigDecimal>> tcResultsMap = CollectionUtils.treeMap(); // FIXME eliminate map-o-map ;)
+    private Map<String, List<TariffCalculationResult>> tcResultsMap = CollectionUtils.treeMap(); // FIXME eliminate map-o-map ;)
 
     // required services
     private TariffCalculationResultService tariffCalculationResultService;
@@ -56,15 +57,16 @@ public class BuildingTCResultsListAction extends FPActionSupport {
             List<TariffCalculationResult> calculationResults = tariffCalculationResultService.
                     getTariffCalcResultsByCalcDateAndAddressId(calculationDate, buildingStub);
 
-            Map<Long, BigDecimal> resultMap = CollectionUtils.treeMap();
-            for (TariffCalculationResult result : calculationResults) {
+//            Map<Long, BigDecimal> resultMap = CollectionUtils.treeMap();
+//            for (TariffCalculationResult result : calculationResults) {
+//
+//                resultMap.put(result.getTariff().getId(), result.getValue());
+//            }
 
-                resultMap.put(result.getTariff().getId(), result.getValue());
-            }
-
-            if (resultMap.size() > 0) {
+//            if (resultMap.size() > 0) {
+            if (calculationResults.size() > 0) {
                 tariffCalculationDates.add(calcDateString);
-                tcResultsMap.put(calcDateString, resultMap);
+                tcResultsMap.put(calcDateString, calculationResults);
             }
         }
     }
@@ -80,6 +82,10 @@ public class BuildingTCResultsListAction extends FPActionSupport {
         return getTranslation(tariff.getTranslations()).getName();
     }
 
+	public String getTariffCalculationExportCode(Long tariffCalculationId){
+		TariffCalculationResult tariffCalculationResult = tariffCalculationResultService.read(new Stub<TariffCalculationResult>(tariffCalculationId));
+		return tariffCalculationResult==null?"":tariffCalculationResult.getTariffExportCode().getI18nName();
+	}
     public boolean tariffCalculationDatesIsEmpty() {
         return tcResultsMap.isEmpty();
     }
@@ -94,23 +100,36 @@ public class BuildingTCResultsListAction extends FPActionSupport {
     }
 
     public BigDecimal getTotalTariff(String calcDate) {
-        Map<Long, BigDecimal> tcResults = tcResultsMap.get(calcDate);
+        List<TariffCalculationResult> tcResults = tcResultsMap.get(calcDate);
 
         BigDecimal total = BigDecimal.ZERO;
-        for (BigDecimal tariff : tcResults.values()) {
-            total = total.add(tariff);
+        for (TariffCalculationResult tariff : tcResults) {
+            total = total.add(tariff.getValue());
         }
 
         return total;
     }
+//    public BigDecimal getTotalTariff(String calcDate) {
+//        Map<Long, BigDecimal> tcResults = tcResultsMap.get(calcDate);
+//
+//        BigDecimal total = BigDecimal.ZERO;
+//        for (BigDecimal tariff : tcResults.values()) {
+//            total = total.add(tariff);
+//        }
+//
+//        return total;
+//    }
 
     public List<String> getTariffCalculationDates() {
         return tariffCalculationDates;
     }
 
-    public Map<Long, BigDecimal> getTcResults(String calcDate) {
+    public List<TariffCalculationResult> getTcResults(String calcDate) {
         return tcResultsMap.get(calcDate);
     }
+//    public Map<Long, BigDecimal> getTcResults(String calcDate) {
+//        return tcResultsMap.get(calcDate);
+//    }
 
     // get/set form data
     public String getBuildingId() {

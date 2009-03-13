@@ -598,8 +598,15 @@
         calculation_date date not null comment 'Calculation result calculation date',
         building_id bigint not null comment 'Building reference',
         tariff_id bigint not null comment 'Tariff reference',
+        tariff_export_code_id bigint comment 'Tariff export code',
         primary key (id)
     ) comment='Table contains tariff calculation results information';
+
+    create table tc_tariff_export_code_tbl (
+        id bigint not null auto_increment,
+        code integer not null unique comment 'Tariff export status code',
+        primary key (id)
+    );
 
     create table tc_tariff_tbl (
         id bigint not null auto_increment comment 'Primary key',
@@ -1120,6 +1127,12 @@
         add constraint FKDA48352F25D394E9 
         foreign key (type_id) 
         references common_file_types_tbl (id);
+
+    alter table tc_tariff_calculation_result_tbl 
+        add index FK_tc_tariff_calculation_result_tbl_tariff_export_code_id (tariff_export_code_id), 
+        add constraint FK_tc_tariff_calculation_result_tbl_tariff_export_code_id 
+        foreign key (tariff_export_code_id) 
+        references tc_tariff_export_code_tbl (id);
 
     alter table tc_tariff_calculation_result_tbl 
         add index FK_tc_tariff_calculation_result_tbl_building_id (building_id), 

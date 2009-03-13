@@ -77,7 +77,7 @@
 
             <table cellpadding="3" cellspacing="1" border="0" width="100%">
                 <tr>
-                    <td colspan="2" class="th" style="padding:0;">
+                    <td colspan="3" class="th" style="padding:0;">
                         <table style="width:100%;font-size:100%;font-weight:bold;">
                             <tr>
                                 <td><s:text name="tc.tariffs_calculated_on"><s:param value="%{formatDate(#calcDate)}"/></s:text></td>
@@ -91,16 +91,18 @@
                     </td>
                 </tr>
 
-                <s:iterator value="%{getTcResults(#calcDate)}">
-                    <tr id="tariff_row_<s:property value="%{key}"/>_<s:property value="%{formatDateWithUnderlines(#calcDate)}"/>"<s:if test="%{value < 0}"> class="cols_1_highlighted" </s:if><s:else> class="cols_1"</s:else>>
-                        <td class="col" style="width: 80%;"><s:property value="%{getTariffTranslation(key)}"/></td>
+                <s:iterator value="%{getTcResults(#calcDate)}" status="stat">
+                    <tr id="tariff_row_<s:property value="%{id}"/>_<s:property value="%{formatDateWithUnderlines(#calcDate)}"/>"<s:if test="%{value < 0}"> class="cols_1_highlighted" </s:if><s:else> class="cols_1"</s:else>>
+                        <td class="col" style="width: 60%;"><s:property value="%{getTariffTranslation(tariff.id)}"/></td>
                         <td class="col" style="width: 20%;"><s:property value="%{value}"/></td>
+                        <td class="col" style="width: 20%;"><s:text name="%{getTariffCalculationExportCode(tariff.id)}"/></td>
                     </tr>
                 </s:iterator>
 
                 <tr class="cols_1">
-                    <td class="col" style="width: 80%; font-weight: bold;"><s:text name="tc.total_tariff"/></td>
+                    <td class="col" style="width: 60%; font-weight: bold;"><s:text name="tc.total_tariff"/></td>
                     <td class="col" style="width: 20%; font-weight: bold;"><s:property value="%{getTotalTariff(#calcDate)}"/></td>
+                    <td class="col" style="width: 20%; font-weight: bold;">&nbsp;</td>
                 </tr>
             </table>
         </s:form>
