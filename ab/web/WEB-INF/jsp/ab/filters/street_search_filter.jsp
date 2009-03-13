@@ -21,15 +21,17 @@
 
         var sValue = !!li.extra ? li.extra[0] : li.selectValue;
         jQuery("#selectedStreetId").val(sValue);
-        jQuery("#streetFilter").val(li.innerHTML);
+        if (li.extra) {
+            jQuery("#streetFilter").val(li.selectValue);
+        }
         jQuery("#streetFilter")[0].form.submit();
     }
 
     function formatItem(row) {
         var street = row[0].toLowerCase();
-        var value = jQuery("#streetFilter").val();
+        var value = jQuery("#streetFilter").val().toLowerCase();
         var i = street.indexOf(value);
-        return street.substr(0, i) + "<strong>" + value + "</strong>" + street.substr(i + value.length);
+        return row[0].substr(0, i) + "<strong>" + row[0].substr(i, value.length) + "</strong>" + row[0].substr(i + value.length);
     }
 
     function selectItem(li) {
@@ -42,12 +44,11 @@
   			delay:10,
   			minChars:3,
   			matchSubset:1,
-            selectOnly:true,
+            selectOnly:1,
   			matchContains:1,
   			cacheLength:10,
             formatItem:formatItem,
   			onItemSelect:selectItem,
-  			onFindValue:findValue,
             extraParams: {"townId":jQuery("#townFilter").val()}
   		}
     );
