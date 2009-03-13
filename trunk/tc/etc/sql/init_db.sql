@@ -66,3 +66,7 @@ INSERT INTO tc_tariff_translations_tbl (tariff_id, language_id, name) VALUES
     (@tariff_170, @ru_id, 'Уборка лестничных клеток'),
     (@tariff_180, @ru_id, 'Дератизация и дезинфекция'),
     (@tariff_190, @ru_id, 'ТО бытовых электроплит');
+
+INSERT INTO tc_tariff_export_code_tbl (id, code) values
+        (1,0),(2,-1),(3,-2),(4,-3),
+        (5,-4),(6,-5),(7,-100);

@@ -107,9 +107,24 @@
             </column>
         </many-to-one>
 
+        <many-to-one name="tariffExportCode" class="TariffExportCode" foreign-key="FK_tc_tariff_calculation_result_tbl_tariff_export_code_id">
+            <column name="tariff_export_code_id" not-null="false">
+                <comment>Tariff export code</comment>
+            </column>
+        </many-to-one>
+    </class>
+
+    <class name="TariffExportCode" table="tc_tariff_export_code_tbl">
+        <id name="id" column="id">
+            <generator class="native" />
+        </id>
+        <property name="code">
+            <column name="code" not-null="true" unique="true">
+                <comment>Tariff export status code</comment>
+            </column>
+        </property>
     </class>
     <!-- end of tariff calculation result section -->
-
     <!-- tariff calculation rules files section -->
     <class name="TariffCalculationRulesFile" table="tc_tariff_calc_rules_files_tbl">
         <comment>Tariff calculation rules files information</comment>
@@ -217,6 +232,7 @@
         from TariffCalculationResult tcr
         inner join fetch tcr.building
         inner join fetch tcr.tariff
+        left outer join fetch tcr.tariffExportCode
         where tcr.id = ?
     </query>
 
@@ -240,6 +256,7 @@
         from TariffCalculationResult tcr
         inner join fetch tcr.building
         inner join fetch tcr.tariff
+        left outer join fetch tcr.tariffExportCode
         where tcr.calculationDate = ? and tcr.building.id =?
     </query>
 
@@ -249,6 +266,7 @@
         inner join fetch tcr.tariff
         inner join tcr.building b
         left join b.buildingses a
+        left outer join fetch tcr.tariffExportCode
         where tcr.calculationDate = ? and a.id = ?
     </query>
 
@@ -257,6 +275,7 @@
         from TariffCalculationResult tcr
         inner join fetch tcr.building
         inner join fetch tcr.tariff
+        left outer join fetch tcr.tariffExportCode
         where tcr.calculationDate = ? and tcr.tariff.id = ? and tcr.building.id = ?
     </query>
     <!-- end of tariff calculation result queries -->
