@@ -95,7 +95,7 @@
                 &nbsp;
                 <input type="button" class="btn-exit" onclick="location.reload();" value="<s:text name="sz.file_list.refresh_list" />" />
                 <input id="action1" type="hidden" name="" value="loadToDB" />
-                <input type="hidden" name="pager.pageNumber" value="<s:property value="%{pager.pageNumber}"/>"/>
+                <input id="pageNum" type="hidden" name="" value="<s:property value="%{pager.pageNumber}"/>"/>
             </td>
         </tr>
         <tr>
@@ -109,6 +109,7 @@
 <script type="text/javascript">
 
     function doAction(action) {
+        jQuery("#pageNum").attr("name", "pager.pageNumber");
         jQuery("#action1").attr("name", "action1");
         jQuery("#action1").val(action);
         jQuery("#fObjects").attr("action", "<s:url action="szFileOperation" />");
