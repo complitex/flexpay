@@ -16,3 +16,5 @@ alter table tc_tariff_calculation_result_tbl
 INSERT INTO tc_tariff_export_code_tbl (id, code) values
         (1,0),(2,-1),(3,-2),(4,-3),
         (5,-4),(6,-5),(7,-100);
+
+update common_version_tbl set last_modified_date='2009-03-13', date_version=0;
