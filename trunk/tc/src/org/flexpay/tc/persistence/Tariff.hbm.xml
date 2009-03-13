@@ -258,6 +258,7 @@
         inner join fetch tcr.tariff
         left outer join fetch tcr.tariffExportCode
         where tcr.calculationDate = ? and tcr.building.id =?
+        order by tcr.value desc
     </query>
 
     <query name="TariffCalculationResult.findByCalcDateAndAddressId">
