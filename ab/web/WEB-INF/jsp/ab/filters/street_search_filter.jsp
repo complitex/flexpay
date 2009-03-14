@@ -38,7 +38,8 @@
         findValue(li);
     }
 
-    jQuery("#streetFilter").autocomplete(
+    jQuery(function() {
+        jQuery("#streetFilter").autocomplete(
         "<s:url action="streetSearchAjax" namespace="/dicts" includeParams="none"/>",
         {
   			delay:10,
@@ -50,7 +51,7 @@
             formatItem:formatItem,
   			onItemSelect:selectItem,
             extraParams: {"townId":jQuery("#townFilter").val()}
-  		}
-    );
+  		});
+    });
 
 </script>
