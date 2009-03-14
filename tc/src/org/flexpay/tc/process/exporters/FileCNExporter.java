@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.tc.util.config.ApplicationConfig;
 import org.flexpay.tc.service.TariffCalculationResultService;
+import org.flexpay.tc.service.TariffExportCodeServiceExt;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.TariffExportCode;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +20,7 @@ public class FileCNExporter implements Exporter{
 	private PrintStream exportPrintStream;
 	private final static String exportFileNamePrefix="CNExportFile_";
 	private TariffCalculationResultService tariffCalculationResultService;
+	private TariffExportCodeServiceExt tariffExportCodeServiceExt;
 
 	/**
 	 * Begin export procedure
@@ -51,10 +53,11 @@ public class FileCNExporter implements Exporter{
 			exportPrintStream.print(" : ");
 		}
 		TariffCalculationResult tariffCalculationResult = (TariffCalculationResult) params[0];
-		tariffCalculationResult.setTariffExportCode(new TariffExportCode(TariffExportCode.EXPORTED));
-		tariffCalculationResultService.update(tariffCalculationResult);
+		if (tariffCalculationResult.getId() != null){
+			tariffCalculationResult.setTariffExportCode(tariffExportCodeServiceExt.findByCode(TariffExportCode.EXPORTED));
+			tariffCalculationResultService.update(tariffCalculationResult);
+		}
 		exportPrintStream.println();
-
 	}
 
 	/**
@@ -96,5 +99,14 @@ public class FileCNExporter implements Exporter{
 	@Required
 	public void setTariffCalculationResultService(TariffCalculationResultService tariffCalculationResultService) {
 		this.tariffCalculationResultService = tariffCalculationResultService;
+	}
+
+	/**
+	 * Set tariffExportCodeService
+	 * @param tariffExportCodeServiceExt tariffExportCodeService
+	 */
+	@Required
+	public void setTariffExportCodeService(TariffExportCodeServiceExt tariffExportCodeServiceExt) {
+		this.tariffExportCodeServiceExt = tariffExportCodeServiceExt;
 	}
 }

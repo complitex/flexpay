@@ -17,12 +17,9 @@
           scope="prototype" />
 
     <bean name="tariffCalcResultExportJob" class="org.flexpay.tc.process.TariffCalcResultExportJob"
-          p:dataSourceDescriptionId="${datasource.id}"
           p:lockManager-ref="lockManager"
-          p:classToTypeRegistry-ref="typeRegistryAb"
-          p:correctionsService-ref="correctionsServiceAb"
           p:tariffCalculationResultService-ref="tariffCalculationResultService"
-          p:exporter-ref="fileCNExporter"
+          p:exporter-ref="jdbcCNExporter"
           scope="prototype">
         <property name="subServiceExportCodes">
             <list>
@@ -47,13 +44,9 @@
     </bean>
 
     <bean name="tariffCalcResultExportForBuildingJob" class="org.flexpay.tc.process.TariffCalcResultExportForBuildingJob"
-          p:dataSourceDescriptionId="${datasource.id}"
           p:lockManager-ref="lockManager"
-          p:classToTypeRegistry-ref="typeRegistryAb"
-          p:correctionsService-ref="correctionsServiceAb"
           p:tariffCalculationResultService-ref="tariffCalculationResultService"
-          p:buildingService-ref="buildingServiceTarget"
-          p:exporter-ref="fileCNExporter"
+          p:exporter-ref="jdbcCNExporter"
           scope="prototype">
         <property name="subServiceExportCodes">
             <list>

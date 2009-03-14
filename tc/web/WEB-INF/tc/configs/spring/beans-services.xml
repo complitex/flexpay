@@ -13,7 +13,11 @@
     <bean id="tariffServiceExtTarget" class="org.flexpay.tc.service.impl.TariffServiceExtImpl"
 		  autowire-candidate="false"
           p:tariffServiceDaoExt-ref="tariffDaoExt"/>
-    
+
+    <bean id="tariffExportCodeServiceExt" class="org.flexpay.tc.service.impl.TariffExportCodeServiceExtImpl"
+		  autowire-candidate="false"
+          p:tariffExportCodeDaoExt-ref="tariffExportCodeDaoExt"/>
+
     <bean id="tariffCalculationResultService" class="org.flexpay.tc.service.impl.TariffCalculationResultServiceImpl"
           p:tariffCalculationResultDao-ref="tariffCalculationResultDao" />
 
