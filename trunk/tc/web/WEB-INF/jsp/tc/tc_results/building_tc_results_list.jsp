@@ -106,7 +106,8 @@
                 </tr>
             </table>
         </s:form>
-
+</s:iterator>
+    <s:iterator value="tariffCalculationDates" id="calcDate">
         <div id="uploadTcResultsDialog_<s:property value="%{formatDateWithUnderlines(#calcDate)}"/>" style="display: none;">
             <s:form action="buildingTCResultsUpload" id="uploadTCResults_%{formatDateWithUnderlines(#calcDate)}">
                 <s:hidden name="buildingId" value="%{buildingId}"/>

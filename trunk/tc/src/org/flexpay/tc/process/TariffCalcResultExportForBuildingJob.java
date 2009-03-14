@@ -26,12 +26,8 @@ import java.util.Map;
 
 public class TariffCalcResultExportForBuildingJob extends Job {
 
-	private Long dataSourceDescriptionId;
 	private LockManager lockManager;
-	private ClassToTypeRegistry classToTypeRegistry;
-	private CorrectionsService correctionsService;
 	private TariffCalculationResultService tariffCalculationResultService;
-	private BuildingService buildingService;
 	private List<String> subServiceExportCodes;
 	private Exporter exporter;
 	/**
@@ -50,7 +46,6 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
-//		Logger pLog = ProcessLogger.getLogger(getClass());
 		try {
 
 			Date calculationDate = (Date) parameters.get(CALCULATION_DATE);
@@ -67,14 +62,12 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 
 			List<TariffCalculationResult> tariffCalcResultList = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndBuilding(
 					calculationDate, buildingStub);
-			//find external id
 			log.info("{} tariff calculation result(s) founded for building with id := {} on date := {}",
 					new Object[] {tariffCalcResultList.size(), buildingStub.getId(), calculationDate});
 			if (tariffCalcResultList.size() > 0) {
 				exporter.beginExport();
-				String externalId = getExternalId(buildingStub);
 				for (TariffCalculationResult tcr : tariffCalcResultList) {
-					exporter.export(new Object[]{tcr, externalId, periodBeginDate});
+					exporter.export(new Object[]{tcr, periodBeginDate});
 					subServiceExportCodes.remove(tcr.getTariff().getSubServiceCode());
 				}
 				for(String code : subServiceExportCodes){
@@ -83,7 +76,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 					tcr.setTariff(tariff);
 					tcr.setCalculationDate(calculationDate);
 					tcr.setValue(BigDecimal.ZERO);
-					exporter.export(new Object[]{tcr,externalId, periodBeginDate});
+					exporter.export(new Object[]{tcr,periodBeginDate});
 				}
 
 			}else{
@@ -102,39 +95,9 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 		return RESULT_NEXT;
 	}
 
-	private String getExternalId(@NotNull Stub<Building> buildingStub) throws FlexPayException {
-
-		Stub<DataSourceDescription> dataSourceDescriptionStub = new Stub<DataSourceDescription>(dataSourceDescriptionId);
-
-		List<BuildingAddress> buildingAddressList = buildingService.getBuildingBuildings(buildingStub);
-		for (BuildingAddress buildingAddress : buildingAddressList) {
-			String externalId = correctionsService.getExternalId(buildingAddress.getId(),
-					classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionStub);
-			if (externalId != null) {
-				return externalId;
-			}
-		}
-		throw new FlexPayException("Building address not found for building.id=" + buildingStub.getId());
-	}
-
-	@Required
-	public void setClassToTypeRegistry(ClassToTypeRegistry classToTypeRegistry) {
-		this.classToTypeRegistry = classToTypeRegistry;
-	}
-
-	@Required
-	public void setCorrectionsService(CorrectionsService correctionsService) {
-		this.correctionsService = correctionsService;
-	}
-
 	@Required
 	public void setTariffCalculationResultService(TariffCalculationResultService tariffCalculationResultService) {
 		this.tariffCalculationResultService = tariffCalculationResultService;
-	}
-
-	@Required
-	public void setDataSourceDescriptionId(Long dataSourceDescriptionId) {
-		this.dataSourceDescriptionId = dataSourceDescriptionId;
 	}
 
 	@Required
@@ -145,11 +108,6 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 	@Required
 	public void setExporter(Exporter exporter) {
 		this.exporter = exporter;
-	}
-
-	@Required
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
 	}
 
 	@Required

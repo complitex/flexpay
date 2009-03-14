@@ -280,6 +280,11 @@
         where tcr.calculationDate = ? and tcr.tariff.id = ? and tcr.building.id = ?
     </query>
     <!-- end of tariff calculation result queries -->
+    <query name="TariffExportCode.findByCode">
+        select distinct tec
+        from TariffExportCode tec
+        where tec.code  = ?
+    </query>
 
     <!-- tariff calculation rules file queries -->
     <query name="TariffCalculationRulesFile.findTariffCalculationRulesFiles">

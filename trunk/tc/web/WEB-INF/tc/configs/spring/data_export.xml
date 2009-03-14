@@ -14,6 +14,11 @@
           p:jdbcPassword="${jdbc.export.password}"
           p:procedure="${stored-procedure}"
           p:tariffCalculationResultService-ref="tariffCalculationResultService"
+          p:tariffExportCodeServiceExt-ref="tariffExportCodeServiceExt"
+          p:buildingService-ref="buildingServiceTarget"
+          p:dataSourceDescriptionId="${datasource.id}"
+          p:classToTypeRegistry-ref="typeRegistryAb"
+          p:correctionsService-ref="correctionsServiceAb"          
           destroy-method="endExport"
           scope="prototype"
           />
@@ -21,5 +26,5 @@
     <bean name="fileCNExporter" class="org.flexpay.tc.process.exporters.FileCNExporter"
           destroy-method="endExport"
           p:tariffCalculationResultService-ref="tariffCalculationResultService"
-            />
+          p:tariffExportCodeService-ref="tariffExportCodeServiceExt"  />
 </beans>

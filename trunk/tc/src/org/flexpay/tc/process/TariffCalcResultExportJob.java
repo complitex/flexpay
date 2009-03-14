@@ -25,10 +25,7 @@ import java.util.Map;
 
 public class TariffCalcResultExportJob extends Job {
 
-	private Long dataSourceDescriptionId;
 	private LockManager lockManager;
-	private ClassToTypeRegistry classToTypeRegistry;
-	private CorrectionsService correctionsService;
 	private TariffCalculationResultService tariffCalculationResultService;
 	private Exporter exporter;
 	public final static String CALCULATION_DATE = "CALCULATION_DATE";
@@ -37,8 +34,6 @@ public class TariffCalcResultExportJob extends Job {
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
-//		Logger pLog = ProcessLogger.getLogger(getClass());
-
 		log.debug("Tariff calculation result export procces started");
 
 		if (!lockManager.lock(Resources.BUILDING_ATTRIBUTES)) {
@@ -46,7 +41,6 @@ public class TariffCalcResultExportJob extends Job {
 			return RESULT_NEXT;
 		}
 
-//		Connection conn = null;
 		try {
 			exporter.beginExport();
 
@@ -55,21 +49,13 @@ public class TariffCalcResultExportJob extends Job {
 
 			List<Long> addressIds = tariffCalculationResultService.getAddressIds(calcDate);
 
-			Stub<DataSourceDescription> dataSourceDescriptionStub = new Stub<DataSourceDescription>(dataSourceDescriptionId);
 
 			for (Long addressId : addressIds) {
-				
-				String externalId = correctionsService.getExternalId(addressId, classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionStub);
-				if (externalId == null) {
-					log.debug("ExternalId for building address with id={} not found", addressId);
-					continue;
-				}
-
 				List<TariffCalculationResult> tcrs = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndAddressId(calcDate, new Stub<BuildingAddress>(addressId));
 				List<String> addressSubServiceExportCodes = CollectionUtils.list(subServiceExportCodes);
 				try {
 					for (TariffCalculationResult tcr : tcrs) {
-						exporter.export(new Object[] {tcr, externalId, periodBeginDate});
+						exporter.export(new Object[] {tcr, periodBeginDate});
 						addressSubServiceExportCodes.remove(tcr.getTariff().getSubServiceCode());
 					}
 					for(String code : addressSubServiceExportCodes){
@@ -79,7 +65,7 @@ public class TariffCalcResultExportJob extends Job {
 						tcr.setTariff(tariff);
 						tcr.setCalculationDate(calcDate);
 						tcr.setValue(BigDecimal.ZERO);
-						exporter.export(new Object[] {tcr,externalId, periodBeginDate});
+						exporter.export(new Object[] {tcr, periodBeginDate});
 					}
 					exporter.commit();
 				} catch (FlexPayException  e) {
@@ -88,7 +74,6 @@ public class TariffCalcResultExportJob extends Job {
 						exporter.rollback();
 					} catch (FlexPayException ex) {
 						ex.printStackTrace();
-						// do nothing
 					}
 				}
 			}
@@ -103,23 +88,8 @@ public class TariffCalcResultExportJob extends Job {
 	}
 
 	@Required
-	public void setClassToTypeRegistry(ClassToTypeRegistry classToTypeRegistry) {
-		this.classToTypeRegistry = classToTypeRegistry;
-	}
-
-	@Required
-	public void setCorrectionsService(CorrectionsService correctionsService) {
-		this.correctionsService = correctionsService;
-	}
-
-	@Required
 	public void setTariffCalculationResultService(TariffCalculationResultService tariffCalculationResultService) {
 		this.tariffCalculationResultService = tariffCalculationResultService;
-	}
-
-	@Required
-	public void setDataSourceDescriptionId(Long dataSourceDescriptionId) {
-		this.dataSourceDescriptionId = dataSourceDescriptionId;
 	}
 
 	@Required
