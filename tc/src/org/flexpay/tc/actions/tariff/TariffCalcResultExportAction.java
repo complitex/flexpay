@@ -34,9 +34,11 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 	@NotNull
 	protected String doExecute() throws Exception {
 
+/*
 		if (modal == 1) {
 			return MODAL;
 		}
+*/
 
 		if (isNotSubmit()) {
 			allDates = formatDates(tariffCalculationResultService.getUniqueDates());
