@@ -10,13 +10,13 @@
 		  <!--p:url="http://localhost:8080/eirc/ws/ShareHistory" />-->
 
 	<!-- Test internal localhost server via Java 6 HTTP server -->
-	<!--<bean id="soapOutHistoryTransport"-->
-		  <!--class="org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport"-->
-		  <!--p:url="http://localhost:58080/ShareHistory" />-->
-
-	<!-- Integration test with OpenESB configured broadcast -->
 	<bean id="soapOutHistoryTransport"
 		  class="org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport"
-		  p:url="http://localhost:9080/historyBroadcast/sourceEndpoint" />
+		  p:url="http://localhost:58080/ShareHistory" />
+
+	<!-- Integration test with OpenESB configured broadcast -->
+	<!--<bean id="soapOutHistoryTransport"-->
+		  <!--class="org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport"-->
+		  <!--p:url="http://localhost:9080/historyBroadcast/sourceEndpoint" />-->
 
 </beans>

@@ -10,7 +10,10 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NonNls;
@@ -35,6 +38,10 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	private StreetTypeDao streetTypeDao;
 
 	private CorrectionsService correctionsService;
+
+	private SessionUtils sessionUtils;
+	private ModificationListener<StreetType> modificationListener;
+
 
 	/**
 	 * Get StreetType translations for specified locale, if translation is not found check for translation in default
@@ -108,6 +115,16 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	}
 
 	/**
+	 * Read object by its unique id
+	 *
+	 * @param stub Object stub
+	 * @return object, or <code>null</code> if object not found
+	 */
+	public StreetType readFull(@NotNull Stub<StreetType> stub) {
+		return streetTypeDao.readFull(stub.getId());
+	}
+
+	/**
 	 * Disable StreetTypes TODO: check if there are any streets with specified type and reject operation
 	 *
 	 * @param streetTypes StreetTypes to disable
@@ -118,6 +135,9 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		for (StreetType streetType : streetTypes) {
 			streetType.setStatus(StreetType.STATUS_DISABLED);
 			streetTypeDao.update(streetType);
+
+			modificationListener.onDelete(streetType);
+
 			log.info("Disabled: {}", streetType);
 		}
 	}
@@ -179,6 +199,8 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		streetType.setId(null);
 		streetTypeDao.create(streetType);
 
+		modificationListener.onCreate(streetType);
+
 		return streetType;
 	}
 
@@ -189,10 +211,20 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 * @return Saved instance
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
 	public StreetType update(@NotNull StreetType streetType) throws FlexPayExceptionContainer {
 
 		validate(streetType);
+
+		StreetType old = readFull(stub(streetType));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + streetType));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, streetType);
+
 		streetTypeDao.update(streetType);
 
 		return streetType;
@@ -239,5 +271,15 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	@Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
+	}
+
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<StreetType> modificationListener) {
+		this.modificationListener = modificationListener;
 	}
 }

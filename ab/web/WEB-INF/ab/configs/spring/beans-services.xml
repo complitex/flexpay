@@ -44,6 +44,10 @@
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="townHistoryChangesListener" />
 
+	<bean id="districtHistoryChangesListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="districtHistoryBuilder" />
+
 	<bean id="districtServiceTarget"
 		  class="org.flexpay.ab.service.imp.DistrictServiceImpl"
 		  autowire-candidate="false"
@@ -52,7 +56,9 @@
 		  p:districtDao-ref="districtDAO"
 		  p:districtNameDao-ref="districtNameDAO"
 		  p:districtNameTemporalDao-ref="districtNameTemporalDao"
-		  p:districtNameTranslationDao-ref="districtNameTranslationDAO" />
+		  p:districtNameTranslationDao-ref="districtNameTranslationDAO"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:modificationListener-ref="districtHistoryChangesListener" />
 
 	<bean id="streetServiceTarget"
 		  class="org.flexpay.ab.service.imp.StreetServiceImpl"
@@ -99,11 +105,17 @@
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="townTypeHistoryChangesListener" />
 
+	<bean id="streetTypeHistoryChangesListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="streetTypeHistoryBuilder" />
+
 	<bean id="streetTypeServiceTarget"
 		  autowire-candidate="false"
 		  class="org.flexpay.ab.service.imp.StreetTypeServiceImpl"
 		  p:streetTypeDao-ref="streetTypeDAO"
-		  p:correctionsService-ref="correctionsServiceAb" />
+		  p:correctionsService-ref="correctionsServiceAb"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:modificationListener-ref="streetTypeHistoryChangesListener" />
 
 	<bean id="identityTypeService"
 		  class="org.flexpay.ab.service.imp.IdentityTypeServiceImpl"
@@ -198,6 +210,7 @@
 				<ref bean="townHistoryHandler" />
 				<ref bean="townTypeHistoryHandler" />
 				<ref bean="streetTypeHistoryHandler" />
+				<ref bean="districtHistoryHandler" />
 			</list>
 		</property>
 	</bean>

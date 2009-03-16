@@ -5,13 +5,14 @@ import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.jetbrains.annotations.Nullable;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
-import java.util.Locale;
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 
 public interface StreetTypeService extends
 		MultilangEntityService<StreetType, StreetTypeTranslation> {
@@ -31,7 +32,7 @@ public interface StreetTypeService extends
 	 * Initialize street type filter
 	 *
 	 * @param streetTypeFilter Filter to init
-	 * @param locale Locale to get filter translations in
+	 * @param locale		   Locale to get filter translations in
 	 * @throws FlexPayException if failure occurs
 	 */
 	@Secured (Roles.STREET_TYPE_READ)
@@ -45,6 +46,15 @@ public interface StreetTypeService extends
 	 */
 	@Secured (Roles.STREET_TYPE_READ)
 	StreetType read(Long id);
+
+	/**
+	 * Read object by its unique id
+	 *
+	 * @param stub Object stub
+	 * @return object, or <code>null</code> if object not found
+	 */
+	@Secured (Roles.STREET_TYPE_READ)
+	StreetType readFull(@NotNull Stub<StreetType> stub);
 
 	/**
 	 * Get Entity translations for specified locale, if translation is not found check for translation in default locale
