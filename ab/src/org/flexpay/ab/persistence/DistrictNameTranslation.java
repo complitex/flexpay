@@ -19,9 +19,8 @@ public class DistrictNameTranslation extends Translation {
 	 * Constructs a new DistrictNameTranslation.
 	 *
 	 * @param name Translation
-	 * @throws Exception if failure occurs
 	 */
-	public DistrictNameTranslation(@NotNull String name) throws Exception {
+	public DistrictNameTranslation(@NotNull String name) {
 		super(name, ApplicationConfig.getDefaultLanguage());
 	}
 
@@ -30,9 +29,8 @@ public class DistrictNameTranslation extends Translation {
 	 *
 	 * @param name Translation
 	 * @param lang Language that translation is in
-	 * @throws Exception if failure occurs
 	 */
-	public DistrictNameTranslation(@NotNull String name, @NotNull Language lang) throws Exception {
+	public DistrictNameTranslation(@NotNull String name, @NotNull Language lang) {
 		super(name, lang);
 	}
 

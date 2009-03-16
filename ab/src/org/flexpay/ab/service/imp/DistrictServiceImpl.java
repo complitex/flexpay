@@ -250,20 +250,37 @@ public class DistrictServiceImpl extends
 	}
 
 	/**
-	 * Create or update district
+	 * Create District object
 	 *
-	 * @param object District to save
-	 * @throws FlexPayExceptionContainer if validation fails
+	 * @param district District object to save
+	 * @return saved object back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
 	 */
 	@Transactional (readOnly = false)
-	public void save(@NotNull District object) throws FlexPayExceptionContainer {
-		validate(object);
-		if (object.isNew()) {
-			object.setId(null);
-			districtDao.create(object);
-		} else {
-			districtDao.update(object);
-		}
+	public District create(@NotNull District district) throws FlexPayExceptionContainer {
+
+		validate(district);
+		district.setId(null);
+		districtDao.create(district);
+
+		return district;
+	}
+
+	/**
+	 * Create or update Town object
+	 *
+	 * @param district District object to save
+	 * @return saved object back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@Transactional (readOnly = false)
+	public District update(@NotNull District district) throws FlexPayExceptionContainer {
+
+		validate(district);
+		districtDao.update(district);
+		return district;
 	}
 
 	/**

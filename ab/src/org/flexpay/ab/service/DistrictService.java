@@ -5,10 +5,7 @@ import java.util.Date;
 import java.util.Collection;
 import java.util.Locale;
 
-import org.flexpay.ab.persistence.District;
-import org.flexpay.ab.persistence.DistrictName;
-import org.flexpay.ab.persistence.DistrictNameTemporal;
-import org.flexpay.ab.persistence.DistrictNameTranslation;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.service.ParentService;
@@ -26,13 +23,24 @@ public interface DistrictService extends NameTimeDependentService<
         ParentService<DistrictFilter> {
 
 	/**
-	 * Create or update district
+	 * Create District object
 	 *
-	 * @param object District to save
+	 * @param district District object to save
+	 * @return saved object back
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	@Secured ({Roles.DISTRICT_CHANGE, Roles.DISTRICT_ADD})
-	void save(@NotNull District object) throws FlexPayExceptionContainer;
+	@Secured (Roles.DISTRICT_ADD)
+	District create(@NotNull District district) throws FlexPayExceptionContainer;
+
+	/**
+	 * Create or update Town object
+	 *
+	 * @param district District object to save
+	 * @return saved object back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.DISTRICT_CHANGE)
+	District update(@NotNull District district) throws FlexPayExceptionContainer;
 
 	/**
 	 * Create new NameTimeDependent with a single name

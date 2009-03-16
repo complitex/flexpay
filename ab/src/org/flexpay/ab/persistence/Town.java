@@ -44,6 +44,10 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 		super(id);
 	}
 
+	public Town(@NotNull Stub<Town> stub) {
+		super(stub.getId());
+	}
+
 	/**
 	 * Create a new empty temporal
 	 *

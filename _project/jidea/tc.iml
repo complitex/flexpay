@@ -94,6 +94,7 @@
     <orderEntry type="library" name="Struts2" level="project" />
     <orderEntry type="library" name="Drools" level="project" />
     <orderEntry type="library" name="Spring-WS" level="project" />
+    <orderEntry type="library" name="CSVReader" level="project" />
   </component>
 </module>
 

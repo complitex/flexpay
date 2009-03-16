@@ -1,7 +1,7 @@
 package org.flexpay.ab.service.history;
 
-import org.flexpay.ab.persistence.Town;
-import org.flexpay.ab.service.TownService;
+import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.service.DistrictService;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
@@ -10,9 +10,9 @@ import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class TownHistoryHandler extends HistoryHandlerBase<Town> {
+public class DistrictHistoryHandler extends HistoryHandlerBase<District> {
 
-	private TownService townService;
+	private DistrictService districtService;
 
 	/**
 	 * Check if this handler can handle this <code>diff</code>
@@ -21,7 +21,7 @@ public class TownHistoryHandler extends HistoryHandlerBase<Town> {
 	 * @return <code>
 	 */
 	public boolean supports(@NotNull Diff diff) {
-		return typeRegistry.getType(Town.class) == diff.getObjectType();
+		return typeRegistry.getType(District.class) == diff.getObjectType();
 	}
 
 	/**
@@ -31,25 +31,25 @@ public class TownHistoryHandler extends HistoryHandlerBase<Town> {
 	 */
 	public void process(@NotNull Diff diff) throws Exception {
 		String masterIndex = diff.getMasterIndex();
-		Town object;
+		District object;
 
 		// find object if it already exists
-		Stub<Town> stub = correctionsService.findCorrection(
-				masterIndex, Town.class, masterIndexService.getMasterSourceDescription());
+		Stub<District> stub = correctionsService.findCorrection(
+				masterIndex, District.class, masterIndexService.getMasterSourceDescription());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {
 				log.info("Request for object creation, but it already exists {}", diff);
-				object = townService.readFull(stub);
+				object = districtService.readFull(stub);
 			} else {
-				object = new Town();
+				object = new District();
 			}
 		} else {
 			if (stub == null) {
 				log.warn("Requested for object update/delete, but not found {}", diff);
 				throw new IllegalStateException("Requested for object update/delete, but not found " + masterIndex);
 			}
-			object = townService.readFull(stub);
+			object = districtService.readFull(stub);
 		}
 
 		if (object == null) {
@@ -59,17 +59,17 @@ public class TownHistoryHandler extends HistoryHandlerBase<Town> {
 		historyBuilder.patch(object, diff);
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_DELETE) {
-			townService.disable(CollectionUtils.list(object));
+			districtService.disable(CollectionUtils.list(object));
 		} else if (object.isNew()) {
-			townService.create(object);
+			districtService.create(object);
 			saveMasterCorrection(object, diff);
 		} else {
-			townService.update(object);
+			districtService.update(object);
 		}
 	}
 
 	@Required
-	public void setTownService(TownService townService) {
-		this.townService = townService;
+	public void setDistrictService(DistrictService districtService) {
+		this.districtService = districtService;
 	}
 }

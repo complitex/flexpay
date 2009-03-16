@@ -106,7 +106,12 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 	}
 
 	@NotNull
+	public Town getTown() {
+		return (Town) getParent();
+	}
+
+	@NotNull
 	public Stub<Town> getTownStub() {
-		return new Stub<Town>((Town) getParent());
+		return new Stub<Town>(getTown());
 	}
 }

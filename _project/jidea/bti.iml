@@ -163,6 +163,7 @@
     <orderEntry type="library" name="Commons" level="project" />
     <orderEntry type="library" name="logging" level="project" />
     <orderEntry type="library" name="Spring-WS" level="project" />
+    <orderEntry type="library" name="CSVReader" level="project" />
   </component>
 </module>
 

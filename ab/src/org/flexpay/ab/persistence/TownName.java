@@ -19,7 +19,7 @@ public class TownName extends TemporaryName<TownName, TownNameTranslation> {
 	 *
 	 * @param townName Town name to copy from
 	 */
-	@SuppressWarnings ({"unchecked"})
+	@SuppressWarnings ({"unchecked", "CollectionsFieldAccessReplaceableByMethodCall"})
 	public TownName(@Nullable TownName townName) {
 		Set<TownNameTranslation> translations = townName != null ? townName.getTranslations() : Collections.EMPTY_SET;
 		for (TownNameTranslation translation : translations) {
