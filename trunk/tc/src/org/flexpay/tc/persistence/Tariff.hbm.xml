@@ -255,10 +255,10 @@
         select distinct tcr
         from TariffCalculationResult tcr
         inner join fetch tcr.building
-        inner join fetch tcr.tariff
+        inner join fetch tcr.tariff tar
         left outer join fetch tcr.tariffExportCode
-        where tcr.calculationDate = ? and tcr.building.id =?
-        order by tcr.value desc
+        where tcr.calculationDate = ? and tcr.building.id =? and tcr.tariff.id = tar.id
+        order by tar.subServiceCode desc
     </query>
 
     <query name="TariffCalculationResult.findByCalcDateAndAddressId">

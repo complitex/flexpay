@@ -1,6 +1,7 @@
 package org.flexpay.tc.process;
 
 import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.locking.LockManager;
@@ -16,6 +17,7 @@ import org.flexpay.tc.process.exporters.Exporter;
 import org.flexpay.tc.service.TariffCalculationResultService;
 
 import org.springframework.beans.factory.annotation.Required;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -44,28 +46,28 @@ public class TariffCalcResultExportJob extends Job {
 		try {
 			exporter.beginExport();
 
-			Date calcDate = (Date) parameters.get(CALCULATION_DATE);
+			Date calculationDate = (Date) parameters.get(CALCULATION_DATE);
 			Date periodBeginDate = (Date) parameters.get(PERIOD_BEGIN_DATE);
 
-			List<Long> addressIds = tariffCalculationResultService.getAddressIds(calcDate);
+			List<Long> addressIds = tariffCalculationResultService.getAddressIds(calculationDate);
 
 
 			for (Long addressId : addressIds) {
-				List<TariffCalculationResult> tcrs = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndAddressId(calcDate, new Stub<BuildingAddress>(addressId));
-				List<String> addressSubServiceExportCodes = CollectionUtils.list(subServiceExportCodes);
+				List<TariffCalculationResult> tariffCalcResultList = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndAddressId(calculationDate, new Stub<BuildingAddress>(addressId));
 				try {
-					for (TariffCalculationResult tcr : tcrs) {
-						exporter.export(new Object[] {tcr, periodBeginDate});
-						addressSubServiceExportCodes.remove(tcr.getTariff().getSubServiceCode());
-					}
-					for(String code : addressSubServiceExportCodes){
-						TariffCalculationResult tcr = new TariffCalculationResult();
-						Tariff tariff = new Tariff();
-						tariff.setSubServiceCode(code);
-						tcr.setTariff(tariff);
-						tcr.setCalculationDate(calcDate);
-						tcr.setValue(BigDecimal.ZERO);
-						exporter.export(new Object[] {tcr, periodBeginDate});
+					for (String subServiceCode : subServiceExportCodes){
+						TariffCalculationResult tcr = getTariffCalculationResultBySubserviceCode(tariffCalcResultList, subServiceCode);
+						if (tcr == null){
+							tcr = new TariffCalculationResult();
+							Tariff tariff = new Tariff(); tariff.setSubServiceCode(subServiceCode);
+							Building building = new Building();
+							building.setId(addressId);
+							tcr.setBuilding(building);
+							tcr.setTariff(tariff);
+							tcr.setCalculationDate(calculationDate);
+							tcr.setValue(BigDecimal.ZERO);
+						}
+						exporter.export(new Object[]{tcr, periodBeginDate});
 					}
 					exporter.commit();
 				} catch (FlexPayException  e) {
@@ -85,6 +87,16 @@ public class TariffCalcResultExportJob extends Job {
 		}
 		log.debug("Tariff calculation result export procces finished");
 		return RESULT_NEXT;
+	}
+
+	private TariffCalculationResult getTariffCalculationResultBySubserviceCode(@NotNull List<TariffCalculationResult> tcrl, @NotNull String subserviceCode){
+		for (TariffCalculationResult tcr : tcrl){
+			if (subserviceCode.equals(tcr.getTariff().getSubServiceCode())){
+				tcrl.remove(tcr);
+				return tcr;
+			}
+		}
+		return null;
 	}
 
 	@Required

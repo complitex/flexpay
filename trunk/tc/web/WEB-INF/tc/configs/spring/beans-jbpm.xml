@@ -46,6 +46,7 @@
     <bean name="tariffCalcResultExportForBuildingJob" class="org.flexpay.tc.process.TariffCalcResultExportForBuildingJob"
           p:lockManager-ref="lockManager"
           p:tariffCalculationResultService-ref="tariffCalculationResultService"
+          p:buildingService-ref="buildingServiceTarget"
           p:exporter-ref="jdbcCNExporter"
           scope="prototype">
         <property name="subServiceExportCodes">
