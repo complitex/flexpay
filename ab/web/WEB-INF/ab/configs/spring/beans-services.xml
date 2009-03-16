@@ -163,9 +163,13 @@
 		  class="org.flexpay.ab.service.history.TownHistoryGenerator"
 		  p:diffService-ref="diffService"
 		  p:historyBuilder-ref="townHistoryBuilder"
-		  p:typeHistoryGenerator-ref="townTypeHistoryGenerator"
+		  p:townTypeHistoryGenerator-ref="townTypeHistoryGenerator"
 		  p:townService-ref="townService"
-		  p:townTypeService-ref="townTypeService" />
+		  p:townTypeService-ref="townTypeService"
+		  p:streetTypeHistoryGenerator-ref="streetTypeHistoryGenerator"
+		  p:streetTypeService-ref="streetTypeService"
+		  p:districtService-ref="districtService"
+		  p:districtHistoryGenerator-ref="districtHistoryGenerator" />
 
 	<bean id="districtHistoryGenerator"
 		  class="org.flexpay.ab.service.history.DistrictHistoryGenerator"

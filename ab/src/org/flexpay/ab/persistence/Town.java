@@ -1,15 +1,13 @@
 package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.NameTimeDependentChild;
-import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.TimeLine;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -144,18 +142,6 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-				.append("id", getId())
-				.append("Status", getStatus())
-				.append("Names", getNamesTimeLine())
-				.append("Types", typesTimeLine)
-				.toString();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -187,6 +173,7 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	public TownTypeTemporal getCurrentTypeTemporal() {
 		return getTypeTemporalForDate(DateUtil.now());
 	}
+
 	/**
 	 * Find temporal for date
 	 *
