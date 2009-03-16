@@ -27,7 +27,7 @@ public class ObjectsSyncerImpl implements ObjectsSyncer {
 	 */
 	public void processHistory(@NotNull List<Diff> diffs) {
 
-		log.info("About to process {} diffs", diffs.size());
+		log.debug("About to process {} diffs", diffs.size());
 
 		for (Diff diff : diffs) {
 
@@ -54,7 +54,7 @@ public class ObjectsSyncerImpl implements ObjectsSyncer {
 			}
 		}
 
-		log.info("Ended processing diffs");
+		log.debug("Ended processing diffs");
 	}
 
 	@Required

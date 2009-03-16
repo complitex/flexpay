@@ -11,9 +11,7 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
+import java.io.*;
 
 public class SoapOutHistoryTransport implements OutTransport {
 
@@ -49,9 +47,15 @@ public class SoapOutHistoryTransport implements OutTransport {
 
 		xml.append("</SaveHistoryRequest>");
 
+		StringWriter writer = new StringWriter();
 		StreamSource source = new StreamSource(new StringReader(xml.toString()));
-		StreamResult result = new StreamResult(System.out);
+		StreamResult result = new StreamResult(writer);
 		webServiceTemplate.sendSourceAndReceiveToResult(url, source, result);
+
+		String response = writer.toString();
+		if (!response.contains("OK!")) {
+			throw new Exception("Failed sending file: " + response);
+		}
 	}
 
 	/**

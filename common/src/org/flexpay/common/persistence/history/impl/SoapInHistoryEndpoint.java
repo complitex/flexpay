@@ -8,6 +8,7 @@ import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.Security;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.process.ProcessManager;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -97,7 +98,8 @@ public class SoapInHistoryEndpoint extends AbstractJDomPayloadEndpoint {
 		}
 
 		log.debug("All done!");
-		return null;
+		return new Element("SaveHistoryResponse", Namespace.getNamespace("http://flexpay.org/schemas/history"))
+				.addContent(ApplicationConfig.getInstanceId() + " OK!");
 	}
 
 	@Required

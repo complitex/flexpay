@@ -9510,15 +9510,23 @@
     <library name="Spring-WS">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/../../common/lib/spring-ws/spring-ws-1.5.6-all.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../common/lib/spring-ws/jdom-1.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/spring-ws/XmlSchema-1.4.3.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/spring-ws/xbean-2.2.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/../../common/lib/spring-ws/wsdl4j-1.6.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/spring-ws/jdom-1.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
         <root url="jar:///windows/D/users/mixa/work/Java/_libs/spring-ws-1.5.6/dist/spring-ws-1.5.6-sources.jar!/" />
+        <root url="file:///windows/D/users/mixa/work/Java/_libs/jdom-1.1/src/java" />
       </SOURCES>
+    </library>
+    <library name="CSVReader">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../common/lib/csv/opencsv-1.8.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
     </library>
   </component>
 </project>
