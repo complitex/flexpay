@@ -57,12 +57,16 @@
           class="org.flexpay.tc.actions.tcresults.BuildingTCResultsListAction"
           p:tariffCalculationResultService-ref="tariffCalculationResultService"
           p:tariffService-ref="tariffService"
+          p:addressService-ref="addressService"
+          p:buildingService-ref="buildingService"
           scope="prototype"/>
 
     <bean id="buildingTCResultsEditAction"
           class="org.flexpay.tc.actions.tcresults.BuildingTCResultsEditAction"
           p:tariffService-ref="tariffService"
           p:tariffCalculationResultService-ref="tariffCalculationResultService"
+          p:addressService-ref="addressService"
+          p:buildingService-ref="buildingService"
           scope="prototype"/>
 
     <bean id="buildingTCResultsUploadAction"

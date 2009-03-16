@@ -5,6 +5,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.ValidationUtil;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.Tariff;
@@ -12,6 +13,8 @@ import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.service.TariffService;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.AddressService;
 import org.jetbrains.annotations.NotNull;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
@@ -31,6 +34,8 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
     private Map<Long, String> tariffMapDBValues = CollectionUtils.map();
 
     // required services
+    private AddressService addressService;
+    private BuildingService buildingService;
     private TariffService tariffService;
     private TariffCalculationResultService tariffCalculationResultService;
 
@@ -115,12 +120,41 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
     }
 
     // rendering utility methods
+    public String getAddress(@NotNull Long buildingId) throws Exception {
+
+        return addressService.getBuildingsAddress(new Stub<BuildingAddress>(buildingId), getUserPreferences().getLocale());
+    }
+
+    public List<BuildingAddress> getAlternateAddresses() throws FlexPayException {
+
+        List<BuildingAddress> alternateAddresses = CollectionUtils.list();
+
+        Long id = Long.parseLong(buildingId);
+        BuildingAddress building = buildingService.readFull(new Stub<BuildingAddress>(id));
+
+        for (BuildingAddress address : buildingService.getBuildingBuildings(building.getBuildingStub())) {
+            if (!building.equals(address)) {
+                alternateAddresses.add(buildingService.readFull(stub(address)));
+            }
+        }
+
+        return alternateAddresses;
+    }
+
+    public boolean hasPrimaryStatus(Long id) {
+
+        BuildingAddress building = buildingService.readFull(new Stub<BuildingAddress>(id));
+        return building.getPrimaryStatus();
+    }
+
     public String getTariffTranslation(Long tariffId) {
+
         Tariff tariff = tariffService.readFull(new Stub<Tariff>(tariffId));
         return getTranslation(tariff.getTranslations()).getName();
     }
 
     public String formatDate(Date date) {
+
         return DateUtil.format(date);
     }
 
@@ -168,5 +202,15 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
     @Required
     public void setTariffService(TariffService tariffService) {
         this.tariffService = tariffService;
+    }
+
+    @Required
+    public void setAddressService(AddressService addressService) {
+        this.addressService = addressService;
+    }
+
+    @Required
+    public void setBuildingService(BuildingService buildingService) {
+        this.buildingService = buildingService;
     }
 }

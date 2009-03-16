@@ -64,8 +64,19 @@
 <s:actionerror/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-    <tr><td class="th_s" colspan="2"><s:text name="tc.tariffs_calculated"/></td></tr>
-    <s:if test="%{tariffCalculationDatesIsEmpty()}"><tr class="cols_1"><td class="col" colspan="2"><s:text name="tc.no_tariff_results"/></td></tr></s:if>
+    <tr><td class="th_s" colspan="2">
+        <s:property value="%{getAddress(buildingId)}"/>
+
+        <s:if test="%{hasPrimaryStatus(buildingId)}">(<s:text name="tc.building_tc_results_edit.primary_status"/>)</s:if>
+    </td></tr>
+
+    <s:iterator value="%{alternateAddresses}">
+        <tr valign="middle" class="cols_1"><td class="col" colspan="2"><s:property value="%{getAddress(id)}"/><s:if test="primaryStatus">(<s:text name="tc.building_tc_results_edit.primary_status"/>)</s:if></td></tr>
+    </s:iterator>
+
+    <s:if test="%{tariffCalculationDatesIsEmpty()}">
+        <tr class="cols_1"><td class="col" colspan="2"><s:text name="tc.no_tariff_results"/></td></tr>
+    </s:if>
 </table>
 
 <s:if test="%{!tariffCalculationDatesIsEmpty()}">
@@ -106,7 +117,8 @@
                 </tr>
             </table>
         </s:form>
-</s:iterator>
+    </s:iterator>
+    
     <s:iterator value="tariffCalculationDates" id="calcDate">
         <div id="uploadTcResultsDialog_<s:property value="%{formatDateWithUnderlines(#calcDate)}"/>" style="display: none;">
             <s:form action="buildingTCResultsUpload" id="uploadTCResults_%{formatDateWithUnderlines(#calcDate)}">
@@ -117,6 +129,6 @@
                 <div id="uploadTCResults_<s:property value="%{formatDateWithUnderlines(#calcDate)}"/>_calendar"/>
             </s:form>
         </div>
-
     </s:iterator>
+    
 </s:if>
