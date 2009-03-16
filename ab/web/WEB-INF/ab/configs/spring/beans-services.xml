@@ -60,6 +60,10 @@
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="districtHistoryChangesListener" />
 
+	<bean id="streetHistoryChangesListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="streetHistoryBuilder" />
+
 	<bean id="streetServiceTarget"
 		  class="org.flexpay.ab.service.imp.StreetServiceImpl"
 		  autowire-candidate="false"
@@ -70,7 +74,9 @@
 		  p:streetNameDao-ref="streetNameDAO"
 		  p:streetNameTemporalDao-ref="streetNameTemporalDao"
 		  p:streetTypeTemporalDao-ref="streetTypeTemporalDao"
-		  p:streetNameTranslationDao-ref="streetNameTranslationDAO" />
+		  p:streetNameTranslationDao-ref="streetNameTranslationDAO"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:modificationListener-ref="streetHistoryChangesListener" />
 
 	<bean id="buildingServiceTarget" class="org.flexpay.ab.service.imp.BuildingServiceImpl"
 		  autowire-candidate="false"
@@ -152,6 +158,10 @@
 		  parent="abHistoryBuilderBase"
 		  class="org.flexpay.ab.service.history.StreetTypeHistoryBuilder" />
 
+	<bean id="streetHistoryBuilder"
+		  parent="abHistoryBuilderBase"
+		  class="org.flexpay.ab.service.history.StreetHistoryBuilder" />
+
 	<!-- History generators -->
 	<bean id="townTypeHistoryGenerator"
 		  class="org.flexpay.ab.service.history.TownTypeHistoryGenerator"
@@ -169,7 +179,9 @@
 		  p:streetTypeHistoryGenerator-ref="streetTypeHistoryGenerator"
 		  p:streetTypeService-ref="streetTypeService"
 		  p:districtService-ref="districtService"
-		  p:districtHistoryGenerator-ref="districtHistoryGenerator" />
+		  p:districtHistoryGenerator-ref="districtHistoryGenerator"
+		  p:streetService-ref="streetService"
+		  p:streetHistoryGenerator-ref="streetHistoryGenerator" />
 
 	<bean id="districtHistoryGenerator"
 		  class="org.flexpay.ab.service.history.DistrictHistoryGenerator"
@@ -182,6 +194,12 @@
 		  p:diffService-ref="diffService"
 		  p:historyBuilder-ref="streetTypeHistoryBuilder"
 		  p:streetTypeService-ref="streetTypeService" />
+
+	<bean id="streetHistoryGenerator"
+		  class="org.flexpay.ab.service.history.StreetHistoryGenerator"
+		  p:diffService-ref="diffService"
+		  p:historyBuilder-ref="streetHistoryBuilder"
+		  p:streetService-ref="streetService" />
 
 	<!-- History handlers -->
 	<bean id="abHistoryHandlerBase" abstract="true" autowire-candidate="false"
@@ -206,11 +224,17 @@
 	<bean id="districtHistoryHandler" parent="abHistoryHandlerBase"
 		  class="org.flexpay.ab.service.history.DistrictHistoryHandler"
 		  p:districtService-ref="districtService"
-		  p:historyBuilder-ref="townHistoryBuilder" />
+		  p:historyBuilder-ref="districtHistoryBuilder" />
+
+	<bean id="streetHistoryHandler" parent="abHistoryHandlerBase"
+		  class="org.flexpay.ab.service.history.StreetHistoryHandler"
+		  p:streetService-ref="streetService"
+		  p:historyBuilder-ref="streetHistoryBuilder" />
 
 	<bean id="abObjectsSyncer" parent="objectsSyncer">
 		<property name="handlers">
 			<list merge="true">
+				<ref bean="streetHistoryHandler" />
 				<ref bean="townHistoryHandler" />
 				<ref bean="townTypeHistoryHandler" />
 				<ref bean="streetTypeHistoryHandler" />

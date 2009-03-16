@@ -1,6 +1,7 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.StreetFilter;
@@ -14,15 +15,19 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.*;
 
@@ -40,6 +45,9 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	private TownDao townDao;
 
 	private ParentService<TownFilter> parentService;
+
+	private SessionUtils sessionUtils;
+	private ModificationListener<Street> modificationListener;
 
 	/**
 	 * Get DAO implementation working with Name time-dependent objects
@@ -220,6 +228,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 			// check if selected street is in a town
 			if (streetNameFilter.needFilter()) {
 				Street selected = readFull(streetNameFilter.getSelectedStub());
+				//noinspection ConstantConditions
 				if (selected.getTownStub().equals(forefatherFilter.getSelectedStub())) {
 					streetNameFilter.setSearchString(format(streetNameFilter.getSelectedStub(), locale, true));
 				} else {
@@ -275,17 +284,115 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	/**
-	 * Create or update object
+	 * Create object
 	 *
 	 * @param object Object to save
+	 * @return Saved object back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
 	 */
 	@Transactional (readOnly = false)
-	public void save(@NotNull Street object) {
-		if (object.isNew()) {
-			object.setId(null);
-			streetDao.create(object);
-		} else {
+	@NotNull
+	public Street create(@NotNull Street object) throws FlexPayExceptionContainer {
+
+		validate(object);
+		object.setId(null);
+		streetDao.create(object);
+
+		modificationListener.onCreate(object);
+
+		return object;
+	}
+
+	/**
+	 * Create object
+	 *
+	 * @param object Object to save
+	 * @return Saved object back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@Transactional (readOnly = false)
+	@NotNull
+	public Street update(@NotNull Street object) throws FlexPayExceptionContainer {
+
+		validate(object);
+
+		Street old = readFull(stub(object));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + object));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, object);
+
+		streetDao.update(object);
+		return object;
+	}
+
+	/**
+	 * validate district before save
+	 *
+	 * @param object District object to validate
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(@NotNull Street object) throws FlexPayExceptionContainer {
+
+		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
+
+		if (object.getParent() == null) {
+			ex.addException(new FlexPayException("No town", "error.ab.district.no_town"));
+		}
+
+		Collection<StreetNameTemporal> temporals = object.getNameTemporals();
+		if (temporals.isEmpty()) {
+			ex.addException(new FlexPayException("No names", "error.ab.district.no_names"));
+		}
+
+		boolean first = true;
+		for (StreetNameTemporal temporal : temporals) {
+
+			// the second and all next names should have default lang translation
+			if (!first || temporals.size() == 1) {
+				StreetName name = object.getNameForDate(DateUtil.now());
+				if (name == null || StringUtils.isBlank(name.getDefaultNameTranslation())) {
+					FlexPayException e = new FlexPayException("No translation", "error.ab.street.no_default_translation",
+							temporal.getBegin(), temporal.getEnd());
+					ex.addException(e);
+
+					log.debug("Period: {} - {} is empty ", temporal.getBegin(), temporal.getEnd());
+				}
+			}
+
+			first = false;
+		}
+
+		if (ex.isNotEmpty()) {
+			throw ex;
+		}
+	}
+
+	/**
+	 * Disable NTD
+	 *
+	 * @param objects NTDs to disable
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if failure occurs
+	 */
+	@Transactional (readOnly = false)
+	@Override
+	public void disable(Collection<Street> objects) throws FlexPayExceptionContainer {
+
+		log.info("{} districts to disable", objects.size());
+		for (Street object : objects) {
+			object.setStatus(StreetType.STATUS_DISABLED);
 			streetDao.update(object);
+
+			modificationListener.onDelete(object);
+
+			log.info("Disabled: {}", object);
 		}
 	}
 
@@ -336,36 +443,53 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return streetDaoExt.findStreets(townFilter.getSelectedId(), sorters, pager);
 	}
 
+	@Required
 	public void setStreetDao(StreetDao streetDao) {
 		this.streetDao = streetDao;
 	}
 
+	@Required
 	public void setStreetDaoExt(StreetDaoExt streetDaoExt) {
 		this.streetDaoExt = streetDaoExt;
 	}
 
+	@Required
 	public void setStreetNameDao(StreetNameDao streetNameDao) {
 		this.streetNameDao = streetNameDao;
 	}
 
+	@Required
 	public void setStreetNameTemporalDao(StreetNameTemporalDao streetNameTemporalDao) {
 		this.streetNameTemporalDao = streetNameTemporalDao;
 	}
 
+	@Required
 	public void setStreetNameTranslationDao(StreetNameTranslationDao streetNameTranslationDao) {
 		this.streetNameTranslationDao = streetNameTranslationDao;
 	}
 
+	@Required
 	public void setTownDao(TownDao townDao) {
 		this.townDao = townDao;
 	}
 
+	@Required
 	public void setParentService(ParentService<TownFilter> parentService) {
 		this.parentService = parentService;
 	}
 
+	@Required
 	public void setStreetTypeTemporalDao(StreetTypeTemporalDao streetTypeTemporalDao) {
 		this.streetTypeTemporalDao = streetTypeTemporalDao;
 	}
 
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<Street> modificationListener) {
+		this.modificationListener = modificationListener;
+	}
 }

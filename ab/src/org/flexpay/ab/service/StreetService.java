@@ -68,12 +68,26 @@ public interface StreetService extends
 			throws FlexPayException;
 
 	/**
-	 * Create or update object
+	 * Create object
 	 *
 	 * @param object Object to save
+	 * @return Saved object back
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	@Secured ({Roles.STREET_ADD, Roles.STREET_CHANGE})
-	void save(@NotNull Street object);
+	@Secured (Roles.STREET_ADD)
+	@NotNull
+	Street create(@NotNull Street object) throws FlexPayExceptionContainer;
+
+	/**
+	 * Create object
+	 *
+	 * @param object Object to save
+	 * @return Saved object back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.STREET_CHANGE)
+	@NotNull
+	Street update(@NotNull Street object) throws FlexPayExceptionContainer;
 
 	/**
 	 * Create new NameTimeDependent with a single name

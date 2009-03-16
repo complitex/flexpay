@@ -68,7 +68,11 @@ public class StreetCreateAction extends CreateAction<
 			Town town = townService.readFull(townFilter.getSelectedStub());
 			object.setParent(town);
 
-			streetService.save(object);
+			if (object.isNew()) {
+				streetService.create(object);
+			} else {
+				streetService.update(object);
+			}
 
 			return SUCCESS;
 		}

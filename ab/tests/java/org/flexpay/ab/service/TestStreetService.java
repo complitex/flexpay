@@ -48,12 +48,12 @@ public class TestStreetService extends TransactionalSpringBeanAwareTestCase {
 //		street.setTypeForDate(streetType, ApplicationConfig.getPastInfinite());
 
 		try {
-			streetService.save(street);
+			streetService.create(street);
 
 			streetType = streetTypeService.read(2L);
 			street.setTypeForDate(streetType, DateUtil.next(DateUtil.now()));
 
-			streetService.save(street);
+			streetService.update(street);
 
 			// TODO! fixme additional name insert creates additional temporal referenced to the same Name object,
 			// TODO! so cascade delete will fail
