@@ -20,25 +20,15 @@ import java.util.Map;
 
 public class TariffCalcResultExportAction extends FPActionSupport {
 
-	@NonNls
-	protected static final String MODAL = "modal";
-
 	private String date;
 	private List<String> allDates;
 	private String tariffBegin;
-	private Integer modal = 0;
 
 	private ProcessManager processManager;
 	private TariffCalculationResultService tariffCalculationResultService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
-
-/*
-		if (modal == 1) {
-			return MODAL;
-		}
-*/
 
 		if (isNotSubmit()) {
 			allDates = formatDates(tariffCalculationResultService.getUniqueDates());
@@ -73,14 +63,6 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 	@Override
 	protected String getErrorResult() {
 		return INPUT;
-	}
-
-	public Integer getModal() {
-		return modal;
-	}
-
-	public void setModal(Integer modal) {
-		this.modal = modal;
 	}
 
 	public String getDate() {

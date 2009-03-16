@@ -121,14 +121,9 @@
 
 		win.showCenter(true, y, x);
 	}
-</script>
-
-<script type="text/javascript">
 
     function doAction(action) {
-        var form = $("fObjects");
-        form.action = action;
-        form.submit();
+        jQuery("#fObjects").attr("action", action).submit();
     }
 
 </script>

@@ -37,9 +37,7 @@
         </tr>
         <tr valign="middle">
             <td colspan="2">
-                <%--<input type="button" name="export" value="<s:text name="tc.calc_result.export" />" class="btn-exit" onclick="calcDateWindow();" />--%>
-                <input type="hidden" name="modal" value="0" />
-                    <input type="hidden" name="submitted" value="true" />
+                <input type="hidden" name="submitted" value="true" />
                 <input type="button" value="<s:text name="tc.calc_result.export" />" class="btn-exit" onclick="submitForm();" />
             </td>
         </tr>
@@ -64,41 +62,6 @@
 
             jQuery("#form").submit();
         }
-/*
-        var x = 0;
-        var y = 0;
-
-        function getXY(e) {
-            var left = document.documentElement.scrollLeft;
-            var top = document.documentElement.scrollTop;
-            if (Prototype.Browser.IE) {
-                x = event.clientX + left;
-                y = event.clientY + top;
-            } else {
-                x = e.clientX + left;
-                y = e.clientY + top;
-            }
-        }
-
-        document.onmousemove = getXY;
-
-        function calcDateWindow() {
-
-            var win = new Window({
-                className: "spread",
-                title: "<s:text name="tc.export.window_title" />",
-                url: "<s:url action="calcResultExport"><s:param name="modal" value="1" /></s:url>&date=" + $("date").value,
-                width:350,
-                height:250,
-                resizable: false,
-                minimizable: false,
-                maximizable: false,
-                destroyOnClose: true
-            });
-
-            win.showCenter(true, y, x);
-        }
-*/
 
     </script>
 
