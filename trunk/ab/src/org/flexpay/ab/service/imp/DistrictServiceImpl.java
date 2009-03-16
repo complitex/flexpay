@@ -12,11 +12,15 @@ import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.history.ModificationListener;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.ParentService;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -37,105 +41,27 @@ public class DistrictServiceImpl extends
 
 	private ParentService<TownFilter> parentService;
 
-	/**
-	 * Setter for property 'districtDao'.
-	 *
-	 * @param districtDao Value to set for property 'districtDao'.
-	 */
-	public void setDistrictDao(DistrictDao districtDao) {
-		this.districtDao = districtDao;
-	}
+	private SessionUtils sessionUtils;
+	private ModificationListener<District> modificationListener;
 
-	/**
-	 * Setter for property 'districtNameDao'.
-	 *
-	 * @param districtNameDao Value to set for property 'districtNameDao'.
-	 */
-	public void setDistrictNameDao(DistrictNameDao districtNameDao) {
-		this.districtNameDao = districtNameDao;
-	}
-
-	/**
-	 * Setter for property 'districtNameTemporalDao'.
-	 *
-	 * @param districtNameTemporalDao Value to set for property 'districtNameTemporalDao'.
-	 */
-	public void setDistrictNameTemporalDao(
-			DistrictNameTemporalDao districtNameTemporalDao) {
-		this.districtNameTemporalDao = districtNameTemporalDao;
-	}
-
-	/**
-	 * Setter for property 'districtNameTranslationDao'.
-	 *
-	 * @param districtNameTranslationDao Value to set for property 'districtNameTranslationDao'.
-	 */
-	public void setDistrictNameTranslationDao(
-			DistrictNameTranslationDao districtNameTranslationDao) {
-		this.districtNameTranslationDao = districtNameTranslationDao;
-	}
-
-	/**
-	 * Setter for property 'townDao'.
-	 *
-	 * @param townDao Value to set for property 'townDao'.
-	 */
-	public void setTownDao(TownDao townDao) {
-		this.townDao = townDao;
-	}
-
-	/**
-	 * Get DAO implementation working with Name time-dependent objects
-	 *
-	 * @return GenericDao implementation
-	 */
 	protected NameTimeDependentDao<District, Long> getNameTimeDependentDao() {
 		return districtDao;
 	}
 
-	/**
-	 * Get DAO implementation working with DateIntervals
-	 *
-	 * @return GenericDao implementation
-	 */
 	protected GenericDao<DistrictNameTemporal, Long> getNameTemporalDao() {
 		return districtNameTemporalDao;
 	}
 
-	/**
-	 * Get DAO implementation working with DateIntervals
-	 *
-	 * @return GenericDao implementation
-	 */
 	protected GenericDao<DistrictName, Long> getNameValueDao() {
 		return districtNameDao;
 	}
 
-	/**
-	 * Get DAO implementation working with name translations
-	 *
-	 * @return GenericDao implementation
-	 */
 	protected GenericDao<DistrictNameTranslation, Long> getNameTranslationDao() {
 		return districtNameTranslationDao;
 	}
 
-	/**
-	 * Get DAO implementation working with parent objects
-	 *
-	 * @return GenericDao implementation
-	 */
 	protected GenericDao<Town, Long> getParentDao() {
 		return townDao;
-	}
-
-	/**
-	 * Setter for property 'parentService'.
-	 *
-	 * @param parentService Value to set for property 'parentService'.
-	 */
-	public void setParentService(ParentService<TownFilter> parentService) {
-		this.parentService = parentService;
 	}
 
 	/**
@@ -264,6 +190,8 @@ public class DistrictServiceImpl extends
 		district.setId(null);
 		districtDao.create(district);
 
+		modificationListener.onCreate(district);
+
 		return district;
 	}
 
@@ -275,12 +203,45 @@ public class DistrictServiceImpl extends
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
 	public District update(@NotNull District district) throws FlexPayExceptionContainer {
 
 		validate(district);
+
+		District old = readFull(stub(district));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + district));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, district);
+
 		districtDao.update(district);
 		return district;
+	}
+
+	/**
+	 * Disable NTD
+	 *
+	 * @param objects NTDs to disable
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if failure occurs
+	 */
+	@Transactional (readOnly = false)
+	@Override
+	public void disable(Collection<District> objects) throws FlexPayExceptionContainer {
+
+		log.info("{} districts to disable", objects.size());
+		for (District object : objects) {
+			object.setStatus(StreetType.STATUS_DISABLED);
+			districtDao.update(object);
+
+			modificationListener.onDelete(object);
+
+			log.info("Disabled: {}", object);
+		}
+
 	}
 
 	/**
@@ -324,5 +285,47 @@ public class DistrictServiceImpl extends
 		if (ex.isNotEmpty()) {
 			throw ex;
 		}
+	}
+
+	@Required
+	public void setDistrictDao(DistrictDao districtDao) {
+		this.districtDao = districtDao;
+	}
+
+	@Required
+	public void setDistrictNameDao(DistrictNameDao districtNameDao) {
+		this.districtNameDao = districtNameDao;
+	}
+
+	@Required
+	public void setDistrictNameTemporalDao(
+			DistrictNameTemporalDao districtNameTemporalDao) {
+		this.districtNameTemporalDao = districtNameTemporalDao;
+	}
+
+	@Required
+	public void setDistrictNameTranslationDao(
+			DistrictNameTranslationDao districtNameTranslationDao) {
+		this.districtNameTranslationDao = districtNameTranslationDao;
+	}
+
+	@Required
+	public void setTownDao(TownDao townDao) {
+		this.townDao = townDao;
+	}
+
+	@Required
+	public void setParentService(ParentService<TownFilter> parentService) {
+		this.parentService = parentService;
+	}
+
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<District> modificationListener) {
+		this.modificationListener = modificationListener;
 	}
 }

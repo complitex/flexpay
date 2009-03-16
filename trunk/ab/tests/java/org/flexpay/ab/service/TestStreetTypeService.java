@@ -22,8 +22,6 @@ import java.util.Set;
 
 public class TestStreetTypeService extends SpringBeanAwareTestCase {
 
-	private Logger log = LoggerFactory.getLogger(getClass());
-
 	@Autowired
 	@Qualifier ("streetTypeService")
 	private StreetTypeService service;
@@ -82,9 +80,10 @@ public class TestStreetTypeService extends SpringBeanAwareTestCase {
 	@Test
 	public void testUpdate() throws Throwable {
 
-		StreetType type = service.read(13L);
-		assertNotNull("Type #13 not found", type);
-
+		StreetType type = new StreetType();
+		type.setTranslation(new StreetTypeTranslation("Sample street type"));
+		service.create(type);
+		
 		type.setTranslation(new StreetTypeTranslation("Тестовый тип"));
 		service.update(type);
 	}
