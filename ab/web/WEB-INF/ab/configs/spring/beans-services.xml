@@ -125,12 +125,15 @@
 
 	<bean id="townTypeHistoryBuilder"
 		  parent="abHistoryBuilderBase"
-		  class="org.flexpay.ab.service.history.TownTypeHistoryBuilder"
-		  p:masterIndexService-ref="masterIndexService" />
+		  class="org.flexpay.ab.service.history.TownTypeHistoryBuilder" />
 
 	<bean id="townHistoryBuilder"
 		  parent="abHistoryBuilderBase"
 		  class="org.flexpay.ab.service.history.TownHistoryBuilder" />
+
+	<bean id="streetTypeHistoryBuilder"
+		  parent="abHistoryBuilderBase"
+		  class="org.flexpay.ab.service.history.StreetTypeHistoryBuilder" />
 
 	<!-- History generators -->
 	<bean id="townTypeHistoryGenerator"
@@ -147,6 +150,12 @@
 		  p:townService-ref="townService"
 		  p:townTypeService-ref="townTypeService" />
 
+	<bean id="streetTypeHistoryGenerator"
+		  class="org.flexpay.ab.service.history.StreetTypeHistoryGenerator"
+		  p:diffService-ref="diffService"
+		  p:historyBuilder-ref="streetTypeHistoryBuilder"
+		  p:streetTypeService-ref="streetTypeService" />
+
 	<!-- History handlers -->
 	<bean id="abHistoryHandlerBase" abstract="true" autowire-candidate="false"
 		  parent="historyHandlerBase"
@@ -157,16 +166,22 @@
 		  p:townService-ref="townService"
 		  p:historyBuilder-ref="townHistoryBuilder" />
 
-	<bean id="towntypeHistoryHandler" parent="abHistoryHandlerBase"
+	<bean id="townTypeHistoryHandler" parent="abHistoryHandlerBase"
 		  class="org.flexpay.ab.service.history.TownTypeHistoryHandler"
 		  p:townTypeService-ref="townTypeService"
 		  p:historyBuilder-ref="townTypeHistoryBuilder" />
+
+	<bean id="streetTypeHistoryHandler" parent="abHistoryHandlerBase"
+		  class="org.flexpay.ab.service.history.StreetTypeHistoryHandler"
+		  p:streetTypeService-ref="streetTypeService"
+		  p:historyBuilder-ref="streetTypeHistoryBuilder" />
 
 	<bean id="abObjectsSyncer" parent="objectsSyncer">
 		<property name="handlers">
 			<list merge="true">
 				<ref bean="townHistoryHandler" />
-				<ref bean="towntypeHistoryHandler" />
+				<ref bean="townTypeHistoryHandler" />
+				<ref bean="streetTypeHistoryHandler" />
 			</list>
 		</property>
 	</bean>
