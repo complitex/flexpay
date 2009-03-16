@@ -44,9 +44,11 @@
 </script>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-    <tr>
-        <td class="th_s" colspan="2"><s:text name="tc.tariffs_calculated"/></td>
-    </tr>
+    <tr><td class="th_s" colspan="2"><s:property value="%{getAddress(buildingId)}"/><s:if test="%{hasPrimaryStatus(buildingId)}"> (<s:text name="tc.building_tc_results_edit.primary_status"/>)</s:if></td></tr>
+
+    <s:iterator value="%{alternateAddresses}">
+        <tr valign="middle" class="cols_1"><td class="col" colspan="2"><s:property value="%{getAddress(id)}"/><s:if test="primaryStatus">(<s:text name="tc.building_tc_results_edit.primary_status"/>)</s:if></td></tr>
+    </s:iterator>
 </table>
 
 <s:actionerror/>
