@@ -95,7 +95,13 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
             Stub<Building> buildingStub = new Stub<Building>(Long.parseLong(buildingId));
             TariffCalculationResult result = tariffCalculationResultService.findTariffCalcResults(calcDate, tariffStub, buildingStub);
 
-            result.setValue(StringUtils.isEmpty(value) ? BigDecimal.ZERO : new BigDecimal(value));
+            BigDecimal oldValue = result.getValue();
+            BigDecimal newValue = StringUtils.isEmpty(value) ? BigDecimal.ZERO : new BigDecimal(value);
+            result.setValue(newValue);
+
+            if (!newValue.equals(oldValue)) {
+                result.setTariffExportCode(null);
+            }
 
             tariffCalculationResultService.update(result);
         }
