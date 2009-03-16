@@ -1,16 +1,14 @@
 package org.flexpay.ab.persistence;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Set;
 
 public class District extends NameTimeDependentChild<DistrictName, DistrictNameTemporal> {
 
@@ -42,21 +40,9 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 	/**
 	 * {@inheritDoc}
 	 */
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-				.append("id", getId())
-				.append("Status", getStatus())
-				.append("Names", getNamesTimeLine())
-				.toString();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
-		return this == obj || obj instanceof Region && super.equals(obj);
-
+		return this == obj || obj instanceof District && super.equals(obj);
 	}
 
 	/**
