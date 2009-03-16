@@ -49,4 +49,8 @@ public class StreetTypeTemporal extends TypeDateInterval<StreetType, StreetTypeT
 	public String toString() {
 		return super.toString();
 	}
+
+	public void setStreet(Street street) {
+		setObject(street);
+	}
 }

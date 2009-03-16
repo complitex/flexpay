@@ -122,6 +122,7 @@
 	<query name="Street.readFull">
 		SELECT distinct o
 		FROM Street o
+			join fetch o.parent 
 		LEFT JOIN FETCH o.nameTemporals t
 		LEFT JOIN FETCH t.value v
 		LEFT JOIN FETCH v.translations tr

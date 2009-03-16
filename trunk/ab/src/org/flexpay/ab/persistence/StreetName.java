@@ -1,11 +1,29 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.TemporaryName;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Set;
+import java.util.Collections;
 
 /**
  * StreetName
  */
 public class StreetName extends TemporaryName<StreetName, StreetNameTranslation> {
+
+	public StreetName() {
+	}
+
+	@SuppressWarnings ({"unchecked", "CollectionsFieldAccessReplaceableByMethodCall"})
+	public StreetName(@Nullable StreetName name) {
+		Set<StreetNameTranslation> translations = name != null ? name.getTranslations() : Collections.EMPTY_SET;
+		for (StreetNameTranslation translation : translations) {
+			StreetNameTranslation copy = new StreetNameTranslation(
+					translation.getName(), translation.getLang());
+			addNameTranslation(copy);
+		}
+
+	}
 
 	/**
 	 * Returns a string representation of the object.

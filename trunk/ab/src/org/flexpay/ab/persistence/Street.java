@@ -90,7 +90,15 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	 *
 	 * @return Value for property 'typesTimeLine'.
 	 */
+	@NotNull
 	public TimeLine<StreetType, StreetTypeTemporal> getTypesTimeLine() {
+
+		if (typesTimeLine == null) {
+			StreetTypeTemporal temporal = new StreetTypeTemporal();
+			temporal.setStreet(this);
+			return new TimeLine<StreetType, StreetTypeTemporal>(temporal);
+		}
+
 		return typesTimeLine;
 	}
 
@@ -268,8 +276,13 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	}
 
 	@NotNull
+	public Town getTown() {
+		return (Town) getParent();
+	}
+
+	@NotNull
 	public Stub<Town> getTownStub() {
-		return new Stub<Town>((Town) getParent());
+		return new Stub<Town>(getTown());
 	}
 
 	public void setName(StreetName name) {

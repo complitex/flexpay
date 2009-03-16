@@ -241,7 +241,6 @@ public class DistrictServiceImpl extends
 
 			log.info("Disabled: {}", object);
 		}
-
 	}
 
 	/**

@@ -1,15 +1,9 @@
 package org.flexpay.ab.service.history;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.persistence.District;
-import org.flexpay.ab.persistence.StreetType;
-import org.flexpay.ab.persistence.Town;
-import org.flexpay.ab.persistence.TownType;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.TownFilter;
-import org.flexpay.ab.service.DistrictService;
-import org.flexpay.ab.service.StreetTypeService;
-import org.flexpay.ab.service.TownService;
-import org.flexpay.ab.service.TownTypeService;
+import org.flexpay.ab.service.*;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
@@ -39,6 +33,9 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 
 	private DistrictService districtService;
 	private DistrictHistoryGenerator districtHistoryGenerator;
+
+	private StreetService streetService;
+	private StreetHistoryGenerator streetHistoryGenerator;
 
 	/**
 	 * Do generation
@@ -90,6 +87,13 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 			districtHistoryGenerator.generateFor(district);
 		}
 		log.debug("ended generating history for districts");
+
+		log.debug("starting generating history for streets");
+		// generate history for all town streets
+		for (Street street : streetService.find(filters)) {
+			streetHistoryGenerator.generateFor(street);
+		}
+		log.debug("ended generating history for streets");
 	}
 
 	@Required
@@ -135,5 +139,15 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 	@Required
 	public void setDistrictHistoryGenerator(DistrictHistoryGenerator districtHistoryGenerator) {
 		this.districtHistoryGenerator = districtHistoryGenerator;
+	}
+
+	@Required
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
+	}
+
+	@Required
+	public void setStreetHistoryGenerator(StreetHistoryGenerator streetHistoryGenerator) {
+		this.streetHistoryGenerator = streetHistoryGenerator;
 	}
 }
