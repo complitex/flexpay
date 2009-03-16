@@ -1,0 +1,10 @@
+<soapenv:Envelope xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:his="http://flexpay.org/schemas/history">
+  <soapenv:Body>
+    <his:SaveHistoryRequest>
+      <his:groupId>10</his:groupId>
+      <his:instanceId>string</his:instanceId>
+      <his:created>2008-09-29T08:49:45</his:created>
+      <his:file>c29ub3Jhcw==</his:file>
+    </his:SaveHistoryRequest>
+  </soapenv:Body>
+</soapenv:Envelope>
