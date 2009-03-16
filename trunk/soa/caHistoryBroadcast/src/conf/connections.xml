@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" xmlns:ns1="caHistoryBroadcast" xmlns:ns2="http://enterprise.netbeans.org/bpel/HistoryBroadcast/broadcastHistoryApplication" version="1.0">
+    <service-assembly>
+        <identification>
+            <name>caHistoryBroadcast</name>
+            <description>Represents the Service Assembly of caHistoryBroadcast</description>
+        </identification>
+        <connections>
+            <connection>
+                <consumer endpoint-name="historySourceEndpoint" service-name="ns1:casaService1"/>
+                <provider endpoint-name="saveHistoryPortTypeRole_myRole" service-name="ns2:historySource"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="saveHistoryPortTypeRole_partnerRole" service-name="ns2:historyConsumer1"/>
+                <provider endpoint-name="consumer1Endpoint" service-name="ns1:casaService2"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="saveHistoryPortTypeRole_partnerRole" service-name="ns2:historyConsumer2"/>
+                <provider endpoint-name="consumer2Endpoint" service-name="ns1:casaService3"/>
+            </connection>
+        </connections>
+    </service-assembly>
+</jbi>

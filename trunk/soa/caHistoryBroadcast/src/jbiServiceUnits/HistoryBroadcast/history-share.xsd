@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://flexpay.org/schemas/history"
+		xmlns:tns="http://flexpay.org/schemas/history" elementFormDefault="qualified">
+
+	<element name="SaveHistoryRequest" type="tns:HistoryFile" />
+        
+        <element name="SaveHistoryResponse" type="string" />
+
+	<complexType name="HistoryFile">
+		<all>
+			<!-- History records group id -->
+			<element name="groupId" type="long" minOccurs="1" />
+
+			<!-- Sharing application instance id -->
+			<element name="instanceId" type="string" minOccurs="1" />
+
+			<!-- Records creation date -->
+			<element name="created" type="dateTime" minOccurs="1" />
+
+			<!-- Base64 binary file -->
+			<element name="file" type="base64Binary" minOccurs="1" />
+		</all>
+	</complexType>
+
+</schema>

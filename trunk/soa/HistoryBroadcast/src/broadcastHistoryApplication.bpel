@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="broadcastHistoryApplication"
+    targetNamespace="http://enterprise.netbeans.org/bpel/HistoryBroadcast/broadcastHistoryApplication"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
+    xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor"
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling"
+    xmlns:tns="http://enterprise.netbeans.org/bpel/HistoryBroadcast/broadcastHistoryApplication" xmlns:ns0="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory">
+    <import namespace="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory" location="saveHistory.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="historyConsumer1" xmlns:tns="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory" partnerLinkType="tns:saveHistory" partnerRole="saveHistoryPortTypeRole"/>
+        <partnerLink name="historyConsumer2" xmlns:tns="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory" partnerLinkType="tns:saveHistory" partnerRole="saveHistoryPortTypeRole"/>
+        <partnerLink name="historySource" xmlns:tns="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory" partnerLinkType="tns:saveHistory" myRole="saveHistoryPortTypeRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="SaveHistoryOut" messageType="ns0:saveHistoryResponse"/>
+        <variable name="SaveHistoryOut1" messageType="ns0:saveHistoryResponse"/>
+        <variable name="SaveHistoryIn" xmlns:tns="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory" messageType="tns:saveHistoryRequest"/>
+    </variables>
+    <sequence>
+        <receive name="ReceiveHistory" createInstance="yes" partnerLink="historySource" operation="saveHistory" xmlns:tns="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory" portType="tns:saveHistoryPortType" variable="SaveHistoryIn"/>
+        <invoke name="Invoke1" partnerLink="historyConsumer1" operation="saveHistory" portType="ns0:saveHistoryPortType" inputVariable="SaveHistoryIn" outputVariable="SaveHistoryOut1"/>
+        <assign name="Assign1">
+            <copy>
+                <from variable="SaveHistoryOut1"/>
+                <to variable="SaveHistoryOut"/>
+            </copy>
+        </assign>
+        <invoke name="Invoke2" partnerLink="historyConsumer2" operation="saveHistory" portType="ns0:saveHistoryPortType" inputVariable="SaveHistoryIn" outputVariable="SaveHistoryOut1"/>
+        <assign name="Assign2">
+            <copy>
+                <from>concat('1. ', $SaveHistoryOut.saveHistoryResponse, '2. ', $SaveHistoryOut1.saveHistoryResponse)</from>
+                <to variable="SaveHistoryOut" part="saveHistoryResponse"/>
+            </copy>
+        </assign>
+        <reply name="Reply2" partnerLink="historySource" operation="saveHistory" portType="ns0:saveHistoryPortType" variable="SaveHistoryOut"/>
+    </sequence>
+</process>

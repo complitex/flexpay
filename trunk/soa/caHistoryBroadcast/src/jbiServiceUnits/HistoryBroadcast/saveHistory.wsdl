@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="saveHistory" targetNamespace="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory" xmlns:ns="http://flexpay.org/schemas/history" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
+    <types>
+        <xsd:schema targetNamespace="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory">
+            <xsd:import namespace="http://flexpay.org/schemas/history" schemaLocation="history-share.xsd"/>
+        </xsd:schema>
+    </types>
+    <message name="saveHistoryRequest">
+        <part name="saveHistoryRequest" element="ns:SaveHistoryRequest"/>
+    </message>
+    <message name="saveHistoryResponse">
+        <part name="saveHistoryResponse" element="ns:SaveHistoryResponse"/>
+    </message>
+    <portType name="saveHistoryPortType">
+        <operation name="saveHistory">
+            <input name="input1" message="tns:saveHistoryRequest"/>
+            <output name="status" message="tns:saveHistoryResponse"/>
+        </operation>
+    </portType>
+    <plnk:partnerLinkType name="saveHistory">
+        <!-- A partner link type is automatically generated when a new port type is added. Partner link types are used by BPEL processes. 
+In a BPEL process, a partner link represents the interaction between the BPEL process and a partner service. Each partner link is associated with a partner link type.
+A partner link type characterizes the conversational relationship between two services. The partner link type can have one or two roles.-->
+        <plnk:role name="saveHistoryPortTypeRole" portType="tns:saveHistoryPortType"/>
+    </plnk:partnerLinkType>
+</definitions>
