@@ -1,22 +1,19 @@
 package org.flexpay.tc.process;
 
+import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.service.BuildingService;
-import org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.process.job.Job;
-import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.tc.locking.Resources;
 import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.process.exporters.Exporter;
 import org.flexpay.tc.service.TariffCalculationResultService;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -29,6 +26,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 	private LockManager lockManager;
 	private TariffCalculationResultService tariffCalculationResultService;
 	private List<String> subServiceExportCodes;
+	private BuildingService buildingService;
 	private Exporter exporter;
 	/**
 	 * Building ID
@@ -66,19 +64,18 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 					new Object[] {tariffCalcResultList.size(), buildingStub.getId(), calculationDate});
 			if (tariffCalcResultList.size() > 0) {
 				exporter.beginExport();
-				for (TariffCalculationResult tcr : tariffCalcResultList) {
+				for (String subServiceCode : subServiceExportCodes){
+					TariffCalculationResult tcr = getTariffCalculationResultBySubserviceCode(tariffCalcResultList, subServiceCode);
+					if (tcr == null){
+						tcr = new TariffCalculationResult();
+						Tariff tariff = new Tariff(); tariff.setSubServiceCode(subServiceCode);
+						tcr.setBuilding(buildingService.findBuilding(new Stub<BuildingAddress>(buildingStub.getId())));
+						tcr.setTariff(tariff);
+						tcr.setCalculationDate(calculationDate);
+						tcr.setValue(BigDecimal.ZERO);
+					}
 					exporter.export(new Object[]{tcr, periodBeginDate});
-					subServiceExportCodes.remove(tcr.getTariff().getSubServiceCode());
 				}
-				for(String code : subServiceExportCodes){
-					TariffCalculationResult tcr = new TariffCalculationResult();
-					Tariff tariff = new Tariff(); tariff.setSubServiceCode(code);
-					tcr.setTariff(tariff);
-					tcr.setCalculationDate(calculationDate);
-					tcr.setValue(BigDecimal.ZERO);
-					exporter.export(new Object[]{tcr,periodBeginDate});
-				}
-
 			}else{
 				log.info("No Tariff calculation results found.");
 			}
@@ -95,6 +92,15 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 		return RESULT_NEXT;
 	}
 
+	private TariffCalculationResult getTariffCalculationResultBySubserviceCode(@NotNull  List<TariffCalculationResult> tcrl, @NotNull String subserviceCode){
+		for (TariffCalculationResult tcr : tcrl){
+			if (subserviceCode.equals(tcr.getTariff().getSubServiceCode())){
+				tcrl.remove(tcr);
+				return tcr;
+			}
+		}
+		return null;
+	}
 	@Required
 	public void setTariffCalculationResultService(TariffCalculationResultService tariffCalculationResultService) {
 		this.tariffCalculationResultService = tariffCalculationResultService;
@@ -115,4 +121,8 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 		this.subServiceExportCodes = subServiceExportCodes;
 	}
 
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
+	}
 }

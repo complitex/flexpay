@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.TariffExportCode;
 import org.flexpay.tc.service.TariffCalculationResultService;
@@ -63,11 +64,11 @@ public class JDBCCNExporter implements Exporter {
 	 * @throws FlexPayException throws flexpay exception when can't export data
 	 */
 	public void export(@NotNull Object[] params) throws FlexPayException {
-
+		Logger plog = ProcessLogger.getLogger(getClass());
 		try {
 			TariffCalculationResult tariffCalculationResult = (TariffCalculationResult) params[0];
 			Integer externalId = Integer.parseInt(getExternalId(new Stub<Building>(tariffCalculationResult.getBuilding().getId())));
-			Date periodBeginDate = new Date(((java.util.Date) params[2]).getTime());
+			Date periodBeginDate = new Date(((java.util.Date) params[1]).getTime());
 			CallableStatement cs = conn.prepareCall(procedure);
 			try {
 				cs.registerOutParameter(1, Types.INTEGER);
@@ -82,25 +83,25 @@ public class JDBCCNExporter implements Exporter {
 				TariffExportCode tariffExportCode;
 
 				if (exportResult == 0) {
-					log.warn("Tariff {} for building with id={} not exists", tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId());
+					plog.info("Tariff {} for building with id={} not exists", tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId());
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.EXPORTED);
 				} else if (exportResult == -1) {
-					log.warn("Building with id={} for caluculation result {} not found", tariffCalculationResult.getBuilding().getId(), tariffCalculationResult);
+					plog.info("Building with id={} for caluculation result {} not found", tariffCalculationResult.getBuilding().getId(), tariffCalculationResult);
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.BUILDING_NOT_FOUND);
 				} else if (exportResult == -2) {
-					log.warn("Error: Can't create record in history for calculation result {}", tariffCalculationResult);
+					plog.info("Error: Can't create record in history for calculation result {}", tariffCalculationResult);
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.CANNOT_CREATE_HISTORY_RECORD);
 				} else if (exportResult == -3) {
-					log.warn("Locking exception: Can't export calculcation result {}", tariffCalculationResult);
+					plog.info("Locking exception: Can't export calculcation result {}", tariffCalculationResult);
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.LOCK_EXCEPTION);
 				} else if (exportResult == -4) {
-					log.warn("Tariff value is negative {}", tariffCalculationResult);
+					plog.info("Tariff value is negative {}", tariffCalculationResult);
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.NEGATIVE_VALUE);
 				} else if (exportResult == -5) {
-					log.warn("Tariff begin date is null {}", tariffCalculationResult);
+					plog.info("Tariff begin date is null {}", tariffCalculationResult);
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.BEGIN_DATE_IS_NULL);
 				} else {
-					log.debug("Tariff calculation result {} exported succesfully", tariffCalculationResult);
+					plog.debug("Tariff calculation result {} exported succesfully", tariffCalculationResult);
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.UNKNOWN_RESULT_CODE);
 				}
 				if (tariffCalculationResult.getId() != null){
