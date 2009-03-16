@@ -3,6 +3,8 @@
 		xmlns:tns="http://flexpay.org/schemas/history" elementFormDefault="qualified">
 
 	<element name="SaveHistoryRequest" type="tns:HistoryFile" />
+	
+	<element name="SaveHistoryResponse" type="string" />
 
 	<complexType name="HistoryFile">
 		<all>
