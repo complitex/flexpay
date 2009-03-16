@@ -59,7 +59,11 @@ public class DistrictCreateAction extends CreateAction<
 			Town town = townService.readFull(townFilter.getSelectedStub());
 			object.setParent(town);
 
-			districtService.save(object);
+			if (object.isNew()) {
+				districtService.create(object);
+			} else {
+				districtService.update(object);
+			}
 
 			return REDIRECT_SUCCESS;
 		}

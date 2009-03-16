@@ -27,7 +27,7 @@ public class TestDistrictService extends SpringBeanAwareTestCase {
 		District district = new District();
 		district.setParent(town);
 
-		districtService.save(district);
+		districtService.create(district);
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class TestDistrictService extends SpringBeanAwareTestCase {
 
 		district.setNameForDate(name, DateUtil.now());
 
-		districtService.save(district);
+		districtService.create(district);
 
 		districtDao.delete(district);
 	}

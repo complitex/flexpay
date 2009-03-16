@@ -46,6 +46,25 @@
 		<property name="target" ref="townTypeServiceTarget" />
 	</bean>
 
+	<bean id="districtService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+				<prop key="readFull">cacheName=commonFlexpayCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+				<prop key="create">cacheNames=commonFlexpayCache</prop>
+				<prop key="update*">cacheNames=commonFlexpayCache</prop>
+				<prop key="disable*">cacheNames=commonFlexpayCache</prop>
+				<prop key="save*">cacheNames=commonFlexpayCache</prop>
+			</props>
+		</property>
+		<property name="target" ref="districtServiceTarget" />
+	</bean>
+
 	<bean id="streetService"
 		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />

@@ -39,7 +39,7 @@ public interface TownService extends
 	Town create(@NotNull Town town) throws FlexPayExceptionContainer;
 
 	/**
-	 * Create or update Town object
+	 * Update Town object
 	 *
 	 * @param town Town object to save
 	 * @return saved object back

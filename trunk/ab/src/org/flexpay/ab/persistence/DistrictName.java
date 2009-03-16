@@ -1,6 +1,10 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.TemporaryName;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Set;
+import java.util.Collections;
 
 public class DistrictName extends TemporaryName<DistrictName, DistrictNameTranslation> {
 
@@ -8,6 +12,16 @@ public class DistrictName extends TemporaryName<DistrictName, DistrictNameTransl
 	 * Constructs a new DistrictName.
 	 */
 	public DistrictName() {
+	}
+
+	@SuppressWarnings ({"unchecked", "CollectionsFieldAccessReplaceableByMethodCall"})
+	public DistrictName(@Nullable DistrictName name) {
+		Set<DistrictNameTranslation> translations = name != null ? name.getTranslations() : Collections.EMPTY_SET;
+		for (DistrictNameTranslation translation : translations) {
+			DistrictNameTranslation copy = new DistrictNameTranslation(
+					translation.getName(), translation.getLang());
+			addNameTranslation(copy);
+		}
 	}
 
 	/**
