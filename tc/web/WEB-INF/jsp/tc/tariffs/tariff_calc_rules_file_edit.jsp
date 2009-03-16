@@ -45,7 +45,7 @@
         </tr>
         <tr valign="middle">
             <td colspan="2">
-                <input type="hidden" id="submitted" name="submitted" value="" />
+                <input type="hidden" id="submitted" name="submitted" value="true" />
                 <input type="button" class="btn-exit" value="<s:text name="common.save"/>" onclick="submitForm();" />
             </td>
         </tr>
@@ -56,24 +56,22 @@
 <script type="text/javascript">
 
     function validateForm() {
-        var fileEl = $("inputForm").elements["upload"];
-        if (fileEl == null || fileEl == undefined) {
-            return true;
-        }
-        if (fileEl.value == null || fileEl.value == "") {
-            alert('<s:text name="tc.error.rules_file_field_cant_be_null" />');
+        var fileVal = jQuery('input[name="upload"]').val();
+        if (fileVal == null || fileVal == "") {
+            alert("<s:text name="tc.error.rules_file_field_cant_be_null" />");
             return false;
         }
         return true;
     }
 
     function submitForm() {
-        if (!validateForm()) {
-            return;
-        }
+        <s:if test="%{rulesFile.id <= 0}">
+            if (!validateForm()) {
+                return;
+            }
+        </s:if>
 
-        $("submitted").value = true;
-        $("inputForm").submit();
+        jQuery("#inputForm").submit();
     }
 
 </script>
