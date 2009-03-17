@@ -7,10 +7,10 @@ import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Collection;
 
 /**
  * Building
@@ -29,7 +29,6 @@ public class Building extends DomainObjectWithStatus {
 		super(id);
 	}
 
-	@NotNull
 	public District getDistrict() {
 		return district;
 	}
@@ -97,5 +96,39 @@ public class Building extends DomainObjectWithStatus {
 		}
 
 		this.buildingses.addAll(buildingses);
+	}
+
+	/**
+	 * Find all streets building has address on
+	 *
+	 * @return set of streets
+	 */
+	@NotNull
+	public Set<Street> getStreets() {
+
+		Set<Street> streets = CollectionUtils.set();
+		for (BuildingAddress address : buildingses) {
+			streets.add(address.getStreet());
+		}
+
+		return streets;
+	}
+
+	/**
+	 * Find building address on a street
+	 *
+	 * @param street Street to get address on
+	 * @return BuildingAddress if exists, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public BuildingAddress getAddressOnStreet(@NotNull Street street) {
+
+		for (BuildingAddress address : buildingses) {
+			if (street.equals(address.getStreet())) {
+				return address;
+			}
+		}
+
+		return null;
 	}
 }

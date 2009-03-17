@@ -131,8 +131,6 @@ public class DistrictHistoryBuilder extends HistoryBuilderBase<District> {
 	 */
 	public void patch(@NotNull District district, @NotNull Diff diff) {
 
-		// setup default region if not exists
-
 		for (HistoryRecord record : diff.getHistoryRecords()) {
 
 			switch (record.getFieldType()) {

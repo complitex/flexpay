@@ -102,6 +102,8 @@
         new_date_value datetime comment 'Optional new date value',
         old_int_value integer comment 'Optional old int value',
         new_int_value integer comment 'Optional new int value',
+        old_bool_value bit comment 'Optional old boolean value',
+        new_bool_value bit comment 'Optional new bool value',
         old_long_value bigint comment 'Optional old long value',
         new_long_value bigint comment 'Optional new long value',
         old_string_value varchar(255) comment 'Optional old string value',
