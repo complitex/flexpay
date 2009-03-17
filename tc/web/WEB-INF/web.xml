@@ -113,11 +113,21 @@
 		<servlet-name>rulesFileDownloadServlet</servlet-name>
 		<servlet-class>org.flexpay.tc.actions.tariff.TariffCalcRulesFileDownloadServlet</servlet-class>
 	</servlet>
-	<servlet-mapping>
+
+    <servlet-mapping>
 		<servlet-name>rulesFileDownloadServlet</servlet-name>
 		<url-pattern>/rulesFileDownloadServlet</url-pattern>
 	</servlet-mapping>
 
+    <servlet>
+        <servlet-name>processLogDownloadServlet</servlet-name>
+		<servlet-class>org.flexpay.common.actions.ProcessLogDownloadServlet</servlet-class>
+	</servlet>
+    
+	<servlet-mapping>
+		<servlet-name>processLogDownloadServlet</servlet-name>
+		<url-pattern>/processLogDownloadServlet</url-pattern>
+	</servlet-mapping>
 
 	<security-constraint>
 		<web-resource-collection>
