@@ -53,7 +53,11 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 			type.setTranslation(translation);
 		}
 
-		addressAttributeTypeService.save(type);
+		if (type.isNew()) {
+			addressAttributeTypeService.create(type);
+		} else {
+			addressAttributeTypeService.update(type);
+		}
 
 		return REDIRECT_SUCCESS;
 	}

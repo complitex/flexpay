@@ -27,9 +27,9 @@ public class TariffCalcRulesFileDownloadServlet extends HttpServlet {
 		Long fileId = Long.parseLong(request.getParameter("rulesFileId"));
 
 		TariffCalculationRulesFileService tariffCalculationRulesFileService = getTariffCalculationRulesFileService();
-        @NonNls OutputStream os = response.getOutputStream();
+		@NonNls OutputStream os = response.getOutputStream();
 
-        TariffCalculationRulesFile rulesFile;
+		TariffCalculationRulesFile rulesFile;
 
 		rulesFile = tariffCalculationRulesFileService.read(new Stub<TariffCalculationRulesFile>(fileId));
 
@@ -42,12 +42,12 @@ public class TariffCalcRulesFileDownloadServlet extends HttpServlet {
 
 		FPFile fpFile = rulesFile.getFile();
 
-        if (fpFile == null) {
-            log.error("File not found: id = {}", fileId);
-            os.write(("File not found: id = " + fileId).getBytes());
-            IOUtils.closeQuietly(os);
-            return;
-        }
+		if (fpFile == null) {
+			log.error("File not found: id = {}", fileId);
+			os.write(("File not found: id = " + fileId).getBytes());
+			IOUtils.closeQuietly(os);
+			return;
+		}
 
 		File file = FPFileUtil.getFileOnServer(fpFile);
 

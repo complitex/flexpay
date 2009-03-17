@@ -1,23 +1,18 @@
 package org.flexpay.tc.process;
 
-import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.process.job.Job;
-import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.tc.locking.Resources;
 import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.process.exporters.Exporter;
 import org.flexpay.tc.service.TariffCalculationResultService;
-
-import org.springframework.beans.factory.annotation.Required;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -55,11 +50,12 @@ public class TariffCalcResultExportJob extends Job {
 			for (Long addressId : addressIds) {
 				List<TariffCalculationResult> tariffCalcResultList = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndAddressId(calculationDate, new Stub<BuildingAddress>(addressId));
 				try {
-					for (String subServiceCode : subServiceExportCodes){
+					for (String subServiceCode : subServiceExportCodes) {
 						TariffCalculationResult tcr = getTariffCalculationResultBySubserviceCode(tariffCalcResultList, subServiceCode);
-						if (tcr == null){
+						if (tcr == null) {
 							tcr = new TariffCalculationResult();
-							Tariff tariff = new Tariff(); tariff.setSubServiceCode(subServiceCode);
+							Tariff tariff = new Tariff();
+							tariff.setSubServiceCode(subServiceCode);
 							Building building = new Building();
 							building.setId(addressId);
 							tcr.setBuilding(building);
@@ -70,7 +66,7 @@ public class TariffCalcResultExportJob extends Job {
 						exporter.export(new Object[]{tcr, periodBeginDate});
 					}
 					exporter.commit();
-				} catch (FlexPayException  e) {
+				} catch (FlexPayException e) {
 					log.error("SQL error for addressId=" + addressId, e);
 					try {
 						exporter.rollback();
@@ -89,9 +85,9 @@ public class TariffCalcResultExportJob extends Job {
 		return RESULT_NEXT;
 	}
 
-	private TariffCalculationResult getTariffCalculationResultBySubserviceCode(@NotNull List<TariffCalculationResult> tcrl, @NotNull String subserviceCode){
-		for (TariffCalculationResult tcr : tcrl){
-			if (subserviceCode.equals(tcr.getTariff().getSubServiceCode())){
+	private TariffCalculationResult getTariffCalculationResultBySubserviceCode(@NotNull List<TariffCalculationResult> tcrl, @NotNull String subserviceCode) {
+		for (TariffCalculationResult tcr : tcrl) {
+			if (subserviceCode.equals(tcr.getTariff().getSubServiceCode())) {
 				tcrl.remove(tcr);
 				return tcr;
 			}
@@ -113,7 +109,7 @@ public class TariffCalcResultExportJob extends Job {
 	public void setExporter(Exporter exporter) {
 		this.exporter = exporter;
 	}
-	
+
 	@Required
 	public void setSubServiceExportCodes(List<String> subServiceExportCodes) {
 		this.subServiceExportCodes = subServiceExportCodes;

@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.List;
 
 public class BuildingsListAction extends BuildingsActionsBase {
-    
+
 	private CountryFilter countryFilter = new CountryFilter();
 	private RegionFilter regionFilter = new RegionFilter();
 	private TownFilter townFilter = new TownFilter();
@@ -33,34 +33,34 @@ public class BuildingsListAction extends BuildingsActionsBase {
 		streetNameFilter.setShowSearchString(true);
 	}
 
-    /**
+	/**
 	 * {@inheritDoc}
 	 */
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
-        ArrayStack filters = initFilters();
+		ArrayStack filters = initFilters();
 
 		buildingsList = buildingService.getBuildings(filters, getPager());
 
 		return SUCCESS;
 	}
 
-    private ArrayStack initFilters() throws FlexPayException {
+	private ArrayStack initFilters() throws FlexPayException {
 
-        ArrayStack filterArrayStack = getFilters();
-        for (Object filter : filterArrayStack) {
-            ((PrimaryKeyFilter) filter).initFilter(session);
-        }
+		ArrayStack filterArrayStack = getFilters();
+		for (Object filter : filterArrayStack) {
+			((PrimaryKeyFilter) filter).initFilter(session);
+		}
 
-        ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
-        setFilters(filters);
-        
-        return filters;
-    }
+		ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
+		setFilters(filters);
 
-    /**
+		return filters;
+	}
+
+	/**
 	 * Get default error execution result
 	 * <p/>
 	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
@@ -172,24 +172,24 @@ public class BuildingsListAction extends BuildingsActionsBase {
 		return buildingsList;
 	}
 
-    /**
-     * Setter for property 'buildingsService'.
-     *
-     * @param buildingService Value to set for property 'buildingsService'.
-     */
+	/**
+	 * Setter for property 'buildingsService'.
+	 *
+	 * @param buildingService Value to set for property 'buildingsService'.
+	 */
 	@Required
-    public void setBuildingService(BuildingService buildingService) {
-        this.buildingService = buildingService;
-    }
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
+	}
 
-    /**
-     * Setter for property 'parentService'.
-     *
-     * @param parentService Value to set for property 'parentService'.
-     */
+	/**
+	 * Setter for property 'parentService'.
+	 *
+	 * @param parentService Value to set for property 'parentService'.
+	 */
 	@Required
-    public void setParentService(ParentService parentService) {
-        this.parentService = parentService;
-    }
+	public void setParentService(ParentService parentService) {
+		this.parentService = parentService;
+	}
 
 }

@@ -25,7 +25,7 @@
 		<property name="target" ref="tariffServiceTarget" />
 	</bean>
 
-	<bean id="tariffServiceExt"
+	<bean id="tariffService"
 		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
@@ -39,7 +39,7 @@
 				<prop key="update">cacheNames=tcFlexpayCache</prop>
 			</props>
 		</property>
-		<property name="target" ref="tariffServiceExtTarget" />
+		<property name="target" ref="tariffServiceTarget" />
 	</bean>
 
 </beans>

@@ -11,22 +11,22 @@ import java.util.Set;
 
 public interface TariffCalculationRulesFileService {
 
-	@Secured({Roles.TARIFF_CALCULATION_RULES_FILE_ADD, Roles.TARIFF_CALCULATION_RULES_FILE_CHANGE})
+	@Secured ({Roles.TARIFF_CALCULATION_RULES_FILE_ADD, Roles.TARIFF_CALCULATION_RULES_FILE_CHANGE})
 	void save(@NotNull TariffCalculationRulesFile tariffCalculationRulesFile);
 
-	@Secured(Roles.TARIFF_CALCULATION_RULES_FILE_READ)
+	@Secured (Roles.TARIFF_CALCULATION_RULES_FILE_READ)
 	TariffCalculationRulesFile read(@NotNull Stub<TariffCalculationRulesFile> stub);
 
-	@Secured({Roles.TARIFF_CALCULATION_RULES_FILE_DELETE})
+	@Secured ({Roles.TARIFF_CALCULATION_RULES_FILE_DELETE})
 	void disable(@NotNull Set<Long> objectIds);
 
-	@Secured({Roles.TARIFF_CALCULATION_RULES_FILE_DELETE})
+	@Secured ({Roles.TARIFF_CALCULATION_RULES_FILE_DELETE})
 	void delete(TariffCalculationRulesFile file);
 
-	@Secured({Roles.TARIFF_CALCULATION_RULES_FILE_DELETE})
+	@Secured ({Roles.TARIFF_CALCULATION_RULES_FILE_DELETE})
 	void delete(@NotNull Stub<TariffCalculationRulesFile> fileStub);
 
-	@Secured({Roles.TARIFF_CALCULATION_RULES_FILE_READ})
+	@Secured ({Roles.TARIFF_CALCULATION_RULES_FILE_READ})
 	List<TariffCalculationRulesFile> listTariffCalculationRulesFiles(Page<TariffCalculationRulesFile> pager);
 
 }

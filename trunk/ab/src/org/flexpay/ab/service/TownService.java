@@ -45,7 +45,7 @@ public interface TownService extends
 	 * @return saved object back
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	@Secured ({Roles.TOWN_ADD, Roles.TOWN_CHANGE})
+	@Secured (Roles.TOWN_CHANGE)
 	Town update(@NotNull Town town) throws FlexPayExceptionContainer;
 
 	/**

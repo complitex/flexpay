@@ -12,16 +12,16 @@
 			<list>
 				<value>classpath:org/flexpay/common/application_config.xml</value>
 				<value>classpath:org/flexpay/ab/application_config.xml</value>
-                <value>classpath:org/flexpay/tc/application_config.xml</value>
-                <value>classpath:org/flexpay/common/application_config_test.xml</value>
+				<value>classpath:org/flexpay/tc/application_config.xml</value>
+				<value>classpath:org/flexpay/common/application_config_test.xml</value>
 			</list>
 		</constructor-arg>
 		<property name="languageService" ref="languageService" />
 	</bean>
 
-    <import resource="common/configs/spring/config.xml" />
-    <import resource="ab/configs/spring/config.xml" />
-    <import resource="bti/configs/spring/config.xml" />
-    <import resource="tc/configs/spring/config.xml" />
+	<import resource="common/configs/spring/config.xml" />
+	<import resource="ab/configs/spring/config.xml" />
+	<import resource="bti/configs/spring/config.xml" />
+	<import resource="tc/configs/spring/config.xml" />
 
 </beans>

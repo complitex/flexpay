@@ -1,13 +1,13 @@
 package org.flexpay.tc.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
-import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.CollectionUtils.ar;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 import java.util.Map;
 
-public class TariffExportCode extends DomainObject{
-	
+public class TariffExportCode extends DomainObject {
+
 	public static final int EXPORTED = 0;
 	public static final int BUILDING_NOT_FOUND = -1;
 	public static final int CANNOT_CREATE_HISTORY_RECORD = -2;
@@ -37,11 +37,13 @@ public class TariffExportCode extends DomainObject{
 
 	/**
 	 * Constructs a new TariffExportCode and set up code.
+	 *
 	 * @param code code
 	 */
-	public TariffExportCode(int code){
+	public TariffExportCode(int code) {
 		this.code = code;
 	}
+
 	/**
 	 * @return the code
 	 */

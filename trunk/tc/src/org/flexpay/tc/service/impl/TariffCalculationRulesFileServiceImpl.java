@@ -17,7 +17,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Set;
 
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class TariffCalculationRulesFileServiceImpl implements TariffCalculationRulesFileService {
 
 	@NonNls
@@ -55,7 +55,7 @@ public class TariffCalculationRulesFileServiceImpl implements TariffCalculationR
 		tariffCalculationRulesFileDao.delete(file);
 	}
 
-	@SuppressWarnings({"ResultOfMethodCallIgnored"})
+	@SuppressWarnings ({"ResultOfMethodCallIgnored"})
 	@Transactional (readOnly = false)
 	public void delete(@NotNull Stub<TariffCalculationRulesFile> fileStub) {
 		TariffCalculationRulesFile rulesFile = tariffCalculationRulesFileDao.read(fileStub.getId());

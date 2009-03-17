@@ -10,12 +10,14 @@ public interface Exporter {
 
 	/**
 	 * Begin export procedure
+	 *
 	 * @throws FlexPayException throws flexpay exception when filed to begin export process
 	 */
 	public void beginExport() throws FlexPayException;
 
 	/**
 	 * Export parameters
+	 *
 	 * @param params params to export
 	 * @throws FlexPayException throws flexpay exception when can't export data
 	 */
@@ -23,12 +25,14 @@ public interface Exporter {
 
 	/**
 	 * Commit transaction
+	 *
 	 * @throws FlexPayException throws flexpay exception when filed to commit transaction
 	 */
 	public void commit() throws FlexPayException;
 
 	/**
 	 * Rollback transaction
+	 *
 	 * @throws FlexPayException throws FlexPayException when can't rollback transaction
 	 */
 	public void rollback() throws FlexPayException;

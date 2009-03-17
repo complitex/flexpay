@@ -18,11 +18,11 @@ public interface TariffCalculationResultDao extends GenericDao<TariffCalculation
 	/**
 	 * Get tariff calculation result list for calculation date and building id
 	 *
-	 * @param calcDate	 tariff calculation result date
+	 * @param calcDate   tariff calculation result date
 	 * @param buildingId tariff calculation result building Id
 	 * @return tariff calculation result list
 	 */
 	List<TariffCalculationResult> findByCalcDateAndBuilding(@NotNull Date calcDate, @NotNull Long buildingId);
 
-    List<TariffCalculationResult> findByCalcDateTariffAndBuilding(@NotNull Date calcDate, @NotNull Long tariffId, @NotNull Long buildingId);
+	List<TariffCalculationResult> findByCalcDateTariffAndBuilding(@NotNull Date calcDate, @NotNull Long tariffId, @NotNull Long buildingId);
 }

@@ -1,8 +1,8 @@
 package org.flexpay.tc.dao.impl;
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.flexpay.tc.dao.TariffExportCodeDaoExt;
 import org.flexpay.tc.persistence.TariffExportCode;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ public class TariffExportCodeDaoExtImpl extends HibernateDaoSupport implements T
 
 	/**
 	 * Find Tariff Export Code bu code
+	 *
 	 * @param code code to find
 	 * @return TariffExportCode
 	 */

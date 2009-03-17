@@ -77,12 +77,12 @@ public interface StreetTypeService extends
 	List<StreetType> getEntities();
 
 	/**
-	 * Disable Entity
+	 * Disable Entities
 	 *
-	 * @param entity Entity to disable
+	 * @param entities Entities to disable
 	 */
 	@Secured (Roles.STREET_TYPE_DELETE)
-	void disable(Collection<StreetType> entity);
+	void disable(Collection<StreetType> entities);
 
 	/**
 	 * Create Entity

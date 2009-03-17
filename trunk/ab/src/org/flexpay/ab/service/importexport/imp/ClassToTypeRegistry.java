@@ -17,6 +17,12 @@ public class ClassToTypeRegistry implements org.flexpay.common.service.importexp
 		if (BuildingAddress.class.isAssignableFrom(clazz)) {
 			return MODULE_BASE + 0x07;
 		}
+		if (Building.class.isAssignableFrom(clazz)) {
+			return MODULE_BASE + 0x0A;
+		}
+		if (AddressAttributeType.class.isAssignableFrom(clazz)) {
+			return MODULE_BASE + 0x0B;
+		}
 		if (Street.class.isAssignableFrom(clazz)) {
 			return MODULE_BASE + 0x06;
 		}

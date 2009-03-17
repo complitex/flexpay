@@ -14,71 +14,71 @@ import java.util.Map;
 
 public class BuildingTCResultsUploadAction extends FPActionSupport {
 
-    private String buildingId;
-    private String calculationDate;
-    private String date = DateUtil.format(DateUtil.now());
+	private String buildingId;
+	private String calculationDate;
+	private String date = DateUtil.format(DateUtil.now());
 
-    private ProcessManager processManager;
+	private ProcessManager processManager;
 
-    @NotNull
-    protected String doExecute() throws Exception {
+	@NotNull
+	protected String doExecute() throws Exception {
 
-        if (isNotSubmit()) {
+		if (isNotSubmit()) {
 
-            return INPUT;
-        }
+			return INPUT;
+		}
 
-        Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
-        log.info("Building id := {}", buildingId);
-        log.info("CalculationDate := {}", calculationDate);
+		log.info("Building id := {}", buildingId);
+		log.info("CalculationDate := {}", calculationDate);
 		log.info("Date := {}", date);
 
-        contextVariables.put(TariffCalcResultExportForBuildingJob.CALCULATION_DATE, DateUtil.parseDate(calculationDate, ApplicationConfig.getFutureInfinite()));
-        contextVariables.put(TariffCalcResultExportForBuildingJob.BUILDING_ID, buildingId);
-        contextVariables.put(TariffCalcResultExportForBuildingJob.PERIOD_BEGIN_DATE, DateUtil.parseBeginDate(date));
+		contextVariables.put(TariffCalcResultExportForBuildingJob.CALCULATION_DATE, DateUtil.parseDate(calculationDate, ApplicationConfig.getFutureInfinite()));
+		contextVariables.put(TariffCalcResultExportForBuildingJob.BUILDING_ID, buildingId);
+		contextVariables.put(TariffCalcResultExportForBuildingJob.PERIOD_BEGIN_DATE, DateUtil.parseBeginDate(date));
 
-        processManager.createProcess("TariffCalcResultExportForBuildingProcess", contextVariables);
+		processManager.createProcess("TariffCalcResultExportForBuildingProcess", contextVariables);
 
-        log.info("TariffCalcResultExportForBuildingProcess started with parameters {} and {}", calculationDate, buildingId);
+		log.info("TariffCalcResultExportForBuildingProcess started with parameters {} and {}", calculationDate, buildingId);
 
-        return REDIRECT_SUCCESS;
-    }
+		return REDIRECT_SUCCESS;
+	}
 
-    @NotNull
-    protected String getErrorResult() {
-        return INPUT;
-    }
+	@NotNull
+	protected String getErrorResult() {
+		return INPUT;
+	}
 
-    // form fields
-    public void setBuildingId(String buildingId) {
-        this.buildingId = buildingId;
-    }
+	// form fields
+	public void setBuildingId(String buildingId) {
+		this.buildingId = buildingId;
+	}
 
-    public String getBuildingId() {
-        return buildingId;
-    }
+	public String getBuildingId() {
+		return buildingId;
+	}
 
-    public void setCalculationDate(String calculationDate) {
-        this.calculationDate = calculationDate;
-    }
+	public void setCalculationDate(String calculationDate) {
+		this.calculationDate = calculationDate;
+	}
 
-    public String getCalculationDate() {
-        return calculationDate;
-    }
+	public String getCalculationDate() {
+		return calculationDate;
+	}
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+	public void setDate(String date) {
+		this.date = date;
+	}
 
-    public String getDate() {
-        return date;
-    }
+	public String getDate() {
+		return date;
+	}
 
-    // spring bean properties
-    @Required
-    public void setProcessManager(ProcessManager processManager) {
-        this.processManager = processManager;
-    }
+	// spring bean properties
+	@Required
+	public void setProcessManager(ProcessManager processManager) {
+		this.processManager = processManager;
+	}
 
 }

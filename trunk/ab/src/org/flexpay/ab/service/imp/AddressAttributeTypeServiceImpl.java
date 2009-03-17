@@ -8,16 +8,27 @@ import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.history.ModificationListener;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeService {
 
+	private Logger log = LoggerFactory.getLogger(getClass());
+
 	private AddressAttributeTypeDao addressAttributeTypeDao;
+
+	private SessionUtils sessionUtils;
+	private ModificationListener<AddressAttributeType> modificationListener;
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(@NotNull AddressAttributeType type) throws FlexPayExceptionContainer {
@@ -44,20 +55,69 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 	}
 
 	/**
+	 * Create building address attribute type
+	 *
+	 * @param type AttributeType to save
+	 * @return persisted object back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@NotNull
+	public AddressAttributeType create(@NotNull AddressAttributeType type) throws FlexPayExceptionContainer {
+
+		validate(type);
+
+		type.setId(null);
+		addressAttributeTypeDao.create(type);
+
+		modificationListener.onCreate(type);
+
+		return type;
+	}
+
+	/**
 	 * Create or update building attribute type
 	 *
 	 * @param type AttributeType to save
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
-	public void save(@NotNull AddressAttributeType type) throws FlexPayExceptionContainer {
+	@NotNull
+	public AddressAttributeType update(@NotNull AddressAttributeType type) throws FlexPayExceptionContainer {
+
 		validate(type);
-		if (type.isNew()) {
-			type.setId(null);
-			addressAttributeTypeDao.create(type);
-		} else {
+
+		AddressAttributeType old = read(stub(type));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + type));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, type);
+
+		addressAttributeTypeDao.update(type);
+
+		return type;
+	}
+
+	/**
+	 * Disable Entities
+	 *
+	 * @param entities Entities to disable
+	 */
+	public void disable(Collection<AddressAttributeType> entities) {
+
+		log.info("{} types to disable", entities.size());
+		for (AddressAttributeType type : entities) {
+
+			type.setStatus(AddressAttributeType.STATUS_DISABLED);
 			addressAttributeTypeDao.update(type);
+
+			modificationListener.onDelete(type);
+
+			log.info("Disabled: {}", type);
 		}
 	}
 
@@ -69,6 +129,7 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 	 */
 	@Nullable
 	public AddressAttributeType read(@NotNull Stub<AddressAttributeType> stub) {
+
 		return addressAttributeTypeDao.readFull(stub.getId());
 	}
 
@@ -83,8 +144,17 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 	}
 
 	@Required
-	public void setBuildingAttributeTypeDao(AddressAttributeTypeDao addressAttributeTypeDao) {
+	public void setAddressAttributeTypeDao(AddressAttributeTypeDao addressAttributeTypeDao) {
 		this.addressAttributeTypeDao = addressAttributeTypeDao;
 	}
 
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<AddressAttributeType> modificationListener) {
+		this.modificationListener = modificationListener;
+	}
 }

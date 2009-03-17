@@ -15,8 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.List;
-
 public class TownHistoryGenerator implements HistoryGenerator<Town> {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
@@ -36,6 +34,9 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 
 	private StreetService streetService;
 	private StreetHistoryGenerator streetHistoryGenerator;
+
+	private AddressAttributeTypeService addressAttributeTypeService;
+	private AddressAttributeTypeHistoryGenerator addressAttributeTypeHistoryGenerator;
 
 	/**
 	 * Do generation
@@ -59,6 +60,13 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 			streetTypeHistoryGenerator.generateFor(type);
 		}
 		log.debug("ended generating history for street types");
+
+		log.debug("starting generating history for address attribute types");
+		// generate history for all address attribute types
+		for (AddressAttributeType type : addressAttributeTypeService.getAttributeTypes()) {
+			addressAttributeTypeHistoryGenerator.generateFor(type);
+		}
+		log.debug("ended generating history for address attribute types");
 
 		// now create town history
 		Town town = townService.readFull(stub(obj));
@@ -148,5 +156,15 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 	@Required
 	public void setStreetHistoryGenerator(StreetHistoryGenerator streetHistoryGenerator) {
 		this.streetHistoryGenerator = streetHistoryGenerator;
+	}
+
+	@Required
+	public void setAddressAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
+		this.addressAttributeTypeService = addressAttributeTypeService;
+	}
+
+	@Required
+	public void setAddressAttributeTypeHistoryGenerator(AddressAttributeTypeHistoryGenerator addressAttributeTypeHistoryGenerator) {
+		this.addressAttributeTypeHistoryGenerator = addressAttributeTypeHistoryGenerator;
 	}
 }
