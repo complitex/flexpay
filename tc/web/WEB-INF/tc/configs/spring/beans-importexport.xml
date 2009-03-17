@@ -114,7 +114,7 @@
 
 	<bean id="buildingAttributeDataProcessor2" class="org.flexpay.tc.service.importexport.TarifResultsDataProcessor"
 		  p:tarifToAttributeNameMapper-ref="tcTariffToAttributeNameMapper"
-		  p:tariffService-ref="tariffServiceExt"
+		  p:tariffService-ref="tariffService"
 		  p:calculationResultService-ref="tariffCalculationResultService"
 		  p:buildingService-ref="buildingService" />
 
