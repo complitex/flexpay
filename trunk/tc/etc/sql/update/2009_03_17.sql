@@ -1,1 +1,0 @@
-INSERT INTO tc_tariff_export_code_tbl (id, code) values (8,1)
