@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
-        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
-        "http://struts.apache.org/dtds/struts-2.0.dtd">
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-    <constant name="struts.custom.i18n.resources"
-              value="org/flexpay/common/i18n/common-messages,
+	<constant name="struts.custom.i18n.resources"
+			  value="org/flexpay/common/i18n/common-messages,
 			         org/flexpay/ab/i18n/errors,org/flexpay/ab/i18n/messages,
 			         org/flexpay/bti/i18n/errors,org/flexpay/bti/i18n/messages,
-			         org/flexpay/tc/i18n/errors,org/flexpay/tc/i18n/messages"/>
+			         org/flexpay/tc/i18n/errors,org/flexpay/tc/i18n/messages" />
 
-    <package name="tc" namespace="/tc" extends="common">
+	<package name="tc" namespace="/tc" extends="common">
 
-        <action name="main" class="staticPageAction">
-            <result type="tiles">tc.dictionaries</result>
-        </action>
+		<action name="main" class="staticPageAction">
+			<result type="tiles">tc.dictionaries</result>
+		</action>
 
-        <action name="importexport" class="staticPageAction">
-            <result type="tiles">tc.importexport</result>
-        </action>
+		<action name="importexport" class="staticPageAction">
+			<result type="tiles">tc.importexport</result>
+		</action>
 
-        <action name="data" class="staticPageAction">
-            <result type="tiles">tc.data</result>
-        </action>
+		<action name="data" class="staticPageAction">
+			<result type="tiles">tc.data</result>
+		</action>
 
-    </package>
+	</package>
 
 	<package name="building_attributes" namespace="/tc" extends="common">
 
@@ -43,9 +43,9 @@
 
 	</package>
 
-    <include file="org/flexpay/tc/actions/tariff/struts.xml"/>
-    <include file="org/flexpay/tc/actions/buildingattributes/struts.xml"/>
-    <include file="org/flexpay/tc/actions/tcresults/struts.xml"/>
-    <include file="org/flexpay/tc/actions/processing/struts.xml"/>
+	<include file="org/flexpay/tc/actions/tariff/struts.xml" />
+	<include file="org/flexpay/tc/actions/buildingattributes/struts.xml" />
+	<include file="org/flexpay/tc/actions/tcresults/struts.xml" />
+	<include file="org/flexpay/tc/actions/processing/struts.xml" />
 
 </struts>

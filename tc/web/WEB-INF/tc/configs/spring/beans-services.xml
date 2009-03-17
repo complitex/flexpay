@@ -6,31 +6,32 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <bean id="tariffServiceTarget" class="org.flexpay.tc.service.impl.TariffServiceImpl"
+	<bean id="tariffServiceTarget"
+		  class="org.flexpay.tc.service.impl.TariffServiceImpl"
 		  autowire-candidate="false"
-          p:tariffDao-ref="tariffDao" />
+		  p:tariffDao-ref="tariffDao"
+		  p:tariffServiceDaoExt-ref="tariffDaoExt" />
 
-    <bean id="tariffServiceExtTarget" class="org.flexpay.tc.service.impl.TariffServiceExtImpl"
+	<bean id="tariffExportCodeServiceExt"
+		  class="org.flexpay.tc.service.impl.TariffExportCodeServiceExtImpl"
 		  autowire-candidate="false"
-          p:tariffServiceDaoExt-ref="tariffDaoExt"/>
+		  p:tariffExportCodeDaoExt-ref="tariffExportCodeDaoExt" />
 
-    <bean id="tariffExportCodeServiceExt" class="org.flexpay.tc.service.impl.TariffExportCodeServiceExtImpl"
-		  autowire-candidate="false"
-          p:tariffExportCodeDaoExt-ref="tariffExportCodeDaoExt"/>
+	<bean id="tariffCalculationResultService"
+		  class="org.flexpay.tc.service.impl.TariffCalculationResultServiceImpl"
+		  p:tariffCalculationResultDao-ref="tariffCalculationResultDao" />
 
-    <bean id="tariffCalculationResultService" class="org.flexpay.tc.service.impl.TariffCalculationResultServiceImpl"
-          p:tariffCalculationResultDao-ref="tariffCalculationResultDao" />
+	<bean id="tariffCalculationRulesFileService"
+		  class="org.flexpay.tc.service.impl.TariffCalculationRulesFileServiceImpl"
+		  p:tariffCalculationRulesFileDao-ref="tariffCalculationRulesFileDao" />
 
-    <bean id="tariffCalculationRulesFileService" class="org.flexpay.tc.service.impl.TariffCalculationRulesFileServiceImpl"
-          p:tariffCalculationRulesFileDao-ref="tariffCalculationRulesFileDao" />
-
-    <bean parent="processManager" autowire-candidate="false">
-        <property name="definitionPaths">
-            <list merge="true">
-                <value>WEB-INF/tc/process</value>
-                <value>WEB-INF/bti/process</value>
-            </list>
-        </property>
-    </bean>
+	<bean parent="processManager" autowire-candidate="false">
+		<property name="definitionPaths">
+			<list merge="true">
+				<value>WEB-INF/tc/process</value>
+				<value>WEB-INF/bti/process</value>
+			</list>
+		</property>
+	</bean>
 
 </beans>

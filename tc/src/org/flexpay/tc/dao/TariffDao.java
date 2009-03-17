@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface TariffDao extends GenericDao<Tariff, Long> {
 
-    List<Tariff> listTariffs();
+	List<Tariff> listTariffs();
 }

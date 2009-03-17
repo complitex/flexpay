@@ -1,19 +1,19 @@
 package org.flexpay.tc.process.exporters;
 
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.JDBCUtils;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.common.process.ProcessLogger;
+import org.flexpay.common.util.JDBCUtils;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.TariffExportCode;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.service.TariffExportCodeServiceExt;
-import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.service.BuildingService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +40,7 @@ public class JDBCCNExporter implements Exporter {
 
 	/**
 	 * Begin export procedure
+	 *
 	 * @throws FlexPayException throws flexpay exception when filed to begin export process
 	 */
 	public void beginExport() throws FlexPayException {
@@ -47,19 +48,20 @@ public class JDBCCNExporter implements Exporter {
 			Class.forName(jdbcDriverClassName);
 			conn = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
 			conn.setAutoCommit(false);
-		}catch(ClassNotFoundException e){
-			FlexPayException fe = new FlexPayException("Can't load driver for JDBC connection",e);
-			log.error(fe.getMessage(),e);
+		} catch (ClassNotFoundException e) {
+			FlexPayException fe = new FlexPayException("Can't load driver for JDBC connection", e);
+			log.error(fe.getMessage(), e);
 			throw fe;
-		}catch(SQLException e){
-			FlexPayException fe = new FlexPayException("Can't accure connection",e);
-			log.error(fe.getMessage(),e);
+		} catch (SQLException e) {
+			FlexPayException fe = new FlexPayException("Can't accure connection", e);
+			log.error(fe.getMessage(), e);
 			throw fe;
 		}
 	}
 
 	/**
 	 * Export parameters
+	 *
 	 * @param params params to export
 	 * @throws FlexPayException throws flexpay exception when can't export data
 	 */
@@ -104,7 +106,7 @@ public class JDBCCNExporter implements Exporter {
 					plog.debug("Tariff calculation result {} exported succesfully", tariffCalculationResult);
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.UNKNOWN_RESULT_CODE);
 				}
-				if (tariffCalculationResult.getId() != null){
+				if (tariffCalculationResult.getId() != null) {
 					tariffCalculationResult.setTariffExportCode(tariffExportCode);
 					tariffCalculationResultService.update(tariffCalculationResult);
 				}
@@ -112,8 +114,8 @@ public class JDBCCNExporter implements Exporter {
 				cs.close();
 			}
 		} catch (SQLException e) {
-			FlexPayException fe = new FlexPayException("Exception accured",e);
-			log.error(fe.getMessage(),e);
+			FlexPayException fe = new FlexPayException("Exception accured", e);
+			log.error(fe.getMessage(), e);
 			throw fe;
 		}
 
@@ -136,14 +138,15 @@ public class JDBCCNExporter implements Exporter {
 
 	/**
 	 * Commit transaction
+	 *
 	 * @throws FlexPayException throws flexpay exception when filed to commit transaction
 	 */
 	public void commit() throws FlexPayException {
 		try {
 			conn.commit();
 		} catch (SQLException e) {
-			FlexPayException fe = new FlexPayException("Can't commit transaction",e);
-			log.error(fe.getMessage(),e);
+			FlexPayException fe = new FlexPayException("Can't commit transaction", e);
+			log.error(fe.getMessage(), e);
 			throw fe;
 		}
 	}
@@ -155,11 +158,11 @@ public class JDBCCNExporter implements Exporter {
 	 *          throws FlexPayException when can't rollback transaction
 	 */
 	public void rollback() throws FlexPayException {
-		try{
+		try {
 			conn.rollback();
-		}catch(SQLException e){
-			FlexPayException fe = new FlexPayException("Can't rollback tarnsaction",e);
-			log.error(fe.getMessage(),e);
+		} catch (SQLException e) {
+			FlexPayException fe = new FlexPayException("Can't rollback tarnsaction", e);
+			log.error(fe.getMessage(), e);
 			throw fe;
 		}
 	}

@@ -18,7 +18,7 @@ public class TariffCalculationResult extends DomainObject {
 	private Tariff tariff;
 	private TariffExportCode tariffExportCode;
 
-	public TariffCalculationResult(){
+	public TariffCalculationResult() {
 	}
 
 	public TariffCalculationResult(@NotNull BigDecimal value, @NotNull Date creationDate, @NotNull Date calculationDate, @NotNull Building building, @NotNull Tariff tariff) {
@@ -85,8 +85,8 @@ public class TariffCalculationResult extends DomainObject {
 				append("value", value).
 				append("creationDate", creationDate).
 				append("calculationDate", calculationDate).
-				append("tariff",tariff.toString()).
-				append("tariffExportCode", tariffExportCode == null? "-":tariffExportCode.toString()).
+				append("tariff", tariff.toString()).
+				append("tariffExportCode", tariffExportCode == null ? "-" : tariffExportCode.toString()).
 				append("}").toString();
 	}
 

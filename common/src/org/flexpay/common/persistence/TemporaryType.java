@@ -93,6 +93,7 @@ public abstract class TemporaryType<TV extends TemporaryValue<TV>, T extends Tra
 	 * @return <code>true</code> if this value is empty, or <code>false</code> otherwise
 	 */
 	public boolean isEmpty() {
+		//noinspection CollectionsFieldAccessReplaceableByMethodCall
 		return translations == Collections.EMPTY_SET;
 	}
 

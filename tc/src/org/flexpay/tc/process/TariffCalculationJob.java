@@ -17,7 +17,7 @@ import org.flexpay.tc.locking.Resources;
 import org.flexpay.tc.persistence.TariffCalculationRulesFile;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.service.TariffCalculationRulesFileService;
-import org.flexpay.tc.service.TariffServiceExt;
+import org.flexpay.tc.service.TariffService;
 import org.flexpay.tc.util.config.ApplicationConfig;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
@@ -37,9 +37,9 @@ public class TariffCalculationJob extends Job {
 	private TariffCalculationResultService tariffCalculationResultService;
 	private TariffCalculationRulesFileService tariffCalculationRulesFileService;
 	private BuildingAttributeTypeService buildingAttributeTypeService;
-	private TariffServiceExt tariffServiceExt;
+	private TariffService tariffService;
 
-	@SuppressWarnings({"IOResourceOpenedButNotSafelyClosed"})
+	@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		Logger pLogger = ProcessLogger.getLogger(getClass());
@@ -47,7 +47,7 @@ public class TariffCalculationJob extends Job {
 		if (lockManager.lock(Resources.BUILDING_ATTRIBUTES)) {
 			//@todo clear all calculated tariff to CALC_DATE
 			Date date = new Date();
-			Date calculationDate = (Date)parameters.get(CALC_DATE);
+			Date calculationDate = (Date) parameters.get(CALC_DATE);
 			//get rules file
 			try {
 				TariffCalculationRulesFile rulesFile = tariffCalculationRulesFileService.read(new Stub<TariffCalculationRulesFile>((Long) parameters.get(RULES_ID)));
@@ -82,7 +82,7 @@ public class TariffCalculationJob extends Job {
 						workingMemory.setGlobal("calculationDate", calculationDate);
 						workingMemory.setGlobal("buildingAttributeTypeService", buildingAttributeTypeService);
 						workingMemory.setGlobal("tariffCalculationResultService", tariffCalculationResultService);
-						workingMemory.setGlobal("tariffServiceExt", tariffServiceExt);
+						workingMemory.setGlobal("tariffServiceExt", tariffService);
 
 						workingMemory.insert(btiBuildingService.readWithAttributes(new Stub<BtiBuilding>(btiBuilding)));
 						workingMemory.fireAllRules();
@@ -146,13 +146,12 @@ public class TariffCalculationJob extends Job {
 	}
 
 	@Required
-	public void setTariffServiceExt(TariffServiceExt tariffServiceExt) {
-		this.tariffServiceExt = tariffServiceExt;
+	public void setTariffService(TariffService tariffService) {
+		this.tariffService = tariffService;
 	}
 
 	@Required
 	public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
 		this.buildingAttributeTypeService = buildingAttributeTypeService;
 	}
-
 }

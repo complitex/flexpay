@@ -1,8 +1,8 @@
 package org.flexpay.tc.process;
 
-import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.persistence.Stub;
@@ -12,8 +12,8 @@ import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.process.exporters.Exporter;
 import org.flexpay.tc.service.TariffCalculationResultService;
-import org.springframework.beans.factory.annotation.Required;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -48,7 +48,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 
 			Date calculationDate = (Date) parameters.get(CALCULATION_DATE);
 			Date periodBeginDate = (Date) parameters.get(PERIOD_BEGIN_DATE);
-			Stub<Building> buildingStub = new Stub<Building>(Long.parseLong((String)parameters.get(BUILDING_ID)));
+			Stub<Building> buildingStub = new Stub<Building>(Long.parseLong((String) parameters.get(BUILDING_ID)));
 
 			log.info("Tariff calculation result export procces started");
 			log.info("Calculation date := {} building id := {}", calculationDate, buildingStub.getId());
@@ -61,14 +61,15 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 			List<TariffCalculationResult> tariffCalcResultList = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndBuilding(
 					calculationDate, buildingStub);
 			log.info("{} tariff calculation result(s) founded for building with id := {} on date := {}",
-					new Object[] {tariffCalcResultList.size(), buildingStub.getId(), calculationDate});
+					new Object[]{tariffCalcResultList.size(), buildingStub.getId(), calculationDate});
 			if (tariffCalcResultList.size() > 0) {
 				exporter.beginExport();
-				for (String subServiceCode : subServiceExportCodes){
+				for (String subServiceCode : subServiceExportCodes) {
 					TariffCalculationResult tcr = getTariffCalculationResultBySubserviceCode(tariffCalcResultList, subServiceCode);
-					if (tcr == null){
+					if (tcr == null) {
 						tcr = new TariffCalculationResult();
-						Tariff tariff = new Tariff(); tariff.setSubServiceCode(subServiceCode);
+						Tariff tariff = new Tariff();
+						tariff.setSubServiceCode(subServiceCode);
 						tcr.setBuilding(buildingService.findBuilding(new Stub<BuildingAddress>(buildingStub.getId())));
 						tcr.setTariff(tariff);
 						tcr.setCalculationDate(calculationDate);
@@ -76,13 +77,13 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 					}
 					exporter.export(new Object[]{tcr, periodBeginDate});
 				}
-			}else{
+			} else {
 				log.info("No Tariff calculation results found.");
 			}
 			exporter.commit();
-		} catch (Exception e){
+		} catch (Exception e) {
 			log.error("Exception occured", e);
-		}finally {
+		} finally {
 			exporter.endExport();
 			lockManager.releaseLock(Resources.BUILDING_ATTRIBUTES);
 		}
@@ -92,15 +93,16 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 		return RESULT_NEXT;
 	}
 
-	private TariffCalculationResult getTariffCalculationResultBySubserviceCode(@NotNull  List<TariffCalculationResult> tcrl, @NotNull String subserviceCode){
-		for (TariffCalculationResult tcr : tcrl){
-			if (subserviceCode.equals(tcr.getTariff().getSubServiceCode())){
+	private TariffCalculationResult getTariffCalculationResultBySubserviceCode(@NotNull List<TariffCalculationResult> tcrl, @NotNull String subserviceCode) {
+		for (TariffCalculationResult tcr : tcrl) {
+			if (subserviceCode.equals(tcr.getTariff().getSubServiceCode())) {
 				tcrl.remove(tcr);
 				return tcr;
 			}
 		}
 		return null;
 	}
+
 	@Required
 	public void setTariffCalculationResultService(TariffCalculationResultService tariffCalculationResultService) {
 		this.tariffCalculationResultService = tariffCalculationResultService;

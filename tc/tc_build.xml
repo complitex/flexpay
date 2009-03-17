@@ -36,13 +36,13 @@
 		<path refid="tc.production.classpath" />
 	</path>
 
-    <path id="tc.runtests.classpath">
-        <path refid="bti.runtests.classpath" />
-        <path refid="tc.test.classpath" />
-        <path location="${build.dir}/web" />
-        <path location="tc/src" />
-        <path location="${tc.dir}/tests/data" />
-    </path>
+	<path id="tc.runtests.classpath">
+		<path refid="bti.runtests.classpath" />
+		<path refid="tc.test.classpath" />
+		<path location="${build.dir}/web" />
+		<path location="tc/src" />
+		<path location="${tc.dir}/tests/data" />
+	</path>
 
 	<target name="tc.help" description="Print tc build script options">
 		<echo>
@@ -62,7 +62,7 @@
 		</echo>
 	</target>
 
-    <target name="tc.clean.build">
+	<target name="tc.clean.build">
 		<antcall target="clean.build" />
 	</target>
 
@@ -84,7 +84,7 @@
 
 	<target name="tc.jar.production" depends="tc.compile.production">
 		<antcall target="template.jar">
-			<param name="jar.name" value="${tc.jar.name}" /> 
+			<param name="jar.name" value="${tc.jar.name}" />
 		</antcall>
 	</target>
 
@@ -116,36 +116,36 @@
 		</antcall>
 	</target>
 
-    <target name="tc.prepare.war">
+	<target name="tc.prepare.war">
 		<antcall target="tc.prepare.war.internal" />
 		<antcall target="template.copy.classes" />
 	</target>
 
-    <target name="tc.prepare.test.war">
+	<target name="tc.prepare.test.war">
 		<antcall target="tc.prepare.war.internal" />
 		<antcall target="common.test.war.data-source" />
 		<antcall target="template.copy.classes" />
 	</target>
 
-    <target name="tc.prepare.war.internal" depends="tc.compile.production,bti.prepare.war.internal">
-        <fileset id="tc.web.resources" dir="${tc.dir}/web" />
-        <antcall target="template.prepare.war">
-            <param name="to_dir" value="" />
-            <param name="src.i18n.dir" value="${build.dir}/empty" />
-            <reference refid="tc.web.resources" torefid="resources" />
-        </antcall>
+	<target name="tc.prepare.war.internal" depends="tc.compile.production,bti.prepare.war.internal">
+		<fileset id="tc.web.resources" dir="${tc.dir}/web" />
+		<antcall target="template.prepare.war">
+			<param name="to_dir" value="" />
+			<param name="src.i18n.dir" value="${build.dir}/empty" />
+			<reference refid="tc.web.resources" torefid="resources" />
+		</antcall>
 
-        <fileset dir="${tc.dir}/${src.dir}" id="tc.classes.resources">
-            <patternset refid="resources_pattern" />
-        </fileset>
-        <antcall target="template.prepare.war">
-            <param name="to_dir" value="/WEB-INF/classes" />
-            <param name="src.i18n.dir" value="${tc.dir}/${src.dir}" />
-            <reference refid="tc.classes.resources" torefid="resources" />
-        </antcall>
-    </target>
+		<fileset dir="${tc.dir}/${src.dir}" id="tc.classes.resources">
+			<patternset refid="resources_pattern" />
+		</fileset>
+		<antcall target="template.prepare.war">
+			<param name="to_dir" value="/WEB-INF/classes" />
+			<param name="src.i18n.dir" value="${tc.dir}/${src.dir}" />
+			<reference refid="tc.classes.resources" torefid="resources" />
+		</antcall>
+	</target>
 
-    <!-- Build production web-archive -->
+	<!-- Build production web-archive -->
 	<target name="template.tc.war.production"
 			depends="clean.all,tc.compile.production,tc.prepare.war,init.distr">
 

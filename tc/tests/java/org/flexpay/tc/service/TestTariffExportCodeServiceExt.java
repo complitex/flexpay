@@ -1,12 +1,12 @@
 package org.flexpay.tc.service;
 
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.flexpay.tc.persistence.TariffExportCode;
 import org.flexpay.tc.dao.TariffExportCodeDaoExt;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.flexpay.tc.persistence.TariffExportCode;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestTariffExportCodeServiceExt extends SpringBeanAwareTestCase {
 
@@ -14,7 +14,7 @@ public class TestTariffExportCodeServiceExt extends SpringBeanAwareTestCase {
 	private TariffExportCodeDaoExt tariffExportCodeDAOExt;
 
 	@Test
-	public void testFindByCode(){
+	public void testFindByCode() {
 		TariffExportCode tariffExportCode = tariffExportCodeDAOExt.findByCode(TariffExportCode.EXPORTED);
 		assertNotNull("Tariff Export Code not found", tariffExportCode);
 		assertEquals("Tariff Export Code is not same", tariffExportCode.getCode(), TariffExportCode.EXPORTED);

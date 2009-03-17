@@ -8,7 +8,7 @@ import org.flexpay.bti.service.importexport.BuildingAttributeDataProcessor;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.service.TariffCalculationResultService;
-import org.flexpay.tc.service.TariffServiceExt;
+import org.flexpay.tc.service.TariffService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class TarifResultsDataProcessor implements BuildingAttributeDataProcessor
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private TarifToAttributeNameMapper tarifToAttributeNameMapper;
-	private TariffServiceExt tariffService;
+	private TariffService tariffService;
 	private BuildingService buildingService;
 	private TariffCalculationResultService calculationResultService;
 
@@ -99,7 +99,7 @@ public class TarifResultsDataProcessor implements BuildingAttributeDataProcessor
 	}
 
 	@Required
-	public void setTariffService(TariffServiceExt tariffService) {
+	public void setTariffService(TariffService tariffService) {
 		this.tariffService = tariffService;
 	}
 

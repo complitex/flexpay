@@ -16,7 +16,6 @@ import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -32,7 +31,6 @@ import java.util.Locale;
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class StreetTypeServiceImpl implements StreetTypeService {
 
-	@NonNls
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private StreetTypeDao streetTypeDao;
@@ -41,7 +39,6 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 
 	private SessionUtils sessionUtils;
 	private ModificationListener<StreetType> modificationListener;
-
 
 	/**
 	 * Get StreetType translations for specified locale, if translation is not found check for translation in default

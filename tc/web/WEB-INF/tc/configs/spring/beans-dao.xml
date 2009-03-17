@@ -7,40 +7,40 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <!--  Dao Layer instances -->
+	<!--  Dao Layer instances -->
 
-    <bean id="tariffDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.tc.dao.TariffDao"/>
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.tc.persistence.Tariff"/>
-            </bean>
-        </property>
-    </bean>
+	<bean id="tariffDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.tc.dao.TariffDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.tc.persistence.Tariff" />
+			</bean>
+		</property>
+	</bean>
 
-    <bean id="tariffDaoExt" class="org.flexpay.tc.dao.impl.TariffDaoExtImpl">
-        <property name="hibernateTemplate" ref="hibernateTemplate" />
-    </bean>
-    
-    <bean id="tariffCalculationResultDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.tc.dao.TariffCalculationResultDao"/>
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.tc.persistence.TariffCalculationResult"/>
-            </bean>
-        </property>
-    </bean>
+	<bean id="tariffDaoExt" class="org.flexpay.tc.dao.impl.TariffDaoExtImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
 
-    <bean id="tariffCalculationRulesFileDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.tc.dao.TariffCalculationRulesFileDao"/>
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.tc.persistence.TariffCalculationRulesFile"/>
-            </bean>
-        </property>
-    </bean>
+	<bean id="tariffCalculationResultDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.tc.dao.TariffCalculationResultDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.tc.persistence.TariffCalculationResult" />
+			</bean>
+		</property>
+	</bean>
 
-    <bean id="tariffExportCodeDaoExt" class="org.flexpay.tc.dao.impl.TariffExportCodeDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate"
-     />
+	<bean id="tariffCalculationRulesFileDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.tc.dao.TariffCalculationRulesFileDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.tc.persistence.TariffCalculationRulesFile" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="tariffExportCodeDaoExt" class="org.flexpay.tc.dao.impl.TariffExportCodeDaoExtImpl"
+		  p:hibernateTemplate-ref="hibernateTemplate"
+			/>
 </beans>
