@@ -87,7 +87,7 @@ public class JDBCCNExporter implements Exporter {
 				if (exportResult == 1) {
                     plog.info("Tariff calculation result {} for building id = {} and external id = {} exported succesfully", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId});
                     tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.EXPORTED);
-				} if (exportResult == 0) {
+				} else if (exportResult == 0) {
 					plog.info("Tariff {} for building with id={} and external id ={} is not exists", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId});
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.TARIFF_NOT_FOUND_FOR_BUILDING);
 				} else if (exportResult == -1) {
