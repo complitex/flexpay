@@ -179,4 +179,9 @@
 		where d.id between ? and ? and d.processingStatus=0
 	</query>
 
+	<query name="Diff.hasHistory">
+		from Dual
+		where exists (from Diff d where d.objectId=? and d.objectType=?)
+	</query>
+
 </hibernate-mapping>

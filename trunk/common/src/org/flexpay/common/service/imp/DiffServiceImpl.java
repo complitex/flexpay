@@ -81,6 +81,17 @@ public class DiffServiceImpl implements DiffService {
 	}
 
 	/**
+	 * Check if there is some history for an object
+	 *
+	 * @param obj Object to check history existance for
+	 * @return <code>true</code> if there is diffs, or <code>false</code> otherwise
+	 */
+	public <T extends DomainObject> boolean hasDiffs(@NotNull T obj) {
+		int objectType = registry.getType(obj.getClass());
+		return diffDaoExt.hasDiffs(obj.getId(), objectType);
+	}
+
+	/**
 	 * Fetch diffs got from last consumer update
 	 *
 	 * @param range Fetch range

@@ -1,12 +1,11 @@
 package org.flexpay.common.service;
 
+import org.flexpay.common.dao.paging.FetchRange;
+import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.history.Diff;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.flexpay.common.persistence.history.Diff;
-import org.flexpay.common.persistence.history.HistoryConsumer;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.dao.paging.FetchRange;
 
 import java.util.List;
 
@@ -52,9 +51,17 @@ public interface DiffService {
 	/**
 	 * Fetch diffs got from last consumer update
 	 *
-	 * @param range	Fetch range
+	 * @param range Fetch range
 	 * @return list of diffs, possibly empty
 	 */
 	@NotNull
 	List<Diff> findNewDiffs(@NotNull FetchRange range);
+
+	/**
+	 * Check if there is some history for an object
+	 *
+	 * @param obj Object to check history existance for
+	 * @return <code>true</code> if there is diffs, or <code>false</code> otherwise
+	 */
+	<T extends DomainObject> boolean hasDiffs(@NotNull T obj);
 }

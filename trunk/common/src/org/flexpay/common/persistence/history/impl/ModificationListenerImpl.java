@@ -36,6 +36,12 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 	 */
 	public void onUpdate(@NotNull T objOld, @NotNull T obj) {
 
+		// check if old object already has history build, i.e. we are not updating new object
+		if (!diffService.hasDiffs(objOld)) {
+			// no diffs found for this object, calling onCreate first on old object version
+			onCreate(objOld);
+		}
+
 		Diff diff = historyBuilder.diff(objOld, obj);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		if (diff.isNotEmpty()) {

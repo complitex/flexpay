@@ -2,16 +2,18 @@ package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.service.TownTypeService;
-import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.List;
-
 public class TownTypeHistoryGenerator implements HistoryGenerator<TownType> {
+
+	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	private TownTypeService townTypeService;
 	private DiffService diffService;
@@ -25,12 +27,12 @@ public class TownTypeHistoryGenerator implements HistoryGenerator<TownType> {
 	 */
 	public void generateFor(@NotNull TownType obj) {
 
-		obj = townTypeService.read(obj.getId());
-
-		List<Diff> diffs = diffService.findDiffs(obj);
-		if (!diffs.isEmpty()) {
+		if (diffService.hasDiffs(obj)) {
+			log.info("Town type already has history, do nothing {}", obj);
 			return;
 		}
+
+		obj = townTypeService.read(obj.getId());
 
 		Diff diff = historyBuilder.diff(null, obj);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
