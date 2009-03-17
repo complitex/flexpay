@@ -7,16 +7,7 @@ import static org.flexpay.common.util.CollectionUtils.map;
 import java.util.Map;
 
 public class TariffExportCode extends DomainObject {
-    /**
-     * 1 - все нормально (в т. ч. когда услуги на доме нет, а в пытаемс€ добавить с 0 тарифом)
-0 - не найдена подуслуга в справочнике
--1 - не найден дом
--2 - ошибка записи тарифа в историю
--3 - в ÷Ќ на доме тариф был, а при загрузке он занул€етс€
--4 - ставка пуста€ или отрицательна€
--5 - пуста€ дата вступлени€ в действие
--6 - не найдена подуслуга на доме, а пытаемс€ добавить с ненулевым тарифом
-     */
+
 	public static final int EXPORTED = 1;
 	public static final int TARIFF_NOT_FOUND_FOR_BUILDING = 0;
 	public static final int BUILDING_NOT_FOUND = -1;

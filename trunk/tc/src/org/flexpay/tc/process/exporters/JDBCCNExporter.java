@@ -84,7 +84,7 @@ public class JDBCCNExporter implements Exporter {
 				TariffExportCode tariffExportCode;
 
 				if (exportResult == 1) {
-                    log.debug("Tariff calculation result {} for building id = {} and external id = {} exported succesfully", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId});
+                    log.info("Tariff calculation result {} for building id = {} and external id = {} exported succesfully", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId});
                     tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.EXPORTED);
 				} if (exportResult == 0) {
 					log.info("Tariff {} for building with id={} and external id ={} is not exists", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId});
@@ -108,8 +108,7 @@ public class JDBCCNExporter implements Exporter {
 					log.info("Tariff  {} not found for building while adding not null tariff value for building id = {} and external id = {}", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId});
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.TARIFF_NOT_FOUND_FOR_BUILDING_WHILE_ADDING_NOT_NULL_TARIFF_VALUE);
 				} else {
-                    //export result == 1
-					log.debug("Tariff calculation result {} for building id = {} and external id = {} export return unknown code {}", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId, exportResult});
+					log.info("Tariff calculation result {} for building id = {} and external id = {} export return unknown code {}", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId, exportResult});
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.UNKNOWN_RESULT_CODE);
 				}
 				if (tariffCalculationResult.getId() != null) {
