@@ -20,7 +20,7 @@
                 value = replaceCommaWithDot(value);
                 total += parseFloat(value);
             } else {
-                jQuery('#demoQuittancePayForm_total_pay').val('<s:text name="eirc.quittances.demo.quittance_pay.error.unaccessible"/>');
+                jQuery('#demoQuittancePayForm_total_pay').val('<s:text name="eirc.error.quittances.quittance_pay.unaccessible"/>');
             }
         }
 
@@ -42,14 +42,14 @@
         jQuery.validator.addMethod("validPayValue", function(value, element) {
             value = replaceCommaWithDot(value);
             return isValidPayValue(value);
-        }, '<s:text name="eirc.quittances.demo.quittance_pay.error.invalid_pay_value"/>');
+        }, '<s:text name="eirc.error.quittances.quittance_pay.invalid_pay_value"/>');
 
 
         <s:iterator value="%{quittance.quittanceDetails}" id="qd">
         jQuery.validator.addMethod('payValue_<s:property value="%{#qd.id}"/>_is_not_too_big', function(value, element) {
             value = replaceCommaWithDot(value);
             return parseFloat(value) <= <s:property value="%{getPayable(#qd)}"/>;
-        }, '<s:text name="eirc.quittances.demo.quittance_pay.error.pay_value_too_big"/>');
+        }, '<s:text name="eirc.error.quittances.quittance_pay.pay_value_too_big"/>');
         </s:iterator>
     });
 
@@ -67,8 +67,8 @@
             messages: {
                 <s:iterator value="%{quittance.quittanceDetails}" id="qd" status="status">
                 'servicePayValue[<s:property value="%{#qd.id}"/>]' : {
-                    'validPayValue': '<s:text name="eirc.quittances.demo.quittance_pay.error.invalid_pay_value"/>',
-                    'payValue_<s:property value="%{#qd.id}"/>_is_not_too_big': '<s:text name="eirc.quittances.demo.quittance_pay.error.pay_value_too_big"/>'
+                    'validPayValue': '<s:text name="eirc.error.quittances.quittance_pay.invalid_pay_value"/>',
+                    'payValue_<s:property value="%{#qd.id}"/>_is_not_too_big': '<s:text name="eirc.error.quittances.quittance_pay.pay_value_too_big"/>'
                 }<s:if test="!#status.last">, </s:if>
                 </s:iterator>
             },
@@ -84,7 +84,7 @@
             },
             showErrors: function(errorMap, errorList) {
                 if (validator.numberOfInvalids() > 0) {                                        
-                    jQuery('#demoQuittancePayForm_total_pay').val('<s:text name="eirc.quittances.demo.quittance_pay.error.unaccessible"/>');
+                    jQuery('#demoQuittancePayForm_total_pay').val('<s:text name="eirc.error.quittances.quittance_pay.unaccessible"/>');
                 }
 
                 this.defaultShowErrors();
@@ -97,7 +97,7 @@
                 row.css('display', 'table-row');                
             },
             invalidHandler: function(form, validator) {
-                alert('<s:text name="eirc.quittances.demo.quittance_pay.error.invalid_submit"/>');
+                alert('<s:text name="eirc.error.quittances.quittance_pay.invalid_submit"/>');
             }
         });
     });
@@ -107,31 +107,31 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
-        <td><s:text name="eirc.quittances.demo.quittance_pay.quittance_number"/>:</td>
+        <td><s:text name="eirc.quittances.quittance_pay.quittance_number"/>:</td>
         <td><s:property value="%{quittanceNumber}"/></td>
     </tr>
     <tr>
-        <td><s:text name="eirc.quittances.demo.quittance_pay.fio"/>:</td>
+        <td><s:text name="eirc.quittances.quittance_pay.fio"/>:</td>
         <td><s:property value="%{getFIO()}"/></td>
     </tr>
     <tr>
-        <td><s:text name="eirc.quittances.demo.quittance_pay.address"/>:</td>
+        <td><s:text name="eirc.quittances.quittance_pay.address"/>:</td>
         <td><s:property value="%{getAddress()}"/></td>
     </tr>
 </table>
 
 <br/>
 
-<s:form id="demoQuittancePayForm" action="demoQuittancePay">
+<s:form id="demoQuittancePayForm" action="quittancePay">
 
     <s:hidden name="quittanceNumber" value="%{quittanceNumber}"/>
 
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr>
-            <td class="th" nowrap="nowrap"><s:text name="eirc.quittances.demo.quittance_pay.service"/></td>
-            <td class="th"><s:text name="eirc.quittances.demo.quittance_pay.service_supplier"/></td>
-            <td class="th" style="width: 20%;"><s:text name="eirc.quittances.demo.quittance_pay.payable"/></td>
-            <td class="th" style="width: 20%;"><s:text name="eirc.quittances.demo.quittance_pay.pay"/></td>
+            <td class="th" nowrap="nowrap"><s:text name="eirc.quittances.quittance_pay.service"/></td>
+            <td class="th"><s:text name="eirc.quittances.quittance_pay.service_supplier"/></td>
+            <td class="th" style="width: 20%;"><s:text name="eirc.quittances.quittance_pay.payable"/></td>
+            <td class="th" style="width: 20%;"><s:text name="eirc.quittances.quittance_pay.pay"/></td>
         </tr>
 
         <s:iterator value="%{quittance.quittanceDetails}" id="qd">
@@ -147,14 +147,14 @@
         </s:iterator>
 
         <tr>
-            <td colspan="2" style="text-align: right; font-weight: bold;"><s:text name="eirc.quittances.demo.quittance_pay.total_payable"/></td>
+            <td colspan="2" style="text-align: right; font-weight: bold;"><s:text name="eirc.quittances.quittance_pay.total_payable"/></td>
             <td style="font-weight: bold;"><s:property value="%{getTotalPayable()}"/></td>
             <td><s:textfield name="total_pay" readonly="true"/></td>
         </tr>
 
         <tr>
             <td colspan="3"/>
-            <td style="text-align: right;"><input type="submit" name="submitted" value="<s:text name="eirc.quittances.demo.quittance_pay.pay"/>" class="btn-exit" style="width: 100%;"/></td>
+            <td style="text-align: right;"><input type="submit" name="submitted" value="<s:text name="eirc.quittances.quittance_pay.pay"/>" class="btn-exit" style="width: 100%;"/></td>
         </tr>
 
     </table>

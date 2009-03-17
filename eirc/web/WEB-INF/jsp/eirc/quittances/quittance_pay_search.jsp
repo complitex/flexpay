@@ -2,7 +2,7 @@
 
 <s:actionerror/>
 
-<s:form action="demoQuittancePaySearch">
+<s:form action="quittancePaySearch">
 
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>

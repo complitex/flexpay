@@ -199,7 +199,7 @@
     <bean name="eirc_quittances_quittances_quittancePayForm" class="net.sf.navigator.menu.MenuComponent"
             p:name="eirc.quittance_pay_form"
             p:title="eirc.menu34.tickets.pay_ticket"
-            p:action="/eirc/demoQuittancePaySearch.action?menu=eirc.quittance_pay_form"
+            p:action="/eirc/quittancePaySearch.action?menu=eirc.quittance_pay_form"
             p:parent-ref="eirc_quittances_quittances"
             p:userRole="ROLE_EIRC_QUITTANCE_READ"
             />
