@@ -82,6 +82,16 @@
 				<comment>Optional new int value</comment>
 			</column>
 		</property>
+		<property name="oldBoolValue">
+			<column name="old_bool_value" not-null="false">
+				<comment>Optional old boolean value</comment>
+			</column>
+		</property>
+		<property name="newBoolValue">
+			<column name="new_bool_value" not-null="false">
+				<comment>Optional new bool value</comment>
+			</column>
+		</property>
 		<property name="oldLongValue">
 			<column name="old_long_value" not-null="false">
 				<comment>Optional old long value</comment>

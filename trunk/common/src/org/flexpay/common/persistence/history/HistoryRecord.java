@@ -15,6 +15,8 @@ import java.util.Date;
  */
 public class HistoryRecord extends DomainObject {
 
+	private Boolean oldBoolValue;
+	private Boolean newBoolValue;
 	private Integer oldIntValue;
 	private Integer newIntValue;
 	private Long oldLongValue;
@@ -46,6 +48,22 @@ public class HistoryRecord extends DomainObject {
 
 	public HistoryRecord(@NotNull Stub<HistoryRecord> stub) {
 		super(stub.getId());
+	}
+
+	public Boolean getOldBoolValue() {
+		return oldBoolValue;
+	}
+
+	public void setOldBoolValue(Boolean oldBoolValue) {
+		this.oldBoolValue = oldBoolValue;
+	}
+
+	public Boolean getNewBoolValue() {
+		return newBoolValue;
+	}
+
+	public void setNewBoolValue(Boolean newBoolValue) {
+		this.newBoolValue = newBoolValue;
 	}
 
 	public Integer getOldIntValue() {

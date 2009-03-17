@@ -66,9 +66,10 @@ public class BuildingAddress extends DomainObjectWithStatus {
 	}
 
 	@Nullable
-	public AddressAttribute getAttribute(AddressAttributeType type) {
+	public AddressAttribute getAttribute(@NotNull AddressAttributeType type) {
+
 		for (AddressAttribute attribute : addressAttributes) {
-			if (attribute.getBuildingAttributeType().equals(type)) {
+			if (type.equals(attribute.getBuildingAttributeType())) {
 				return attribute;
 			}
 		}
@@ -83,6 +84,7 @@ public class BuildingAddress extends DomainObjectWithStatus {
 	 */
 	@Nullable
 	public AddressAttribute getNumberAttribute() {
+
 		for (AddressAttribute attribute : addressAttributes) {
 			if (attribute.getBuildingAttributeType().isBuildingNumber()) {
 				return attribute;
@@ -197,12 +199,21 @@ public class BuildingAddress extends DomainObjectWithStatus {
 	}
 
 	/**
-	 * Check if buildings is a primary one
+	 * Check if address is a primary one
 	 *
-	 * @return <code>true</code> if buildings is a primary one, or <code>false</code> otherwise
+	 * @return <code>true</code> if address is a primary one, or <code>false</code> otherwise
 	 */
 	public boolean isPrimary() {
 		return primaryStatus;
+	}
+
+	/**
+	 * Check if address is not a primary one
+	 *
+	 * @return <code>false</code> if address is a primary one, or <code>true</code> otherwise
+	 */
+	public boolean isNotPrimary() {
+		return !isPrimary();
 	}
 
 	/**
