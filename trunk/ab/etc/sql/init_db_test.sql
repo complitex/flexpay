@@ -122,7 +122,7 @@ INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, stre
 INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
 	VALUES ('Avenue', 'av', @en_id, @street_type_id);
 INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'просп', NULL);
+	VALUES (@street_type_id, 0x1004, 'просп', NULL);
 
 INSERT INTO ab_street_types_tbl (id, status) VALUES (11, 0);
 SELECT @street_type_id:=11;
@@ -141,7 +141,7 @@ SELECT @street_type_id:=13;
 INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
 	VALUES ('Тупик', 'туп', @ru_id, @street_type_id);
 INSERT INTO common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
-	VALUES (@street_type_id, 0x04, 'т', NULL);
+	VALUES (@street_type_id, 0x1004, 'т', NULL);
 
 INSERT INTO ab_street_types_tbl (id, status) VALUES (14, 0);
 SELECT @street_type_street:=14;
