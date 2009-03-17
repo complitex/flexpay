@@ -59,12 +59,17 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/find_quittance.jsp" />
 	</definition>
 
-	<definition name="eirc.quittances.pay_quittance" extends="eirc.quittances">
-		<put-attribute name="title" value="eirc.menu34.quittances.pay_quittance" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/quittance_pay_form.jsp" />
-	</definition>
+    <definition name="eirc.quittances.quittance_pay_search" extends="eirc.quittances">
+        <put-attribute name="title" value="eirc.quittances.quittance_pay_search.title"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/quittance_pay_search.jsp"/>
+    </definition>
 
-	<!-- Quittance packets -->
+    <definition name="eirc.quittances.quittance_pay" extends="eirc.quittances">
+        <put-attribute name="title" value="eirc.quittances.quittance_pay.title"/>
+        <put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/quittance_pay.jsp"/>
+    </definition>
+
+    <!-- Quittance packets -->
 	<definition name="eirc.quittances.packets_list" extends="eirc.quittances">
 		<put-attribute name="title" value="eirc.quittance.packets" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/list_quittance_packets.jsp" />
@@ -257,17 +262,5 @@
 		<put-attribute name="title" value="eirc.eirc_account.create.select_apartment" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_create_form2.jsp" />
 	</definition>
-
-    <!-- EIRC Quittance pay DEMO -->
-    <definition name="eirc.quittances.demo.quittance_pay_search" extends="eirc.quittances">
-        <put-attribute name="title" value="eirc.quittances.demo.quittance_pay_search.title"/>
-        <put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/demo/quittance_pay_search.jsp"/>
-    </definition>
-    
-    <definition name="eirc.quittances.demo.quittance_pay" extends="eirc.quittances">
-        <put-attribute name="title" value="eirc.quittances.demo.quittance_pay.title"/>
-        <put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/demo/quittance_pay.jsp"/>
-    </definition>
-    <!-- end of EIRC Quittance pay DEMO -->
 
 </tiles-definitions>

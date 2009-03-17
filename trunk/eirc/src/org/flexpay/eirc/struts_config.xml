@@ -43,6 +43,4 @@
 	<include file="org/flexpay/eirc/actions/registry/struts.xml" />
 	<include file="org/flexpay/eirc/actions/quittance/struts.xml" />
 
-    <include file="org/flexpay/eirc/actions/quittance/demo/struts.xml" />
-
 </struts>

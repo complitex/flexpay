@@ -50,15 +50,6 @@
 		  class="org.flexpay.eirc.actions.quittance.QuittanceSearchAction"
 		  p:quittanceService-ref="quittanceService" />
 
-	<bean id="quittancePayAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.quittance.QuittancePayAction"
-		  p:addressService-ref="addressService"
-		  p:eircAccountService-ref="eircAccountService"
-		  p:quittanceNumberService-ref="quittanceNumberService"
-		  p:quittanceService-ref="quittanceService"
-		  p:quittancePacketService-ref="quittancePacketService"
-		  p:quittancePaymentService-ref="quittancePaymentService" />
-
 	<!-- Quittance packets -->
 	<bean id="quittancePacketsListAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.quittance.QuittancePacketListAction"
@@ -75,6 +66,14 @@
 		  p:addressService-ref="addressService"
 		  p:eircAccountService-ref="eircAccountService"
 		  p:quittancePacketService-ref="quittancePacketService" />
+
+    <bean id="quittancePaySearchAction" class="org.flexpay.eirc.actions.quittance.QuittancePaySearchAction"
+          p:quittanceService-ref="quittanceService"
+          scope="prototype"/>
+
+    <bean id="quittancePayAction" class="org.flexpay.eirc.actions.quittance.QuittancePayAction"
+          p:quittanceService-ref="quittanceService"
+          scope="prototype"/>
 
 	<!-- Registries -->
 	<bean id="registriesListAction" scope="prototype"
@@ -325,15 +324,5 @@
 		  class="org.flexpay.eirc.actions.eirc_account.EircAccountCreateAction">
 		<property name="eircAccountService" ref="eircAccountService" />
 	</bean>
-
-    <!-- EIRC Quittance pay DEMO -->
-    <bean id="demoQuittancePaySearchAction" class="org.flexpay.eirc.actions.quittance.demo.QuittancePaySearchAction"
-          p:quittanceService-ref="quittanceService"
-          scope="prototype"/>
-
-    <bean id="demoQuittancePayAction" class="org.flexpay.eirc.actions.quittance.demo.QuittancePayAction"
-          p:quittanceService-ref="quittanceService"
-          scope="prototype"/>
-    <!-- end of EIRC Quittance pay DEMO -->
 
 </beans>

@@ -43,14 +43,20 @@
 			</result>
 		</action>
 
-		<action name="quittancePay" class="quittancePayAction">
-			<result name="input" type="tiles">eirc.quittances.pay_quittance</result>
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">quittancePacketView</param>
-				<param name="parse">true</param>
-				<param name="packet.id">${packet.id}</param>
-			</result>
-		</action>
+        <action name="quittancePaySearch" class="quittancePaySearchAction">
+            <result name="input" type="tiles">eirc.quittances.quittance_pay_search</result>
+            <result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">quittancePay</param>
+                <param name="parse">true</param>
+                <param name="quittance.id">${quittanceId}</param>
+                <param name="quittanceNumber">${quittanceNumber}</param>
+            </result>
+        </action>
+
+        <action name="quittancePay" class="quittancePayAction">
+            <result name="input" type="tiles">eirc.quittances.quittance_pay</result>
+            <result name="redirectSuccess" type="redirect-action">quittancePaySearch</result>
+        </action>
 
 	</package>
 

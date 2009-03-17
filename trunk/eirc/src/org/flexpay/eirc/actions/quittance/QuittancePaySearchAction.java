@@ -1,4 +1,4 @@
-package org.flexpay.eirc.actions.quittance.demo;
+package org.flexpay.eirc.actions.quittance;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.eirc.persistence.account.Quittance;
@@ -29,7 +29,7 @@ public class QuittancePaySearchAction extends FPActionSupport {
             }
 
             if (alreadyPayed(quittanceNumber)) {
-                addActionError(getText("eirc.quittances.demo.quittance_pay_search.already_payed"));
+                addActionError(getText("eirc.quittances.quittance_pay_search.already_payed"));
                 return INPUT;
             }
 
