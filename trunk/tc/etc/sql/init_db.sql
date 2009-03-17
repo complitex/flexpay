@@ -69,4 +69,4 @@ INSERT INTO tc_tariff_translations_tbl (tariff_id, language_id, name) VALUES
 
 INSERT INTO tc_tariff_export_code_tbl (id, code) values
         (1,0),(2,-1),(3,-2),(4,-3),
-        (5,-4),(6,-5),(7,-100);
+        (5,-4),(6,-5),(7,-100),(8,1) ;

@@ -45,8 +45,9 @@ public class TariffCalcResultExportJob extends Job {
 			Date periodBeginDate = (Date) parameters.get(PERIOD_BEGIN_DATE);
 
 			List<Long> addressIds = tariffCalculationResultService.getAddressIds(calculationDate);
-
-
+            int cnt = addressIds.size();
+            int exportedCnt = 0;
+            log.info("Found {} building addresses. Starting tariff export.",cnt);
 			for (Long addressId : addressIds) {
 				List<TariffCalculationResult> tariffCalcResultList = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndAddressId(calculationDate, new Stub<BuildingAddress>(addressId));
 				try {
@@ -74,7 +75,12 @@ public class TariffCalcResultExportJob extends Job {
 						ex.printStackTrace();
 					}
 				}
+                exportedCnt++;
+                if ((exportedCnt %100)==0){
+                    log.info("{} buildings exported.", exportedCnt);
+                }
 			}
+            log.info("{} buildings exported.", exportedCnt);
 		} catch (Exception e) {
 			log.error("Exporter exception", e);
 		} finally {

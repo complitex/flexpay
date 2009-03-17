@@ -85,26 +85,27 @@ public class JDBCCNExporter implements Exporter {
 				TariffExportCode tariffExportCode;
 
 				if (exportResult == 0) {
-					plog.info("Tariff {} for building with id={} not exists", tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId());
-					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.EXPORTED);
+					plog.info("Tariff {} for building with id={} and external id ={} is not exists", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId});
+					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.TARIFF_NOT_FOUND_FOR_BUILDING);
 				} else if (exportResult == -1) {
-					plog.info("Building with id={} for caluculation result {} not found", tariffCalculationResult.getBuilding().getId(), tariffCalculationResult);
+					plog.info("Building with id={} and external id = {} for caluculation result {} not found", new Object[]{tariffCalculationResult.getBuilding().getId(), externalId, tariffCalculationResult.getTariff()});
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.BUILDING_NOT_FOUND);
 				} else if (exportResult == -2) {
-					plog.info("Error: Can't create record in history for calculation result {}", tariffCalculationResult);
+					plog.info("Error: Can't create record in history for calculation result {} building id = {} and external id = {}", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId});
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.CANNOT_CREATE_HISTORY_RECORD);
 				} else if (exportResult == -3) {
-					plog.info("Locking exception: Can't export calculcation result {}", tariffCalculationResult);
+					plog.info("Locking exception: Can't export calculcation result {} for building id ={} and external id ={}", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId});
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.LOCK_EXCEPTION);
 				} else if (exportResult == -4) {
-					plog.info("Tariff value is negative {}", tariffCalculationResult);
+					plog.info("Tariff value is negative {} for building id = {} and external id = {}", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId});
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.NEGATIVE_VALUE);
 				} else if (exportResult == -5) {
-					plog.info("Tariff begin date is null {}", tariffCalculationResult);
+					plog.info("Tariff begin date is null {} for building id = {} and external id = {}", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId});
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.BEGIN_DATE_IS_NULL);
 				} else {
-					plog.debug("Tariff calculation result {} exported succesfully", tariffCalculationResult);
-					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.UNKNOWN_RESULT_CODE);
+                    //export result == 1
+					plog.debug("Tariff calculation result {} for building id = {} and external id = {} exported succesfully", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId});
+					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.EXPORTED);
 				}
 				if (tariffCalculationResult.getId() != null) {
 					tariffCalculationResult.setTariffExportCode(tariffExportCode);
