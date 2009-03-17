@@ -10,4 +10,6 @@ public interface DiffDaoExt {
 
 	@NotNull
 	List<Diff> findNewHistoryRecords(FetchRange range);
+
+	boolean hasDiffs(Long objectId, int objectType);
 }

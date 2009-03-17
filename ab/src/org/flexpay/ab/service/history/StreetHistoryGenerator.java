@@ -12,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.List;
-
 public class StreetHistoryGenerator implements HistoryGenerator<Street> {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
@@ -30,22 +28,21 @@ public class StreetHistoryGenerator implements HistoryGenerator<Street> {
 	 */
 	public void generateFor(@NotNull Street obj) {
 
-		log.debug("starting generating history for district {}", obj);
+		log.debug("starting generating history for street {}", obj);
 
-		// create district history
-		Street district = streetService.readFull(stub(obj));
-		if (district == null) {
-			log.warn("Town not found {}", district);
+		// create street history
+		Street street = streetService.readFull(stub(obj));
+		if (street == null) {
+			log.warn("Town not found {}", street);
 			return;
 		}
 
-		List<Diff> diffs = diffService.findDiffs(district);
-		if (!diffs.isEmpty()) {
-			log.info("Street already has history, do nothing {}", district);
+		if (diffService.hasDiffs(street)) {
+			log.info("Street already has history, do nothing {}", street);
 			return;
 		}
 
-		Diff diff = historyBuilder.diff(null, district);
+		Diff diff = historyBuilder.diff(null, street);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		diffService.create(diff);
 

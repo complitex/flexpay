@@ -2,17 +2,15 @@ package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.service.DistrictService;
-import org.flexpay.common.persistence.history.HistoryGenerator;
-import org.flexpay.common.persistence.history.Diff;
-import org.flexpay.common.persistence.history.ProcessingStatus;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.HistoryGenerator;
+import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Required;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
+import org.springframework.beans.factory.annotation.Required;
 
 public class DistrictHistoryGenerator implements HistoryGenerator<District> {
 
@@ -39,8 +37,7 @@ public class DistrictHistoryGenerator implements HistoryGenerator<District> {
 			return;
 		}
 
-		List<Diff> diffs = diffService.findDiffs(district);
-		if (!diffs.isEmpty()) {
+		if (diffService.hasDiffs(district)) {
 			log.info("District already has history, do nothing {}", district);
 			return;
 		}

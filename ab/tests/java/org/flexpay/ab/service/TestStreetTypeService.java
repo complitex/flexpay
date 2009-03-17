@@ -1,8 +1,6 @@
 package org.flexpay.ab.service;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.StreetTypeDao;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
@@ -80,10 +78,9 @@ public class TestStreetTypeService extends SpringBeanAwareTestCase {
 	@Test
 	public void testUpdate() throws Throwable {
 
-		StreetType type = new StreetType();
-		type.setTranslation(new StreetTypeTranslation("Sample street type"));
-		service.create(type);
-		
+		StreetType type = service.read(13L);
+		assertNotNull("Type #13 not found", type);
+
 		type.setTranslation(new StreetTypeTranslation("Тестовый тип"));
 		service.update(type);
 	}

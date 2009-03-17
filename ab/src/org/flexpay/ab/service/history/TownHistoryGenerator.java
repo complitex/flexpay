@@ -67,8 +67,7 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 			return;
 		}
 
-		List<Diff> diffs = diffService.findDiffs(town);
-		if (diffs.isEmpty()) {
+		if (!diffService.hasDiffs(town)) {
 			log.debug("starting generating history for town {}", town);
 
 			Diff diff = historyBuilder.diff(null, town);
