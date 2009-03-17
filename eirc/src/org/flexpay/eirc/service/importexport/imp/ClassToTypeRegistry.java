@@ -6,13 +6,15 @@ import org.flexpay.eirc.persistence.Service;
 
 public class ClassToTypeRegistry extends org.flexpay.bti.service.importexport.impl.ClassToTypeRegistry {
 
+	private static final int MODULE_BASE = 0x5000;
+
 	public int getType(Class<? extends DomainObject> clazz) {
 		if (Consumer.class.isAssignableFrom(clazz)) {
-			return 0x0101;
+			return MODULE_BASE + 0x0101;
 		}
 
 		if (Service.class.isAssignableFrom(clazz)) {
-			return 0x0102;
+			return MODULE_BASE + 0x0102;
 		}
 
 		return super.getType(clazz);
