@@ -106,7 +106,7 @@
                     <tr id="tariff_row_<s:property value="%{id}"/>_<s:property value="%{formatDateWithUnderlines(#calcDate)}"/>"<s:if test="%{value < 0}"> class="cols_1_highlighted" </s:if><s:else> class="cols_1"</s:else>>
                         <td class="col" style="width: 60%;"><s:property value="%{getTariffTranslation(tariff.id)}"/></td>
                         <td class="col" style="width: 20%;"><s:property value="%{value}"/></td>
-                        <td class="col" style="width: 20%;"><s:text name="%{getTariffCalculationExportCode(tariff.id)}"/></td>
+                        <td class="col" style="width: 20%;"><s:text name="%{getTariffCalculationExportCode(id)}"/></td>
                     </tr>
                 </s:iterator>
 
