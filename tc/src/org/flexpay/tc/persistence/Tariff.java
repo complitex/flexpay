@@ -46,6 +46,10 @@ public class Tariff extends DomainObjectWithStatus {
 		translations = TranslationUtil.setTranslation(translations, this, translation);
 	}
 
+	public String getDefultTranslation() {
+		return TranslationUtil.getTranslation(translations).getName();
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
@@ -55,5 +59,4 @@ public class Tariff extends DomainObjectWithStatus {
 				append("subServiceCode", subServiceCode).
 				append("}").toString();
 	}
-
 }
