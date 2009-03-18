@@ -12,11 +12,15 @@ import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.util.config.ApplicationConfig;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
+import java.util.PropertyResourceBundle;
 
 public class TestOutputExportResults extends SpringBeanAwareTestCase {
 
@@ -45,6 +49,10 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		List<TariffCalculationResult> results = (List<TariffCalculationResult>) hibernateTemplate.find(hql, calcDate);
 		System.out.println("Found " + results.size() + " results for date: " + calcDate);
 
+		ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
+		ms.setDefaultEncoding("UTF-8");
+		ms.setBasename("org/flexpay/tc/i18n/messages");
+
 		File tmpFile = File.createTempFile("Output_" + df.format(calcDate) + "_", ".csv");
 		OutputStream os = new BufferedOutputStream(new FileOutputStream(tmpFile));
 		Writer wr = new OutputStreamWriter(os, "cp1251");
@@ -54,6 +62,8 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 				String address = addressService.getBuildingAddress(stub(building), ApplicationConfig.getDefaultLocale());
 				building = buildingService.read(stub(building));
 				District district = districtService.readFull(stub(building.getDistrict()));
+				String i18nName = result.getTariffExportCode().getI18nName();
+				Object[] params = {};
 				StringBuilder sb = new StringBuilder()
 						.append("\"").append(district.getCurrentName().getDefaultNameTranslation()).append("\"").append(delimeter)
 						.append("\"").append(address).append("\"").append(delimeter)
@@ -61,7 +71,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 						.append(result.getValue()).append(delimeter)
 						.append(result.getTariff().getSubServiceCode()).append(delimeter)
 						.append(result.getTariffExportCode().getCode()).append(delimeter)
-						.append(result.getTariffExportCode().getI18nName()).append(delimeter)
+						.append("\"").append(ms.getMessage(i18nName, params, ApplicationConfig.getDefaultLocale())).append("\"")
 						.append("\n");
 				wr.write(sb.toString());
 			}
