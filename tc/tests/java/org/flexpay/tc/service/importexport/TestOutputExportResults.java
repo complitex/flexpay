@@ -40,7 +40,8 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 					 "	inner join fetch tr.tariff t " +
 					 "	left join fetch t.translations ttr " +
 					 "	inner join fetch tr.tariffExportCode c " +
-					 "where tr.calculationDate=?";
+					 "where tr.calculationDate=? " +
+					 "order by tr.building.id, c.code ";
 		List<TariffCalculationResult> results = (List<TariffCalculationResult>) hibernateTemplate.find(hql, calcDate);
 		System.out.println("Found " + results.size() + " results for date: " + calcDate);
 
