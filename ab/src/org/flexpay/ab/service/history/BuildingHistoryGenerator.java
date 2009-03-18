@@ -1,7 +1,7 @@
 package org.flexpay.ab.service.history;
 
-import org.flexpay.ab.persistence.District;
-import org.flexpay.ab.service.DistrictService;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.service.BuildingService;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
@@ -12,41 +12,41 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class DistrictHistoryGenerator implements HistoryGenerator<District> {
+public class BuildingHistoryGenerator implements HistoryGenerator<Building> {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
-	private DistrictService districtService;
+	private BuildingService buildingService;
 	private DiffService diffService;
 
-	private DistrictHistoryBuilder historyBuilder;
+	private BuildingHistoryBuilder historyBuilder;
 
 	/**
 	 * Do generation
 	 *
 	 * @param obj Object to generate history for
 	 */
-	public void generateFor(@NotNull District obj) {
+	public void generateFor(@NotNull Building obj) {
 
-		log.debug("starting generating history for district {}", obj);
+		log.debug("starting generating history for building {}", obj);
 
-		// create district history
-		District district = districtService.readFull(stub(obj));
-		if (district == null) {
-			log.warn("District not found {}", district);
+		// create building history
+		Building building = buildingService.read(stub(obj));
+		if (building == null) {
+			log.warn("Building not found {}", building);
 			return;
 		}
 
-		if (diffService.hasDiffs(district)) {
-			log.info("District already has history, do nothing {}", district);
+		if (diffService.hasDiffs(building)) {
+			log.info("Building already has history, do nothing {}", building);
 			return;
 		}
 
-		Diff diff = historyBuilder.diff(null, district);
+		Diff diff = historyBuilder.diff(null, building);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		diffService.create(diff);
 
-		log.debug("Ended generating history for district {}", obj);
+		log.debug("Ended generating history for building {}", obj);
 	}
 
 	@Required
@@ -55,12 +55,12 @@ public class DistrictHistoryGenerator implements HistoryGenerator<District> {
 	}
 
 	@Required
-	public void setDistrictService(DistrictService districtService) {
-		this.districtService = districtService;
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
 	}
 
 	@Required
-	public void setHistoryBuilder(DistrictHistoryBuilder historyBuilder) {
+	public void setHistoryBuilder(BuildingHistoryBuilder historyBuilder) {
 		this.historyBuilder = historyBuilder;
 	}
 }

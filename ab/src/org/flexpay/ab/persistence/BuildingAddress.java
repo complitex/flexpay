@@ -171,7 +171,6 @@ public class BuildingAddress extends DomainObjectWithStatus {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("Building id", building.getId())
 				.append("Street id", street.getId())
-				.append("attributes: ", addressAttributes.toArray())
 				.toString();
 	}
 

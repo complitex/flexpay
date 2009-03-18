@@ -13,9 +13,13 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
+import org.flexpay.common.service.internal.SessionUtils;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NonNls;
@@ -24,10 +28,12 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.Collection;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class BuildingServiceImpl implements BuildingService {
@@ -41,6 +47,9 @@ public class BuildingServiceImpl implements BuildingService {
 
 	private ParentService<StreetFilter> parentService;
 	private ParentService<DistrictFilter> districtParentService;
+
+	private SessionUtils sessionUtils;
+	private ModificationListener<Building> modificationListener;
 
 	public List<BuildingAddress> getBuildings(ArrayStack filters, Page pager) {
 		PrimaryKeyFilter streetFilter = (PrimaryKeyFilter) filters.peek();
@@ -201,6 +210,17 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 	/**
+	 * Find all buildings on a specified street
+	 *
+	 * @param stub Street stub
+	 * @return List of buildings on a street
+	 */
+	@NotNull
+	public List<Building> findStreetBuildings(Stub<Street> stub) {
+		return buildingDao.findStreetBuildings(stub.getId());
+	}
+
+	/**
 	 * Find building by number
 	 *
 	 * @param street   Building street
@@ -297,7 +317,7 @@ public class BuildingServiceImpl implements BuildingService {
 		BuildingAddress buildingAddress = new BuildingAddress();
 		buildingAddress.setPrimaryStatus(true);
 		buildingAddress.setStreet(new Street(street.getId()));
-		building.addBuildings(buildingAddress);
+		building.addAddress(buildingAddress);
 
 		buildingAddress.setBuildingAttribute(numberValue, ApplicationConfig.getBuildingAttributeTypeNumber());
 
@@ -357,10 +377,10 @@ public class BuildingServiceImpl implements BuildingService {
 			building = new Building();
 			building.setDistrict(new District(district));
 			buildingAddress.setPrimaryStatus(true);
-			building.addBuildings(buildingAddress);
+			building.addAddress(buildingAddress);
 			buildingDao.create(building);
 		} else {
-			building.addBuildings(buildingAddress);
+			building.addAddress(buildingAddress);
 			buildingsDao.create(buildingAddress);
 		}
 
@@ -415,6 +435,97 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 	/**
+	 * Disable buildings
+	 *
+	 * @param buildings Buildings to disable
+	 */
+	@Transactional (readOnly = false)
+	public void disable(Collection<Building> buildings) {
+		log.info("{} districts to disable", buildings.size());
+		for (Building object : buildings) {
+			object.disable();
+			for (BuildingAddress address : object.getBuildingses()) {
+				address.disable();
+			}
+			buildingDao.update(object);
+
+			modificationListener.onDelete(object);
+
+			log.info("Disabled: {}", object);
+		}
+	}
+
+	/**
+	 * Create building
+	 *
+	 * @param building Building to create
+	 * @return persisted building back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@NotNull
+	@Transactional (readOnly = false)
+	public Building create(@NotNull Building building) throws FlexPayExceptionContainer {
+
+		validate(building);
+		building.setId(null);
+		buildingDao.create(building);
+
+		modificationListener.onCreate(building);
+
+		return building;
+	}
+
+	/**
+	 * Update building
+	 *
+	 * @param building Building to update
+	 * @return updated building back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@NotNull
+	@Transactional (readOnly = false)
+	public Building update(@NotNull Building building) throws FlexPayExceptionContainer {
+
+		validate(building);
+
+		Building old = read(stub(building));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + building));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, building);
+
+		buildingDao.update(building);
+
+		return building;
+	}
+
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(Building building) throws FlexPayExceptionContainer {
+
+		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
+
+		if (building.getBuildingses().isEmpty()) {
+			ex.addException(new FlexPayException("No address", "error.ab.buildings.no_number"));
+		}
+
+		if (building.getDistrict() == null) {
+			ex.addException(new FlexPayException("No district", "error.ab.building.no_district"));
+		}
+
+		// todo: check that building has only one address on any streets
+
+		if (ex.isNotEmpty()) {
+			ex.info(log);
+			throw ex;
+		}
+	}
+
+	/**
 	 * Find all Buildings relation for building stub
 	 *
 	 * @param stub Building stub
@@ -426,28 +537,42 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 	public Building read(@NotNull Stub<Building> stub) {
-		return buildingDao.read(stub.getId());
+		return buildingDao.readFull(stub.getId());
 	}
 
+	@Required
 	public void setBuildingDao(BuildingDao buildingDao) {
 		this.buildingDao = buildingDao;
 	}
 
+	@Required
 	public void setBuildingsDao(BuildingsDao buildingsDao) {
 		this.buildingsDao = buildingsDao;
 	}
 
+	@Required
 	public void setBuildingsDaoExt(BuildingsDaoExt buildingsDaoExt) {
 		this.buildingsDaoExt = buildingsDaoExt;
 	}
 
+	@Required
 	public void setParentService(ParentService<StreetFilter> parentService) {
 		this.parentService = parentService;
 	}
 
+	@Required
 	public void setDistrictParentService(
 			ParentService<DistrictFilter> districtParentService) {
 		this.districtParentService = districtParentService;
 	}
 
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<Building> modificationListener) {
+		this.modificationListener = modificationListener;
+	}
 }

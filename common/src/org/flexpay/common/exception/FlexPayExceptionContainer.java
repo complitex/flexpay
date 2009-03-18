@@ -97,4 +97,12 @@ public class FlexPayExceptionContainer extends Exception {
 			}
 		}
 	}
+
+	public void info(Logger log) {
+		if (log.isInfoEnabled()) {
+			for (FlexPayException exception : exceptions) {
+				log.info("Internal exception", exception);
+			}
+		}
+	}
 }

@@ -185,18 +185,8 @@ public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends 
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof NameTimeDependent)) {
-			return false;
-		}
 
-		NameTimeDependent<T, DI> that = (NameTimeDependent<T, DI>) obj;
-
-		return new EqualsBuilder()
-				.append(namesTimeLine, that.namesTimeLine)
-				.isEquals();
+		return obj instanceof NameTimeDependent<?, ?> && super.equals(obj);
 	}
 
 	/**

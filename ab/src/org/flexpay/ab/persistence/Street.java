@@ -1,7 +1,5 @@
 package org.flexpay.ab.persistence;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.NameTimeDependentChild;
@@ -223,15 +221,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	@Override
 	public boolean equals(Object obj) {
 
-		return this == obj || obj instanceof Street && super.equals(obj);
-	}
-
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("Name", getCurrentName())
-				.append("Type", getCurrentType())
-				.toString();
+		return obj instanceof Street && super.equals(obj);
 	}
 
 	@NotNull

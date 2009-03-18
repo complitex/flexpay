@@ -3,6 +3,7 @@ package org.flexpay.ab.persistence;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,6 +23,10 @@ public class AddressAttributeType extends DomainObjectWithStatus {
 
 	public AddressAttributeType(Long id) {
 		super(id);
+	}
+
+	public AddressAttributeType(@NotNull Stub<AddressAttributeType> stub) {
+		super(stub.getId());
 	}
 
 	/**

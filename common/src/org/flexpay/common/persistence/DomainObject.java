@@ -52,7 +52,7 @@ public class DomainObject implements Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		return id == null ? 0 : id.hashCode();
+		return id == null ? super.hashCode() : id.hashCode();
 	}
 
 	/**
