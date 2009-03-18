@@ -1,28 +1,29 @@
 package org.flexpay.tc.service.importexport;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.apache.commons.io.IOUtils;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.service.AddressService;
+import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.DistrictService;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.tc.service.TariffService;
+import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.util.config.ApplicationConfig;
-import org.flexpay.ab.service.BuildingService;
-import org.flexpay.ab.service.AddressService;
-import org.flexpay.ab.persistence.Building;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.apache.commons.io.IOUtils;
 
-import java.util.List;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class TestOutputExportResults extends SpringBeanAwareTestCase {
 
 	@Autowired
-	private TariffService tariffService;
-	@Autowired
 	private BuildingService buildingService;
+	@Autowired
+	private DistrictService districtService;
 	@Autowired
 	private AddressService addressService;
 
@@ -50,15 +51,20 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 			for (TariffCalculationResult result : results) {
 				Building building = result.getBuilding();
 				String address = addressService.getBuildingAddress(stub(building), ApplicationConfig.getDefaultLocale());
+				building = buildingService.read(stub(building));
+				District district = districtService.readFull(stub(building.getDistrict()));
 				StringBuilder sb = new StringBuilder()
-					.append("\"").append(address).append("\"").append(delimeter)
-					.append("\"").append(result.getTariff().getDefultTranslation()).append("\"").append(delimeter)
-					.append(result.getValue()).append(delimeter)
-					.append(result.getTariff().getSubServiceCode()).append(delimeter)
-					.append(result.getTariffExportCode().getCode()).append("\n");
+						.append("\"").append(district.getCurrentName().getDefaultNameTranslation()).append("\"").append(delimeter)
+						.append("\"").append(address).append("\"").append(delimeter)
+						.append("\"").append(result.getTariff().getDefultTranslation()).append("\"").append(delimeter)
+						.append(result.getValue()).append(delimeter)
+						.append(result.getTariff().getSubServiceCode()).append(delimeter)
+						.append(result.getTariffExportCode().getCode()).append(delimeter)
+						.append(result.getTariffExportCode().getI18nName()).append(delimeter)
+						.append("\n");
 				wr.write(sb.toString());
 			}
-		}	finally {
+		} finally {
 			IOUtils.closeQuietly(wr);
 			IOUtils.closeQuietly(os);
 		}
