@@ -154,10 +154,76 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 				case FIELD_DISTRICT_ID:
 					patchDistrictReference(building, record);
 					break;
+				case FIELD_ADDRESS_VALUE:
+					patchAddress(building, record);
+					break;
+				case FIELD_PRIMARY_ADDRESS:
+					patchPrimaryStatus(building, record);
+					break;
 				default:
 					log.warn("Unsupported field type {}", record);
 			}
 		}
+	}
+
+	private void patchPrimaryStatus(@NotNull Building building, @NotNull HistoryRecord record) {
+
+		BuildingAddress addr = findStreetAddress(building, record.getFieldKey());
+		boolean isPrimary = record.getNewBoolValue() != null ? record.getNewBoolValue() : false;
+
+		if ((addr.getBuildingAttributes().isEmpty() && !isPrimary) || addr.isNotNew()) {
+			addr.setPrimaryStatus(isPrimary);
+			building.addAddress(addr);
+		}
+
+		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+	}
+
+	private BuildingAddress findStreetAddress(Building building, String streetId) {
+
+		// find street
+		Stub<Street> streetStub = correctionsService.findCorrection(
+				streetId, Street.class, masterIndexService.getMasterSourceDescription());
+		if (streetStub == null) {
+			throw new IllegalStateException("Cannot find street by master index: " + streetId);
+		}
+		Street street = new Street(streetStub);
+
+		// find address on street
+		BuildingAddress addr = building.getAddressOnStreet(street);
+		if (addr == null) {
+			addr = new BuildingAddress();
+			addr.setStreet(street);
+		}
+
+		return addr;
+	}
+
+	private void patchAddress(@NotNull Building building, @NotNull HistoryRecord record) {
+
+		// split street-id and type-id
+		String[] parts = record.getFieldKey().split("\\|");
+		if (parts.length != 2) {
+			log.warn("Address setup record should have street-id and type-id splitted with '|': {}", record);
+			return;
+		}
+
+		BuildingAddress addr = findStreetAddress(building, parts[0]);
+
+		// find attribute type
+		Stub<AddressAttributeType> typeStub = correctionsService.findCorrection(
+				parts[1], AddressAttributeType.class, masterIndexService.getMasterSourceDescription());
+		if (typeStub == null) {
+			throw new IllegalStateException("Cannot find address attribute type by master index: " + parts[1]);
+		}
+
+		// setup address value and add address to building
+		AddressAttributeType type = new AddressAttributeType(typeStub);
+		addr.setBuildingAttribute(record.getNewStringValue(), type);
+
+		building.addAddress(addr);
+
+		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 	}
 
 	private void patchDistrictReference(@NotNull Building building, @NotNull HistoryRecord record) {
@@ -169,11 +235,11 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 			Stub<District> stub = correctionsService.findCorrection(
 					externalId, District.class, masterIndexService.getMasterSourceDescription());
 			if (stub == null) {
-				throw new IllegalStateException("Cannot find district type by master index: " + externalId);
+				throw new IllegalStateException("Cannot find district by master index: " + externalId);
 			}
 			district = new District(stub);
-
 		}
+
 		building.setDistrict(district);
 		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 	}

@@ -44,7 +44,7 @@ public class RawBuildingsDataConverter implements
 
 		BuildingAddress buildingAddress = new BuildingAddress();
 		buildingAddress.setStreet(new Street(street));
-		building.addBuildings(buildingAddress);
+		building.addAddress(buildingAddress);
 
 		buildingAddress.setBuildingAttribute(BuildingAddress.numberAttribute(rawData.getNumber()));
 

@@ -1,7 +1,10 @@
 package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.StreetService;
+import org.flexpay.ab.service.BuildingService;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
@@ -12,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.List;
+
 public class StreetHistoryGenerator implements HistoryGenerator<Street> {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
@@ -20,6 +25,9 @@ public class StreetHistoryGenerator implements HistoryGenerator<Street> {
 	private DiffService diffService;
 
 	private StreetHistoryBuilder historyBuilder;
+
+	private BuildingService buildingService;
+	private BuildingHistoryGenerator buildingHistoryGenerator;
 
 	/**
 	 * Do generation
@@ -33,20 +41,31 @@ public class StreetHistoryGenerator implements HistoryGenerator<Street> {
 		// create street history
 		Street street = streetService.readFull(stub(obj));
 		if (street == null) {
-			log.warn("Town not found {}", street);
+			log.warn("Street not found {}", obj);
 			return;
 		}
 
-		if (diffService.hasDiffs(street)) {
+		if (!diffService.hasDiffs(street)) {
+
+			Diff diff = historyBuilder.diff(null, street);
+			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+			diffService.create(diff);
+		} else {
 			log.info("Street already has history, do nothing {}", street);
-			return;
 		}
-
-		Diff diff = historyBuilder.diff(null, street);
-		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
-		diffService.create(diff);
-
 		log.debug("Ended generating history for street {}", obj);
+
+		log.debug("starting generating history for street buildings {}", obj);
+		List<Building> buidings = buildingService.findStreetBuildings(stub(obj));
+		for (Building building : buidings) {
+			// generate history for this building if it has primary address on this street
+			// done in order to prevent duplicates appear
+			BuildingAddress address = building.getAddressOnStreet(street);
+			if (address != null && address.isPrimary()) {
+				buildingHistoryGenerator.generateFor(building);
+			}
+		}
+		log.debug("Ended generating history for street buildings {}", obj);
 	}
 
 	@Required
@@ -62,5 +81,15 @@ public class StreetHistoryGenerator implements HistoryGenerator<Street> {
 	@Required
 	public void setHistoryBuilder(StreetHistoryBuilder historyBuilder) {
 		this.historyBuilder = historyBuilder;
+	}
+
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
+	}
+
+	@Required
+	public void setBuildingHistoryGenerator(BuildingHistoryGenerator buildingHistoryGenerator) {
+		this.buildingHistoryGenerator = buildingHistoryGenerator;
 	}
 }

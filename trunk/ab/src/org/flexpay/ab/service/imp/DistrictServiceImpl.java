@@ -234,7 +234,7 @@ public class DistrictServiceImpl extends
 
 		log.info("{} districts to disable", objects.size());
 		for (District object : objects) {
-			object.setStatus(StreetType.STATUS_DISABLED);
+			object.setStatus(District.STATUS_DISABLED);
 			districtDao.update(object);
 
 			modificationListener.onDelete(object);

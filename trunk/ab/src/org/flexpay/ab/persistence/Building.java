@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -69,9 +68,9 @@ public class Building extends DomainObjectWithStatus {
 		this.apartments = apartments;
 	}
 
-	public void addBuildings(@NotNull BuildingAddress buildingAddress) {
+	public void addAddress(@NotNull BuildingAddress buildingAddress) {
 		if (Collections.emptySet().equals(buildingses)) {
-			buildingses = new HashSet<BuildingAddress>();
+			buildingses = CollectionUtils.set();
 		}
 
 		buildingAddress.setBuilding(this);
@@ -123,7 +122,7 @@ public class Building extends DomainObjectWithStatus {
 	@Nullable
 	public BuildingAddress getAddressOnStreet(@NotNull Street street) {
 
-		for (BuildingAddress address : buildingses) {
+		for (BuildingAddress address : getBuildingses()) {
 			if (street.equals(address.getStreet())) {
 				return address;
 			}

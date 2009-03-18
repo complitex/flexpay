@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
@@ -15,6 +16,7 @@ import org.springframework.security.annotation.Secured;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.Collection;
 
 public interface BuildingService extends ParentService<BuildingsFilter> {
 
@@ -72,7 +74,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	@Secured (Roles.BUILDING_READ)
 	@Nullable
 	BuildingAddress findBuildings(@NotNull Stub<Street> street, @Nullable Stub<District> district,
-							@NotNull Set<AddressAttribute> attributes)
+								  @NotNull Set<AddressAttribute> attributes)
 			throws FlexPayException;
 
 	/**
@@ -90,7 +92,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	@Secured (Roles.BUILDING_READ)
 	@Nullable
 	BuildingAddress findBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district,
-							String number, String bulk) throws FlexPayException;
+								  String number, String bulk) throws FlexPayException;
 
 	/**
 	 * Find building by number
@@ -141,6 +143,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 * Update buildings
 	 *
 	 * @param buildingAddress Buildings
+	 * @deprecated use {@link #update(org.flexpay.ab.persistence.Building)} instead
 	 */
 	@Secured (Roles.BUILDING_CHANGE)
 	void update(BuildingAddress buildingAddress);
@@ -153,11 +156,12 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 * @param attrs	Buildings attributes
 	 * @return new Buildings object created
 	 * @throws FlexPayException if failure occurs
+	 * @deprecated use {@link #create(org.flexpay.ab.persistence.Building)} instead
 	 */
 	@Secured (Roles.BUILDING_ADD)
 	@NotNull
 	BuildingAddress createStreetDistrictBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district,
-											@NotNull Set<AddressAttribute> attrs)
+												  @NotNull Set<AddressAttribute> attrs)
 			throws FlexPayException;
 
 	/**
@@ -168,11 +172,12 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 * @param attrs	Buildings attributes
 	 * @return new Buildings object created
 	 * @throws FlexPayException if failure occurs
+	 * @deprecated use {@link #create(org.flexpay.ab.persistence.Building)} instead
 	 */
 	@Secured (Roles.BUILDING_ADD)
 	@NotNull
 	BuildingAddress createStreetBuildings(@NotNull Stub<Building> building, @NotNull Stub<Street> street,
-									@NotNull Set<AddressAttribute> attrs)
+										  @NotNull Set<AddressAttribute> attrs)
 			throws FlexPayException;
 
 	/**
@@ -186,6 +191,14 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	List<BuildingAddress> getBuildingBuildings(Stub<Building> stub) throws FlexPayException;
 
 	/**
+	 * Find all buildings on a specified street
+	 *
+	 * @param stub Street stub
+	 * @return List of buildings on a street
+	 */
+	@NotNull
+	List<Building> findStreetBuildings(Stub<Street> stub);
+	/**
 	 * Read building info
 	 *
 	 * @param stub Building stub
@@ -193,4 +206,34 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	@Secured (Roles.BUILDING_READ)
 	Building read(@NotNull Stub<Building> stub);
+
+	/**
+	 * Update building
+	 *
+	 * @param building Building to update
+	 * @return updated building back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.BUILDING_CHANGE)
+	@NotNull
+	Building update(@NotNull Building building) throws FlexPayExceptionContainer;
+
+	/**
+	 * Create building
+	 *
+	 * @param building Building to create
+	 * @return persisted building back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.BUILDING_ADD)
+	@NotNull
+	Building create(@NotNull Building building) throws FlexPayExceptionContainer;
+
+	/**
+	 * Disable buildings
+	 *
+	 * @param buildings Buildings to disable
+	 */
+	@Secured (Roles.BUILDING_DELETE)
+	void disable(Collection<Building> buildings);
 }

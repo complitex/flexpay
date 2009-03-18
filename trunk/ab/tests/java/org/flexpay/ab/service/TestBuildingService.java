@@ -51,7 +51,7 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 
 		BuildingAddress buildingAddress = new BuildingAddress();
 		buildingAddress.setStreet(street);
-		building.addBuildings(buildingAddress);
+		building.addAddress(buildingAddress);
 		return buildingAddress;
 	}
 
