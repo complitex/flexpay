@@ -35,7 +35,9 @@
 		<property name="spRegistryTypeDao" ref="spRegistryTypeDao" />
 	</bean>
 
-	<bean id="spServiceTarget" class="org.flexpay.eirc.service.imp.SPServiceImpl"
+	<bean id="spServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.eirc.service.imp.SPServiceImpl"
 		  p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao"
 		  p:serviceDao-ref="serviceDao"
 		  p:serviceDaoExt-ref="serviceDaoExt"
@@ -92,7 +94,9 @@
 		  p:importUtil-ref="eircImportUtil"
 		  p:accountService-ref="eircAccountService" />
 
-	<bean id="consumerServiceTarget" class="org.flexpay.eirc.service.imp.ConsumerServiceImpl"
+	<bean id="consumerServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.eirc.service.imp.ConsumerServiceImpl"
 		  p:serviceDao-ref="serviceDao"
 		  p:consumerDao-ref="consumerDao"
 		  p:consumerDaoExt-ref="consumerDaoExt" />
@@ -175,7 +179,9 @@
 		<property name="spRegistryStatusDao" ref="spRegistryStatusDao" />
 	</bean>
 
-	<bean id="registryArchiveStatusServiceTarget" class="org.flexpay.eirc.service.imp.RegistryArchiveStatusServiceImpl"
+	<bean id="registryArchiveStatusServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.eirc.service.imp.RegistryArchiveStatusServiceImpl"
 		  p:registryArchiveStatusDao-ref="registryArchiveStatusDao" />
 
 	<bean id="registryRecordStatusService" class="org.flexpay.eirc.service.imp.SpRegistryRecordStatusServiceImpl"
