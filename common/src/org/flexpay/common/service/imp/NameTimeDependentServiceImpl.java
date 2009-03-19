@@ -114,7 +114,7 @@ public abstract class NameTimeDependentServiceImpl<
 	 * @return object, or <code>null</code> if not found
 	 */
 	@Nullable
-	public final NTD readFull(@NotNull Stub<NTD> stub) {
+	public NTD readFull(@NotNull Stub<NTD> stub) {
 		return getNameTimeDependentDao().readFull(stub.getId());
 	}
 

@@ -195,6 +195,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	private boolean isFilterValid(StreetFilter filter) {
+
 		for (StreetNameTranslation nameTranslation : filter.getNames()) {
 			StreetName name = (StreetName) nameTranslation.getTranslatable();
 			if (name.getStub().getId().equals(filter.getSelectedId())) {
@@ -441,6 +442,26 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		log.debug("Finding town streets with sorters");
 		PrimaryKeyFilter<?> townFilter = (PrimaryKeyFilter<?>) filters.peek();
 		return streetDaoExt.findStreets(townFilter.getSelectedId(), sorters, pager);
+	}
+
+	/**
+	 * Read name time-dependent object by its unique id
+	 *
+	 * @param stub Object stub
+	 * @return object, or <code>null</code> if not found
+	 */
+	@Override
+	public Street readFull(@NotNull Stub<Street> stub) {
+
+		Street street = streetDao.readFull(stub.getId());
+		if (street == null) {
+			return null;
+		}
+
+		street.setTypeTemporals(CollectionUtils.treeSet(streetDao.findTypeTemporals(stub.getId())));
+		street.getDistricts().addAll(streetDao.findDistricts(stub.getId()));
+
+		return street;
 	}
 
 	@Required

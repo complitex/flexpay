@@ -57,7 +57,7 @@ public class BuildingAddress extends DomainObjectWithStatus {
 
 	@NotNull
 	public Set<AddressAttribute> getBuildingAttributes() {
-		return this.addressAttributes;
+		return addressAttributes;
 	}
 
 	@SuppressWarnings ({"UnusedDeclaration"})
