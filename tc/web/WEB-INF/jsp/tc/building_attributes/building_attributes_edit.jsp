@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
+
 <%@ page import="org.flexpay.bti.persistence.BuildingAttributeTypeSimple" %>
 <%@ page import="org.flexpay.bti.persistence.BuildingAttributeTypeEnum" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
