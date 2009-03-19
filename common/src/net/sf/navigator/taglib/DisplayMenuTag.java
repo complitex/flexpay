@@ -185,7 +185,9 @@ public class DisplayMenuTag extends TagSupport {
             HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
             HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
             if (menu.getAction() != null) {
+				log.debug("request.getServletPath() = {}, request.getContextPath() = {}", request.getServletPath(), request.getContextPath());
                 menu.setLocation(UrlHelper.buildUrl(menu.getAction(), request, response, request.getParameterMap()));
+				log.debug("menu.location = {}", menu.getLocation());
             }
         }
     }
