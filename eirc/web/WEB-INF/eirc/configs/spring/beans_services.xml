@@ -187,14 +187,14 @@
 	<bean id="registryRecordStatusService" class="org.flexpay.eirc.service.imp.SpRegistryRecordStatusServiceImpl"
 		  p:spRegistryRecordStatusDao-ref="spRegistryRecordStatusDao" />
 
-	<bean parent="processManager" autowire-candidate="false">
+	<bean id="processManagerEirc" parent="processManager" autowire-candidate="false">
 		<property name="definitionPaths">
 			<list merge="true">
 				<value>WEB-INF/eirc/process</value>
 			</list>
 		</property>
 		<property name="lyfecycleVoters">
-			<list>
+			<list merge="true">
 				<bean class="org.flexpay.eirc.process.quittance.QuittanceJobVoter"
 					  p:processHelper-ref="processHelper" />
 			</list>
