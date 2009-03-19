@@ -120,24 +120,32 @@
 	</query>
 
 	<query name="Street.readFull">
-		SELECT distinct o
-		FROM Street o
+		select distinct o
+		from Street o
 			join fetch o.parent 
-		LEFT JOIN FETCH o.nameTemporals t
-		LEFT JOIN FETCH t.value v
-		LEFT JOIN FETCH v.translations tr
-		LEFT JOIN FETCH tr.lang l
-		LEFT JOIN FETCH l.translations
-		LEFT JOIN FETCH o.typeTemporals tt
-		LEFT JOIN FETCH tt.value tv
-		LEFT JOIN FETCH tv.translations ttr
-		LEFT JOIN FETCH ttr.lang tl
-		LEFT JOIN FETCH tl.translations
-		LEFT JOIN FETCH o.districts d
-		LEFT JOIN FETCH d.nameTemporals dt
-		LEFT JOIN FETCH dt.value dv
-		LEFT JOIN FETCH dv.translations
-		WHERE o.id=? and (dt is null or dt.invalidDate='2100-12-31')
+			left join fetch o.nameTemporals t
+			left join fetch t.value v
+			left join fetch v.translations tr
+		where o.id=? and o.status=0 and t.invalidDate='2100-12-31'
+	</query>
+
+	<query name="Street.findTypeTemporals">
+		select distinct stt
+		from StreetTypeTemporal stt
+			left join fetch stt.value v
+			left join fetch v.translations
+		where stt.object.id=? and stt.object.status=0 and stt.invalidDate='2100-12-31'
+		order by stt.createDate 
+	</query>
+
+	<query name="Street.findDistricts">
+		select distinct d
+		from Street s
+			left join s.districts d
+			left join fetch d.nameTemporals dt
+			left join fetch dt.value dv
+			left join fetch dv.translations
+		WHERE s.id=? and s.status=0 and dt.invalidDate='2100-12-31'
 	</query>
 
 	<query name="StreetNameTemporal.readFull">
