@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
+
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 <s:hidden name="streetSorterByType.active" id="streetSorterByTypeActive" />
 <s:hidden name="streetSorterByType.order" id="streetSorterByTypeOrder" />

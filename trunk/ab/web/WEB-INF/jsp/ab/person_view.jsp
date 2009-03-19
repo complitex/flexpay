@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
+
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <a href="<s:url action="personEdit"><s:param name="person.id" value="person.id" /></s:url>"><s:text name="common.edit" /></a>
