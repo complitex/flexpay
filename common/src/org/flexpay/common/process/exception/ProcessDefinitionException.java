@@ -1,23 +1,23 @@
 package org.flexpay.common.process.exception;
 
 import org.flexpay.common.exception.FlexPayException;
+import org.jetbrains.annotations.NonNls;
 
 public class ProcessDefinitionException extends FlexPayException {
-
-    public ProcessDefinitionException(String message) {
-        super(message);
-    }
 
     public ProcessDefinitionException(String message, String errorKey, Object... params) {
         super(message, errorKey, params);
     }
 
-    public ProcessDefinitionException(Throwable cause) {
-        super(cause);
-    }
-
-    public ProcessDefinitionException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
+	/**
+	 * Constructs exception with specified detail message, error code key and optional error message parameters
+	 *
+	 * @param message  the detail message
+	 * @param cause	the cause
+	 * @param errorKey localization error message key
+	 * @param params   optional localization error message parameters
+	 */
+	public ProcessDefinitionException(@NonNls String message, Throwable cause, String errorKey, Object... params) {
+		super(message, cause, errorKey, params);
+	}
 }

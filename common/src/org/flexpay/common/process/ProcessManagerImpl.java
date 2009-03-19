@@ -147,7 +147,8 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 			}
 
 			log.warn("No definition found: {}", name);
-			throw new ProcessDefinitionException("Process definition for name " + name + " file not found!");
+			throw new ProcessDefinitionException("Process definition for name " + name + " file not found!",
+					"error.common.pm.pd_file_not_found", name);
 		} finally {
 			IOUtils.closeQuietly(is);
 		}
@@ -165,14 +166,14 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		ProcessDefinition processDefinition = null;
 		try {
 			processDefinition = ProcessDefinition.parseXmlInputStream(in);
-//            processDefinition.setName(ApplicationConfig.getApplicationName() + "." + processDefinition.getName());
 			return deployProcessDefinition(processDefinition, replace);
 		} catch (Exception e) {
-			log.error("deployProcessDefinition: ", e);
+			log.error("Process definition deployment failed", e);
 			if (processDefinition == null) {
-				throw new ProcessDefinitionException("InputStream is not process definition file");
+				throw new ProcessDefinitionException("Not process definition", e, "error.common.pm.not_pd");
 			} else {
-				throw new ProcessDefinitionException("Can't deploy processDefinition for " + processDefinition.getName());
+				throw new ProcessDefinitionException("Can't deploy definition for " + processDefinition.getName(), e,
+						"error.common.pm.pd_deployment_failed", processDefinition.getName());
 			}
 		}
 	}
@@ -283,35 +284,37 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	/**
 	 * Init process by process definition name
 	 *
-	 * @param processDefinitionName name of process definition
+	 * @param definitionName name of process definition
 	 * @return ID of process instance
 	 * @throws ProcessDefinitionException when process definition has an error
 	 * @throws ProcessInstanceException   when jbpm can't instanciate process from process definition
 	 */
-	private Long initProcess(String processDefinitionName)
+	private Long initProcess(String definitionName)
 			throws ProcessDefinitionException, ProcessInstanceException {
 
 		ProcessDefinition processDefinition;
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
 		GraphSession graphSession = jbpmContext.getGraphSession();
 		try {
-			processDefinition = graphSession.findLatestProcessDefinition(processDefinitionName);
+			processDefinition = graphSession.findLatestProcessDefinition(definitionName);
 		} catch (RuntimeException e) {
 			jbpmContext.close();
 			log.error("findLatestProcessDefinition", e);
-			throw new ProcessDefinitionException("Can't access ProcessDefinition for " + processDefinitionName, e);
+			throw new ProcessDefinitionException("Can't access ProcessDefinition for " + definitionName, e,
+					"error.common.pm.cant_access_pd", definitionName);
 		}
 		// try to search in predefined set of places
 		if (processDefinition == null) {
-			deployProcessDefinition(processDefinitionName, true);
+			deployProcessDefinition(definitionName, true);
 			jbpmContext.close();
 			jbpmContext = jbpmConfiguration.createJbpmContext();
 			graphSession = jbpmContext.getGraphSession();
-			processDefinition = graphSession.findLatestProcessDefinition(processDefinitionName);
+			processDefinition = graphSession.findLatestProcessDefinition(definitionName);
 		}
 		if (processDefinition == null) {
-			log.error("Can't find process definition for name: {}", processDefinitionName);
-			throw new ProcessDefinitionException("Can't find process definition for name: " + processDefinitionName);
+			log.error("Can't find process definition for name: {}", definitionName);
+			throw new ProcessDefinitionException("Can't find process definition for name: " + definitionName,
+					"error.common.pm.cant_access_pd", definitionName);
 		}
 
 		log.info("Initializing  process. Process Definition id = {}, name = {}, version = {}",
@@ -322,7 +325,8 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 			return processInstance.getId();
 		} catch (RuntimeException e) {
 			log.error("ProcessInstanceCreation", e);
-			throw new ProcessInstanceException("Can't create ProcessInstance for " + processDefinitionName, e);
+			throw new ProcessInstanceException("Can't create ProcessInstance for " + definitionName, e,
+					"error.common.pm.cant_create_pi", definitionName);
 		} finally {
 			jbpmContext.close();
 		}
@@ -575,7 +579,8 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 			});
 		} catch (RuntimeException e) {
 			log.error("Failed removeProcess", e);
-			throw new ProcessInstanceException("Can't remove ProcessInstance for " + processID, e);
+			throw new ProcessInstanceException("Can't remove ProcessInstance for " + processID, e,
+					"error.common.pm.cant_remove_pi", processID);
 		}
 	}
 

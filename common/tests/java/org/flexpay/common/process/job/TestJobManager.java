@@ -1,6 +1,5 @@
 package org.flexpay.common.process.job;
 
-import org.flexpay.common.process.exception.JobClassNotFoundException;
 import org.flexpay.common.process.exception.JobConfigurationNotFoundException;
 import org.flexpay.common.process.exception.JobInstantiationException;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
@@ -30,12 +29,6 @@ public class TestJobManager extends SpringBeanAwareTestCase {
 	@Test (expected = JobConfigurationNotFoundException.class)
 	@Ignore
 	public void testJobClassConfigurationNotFound() throws Exception {
-		jobManager.addJob(1, 1, "--=No One Job has this long name=--", new HashMap<Serializable, Serializable>());
-	}
-
-	@Test (expected = JobClassNotFoundException.class)
-	@Ignore
-	public void testJobClassNotFound() throws Throwable {
 		jobManager.addJob(1, 1, "--=No One Job has this long name=--", new HashMap<Serializable, Serializable>());
 	}
 
