@@ -255,11 +255,6 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return streetDao.findByTownAndQuery(stub.getId(), query);
 	}
 
-	/**
-	 * Save Street types timeline
-	 *
-	 * @param object Street to update
-	 */
 	@Transactional (readOnly = false)
 	public void saveTypes(Street object) {
 

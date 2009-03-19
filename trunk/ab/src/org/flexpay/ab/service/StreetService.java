@@ -59,6 +59,7 @@ public interface StreetService extends
 	 * Save Street types timeline
 	 *
 	 * @param object Street to update
+	 * @deprecated use {@link #update(org.flexpay.ab.persistence.Street)} instead
 	 */
 	@Secured (Roles.STREET_CHANGE)
 	void saveTypes(Street object);
