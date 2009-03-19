@@ -24,10 +24,7 @@ import org.springframework.web.util.WebUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Helper ActionSupport extension, able to set
@@ -186,7 +183,13 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	public String getErrorMessage(@NotNull FlexPayException e) {
 		if (StringUtils.isNotEmpty(e.getErrorKey())) {
 			log.debug("Adding error: {}, params: {}", e.getErrorKey(), StringUtils.join(e.getParams(), ","));
-			return getText(e.getErrorKey(), e.getParams());
+			try {
+				return getText(e.getErrorKey(), e.getParams());
+			} catch (RuntimeException ex) {
+				log.error("Failed getting text " + e.getErrorKey() + " with parameters " +
+						  Arrays.asList(e.getParams()), ex);
+				return e.getMessage();
+			}
 		} else {
 			return e.getMessage();
 		}

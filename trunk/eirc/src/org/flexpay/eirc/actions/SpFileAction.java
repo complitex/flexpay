@@ -35,6 +35,8 @@ public class SpFileAction extends FPActionSupport {
 			if (processId == null) {
 				throw new Exception("Failed creating process, unknown reason");
 			}
+
+			addActionError(getText("eirc.registry.parse_started"));
         } else if ("loadFromDb".equals(action)) {
             // SzFileUtil.loadFromDb(szFile);
         } else if ("deleteFromDb".equals(action)) {

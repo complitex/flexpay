@@ -25,7 +25,7 @@
 		  class="org.flexpay.tc.service.impl.TariffCalculationRulesFileServiceImpl"
 		  p:tariffCalculationRulesFileDao-ref="tariffCalculationRulesFileDao" />
 
-	<bean parent="processManager" autowire-candidate="false">
+	<bean id="processManagerTc" parent="processManager" autowire-candidate="false">
 		<property name="definitionPaths">
 			<list merge="true">
 				<value>WEB-INF/tc/process</value>

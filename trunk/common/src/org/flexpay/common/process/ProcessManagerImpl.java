@@ -44,6 +44,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * singleton instance
 	 */
 	private static final ProcessManagerImpl instance = new ProcessManagerImpl();
+
 	private static final Thread thread = new Thread(instance, "ProcessManager Thread");
 	private volatile boolean started = false;
 	private volatile boolean stopped = false;
