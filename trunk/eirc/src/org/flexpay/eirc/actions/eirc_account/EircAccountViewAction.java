@@ -7,13 +7,14 @@ import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.SPService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class EircAccountViewAction extends FPActionSupport {
 	
-	private EircAccountService eircAccountService;
-	
 	private EircAccount eircAccount;
 	private SPService spService;
+
+	private EircAccountService eircAccountService;
 
 	@NotNull
 	public String doExecute() {
@@ -40,25 +41,22 @@ public class EircAccountViewAction extends FPActionSupport {
 		return persistent.format(getLocale());
 	}
 
-	/**
-	 * @return the eircAccount
-	 */
 	public EircAccount getEircAccount() {
 		return eircAccount;
 	}
 
-	/**
-	 * @param eircAccount the eircAccount to set
-	 */
 	public void setEircAccount(EircAccount eircAccount) {
 		this.eircAccount = eircAccount;
 	}
 
+	@Required
 	public void setEircAccountService(EircAccountService eircAccountService) {
 		this.eircAccountService = eircAccountService;
 	}
 
+	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
 	}
+
 }

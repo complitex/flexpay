@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror />
@@ -35,7 +36,7 @@
 		<tr>
 			<td colspan="5">
 				<input type="submit" class="btn-exit"
-					   onclick="jQuery('#fobjects').attr('action','<s:url action="streetTypeDelete"/>');"
+					   onclick="$('#fobjects').attr('action','<s:url action="streetTypeDelete" includeParams="none" />');"
 					   value="<s:text name="common.delete_selected"/>" />
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="editStreetType"><s:param name="streetType.id" value="0" /></s:url>';"

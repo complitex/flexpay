@@ -1,11 +1,55 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
+<%@include file="/WEB-INF/jsp/common/jquery_ui.jsp"%>
+
+<script type="text/javascript">
+
+    $("#calendar").datepicker({
+        dateFormat: "yy/mm/dd",
+        onSelect: function(dateText) {
+            $("#inputCalcDate").val(dateText);
+        }
+    });
+
+    $("#dialog").dialog({
+        bgiframe: true,
+        modal: true,
+        width: 380,
+        height: 420,
+        closeOnEscape: true,
+        title: '<s:text name="tc.calculate.window_title" />',
+        autoOpen: false,
+        buttons: {
+            '<s:text name="tc.calculate" />' : function() {
+                doAction("<s:url action="tariffCalculate" includeParams="none" />");
+            },
+            '<s:text name="tc.cancel" />' : function() {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    function calculate() {
+        var fileId = $("input[name=id]:checked").val();
+        if (fileId == null || fileId == undefined) {
+            alert('<s:text name="tc.error.calculate.element_not_selected" />');
+            return;
+        }
+        $("#dialog").dialog("open");
+    }
+
+    function doAction(action) {
+        $("#fObjects").attr("action", action).submit();
+    }
+
+</script>
+
 <s:actionerror />
 
-<s:form id="fObjects" method="post">
-    <table cellpadding="3" cellspacing="1" border="0" width="100%">
+<s:form id="fObjects">
 
+    <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr>
             <td colspan="8">
                 <%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
@@ -69,61 +113,16 @@
         <tr>
             <td colspan="8">
                 <%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
-                <input type="button" class="btn-exit" onclick="location.href='<s:url action="rulesFileEdit"><s:param name="rulesFile.id" value="0" /></s:url>';" value="<s:text name="common.new"/>" />
-                <input type="button" class="btn-exit" onclick="doAction('<s:url action="rulesFileDelete" includeParams="false" />');" value="<s:text name="common.delete_selected"/>" />
-                <input type="button" class="btn-exit" onclick="calcDateWindow();" value="<s:text name="tc.calculate"/>" />
+                <input type="button" class="btn-exit" onclick="location.href='<s:url action="rulesFileEdit"><s:param name="rulesFile.id" value="0" /></s:url>';" value="<s:text name="common.new" />" />
+                <input type="button" class="btn-exit" onclick="doAction('<s:url action="rulesFileDelete" includeParams="none" />');" value="<s:text name="common.delete_selected" />" />
+                <input type="button" class="btn-exit" onclick="calculate();" value="<s:text name="tc.calculate" />" />
             </td>
         </tr>
-
     </table>
 
+    <div id="dialog" style="display:none;">
+        <s:hidden id="inputCalcDate" name="calcDate" />
+        <div id="calendar"></div>
+    </div>
+
 </s:form>
-
-<script type="text/javascript">
-
-    var x = 0;
-    var y = 0;
-
-    function getXY(e) {
-        var left = document.documentElement.scrollLeft;
-        var top = document.documentElement.scrollTop;
-        if (Prototype.Browser.IE) {
-            x = event.clientX + left;
-            y = event.clientY + top;
-        } else {
-            x = e.clientX + left;
-            y = e.clientY + top;
-        }
-    }
-
-    document.onmousemove = getXY;
-
-	function calcDateWindow() {
-
-        var fileId = FP.getCheckedValue($("fObjects").elements["id"]);
-
-        if (fileId == null) {
-            alert("<s:text name="tc.error.calculate.element_not_selected" />");
-            return;
-        }
-
-		var win = new Window({
-            className: "spread",
-            title: "<s:text name="tc.calculate.window_title" />",
-			url: "<s:url action="tariffCalculate" includeParams="false" />?id=" + fileId,
-            width:250,
-            height:250,
-            resizable: false,
-            minimizable: false,
-            maximizable: false,
-            destroyOnClose: true
-        });
-
-		win.showCenter(true, y, x);
-	}
-
-    function doAction(action) {
-        jQuery("#fObjects").attr("action", action).submit();
-    }
-
-</script>

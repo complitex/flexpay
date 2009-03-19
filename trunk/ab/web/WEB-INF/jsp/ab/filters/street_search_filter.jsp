@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 <s:hidden name="streetNameFilter.selectedId" id="selectedStreetId" value="%{streetNameFilter.selectedId}" />
 <s:if test="streetNameFilter.showSearchString && streetNameFilter.searchString != null">
@@ -8,8 +9,10 @@
 
 <input type="text" class="form-search" id="streetFilter"
 	   name="streetNameFilter.searchString"
-       onfocus="if(jQuery('#selectedStreetId').val().length == 0)this.value='';" onblur="if(jQuery('#selectedStreetId').val().length == 0)this.value='<s:text name="%{streetNameFilter.field.value}" />';"
+       onfocus="if($('#selectedStreetId').val().length == 0)this.value='';" onblur="if($('#selectedStreetId').val().length == 0)this.value='<s:text name="%{streetNameFilter.field.value}" />';"
 	   value="<s:text name="%{streetNameFilter.field.value}" />" />
+
+<%@include file="/WEB-INF/jsp/common/jquery_autocomplete.jsp" %>
 
 <script type="text/javascript">
 
@@ -20,16 +23,16 @@
         }
 
         var sValue = !!li.extra ? li.extra[0] : li.selectValue;
-        jQuery("#selectedStreetId").val(sValue);
+        $("#selectedStreetId").val(sValue);
         if (li.extra) {
-            jQuery("#streetFilter").val(li.selectValue);
+            $("#streetFilter").val(li.selectValue);
         }
-        jQuery("#streetFilter")[0].form.submit();
+        $("#streetFilter")[0].form.submit();
     }
 
     function formatItem(row) {
         var street = row[0].toLowerCase();
-        var value = jQuery("#streetFilter").val().toLowerCase();
+        var value = $("#streetFilter").val().toLowerCase();
         var i = street.indexOf(value);
         return row[0].substr(0, i) + "<strong>" + row[0].substr(i, value.length) + "</strong>" + row[0].substr(i + value.length);
     }
@@ -38,8 +41,8 @@
         findValue(li);
     }
 
-    jQuery(function() {
-        jQuery("#streetFilter").autocomplete(
+    $(function() {
+        $("#streetFilter").autocomplete(
         "<s:url action="streetSearchAjax" namespace="/dicts" includeParams="none"/>",
         {
   			delay:10,
@@ -50,7 +53,7 @@
   			cacheLength:10,
             formatItem:formatItem,
   			onItemSelect:selectItem,
-            extraParams: {"townId":jQuery("#townFilter").val()}
+            extraParams: {"townId" : $("#townFilter").val()}
   		});
     });
 

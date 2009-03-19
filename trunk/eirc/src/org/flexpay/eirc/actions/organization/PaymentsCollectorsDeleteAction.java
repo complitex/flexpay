@@ -10,9 +10,9 @@ import java.util.Set;
 
 public class PaymentsCollectorsDeleteAction extends FPActionSupport {
 
-	private PaymentsCollectorService collectorService;
-
 	private Set<Long> objectIds = CollectionUtils.set();
+
+	private PaymentsCollectorService collectorService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -45,4 +45,5 @@ public class PaymentsCollectorsDeleteAction extends FPActionSupport {
 	public void setCollectorService(PaymentsCollectorService collectorService) {
 		this.collectorService = collectorService;
 	}
+
 }

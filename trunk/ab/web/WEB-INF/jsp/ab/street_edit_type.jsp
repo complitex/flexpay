@@ -1,4 +1,11 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+
+<%@include file="/WEB-INF/jsp/common/jquery_ui.jsp"%>
+
+<script type="text/javascript">
+    FP.calendars("#date", "<s:url value="/resources/common/js/jquery/jquery-ui/images/calendar.gif" includeParams="none" />");
+</script>
 
 <s:actionerror/>
 
@@ -8,21 +15,7 @@
 		<tr>
 			<td class="th" width="100%" colspan="3" align="center">
 				<s:text name="ab.from" />&nbsp;
-				<s:textfield name="date" id="date" value="%{date}"/>
-				<img src="<s:url value="/resources/common/js/jscalendar/img.gif"/>" alt=""
-					 id="trigger_from"
-					 style="cursor: pointer; border: 1px solid red;"
-					 title="<s:text name="common.calendar"/>"
-					 onmouseover="this.style.background='red';"
-					 onmouseout="this.style.background='';"/>
-				<script type="text/javascript">
-					Calendar.setup({
-						inputField	 : "date",
-						ifFormat	 : "%Y/%m/%d",
-						button		 : "trigger_from",
-						align		 : "Tl"
-					});
-				</script>
+				<s:textfield name="date" id="date" value="%{date}" readonly="true" />
 				&nbsp;
 				<%@include file="filters/street_type_filter.jsp"%>
 			</td>
@@ -32,8 +25,7 @@
 			<td colspan="3" height="3" bgcolor="#4a4f4f"/>
 		<tr>
 			<td colspan="3">
-				<input type="submit" class="btn-exit"
-					   value="<s:text name="common.save"/>"/>
+				<input type="submit" class="btn-exit" value="<s:text name="common.save"/>"/>
 			</td>
 		</tr>
 		<s:hidden name="temporal.id" value="%{temporal.id}" />

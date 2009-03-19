@@ -1,29 +1,19 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-
-<script type="text/javascript" src="<c:url value="/resources/common/js/prototype.js" />"></script>
-<%--<script type="text/javascript" src="<c:url value="/resources/eirc/js/flexpay_eirc.js" />"></script>--%>
-<script type="text/javascript" src="<c:url value="/resources/common/js/jquery/jquery-1.3.2.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/common/js/flexpay_common.js"/>"></script>
 
 <script type="text/javascript">
 
     // folding functions
     function toggleElements(elements, showButton) {
-        jQuery.each(elements, function(i, value) {
-            jQuery(value).toggle();
+        $.each(elements, function(i, value) {
+            $(value).toggle();
         });
-
-        if (jQuery(elements[0]).is(':visible')) {
-            jQuery(showButton).val('<s:text name="common.hide"/>');
-        } else {
-            jQuery(showButton).val('<s:text name="common.show"/>');
-        }
+        $(showButton).val($(elements[0]).is(":visible") ? "<s:text name="common.hide"/>" : "<s:text name="common.show"/>");
     }
     ;
 
     function toggleProcessVariables() {
-        toggleElements(jQuery('#processVariables'), '#toggle_variables_button');
+        toggleElements($("#processVariables"), "#toggle_variables_button");
     }
 
 </script>

@@ -8,16 +8,17 @@ import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
 public class ServiceTypeEditAction extends FPActionSupport {
 
-	private ServiceTypeService serviceTypeService;
-
 	private ServiceType serviceType = new ServiceType();
 	private Map<Long, String> names = map();
 	private Map<Long, String> descriptions = map();
+
+	private ServiceTypeService serviceTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -107,7 +108,9 @@ public class ServiceTypeEditAction extends FPActionSupport {
 		this.descriptions = descriptions;
 	}
 
+	@Required
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
 		this.serviceTypeService = serviceTypeService;
 	}
+
 }

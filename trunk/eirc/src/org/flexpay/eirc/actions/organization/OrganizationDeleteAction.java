@@ -4,14 +4,15 @@ import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.eirc.service.OrganizationService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
 
 public class OrganizationDeleteAction extends FPActionSupport {
 
-	private OrganizationService organizationService;
-
 	private Set<Long> objectIds = set();
+
+	private OrganizationService organizationService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -40,7 +41,9 @@ public class OrganizationDeleteAction extends FPActionSupport {
 		this.objectIds = objectIds;
 	}
 
+	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
 	}
+
 }

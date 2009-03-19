@@ -3,15 +3,16 @@ package org.flexpay.eirc.actions.serviceprovider;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.eirc.service.SPService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class ServiceProviderDeleteAction extends FPActionSupport {
 
-	private SPService spService;
-
 	private Set<Long> objectIds = new HashSet<Long>();
+
+	private SPService spService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -40,6 +41,7 @@ public class ServiceProviderDeleteAction extends FPActionSupport {
 		this.objectIds = objectIds;
 	}
 
+	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
 	}

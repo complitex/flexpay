@@ -24,6 +24,7 @@ import org.flexpay.eirc.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -389,27 +390,34 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 		}
 	}
 
+	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
 	}
 
+	@Required
 	public void setAddressService(AddressService addressService) {
 		this.addressService = addressService;
 	}
 
+	@Required
 	public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
 		this.serviceOrganizationService = serviceOrganizationService;
 	}
 
+	@Required
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
 		this.serviceTypeService = serviceTypeService;
 	}
 
+	@Required
 	public void setQuittanceService(QuittanceService quittanceService) {
 		this.quittanceService = quittanceService;
 	}
 
+	@Required
 	public void setQuittanceNumberService(QuittanceNumberService quittanceNumberService) {
 		this.quittanceNumberService = quittanceNumberService;
 	}
+
 }

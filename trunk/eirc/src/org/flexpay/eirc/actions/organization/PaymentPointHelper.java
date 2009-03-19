@@ -36,4 +36,5 @@ public class PaymentPointHelper {
 	public void setPaymentPointService(PaymentPointService paymentPointService) {
 		this.paymentPointService = paymentPointService;
 	}
+
 }

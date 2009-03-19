@@ -1,9 +1,25 @@
 var FP = {
     // Set checkboxes group (names starts with prefix) state to checked
     setCheckboxes : function (checked, prefix) {
-        jQuery('input[type="checkbox"][name^="' + prefix + '"]').each(function(el) {
+        $('input[type=checkbox][name^=' + prefix + ']').each(function(el) {
             this.checked = checked;
         });
+    },
+
+    validateSubmit : function (warnMes) {
+        if ($("#setupType").val() == "setupType") {
+            return true;
+        }
+
+        var radio = $("input[type=radio][name=object.id]:checked");
+
+        if (!radio) {
+            alert(warnMes);
+            $("#setupType").val("setupType");
+            return false;
+        }
+
+        return true;
     },
 
     sorters : [],
@@ -11,10 +27,10 @@ var FP = {
     activateSorter : function (sorter) {
         // disable all sorters
         $.protify(this.sorters).each(function (field) {
-            jQuery("#" + field).val(0);
+            $("#" + field).val(0);
         });
         // set active passed sorter
-        jQuery("#" + sorter).val(1);
+        $("#" + sorter).val(1);
     },
 
     /**
@@ -47,27 +63,21 @@ var FP = {
         return buffer.join("");
     },
 
-    /**
-     *  This function for get checked radio value
-     *
-     * @param radioObj radio button elements array
-     * @return  the value of the radio button that is checked
-     *          and return null if none are checked, or there are no radio buttons
-     */
-    getCheckedValue : function(radioObj) {
-        if (!radioObj) {
-            return null;
-        }
-        var len = radioObj.length;
-        if (len == undefined) {
-            return radioObj.checked ? radioObj.value : null;
-        }
-        for(var i = 0; i < len; i++) {
-            if(radioObj[i].checked) {
-                return radioObj[i].value;
+    calendars : function(arg, img) {
+        $(function() {
+            if (img != null) {
+                $(arg).datepicker({
+                    showOn: "both",
+                    dateFormat: "yy/mm/dd",
+                    buttonImage: img,
+                    buttonImageOnly: true
+                });
+            } else {
+                $(arg).datepicker({
+                    dateFormat: "yy/mm/dd"
+                });
             }
-        }
-        return null;
+        });
     }
 
 };

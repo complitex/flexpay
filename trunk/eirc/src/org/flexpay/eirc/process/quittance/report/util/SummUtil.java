@@ -36,4 +36,5 @@ public class SummUtil {
 		}
 		return current.add(val);
 	}
+
 }

@@ -4,6 +4,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -56,7 +57,9 @@ public class RegistriesProcessAction extends FPActionSupport {
 		this.objectIds = objectIds;
 	}
 
+	@Required
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
 	}
+
 }

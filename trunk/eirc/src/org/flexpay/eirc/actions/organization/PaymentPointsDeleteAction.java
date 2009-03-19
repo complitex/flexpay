@@ -10,9 +10,9 @@ import java.util.Set;
 
 public class PaymentPointsDeleteAction extends FPActionSupport {
 
-	private PaymentPointService paymentPointService;
-
 	private Set<Long> objectIds = new HashSet<Long>();
+
+	private PaymentPointService paymentPointService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -45,4 +45,5 @@ public class PaymentPointsDeleteAction extends FPActionSupport {
 	public void setPaymentPointService(PaymentPointService paymentPointService) {
 		this.paymentPointService = paymentPointService;
 	}
+
 }

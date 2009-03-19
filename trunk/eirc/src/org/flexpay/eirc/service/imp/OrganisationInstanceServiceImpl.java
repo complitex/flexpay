@@ -212,7 +212,9 @@ public abstract class OrganisationInstanceServiceImpl<
 		this.instanceDao = instanceDao;
 	}
 
+	@Required
 	public void setSessionUtils(SessionUtils sessionUtils) {
 		this.sessionUtils = sessionUtils;
 	}
+
 }

@@ -20,14 +20,11 @@ import org.flexpay.eirc.persistence.filters.ServiceTypeFilter;
 import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
 public class ServiceEditAction extends FPActionSupport {
-
-	private SPService spService;
-	private ServiceTypeService serviceTypeService;
-	private MeasureUnitService measureUnitService;
 
 	private Service service = new Service(0L);
 
@@ -39,6 +36,10 @@ public class ServiceEditAction extends FPActionSupport {
 	private EndDateFilter endDateFilter = new EndDateFilter();
 
 	private Map<Long, String> descriptions = map();
+
+	private SPService spService;
+	private ServiceTypeService serviceTypeService;
+	private MeasureUnitService measureUnitService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -195,15 +196,19 @@ public class ServiceEditAction extends FPActionSupport {
 		this.descriptions = descriptions;
 	}
 
+	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
 	}
 
+	@Required
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
 		this.serviceTypeService = serviceTypeService;
 	}
 
+	@Required
 	public void setMeasureUnitService(MeasureUnitService measureUnitService) {
 		this.measureUnitService = measureUnitService;
 	}
+
 }

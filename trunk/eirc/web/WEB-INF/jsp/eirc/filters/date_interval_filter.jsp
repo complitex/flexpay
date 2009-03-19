@@ -1,35 +1,15 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
+<%@include file="/WEB-INF/jsp/common/jquery_ui.jsp"%>
+
+<script type="text/javascript">
+    FP.calendars("#dateIntervalBegin", "<s:url value="/resources/common/js/jquery/jquery-ui/images/calendar.gif" includeParams="none" />");
+    FP.calendars("#dateIntervalEnd", "<s:url value="/resources/common/js/jquery/jquery-ui/images/calendar.gif" includeParams="none" />");
+</script>
+
 <s:text name="ab.from"/>
-<input type="text" name="fromDate" id="dateInterval.begin"
-		value="<s:property value="fromDate"/>" />
-<img src="<c:url value="/resources/common/js/jscalendar/img.gif"/>" alt=""
-	 id="trigger_dateInterval.begin"
-	 style="cursor: pointer; border: 1px solid red;"
-	 title="<s:text name="common.calendar"/>"
-	 onmouseover="this.style.background='red';"
-	 onmouseout="this.style.background='';"/>
+<input type="text" name="fromDate" id="dateIntervalBegin" value="<s:property value="fromDate"/>" readonly="readonly" />
 &nbsp;&nbsp;
 <s:text name="ab.till"/>
-<input type="text" name="tillDate" id="dateInterval.end"
-	   value="<s:property value="tillDate" />" />
-<img src="<c:url value="/resources/common/js/jscalendar/img.gif"/>" alt=""
-	 id="trigger_dateInterval.end"
-	 style="cursor: pointer; border: 1px solid red;"
-	 title="<s:text name="common.calendar"/>"
-	 onmouseover="this.style.background='red';"
-	 onmouseout="this.style.background='';"/>
-<script type="text/javascript">
-Calendar.setup({
-	inputField	 : "dateInterval.begin",
-	ifFormat	 : "%Y/%m/%d",
-	button		 : "trigger_dateInterval.begin",
-	align		 : "Tl"
-});
-Calendar.setup({
-	inputField	 : "dateInterval.end",
-	ifFormat	 : "%Y/%m/%d",
-	button		 : "trigger_dateInterval.end",
-	align		 : "Tl"
-});
-</script>
+<input type="text" name="tillDate" id="dateIntervalEnd" value="<s:property value="tillDate" />" readonly="readonly" />

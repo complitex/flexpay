@@ -101,4 +101,5 @@ public class QuittanceJobVoter implements LyfecycleVoter {
 	public void setProcessHelper(ProcessHelper processHelper) {
 		this.processHelper = processHelper;
 	}
+
 }

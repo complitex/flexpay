@@ -14,13 +14,11 @@ import org.flexpay.eirc.persistence.filters.SubdivisionFilter;
 import org.flexpay.eirc.service.OrganizationService;
 import org.flexpay.eirc.service.SubdivisionService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
 public class SubdivisionEditAction extends FPActionSupport {
-
-	private SubdivisionService subdivisionService;
-	private OrganizationService organizationService;
 
 	private Subdivision subdivision = new Subdivision();
 	private Organization headOrganization = new Organization();
@@ -28,6 +26,9 @@ public class SubdivisionEditAction extends FPActionSupport {
 	private SubdivisionFilter subdivisionFilter = new SubdivisionFilter();
 	private Map<Long, String> descriptions = map();
 	private Map<Long, String> names = map();
+
+	private SubdivisionService subdivisionService;
+	private OrganizationService organizationService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -185,11 +186,14 @@ public class SubdivisionEditAction extends FPActionSupport {
 		this.names = names;
 	}
 
+	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
 	}
 
+	@Required
 	public void setSubdivisionService(SubdivisionService subdivisionService) {
 		this.subdivisionService = subdivisionService;
 	}
+
 }

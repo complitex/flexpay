@@ -28,10 +28,6 @@ public class TariffCalculateAction extends FPActionWithPagerSupport<TariffCalcul
 			return REDIRECT_SUCCESS;
 		}
 
-		if (isNotSubmit()) {
-			return INPUT;
-		}
-
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 		contextVariables.put(TariffCalculationJob.RULES_ID, id);
 		contextVariables.put(TariffCalculationJob.CALC_DATE, DateUtil.parseDate(calcDate, ApplicationConfig.getFutureInfinite()));

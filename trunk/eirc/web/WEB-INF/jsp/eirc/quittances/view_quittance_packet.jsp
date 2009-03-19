@@ -1,8 +1,9 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror />
 
-<s:form method="post" id="fpackets">
+<s:form id="fpackets">
 	<s:hidden name="packet.id" />
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
@@ -40,7 +41,7 @@
 			<td colspan="10">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<%--<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit"--%>
-					   <%--onclick="$('fpackets').action='<s:url action="bankDelete"/>';" />--%>
+					   <%--onclick="$('#fpackets').attr('action', '<s:url action="bankDelete"/>');" />--%>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="quittanceSearch"><s:param name="packet.id" value="packet.id"/></s:url>';"
 					   value="<s:text name="common.new"/>" />

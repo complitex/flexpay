@@ -40,9 +40,6 @@ public class EircAccountCreateForm1Action extends BuildingsFilterDependentAction
 		return SUCCESS;
 	}
 
-	/**
-	 * @return the apartments
-	 */
 	public List<Apartment> getApartments() {
 		return apartments;
 	}

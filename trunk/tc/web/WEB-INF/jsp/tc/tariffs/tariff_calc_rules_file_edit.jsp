@@ -1,9 +1,31 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
+<script type="text/javascript">
+
+    function validateForm() {
+        var fileVal = $("input[name=upload]").val();
+        if (fileVal == null || fileVal == "") {
+            alert("<s:text name="tc.error.rules_file_field_cant_be_null" />");
+            return false;
+        }
+        return true;
+    }
+
+    function submitForm() {
+        <s:if test="%{rulesFile.id <= 0}">
+            if (!validateForm()) {
+                return;
+            }
+        </s:if>
+        $("#inputForm").submit();
+    }
+
+</script>
+
 <s:actionerror />
 
-<s:form id="inputForm" action="rulesFileEdit" method="POST" enctype="multipart/form-data">
+<s:form id="inputForm" action="rulesFileEdit" enctype="multipart/form-data">
 
     <s:hidden name="rulesFile.id" />
 
@@ -52,26 +74,3 @@
     </table>
 
 </s:form>
-
-<script type="text/javascript">
-
-    function validateForm() {
-        var fileVal = jQuery('input[name="upload"]').val();
-        if (fileVal == null || fileVal == "") {
-            alert("<s:text name="tc.error.rules_file_field_cant_be_null" />");
-            return false;
-        }
-        return true;
-    }
-
-    function submitForm() {
-        <s:if test="%{rulesFile.id <= 0}">
-            if (!validateForm()) {
-                return;
-            }
-        </s:if>
-
-        jQuery("#inputForm").submit();
-    }
-
-</script>

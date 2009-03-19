@@ -1,22 +1,13 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:if test="endDateFilter.readOnly">
     <s:property value="endDateFilter.stringDate" />
 </s:if><s:else>
-    <input type="text" name="endDateFilter.stringDate" id="endDateFilter" value="<s:property value="endDateFilter.stringDate" />" />
-    <img src="<s:url value="/resources/common/js/jscalendar/img.gif" includeParams="none"/>" alt=""
-         id="trigger_endDateFilter"
-         style="cursor:pointer;border:1px solid red;"
-         title="<s:text name="common.calendar"/>"
-         onmouseover="this.style.background='red';"
-         onmouseout="this.style.background='';"/>
+    <%@include file="/WEB-INF/jsp/common/jquery_ui.jsp"%>
+
     <script type="text/javascript">
-        Calendar.setup({
-            inputField : "endDateFilter",
-            ifFormat   : "%Y/%m/%d",
-            button     : "trigger_endDateFilter",
-            align      : "Tl"
-        });
+        FP.calendars("#endDateFilter", "<s:url value="/resources/common/js/jquery/jquery-ui/images/calendar.gif" includeParams="none" />");
     </script>
+    <input type="text" name="endDateFilter.stringDate" id="endDateFilter" value="<s:property value="endDateFilter.stringDate" />" readonly="readonly" />
 </s:else>

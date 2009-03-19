@@ -7,14 +7,15 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.service.EircAccountService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class EircAccountCreateAction extends FPActionSupport {
-
-	private EircAccountService eircAccountService;
 
 	private Long personId;
 	private Long apartmentId;
 	private EircAccount eircAccount;
+
+	private EircAccountService eircAccountService;
 
 	@NotNull
 	public String doExecute() throws FlexPayExceptionContainer {
@@ -46,50 +47,29 @@ public class EircAccountCreateAction extends FPActionSupport {
 		return "redirectForm2";
 	}
 
-	/**
-	 * @param eircAccountService the eircAccountService to set
-	 */
-	public void setEircAccountService(EircAccountService eircAccountService) {
-		this.eircAccountService = eircAccountService;
-	}
-
-
-	/**
-	 * @param personId the personId to set
-	 */
 	public void setPersonId(Long personId) {
 		this.personId = personId;
 	}
 
-
-	/**
-	 * @param apartmentId the apartmentId to set
-	 */
 	public void setApartmentId(Long apartmentId) {
 		this.apartmentId = apartmentId;
 	}
 
-
-	/**
-	 * @return the personId
-	 */
 	public Long getPersonId() {
 		return personId;
 	}
 
-
-	/**
-	 * @return the apartmentId
-	 */
 	public Long getApartmentId() {
 		return apartmentId;
 	}
 
-
-	/**
-	 * @return the eircAccount
-	 */
 	public EircAccount getEircAccount() {
 		return eircAccount;
 	}
+
+	@Required
+	public void setEircAccountService(EircAccountService eircAccountService) {
+		this.eircAccountService = eircAccountService;
+	}
+
 }

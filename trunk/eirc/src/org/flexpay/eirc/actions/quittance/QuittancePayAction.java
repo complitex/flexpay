@@ -95,4 +95,5 @@ public class QuittancePayAction extends FPActionSupport {
     public void setQuittanceService(QuittanceService quittanceService) {
         this.quittanceService = quittanceService;
     }
+
 }

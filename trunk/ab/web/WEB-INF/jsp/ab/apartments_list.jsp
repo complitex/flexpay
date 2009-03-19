@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror/>
@@ -15,10 +16,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="jQuery('#fobjects').attr('action','<s:url action="apartmentDelete"/>');"
+					   onclick="$('#fobjects').attr('action','<s:url action="apartmentDelete" includeParams="none" />');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="submit" class="btn-exit"
-					   onclick="jQuery('#fobjects').attr('action','<s:url action='apartmentEdit'><s:param name="apartment.id" value="0"/></s:url>');"
+					   onclick="$('#fobjects').attr('action','<s:url action='apartmentEdit'><s:param name="apartment.id" value="0"/></s:url>');"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
@@ -53,10 +54,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-					   onclick="jQuery('#fobjects').attr('action','<s:url action="apartmentDelete"/>');"
+					   onclick="$('#fobjects').attr('action','<s:url action="apartmentDelete" includeParams="none" />');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="submit" class="btn-exit"
-					   onclick="jQuery('#fobjects').attr('action','<s:url action='apartmentEdit'><s:param name="apartment.id" value="0"/></s:url>');"
+					   onclick="$('#fobjects').attr('action','<s:url action='apartmentEdit'><s:param name="apartment.id" value="0"/></s:url>');"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

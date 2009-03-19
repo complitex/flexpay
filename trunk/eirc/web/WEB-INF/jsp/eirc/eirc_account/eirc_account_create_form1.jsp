@@ -1,10 +1,10 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror/>
 
-<table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="srform" method="post" action="<s:url action="eircAccountCreateForm1" includeParams="none" />">
-
+<form id="srform" method="post" action="<s:url action="eircAccountCreateForm1" includeParams="none" />">
+    <table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td class="filter"><s:text name="ab.country"/></td>
 			<td>
@@ -46,11 +46,9 @@
 		<tr>
 			<td colspan="3">
 				<input type="submit" class="btn-exit"
-					   onclick="$('srform').action='<s:url action="eircAccountCreateForm2" includeParams="none" />';$('srform').submit()"
+					   onclick="$('#srform').attr('action', '<s:url action="eircAccountCreateForm2" includeParams="none" />');"
 					   value="<s:text name="common.next"/>"/>
 			</td>
 		</tr>
-	</form>
-</table>
-
-
+    </table>
+</form>

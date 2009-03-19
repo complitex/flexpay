@@ -14,12 +14,11 @@ import java.util.Map;
 public class SpFileAction extends FPActionSupport {
 
     private Long spFileId;
+	private Long processId = null;
     @NonNls
     private String action;
 
     private ProcessManager processManager;
-
-	private Long processId = null;
 
     @NotNull
 	public String doExecute() throws Exception {
@@ -31,7 +30,7 @@ public class SpFileAction extends FPActionSupport {
         if ("loadToDb".equals(action)) {
             Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
             contextVariables.put("FileId", spFileId);
-            processId = processManager.createProcess("eirc.ParseRegistryProcess", contextVariables);
+            processId = processManager.createProcess("ParseRegistryProcess", contextVariables);
 			log.debug("Load to db process id {}", processId);
 			if (processId == null) {
 				throw new Exception("Failed creating process, unknown reason");
@@ -60,16 +59,10 @@ public class SpFileAction extends FPActionSupport {
         return REDIRECT_ERROR;
     }
 
-    /**
-     * @param spFileId the spFileId to set
-     */
     public void setSpFileId(Long spFileId) {
         this.spFileId = spFileId;
     }
 
-    /**
-     * @param action the action to set
-     */
     public void setAction(@NonNls String action) {
         this.action = action;
     }
@@ -82,4 +75,5 @@ public class SpFileAction extends FPActionSupport {
 	public void setProcessManager(ProcessManager processManager) {
         this.processManager = processManager;
     }
+
 }

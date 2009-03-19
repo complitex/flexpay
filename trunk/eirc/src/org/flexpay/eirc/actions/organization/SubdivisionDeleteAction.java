@@ -5,15 +5,16 @@ import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.service.SubdivisionService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
 
 public class SubdivisionDeleteAction extends FPActionSupport {
 
-	private SubdivisionService subdivisionService;
-
 	private Organization organization = new Organization();
 	private Set<Long> objectIds = set();
+
+	private SubdivisionService subdivisionService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -56,7 +57,9 @@ public class SubdivisionDeleteAction extends FPActionSupport {
 		this.organization = organization;
 	}
 
+	@Required
 	public void setSubdivisionService(SubdivisionService subdivisionService) {
 		this.subdivisionService = subdivisionService;
 	}
+
 }

@@ -25,8 +25,8 @@ public class QuittancesStats {
 
 	public void addAddress(String address) {
 		++count;
-		Integer addressCount = stats.containsKey(address) ?
-							   stats.get(address) : 0;
+		Integer addressCount = stats.containsKey(address) ? stats.get(address) : 0;
 		stats.put(address, addressCount + 1);
 	}
+
 }

@@ -94,6 +94,7 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 
 	public void setFromDate(String dt) {
 		fromDate = DateUtil.parseDate(dt, DateUtil.currentMonth());
+		log.debug("dt = {}, fromDate = {}", dt, fromDate);
 	}
 
 	public String getTillDate() {
@@ -102,6 +103,7 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 
 	public void setTillDate(String dt) {
 		tillDate = DateUtil.parseDate(dt, DateUtil.now());
+		log.debug("dt = {}, fromDate = {}", dt, tillDate);
 	}
 
 	@Required

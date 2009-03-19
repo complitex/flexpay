@@ -9,6 +9,7 @@ import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class SelectCorrectionTypeAction extends FPActionSupport {
 
@@ -75,11 +76,14 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
 		this.record = record;
 	}
 
+	@Required
 	public void setRegistryRecordService(RegistryRecordService registryRecordService) {
 		this.registryRecordService = registryRecordService;
 	}
 
+	@Required
 	public void setTypeRegistry(ClassToTypeRegistry typeRegistry) {
 		this.typeRegistry = typeRegistry;
 	}
+
 }

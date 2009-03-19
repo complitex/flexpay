@@ -1,4 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<tr>
 		<td class="th" width="1%">&nbsp;</td>
@@ -29,7 +31,7 @@
 	<tr>
 		<td colspan="4">
 			<input type="submit" class="btn-exit"
-				   onclick="window.location='<s:url value="/dicts/countryCreate.action"/>'"
+				   onclick="window.location='<s:url value="/dicts/countryCreate.action" includeParams="none" />'"
 				   value="<s:text name="common.new"/>"/>
 		</td>
 	</tr>

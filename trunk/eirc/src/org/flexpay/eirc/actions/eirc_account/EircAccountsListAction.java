@@ -107,9 +107,6 @@ public class EircAccountsListAction extends ApartmentFilterDependent2Action {
 		return true;
 	}
 
-	/**
-	 * @return the eircAccountsList
-	 */
 	public List<EircAccount> getEircAccountList() {
 		return eircAccountsList;
 	}

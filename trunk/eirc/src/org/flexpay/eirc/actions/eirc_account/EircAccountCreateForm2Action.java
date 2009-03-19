@@ -32,17 +32,12 @@ public class EircAccountCreateForm2Action extends PersonsListAction {
 		return "redirectForm1";
 	}
 
-	/**
-	 * @return the apartmentId
-	 */
 	public Long getApartmentId() {
 		return apartmentId;
 	}
 
-	/**
-	 * @param apartmentId the apartmentId to set
-	 */
 	public void setApartmentId(Long apartmentId) {
 		this.apartmentId = apartmentId;
 	}
+
 }

@@ -13,12 +13,12 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class PaymentPointEditAction extends FPActionSupport {
 
+	private PaymentsCollectorFilter paymentsCollectorFilter = new PaymentsCollectorFilter();
+	private PaymentPoint point = new PaymentPoint();
+
 	private OrganizationHelper organizationHelper;
 	private PaymentsCollectorService paymentsCollectorService;
 	private PaymentPointService paymentPointService;
-
-	private PaymentsCollectorFilter paymentsCollectorFilter = new PaymentsCollectorFilter();
-	private PaymentPoint point = new PaymentPoint();
 
 	public PaymentPointEditAction() {
 		paymentsCollectorFilter.setAllowEmpty(false);
@@ -126,4 +126,5 @@ public class PaymentPointEditAction extends FPActionSupport {
 	public void setOrganizationHelper(OrganizationHelper organizationHelper) {
 		this.organizationHelper = organizationHelper;
 	}
+
 }

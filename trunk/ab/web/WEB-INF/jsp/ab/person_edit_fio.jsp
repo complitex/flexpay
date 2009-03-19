@@ -1,4 +1,11 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+
+<%@include file="/WEB-INF/jsp/common/jquery_ui.jsp"%>
+
+<script type="text/javascript">
+    FP.calendars("#birthDate", "<s:url value="/resources/common/js/jquery/jquery-ui/images/calendar.gif" includeParams="none" />");
+</script>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<s:form action="personEditFIO" method="post">
@@ -34,22 +41,7 @@
 		<tr class="cols_1">
 			<td class="col_1"><s:text name="ab.person.birth_date"/></td>
 			<td class="col_1" colspan="3">
-				<input type="text" name="identity.birthDateStr" id="fio.birthDate"
-						value="<s:property value="format(#fio.birthDate)"/>" />
-				<img src="<s:url value="/resources/common/js/jscalendar/img.gif" includeParams="none"/>" alt=""
-					 id="trigger_fio.birthDate"
-					 style="cursor: pointer; border: 1px solid red;"
-					 title="<s:text name="common.calendar"/>"
-					 onmouseover="this.style.background='red';"
-					 onmouseout="this.style.background='';"/>
-				<script type="text/javascript">
-				Calendar.setup({
-					inputField	 : "fio.birthDate",
-					ifFormat	 : "%Y/%m/%d",
-					button		 : "trigger_fio.birthDate",
-					align		 : "Tl"
-				});
-				</script>
+				<input type="text" name="identity.birthDateStr" id="birthDate" value="<s:property value="format(#fio.birthDate)"/>" readonly="readonly" />
 			</td>
 		</tr>
 		<tr>

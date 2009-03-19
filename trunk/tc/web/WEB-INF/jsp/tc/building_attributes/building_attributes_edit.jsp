@@ -1,31 +1,23 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ page import="org.flexpay.bti.persistence.BuildingAttributeTypeSimple" %>
 <%@ page import="org.flexpay.bti.persistence.BuildingAttributeTypeEnum" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<link rel="stylesheet" type="text/css" href="<c:url value="/resources/common/js/jquery/jquery-ui/theme/ui.all.css"/>"/>
-
-<script type="text/javascript" src="<c:url value="/resources/common/js/jquery/jquery-1.3.2.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/common/js/jquery/jquery-ui/jquery-ui-personalized-1.6rc6.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/common/js/jquery/jquery-ui/i18n/ui.datepicker-ru.js"/>"></script>
+<%@include file="/WEB-INF/jsp/common/jquery_ui.jsp"%>
 
 <script type="text/javascript">
     // folding functions
     function toggleElements(elements, showButton) {
-        jQuery.each(elements, function(i, value) {
-            jQuery(value).toggle();
+        $.each(elements, function(i, value) {
+            $(value).toggle();
         });
-
-        if (jQuery(elements[0]).is(':visible')) {
-            jQuery(showButton).val('<s:text name="common.hide"/>');
-        } else {
-            jQuery(showButton).val('<s:text name="common.show"/>');
-        }
+        $(showButton).val($(elements[0]).is(":visible") ? "<s:text name="common.hide" />" : "<s:text name="common.show" />");
     }
 
     // defining attribute groups
     var attributeGroups = new Array();
     <s:iterator value="%{getAttributeGroups()}" id="groupId">
-    attributeGroups[<s:property value="#groupId"/>] = new Array(<s:iterator value="%{getGroupAttributeTypes(#groupId)}" id="typeId" status="status">"#attr_<s:property value="%{#typeId}"/>_id"<s:if test="!#status.last">, </s:if></s:iterator>);
+        attributeGroups[<s:property value="#groupId"/>] = new Array(<s:iterator value="%{getGroupAttributeTypes(#groupId)}" id="typeId" status="status">"#attr_<s:property value="%{#typeId}"/>_id"<s:if test="!#status.last">, </s:if></s:iterator>);
     </s:iterator>
 
     function toggleAttributesGroup(groupId) {
@@ -33,11 +25,7 @@
     }
 
     // attribute date picker configuration
-    jQuery(function() {
-        jQuery('#buildingAttributesEdit_attributeDate').datepicker({
-            dateFormat: 'yy/mm/dd'
-        });
-    });   
+    FP.calendars("#buildingAttributesEdit_attributeDate", "<s:url value="/resources/common/js/jquery/jquery-ui/images/calendar.gif" includeParams="none" />");
 </script>
 
 <s:actionerror />
@@ -47,25 +35,30 @@
 
         <%-- main address + alternatives --%>
         <s:iterator value="%{alternateAddresses}">
-            <tr valign="middle" class="cols_1"><td class="col" colspan="2">
+            <tr valign="middle" class="cols_1">
+                <td class="col" colspan="2">
                     <s:property value="%{getAddress(id)}"/><s:if test="primaryStatus">(<s:text name="tc.edit_building_attributes.primary_status"/>)</s:if>
-            </td></tr>
+                </td>
+            </tr>
         </s:iterator>
-
-        <tr><td class="th" colspan="2">
+        <tr>
+            <td class="th" colspan="2">
                 <s:property value="%{getAddress(building.id)}"/><s:if test="%{building.primaryStatus}">(<s:text name="tc.edit_building_attributes.primary_status"/>)</s:if>
-        </td></tr>
-
+            </td>
+        </tr>
         <tr>
             <td>
                 <s:text name="tc.edit_building_attributes.date"/>
                 <s:textfield name="attributeDate" value="%{attributeDate}" readonly="true"/>
                 <s:submit name="dateSubmitted" value="%{getText('tc.show_attribute_values')}" cssClass="btn-exit"/>
             </td>
-            <td style="text-align:right;"><s:submit name="submitted" value="%{getText('common.save')}" cssClass="btn-exit"/></td>
+            <td style="text-align:right;">
+                <s:submit name="submitted" value="%{getText('common.save')}" cssClass="btn-exit"/>
+            </td>
         </tr>
-
-        <tr><td class="th_s" colspan="2"><s:text name="tc.building_attributes"/></td></tr>
+        <tr>
+            <td class="th_s" colspan="2"><s:text name="tc.building_attributes"/></td>
+        </tr>
 
         <%-- attribute groups --%>
         <s:iterator value="%{getAttributeGroups()}" id="groupId" status="groupStatus">
@@ -89,13 +82,13 @@
                         <s:if test="%{isBuildingAttributeTypeSimple(#typeId)}">
                             <nobr>
                                 <s:textfield name="attributeMap[%{#typeId}]" value="%{getAttributeValue(#typeId)}" cssStyle="width:140px;"/>
-                                <s:if test="%{isTempAttribute(#typeId)}"><img src="<s:url value="/resources/common/img/i_clock.gif"/>" alt="<s:text name="tc.temp_attribute"/>" style="vertical-align: middle;"/></s:if>
+                                <s:if test="%{isTempAttribute(#typeId)}"><img src="<s:url value="/resources/common/img/i_clock.gif" includeParams="none" />" alt="<s:text name="tc.temp_attribute"/>" style="vertical-align: middle;"/></s:if>
                             </nobr>
                         </s:if>
                         <s:if test="%{isBuildingAttributeTypeEnum(#typeId)}">
                             <nobr>
                                 <s:select name="attributeMap[%{#typeId}]" value="%{getAttributeValue(#typeId)}" list="%{getTypeValues(#typeId)}" listKey="order" listValue="value" emptyOption="true" cssStyle="width:140px;"/>
-                                <s:if test="%{isTempAttribute(#typeId)}"><img src="<s:url value="/resources/common/img/i_clock.gif"/>" alt="<s:text name="tc.temp_attribute"/>" style="vertical-align:middle;"/></s:if>
+                                <s:if test="%{isTempAttribute(#typeId)}"><img src="<s:url value="/resources/common/img/i_clock.gif" includeParams="none" />" alt="<s:text name="tc.temp_attribute"/>" style="vertical-align:middle;"/></s:if>
                             </nobr>
                         </s:if>
                     </td>
