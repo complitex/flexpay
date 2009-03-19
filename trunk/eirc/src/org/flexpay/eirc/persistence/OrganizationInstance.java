@@ -6,6 +6,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Locale;
@@ -38,7 +39,7 @@ public abstract class OrganizationInstance<
 		super(stub.getId());
 	}
 
-	@NotNull
+	@Nullable
 	public Organization getOrganization() {
 		return organization;
 	}

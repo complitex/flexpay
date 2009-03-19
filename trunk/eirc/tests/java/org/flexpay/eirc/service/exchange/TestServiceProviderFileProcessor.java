@@ -26,17 +26,13 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	protected RegistryProcessor registryProcessor;
 	@Autowired
 	protected ExchangeHelper exchangeHelper;
+	@Autowired
+	@Qualifier ("spService")
 	protected SPService spService;
 	@Autowired
 	protected RegistryRecordService registryRecordService;
 	@Autowired
 	protected RegistryService registryService;
-
-
-	@Autowired
-	public void setSpService(@Qualifier ("spService") SPService spService) {
-		this.spService = spService;
-	}
 
 	@Test
 	@NotTransactional

@@ -94,6 +94,7 @@ public class SPServiceImpl implements SPService {
 	 */
 	public ServiceProvider read(ServiceProvider provider) {
 		if (provider.isNotNew()) {
+			//noinspection ConstantConditions
 			return serviceProviderDao.readFull(provider.getId());
 		}
 
@@ -168,6 +169,7 @@ public class SPServiceImpl implements SPService {
 		Long orgId = sp.getOrganization() != null ? sp.getOrganization().getId() : null;
 		OUTER:
 		for (Organization org : organizations) {
+			//noinspection ConstantConditions
 			if (org.getId().equals(orgId)) {
 				providerlessOrgs.add(org);
 				continue;
@@ -263,6 +265,7 @@ public class SPServiceImpl implements SPService {
 
 		if (service.isSubService() && service.getServiceProvider().isNotNew() && service.getParentService().isNotNew()) {
 			Service parentStub = service.getParentService();
+			@SuppressWarnings ({"ConstantConditions"})
 			Service parent = serviceDao.read(parentStub.getId());
 			Long parentProviderId = parent.getServiceProvider().getId();
 			if (!parentProviderId.equals(service.getServiceProvider().getId())) {
