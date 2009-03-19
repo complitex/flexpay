@@ -10,4 +10,5 @@ public class SubServiceTotals extends ServiceTotalsBase {
 	public SubServiceTotals(ServiceType serviceType) {
 		super(serviceType);
 	}
+
 }

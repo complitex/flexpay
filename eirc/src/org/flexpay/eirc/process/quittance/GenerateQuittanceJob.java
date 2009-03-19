@@ -5,6 +5,7 @@ import org.flexpay.common.process.job.Job;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.service.QuittanceService;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -37,7 +38,9 @@ public class GenerateQuittanceJob extends Job {
 		return CollectionUtils.set(PARAM_DATE_FROM, PARAM_DATE_TILL, PARAM_SERVICE_ORGANIZATION_ID);
 	}
 
+	@Required
 	public void setQuittanceService(QuittanceService quittanceService) {
 		this.quittanceService = quittanceService;
 	}
+
 }

@@ -10,6 +10,7 @@ import org.flexpay.common.util.DateUtil;
 import org.flexpay.eirc.persistence.filters.ServiceOrganizationFilter;
 import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -18,15 +19,13 @@ import java.util.Map;
 
 public class QuittanceGeneratePDFAction extends FPActionSupport {
 
-	private ServiceOrganizationService serviceOrganizationService;
-
-	private ServiceOrganizationFilter serviceOrganizationFilter =
-			new ServiceOrganizationFilter();
+	private ServiceOrganizationFilter serviceOrganizationFilter = new ServiceOrganizationFilter();
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtils.truncate(new Date(), Calendar.MONTH));
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
 
 	private ProcessManager processManager;
+	private ServiceOrganizationService serviceOrganizationService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -91,18 +90,14 @@ public class QuittanceGeneratePDFAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	/**
-	 * @param serviceOrganizationService the serviceOrganizationService to set
-	 */
-	public void setServiceOrganizationService(
-			ServiceOrganizationService serviceOrganizationService) {
+	@Required
+	public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
 		this.serviceOrganizationService = serviceOrganizationService;
 	}
 
-	/**
-	 * @param processManager process manager setter
-	 */
+	@Required
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
 	}
+
 }

@@ -1,8 +1,9 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror />
 
-<s:form method="post" id="fregistries">
+<s:form id="fregistries">
 	<%@include file="../filters/sender_organization_filter.jsp" %>
 	&nbsp;&nbsp;
 	<%@include file="../filters/recipient_organization_filter.jsp" %>
@@ -54,7 +55,7 @@
 			<td colspan="10">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" value="<s:text name="eirc.process" />" class="btn-exit"
-					   onclick="$('fregistries').action='<s:url action="registriesProcess"/>';"/>
+					   onclick="$('#fregistries').attr('action', '<s:url action="registriesProcess" includeParams="none" />');"/>
 			</td>
 		</tr>
 	</table>

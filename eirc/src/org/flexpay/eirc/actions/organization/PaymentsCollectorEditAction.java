@@ -18,12 +18,12 @@ import java.util.Map;
 
 public class PaymentsCollectorEditAction extends FPActionSupport {
 
-	private PaymentsCollectorService instanceService;
-	private OrganizationService organizationService;
-
 	private PaymentsCollector instance = new PaymentsCollector();
 	private OrganizationFilter organizationFilter = new OrganizationFilter();
 	private Map<Long, String> descriptions = map();
+
+	private PaymentsCollectorService instanceService;
+	private OrganizationService organizationService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -141,4 +141,5 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 	public void setInstanceService(PaymentsCollectorService instanceService) {
 		this.instanceService = instanceService;
 	}
+
 }

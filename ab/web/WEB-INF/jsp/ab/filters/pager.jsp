@@ -1,5 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-
 
 <script type="text/javascript">
 
@@ -13,7 +13,7 @@
                 }
             }
 			select.name = 'pager.pageSize';
-            jQuery("#pageSizeChanged").val(true);
+            $("#pageSizeChanged").val(true);
 			select.form.submit();
 		}
 	}

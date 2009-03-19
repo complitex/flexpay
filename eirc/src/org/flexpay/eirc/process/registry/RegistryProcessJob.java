@@ -5,6 +5,7 @@ import org.flexpay.common.process.job.Job;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collection;
 import java.util.Map;
@@ -30,11 +31,14 @@ public class RegistryProcessJob extends Job {
 		return RESULT_NEXT;
 	}
 
+	@Required
 	public void setRegistryService(RegistryService registryService) {
 		this.registryService = registryService;
 	}
 
+	@Required
 	public void setRegistryProcessor(RegistryProcessor registryProcessor) {
 		this.registryProcessor = registryProcessor;
 	}
+
 }

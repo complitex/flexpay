@@ -18,15 +18,15 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class QuittancePacketEditAction extends FPActionSupport {
 
-	private QuittancePacketService quittancePacketService;
-	private PaymentPointService paymentPointService;
-	private PaymentPointHelper paymentPointHelper;
-
 	private CreateDateFilter createDateFilter = new CreateDateFilter();
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private CloseDateFilter closeDateFilter = new CloseDateFilter();
 	private PaymentPointsFilter paymentPointsFilter = new PaymentPointsFilter();
 	private QuittancePacket packet = new QuittancePacket();
+
+	private QuittancePacketService quittancePacketService;
+	private PaymentPointService paymentPointService;
+	private PaymentPointHelper paymentPointHelper;
 
 	public QuittancePacketEditAction() {
 		beginDateFilter.setReadOnly(true);
@@ -170,4 +170,5 @@ public class QuittancePacketEditAction extends FPActionSupport {
 	public void setPaymentPointHelper(PaymentPointHelper paymentPointHelper) {
 		this.paymentPointHelper = paymentPointHelper;
 	}
+
 }

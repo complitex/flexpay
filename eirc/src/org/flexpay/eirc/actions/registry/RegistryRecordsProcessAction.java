@@ -6,6 +6,7 @@ import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.SpRegistry;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -62,7 +63,9 @@ public class RegistryRecordsProcessAction extends FPActionSupport {
 		this.registry = registry;
 	}
 
+	@Required
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
 	}
+
 }

@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror/>
@@ -11,10 +12,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="jQuery('#fregions').attr('action','<s:url action="regionDelete"/>');"
+					   onclick="$('#fregions').attr('action','<s:url action="regionDelete" includeParams="none" />');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="regionCreate"/>';"
+					   onclick="window.location='<s:url action="regionCreate" includeParams="none" />';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
@@ -49,10 +50,10 @@
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="submit" class="btn-exit"
-					   onclick="jQuery('#fregions').attr('action','<s:url action="regionDelete"/>');"
+					   onclick="$('#fregions').attr('action','<s:url action="regionDelete" includeParams="none" />');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="regionCreate"/>';"
+					   onclick="window.location='<s:url action="regionCreate" includeParams="none" />';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

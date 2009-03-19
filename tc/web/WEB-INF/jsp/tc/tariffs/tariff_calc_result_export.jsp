@@ -1,6 +1,30 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
+<%@include file="/WEB-INF/jsp/common/jquery_ui.jsp"%>
+
+<script type="text/javascript">
+
+    function validateFrom() {
+        var v = $("#tariffBegin").val();
+        if (v == null || v == "") {
+            alert('<s:text name="tc.error.field_calc_date_required" />');
+            return false;
+        }
+        return true;
+    }
+
+    function submitForm() {
+        if (!validateFrom()) {
+            return;
+        }
+        $("#form").submit();
+    }
+
+    FP.calendars("#tariffBegin", "<s:url value="/resources/common/js/jquery/jquery-ui/images/calendar.gif" includeParams="none" />");
+
+</script>
+
 <s:actionerror />
 
 <s:form id="form" action="calcResultExport">
@@ -20,19 +44,6 @@
             </td>
             <td class="col">
                 <s:textfield id="tariffBegin" name="tariffBegin" readonly="true" size="10" required="true" />
-                <img id="calcDate" src="<c:url value="/resources/common/js/jscalendar/img.gif"/>"
-                     style="cursor:pointer;border:1px solid red;"
-                     alt="<s:text name="common.calendar"/>"
-                     onmouseover="this.style.background='red';"
-                     onmouseout="this.style.background='';" />
-                <script type="text/javascript">
-                    Calendar.setup({
-                        inputField	 : "tariffBegin",
-                        ifFormat	 : "%Y/%m/%d",
-                        button		 : "calcDate",
-                        align		 : "Tl"
-                    });
-                </script>
             </td>
         </tr>
         <tr valign="middle">
@@ -42,27 +53,5 @@
             </td>
         </tr>
     </table>
-
-    <script type="text/javascript">
-
-        function validateFrom() {
-            var v = jQuery("#tariffBegin").val();
-            if (v == null || v == "") {
-                alert('<s:text name="tc.error.field_calc_date_required" />');
-                return false;
-            }
-            return true;
-        }
-
-        function submitForm() {
-            var isValid = validateFrom();
-            if (!isValid) {
-                return;
-            }
-
-            jQuery("#form").submit();
-        }
-
-    </script>
 
 </s:form>

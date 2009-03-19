@@ -31,4 +31,5 @@ public class ServiceTotals extends ServiceTotalsBase {
 	public void setSubServiceTotals(SubServiceTotals totals) {
 		subServicesTotals.put(totals.getServiceType(), totals);
 	}
+
 }

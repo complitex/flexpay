@@ -1,8 +1,9 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror />
 
-<s:form method="post" id="fServiceOrganizations">
+<s:form id="fServiceOrganizations">
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
@@ -48,8 +49,8 @@
 		<tr>
 			<td colspan="10">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
-				<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit" onclick="$('fServiceOrganizations').action='<s:url action="serviceOrganizationDelete"/>';" />
-				<input type="button" class="btn-exit" onclick="location.href='<s:url action="serviceOrganizationEdit"><s:param name="serviceOrganization.id" value="0" /></s:url>'" value="<s:text name="common.new"/>" />
+				<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit" onclick="$('#fServiceOrganizations').attr('action', '<s:url action="serviceOrganizationDelete" includeParams="none" />');" />
+				<input type="button" class="btn-exit" onclick="location.href='<s:url action="serviceOrganizationEdit"><s:param name="serviceOrganization.id" value="0" /></s:url>';" value="<s:text name="common.new"/>" />
 			</td>
 		</tr>
 	</table>

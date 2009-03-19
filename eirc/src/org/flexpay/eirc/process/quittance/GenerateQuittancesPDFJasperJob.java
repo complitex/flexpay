@@ -13,6 +13,7 @@ import org.flexpay.eirc.process.quittance.report.JRQuittanceDataSource;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
 import java.io.InputStream;
@@ -27,14 +28,14 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 
 	public static final String JOB_NAME = "generateQuitancesPDFJob";
 
-	private QuittanceService quittanceService;
-	private ReportUtil reportUtil;
-	private JRQuittanceDataSource jrDataSource;
-
 	public final static String RESULT_FILE_NAME = "RESULT_FILE_NAME";
 	public static final String PARAM_DATE_FROM = "dateFrom";
 	public static final String PARAM_DATE_TILL = "dateTill";
 	public static final String PARAM_SERVICE_ORGANIZATION_ID = "serviceOrganizationId";
+
+	private QuittanceService quittanceService;
+	private ReportUtil reportUtil;
+	private JRQuittanceDataSource jrDataSource;
 
 	public String execute(Map<Serializable, Serializable> contextVariables) throws FlexPayException {
 
@@ -103,15 +104,19 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 		return CollectionUtils.set(PARAM_DATE_FROM, PARAM_DATE_TILL, PARAM_SERVICE_ORGANIZATION_ID);
 	}
 
+	@Required
 	public void setQuittanceService(QuittanceService quittanceService) {
 		this.quittanceService = quittanceService;
 	}
 
+	@Required
 	public void setReportUtil(ReportUtil reportUtil) {
 		this.reportUtil = reportUtil;
 	}
 
+	@Required
 	public void setJrDataSource(JRQuittanceDataSource jrDataSource) {
 		this.jrDataSource = jrDataSource;
 	}
+
 }

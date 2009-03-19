@@ -32,14 +32,13 @@
 			</result>
 		</action>
 
-		<action name="tariffCalculate" class="tariffCalculateAction">
-			<result name="input" type="tiles">tc.rules_file.calculate</result>
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">rulesFilesList.action</param>
-				<param name="parse">true</param>
-				<param name="pager.pageNumber">${pager.pageNumber}</param>
-			</result>
-		</action>
+        <action name="tariffCalculate" class="tariffCalculateAction">
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">rulesFilesList.action</param>
+                <param name="parse">true</param>
+                <param name="pager.pageNumber">${pager.pageNumber}</param>
+            </result>
+        </action>
 
 		<action name="calcResultExport" class="tariffCalcResultExportAction">
 			<result name="input" type="tiles">tc.calc_results.export</result>

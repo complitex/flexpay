@@ -6,14 +6,15 @@ import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.service.QuittanceService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class QuittanceSearchAction extends FPActionSupport {
-
-	private QuittanceService quittanceService;
 
 	private String quittanceNumber;
 	private Quittance quittance = new Quittance();
 	private QuittancePacket packet = new QuittancePacket();
+
+	private QuittanceService quittanceService;
 
 	/**
 	 * Perform action execution.
@@ -74,7 +75,9 @@ public class QuittanceSearchAction extends FPActionSupport {
 		this.packet = packet;
 	}
 
+	@Required
 	public void setQuittanceService(QuittanceService quittanceService) {
 		this.quittanceService = quittanceService;
 	}
+
 }

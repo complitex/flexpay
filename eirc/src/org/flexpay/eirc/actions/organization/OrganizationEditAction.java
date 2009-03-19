@@ -10,16 +10,17 @@ import org.flexpay.eirc.persistence.OrganizationDescription;
 import org.flexpay.eirc.persistence.OrganizationName;
 import org.flexpay.eirc.service.OrganizationService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
 public class OrganizationEditAction extends FPActionSupport {
 
-	private transient OrganizationService organizationService;
-
 	private Organization organization = new Organization();
 	private Map<Long, String> names = map();
 	private Map<Long, String> descriptions = map();
+
+	private transient OrganizationService organizationService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -131,7 +132,9 @@ public class OrganizationEditAction extends FPActionSupport {
 		this.descriptions = descriptions;
 	}
 
+	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
 	}
+
 }

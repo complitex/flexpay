@@ -11,17 +11,18 @@ import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.service.OrganizationService;
 import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
 public class ServiceOrganizationEditAction extends FPActionSupport {
 
-	private ServiceOrganizationService serviceOrganizationService;
-	private OrganizationService organizationService;
-
 	private OrganizationFilter organizationFilter = new OrganizationFilter();
 	private ServiceOrganization serviceOrganization = new ServiceOrganization();
 	private Map<Long, String> descriptions = map();
+
+	private ServiceOrganizationService serviceOrganizationService;
+	private OrganizationService organizationService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -126,10 +127,12 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 		this.organizationFilter = organizationFilter;
 	}
 
+	@Required
     public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
         this.serviceOrganizationService = serviceOrganizationService;
     }
 
+	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
 	}

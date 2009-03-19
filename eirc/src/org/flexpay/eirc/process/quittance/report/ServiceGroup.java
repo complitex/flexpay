@@ -18,8 +18,7 @@ import java.util.TreeSet;
 public class ServiceGroup {
 
 	private Service service;
-	private SortedSet<QuittanceDetails> detailses =
-			new TreeSet<QuittanceDetails>(new DateTillComparator());
+	private SortedSet<QuittanceDetails> detailses = new TreeSet<QuittanceDetails>(new DateTillComparator());
 
 	public ServiceGroup(@NotNull Service service) {
 		this.service = service;
@@ -115,4 +114,5 @@ public class ServiceGroup {
 
 		return totals;
 	}
+
 }

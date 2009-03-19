@@ -327,4 +327,5 @@ public class QuittanceInfo implements Cloneable, Serializable {
 	public QuittanceInfo clone() throws CloneNotSupportedException {
 		return (QuittanceInfo) super.clone();
 	}
+
 }

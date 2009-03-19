@@ -1,4 +1,12 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+
+<%@include file="/WEB-INF/jsp/common/jquery_ui.jsp"%>
+
+<script type="text/javascript">
+    FP.calendars("#beginDate", "<s:url value="/resources/common/js/jquery/jquery-ui/images/calendar.gif" includeParams="none" />");
+    FP.calendars("#endDate", "<s:url value="/resources/common/js/jquery/jquery-ui/images/calendar.gif" includeParams="none" />");
+</script>
 
 <s:actionerror/>
 
@@ -46,44 +54,13 @@
 				<s:text name="ab.person.registration.begin_date"/>
 			</td>
 			<td>
-				<input type="text" name="beginDateStr" id="beginDate"
-						value="<s:property value="format(beginDate)"/>" />
-				<img src="<s:url value="/resources/common/js/jscalendar/img.gif" includeParams="none"/>" alt=""
-					 id="trigger.beginDate"
-					 style="cursor: pointer; border: 1px solid red;"
-					 title="<s:text name="common.calendar"/>"
-					 onmouseover="this.style.background='red';"
-					 onmouseout="this.style.background='';"/>
-				<script type="text/javascript">
-				Calendar.setup({
-					inputField	 : "beginDate",
-					ifFormat	 : "%Y/%m/%d",
-					button		 : "trigger.beginDate",
-					align		 : "Tl"
-				});
-				</script>
+				<input type="text" name="beginDateStr" id="beginDate" value="<s:property value="format(beginDate)"/>" readonly="readonly" />
 			</td>
 			<td class="filter">
 				<s:text name="ab.person.registration.end_date"/>
 			</td>
 			<td>
-				<input type="text" name="endDateStr" id="endDate"
-						value="<s:property value="format(endDate)"/>" />
-				<img src="<s:url value="/resources/common/js/jscalendar/img.gif" includeParams="none"/>" alt=""
-					 id="trigger.endDate"
-					 style="cursor: pointer; border: 1px solid red;"
-					 title="<s:text name="common.calendar"/>"
-					 onmouseover="this.style.background='red';"
-					 onmouseout="this.style.background='';"/>
-				<script type="text/javascript">
-				Calendar.setup({
-					inputField	 : "endDate",
-					ifFormat	 : "%Y/%m/%d",
-					button		 : "trigger.endDate",
-					align		 : "Tl"
-				});
-				</script>
-
+				<input type="text" name="endDateStr" id="endDate" value="<s:property value="format(endDate)"/>" readonly="readonly" />
 			</td>
 		</tr>
 

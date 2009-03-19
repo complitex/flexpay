@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror/>
@@ -40,7 +41,7 @@
 			<td colspan="7">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-				<%-- onclick="jQuery('#fobjects').action='<s:url action="delete_persons"/>';jQuery('#fobjects').submit();" --%>
+				<%-- onclick="$('#fobjects').attr('action', '<s:url action="delete_persons"/>').submit();" --%>
 					   onclick="alert('<s:text name="error.not_implemented" />');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"

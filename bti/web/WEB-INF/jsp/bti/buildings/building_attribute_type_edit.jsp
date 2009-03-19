@@ -1,7 +1,9 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror />
 
+<script type="text/javascript" src="<s:url value="/resources/common/js/prototype.js" includeParams="none" />"></script>
 <script type="text/javascript">
 	var FPINT = {
 		setFormType : function(type) {

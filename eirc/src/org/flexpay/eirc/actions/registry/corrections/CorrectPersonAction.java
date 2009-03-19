@@ -10,6 +10,7 @@ import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class CorrectPersonAction extends PersonsListAction {
 
@@ -91,15 +92,19 @@ public class CorrectPersonAction extends PersonsListAction {
 		this.record = record;
 	}
 
+	@Required
 	public void setConsumersDataSource(RawConsumersDataSource consumersDataSource) {
 		this.consumersDataSource = consumersDataSource;
 	}
 
+	@Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
 	}
 
+	@Required
 	public void setRecordService(RegistryRecordService recordService) {
 		this.recordService = recordService;
 	}
+
 }

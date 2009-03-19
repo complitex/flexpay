@@ -9,17 +9,18 @@ import org.flexpay.eirc.service.OrganizationService;
 import org.flexpay.eirc.service.SubdivisionService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
 
 public class SubdivisionsListAction extends FPActionSupport {
 
-	private SubdivisionService subdivisionService;
-	private OrganizationService organizationService;
-
 	private Organization organization = new Organization();
 	private List<Subdivision> subdivisions = Collections.emptyList();
+
+	private SubdivisionService subdivisionService;
+	private OrganizationService organizationService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -85,11 +86,14 @@ public class SubdivisionsListAction extends FPActionSupport {
 		this.subdivisions = subdivisions;
 	}
 
+	@Required
 	public void setSubdivisionService(SubdivisionService subdivisionService) {
 		this.subdivisionService = subdivisionService;
 	}
 
+	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
 	}
+
 }

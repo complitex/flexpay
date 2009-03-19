@@ -15,7 +15,6 @@ import java.util.Map;
  */
 public class QuittanceInfoGenerator {
 
-
 	/**
 	 * Build quittance info
 	 *
@@ -143,4 +142,5 @@ public class QuittanceInfoGenerator {
 
 		return serviceGroups;
 	}
+
 }

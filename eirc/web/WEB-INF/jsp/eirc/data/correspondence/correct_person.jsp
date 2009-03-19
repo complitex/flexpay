@@ -1,9 +1,11 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror/>
 
 <form id="fobjects" method="post"
-	  action="<s:url action="registryRecordCorrectPerson" includeParams="none" />">
+	  action="<s:url action="registryRecordCorrectPerson" includeParams="none" />"
+      onsubmit="return FP.validateSubmit('<s:text name="eirc.need_select_person" />');">
 
 	<%@include file="../registry_record_info.jsp" %>
 	<%@ include file="/WEB-INF/jsp/ab/filters/groups/person_search.jsp" %>
@@ -43,7 +45,7 @@
 				<%@ include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="hidden" id="setupType" name="setupType" value="setupType"/>
 				<s:hidden name="record.id" value="%{record.id}"/>
-				<input type="submit" onclick="$('setupType').value = 'person';"
+				<input type="submit" onclick="$('#setupType').val('person');"
 					   class="btn-exit"
 					   value="<s:text name="common.set"/>"/>
 				<input type="button" value="<s:text name="common.close" />"
@@ -54,25 +56,3 @@
 
 	</table>
 </form>
-
-<script type="text/javascript">
-	function validateSubmit() {
-
-		if ($('setupType').value == 'setupType') {
-			return true;
-		}
-
-		var inputs = Form.getInputs('fobjects', 'radio', 'object.id');
-		var radio = inputs.find(function(radio) {
-			return radio.checked;
-		});
-
-		if (!radio) {
-			alert('<s:text name="eirc.need_select_person" />');
-			$('setupType').value = 'setupType';
-			return false;
-		}
-
-		return true;
-	}
-</script>

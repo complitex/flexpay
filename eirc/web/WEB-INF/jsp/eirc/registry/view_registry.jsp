@@ -1,8 +1,11 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="utf-8" language="java" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+
+<%@include file="/WEB-INF/jsp/common/jquery_ui.jsp"%>
 
 <s:actionerror />
 
-<s:form method="post" id="frecords">
+<s:form id="frecords">
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td colspan="12">
@@ -79,7 +82,7 @@
 				<td class="col"><s:property value="%{importError.errorId}"/></td>
 				<td class="col"><s:text name="%{recordStatus.i18nName}"/></td>
 				<td class="col">
-                    <a href="javascript:correspondenceScreen(<s:property value="%{id}" />)">
+                    <a href="javascript:createDialog(<s:property value="%{id}" />)">
 					    <s:text name="common.edit"/>
                     </a>
 				</td>
@@ -89,7 +92,7 @@
 			<td colspan="12">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
 				<input type="submit" value="<s:text name="eirc.process_selected" />" class="btn-exit"
-					   onclick="$('frecords').action='<s:url action="registryRecordsProcess" includeParams="none"/>';"/>
+					   onclick="$('#frecords').attr('action', '<s:url action="registryRecordsProcess" includeParams="none"/>');"/>
 			</td>
 		</tr>
 	</table>
@@ -97,12 +100,32 @@
 </s:form>
 
 <script type="text/javascript">
-	function correspondenceScreen(recordId) {
-		var win = new Window(
-		{className: "spread", title: "Corrections", top:70, left:100, width:800, height:600,
-			url: '<s:url action="selectCorrectionType" includeParams="none"/>' + "?record.id=" + recordId});
 
-		// show window in center
-		win.showCenter(/*Modal*/ true, /*Top*/ 50, /*left*/ 200);
-	}
+    function createDialog(recordId) {
+
+        $("#dialog").append(
+                $('<iframe name="frame" src="<s:url action="selectCorrectionType" includeParams="none"/>?record.id=' + recordId + '" width="600" height="320"></iframe>').
+                        css({"border" : "none"})
+        );
+
+        $("#dialog").dialog({
+            bgiframe: true,
+            modal: true,
+            width: 640,
+            height: 400,
+            closeOnEscape: true,
+            title: "Corrections",
+            autoOpen: false,
+            buttons: {
+                '<s:text name="common.cancel" />' : function() {
+                    $(this).html("").dialog("destroy");
+                }
+            }
+        });
+
+        $("#dialog").dialog("open");
+    }
+
 </script>
+
+<div id="dialog" style="display:none;"></div>

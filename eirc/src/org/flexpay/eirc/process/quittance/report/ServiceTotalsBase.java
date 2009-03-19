@@ -212,4 +212,5 @@ public abstract class ServiceTotalsBase implements Serializable {
 
 		return result;
 	}
+
 }

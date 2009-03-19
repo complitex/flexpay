@@ -67,10 +67,6 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/tc/tc_results/building_tc_results_edit.jsp" />
 	</definition>
 
-	<definition name="tc.rules_file.calculate" extends="ab.layout.content">
-		<put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calculate_modalbox.jsp" />
-	</definition>
-
 	<!-- Processing -->
 	<definition name="tc.processing" extends="tc.importexport">
 		<put-attribute name="title" value="tc.menu34.processes" />

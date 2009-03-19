@@ -109,10 +109,9 @@
 <script type="text/javascript">
 
     function doAction(action) {
-        jQuery("#pageNum").attr("name", "pager.pageNumber");
-        jQuery("#action1").attr("name", "action1");
-        jQuery("#action1").val(action);
-        jQuery("#fObjects").attr("action", "<s:url action="szFileOperation" />");
+        $("#pageNum").attr("name", "pager.pageNumber");
+        $("#action1").attr("name", "action1").val(action);
+        $("#fObjects").attr("action", "<s:url action="szFileOperation" includeParams="none" />");
     }
 
 </script>

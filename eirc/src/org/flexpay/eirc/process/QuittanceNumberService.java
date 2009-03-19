@@ -55,4 +55,5 @@ public interface QuittanceNumberService {
 			return number;
 		}
 	}
+
 }

@@ -41,17 +41,10 @@ public class BuildingAjaxAction {
 		return buildingses;
 	}
 
-	/**
-	 * @param streetId
-	 *            the streetId to set
-	 */
 	public void setStreetId(Long streetId) {
 		this.streetId = streetId;
 	}
 
-	/**
-	 * @return the buildingsList
-	 */
 	public List<BuildingAddress> getBuildingsList() {
 		return buildingsList;
 	}
