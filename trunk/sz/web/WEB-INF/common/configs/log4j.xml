@@ -35,11 +35,6 @@
 		<appender-ref ref="flexpay" />
 	</category>
 
-	<category name="org.flexpay.common.service.internal" additivity="false">
-		<priority value="warn" />
-		<appender-ref ref="flexpay" />
-	</category>
-
     <category name="org.hibernate" additivity="false">
         <priority value="info" />
         <appender-ref ref="flexpay" />
