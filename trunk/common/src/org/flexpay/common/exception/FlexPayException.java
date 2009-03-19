@@ -43,6 +43,20 @@ public class FlexPayException extends Exception {
 	}
 
 	/**
+	 * Constructs exception with specified detail message, error code key and optional error message parameters
+	 *
+	 * @param message  the detail message
+	 * @param cause the cause
+	 * @param errorKey localization error message key
+	 * @param params   optional localization error message parameters
+	 */
+	public FlexPayException(@NonNls String message, Throwable cause, String errorKey, Object... params) {
+		super(message, cause);
+		this.errorKey = errorKey;
+		this.params = convert(params);
+	}
+
+	/**
 	 * Constructs exception from root cause exception.
 	 *
 	 * @param cause the cause

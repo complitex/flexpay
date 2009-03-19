@@ -1,7 +1,6 @@
 package org.flexpay.common.process.job;
 
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.exception.JobClassNotFoundException;
 import org.flexpay.common.process.exception.JobConfigurationNotFoundException;
 import org.flexpay.common.process.exception.JobInstantiationException;
 import org.flexpay.common.util.CollectionUtils;
@@ -10,14 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.util.Assert;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.*;
 
 
-public class JobManager implements BeanFactoryAware, InitializingBean {
+public class JobManager implements BeanFactoryAware {
 
 	private static JobManager instance = null;
 	private BeanFactory beanFactory;
@@ -119,7 +117,7 @@ public class JobManager implements BeanFactoryAware, InitializingBean {
 	}
 
 	public synchronized boolean addJob(long processId, long taskId, String jobName, Map<Serializable, Serializable> parameters)
-			throws JobInstantiationException, JobClassNotFoundException, JobConfigurationNotFoundException {
+			throws JobInstantiationException, JobConfigurationNotFoundException {
 
 		if (beanFactory.containsBean(jobName)) {
 			try {
@@ -130,13 +128,16 @@ public class JobManager implements BeanFactoryAware, InitializingBean {
 				log.info("Job {} was added. Id = {}", jobName, job.getId());
 			} catch (ClassCastException e) {
 				log.error("Illegal exception when creating instance of " + jobName, e);
-				throw new JobInstantiationException("Illegal exception when creating instance of " + jobName, e);
+				throw new JobInstantiationException("Illegal exception when creating instance of " + jobName, e,
+						"error.common.jm.job_create_failed", jobName);
 			} catch (BeansException e) {
 				log.error("Illegal exception when creating instance of " + jobName, e);
-				throw new JobInstantiationException("Illegal exception when creating instance of " + jobName, e);
+				throw new JobInstantiationException("Illegal exception when creating instance of " + jobName, e,
+						"error.common.jm.job_create_failed", jobName);
 			}
 		} else {
-			throw new JobConfigurationNotFoundException("Job bean is not configured");
+			throw new JobConfigurationNotFoundException("Job bean is not configured " + jobName,
+					"error.common.jm.job_not_found", jobName);
 		}
 		return true;
 	}
@@ -176,22 +177,11 @@ public class JobManager implements BeanFactoryAware, InitializingBean {
 		this.beanFactory = beanFactory;
 	}
 
-	/**
-	 * Invoked by a BeanFactory after it has set all bean properties supplied (and satisfied BeanFactoryAware and
-	 * ApplicationContextAware). <p>This method allows the bean instance to perform initialization only possible when all
-	 * bean properties have been set and to throw an exception in the event of misconfiguration.
-	 *
-	 * @throws Exception in the event of misconfiguration (such as failure to set an essential property) or if
-	 *                   initialization fails.
-	 */
-	public void afterPropertiesSet() throws Exception {
-		Assert.notNull(processManager, "Process manager was not set");
-	}
-
 	public void setMaximumRunningJobs(int maximumRunningJobs) {
 		this.maximumRunningJobs = maximumRunningJobs;
 	}
 
+	@Required
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
 	}
