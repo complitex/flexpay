@@ -20,7 +20,7 @@
 	</category>
 
     <category name="org.hibernate" additivity="false">
-        <priority value="info" />
+        <priority value="debug" />
         <appender-ref ref="flexpay" />
     </category>
 
