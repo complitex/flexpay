@@ -58,11 +58,22 @@ public interface PersonService {
 	List<Person> findByFIO(Page pager, String searchString);
 
 	/**
-	 * Create or update person
+	 * Create person
 	 *
 	 * @param person Person to save
+	 * @return saved person back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.PERSON_ADD)
+	Person create(@NotNull Person person) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update person
+	 *
+	 * @param person Person to update
+	 * @return Saved person back
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Secured ({Roles.PERSON_ADD, Roles.PERSON_CHANGE})
-	void save(Person person) throws FlexPayExceptionContainer;
+	Person update(@NotNull Person person) throws FlexPayExceptionContainer;
 }

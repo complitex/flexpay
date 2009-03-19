@@ -111,14 +111,31 @@ public class PersonServiceImpl implements PersonService {
 	 *          if validation fails
 	 */
 	@Transactional (readOnly = false)
-	public void save(Person person) throws FlexPayExceptionContainer {
+	public Person update(@NotNull Person person) throws FlexPayExceptionContainer {
+
 		validate(person);
-		if (person.isNew()) {
-			person.setId(null);
-			personDao.create(person);
-		} else {
-			personDao.update(person);
-		}
+		personDao.update(person);
+
+		return person;
+	}
+
+	/**
+	 * Create person
+	 *
+	 * @param person Person to save
+	 * @return saved person back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@Transactional (readOnly = false)
+	public Person create(@NotNull Person person) throws FlexPayExceptionContainer {
+
+		validate(person);
+		person.setId(null);
+		personDao.create(person);
+
+		return person;
+
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})

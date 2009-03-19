@@ -46,7 +46,11 @@ public class PersonSaveFIOAction extends FPActionSupport {
 		boolean modified = person.setFIOIdentity(identity);
 		if (modified) {
 			log.info("Saving person");
-			personService.save(person);
+			if (person.isNew()) {
+				personService.create(person);
+			} else {
+				personService.update(person);
+			}
 			addActionError(getText("ab.person.fio.updated"));
 			if (log.isInfoEnabled()) {
 				log.info("Saved, errors: {}", getActionErrors());

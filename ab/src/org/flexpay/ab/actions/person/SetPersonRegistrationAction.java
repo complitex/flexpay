@@ -29,7 +29,12 @@ public class SetPersonRegistrationAction extends ApartmentFilterDependentAction 
 
 			person = personService.read(stub(person));
 			person.setPersonRegistration(new Apartment(apartmentFilter.getSelectedId()), beginDate, endDate);
-			personService.save(person);
+
+			if (person.isNew()) {
+				personService.create(person);
+			} else {
+				personService.update(person);
+			}
 		}
 		return SUCCESS;
 	}

@@ -244,7 +244,12 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 				log.error("Do not saving person, empty last name: {}", object);
 				return;
 			}
-			personService.save(object);
+
+			if (object.isNew()) {
+				personService.create(object);
+			} else {
+				personService.update(object);
+			}
 		}
 	}
 
