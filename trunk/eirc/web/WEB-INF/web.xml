@@ -570,10 +570,10 @@
         <role-name>ROLE_MENU_EIRC_DICTS_SERVICES</role-name>
     </security-role>
     <security-role>
-        <role-name>ROLE_MENU_EIRC_IMPORT_SP_FIlES_IMPORT</role-name>
+        <role-name>ROLE_MENU_EIRC_IMPORT_SP_FILES_IMPORT</role-name>
     </security-role>
     <security-role>
-        <role-name>ROLE_MENU_EIRC_IMPORT_IMPORTED_SP_FIlES</role-name>
+        <role-name>ROLE_MENU_EIRC_IMPORT_IMPORTED_SP_FILES</role-name>
     </security-role>
     <security-role>
         <role-name>ROLE_MENU_EIRC_IMPORT_REGISTRIES</role-name>

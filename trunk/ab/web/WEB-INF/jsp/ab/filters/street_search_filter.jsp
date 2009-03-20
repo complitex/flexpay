@@ -12,7 +12,7 @@
        onfocus="if($('#selectedStreetId').val().length == 0)this.value='';" onblur="if($('#selectedStreetId').val().length == 0)this.value='<s:text name="%{streetNameFilter.field.value}" />';"
 	   value="<s:text name="%{streetNameFilter.field.value}" />" />
 
-<%@include file="/WEB-INF/jsp/common/jquery_autocomplete.jsp" %>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_autocomplete.jsp" %>
 
 <script type="text/javascript">
 

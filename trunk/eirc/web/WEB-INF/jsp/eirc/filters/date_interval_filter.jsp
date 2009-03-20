@@ -1,11 +1,11 @@
 
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<%@include file="/WEB-INF/jsp/common/jquery_ui.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
 
 <script type="text/javascript">
-    FP.calendars("#dateIntervalBegin", "<s:url value="/resources/common/js/jquery/jquery-ui/images/calendar.gif" includeParams="none" />");
-    FP.calendars("#dateIntervalEnd", "<s:url value="/resources/common/js/jquery/jquery-ui/images/calendar.gif" includeParams="none" />");
+    FP.calendars("#dateIntervalBegin", true);
+    FP.calendars("#dateIntervalEnd", true);
 </script>
 
 <s:text name="ab.from"/>

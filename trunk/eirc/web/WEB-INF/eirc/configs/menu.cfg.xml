@@ -152,14 +152,14 @@
             p:title="eirc.menu34.files.upload"
             p:action="/eirc/spFileCreate.action?menu=eirc.sp_file_create"
             p:parent-ref="eirc_import_import"
-            p:userRole="ROLE_MENU_EIRC_IMPORT_SP_FIlES_IMPORT"
+            p:userRole="ROLE_MENU_EIRC_IMPORT_SP_FILES_IMPORT"
             />
     <bean name="eirc_import_import_spFilesList" class="net.sf.navigator.menu.MenuComponent"
             p:name="eirc.sp_files"
             p:title="eirc.menu34.file_list"
             p:action="/eirc/spFileList.action?menu=eirc.sp_files"
             p:parent-ref="eirc_import_import"
-            p:userRole="ROLE_MENU_EIRC_IMPORT_IMPORTED_SP_FIlES"
+            p:userRole="ROLE_MENU_EIRC_IMPORT_IMPORTED_SP_FILES"
             />
     <bean name="eirc_import_import_registriesList" class="net.sf.navigator.menu.MenuComponent"
             p:name="eirc.registries"

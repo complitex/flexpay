@@ -1,4 +1,7 @@
 var FP = {
+
+    base : "",
+
     // Set checkboxes group (names starts with prefix) state to checked
     setCheckboxes : function (checked, prefix) {
         $('input[type=checkbox][name^=' + prefix + ']').each(function() {
@@ -63,13 +66,13 @@ var FP = {
         return buffer.join("");
     },
 
-    calendars : function(arg, img) {
+    calendars : function(arg, withImg) {
         $(function() {
-            if (img != null) {
+            if (withImg) {
                 $(arg).datepicker({
                     showOn: "both",
                     dateFormat: "yy/mm/dd",
-                    buttonImage: img,
+                    buttonImage: FP.base + "/resources/common/js/jquery/jquery-ui/images/calendar.gif",
                     buttonImageOnly: true
                 });
             } else {

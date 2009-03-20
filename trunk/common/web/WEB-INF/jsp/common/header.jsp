@@ -6,8 +6,8 @@
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
     <tr class="verytop">
         <td>
-            <a href="<c:url value="/" />">
-                <img src="<c:url value="/resources/common/img/logo.gif" />"
+            <a href="<s:url value="/" />">
+                <img src="<s:url value="/resources/common/img/logo.gif" includeParams="none" />"
                      width="123" height="37" alt="FlexPay" border="0" hspace="25" vspace="6"/>
             </a>
         </td>
