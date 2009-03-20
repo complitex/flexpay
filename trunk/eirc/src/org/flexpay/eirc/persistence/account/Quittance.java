@@ -5,11 +5,10 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.ServiceOrganization;
+import org.flexpay.eirc.persistence.Service;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 public class Quittance extends DomainObject {
 
@@ -80,13 +79,60 @@ public class Quittance extends DomainObject {
 	/**
 	 * @return the quittanceDetails
 	 */
-	public Set<QuittanceDetails> getQuittanceDetails() {
-		Set<QuittanceDetails> quittanceDetails = CollectionUtils.set();
+	public List<QuittanceDetails> getQuittanceDetails() {
+		List<QuittanceDetails> quittanceDetails = CollectionUtils.list();
 		for (QuittanceDetailsQuittance el : quittanceDetailsQuittances) {
 			quittanceDetails.add(el.getQuittanceDetails());
 		}
 
 		return quittanceDetails;
+	}
+
+	/**
+	 * Reorder quittance details that subservices go after service
+	 *
+	 * @return quittance details
+	 */
+	public List<QuittanceDetails> getOrderedQuittanceDetails() {
+
+		List<Service> parentServices = CollectionUtils.list();
+		Map<Service, List<QuittanceDetails>> service2subservices = CollectionUtils.map();
+
+		for (QuittanceDetailsQuittance el : quittanceDetailsQuittances) {
+
+			Service service = getService(el);
+			Service parentService = service.isSubService() ? service.getParentService() : service;
+
+			List<QuittanceDetails> detailses = service2subservices.get(parentService);
+			if (detailses == null) {
+				detailses = CollectionUtils.list();
+			}
+
+			// subservice is added to the end of a list, and parent service itself to the begining
+			if (service.isSubService()) {
+				detailses.add(el.getQuittanceDetails());
+			} else {
+				detailses.add(0, el.getQuittanceDetails());
+				parentServices.add(parentService);
+			}
+			service2subservices.put(parentService, detailses);
+		}
+
+		// now build result list
+		List<QuittanceDetails> result = CollectionUtils.list();
+		for (Service service : parentServices) {
+			result.addAll(service2subservices.get(service));
+		}
+
+		return result;
+	}
+
+	private Service getService(QuittanceDetailsQuittance qdq) {
+		return qdq.getQuittanceDetails().getConsumer().getService();
+	}
+
+	private boolean isSubServiceDetails(QuittanceDetailsQuittance qdq) {
+		return getService(qdq).isSubService();
 	}
 
 	/**

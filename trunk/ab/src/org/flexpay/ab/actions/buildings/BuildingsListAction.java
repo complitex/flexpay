@@ -2,21 +2,19 @@ package org.flexpay.ab.actions.buildings;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.persistence.filters.CountryFilter;
-import org.flexpay.ab.persistence.filters.RegionFilter;
-import org.flexpay.ab.persistence.filters.StreetNameFilter;
-import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
 public class BuildingsListAction extends BuildingsActionsBase {
 
-	private ParentService parentService;
+	private ParentService<StreetFilter> parentService;
 	private BuildingService buildingService;
 
 	private CountryFilter countryFilter = new CountryFilter();
@@ -30,7 +28,7 @@ public class BuildingsListAction extends BuildingsActionsBase {
 		streetNameFilter.setShowSearchString(true);
 	}
 
-    /**
+	/**
 	 * {@inheritDoc}
 	 */
 	@NotNull
@@ -39,7 +37,7 @@ public class BuildingsListAction extends BuildingsActionsBase {
 
 		ArrayStack filterArrayStack = getFilters();
 		for (Object filter : filterArrayStack) {
-			((PrimaryKeyFilter) filter).initFilter(session);
+			((PrimaryKeyFilter<?>) filter).initFilter(session);
 		}
 
 		ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
@@ -162,22 +160,13 @@ public class BuildingsListAction extends BuildingsActionsBase {
 		return buildingsList;
 	}
 
-    /**
-     * Setter for property 'buildingsService'.
-     *
-     * @param buildingService Value to set for property 'buildingsService'.
-     */
-    public void setBuildingService(BuildingService buildingService) {
-        this.buildingService = buildingService;
-    }
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
+	}
 
-    /**
-     * Setter for property 'parentService'.
-     *
-     * @param parentService Value to set for property 'parentService'.
-     */
-    public void setParentService(ParentService parentService) {
-        this.parentService = parentService;
-    }
-
+	@Required
+	public void setParentService(ParentService<StreetFilter> parentService) {
+		this.parentService = parentService;
+	}
 }
