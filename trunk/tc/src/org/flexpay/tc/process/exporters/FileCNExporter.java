@@ -4,8 +4,10 @@ import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.TariffExportCode;
+import org.flexpay.tc.persistence.TariffExportLogRecord;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.service.TariffExportCodeServiceExt;
+import org.flexpay.tc.service.TariffExportLogRecordService;
 import org.flexpay.tc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -21,6 +23,7 @@ public class FileCNExporter implements Exporter {
 	private final static String exportFileNamePrefix = "CNExportFile_";
 	private TariffCalculationResultService tariffCalculationResultService;
 	private TariffExportCodeServiceExt tariffExportCodeServiceExt;
+	private TariffExportLogRecordService tariffExportLogRecordService;
 
 	/**
 	 * Begin export procedure
@@ -55,8 +58,16 @@ public class FileCNExporter implements Exporter {
 			exportPrintStream.print(" : ");
 		}
 		TariffCalculationResult tariffCalculationResult = (TariffCalculationResult) params[0];
+		TariffExportLogRecord tariffExportLogRecord = new TariffExportLogRecord();
+		tariffExportLogRecord.setBuilding(tariffCalculationResult.getBuilding());
+		tariffExportLogRecord.setTariff(tariffCalculationResult.getTariff());
+		tariffExportLogRecord.setTariffBeginDate((java.util.Date) params[1]);
+		tariffExportLogRecord.setTariffExportCode(tariffExportCodeServiceExt.findByCode(TariffExportCode.EXPORTED));
+		tariffExportLogRecord.setExportdate(new java.util.Date());
+		tariffExportLogRecordService.save(tariffExportLogRecord);
+
 		if (tariffCalculationResult.getId() != null) {
-			tariffCalculationResult.setTariffExportCode(tariffExportCodeServiceExt.findByCode(TariffExportCode.EXPORTED));
+			tariffCalculationResult.setLastTariffExportLogRecord(tariffExportLogRecord);
 			tariffCalculationResultService.update(tariffCalculationResult);
 		}
 		exportPrintStream.println();
@@ -113,5 +124,14 @@ public class FileCNExporter implements Exporter {
 	@Required
 	public void setTariffExportCodeService(TariffExportCodeServiceExt tariffExportCodeServiceExt) {
 		this.tariffExportCodeServiceExt = tariffExportCodeServiceExt;
+	}
+
+	/**
+	 * Set tariffExportLogRecordService
+	 * @param tariffExportLogRecordService tariffExportLogRecordService
+	 */
+	@Required
+	public void setTariffExportLogRecordService(TariffExportLogRecordService tariffExportLogRecordService) {
+		this.tariffExportLogRecordService = tariffExportLogRecordService;
 	}
 }

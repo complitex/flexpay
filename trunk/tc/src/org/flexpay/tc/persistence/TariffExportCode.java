@@ -19,8 +19,15 @@ public class TariffExportCode extends DomainObject {
 	public static final int UNKNOWN_RESULT_CODE = -100;
 
 	private static final Map<Integer, String> typeToName = map(
-			ar(EXPORTED, TARIFF_NOT_FOUND_FOR_BUILDING, BUILDING_NOT_FOUND, CANNOT_CREATE_HISTORY_RECORD,
-                    NULL_NOT_NULL_TARIFF_VALUE, NEGATIVE_VALUE, BEGIN_DATE_IS_NULL, UNKNOWN_RESULT_CODE, TARIFF_NOT_FOUND_FOR_BUILDING_WHILE_ADDING_NOT_NULL_TARIFF_VALUE),
+			ar(     EXPORTED,
+                    TARIFF_NOT_FOUND_FOR_BUILDING,
+                    BUILDING_NOT_FOUND,
+                    CANNOT_CREATE_HISTORY_RECORD,
+                    NULL_NOT_NULL_TARIFF_VALUE,
+                    NEGATIVE_VALUE,
+                    BEGIN_DATE_IS_NULL,
+                    UNKNOWN_RESULT_CODE,
+                    TARIFF_NOT_FOUND_FOR_BUILDING_WHILE_ADDING_NOT_NULL_TARIFF_VALUE),
 			ar(
 					"tc.tariff.export_code.exported",
 					"tc.tariff.export_code.tariff_not_found_for_building",

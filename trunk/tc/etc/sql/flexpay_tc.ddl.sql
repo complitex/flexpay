@@ -600,13 +600,23 @@
         calculation_date date not null comment 'Calculation result calculation date',
         building_id bigint not null comment 'Building reference',
         tariff_id bigint not null comment 'Tariff reference',
-        tariff_export_code_id bigint comment 'Tariff export code',
+        last_tariff_export_log_record_id bigint comment 'Last tariff export log record',
         primary key (id)
     ) comment='Table contains tariff calculation results information';
 
     create table tc_tariff_export_code_tbl (
         id bigint not null auto_increment,
         code integer not null unique comment 'Tariff export status code',
+        primary key (id)
+    );
+
+    create table tc_tariff_export_log_record_tbl (
+        id bigint not null auto_increment,
+        export_date datetime not null comment 'Export date',
+        tariff_begin_date datetime not null comment 'Tariff Begin Date',
+        building_id bigint not null comment 'Building reference',
+        tariff_id bigint not null comment 'Tariff reference',
+        tariff_export_code_id bigint comment 'Tariff export code',
         primary key (id)
     );
 
@@ -1131,10 +1141,10 @@
         references common_file_types_tbl (id);
 
     alter table tc_tariff_calculation_result_tbl 
-        add index FK_tc_tariff_calculation_result_tbl_tariff_export_code_id (tariff_export_code_id), 
-        add constraint FK_tc_tariff_calculation_result_tbl_tariff_export_code_id 
-        foreign key (tariff_export_code_id) 
-        references tc_tariff_export_code_tbl (id);
+        add index FK_tc_tariff_calculation_result_tbl_tariff_export_log_record_id (last_tariff_export_log_record_id), 
+        add constraint FK_tc_tariff_calculation_result_tbl_tariff_export_log_record_id 
+        foreign key (last_tariff_export_log_record_id) 
+        references tc_tariff_export_log_record_tbl (id);
 
     alter table tc_tariff_calculation_result_tbl 
         add index FK_tc_tariff_calculation_result_tbl_building_id (building_id), 
@@ -1145,6 +1155,24 @@
     alter table tc_tariff_calculation_result_tbl 
         add index FK_tc_tariff_calculation_result_tbl_tariff_id (tariff_id), 
         add constraint FK_tc_tariff_calculation_result_tbl_tariff_id 
+        foreign key (tariff_id) 
+        references tc_tariff_tbl (id);
+
+    alter table tc_tariff_export_log_record_tbl 
+        add index FK_tc_tariff_export_log_record_tbl_tariff_export_code_id (tariff_export_code_id), 
+        add constraint FK_tc_tariff_export_log_record_tbl_tariff_export_code_id 
+        foreign key (tariff_export_code_id) 
+        references tc_tariff_export_code_tbl (id);
+
+    alter table tc_tariff_export_log_record_tbl 
+        add index FK_tc_tariff_export_log_record_tbl_building_id (building_id), 
+        add constraint FK_tc_tariff_export_log_record_tbl_building_id 
+        foreign key (building_id) 
+        references ab_buildings_tbl (id);
+
+    alter table tc_tariff_export_log_record_tbl 
+        add index FK_tc_tariff_export_log_record_tbl_tariff_id (tariff_id), 
+        add constraint FK_tc_tariff_export_log_record_tbl_tariff_id 
         foreign key (tariff_id) 
         references tc_tariff_tbl (id);
 

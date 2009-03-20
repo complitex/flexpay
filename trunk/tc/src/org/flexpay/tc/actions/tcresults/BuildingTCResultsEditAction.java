@@ -100,7 +100,7 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
 			result.setValue(newValue);
 
 			if (!newValue.equals(oldValue)) {
-				result.setTariffExportCode(null);
+				result.setLastTariffExportLogRecord(null);
 			}
 
 			tariffCalculationResultService.update(result);

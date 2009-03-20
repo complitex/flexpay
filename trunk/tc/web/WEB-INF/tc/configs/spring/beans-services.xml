@@ -17,6 +17,11 @@
 		  autowire-candidate="false"
 		  p:tariffExportCodeDaoExt-ref="tariffExportCodeDaoExt" />
 
+    <bean id="tariffExportLogService"
+        class="org.flexpay.tc.service.impl.TariffExportLogRecordServiceImpl"
+        autowire-candidate="false"
+        p:tariffExportLogRecordDao-ref="tariffExportLogRecordDao"
+    />
 	<bean id="tariffCalculationResultService"
 		  class="org.flexpay.tc.service.impl.TariffCalculationResultServiceImpl"
 		  p:tariffCalculationResultDao-ref="tariffCalculationResultDao" />

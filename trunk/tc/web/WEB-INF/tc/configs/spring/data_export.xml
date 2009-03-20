@@ -19,6 +19,7 @@
 		  p:dataSourceDescriptionId="${datasource.id}"
 		  p:classToTypeRegistry-ref="typeRegistryAb"
 		  p:correctionsService-ref="correctionsServiceAb"
+          p:tariffExportLogRecordService-ref="tariffExportLogService"
 		  destroy-method="endExport"
 		  scope="prototype"
 			/>
@@ -26,5 +27,6 @@
 	<bean name="fileCNExporter" class="org.flexpay.tc.process.exporters.FileCNExporter"
 		  destroy-method="endExport"
 		  p:tariffCalculationResultService-ref="tariffCalculationResultService"
-		  p:tariffExportCodeService-ref="tariffExportCodeServiceExt" />
+		  p:tariffExportCodeService-ref="tariffExportCodeServiceExt"
+          p:tariffExportLogRecordService-ref="tariffExportLogService"/>
 </beans>
