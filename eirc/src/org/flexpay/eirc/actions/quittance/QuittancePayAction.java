@@ -2,98 +2,94 @@ package org.flexpay.eirc.actions.quittance;
 
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.eirc.service.QuittanceService;
-import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.persistence.account.Quittance;
-import org.flexpay.eirc.persistence.account.QuittanceDetailsQuittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
-import org.flexpay.eirc.persistence.EircAccount;
-import org.flexpay.eirc.persistence.ConsumerInfo;
+import org.flexpay.eirc.service.QuittanceService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 public class QuittancePayAction extends FPActionSupport {
 
-    // form data
-    private Quittance quittance = new Quittance();
-    private String quittanceNumber;
+	// form data
+	private Quittance quittance = new Quittance();
+	private String quittanceNumber;
 
-    // required services
-    private QuittanceService quittanceService;
-    
-    @NotNull
-    protected String doExecute() throws Exception {
+	// required services
+	private QuittanceService quittanceService;
 
-        if (isSubmit()) {
-            session.put(quittanceNumber , "true");
-            return REDIRECT_SUCCESS;
-        }
+	@NotNull
+	protected String doExecute() throws Exception {
 
-        quittance = quittanceService.readFull(stub(quittance));
+		if (isSubmit()) {
+			session.put(quittanceNumber, "true");
+			return REDIRECT_SUCCESS;
+		}
 
-        return INPUT;
-    }
+		quittance = quittanceService.readFull(stub(quittance));
 
-    @NotNull
-    protected String getErrorResult() {
-        return INPUT;
-    }
+		return INPUT;
+	}
 
-    // rendering utility methods
-    public String getAddress() {
-        return quittance.getEircAccount().getConsumerInfo().getAddress();
-    }
+	@NotNull
+	protected String getErrorResult() {
+		return INPUT;
+	}
 
-    public String getFIO() {
-        return quittance.getEircAccount().getConsumerInfo().getFIO();
-    }
+	// rendering utility methods
+	public String getAddress() {
+		return quittance.getEircAccount().getConsumerInfo().getAddress();
+	}
 
-    public String getServiceName(QuittanceDetails qd) {
-        return getTranslation(qd.getConsumer().getService().getServiceType().getTypeNames()).getName();        
-    }
+	public String getFIO() {
+		return quittance.getEircAccount().getConsumerInfo().getFIO();
+	}
 
-    public String getServiceProviderName(QuittanceDetails qd) {
-        return qd.getConsumer().getService().getServiceProvider().getName();
-    }
+	public String getServiceName(QuittanceDetails qd) {
 
-    public String getPayable(QuittanceDetails qd) {        
-        return qd.getOutgoingBalance().toString();
-    }
+		return getTranslation(qd.getConsumer().getService().getServiceType().getTypeNames()).getName();
+	}
 
-    public String getTotalPayable() {
-        BigDecimal total = new BigDecimal("0.00");
+	public String getServiceProviderName(QuittanceDetails qd) {
+		return qd.getConsumer().getService().getServiceProvider().getName();
+	}
 
-        for (QuittanceDetails qd : quittance.getQuittanceDetails()) {
-            total = total.add(qd.getOutgoingBalance());
-        }
+	public String getPayable(QuittanceDetails qd) {
+		return qd.getOutgoingBalance().toString();
+	}
 
-        return total.toString();
-    }
+	public String getTotalPayable() {
+		BigDecimal total = new BigDecimal("0.00");
 
-    // set/get form data
-    public void setQuittance(Quittance quittance) {
-        this.quittance = quittance;
-    }
+		for (QuittanceDetails qd : quittance.getQuittanceDetails()) {
+			total = total.add(qd.getOutgoingBalance());
+		}
 
-    public Quittance getQuittance() {
-        return quittance;
-    }
+		return total.toString();
+	}
 
-    public String getQuittanceNumber() {
-        return quittanceNumber;
-    }
+	// set/get form data
+	public void setQuittance(Quittance quittance) {
+		this.quittance = quittance;
+	}
 
-    public void setQuittanceNumber(String quittanceNumber) {
-        this.quittanceNumber = quittanceNumber;
-    }
+	public Quittance getQuittance() {
+		return quittance;
+	}
 
-    // required services setters
-    @Required
-    public void setQuittanceService(QuittanceService quittanceService) {
-        this.quittanceService = quittanceService;
-    }
+	public String getQuittanceNumber() {
+		return quittanceNumber;
+	}
+
+	public void setQuittanceNumber(String quittanceNumber) {
+		this.quittanceNumber = quittanceNumber;
+	}
+
+	// required services setters
+	@Required
+	public void setQuittanceService(QuittanceService quittanceService) {
+		this.quittanceService = quittanceService;
+	}
 
 }
