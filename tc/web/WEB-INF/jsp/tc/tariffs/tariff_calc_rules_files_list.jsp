@@ -1,7 +1,7 @@
 
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
-<%@include file="/WEB-INF/jsp/common/jquery_ui.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
 
 <script type="text/javascript">
 

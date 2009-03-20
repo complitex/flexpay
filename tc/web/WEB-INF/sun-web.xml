@@ -316,12 +316,10 @@
 	</security-role-mapping>
 
     <!-- Menu -->
-<!--
     <security-role-mapping>
         <role-name>ROLE_MENU_AB</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
--->
     <security-role-mapping>
         <role-name>ROLE_MENU_AB_DICTS</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -398,22 +396,18 @@
         <role-name>ROLE_MENU_TC</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
-<!--
     <security-role-mapping>
         <role-name>ROLE_MENU_TC_DICTS</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
--->
     <security-role-mapping>
         <role-name>ROLE_MENU_TC_IMPORTEXPORT</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
-<!--
     <security-role-mapping>
         <role-name>ROLE_MENU_TC_DATA</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
--->
     <security-role-mapping>
         <role-name>ROLE_MENU_TC_OTHER_DICTS</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -422,12 +416,10 @@
         <role-name>ROLE_MENU_TC_IMPORTEXPORT2</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
-<!--
     <security-role-mapping>
         <role-name>ROLE_MENU_TC_PROCESSES</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
--->
     <security-role-mapping>
         <role-name>ROLE_MENU_TC_DATA2</role-name>
         <group-name>FULL_ACCESS</group-name>
@@ -444,12 +436,10 @@
         <role-name>ROLE_MENU_TC_IMPORTEXPORT_CALC_RESULTS_EXPORT</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
-<!--
     <security-role-mapping>
         <role-name>ROLE_MENU_TC_IMPORTEXPORT_ATTRIBUTES_IMPORT</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
--->
     <security-role-mapping>
         <role-name>ROLE_MENU_TC_IMPORTEXPORT_PROCESSES</role-name>
         <group-name>FULL_ACCESS</group-name>

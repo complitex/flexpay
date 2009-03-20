@@ -318,10 +318,6 @@
 		<role-name>ROLE_EIRC_ORGANIZATION_DELETE</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
 	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_ORGANIZATION_READ</role-name>
-		<group-name>EIRC_READ_ONLY</group-name>
-	</security-role-mapping>
 
 	<!-- Banks -->
 	<security-role-mapping>
@@ -339,10 +335,6 @@
 	<security-role-mapping>
 		<role-name>ROLE_EIRC_BANK_DELETE</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_BANK_READ</role-name>
-		<group-name>EIRC_READ_ONLY</group-name>
 	</security-role-mapping>
 
     <!-- Service organizations -->
@@ -374,10 +366,6 @@
         <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_DELETE</role-name>
         <group-name>EIRC_FULL_ACCESS</group-name>
     </security-role-mapping>
-    <security-role-mapping>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
-        <group-name>EIRC_READ_ONLY</group-name>
-    </security-role-mapping>
 
 	<!-- Service providers -->
 	<security-role-mapping>
@@ -395,10 +383,6 @@
 	<security-role-mapping>
 		<role-name>ROLE_EIRC_SERVICE_PROVIDER_DELETE</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_SERVICE_PROVIDER_READ</role-name>
-		<group-name>EIRC_READ_ONLY</group-name>
 	</security-role-mapping>
 
 	<!-- EIRC accounts -->
@@ -418,10 +402,6 @@
 		<role-name>ROLE_EIRC_ACCOUNT_DELETE</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
 	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_ACCOUNT_READ</role-name>
-		<group-name>EIRC_READ_ONLY</group-name>
-	</security-role-mapping>
 
 	<!-- EIRC services -->
 	<security-role-mapping>
@@ -440,10 +420,6 @@
 		<role-name>ROLE_EIRC_SERVICE_DELETE</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
 	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_SERVICE_READ</role-name>
-		<group-name>EIRC_READ_ONLY</group-name>
-	</security-role-mapping>
 
 	<!-- EIRC Service types -->
 	<security-role-mapping>
@@ -461,10 +437,6 @@
 	<security-role-mapping>
 		<role-name>ROLE_EIRC_SERVICE_TYPE_DELETE</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_SERVICE_TYPE_READ</role-name>
-		<group-name>EIRC_READ_ONLY</group-name>
 	</security-role-mapping>
 
 	<!-- EIRC Registries -->
@@ -498,10 +470,6 @@
 		<role-name>ROLE_COMMON_PROCESS_DEFINITION_UPLOAD_NEW</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
 	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_COMMON_PROCESS_READ</role-name>
-		<group-name>EIRC_READ_ONLY</group-name>
-	</security-role-mapping>
 
 	<!-- Quittances -->
 	<security-role-mapping>
@@ -520,10 +488,43 @@
 		<role-name>ROLE_EIRC_QUITTANCE_RECEIVE</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
 	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_QUITTANCE_READ</role-name>
-		<group-name>EIRC_READ_ONLY</group-name>
-	</security-role-mapping>
+
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_QUITTANCE_READ</role-name>
+        <group-name>EIRC_READ_ONLY</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_COMMON_PROCESS_READ</role-name>
+        <group-name>EIRC_READ_ONLY</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_BANK_READ</role-name>
+        <group-name>EIRC_READ_ONLY</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_ORGANIZATION_READ</role-name>
+        <group-name>EIRC_READ_ONLY</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
+        <group-name>EIRC_READ_ONLY</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_PROVIDER_READ</role-name>
+        <group-name>EIRC_READ_ONLY</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_ACCOUNT_READ</role-name>
+        <group-name>EIRC_READ_ONLY</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_READ</role-name>
+        <group-name>EIRC_READ_ONLY</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_TYPE_READ</role-name>
+        <group-name>EIRC_READ_ONLY</group-name>
+    </security-role-mapping>
 
     <!-- Menu -->
     <security-role-mapping>
@@ -683,11 +684,11 @@
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
-        <role-name>ROLE_MENU_EIRC_IMPORT_SP_FIlES_IMPORT</role-name>
+        <role-name>ROLE_MENU_EIRC_IMPORT_SP_FILES_IMPORT</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
-        <role-name>ROLE_MENU_EIRC_IMPORT_IMPORTED_SP_FIlES</role-name>
+        <role-name>ROLE_MENU_EIRC_IMPORT_IMPORTED_SP_FILES</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
@@ -717,6 +718,64 @@
     <security-role-mapping>
         <role-name>ROLE_MENU_EIRC_QUITTANCES_PACKETS</role-name>
         <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
+
+
+    <security-role-mapping>
+        <role-name>ROLE_BASIC</role-name>
+        <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_MENU_EIRC</role-name>
+        <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_MENU_EIRC_QUITTANCES</role-name>
+        <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_MENU_EIRC_QUITTANCES2</role-name>
+        <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_MENU_EIRC_QUITTANCES_PAYFORM</role-name>
+        <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_QUITTANCE_READ</role-name>
+        <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_COMMON_PROCESS_READ</role-name>
+        <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_BANK_READ</role-name>
+        <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_ORGANIZATION_READ</role-name>
+        <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
+        <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_PROVIDER_READ</role-name>
+        <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_ACCOUNT_READ</role-name>
+        <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_READ</role-name>
+        <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_EIRC_SERVICE_TYPE_READ</role-name>
+        <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
     </security-role-mapping>
 
 </sun-web-app>

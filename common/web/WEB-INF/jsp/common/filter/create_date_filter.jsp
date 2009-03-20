@@ -4,10 +4,10 @@
 <s:if test="createDateFilter.readOnly">
     <s:property value="createDateFilter.stringDate" />
 </s:if><s:else>
-    <%@include file="/WEB-INF/jsp/common/jquery_ui.jsp"%>
+    <%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
 
     <script type="text/javascript">
-        FP.calendars("#createDateFilter", "<s:url value="/resources/common/js/jquery/jquery-ui/images/calendar.gif" includeParams="none" />");
+        FP.calendars("#createDateFilter", true);
     </script>
     <input type="text" name="createDateFilter.stringDate" id="createDateFilter" value="<s:property value="createDateFilter.stringDate" />" readonly="readonly" />
 

@@ -11,8 +11,9 @@
 	<link rel="stylesheet" type="text/css" href="<s:url value="/resources/common/style/fp.css" includeParams="none" />" />
 
     <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-1.3.2.min.js" includeParams="none"/>"></script>
-    <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery.protify-0.2.js" includeParams="none"/>"></script>
+    <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery.protify-0.2.min.js" includeParams="none"/>"></script>
     <script type="text/javascript" src="<s:url value="/resources/common/js/flexpay_common.js" includeParams="none"/>"></script>
+    <script type="text/javascript">FP.base = "<s:url value="/" includeParams="none"/>";</script>
 </head>
 <body>
 

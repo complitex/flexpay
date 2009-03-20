@@ -1,7 +1,7 @@
 
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<%@include file="/WEB-INF/jsp/common/jquery_ui.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
 
 <s:actionerror />
 
@@ -114,7 +114,7 @@
             width: 640,
             height: 400,
             closeOnEscape: true,
-            title: "Corrections",
+            title: "<s:text name="eirc.registry.view.dialog_title" />",
             autoOpen: false,
             buttons: {
                 '<s:text name="common.cancel" />' : function() {

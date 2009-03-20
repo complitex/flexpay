@@ -3,7 +3,7 @@
 <%@ page import="org.flexpay.bti.persistence.BuildingAttributeTypeEnum" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<%@include file="/WEB-INF/jsp/common/jquery_ui.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
 
 <script type="text/javascript">
     // folding functions
@@ -25,7 +25,7 @@
     }
 
     // attribute date picker configuration
-    FP.calendars("#buildingAttributesEdit_attributeDate", "<s:url value="/resources/common/js/jquery/jquery-ui/images/calendar.gif" includeParams="none" />");
+    FP.calendars("#buildingAttributesEdit_attributeDate", true);
 </script>
 
 <s:actionerror />
