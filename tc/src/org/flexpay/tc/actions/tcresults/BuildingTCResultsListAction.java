@@ -109,7 +109,7 @@ public class BuildingTCResultsListAction extends FPActionSupport {
 	public String getTariffCalculationExportCode(Long tariffCalculationId) {
 
 		TariffCalculationResult tariffCalculationResult = tariffCalculationResultService.read(new Stub<TariffCalculationResult>(tariffCalculationId));
-		return tariffCalculationResult == null ? "" : tariffCalculationResult.getTariffExportCode().getI18nName();
+		return tariffCalculationResult == null ? "" : tariffCalculationResult.getLastTariffExportLogRecord().getTariffExportCode().getI18nName();
 	}
 
 	public boolean tariffCalculationDatesIsEmpty() {

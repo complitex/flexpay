@@ -12,8 +12,10 @@ import org.flexpay.common.util.JDBCUtils;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.TariffExportCode;
+import org.flexpay.tc.persistence.TariffExportLogRecord;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.service.TariffExportCodeServiceExt;
+import org.flexpay.tc.service.TariffExportLogRecordService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,7 @@ public class JDBCCNExporter implements Exporter {
 	private Long dataSourceDescriptionId;
 	private Logger log = LoggerFactory.getLogger(getClass());
 	private TariffExportCodeServiceExt tariffExportCodeServiceExt;
+	private TariffExportLogRecordService tariffExportLogRecordService;
 
 	/**
 	 * Begin export procedure
@@ -112,8 +115,15 @@ public class JDBCCNExporter implements Exporter {
 					plog.info("Tariff calculation result {} for building id = {} and external id = {} export return unknown code {}", new Object[]{tariffCalculationResult.getTariff(), tariffCalculationResult.getBuilding().getId(), externalId, exportResult});
 					tariffExportCode = tariffExportCodeServiceExt.findByCode(TariffExportCode.UNKNOWN_RESULT_CODE);
 				}
+				TariffExportLogRecord tariffExportLogRecord = new TariffExportLogRecord();
+				tariffExportLogRecord.setBuilding(tariffCalculationResult.getBuilding());
+				tariffExportLogRecord.setTariff(tariffCalculationResult.getTariff());
+				tariffExportLogRecord.setTariffBeginDate(periodBeginDate);
+				tariffExportLogRecord.setTariffExportCode(tariffExportCode);
+				tariffExportLogRecord.setExportdate(new java.util.Date());
+				tariffExportLogRecordService.save(tariffExportLogRecord);
 				if (tariffCalculationResult.getId() != null) {
-					tariffCalculationResult.setTariffExportCode(tariffExportCode);
+					tariffCalculationResult.setLastTariffExportLogRecord(tariffExportLogRecord);
 					tariffCalculationResultService.update(tariffCalculationResult);
 				}
 			} finally {
@@ -233,5 +243,10 @@ public class JDBCCNExporter implements Exporter {
 	@Required
 	public void setClassToTypeRegistry(ClassToTypeRegistry classToTypeRegistry) {
 		this.classToTypeRegistry = classToTypeRegistry;
+	}
+
+	@Required
+	public void setTariffExportLogRecordService(TariffExportLogRecordService tariffExportLogRecordService) {
+		this.tariffExportLogRecordService = tariffExportLogRecordService;
 	}
 }

@@ -16,7 +16,8 @@ public class TariffCalculationResult extends DomainObject {
 	private Date calculationDate;
 	private Building building;
 	private Tariff tariff;
-	private TariffExportCode tariffExportCode;
+//	private TariffExportCode tariffExportCode;
+	private TariffExportLogRecord lastTariffExportLogRecord;
 
 	public TariffCalculationResult() {
 	}
@@ -69,12 +70,20 @@ public class TariffCalculationResult extends DomainObject {
 		this.tariff = tariff;
 	}
 
-	public TariffExportCode getTariffExportCode() {
-		return tariffExportCode;
+//	public TariffExportCode getTariffExportCode() {
+//		return tariffExportCode;
+//	}
+//
+//	public void setTariffExportCode(TariffExportCode tariffExportCode) {
+//		this.tariffExportCode = tariffExportCode;
+//	}
+
+	public TariffExportLogRecord getLastTariffExportLogRecord() {
+		return lastTariffExportLogRecord;
 	}
 
-	public void setTariffExportCode(TariffExportCode tariffExportCode) {
-		this.tariffExportCode = tariffExportCode;
+	public void setLastTariffExportLogRecord(TariffExportLogRecord lastTariffExportLogRecord) {
+		this.lastTariffExportLogRecord = lastTariffExportLogRecord;
 	}
 
 	@Override
@@ -86,7 +95,7 @@ public class TariffCalculationResult extends DomainObject {
 				append("creationDate", creationDate).
 				append("calculationDate", calculationDate).
 				append("tariff", tariff.toString()).
-				append("tariffExportCode", tariffExportCode == null ? "-" : tariffExportCode.toString()).
+//				append("tariffExportCode", tariffExportCode == null ? "-" : tariffExportCode.toString()).
 				append("}").toString();
 	}
 
