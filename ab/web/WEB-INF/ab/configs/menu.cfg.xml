@@ -12,7 +12,7 @@
 		  p:title="ab.menu.ab"
 		  p:action="/ab/main.action?menu=ab"
 		  p:parent-ref="fpMenu"
-		  p:userRole="ROLE_BASIC"
+		  p:userRole="ROLE_MENU_AB"
 			/>
 
 	<!--level2-->
@@ -21,7 +21,7 @@
 		  p:title="ab.menu.dicts"
 		  p:action="/ab/main.action?menu=ab.dicts"
 		  p:parent-ref="ab"
-		  p:userRole="ROLE_BASIC"
+		  p:userRole="ROLE_MENU_AB_DICTS"
 			/>
 
 	<!--level3-->
@@ -29,25 +29,25 @@
 		  p:name="ab.address_dictionaries"
 		  p:title="ab.menu.address_dictionaries"
 		  p:parent-ref="ab_dicts"
-		  p:userRole="ROLE_BASIC"
+		  p:userRole="ROLE_MENU_AB_ADDRESS_DICTS"
 			/>
 	<bean name="ab_dicts_personDictionaries" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.person_dictionaries"
 		  p:title="ab.menu.person_dictionaries"
 		  p:parent-ref="ab_dicts"
-		  p:userRole="ROLE_BASIC"
+		  p:userRole="ROLE_MENU_AB_PERSON_DICTS"
 			/>
 	<bean name="ab_dicts_typeDictionaries" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.type_dictionaries"
 		  p:title="ab.menu.type_dictionaries"
 		  p:parent-ref="ab_dicts"
-		  p:userRole="ROLE_BASIC"
+		  p:userRole="ROLE_MENU_AB_TYPE_DICTS"
 			/>
 	<bean name="ab_dicts_otherDictionaries" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.other_dictionaries"
 		  p:title="ab.menu.other_dictionaries"
 		  p:parent-ref="ab_dicts"
-		  p:userRole="ROLE_BASIC"
+		  p:userRole="ROLE_MENU_AB_OTHER_DICTS"
 			/>
 
 	<!--level4-->
@@ -56,91 +56,91 @@
 		  p:title="ab.menu.dict.countries"
 		  p:action="/dicts/countriesList.action?menu=ab.counties"
 		  p:parent-ref="ab_dicts_addressDictionaries"
-		  p:userRole="ROLE_AB_COUNTRY_READ"
+		  p:userRole="ROLE_MENU_AB_DICTS_COUNTRIES"
 			/>
 	<bean name="ab_dicts_addressDictionaries_regions" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.regions"
 		  p:title="ab.menu.dict.regions"
 		  p:action="/dicts/regionsList.action?menu=ab.regions"
 		  p:parent-ref="ab_dicts_addressDictionaries"
-		  p:userRole="ROLE_AB_REGION_READ"
+		  p:userRole="ROLE_MENU_AB_DICTS_REGIONS"
 			/>
 	<bean name="ab_dicts_addressDictionaries_towns" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.towns"
 		  p:title="ab.menu.dict.towns"
 		  p:action="/dicts/townsList.action?menu=ab.towns"
 		  p:parent-ref="ab_dicts_addressDictionaries"
-		  p:userRole="ROLE_AB_TOWN_READ"
+		  p:userRole="ROLE_MENU_AB_DICTS_TOWNS"
 			/>
 	<bean name="ab_dicts_addressDictionaries_districts" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.districts"
 		  p:title="ab.menu.dict.districts"
 		  p:action="/dicts/districtsList.action?menu=ab.districts"
 		  p:parent-ref="ab_dicts_addressDictionaries"
-		  p:userRole="ROLE_AB_DISTRICT_READ"
+		  p:userRole="ROLE_MENU_AB_DICTS_DISTRICTS"
 			/>
 	<bean name="ab_dicts_addressDictionaries_streets" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.streets"
 		  p:title="ab.menu.dict.streets"
 		  p:action="/dicts/streetsList.action?menu=ab.streets"
 		  p:parent-ref="ab_dicts_addressDictionaries"
-		  p:userRole="ROLE_AB_STREET_READ"
+		  p:userRole="ROLE_MENU_AB_DICTS_STREETS"
 			/>
 	<bean name="ab_dicts_addressDictionaries_buildings" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.buildings"
 		  p:title="ab.menu.dict.buildings"
 		  p:action="/dicts/buildingsList.action?menu=ab.buildings"
 		  p:parent-ref="ab_dicts_addressDictionaries"
-		  p:userRole="ROLE_AB_BUILDING_READ"
+		  p:userRole="ROLE_MENU_AB_DICTS_BUILDINGS"
 			/>
 	<bean name="ab_dicts_addressDictionaries_apartments" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.apartments"
 		  p:title="ab.menu.dict.apartments"
 		  p:action="/dicts/apartmentsList.action?menu=ab.apartments"
 		  p:parent-ref="ab_dicts_addressDictionaries"
-		  p:userRole="ROLE_AB_APARTMENT_READ"
+		  p:userRole="ROLE_MENU_AB_DICTS_APARTMENTS"
 			/>
 	<bean name="ab_dicts_personDictionaries_persons" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.persons"
 		  p:title="ab.menu.dict.persons"
 		  p:action="/dicts/personsList.action?menu=ab.persons"
 		  p:parent-ref="ab_dicts_personDictionaries"
-		  p:userRole="ROLE_AB_PERSON_READ"
+		  p:userRole="ROLE_MENU_AB_DICTS_PERSONS"
 			/>
 	<bean name="ab_dicts_typeDictionaries_townTypes" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.town_types"
 		  p:title="ab.menu.dict.town_types"
 		  p:action="/dicts/townTypesList.action?menu=ab.town_types"
 		  p:parent-ref="ab_dicts_typeDictionaries"
-		  p:userRole="ROLE_AB_TOWN_TYPE_READ"
+		  p:userRole="ROLE_MENU_AB_DICTS_TOWN_TYPES"
 			/>
 	<bean name="ab_dicts_typeDictionaries_streetTypes" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.street_types"
 		  p:title="ab.menu.dict.street_types"
 		  p:action="/dicts/streetTypesList.action?menu=ab.street_types"
 		  p:parent-ref="ab_dicts_typeDictionaries"
-		  p:userRole="ROLE_AB_STREET_TYPE_READ"
+		  p:userRole="ROLE_MENU_AB_DICTS_STREET_TYPES"
 			/>
 	<bean name="ab_dicts_typeDictionaries_identityTypes" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.identity_types"
 		  p:title="ab.menu.dict.identity_types"
 		  p:action="/dicts/identityTypesList.action?menu=ab.identity_types"
 		  p:parent-ref="ab_dicts_typeDictionaries"
-		  p:userRole="ROLE_AB_IDENTITY_TYPE_READ"
+		  p:userRole="ROLE_MENU_AB_DICTS_IDENTITY_TYPES"
 			/>
 	<bean name="ab_dicts_typeDictionaries_attributeTypes" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.attribute_types"
 		  p:title="ab.menu.dict.attribute_types"
 		  p:action="/dicts/addressAttributeTypesList.action?menu=ab.attribute_types"
 		  p:parent-ref="ab_dicts_typeDictionaries"
-		  p:userRole="ROLE_AB_BUILDING_ATTRIBUTE_TYPE_READ"
+		  p:userRole="ROLE_MENU_AB_DICTS_BUILDING_ATTRIBUTE_TYPES"
 			/>
 	<bean name="ab_dicts_typeDictionaries_measureUnits" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="ab.measure_units"
 		  p:title="ab.menu.dict.measure_units"
 		  p:action="/dicts/measureUnitsList.action?menu=ab.measure_units"
 		  p:parent-ref="ab_dicts_otherDictionaries"
-		  p:userRole=""
+		  p:userRole="ROLE_MENU_AB_DICTS_MEASURE_UNITS"
 			/>
 
 </beans>
