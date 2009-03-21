@@ -6,7 +6,9 @@ import org.flexpay.tc.dao.TariffExportLogRecordDao;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class TariffExportLogRecordServiceImpl implements TariffExportLogRecordService {
 
 	private TariffExportLogRecordDao tariffExportLogRecordDao;
@@ -25,6 +27,7 @@ public class TariffExportLogRecordServiceImpl implements TariffExportLogRecordSe
 	 *
 	 * @param tariffExportLogRecord TariffExportLogRecord
 	 */
+	@Transactional (readOnly = false)
 	public void save(@NotNull TariffExportLogRecord tariffExportLogRecord) {
 		tariffExportLogRecordDao.create(tariffExportLogRecord);
 	}
@@ -34,6 +37,7 @@ public class TariffExportLogRecordServiceImpl implements TariffExportLogRecordSe
 	 *
 	 * @param tariffExportLogRecord tariffExportLogRecord
 	 */
+	@Transactional (readOnly = false)
 	public void delete(@NotNull TariffExportLogRecord tariffExportLogRecord) {
 		tariffExportLogRecordDao.delete(tariffExportLogRecord);
 	}
