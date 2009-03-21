@@ -12,7 +12,7 @@ public interface TariffExportLogRecordService {
 	 * @param tariffExportLogRecordStub stub object
 	 * @return tariff export log record
 	 */
-	@Secured (Roles.TARIFF_CALCULATION_RULES_FILE_READ)
+	@Secured (Roles.TARIFF_EXPORT_LOG_RECORD_READ)
 	public TariffExportLogRecord read(@NotNull Stub<TariffExportLogRecord> tariffExportLogRecordStub);
 
 	/**

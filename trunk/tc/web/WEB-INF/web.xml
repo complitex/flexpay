@@ -365,6 +365,16 @@
 	<security-role>
 		<role-name>ROLE_TC_TARIFF_CALCULATION_RULES_FILE_TARIFF_CALCULATE</role-name>
 	</security-role>
+    <!-- Tariff export log record roles -->
+    <security-role>
+        <role-name>ROLE_TC_TARIFF_EXPORT_LOG_RECORD_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_TC_TARIFF_EXPORT_LOG_RECORD_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_TC_TARIFF_EXPORT_LOG_RECORD_DELETE</role-name>
+    </security-role>
 
     <!-- Menu -->
     <security-role>
