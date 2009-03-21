@@ -315,6 +315,21 @@
 		<group-name>TC_FULL_ACCESS</group-name>
 	</security-role-mapping>
 
+    <!--Tariff export log record-->
+
+    <security-role-mapping>
+        <role-name>ROLE_TC_TARIFF_EXPORT_LOG_RECORD_READ</role-name>
+        <group-name>TC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_TC_TARIFF_EXPORT_LOG_RECORD_ADD</role-name>
+        <group-name>TC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_TC_TARIFF_EXPORT_LOG_RECORD_DELETE</role-name>
+        <group-name>TC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    
     <!-- Menu -->
     <security-role-mapping>
         <role-name>ROLE_MENU_AB</role-name>
