@@ -26,7 +26,7 @@ public class TariffExportLogRecordServiceImpl implements TariffExportLogRecordSe
 	 * @param tariffExportLogRecord TariffExportLogRecord
 	 */
 	public void save(@NotNull TariffExportLogRecord tariffExportLogRecord) {
-		tariffExportLogRecordDao.update(tariffExportLogRecord);
+		tariffExportLogRecordDao.create(tariffExportLogRecord);
 	}
 
 	/**
