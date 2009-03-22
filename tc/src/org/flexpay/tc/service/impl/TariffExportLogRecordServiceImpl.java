@@ -12,12 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class TariffExportLogRecordServiceImpl implements TariffExportLogRecordService {
 
 	private TariffExportLogRecordDao tariffExportLogRecordDao;
+
 	/**
 	 * Read tariff export record by stub object
 	 *
 	 * @param tariffExportLogRecordStub stub object
 	 * @return tariff export log record
 	 */
+	@Transactional (readOnly = true)
 	public TariffExportLogRecord read(@NotNull Stub<TariffExportLogRecord> tariffExportLogRecordStub) {
 		return tariffExportLogRecordDao.read(tariffExportLogRecordStub.getId());
 	}
@@ -29,7 +31,12 @@ public class TariffExportLogRecordServiceImpl implements TariffExportLogRecordSe
 	 */
 	@Transactional (readOnly = false)
 	public void save(@NotNull TariffExportLogRecord tariffExportLogRecord) {
-		tariffExportLogRecordDao.create(tariffExportLogRecord);
+		if (tariffExportLogRecord.isNew()){
+			tariffExportLogRecord.setId(null);
+			tariffExportLogRecordDao.create(tariffExportLogRecord);
+		}else{
+			tariffExportLogRecordDao.update(tariffExportLogRecord);
+		}
 	}
 
 	/**
