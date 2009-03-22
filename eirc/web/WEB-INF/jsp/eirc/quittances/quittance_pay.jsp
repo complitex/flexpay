@@ -193,7 +193,6 @@
 				// http://msmvps.com/blogs/rexiology/archive/2006/01/09/80628.aspx
 				// cast float to integer trick
 				var nextSumm = (totalSumm * qd.toPay) / totalToPay | 0;
-				alert("Next summ " + nextSumm + " for " + qd);
 				summ += nextSumm;
 				summs[qd.id] = nextSumm;
 			}
