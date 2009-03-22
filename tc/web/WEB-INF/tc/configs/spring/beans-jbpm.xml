@@ -21,6 +21,7 @@
 		  class="org.flexpay.tc.process.TariffCalcResultExportJob"
 		  p:lockManager-ref="lockManager"
 		  p:tariffCalculationResultService-ref="tariffCalculationResultService"
+          p:tariffService-ref="tariffService"
 		  p:exporter-ref="jdbcCNExporter"
 		  scope="prototype">
 		<property name="subServiceExportCodes">
@@ -50,6 +51,7 @@
 		  p:lockManager-ref="lockManager"
 		  p:tariffCalculationResultService-ref="tariffCalculationResultService"
 		  p:buildingService-ref="buildingServiceTarget"
+          p:tariffService-ref="tariffService"
 		  p:exporter-ref="jdbcCNExporter"
 		  scope="prototype">
 		<property name="subServiceExportCodes">

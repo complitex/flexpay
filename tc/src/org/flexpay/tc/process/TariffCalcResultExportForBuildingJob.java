@@ -12,6 +12,7 @@ import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.process.exporters.Exporter;
 import org.flexpay.tc.service.TariffCalculationResultService;
+import org.flexpay.tc.service.TariffService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -28,6 +29,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 	private List<String> subServiceExportCodes;
 	private BuildingService buildingService;
 	private Exporter exporter;
+	private TariffService tariffService;
 	/**
 	 * Building ID
 	 */
@@ -68,10 +70,8 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 					TariffCalculationResult tcr = getTariffCalculationResultBySubserviceCode(tariffCalcResultList, subServiceCode);
 					if (tcr == null) {
 						tcr = new TariffCalculationResult();
-						Tariff tariff = new Tariff();
-						tariff.setSubServiceCode(subServiceCode);
 						tcr.setBuilding(buildingService.findBuilding(new Stub<BuildingAddress>(buildingStub.getId())));
-						tcr.setTariff(tariff);
+						tcr.setTariff(tariffService.getTariffByCode(subServiceCode));
 						tcr.setCalculationDate(calculationDate);
 						tcr.setValue(BigDecimal.ZERO);
 					}
@@ -126,5 +126,10 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
+	}
+
+	@Required
+	public void setTariffService(TariffService tariffService) {
+		this.tariffService = tariffService;
 	}
 }
