@@ -20,7 +20,7 @@
 				value = replaceCommaWithDot(value);
 				total += parseFloat(value);
 			} else {
-				$('#demoQuittancePayForm_total_pay').val('<s:text name="eirc.error.quittances.quittance_pay.unaccessible"/>');
+				<%--$('#demoQuittancePayForm_total_pay').val('<s:text name="eirc.error.quittances.quittance_pay.unaccessible"/>');--%>
 			}
 		}
 
@@ -53,54 +53,54 @@
 	</s:iterator>
 	});
 
-	<%--$(function() {--%>
-		<%--var validator = $("#demoQuittancePayForm").validate({--%>
-			<%--rules: {--%>
-				<%--<s:iterator value="%{quittance.quittanceDetails}" id="qd">--%>
-				<%--'servicePayValue[<s:property value="%{#qd.id}"/>]' : {--%>
-					<%--'validPayValue': true,--%>
-					<%--'payValue_<s:property value="%{#qd.id}"/>_is_not_too_big': true--%>
-				<%--},--%>
-				<%--</s:iterator>--%>
-				<%--'total_pay': 'required' // covers $ validation 1.5.1 bug (it doesn't allow form fields without any rules)--%>
-			<%--},--%>
-			<%--messages: {--%>
-				<%--<s:iterator value="%{quittance.quittanceDetails}" id="qd" status="status">--%>
-				<%--'servicePayValue[<s:property value="%{#qd.id}"/>]' : {--%>
-					<%--'validPayValue': '<s:text name="eirc.error.quittances.quittance_pay.invalid_pay_value"/>',--%>
-					<%--'payValue_<s:property value="%{#qd.id}"/>_is_not_too_big': '<s:text name="eirc.error.quittances.quittance_pay.pay_value_too_big"/>'--%>
-				<%--}<s:if test="!#status.last">, </s:if>--%>
-				<%--</s:iterator>--%>
-			<%--},--%>
-			<%--errorClass: "cols_1_error",--%>
-			<%--errorElement: "span",--%>
-			<%--success: function(label) {--%>
-				<%--label.parent("td").parent("tr.cols_1_error").css("display", "none");--%>
-				<%--label.remove();--%>
+	$(function() {
+		var validator = $("#demoQuittancePayForm").validate({
+			rules: {
+				<s:iterator value="%{quittance.quittanceDetails}" id="qd">
+				'servicePayValue[<s:property value="%{#qd.id}"/>]' : {
+					'validPayValue': true,
+					'payValue_<s:property value="%{#qd.id}"/>_is_not_too_big': true
+				},
+				</s:iterator>
+				'total_pay': 'required' // covers $ validation 1.5.1 bug (it doesn't allow form fields without any rules)
+			},
+			messages: {
+				<s:iterator value="%{quittance.quittanceDetails}" id="qd" status="status">
+				'servicePayValue[<s:property value="%{#qd.id}"/>]' : {
+					'validPayValue': '<s:text name="eirc.error.quittances.quittance_pay.invalid_pay_value"/>',
+					'payValue_<s:property value="%{#qd.id}"/>_is_not_too_big': '<s:text name="eirc.error.quittances.quittance_pay.pay_value_too_big"/>'
+				}<s:if test="!#status.last">, </s:if>
+				</s:iterator>
+			},
+			errorClass: "cols_1_error",
+			errorElement: "span",
+			success: function(label) {
+				label.parent("td").parent("tr.cols_1_error").css("display", "none");
+				label.remove();
 
-				<%--if (validator.numberOfInvalids() == 0) {--%>
-					<%--updateTotalPay();--%>
-				<%--}--%>
-			<%--},--%>
-			<%--showErrors: function(errorMap, errorList) {--%>
-				<%--if (validator.numberOfInvalids() > 0) {--%>
+				if (validator.numberOfInvalids() == 0) {
+					updateTotalPay();
+				}
+			},
+			showErrors: function(errorMap, errorList) {
+				if (validator.numberOfInvalids() > 0) {
 					<%--$('#demoQuittancePayForm_total_pay').val('<s:text name="eirc.error.quittances.quittance_pay.unaccessible"/>');--%>
-				<%--}--%>
+				}
 
-				<%--this.defaultShowErrors();--%>
-			<%--},--%>
-			<%--errorPlacement: function(error, element) {--%>
-				<%--var row = element.parent("td").parent("tr").prev("tr");--%>
-				<%--var cell = row.children()[0];--%>
+				this.defaultShowErrors();
+			},
+			errorPlacement: function(error, element) {
+				var row = element.parent("td").parent("tr").prev("tr");
+				var cell = row.children()[0];
 
-				<%--error.appendTo(cell);--%>
-				<%--row.css("display", "table-row");--%>
-			<%--},--%>
-			<%--invalidHandler: function(form, validator) {--%>
-				<%--alert('<s:text name="eirc.error.quittances.quittance_pay.invalid_submit"/>');--%>
-			<%--}--%>
-		<%--});--%>
-	<%--});--%>
+				error.appendTo(cell);
+				row.css("display", "table-row");
+			},
+			invalidHandler: function(form, validator) {
+				alert('<s:text name="eirc.error.quittances.quittance_pay.invalid_submit"/>');
+			}
+		});
+	});
 
 	/**
 	 * Quittance details object
@@ -142,7 +142,7 @@
 		return ((i-mod)/divider).toString() + "." + (mod < 10 ? "0" + mod : mod);
 	}
 
-	var DETAILS = [];
+	var DETAILS = $.protify([]);
 
 	function divideAscending() {
 		var totalSumm = dotted2Int($("#demoQuittancePayForm_total_pay").val());
@@ -165,21 +165,47 @@
 				var nextSumm = totalSumm >= qd.toPay ? qd.toPay : totalSumm;
 				summs[qd.id] += nextSumm;
 				totalSumm -= nextSumm;
-				if (nextSumm > 0) {
-					alert("Next summ for " + qd + " is " + nextSumm);
-				}
 			}
 		}
 
-		// set summs to zero
+		// set summs to their values
 		for (var id in summs) {
 			$("#demoQuittancePayForm_servicePayValue_" + id + "_").val(int2Dotted(summs[id]));
 		}
 	}
 	function divideByRatio() {
-		var totalSumm = $("#demoQuittancePayForm_total_pay").val();
+		var totalSumm = dotted2Int($("#demoQuittancePayForm_total_pay").val());
+		var nonZeroSumms = DETAILS.findAll(function (qd) {
+			return qd.toPay > 0;
+		});
 
-		alert(DETAILS.join("\n"));
+		var summs = {};
+		// set summs to zero
+		DETAILS.each(function (qd) {
+			summs[qd.id] = 0;
+		});
+
+		var last = nonZeroSumms.last();
+		var summ = 0;
+		var totalToPay = dotted2Int('<s:property value="%{getTotalPayable()}" />');
+		nonZeroSumms.each(function (qd) {
+			if (qd.id != last.id) {
+				// http://msmvps.com/blogs/rexiology/archive/2006/01/09/80628.aspx
+				// cast float to integer trick
+				var nextSumm = (totalSumm * qd.toPay) / totalToPay | 0;
+				alert("Next summ " + nextSumm + " for " + qd);
+				summ += nextSumm;
+				summs[qd.id] = nextSumm;
+			}
+		});
+
+		// set last element summ
+		summs[last.id] = totalSumm - summ;
+
+		// set summs to their values
+		for (var id in summs) {
+			$("#demoQuittancePayForm_servicePayValue_" + id + "_").val(int2Dotted(summs[id]));
+		}
 	}
 </script>
 
