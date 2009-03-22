@@ -63,7 +63,9 @@ public class QuittancePayAction extends FPActionSupport {
 		BigDecimal total = new BigDecimal("0.00");
 
 		for (QuittanceDetails qd : quittance.getQuittanceDetails()) {
-			total = total.add(qd.getOutgoingBalance());
+			if (!qd.getConsumer().getService().isSubService()) {
+				total = total.add(qd.getOutgoingBalance());
+			}
 		}
 
 		return total.toString();
