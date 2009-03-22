@@ -11,6 +11,7 @@ import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.process.exporters.Exporter;
 import org.flexpay.tc.service.TariffCalculationResultService;
+import org.flexpay.tc.service.TariffService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -28,7 +29,8 @@ public class TariffCalcResultExportJob extends Job {
 	public final static String CALCULATION_DATE = "CALCULATION_DATE";
 	public final static String PERIOD_BEGIN_DATE = "PERIOD_BEGIN_DATE";
 	private List<String> subServiceExportCodes;
-
+	private TariffService tariffService;
+	
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		log.debug("Tariff calculation result export procces started");
@@ -55,12 +57,10 @@ public class TariffCalcResultExportJob extends Job {
 						TariffCalculationResult tcr = getTariffCalculationResultBySubserviceCode(tariffCalcResultList, subServiceCode);
 						if (tcr == null) {
 							tcr = new TariffCalculationResult();
-							Tariff tariff = new Tariff();
-							tariff.setSubServiceCode(subServiceCode);
+							tcr.setTariff(tariffService.getTariffByCode(subServiceCode));
 							Building building = new Building();
 							building.setId(addressId);
 							tcr.setBuilding(building);
-							tcr.setTariff(tariff);
 							tcr.setCalculationDate(calculationDate);
 							tcr.setValue(BigDecimal.ZERO);
 						}
@@ -119,6 +119,11 @@ public class TariffCalcResultExportJob extends Job {
 	@Required
 	public void setSubServiceExportCodes(List<String> subServiceExportCodes) {
 		this.subServiceExportCodes = subServiceExportCodes;
+	}
+
+	@Required
+	public void setTariffService(TariffService tariffService) {
+		this.tariffService = tariffService;
 	}
 
 }
