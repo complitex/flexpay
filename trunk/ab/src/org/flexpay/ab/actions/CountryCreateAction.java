@@ -1,6 +1,7 @@
 package org.flexpay.ab.actions;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.CountryNameTranslation;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.actions.FPActionSupport;
@@ -8,6 +9,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.LangNameTranslation;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.LanguageUtil;
+import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NonNls;
@@ -30,6 +32,11 @@ public class CountryCreateAction extends FPActionSupport implements ServletReque
 
 		// Need to create new Country
 		if (isSubmit()) {
+            if (!doValidate(countryNames)) {
+                request.setAttribute("country_names", countryNames);
+                return INPUT;
+            }
+
 			countryService.create(countryNames);
 			return REDIRECT_SUCCESS;
 		}
@@ -38,7 +45,41 @@ public class CountryCreateAction extends FPActionSupport implements ServletReque
 		return INPUT;
 	}
 
-	/**
+    private boolean doValidate(List<CountryNameTranslation> countryNames) throws FlexPayException {
+
+        // validate default language country name
+        CountryNameTranslation defaultTranslation = TranslationUtil.getTranslation(countryNames);
+        String fullName = defaultTranslation.getName();
+        String shortName = defaultTranslation.getShortName();
+
+        if (StringUtils.isEmpty(fullName)) {
+            addActionError(getText("ab.error.country.full_name_is_required"));
+        }
+
+        if (StringUtils.isEmpty(shortName)) {
+            addActionError(getText("ab.error.country.short_name_is_required"));
+        }
+
+        if (StringUtils.isEmpty(fullName) || StringUtils.isEmpty(shortName)) {
+            return false;
+        }
+
+        if (!countryService.isNameAvailable(fullName, ApplicationConfig.getDefaultLanguage())) {
+            addActionError(getText("ab.error.country.full_name_is_not_available", new String[] { fullName }));
+        }
+
+        if (!countryService.isShortNameAvailable(shortName, ApplicationConfig.getDefaultLanguage())) {
+            addActionError(getText("ab.error.country.short_name_is_not_available", new String[] { shortName }));
+        }
+
+        if (hasActionErrors()) {
+            request.setAttribute("country_names", countryNames);            
+        }
+
+        return !hasActionErrors();
+    }
+
+    /**
 	 * Get default error execution result
 	 * <p/>
 	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session

@@ -47,4 +47,16 @@
 		WHERE c.id=?
 	</query>
 
+    <query name="CountryNameTranslation.findByName">
+        SELECT DISTINCT translation
+        FROM CountryNameTranslation translation
+        WHERE translation.name=? AND translation.lang=?
+    </query>
+
+    <query name="CountryNameTranslation.findByShortName">
+        SELECT DISTINCT translation
+        FROM CountryNameTranslation translation
+        WHERE translation.shortName =? AND translation.lang=?
+    </query>
+
 </hibernate-mapping>
