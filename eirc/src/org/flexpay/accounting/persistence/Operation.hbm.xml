@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.accounting.persistence">
+    <class name="Operation" table="accounting_operation_tbl" optimistic-lock="version">
+        <comment>Operation</comment>
+        <id name="id" column="id">
+            <generator class="native" />
+        </id>
+        <discriminator column="PAYMENT_TYPE" type="string"/>
+        <version name="version" access="field">
+            <column name="version">
+                <comment>Optimistic lock version</comment>
+            </column>
+        </version>
+        <property name="operationCode"/>
+        <property name="operationSumm"/>
+        <property name="operationInputSumm"/>
+        <many-to-one name="creatorOrganization" class="org.flexpay.eirc.persistence.Organization" foreign-key="FK_accounting_operation_tbl_creator_organization_id">
+            <column name="creator_organization_id" not-null="true">
+                <comment>Organization when operation created</comment>
+            </column>
+        </many-to-one>
+        <property name="creatorUserName"/>
+        <property name="creationDate"/>
+        <many-to-one name="confirmatorOrganization" class="org.flexpay.eirc.persistence.Organization" foreign-key="FK_accounting_operation_tbl_confirmator_organization_id">
+            <column name="confirmator_organization_id" not-null="true">
+                <comment>Organization when operation confirmed</comment>
+            </column>
+
+        </many-to-one>
+        <property name="confirmatorUserName"/>
+        <property name="confirmationDate"/>
+        <many-to-one name="operationStatus" class="OperationStatus" foreign-key="FK_accounting_operation_tbl_operation_status_id">
+            <column name="operation_status_id" not-null="true">
+                <comment>Operation Status</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="level" class="OperationLevel" foreign-key="FK_accounting_operation_tbl_level_id">
+            <column name="level_id" not-null="true">
+                <comment>Operation Level</comment>
+            </column>
+        </many-to-one>
+        <subclass name="CashPaymentOperation" discriminator-value="CASH_PAYMENT"/>
+        <subclass name="CashReturnOperation" discriminator-value="CASH_RETURN"/>
+        <subclass name="ElectronicPaymentOperation" discriminator-value="ELEC_PAYMENT"/>
+        <subclass name="ElectonicReturnOperation" discriminator-value="ELEC_RETURN"/>
+        <subclass name="ServiceFeeOperation" discriminator-value="SERVICE_FEE"/>
+    </class>
+</hibernate-mapping>
