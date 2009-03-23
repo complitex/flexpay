@@ -127,6 +127,15 @@
 		<url-pattern>/spFileDownloadServlet</url-pattern>
 	</servlet-mapping>
 
+    <servlet>
+        <servlet-name>processLogDownloadServlet</servlet-name>
+		<servlet-class>org.flexpay.common.actions.ProcessLogDownloadServlet</servlet-class>
+	</servlet>    
+	<servlet-mapping>
+		<servlet-name>processLogDownloadServlet</servlet-name>
+		<url-pattern>/processLogDownloadServlet</url-pattern>
+	</servlet-mapping>
+
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>secure-resource</web-resource-name>
