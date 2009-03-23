@@ -706,7 +706,6 @@
         payment_status_id bigint not null comment 'Payment status reference',
         details_id bigint not null comment 'Quittance details reference',
         amount decimal(19,2) not null comment 'Amount payed for quittance',
-        quittance_payment_id bigint not null,
         primary key (id)
     ) comment='Quittance details payments';
 
@@ -763,7 +762,7 @@
     create table eirc_quittance_payments_tbl (
         id bigint not null auto_increment,
         version integer not null comment 'Optimistic lock version',
-        packet_id bigint not null comment 'Quittances packet reference',
+        packet_id bigint comment 'Optional quittances packet reference',
         payment_status_id bigint not null comment 'Payment status reference',
         quittance_id bigint not null comment 'Quittance reference',
         amount decimal(19,2) not null comment 'Amount payed for quittance',
@@ -1617,12 +1616,6 @@
         add index FK_eirc_quittance_details_payments_tbl_payment_id (payment_id), 
         add constraint FK_eirc_quittance_details_payments_tbl_payment_id 
         foreign key (payment_id) 
-        references eirc_quittance_payments_tbl (id);
-
-    alter table eirc_quittance_details_payments_tbl 
-        add index FK3B002EBEF2132330 (quittance_payment_id), 
-        add constraint FK3B002EBEF2132330 
-        foreign key (quittance_payment_id) 
         references eirc_quittance_payments_tbl (id);
 
     alter table eirc_quittance_details_payments_tbl 

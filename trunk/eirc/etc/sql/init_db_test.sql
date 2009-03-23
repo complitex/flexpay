@@ -542,7 +542,7 @@ insert into eirc_quittance_payment_statuses_tbl (id, version, code, i18n_name)
 select @payment_status_full:=1;
 insert into eirc_quittance_payment_statuses_tbl (id, version, code, i18n_name)
 	values (2, 1, 2, 'eirc.quittance.payment.status.partially');
-select @payment_status_full:=2;
+select @payment_status_partial:=2;
 
 -- Quittance packets
 insert into eirc_quittance_packets_tbl (id, status, version, packet_number, payment_point_id,
@@ -551,3 +551,14 @@ insert into eirc_quittance_packets_tbl (id, status, version, packet_number, paym
 	values (1, 0, 0, 123, @payment_point_1,
 		'2009-01-12', '2100-12-31', '2100-12-31', 'test user', '',
 		2, 123.45, 1, 12.21);
+
+-- Partial quittance payment
+insert into eirc_quittance_payments_tbl (id, version, quittance_id, packet_id, payment_status_id, amount)
+	values (1, 0, @quittance_1, null, @payment_status_partial, '100.0');
+select @q_payment_1:=1;
+insert into eirc_quittance_details_payments_tbl (version, details_id, payment_status_id, payment_id, amount)
+	values (0, @quittance_details_1_2, @payment_status_full, @q_payment_1, '50.0');
+insert into eirc_quittance_details_payments_tbl (version, details_id, payment_status_id, payment_id, amount)
+	values (0, @quittance_details_1_3, @payment_status_partial, @q_payment_1, '20.0');
+insert into eirc_quittance_details_payments_tbl (version, details_id, payment_status_id, payment_id, amount)
+	values (0, @quittance_details_1_4, @payment_status_partial, @q_payment_1, '30.0');

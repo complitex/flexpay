@@ -3,7 +3,9 @@ package org.flexpay.eirc.persistence;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -61,6 +63,18 @@ public class QuittancePayment extends DomainObject {
 
 	public void setDetailsPayments(Set<QuittanceDetailsPayment> detailsPayments) {
 		this.detailsPayments = detailsPayments;
+	}
+
+	@Nullable
+	public QuittanceDetailsPayment getPayment(QuittanceDetails qd) {
+
+		for (QuittanceDetailsPayment payment : detailsPayments) {
+			if (payment.getQuittanceDetails().equals(qd)) {
+				return payment;
+			}
+		}
+
+		return null;
 	}
 
 	public BigDecimal getAmount() {

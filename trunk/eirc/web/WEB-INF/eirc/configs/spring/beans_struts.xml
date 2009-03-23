@@ -67,13 +67,14 @@
 		  p:eircAccountService-ref="eircAccountService"
 		  p:quittancePacketService-ref="quittancePacketService" />
 
-    <bean id="quittancePaySearchAction" class="org.flexpay.eirc.actions.quittance.QuittancePaySearchAction"
-          p:quittanceService-ref="quittanceService"
-          scope="prototype"/>
+	<bean id="quittancePaySearchAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.quittance.QuittancePaySearchAction"
+		  p:quittanceService-ref="quittanceService" />
 
-    <bean id="quittancePayAction" class="org.flexpay.eirc.actions.quittance.QuittancePayAction"
-          p:quittanceService-ref="quittanceService"
-          scope="prototype"/>
+	<bean id="quittancePayAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.quittance.QuittancePayAction"
+		  p:quittanceService-ref="quittanceService"
+		  p:quittancePaymentService-ref="quittancePaymentService" />
 
 	<!-- Registries -->
 	<bean id="registriesListAction" scope="prototype"
@@ -91,12 +92,11 @@
 		  p:processManager-ref="processManager" />
 
 	<bean id="registryViewAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.RegistryViewAction">
-		<property name="registryService" ref="registryService" />
-		<property name="registryRecordService" ref="registryRecordService" />
-		<property name="classToTypeRegistry" ref="typeRegistryEirc" />
-		<property name="serviceTypeService" ref="serviceTypeService" />
-	</bean>
+		  class="org.flexpay.eirc.actions.registry.RegistryViewAction"
+		  p:registryService-ref="registryService"
+		  p:registryRecordService-ref="registryRecordService"
+		  p:classToTypeRegistry-ref="typeRegistryEirc"
+		  p:serviceTypeService-ref="serviceTypeService" />
 
 	<!-- Organisations -->
 	<bean id="organizationsListAction" scope="prototype"
