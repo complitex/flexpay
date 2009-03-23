@@ -5,7 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.CountryDao;
-import org.flexpay.ab.dao.CountryNameDao;
+import org.flexpay.ab.dao.CountryNameTranslationDao;
 import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.CountryNameTranslation;
 import org.flexpay.ab.persistence.filters.CountryFilter;
@@ -29,9 +29,9 @@ public class CountryServiceImpl implements CountryService {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private CountryDao countryDao;
-	private CountryNameDao countryNameDao;
+	private CountryNameTranslationDao countryNameTranslationDao;
 
-	@Transactional (readOnly = false)
+    @Transactional (readOnly = false)
 	public Country create(List<CountryNameTranslation> countryNames) {
 		Country country = new Country();
 		country.setStatus(Country.STATUS_ACTIVE);
@@ -52,7 +52,7 @@ public class CountryServiceImpl implements CountryService {
 		// Save country
 		countryDao.create(country);
 		for (CountryNameTranslation name : names) {
-			countryNameDao.create(name);
+			countryNameTranslationDao.create(name);
 		}
 		country.setCountryNames(names);
 
@@ -161,12 +161,33 @@ public class CountryServiceImpl implements CountryService {
 		return initFilter(parentFilter, locale);
 	}
 
-	public void setCountryDao(CountryDao countryDao) {
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isNameAvailable(@NotNull String name, @NotNull Language language) {
+
+        List<CountryNameTranslation> translations = countryNameTranslationDao.findByName(name, language);
+        return translations.size() == 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isShortNameAvailable(@NotNull String shortName, @NotNull Language language) {
+
+        List<CountryNameTranslation> translations = countryNameTranslationDao.findByShortName(shortName, language);
+        return translations.size() == 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setCountryDao(CountryDao countryDao) {
 		this.countryDao = countryDao;
 	}
 
-	public void setCountryNameDao(CountryNameDao countryNameDao) {
-		this.countryNameDao = countryNameDao;
+	public void setCountryNameDao(CountryNameTranslationDao countryNameTranslationDao) {
+		this.countryNameTranslationDao = countryNameTranslationDao;
 	}
 
 	public Country readFull(@NotNull Stub<Country> stub) {

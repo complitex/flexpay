@@ -6,6 +6,7 @@ import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.springframework.security.annotation.Secured;
 import org.jetbrains.annotations.NotNull;
@@ -63,4 +64,22 @@ public interface CountryService extends ParentService<CountryFilter> {
 
 	@Secured (Roles.COUNTRY_READ)
 	Country readFull(@NotNull Stub<Country> stub);
+
+    /**
+     * Checks whether there is no country with name <code>countryName</code> in language <code>language</code>
+     * @param countryName country full name
+     * @param language search language
+     * @return <code>true</code> if there is no country with the name in the language, <code>false</code> otherwise
+     */
+    @Secured (Roles.COUNTRY_READ)
+    boolean isNameAvailable(@NotNull String countryName, @NotNull Language language);
+
+    /**
+     * Checks whether there is no country with short name <code>shortName</code> in language <code>language</code>
+     * @param shortName country short name
+     * @param language search language
+     * @return <code>true</code> if there is no country with the short name in the language, <code>false</code> otherwise
+     */
+    @Secured (Roles.COUNTRY_READ)
+    boolean isShortNameAvailable(@NotNull String shortName, @NotNull Language language);
 }
