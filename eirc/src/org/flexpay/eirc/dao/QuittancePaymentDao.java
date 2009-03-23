@@ -15,4 +15,7 @@ public interface QuittancePaymentDao extends GenericDao<QuittancePayment, Long> 
 
 	@NotNull
 	List<QuittancePacket> findQuittancePayedPackets(Long quittanceId);
+
+	@NotNull
+	List<QuittancePayment> findQuittancePayments(Long quittanceId);
 }

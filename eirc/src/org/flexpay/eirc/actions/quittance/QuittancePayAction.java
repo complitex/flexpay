@@ -4,30 +4,52 @@ import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
+import org.flexpay.eirc.persistence.QuittancePayment;
+import org.flexpay.eirc.persistence.QuittanceDetailsPayment;
 import org.flexpay.eirc.service.QuittanceService;
+import org.flexpay.eirc.service.QuittancePaymentService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Collections;
 
 public class QuittancePayAction extends FPActionSupport {
 
 	// form data
 	private Quittance quittance = new Quittance();
+	private List<QuittancePayment> payments = Collections.emptyList();
 	private String quittanceNumber;
 
 	// required services
 	private QuittanceService quittanceService;
+	private QuittancePaymentService quittancePaymentService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		if (isSubmit()) {
-			session.put(quittanceNumber, "true");
+		if (quittance.getId() == null) {
+			addActionError(getText("error.no_id"));
 			return REDIRECT_SUCCESS;
 		}
 
 		quittance = quittanceService.readFull(stub(quittance));
+		if (quittance == null) {
+			addActionError(getText("error.invalid_id"));
+			return REDIRECT_SUCCESS;
+		}
+
+		if (isSubmit()) {
+			addActionError("eirc.quittances.quittance_pay.payed_successfully");
+			return REDIRECT_SUCCESS;
+		}
+
+		payments = quittancePaymentService.getQuittancePayments(stub(quittance));
+
+		if (quittancePayed()) {
+			addActionError(getText("eirc.quittance.payment.was_paid"));
+		}
 
 		return INPUT;
 	}
@@ -71,6 +93,47 @@ public class QuittancePayAction extends FPActionSupport {
 		return total.toString();
 	}
 
+	public boolean quittancePayed() {
+
+		for (QuittanceDetails details : quittance.getQuittanceDetails()) {
+			if (!details.getConsumer().getService().isSubService()) {
+				BigDecimal summToPay = details.getOutgoingBalance();
+				if (summToPay.compareTo(getPayedSumm(details)) > 0) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	@NotNull
+	public BigDecimal getTotalPayed() {
+
+		BigDecimal summ = new BigDecimal("0.00");
+		for (QuittanceDetails details : quittance.getQuittanceDetails()) {
+			if (!details.getConsumer().getService().isSubService()) {
+				BigDecimal summPayed = getPayedSumm(details);
+				summ = summ.add(summPayed);
+			}
+		}
+
+		return summ;
+	}
+
+	@NotNull
+	public BigDecimal getPayedSumm(QuittanceDetails qd) {
+		BigDecimal summ = new BigDecimal("0.00");
+		for (QuittancePayment payment : payments) {
+			QuittanceDetailsPayment detailsPayment = payment.getPayment(qd);
+			if (detailsPayment != null) {
+				summ = summ.add(detailsPayment.getAmount());
+			}
+		}
+
+		return summ;
+	}
+
 	// set/get form data
 	public void setQuittance(Quittance quittance) {
 		this.quittance = quittance;
@@ -94,4 +157,8 @@ public class QuittancePayAction extends FPActionSupport {
 		this.quittanceService = quittanceService;
 	}
 
+	@Required
+	public void setQuittancePaymentService(QuittancePaymentService quittancePaymentService) {
+		this.quittancePaymentService = quittancePaymentService;
+	}
 }

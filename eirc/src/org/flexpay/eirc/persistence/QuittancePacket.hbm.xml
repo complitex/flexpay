@@ -148,8 +148,8 @@
 		</version>
 		<many-to-one name="packet" foreign-key="FK_eirc_quittance_payments_tbl_packet_id"
 					 class="QuittancePacket">
-			<column name="packet_id" not-null="true">
-				<comment>Quittances packet reference</comment>
+			<column name="packet_id" not-null="false">
+				<comment>Optional quittances packet reference</comment>
 			</column>
 		</many-to-one>
 		<many-to-one name="paymentStatus" foreign-key="FK_eirc_quittance_payments_tbl_payment_status_id"
@@ -170,7 +170,7 @@
 			</column>
 		</property>
 		<set name="detailsPayments" cascade="all" inverse="true">
-			<key column="quittance_payment_id" not-null="true" />
+			<key column="payment_id" not-null="true" />
 			<one-to-many class="QuittanceDetailsPayment" />
 		</set>
 	</class>
@@ -265,6 +265,16 @@
 			left join fetch o.paymentStatus
 			left join o.quittance q
 		where q.id=?
+	</query>
+
+	<query name="QuittancePayment.findQuittancePayments">
+		select distinct o
+		from QuittancePayment o
+			left join fetch o.paymentStatus
+			left join fetch o.detailsPayments dp
+			left join fetch dp.paymentStatus
+			left join fetch dp.quittanceDetails qd
+		where o.quittance.id=?
 	</query>
 
 </hibernate-mapping>

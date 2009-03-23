@@ -216,6 +216,10 @@
 		<td><s:property value="%{quittanceNumber}" /></td>
 	</tr>
 	<tr>
+		<td><s:text name="month" />:</td>
+		<td><s:date format="MM/yyyy" name="quittance.dateFrom" /></td>
+	</tr>
+	<tr>
 		<td><s:text name="eirc.quittances.quittance_pay.fio" />:</td>
 		<td><s:property value="%{getFIO()}" /></td>
 	</tr>
@@ -239,8 +243,9 @@
 		<tr>
 			<td class="th" nowrap="nowrap"><s:text name="eirc.quittances.quittance_pay.service" /></td>
 			<td class="th"><s:text name="eirc.quittances.quittance_pay.service_supplier" /></td>
-			<td class="th" style="width:20%;"><s:text name="eirc.quittances.quittance_pay.payable" /></td>
-			<td class="th" style="width:20%;"><s:text name="eirc.quittances.quittance_pay.pay" /></td>
+			<td class="th"><s:text name="eirc.quittances.quittance_pay.payable" /></td>
+			<td class="th"><s:text name="eirc.quittances.quittance_pay.payed" /></td>
+			<td class="th"><s:text name="eirc.quittances.quittance_pay.pay" /></td>
 		</tr>
 
 		<s:iterator value="%{quittance.orderedQuittanceDetails}" id="qd">
@@ -259,13 +264,14 @@
 									"<s:property value="%{getServiceName(#qd)}" />",
 									"<s:property value="%{getServiceProviderName(#qd)}" />",
 									"<s:property value="%{#qd.outgoingBalance}" />",
-									"<s:property value="%{#qd.outgoingBalance}" />"));
+									"<s:property value="%{getPayedSumm(#qd)}" />"));
 						</script>
 					</s:else>
 				</td>
 				<td class="col"><s:property value="%{getServiceProviderName(#qd)}" /></td>
 				<td class="col" id="paySumm_<s:property value="%{#qd.id}" />"><s:property
 						value="%{getPayable(#qd)}" /></td>
+				<td class="col"><s:property value="%{getPayedSumm(#qd)}" /></td>
 				<td class="col">
 					<s:if test="%{!#qd.consumer.service.isSubService()}">
 						<s:textfield name="servicePayValue[%{#qd.id}]" value="%{getPayable(#qd)}"
@@ -277,12 +283,13 @@
 			<td class="col" colspan="2" style="text-align:right;font-weight:bold;"><s:text
 					name="eirc.quittances.quittance_pay.total_payable" /></td>
 			<td class="col" style="font-weight:bold;"><s:property value="%{getTotalPayable()}" /></td>
+			<td class="col" style="font-weight:bold;"><s:property value="%{getTotalPayed()}" /></td>
 			<td class="col"><s:textfield name="total_pay" value="%{getTotalPayable()}"
 										 cssStyle="width: 100%; text-align: right;" /></td>
 		</tr>
 
 		<tr>
-			<td colspan="3" style="text-align:left;">
+			<td colspan="4" style="text-align:left;">
 				<input type="button" value="<s:text name="eirc.quittance.payment.pay_by_ratio"/>"
 					   class="btn-exit" onclick="divideByRatio();" />
 				<input type="button" value="<s:text name="eirc.quittance.payment.pay_asc"/>"
