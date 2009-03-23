@@ -48,23 +48,3 @@ SELECT @deleting_status_id:=last_insert_id();
 INSERT INTO common_file_statuses_tbl (name, code, module_id)
 	VALUES ('sz.file_status.deleting_from_db', 6, @module_sz);
 SELECT @deleting_from_db_status_id:=last_insert_id();
-
--- Init OSZN orgs
-insert into sz_oszns_tbl (description, district_id) values
-        ('Заельцовский', @district_id_nsk_zaelcovskiy),
-        ('Дзержинский', 2),
-        ('Железнодорожный', 3),
-        ('Калининский', 4),
-        ('Кировский', 5),
-        ('Лениниский', 6),
-        ('Октябрьский', 7),
-        ('Первомайский', 8),
-        ('Советский', 9),
-        ('Центральный', 10),
-        ('Дёмский', 11),
-        ('Калиниский', 12),
-        ('Кировский', 13),
-        ('Лениниский', 14),
-        ('Октябрьский', 15),
-        ('Орджоникидзевский', 16),
-        ('Советский', 17);
