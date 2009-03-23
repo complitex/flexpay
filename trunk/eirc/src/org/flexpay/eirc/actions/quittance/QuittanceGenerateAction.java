@@ -8,6 +8,7 @@ import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.eirc.persistence.filters.ServiceOrganizationFilter;
+import org.flexpay.eirc.process.quittance.GenerateQuittanceJob;
 import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -32,15 +33,24 @@ public class QuittanceGenerateAction extends FPActionSupport {
 
 		if (isSubmit()) {
 
+			boolean validated = true;
+
 			if (!serviceOrganizationFilter.needFilter()) {
 				addActionError(getText("eirc.error.quittance.no_service_organization"));
-			} else {
+				validated = false;
+			}
+			if (!DateUtil.truncateMonth(beginDateFilter.getDate()).equals(DateUtil.truncateMonth(endDateFilter.getDate()))) {
+				addActionError(getText("eirc.error.quittance.job.month_only_allowed"));
+				validated = false;
+			}
+
+			if (validated) {
 
 				Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
-				contextVariables.put("dateFrom", beginDateFilter.getDate());
-				contextVariables.put("dateTill", endDateFilter.getDate());
-				contextVariables.put("serviceOrganizationId", serviceOrganizationFilter.getSelectedId());
+				contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, beginDateFilter.getDate());
+				contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, endDateFilter.getDate());
+				contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANIZATION_ID, serviceOrganizationFilter.getSelectedId());
 
 				processManager.createProcess("GenerateQuitances", contextVariables);
 

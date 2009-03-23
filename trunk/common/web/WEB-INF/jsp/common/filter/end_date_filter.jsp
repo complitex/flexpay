@@ -4,8 +4,6 @@
 <s:if test="endDateFilter.readOnly">
     <s:property value="endDateFilter.stringDate" />
 </s:if><s:else>
-    <%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
-
     <script type="text/javascript">
         FP.calendars("#endDateFilter", true);
     </script>
