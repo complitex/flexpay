@@ -1,9 +1,55 @@
-
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror />
 
-<s:form action="quittanceGenerate">
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		$.validator.addMethod("datesCheck", function (value, element) {
+			var begin = new Date($("#beginDateFilter").val());
+			var end = new Date($("#endDateFilter").val());
+			return this.optional(element) || begin <= end;
+		});
+
+		$.validator.addMethod("sameMonth", function (value, element) {
+			var begin = new Date($("#beginDateFilter").val());
+			var end = new Date($("#endDateFilter").val());
+			return this.optional(element) || begin.getYear() == end.getYear() && begin.getMonth() == end.getMonth();
+		});
+
+		$("#qgform").validate({
+			rules : {
+				"beginDateFilter.stringDate" : {
+					required : true,
+					date : true,
+					datesCheck : true,
+					sameMonth : true
+				},
+				"endDateFilter.stringDate" : {
+					required : true,
+					date : true
+				}
+			},
+			messages : {
+				"beginDateFilter.stringDate" : {
+					required : "<s:text name="eirc.error.quittance.job.no_dates" />",
+					datesCheck : "<s:text name="eirc.error.quittance.job.begin_after_end" />",
+					sameMonth : "<s:text name="eirc.error.quittance.job.month_only_allowed" />"
+				},
+				"endDateFilter.stringDate" : "endDateFilter"
+			},
+			errorPlacement: function(error, element) {
+				var row = element.parent("td").parent("tr").prev("tr");
+				var cell = row.children()[0];
+
+				error.appendTo(cell);
+				row.css("display", "table-row");
+			}
+		});
+	});
+</script>
+
+<s:form id="qgform" action="quittanceGenerate">
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr valign="middle" class="cols_1">
 			<td class="col">
