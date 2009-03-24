@@ -27,7 +27,9 @@
 				},
 				"endDateFilter.stringDate" : {
 					required : true,
-					date : true
+					date : true,
+					datesCheck : true,
+					sameMonth : true
 				}
 			},
 			messages : {
@@ -36,7 +38,11 @@
 					datesCheck : "<s:text name="eirc.error.quittance.job.begin_after_end" />",
 					sameMonth : "<s:text name="eirc.error.quittance.job.month_only_allowed" />"
 				},
-				"endDateFilter.stringDate" : "endDateFilter"
+				"endDateFilter.stringDate" : {
+					required : "<s:text name="eirc.error.quittance.job.no_dates" />",
+					datesCheck : "<s:text name="eirc.error.quittance.job.begin_after_end" />",
+					sameMonth : "<s:text name="eirc.error.quittance.job.month_only_allowed" />"
+				}
 			},
 			errorPlacement: function(error, element) {
 				var row = element.parent("td").parent("tr").prev("tr");
@@ -51,16 +57,25 @@
 
 <s:form id="qgform" action="quittanceGenerate">
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
-		<tr valign="middle" class="cols_1">
+		<tr class="cols_1_error" style="display:none;">
+			<td colspan="4" />
+		</tr>
+		<tr valign="middle">
 			<td class="col">
 				<%@include file="../filters/service_organization_filter.jsp" %>
 			</td>
+		</tr>
+		<tr class="cols_1_error" style="display:none;">
+			<td colspan="4" />
 		</tr>
 		<tr>
 			<td class="col">
 				<s:text name="ab.from" />
 				<%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %>
 			</td>
+		</tr>
+		<tr class="cols_1_error" style="display:none;">
+			<td colspan="4" />
 		</tr>
 		<tr>
 			<td class="col">
