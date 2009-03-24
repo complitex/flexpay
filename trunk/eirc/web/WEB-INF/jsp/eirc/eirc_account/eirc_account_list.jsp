@@ -19,7 +19,7 @@
 			<td class="th" width="42%"><s:text name="eirc.eirc_account.person"/></td>
 			<td class="th" width="42%"><s:text name="eirc.eirc_account.apartment"/></td>
 		</tr>
-		<s:iterator value="%{eircAccountsList}" status="status">
+		<s:iterator value="%{eircAccounts}" status="status">
 			<tr valign="middle" class="cols_1">
 				<td class="col" align="right">
                     <s:property value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>

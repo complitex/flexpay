@@ -1,16 +1,8 @@
 package org.flexpay.common.actions;
 
-import org.apache.struts2.interceptor.ServletRequestAware;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.util.config.UserPreferences;
-import org.jetbrains.annotations.NonNls;
 
-import javax.servlet.http.HttpServletRequest;
-
-public abstract class FPActionWithPagerSupport<T> extends FPActionSupport implements ServletRequestAware {
-
-	@NonNls
-	private HttpServletRequest request;
+public abstract class FPActionWithPagerSupport<T> extends FPActionSupport {
 
 	private Page<T> pager = new Page<T>();
 	private boolean pageSizeChanged = false;
@@ -40,7 +32,6 @@ public abstract class FPActionWithPagerSupport<T> extends FPActionSupport implem
 
 	public void setPageSize(Integer pageSize) {
 		getUserPreferences().setPageSize(pageSize);
-		UserPreferences.setPreferences(request, getUserPreferences());
 	}
 
 	public Integer getPageSize() {
@@ -54,9 +45,4 @@ public abstract class FPActionWithPagerSupport<T> extends FPActionSupport implem
 	public void setPager(Page<T> pager) {
 		this.pager = pager;
 	}
-
-	public void setServletRequest(HttpServletRequest request) {
-		this.request = request;
-	}
-
 }

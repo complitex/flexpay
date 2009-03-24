@@ -29,6 +29,14 @@ public class TestEircAccountService extends SpringBeanAwareTestCase {
 	}
 
 	@Test
+	public void testFindEircAccounts() {
+
+		List<EircAccount> accounts = eircAccountService.findAccounts(
+				CollectionUtils.arrayStack(new ApartmentFilter()), new Page<EircAccount>());
+		assertFalse("No eirc accounts found", accounts.isEmpty());
+	}
+
+	@Test
 	public void testFindEircAccountByApartment2() {
 
 		ApartmentFilter apartmentFilter = new ApartmentFilter(330L);

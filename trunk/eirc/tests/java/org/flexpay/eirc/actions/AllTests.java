@@ -7,7 +7,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		TestSpFileCreateAction.class,
 //		TestSpFileAction.class,
-		TestPrintTicketAction.class
+		TestPrintTicketAction.class,
+		TestEircAccountListAction.class
 		})
 public class AllTests {
 
