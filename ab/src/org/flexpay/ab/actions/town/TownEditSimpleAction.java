@@ -15,207 +15,231 @@ import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
 public class TownEditSimpleAction extends FPActionSupport {
 
-	private RegionService regionService;
-	private TownTypeService townTypeService;
-	private TownService townService;
+    // filters
+    private CountryFilter countryFilter = new CountryFilter();
+    private RegionFilter regionFilter = new RegionFilter();
+    private TownTypeFilter townTypeFilter = new TownTypeFilter();
+    private BeginDateFilter beginDateFilter = new BeginDateFilter();
 
-	private CountryFilter countryFilter = new CountryFilter();
-	private RegionFilter regionFilter = new RegionFilter();
-	private TownTypeFilter townTypeFilter = new TownTypeFilter();
-	private BeginDateFilter beginDateFilter = new BeginDateFilter();
-	private Map<Long, String> names = CollectionUtils.treeMap();
-	private Town town = new Town();
+    // form data
+    private Map<Long, String> names = CollectionUtils.treeMap();
+    private Town town = new Town();
 
-	/**
-	 * Constructor TownEditSimpleAction creates a new TownEditSimpleAction instance.
-	 */
-	public TownEditSimpleAction() {
-		// disable automatic form submit on region filter change
-		regionFilter.setNeedAutoChange(false);
-	}
+    // required services
+    private RegionService regionService;
+    private TownTypeService townTypeService;
+    private TownService townService;
 
-	/**
-	 * Perform action execution.
-	 * <p/>
-	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
-	 *
-	 * @return execution result code
-	 * @throws Exception if failure occurs
-	 */
-	@NotNull
-	protected String doExecute() throws Exception {
+    /**
+     * Constructor TownEditSimpleAction creates a new TownEditSimpleAction instance.
+     */
+    public TownEditSimpleAction() {
+        // disable automatic form submit on region filter change
+        regionFilter.setNeedAutoChange(false);
+    }
 
-		if (town.getId() == null) {
-			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
-		}
+    /**
+     * Perform action execution.
+     * <p/>
+     * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+     *
+     * @return execution result code
+     * @throws Exception if failure occurs
+     */
+    @NotNull
+    protected String doExecute() throws Exception {
 
-		Town twn = town.isNew() ? town : townService.readFull(stub(town));
-		if (twn == null) {
-			addActionError(getText("error.invalid_id"));
-			return REDIRECT_SUCCESS;
-		}
+        Town twn = town.isNew() ? town : townService.readFull(stub(town));
+        initFilters();
 
-		// init defaults and show input form
-		if (!isSubmit()) {
-			town = twn;
-			initDefaults();
-			initFilters();
-			return INPUT;
-		}
+        if (isSubmit()) {
 
-		initFilters();
+            if (!doValidate()) {
+                return INPUT;
+            }
 
-		// collect data and save
-		if (!regionFilter.needFilter()) {
-			addActionError(getText("ab.error.town.no_region"));
-			return INPUT;
-		}
-		if (!townTypeFilter.needFilter()) {
-			addActionError(getText("ab.error.town.no_type"));
-			return INPUT;
-		}
+            updateTown(twn);
 
-		// Type
-		twn.setTypeForDate(new TownType(townTypeFilter.getSelectedId()), beginDateFilter.getDate());
+            return REDIRECT_SUCCESS;
+        }
 
-		// Name
-		// init translations
-		// todo refactor to common method used everywhere
-		TownName townName = new TownName();
-		for (Map.Entry<Long, String> name : names.entrySet()) {
-			String value = name.getValue();
-			Language lang = getLang(name.getKey());
-			TownNameTranslation translation = new TownNameTranslation();
-			translation.setLang(lang);
-			translation.setName(value);
-			townName.addNameTranslation(translation);
-		}
-		twn.setNameForDate(townName, beginDateFilter.getDate());
+        town = twn;
+        initDefaults();
+        return INPUT;
+    }
 
-		log.debug("Names timeline: {}", twn.getNamesTimeLine());
+    private boolean doValidate() {
 
-		// setup region for new object
-		if (twn.isNew()) {
-			twn.setRegion(new Region(regionFilter.getSelectedId()));
-		}
+        if (town.getId() == null) {
+            addActionError(getText("common.object_not_selected"));
+            return false;
+        }
 
-		if (twn.isNew()) {
-			townService.create(twn);
-		} else {
-			townService.update(twn);
-		}
+        Town twn = town.isNew() ? town : townService.readFull(stub(town));
+        if (twn == null) {
+            addActionError(getText("error.invalid_id"));
+            return false;
+        }
 
-		return REDIRECT_SUCCESS;
-	}
+        if (!regionFilter.needFilter()) {
+            addActionError(getText("ab.error.town.no_region"));
+        }
 
-	/**
-	 * Get default error execution result
-	 * <p/>
-	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
-	 *
-	 * @return {@link #ERROR} by default
-	 */
-	@NotNull
-	protected String getErrorResult() {
-		return INPUT;
-	}
+        if (!townTypeFilter.needFilter()) {
+            addActionError(getText("ab.error.town.no_type"));
+        }
 
-	private void initFilters() throws Exception {
-		townTypeFilter = townTypeService.initFilter(townTypeFilter, getUserPreferences().getLocale());
+        if (!beginDateFilter.needFilter()) {
+            addActionError(getText("ab.error.town.no_begin_date"));
+        }
 
-		ArrayStack filters = CollectionUtils.arrayStack(countryFilter, regionFilter);
-		regionService.initFilters(filters, getUserPreferences().getLocale());
+        return !hasActionErrors();
+    }
 
-		if (town.isNotNew()) {
-			regionFilter.setReadOnly(true);
-			countryFilter.setReadOnly(true);
-		}
-	}
+    /*
+    * Creates new town if it is a new one (haven't been yet persisted) or updates persistent one
+    */
+    private void updateTown(Town twn) throws FlexPayExceptionContainer {
 
-	private void initDefaults() {
-		TownNameTemporal tmprl = town.getCurrentNameTemporal();
-		if (tmprl == null) {
-			names = ActionUtil.getLangIdsToTranslations(new TownName());
-			beginDateFilter.setDate(ApplicationConfig.getPastInfinite());
-		} else {
-			names = ActionUtil.getLangIdsToTranslations(tmprl.getValue());
-			beginDateFilter.setDate(tmprl.getBegin());
-		}
+        TownName townName = getTownName();
+        twn.setNameForDate(townName, beginDateFilter.getDate());
+        twn.setTypeForDate(new TownType(townTypeFilter.getSelectedId()), beginDateFilter.getDate());
 
-		TownTypeTemporal tmprlType = town.getCurrentTypeTemporal();
-		if (tmprlType != null) {
-			townTypeFilter.setSelectedId(tmprlType.getValue().getId());
-		}
+        // setup region for new object
+        if (twn.isNew()) {
+            twn.setRegion(new Region(regionFilter.getSelectedId()));
+            townService.create(twn);
+        } else {
+            townService.update(twn);
+        }
+    }
 
-		if (town.isNotNew()) {
-			regionFilter.setSelectedId(town.getRegionStub().getId());
-		}
-	}
+    private TownName getTownName() {
 
-	public CountryFilter getCountryFilter() {
-		return countryFilter;
-	}
+        TownName townName = new TownName();
+        for (Map.Entry<Long, String> name : names.entrySet()) {
+            String value = name.getValue();
+            Language lang = getLang(name.getKey());
+            TownNameTranslation translation = new TownNameTranslation();
+            translation.setLang(lang);
+            translation.setName(value);
+            townName.addNameTranslation(translation);
+        }
 
-	public void setCountryFilter(CountryFilter countryFilter) {
-		this.countryFilter = countryFilter;
-	}
+        return townName;
+    }
 
-	public RegionFilter getRegionFilter() {
-		return regionFilter;
-	}
+    /**
+     * Get default error execution result
+     * <p/>
+     * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+     *
+     * @return {@link #ERROR} by default
+     */
+    @NotNull
+    protected String getErrorResult() {
+        return INPUT;
+    }
 
-	public void setRegionFilter(RegionFilter regionFilter) {
-		this.regionFilter = regionFilter;
-	}
+    private void initFilters() throws Exception {
+        townTypeFilter = townTypeService.initFilter(townTypeFilter, getUserPreferences().getLocale());
 
-	public TownTypeFilter getTownTypeFilter() {
-		return townTypeFilter;
-	}
+        ArrayStack filters = CollectionUtils.arrayStack(countryFilter, regionFilter);
+        regionService.initFilters(filters, getUserPreferences().getLocale());
 
-	public void setTownTypeFilter(TownTypeFilter townTypeFilter) {
-		this.townTypeFilter = townTypeFilter;
-	}
+        if (town.isNotNew()) {
+            regionFilter.setReadOnly(true);
+            countryFilter.setReadOnly(true);
+        }
+    }
 
-	public BeginDateFilter getBeginDateFilter() {
-		return beginDateFilter;
-	}
+    private void initDefaults() {
+        TownNameTemporal tmprl = town.getCurrentNameTemporal();
+        if (tmprl == null) {
+            names = ActionUtil.getLangIdsToTranslations(new TownName());
+            beginDateFilter.setDate(ApplicationConfig.getPastInfinite());
+        } else {
+            names = ActionUtil.getLangIdsToTranslations(tmprl.getValue());
+            beginDateFilter.setDate(tmprl.getBegin());
+        }
 
-	public void setBeginDateFilter(BeginDateFilter beginDateFilter) {
-		this.beginDateFilter = beginDateFilter;
-	}
+        TownTypeTemporal tmprlType = town.getCurrentTypeTemporal();
+        if (tmprlType != null) {
+            townTypeFilter.setSelectedId(tmprlType.getValue().getId());
+        }
 
-	public Map<Long, String> getNames() {
-		return names;
-	}
+        if (town.isNotNew()) {
+            regionFilter.setSelectedId(town.getRegionStub().getId());
+        }
+    }
 
-	public void setNames(Map<Long, String> names) {
-		this.names = names;
-	}
+    // filters
+    public CountryFilter getCountryFilter() {
+        return countryFilter;
+    }
 
-	public Town getTown() {
-		return town;
-	}
+    public void setCountryFilter(CountryFilter countryFilter) {
+        this.countryFilter = countryFilter;
+    }
 
-	public void setTown(Town town) {
-		this.town = town;
-	}
+    public RegionFilter getRegionFilter() {
+        return regionFilter;
+    }
 
-	public void setRegionService(RegionService regionService) {
-		this.regionService = regionService;
-	}
+    public void setRegionFilter(RegionFilter regionFilter) {
+        this.regionFilter = regionFilter;
+    }
 
-	public void setTownTypeService(TownTypeService townTypeService) {
-		this.townTypeService = townTypeService;
-	}
+    public TownTypeFilter getTownTypeFilter() {
+        return townTypeFilter;
+    }
 
-	public void setTownService(TownService townService) {
-		this.townService = townService;
-	}
+    public void setTownTypeFilter(TownTypeFilter townTypeFilter) {
+        this.townTypeFilter = townTypeFilter;
+    }
+
+    public BeginDateFilter getBeginDateFilter() {
+        return beginDateFilter;
+    }
+
+    public void setBeginDateFilter(BeginDateFilter beginDateFilter) {
+        this.beginDateFilter = beginDateFilter;
+    }
+
+    // form data
+    public Map<Long, String> getNames() {
+        return names;
+    }
+
+    public void setNames(Map<Long, String> names) {
+        this.names = names;
+    }
+
+    public Town getTown() {
+        return town;
+    }
+
+    public void setTown(Town town) {
+        this.town = town;
+    }
+
+    // required services
+    public void setRegionService(RegionService regionService) {
+        this.regionService = regionService;
+    }
+
+    public void setTownTypeService(TownTypeService townTypeService) {
+        this.townTypeService = townTypeService;
+    }
+
+    public void setTownService(TownService townService) {
+        this.townService = townService;
+    }
 }
