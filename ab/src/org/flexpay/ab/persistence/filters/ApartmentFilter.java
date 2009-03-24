@@ -11,6 +11,13 @@ public class ApartmentFilter extends PrimaryKeyFilter<Apartment> {
 
 	private List<Apartment> apartments = Collections.emptyList();
 
+	public ApartmentFilter() {
+	}
+
+	public ApartmentFilter(Long selectedId) {
+		super(selectedId);
+	}
+
 	public List<Apartment> getApartments() {
 		return apartments;
 	}

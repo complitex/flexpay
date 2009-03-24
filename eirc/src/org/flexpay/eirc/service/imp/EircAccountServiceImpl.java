@@ -109,7 +109,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 			personSearchFilter = (PersonSearchFilter) filters.peek();
 			if (personSearchFilter.needFilter()) {
 				String str = "%" + personSearchFilter.getSearchString() + "%";
-				return eircAccountDao.findByPersonFIO(str, pager);
+				return eircAccountDao.findByPersonFIO(str, str, pager);
 			}
 			personSearchFilter = (PersonSearchFilter) filters.pop();
 		}

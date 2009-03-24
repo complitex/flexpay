@@ -10,6 +10,13 @@ public class PersonSearchFilter extends ObjectFilter {
 
 	private String searchString;
 
+	public PersonSearchFilter() {
+	}
+
+	public PersonSearchFilter(String searchString) {
+		this.searchString = searchString;
+	}
+
 	public String getSearchString() {
 		return searchString;
 	}
