@@ -17,8 +17,9 @@ public interface EircAccountDao extends GenericDao<EircAccount, Long> {
 	 * Find accounts by person info
 	 *
 	 * @param searchString Person info search string
+	 * @param ciSearchString Consumer info search string
 	 * @param pager		Pager
 	 * @return List of accounts
 	 */
-	List<EircAccount> findByPersonFIO(String searchString, Page<EircAccount> pager);
+	List<EircAccount> findByPersonFIO(String searchString, String ciSearchString, Page<EircAccount> pager);
 }

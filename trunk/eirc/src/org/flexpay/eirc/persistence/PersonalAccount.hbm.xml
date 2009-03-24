@@ -204,19 +204,23 @@
 	<query name="EircAccount.findByPersonFIO.count">
 		select count(a)
 		from EircAccount a
-			left join a.consumerInfo
+			left join a.consumerInfo ci
 			left join a.person p
 			inner join p.personIdentities pi
-		where a.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName like ?
+		where a.status=0 and
+			( upper(pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName) like upper(?) or
+			  upper(ci.lastName || ' ' || ci.firstName || ' ' || ci.middleName) like upper(?) )
 	</query>
 
 	<query name="EircAccount.findByPersonFIO">
 		select distinct a
 		from EircAccount a
-			left join fetch a.consumerInfo
+			left join fetch a.consumerInfo ci
 			left join a.person p
 			inner join p.personIdentities pi
-		where a.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName like ?
+		where a.status=0 and
+			( upper(pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName) like upper(?) or
+			  upper(ci.lastName || ' ' || ci.firstName || ' ' || ci.middleName) like upper(?) )
 	</query>
 
 	<query name="EircAccount.findByPersonAndApartment">
@@ -226,7 +230,14 @@
 		where a.person.id=? and a.apartment.id=? and a.status=0
 	</query>
 
+	<query name="EircAccount.findByApartment.count">
+		select count(a)
+		from EircAccount a
+		where a.apartment.id=? and a.status=0
+	</query>
+
 	<query name="EircAccount.findByApartment">
+		select distinct a
 		from EircAccount a
 			left join fetch a.consumerInfo
 		where a.apartment.id=? and a.status=0
@@ -255,6 +266,5 @@
 			left join fetch s.serviceType st
 		WHERE a.id=? and (c is null or c.status=0)
 	</query>
-
 
 </hibernate-mapping>
