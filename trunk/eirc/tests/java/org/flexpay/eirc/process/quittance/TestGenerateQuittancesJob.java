@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
 import java.util.GregorianCalendar;
 import java.util.Map;
+import java.util.Date;
 
 public class TestGenerateQuittancesJob extends SpringBeanAwareTestCase {
 
@@ -20,8 +21,10 @@ public class TestGenerateQuittancesJob extends SpringBeanAwareTestCase {
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
-		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, new GregorianCalendar(2008, 5, 1).getTime());
-		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, DateUtil.now());
+		Date from = new GregorianCalendar(2008, 5, 1).getTime();
+		Date till = new GregorianCalendar(2008, 5, 30).getTime();
+		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, from);
+		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, till);
 		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANIZATION_ID, 1L);
 
 		job.execute(contextVariables);
