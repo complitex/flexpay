@@ -7,6 +7,7 @@ import org.flexpay.eirc.dao.QuittanceDao;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
 import org.flexpay.eirc.dao.QuittanceDetailsDao;
 import org.flexpay.eirc.persistence.ServiceOrganization;
+import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.process.QuittanceNumberService;
@@ -106,11 +107,18 @@ public class QuittanceServiceImpl implements QuittanceService {
 		return quittances.get(0);
 	}
 
-    public List<Quittance> findAllQuittances() {
-        return quittanceDao.findAllQuittances();
-    }
+	/**
+	 * Find quittance for account for current open period
+	 *
+	 * @param stub account stub to get quittance for
+	 * @return list of quittance in current open period
+	 */
+	@NotNull
+	public List<Quittance> getLatestAccountQuittances(@NotNull Stub<EircAccount> stub) {
+		return quittanceDao.findAccountQuittances(stub.getId());
+	}
 
-    @Required
+	@Required
 	public void setQuittanceDao(QuittanceDao quittanceDao) {
 		this.quittanceDao = quittanceDao;
 	}

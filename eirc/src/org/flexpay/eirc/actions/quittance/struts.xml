@@ -43,20 +43,29 @@
 			</result>
 		</action>
 
-        <action name="quittancePaySearch" class="quittancePaySearchAction">
-            <result name="input" type="tiles">eirc.quittances.quittance_pay_search</result>
-            <result name="redirectSuccess" type="redirect-action">
+		<action name="quittancePaySearch" class="quittancePaySearchAction">
+			<result name="input" type="tiles">eirc.quittances.quittance_pay_search</result>
+			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">quittancePay</param>
-                <param name="parse">true</param>
-                <param name="quittance.id">${quittanceId}</param>
-                <param name="quittanceNumber">${quittanceNumber}</param>
-            </result>
-        </action>
+				<param name="parse">true</param>
+				<param name="quittance.id">${quittanceId}</param>
+				<param name="quittanceNumber">${quittanceNumber}</param>
+			</result>
+		</action>
 
-        <action name="quittancePay" class="quittancePayAction">
-            <result name="input" type="tiles">eirc.quittances.quittance_pay</result>
-            <result name="redirectSuccess" type="redirect-action">quittancePaySearch</result>
-        </action>
+		<action name="quittancePay" class="quittancePayAction">
+			<result name="input" type="tiles">eirc.quittances.quittance_pay</result>
+			<result name="redirectSuccess" type="redirect-action">quittancePaySearch</result>
+		</action>
+
+		<action name="accountsForQuittancesList" class="eircAccountsListAction">
+			<result type="tiles">eirc.quittances.eirc_account.list</result>
+		</action>
+
+		<action name="quittancesList" class="quittancesListAction">
+			<result name="success" type="tiles">eirc.quittances.quittances_list</result>
+			<result name="redirectError" type="redirect-action">accountsForQuittancesList</result>
+		</action>
 
 	</package>
 

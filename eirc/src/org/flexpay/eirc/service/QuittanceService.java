@@ -3,6 +3,7 @@ package org.flexpay.eirc.service;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
@@ -64,9 +65,13 @@ public interface QuittanceService {
 	@Nullable
 	Quittance findByNumber(@NotNull String quittanceNumber) throws FlexPayException;
 
-    /**
-     * Returns list of all quittances
-     * @return list of all quittances
-     */
-    List<Quittance> findAllQuittances();
+	/**
+	 * Find quittance for account for current open period
+	 *
+	 * @param stub account stub to get quittance for
+	 * @return list of quittance in current open period
+	 */
+	@Secured (Roles.QUITTANCE_READ)
+	@NotNull
+	List<Quittance> getLatestAccountQuittances(@NotNull Stub<EircAccount> stub);
 }
