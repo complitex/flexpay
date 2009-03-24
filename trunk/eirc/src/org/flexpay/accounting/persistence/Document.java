@@ -1,7 +1,6 @@
 package org.flexpay.accounting.persistence;
 
 import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.common.persistence.DomainObject;
 
 import java.math.BigDecimal;
@@ -11,8 +10,8 @@ public class Document extends DomainObject {
 	private Operation operation;
 	private DocumentType type;
 	private BigDecimal summ;
-	private EircAccount subjectDebet;
-	private EircAccount subjectCredit;
+	private EircSubject subjectDebet;
+	private EircSubject subjectCredit;
 	private DocumentStatus documentStatus;
 	private int status;
 	private RegistryRecord registryRecord;
@@ -42,19 +41,19 @@ public class Document extends DomainObject {
 		this.summ = summ;
 	}
 
-	public EircAccount getSubjectDebet() {
+	public EircSubject getSubjectDebet() {
 		return subjectDebet;
 	}
 
-	public void setSubjectDebet(EircAccount subjectDebet) {
+	public void setSubjectDebet(EircSubject subjectDebet) {
 		this.subjectDebet = subjectDebet;
 	}
 
-	public EircAccount getSubjectCredit() {
+	public EircSubject getSubjectCredit() {
 		return subjectCredit;
 	}
 
-	public void setSubjectCredit(EircAccount subjectCredit) {
+	public void setSubjectCredit(EircSubject subjectCredit) {
 		this.subjectCredit = subjectCredit;
 	}
 
