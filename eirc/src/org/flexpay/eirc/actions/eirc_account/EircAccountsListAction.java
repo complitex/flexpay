@@ -18,7 +18,7 @@ import java.util.List;
 
 public class EircAccountsListAction extends ApartmentFilterDependent2Action {
 
-	private List<EircAccount> eircAccountsList;
+	private List<EircAccount> eircAccounts;
 
 	private PersonSearchFilter personSearchFilter = new PersonSearchFilter();
 
@@ -37,7 +37,7 @@ public class EircAccountsListAction extends ApartmentFilterDependent2Action {
 
 		initFilters();
 
-		eircAccountsList = eircAccountService.findAccounts(getFilters(), getPager());
+		eircAccounts = eircAccountService.findAccounts(getFilters(), getPager());
 
 		return SUCCESS;
 	}
@@ -107,8 +107,8 @@ public class EircAccountsListAction extends ApartmentFilterDependent2Action {
 		return true;
 	}
 
-	public List<EircAccount> getEircAccountList() {
-		return eircAccountsList;
+	public List<EircAccount> getEircAccounts() {
+		return eircAccounts;
 	}
 
 	public PersonSearchFilter getPersonSearchFilter() {
