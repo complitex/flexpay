@@ -191,11 +191,12 @@
 			and (pr is null or (pr.beginDate<=current_date() and pr.endDate>=current_date()))
 	]]></query>
 
-    <query name="Quittance.findAllQuittances">
+    <query name="Quittance.findAccountQuittances">
         select distinct q
         from Quittance q
-        inner join fetch q.eircAccount a
+        	inner join fetch q.eircAccount a
+        where a.id=?
+        order by q.dateFrom desc, q.orderNumber desc 
     </query>
-
 
 </hibernate-mapping>

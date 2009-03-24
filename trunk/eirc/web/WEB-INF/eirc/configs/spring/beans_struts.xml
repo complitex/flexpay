@@ -50,6 +50,11 @@
 		  class="org.flexpay.eirc.actions.quittance.QuittanceSearchAction"
 		  p:quittanceService-ref="quittanceService" />
 
+	<bean id="quittancesListAction" scope="prototype"
+		  class="org.flexpay.eirc.actions.quittance.QuittancesListAction"
+		  p:quittanceService-ref="quittanceService"
+		  p:accountService-ref="eircAccountService" />
+
 	<!-- Quittance packets -->
 	<bean id="quittancePacketsListAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.quittance.QuittancePacketListAction"
