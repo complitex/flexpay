@@ -23,6 +23,6 @@ public class TestEircAccountListAction extends SpringBeanAwareTestCase {
 		accountsListAction.setUserPreferences(prefs);
 		assertEquals("Failed listing accounts", FPActionSupport.SUCCESS, accountsListAction.execute());
 
-		assertFalse("No accounts found", accountsListAction.getEircAccountList().isEmpty());
+		assertFalse("No accounts found", accountsListAction.getEircAccounts().isEmpty());
 	}
 }
