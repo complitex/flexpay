@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-@Transactional (readOnly = true)
+@Transactional (readOnly = true, rollbackFor = Exception.class)
 public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		TownNameTranslation, TownName, TownNameTemporal, Town, Region>
 		implements TownService {
