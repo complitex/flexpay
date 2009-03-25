@@ -7,6 +7,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.exception.FlexPayException;
@@ -270,11 +271,21 @@ public class DistrictServiceImpl extends
 			if (!first || temporals.size() == 1) {
 				DistrictName name = object.getNameForDate(DateUtil.now());
 				if (name == null || StringUtils.isBlank(name.getDefaultNameTranslation())) {
-					FlexPayException e = new FlexPayException("No translation", "error.ab.district.no_default_translation_for_period",
-							temporal.getBegin(), temporal.getEnd());
-					ex.addException(e);
 
-					log.debug("Period: {} - {} is empty ", temporal.getBegin(), temporal.getEnd());
+					if (ApplicationConfig.getPastInfinite().equals(temporal.getBegin())
+						&& ApplicationConfig.getFutureInfinite().equals(temporal.getEnd())) {
+
+						FlexPayException e = new FlexPayException("No translation", "error.ab.district.no_default_translation",
+								temporal.getBegin(), temporal.getEnd());
+						ex.addException(e);
+
+					} else {
+						FlexPayException e = new FlexPayException("No translation", "error.ab.district.no_default_translation_for_period",
+								temporal.getBegin(), temporal.getEnd());
+						ex.addException(e);
+
+						log.debug("Period: {} - {} is empty ", temporal.getBegin(), temporal.getEnd());
+					}
 				}
 			}
 
