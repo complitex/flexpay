@@ -36,12 +36,10 @@
 
 		editEnumValue : function(i) {
 			$("#enumValueDisp_" + i).hide();
-			$("#enumValue_" + i).show();
-			$("#enumValue_" + i).focus();
+			$("#enumValue_" + i).show().focus();
 		},
 		stopEditEnumValue : function(i) {
-			$("#enumValueDisp_" + i).val($("enumValue_" + i).val());
-			$("#enumValueDisp_" + i).show();
+			$("#enumValueDisp_" + i).val($("enumValue_" + i).val()).show();
 			$("#enumValue_" + i).hide();
 		},
 		moveEnumValueUp : function(i) {
@@ -216,7 +214,7 @@
 					</tr>
 				</table>
 				<script type="text/javascript">
-                    <s:iterator value="enumValues" status="st">
+                    <s:iterator value="enumValues">
 					    FPINT.addNewEnumValue("<s:property value="%{value}" />");
                     </s:iterator>
 				</script>

@@ -1,37 +1,27 @@
 package org.flexpay.accounting.persistence;
 
-import org.flexpay.eirc.persistence.RegistryRecord;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.accounting.persistence.operations.Operation;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.eirc.persistence.RegistryRecord;
 
 import java.math.BigDecimal;
 
 public class Document extends DomainObject {
 
-	private Operation operation;
-	private DocumentType type;
 	private BigDecimal summ;
+	private Integer status;
+
+	private Operation operation;
+
 	private EircSubject subjectDebet;
 	private EircSubject subjectCredit;
-	private DocumentStatus documentStatus;
-	private int status;
 	private RegistryRecord registryRecord;
+
 	private Document referenceDocument;
-
-	public Operation getOperation() {
-		return operation;
-	}
-
-	public void setOperation(Operation operation) {
-		this.operation = operation;
-	}
-
-	public DocumentType getType() {
-		return type;
-	}
-
-	public void setType(DocumentType type) {
-		this.type = type;
-	}
+	private DocumentType documentType;
+	private DocumentStatus documentStatus;
 
 	public BigDecimal getSumm() {
 		return summ;
@@ -39,6 +29,22 @@ public class Document extends DomainObject {
 
 	public void setSumm(BigDecimal summ) {
 		this.summ = summ;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Operation getOperation() {
+		return operation;
+	}
+
+	public void setOperation(Operation operation) {
+		this.operation = operation;
 	}
 
 	public EircSubject getSubjectDebet() {
@@ -57,22 +63,6 @@ public class Document extends DomainObject {
 		this.subjectCredit = subjectCredit;
 	}
 
-	public DocumentStatus getDocumentStatus() {
-		return documentStatus;
-	}
-
-	public void setDocumentStatus(DocumentStatus documentStatus) {
-		this.documentStatus = documentStatus;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
 	public RegistryRecord getRegistryRecord() {
 		return registryRecord;
 	}
@@ -88,4 +78,36 @@ public class Document extends DomainObject {
 	public void setReferenceDocument(Document referenceDocument) {
 		this.referenceDocument = referenceDocument;
 	}
+
+	public DocumentType getDocumentType() {
+		return documentType;
+	}
+
+	public void setDocumentType(DocumentType documentType) {
+		this.documentType = documentType;
+	}
+
+	public DocumentStatus getDocumentStatus() {
+		return documentStatus;
+	}
+
+	public void setDocumentStatus(DocumentStatus documentStatus) {
+		this.documentStatus = documentStatus;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("Document {").
+				append("summ", summ).
+				append("status", status).
+				append("operation.id", operation.getId()).
+				append("subjectDebet.id", subjectDebet.getId()).
+				append("subjectCredit.id", subjectCredit.getId()).
+				append("registryRecord", registryRecord).
+				append("documentType", documentType).
+				append("documentStatus", documentStatus).
+				append("}").toString();
+	}
+
 }
