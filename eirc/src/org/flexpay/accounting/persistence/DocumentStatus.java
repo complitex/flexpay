@@ -1,4 +1,5 @@
 package org.flexpay.accounting.persistence;
 
-public class DocumentStatus {
+public enum DocumentStatus {
+	CREATED, REGISTERED, DELETED, RETURNED, ERROR
 }
