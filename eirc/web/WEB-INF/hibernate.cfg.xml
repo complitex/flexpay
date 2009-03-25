@@ -63,10 +63,9 @@
 		<mapping resource="org/flexpay/eirc/persistence/PersonalAccount.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/Ticket.hbm.xml" />
 
-		<!-- Eirc accounts -->
 		<mapping resource="org/flexpay/eirc/persistence/account/Quittance.hbm.xml" />
 
-        <mapping resource="org/flexpay/accounting/persistence/Operation.hbm.xml" />
+        <!--<mapping resource="org/flexpay/accounting/persistence/Operation.hbm.xml" />-->
 
 	</session-factory>
 

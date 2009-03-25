@@ -57,6 +57,10 @@
 			<result name="redirectSuccess" type="redirect-action">quittancePaySearch</result>
 		</action>
 
+		<action name="apartmentsForQuittancesList" class="apartmentsListAction">
+			<result type="tiles">eirc.quittances.apartment.list</result>
+		</action>
+
 		<action name="accountsForQuittancesList" class="eircAccountsListAction">
 			<result type="tiles">eirc.quittances.eirc_account.list</result>
 		</action>

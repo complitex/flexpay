@@ -214,6 +214,13 @@
 		  p:parent-ref="eirc_quittances_payment"
 		  p:userRole="ROLE_MENU_EIRC_QUITTANCES_PAYFORM" />
 
+	<bean name="eirc_quittances_quittances_apartmentsForQuittancesList" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.quittance_search_apartment"
+		  p:title="eirc.quittances.payment.apartment_search"
+		  p:action="/eirc/apartmentsForQuittancesList.action?menu=eirc.quittance_search_apartment"
+		  p:parent-ref="eirc_quittances_payment"
+		  p:userRole="ROLE_MENU_EIRC_QUITTANCES_PAYFORM" />
+
 	<bean name="eirc_quittances_packets_quittancePacketList" class="net.sf.navigator.menu.MenuComponent"
 		  p:name="eirc.quittance_packet"
 		  p:title="eirc.quittance.packets"
