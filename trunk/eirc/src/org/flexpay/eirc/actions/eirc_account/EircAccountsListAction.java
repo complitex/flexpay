@@ -27,6 +27,7 @@ public class EircAccountsListAction extends ApartmentFilterDependent2Action {
 	private AddressService addressService;
 
 	public EircAccountsListAction() {
+		buildingsFilter.setAllowEmpty(true);
 		apartmentFilter.setAllowEmpty(true);
 		apartmentFilter.setNeedAutoChange(true);
 		streetNameFilter.setShowSearchString(true);

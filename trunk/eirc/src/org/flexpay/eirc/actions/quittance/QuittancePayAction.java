@@ -2,18 +2,19 @@ package org.flexpay.eirc.actions.quittance;
 
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.eirc.persistence.QuittanceDetailsPayment;
+import org.flexpay.eirc.persistence.QuittancePayment;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
-import org.flexpay.eirc.persistence.QuittancePayment;
-import org.flexpay.eirc.persistence.QuittanceDetailsPayment;
-import org.flexpay.eirc.service.QuittanceService;
+import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.QuittancePaymentService;
+import org.flexpay.eirc.service.QuittanceService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 public class QuittancePayAction extends FPActionSupport {
 
@@ -24,6 +25,7 @@ public class QuittancePayAction extends FPActionSupport {
 
 	// required services
 	private QuittanceService quittanceService;
+	private QuittanceNumberService numberService;
 	private QuittancePaymentService quittancePaymentService;
 
 	@NotNull
@@ -44,6 +46,8 @@ public class QuittancePayAction extends FPActionSupport {
 			addActionError("eirc.quittances.quittance_pay.payed_successfully");
 			return REDIRECT_SUCCESS;
 		}
+
+		quittanceNumber = numberService.getNumber(quittance);
 
 		payments = quittancePaymentService.getQuittancePayments(stub(quittance));
 
@@ -147,10 +151,6 @@ public class QuittancePayAction extends FPActionSupport {
 		return quittanceNumber;
 	}
 
-	public void setQuittanceNumber(String quittanceNumber) {
-		this.quittanceNumber = quittanceNumber;
-	}
-
 	// required services setters
 	@Required
 	public void setQuittanceService(QuittanceService quittanceService) {
@@ -160,5 +160,10 @@ public class QuittancePayAction extends FPActionSupport {
 	@Required
 	public void setQuittancePaymentService(QuittancePaymentService quittancePaymentService) {
 		this.quittancePaymentService = quittancePaymentService;
+	}
+
+	@Required
+	public void setNumberService(QuittanceNumberService numberService) {
+		this.numberService = numberService;
 	}
 }
