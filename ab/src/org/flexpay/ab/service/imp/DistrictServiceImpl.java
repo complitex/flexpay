@@ -270,7 +270,7 @@ public class DistrictServiceImpl extends
 			if (!first || temporals.size() == 1) {
 				DistrictName name = object.getNameForDate(DateUtil.now());
 				if (name == null || StringUtils.isBlank(name.getDefaultNameTranslation())) {
-					FlexPayException e = new FlexPayException("No translation", "error.ab.district.no_default_translation",
+					FlexPayException e = new FlexPayException("No translation", "error.ab.district.no_default_translation_for_period",
 							temporal.getBegin(), temporal.getEnd());
 					ex.addException(e);
 
