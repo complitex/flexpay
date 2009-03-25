@@ -42,8 +42,7 @@ public class DistrictCreateAction extends CreateAction<
 
 		if (isSubmit()) {
 
-			if (!townFilter.needFilter()) {
-				addActionError(getText("ab.error.street.no_town"));
+			if (!doValidate()) {
 				return INPUT;
 			}
 
@@ -70,6 +69,23 @@ public class DistrictCreateAction extends CreateAction<
 		return INPUT;
 	}
 
+	private boolean doValidate() {
+
+		if (!townFilter.needFilter()) {
+			addActionError(getText("ab.error.street.no_town"));
+		}
+
+		// checking whether name on default language is entered
+		for (DistrictNameTranslation translation : nameTranslations) {
+			if (translation.getLang().isDefault()) {
+				if (StringUtils.isEmpty(translation.getName())) {
+					addActionError(getText("error.ab.district.no_default_translation"));
+				}
+			}
+		}
+
+		return !hasActionErrors();
+	}
 
 	/**
 	 * Getter for property 'countryFilter'.
