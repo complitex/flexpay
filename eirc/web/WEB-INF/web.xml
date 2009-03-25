@@ -540,6 +540,9 @@
         <role-name>ROLE_MENU_EIRC_QUITTANCES2</role-name>
     </security-role>
     <security-role>
+        <role-name>ROLE_MENU_EIRC_QUITTANCE_PAYMENT</role-name>
+    </security-role>
+    <security-role>
         <role-name>ROLE_MENU_EIRC_QUITTANCE_PACKETS</role-name>
     </security-role>
     <security-role>

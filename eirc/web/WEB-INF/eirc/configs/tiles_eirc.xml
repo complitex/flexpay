@@ -74,7 +74,7 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/eirc_account_list.jsp" />
 	</definition>
 
-	<definition name="eirc.quittances.йгшеефтсуы.list" extends="eirc.dictionaries">
+	<definition name="eirc.quittances.quittances_list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.quittances.quittances_list" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/quittance_list.jsp" />
 	</definition>

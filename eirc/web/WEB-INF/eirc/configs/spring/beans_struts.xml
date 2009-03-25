@@ -79,7 +79,8 @@
 	<bean id="quittancePayAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.quittance.QuittancePayAction"
 		  p:quittanceService-ref="quittanceService"
-		  p:quittancePaymentService-ref="quittancePaymentService" />
+		  p:quittancePaymentService-ref="quittancePaymentService"
+		  p:numberService-ref="quittanceNumberService" />
 
 	<!-- Registries -->
 	<bean id="registriesListAction" scope="prototype"

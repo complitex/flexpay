@@ -1,214 +1,224 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <!--level1-->
-    <bean name="eirc" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc"
-            p:title="eirc.menu1.title"
-            p:action="/eirc/main.action?menu=eirc"
-            p:parent-ref="fpMenu"
-            p:userRole="ROLE_MENU_EIRC"
-            />
+	<!--level1-->
+	<bean name="eirc" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc"
+		  p:title="eirc.menu1.title"
+		  p:action="/eirc/main.action?menu=eirc"
+		  p:parent-ref="fpMenu"
+		  p:userRole="ROLE_MENU_EIRC" />
 
-    <!--level2-->
-    <bean name="eirc_dicts" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.dicts"
-            p:title="eirc.menu2.dictionaries"
-            p:action="/eirc/organizationsList.action?menu=eirc.dicts"
-            p:parent-ref="eirc"
-            p:userRole="ROLE_MENU_EIRC_DICTS"
-            />
-    <bean name="eirc_import" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.import"
-            p:title="eirc.menu2.import"
-            p:action="/eirc/main.action?menu=eirc.import"
-            p:parent-ref="eirc"
-            p:userRole="ROLE_MENU_EIRC_IMPORT"
-            />
-    <bean name="eirc_processing" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.processing"
-            p:title="eirc.menu2.processing"
-            p:action="/eirc/processing.action?menu=eirc.processing"
-            p:parent-ref="eirc"
-            p:userRole="ROLE_MENU_EIRC_PROCESSING"
-            />
-    <bean name="eirc_quittances" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.quittances"
-            p:title="eirc.menu2.tickets"
-            p:action="/eirc/quittances.action?menu=eirc.quittances"
-            p:parent-ref="eirc"
-            p:userRole="ROLE_MENU_EIRC_QUITTANCES"
-            />
+	<!--level2-->
+	<bean name="eirc_dicts" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.dicts"
+		  p:title="eirc.menu2.dictionaries"
+		  p:action="/eirc/organizationsList.action?menu=eirc.dicts"
+		  p:parent-ref="eirc"
+		  p:userRole="ROLE_MENU_EIRC_DICTS" />
 
-    <!--level3-->
-    <bean name="eirc_dicts_organizations" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.organizations"
-            p:title="eirc.organizations"
-            p:parent-ref="eirc_dicts"
-            p:userRole="ROLE_MENU_EIRC_ORGANIZATIONS_DICTS"
-            />
-    <bean name="eirc_dicts_services" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.services"
-            p:title="eirc.services"
-            p:parent-ref="eirc_dicts"
-            p:userRole="ROLE_MENU_EIRC_SERVICES_DICTS"
-            />
-    <bean name="eirc_import_import" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.import2"
-            p:title="eirc.menu2.import"
-            p:parent-ref="eirc_import"
-            p:userRole="ROLE_MENU_EIRC_IMPORT2"
-            />
-    <bean name="eirc_processing_processing" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.processing2"
-            p:title="eirc.menu2.processing"
-            p:parent-ref="eirc_processing"
-            p:userRole="ROLE_MENU_EIRC_PROCESSING2"
-            />
-    <bean name="eirc_quittances_quittances" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.quittances2"
-            p:title="eirc.menu2.tickets"
-            p:parent-ref="eirc_quittances"
-            p:userRole="ROLE_MENU_EIRC_QUITTANCES2"
-            />
-    <bean name="eirc_quittances_packets" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.packets"
-            p:title="eirc.quittance.packets"
-            p:parent-ref="eirc_quittances"
-            p:userRole="ROLE_MENU_EIRC_QUITTANCE_PACKETS"
-            />
+	<bean name="eirc_import" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.import"
+		  p:title="eirc.menu2.import"
+		  p:action="/eirc/main.action?menu=eirc.import"
+		  p:parent-ref="eirc"
+		  p:userRole="ROLE_MENU_EIRC_IMPORT" />
 
-    <!--level4-->
-    <bean name="eirc_dicts_organizations_organizations" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.organizations"
-            p:title="eirc.organizations"
-            p:action="/eirc/organizationsList.action?menu=eirc.organizations"
-            p:parent-ref="eirc_dicts_organizations"
-            p:userRole="ROLE_MENU_EIRC_DICTS_ORGANIZATIONS"
-            />
-    <bean name="eirc_dicts_organizations_banks" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.banks"
-            p:title="eirc.banks"
-            p:action="/eirc/banksList.action?menu=eirc.banks"
-            p:parent-ref="eirc_dicts_organizations"
-            p:userRole="ROLE_MENU_EIRC_DICTS_BANKS"
-            />
-    <bean name="eirc_dicts_organizations_serviceOrganizations" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.service_organizations"
-            p:title="eirc.service_organizations"
-            p:action="/eirc/serviceOrganizationsList.action?menu=eirc.service_organizations"
-            p:parent-ref="eirc_dicts_organizations"
-            p:userRole="ROLE_MENU_EIRC_DICTS_SERVICE_ORGANIZATIONS"
-            />
-    <bean name="eirc_dicts_organizations_serviceProviders" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.service_providers"
-            p:title="eirc.service_providers"
-            p:action="/eirc/serviceProvidersList.action?menu=eirc.service_providers"
-            p:parent-ref="eirc_dicts_organizations"
-            p:userRole="ROLE_MENU_EIRC_DICTS_SERVICE_PROVIDERS"
-            />
-    <bean name="eirc_dicts_organizations_paymentsCollectors" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.payments_collectors"
-            p:title="eirc.payments_collectors"
-            p:action="/eirc/paymentsCollectorsList.action?menu=eirc.payments_collectors"
-            p:parent-ref="eirc_dicts_organizations"
-            p:userRole="ROLE_MENU_EIRC_DICTS_PAYMENT_COLLECTORS"
-            />
-    <bean name="eirc_dicts_organizations_paymentPoints" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.payment_points"
-            p:title="eirc.payment_points"
-            p:action="/eirc/paymentPointsList.action?menu=eirc.payment_points"
-            p:parent-ref="eirc_dicts_organizations"
-            p:userRole="ROLE_MENU_EIRC_DICTS_PAYMENT_POINTS"
-            />
-    <bean name="eirc_dicts_organizations_eircAccounts" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.eirc_accounts"
-            p:title="eirc.eirc_account.list"
-            p:action="/eirc/eircAccountsList.action?menu=eirc.eirc_accounts"
-            p:parent-ref="eirc_dicts_organizations"
-            p:userRole="ROLE_MENU_EIRC_DICTS_EIRC_ACCOUNTS"
-            />
-    <bean name="eirc_dicts_services_service_types" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.service_types"
-            p:title="eirc.service_types"
-            p:action="/eirc/serviceTypesList.action?menu=eirc.service_types"
-            p:parent-ref="eirc_dicts_services"
-            p:userRole="ROLE_MENU_EIRC_DICTS_SERVICE_TYPES"
-            />
-    <bean name="eirc_dicts_services_services" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.services"
-            p:title="eirc.services"
-            p:action="/eirc/servicesList.action?menu=eirc.services"
-            p:parent-ref="eirc_dicts_services"
-            p:userRole="ROLE_MENU_EIRC_DICTS_SERVICES"
-            />
-    <bean name="eirc_import_import_spFileCreate" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.sp_file_create"
-            p:title="eirc.menu34.files.upload"
-            p:action="/eirc/spFileCreate.action?menu=eirc.sp_file_create"
-            p:parent-ref="eirc_import_import"
-            p:userRole="ROLE_MENU_EIRC_IMPORT_SP_FILES_IMPORT"
-            />
-    <bean name="eirc_import_import_spFilesList" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.sp_files"
-            p:title="eirc.menu34.file_list"
-            p:action="/eirc/spFileList.action?menu=eirc.sp_files"
-            p:parent-ref="eirc_import_import"
-            p:userRole="ROLE_MENU_EIRC_IMPORT_IMPORTED_SP_FILES"
-            />
-    <bean name="eirc_import_import_registriesList" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.registries"
-            p:title="eirc.menu34.registries"
-            p:action="/eirc/registriesList.action?menu=eirc.registries"
-            p:parent-ref="eirc_import_import"
-            p:userRole="ROLE_MENU_EIRC_IMPORT_REGISTRIES"
-            />
-    <bean name="eirc_processing_processing_processesList" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.processes"
-            p:title="common.processing.process_list"
-            p:action="/eirc/processesList.action?menu=eirc.processes"
-            p:parent-ref="eirc_processing_processing"
-            p:userRole="ROLE_MENU_EIRC_PROCESSING_PROCESSES"
-            />
-    <bean name="eirc_processing_processing_processDefinition" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.process_definition"
-            p:title="common.processing.definition"
-            p:action="/eirc/processDefinitionDeploy.action?menu=eirc.process_definition"
-            p:parent-ref="eirc_processing_processing"
-            p:userRole="ROLE_MENU_EIRC_PROCESSING_PROCESS_DEFINITION"
-            />
-    <bean name="eirc_quittances_quittances_quittanceGenerate" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.quittance_generate"
-            p:title="eirc.menu34.quittances.generate_quittances"
-            p:action="/eirc/quittanceGenerate.action?menu=eirc.quittance_generate"
-            p:parent-ref="eirc_quittances_quittances"
-            p:userRole="ROLE_MENU_EIRC_QUITTANCES_GENERATE"
-            />
-    <bean name="eirc_quittances_quittances_printQuittances" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.print_quittances"
-            p:title="eirc.menu34.tickets.print_tickets"
-            p:action="/eirc/printQuittances.action?menu=eirc.print_quittances"
-            p:parent-ref="eirc_quittances_quittances"
-            p:userRole="ROLE_MENU_EIRC_QUITTANCES_PRINT"
-            />
-    <bean name="eirc_quittances_quittances_quittancePayForm" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.quittance_pay_form"
-            p:title="eirc.menu34.tickets.pay_ticket"
-            p:action="/eirc/quittancePaySearch.action?menu=eirc.quittance_pay_form"
-            p:parent-ref="eirc_quittances_quittances"
-            p:userRole="ROLE_MENU_EIRC_QUITTANCES_PAYFORM"
-            />
-    <bean name="eirc_quittances_packets_quittancePacketList" class="net.sf.navigator.menu.MenuComponent"
-            p:name="eirc.quittance_packet"
-            p:title="eirc.quittance.packets"
-            p:action="/eirc/quittancePacketList.action?menu=eirc.quittance_packet"
-            p:parent-ref="eirc_quittances_packets"
-            p:userRole="ROLE_MENU_EIRC_QUITTANCES_PACKETS"
-            />
+	<bean name="eirc_processing" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.processing"
+		  p:title="eirc.menu2.processing"
+		  p:action="/eirc/processing.action?menu=eirc.processing"
+		  p:parent-ref="eirc"
+		  p:userRole="ROLE_MENU_EIRC_PROCESSING" />
+
+	<bean name="eirc_quittances" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.quittances"
+		  p:title="eirc.menu2.tickets"
+		  p:action="/eirc/quittances.action?menu=eirc.quittances"
+		  p:parent-ref="eirc"
+		  p:userRole="ROLE_MENU_EIRC_QUITTANCES" />
+
+	<!--level3-->
+	<bean name="eirc_dicts_organizations" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.organizations"
+		  p:title="eirc.organizations"
+		  p:parent-ref="eirc_dicts"
+		  p:userRole="ROLE_MENU_EIRC_ORGANIZATIONS_DICTS" />
+
+	<bean name="eirc_dicts_services" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.services"
+		  p:title="eirc.services"
+		  p:parent-ref="eirc_dicts"
+		  p:userRole="ROLE_MENU_EIRC_SERVICES_DICTS" />
+
+	<bean name="eirc_import_import" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.import2"
+		  p:title="eirc.menu2.import"
+		  p:parent-ref="eirc_import"
+		  p:userRole="ROLE_MENU_EIRC_IMPORT2" />
+
+	<bean name="eirc_processing_processing" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.processing2"
+		  p:title="eirc.menu2.processing"
+		  p:parent-ref="eirc_processing"
+		  p:userRole="ROLE_MENU_EIRC_PROCESSING2" />
+
+	<bean name="eirc_quittances_quittances" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.quittances2"
+		  p:title="eirc.menu2.tickets"
+		  p:parent-ref="eirc_quittances"
+		  p:userRole="ROLE_MENU_EIRC_QUITTANCES2" />
+
+	<bean name="eirc_quittances_payment"
+		  class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.quittance_payment"
+		  p:title="eirc.quittances.quittance_pay.title"
+		  p:parent-ref="eirc_quittances"
+		  p:userRole="ROLE_MENU_EIRC_QUITTANCE_PAYMENT" />
+
+	<bean name="eirc_quittances_packets" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.packets"
+		  p:title="eirc.quittance.packets"
+		  p:parent-ref="eirc_quittances"
+		  p:userRole="ROLE_MENU_EIRC_QUITTANCE_PACKETS" />
+
+	<!--level4-->
+	<bean name="eirc_dicts_organizations_organizations" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.organizations"
+		  p:title="eirc.organizations"
+		  p:action="/eirc/organizationsList.action?menu=eirc.organizations"
+		  p:parent-ref="eirc_dicts_organizations"
+		  p:userRole="ROLE_MENU_EIRC_DICTS_ORGANIZATIONS" />
+
+	<bean name="eirc_dicts_organizations_banks" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.banks"
+		  p:title="eirc.banks"
+		  p:action="/eirc/banksList.action?menu=eirc.banks"
+		  p:parent-ref="eirc_dicts_organizations"
+		  p:userRole="ROLE_MENU_EIRC_DICTS_BANKS" />
+
+	<bean name="eirc_dicts_organizations_serviceOrganizations" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.service_organizations"
+		  p:title="eirc.service_organizations"
+		  p:action="/eirc/serviceOrganizationsList.action?menu=eirc.service_organizations"
+		  p:parent-ref="eirc_dicts_organizations"
+		  p:userRole="ROLE_MENU_EIRC_DICTS_SERVICE_ORGANIZATIONS" />
+
+	<bean name="eirc_dicts_organizations_serviceProviders" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.service_providers"
+		  p:title="eirc.service_providers"
+		  p:action="/eirc/serviceProvidersList.action?menu=eirc.service_providers"
+		  p:parent-ref="eirc_dicts_organizations"
+		  p:userRole="ROLE_MENU_EIRC_DICTS_SERVICE_PROVIDERS" />
+
+	<bean name="eirc_dicts_organizations_paymentsCollectors" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.payments_collectors"
+		  p:title="eirc.payments_collectors"
+		  p:action="/eirc/paymentsCollectorsList.action?menu=eirc.payments_collectors"
+		  p:parent-ref="eirc_dicts_organizations"
+		  p:userRole="ROLE_MENU_EIRC_DICTS_PAYMENT_COLLECTORS" />
+
+	<bean name="eirc_dicts_organizations_paymentPoints" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.payment_points"
+		  p:title="eirc.payment_points"
+		  p:action="/eirc/paymentPointsList.action?menu=eirc.payment_points"
+		  p:parent-ref="eirc_dicts_organizations"
+		  p:userRole="ROLE_MENU_EIRC_DICTS_PAYMENT_POINTS" />
+
+	<bean name="eirc_dicts_organizations_eircAccounts" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.eirc_accounts"
+		  p:title="eirc.eirc_account.list"
+		  p:action="/eirc/eircAccountsList.action?menu=eirc.eirc_accounts"
+		  p:parent-ref="eirc_dicts_organizations"
+		  p:userRole="ROLE_MENU_EIRC_DICTS_EIRC_ACCOUNTS" />
+
+	<bean name="eirc_dicts_services_service_types" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.service_types"
+		  p:title="eirc.service_types"
+		  p:action="/eirc/serviceTypesList.action?menu=eirc.service_types"
+		  p:parent-ref="eirc_dicts_services"
+		  p:userRole="ROLE_MENU_EIRC_DICTS_SERVICE_TYPES" />
+
+	<bean name="eirc_dicts_services_services" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.services"
+		  p:title="eirc.services"
+		  p:action="/eirc/servicesList.action?menu=eirc.services"
+		  p:parent-ref="eirc_dicts_services"
+		  p:userRole="ROLE_MENU_EIRC_DICTS_SERVICES" />
+
+	<bean name="eirc_import_import_spFileCreate" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.sp_file_create"
+		  p:title="eirc.menu34.files.upload"
+		  p:action="/eirc/spFileCreate.action?menu=eirc.sp_file_create"
+		  p:parent-ref="eirc_import_import"
+		  p:userRole="ROLE_MENU_EIRC_IMPORT_SP_FILES_IMPORT" />
+
+	<bean name="eirc_import_import_spFilesList" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.sp_files"
+		  p:title="eirc.menu34.file_list"
+		  p:action="/eirc/spFileList.action?menu=eirc.sp_files"
+		  p:parent-ref="eirc_import_import"
+		  p:userRole="ROLE_MENU_EIRC_IMPORT_IMPORTED_SP_FILES" />
+
+	<bean name="eirc_import_import_registriesList" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.registries"
+		  p:title="eirc.menu34.registries"
+		  p:action="/eirc/registriesList.action?menu=eirc.registries"
+		  p:parent-ref="eirc_import_import"
+		  p:userRole="ROLE_MENU_EIRC_IMPORT_REGISTRIES" />
+
+	<bean name="eirc_processing_processing_processesList" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.processes"
+		  p:title="common.processing.process_list"
+		  p:action="/eirc/processesList.action?menu=eirc.processes"
+		  p:parent-ref="eirc_processing_processing"
+		  p:userRole="ROLE_MENU_EIRC_PROCESSING_PROCESSES" />
+
+	<bean name="eirc_processing_processing_processDefinition" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.process_definition"
+		  p:title="common.processing.definition"
+		  p:action="/eirc/processDefinitionDeploy.action?menu=eirc.process_definition"
+		  p:parent-ref="eirc_processing_processing"
+		  p:userRole="ROLE_MENU_EIRC_PROCESSING_PROCESS_DEFINITION" />
+
+	<bean name="eirc_quittances_quittances_quittanceGenerate" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.quittance_generate"
+		  p:title="eirc.menu34.quittances.generate_quittances"
+		  p:action="/eirc/quittanceGenerate.action?menu=eirc.quittance_generate"
+		  p:parent-ref="eirc_quittances_quittances"
+		  p:userRole="ROLE_MENU_EIRC_QUITTANCES_GENERATE" />
+
+	<bean name="eirc_quittances_quittances_printQuittances" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.print_quittances"
+		  p:title="eirc.menu34.tickets.print_tickets"
+		  p:action="/eirc/printQuittances.action?menu=eirc.print_quittances"
+		  p:parent-ref="eirc_quittances_quittances"
+		  p:userRole="ROLE_MENU_EIRC_QUITTANCES_PRINT" />
+
+	<bean name="eirc_quittances_quittances_quittancePayForm" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.quittance_pay_form"
+		  p:title="eirc.quittances.payment.number_search"
+		  p:action="/eirc/quittancePaySearch.action?menu=eirc.quittance_pay_form"
+		  p:parent-ref="eirc_quittances_payment"
+		  p:userRole="ROLE_MENU_EIRC_QUITTANCES_PAYFORM" />
+
+	<bean name="eirc_quittances_quittances_accountsForQuittancesList" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.quittance_search_account"
+		  p:title="eirc.quittances.payment.account_search"
+		  p:action="/eirc/accountsForQuittancesList.action?menu=eirc.quittance_search_account"
+		  p:parent-ref="eirc_quittances_payment"
+		  p:userRole="ROLE_MENU_EIRC_QUITTANCES_PAYFORM" />
+
+	<bean name="eirc_quittances_packets_quittancePacketList" class="net.sf.navigator.menu.MenuComponent"
+		  p:name="eirc.quittance_packet"
+		  p:title="eirc.quittance.packets"
+		  p:action="/eirc/quittancePacketList.action?menu=eirc.quittance_packet"
+		  p:parent-ref="eirc_quittances_packets"
+		  p:userRole="ROLE_MENU_EIRC_QUITTANCES_PACKETS" />
 
 </beans>

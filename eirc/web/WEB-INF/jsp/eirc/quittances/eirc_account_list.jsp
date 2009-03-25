@@ -13,9 +13,10 @@
 			<td class="th" width="1%">
                 <input type="checkbox" disabled="1" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
 			</td>
-			<td class="th" width="14%"><s:text name="eirc.eirc_account"/></td>
-			<td class="th" width="42%"><s:text name="eirc.eirc_account.person"/></td>
-			<td class="th" width="42%"><s:text name="eirc.eirc_account.apartment"/></td>
+			<td class="th"><s:text name="eirc.eirc_account"/></td>
+			<td class="th"><s:text name="eirc.eirc_account.person"/></td>
+			<td class="th"><s:text name="eirc.eirc_account.apartment"/></td>
+			<td class="th">&nbsp;</td>
 		</tr>
 		<s:iterator value="%{eircAccounts}" status="status">
 			<tr valign="middle" class="cols_1">
@@ -44,14 +45,16 @@
 						<s:property value="%{getAddress(apartment)}"/>
 					</a>
 				</td>
+				<td class="col">
+					<a href="<s:url action='quittancesList' namespace="/eirc" includeParams="none"><s:param name="account.id" value="%{id}"/></s:url>">
+						<s:text name="eirc.quittances.account_quittances" />
+					</a>
+				</td>
 			</tr>
 		</s:iterator>
 		<tr>
 			<td colspan="5">
 				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
-				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="eircAccountCreateForm1" includeParams="none" />';"
-					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
 	</table>
