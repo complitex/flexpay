@@ -75,15 +75,6 @@ public class DistrictCreateAction extends CreateAction<
 			addActionError(getText("ab.error.street.no_town"));
 		}
 
-		// checking whether name on default language is entered
-		for (DistrictNameTranslation translation : nameTranslations) {
-			if (translation.getLang().isDefault()) {
-				if (StringUtils.isEmpty(translation.getName())) {
-					addActionError(getText("error.ab.district.no_default_translation"));
-				}
-			}
-		}
-
 		return !hasActionErrors();
 	}
 
