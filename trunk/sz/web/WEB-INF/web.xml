@@ -459,6 +459,12 @@
 	<security-role>
 		<role-name>ROLE_EIRC_QUITTANCE_RECEIVE</role-name>
 	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_QUITTANCE_PAY</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_EIRC_QUITTANCE_PAYMENT_READ</role-name>
+	</security-role>
 
 	<security-role>
 		<role-name>ROLE_SZ_SZ_FILE_READ</role-name>

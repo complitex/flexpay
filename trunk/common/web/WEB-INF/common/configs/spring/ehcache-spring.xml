@@ -39,6 +39,12 @@
 		   overflowToDisk="true"
 		   memoryStoreEvictionPolicy="LRU" />
 
+	<cache name="flexpayReadOnlyCache"
+		   maxElementsInMemory="5000"
+		   eternal="true"
+		   overflowToDisk="false"
+		   memoryStoreEvictionPolicy="LRU" />
+
 	<cache name="commonFlexpayCache"
 		   maxElementsInMemory="100"
 		   eternal="true"

@@ -521,8 +521,81 @@
 		<group-name>EIRC_FULL_ACCESS</group-name>
 	</security-role-mapping>
 	<security-role-mapping>
+		<role-name>ROLE_EIRC_QUITTANCE_PAYMENT_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_QUITTANCE_PAY</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
 		<role-name>ROLE_EIRC_QUITTANCE_READ</role-name>
 		<group-name>EIRC_READ_ONLY</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_BASIC</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_MENU_EIRC</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_MENU_EIRC_QUITTANCES</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_MENU_EIRC_QUITTANCES2</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_MENU_EIRC_QUITTANCES_PAYFORM</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_QUITTANCE_READ</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_COMMON_PROCESS_READ</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_BANK_READ</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_ORGANIZATION_READ</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_PROVIDER_READ</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_ACCOUNT_READ</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_READ</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_SERVICE_TYPE_READ</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_QUITTANCE_PAYMENT_READ</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_QUITTANCE_PAY</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
 	</security-role-mapping>
 
     <!-- SZ files -->

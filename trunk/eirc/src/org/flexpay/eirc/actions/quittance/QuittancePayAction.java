@@ -1,13 +1,19 @@
 package org.flexpay.eirc.actions.quittance;
 
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.QuittanceDetailsPayment;
 import org.flexpay.eirc.persistence.QuittancePayment;
+import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.QuittancePaymentService;
+import org.flexpay.eirc.service.QuittancePaymentStatusService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -15,6 +21,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class QuittancePayAction extends FPActionSupport {
 
@@ -25,10 +32,14 @@ public class QuittancePayAction extends FPActionSupport {
 	private String source = "number";
 
 
+	private BigDecimal totalPayed;
+	private Map<Long, BigDecimal> servicePayments = CollectionUtils.map();
+
 	// required services
 	private QuittanceService quittanceService;
 	private QuittanceNumberService numberService;
 	private QuittancePaymentService quittancePaymentService;
+	private QuittancePaymentStatusService paymentStatusService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -44,20 +55,85 @@ public class QuittancePayAction extends FPActionSupport {
 			return doRedirect();
 		}
 
+		quittanceNumber = numberService.getNumber(quittance);
+		payments = quittancePaymentService.getQuittancePayments(stub(quittance));
+
+		log.info("Total payed: {}", totalPayed);
+		log.info("Service payments {}", servicePayments);
+
 		if (isSubmit()) {
-			addActionError("eirc.quittances.quittance_pay.payed_successfully");
+			doPay();
+			addActionError(getText("eirc.quittances.quittance_pay.payed_successfully"));
 			return doRedirect();
 		}
 
-		quittanceNumber = numberService.getNumber(quittance);
+		// prepare summs to pay
+		for (QuittanceDetails details : quittance.getQuittanceDetails()) {
+			Service service = details.getConsumer().getService();
+			servicePayments.put(service.getId(), details.getOutgoingBalance());
+		}
 
-		payments = quittancePaymentService.getQuittancePayments(stub(quittance));
+		initTotalPayed();
 
 		if (quittancePayed()) {
 			addActionError(getText("eirc.quittance.payment.was_paid"));
 		}
 
 		return INPUT;
+	}
+
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void doPay() throws FlexPayExceptionContainer {
+
+		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
+
+		QuittancePayment payment = new QuittancePayment();
+		payment.setQuittance(quittance);
+		payment.setAmount(totalPayed);
+		BigDecimal summ = new BigDecimal("0.00");
+		boolean hasPartialPayments = false;
+		for (Map.Entry<Long, BigDecimal> entry : servicePayments.entrySet()) {
+			Long serviceId = entry.getKey();
+			BigDecimal payed = entry.getValue();
+
+			QuittanceDetailsPayment detailsPayment = new QuittanceDetailsPayment();
+			detailsPayment.setAmount(payed);
+
+			QuittanceDetails details = quittance.getServiceDetails(new Stub<Service>(serviceId));
+			if (details == null) {
+				ex.addException(new FlexPayException("No details ",
+						"eirc.error.quittances.pay.no_details_found", serviceId));
+				continue;
+			}
+			detailsPayment.setQuittanceDetails(details);
+
+			// check if payed summ is equals or more then needed to pay
+			BigDecimal alreadyPayed = getPayedSumm(details);
+			if (alreadyPayed.add(payed).compareTo(details.getOutgoingBalance()) >= 0) {
+				detailsPayment.setPaymentStatus(paymentStatusService.getPayedFullStatus());
+			} else {
+				detailsPayment.setPaymentStatus(paymentStatusService.getPayedPartiallyStatus());
+				hasPartialPayments = true;
+			}
+
+			payment.addDetailsPayment(detailsPayment);
+			summ = summ.add(payed);
+		}
+
+		if (!summ.equals(totalPayed)) {
+			ex.addException(new FlexPayException("invalid division",
+					"eirc.error.quittances.pay.invalid_summ_division", summ, totalPayed));
+		}
+
+		payment.setPaymentStatus(hasPartialPayments ?
+								 paymentStatusService.getPayedPartiallyStatus() :
+								 paymentStatusService.getPayedFullStatus());
+
+		if (ex.isNotEmpty()) {
+			throw ex;
+		}
+
+		quittancePaymentService.createPayment(payment);
 	}
 
 	private String doRedirect() {
@@ -96,11 +172,16 @@ public class QuittancePayAction extends FPActionSupport {
 		return qd.getConsumer().getService().getServiceProvider().getName();
 	}
 
-	public String getPayable(QuittanceDetails qd) {
-		return qd.getOutgoingBalance().toString();
+	public BigDecimal getPayable(QuittanceDetails qd) {
+		return servicePayments.get(qd.getConsumer().getService().getId());
 	}
 
-	public String getTotalPayable() {
+	private void initTotalPayed() {
+		totalPayed = getTotalPayable();
+	}
+
+	public BigDecimal getTotalPayable() {
+
 		BigDecimal total = new BigDecimal("0.00");
 
 		for (QuittanceDetails qd : quittance.getQuittanceDetails()) {
@@ -109,7 +190,7 @@ public class QuittancePayAction extends FPActionSupport {
 			}
 		}
 
-		return total.toString();
+		return total;
 	}
 
 	public boolean quittancePayed() {
@@ -126,8 +207,7 @@ public class QuittancePayAction extends FPActionSupport {
 		return true;
 	}
 
-	@NotNull
-	public BigDecimal getTotalPayed() {
+	public BigDecimal getTotalPayedBefore() {
 
 		BigDecimal summ = new BigDecimal("0.00");
 		for (QuittanceDetails details : quittance.getQuittanceDetails()) {
@@ -166,11 +246,30 @@ public class QuittancePayAction extends FPActionSupport {
 		return quittanceNumber;
 	}
 
+	public String getSource() {
+		return source;
+	}
+
 	public void setSource(String source) {
 		this.source = source;
 	}
 
-	// required services setters
+	public Map<Long, BigDecimal> getServicePayments() {
+		return servicePayments;
+	}
+
+	public void setServicePayments(Map<Long, BigDecimal> servicePayments) {
+		this.servicePayments = servicePayments;
+	}
+
+	public BigDecimal getTotalPayed() {
+		return totalPayed;
+	}
+
+	public void setTotalPayed(BigDecimal totalPayed) {
+		this.totalPayed = totalPayed;
+	}
+
 	@Required
 	public void setQuittanceService(QuittanceService quittanceService) {
 		this.quittanceService = quittanceService;
@@ -184,5 +283,10 @@ public class QuittancePayAction extends FPActionSupport {
 	@Required
 	public void setNumberService(QuittanceNumberService numberService) {
 		this.numberService = numberService;
+	}
+
+	@Required
+	public void setPaymentStatusService(QuittancePaymentStatusService paymentStatusService) {
+		this.paymentStatusService = paymentStatusService;
 	}
 }

@@ -39,6 +39,16 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 		return quittancePaymentDao.findQuittancePayments(stub.getId());
 	}
 
+	/**
+	 * Create quittance payment
+	 *
+	 * @param payment QuittancePayement to persist
+	 */
+	@Transactional (readOnly = false)
+	public void createPayment(@NotNull QuittancePayment payment) {
+		quittancePaymentDao.create(payment);
+	}
+
 	@Required
 	public void setQuittancePaymentDao(QuittancePaymentDao quittancePaymentDao) {
 		this.quittancePaymentDao = quittancePaymentDao;

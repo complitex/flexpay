@@ -84,6 +84,7 @@
 		  class="org.flexpay.eirc.actions.quittance.QuittancePayAction"
 		  p:quittanceService-ref="quittanceService"
 		  p:quittancePaymentService-ref="quittancePaymentService"
+		  p:paymentStatusService-ref="quittancePaymentStatusService"
 		  p:numberService-ref="quittanceNumberService" />
 
 	<!-- Registries -->
