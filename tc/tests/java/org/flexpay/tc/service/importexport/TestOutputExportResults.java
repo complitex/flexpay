@@ -44,7 +44,6 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 									  "	left join fetch logrecord.tariffExportCode exportCode " +
 									  "	left join fetch logrecord.building building " +
 									  " where logrecord.tariffBeginDate=? and building.id=? " +
-									  " and exportCode.code <> " + TariffExportCode.EXPORTED +
 									  " order by logrecord.exportdate desc";
 
 	private static final String hqlGetResult = "select distinct tcresult " +
@@ -99,13 +98,12 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 				List<TariffExportLogRecord> records = (List<TariffExportLogRecord>) hibernateTemplate.find(hql, new Object[]{tariffBeginDate, buildingId});
 				log.info("Found {} log records for date: {} and building #{}", new Object[]{records.size(), tariffBeginDate, buildingId});
 
-				//List<TariffExportLogRecord> filteredRecords = filterRecordsByExportDate(records);
-				//log.info("{} record(s) filtered", records.size() - filteredRecords.size());
-
-				//for (TariffExportLogRecord record : filteredRecords) {
-
 				List<Long> exportedTariffIds = CollectionUtils.list();
 				for (TariffExportLogRecord record : records) {
+					// filtering records with code EXPORTED
+					if (record.getTariffExportCode().getCode() == TariffExportCode.EXPORTED) {
+						continue;
+					}
 
 					// chacking if we have record with such tariff
 					Long tariffId = record.getTariff().getId();
@@ -137,52 +135,9 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		System.out.println("Results printed to file: " + tmpFile.getAbsolutePath());
 	}
 
-	/*
-	private List<TariffExportLogRecord> filterRecordsByExportDate(List<TariffExportLogRecord> records) {
-
-		List<TariffExportLogRecord> filtered = CollectionUtils.list();
-
-		for (TariffExportLogRecord record : records) {
-			TariffExportLogRecord latestExportDateResult = getLatestExportDateRecord(records, record.getBuilding().getId(), record.getTariff().getId());
-
-			if (!filtered.contains(latestExportDateResult)) {
-				filtered.add(latestExportDateResult);
-			}
-		}
-
-		return filtered;
-	}
-
-	private TariffExportLogRecord getLatestExportDateRecord(List<TariffExportLogRecord> records, Long buildingId, Long tariffId) {
-
-		TariffExportLogRecord latestExportDateRecord = null;
-		Date latestExportDate = null;
-
-		for (TariffExportLogRecord record : records) {
-			Date logRecordExportDate = record.getExportdate();
-
-			// if we have export result with the same tariff begin date and building id
-			if (tariffId.equals(record.getTariff().getId())) {
-				if (latestExportDate == null) {
-					latestExportDateRecord = record;
-					latestExportDate = logRecordExportDate;
-				} else {
-					if (latestExportDate.before(logRecordExportDate)) {
-						latestExportDateRecord = record;
-						latestExportDate = logRecordExportDate;
-					}
-				}
-			}
-		}
-
-		return latestExportDateRecord;
-	}
-	*/
-
 	private void write(ReloadableResourceBundleMessageSource ms, Writer wr, TariffExportLogRecord record, TariffCalculationResult result) throws Exception {
 		// формат записи в файл
 		// 1) Адрес дома (улица, номер дома и так далее) 2) код дома в ЦН 3) название тарифа 4) значение тарифа 5) код тарифа 6) tariff export code
-
 		Building building = record.getBuilding();
 		String address = addressService.getBuildingAddress(stub(building), ApplicationConfig.getDefaultLocale());
 		building = buildingService.read(stub(building));
