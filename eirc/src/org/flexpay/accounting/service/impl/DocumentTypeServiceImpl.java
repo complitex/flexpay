@@ -6,9 +6,11 @@ import org.flexpay.accounting.service.DocumentTypeService;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class DocumentTypeServiceImpl implements DocumentTypeService {
@@ -24,12 +26,13 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 	 * @param typeStub document type stub
 	 * @return DocumentType object
 	 */
+	@Nullable
 	public DocumentType read(@NotNull Stub<DocumentType> typeStub) {
 		return documentTypeDao.readFull(typeStub.getId());
 	}
 
 	/**
-	 * Save type
+	 * Save document type
 	 *
 	 * @param documentType DocumentType Object
 	 */
@@ -60,6 +63,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 		documentTypeDao.delete(documentType);
 	}
 
+	@Required
 	public void setDocumentTypeDao(DocumentTypeDao documentTypeDao) {
 		this.documentTypeDao = documentTypeDao;
 	}

@@ -1,14 +1,16 @@
 package org.flexpay.accounting.service.impl;
 
-import org.flexpay.accounting.dao.OperationDAO;
+import org.flexpay.accounting.dao.OperationDao;
 import org.flexpay.accounting.persistence.operations.Operation;
 import org.flexpay.accounting.service.OperationService;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class OperationServiceImpl implements OperationService {
@@ -16,7 +18,7 @@ public class OperationServiceImpl implements OperationService {
 	@NonNls
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	private OperationDAO operationDao;
+	private OperationDao operationDao;
 
 	/**
 	 * Read Operation object by Stub
@@ -24,6 +26,7 @@ public class OperationServiceImpl implements OperationService {
 	 * @param operationStub operation stub
 	 * @return Operation object
 	 */
+	@Nullable
 	public Operation read(@NotNull Stub<Operation> operationStub) {
 		return operationDao.readFull(operationStub.getId());
 	}
@@ -60,7 +63,8 @@ public class OperationServiceImpl implements OperationService {
 		operationDao.delete(operation);
 	}
 
-	public void setOperationDao(OperationDAO operationDao) {
+	@Required
+	public void setOperationDao(OperationDao operationDao) {
 		this.operationDao = operationDao;
 	}
 

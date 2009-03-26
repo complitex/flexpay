@@ -32,8 +32,8 @@ public class EircSubject extends DomainObject implements Subject {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("EircSubject {").
 				append("id", getId()).
-				append("eircAccount", eircAccount).
-				append("organization", organization).
+				append("eircAccount.id", eircAccount.getId()).
+				append("organization.id", organization.getId()).
 				append("}").toString();
 	}
 
