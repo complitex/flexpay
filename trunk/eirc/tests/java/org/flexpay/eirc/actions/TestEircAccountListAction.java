@@ -9,10 +9,12 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 public class TestEircAccountListAction extends SpringBeanAwareTestCase {
 
 	@Autowired
+	@Qualifier("eircAccountsListAction")
 	private EircAccountsListAction accountsListAction;
 
 	@Test
