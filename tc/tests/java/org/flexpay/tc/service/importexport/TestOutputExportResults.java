@@ -43,6 +43,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 									  "	left join fetch logrecord.tariffExportCode exportCode " +
 									  "	left join fetch logrecord.building building " +
 									  " where logrecord.tariffBeginDate=? and building.id=? " +
+									  " and exportCode.code <> " + TariffExportCode.EXPORTED +
 									  " order by building.id, exportCode.code";
 
 	// required services
@@ -115,7 +116,8 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		List<TariffExportLogRecord> filtered = CollectionUtils.list();
 
 		for (TariffExportLogRecord record : records) {
-			TariffExportLogRecord latestExportDateResult = getLatestExportDateRecord(records, record.getTariffBeginDate(), record.getBuilding().getId());
+			TariffExportLogRecord latestExportDateResult = getLatestExportDateRecord(records,
+					record.getTariffBeginDate(), record.getBuilding().getId(), record.getTariff().getId());
 
 			if (!filtered.contains(latestExportDateResult)) {
 				filtered.add(latestExportDateResult);
@@ -125,7 +127,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		return filtered;
 	}
 
-	private TariffExportLogRecord getLatestExportDateRecord(List<TariffExportLogRecord> records, Date tariffBeginDate, Long buildingId) {
+	private TariffExportLogRecord getLatestExportDateRecord(List<TariffExportLogRecord> records, Date tariffBeginDate, Long buildingId, Long tariffId) {
 
 		TariffExportLogRecord latestExportDateRecord = null;
 		Date latestExportDate = null;
@@ -134,7 +136,9 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 			Date logRecordExportDate = record.getExportdate();
 
 			// if we have export result with the same tariff begin date and building id
-			if (tariffBeginDate.equals(record.getTariffBeginDate()) && buildingId.equals(record.getBuilding().getId())) {
+			if (tariffBeginDate.equals(record.getTariffBeginDate())
+				&& buildingId.equals(record.getBuilding().getId())
+				&& tariffId.equals(record.getTariff().getId())) {
 				if (latestExportDate == null) {
 					latestExportDateRecord = record;
 					latestExportDate = logRecordExportDate;
@@ -183,11 +187,9 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 	private String getExternalId(@NotNull Stub<Building> buildingStub) throws FlexPayException {
 
 		Stub<DataSourceDescription> dataSourceDescriptionStub = new Stub<DataSourceDescription>(dataSourceDescriptionId);
-
 		List<BuildingAddress> buildingAddressList = buildingService.getBuildingBuildings(buildingStub);
 
 		for (BuildingAddress buildingAddress : buildingAddressList) {
-
 			String externalId = correctionsService.getExternalId(buildingAddress.getId(), classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionStub);
 
 			if (externalId != null) {
