@@ -1,6 +1,6 @@
-package net.sf.navigator.displayer;
+package net.sourceforge.navigator.displayer;
 
-import net.sf.navigator.menu.MenuComponent;
+import net.sourceforge.navigator.menu.MenuComponent;
 
 import javax.servlet.jsp.JspException;
 import java.io.IOException;

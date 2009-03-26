@@ -18,7 +18,7 @@
  * limitations under the License.
  */ 
 
-package net.sf.navigator.util;
+package net.sourceforge.navigator.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

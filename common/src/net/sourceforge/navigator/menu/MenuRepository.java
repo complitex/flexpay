@@ -1,6 +1,6 @@
-package net.sf.navigator.menu;
+package net.sourceforge.navigator.menu;
 
-import net.sf.navigator.displayer.MenuDisplayerMapping;
+import net.sourceforge.navigator.displayer.MenuDisplayerMapping;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Required;

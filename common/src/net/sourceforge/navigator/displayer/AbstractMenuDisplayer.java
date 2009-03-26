@@ -1,8 +1,8 @@
-package net.sf.navigator.displayer;
+package net.sourceforge.navigator.displayer;
 
 import com.opensymphony.xwork2.util.LocalizedTextUtil;
-import net.sf.navigator.menu.MenuComponent;
-import net.sf.navigator.util.MessageResources;
+import net.sourceforge.navigator.menu.MenuComponent;
+import net.sourceforge.navigator.util.MessageResources;
 import org.flexpay.common.util.config.UserPreferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

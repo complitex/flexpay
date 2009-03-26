@@ -1,8 +1,8 @@
-package net.sf.navigator.taglib;
+package net.sourceforge.navigator.taglib;
 
-import net.sf.navigator.displayer.MenuDisplayer;
-import net.sf.navigator.displayer.MenuDisplayerMapping;
-import net.sf.navigator.menu.MenuRepository;
+import net.sourceforge.navigator.displayer.MenuDisplayer;
+import net.sourceforge.navigator.displayer.MenuDisplayerMapping;
+import net.sourceforge.navigator.menu.MenuRepository;
 import org.flexpay.common.util.config.UserPreferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +19,8 @@ public class UseMenuDisplayerTag extends TagSupport {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
-    public static final String PRIVATE_REPOSITORY = "net.sf.navigator.repositoryKey";
-    public static final String DISPLAYER_KEY = "net.sf.navigator.taglib.DISPLAYER";
+    public static final String PRIVATE_REPOSITORY = "net.sourceforge.navigator.repositoryKey";
+    public static final String DISPLAYER_KEY = "net.sourceforge.navigator.taglib.DISPLAYER";
 
     protected MenuDisplayer menuDisplayer;
     protected String name;

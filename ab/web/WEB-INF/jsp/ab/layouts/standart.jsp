@@ -1,6 +1,6 @@
 
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-<%@ taglib prefix="menu" uri="http://struts-menu.sf.net/tag" %>
+<%@ taglib prefix="menu" uri="http://struts-menu.sourceforge.net/tag" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 

@@ -6,17 +6,17 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <bean name="fpDisplayerMapping" class="net.sf.navigator.displayer.MenuDisplayerMapping"
-            p:type="net.sf.navigator.displayer.FPMenuDisplayer"
+    <bean name="fpDisplayerMapping" class="net.sourceforge.navigator.displayer.MenuDisplayerMapping"
+            p:type="net.sourceforge.navigator.displayer.FPMenuDisplayer"
             />
 
     <!--level0-->
-    <bean name="fpMenu" class="net.sf.navigator.menu.MenuComponent"
+    <bean name="fpMenu" class="net.sourceforge.navigator.menu.MenuComponent"
             p:name="fp"
             p:userRole="ROLE_BASIC"
             />
 
-    <bean name="menuRepository" class="net.sf.navigator.menu.MenuRepository">
+    <bean name="menuRepository" class="net.sourceforge.navigator.menu.MenuRepository">
         <property name="menu" ref="fpMenu" />
         <property name="displayers">
             <map>

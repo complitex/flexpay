@@ -1,8 +1,8 @@
-package net.sf.navigator.taglib;
+package net.sourceforge.navigator.taglib;
 
-import net.sf.navigator.displayer.MenuDisplayer;
-import net.sf.navigator.menu.MenuComponent;
-import net.sf.navigator.menu.MenuRepository;
+import net.sourceforge.navigator.displayer.MenuDisplayer;
+import net.sourceforge.navigator.menu.MenuComponent;
+import net.sourceforge.navigator.menu.MenuRepository;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.views.util.UrlHelper;
 import org.slf4j.Logger;
@@ -72,6 +72,7 @@ public class DisplayMenuTag extends TagSupport {
                 // set the location value to use
                 // the context relative page attribute
                 // if specified in the menu
+				HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
                 try {
                     setPageLocation(menu);
                 } catch (MalformedURLException e) {
@@ -80,9 +81,8 @@ public class DisplayMenuTag extends TagSupport {
                     menu.setLocation("#");
                 }
 
-				HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 				String curMenuComponentName = (String) WebUtils.getSessionAttribute(request, "activeMenuComponentName");
-				MenuComponent activeMenuComponent = null;
+				MenuComponent activeMenuComponent;
                 if (curMenuComponentName == null) {
                     String curAction = (String) WebUtils.getSessionAttribute(request, "currentAction");
                     activeMenuComponent = getMenuByAction(curAction, applicationContext);
@@ -185,9 +185,11 @@ public class DisplayMenuTag extends TagSupport {
             HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
             HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
             if (menu.getAction() != null) {
-				log.debug("request.getServletPath() = {}, request.getParameterMap() = {}", request.getServletPath(), request.getParameterMap());
+				String menuParam = request.getParameter("menu");
+				if (menuParam == null || !menuParam.equals(menu.getName())) {
+					request.getParameterMap().put("menu", menu.getName());
+				}
                 menu.setLocation(UrlHelper.buildUrl(menu.getAction(), request, response, request.getParameterMap()));
-				log.debug("menu.location = {}", menu.getLocation());
             }
         }
     }
