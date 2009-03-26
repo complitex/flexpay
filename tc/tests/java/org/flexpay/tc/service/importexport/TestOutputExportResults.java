@@ -106,7 +106,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 					if (record.getTariffExportCode().getCode() != TariffExportCode.EXPORTED) {
 
 						List<TariffCalculationResult> results = (List<TariffCalculationResult>) hibernateTemplate.find(hqlGetResult, new Object[] { record.getId() });
-						if (results.size() != 1) {
+						if (results.size() > 1) {
 							log.error("Unexpected number of results for log record: {}", results.size());
 							throw new RuntimeException("Unexpected number of results for log record: " + results.size());
 						}
@@ -181,13 +181,15 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		externalId = (externalId == null) ? "" : externalId;
 		String cnId = externalId.equals("1") ? "" : externalId; // exclude cnId 1
 
+		String value = (result != null) ? result.getValue().toString() : "0";
+
 		StringBuilder sb = new StringBuilder()
 				.append("\"").append(district.getCurrentName().getDefaultNameTranslation()).append("\"").append(delimeter)
 				.append("\"").append(address).append("\"").append(delimeter)
 				.append(record.getBuilding().getId()).append(delimeter)
 				.append(cnId).append(delimeter)
 				.append("\"").append(record.getTariff().getDefultTranslation()).append("\"").append(delimeter)
-				.append(result.getValue()).append(delimeter)
+				.append(value).append(delimeter)
 				.append(record.getTariff().getSubServiceCode()).append(delimeter)
 				.append(record.getTariffExportCode().getCode()).append(delimeter)
 				.append("\"").append(ms.getMessage(i18nName, params, ApplicationConfig.getDefaultLocale())).append("\"")
