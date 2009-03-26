@@ -56,4 +56,7 @@ public abstract class Roles {
 	public static final String QUITTANCE_CREATE_PRINT_FILE = PREFIX + "QUITTANCE_CREATE_PRINT_FILE";
 	public static final String QUITTANCE_READ = PREFIX + "QUITTANCE_READ";
 	public static final String QUITTANCE_RECEIVE = PREFIX + "QUITTANCE_RECEIVE";
+
+	public static final String QUITTANCE_PAYMENT_READ = PREFIX + "QUITTANCE_PAYMENT_READ";
+	public static final String QUITTANCE_PAY = PREFIX + "QUITTANCE_PAY";
 }

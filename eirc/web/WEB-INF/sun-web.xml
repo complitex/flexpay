@@ -488,6 +488,14 @@
 		<role-name>ROLE_EIRC_QUITTANCE_RECEIVE</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
 	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_QUITTANCE_PAYMENT_READ</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_QUITTANCE_PAY</role-name>
+		<group-name>EIRC_FULL_ACCESS</group-name>
+	</security-role-mapping>
 
     <security-role-mapping>
         <role-name>ROLE_EIRC_QUITTANCE_READ</role-name>
@@ -777,5 +785,14 @@
         <role-name>ROLE_EIRC_SERVICE_TYPE_READ</role-name>
         <group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
     </security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_QUITTANCE_PAYMENT_READ</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_EIRC_QUITTANCE_PAY</role-name>
+		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
+	</security-role-mapping>
+
 
 </sun-web-app>

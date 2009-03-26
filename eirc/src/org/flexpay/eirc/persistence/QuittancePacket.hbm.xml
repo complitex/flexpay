@@ -277,4 +277,10 @@
 		where o.quittance.id=?
 	</query>
 
+	<query name="QuittancePaymentStatus.findStatus">
+		select distinct o
+		from QuittancePaymentStatus o
+		where o.code=?
+	</query>
+
 </hibernate-mapping>

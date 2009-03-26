@@ -134,4 +134,6 @@ public class QuittanceDetails extends DomainObject {
 	public void setMonth(Date month) {
 		this.month = month;
 	}
+
+	
 }

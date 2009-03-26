@@ -7,6 +7,7 @@ import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.persistence.Service;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -131,10 +132,6 @@ public class Quittance extends DomainObject {
 		return qdq.getQuittanceDetails().getConsumer().getService();
 	}
 
-	private boolean isSubServiceDetails(QuittanceDetailsQuittance qdq) {
-		return getService(qdq).isSubService();
-	}
-
 	/**
 	 * @return the quittanceDetailsQuittances
 	 */
@@ -190,5 +187,16 @@ public class Quittance extends DomainObject {
 	@NotNull
 	public Long getEircAccountId() {
 		return new Stub<EircAccount>(eircAccount).getId();
+	}
+
+	@Nullable
+	public QuittanceDetails getServiceDetails(Stub<Service> stub) {
+		for (QuittanceDetails details : getQuittanceDetails()) {
+			if (details.getConsumer().getServiceStub().equals(stub)) {
+				return details;
+			}
+		}
+
+		return null;
 	}
 }

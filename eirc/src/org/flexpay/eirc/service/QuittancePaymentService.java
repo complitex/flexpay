@@ -5,6 +5,7 @@ import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.eirc.persistence.QuittancePayment;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.annotation.Secured;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public interface QuittancePaymentService {
 	 * @param stub Quittance stub
 	 * @return List of quittance packets possibly empty
 	 */
+	@Secured(Roles.QUITTANCE_PAYMENT_READ)
 	@NotNull
 	List<QuittancePacket> getPacketsWhereQuittancePayed(@NotNull Stub<Quittance> stub);
 
@@ -25,6 +27,15 @@ public interface QuittancePaymentService {
 	 * @param stub Quittance stub to get quittance of
 	 * @return List of registered quittance payments
 	 */
+	@Secured(Roles.QUITTANCE_PAYMENT_READ)
 	@NotNull
 	List<QuittancePayment> getQuittancePayments(@NotNull Stub<Quittance> stub);
+
+	/**
+	 * Create quittance payment
+	 * 
+	 * @param payment QuittancePayement to persist
+	 */
+	@Secured(Roles.QUITTANCE_PAY)
+	void createPayment(@NotNull QuittancePayment payment);
 }

@@ -9,7 +9,7 @@
 	// summ update
 	function updateTotalPay() {
 		var total = 0.00;
-		var elements = $("input[id^=demoQuittancePayForm_servicePayValue_]");
+		var elements = $("input[id^=demoQuittancePayForm_servicePayments_]");
 
 		for (var i = 0; i < elements.length; i++) {
 			var value = $(elements[i]).val();
@@ -44,9 +44,9 @@
 
 
 	<s:iterator value="%{quittance.quittanceDetails}" id="qd">
-		$.validator.addMethod("payValue_<s:property value="%{#qd.id}"/>_is_not_too_big", function(value, element) {
+		$.validator.addMethod("payValue_<s:property value="%{#qd.consumer.service.id}"/>_is_not_too_big", function(value, element) {
 			value = replaceCommaWithDot(value);
-			return parseFloat(value) <= <s:property value="%{getPayable(#qd)}"/>;
+			return dotted2Int(value) <= dotted2Int('<s:property value="%{getPayable(#qd)}"/>');
 		}, '<s:text name="eirc.error.quittances.quittance_pay.pay_value_too_big"/>');
 	</s:iterator>
 	});
@@ -55,18 +55,18 @@
 		var validator = $("#demoQuittancePayForm").validate({
 			rules: {
 				<s:iterator value="%{quittance.quittanceDetails}" id="qd">
-				'servicePayValue[<s:property value="%{#qd.id}"/>]' : {
+				'servicePayments[<s:property value="%{#qd.consumer.service.id}"/>]' : {
 					'validPayValue': true,
-					'payValue_<s:property value="%{#qd.id}"/>_is_not_too_big': true
+					'payValue_<s:property value="%{#qd.consumer.service.id}"/>_is_not_too_big': true
 				},
 				</s:iterator>
-				'total_pay': 'required' // covers $ validation 1.5.1 bug (it doesn't allow form fields without any rules)
+				'totalPayed': 'required' // covers $ validation 1.5.1 bug (it doesn't allow form fields without any rules)
 			},
 			messages: {
 				<s:iterator value="%{quittance.quittanceDetails}" id="qd" status="status">
-				'servicePayValue[<s:property value="%{#qd.id}"/>]' : {
+				'servicePayments[<s:property value="%{#qd.id}"/>]' : {
 					'validPayValue': '<s:text name="eirc.error.quittances.quittance_pay.invalid_pay_value"/>',
-					'payValue_<s:property value="%{#qd.id}"/>_is_not_too_big': '<s:text name="eirc.error.quittances.quittance_pay.pay_value_too_big"/>'
+					'payValue_<s:property value="%{#qd.consumer.service.id}"/>_is_not_too_big': '<s:text name="eirc.error.quittances.quittance_pay.pay_value_too_big"/>'
 				}<s:if test="!#status.last">, </s:if>
 				</s:iterator>
 			},
@@ -103,8 +103,9 @@
 	/**
 	 * Quittance details object
 	 */
-	function QD(id, title, provider, toPay, payed) {
+	function QD(id, serviceId, title, provider, toPay, payed) {
 		this.id = id;
+		this.serviceId = serviceId;
 		this.title = title;
 		this.provider = provider;
 		this.toPay = dotted2Int(toPay);
@@ -112,6 +113,7 @@
 
 		this.toString = function() {
 			return "id : " + this.id + ", " +
+				   "serviceId : " + this.serviceId + ", " +
 				   "title : " + this.title + ", " +
 				   "provider : " + this.provider + ", " +
 				   "toPay : " + int2Dotted(this.toPay) + " (" + this.toPay+ "), " +
@@ -143,7 +145,7 @@
 	var DETAILS = $.protify([]);
 
 	function divideAscending() {
-		var totalSumm = dotted2Int($("#demoQuittancePayForm_total_pay").val());
+		var totalSumm = dotted2Int($("#demoQuittancePayForm_totalPayed").val());
 		var sortBySumm = DETAILS.sort(function (qd1, qd2) {
 			return qd2.toPay - qd1.toPay;
 		});
@@ -153,7 +155,7 @@
 		// set summs to zero
 		for (var i = 0; i < sortBySumm.length; ++i) {
 			var qd = sortBySumm[i];
-			summs[qd.id] = 0;
+			summs[qd.serviceId] = 0;
 		}
 
 		// divide summs
@@ -161,18 +163,18 @@
 			for (i = 0; i < sortBySumm.length && totalSumm > 0; ++i) {
 				qd = sortBySumm[i];
 				var nextSumm = totalSumm >= qd.toPay ? qd.toPay : totalSumm;
-				summs[qd.id] += nextSumm;
+				summs[qd.serviceId] += nextSumm;
 				totalSumm -= nextSumm;
 			}
 		}
 
 		// set summs to their values
-		for (var id in summs) {
-			$("#demoQuittancePayForm_servicePayValue_" + id + "_").val(int2Dotted(summs[id]));
+		for (var serviceId in summs) {
+			$("#demoQuittancePayForm_servicePayments_" + serviceId + "_").val(int2Dotted(summs[serviceId]));
 		}
 	}
 	function divideByRatio() {
-		var totalSumm = dotted2Int($("#demoQuittancePayForm_total_pay").val());
+		var totalSumm = dotted2Int($("#demoQuittancePayForm_totalPayed").val());
 		var nonZeroSumms = DETAILS.findAll(function (qd) {
 			return qd.toPay > 0;
 		});
@@ -180,7 +182,7 @@
 		var summs = {};
 		// set summs to zero
 		DETAILS.each(function (qd) {
-			summs[qd.id] = 0;
+			summs[qd.serviceId] = 0;
 		});
 
 		var last = nonZeroSumms.last();
@@ -192,16 +194,16 @@
 				// cast float to integer trick
 				var nextSumm = (totalSumm * qd.toPay) / totalToPay | 0;
 				summ += nextSumm;
-				summs[qd.id] = nextSumm;
+				summs[qd.serviceId] = nextSumm;
 			}
 		});
 
 		// set last element summ
-		summs[last.id] = totalSumm - summ;
+		summs[last.serviceId] = totalSumm - summ;
 
 		// set summs to their values
-		for (var id in summs) {
-			$("#demoQuittancePayForm_servicePayValue_" + id + "_").val(int2Dotted(summs[id]));
+		for (var serviceId in summs) {
+			$("#demoQuittancePayForm_servicePayments_" + serviceId + "_").val(int2Dotted(summs[serviceId]));
 		}
 	}
 </script>
@@ -235,10 +237,12 @@
 
 <s:form id="demoQuittancePayForm" action="quittancePay">
 
-	<s:hidden name="quittanceNumber" value="%{quittanceNumber}" />
+	<s:hidden name="source" />
+	<s:hidden name="quittance.id" />
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
+			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" nowrap="nowrap"><s:text name="eirc.quittances.quittance_pay.service" /></td>
 			<td class="th"><s:text name="eirc.quittances.quittance_pay.service_supplier" /></td>
 			<td class="th"><s:text name="eirc.quittances.quittance_pay.payable" /></td>
@@ -246,11 +250,14 @@
 			<td class="th"><s:text name="eirc.quittances.quittance_pay.pay" /></td>
 		</tr>
 
-		<s:iterator value="%{quittance.orderedQuittanceDetails}" id="qd">
+		<s:iterator value="%{quittance.orderedQuittanceDetails}" id="qd" status="status">
 			<tr class="cols_1_error" style="display:none;">
 				<td colspan="4" />
 			</tr>
 			<tr class="cols_1">
+				<td class="col" align="right">
+                    <s:property value="%{#status.index + 1}"/>
+				</td>
 				<td class="col" nowrap="nowrap">
 					<s:if test="%{#qd.consumer.service.isSubService()}">&nbsp;&nbsp;&nbsp;<i><s:property
 							value="%{getServiceName(#qd)}" /></i></s:if>
@@ -259,6 +266,7 @@
 						<script type="text/javascript">
 							DETAILS.push(new QD(
 									"<s:property value="%{#qd.id}" />",
+									"<s:property value="%{#qd.consumer.service.id}" />",
 									"<s:property value="%{getServiceName(#qd)}" />",
 									"<s:property value="%{getServiceProviderName(#qd)}" />",
 									"<s:property value="%{#qd.outgoingBalance}" />",
@@ -267,27 +275,26 @@
 					</s:else>
 				</td>
 				<td class="col"><s:property value="%{getServiceProviderName(#qd)}" /></td>
-				<td class="col" id="paySumm_<s:property value="%{#qd.id}" />"><s:property
-						value="%{getPayable(#qd)}" /></td>
+				<td class="col" id="paySumm_<s:property value="%{#qd.id}" />"><s:property value="%{#qd.outgoingBalance}" /></td>
 				<td class="col"><s:property value="%{getPayedSumm(#qd)}" /></td>
 				<td class="col">
 					<s:if test="%{!#qd.consumer.service.isSubService()}">
-						<s:textfield name="servicePayValue[%{#qd.id}]" value="%{getPayable(#qd)}"
+						<s:textfield name="servicePayments[%{#qd.consumer.service.id}]" value="%{getPayable(#qd)}"
 									 cssStyle="width: 100%; text-align: right;" /></s:if></td>
 			</tr>
 		</s:iterator>
 
 		<tr class="cols_1">
-			<td class="col" colspan="2" style="text-align:right;font-weight:bold;"><s:text
+			<td class="col" colspan="3" style="text-align:right;font-weight:bold;"><s:text
 					name="eirc.quittances.quittance_pay.total_payable" /></td>
-			<td class="col" style="font-weight:bold;"><s:property value="%{getTotalPayable()}" /></td>
-			<td class="col" style="font-weight:bold;"><s:property value="%{getTotalPayed()}" /></td>
-			<td class="col"><s:textfield name="total_pay" value="%{getTotalPayable()}"
+			<td class="col" style="font-weight:bold;"><s:property value="%{totalPayable}" /></td>
+			<td class="col" style="font-weight:bold;"><s:property value="%{totalPayedBefore}" /></td>
+			<td class="col"><s:textfield name="totalPayed" value="%{totalPayed}"
 										 cssStyle="width: 100%; text-align: right;" /></td>
 		</tr>
 
 		<tr>
-			<td colspan="4" style="text-align:left;">
+			<td colspan="5" style="text-align:left;">
 				<input type="button" value="<s:text name="eirc.quittance.payment.pay_by_ratio"/>"
 					   class="btn-exit" onclick="divideByRatio();" />
 				<input type="button" value="<s:text name="eirc.quittance.payment.pay_asc"/>"

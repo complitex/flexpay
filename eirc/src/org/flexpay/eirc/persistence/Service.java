@@ -125,6 +125,10 @@ public class Service extends DomainObject {
 		return parentService != null;
 	}
 
+	public boolean isNotSubservice() {
+		return !isSubService();
+	}
+
 	public Set<Service> getChildServices() {
 		return childServices;
 	}

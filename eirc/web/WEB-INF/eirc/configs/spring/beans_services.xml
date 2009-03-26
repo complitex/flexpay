@@ -135,6 +135,11 @@
 		  p:serviceDaoExt-ref="serviceDaoExt"
 		  p:serviceTypeDao-ref="serviceTypeDao" />
 
+	<bean id="quittancePaymentStatusServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.eirc.service.imp.QuittancePaymentStatusServiceImpl"
+		  p:statusDao-ref="quittancePaymentStatusDao" />
+
 	<bean id="quittanceService" class="org.flexpay.eirc.service.imp.QuittanceServiceImpl"
 		  p:quittanceNumberService-ref="quittanceNumberService"
 		  p:quittanceDetailsDao-ref="quittanceDetailsDao"

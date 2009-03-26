@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
@@ -144,5 +145,10 @@ public class Consumer extends DomainObjectWithStatus {
 
 	public Stub<EircAccount> getEircAccountStub() {
 		return stub(eircAccount);
+	}
+
+	@NotNull
+	public Stub<Service> getServiceStub() {
+		return stub(getService());
 	}
 }
