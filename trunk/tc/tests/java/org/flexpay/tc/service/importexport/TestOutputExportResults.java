@@ -100,19 +100,21 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 				log.info("Found {} log records for date: {} and buiding #{}", new Object[]{records.size(), tariffBeginDate, buildingId});
 
 				List<TariffExportLogRecord> filteredRecords = filterRecordsByExportDate(records);
-				log.info("{} records filtered", records.size() - filteredRecords.size());
+				log.info("{} record(s) filtered", records.size() - filteredRecords.size());
 
 				for (TariffExportLogRecord record : filteredRecords) {
-					if (record.getTariffExportCode().getCode() != TariffExportCode.EXPORTED) {
-
-						List<TariffCalculationResult> results = (List<TariffCalculationResult>) hibernateTemplate.find(hqlGetResult, new Object[] { record.getId() });
-						if (results.size() > 1) {
-							log.error("Unexpected number of results for log record: {}", results.size());
-							throw new RuntimeException("Unexpected number of results for log record: " + results.size());
-						}
-
-						write(ms, wr, record, results.get(0));
+					List<TariffCalculationResult> results = (List<TariffCalculationResult>) hibernateTemplate.find(hqlGetResult, new Object[]{record.getId()});
+					if (results.size() > 1) {
+						log.error("Unexpected number of results for log record: {}", results.size());
+						throw new RuntimeException("Unexpected number of results for log record: " + results.size());
 					}
+
+					TariffCalculationResult result = null;
+					if (results.size() == 1) {
+						result = results.get(0);
+					}
+
+					write(ms, wr, record, result);
 				}
 			}
 		} finally {
