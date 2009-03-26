@@ -17,6 +17,7 @@ import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.tc.persistence.TariffExportCode;
 import org.flexpay.tc.persistence.TariffExportLogRecord;
+import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +46,10 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 									  " where logrecord.tariffBeginDate=? and building.id=? " +
 									  " and exportCode.code <> " + TariffExportCode.EXPORTED +
 									  " order by building.id, exportCode.code";
+
+	private static final String hqlGetResult = "select distinct tcresult " +
+											   "from TariffCalculationResult tcresult " +
+											   "where tcresult.lastTariffExportLogRecord.id=?";
 
 	// required services
 	@Autowired
@@ -92,14 +97,21 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 
 			for (Long buildingId : buildingIds) {
 				List<TariffExportLogRecord> records = (List<TariffExportLogRecord>) hibernateTemplate.find(hql, new Object[]{tariffBeginDate, buildingId});
-				log.info("Found {} log records for date: {} and buiding #{}", new Object[] {records.size(), tariffBeginDate, buildingId});
+				log.info("Found {} log records for date: {} and buiding #{}", new Object[]{records.size(), tariffBeginDate, buildingId});
 
 				List<TariffExportLogRecord> filteredRecords = filterRecordsByExportDate(records);
-				log.info("Several records with same building and tariff begin date found, {} filtered", records.size() - filteredRecords.size());
+				log.info("{} records filtered", records.size() - filteredRecords.size());
 
 				for (TariffExportLogRecord record : filteredRecords) {
-					if (record.getTariffExportCode().getCode() != TariffExportCode.EXPORTED){
-						write(ms, wr, record);
+					if (record.getTariffExportCode().getCode() != TariffExportCode.EXPORTED) {
+
+						List<TariffCalculationResult> results = (List<TariffCalculationResult>) hibernateTemplate.find(hqlGetResult, new Object[] { record.getId() });
+						if (results.size() != 1) {
+							log.error("Unexpected number of results for log record: {}", results.size());
+							throw new RuntimeException("Unexpected number of results for log record: " + results.size());
+						}
+
+						write(ms, wr, record, results.get(0));
 					}
 				}
 			}
@@ -154,7 +166,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		return latestExportDateRecord;
 	}
 
-	private void write(ReloadableResourceBundleMessageSource ms, Writer wr, TariffExportLogRecord record) throws Exception {
+	private void write(ReloadableResourceBundleMessageSource ms, Writer wr, TariffExportLogRecord record, TariffCalculationResult result) throws Exception {
 		// формат записи в файл
 		// 1) Адрес дома (улица, номер дома и так далее) 2) код дома в ЦН 3) название тарифа 4) значение тарифа 5) код тарифа 6) tariff export code
 
@@ -175,7 +187,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 				.append(record.getBuilding().getId()).append(delimeter)
 				.append(cnId).append(delimeter)
 				.append("\"").append(record.getTariff().getDefultTranslation()).append("\"").append(delimeter)
-				//.append(record.getValue()).append(delimeter)
+				.append(result.getValue()).append(delimeter)
 				.append(record.getTariff().getSubServiceCode()).append(delimeter)
 				.append(record.getTariffExportCode().getCode()).append(delimeter)
 				.append("\"").append(ms.getMessage(i18nName, params, ApplicationConfig.getDefaultLocale())).append("\"")
