@@ -1,4 +1,4 @@
-package net.sf.navigator.util;
+package net.sourceforge.navigator.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +84,7 @@ public abstract class MessageResourcesFactory implements Serializable {
      * The fully qualified class name to be used for
      * <code>MessageResourcesFactory</code> instances.
      */
-    protected static String factoryClass = "net.sf.navigator.util.PropertyMessageResourcesFactory";
+    protected static String factoryClass = "net.sourceforge.navigator.util.PropertyMessageResourcesFactory";
 
     /**
      * The fully qualified class name that is used for

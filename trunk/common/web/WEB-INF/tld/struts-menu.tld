@@ -9,11 +9,11 @@
     <display-name>Struts Menu Tag</display-name>
     <tlib-version>1.1</tlib-version>
     <short-name>menu</short-name>
-    <uri>http://struts-menu.sf.net/tag</uri>
+    <uri>http://struts-menu.sourceforge.net/tag</uri>
 
     <tag>
       <name>useMenuDisplayer</name>
-      <tag-class>net.sf.navigator.taglib.UseMenuDisplayerTag</tag-class>
+      <tag-class>net.sourceforge.navigator.taglib.UseMenuDisplayerTag</tag-class>
       <body-content>JSP</body-content>
       <attribute>
           <name>name</name>
@@ -24,7 +24,7 @@
 
     <tag>
         <name>displayMenu</name>
-        <tag-class>net.sf.navigator.taglib.DisplayMenuTag</tag-class>
+        <tag-class>net.sourceforge.navigator.taglib.DisplayMenuTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
             <name>name</name>

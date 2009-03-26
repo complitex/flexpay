@@ -1,4 +1,4 @@
-package net.sf.navigator.menu;
+package net.sourceforge.navigator.menu;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;

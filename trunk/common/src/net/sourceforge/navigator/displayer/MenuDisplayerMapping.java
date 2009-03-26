@@ -1,4 +1,4 @@
-package net.sf.navigator.displayer;
+package net.sourceforge.navigator.displayer;
 
 import org.springframework.beans.factory.annotation.Required;
 

@@ -1,4 +1,4 @@
-package net.sf.navigator.menu;
+package net.sourceforge.navigator.menu;
 
 import org.springframework.beans.factory.annotation.Required;
 
@@ -66,7 +66,7 @@ public abstract class MenuBase {
     protected String module;
 
     public void setAction(String action) {
-        this.action = action;
+        this.action = action + ".action";
     }
 
     public String getAction() {

@@ -1,4 +1,4 @@
-package net.sf.navigator.menu;
+package net.sourceforge.navigator.menu;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

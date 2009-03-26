@@ -1,6 +1,6 @@
 package org.flexpay.common.util.config;
 
-import net.sf.navigator.menu.MenuComponent;
+import net.sourceforge.navigator.menu.MenuComponent;
 import org.flexpay.common.persistence.Language;
 import org.springframework.web.util.WebUtils;
 

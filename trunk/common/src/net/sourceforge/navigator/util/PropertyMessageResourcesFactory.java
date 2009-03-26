@@ -1,4 +1,4 @@
-package net.sf.navigator.util;
+package net.sourceforge.navigator.util;
 
 /**
  * Factory for <code>PropertyMessageResources</code> instances.  The

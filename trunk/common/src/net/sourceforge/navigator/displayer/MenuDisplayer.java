@@ -1,6 +1,6 @@
-package net.sf.navigator.displayer;
+package net.sourceforge.navigator.displayer;
 
-import net.sf.navigator.menu.MenuComponent;
+import net.sourceforge.navigator.menu.MenuComponent;
 import org.flexpay.common.util.config.UserPreferences;
 
 import javax.servlet.jsp.JspException;
@@ -11,7 +11,7 @@ import java.util.Set;
 
 public interface MenuDisplayer {
 
-    public static final String DEFAULT_CONFIG = "net.sf.navigator.displayer.menuStrings";
+    public static final String DEFAULT_CONFIG = "net.sourceforge.navigator.displayer.menuStrings";
 
     void display(MenuComponent menu) throws JspException, IOException;
 
