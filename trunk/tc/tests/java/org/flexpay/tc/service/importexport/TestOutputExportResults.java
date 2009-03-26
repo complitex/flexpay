@@ -18,6 +18,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.TariffExportLogRecord;
+import org.flexpay.tc.persistence.TariffExportCode;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.service.TariffService;
 import org.flexpay.tc.util.config.ApplicationConfig;
@@ -102,7 +103,9 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 				log.info("Several results with same building and tariff begin date found, {} filtered", results.size() - filteredResults.size());
 
 				for (TariffCalculationResult result : filteredResults) {
-					writeCalculationResult(ms, wr, result);
+					if (result.getLastTariffExportLogRecord().getTariffExportCode().getCode() != TariffExportCode.EXPORTED){
+						writeCalculationResult(ms, wr, result);
+					}
 				}
 			}
 		} finally {
@@ -173,6 +176,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		StringBuilder sb = new StringBuilder()
 				.append("\"").append(district.getCurrentName().getDefaultNameTranslation()).append("\"").append(delimeter)
 				.append("\"").append(address).append("\"").append(delimeter)
+				.append(result.getBuilding().getId()).append(delimeter)
 				.append(cnId).append(delimeter)
 				.append("\"").append(result.getTariff().getDefultTranslation()).append("\"").append(delimeter)
 				.append(result.getValue()).append(delimeter)
