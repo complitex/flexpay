@@ -3,6 +3,8 @@ package org.flexpay.accounting.service;
 import org.flexpay.accounting.persistence.Document;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.springframework.security.annotation.Secured;
 
 public interface DocumentService {
 
@@ -12,6 +14,8 @@ public interface DocumentService {
 	 * @param documentStub document stub
 	 * @return Document object
 	 */
+	@Secured (Roles.DOCUMENT_READ)
+	@Nullable
 	public Document read(@NotNull Stub<Document> documentStub);
 
 	/**
@@ -19,6 +23,7 @@ public interface DocumentService {
 	 *
 	 * @param document Document Object
 	 */
+	@Secured ({Roles.DOCUMENT_ADD, Roles.DOCUMENT_CHANGE})
 	public void save(@NotNull Document document);
 
 	/**
@@ -26,6 +31,7 @@ public interface DocumentService {
 	 *
 	 * @param documentStub document stub
 	 */
+	@Secured (Roles.DOCUMENT_DELETE)
 	public void delete(@NotNull Stub<Document> documentStub);
 
 }

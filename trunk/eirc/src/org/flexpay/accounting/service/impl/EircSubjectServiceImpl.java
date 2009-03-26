@@ -6,9 +6,11 @@ import org.flexpay.accounting.service.EircSubjectService;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class EircSubjectServiceImpl implements EircSubjectService {
@@ -24,6 +26,7 @@ public class EircSubjectServiceImpl implements EircSubjectService {
 	 * @param subjectStub subject stub
 	 * @return EircSubject object
 	 */
+	@Nullable
 	public EircSubject read(@NotNull Stub<EircSubject> subjectStub) {
 		return eircSubjectDao.readFull(subjectStub.getId());
 	}
@@ -60,6 +63,7 @@ public class EircSubjectServiceImpl implements EircSubjectService {
 		eircSubjectDao.delete(eircSubject);
 	}
 
+	@Required
 	public void setEircSubjectDao(EircSubjectDao eircSubjectDao) {
 		this.eircSubjectDao = eircSubjectDao;
 	}

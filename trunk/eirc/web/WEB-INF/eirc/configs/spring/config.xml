@@ -4,8 +4,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <import resource="beans_dao.xml" />
+    <import resource="beans_dao_acc.xml" />
 	<import resource="beans-logic.xml" />
     <import resource="beans_services.xml" />
+    <import resource="beans_services_acc.xml" />
     <import resource="beans-cache.xml" />
 	<import resource="beans-reports.xml" />
     <import resource="beans_struts.xml" />

@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 public class Document extends DomainObject {
 
 	private BigDecimal summ;
-	private Integer status;
 
 	private Operation operation;
 
@@ -29,14 +28,6 @@ public class Document extends DomainObject {
 
 	public void setSumm(BigDecimal summ) {
 		this.summ = summ;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
 	}
 
 	public Operation getOperation() {
@@ -99,8 +90,8 @@ public class Document extends DomainObject {
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("Document {").
+				append("id", getId()).
 				append("summ", summ).
-				append("status", status).
 				append("operation.id", operation.getId()).
 				append("subjectDebet.id", subjectDebet.getId()).
 				append("subjectCredit.id", subjectCredit.getId()).
