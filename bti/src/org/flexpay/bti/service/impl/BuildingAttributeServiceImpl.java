@@ -19,7 +19,7 @@ public class BuildingAttributeServiceImpl implements BuildingAttributeService {
 	private BtiBuildingDaoExt buildingDaoExt;
 
 	/**
-	 * Find temp attributes of a building
+	 * Find attributes of a building
 	 *
 	 * @param stub  Building stub
 	 * @param pager Page

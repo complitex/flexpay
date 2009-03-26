@@ -11,7 +11,7 @@ import java.util.List;
 public interface BuildingAttributeService {
 
 	/**
-	 * Find temp attributes of a building
+	 * Find attributes of a building
 	 *
 	 * @param stub  Building stub
 	 * @param pager Page
