@@ -189,7 +189,7 @@ public class DisplayMenuTag extends TagSupport {
 				if (menuParam == null || !menuParam.equals(menu.getName())) {
 					request.getParameterMap().put("menu", menu.getName());
 				}
-                menu.setLocation(UrlHelper.buildUrl(menu.getAction(), request, response, request.getParameterMap()));
+                menu.setLocation(UrlHelper.buildUrl(menu.getNamespace() + "/" + menu.getAction(), request, response, request.getParameterMap()));
             }
         }
     }

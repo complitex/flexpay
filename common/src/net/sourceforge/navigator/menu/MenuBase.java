@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 public abstract class MenuBase {
 
+	protected String namespace;
     protected String action;
     protected String location;
 
@@ -65,7 +66,15 @@ public abstract class MenuBase {
      */
     protected String module;
 
-    public void setAction(String action) {
+	public String getNamespace() {
+		return namespace;
+	}
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
+	}
+
+	public void setAction(String action) {
         this.action = action + ".action";
     }
 
