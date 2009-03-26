@@ -15,12 +15,9 @@ import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.DateUtil;
-import org.flexpay.tc.persistence.TariffCalculationResult;
-import org.flexpay.tc.persistence.TariffExportLogRecord;
 import org.flexpay.tc.persistence.TariffExportCode;
+import org.flexpay.tc.persistence.TariffExportLogRecord;
 import org.flexpay.tc.service.TariffCalculationResultService;
-import org.flexpay.tc.service.TariffService;
 import org.flexpay.tc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -39,15 +36,14 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 
 	private Long dataSourceDescriptionId = 1L;
 
-	private static final String hql = "select distinct result " +
-									  "from TariffCalculationResult result " +
-									  "	inner join fetch result.tariff tariff " +
-									  "	left join fetch tariff.translations ttr " +
-									  "	inner join fetch result.lastTariffExportLogRecord logrecord " +
+	private static final String hql = "select distinct logrecord " +
+									  "from TariffExportLogRecord logrecord" +
+									  " left join fetch logrecord.tariff tariff " +
+									  " left join fetch tariff.translations ttr " +
 									  "	left join fetch logrecord.tariffExportCode exportCode " +
-									  "	left join fetch result.building building " +
-									  "where result.calculationDate=? and building.id=? " +
-									  "order by result.building.id, exportCode.code ";
+									  "	left join fetch logrecord.building building " +
+									  " where logrecord.tariffBeginDate=? and building.id=? " +
+									  " order by building.id, exportCode.code";
 
 	// required services
 	@Autowired
@@ -58,9 +54,6 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 
 	@Autowired
 	private AddressService addressService;
-
-	@Autowired
-	private TariffService tariffService;
 
 	@Autowired
 	private TariffCalculationResultService tariffCalculationResultService;
@@ -77,7 +70,8 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 	public void testGenerateTariffs() throws Exception {
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd");
-		Date tariffBeginDate = df.parse("2009_01_30");
+		Date tariffBeginDate = df.parse("2009_01_01");
+		Date calcDate = df.parse("2009_01_30");
 
 		File tmpFile = null;
 		OutputStream os = null;
@@ -93,18 +87,18 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 			ms.setDefaultEncoding("UTF-8");
 			ms.setBasename("org/flexpay/tc/i18n/messages");
 
-			List<Long> buildingIds = tariffCalculationResultService.getAddressIds(tariffBeginDate);
+			List<Long> buildingIds = tariffCalculationResultService.getAddressIds(calcDate);
 
 			for (Long buildingId : buildingIds) {
-				List<TariffCalculationResult> results = (List<TariffCalculationResult>) hibernateTemplate.find(hql, new Object[]{tariffBeginDate, buildingId});
-				System.out.println("Found " + results.size() + " results for date: " + tariffBeginDate);
+				List<TariffExportLogRecord> records = (List<TariffExportLogRecord>) hibernateTemplate.find(hql, new Object[]{tariffBeginDate, buildingId});
+				log.info("Found {} log records for date: {} and buiding #{}", new Object[] {records.size(), tariffBeginDate, buildingId});
 
-				List<TariffCalculationResult> filteredResults = filterResultsByExportDate(results);
-				log.info("Several results with same building and tariff begin date found, {} filtered", results.size() - filteredResults.size());
+				List<TariffExportLogRecord> filteredRecords = filterRecordsByExportDate(records);
+				log.info("Several records with same building and tariff begin date found, {} filtered", records.size() - filteredRecords.size());
 
-				for (TariffCalculationResult result : filteredResults) {
-					if (result.getLastTariffExportLogRecord().getTariffExportCode().getCode() != TariffExportCode.EXPORTED){
-						writeCalculationResult(ms, wr, result);
+				for (TariffExportLogRecord record : filteredRecords) {
+					if (record.getTariffExportCode().getCode() != TariffExportCode.EXPORTED){
+						write(ms, wr, record);
 					}
 				}
 			}
@@ -116,13 +110,12 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		System.out.println("Results printed to file: " + tmpFile.getAbsolutePath());
 	}
 
-	private List<TariffCalculationResult> filterResultsByExportDate(List<TariffCalculationResult> results) {
+	private List<TariffExportLogRecord> filterRecordsByExportDate(List<TariffExportLogRecord> records) {
 
-		List<TariffCalculationResult> filtered = CollectionUtils.list();
+		List<TariffExportLogRecord> filtered = CollectionUtils.list();
 
-		for (TariffCalculationResult result : results) {
-			TariffExportLogRecord logRecord = result.getLastTariffExportLogRecord();
-			TariffCalculationResult latestExportDateResult = getLatestExportDateResult(results, logRecord.getTariffBeginDate(), logRecord.getBuilding().getId());
+		for (TariffExportLogRecord record : records) {
+			TariffExportLogRecord latestExportDateResult = getLatestExportDateRecord(records, record.getTariffBeginDate(), record.getBuilding().getId());
 
 			if (!filtered.contains(latestExportDateResult)) {
 				filtered.add(latestExportDateResult);
@@ -132,41 +125,40 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		return filtered;
 	}
 
-	private TariffCalculationResult getLatestExportDateResult(List<TariffCalculationResult> results, Date tariffBeginDate, Long buildingId) {
+	private TariffExportLogRecord getLatestExportDateRecord(List<TariffExportLogRecord> records, Date tariffBeginDate, Long buildingId) {
 
-		TariffCalculationResult latestExportDateResult = null;
+		TariffExportLogRecord latestExportDateRecord = null;
 		Date latestExportDate = null;
 
-		for (TariffCalculationResult result : results) {
-			TariffExportLogRecord logRecord = result.getLastTariffExportLogRecord();
-			Date logRecordExportDate = logRecord.getExportdate();
+		for (TariffExportLogRecord record : records) {
+			Date logRecordExportDate = record.getExportdate();
 
 			// if we have export result with the same tariff begin date and building id
-			if (tariffBeginDate.equals(logRecord.getTariffBeginDate()) && buildingId.equals(logRecord.getBuilding().getId())) {
+			if (tariffBeginDate.equals(record.getTariffBeginDate()) && buildingId.equals(record.getBuilding().getId())) {
 				if (latestExportDate == null) {
-					latestExportDateResult = result;
+					latestExportDateRecord = record;
 					latestExportDate = logRecordExportDate;
 				} else {
 					if (latestExportDate.before(logRecordExportDate)) {
-						latestExportDateResult = result;
+						latestExportDateRecord = record;
 						latestExportDate = logRecordExportDate;
 					}
 				}
 			}
 		}
 
-		return latestExportDateResult;
+		return latestExportDateRecord;
 	}
 
-	private void writeCalculationResult(ReloadableResourceBundleMessageSource ms, Writer wr, TariffCalculationResult result) throws Exception {
+	private void write(ReloadableResourceBundleMessageSource ms, Writer wr, TariffExportLogRecord record) throws Exception {
 		// формат записи в файл
 		// 1) Адрес дома (улица, номер дома и так далее) 2) код дома в ЦН 3) название тарифа 4) значение тарифа 5) код тарифа 6) tariff export code
 
-		Building building = result.getBuilding();
+		Building building = record.getBuilding();
 		String address = addressService.getBuildingAddress(stub(building), ApplicationConfig.getDefaultLocale());
 		building = buildingService.read(stub(building));
 		District district = districtService.readFull(stub(building.getDistrict()));
-		String i18nName = result.getLastTariffExportLogRecord().getTariffExportCode().getI18nName();
+		String i18nName = record.getTariffExportCode().getI18nName();
 		Object[] params = {};
 
 		String externalId = getExternalId(stub(building));
@@ -176,26 +168,16 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		StringBuilder sb = new StringBuilder()
 				.append("\"").append(district.getCurrentName().getDefaultNameTranslation()).append("\"").append(delimeter)
 				.append("\"").append(address).append("\"").append(delimeter)
-				.append(result.getBuilding().getId()).append(delimeter)
+				.append(record.getBuilding().getId()).append(delimeter)
 				.append(cnId).append(delimeter)
-				.append("\"").append(result.getTariff().getDefultTranslation()).append("\"").append(delimeter)
-				.append(result.getValue()).append(delimeter)
-				.append(result.getTariff().getSubServiceCode()).append(delimeter)
-				.append(result.getLastTariffExportLogRecord().getTariffExportCode().getCode()).append(delimeter)
+				.append("\"").append(record.getTariff().getDefultTranslation()).append("\"").append(delimeter)
+				//.append(record.getValue()).append(delimeter)
+				.append(record.getTariff().getSubServiceCode()).append(delimeter)
+				.append(record.getTariffExportCode().getCode()).append(delimeter)
 				.append("\"").append(ms.getMessage(i18nName, params, ApplicationConfig.getDefaultLocale())).append("\"")
 				.append("\n");
 
 		wr.write(sb.toString());
-	}
-
-	private TariffCalculationResult getTariffCalcResultBySubserviceCode(List<TariffCalculationResult> results, String subserviceCode) {
-		for (TariffCalculationResult tcr : results) {
-			if (subserviceCode.equals(tcr.getTariff().getSubServiceCode())) {
-				results.remove(tcr);
-				return tcr;
-			}
-		}
-		return null;
 	}
 
 	private String getExternalId(@NotNull Stub<Building> buildingStub) throws FlexPayException {
