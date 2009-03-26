@@ -38,14 +38,14 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 	private Long dataSourceDescriptionId = 1L;
 
 	private static final String hql = "select distinct logrecord " +
-									  "from TariffExportLogRecord logrecord" +
+									  "from TariffExportLogRecord logrecord " +
 									  " left join fetch logrecord.tariff tariff " +
 									  " left join fetch tariff.translations ttr " +
 									  "	left join fetch logrecord.tariffExportCode exportCode " +
 									  "	left join fetch logrecord.building building " +
 									  " where logrecord.tariffBeginDate=? and building.id=? " +
 									  " and exportCode.code <> " + TariffExportCode.EXPORTED +
-									  " order by building.id, exportCode.code";
+									  " order by exportdate desc";
 
 	private static final String hqlGetResult = "select distinct tcresult " +
 											   "from TariffCalculationResult tcresult " +
@@ -97,12 +97,22 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 
 			for (Long buildingId : buildingIds) {
 				List<TariffExportLogRecord> records = (List<TariffExportLogRecord>) hibernateTemplate.find(hql, new Object[]{tariffBeginDate, buildingId});
-				log.info("Found {} log records for date: {} and buiding #{}", new Object[]{records.size(), tariffBeginDate, buildingId});
+				log.info("Found {} log records for date: {} and building #{}", new Object[]{records.size(), tariffBeginDate, buildingId});
 
-				List<TariffExportLogRecord> filteredRecords = filterRecordsByExportDate(records);
-				log.info("{} record(s) filtered", records.size() - filteredRecords.size());
+				//List<TariffExportLogRecord> filteredRecords = filterRecordsByExportDate(records);
+				//log.info("{} record(s) filtered", records.size() - filteredRecords.size());
 
-				for (TariffExportLogRecord record : filteredRecords) {
+				//for (TariffExportLogRecord record : filteredRecords) {
+
+				List<Long> exportedTariffIds = CollectionUtils.list();
+				for (TariffExportLogRecord record : records) {
+
+					// chacking if we have record with such tariff
+					Long tariffId = record.getTariff().getId();
+					if (exportedTariffIds.contains(tariffId)) {
+						continue;
+					}
+
 					List<TariffCalculationResult> results = (List<TariffCalculationResult>) hibernateTemplate.find(hqlGetResult, new Object[]{record.getId()});
 					if (results.size() > 1) {
 						log.error("Unexpected number of results for log record: {}", results.size());
@@ -115,6 +125,8 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 					}
 
 					write(ms, wr, record, result);
+
+					exportedTariffIds.add(tariffId);
 				}
 			}
 		} finally {
@@ -125,13 +137,13 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		System.out.println("Results printed to file: " + tmpFile.getAbsolutePath());
 	}
 
+	/*
 	private List<TariffExportLogRecord> filterRecordsByExportDate(List<TariffExportLogRecord> records) {
 
 		List<TariffExportLogRecord> filtered = CollectionUtils.list();
 
 		for (TariffExportLogRecord record : records) {
-			TariffExportLogRecord latestExportDateResult = getLatestExportDateRecord(records,
-					record.getTariffBeginDate(), record.getBuilding().getId(), record.getTariff().getId());
+			TariffExportLogRecord latestExportDateResult = getLatestExportDateRecord(records, record.getBuilding().getId(), record.getTariff().getId());
 
 			if (!filtered.contains(latestExportDateResult)) {
 				filtered.add(latestExportDateResult);
@@ -141,7 +153,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		return filtered;
 	}
 
-	private TariffExportLogRecord getLatestExportDateRecord(List<TariffExportLogRecord> records, Date tariffBeginDate, Long buildingId, Long tariffId) {
+	private TariffExportLogRecord getLatestExportDateRecord(List<TariffExportLogRecord> records, Long buildingId, Long tariffId) {
 
 		TariffExportLogRecord latestExportDateRecord = null;
 		Date latestExportDate = null;
@@ -150,9 +162,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 			Date logRecordExportDate = record.getExportdate();
 
 			// if we have export result with the same tariff begin date and building id
-			if (tariffBeginDate.equals(record.getTariffBeginDate())
-				&& buildingId.equals(record.getBuilding().getId())
-				&& tariffId.equals(record.getTariff().getId())) {
+			if (tariffId.equals(record.getTariff().getId())) {
 				if (latestExportDate == null) {
 					latestExportDateRecord = record;
 					latestExportDate = logRecordExportDate;
@@ -167,6 +177,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 
 		return latestExportDateRecord;
 	}
+	*/
 
 	private void write(ReloadableResourceBundleMessageSource ms, Writer wr, TariffExportLogRecord record, TariffCalculationResult result) throws Exception {
 		// формат записи в файл
