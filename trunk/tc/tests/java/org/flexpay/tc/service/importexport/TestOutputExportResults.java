@@ -36,8 +36,6 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 
 	private String delimeter = ",";
 
-	private String[] subserviceCodes = {"010", "020", "030", "040", "050", "060", "070", "080", "090", "100", "110", "120", "130", "140", "150", "160"};
-
 	private Long dataSourceDescriptionId = 1L;
 
 	private static final String hql = "select distinct result " +
