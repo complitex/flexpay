@@ -118,7 +118,11 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 	private void saveAccount(EircAccount account) throws FlexPayException {
 
 		try {
-			factory.getAccountService().save(account);
+			if (account.isNew()) {
+				factory.getAccountService().create(account);
+			} else {
+				factory.getAccountService().update(account);
+			}
 		} catch (FlexPayExceptionContainer e) {
 			throw e.getFirstException();
 		}

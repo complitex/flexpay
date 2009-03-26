@@ -22,6 +22,8 @@ public class QuittancePayAction extends FPActionSupport {
 	private Quittance quittance = new Quittance();
 	private List<QuittancePayment> payments = Collections.emptyList();
 	private String quittanceNumber;
+	private String source = "number";
+
 
 	// required services
 	private QuittanceService quittanceService;
@@ -33,18 +35,18 @@ public class QuittancePayAction extends FPActionSupport {
 
 		if (quittance.getId() == null) {
 			addActionError(getText("error.no_id"));
-			return REDIRECT_SUCCESS;
+			return doRedirect();
 		}
 
 		quittance = quittanceService.readFull(stub(quittance));
 		if (quittance == null) {
-			addActionError(getText("error.invalid_id"));
-			return REDIRECT_SUCCESS;
+			addActionError(getText("eirc.error.quittance.no_quittance_found"));
+			return doRedirect();
 		}
 
 		if (isSubmit()) {
 			addActionError("eirc.quittances.quittance_pay.payed_successfully");
-			return REDIRECT_SUCCESS;
+			return doRedirect();
 		}
 
 		quittanceNumber = numberService.getNumber(quittance);
@@ -56,6 +58,19 @@ public class QuittancePayAction extends FPActionSupport {
 		}
 
 		return INPUT;
+	}
+
+	private String doRedirect() {
+		if ("number".equals(source)) {
+			return "redirectNumber";
+		}
+		if ("address".equals(source)) {
+			return "redirectAddress";
+		}
+		if ("account".equals(source)) {
+			return "redirectAccount";
+		}
+		return "redirectNumber";
 	}
 
 	@NotNull
@@ -149,6 +164,10 @@ public class QuittancePayAction extends FPActionSupport {
 
 	public String getQuittanceNumber() {
 		return quittanceNumber;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
 	}
 
 	// required services setters

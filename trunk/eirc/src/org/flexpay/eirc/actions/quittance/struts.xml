@@ -49,25 +49,35 @@
 				<param name="actionName">quittancePay</param>
 				<param name="parse">true</param>
 				<param name="quittance.id">${quittanceId}</param>
+				<param name="source">number</param>
+			</result>
+		</action>
+
+		<action name="findQuittanceByAddress" class="quittanceSearchByAddressAction">
+			<result name="success" type="tiles">eirc.quittances.eirc_account.list</result>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">quittancePay</param>
+				<param name="parse">true</param>
+				<param name="quittance.id">${quittance.id}</param>
+				<param name="source">address</param>
+			</result>
+		</action>
+
+		<action name="findQuittanceByAccountNumber" class="quittanceSearchByAccountAction">
+			<result name="input" type="tiles">eirc.quittances.eirc_account.find</result>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">quittancePay</param>
+				<param name="parse">true</param>
+				<param name="quittance.id">${quittance.id}</param>
+				<param name="source">account</param>
 			</result>
 		</action>
 
 		<action name="quittancePay" class="quittancePayAction">
 			<result name="input" type="tiles">eirc.quittances.quittance_pay</result>
-			<result name="redirectSuccess" type="redirect-action">quittancePaySearch</result>
-		</action>
-
-		<action name="apartmentsForQuittancesList" class="apartmentsListAction">
-			<result type="tiles">eirc.quittances.apartment.list</result>
-		</action>
-
-		<action name="accountsForQuittancesList" class="eircAccountsListAction">
-			<result type="tiles">eirc.quittances.eirc_account.list</result>
-		</action>
-
-		<action name="quittancesList" class="quittancesListAction">
-			<result name="success" type="tiles">eirc.quittances.quittances_list</result>
-			<result name="redirectError" type="redirect-action">accountsForQuittancesList</result>
+			<result name="redirectNumber" type="redirect-action">quittancePaySearch</result>
+			<result name="redirectAccount" type="redirect-action">findQuittanceByAccountNumber</result>
+			<result name="redirectAddress" type="redirect-action">findQuittanceByAddress</result>
 		</action>
 
 	</package>

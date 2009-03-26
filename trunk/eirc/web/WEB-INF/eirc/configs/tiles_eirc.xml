@@ -69,14 +69,14 @@
         <put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/quittance_pay.jsp"/>
     </definition>
 
-	<definition name="eirc.quittances.apartment.list" extends="eirc.dictionaries">
-		<put-attribute name="title" value="eirc.quittances.payment.apartment_search" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/apartments_list.jsp" />
+	<definition name="eirc.quittances.eirc_account.list" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.quittances.apartment_search" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/eirc_account_list.jsp" />
 	</definition>
 
-	<definition name="eirc.quittances.eirc_account.list" extends="eirc.dictionaries">
+	<definition name="eirc.quittances.eirc_account.find" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.quittances.account_search" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/eirc_account_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/eirc_account_search.jsp" />
 	</definition>
 
 	<definition name="eirc.quittances.quittances_list" extends="eirc.dictionaries">

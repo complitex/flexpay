@@ -236,6 +236,13 @@
 		where a.apartment.id=? and a.status=0
 	</query>
 
+	<query name="EircAccount.findByNumber">
+		select distinct a
+		from EircAccount a
+			left join fetch a.consumerInfo
+		where a.accountNumber=? and a.status=0
+	</query>
+
 	<query name="EircAccount.findByApartment">
 		select distinct a
 		from EircAccount a
@@ -248,6 +255,7 @@
 			left outer join fetch a.consumerInfo
 		where a.status=0
 	</query>
+
 	<query name="EircAccount.findObjects.count">
 		select count(*) from EircAccount a where a.status=0
 	</query>

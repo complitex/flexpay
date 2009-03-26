@@ -29,10 +29,23 @@ public interface EircAccountService {
 	 * Create or update account
 	 *
 	 * @param account EIRC account to save
+	 * @return persisted account object back
 	 * @throws FlexPayExceptionContainer if validation failure occurs
 	 */
-	@Secured ({Roles.ACCOUNT_ADD, Roles.ACCOUNT_CHANGE})
-	void save(@NotNull EircAccount account) throws FlexPayExceptionContainer;
+	@Secured (Roles.ACCOUNT_ADD)
+	@NotNull
+	EircAccount create(@NotNull EircAccount account) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update account
+	 *
+	 * @param account EIRC account to save
+	 * @return updated account object back
+	 * @throws FlexPayExceptionContainer if validation failure occurs
+	 */
+	@Secured (Roles.ACCOUNT_CHANGE)
+	@NotNull
+	EircAccount update(@NotNull EircAccount account) throws FlexPayExceptionContainer;
 
 	/**
 	 * Find EircAccounts
@@ -63,4 +76,13 @@ public interface EircAccountService {
 	@Secured (Roles.ACCOUNT_READ)
 	@Nullable
 	String getPersonFIO(@NotNull EircAccount account);
+
+	/**
+	 * Find account by its number
+	 *
+	 * @param accountNumber EircAccount number to lookup
+	 * @return EircAccount if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	EircAccount findAccount(String accountNumber);
 }

@@ -29,7 +29,7 @@ public class EircAccountCreateAction extends FPActionSupport {
 			eircAccount = new EircAccount();
 			eircAccount.setApartment(new Apartment(apartmentId));
 			eircAccount.setPerson(new Person(personId));
-			eircAccountService.save(eircAccount);
+			eircAccountService.create(eircAccount);
 
 			return REDIRECT_SUCCESS;
 		}

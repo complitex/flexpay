@@ -142,7 +142,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		account.setConsumerInfo(info);
 
 		try {
-			accountService.save(account);
+			accountService.create(account);
 		} catch (FlexPayExceptionContainer c) {
 			for (FlexPayException exception : c.getExceptions()) {
 				log.error("Failed saving account", exception);
