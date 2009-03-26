@@ -45,7 +45,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 									  "	left join fetch logrecord.building building " +
 									  " where logrecord.tariffBeginDate=? and building.id=? " +
 									  " and exportCode.code <> " + TariffExportCode.EXPORTED +
-									  " order by exportdate desc";
+									  " order by logrecord.exportdate desc";
 
 	private static final String hqlGetResult = "select distinct tcresult " +
 											   "from TariffCalculationResult tcresult " +
