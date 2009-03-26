@@ -50,21 +50,34 @@ public class EircAccountServiceImpl implements EircAccountService {
 	}
 
 	/**
-	 * Create or update account
+	 * Create account
 	 *
 	 * @param account EIRC account to save
 	 */
+	@NotNull
 	@Transactional (readOnly = false)
-	public void save(@NotNull EircAccount account) throws FlexPayExceptionContainer {
+	public EircAccount create(@NotNull EircAccount account) throws FlexPayExceptionContainer {
 		validate(account);
-		if (account.isNew()) {
-			account.setId(null);
-			account.setAccountNumber(nextPersonalAccount());
-			Long id = eircAccountDao.create(account);
-			account.setId(id);
-		} else {
-			eircAccountDao.update(account);
-		}
+		account.setId(null);
+		account.setAccountNumber(nextPersonalAccount());
+		eircAccountDao.create(account);
+
+		return account;
+	}
+
+	/**
+	 * Update account
+	 *
+	 * @param account EIRC account to save
+	 */
+	@NotNull
+	@Transactional (readOnly = false)
+	public EircAccount update(@NotNull EircAccount account) throws FlexPayExceptionContainer {
+
+		validate(account);
+		eircAccountDao.update(account);
+
+		return account;
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
@@ -128,6 +141,21 @@ public class EircAccountServiceImpl implements EircAccountService {
 		}
 
 		return eircAccountDao.findObjects(pager);
+	}
+
+	/**
+	 * Find account by its number
+	 *
+	 * @param accountNumber EircAccount number to lookup
+	 * @return EircAccount if found, or <code>null</code> otherwise
+	 */
+	public EircAccount findAccount(String accountNumber) {
+		List<EircAccount> accounts = eircAccountDao.findByNumber(accountNumber);
+		if (accounts.size() > 1) {
+			throw new RuntimeException("Internal error, account number duplicate: " + accountNumber);
+		}
+
+		return accounts.isEmpty() ? null : accounts.get(0);
 	}
 
 	/**

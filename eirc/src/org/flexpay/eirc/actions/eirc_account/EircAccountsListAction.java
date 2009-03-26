@@ -18,7 +18,7 @@ import java.util.List;
 
 public class EircAccountsListAction extends ApartmentFilterDependent2Action {
 
-	private List<EircAccount> eircAccounts;
+	protected List<EircAccount> eircAccounts;
 
 	private PersonSearchFilter personSearchFilter = new PersonSearchFilter();
 

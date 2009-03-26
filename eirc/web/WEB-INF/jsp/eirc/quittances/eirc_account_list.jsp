@@ -46,9 +46,13 @@
 					</a>
 				</td>
 				<td class="col">
-					<a href="<s:url action='quittancesList' namespace="/eirc" includeParams="none"><s:param name="account.id" value="%{id}"/></s:url>">
-						<s:text name="eirc.quittances.account_quittances" />
-					</a>
+					<s:set name="quittance" value="%{getAccountQuittance(id)}" />
+					<s:if test="#quittance != null">
+					<a href="<s:url action='quittancePay' includeParams="none"><s:param name="quittance.id" value="%{#quittance.id}"/><s:param name="source" value="'address'"/></s:url>">
+						<s:text name="eirc.quittances.quittance_pay.pay" />
+					</a></s:if><s:else>
+						<s:text name="eirc.quittances.no_quittances" />
+					</s:else>
 				</td>
 			</tr>
 		</s:iterator>

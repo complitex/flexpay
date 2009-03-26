@@ -1,24 +1,22 @@
 package org.flexpay.eirc.actions.quittance;
 
-import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.eirc.persistence.account.Quittance;
-import org.flexpay.eirc.persistence.EircAccount;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.EircAccountService;
+import org.flexpay.eirc.persistence.EircAccount;
+import org.flexpay.eirc.persistence.account.Quittance;
 import org.jetbrains.annotations.NotNull;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
-import java.util.Collections;
 
-/**
- * List quittances of eirc aсcount for the last period
- */
-public class QuittancesListAction extends FPActionWithPagerSupport<Quittance> {
+public class QuittanceSearchByAccountAction extends FPActionSupport {
 
-	private EircAccount account = new EircAccount();
-	private List<Quittance> quittances = Collections.emptyList();
+	private String accountNumber;
+	private Quittance quittance;
 
 	private EircAccountService accountService;
 	private QuittanceService quittanceService;
@@ -34,20 +32,24 @@ public class QuittancesListAction extends FPActionWithPagerSupport<Quittance> {
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		if (account.getId() == null) {
-			addActionError(getText("error.no_id"));
-			return REDIRECT_ERROR;
+		if (StringUtils.isBlank(accountNumber)) {
+			return INPUT;
 		}
 
-		account = accountService.readFull(stub(account));
+		EircAccount account = accountService.findAccount(accountNumber);
 		if (account == null) {
-			addActionError(getText("error.invalid_id"));
-			return REDIRECT_ERROR;
+			addActionError(getText("eirc.error.account_not_found"));
+			return INPUT;
 		}
 
-		quittances = quittanceService.getLatestAccountQuittances(stub(account));
+		List<Quittance> quittances = quittanceService.getLatestAccountQuittances(stub(account), new Page<Quittance>());
+		if (quittances.isEmpty()) {
+			addActionError(getText("eirc.error.quittance.no_for_account"));
+			return INPUT;
+		}
 
-		return SUCCESS;
+		quittance = quittances.get(0);
+		return REDIRECT_SUCCESS;
 	}
 
 	/**
@@ -59,19 +61,19 @@ public class QuittancesListAction extends FPActionWithPagerSupport<Quittance> {
 	 */
 	@NotNull
 	protected String getErrorResult() {
-		return REDIRECT_ERROR;
+		return INPUT;
 	}
 
-	public EircAccount getAccount() {
-		return account;
+	public String getAccountNumber() {
+		return accountNumber;
 	}
 
-	public void setAccount(EircAccount account) {
-		this.account = account;
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 
-	public List<Quittance> getQuittances() {
-		return quittances;
+	public Quittance getQuittance() {
+		return quittance;
 	}
 
 	@Required

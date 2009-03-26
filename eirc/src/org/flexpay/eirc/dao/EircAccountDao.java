@@ -22,4 +22,6 @@ public interface EircAccountDao extends GenericDao<EircAccount, Long> {
 	 * @return List of accounts
 	 */
 	List<EircAccount> findByPersonFIO(String searchString, String ciSearchString, Page<EircAccount> pager);
+
+	List<EircAccount> findByNumber(String accountNumber);
 }
