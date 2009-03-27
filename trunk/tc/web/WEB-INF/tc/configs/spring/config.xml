@@ -13,4 +13,6 @@
 	<import resource="data_export.xml" />
 	<import resource="beans-jbpm.xml" />
 
+    <import resource="../menu.cfg.xml" />
+
 </beans>

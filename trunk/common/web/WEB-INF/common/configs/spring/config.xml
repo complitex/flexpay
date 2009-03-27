@@ -22,4 +22,6 @@
 
 	<import resource="beans_self_testing.xml" />
 
+    <import resource="../menu.cfg.xml" />
+
 </beans>
