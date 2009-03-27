@@ -380,13 +380,13 @@
         change_summ decimal(19,2) not null comment 'Change',
         creator varchar(255) not null comment 'Creator username',
         creation_date datetime not null comment 'Creation date',
-        confirmator varchar(255) not null comment 'Confirmator username',
-        confirmation_date datetime not null comment 'Confirmation date',
+        confirmator varchar(255) comment 'Confirmator username',
+        confirmation_date datetime comment 'Confirmation date',
         level integer not null comment 'Operation level',
         status integer not null comment 'Operation status',
         creator_organization_id bigint not null comment 'Organization operation created in',
-        confirmator_organization_id bigint not null comment 'Organization operation confirmed in',
-        registry_record_id bigint not null comment 'Registry record',
+        confirmator_organization_id bigint comment 'Organization operation confirmed in',
+        registry_record_id bigint comment 'Registry record',
         parent_operation_id bigint comment 'Optional parent operation reference',
         primary key (id)
     ) comment='Operations';

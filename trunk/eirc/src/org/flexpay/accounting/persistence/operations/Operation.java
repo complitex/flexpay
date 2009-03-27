@@ -7,11 +7,12 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.RegistryRecord;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
-import java.util.Collections;
 
 public class Operation extends DomainObject {
 
@@ -35,7 +36,7 @@ public class Operation extends DomainObject {
 
 	private Set<Document> documents = Collections.emptySet();
 
-	private Operation parentOperation; 
+	private Operation parentOperation;
 	private Set<Operation> childOperations = Collections.emptySet();
 
 	public BigDecimal getOperationSumm() {
@@ -98,7 +99,7 @@ public class Operation extends DomainObject {
 		return creatorOrganization;
 	}
 
-	public void setCreatorOrganization(Organization creatorOrganization) {
+	public void setCreatorOrganization(@NotNull Organization creatorOrganization) {
 		this.creatorOrganization = creatorOrganization;
 	}
 
