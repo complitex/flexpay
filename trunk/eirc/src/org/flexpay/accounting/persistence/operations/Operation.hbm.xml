@@ -3,120 +3,136 @@
 		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="org.flexpay.accounting.persistence">
+<hibernate-mapping package="org.flexpay.accounting.persistence.operations">
 
-    <typedef name="operationLevelType" class="org.flexpay.common.persistence.GenericEnumUserType">
-        <param name="enumClass">
-            org.flexpay.accounting.persistence.operations.OperationLevel
-        </param>
-        <param name="identifierMethod">
-            toInt
-        </param>
-        <param name="valueOfMethod">
-            fromInt
-        </param>
-    </typedef>
-    <typedef name="operationStatusType" class="org.flexpay.common.persistence.GenericEnumUserType">
-        <param name="enumClass">
-            org.flexpay.accounting.persistence.operations.OperationStatus
-        </param>
-        <param name="identifierMethod">
-            toInt
-        </param>
-        <param name="valueOfMethod">
-            fromInt
-        </param>
-    </typedef>
+	<typedef name="operationLevelType" class="org.flexpay.common.persistence.GenericEnumUserType">
+		<param name="enumClass">
+			org.flexpay.accounting.persistence.operations.OperationLevel
+		</param>
+		<param name="identifierMethod">toInt</param>
+		<param name="valueOfMethod">fromInt</param>
+	</typedef>
+	<typedef name="operationStatusType" class="org.flexpay.common.persistence.GenericEnumUserType">
+		<param name="enumClass">
+			org.flexpay.accounting.persistence.operations.OperationStatus
+		</param>
+		<param name="identifierMethod">toInt</param>
+		<param name="valueOfMethod">fromInt</param>
+	</typedef>
 
-    <class name="org.flexpay.accounting.persistence.operations.Operation" table="accounting_operation_tbl" optimistic-lock="version">
-        <comment>Operation</comment>
-        <id name="id">
-            <column name="id">
-                <comment>Primary key</comment>
-            </column>
-            <generator class="native" />
-        </id>
-        <discriminator column="PAYMENT_TYPE" type="string"/>
-        <version name="version" access="field">
-            <column name="version">
-                <comment>Optimistic lock version</comment>
-            </column>
-        </version>
-        <property name="operationSumm">
-            <column name="operation_summ" not-null="true">
-                <comment>Operation summ</comment>
-            </column>
-        </property>
-        <property name="operationInputSumm">
-            <column name="operation_input_summ" not-null="true">
-                <comment>Operation input summ</comment>
-            </column>
-        </property>
-        <property name="change">
-            <column name="change_summ" not-null="true">
-                <comment>Change</comment>
-            </column>
-        </property>
-        <property name="creatorUserName">
-            <column name="creator" not-null="true">
-                <comment>Creator username</comment>
-            </column>
-        </property>
-        <property name="creationDate">
-            <column name="creation_date" not-null="true">
-                <comment>Creation date</comment>
-            </column>
-        </property>
-        <property name="confirmatorUserName">
-            <column name="confirmator" not-null="true">
-                <comment>Confirmator username</comment>
-            </column>
-        </property>
-        <property name="confirmationDate">
-            <column name="confirmation_date" not-null="true">
-                <comment>Confirmation date</comment>
-            </column>
-        </property>
-        <property name="operationLevel" type="operationLevelType">
-            <column name="level" not-null="true">
-                <comment>Operation level</comment>
-            </column>
-        </property>
-        <property name="operationStatus" type="operationStatusType">
-            <column name="status" not-null="true">
-                <comment>Operation status</comment>
-            </column>
-        </property>
-        <many-to-one name="creatorOrganization" class="org.flexpay.eirc.persistence.Organization" foreign-key="FK_accounting_operation_tbl_creator_organization_id">
-            <column name="creator_organization_id" not-null="true">
-                <comment>Organization when operation created</comment>
-            </column>
-        </many-to-one>
-        <many-to-one name="confirmatorOrganization" class="org.flexpay.eirc.persistence.Organization" foreign-key="FK_accounting_operation_tbl_confirmator_organization_id">
-            <column name="confirmator_organization_id" not-null="true">
-                <comment>Organization when operation confirmed</comment>
-            </column>
-        </many-to-one>
-        <many-to-one name="registryRecord" class="org.flexpay.eirc.persistence.RegistryRecord" foreign-key="FK_accounting_operation_tbl_registry_record_id">
-            <column name="registry_record_id" not-null="true">
-                <comment>Registry record</comment>
-            </column>
-        </many-to-one>
-        <set name="documents" inverse="true" cascade="all-delete-orphan">
-            <key column="document_id" not-null="true" />
-            <one-to-many class="org.flexpay.accounting.persistence.Document" />
-        </set>
-        <set name="childOperations" inverse="true" cascade="all-delete-orphan">
-            <key column="parent_id" not-null="true" />
-            <one-to-many class="org.flexpay.accounting.persistence.operations.Operation" />
-        </set>
+	<class name="Operation"
+		   table="accounting_operations_tbl"
+		   optimistic-lock="version">
+		<comment>Operations</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<discriminator type="string">
+			<column name="PAYMENT_TYPE" not-null="true">
+				<comment>Various operation types descriminator</comment>
+			</column>
+		</discriminator>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="operationSumm">
+			<column name="operation_summ" not-null="true" scale="2">
+				<comment>Operation summ</comment>
+			</column>
+		</property>
+		<property name="operationInputSumm">
+			<column name="operation_input_summ" not-null="true" scale="2">
+				<comment>Operation input summ</comment>
+			</column>
+		</property>
+		<property name="change">
+			<column name="change_summ" not-null="true" scale="2">
+				<comment>Change</comment>
+			</column>
+		</property>
+		<property name="creatorUserName">
+			<column name="creator" not-null="true">
+				<comment>Creator username</comment>
+			</column>
+		</property>
+		<property name="creationDate" type="timestamp">
+			<column name="creation_date" not-null="true">
+				<comment>Creation date</comment>
+			</column>
+		</property>
+		<property name="confirmatorUserName">
+			<column name="confirmator" not-null="true">
+				<comment>Confirmator username</comment>
+			</column>
+		</property>
+		<property name="confirmationDate" type="timestamp">
+			<column name="confirmation_date" not-null="true">
+				<comment>Confirmation date</comment>
+			</column>
+		</property>
+		<property name="operationLevel" type="operationLevelType">
+			<column name="level" not-null="true">
+				<comment>Operation level</comment>
+			</column>
+		</property>
+		<property name="operationStatus" type="operationStatusType">
+			<column name="status" not-null="true">
+				<comment>Operation status</comment>
+			</column>
+		</property>
+		<many-to-one name="creatorOrganization"
+					 class="org.flexpay.eirc.persistence.Organization"
+					 foreign-key="FK_accounting_operations_tbl_creator_organization_id">
+			<column name="creator_organization_id" not-null="true">
+				<comment>Organization operation created in</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="confirmatorOrganization"
+					 class="org.flexpay.eirc.persistence.Organization"
+					 foreign-key="FK_accounting_operations_tbl_confirmator_organization_id">
+			<column name="confirmator_organization_id" not-null="true">
+				<comment>Organization operation confirmed in</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="registryRecord"
+					 class="org.flexpay.eirc.persistence.RegistryRecord"
+					 foreign-key="FK_accounting_operations_tbl_registry_record_id">
+			<column name="registry_record_id" not-null="true">
+				<comment>Registry record</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="parentOperation"
+					 foreign-key="FK_accounting_operations_tbl_parent_id"
+					 class="Operation">
+			<column name="parent_operation_id" not-null="false">
+				<comment>Optional parent operation reference</comment>
+			</column>
+		</many-to-one>
+		<set name="documents" inverse="true" cascade="all-delete-orphan">
+			<key column="operation_id" not-null="true" />
+			<one-to-many class="org.flexpay.accounting.persistence.Document" />
+		</set>
+		<set name="childOperations" inverse="true" cascade="all-delete-orphan">
+			<key column="parent_operation_id" />
+			<one-to-many class="Operation" />
+		</set>
 
-        <subclass name="org.flexpay.accounting.persistence.operations.CashPaymentOperation" discriminator-value="CASH_PAYMENT"/>
-        <subclass name="org.flexpay.accounting.persistence.operations.CashReturnOperation" discriminator-value="CASH_RETURN"/>
-        <subclass name="org.flexpay.accounting.persistence.operations.ElectronicPaymentOperation" discriminator-value="ELEC_PAYMENT"/>
-        <subclass name="org.flexpay.accounting.persistence.operations.ElectonicReturnOperation" discriminator-value="ELEC_RETURN"/>
-        <subclass name="org.flexpay.accounting.persistence.operations.ServiceFeeOperation" discriminator-value="SERVICE_FEE"/>
+		<subclass name="org.flexpay.accounting.persistence.operations.CashPaymentOperation"
+				  discriminator-value="CASH_PAYMENT" />
+		<subclass name="org.flexpay.accounting.persistence.operations.CashReturnOperation"
+				  discriminator-value="CASH_RETURN" />
+		<subclass name="org.flexpay.accounting.persistence.operations.ElectronicPaymentOperation"
+				  discriminator-value="ELEC_PAYMENT" />
+		<subclass name="org.flexpay.accounting.persistence.operations.ElectonicReturnOperation"
+				  discriminator-value="ELEC_RETURN" />
+		<subclass name="org.flexpay.accounting.persistence.operations.ServiceFeeOperation"
+				  discriminator-value="SERVICE_FEE" />
 
-    </class>
+	</class>
 
 </hibernate-mapping>

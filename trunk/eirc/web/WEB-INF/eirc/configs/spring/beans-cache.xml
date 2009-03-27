@@ -57,4 +57,21 @@
 		<property name="target" ref="quittancePaymentStatusServiceTarget" />
 	</bean>
 
+	<bean id="documentTypeService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+				<prop key="read">cacheName=flexpayCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+				<prop key="save">cacheNames=flexpayCache</prop>
+				<prop key="delete">cacheNames=flexpayCache</prop>
+			</props>
+		</property>
+		<property name="target" ref="documentTypeServiceTarget" />
+	</bean>
+
 </beans>

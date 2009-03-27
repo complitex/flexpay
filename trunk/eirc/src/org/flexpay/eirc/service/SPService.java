@@ -9,6 +9,8 @@ import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.ServiceFilter;
 import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.annotation.Secured;
 
 import java.util.List;
@@ -101,7 +103,8 @@ public interface SPService {
 	 * @return Service description
 	 */
 	@Secured (Roles.SERVICE_READ)
-	Service read(Stub<Service> stub);
+	@Nullable
+	Service read(@NotNull Stub<Service> stub);
 
 	/**
 	 * Create or update service

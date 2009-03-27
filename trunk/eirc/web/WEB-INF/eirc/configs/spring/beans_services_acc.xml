@@ -9,7 +9,9 @@
 	<bean id="documentService" class="org.flexpay.accounting.service.impl.DocumentServiceImpl"
 		  p:documentDao-ref="documentDao" />
 
-    <bean id="documentTypeService" class="org.flexpay.accounting.service.impl.DocumentTypeServiceImpl"
+    <bean id="documentTypeServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.accounting.service.impl.DocumentTypeServiceImpl"
           p:documentTypeDao-ref="documentTypeDao" />
 
     <bean id="eircSubjectService" class="org.flexpay.accounting.service.impl.EircSubjectServiceImpl"

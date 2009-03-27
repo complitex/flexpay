@@ -62,8 +62,9 @@
 		<mapping resource="org/flexpay/eirc/persistence/PersonalAccount.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/SpFile.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/Ticket.hbm.xml" />
-		<!-- Eirc accounts -->
 		<mapping resource="org/flexpay/eirc/persistence/account/Quittance.hbm.xml" />
+		<mapping resource="org/flexpay/accounting/persistence/Document.hbm.xml" />
+		<mapping resource="org/flexpay/accounting/persistence/operations/Operation.hbm.xml" />
 
 
 		<!-- SZ File -->

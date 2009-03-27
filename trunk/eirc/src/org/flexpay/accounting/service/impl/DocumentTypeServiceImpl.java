@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.List;
+
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class DocumentTypeServiceImpl implements DocumentTypeService {
 
@@ -29,6 +31,17 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 	@Nullable
 	public DocumentType read(@NotNull Stub<DocumentType> typeStub) {
 		return documentTypeDao.readFull(typeStub.getId());
+	}
+
+	/**
+	 * Read DocumentType object by Stub
+	 *
+	 * @param code document type code
+	 * @return DocumentType object
+	 */
+	public DocumentType read(int code) {
+		List<DocumentType> types = documentTypeDao.findDocumentType(code);
+		return types.isEmpty() ? null : types.get(0);
 	}
 
 	/**
