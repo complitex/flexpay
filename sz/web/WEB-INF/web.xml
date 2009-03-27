@@ -15,10 +15,6 @@
 		<param-value>
             /WEB-INF/applicationContext.xml
             /WEB-INF/applicationContext-security.xml
-            /WEB-INF/common/configs/menu.cfg.xml
-            /WEB-INF/ab/configs/menu.cfg.xml
-            /WEB-INF/eirc/configs/menu.cfg.xml
-            /WEB-INF/sz/configs/menu.cfg.xml
         </param-value>
 	</context-param>
 
