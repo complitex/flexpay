@@ -53,7 +53,7 @@
             </column>
         </property>
         <property name="change">
-            <column name="change" not-null="true">
+            <column name="change_summ" not-null="true">
                 <comment>Change</comment>
             </column>
         </property>
