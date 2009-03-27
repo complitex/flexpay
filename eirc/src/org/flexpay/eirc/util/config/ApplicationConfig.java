@@ -1,6 +1,7 @@
 package org.flexpay.eirc.util.config;
 
 import org.flexpay.eirc.persistence.Organization;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -25,6 +26,7 @@ public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationCon
 		return (ApplicationConfig) org.flexpay.common.util.config.ApplicationConfig.getInstance();
 	}
 
+	@NotNull
 	public static Organization getSelfOrganization() {
 		return getInstance().selfOrganization;
 	}

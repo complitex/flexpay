@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.accounting.persistence.operations.Operation;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.eirc.persistence.RegistryRecord;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 
@@ -34,7 +35,7 @@ public class Document extends DomainObject {
 		return operation;
 	}
 
-	public void setOperation(Operation operation) {
+	public void setOperation(@NotNull Operation operation) {
 		this.operation = operation;
 	}
 
@@ -42,7 +43,7 @@ public class Document extends DomainObject {
 		return subjectDebet;
 	}
 
-	public void setSubjectDebet(EircSubject subjectDebet) {
+	public void setSubjectDebet(@NotNull EircSubject subjectDebet) {
 		this.subjectDebet = subjectDebet;
 	}
 
@@ -50,7 +51,7 @@ public class Document extends DomainObject {
 		return subjectCredit;
 	}
 
-	public void setSubjectCredit(EircSubject subjectCredit) {
+	public void setSubjectCredit(@NotNull EircSubject subjectCredit) {
 		this.subjectCredit = subjectCredit;
 	}
 
@@ -74,7 +75,7 @@ public class Document extends DomainObject {
 		return documentType;
 	}
 
-	public void setDocumentType(DocumentType documentType) {
+	public void setDocumentType(@NotNull DocumentType documentType) {
 		this.documentType = documentType;
 	}
 
@@ -82,7 +83,7 @@ public class Document extends DomainObject {
 		return documentStatus;
 	}
 
-	public void setDocumentStatus(DocumentStatus documentStatus) {
+	public void setDocumentStatus(@NotNull DocumentStatus documentStatus) {
 		this.documentStatus = documentStatus;
 	}
 

@@ -26,7 +26,7 @@ public interface DocumentTypeService {
 	 */
 	@Secured (Roles.DOCUMENT_TYPE_READ)
 	@Nullable
-	DocumentType read(int code);
+	DocumentType read(String code);
 
 	/**
 	 * Save type

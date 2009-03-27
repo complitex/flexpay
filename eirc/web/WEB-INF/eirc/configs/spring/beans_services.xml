@@ -152,7 +152,11 @@
 		  p:quittancePaymentDao-ref="quittancePaymentDao" />
 
 	<bean id="quittancePaymentService" class="org.flexpay.eirc.service.imp.QuittancePaymentServiceImpl"
-		  p:quittancePaymentDao-ref="quittancePaymentDao" />
+		  p:organizationService-ref="organizationService"
+		  p:quittancePaymentDao-ref="quittancePaymentDao"
+		  p:documentTypeService-ref="documentTypeService"
+		  p:operationService-ref="operationService"
+		  p:spService-ref="spService" />
 
 	<bean id="paymentPointService" class="org.flexpay.eirc.service.imp.PaymentPointServiceImpl"
 		  p:paymentPointDao-ref="paymentPointDao" />

@@ -66,12 +66,12 @@
 			</column>
 		</property>
 		<property name="confirmatorUserName">
-			<column name="confirmator" not-null="true">
+			<column name="confirmator" not-null="false">
 				<comment>Confirmator username</comment>
 			</column>
 		</property>
 		<property name="confirmationDate" type="timestamp">
-			<column name="confirmation_date" not-null="true">
+			<column name="confirmation_date" not-null="false">
 				<comment>Confirmation date</comment>
 			</column>
 		</property>
@@ -95,14 +95,14 @@
 		<many-to-one name="confirmatorOrganization"
 					 class="org.flexpay.eirc.persistence.Organization"
 					 foreign-key="FK_accounting_operations_tbl_confirmator_organization_id">
-			<column name="confirmator_organization_id" not-null="true">
+			<column name="confirmator_organization_id" not-null="false">
 				<comment>Organization operation confirmed in</comment>
 			</column>
 		</many-to-one>
 		<many-to-one name="registryRecord"
 					 class="org.flexpay.eirc.persistence.RegistryRecord"
 					 foreign-key="FK_accounting_operations_tbl_registry_record_id">
-			<column name="registry_record_id" not-null="true">
+			<column name="registry_record_id" not-null="false">
 				<comment>Registry record</comment>
 			</column>
 		</many-to-one>
@@ -114,7 +114,7 @@
 			</column>
 		</many-to-one>
 		<set name="documents" inverse="true" cascade="all-delete-orphan">
-			<key column="operation_id" not-null="true" />
+			<key column="operation_id" />
 			<one-to-many class="org.flexpay.accounting.persistence.Document" />
 		</set>
 		<set name="childOperations" inverse="true" cascade="all-delete-orphan">
