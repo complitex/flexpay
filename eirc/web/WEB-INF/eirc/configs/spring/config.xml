@@ -16,4 +16,7 @@
 	<import resource="beans_self_testing.xml" />
 	<import resource="stand-alone-tasks.xml" />
     <import resource="beans_jbpm.xml"/>
+
+    <import resource="../menu.cfg.xml"/>
+
 </beans>
