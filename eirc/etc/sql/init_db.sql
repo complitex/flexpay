@@ -271,3 +271,12 @@ SELECT @service_:=last_insert_id();
 INSERT INTO eirc_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('ТО бытовых электроплит', '', @ru_id, @service_);
 
+
+insert into accounting_document_types_tbl (id, code, name)
+	values (1, 1, 'accounting.document.type.cash_payment');
+insert into accounting_document_types_tbl (id, code, name)
+	values (2, 2, 'accounting.document.type.cash_payment_return');
+insert into accounting_document_types_tbl (id, code, name)
+	values (3, 3, 'accounting.document.type.cashless_payment');
+insert into accounting_document_types_tbl (id, code, name)
+	values (4, 4, 'accounting.document.type.cashless_payment_return');

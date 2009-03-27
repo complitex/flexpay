@@ -133,7 +133,7 @@ public class QuittancePayAction extends FPActionSupport {
 			throw ex;
 		}
 
-		quittancePaymentService.createPayment(payment);
+		quittancePaymentService.cashPayment(payment);
 	}
 
 	private String doRedirect() {

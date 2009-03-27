@@ -1,6 +1,7 @@
 package org.flexpay.eirc.service;
 
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.eirc.persistence.QuittancePayment;
 import org.flexpay.eirc.persistence.account.Quittance;
@@ -32,10 +33,11 @@ public interface QuittancePaymentService {
 	List<QuittancePayment> getQuittancePayments(@NotNull Stub<Quittance> stub);
 
 	/**
-	 * Create quittance payment
-	 * 
+	 * Create cash quittance payment
+	 *
 	 * @param payment QuittancePayement to persist
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Secured(Roles.QUITTANCE_PAY)
-	void createPayment(@NotNull QuittancePayment payment);
+	void cashPayment(@NotNull QuittancePayment payment) throws FlexPayExceptionContainer;
 }

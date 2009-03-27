@@ -4,12 +4,14 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.accounting.persistence.Document;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.RegistryRecord;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
+import java.util.Collections;
 
 public class Operation extends DomainObject {
 
@@ -31,8 +33,10 @@ public class Operation extends DomainObject {
 	private OperationLevel operationLevel;
 	private OperationStatus operationStatus;
 
-	private Set<Document> documents;
-	private Set<Operation> childOperations;
+	private Set<Document> documents = Collections.emptySet();
+
+	private Operation parentOperation; 
+	private Set<Operation> childOperations = Collections.emptySet();
 
 	public BigDecimal getOperationSumm() {
 		return operationSumm;
@@ -136,6 +140,24 @@ public class Operation extends DomainObject {
 
 	public void setDocuments(Set<Document> documents) {
 		this.documents = documents;
+	}
+
+	public void addDocument(Document doc) {
+
+		//noinspection CollectionsFieldAccessReplaceableByMethodCall
+		if (documents == Collections.EMPTY_SET) {
+			documents = CollectionUtils.set();
+		}
+		doc.setOperation(this);
+		documents.add(doc);
+	}
+
+	public Operation getParentOperation() {
+		return parentOperation;
+	}
+
+	public void setParentOperation(Operation parentOperation) {
+		this.parentOperation = parentOperation;
 	}
 
 	public Set<Operation> getChildOperations() {
