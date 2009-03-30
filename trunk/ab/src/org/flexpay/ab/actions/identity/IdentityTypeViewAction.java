@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
+import org.hibernate.Hibernate;
 
 public class IdentityTypeViewAction extends FPActionSupport {
 
@@ -14,6 +15,7 @@ public class IdentityTypeViewAction extends FPActionSupport {
 	@NotNull
 	public String doExecute() throws Exception {
 		identityType = identityTypeService.read(id);
+        Hibernate.initialize(identityType.getTranslations());
 
 		return SUCCESS;
 	}
