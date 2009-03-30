@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Transactional (readOnly = true)
 public class PersonServiceImpl implements PersonService {
@@ -119,7 +120,23 @@ public class PersonServiceImpl implements PersonService {
 		return person;
 	}
 
-	/**
+    /**
+     * Disable persons
+     *
+     * @param objectIds Person identifiers
+     */
+    @Transactional (readOnly = false)
+    public void disable(@NotNull Set<Long> objectIds) {
+        for (Long id : objectIds) {
+			Person person = personDao.read(id);
+			if (person != null) {
+				person.disable();
+				personDao.update(person);
+			}
+		}
+    }
+
+    /**
 	 * Create person
 	 *
 	 * @param person Person to save

@@ -15,6 +15,10 @@
 			<result type="tiles">ab.person.view</result>
 		</action>
 
+        <action name="personDelete" class="personDeleteAction">
+			<result name="redirectSuccess" type="redirect-action">personsList</result>
+		</action>
+
 		<action name="personEdit" class="personEditAction">
 			<result name="input" type="tiles">ab.person.edit</result>
 			<result type="redirect-action">

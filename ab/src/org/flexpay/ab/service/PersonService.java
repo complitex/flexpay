@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.security.annotation.Secured;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PersonService {
 
@@ -76,4 +77,12 @@ public interface PersonService {
 	 */
 	@Secured ({Roles.PERSON_ADD, Roles.PERSON_CHANGE})
 	Person update(@NotNull Person person) throws FlexPayExceptionContainer;
+
+    /**
+	 * Disable persons
+	 *
+	 * @param objectIds Person identifiers
+	 */
+	@Secured (Roles.PERSON_DELETE)
+	void disable(@NotNull Set<Long> objectIds);
 }
