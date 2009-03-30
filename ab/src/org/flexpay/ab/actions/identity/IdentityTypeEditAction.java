@@ -30,8 +30,7 @@ public class IdentityTypeEditAction extends FPActionSupport {
 		IdentityType type = identityType.isNew() ? identityType : identityTypeService.read(identityType.getId());
 
 		if (!isSubmit()) {
-			identityType = type;
-            Hibernate.initialize(identityType.getTranslations());
+			identityType = type;            
 			initTranslations();
 			return INPUT;
 		}
