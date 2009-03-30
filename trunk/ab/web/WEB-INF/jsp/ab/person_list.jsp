@@ -12,8 +12,8 @@
 
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
-			<td class="th" width="1%"><input type="checkbox"
-											 onchange="FP.setCheckboxes(this.checked, 'objectIds');">
+			<td class="th" width="1%">
+                <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
 			</td>
 			<td class="th" width="20%"><s:text name="ab.person.last_name"/></td>
 			<td class="th" width="20%"><s:text name="ab.person.first_name"/></td>
@@ -25,8 +25,7 @@
 			<tr valign="middle" class="cols_1">
 				<td class="col_1s" align="right"><s:property
 						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>&nbsp;</td>
-				<td class="col"><input type="checkbox" name="objectIds"
-									   value="<s:property value="%{object.id}"/>"/></td>
+				<td class="col"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/></td>
 				<td class="col"><s:property value="%{defaultIdentity.lastName}"/></td>
 				<td class="col"><s:property value="%{defaultIdentity.firstName}"/></td>
 				<td class="col"><s:property value="%{defaultIdentity.middleName}"/></td>
@@ -41,8 +40,7 @@
 			<td colspan="7">
 				<%@ include file="filters/pager.jsp" %>
 				<input type="button" class="btn-exit"
-				<%-- onclick="$('#fobjects').attr('action', '<s:url action="delete_persons"/>').submit();" --%>
-					   onclick="alert('<s:text name="error.not_implemented" />');"
+				       onclick="$('#fobjects').attr('action', '<s:url action="personDelete"/>').submit();"					   
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="personEdit"><s:param name="person.id" value="0"/></s:url>';"

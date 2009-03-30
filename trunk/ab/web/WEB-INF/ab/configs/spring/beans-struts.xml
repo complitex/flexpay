@@ -263,6 +263,10 @@
 		  p:personService-ref="personService"
 		  p:apartmentService-ref="apartmentService" />
 
+    <bean id="personDeleteAction" scope="prototype"
+		  class="org.flexpay.ab.actions.person.PersonDeleteAction"
+		  p:personService-ref="personService"/>
+
 	<bean id="personEditAction" scope="prototype"
 		  class="org.flexpay.ab.actions.person.PersonEditAction"
 		  p:parentService-ref="apartmentService"
