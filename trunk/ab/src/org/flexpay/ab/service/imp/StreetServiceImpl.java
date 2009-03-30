@@ -354,7 +354,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 			if (!first || temporals.size() == 1) {
 				StreetName name = object.getNameForDate(DateUtil.now());
 				if (name == null || StringUtils.isBlank(name.getDefaultNameTranslation())) {
-					FlexPayException e = new FlexPayException("No translation", "error.ab.street.no_default_translation",
+					FlexPayException e = new FlexPayException("No translation", "error.no_default_translation",
 							temporal.getBegin(), temporal.getEnd());
 					ex.addException(e);
 
