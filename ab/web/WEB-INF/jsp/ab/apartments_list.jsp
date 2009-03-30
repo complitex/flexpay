@@ -53,7 +53,7 @@
 		<tr>
 			<td colspan="4">
 				<%@ include file="filters/pager.jsp" %>
-				<input type="button" class="btn-exit"
+				<input type="submit" class="btn-exit"
 					   onclick="$('#fobjects').attr('action','<s:url action="apartmentDelete" includeParams="none" />');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="submit" class="btn-exit"
