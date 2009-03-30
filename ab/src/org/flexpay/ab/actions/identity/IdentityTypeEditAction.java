@@ -8,6 +8,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.jetbrains.annotations.NotNull;
+import org.hibernate.Hibernate;
 
 import java.util.Map;
 
@@ -30,6 +31,7 @@ public class IdentityTypeEditAction extends FPActionSupport {
 
 		if (!isSubmit()) {
 			identityType = type;
+            Hibernate.initialize(identityType.getTranslations());
 			initTranslations();
 			return INPUT;
 		}
