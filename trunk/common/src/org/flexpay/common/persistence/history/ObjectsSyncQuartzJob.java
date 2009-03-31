@@ -37,9 +37,7 @@ public class ObjectsSyncQuartzJob extends QuartzJobBean {
 			return;
 		}
 
-		if (log.isDebugEnabled()) {
-			log.debug("Starting objects sync");
-		}
+		log.debug("Starting objects sync");
 
 		try {
 			Security.authenticateSyncer();
@@ -55,6 +53,8 @@ public class ObjectsSyncQuartzJob extends QuartzJobBean {
 		} finally {
 			lockManager.releaseLock(LOCK_NAME);
 		}
+
+		log.debug("Ended objects sync");
 	}
 
 	@Required

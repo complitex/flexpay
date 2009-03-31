@@ -386,7 +386,7 @@
         status integer not null comment 'Operation status',
         creator_organization_id bigint not null comment 'Organization operation created in',
         confirmator_organization_id bigint comment 'Organization operation confirmed in',
-        registry_record_id bigint comment 'Registry record',
+        registry_rec_ord_id bigint comment 'Registry record',
         parent_operation_id bigint comment 'Optional parent operation reference',
         primary key (id)
     ) comment='Operations';

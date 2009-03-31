@@ -1,14 +1,13 @@
 package org.flexpay.sz.util.config;
 
 import org.apache.commons.digester.Digester;
-import org.flexpay.ab.util.config.AbConfigLoader;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
 
-public class SZConfigLoader extends AbConfigLoader {
+public class ConfigLoader extends org.flexpay.eirc.util.config.ConfigLoader {
 
-	public SZConfigLoader(URL[] configFiles) {
+	public ConfigLoader(URL[] configFiles) {
 		super(configFiles);
 	}
 
@@ -34,5 +33,4 @@ public class SZConfigLoader extends AbConfigLoader {
 		d.addCallMethod("flexpay/szDefaultDbfFileEncoding", "setSzDefaultDbfFileEncoding", 0);
 
 	}
-
 }

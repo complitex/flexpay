@@ -1,14 +1,13 @@
 package org.flexpay.eirc.util.config;
 
 import org.apache.commons.digester.Digester;
-import org.flexpay.ab.util.config.AbConfigLoader;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
 
-public class EircConfigLoader extends AbConfigLoader {
+public class ConfigLoader extends org.flexpay.ab.util.config.ConfigLoader {
 
-	public EircConfigLoader(URL[] configFiles) {
+	public ConfigLoader(URL[] configFiles) {
 		super(configFiles);
 	}
 

@@ -30,6 +30,8 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 	protected HistoryConsumerService consumerService;
 	protected HistoryRecordsFilter recordsFilter;
 
+	private int pagingSize = 50;
+
 	/**
 	 * Generate pack of history records for consumer
 	 *
@@ -46,7 +48,7 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 		}
 
 		FetchRange range = new FetchRange();
-		range.setPageSize(5);
+		range.setPageSize(pagingSize);
 		List<Diff> diffs = consumerService.findNewDiffs(consumer, range);
 
 		HistoryPackingContext context = new HistoryPackingContext();
@@ -171,5 +173,9 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 	@Required
 	public void setRecordsFilter(HistoryRecordsFilter recordsFilter) {
 		this.recordsFilter = recordsFilter;
+	}
+
+	public void setPagingSize(int pagingSize) {
+		this.pagingSize = pagingSize;
 	}
 }
