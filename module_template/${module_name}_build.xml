@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay_${module_name}" basedir=".." default="${module_name}.help">
+
+	<import file="../${parent_module_name}/${parent_module_name}_build.xml" />
+
+	<property file="${module_name}/${module_name}_build.properties" />
+
+	<property name="${module_name}.dir" value="${basedir}/${module_name}" />
+
+	<path id="${module_name}.lib">
+		<fileset dir="${${module_name}.dir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<fileset id="${module_name}.libraries" dir="${${module_name}.dir}/lib">
+		<include name="**/*" />
+	</fileset>
+
+	<path id="${module_name}.jar" location="${build.dir}/lib/${${module_name}.jar.name}" />
+	<path id="${module_name}.test.jar" location="${build.dir}/lib/${${module_name}.tests.jar.name}" />
+
+	<path id="${module_name}.production.classpath">
+		<path refid="${parent_module_name}.production.classpath" />
+		<path refid="${module_name}.lib" />
+		<path refid="${parent_module_name}.jar" />
+	</path>
+
+	<path id="${module_name}.test.classpath">
+		<path refid="${parent_module_name}.test.classpath" />
+		<path refid="${module_name}.jar" />
+		<path refid="${module_name}.test.jar" />
+		<path refid="${module_name}.production.classpath" />
+	</path>
+
+    <path id="${module_name}.runtests.classpath">
+        <path refid="${parent_module_name}.runtests.classpath" />
+        <path refid="${module_name}.test.classpath" />
+        <path location="${build.dir}/web" />
+        <path location="${module_name}/src" />
+        <path location="${module_name}/tests/data" />
+    </path>
+
+	<target name="${module_name}.help" description="Print ${module_name} module build script options">
+		<echo>
+	${module_name} module build script
+	Usage:
+	ant -f ${module_name}_build.xml [target_name [target_options]]
+
+	Available targets are:
+		${module_name}.db - Initialize database
+		${module_name}.exportschema.mysql5 - Generate DDL of module for MySQL5
+		${module_name}.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
+			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.${module_name}.service.TestBuildingService
+		${module_name}.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
+		${module_name}.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		</echo>
+	</target>
+
+    <target name="${module_name}.clean.build">
+		<antcall target="clean.build" />
+	</target>
+
+	<property name="${module_name}.src.production" value="${${module_name}.dir}/${src.dir};${${parent_module_name}.src.production}" />
+	<target name="${module_name}.compile.production">
+		<antcall target="template.compile.production">
+			<param name="sources.dir" value="${${module_name}.src.production}" />
+			<reference refid="${module_name}.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<property name="${module_name}.src.test" value="${${module_name}.src.production};${${module_name}.dir}/${tests.src.dir};${${parent_module_name}.src.test}" />
+	<target name="${module_name}.compile.test">
+		<antcall target="template.compile.test">
+			<param name="sources.dir" value="${${module_name}.src.test}" />
+			<reference refid="${module_name}.test.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="${module_name}.jar.production" depends="${module_name}.compile.production">
+		<antcall target="template.jar">
+			<param name="jar.name" value="${${module_name}.jar.name}" /> 
+		</antcall>
+	</target>
+
+	<!-- Build targets -->
+	<target name="${module_name}.docs" depends="${module_name}.compile.production">
+		<fileset id="${module_name}.docs.resources" dir="${${module_name}.dir}/docs" />
+		<antcall target="template.docs">
+			<param name="sources.dir" value="${${module_name}.src.production}" />
+			<param name="module_name" value="Bureau of techinical stock-taking" />
+			<param name="docs.file" value="${${module_name}.docs.name}" />
+			<reference refid="${module_name}.docs.resources" torefid="resources" />
+			<reference refid="${module_name}.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="${module_name}.war.production.tomcat_mysql5">
+		<antcall target="clean.all" />
+		<antcall target="template.${module_name}.war.production">
+			<param name="app_server.properties" value="app_server_tomcat.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="${module_name}.war.production.glassfish_mysql5">
+		<antcall target="clean.all" />
+		<antcall target="template.${module_name}.war.production">
+			<param name="app_server.properties" value="app_server_glassfish.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+    <target name="${module_name}.prepare.war">
+		<antcall target="${module_name}.prepare.war.internal" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+	<target name="${module_name}.prepare.test.war">
+		<antcall target="${module_name}.prepare.war.internal" />
+		<antcall target="common.test.war.data-source" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+    <target name="${module_name}.prepare.war.internal" depends="${parent_module_name}.prepare.war.internal">
+        <fileset id="${module_name}.web.resources" dir="${${module_name}.dir}/web" />
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="" />
+            <param name="src.i18n.dir" value="${build.dir}/empty" />
+            <reference refid="${module_name}.web.resources" torefid="resources" />
+        </antcall>
+
+        <fileset dir="${${module_name}.dir}/${src.dir}" id="${module_name}.classes.resources">
+            <patternset refid="resources_pattern" />
+        </fileset>
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="/WEB-INF/classes" />
+            <param name="src.i18n.dir" value="${${module_name}.dir}/${src.dir}" />
+            <reference refid="${module_name}.classes.resources" torefid="resources" />
+        </antcall>
+    </target>
+
+    <!-- Build production web-archive -->
+	<target name="template.${module_name}.war.production"
+			depends="clean.all,${module_name}.compile.production,${module_name}.prepare.war,init.distr">
+
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+
+		<antcall target="template.set_db_name" />
+		<antcall target="template.switch_instance_id" />
+
+		<war destfile="${distr.dir}/${${module_name}.war.name}" needxmlfile="false">
+			<fileset dir="${build.dir}/web" />
+			<lib refid="${module_name}.libraries" />
+		</war>
+
+		<antcall target="common.war.include.libs">
+			<param name="warfile" value="${distr.dir}/${${module_name}.war.name}" />
+		</antcall>
+	</target>
+
+	<target name="${module_name}.exportschema.mysql5" depends="clean.build,${module_name}.compile.production">
+		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+		<antcall target="template.schemaexport">
+			<param name="file_name" value="flexpay_${module_name}.ddl.sql" />
+			<param name="src.dir" value="${${module_name}.src.production}" />
+			<param name="hibernate.cfg"
+				   value="${${module_name}.dir}/web/WEB-INF/hibernate.cfg.xml" />
+			<param name="hibernate.properties"
+				   value="${common.dir}/web/WEB-INF/common/configs/ps/data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="${module_name}.runtests" depends="${module_name}.compile.test,${module_name}.prepare.test.war">
+		<condition property="class.name" value="${test.class.name}" else="org.flexpay.${module_name}.AllTests">
+			<isset property="test.class.name" />
+		</condition>
+		<antcall target="template.run.tests">
+			<param name="test_name" value="${class.name}" />
+			<reference refid="${module_name}.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="${module_name}.sql.init-db">
+		<antcall target="${parent_module_name}.sql.init-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${${module_name}.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<antcall target="template.set_db_name" />
+	</target>
+
+	<target name="${module_name}.sql.init-db-test">
+		<antcall target="${parent_module_name}.sql.init-db-test" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${${module_name}.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${${module_name}.dir}/etc/sql/init_db_test.sql" />
+		</concat>
+		<antcall target="template.set_test_db_name" />
+	</target>
+
+	<target name="${module_name}.sql.all">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${${module_name}.dir}/etc/sql/flexpay_${module_name}.ddl.sql" />
+		</concat>
+		<antcall target="${module_name}.sql.init-db" />
+	</target>
+
+	<target name="${module_name}.sql.all-test">
+		<antcall target="common.sql.create-test-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${${module_name}.dir}/etc/sql/flexpay_${module_name}.ddl.sql" />
+		</concat>
+		<antcall target="${module_name}.sql.init-db-test" />
+	</target>
+
+	<target name="${module_name}.db-test" description="create ${module_name} db">
+		<antcall target="${module_name}.sql.all-test" />
+		<antcall target="template.mysql.run">
+			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
+		</antcall>
+	</target>
+
+</project>
