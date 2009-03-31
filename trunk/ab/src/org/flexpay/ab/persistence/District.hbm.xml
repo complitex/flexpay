@@ -78,6 +78,7 @@
 		LEFT JOIN FETCH t.value v
 		LEFT JOIN FETCH v.translations tr
 		LEFT JOIN FETCH tr.lang l
+		    join fetch l.translations
 		WHERE o.id=? and t.invalidDate='2100-12-31'
 	</query>
 
