@@ -1,12 +1,12 @@
 package org.flexpay.tc.util.config;
 
 import org.apache.commons.digester.Digester;
-import org.flexpay.ab.util.config.AbConfigLoader;
+import org.flexpay.ab.util.config.ConfigLoader;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
 
-public class TCConfigLoader extends AbConfigLoader {
+public class TCConfigLoader extends ConfigLoader {
 
 	public TCConfigLoader(URL[] configFiles) {
 		super(configFiles);

@@ -7,7 +7,7 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- ConfigLoader is a subject to replace in dependent modules -->
-	<bean id="szConfigLoader" class="org.flexpay.sz.util.config.SZConfigLoader" init-method="loadConfig">
+	<bean id="szConfigLoader" class="org.flexpay.sz.util.config.ConfigLoader" init-method="loadConfig">
 		<constructor-arg index="0">
 			<list>
 				<value>classpath:org/flexpay/common/application_config.xml</value>

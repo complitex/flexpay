@@ -2,7 +2,7 @@ package org.flexpay.sz.util.config;
 
 import java.io.File;
 
-public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationConfig {
+public class ApplicationConfig extends org.flexpay.eirc.util.config.ApplicationConfig {
 
 	private String szDataRoot;
 	private String szDefaultDbfFileEncoding;

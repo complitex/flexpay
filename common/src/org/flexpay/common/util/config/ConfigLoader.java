@@ -17,9 +17,8 @@ import java.net.URL;
 /**
  * Application configuration loader
  */
-public class CommonConfigLoader implements ResourceLoaderAware {
+public class ConfigLoader implements ResourceLoaderAware {
 
-	@NonNls
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	// Configuration file URL
@@ -32,7 +31,7 @@ public class CommonConfigLoader implements ResourceLoaderAware {
 	 *
 	 * @param configFiles Configuration file URL
 	 */
-	public CommonConfigLoader(URL[] configFiles) {
+	public ConfigLoader(URL[] configFiles) {
 		this.configFiles = configFiles;
 	}
 

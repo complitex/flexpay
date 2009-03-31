@@ -1,15 +1,14 @@
 package org.flexpay.ab.util.config;
 
 import org.apache.commons.digester.Digester;
-import org.flexpay.common.util.config.CommonConfigLoader;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
 
-public class AbConfigLoader extends CommonConfigLoader {
+public class ConfigLoader extends org.flexpay.common.util.config.ConfigLoader {
 
-	public AbConfigLoader(URL[] configFiles) {
+	public ConfigLoader(URL[] configFiles) {
 		super(configFiles);
 	}
 
