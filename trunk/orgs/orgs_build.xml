@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay_orgs" basedir=".." default="orgs.help">
+
+	<import file="../common/common_build.xml" />
+
+	<property file="orgs/orgs_build.properties" />
+
+	<property name="orgs.dir" value="${basedir}/orgs" />
+
+	<path id="orgs.lib">
+		<fileset dir="${orgs.dir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<fileset id="orgs.libraries" dir="${orgs.dir}/lib">
+		<include name="**/*" />
+	</fileset>
+
+	<path id="orgs.jar" location="${build.dir}/lib/${orgs.jar.name}" />
+	<path id="orgs.test.jar" location="${build.dir}/lib/${orgs.tests.jar.name}" />
+
+	<path id="orgs.production.classpath">
+		<path refid="common.production.classpath" />
+		<path refid="orgs.lib" />
+		<path refid="common.jar" />
+	</path>
+
+	<path id="orgs.test.classpath">
+		<path refid="common.test.classpath" />
+		<path refid="orgs.jar" />
+		<path refid="orgs.test.jar" />
+		<path refid="orgs.production.classpath" />
+	</path>
+
+    <path id="orgs.runtests.classpath">
+        <path refid="common.runtests.classpath" />
+        <path refid="orgs.test.classpath" />
+        <path location="${build.dir}/web" />
+        <path location="orgs/src" />
+        <path location="orgs/tests/data" />
+    </path>
+
+	<target name="orgs.help" description="Print orgs module build script options">
+		<echo>
+	orgs module build script
+	Usage:
+	ant -f orgs_build.xml [target_name [target_options]]
+
+	Available targets are:
+		orgs.db - Initialize database
+		orgs.exportschema.mysql5 - Generate DDL of module for MySQL5
+		orgs.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
+			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.orgs.service.TestBuildingService
+		orgs.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
+		orgs.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		</echo>
+	</target>
+
+    <target name="orgs.clean.build">
+		<antcall target="clean.build" />
+	</target>
+
+	<property name="orgs.src.production" value="${orgs.dir}/${src.dir};${common.src.production}" />
+	<target name="orgs.compile.production">
+		<antcall target="template.compile.production">
+			<param name="sources.dir" value="${orgs.src.production}" />
+			<reference refid="orgs.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<property name="orgs.src.test" value="${orgs.src.production};${orgs.dir}/${tests.src.dir};${common.src.test}" />
+	<target name="orgs.compile.test">
+		<antcall target="template.compile.test">
+			<param name="sources.dir" value="${orgs.src.test}" />
+			<reference refid="orgs.test.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="orgs.jar.production" depends="orgs.compile.production">
+		<antcall target="template.jar">
+			<param name="jar.name" value="${orgs.jar.name}" /> 
+		</antcall>
+	</target>
+
+	<!-- Build targets -->
+	<target name="orgs.docs" depends="orgs.compile.production">
+		<fileset id="orgs.docs.resources" dir="${orgs.dir}/docs" />
+		<antcall target="template.docs">
+			<param name="sources.dir" value="${orgs.src.production}" />
+			<param name="module_name" value="Bureau of techinical stock-taking" />
+			<param name="docs.file" value="${orgs.docs.name}" />
+			<reference refid="orgs.docs.resources" torefid="resources" />
+			<reference refid="orgs.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="orgs.war.production.tomcat_mysql5">
+		<antcall target="clean.all" />
+		<antcall target="template.orgs.war.production">
+			<param name="app_server.properties" value="app_server_tomcat.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="orgs.war.production.glassfish_mysql5">
+		<antcall target="clean.all" />
+		<antcall target="template.orgs.war.production">
+			<param name="app_server.properties" value="app_server_glassfish.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+    <target name="orgs.prepare.war">
+		<antcall target="orgs.prepare.war.internal" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+	<target name="orgs.prepare.test.war">
+		<antcall target="orgs.prepare.war.internal" />
+		<antcall target="common.test.war.data-source" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+    <target name="orgs.prepare.war.internal" depends="common.prepare.war.internal">
+        <fileset id="orgs.web.resources" dir="${orgs.dir}/web" />
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="" />
+            <param name="src.i18n.dir" value="${build.dir}/empty" />
+            <reference refid="orgs.web.resources" torefid="resources" />
+        </antcall>
+
+        <fileset dir="${orgs.dir}/${src.dir}" id="orgs.classes.resources">
+            <patternset refid="resources_pattern" />
+        </fileset>
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="/WEB-INF/classes" />
+            <param name="src.i18n.dir" value="${orgs.dir}/${src.dir}" />
+            <reference refid="orgs.classes.resources" torefid="resources" />
+        </antcall>
+    </target>
+
+    <!-- Build production web-archive -->
+	<target name="template.orgs.war.production"
+			depends="clean.all,orgs.compile.production,orgs.prepare.war,init.distr">
+
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+
+		<antcall target="template.set_db_name" />
+		<antcall target="template.switch_instance_id" />
+
+		<war destfile="${distr.dir}/${orgs.war.name}" needxmlfile="false">
+			<fileset dir="${build.dir}/web" />
+			<lib refid="orgs.libraries" />
+		</war>
+
+		<antcall target="common.war.include.libs">
+			<param name="warfile" value="${distr.dir}/${orgs.war.name}" />
+		</antcall>
+	</target>
+
+	<target name="orgs.exportschema.mysql5" depends="clean.build,orgs.compile.production">
+		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+		<antcall target="template.schemaexport">
+			<param name="file_name" value="flexpay_orgs.ddl.sql" />
+			<param name="src.dir" value="${orgs.src.production}" />
+			<param name="hibernate.cfg"
+				   value="${orgs.dir}/web/WEB-INF/hibernate.cfg.xml" />
+			<param name="hibernate.properties"
+				   value="${common.dir}/web/WEB-INF/common/configs/ps/data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="orgs.runtests" depends="orgs.compile.test,orgs.prepare.test.war">
+		<condition property="class.name" value="${test.class.name}" else="org.flexpay.orgs.AllTests">
+			<isset property="test.class.name" />
+		</condition>
+		<antcall target="template.run.tests">
+			<param name="test_name" value="${class.name}" />
+			<reference refid="orgs.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="orgs.sql.init-db">
+		<antcall target="common.sql.init-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${orgs.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<antcall target="template.set_db_name" />
+	</target>
+
+	<target name="orgs.sql.init-db-test">
+		<antcall target="common.sql.init-db-test" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${orgs.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${orgs.dir}/etc/sql/init_db_test.sql" />
+		</concat>
+		<antcall target="template.set_test_db_name" />
+	</target>
+
+	<target name="orgs.sql.all">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${orgs.dir}/etc/sql/flexpay_orgs.ddl.sql" />
+		</concat>
+		<antcall target="orgs.sql.init-db" />
+	</target>
+
+	<target name="orgs.sql.all-test">
+		<antcall target="common.sql.create-test-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${orgs.dir}/etc/sql/flexpay_orgs.ddl.sql" />
+		</concat>
+		<antcall target="orgs.sql.init-db-test" />
+	</target>
+
+	<target name="orgs.db-test" description="create orgs db">
+		<antcall target="orgs.sql.all-test" />
+		<antcall target="template.mysql.run">
+			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
+		</antcall>
+	</target>
+
+</project>
