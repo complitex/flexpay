@@ -32,7 +32,8 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 
 		if (isSubmit()) {
 			processSubmit();
-		}
+            return SUCCESS;
+        }
 
 		if (person.getId() == null) {
 			log.info("No person id specified");
