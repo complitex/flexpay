@@ -9,6 +9,7 @@ public class ProcessSorterByState extends ProcessSorter {
 	 * {@inheritDoc}
 	 */
 	public void setOrderBy(StringBuilder orderByClause) {
-		// TODO resolve where to take data from
+
+		orderByClause.append(" pi.end ").append(getOrder()).append(", pi.start ").append(getOrder());
 	}
 }

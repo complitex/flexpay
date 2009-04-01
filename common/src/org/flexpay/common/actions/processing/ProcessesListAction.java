@@ -3,11 +3,9 @@ package org.flexpay.common.actions.processing;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.ProcessStateComparator;
 import org.flexpay.common.process.sorter.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,19 +48,7 @@ public class  ProcessesListAction extends FPActionSupport {
 
 	private List<Process> getProcessListMethod() {
 
-		ProcessSorter activeSorter = getActiveSorter();
-
-		List<Process> processes;
-		if (activeSorter instanceof ProcessSorterByState) {
-			processes = processManager.getProcesses();
-			ProcessStateComparator stateComparator = new ProcessStateComparator();
-			stateComparator.setOrder(activeSorter.getOrder());
-			Collections.sort(processes, stateComparator);
-		} else {
-			processes = processManager.getProcesses(activeSorter);
-		}
-
-		return processes;
+		return processManager.getProcesses(getActiveSorter());
 	}
 
 	private ProcessSorter getActiveSorter() {
