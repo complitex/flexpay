@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence">
+
+	<query name="Process.readFull">
+		select distinct pi
+		from org.jbpm.graph.exe.ProcessInstance pi
+		left join fetch pi.processDefinition pd
+		where pi.id=?
+	</query>
+
+</hibernate-mapping>

@@ -16,6 +16,8 @@
 		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/history/Diff.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/history/HistoryConsumer.hbm.xml" />
+		<!-- common.Process -->
+		<mapping resource="org/flexpay/common/persistence/Process.hbm.xml" />
 		<!-- FPFiles, FPFileTypes, FPFileStatuses, FPModules -->
 		<mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/FPFile.hbm.xml" />

@@ -37,6 +37,7 @@
 				<value>WEB-INF/bti/process</value>
 			</list>
 		</property>
+
 	</bean>
 
 </beans>

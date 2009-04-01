@@ -12,6 +12,9 @@
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
+	<bean id="processDao" class="org.flexpay.common.dao.impl.ProcessDaoImpl"
+		  p:hibernateTemplate-ref="hibernateTemplate"/>
+
 	<bean id="correctionsDao" class="org.flexpay.common.dao.impl.CorrectionsDaoImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 		<property name="dataSource" ref="dataSource" />
@@ -144,5 +147,5 @@
             </bean>
         </property>
     </bean>
-
+	
 </beans>
