@@ -10,7 +10,7 @@
 
 		<tr>
 			<td colspan="5">
-				<%@ include file="filters/pager.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 				<input type="submit" class="btn-exit"
 					   onclick="$('#fobjects').attr('action','<s:url action="townDelete" includeParams="none" />');"
 					   value="<s:text name="common.delete_selected"/>"/>
@@ -54,7 +54,7 @@
 
 		<tr>
 			<td colspan="5">
-				<%@ include file="filters/pager.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 				<input type="submit" class="btn-exit"
 					   onclick="$('#fobjects').attr('action','<s:url action="townDelete" includeParams="none" />');"
 					   value="<s:text name="common.delete_selected"/>"/>

@@ -37,7 +37,7 @@
 		</s:iterator>
 		<tr>
 			<td colspan="3">
-				<%@ include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+				<%@ include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 				<input type="hidden" id="setupType" name="setupType" value="setupType"/>
 				<s:hidden name="record.id" value="%{record.id}"/>
 				<input type="submit" onclick="$('#setupType').val('building');" class="btn-exit"

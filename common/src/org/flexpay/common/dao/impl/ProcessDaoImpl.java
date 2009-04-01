@@ -1,6 +1,7 @@
 package org.flexpay.common.dao.impl;
 
 import org.flexpay.common.dao.ProcessDao;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.ProcessState;
@@ -8,11 +9,15 @@ import org.flexpay.common.process.sorter.ProcessSorter;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.util.CollectionUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.beans.factory.annotation.Required;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.hibernate.Session;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 
 import java.util.List;
 import java.util.Map;
@@ -24,19 +29,19 @@ import java.io.Serializable;
  */
 public class ProcessDaoImpl implements ProcessDao {
 
-	private static final Logger log = LoggerFactory.getLogger(ProcessDaoImpl.class);
-
 	private HibernateTemplate hibernateTemplate;
 
 	/**
 	 * {@inheritDoc}
-	 */
-	@SuppressWarnings ({"unchecked"})
-	public List<Process> findAllProcesses(ProcessSorter sorter) {
+	 */	
+	public List<Process> findProcesses(ProcessSorter sorter, final Page<Process> pager) {
 
-		StringBuilder hql = new StringBuilder("select distinct pi " +
-											  "from org.jbpm.graph.exe.ProcessInstance pi " +
-											  "left join fetch pi.processDefinition pd ");
+		final StringBuilder hql = new StringBuilder("select distinct pi " +
+													"from org.jbpm.graph.exe.ProcessInstance pi " +
+													"left join fetch pi.processDefinition pd ");
+
+		final StringBuilder cntHql = new StringBuilder("select count(pi) " +
+													   "from org.jbpm.graph.exe.ProcessInstance pi");
 
 		if (sorter != null) {
 			StringBuilder orderByClause = new StringBuilder();
@@ -47,13 +52,41 @@ public class ProcessDaoImpl implements ProcessDao {
 			}
 		}
 
-		List<ProcessInstance> instances = (List<ProcessInstance>) hibernateTemplate.find(hql.toString());
+		List<ProcessInstance> instances;
+		if (pager != null) {
+			instances = getProcessInstancesPage(pager, hql, cntHql);
+		} else {
+			instances = getAllProcessesInstances(hql);
+		}
+
 		List<Process> processes = CollectionUtils.list();
 		for (ProcessInstance processInstance : instances) {
 			processes.add(getProcessInfo(processInstance.getId()));
 		}
 
 		return processes;
+	}
+
+	@SuppressWarnings ({"unchecked"})
+	private List<ProcessInstance> getAllProcessesInstances(StringBuilder hql) {
+
+		return (List<ProcessInstance>) hibernateTemplate.find(hql.toString());
+	}
+
+	@SuppressWarnings ({"unchecked"})
+	private List<ProcessInstance> getProcessInstancesPage(final Page<Process> pager, final StringBuilder hql, final StringBuilder cntHql) {
+		return (List<ProcessInstance>) hibernateTemplate.executeFind(new HibernateCallback() {
+			public List<ProcessInstance> doInHibernate(Session session) throws HibernateException {
+				Query cntQuery = session.createQuery(cntHql.toString());
+				Long count = (Long) cntQuery.uniqueResult();
+				pager.setTotalElements(count.intValue());
+
+				return (List<ProcessInstance>) session.createQuery(hql.toString())
+												.setFirstResult(pager.getThisPageFirstElementNumber())
+												.setMaxResults(pager.getPageSize())
+												.list();
+			}
+		});
 	}
 
 	/**

@@ -52,7 +52,7 @@
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr>
             <td colspan="8">
-                <%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+                <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
             </td>
         <tr>
         <tr>
@@ -112,7 +112,7 @@
 
         <tr>
             <td colspan="8">
-                <%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+                <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
                 <input type="button" class="btn-exit" onclick="location.href='<s:url action="rulesFileEdit"><s:param name="rulesFile.id" value="0" /></s:url>';" value="<s:text name="common.new" />" />
                 <input type="button" class="btn-exit" onclick="doAction('<s:url action="rulesFileDelete" includeParams="none" />');" value="<s:text name="common.delete_selected" />" />
                 <input type="button" class="btn-exit" onclick="calculate();" value="<s:text name="tc.calculate" />" />

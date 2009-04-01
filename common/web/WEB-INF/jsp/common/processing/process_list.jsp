@@ -5,6 +5,10 @@
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
 		<tr>
+			<td colspan="9"><%@include file="../filter/pager/pager.jsp" %></td>
+		</tr>
+
+		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
 			</td>
@@ -53,6 +57,10 @@
 			<td class="col">&nbsp;</td>
 		</tr>
 		</s:iterator>
+
+		<tr>
+			<td colspan="9"><%@include file="../filter/pager/pager.jsp" %></td>
+		</tr>
 
 		<tr>
 			<td colspan="2" align="center">

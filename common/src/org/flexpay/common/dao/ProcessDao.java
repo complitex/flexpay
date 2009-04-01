@@ -3,7 +3,7 @@ package org.flexpay.common.dao;
 import java.util.List;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.sorter.ProcessSorter;
-import org.jetbrains.annotations.NotNull;
+import org.flexpay.common.dao.paging.Page;
 import org.jbpm.graph.exe.ProcessInstance;
 
 /**
@@ -15,9 +15,10 @@ public interface ProcessDao {
 	 * Returns list of all processes in database
 	 *
 	 * @param sorter process sorter
+	 * @param pager pager
 	 * @return list of all processes in database
 	 */
-	List<Process> findAllProcesses(ProcessSorter sorter);
+	List<Process> findProcesses(ProcessSorter sorter, Page<Process> pager);
 
 	/**
 	 * Converts JBPM process instance object into {@link org.flexpay.common.process.Process}

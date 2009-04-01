@@ -4,6 +4,7 @@ import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.process.sorter.ProcessSorter;
 import org.flexpay.common.service.Roles;
+import org.flexpay.common.dao.paging.Page;
 import org.jbpm.graph.def.ProcessDefinition;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jetbrains.annotations.NotNull;
@@ -94,11 +95,21 @@ public interface ProcessManager {
 	/**
 	 * Get list of system processes
 	 *
-	 * @param processSorter process sorter
+	 * @param pager pager
 	 * @return Process list
 	 */
 	@Secured (Roles.PROCESS_READ)
-	public List<Process> getProcesses(ProcessSorter processSorter);
+	public List<Process> getProcesses(Page<Process> pager);
+
+	/**
+	 * Get list of system processes
+	 *
+	 * @param processSorter process sorter
+	 * @param pager pager
+	 * @return Process list
+	 */
+	@Secured (Roles.PROCESS_READ)
+	public List<Process> getProcesses(ProcessSorter processSorter, Page<Process> pager);
 
 	public List<TaskInstance> getRunningTasks();
 

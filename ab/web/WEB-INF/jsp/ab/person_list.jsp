@@ -38,7 +38,7 @@
 		</s:iterator>
 		<tr>
 			<td colspan="7">
-				<%@ include file="filters/pager.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 				<input type="button" class="btn-exit"
 				       onclick="$('#fobjects').attr('action', '<s:url action="personDelete"/>').submit();"					   
 					   value="<s:text name="common.delete_selected"/>"/>

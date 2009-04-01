@@ -53,7 +53,7 @@
 		</s:iterator>
 		<tr>
 			<td colspan="10">
-				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 				<input type="submit" value="<s:text name="eirc.process" />" class="btn-exit"
 					   onclick="$('#fregistries').attr('action', '<s:url action="registriesProcess" includeParams="none" />');"/>
 			</td>

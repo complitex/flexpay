@@ -10,6 +10,7 @@ import org.flexpay.common.process.sorter.ProcessSorter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.dao.ProcessDao;
+import org.flexpay.common.dao.paging.Page;
 import org.jbpm.JbpmConfiguration;
 import org.jbpm.JbpmContext;
 import org.jbpm.context.exe.ContextInstance;
@@ -618,15 +619,23 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 */
 	public List<Process> getProcesses() {
 
-		return getProcesses(null);
+		return getProcesses(null, null);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Process> getProcesses(ProcessSorter processSorter) {
+	public List<Process> getProcesses(Page<Process> pager) {
 
-		return processDao.findAllProcesses(processSorter);
+		return getProcesses(null, pager);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<Process> getProcesses(ProcessSorter processSorter, Page<Process> pager) {
+
+		return processDao.findProcesses(processSorter, pager);
 	}
 
 	/**
