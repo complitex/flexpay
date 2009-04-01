@@ -52,7 +52,7 @@ public class QuittanceGenerateAction extends FPActionSupport {
 				contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, endDateFilter.getDate());
 				contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANIZATION_ID, serviceOrganizationFilter.getSelectedId());
 
-				processManager.createProcess("GenerateQuitances", contextVariables);
+				processManager.createProcess("GenerateQuittances", contextVariables);
 
 				addActionError(getText("eirc.quittance.generation_started"));
 			}
