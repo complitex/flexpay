@@ -1,16 +1,18 @@
 package org.flexpay.common.actions.processing;
 
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.sorter.*;
+import org.flexpay.common.dao.paging.Page;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class  ProcessesListAction extends FPActionSupport {
+public class  ProcessesListAction extends FPActionWithPagerSupport<Process> {
 
 	// form data
 	private List<Process> processList;
@@ -31,6 +33,7 @@ public class  ProcessesListAction extends FPActionSupport {
 	 */
 	@NotNull
 	protected String doExecute() throws Exception {
+
 		if (objectIds != null && objectIds.size() > 0) {
 			processManager.deleteProcessInstances(objectIds);
 		}
@@ -48,7 +51,7 @@ public class  ProcessesListAction extends FPActionSupport {
 
 	private List<Process> getProcessListMethod() {
 
-		return processManager.getProcesses(getActiveSorter());
+		return processManager.getProcesses(getActiveSorter(), getPager());
 	}
 
 	private ProcessSorter getActiveSorter() {

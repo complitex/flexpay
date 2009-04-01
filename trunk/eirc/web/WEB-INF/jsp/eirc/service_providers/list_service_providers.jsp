@@ -27,7 +27,7 @@
 		</s:iterator>
 		<tr>
 			<td colspan="10">
-				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 				<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit"
 					   onclick="$('#fproviders').attr('action', '<s:url action="serviceProviderDelete" includeParams="none" />');"/>
 				<input type="button" class="btn-exit"

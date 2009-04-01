@@ -5,7 +5,7 @@
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr>
             <td colspan="10">
-                <%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+                <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
             </td>
         </tr>
         <tr>
@@ -100,7 +100,7 @@
         </tr>
         <tr>
             <td colspan="10">
-                <%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+                <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
             </td>
         </tr>
     </table>

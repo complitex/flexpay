@@ -30,7 +30,7 @@
         </s:iterator>
         <tr>
             <td colspan="10">
-                <%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+                <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
                 <input type="submit" value="<s:text name="eirc.remove_served_buildings" />" class="btn-exit" name="submitted" />
                 <input type="button" class="btn-exit" onclick="location.href='<s:url action="serviceOrganizationAddServedBuilding"><s:param name="serviceOrganization.id" value="%{serviceOrganization.id}" /></s:url>'" value="<s:text name="eirc.add_served_buildings"/>" />
             </td>

@@ -11,7 +11,9 @@ public class UserPreferences {
 
 	private String userName = "";
 	private Locale locale;
+
 	private Integer pageSize = 20;
+
 	private MenuComponent menuComponent = new MenuComponent();
 
 	private static final String WW_TRANS_I18_N_LOCALE = "WW_TRANS_I18N_LOCALE";

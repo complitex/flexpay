@@ -8,7 +8,7 @@
 
 		<tr>
 			<td colspan="7">
-				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 			</td>
 		<tr>
 		<tr>
@@ -48,7 +48,7 @@
 
 		<tr>
 			<td colspan="7">
-				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 				<input type="button" class="btn-exit"
 					   onclick="location.href='<s:url action="buildingAttributeTypeEdit"><s:param name="attributeType.id" value="0" /></s:url>';"
 					   value="<s:text name="common.new"/>" />

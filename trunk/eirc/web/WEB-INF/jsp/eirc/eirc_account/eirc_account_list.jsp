@@ -50,7 +50,7 @@
 		</s:iterator>
 		<tr>
 			<td colspan="5">
-				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="eircAccountCreateForm1" includeParams="none" />';"
 					   value="<s:text name="common.new"/>"/>
