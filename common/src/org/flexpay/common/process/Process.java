@@ -88,7 +88,7 @@ public class Process {
 		}
 	}
 
-	protected void setProcessState(ProcessState processState) {
+	public void setProcessState(ProcessState processState) {
 		this.processState = processState;
 	}
 

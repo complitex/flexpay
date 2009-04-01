@@ -2,6 +2,7 @@ package org.flexpay.common.process;
 
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.common.process.sorter.ProcessSorter;
 import org.flexpay.common.service.Roles;
 import org.jbpm.graph.def.ProcessDefinition;
 import org.jbpm.taskmgmt.exe.TaskInstance;
@@ -89,6 +90,15 @@ public interface ProcessManager {
 	 */
 	@Secured (Roles.PROCESS_READ)
 	public List<Process> getProcesses();
+
+	/**
+	 * Get list of system processes
+	 *
+	 * @param processSorter process sorter
+	 * @return Process list
+	 */
+	@Secured (Roles.PROCESS_READ)
+	public List<Process> getProcesses(ProcessSorter processSorter);
 
 	public List<TaskInstance> getRunningTasks();
 

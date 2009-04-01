@@ -18,6 +18,8 @@
 		<mapping resource="org/flexpay/common/persistence/FPFile.hbm.xml" />
 		<!-- common.ImportErrors -->
 		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
+		<!-- common.Process -->
+		<mapping resource="org/flexpay/common/persistence/Process.hbm.xml" />
 		<!-- Dual virtual table -->
 		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />

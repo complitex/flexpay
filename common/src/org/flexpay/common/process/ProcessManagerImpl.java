@@ -6,8 +6,10 @@ import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.job.JobManager;
+import org.flexpay.common.process.sorter.ProcessSorter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.dao.ProcessDao;
 import org.jbpm.JbpmConfiguration;
 import org.jbpm.JbpmContext;
 import org.jbpm.context.exe.ContextInstance;
@@ -21,8 +23,8 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Required;
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Collections;
@@ -61,6 +63,9 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * Limit number of task restarts
 	 */
 	private int taskRepeatLimit = 10;
+
+	// process DAO
+	private ProcessDao processDao;
 
 	private JbpmConfiguration jbpmConfiguration = null;
 
@@ -319,7 +324,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		}
 
 		log.info("Initializing  process. Process Definition id = {}, name = {}, version = {}",
-				new Object[] {processDefinition.getId(), processDefinition.getName(), processDefinition.getVersion()});
+				new Object[]{processDefinition.getId(), processDefinition.getName(), processDefinition.getVersion()});
 
 		try {
 			ProcessInstance processInstance = new ProcessInstance(processDefinition);
@@ -390,7 +395,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 
 		if (runCounter > taskRepeatLimit) {
 			log.info("Exceded limit ({}) for task '{}' ({}, pid - {}). Process ended.",
-					new Object[] {taskRepeatLimit, task.getName(), task.getId(), processInstance.getId()});
+					new Object[]{taskRepeatLimit, task.getName(), task.getId(), processInstance.getId()});
 			completeTask(task);
 			return false;
 		}
@@ -399,7 +404,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		switch (vote) {
 			case CANCEL:
 				log.info("Task '{}' ({}, pid - {}). Cancelled by voters.",
-					new Object[] {task.getName(), task.getId(), processInstance.getId()});
+						new Object[]{task.getName(), task.getId(), processInstance.getId()});
 				completeTask(task);
 				return false;
 			case POSTPONE:
@@ -410,13 +415,13 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		}
 
 		log.info("Starting task '{}' ({}, pid - {})",
-					new Object[] {task.getName(), task.getId(), processInstance.getId()});
+				new Object[]{task.getName(), task.getId(), processInstance.getId()});
 
 		if (task.getStart() == null) {
 			task.start();
 		} else {
 			log.info("Task '{}' ({}, pid={}) restarted. Recovering from failure.",
-					new Object[] {task.getName(), task.getId(), processInstance.getId()});
+					new Object[]{task.getName(), task.getId(), processInstance.getId()});
 		}
 
 		try {
@@ -609,62 +614,19 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	}
 
 	/**
-	 * Get list of system processes
-	 *
-	 * @return Process list
+	 * {@inheritDoc}
 	 */
-	@SuppressWarnings ({"unchecked"})
 	public List<Process> getProcesses() {
-		return execute(new ContextCallback<List<Process>>() {
 
-			public List<Process> doInContext(@NotNull JbpmContext context) {
-				List<Process> processes = CollectionUtils.list();
-				GraphSession graphSession = context.getGraphSession();
-				List<ProcessDefinition> processDefinitions = graphSession.findAllProcessDefinitions();
-				for (ProcessDefinition processDefinition : processDefinitions) {
-					List<ProcessInstance> processInstances = graphSession.findProcessInstances(processDefinition.getId());
-					for (ProcessInstance processInstance : processInstances) {
-						processes.add(getProcessInfo(processInstance));
-					}
-				}
-
-				return processes;
-			}
-		});
+		return getProcesses(null);
 	}
 
-	private Process getProcessInfo(ProcessInstance processInstance) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<Process> getProcesses(ProcessSorter processSorter) {
 
-		Process process = new Process();
-		if (processInstance == null) {
-			return process;
-		}
-
-		process.setId(processInstance.getId());
-		process.setProcessDefinitionName(processInstance.getProcessDefinition().getName());
-		process.setProcessEndDate(processInstance.getEnd());
-		process.setProcessStartDate(processInstance.getStart());
-		process.setProcessDefenitionVersion(processInstance.getProcessDefinition().getVersion());
-
-		File logFile = ProcessLogger.getLogFile(processInstance.getId());
-		if (logFile.exists()) {
-			process.setLogFileName(logFile.getAbsolutePath());
-		} else {
-			process.setLogFileName("");
-		}
-
-		@SuppressWarnings ({"unchecked"})
-		Map<Serializable, Serializable> parameters = processInstance.getContextInstance().getVariables();
-		if (parameters == null) {
-			parameters = CollectionUtils.map();
-		}
-		process.setParameters(parameters);
-
-		if (parameters.containsKey(Job.RESULT_ERROR)) {
-			process.setProcessState((ProcessState) parameters.get(Job.RESULT_ERROR));
-		}
-
-		return process;
+		return processDao.findAllProcesses(processSorter);
 	}
 
 	/**
@@ -674,13 +636,11 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @return Process info
 	 */
 	@NotNull
-	@SuppressWarnings ({"unchecked"})
 	public Process getProcessInstanceInfo(@NotNull final Long processId) {
 
 		return execute(new ContextCallback<Process>() {
-
 			public Process doInContext(@NotNull JbpmContext context) {
-				return getProcessInfo(context.getProcessInstance(processId));
+				return processDao.getProcessInfoWithVariables(context.getProcessInstance(processId));
 			}
 		});
 	}
@@ -864,6 +824,11 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 */
 	public void setLyfecycleVoters(List<LyfecycleVoter> lyfecycleVoters) {
 		this.lyfecycleVoters.addAll(lyfecycleVoters);
+	}
+
+	@Required
+	public void setProcessDao(ProcessDao processDao) {
+		this.processDao = processDao;
 	}
 }
 

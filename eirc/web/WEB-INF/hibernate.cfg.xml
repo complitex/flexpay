@@ -13,6 +13,8 @@
 		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
 		<!-- common.ImportErrors -->
 		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
+		<!-- common.Process -->
+		<mapping resource="org/flexpay/common/persistence/Process.hbm.xml" />
         <!-- FPFiles, FPFileTypes, FPFileStatuses, FPModules -->
         <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
         <mapping resource="org/flexpay/common/persistence/FPFile.hbm.xml" />
