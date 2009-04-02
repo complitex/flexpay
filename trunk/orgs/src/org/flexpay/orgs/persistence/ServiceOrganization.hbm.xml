@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.orgs.persistence">
+
+	<class name="ServiceOrganizationDescription" table="orgs_service_organization_descriptions_tbl"
+			optimistic-lock="version">
+		<comment>Service organization descriptions</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Description value</comment>
+			</column>
+		</property>
+		<properties name="lang_service_organization_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_orgs_service_organization_description_language"
+						 class="org.flexpay.common.persistence.Language">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" class="ServiceOrganization"
+						 foreign-key="FK_orgs_service_organization_description_service_organization">
+				<column name="service_organization_id" not-null="true">
+					<comment>Organization reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<query name="ServiceOrganization.listServiceOrganizations">
+		select distinct so
+		from org.flexpay.orgs.persistence.ServiceOrganization so
+		inner join fetch so.organization o
+		left join fetch o.names n
+		left join fetch n.lang l
+	</query>
+
+	<query name="ServiceOrganization.findServiceOrganizations">
+		select distinct so
+		from org.flexpay.orgs.persistence.ServiceOrganization so
+		left outer join fetch so.descriptions
+		inner join fetch so.organization
+		where so.status=0
+	</query>
+
+	<query name="ServiceOrganization.findServiceOrganizations.count">
+		select count(so)
+		from org.flexpay.orgs.persistence.ServiceOrganization so
+		where so.status=0
+	</query>
+
+	<query name="ServiceOrganization.findOrganizationServiceOrganizations">
+		from org.flexpay.orgs.persistence.ServiceOrganization
+		where status=0 and organization.id=?
+	</query>
+
+	<query name="ServiceOrganization.findServiceOrganizationlessOrganizations">
+		select distinct o
+		from Organization o
+		left join fetch o.names
+		left join fetch o.descriptions
+		left join o.serviceOrganizations so
+		where o.status = 0 and o.id not in (select so1.organization.id from org.flexpay.orgs.persistence.ServiceOrganization so1 where so1.status =
+		0) or so.id = ?
+	</query>
+
+</hibernate-mapping>

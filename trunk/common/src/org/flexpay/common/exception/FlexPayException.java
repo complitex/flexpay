@@ -3,6 +3,7 @@ package org.flexpay.common.exception;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
+import org.slf4j.Logger;
 
 import java.util.Date;
 
@@ -46,7 +47,7 @@ public class FlexPayException extends Exception {
 	 * Constructs exception with specified detail message, error code key and optional error message parameters
 	 *
 	 * @param message  the detail message
-	 * @param cause the cause
+	 * @param cause	the cause
 	 * @param errorKey localization error message key
 	 * @param params   optional localization error message parameters
 	 */
@@ -128,5 +129,36 @@ public class FlexPayException extends Exception {
 		}
 
 		return res;
+	}
+
+	public void debug(Logger log) {
+		if (log.isDebugEnabled()) {
+			log.debug(getMessage(), this);
+		}
+	}
+
+	public void debug(Logger log, String format, Object ... params) {
+		if (log.isDebugEnabled()) {
+			log.debug(getMessage(), this);
+			log.debug(format, params);
+		}
+	}
+
+	public void info(Logger log) {
+		if (log.isInfoEnabled()) {
+			log.info(getMessage(), this);
+		}
+	}
+
+	public void info(Logger log, String format, Object ... params) {
+		if (log.isInfoEnabled()) {
+			log.info(getMessage(), this);
+			log.info(format, params);
+		}
+	}
+
+	public void error(Logger log, String format, Object ... params) {
+		log.error(getMessage(), this);
+		log.error(format, params);
 	}
 }

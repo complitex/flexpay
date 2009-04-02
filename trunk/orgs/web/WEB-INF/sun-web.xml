@@ -9,4 +9,76 @@
 		<group-name>FULL_ACCESS</group-name>
 	</security-role-mapping>
 
+	<!-- Organizations -->
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_ORGANIZATION_READ</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_ORGANIZATION_CHANGE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_ORGANIZATION_ADD</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_ORGANIZATION_DELETE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Banks -->
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_BANK_READ</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_BANK_CHANGE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_BANK_ADD</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_BANK_DELETE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Service organizations -->
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_READ</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_CHANGE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_ADD</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_DELETE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Service providers -->
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_READ</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_CHANGE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_ADD</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_DELETE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
 </sun-web-app>

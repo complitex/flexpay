@@ -1,6 +1,6 @@
 package org.flexpay.eirc.util.config;
 
-import org.flexpay.eirc.persistence.Organization;
+import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -59,6 +59,7 @@ public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationCon
 		this.eircDataRoot = eircDataRoot;
 		File eircRoot = getEircDataRootInternal();
 		if (!eircRoot.exists()) {
+			//noinspection ResultOfMethodCallIgnored
 			eircRoot.mkdirs();
 		}
 	}

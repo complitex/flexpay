@@ -18,6 +18,15 @@
         <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/FPFile.hbm.xml" />
 
+		<mapping resource="org/flexpay/orgs/persistence/Bank.hbm.xml" />
+		<mapping resource="org/flexpay/orgs/persistence/Organization.hbm.xml" />
+		<mapping resource="org/flexpay/orgs/persistence/PaymentPoint.hbm.xml" />
+		<mapping resource="org/flexpay/orgs/persistence/PaymentsCollector.hbm.xml" />
+		<mapping resource="org/flexpay/orgs/persistence/ServiceProvider.hbm.xml" />
+		<mapping resource="org/flexpay/orgs/persistence/ServiceOrganizationBase.hbm.xml" />
+		<mapping resource="org/flexpay/orgs/persistence/ServiceOrganization.hbm.xml" />
+		<mapping resource="org/flexpay/orgs/persistence/Subdivision.hbm.xml" />
+
 	</session-factory>
 
 </hibernate-configuration>

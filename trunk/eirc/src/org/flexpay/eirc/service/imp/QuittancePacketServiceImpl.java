@@ -11,7 +11,7 @@ import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.eirc.dao.QuittancePacketDao;
 import org.flexpay.eirc.dao.QuittancePacketDaoExt;
 import org.flexpay.eirc.dao.QuittancePaymentDao;
-import org.flexpay.eirc.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.eirc.persistence.QuittancePayment;
 import org.flexpay.eirc.service.QuittancePacketService;

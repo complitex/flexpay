@@ -84,7 +84,7 @@
 			<one-to-many class="QuittanceDetailsQuittance" />
 		</set>
 		<many-to-one name="serviceOrganization" foreign-key="FK_eirc_quittances_service_organization"
-					 class="org.flexpay.eirc.persistence.ServiceOrganization">
+					 class="org.flexpay.orgs.persistence.ServiceOrganization">
 			<column name="service_organization_id" not-null="true">
 				<comment>Service organization reference</comment>
 			</column>

@@ -3,7 +3,7 @@ package org.flexpay.sz.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.eirc.persistence.Organization;
+import org.flexpay.orgs.persistence.Organization;
 
 import java.util.Date;
 

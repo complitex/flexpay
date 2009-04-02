@@ -7,8 +7,8 @@ import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.eirc.persistence.filters.ServiceOrganizationFilter;
-import org.flexpay.eirc.service.ServiceOrganizationService;
+import org.flexpay.orgs.persistence.filters.ServiceOrganizationFilter;
+import org.flexpay.orgs.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 

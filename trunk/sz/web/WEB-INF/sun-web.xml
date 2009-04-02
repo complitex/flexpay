@@ -301,6 +301,78 @@
 		<group-name>VIEW_ONLY</group-name>
 	</security-role-mapping>
 
+	<!-- Organizations -->
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_ORGANIZATION_READ</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_ORGANIZATION_CHANGE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_ORGANIZATION_ADD</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_ORGANIZATION_DELETE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Banks -->
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_BANK_READ</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_BANK_CHANGE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_BANK_ADD</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_BANK_DELETE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Service organizations -->
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_READ</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_CHANGE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_ADD</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_DELETE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Service providers -->
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_READ</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_CHANGE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_ADD</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_DELETE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
 	<!-- Accounting -->
 	<security-role-mapping>
 		<role-name>ROLE_ACC_DOCUMENT_READ</role-name>
@@ -386,59 +458,7 @@
 		<group-name>ACCOUNTING_FULL_ACCESS</group-name>
 	</security-role-mapping>
 
-	<!-- Organizations -->
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_ORGANIZATION_READ</role-name>
-		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_ORGANIZATION_CHANGE</role-name>
-		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_ORGANIZATION_ADD</role-name>
-		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_ORGANIZATION_DELETE</role-name>
-		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_ORGANIZATION_READ</role-name>
-		<group-name>EIRC_READ_ONLY</group-name>
-	</security-role-mapping>
-
-	<!-- Banks -->
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_BANK_READ</role-name>
-		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_BANK_CHANGE</role-name>
-		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_BANK_ADD</role-name>
-		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_BANK_DELETE</role-name>
-		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_BANK_READ</role-name>
-		<group-name>EIRC_READ_ONLY</group-name>
-	</security-role-mapping>
-
     <!-- Service organizations -->
-    <security-role-mapping>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
-        <group-name>EIRC_FULL_ACCESS</group-name>
-    </security-role-mapping>
-    <security-role-mapping>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_CHANGE</role-name>
-        <group-name>EIRC_FULL_ACCESS</group-name>
-    </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS</role-name>
         <group-name>EIRC_FULL_ACCESS</group-name>
@@ -451,40 +471,6 @@
         <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS</role-name>
         <group-name>EIRC_FULL_ACCESS</group-name>
     </security-role-mapping>
-    <security-role-mapping>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD</role-name>
-        <group-name>EIRC_FULL_ACCESS</group-name>
-    </security-role-mapping>
-    <security-role-mapping>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_DELETE</role-name>
-        <group-name>EIRC_FULL_ACCESS</group-name>
-    </security-role-mapping>
-    <security-role-mapping>
-        <role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
-        <group-name>EIRC_READ_ONLY</group-name>
-    </security-role-mapping>
-
-	<!-- Service providers -->
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_SERVICE_PROVIDER_READ</role-name>
-		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_SERVICE_PROVIDER_CHANGE</role-name>
-		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_SERVICE_PROVIDER_ADD</role-name>
-		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_SERVICE_PROVIDER_DELETE</role-name>
-		<group-name>EIRC_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_EIRC_SERVICE_PROVIDER_READ</role-name>
-		<group-name>EIRC_READ_ONLY</group-name>
-	</security-role-mapping>
 
 	<!-- EIRC accounts -->
 	<security-role-mapping>
@@ -647,19 +633,19 @@
 		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
 	</security-role-mapping>
 	<security-role-mapping>
-		<role-name>ROLE_EIRC_BANK_READ</role-name>
+		<role-name>ROLE_ORGS_BANK_READ</role-name>
 		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
 	</security-role-mapping>
 	<security-role-mapping>
-		<role-name>ROLE_EIRC_ORGANIZATION_READ</role-name>
+		<role-name>ROLE_ORGS_ORGANIZATION_READ</role-name>
 		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
 	</security-role-mapping>
 	<security-role-mapping>
-		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_READ</role-name>
 		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
 	</security-role-mapping>
 	<security-role-mapping>
-		<role-name>ROLE_EIRC_SERVICE_PROVIDER_READ</role-name>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_READ</role-name>
 		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
 	</security-role-mapping>
 	<security-role-mapping>

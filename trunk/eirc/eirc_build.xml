@@ -2,11 +2,9 @@
 <project name="flexpay_eirc" basedir=".." default="eirc.help">
 
 	<import file="../bti/bti_build.xml" />
+	<import file="../orgs/orgs_build.xml" />
 
 	<property file="eirc/eirc_build.properties" />
-	<property file="bti/bti_build.properties" />
-	<property file="ab/ab_build.properties" />
-	<property file="common/common_build.properties" />
 
 	<property name="eirc.dir" value="${basedir}/eirc" />
 
@@ -25,12 +23,15 @@
 
 	<path id="eirc.production.classpath">
 		<path refid="bti.production.classpath" />
+		<path refid="orgs.production.classpath" />
 		<path refid="eirc.lib" />
 		<path refid="bti.jar" />
+		<path refid="orgs.jar" />
 	</path>
 
 	<path id="eirc.test.classpath">
 		<path refid="bti.test.classpath" />
+		<path refid="orgs.test.classpath" />
 		<path refid="eirc.jar" />
 		<path refid="eirc.test.jar" />
 		<path refid="eirc.production.classpath" />
@@ -38,6 +39,7 @@
 
     <path id="eirc.runtests.classpath">
         <path refid="bti.runtests.classpath" />
+        <path refid="orgs.runtests.classpath" />
         <path refid="eirc.test.classpath" />
         <path location="${build.dir}/web" />
         <path location="eirc/src" />
@@ -66,7 +68,7 @@
 		<antcall target="clean.build" />
 	</target>
 
-	<property name="eirc.src.production" value="${eirc.dir}/${src.dir};${bti.src.production}" />
+	<property name="eirc.src.production" value="${eirc.dir}/${src.dir};${bti.src.production};${orgs.src.production}" />
 	<target name="eirc.compile.production">
 		<antcall target="template.compile.production">
 			<param name="sources.dir" value="${eirc.src.production}" />
@@ -74,7 +76,7 @@
 		</antcall>
 	</target>
 
-	<property name="eirc.src.test" value="${eirc.src.production};${eirc.dir}/${tests.src.dir};${bti.src.test}" />
+	<property name="eirc.src.test" value="${eirc.src.production};${eirc.dir}/${tests.src.dir};${bti.src.test};${orgs.src.test}" />
 	<target name="eirc.compile.test">
 		<antcall target="template.compile.test">
 			<param name="sources.dir" value="${eirc.src.test}" />
@@ -127,7 +129,7 @@
 		<antcall target="template.copy.classes" />
 	</target>
 
-    <target name="eirc.prepare.war.internal" depends="eirc.compile.production,bti.prepare.war.internal">
+    <target name="eirc.prepare.war.internal" depends="eirc.compile.production,bti.prepare.war.internal,orgs.prepare.war.internal">
         <fileset id="eirc.web.resources" dir="${eirc.dir}/web" />
         <antcall target="template.prepare.war">
             <param name="to_dir" value="" />
@@ -208,23 +210,25 @@
 		</antcall>
 	</target>
 
-	<target name="eirc.sql.init-db">
+	<target name="eirc.sql.init-db" unless="eirc.sql.init-db.run">
 		<antcall target="bti.sql.init-db" />
+		<antcall target="orgs.sql.init-db" />
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${eirc.dir}/etc/sql/init_db.sql" />
 		</concat>
-		<antcall target="template.set_db_name" />
+		<property name="eirc.sql.init-db.run" value="true" />
 	</target>
 
-	<target name="eirc.sql.init-db-test">
-		<antcall target="bti.sql.init-db-test" />
+	<target name="eirc.sql.init-db-test"
+			depends="bti.sql.init-db-test,orgs.sql.init-db-test"
+			unless="eirc.sql.init-db-test.run">
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${eirc.dir}/etc/sql/init_db.sql" />
 		</concat>
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${eirc.dir}/etc/sql/init_db_test.sql" />
 		</concat>
-		<antcall target="template.set_test_db_name" />
+		<property name="eirc.sql.init-db-test.run" value="true" />
 	</target>
 
 	<target name="eirc.sql.all">
@@ -233,6 +237,7 @@
 			<fileset file="${eirc.dir}/etc/sql/flexpay_eirc.ddl.sql" />
 		</concat>
 		<antcall target="eirc.sql.init-db" />
+		<antcall target="template.set_db_name" />
 	</target>
 
 	<target name="eirc.sql.all-test">
@@ -241,6 +246,7 @@
 			<fileset file="${eirc.dir}/etc/sql/flexpay_eirc.ddl.sql" />
 		</concat>
 		<antcall target="eirc.sql.init-db-test" />
+		<antcall target="template.set_test_db_name" />
 	</target>
 
 	<target name="eirc.db-test" description="create eirc test db">

@@ -1,6 +1,7 @@
 package org.flexpay.common.process.job;
 
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
@@ -69,7 +70,15 @@ public abstract class Job implements Runnable {
 			SecurityContextHolder.clearContext();
 			jobMgr.jobFinished(id, transition);
 		} catch (Throwable e) {
-			log.error("Job with id = " + getId() + " completed with exception", e);
+			if (e instanceof FlexPayException) {
+				FlexPayException ex = (FlexPayException) e;
+				ex.error(log, "Job with id #{} completed with exception", getId());
+			} else if (e instanceof FlexPayExceptionContainer) {
+				FlexPayExceptionContainer ex = (FlexPayExceptionContainer) e;
+				ex.error(log, "Job with id #{} completed with exception", getId());
+			} else {
+				log.error("Job with id = " + getId() + " completed with exception", e);
+			}
 			parameters.put(STATUS_ERROR, Boolean.TRUE);
 			SecurityContextHolder.clearContext();
 			jobMgr.jobFinished(id, RESULT_ERROR);

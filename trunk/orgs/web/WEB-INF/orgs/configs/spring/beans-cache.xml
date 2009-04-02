@@ -7,5 +7,21 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- Module orgs caches config -->
+	<bean id="serviceProviderService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+				<prop key="read">cacheName=flexpayCache</prop>
+				<prop key="flexpayCache">cacheName=flexpayCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+				<prop key="save*">cacheNames=flexpayCache</prop>
+			</props>
+		</property>
+		<property name="target" ref="serviceProviderServiceTarget" />
+	</bean>
 
 </beans>

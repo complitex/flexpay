@@ -5,7 +5,7 @@ import org.flexpay.common.process.job.Job;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.eirc.persistence.ServiceOrganization;
+import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.service.QuittanceService;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -32,11 +32,11 @@ public class GenerateQuittanceJob extends Job {
 			throw new FlexPayException("No date", "eirc.error.quittance.job.no_dates");
 		}
 		if (!DateUtil.truncateMonth(dateFrom).equals(DateUtil.truncateMonth(dateTill))) {
-			throw new FlexPayException("", "eirc.error.quittance.job.month_only_allowed");
+			throw new FlexPayException("Invalid date", "eirc.error.quittance.job.month_only_allowed");
 		}
 		Long organizationId = (Long) contextVariables.get(PARAM_SERVICE_ORGANIZATION_ID);
 
-		Stub<ServiceOrganization> stub = new Stub<ServiceOrganization>(organizationId);
+		Stub<EircServiceOrganization> stub = new Stub<EircServiceOrganization>(organizationId);
 		quittanceService.generateForServiceOrganization(stub, dateFrom, dateTill);
 
 		return Job.RESULT_NEXT;

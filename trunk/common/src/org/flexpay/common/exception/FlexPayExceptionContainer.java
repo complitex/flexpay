@@ -93,7 +93,15 @@ public class FlexPayExceptionContainer extends Exception {
 	public void debug(Logger log) {
 		if (log.isDebugEnabled()) {
 			for (FlexPayException exception : exceptions) {
-				log.debug("Internal exception", exception);
+				exception.debug(log);
+			}
+		}
+	}
+
+	public void debug(Logger log, String format, Object ... params) {
+		if (log.isDebugEnabled()) {
+			for (FlexPayException exception : exceptions) {
+				exception.debug(log, format, params);
 			}
 		}
 	}
@@ -101,8 +109,22 @@ public class FlexPayExceptionContainer extends Exception {
 	public void info(Logger log) {
 		if (log.isInfoEnabled()) {
 			for (FlexPayException exception : exceptions) {
-				log.info("Internal exception", exception);
+				exception.info(log);
 			}
+		}
+	}
+
+	public void info(Logger log, String format, Object ... params) {
+		if (log.isInfoEnabled()) {
+			for (FlexPayException exception : exceptions) {
+				exception.info(log, format, params);
+			}
+		}
+	}
+
+	public void error(Logger log, String format, Object ... params) {
+		for (FlexPayException exception : exceptions) {
+			exception.error(log, format, params);
 		}
 	}
 }

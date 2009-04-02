@@ -4,8 +4,9 @@ import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.eirc.dao.ServiceDaoExt;
 import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.ServiceType;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.service.ServiceProviderService;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
@@ -18,20 +19,19 @@ public class TestServiceDao extends SpringBeanAwareTestCase {
 
 	@Autowired
 	protected ServiceDaoExt serviceDaoExt;
+	@Autowired
+	@Qualifier ("spService")
 	protected SPService spService;
 	@Autowired
-	protected ServiceTypeService serviceTypeService;
-
+	private ServiceProviderService providerService;
 	@Autowired
-	public void setSpService(@Qualifier ("spService") SPService spService) {
-		this.spService = spService;
-	}
+	protected ServiceTypeService serviceTypeService;
 
 	@Test
 	public void testGetIntersectionServices() {
 
 		// Find CN service provider
-		ServiceProvider provider = spService.getProvider(4L);
+		ServiceProvider provider = providerService.getProvider(4L);
 		assertNotNull("Cannot find service provider", provider);
 
 		// Find service type by code

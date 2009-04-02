@@ -3,7 +3,6 @@ package org.flexpay.eirc.dao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.ServiceType;
 
 import java.util.Date;
@@ -20,14 +19,6 @@ public interface ServiceDaoExt {
 	 * @return ServiceType instance
 	 */
 	ServiceType findByCode(int code);
-
-	/**
-	 * Find Service Provider by Organization id
-	 *
-	 * @param organizationId Organization key
-	 * @return ServiceProvider instance
-	 */
-	ServiceProvider findByNumber(Long organizationId);
 
 	/**
 	 * List active services using filters and pager
@@ -49,5 +40,4 @@ public interface ServiceDaoExt {
 	 * @return List of services
 	 */
 	List<Service> findIntersectingServices(Long providerId, Long typeId, Date beginDate, Date endDate);
-
 }

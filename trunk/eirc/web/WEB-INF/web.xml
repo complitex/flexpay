@@ -322,6 +322,59 @@
 		<role-name>ROLE_AB_PERSON_DELETE</role-name>
 	</security-role>
 
+	<!-- Organisations roles -->
+	<security-role>
+		<role-name>ROLE_ORGS_ORGANIZATION_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_ORGANIZATION_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_ORGANIZATION_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_ORGANIZATION_DELETE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_ORGS_BANK_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_BANK_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_BANK_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_BANK_DELETE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_DELETE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_DELETE</role-name>
+	</security-role>
+
 	<!-- Accounting -->
 	<security-role>
 		<role-name>ROLE_ACC_DOCUMENT_READ</role-name>
@@ -377,38 +430,6 @@
 
 	<!-- EIRC -->
 	<security-role>
-		<role-name>ROLE_EIRC_ORGANIZATION_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_ORGANIZATION_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_ORGANIZATION_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_ORGANIZATION_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_EIRC_BANK_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_BANK_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_BANK_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_BANK_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_CHANGE</role-name>
-	</security-role>
-	<security-role>
 		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_READ_SERVED_BUILDINGS</role-name>
 	</security-role>
 	<security-role>
@@ -416,25 +437,6 @@
 	</security-role>
 	<security-role>
 		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_ORGANIZATION_DELETE</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_PROVIDER_READ</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_PROVIDER_CHANGE</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_PROVIDER_ADD</role-name>
-	</security-role>
-	<security-role>
-		<role-name>ROLE_EIRC_SERVICE_PROVIDER_DELETE</role-name>
 	</security-role>
 
 	<security-role>

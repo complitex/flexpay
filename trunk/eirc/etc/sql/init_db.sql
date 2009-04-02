@@ -1,10 +1,6 @@
 INSERT INTO common_flexpay_modules_tbl (name) VALUES ('eirc');
 SELECT @module_eirc:=last_insert_id();
 
-insert into common_data_source_descriptions_tbl (id, description)
-	values (2, 'Харьковский центр начислений');
-SELECT @source_description_id:=2;
-
 -- Init Sequences table
 INSERT INTO common_sequences_tbl (id, counter, description) VALUES (1, 10, 'Последовательность для ЛС модуля ЕИРЦ');
 
@@ -97,17 +93,6 @@ INSERT INTO eirc_registry_record_statuses_tbl (id, code) VALUES (3, 3);
 select @record_status_error_fixed:=3;
 INSERT INTO eirc_registry_record_statuses_tbl (id, code) VALUES (4, 4);
 select @record_status_processed:=4;
-
--- Init organizations
--- EIRC is the first one, ID=1
--- CN is the fourth one, ID=4
-INSERT INTO eirc_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
-	VALUES (1, 0, 0, '', '', '-------', '123');
-SELECT @organization_eirc:=1;
-INSERT INTO eirc_organization_descriptions_tbl (name, language_id, organization_id)
-	VALUES ('Eirc itself', @ru_id, @organization_eirc);
-INSERT INTO eirc_organization_names_tbl (name, language_id, organization_id)
-	VALUES ('EIRC', @ru_id, @organization_eirc);
 
 -- Init service types
 INSERT INTO eirc_service_types_tbl (status, code) VALUES (0, 12);

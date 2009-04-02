@@ -8,8 +8,8 @@ import org.flexpay.eirc.dao.ConsumerDaoExt;
 import org.flexpay.eirc.dao.ServiceDao;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.service.ConsumerService;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class ConsumerServiceImpl implements ConsumerService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());

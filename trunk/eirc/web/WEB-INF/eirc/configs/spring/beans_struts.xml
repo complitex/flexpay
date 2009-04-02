@@ -109,87 +109,7 @@
 		  p:classToTypeRegistry-ref="typeRegistryEirc"
 		  p:serviceTypeService-ref="serviceTypeService" />
 
-	<!-- Organisations -->
-	<bean id="organizationsListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.OrganizationsListAction"
-		  p:organizationService-ref="organizationService" />
-
-	<bean id="organizationDeleteAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.OrganizationDeleteAction"
-		  p:organizationService-ref="organizationService" />
-
-	<bean id="organizationEditAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.OrganizationEditAction"
-		  p:organizationService-ref="organizationService" />
-
-	<bean id="organizationHelper" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.OrganizationHelper"
-		  p:organizationService-ref="organizationService" />
-
-	<bean id="paymentPointHelper" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.PaymentPointHelper"
-		  p:paymentPointService-ref="paymentPointService" />
-
-	<!-- Bank actions -->
-	<bean id="banksListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.BanksListAction"
-		  p:bankService-ref="bankService" />
-
-	<bean id="bankDeleteAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.BankDeleteAction"
-		  p:bankService-ref="bankService" />
-
-	<bean id="bankEditAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.BankEditAction"
-		  p:organizationService-ref="organizationService"
-		  p:bankService-ref="bankService" />
-
-	<!-- Payments Collectors actions -->
-	<bean id="paymentsCollectorsListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.PaymentsCollectorsListAction"
-		  p:organizationService-ref="organizationService"
-		  p:collectorService-ref="paymentsCollectorService" />
-
-	<bean id="paymentsCollectorsDeleteAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.PaymentsCollectorsDeleteAction"
-		  p:collectorService-ref="paymentsCollectorService" />
-
-	<bean id="paymentsCollectorEditAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.PaymentsCollectorEditAction"
-		  p:organizationService-ref="organizationService"
-		  p:instanceService-ref="paymentsCollectorService" />
-
-	<!-- Payment points actions -->
-	<bean id="paymentPointsListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.PaymentPointsListAction"
-		  p:organizationHelper-ref="organizationHelper"
-		  p:collectorService-ref="paymentsCollectorService"
-		  p:paymentPointService-ref="paymentPointService" />
-
-	<bean id="paymentPointsDeleteAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.PaymentPointsDeleteAction"
-		  p:paymentPointService-ref="paymentPointService" />
-
-	<bean id="paymentPointEditAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.PaymentPointEditAction"
-		  p:organizationHelper-ref="organizationHelper"
-		  p:paymentPointService-ref="paymentPointService"
-		  p:paymentsCollectorService-ref="paymentsCollectorService" />
-
-	<!-- Service organization actions -->
-	<bean id="serviceOrganizationsListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationsListAction"
-		  p:serviceOrganizationService-ref="serviceOrganizationService" />
-
-	<bean id="serviceOrganizationDeleteAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationDeleteAction"
-		  p:serviceOrganizationService-ref="serviceOrganizationService" />
-
-	<bean id="serviceOrganizationEditAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationEditAction"
-		  p:organizationService-ref="organizationService"
-		  p:serviceOrganizationService-ref="serviceOrganizationService" />
-
+	<!-- Served buildings actions -->
 	<bean id="serviceOrganizationListServedBuildingsAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationListServedBuildingsAction"
 		  p:serviceOrganizationService-ref="serviceOrganizationService"
@@ -207,32 +127,18 @@
 
 	<!-- Subdivision actions -->
 	<bean id="subdivisionsListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.SubdivisionsListAction"
+		  class="org.flexpay.orgs.actions.organization.SubdivisionsListAction"
 		  p:organizationService-ref="organizationService"
 		  p:subdivisionService-ref="subdivisionService" />
 
 	<bean id="subdivisionDeleteAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.SubdivisionDeleteAction"
+		  class="org.flexpay.orgs.actions.organization.SubdivisionDeleteAction"
 		  p:subdivisionService-ref="subdivisionService" />
 
 	<bean id="subdivisionEditAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.organization.SubdivisionEditAction"
+		  class="org.flexpay.orgs.actions.organization.SubdivisionEditAction"
 		  p:organizationService-ref="organizationService"
 		  p:subdivisionService-ref="subdivisionService" />
-
-	<!-- Service provider actions -->
-	<bean id="serviceProvidersListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.serviceprovider.ServiceProvidersListAction"
-		  p:spService-ref="spService" />
-
-	<bean id="serviceProviderDeleteAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.serviceprovider.ServiceProviderDeleteAction"
-		  p:spService-ref="spService" />
-
-	<bean id="serviceProviderEditAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.serviceprovider.ServiceProviderEditAction"
-		  p:organizationService-ref="organizationService"
-		  p:spService-ref="spService" />
 
 	<!-- Services -->
 	<bean id="serviceTypesListAction" scope="prototype"
@@ -249,12 +155,14 @@
 
 	<bean id="servicesListAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.service.ServicesListAction"
+		  p:providerService-ref="serviceProviderService"
 		  p:spService-ref="spService" />
 
 	<bean id="serviceEditAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.service.ServiceEditAction"
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:measureUnitService-ref="measureUnitService"
+		  p:providerService-ref="serviceProviderService"
 		  p:spService-ref="spService" />
 
 	<!-- Corrections -->

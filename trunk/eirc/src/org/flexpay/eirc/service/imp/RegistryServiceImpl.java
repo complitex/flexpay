@@ -3,14 +3,14 @@ package org.flexpay.eirc.service.imp;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.eirc.dao.OrganizationDao;
+import org.flexpay.orgs.dao.OrganizationDao;
 import org.flexpay.eirc.dao.RegistryContainerDao;
 import org.flexpay.eirc.dao.RegistryDao;
 import org.flexpay.eirc.dao.RegistryDaoExt;
-import org.flexpay.eirc.persistence.Organization;
+import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.eirc.persistence.RegistryContainer;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.filters.OrganizationFilter;
+import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.RegistryService;
@@ -45,8 +45,8 @@ public class RegistryServiceImpl implements RegistryService {
 	 */
 	@Transactional (readOnly = false)
 	public SpRegistry create(SpRegistry registry) throws FlexPayException {
-		registry.setRecipient(organizationDao.read(registry.getRecipient().getId()));
-		registry.setSender(organizationDao.read(registry.getSender().getId()));
+		registry.setRecipient(organizationDao.read(registry.getRecipientStub().getId()));
+		registry.setSender(organizationDao.read(registry.getSenderStub().getId()));
 		registryDao.create(registry);
 
 		for (RegistryContainer container : registry.getContainers()) {

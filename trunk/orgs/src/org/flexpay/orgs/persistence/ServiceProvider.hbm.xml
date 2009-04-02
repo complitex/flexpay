@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.orgs.persistence">
+
+	<class name="ServiceProvider" table="orgs_service_providers_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native"/>
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled-disabled status</comment>
+			</column>
+		</property>
+		<many-to-one name="organization" class="Organization"
+					 foreign-key="FK_orgs_service_provider_organization">
+			<column name="organization_id" not-null="true">
+				<comment>Organization reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="dataSourceDescription"
+					 foreign-key="FK_orgs_service_provider_data_source_description"
+					 class="org.flexpay.common.persistence.DataSourceDescription">
+			<column name="data_source_description_id" not-null="true">
+				<comment>Data source description reference</comment>
+			</column>
+		</many-to-one>
+		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
+			<key column="service_provider_id" not-null="true"/>
+			<one-to-many class="org.flexpay.orgs.persistence.ServiceProviderDescription"/>
+		</set>
+	</class>
+
+	<class name="ServiceProviderDescription" table="orgs_service_provider_descriptions_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native"/>
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Description value</comment>
+			</column>
+		</property>
+		<properties name="lang_service_provider_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_orgs_service_provider_description_language"
+						 class="org.flexpay.common.persistence.Language">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" class="org.flexpay.orgs.persistence.ServiceProvider"
+						 foreign-key="FK_orgs_service_provider_description_service_provider">
+				<column name="service_provider_id" not-null="true">
+					<comment>Service provider reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<query name="ServiceProvider.findByOrganizationId">
+		from ServiceProvider where organization.id=?
+	</query>
+
+	<query name="ServiceProvider.readFull">
+		select distinct o
+		from ServiceProvider o
+		 	left join fetch o.descriptions
+		 	inner join fetch o.organization org
+		 	left join fetch org.names
+		where o.id=?
+	</query>
+
+	<query name="ServiceProvider.findProviderlessOrgs">
+		select distinct o
+		from Organization o
+		 	left join fetch o.names
+			left join fetch o.descriptions
+			left join fetch o.serviceProviders sp
+		where o.status=0
+	</query>
+
+	<query name="ServiceProvider.findProviders.count">
+		select count(*)
+		from ServiceProvider o
+		where o.status=0
+	</query>
+
+	<query name="ServiceProvider.findProviders">
+		select distinct o
+		from ServiceProvider o
+		 	left join fetch o.descriptions
+		 	inner join fetch o.organization org
+		 	left join fetch org.names 
+		where o.status=0
+	</query>
+
+</hibernate-mapping>

@@ -235,6 +235,7 @@
     <orderEntry type="library" name="j2ee" level="project" />
     <orderEntry type="library" name="Spring-WS" level="project" />
     <orderEntry type="library" name="CSVReader" level="project" />
+    <orderEntry type="module" module-name="orgs" />
   </component>
 </module>
 

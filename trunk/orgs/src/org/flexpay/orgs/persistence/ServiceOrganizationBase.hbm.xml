@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.orgs.persistence">
+
+	<class name="org.flexpay.orgs.persistence.ServiceOrganization" table="orgs_service_organizations_tbl" optimistic-lock="version"
+			discriminator-value="orgs">
+		<comment>Service organizations</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<discriminator type="string">
+			<column name="org_type" not-null="true">
+				<comment>Class hierarchy descriminator, all entities should have the same value</comment>
+			</column>
+		</discriminator>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled/Disabled status</comment>
+			</column>
+		</property>
+		<many-to-one name="organization" foreign-key="FK_orgs_service_organization_organization"
+					 class="org.flexpay.orgs.persistence.Organization">
+			<column name="organization_id" not-null="true">
+				<comment>Organization reference</comment>
+			</column>
+		</many-to-one>
+		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
+			<key column="service_organization_id" not-null="true" />
+			<one-to-many class="ServiceOrganizationDescription" />
+		</set>
+	</class>
+
+	<query name="ServiceOrganization.readFull">
+		select distinct so
+		from org.flexpay.orgs.persistence.ServiceOrganization so
+		left outer join fetch so.descriptions
+		inner join fetch so.organization o
+		left join fetch o.names
+		where so.id=?
+	</query>
+
+</hibernate-mapping>

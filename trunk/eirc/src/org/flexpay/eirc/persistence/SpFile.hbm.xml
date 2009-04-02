@@ -35,7 +35,7 @@
 				<comment>Registry file reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="serviceProvider" foreign-key="FK_eirc_registry_service_provider" class="ServiceProvider">
+		<many-to-one name="serviceProvider" foreign-key="FK_eirc_registry_service_provider" class="org.flexpay.orgs.persistence.ServiceProvider">
 			<column name="service_provider_id" not-null="false">
 				<comment>Service provider reference</comment>
 			</column>
@@ -52,12 +52,12 @@
 				<comment>Registry archive status reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="sender" class="Organization" foreign-key="FK_eirc_registry_sender">
+		<many-to-one name="sender" class="org.flexpay.orgs.persistence.Organization" foreign-key="FK_eirc_registry_sender">
 			<column name="sender_id" not-null="false">
 				<comment>Sender organization reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="recipient" class="Organization" foreign-key="FK_eirc_registry_recipient">
+		<many-to-one name="recipient" class="org.flexpay.orgs.persistence.Organization" foreign-key="FK_eirc_registry_recipient">
 			<column name="recipient_id" not-null="false">
 				<comment>Recipient organization reference</comment>
 			</column>

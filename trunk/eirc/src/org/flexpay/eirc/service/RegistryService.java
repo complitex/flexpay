@@ -3,10 +3,10 @@ package org.flexpay.eirc.service;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,7 +29,7 @@ public interface RegistryService {
 	/**
 	 * Get all SpRegistry by spFile id in page mode
 	 *
-	 * @param pager Page object
+	 * @param pager	Page object
 	 * @param spFileId spFile id
 	 * @return List of SpRegistry objects for pager
 	 */
@@ -90,7 +90,7 @@ public interface RegistryService {
 	 * Find registry recieved from specified sender with a specified number
 	 *
 	 * @param registryNumber Registry number to search for
-	 * @param senderStub Sender organization stub
+	 * @param senderStub	 Sender organization stub
 	 * @return Registry reference if found, or <code>null</code> otherwise
 	 */
 	@Nullable

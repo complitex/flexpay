@@ -6,10 +6,9 @@ import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.eirc.dao.ServiceDaoExt;
 import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.filters.ParentServiceFilterMarker;
-import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
+import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -43,17 +42,6 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 			getHibernateTemplate().setMaxResults(1);
 			List<?> objects = getHibernateTemplate().find("from ServiceType where code=? and status=0", code);
 			return objects.isEmpty() ? null : (ServiceType) objects.get(0);
-		} finally {
-			getHibernateTemplate().setMaxResults(0);
-		}
-	}
-
-	public ServiceProvider findByNumber(Long id) {
-		try {
-			getHibernateTemplate().setMaxResults(1);
-			List<?> objects = getHibernateTemplate()
-					.findByNamedQuery("ServiceProvider.findByOrganizationId", id);
-			return objects.isEmpty() ? null : (ServiceProvider) objects.get(0);
 		} finally {
 			getHibernateTemplate().setMaxResults(0);
 		}
@@ -140,5 +128,4 @@ public class ServiceDaoExtImpl extends HibernateDaoSupport implements ServiceDao
 		Object[] params = {providerId, typeId, beginDate, endDate, beginDate, endDate};
 		return getHibernateTemplate().findByNamedQuery("Service.findIntersectingServices", params);
 	}
-
 }

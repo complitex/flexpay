@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class Ticket extends DomainObject {
 	private Date creationDate;
-	private ServiceOrganization serviceOrganization;
+	private EircServiceOrganization serviceOrganization;
 	private Person person;
 	private Integer ticketNumber;
 	private Date dateFrom;
@@ -42,7 +42,7 @@ public class Ticket extends DomainObject {
 	/**
 	 * @return the serviceOrganization
 	 */
-	public ServiceOrganization getServiceOrganization() {
+	public EircServiceOrganization getServiceOrganization() {
 		return serviceOrganization;
 	}
 
@@ -50,7 +50,7 @@ public class Ticket extends DomainObject {
 	 * @param serviceOrganization
 	 *            the serviceOrganization to set
 	 */
-	public void setServiceOrganization(ServiceOrganization serviceOrganization) {
+	public void setServiceOrganization(EircServiceOrganization serviceOrganization) {
 		this.serviceOrganization = serviceOrganization;
 	}
 

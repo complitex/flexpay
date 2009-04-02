@@ -186,15 +186,19 @@
 		</antcall>
 	</target>
 
-	<target name="orgs.sql.init-db">
+	<target name="orgs.sql.init-db"
+			depends="common.sql.init-db"
+			unless="orgs.sql.init-db.run">
 		<antcall target="common.sql.init-db" />
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${orgs.dir}/etc/sql/init_db.sql" />
 		</concat>
-		<antcall target="template.set_db_name" />
+		<property name="orgs.sql.init-db.run" value="true" />
 	</target>
 
-	<target name="orgs.sql.init-db-test">
+	<target name="orgs.sql.init-db-test"
+			depends="common.sql.init-db-test"
+			unless="orgs.sql.init-db-test.run">
 		<antcall target="common.sql.init-db-test" />
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${orgs.dir}/etc/sql/init_db.sql" />
@@ -202,7 +206,7 @@
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${orgs.dir}/etc/sql/init_db_test.sql" />
 		</concat>
-		<antcall target="template.set_test_db_name" />
+		<property name="orgs.sql.init-db-test.run" value="true" />
 	</target>
 
 	<target name="orgs.sql.all">
@@ -211,6 +215,7 @@
 			<fileset file="${orgs.dir}/etc/sql/flexpay_orgs.ddl.sql" />
 		</concat>
 		<antcall target="orgs.sql.init-db" />
+		<antcall target="template.set_db_name" />
 	</target>
 
 	<target name="orgs.sql.all-test">
@@ -219,6 +224,7 @@
 			<fileset file="${orgs.dir}/etc/sql/flexpay_orgs.ddl.sql" />
 		</concat>
 		<antcall target="orgs.sql.init-db-test" />
+		<antcall target="template.set_test_db_name" />
 	</target>
 
 	<target name="orgs.db-test" description="create orgs db">

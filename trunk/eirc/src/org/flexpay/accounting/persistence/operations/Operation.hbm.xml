@@ -86,14 +86,14 @@
 			</column>
 		</property>
 		<many-to-one name="creatorOrganization"
-					 class="org.flexpay.eirc.persistence.Organization"
+					 class="org.flexpay.orgs.persistence.Organization"
 					 foreign-key="FK_accounting_operations_tbl_creator_organization_id">
 			<column name="creator_organization_id" not-null="true">
 				<comment>Organization operation created in</comment>
 			</column>
 		</many-to-one>
 		<many-to-one name="confirmatorOrganization"
-					 class="org.flexpay.eirc.persistence.Organization"
+					 class="org.flexpay.orgs.persistence.Organization"
 					 foreign-key="FK_accounting_operations_tbl_confirmator_organization_id">
 			<column name="confirmator_organization_id" not-null="false">
 				<comment>Organization operation confirmed in</comment>

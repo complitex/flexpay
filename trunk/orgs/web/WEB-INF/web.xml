@@ -43,9 +43,9 @@
 	<listener>
 		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
 	</listener>
-    <listener>
-        <listener-class>net.sourceforge.navigator.menu.MenuContextListener</listener-class>
-    </listener>
+	<listener>
+		<listener-class>net.sourceforge.navigator.menu.MenuContextListener</listener-class>
+	</listener>
 
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
@@ -120,6 +120,59 @@
 		<role-name>ROLE_BASIC</role-name>
 	</security-role>
 
+	<!-- Organisations roles -->
+	<security-role>
+		<role-name>ROLE_ORGS_ORGANIZATION_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_ORGANIZATION_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_ORGANIZATION_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_ORGANIZATION_DELETE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_ORGS_BANK_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_BANK_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_BANK_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_BANK_DELETE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_ORGANIZATION_DELETE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_DELETE</role-name>
+	</security-role>
+
 	<login-config>
 		<auth-method>FORM</auth-method>
 		<form-login-config>
@@ -133,15 +186,15 @@
 		<location>/resources/common/jsp/forbidden.jsp</location>
 	</error-page>
 
-    <welcome-file-list>
-            <welcome-file>/resources/orgs/jsp/index.jsp</welcome-file>
-    </welcome-file-list>
+	<welcome-file-list>
+		<welcome-file>/resources/orgs/jsp/index.jsp</welcome-file>
+	</welcome-file-list>
 
-    <jsp-config>
-        <taglib>
-            <taglib-uri>http://struts-menu.sourceforge.net/tag</taglib-uri>
-            <taglib-location>/WEB-INF/tld/struts-menu.tld</taglib-location>
-        </taglib>
-    </jsp-config>
+	<jsp-config>
+		<taglib>
+			<taglib-uri>http://struts-menu.sourceforge.net/tag</taglib-uri>
+			<taglib-location>/WEB-INF/tld/struts-menu.tld</taglib-location>
+		</taglib>
+	</jsp-config>
 
 </web-app>
