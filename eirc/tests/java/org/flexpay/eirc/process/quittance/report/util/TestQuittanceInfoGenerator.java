@@ -5,7 +5,7 @@ import org.flexpay.common.test.TransactionalSpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.dao.QuittanceDao;
 import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.ServiceOrganization;
+import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.quittance.report.ServiceGroup;
@@ -29,7 +29,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 	private QuittanceDao quittanceDao;
 
 	// see init_db for ids definitions
-	private Stub<ServiceOrganization> organizationStub = new Stub<ServiceOrganization>(1L);
+	private Stub<EircServiceOrganization> organizationStub = new Stub<EircServiceOrganization>(1L);
 
 	private Date dt_2007_12_01 = new GregorianCalendar(2007, 11, 1).getTime();
 	private Date dt_2007_12_31 = new GregorianCalendar(2007, 11, 31).getTime();

@@ -7,7 +7,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.dao.QuittanceDao;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
 import org.flexpay.eirc.dao.QuittanceDetailsDao;
-import org.flexpay.eirc.persistence.ServiceOrganization;
+import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
@@ -53,7 +53,7 @@ public class QuittanceServiceImpl implements QuittanceService {
 	}
 
 	@Transactional (readOnly = false)
-	public void generateForServiceOrganization(Stub<ServiceOrganization> stub,
+	public void generateForServiceOrganization(Stub<EircServiceOrganization> stub,
 											   Date dateFrom, Date dateTill) {
 
 		long time = System.currentTimeMillis();
@@ -69,7 +69,7 @@ public class QuittanceServiceImpl implements QuittanceService {
 	}
 
 	@NotNull
-	public List<Quittance> getQuittances(Stub<ServiceOrganization> stub, Date dateFrom, Date dateTill) {
+	public List<Quittance> getQuittances(Stub<EircServiceOrganization> stub, Date dateFrom, Date dateTill) {
 		return quittanceDao.listQuittancesForPrinting(stub.getId(), dateFrom, dateTill);
 	}
 

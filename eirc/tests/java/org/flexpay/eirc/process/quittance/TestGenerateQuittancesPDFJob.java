@@ -4,7 +4,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.persistence.ServiceOrganization;
+import org.flexpay.eirc.persistence.EircServiceOrganization;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import org.junit.Ignore;
@@ -22,7 +22,7 @@ public class TestGenerateQuittancesPDFJob extends SpringBeanAwareTestCase {
 	private GenerateQuittancesPDFJasperJob job;
 
 	// see init_db for ids definitions
-	private Stub<ServiceOrganization> organizationStub = new Stub<ServiceOrganization>(1L);
+	private Stub<EircServiceOrganization> organizationStub = new Stub<EircServiceOrganization>(1L);
 	private Date dt_2007_12_01 = new GregorianCalendar(2007, 11, 1).getTime();
 	private Date dt_2007_01_01 = new GregorianCalendar(2008, 0, 1).getTime();
 

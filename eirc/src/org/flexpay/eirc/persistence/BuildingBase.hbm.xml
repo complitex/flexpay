@@ -45,11 +45,10 @@
 				<one-to-many class="org.flexpay.bti.persistence.BuildingTempAttribute" />
 			</set>
 
-
 			<subclass name="org.flexpay.eirc.persistence.ServedBuilding" discriminator-value="ab">
 				<many-to-one name="serviceOrganization"
 							 foreign-key="FK_eirc_building_service_organization"
-							 class="org.flexpay.eirc.persistence.ServiceOrganization">
+							 class="org.flexpay.eirc.persistence.EircServiceOrganization">
 					<column name="eirc_service_organization_id">
 						<comment>Service organization reference</comment>
 					</column>

@@ -194,23 +194,25 @@
 		</antcall>
 	</target>
 
-	<target name="sz.sql.init-db">
-		<antcall target="eirc.sql.init-db" />
+	<target name="sz.sql.init-db"
+			depends="eirc.sql.init-db"
+			unless="sz.sql.init-db.run">
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${sz.dir}/etc/sql/init_db.sql" />
 		</concat>
-		<antcall target="template.set_db_name" />
+		<property name="sz.sql.init-db.run" value="true" />
 	</target>
 
-	<target name="sz.sql.init-db-test">
-		<antcall target="eirc.sql.init-db-test" />
+	<target name="sz.sql.init-db-test"
+			depends="eirc.sql.init-db-test"
+			unless="sz.sql.init-db-test.run">
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${sz.dir}/etc/sql/init_db.sql" />
 		</concat>
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${sz.dir}/etc/sql/init_db_test.sql" />
 		</concat>
-		<antcall target="template.set_test_db_name" />
+		<property name="sz.sql.init-db-test.run" value="true" />
 	</target>
 
 	<target name="sz.sql.all">
@@ -219,6 +221,7 @@
 			<fileset file="${sz.dir}/etc/sql/flexpay_eirc.ddl.sql" />
 		</concat>
 		<antcall target="sz.sql.init-db" />
+		<antcall target="template.set_db_name" />
 	</target>
 
 	<target name="sz.sql.all-test">
@@ -227,6 +230,7 @@
 			<fileset file="${sz.dir}/etc/sql/flexpay_sz.ddl.sql" />
 		</concat>
 		<antcall target="sz.sql.init-db-test" />
+		<antcall target="template.set_test_db_name" />
 	</target>
 
 	<target name="sz.db-test" description="create sz test db">

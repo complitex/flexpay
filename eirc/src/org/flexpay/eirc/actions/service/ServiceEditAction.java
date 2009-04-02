@@ -12,13 +12,14 @@ import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.ServiceDescription;
-import org.flexpay.eirc.persistence.ServiceProvider;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.filters.ServiceFilter;
-import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
 import org.flexpay.eirc.persistence.filters.ServiceTypeFilter;
 import org.flexpay.eirc.service.SPService;
 import org.flexpay.eirc.service.ServiceTypeService;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
+import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -38,6 +39,7 @@ public class ServiceEditAction extends FPActionSupport {
 	private Map<Long, String> descriptions = map();
 
 	private SPService spService;
+	private ServiceProviderService providerService;
 	private ServiceTypeService serviceTypeService;
 	private MeasureUnitService measureUnitService;
 
@@ -51,7 +53,7 @@ public class ServiceEditAction extends FPActionSupport {
 
 		Service srvc = service.isNew() ? service : spService.read(stub(service));
 
-		serviceProviderFilter = spService.initServiceProvidersFilter(serviceProviderFilter);
+		serviceProviderFilter = providerService.initServiceProvidersFilter(serviceProviderFilter);
 		serviceTypeFilter = serviceTypeService.initFilter(serviceTypeFilter);
 		parentServiceFilter = spService.initParentServicesFilter(parentServiceFilter);
 		measureUnitFilter = measureUnitService.initFilter(measureUnitFilter);
@@ -211,4 +213,8 @@ public class ServiceEditAction extends FPActionSupport {
 		this.measureUnitService = measureUnitService;
 	}
 
+	@Required
+	public void setProviderService(ServiceProviderService providerService) {
+		this.providerService = providerService;
+	}
 }

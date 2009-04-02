@@ -23,7 +23,7 @@ public class BuildingAjaxAction {
 	}
 
 	List<BuildingAddress> getBuildingListByStreetId(Long streetId) {
-		Page pager = new Page(200, 1);
+		Page<?> pager = new Page(200, 1);
 		List<BuildingAddress> buildingses = null;
 		while (true) {
 			if (buildingses == null) {

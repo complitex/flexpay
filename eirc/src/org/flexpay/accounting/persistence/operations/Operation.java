@@ -5,8 +5,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.accounting.persistence.Document;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.eirc.persistence.RegistryRecord;
+import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;

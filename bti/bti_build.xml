@@ -188,23 +188,26 @@
 		</antcall>
 	</target>
 
-	<target name="bti.sql.init-db">
+	<target name="bti.sql.init-db"
+			depends="ab.sql.init-db"
+			unless="bti.sql.init-db.run">
 		<antcall target="ab.sql.init-db" />
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${bti.dir}/etc/sql/init_db.sql" />
 		</concat>
-		<antcall target="template.set_db_name" />
+		<property name="bti.sql.init-db.run" value="true" />
 	</target>
 
-	<target name="bti.sql.init-db-test">
-		<antcall target="ab.sql.init-db-test" />
+	<target name="bti.sql.init-db-test"
+			depends="ab.sql.init-db-test"
+			unless="bti.sql.init-db.run">
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${bti.dir}/etc/sql/init_db.sql" />
 		</concat>
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${bti.dir}/etc/sql/init_db_test.sql" />
 		</concat>
-		<antcall target="template.set_test_db_name" />
+		<property name="bti.sql.init-db-run.run" value="true" />
 	</target>
 
 	<target name="bti.sql.all">
@@ -213,6 +216,7 @@
 			<fileset file="${bti.dir}/etc/sql/flexpay_bti.ddl.sql" />
 		</concat>
 		<antcall target="bti.sql.init-db" />
+		<antcall target="template.set_db_name" />
 	</target>
 
 	<target name="bti.sql.all-test">
@@ -221,6 +225,7 @@
 			<fileset file="${bti.dir}/etc/sql/flexpay_bti.ddl.sql" />
 		</concat>
 		<antcall target="bti.sql.init-db-test" />
+		<antcall target="template.set_test_db_name" />
 	</target>
 
 	<target name="bti.db-test" description="create bti db">

@@ -27,7 +27,7 @@
 			<generator class="native" />
 		</id>
 		<property name="creationDate" not-null="true" column="creation_date" />
-		<many-to-one name="serviceOrganization" foreign-key="FK_eirc_ticket_service_organization" class="ServiceOrganization">
+		<many-to-one name="serviceOrganization" foreign-key="FK_eirc_ticket_service_organization" class="org.flexpay.orgs.persistence.ServiceOrganization">
 			<column name="service_organization_id" not-null="true">
 				<comment>Service organization reference</comment>
 			</column>

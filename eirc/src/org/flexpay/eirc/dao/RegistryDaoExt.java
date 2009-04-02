@@ -2,7 +2,7 @@ package org.flexpay.eirc.dao;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.filters.OrganizationFilter;
+import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.jetbrains.annotations.NotNull;
 

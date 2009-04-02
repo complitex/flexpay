@@ -7,7 +7,7 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.reporting.ReportUtil;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.persistence.ServiceOrganization;
+import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.quittance.report.JRQuittanceDataSource;
 import org.flexpay.eirc.service.QuittanceService;
@@ -55,7 +55,7 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 
 			plog.info("Fetching quittances");
 			List<Quittance> quittances = quittanceService.getQuittances(
-					new Stub<ServiceOrganization>(organizationId), dateFrom, dateTill);
+					new Stub<EircServiceOrganization>(organizationId), dateFrom, dateTill);
 
 			plog.info("About to prepare JR data source");
 			jrDataSource.setQuittances(quittances, 4);

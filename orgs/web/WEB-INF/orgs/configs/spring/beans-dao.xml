@@ -1,8 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 	<!-- Module orgs DAO layer instances -->
+	<bean id="serviceProviderDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.orgs.dao.ServiceProviderDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.orgs.persistence.ServiceProvider" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="serviceProviderDaoExt" class="org.flexpay.orgs.dao.impl.ServiceProviderDaoExtImpl"
+		  p:hibernateTemplate-ref="hibernateTemplate" />
+
+	<bean id="organizationDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.orgs.dao.OrganizationDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.orgs.persistence.Organization" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="subdivisionDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.orgs.dao.SubdivisionDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.orgs.persistence.Subdivision" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="bankDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.orgs.dao.BankDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.orgs.persistence.Bank" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="paymentsCollectorDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.orgs.dao.PaymentsCollectorDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.orgs.persistence.PaymentsCollector" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="serviceOrganizationDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.orgs.dao.ServiceOrganizationDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.orgs.persistence.ServiceOrganization" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="paymentPointDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.orgs.dao.PaymentPointDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.orgs.persistence.PaymentPoint" />
+			</bean>
+		</property>
+	</bean>
 
 </beans>

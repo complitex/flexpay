@@ -4,8 +4,8 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.EircAccount;
-import org.flexpay.eirc.persistence.ServiceOrganization;
 import org.flexpay.eirc.persistence.Service;
+import org.flexpay.orgs.persistence.ServiceOrganization;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

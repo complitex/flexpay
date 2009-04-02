@@ -5,38 +5,6 @@
 
 <hibernate-mapping package="org.flexpay.eirc.persistence">
 
-	<class name="PaymentPoint" table="eirc_payment_points_tbl" optimistic-lock="version">
-		<comment>Payment points</comment>
-		<id name="id" column="id">
-			<generator class="native" />
-		</id>
-		<version name="version" access="field">
-			<column name="version" not-null="true">
-				<comment>Optimistic lock version</comment>
-			</column>
-		</version>
-		<property name="status">
-			<column name="status" not-null="true">
-				<comment>Enabled-disabled status</comment>
-			</column>
-		</property>
-		<property name="address">
-			<column name="address" not-null="true">
-				<comment>Address</comment>
-			</column>
-		</property>
-		<many-to-one name="collector" foreign-key="FK_eirc_payment_points_tbl_collector_id"
-					 class="org.flexpay.eirc.persistence.PaymentsCollector">
-			<column name="collector_id" not-null="true">
-				<comment>Payments collector reference</comment>
-			</column>
-		</many-to-one>
-		<set name="quittancePackets" inverse="true" cascade="none">
-			<key column="payment_point_id" not-null="true" />
-			<one-to-many class="QuittancePacket" />
-		</set>
-	</class>
-
 	<class name="QuittancePacket" table="eirc_quittance_packets_tbl" optimistic-lock="version">
 		<comment>Quittance payment packets</comment>
 		<id name="id" column="id">
@@ -73,7 +41,7 @@
 			</column>
 		</property>
 		<many-to-one name="paymentPoint" foreign-key="eirc_quittance_packets_tbl_payment_id"
-					 class="PaymentPoint">
+					 class="org.flexpay.orgs.persistence.PaymentPoint">
 			<column name="payment_point_id" not-null="true">
 				<comment>Payment point reference</comment>
 			</column>
@@ -209,37 +177,6 @@
 			</column>
 		</property>
 	</class>
-
-
-	<query name="PaymentPoint.listPoints.count">
-		select count(o)
-		from PaymentPoint o
-		where o.status = 0
-	</query>
-
-	<query name="PaymentPoint.listPoints">
-		from PaymentPoint o
-		inner join fetch o.collector
-		where o.status = 0
-	</query>
-
-	<query name="PaymentPoint.listCollectorPoints.count">
-		select count(o)
-		from PaymentPoint o
-		where o.status = 0 and o.collector.id = ?
-	</query>
-
-	<query name="PaymentPoint.listCollectorPoints">
-		from PaymentPoint o
-		inner join fetch o.collector
-		where o.status = 0 and o.collector.id = ?
-	</query>
-
-	<query name="PaymentPoint.readFull">
-		from PaymentPoint o
-		inner join fetch o.collector
-		where o.id=?
-	</query>
 
 	<query name="QuittancePacket.nextPacketNumber">
 		select max(id) as maxId, max(packetNumber) as maxPacket 

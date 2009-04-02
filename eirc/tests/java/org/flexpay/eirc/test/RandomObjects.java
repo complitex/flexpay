@@ -4,7 +4,7 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
@@ -28,8 +28,8 @@ public class RandomObjects {
 		return (Apartment) hibernateTemplate.execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				String query = "select count(*) " +
-						"from Apartment a inner join a.building b left join b.buildingses bs inner join bs.street s " +
-						"where s.parent.id=?";
+							   "from Apartment a inner join a.building b left join b.buildingses bs inner join bs.street s " +
+							   "where s.parent.id=?";
 				Long count = (Long) session.createQuery(query)
 						.setLong(0, town.getId()).uniqueResult();
 				if (count == null) {
@@ -51,7 +51,7 @@ public class RandomObjects {
 
 	public Person getRandomPerson() {
 		return (Person) hibernateTemplate.execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				String query = "select max(id) from Person where status=0";
 				Long maxId = (Long) session.createQuery(query).uniqueResult();
 				long randLong = Math.abs(rand.nextLong());
@@ -64,7 +64,7 @@ public class RandomObjects {
 
 	public ServiceProvider getRandomServiceProvider() {
 		return (ServiceProvider) hibernateTemplate.execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				String query = "select max(id) from ServiceProvider";
 				Long maxId = (Long) session.createQuery(query).uniqueResult();
 				long randLong = Math.abs(rand.nextLong());
@@ -77,7 +77,7 @@ public class RandomObjects {
 
 	public Service getRandomService(final ServiceProvider provider) {
 		return (Service) hibernateTemplate.execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				String query = "select count(id) from Service where serviceProvider.id=?";
 				Long count = (Long) session.createQuery(query)
 						.setLong(0, provider.getId()).uniqueResult();

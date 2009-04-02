@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.orgs.persistence">
+
+	<class name="PaymentPoint" table="orgs_payment_points_tbl" optimistic-lock="version">
+		<comment>Payment points</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled-disabled status</comment>
+			</column>
+		</property>
+		<property name="address">
+			<column name="address" not-null="true">
+				<comment>Address</comment>
+			</column>
+		</property>
+		<many-to-one name="collector" foreign-key="FK_orgs_payment_points_tbl_collector_id"
+					 class="PaymentsCollector">
+			<column name="collector_id" not-null="true">
+				<comment>Payments collector reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<query name="PaymentPoint.listPoints.count">
+		select count(o)
+		from PaymentPoint o
+		where o.status = 0
+	</query>
+
+	<query name="PaymentPoint.listPoints">
+		from PaymentPoint o
+		inner join fetch o.collector
+		where o.status = 0
+	</query>
+
+	<query name="PaymentPoint.listCollectorPoints.count">
+		select count(o)
+		from PaymentPoint o
+		where o.status = 0 and o.collector.id = ?
+	</query>
+
+	<query name="PaymentPoint.listCollectorPoints">
+		from PaymentPoint o
+		inner join fetch o.collector
+		where o.status = 0 and o.collector.id = ?
+	</query>
+
+	<query name="PaymentPoint.readFull">
+		from PaymentPoint o
+		inner join fetch o.collector
+		where o.id=?
+	</query>
+	
+</hibernate-mapping>

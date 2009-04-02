@@ -2,9 +2,9 @@ package org.flexpay.accounting.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.eirc.persistence.EircAccount;
-import org.flexpay.eirc.persistence.Organization;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.eirc.persistence.EircAccount;
+import org.flexpay.orgs.persistence.Organization;
 
 public class EircSubject extends DomainObject implements Subject {
 

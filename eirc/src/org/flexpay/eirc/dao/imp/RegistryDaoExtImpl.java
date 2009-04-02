@@ -3,7 +3,7 @@ package org.flexpay.eirc.dao.imp;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.dao.RegistryDaoExt;
 import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.filters.OrganizationFilter;
+import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;

@@ -191,19 +191,21 @@
 		</concat>
 	</target>
 
-	<target name="common.sql.init-db">
+	<target name="common.sql.init-db" unless="common.sql.init-db.run">
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${common.dir}/etc/sql/init_db.sql" />
 		</concat>
+		<property name="common.sql.init-db.run" value="true" />
 	</target>
 
-	<target name="common.sql.init-db-test">
+	<target name="common.sql.init-db-test" unless="common.sql.init-db-test.run">
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${common.dir}/etc/sql/init_db.sql" />
 		</concat>
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${common.dir}/etc/sql/init_db_test.sql" />
 		</concat>
+		<property name="common.sql.init-db-test.run" value="set" />
 	</target>
 
 	<target name="common.sql.all">
@@ -212,6 +214,7 @@
 			<fileset file="${common.dir}/etc/sql/flexpay_common.ddl.sql" />
 		</concat>
 		<antcall target="common.sql.init-db" />
+		<antcall target="template.set_db_name" />
 	</target>
 
 	<target name="common.sql.all-test">
@@ -220,6 +223,7 @@
 			<fileset file="${common.dir}/etc/sql/flexpay_common.ddl.sql" />
 		</concat>
 		<antcall target="common.sql.init-db-test" />
+		<antcall target="template.set_test_db_name" />
 	</target>
 
 	<target name="common.db-test" description="create common test db">

@@ -105,7 +105,7 @@
 		</many-to-one>
 		<many-to-one name="organization"
 					 foreign-key="FK_accounting_eirc_subjects_tbl_organization_id"
-					 class="org.flexpay.eirc.persistence.Organization">
+					 class="org.flexpay.orgs.persistence.Organization">
 			<column name="organization_id" not-null="true">
 				<comment>Subject organisation reference</comment>
 			</column>

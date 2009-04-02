@@ -38,6 +38,10 @@ SELECT @source_description_test_data:=last_insert_id();
 INSERT INTO common_data_source_descriptions_tbl (id, description) VALUES (2002, 'Master-Index');
 SELECT @source_description_master_index:=2002;
 
+insert into common_data_source_descriptions_tbl (id, description)
+	values (2, 'Харьковский центр начислений');
+SELECT @source_description_id:=2;
+
 -- Init modules
 INSERT INTO common_flexpay_modules_tbl (name) VALUES ('common');
 SELECT @module_common:=last_insert_id();

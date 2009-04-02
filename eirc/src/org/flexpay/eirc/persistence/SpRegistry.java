@@ -5,6 +5,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.ServiceProvider;
 
 import java.math.BigDecimal;
 import java.util.Collections;

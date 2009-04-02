@@ -7,4 +7,43 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+	<bean id="organisationInstanceService" abstract="true"
+		  class="org.flexpay.orgs.service.imp.OrganisationInstanceServiceImpl"
+		  p:sessionUtils-ref="sessionUtils" />
+
+	<bean id="organizationService"
+		  class="org.flexpay.orgs.service.imp.OrganizationServiceImpl"
+		  p:organizationDao-ref="organizationDao" />
+
+	<bean id="subdivisionService"
+		  class="org.flexpay.orgs.service.imp.SubdivisionServiceImpl"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:subdivisionDao-ref="subdivisionDao"
+		  p:organizationService-ref="organizationService" />
+
+	<bean id="bankService"
+		  class="org.flexpay.orgs.service.imp.BankServiceImpl"
+		  parent="organisationInstanceService"
+		  p:instanceDao-ref="bankDao" />
+
+	<bean id="paymentsCollectorService"
+		  class="org.flexpay.orgs.service.imp.PaymentsCollectorServiceImpl"
+		  parent="organisationInstanceService"
+		  p:instanceDao-ref="paymentsCollectorDao" />
+
+	<bean id="paymentPointService"
+		  class="org.flexpay.orgs.service.imp.PaymentPointServiceImpl"
+		  p:paymentPointDao-ref="paymentPointDao" />
+
+	<bean id="serviceOrganizationService"
+		  class="org.flexpay.orgs.service.imp.ServiceOrganizationServiceImpl"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:serviceOrganizationDao-ref="serviceOrganizationDao" />
+
+	<bean id="serviceProviderServiceTarget" autowire-candidate="false"
+		  class="org.flexpay.orgs.service.imp.ServiceProviderServiceImpl"
+		  p:serviceProviderDao-ref="serviceProviderDao"
+		  p:serviceProviderDaoExt-ref="serviceProviderDaoExt"
+		  p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao" />
+
 </beans>

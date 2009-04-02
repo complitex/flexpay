@@ -12,7 +12,7 @@ import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.eirc.persistence.ServedBuilding;
-import org.flexpay.eirc.persistence.ServiceOrganization;
+import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -28,7 +28,7 @@ public class ServiceOrganizationAddServedBuildingAction extends BuildingsActions
     private TownFilter townFilter = new TownFilter();
     private StreetNameFilter streetNameFilter = new StreetNameFilter();
 
-    private ServiceOrganization serviceOrganization = new ServiceOrganization();
+    private EircServiceOrganization serviceOrganization = new EircServiceOrganization();
     private List<BuildingAddress> buildingsList = list();
     private Set<Long> objectIds = new HashSet<Long>();
 
@@ -49,7 +49,7 @@ public class ServiceOrganizationAddServedBuildingAction extends BuildingsActions
             return REDIRECT_SUCCESS;
         }
 
-        serviceOrganization = serviceOrganizationService.read(serviceOrganization);
+        serviceOrganization = (EircServiceOrganization) serviceOrganizationService.read(serviceOrganization);
         if (serviceOrganization == null) {
             addActionError(getText("error.invalid_id"));
             return REDIRECT_SUCCESS;
@@ -122,11 +122,11 @@ public class ServiceOrganizationAddServedBuildingAction extends BuildingsActions
         streetNameFilter = (StreetNameFilter) filters.peek(0);
     }
 
-    public ServiceOrganization getServiceOrganization() {
+    public EircServiceOrganization getServiceOrganization() {
         return serviceOrganization;
     }
 
-    public void setServiceOrganization(ServiceOrganization serviceOrganization) {
+    public void setServiceOrganization(EircServiceOrganization serviceOrganization) {
         this.serviceOrganization = serviceOrganization;
     }
 
@@ -175,7 +175,7 @@ public class ServiceOrganizationAddServedBuildingAction extends BuildingsActions
     }
 
 	@Required
-    public void setParentService(ParentService parentService) {
+    public void setParentService(ParentService<?> parentService) {
         this.parentService = parentService;
     }
 

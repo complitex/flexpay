@@ -15,8 +15,13 @@ import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.sp.SpFileReader.Message;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.ServiceProviderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,7 +54,7 @@ public class RegistryFileParser {
 	private RegistryRecordWorkflowManager recordWorkflowManager;
 
 	private OrganizationService organizationService;
-	private SPService spService;
+	private ServiceProviderService providerService;
 	private ConsumerService consumerService;
 
 	@SuppressWarnings ({"ConstantConditions"})
@@ -111,7 +116,7 @@ public class RegistryFileParser {
 		File file = spFile.getFile();
 		if (file == null) {
 			throw new FileNotFoundException("For FPFile(id=" + spFile.getId()
-					+ ") not found temp file: " + spFile.getNameOnServer());
+											+ ") not found temp file: " + spFile.getNameOnServer());
 		}
 
 		log.debug("Opening registry file: {}", spFile);
@@ -213,9 +218,9 @@ public class RegistryFileParser {
 				log.error("Failed processing registry header, sender not found: #{}", newRegistry.getSenderCode());
 				throw new FlexPayException("Cannot find sender organization " + newRegistry.getSenderCode());
 			}
-				log.info("Recipient: {}\n sender: {}", recipient, sender);
+			log.info("Recipient: {}\n sender: {}", recipient, sender);
 
-			ServiceProvider provider = spService.getProvider(newRegistry.getSenderCode());
+			ServiceProvider provider = providerService.getProvider(newRegistry.getSenderCode());
 			if (provider == null) {
 				log.error("Failed processing registry header, provider not found: #{}", newRegistry.getSenderCode());
 				throw new FlexPayException("Cannot find service provider " + newRegistry.getSenderCode());
@@ -413,55 +418,53 @@ public class RegistryFileParser {
 		registryWorkflowManager.setNextSuccessStatus(registry);
 	}
 
-	/**
-	 * @param registryService the spRegistryService to set
-	 */
+	@Required
 	public void setRegistryService(RegistryService registryService) {
 		this.registryService = registryService;
 	}
 
-	/**
-	 * @param registryRecordService the spRegistryRecordService to set
-	 */
+	@Required
 	public void setSpRegistryRecordService(RegistryRecordService registryRecordService) {
 		this.registryRecordService = registryRecordService;
 	}
 
-	/**
-	 * @param registryTypeService the spRegistryTypeService to set
-	 */
+	@Required
 	public void setRegistryTypeService(SpRegistryTypeService registryTypeService) {
 		this.registryTypeService = registryTypeService;
 	}
 
-	/**
-	 * @param registryArchiveStatusService the spRegistryArchiveStatusService to set
-	 */
+	@Required
 	public void setRegistryArchiveStatusService(RegistryArchiveStatusService registryArchiveStatusService) {
 		this.registryArchiveStatusService = registryArchiveStatusService;
 	}
 
+	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
 	}
 
-	public void setSpService(SPService spService) {
-		this.spService = spService;
-	}
-
+	@Required
 	public void setRegistryWorkflowManager(RegistryWorkflowManager registryWorkflowManager) {
 		this.registryWorkflowManager = registryWorkflowManager;
 	}
 
+	@Required
 	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
 		this.recordWorkflowManager = recordWorkflowManager;
 	}
 
+	@Required
 	public void setSessionUtils(SessionUtils sessionUtils) {
 		this.sessionUtils = sessionUtils;
 	}
 
+	@Required
 	public void setConsumerService(ConsumerService consumerService) {
 		this.consumerService = consumerService;
+	}
+
+	@Required
+	public void setProviderService(ServiceProviderService providerService) {
+		this.providerService = providerService;
 	}
 }

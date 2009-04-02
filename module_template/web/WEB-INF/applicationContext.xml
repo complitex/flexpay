@@ -17,6 +17,6 @@
 	</bean>
 
     <import resource="common/configs/spring/config.xml" />
-    <import resource="${module_name}/configs/springs/config.xml" />
+    <import resource="${module_name}/configs/spring/config.xml" />
 
 </beans>

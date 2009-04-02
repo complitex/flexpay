@@ -5,7 +5,7 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.EircAccount;
-import org.flexpay.eirc.persistence.ServiceOrganization;
+import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +32,7 @@ public interface QuittanceService {
 	 * @param dateFrom Period begin date
 	 * @param dateTill Period end date
 	 */
-	void generateForServiceOrganization(Stub<ServiceOrganization> stub, Date dateFrom, Date dateTill);
+	void generateForServiceOrganization(Stub<EircServiceOrganization> stub, Date dateFrom, Date dateTill);
 
 	/**
 	 * Get a list of Quittances separated with addresses, used to divide quittances by bulks
@@ -43,7 +43,7 @@ public interface QuittanceService {
 	 * @return List of Quittances
 	 */
 	@NotNull
-	List<Quittance> getQuittances(Stub<ServiceOrganization> stub, Date dateFrom, Date dateTill);
+	List<Quittance> getQuittances(Stub<EircServiceOrganization> stub, Date dateFrom, Date dateTill);
 
 	/**
 	 * Read full quittance details

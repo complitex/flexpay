@@ -15,6 +15,7 @@ import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.service.importexport.ImportUtil;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistry;
+import org.flexpay.orgs.service.OrganizationService;
 
 import java.util.ArrayList;
 import java.util.List;

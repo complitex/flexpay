@@ -1,7 +1,7 @@
 package org.flexpay.eirc.actions.organization;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.eirc.persistence.ServiceOrganization;
+import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -12,7 +12,7 @@ import java.util.Set;
 public class ServiceOrganizationRemoveServedBuildingsAction extends FPActionSupport {
 
 	private Set<Long> objectIds = new HashSet<Long>();
-    private ServiceOrganization serviceOrganization = new ServiceOrganization();
+    private EircServiceOrganization serviceOrganization = new EircServiceOrganization();
 
 	private ServiceOrganizationService serviceOrganizationService;
 
@@ -24,7 +24,7 @@ public class ServiceOrganizationRemoveServedBuildingsAction extends FPActionSupp
             return REDIRECT_SUCCESS;
         }
 
-        serviceOrganization = serviceOrganizationService.read(serviceOrganization);
+        serviceOrganization = (EircServiceOrganization) serviceOrganizationService.read(serviceOrganization);
         if (serviceOrganization == null) {
             addActionError(getText("error.invalid_id"));
             return REDIRECT_SUCCESS;
@@ -55,11 +55,11 @@ public class ServiceOrganizationRemoveServedBuildingsAction extends FPActionSupp
 		this.objectIds = objectIds;
 	}
 
-    public ServiceOrganization getServiceOrganization() {
+    public EircServiceOrganization getServiceOrganization() {
         return serviceOrganization;
     }
 
-    public void setServiceOrganization(ServiceOrganization serviceOrganization) {
+    public void setServiceOrganization(EircServiceOrganization serviceOrganization) {
         this.serviceOrganization = serviceOrganization;
     }
 

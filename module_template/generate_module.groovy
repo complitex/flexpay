@@ -20,8 +20,14 @@ def moduleDir = new File(baseDir, moduleName)
 
 assert !moduleDir.exists(), "${moduleDir} already exists, remove it first!"
 
+class SVNFileFilter implements FileFilter {
+		public boolean	accept(File pathname) {
+			return pathname.name != '.svn'
+		}
+}
+
 println "copying template to directory ${moduleDir}"
-FileUtils.copyDirectory templateDir, moduleDir
+FileUtils.copyDirectory templateDir, moduleDir, new SVNFileFilter()
 
 println "renaming template files and directories"
 def hasDirRenames = true;

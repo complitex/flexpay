@@ -4,13 +4,14 @@ import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.filters.ServiceProviderFilter;
 import org.flexpay.eirc.service.SPService;
+import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
+import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ServicesListAction extends FPActionWithPagerSupport<Service> {
@@ -21,17 +22,15 @@ public class ServicesListAction extends FPActionWithPagerSupport<Service> {
 
 	private List<Service> services;
 
+	private ServiceProviderService providerService;
 	private SPService spService;
 
 	@NotNull
 	public String doExecute() throws Exception {
 
-		serviceProviderFilter = spService.initServiceProvidersFilter(serviceProviderFilter);
+		serviceProviderFilter = providerService.initServiceProvidersFilter(serviceProviderFilter);
 
-		List<ObjectFilter> filters = new ArrayList<ObjectFilter>();
-		filters.add(beginDateFilter);
-		filters.add(endDateFilter);
-		filters.add(serviceProviderFilter);
+		List<ObjectFilter> filters = CollectionUtils.list(beginDateFilter, endDateFilter, serviceProviderFilter);
 
 		services = spService.listServices(filters, getPager());
 
@@ -83,4 +82,8 @@ public class ServicesListAction extends FPActionWithPagerSupport<Service> {
 		this.spService = spService;
 	}
 
+	@Required
+	public void setProviderService(ServiceProviderService providerService) {
+		this.providerService = providerService;
+	}
 }
