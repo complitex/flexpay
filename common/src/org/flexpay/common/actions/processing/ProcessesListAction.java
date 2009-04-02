@@ -1,13 +1,18 @@
 package org.flexpay.common.actions.processing;
 
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.persistence.filter.BeginDateFilter;
+import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.ProcessState;
+import org.flexpay.common.process.filter.ProcessStateFilter;
+import org.flexpay.common.process.filter.ProcessStateObject;
 import org.flexpay.common.process.sorter.*;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +30,11 @@ public class  ProcessesListAction extends FPActionWithPagerSupport<Process> {
 	private ProcessSorterByState processSorterByState = new ProcessSorterByState();
 	private ProcessSorterByUser processSorterByUser = new ProcessSorterByUser();
 
+	// filters
+	private BeginDateFilter beginDateFilter = new BeginDateFilter();
+	private EndDateFilter endDateFilter = new EndDateFilter();
+	private ProcessStateFilter processStateFilter = new ProcessStateFilter();
+
 	// process manager
 	private ProcessManager processManager;
 
@@ -33,7 +43,7 @@ public class  ProcessesListAction extends FPActionWithPagerSupport<Process> {
 	 */
 	@NotNull
 	protected String doExecute() throws Exception {
-
+		
 		if (objectIds != null && objectIds.size() > 0) {
 			processManager.deleteProcessInstances(objectIds);
 		}
@@ -51,7 +61,21 @@ public class  ProcessesListAction extends FPActionWithPagerSupport<Process> {
 
 	private List<Process> getProcessListMethod() {
 
-		return processManager.getProcesses(getActiveSorter(), getPager());
+		// if start from date is not set it should be set to past infinite
+		Date startFrom = beginDateFilter.getDate();
+		if (dateIsNotSet(startFrom)) {
+			startFrom = null;
+		}
+		Date endBefore = endDateFilter.getDate();
+		if (dateIsNotSet(endBefore)) {
+			endBefore = null;
+		}
+
+		return processManager.getProcesses(getActiveSorter(), getPager(), startFrom, endBefore, processStateFilter.getProcessState());
+	}
+
+	private boolean dateIsNotSet(Date date) {
+		return date.equals(ApplicationConfig.getFutureInfinite());
 	}
 
 	private ProcessSorter getActiveSorter() {
@@ -64,6 +88,12 @@ public class  ProcessesListAction extends FPActionWithPagerSupport<Process> {
 		}
 
 		return null;
+	}
+
+	// rendering utility methods
+	public String getTranslation(ProcessState state) {
+
+		return getText(ProcessStateObject.getByProcessState(state).getName());
 	}
 
 	// form data
@@ -114,6 +144,19 @@ public class  ProcessesListAction extends FPActionWithPagerSupport<Process> {
 
 	public void setProcessSorterByUser(ProcessSorterByUser processSorterByUser) {
 		this.processSorterByUser = processSorterByUser;
+	}
+
+	// filters
+	public BeginDateFilter getBeginDateFilter() {
+		return beginDateFilter;
+	}
+
+	public EndDateFilter getEndDateFilter() {
+		return endDateFilter;
+	}
+
+	public ProcessStateFilter getProcessStateFilter() {
+		return processStateFilter;
 	}
 
 	// process manager

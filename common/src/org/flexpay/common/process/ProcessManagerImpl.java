@@ -28,10 +28,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Process manager allows to create and maintain processes lyfecycle
@@ -619,7 +616,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 */
 	public List<Process> getProcesses() {
 
-		return getProcesses(null, null);
+		return getProcesses(null);
 	}
 
 	/**
@@ -627,15 +624,15 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 */
 	public List<Process> getProcesses(Page<Process> pager) {
 
-		return getProcesses(null, pager);
+		return getProcesses(null, pager, null, null, null);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Process> getProcesses(ProcessSorter processSorter, Page<Process> pager) {
+	public List<Process> getProcesses(ProcessSorter processSorter, Page<Process> pager, Date startFrom, Date endBefore, ProcessState state) {
 
-		return processDao.findProcesses(processSorter, pager);
+		return processDao.findProcesses(processSorter, pager, startFrom, endBefore, state);
 	}
 
 	/**

@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Date;
 
 public interface ProcessManager {
 
@@ -109,7 +110,7 @@ public interface ProcessManager {
 	 * @return Process list
 	 */
 	@Secured (Roles.PROCESS_READ)
-	public List<Process> getProcesses(ProcessSorter processSorter, Page<Process> pager);
+	public List<Process> getProcesses(ProcessSorter processSorter, Page<Process> pager, Date startFrom, Date endBefore, ProcessState state);
 
 	public List<TaskInstance> getRunningTasks();
 

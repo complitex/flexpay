@@ -5,6 +5,25 @@
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
 		<tr>
+			<td colspan="9">
+				<s:text name="common.processing.process.filter.start_date"/>
+				<%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %>
+
+				<s:text name="common.processing.process.filter.end_date"/>
+				<%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %>
+
+				<s:submit name="filtered" value="%{getText('common.show')}" cssClass="btn-exit"/>
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="9">
+				<s:text name="common.processing.process.filter.state"/>
+				<%@include file="/WEB-INF/jsp/common/processing/filters/process_state_filter.jsp" %>
+			</td>
+		</tr>
+
+		<tr>
 			<td colspan="9"><%@include file="../filter/pager/pager.jsp" %></td>
 		</tr>
 
@@ -53,7 +72,7 @@
 			<td class="col"><s:date name="processStartDate" format="yyyy/MM/dd"/></td>
 			<td class="col"><s:date name="processEndDate" format="yyyy/MM/dd"/></td>
 			<td class="col">&nbsp;</td>
-			<td class="col"><s:property value="processState"/></td>
+			<td class="col"><s:property value="%{getTranslation(processState)}"/></td>
 			<td class="col">&nbsp;</td>
 		</tr>
 		</s:iterator>
