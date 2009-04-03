@@ -6,6 +6,10 @@
 	<import file="tc/tc_build.xml" />
 
 	<target name="sz.deploy.sjsas" depends="sz.war.production.glassfish_mysql5">
+		<antcall target="sz.deploy.sjsas.nobuild" />
+	</target>
+
+	<target name="sz.deploy.sjsas.nobuild">
 		<antcall target="template.deploy.sjsas">
 			<param name="application_archive" value="${distr.dir}/${sz.war.name}" />
 		</antcall>
