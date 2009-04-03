@@ -358,7 +358,6 @@
         subject_debet_id bigint not null comment 'Debet subject reference',
         subject_credit_id bigint not null comment 'Credit subject reference',
         operation_id bigint not null comment 'Operation reference',
-        registry_record_id bigint comment 'Optional registry record reference',
         type_id bigint not null comment 'Document type reference',
         primary key (id)
     ) comment='Operation document';
@@ -366,7 +365,6 @@
     create table accounting_eirc_subjects_tbl (
         id bigint not null auto_increment comment 'Primary key',
         version integer not null comment 'Optimistic lock version',
-        eirc_account_id bigint comment 'Optional eirc account reference',
         organization_id bigint not null comment 'Subject organisation reference',
         primary key (id)
     ) comment='Operation document subjects';
@@ -386,7 +384,6 @@
         status integer not null comment 'Operation status',
         creator_organization_id bigint not null comment 'Organization operation created in',
         confirmator_organization_id bigint comment 'Organization operation confirmed in',
-        registry_record_id bigint comment 'Registry record',
         parent_operation_id bigint comment 'Optional parent operation reference',
         primary key (id)
     ) comment='Operations';
@@ -869,27 +866,6 @@
         type_id bigint not null comment 'Service type reference',
         measure_unit_id bigint comment 'Measure unit reference',
         parent_service_id bigint comment 'If parent service reference present service is a subservice',
-        primary key (id)
-    );
-
-    create table eirc_ticket_service_amounts_tbl (
-        id bigint not null auto_increment,
-        ticket_id bigint comment 'Ticket reference',
-        consumer_id bigint not null comment 'Consumer reference',
-        date_from_amount decimal(19,2) not null,
-        date_till_amount decimal(19,2) not null,
-        primary key (id)
-    );
-
-    create table eirc_tickets_tbl (
-        id bigint not null auto_increment,
-        creation_date datetime not null,
-        service_organization_id bigint not null comment 'Service organization reference',
-        person_id bigint not null comment 'Person reference',
-        ticket_number integer not null,
-        date_from datetime not null,
-        date_till datetime not null,
-        apartment_id bigint not null comment 'Apartment reference',
         primary key (id)
     );
 
@@ -1561,12 +1537,6 @@
         references accounting_eirc_subjects_tbl (id);
 
     alter table accounting_documents_tbl 
-        add index FK_accounting_documents_tbl_registry_record_id (registry_record_id), 
-        add constraint FK_accounting_documents_tbl_registry_record_id 
-        foreign key (registry_record_id) 
-        references eirc_registry_records_tbl (id);
-
-    alter table accounting_documents_tbl 
         add index FK_accounting_documents_tbl_document_type_id (type_id), 
         add constraint FK_accounting_documents_tbl_document_type_id 
         foreign key (type_id) 
@@ -1583,18 +1553,6 @@
         add constraint FK_accounting_eirc_subjects_tbl_organization_id 
         foreign key (organization_id) 
         references orgs_organizations_tbl (id);
-
-    alter table accounting_eirc_subjects_tbl 
-        add index FK_accounting_eirc_subjects_tbl_account_id (eirc_account_id), 
-        add constraint FK_accounting_eirc_subjects_tbl_account_id 
-        foreign key (eirc_account_id) 
-        references eirc_eirc_accounts_tbl (id);
-
-    alter table accounting_operations_tbl 
-        add index FK_accounting_operations_tbl_registry_record_id (registry_record_id), 
-        add constraint FK_accounting_operations_tbl_registry_record_id 
-        foreign key (registry_record_id) 
-        references eirc_registry_records_tbl (id);
 
     alter table accounting_operations_tbl 
         add index FK_accounting_operations_tbl_confirmator_organization_id (confirmator_organization_id), 
@@ -2025,36 +1983,6 @@
         add constraint FK_eirc_service_service_type 
         foreign key (type_id) 
         references eirc_service_types_tbl (id);
-
-    alter table eirc_ticket_service_amounts_tbl 
-        add index FK_eirc_ticket_service_amount_ticket (ticket_id), 
-        add constraint FK_eirc_ticket_service_amount_ticket 
-        foreign key (ticket_id) 
-        references eirc_tickets_tbl (id);
-
-    alter table eirc_ticket_service_amounts_tbl 
-        add index FK_eirc_ticket_service_amount_consumer (consumer_id), 
-        add constraint FK_eirc_ticket_service_amount_consumer 
-        foreign key (consumer_id) 
-        references eirc_consumers_tbl (id);
-
-    alter table eirc_tickets_tbl 
-        add index FK_eirc_ticket_person (person_id), 
-        add constraint FK_eirc_ticket_person 
-        foreign key (person_id) 
-        references ab_persons_tbl (id);
-
-    alter table eirc_tickets_tbl 
-        add index FK_eirc_ticket_service_organization (service_organization_id), 
-        add constraint FK_eirc_ticket_service_organization 
-        foreign key (service_organization_id) 
-        references orgs_service_organizations_tbl (id);
-
-    alter table eirc_tickets_tbl 
-        add index FK_eirc_ticket_apartment (apartment_id), 
-        add constraint FK_eirc_ticket_apartment 
-        foreign key (apartment_id) 
-        references ab_apartments_tbl (id);
 
     alter table orgs_bank_accounts_tbl 
         add index FK_orgs_bank_accounts_tbl_organization_id (organization_id), 

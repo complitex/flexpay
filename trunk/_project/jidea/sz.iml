@@ -228,6 +228,7 @@
     <orderEntry type="library" name="Spring-WS" level="project" />
     <orderEntry type="library" name="CSVReader" level="project" />
     <orderEntry type="module" module-name="orgs" />
+    <orderEntry type="module" module-name="payments" />
   </component>
 </module>
 
