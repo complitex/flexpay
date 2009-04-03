@@ -1,11 +1,11 @@
 package org.flexpay.eirc.service.imp;
 
-import org.flexpay.accounting.persistence.operations.CashPaymentOperation;
-import org.flexpay.accounting.persistence.operations.OperationStatus;
-import org.flexpay.accounting.persistence.operations.OperationLevel;
-import org.flexpay.accounting.persistence.*;
-import org.flexpay.accounting.service.OperationService;
-import org.flexpay.accounting.service.DocumentTypeService;
+import org.flexpay.payments.persistence.operations.CashPaymentOperation;
+import org.flexpay.payments.persistence.operations.OperationStatus;
+import org.flexpay.payments.persistence.operations.OperationLevel;
+import org.flexpay.payments.service.OperationService;
+import org.flexpay.payments.service.DocumentTypeService;
+import org.flexpay.payments.persistence.*;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
@@ -108,7 +108,7 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 
 			EircSubject debet = new EircSubject();
 			debet.setOrganization(eirc);
-			debet.setEircAccount(account);
+//			debet.setEircAccount(account);
 			doc.setSubjectDebet(debet);
 
 			Stub<Service> stub = qdPayment.getQuittanceDetails().getConsumer().getServiceStub();
@@ -119,7 +119,7 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 			}
 			EircSubject credit = new EircSubject();
 			credit.setOrganization(service.getServiceProvider().getOrganization());
-			credit.setEircAccount(null);
+//			credit.setEircAccount(null);
 			doc.setSubjectCredit(credit);
 
 			op.addDocument(doc);

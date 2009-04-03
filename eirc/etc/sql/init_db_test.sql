@@ -1,3 +1,6 @@
+-- Setup service organization
+update ab_buildings_tbl set eirc_service_organization_id=@service_org_1 where id=@building_ivanova_27_id;
+
 -- Init services
 INSERT INTO eirc_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date)
 	VALUES (@service_provider_cn, '1', @unit_square_meter, @service_kvarplata, '1900-01-01', '2100-12-31');
