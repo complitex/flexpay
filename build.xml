@@ -10,6 +10,7 @@
         <target name="build.jars">
                 <antcall target="sz.jar.production" />
                 <antcall target="eirc.jar.production" />
+                <antcall target="orgs.jar.production" />
                 <antcall target="bti.jar.production" />
                 <antcall target="tc.jar.production" />
                 <antcall target="ab_sync.jar.production" />
@@ -20,7 +21,9 @@
 	<!-- Build wars -->
 	<target name="build.wars">
 		<antcall target="sz.war.production.glassfish_mysql5" />
-		<antcall target="eirc.war.production.glassfish_mysql5" />
+                <antcall target="eirc.war.production.glassfish_mysql5" />
+                <antcall target="orgs.war.production.glassfish_mysql5" />
+                <antcall target="payments.war.production.glassfish_mysql5" />
 		<antcall target="bti.war.production.glassfish_mysql5" />
 		<antcall target="tc.war.production.glassfish_mysql5" />
 		<antcall target="ab_sync.war.production.glassfish_mysql5" />
@@ -33,7 +36,9 @@
 		<antcall target="ab.exportschema.mysql5" />
 		<antcall target="ab_sync.exportschema.mysql5" />
 		<antcall target="bti.exportschema.mysql5" />
-		<antcall target="tc.exportschema.mysql5" />
+                <antcall target="tc.exportschema.mysql5" />
+                <antcall target="orgs.exportschema.mysql5" />
+                <antcall target="payments.exportschema.mysql5" />
 		<antcall target="eirc.exportschema.mysql5" />
 		<antcall target="sz.exportschema.mysql5" />
 	</target>
@@ -52,7 +57,13 @@
 		<antcall target="tc.db-test" />
 		<antcall target="tc.runtests" />
 
-		<antcall target="eirc.db-test" />
+                <antcall target="orgs.db-test" />
+                <antcall target="orgs.runtests" />
+
+                <antcall target="payments.db-test" />
+                <antcall target="payments.runtests" />
+
+                <antcall target="eirc.db-test" />
 		<antcall target="eirc.runtests" />
 
 		<antcall target="sz.db-test" />
@@ -65,7 +76,9 @@
 		<antcall target="ab.docs" />
 		<antcall target="ab_sync.docs" />
 		<antcall target="bti.docs" />
-		<antcall target="tc.docs" />
+                <antcall target="tc.docs" />
+                <antcall target="orgs.docs" />
+                <antcall target="payments.docs" />
 		<antcall target="eirc.docs" />
 		<antcall target="sz.docs" />
 	</target>
