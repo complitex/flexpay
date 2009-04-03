@@ -19,9 +19,20 @@ public interface ProcessDao {
 	 *
 	 * @param sorter process sorter
 	 * @param pager pager
+	 * @param startFrom lower bound for start date (if null will not be used)
+	 * @param endBefore upper bound for end date (if null will not be used)
+	 * @param state allowed state (if null will not be used)
+	 * @param name allowed name (if null will not be used)
 	 * @return list of all processes in database
 	 */
-	List<Process> findProcesses(ProcessSorter sorter, Page<Process> pager, Date startFrom, Date endBefore, ProcessState state);
+	List<Process> findProcesses(ProcessSorter sorter, Page<Process> pager, Date startFrom, Date endBefore,
+								ProcessState state, String name);
+
+	/**
+	 * Returns list of all unique names of processes in database
+	 * @return list of all unique names of processes in database
+	 */
+	List<String> findAllProcessNames();
 
 	/**
 	 * Converts JBPM process instance object into {@link org.flexpay.common.process.Process}

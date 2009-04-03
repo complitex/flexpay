@@ -33,7 +33,7 @@ public interface ProcessManager {
 	 * @throws ProcessDefinitionException when can't deplot process definition to jbpm
 	 */
 	@Secured (Roles.PROCESS_DEFINITION_UPLOAD_NEW)
-	public long deployProcessDefinition(String name, boolean replace) throws ProcessDefinitionException;
+	long deployProcessDefinition(String name, boolean replace) throws ProcessDefinitionException;
 
 	/**
 	 * Deploys parsed process definition to jbpm
@@ -43,7 +43,7 @@ public interface ProcessManager {
 	 * @return ID of process definition
 	 */
 	@Secured (Roles.PROCESS_DEFINITION_UPLOAD_NEW)
-	public long deployProcessDefinition(ProcessDefinition definition, boolean replace);
+	long deployProcessDefinition(ProcessDefinition definition, boolean replace);
 
 	/**
 	 * Deploys process definition to jbpm from inputStream
@@ -53,16 +53,16 @@ public interface ProcessManager {
 	 * @return ID of process definition
 	 * @throws ProcessDefinitionException when can't deploy process definition to jbpm
 	 */
-	public long deployProcessDefinition(InputStream in, boolean replace) throws ProcessDefinitionException;
+	long deployProcessDefinition(InputStream in, boolean replace) throws ProcessDefinitionException;
 
 	@Secured (Roles.PROCESS_DELETE)
-	public void deleteProcessInstance(final Process process);
+	void deleteProcessInstance(final Process process);
 
 	@Secured (Roles.PROCESS_DELETE)
-	public void deleteProcessInstances(List<Process> processes);
+	void deleteProcessInstances(List<Process> processes);
 
 	@Secured (Roles.PROCESS_DELETE)
-	public void deleteProcessInstances(final Set<Long> processIds);
+	void deleteProcessInstances(final Set<Long> processIds);
 
 	/**
 	 * Wait for process completion
@@ -70,7 +70,7 @@ public interface ProcessManager {
 	 * @param processId ProcessInstance id
 	 * @throws InterruptedException if waiting thread is interrupted
 	 */
-	public void join(long processId) throws InterruptedException;
+	void join(long processId) throws InterruptedException;
 
 	/**
 	 * Create process for process definition name
@@ -82,7 +82,7 @@ public interface ProcessManager {
 	 *                                    when can't instantiate process instance
 	 * @throws ProcessDefinitionException when process definition not found
 	 */
-	public long createProcess(String definitionName, Map<Serializable, Serializable> parameters)
+	long createProcess(String definitionName, Map<Serializable, Serializable> parameters)
 			throws ProcessInstanceException, ProcessDefinitionException;
 
 	/**
@@ -91,28 +91,39 @@ public interface ProcessManager {
 	 * @return Process list
 	 */
 	@Secured (Roles.PROCESS_READ)
-	public List<Process> getProcesses();
+	List<Process> getProcesses();
 
 	/**
-	 * Get list of system processes
+	 * Get paged list of system processes
 	 *
 	 * @param pager pager
 	 * @return Process list
 	 */
 	@Secured (Roles.PROCESS_READ)
-	public List<Process> getProcesses(Page<Process> pager);
+	List<Process> getProcesses(Page<Process> pager);
 
 	/**
-	 * Get list of system processes
+	 * Get paged list of system processes filtered by state, "start from" and "end before" dates
 	 *
 	 * @param processSorter process sorter
 	 * @param pager pager
+	 * @param startFrom lower bound for process start date (if null will not be used)
+	 * @param endBefore upper bound for process end date (if null will not be used)
+	 * @param state state allowed by filter (if null will not be used)
+	 * @param name name allowed by filter (if null will not be used)
 	 * @return Process list
 	 */
 	@Secured (Roles.PROCESS_READ)
-	public List<Process> getProcesses(ProcessSorter processSorter, Page<Process> pager, Date startFrom, Date endBefore, ProcessState state);
+	List<Process> getProcesses(ProcessSorter processSorter, Page<Process> pager, Date startFrom, Date endBefore, ProcessState state, String name);
 
-	public List<TaskInstance> getRunningTasks();
+	/**
+	 * Returns list which contains unique names of all the processes in the system
+	 * @return list which contains unique names of all the processes in the system
+	 */
+	@Secured (Roles.PROCESS_READ)
+	List<String> getAllProcessNames();
+
+	List<TaskInstance> getRunningTasks();
 
 	/**
 	 * Called when process job was finished
@@ -121,7 +132,7 @@ public interface ProcessManager {
 	 * @param parameters Task context parameters
 	 * @param transition transition name
 	 */
-	public void taskCompleted(Long taskId, Map<Serializable, Serializable> parameters, String transition);
+	void taskCompleted(Long taskId, Map<Serializable, Serializable> parameters, String transition);
 
 	/**
 	 * Retrive process info
@@ -131,14 +142,14 @@ public interface ProcessManager {
 	 */
 	@Secured (Roles.PROCESS_READ)
 	@NotNull
-	public Process getProcessInstanceInfo(@NotNull final Long processId);
+	Process getProcessInstanceInfo(@NotNull final Long processId);
 
-	public void setDefinitionPaths(List<String> definitionPaths);
+	void setDefinitionPaths(List<String> definitionPaths);
 
 	/**
 	 * Add voters
 	 *
 	 * @param lyfecycleVoters Voters to set
 	 */
-	public void setLyfecycleVoters(List<LyfecycleVoter> lyfecycleVoters);
+	void setLyfecycleVoters(List<LyfecycleVoter> lyfecycleVoters);
 }

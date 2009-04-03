@@ -12,4 +12,9 @@
 		where pi.id=?
 	</query>
 
+	<query name="Process.findAllProcessNames">
+		select distinct pd.name
+		from org.jbpm.graph.def.ProcessDefinition pd
+	</query>
+	
 </hibernate-mapping>

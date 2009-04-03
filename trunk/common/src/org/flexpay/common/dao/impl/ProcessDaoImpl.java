@@ -33,57 +33,51 @@ public class ProcessDaoImpl implements ProcessDao {
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Process> findProcesses(ProcessSorter sorter, final Page<Process> pager, Date startFrom, Date endBefore, ProcessState state) {
+	public List<Process> findProcesses(ProcessSorter sorter, final Page<Process> pager, Date startFrom, Date endBefore,
+									   ProcessState state, String name) {
 
 		final StringBuilder hql = new StringBuilder("select distinct pi " +
 													"from org.jbpm.graph.exe.ProcessInstance pi " +
 													"left join fetch pi.processDefinition pd ");
 
 		final StringBuilder cntHql = new StringBuilder("select count(pi) " +
-													   "from org.jbpm.graph.exe.ProcessInstance pi");
+													   "from org.jbpm.graph.exe.ProcessInstance pi ");
 
-		final StringBuilder filterHql = getFilterAndSortHql(sorter, state, startFrom, endBefore);
+		final StringBuilder filterHql = getFilterAndSortHql(sorter, state, startFrom, endBefore, name);
 		hql.append(filterHql);
 		cntHql.append(filterHql);
 
-		return convert(getProcessInstances(pager, hql, cntHql, startFrom, endBefore, state));
+		return convert(getProcessInstances(pager, hql, cntHql, startFrom, endBefore, state, name));
 	}
 
 	private List<ProcessInstance> getProcessInstances(Page<Process> pager, StringBuilder hql, StringBuilder cntHql,
-													  Date startFrom, Date endBefore, ProcessState state) {
+													  Date startFrom, Date endBefore, ProcessState state, String name) {
 
 		List<ProcessInstance> instances;
 		if (pager != null) {
-			instances = getProcessInstancesPage(pager, hql, cntHql, startFrom, endBefore, state);
+			instances = getProcessInstancesPage(pager, hql, cntHql, startFrom, endBefore, state, name);
 		} else {
-			instances = getAllProcessesInstances(hql, startFrom, endBefore, state);
+			instances = getAllProcessesInstances(hql, startFrom, endBefore, state, name);
 		}
 
 		return instances;
 	}
 
-	private void addSorting(StringBuilder hql, ProcessSorter sorter) {
-
-		if (sorter != null) {
-			StringBuilder orderByClause = new StringBuilder();
-			sorter.setOrderBy(orderByClause);
-
-			if (orderByClause.length() > 0) {
-				hql.append(" order by ").append(orderByClause);
-			}
-		}
-	}
-
-	private StringBuilder getFilterAndSortHql(ProcessSorter sorter, ProcessState state, Date startFrom, Date endBefore) {
+	private StringBuilder getFilterAndSortHql(ProcessSorter sorter, ProcessState state, Date startFrom, Date endBefore,
+											  String name) {
 		final StringBuilder filterHql = new StringBuilder();
-		addFiltering(filterHql, state, startFrom, endBefore);
+		addFiltering(filterHql, state, startFrom, endBefore, name);
 		addSorting(filterHql, sorter);
 		return filterHql;
 	}
 
-	private void addFiltering(StringBuilder hql, ProcessState state, Date startFrom, Date endBefore) {
+	private void addFiltering(StringBuilder hql, ProcessState state, Date startFrom, Date endBefore, String name) {
 
 		StringBuilder whereClause = new StringBuilder();
+
+		if (name != null) {
+			appendHqlWhereClause(whereClause, "pi.processDefinition.name = :name");
+		}
 
 		if (state != null) {
 			switch (state) {
@@ -105,17 +99,18 @@ public class ProcessDaoImpl implements ProcessDao {
 		}
 
 		if (startFrom != null && state != ProcessState.WAITING) {
-			appendHqlWhereClause(whereClause, "pi.start > ?");
+			appendHqlWhereClause(whereClause, "pi.start > :startFrom");
 		}
 
 		if (endBefore != null && state != ProcessState.RUNING) {
-			appendHqlWhereClause(whereClause, "pi.end < ?");
+			appendHqlWhereClause(whereClause, "pi.end < :endBefore");
 		}
 
 		if (whereClause.length() > 0) {
 			hql.append(" where ").append(whereClause);
 		}
 	}
+
 
 	private void appendHqlWhereClause(StringBuilder whereClause, String appendix) {
 
@@ -125,56 +120,64 @@ public class ProcessDaoImpl implements ProcessDao {
 		whereClause.append(appendix);
 	}
 
-	private void setQueryParameters(Query query, ProcessState state, Date startFrom, Date endBefore) {
+	private void addSorting(StringBuilder hql, ProcessSorter sorter) {
 
-		boolean startIsPresent = startFrom != null && state != ProcessState.WAITING;
-		boolean endIsPresent = endBefore != null && state != ProcessState.RUNING;
+		if (sorter != null) {
+			StringBuilder orderByClause = new StringBuilder();
+			sorter.setOrderBy(orderByClause);
 
-		// both start and end dates are present
-		if (startIsPresent && endIsPresent) {
-			query.setDate(0, startFrom);
-			query.setDate(1, endBefore);
+			if (orderByClause.length() > 0) {
+				hql.append(" order by ").append(orderByClause);
+			}
+		}
+	}
+
+	private void setQueryParameters(Query query, ProcessState state, Date startFrom, Date endBefore, String name) {
+
+		if (name != null) {
+			query.setString("name", name);
 		}
 
-		// start date is present, end date is not
-		if (startIsPresent && !endIsPresent) {
-			query.setDate(0, startFrom);
+		if (startFrom != null && state != ProcessState.WAITING) {
+			query.setDate("startFrom", startFrom);
 		}
 
-		// end date is present, start is not
-		if (!startIsPresent && endIsPresent) {
-			query.setDate(0, endBefore);
+		if (endBefore != null && state != ProcessState.RUNING) {
+			query.setDate("endBefore", endBefore);
 		}
 	}
 
 	@SuppressWarnings ({"unchecked"})
 	private List<ProcessInstance> getAllProcessesInstances(final StringBuilder hql, final Date startFrom,
-														   final Date endBefore, final ProcessState state) {
+														   final Date endBefore, final ProcessState state,
+														   final String name) {
 
 		return (List<ProcessInstance>) hibernateTemplate.executeFind(new HibernateCallback() {
 			public List<ProcessInstance> doInHibernate(Session session) throws HibernateException {
 				Query query = session.createQuery(hql.toString());
-				setQueryParameters(query, state, startFrom, endBefore);
+				setQueryParameters(query, state, startFrom, endBefore, name);
 				return (List<ProcessInstance>) query.list();
 			}
 		});
 	}
 
 	@SuppressWarnings ({"unchecked"})
-	private List<ProcessInstance> getProcessInstancesPage(final Page<Process> pager, final StringBuilder hql, final StringBuilder cntHql,
-														  final Date startFrom, final Date endBefore, final ProcessState state) {
+	private List<ProcessInstance> getProcessInstancesPage(final Page<Process> pager, final StringBuilder hql,
+														  final StringBuilder cntHql, final Date startFrom,
+														  final Date endBefore, final ProcessState state,
+														  final String name) {
 
 		return (List<ProcessInstance>) hibernateTemplate.executeFind(new HibernateCallback() {
 			public List<ProcessInstance> doInHibernate(Session session) throws HibernateException {
 
 				// getting total elements number for pager
 				Query cntQuery = session.createQuery(cntHql.toString());
-				setQueryParameters(cntQuery, state, startFrom, endBefore);
+				setQueryParameters(cntQuery, state, startFrom, endBefore, name);
 				Long count = (Long) cntQuery.uniqueResult();
 				pager.setTotalElements(count.intValue());
 
 				Query query = session.createQuery(hql.toString());
-				setQueryParameters(query, state, startFrom, endBefore);
+				setQueryParameters(query, state, startFrom, endBefore, name);
 				query.setFirstResult(pager.getThisPageFirstElementNumber());
 				query.setMaxResults(pager.getPageSize());
 
@@ -244,6 +247,14 @@ public class ProcessDaoImpl implements ProcessDao {
 		}
 
 		return process;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@SuppressWarnings ({"unchecked"})
+	public List<String> findAllProcessNames() {
+		return (List<String>) hibernateTemplate.findByNamedQuery("Process.findAllProcessNames");
 	}
 
 	@Required

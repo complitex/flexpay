@@ -20,6 +20,14 @@ public abstract class DateFilterBase extends ObjectFilter {
 
 	protected abstract Date getEmptyDate();
 
+	public boolean dateIsEmpty() {
+		return getEmptyDate().equals(getDate());
+	}
+
+	public boolean dateIsNotEmpty() {
+		return !dateIsEmpty();
+	}
+
 	public String getStringDate() {
 		String dt = DateUtil.format(getDate());
 		return "-".equals(dt) ? "" : dt;

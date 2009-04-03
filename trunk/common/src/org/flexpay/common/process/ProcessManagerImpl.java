@@ -624,15 +624,23 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 */
 	public List<Process> getProcesses(Page<Process> pager) {
 
-		return getProcesses(null, pager, null, null, null);
+		return getProcesses(null, pager, null, null, null, null);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Process> getProcesses(ProcessSorter processSorter, Page<Process> pager, Date startFrom, Date endBefore, ProcessState state) {
+	public List<Process> getProcesses(ProcessSorter processSorter, Page<Process> pager, Date startFrom, Date endBefore,
+									  ProcessState state, String name) {
 
-		return processDao.findProcesses(processSorter, pager, startFrom, endBefore, state);
+		return processDao.findProcesses(processSorter, pager, startFrom, endBefore, state, name);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<String> getAllProcessNames() {
+		return processDao.findAllProcessNames();
 	}
 
 	/**

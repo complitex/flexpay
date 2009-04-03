@@ -1,4 +1,4 @@
-
+	
 -- Init Languages table
 INSERT INTO common_languages_tbl (is_default, status, lang_iso_code) values (1, 0, 'ru');
 SELECT @ru_id:=last_insert_id();
