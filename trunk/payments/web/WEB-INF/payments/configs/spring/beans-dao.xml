@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<!-- Module payments DAO layer instances -->
+	<bean id="documentDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.payments.dao.DocumentDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.payments.persistence.Document" />
+			</bean>
+		</property>
+	</bean>
+
+    <bean id="documentTypeDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.payments.dao.DocumentTypeDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.payments.persistence.DocumentType" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="eircSubjectDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.payments.dao.EircSubjectDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.payments.persistence.EircSubject" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="operationDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.payments.persistence.operations.Operation" />
+            </bean>
+        </property>
+    </bean>
+
+</beans>

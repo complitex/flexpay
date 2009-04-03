@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.accounting.persistence">
+
+	<typedef name="documentStatusType" class="org.flexpay.common.persistence.GenericEnumUserType">
+		<param name="enumClass">
+			org.flexpay.payments.persistence.DocumentStatus
+		</param>
+		<param name="identifierMethod">
+			toInt
+		</param>
+		<param name="valueOfMethod">
+			fromInt
+		</param>
+	</typedef>
+
+	<class name="org.flexpay.payments.persistence.Document"
+		   table="accounting_documents_tbl"
+		   optimistic-lock="version">
+		<comment>Operation document</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="summ">
+			<column name="summ" not-null="true">
+				<comment>Summ</comment>
+			</column>
+		</property>
+		<property name="documentStatus" type="documentStatusType">
+			<column name="status" not-null="true">
+				<comment>Document status</comment>
+			</column>
+		</property>
+		<many-to-one name="subjectDebet" cascade="all"
+					 foreign-key="FK_accounting_documents_tbl_subject_debet_id"
+					 class="org.flexpay.payments.persistence.EircSubject">
+			<column name="subject_debet_id" not-null="true">
+				<comment>Debet subject reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="subjectCredit" cascade="all"
+					 foreign-key="FK_accounting_documents_tbl_subject_credit_id"
+					 class="org.flexpay.payments.persistence.EircSubject">
+			<column name="subject_credit_id" not-null="true">
+				<comment>Credit subject reference</comment>
+			</column>
+		</many-to-one>
+
+		<many-to-one name="operation"
+					 class="org.flexpay.payments.persistence.operations.Operation"
+					 foreign-key="FK_accounting_documents_tbl_accounting_operation_id">
+			<column name="operation_id" not-null="true">
+				<comment>Operation reference</comment>
+			</column>
+		</many-to-one>
+
+		<!--<many-to-one name="registryRecord" class="org.flexpay.eirc.persistence.RegistryRecord"-->
+					 <!--foreign-key="FK_accounting_documents_tbl_registry_record_id">-->
+			<!--<column name="registry_record_id" not-null="false">-->
+				<!--<comment>Optional registry record reference</comment>-->
+			<!--</column>-->
+		<!--</many-to-one>-->
+
+		<many-to-one name="documentType" class="org.flexpay.payments.persistence.DocumentType"
+					 foreign-key="FK_accounting_documents_tbl_document_type_id">
+			<column name="type_id" not-null="true">
+				<comment>Document type reference</comment>
+			</column>
+		</many-to-one>
+
+	</class>
+
+	<class name="org.flexpay.payments.persistence.EircSubject"
+		   table="accounting_eirc_subjects_tbl"
+		   optimistic-lock="version">
+		<comment>Operation document subjects</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<!--<many-to-one name="eircAccount"-->
+					 <!--foreign-key="FK_accounting_eirc_subjects_tbl_account_id"-->
+					 <!--class="org.flexpay.eirc.persistence.EircAccount">-->
+			<!--<column name="eirc_account_id" not-null="false">-->
+				<!--<comment>Optional eirc account reference</comment>-->
+			<!--</column>-->
+		<!--</many-to-one>-->
+		<many-to-one name="organization"
+					 foreign-key="FK_accounting_eirc_subjects_tbl_organization_id"
+					 class="org.flexpay.orgs.persistence.Organization">
+			<column name="organization_id" not-null="true">
+				<comment>Subject organisation reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<class name="org.flexpay.payments.persistence.DocumentType"
+		   table="accounting_document_types_tbl"
+		   optimistic-lock="version">
+		<comment>Operation document types</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Type name</comment>
+			</column>
+		</property>
+		<property name="code">
+			<column name="code" not-null="true" unique="true">
+				<comment>Type unique code</comment>
+			</column>
+		</property>
+	</class>
+
+	<query name="DocumentType.findDocumentType">
+		from DocumentType
+		where code=?
+	</query>
+
+</hibernate-mapping>

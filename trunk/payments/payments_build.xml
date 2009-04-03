@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay_payments" basedir=".." default="payments.help">
+
+	<import file="../orgs/orgs_build.xml" />
+
+	<property file="payments/payments_build.properties" />
+
+	<property name="payments.dir" value="${basedir}/payments" />
+
+	<path id="payments.lib">
+		<fileset dir="${payments.dir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<fileset id="payments.libraries" dir="${payments.dir}/lib">
+		<include name="**/*" />
+	</fileset>
+
+	<path id="payments.jar" location="${build.dir}/lib/${payments.jar.name}" />
+	<path id="payments.test.jar" location="${build.dir}/lib/${payments.tests.jar.name}" />
+
+	<path id="payments.production.classpath">
+		<path refid="orgs.production.classpath" />
+		<path refid="payments.lib" />
+		<path refid="orgs.jar" />
+	</path>
+
+	<path id="payments.test.classpath">
+		<path refid="orgs.test.classpath" />
+		<path refid="payments.jar" />
+		<path refid="payments.test.jar" />
+		<path refid="payments.production.classpath" />
+	</path>
+
+    <path id="payments.runtests.classpath">
+        <path refid="orgs.runtests.classpath" />
+        <path refid="payments.test.classpath" />
+        <path location="${build.dir}/web" />
+        <path location="payments/src" />
+        <path location="payments/tests/data" />
+    </path>
+
+	<target name="payments.help" description="Print payments module build script options">
+		<echo>
+	payments module build script
+	Usage:
+	ant -f payments_build.xml [target_name [target_options]]
+
+	Available targets are:
+		payments.db - Initialize database
+		payments.exportschema.mysql5 - Generate DDL of module for MySQL5
+		payments.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
+			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.payments.service.TestBuildingService
+		payments.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
+		payments.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		</echo>
+	</target>
+
+    <target name="payments.clean.build">
+		<antcall target="clean.build" />
+	</target>
+
+	<property name="payments.src.production" value="${payments.dir}/${src.dir};${orgs.src.production}" />
+	<target name="payments.compile.production">
+		<antcall target="template.compile.production">
+			<param name="sources.dir" value="${payments.src.production}" />
+			<reference refid="payments.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<property name="payments.src.test" value="${payments.src.production};${payments.dir}/${tests.src.dir};${orgs.src.test}" />
+	<target name="payments.compile.test">
+		<antcall target="template.compile.test">
+			<param name="sources.dir" value="${payments.src.test}" />
+			<reference refid="payments.test.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="payments.jar.production" depends="payments.compile.production">
+		<antcall target="template.jar">
+			<param name="jar.name" value="${payments.jar.name}" /> 
+		</antcall>
+	</target>
+
+	<!-- Build targets -->
+	<target name="payments.docs" depends="payments.compile.production">
+		<fileset id="payments.docs.resources" dir="${payments.dir}/docs" />
+		<antcall target="template.docs">
+			<param name="sources.dir" value="${payments.src.production}" />
+			<param name="module_name" value="Bureau of techinical stock-taking" />
+			<param name="docs.file" value="${payments.docs.name}" />
+			<reference refid="payments.docs.resources" torefid="resources" />
+			<reference refid="payments.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="payments.war.production.tomcat_mysql5">
+		<antcall target="clean.all" />
+		<antcall target="template.payments.war.production">
+			<param name="app_server.properties" value="app_server_tomcat.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="payments.war.production.glassfish_mysql5">
+		<antcall target="clean.all" />
+		<antcall target="template.payments.war.production">
+			<param name="app_server.properties" value="app_server_glassfish.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+    <target name="payments.prepare.war">
+		<antcall target="payments.prepare.war.internal" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+	<target name="payments.prepare.test.war">
+		<antcall target="payments.prepare.war.internal" />
+		<antcall target="common.test.war.data-source" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+    <target name="payments.prepare.war.internal" depends="orgs.prepare.war.internal">
+        <fileset id="payments.web.resources" dir="${payments.dir}/web" />
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="" />
+            <param name="src.i18n.dir" value="${build.dir}/empty" />
+            <reference refid="payments.web.resources" torefid="resources" />
+        </antcall>
+
+        <fileset dir="${payments.dir}/${src.dir}" id="payments.classes.resources">
+            <patternset refid="resources_pattern" />
+        </fileset>
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="/WEB-INF/classes" />
+            <param name="src.i18n.dir" value="${payments.dir}/${src.dir}" />
+            <reference refid="payments.classes.resources" torefid="resources" />
+        </antcall>
+    </target>
+
+    <!-- Build production web-archive -->
+	<target name="template.payments.war.production"
+			depends="clean.all,payments.compile.production,payments.prepare.war,init.distr">
+
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+
+		<antcall target="template.set_db_name" />
+		<antcall target="template.switch_instance_id" />
+
+		<war destfile="${distr.dir}/${payments.war.name}" needxmlfile="false">
+			<fileset dir="${build.dir}/web" />
+			<lib refid="payments.libraries" />
+		</war>
+
+		<antcall target="common.war.include.libs">
+			<param name="warfile" value="${distr.dir}/${payments.war.name}" />
+		</antcall>
+	</target>
+
+	<target name="payments.exportschema.mysql5" depends="clean.build,payments.compile.production">
+		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+		<antcall target="template.schemaexport">
+			<param name="file_name" value="flexpay_payments.ddl.sql" />
+			<param name="src.dir" value="${payments.src.production}" />
+			<param name="hibernate.cfg"
+				   value="${payments.dir}/web/WEB-INF/hibernate.cfg.xml" />
+			<param name="hibernate.properties"
+				   value="${common.dir}/web/WEB-INF/common/configs/ps/data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="payments.runtests" depends="payments.compile.test,payments.prepare.test.war">
+		<condition property="class.name" value="${test.class.name}" else="org.flexpay.payments.AllTests">
+			<isset property="test.class.name" />
+		</condition>
+		<antcall target="template.run.tests">
+			<param name="test_name" value="${class.name}" />
+			<reference refid="payments.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="payments.sql.init-db"
+			depends="orgs.sql.init-db"
+			unless="payments.sql.init-db.run">
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${payments.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<property name="payments.sql.init-db.run" value="true" />
+	</target>
+
+	<target name="payments.sql.init-db-test"
+			depends="orgs.sql.init-db-test"
+			unless="payments.sql.init-db-test.run">
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${payments.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${payments.dir}/etc/sql/init_db_test.sql" />
+		</concat>
+		<property name="payments.sql.init-db-test.run" value="true" />
+	</target>
+
+	<target name="payments.sql.all">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${payments.dir}/etc/sql/flexpay_payments.ddl.sql" />
+		</concat>
+		<antcall target="payments.sql.init-db" />
+		<antcall target="template.set_db_name" />
+	</target>
+
+	<target name="payments.sql.all-test">
+		<antcall target="common.sql.create-test-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${payments.dir}/etc/sql/flexpay_payments.ddl.sql" />
+		</concat>
+		<antcall target="payments.sql.init-db-test" />
+		<antcall target="template.set_test_db_name" />
+	</target>
+
+	<target name="payments.db-test" description="create payments db">
+		<antcall target="payments.sql.all-test" />
+		<antcall target="template.mysql.run">
+			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
+		</antcall>
+	</target>
+
+</project>
