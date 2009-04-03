@@ -24,6 +24,7 @@
     <import resource="ab/configs/spring/config.xml" />
     <import resource="bti/configs/spring/config.xml" />
     <import resource="orgs/configs/spring/config.xml" />
+    <import resource="payments/configs/spring/config.xml" />
     <import resource="eirc/configs/spring/config.xml" />
 
 </beans>
