@@ -59,6 +59,14 @@
       <maximumStackSize value="32" />
       <properties />
     </buildFile>
+    <buildFile url="file://$PROJECT_DIR$/../../payments/payments_build.xml">
+      <additionalClassPath />
+      <antReference projectDefault="true" />
+      <customJdkName value="" />
+      <maximumHeapSize value="128" />
+      <maximumStackSize value="32" />
+      <properties />
+    </buildFile>
   </component>
   <component name="BuildJarProjectSettings">
     <option name="BUILD_JARS_ON_MAKE" value="false" />
@@ -13549,6 +13557,7 @@
       <module fileurl="file://$PROJECT_DIR$/eirc.iml" filepath="$PROJECT_DIR$/eirc.iml" />
       <module fileurl="file://$PROJECT_DIR$/module_template.iml" filepath="$PROJECT_DIR$/module_template.iml" />
       <module fileurl="file://$PROJECT_DIR$/orgs.iml" filepath="$PROJECT_DIR$/orgs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/payments.iml" filepath="$PROJECT_DIR$/payments.iml" />
       <module fileurl="file://$PROJECT_DIR$/samples.iml" filepath="$PROJECT_DIR$/samples.iml" />
       <module fileurl="file://$PROJECT_DIR$/sz.iml" filepath="$PROJECT_DIR$/sz.iml" />
       <module fileurl="file://$PROJECT_DIR$/tc.iml" filepath="$PROJECT_DIR$/tc.iml" />
@@ -13761,6 +13770,49 @@
         <entry key="$PROJECT_DIR$/../../eirc">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://flexpay.googlecode.com/svn/branches" />
+                  <option value="https://flexpay.googlecode.com/svn/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://flexpay.googlecode.com/svn/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../module_template">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1236663152851" />
+                          <option name="revision" value="1031" />
+                          <option name="url" value="https://flexpay.googlecode.com/svn/branches/FP-225" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1231921115221" />
+                          <option name="revision" value="773" />
+                          <option name="url" value="https://flexpay.googlecode.com/svn/branches/FP-277" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1231149808711" />
+                          <option name="revision" value="758" />
+                          <option name="url" value="https://flexpay.googlecode.com/svn/branches/FP-290" />
+                        </SvnBranchItem>
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="branchUrls">
                 <list>
                   <option value="https://flexpay.googlecode.com/svn/branches" />

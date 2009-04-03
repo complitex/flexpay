@@ -106,9 +106,6 @@ SELECT @service_org_1:=1;
 INSERT INTO orgs_service_organization_descriptions_tbl (name, language_id, service_organization_id)
 	VALUES ('ЖКО', @ru_id, @service_org_1);
 
--- Setup service organization
-update ab_buildings_tbl set eirc_service_organization_id=@service_org_1 where id=@building_ivanova_27_id;
-
 -- Payment collectors
 insert INTO orgs_payments_collectors_tbl (id, status, version, organization_id)
 	values (1, 0, 0, @organization_cn);
