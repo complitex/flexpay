@@ -1,27 +1,38 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:form>
-
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
-
 		<tr>
-			<td colspan="9">
+			<td nowrap="nowrap">
 				<s:text name="common.processing.process.filter.start_date"/>
 				<%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %>
+			</td>
 
+			<td nowrap="nowrap">
 				<s:text name="common.processing.process.filter.end_date"/>
 				<%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %>
-
-				<s:submit name="filtered" value="%{getText('common.show')}" cssClass="btn-exit"/>
 			</td>
+
+			<td><s:submit name="filtered" value="%{getText('common.show')}" cssClass="btn-exit"/></td>
 		</tr>
 
 		<tr>
-			<td colspan="9">
+			<td nowrap="nowrap">
+				<s:text name="common.processing.process.filter.name"/>
+				<%@include file="/WEB-INF/jsp/common/processing/filters/process_name_filter.jsp" %>
+			</td>
+
+			<td nowrap="nowrap">
 				<s:text name="common.processing.process.filter.state"/>
 				<%@include file="/WEB-INF/jsp/common/processing/filters/process_state_filter.jsp" %>
 			</td>
+
+			<td>&nbsp;</td>
 		</tr>
+	</table>
+
+	<s:if test="%{resultsAreNotEmpty()}">
+	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
 		<tr>
 			<td colspan="9"><%@include file="../filter/pager/pager.jsp" %></td>
@@ -88,6 +99,11 @@
 		</tr>
 
 	</table>
+	</s:if>
+	<s:else>
+		<br/>
+		<p align="center"><s:text name="common.processing.process.not_found"/></p>		
+	</s:else>
 </s:form>
 
 	

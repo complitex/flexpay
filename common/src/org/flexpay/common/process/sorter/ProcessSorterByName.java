@@ -9,6 +9,6 @@ public class ProcessSorterByName extends ProcessSorter {
 	 * {@inheritDoc}
 	 */
 	public void setOrderBy(StringBuilder orderByClause) {
-		orderByClause.append(" pd.name ").append(getOrder());
+		orderByClause.append(" pi.processDefinition.name ").append(getOrder());
 	}
 }

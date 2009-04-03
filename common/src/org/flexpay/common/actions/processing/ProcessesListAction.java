@@ -6,18 +6,20 @@ import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.ProcessState;
+import org.flexpay.common.process.filter.ProcessNameFilter;
 import org.flexpay.common.process.filter.ProcessStateFilter;
 import org.flexpay.common.process.filter.ProcessStateObject;
 import org.flexpay.common.process.sorter.*;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class  ProcessesListAction extends FPActionWithPagerSupport<Process> {
+public class ProcessesListAction extends FPActionWithPagerSupport<Process> implements InitializingBean {
 
 	// form data
 	private List<Process> processList;
@@ -28,12 +30,12 @@ public class  ProcessesListAction extends FPActionWithPagerSupport<Process> {
 	private ProcessSorterByStartDate processSorterByStartDate = new ProcessSorterByStartDate();
 	private ProcessSorterByEndDate processSorterByEndDate = new ProcessSorterByEndDate();
 	private ProcessSorterByState processSorterByState = new ProcessSorterByState();
-	private ProcessSorterByUser processSorterByUser = new ProcessSorterByUser();
 
 	// filters
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();
 	private ProcessStateFilter processStateFilter = new ProcessStateFilter();
+	private ProcessNameFilter processNameFilter = new ProcessNameFilter();
 
 	// process manager
 	private ProcessManager processManager;
@@ -43,12 +45,19 @@ public class  ProcessesListAction extends FPActionWithPagerSupport<Process> {
 	 */
 	@NotNull
 	protected String doExecute() throws Exception {
-		
+
+		initFilters();
+
 		if (objectIds != null && objectIds.size() > 0) {
 			processManager.deleteProcessInstances(objectIds);
 		}
+
 		processList = getProcessListMethod();
 		return SUCCESS;
+	}
+
+	private void initFilters() {
+		processNameFilter.loadAllProcessNames();
 	}
 
 	/**
@@ -61,26 +70,16 @@ public class  ProcessesListAction extends FPActionWithPagerSupport<Process> {
 
 	private List<Process> getProcessListMethod() {
 
-		// if start from date is not set it should be set to past infinite
-		Date startFrom = beginDateFilter.getDate();
-		if (dateIsNotSet(startFrom)) {
-			startFrom = null;
-		}
-		Date endBefore = endDateFilter.getDate();
-		if (dateIsNotSet(endBefore)) {
-			endBefore = null;
-		}
+		Date startFrom = beginDateFilter.dateIsNotEmpty() ? beginDateFilter.getDate() : null;
+		Date endBefore = endDateFilter.dateIsNotEmpty() ? endDateFilter.getDate() : null;
 
-		return processManager.getProcesses(getActiveSorter(), getPager(), startFrom, endBefore, processStateFilter.getProcessState());
-	}
-
-	private boolean dateIsNotSet(Date date) {
-		return date.equals(ApplicationConfig.getFutureInfinite());
+		return processManager.getProcesses(getActiveSorter(), getPager(), startFrom, endBefore,
+				processStateFilter.getProcessState(), processNameFilter.getSelectedName());
 	}
 
 	private ProcessSorter getActiveSorter() {
 
-		ProcessSorter[] sorters = { processSorterByName, processSorterByStartDate, processSorterByEndDate, processSorterByState, processSorterByUser };
+		ProcessSorter[] sorters = {processSorterByName, processSorterByStartDate, processSorterByEndDate, processSorterByState};
 		for (ProcessSorter sorter : sorters) {
 			if (sorter.isActivated()) {
 				return sorter;
@@ -94,6 +93,10 @@ public class  ProcessesListAction extends FPActionWithPagerSupport<Process> {
 	public String getTranslation(ProcessState state) {
 
 		return getText(ProcessStateObject.getByProcessState(state).getName());
+	}
+
+	public boolean resultsAreNotEmpty() {
+		return processList.size() > 0;
 	}
 
 	// form data
@@ -110,40 +113,16 @@ public class  ProcessesListAction extends FPActionWithPagerSupport<Process> {
 		return processSorterByName;
 	}
 
-	public void setProcessSorterByName(ProcessSorterByName processSorterByName) {
-		this.processSorterByName = processSorterByName;
-	}
-
 	public ProcessSorterByStartDate getProcessSorterByStartDate() {
 		return processSorterByStartDate;
-	}
-
-	public void setProcessSorterByStartDate(ProcessSorterByStartDate processSorterByStartDate) {
-		this.processSorterByStartDate = processSorterByStartDate;
 	}
 
 	public ProcessSorterByEndDate getProcessSorterByEndDate() {
 		return processSorterByEndDate;
 	}
 
-	public void setProcessSorterByEndDate(ProcessSorterByEndDate processSorterByEndDate) {
-		this.processSorterByEndDate = processSorterByEndDate;
-	}
-
 	public ProcessSorterByState getProcessSorterByState() {
 		return processSorterByState;
-	}
-
-	public void setProcessSorterByState(ProcessSorterByState processSorterByState) {
-		this.processSorterByState = processSorterByState;
-	}
-
-	public ProcessSorterByUser getProcessSorterByUser() {
-		return processSorterByUser;
-	}
-
-	public void setProcessSorterByUser(ProcessSorterByUser processSorterByUser) {
-		this.processSorterByUser = processSorterByUser;
 	}
 
 	// filters
@@ -159,8 +138,17 @@ public class  ProcessesListAction extends FPActionWithPagerSupport<Process> {
 		return processStateFilter;
 	}
 
+	public ProcessNameFilter getProcessNameFilter() {
+		return processNameFilter;
+	}
+
 	// process manager
+	@Required
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
+	}
+
+	public void afterPropertiesSet() throws Exception {
+		processNameFilter.setProcessManager(processManager);
 	}
 }
