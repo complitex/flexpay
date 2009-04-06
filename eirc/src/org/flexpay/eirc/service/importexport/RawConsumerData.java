@@ -3,8 +3,8 @@ package org.flexpay.eirc.service.importexport;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.service.importexport.RawData;
 import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.Registry;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -100,9 +100,9 @@ public class RawConsumerData extends RawData<Consumer> {
 		return obj == null ? null : (RegistryRecord) obj;
 	}
 
-	public SpRegistry getRegistry() {
+	public Registry getRegistry() {
 		Object obj = getNameToValuesMap().get(FIELD_REGISTRY_HEADER);
-		return obj == null ? null : (SpRegistry) obj;
+		return obj == null ? null : (Registry) obj;
 	}
 
 	public String getPersonFIO() {

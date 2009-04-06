@@ -1,7 +1,7 @@
-package org.flexpay.eirc.persistence.filters;
+package org.flexpay.common.persistence.filter;
 
 import org.flexpay.common.persistence.filter.ObjectFilter;
-import org.flexpay.eirc.persistence.RegistryRecordStatus;
+import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 
 import java.util.Map;
 import java.util.TreeMap;

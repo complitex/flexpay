@@ -1,8 +1,8 @@
 package org.flexpay.eirc.service.imp;
 
-import org.flexpay.eirc.dao.SpRegistryTypeDao;
-import org.flexpay.eirc.persistence.RegistryType;
-import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
+import org.flexpay.common.dao.registry.RegistryTypeDao;
+import org.flexpay.common.persistence.registry.RegistryType;
+import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.eirc.service.SpRegistryTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ public class RegistryTypeServiceImpl implements SpRegistryTypeService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	private SpRegistryTypeDao spRegistryTypeDao;
+	private RegistryTypeDao registryTypeDao;
 
 	/**
 	 * Read SpRegistryType object by its unique id
@@ -24,7 +24,7 @@ public class RegistryTypeServiceImpl implements SpRegistryTypeService {
 	 * @return SpRegistryType object, or <code>null</code> if object not found
 	 */
 	public RegistryType read(Long id) {
-		return spRegistryTypeDao.read(id);
+		return registryTypeDao.read(id);
 	}
 
 	/**
@@ -33,16 +33,16 @@ public class RegistryTypeServiceImpl implements SpRegistryTypeService {
 	 * @param registryTypeFilter filter to init
 	 */
 	public void initFilter(RegistryTypeFilter registryTypeFilter) {
-		List<RegistryType> types = spRegistryTypeDao.findAll();
+		List<RegistryType> types = registryTypeDao.findAll();
 		registryTypeFilter.setRegistryTypes(types);
 
 		log.debug("Registry types: {}" + types);
 	}
 
 	/**
-	 * @param spRegistryTypeDao the spRegistryTypeDao to set
+	 * @param registryTypeDao the spRegistryTypeDao to set
 	 */
-	public void setSpRegistryTypeDao(SpRegistryTypeDao spRegistryTypeDao) {
-		this.spRegistryTypeDao = spRegistryTypeDao;
+	public void setSpRegistryTypeDao(RegistryTypeDao registryTypeDao) {
+		this.registryTypeDao = registryTypeDao;
 	}
 }

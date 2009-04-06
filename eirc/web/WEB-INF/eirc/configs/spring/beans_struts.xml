@@ -112,18 +112,18 @@
 	<!-- Served buildings actions -->
 	<bean id="serviceOrganizationListServedBuildingsAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationListServedBuildingsAction"
-		  p:serviceOrganizationService-ref="serviceOrganizationService"
+		  p:serviceOrganizationService-ref="eircServiceOrganizationService"
 		  p:addressService-ref="addressService" />
 
 	<bean id="serviceOrganizationAddServedBuildingAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationAddServedBuildingAction"
 		  p:parentService-ref="streetService"
 		  p:buildingService-ref="buildingService"
-		  p:serviceOrganizationService-ref="serviceOrganizationService" />
+		  p:serviceOrganizationService-ref="eircServiceOrganizationService" />
 
 	<bean id="serviceOrganizationRemoveServedBuildingsAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationRemoveServedBuildingsAction"
-		  p:serviceOrganizationService-ref="serviceOrganizationService" />
+		  p:serviceOrganizationService-ref="eircServiceOrganizationService" />
 
 	<!-- Subdivision actions -->
 	<bean id="subdivisionsListAction" scope="prototype"
@@ -167,42 +167,41 @@
 
 	<!-- Corrections -->
 	<bean id="selectCorrectionTypeAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.corrections.SelectCorrectionTypeAction">
-		<property name="registryRecordService" ref="registryRecordService" />
-		<property name="typeRegistry" ref="typeRegistryEirc" />
-	</bean>
+		  class="org.flexpay.eirc.actions.registry.corrections.SelectCorrectionTypeAction"
+		  p:registryRecordService-ref="registryRecordService"
+		  p:typeRegistry-ref="typeRegistryEirc" />
 
 	<bean id="correctRecordAddressAction" scope="prototype" parent="apartmentsListAction"
-		  class="org.flexpay.eirc.actions.registry.corrections.CorrectAddressAction">
-		<property name="consumersDataSource" ref="consumersDataSource" />
-		<property name="correctionsService" ref="correctionsServiceEirc" />
-		<property name="recordService" ref="registryRecordService" />
-		<property name="serviceTypeService" ref="serviceTypeService" />
-		<property name="typeRegistry" ref="typeRegistryEirc" />
-	</bean>
+		  class="org.flexpay.eirc.actions.registry.corrections.CorrectAddressAction"
+		  p:consumersDataSource-ref="consumersDataSource"
+		  p:correctionsService-ref="correctionsServiceEirc"
+		  p:recordService-ref="registryRecordService"
+		  p:serviceTypeService-ref="serviceTypeService"
+		  p:typeRegistry-ref="typeRegistryEirc"
+		  p:serviceProviderService-ref="serviceProviderService" />
 
 	<bean id="correctBuildingAddressAction" scope="prototype" parent="buildingsListAction"
-		  class="org.flexpay.eirc.actions.registry.corrections.CorrectBuildingAction">
-		<property name="consumersDataSource" ref="consumersDataSource" />
-		<property name="correctionsService" ref="correctionsServiceEirc" />
-		<property name="recordService" ref="registryRecordService" />
-		<property name="serviceTypeService" ref="serviceTypeService" />
-	</bean>
+		  class="org.flexpay.eirc.actions.registry.corrections.CorrectBuildingAction"
+		  p:consumersDataSource-ref="consumersDataSource"
+		  p:correctionsService-ref="correctionsServiceEirc"
+		  p:recordService-ref="registryRecordService"
+		  p:serviceTypeService-ref="serviceTypeService"
+		  p:serviceProviderService-ref="serviceProviderService" />
 
 	<bean id="correctStreetAddressAction" scope="prototype" parent="streetsListAction"
-		  class="org.flexpay.eirc.actions.registry.corrections.CorrectStreetAction">
-		<property name="consumersDataSource" ref="consumersDataSource" />
-		<property name="correctionsService" ref="correctionsServiceEirc" />
-		<property name="recordService" ref="registryRecordService" />
-		<property name="serviceTypeService" ref="serviceTypeService" />
-	</bean>
+		  class="org.flexpay.eirc.actions.registry.corrections.CorrectStreetAction"
+		  p:consumersDataSource-ref="consumersDataSource"
+		  p:correctionsService-ref="correctionsServiceEirc"
+		  p:recordService-ref="registryRecordService"
+		  p:serviceTypeService-ref="serviceTypeService"
+		  p:serviceProviderService-ref="serviceProviderService" />
 
 	<bean id="correctPersonAction" scope="prototype" parent="personsListAction"
-		  class="org.flexpay.eirc.actions.registry.corrections.CorrectPersonAction">
-		<property name="consumersDataSource" ref="consumersDataSource" />
-		<property name="correctionsService" ref="correctionsServiceEirc" />
-		<property name="recordService" ref="registryRecordService" />
-	</bean>
+		  class="org.flexpay.eirc.actions.registry.corrections.CorrectPersonAction"
+		  p:consumersDataSource-ref="consumersDataSource"
+		  p:correctionsService-ref="correctionsServiceEirc"
+		  p:recordService-ref="registryRecordService"
+		  p:serviceProviderService-ref="serviceProviderService" />
 
 	<bean id="processesListAction" scope="prototype"
 		  class="org.flexpay.common.actions.processing.ProcessesListAction"

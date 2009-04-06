@@ -3,11 +3,11 @@ package org.flexpay.eirc.service;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.RegistryRecordContainer;
-import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
+import org.flexpay.common.persistence.registry.RegistryRecordContainer;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
-import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -57,7 +57,7 @@ public interface RegistryRecordService {
 	 * @param pager				 Page
 	 * @return list of filtered registry records
 	 */
-	List<RegistryRecord> listRecords(SpRegistry registry, ImportErrorTypeFilter importErrorTypeFilter,
+	List<RegistryRecord> listRecords(Registry registry, ImportErrorTypeFilter importErrorTypeFilter,
 									   RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager);
 
 	/**
@@ -66,15 +66,7 @@ public interface RegistryRecordService {
 	 * @param registry Registry to count errors for
 	 * @return number of errors
 	 */
-	int getErrorsNumber(SpRegistry registry);
-
-	/**
-	 * Find data source description for record
-	 *
-	 * @param record Registry record
-	 * @return DataSourceDescription
-	 */
-	DataSourceDescription getDataSourceDescription(RegistryRecord record);
+	int getErrorsNumber(Registry registry);
 
 	/**
 	 * Set record status to fixed and invalidate error
@@ -92,7 +84,7 @@ public interface RegistryRecordService {
 	 * @param objectIds Set of identifiers
 	 * @return Records
 	 */
-	Collection<RegistryRecord> findObjects(SpRegistry registry, Set<Long> objectIds);
+	Collection<RegistryRecord> findObjects(Registry registry, Set<Long> objectIds);
 
 	/**
 	 * Find containers associated with a registry record

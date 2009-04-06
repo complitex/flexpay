@@ -4,16 +4,17 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.dao.OrganizationDao;
-import org.flexpay.eirc.dao.RegistryContainerDao;
-import org.flexpay.eirc.dao.RegistryDao;
+import org.flexpay.common.dao.registry.RegistryContainerDao;
+import org.flexpay.common.dao.registry.RegistryDao;
 import org.flexpay.eirc.dao.RegistryDaoExt;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.eirc.persistence.RegistryContainer;
-import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.common.persistence.registry.RegistryContainer;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
-import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
+import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.RegistryService;
+import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -44,16 +45,17 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @return created SpRegistry object
 	 */
 	@Transactional (readOnly = false)
-	public SpRegistry create(SpRegistry registry) throws FlexPayException {
-		registry.setRecipient(organizationDao.read(registry.getRecipientStub().getId()));
-		registry.setSender(organizationDao.read(registry.getSenderStub().getId()));
+	public Registry create(Registry registry) throws FlexPayException {
+		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
+		props.setRecipient(organizationDao.read(props.getRecipientStub().getId()));
+		props.setSender(organizationDao.read(props.getSenderStub().getId()));
 		registryDao.create(registry);
 
 		for (RegistryContainer container : registry.getContainers()) {
 			registryContainerDao.create(container);
 		}
 
-		log.debug("Created SpRegistry: {}", registry);
+		log.debug("Created Registry: {}", registry);
 
 		return registry;
 	}
@@ -65,7 +67,7 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @return List of SpRegistry objects for pager
 	 */
 	@Transactional (readOnly = false)
-	public List<SpRegistry> findObjects(Page<SpRegistry> pager, Long spFileId) {
+	public List<Registry> findObjects(Page<Registry> pager, Long spFileId) {
 		return registryDao.findObjects(pager, spFileId);
 	}
 
@@ -76,8 +78,8 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @return SpRegistry object, or <code>null</code> if object not found
 	 */
 	@Nullable
-	public SpRegistry read(@NotNull Stub<SpRegistry> stub) {
-		SpRegistry registry = registryDao.readFull(stub.getId());
+	public Registry read(@NotNull Stub<Registry> stub) {
+		Registry registry = registryDao.readFull(stub.getId());
 		if (registry == null) {
 			log.debug("Registry #{} not found", stub);
 			return null;
@@ -93,8 +95,8 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @param stub Registry stub
 	 * @return Registry if found, or <code>null</code> otherwise
 	 */
-	public SpRegistry readWithContainers(@NotNull Stub<SpRegistry> stub) {
-		List<SpRegistry> registries = registryDao.listRegistryWithContainers(stub.getId());
+	public Registry readWithContainers(@NotNull Stub<Registry> stub) {
+		List<Registry> registries = registryDao.listRegistryWithContainers(stub.getId());
 		if (registries.isEmpty()) {
 			return null;
 		}
@@ -105,21 +107,21 @@ public class RegistryServiceImpl implements RegistryService {
 	/**
 	 * Update SpRegistry
 	 *
-	 * @param spRegistry SpRegistry to update for
+	 * @param registry SpRegistry to update for
 	 * @return Updated SpRegistry object
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if SpRegistry object is invalid
 	 */
 	@Transactional (readOnly = false)
-	public SpRegistry update(SpRegistry spRegistry) throws FlexPayException {
-		registryDao.update(spRegistry);
+	public Registry update(Registry registry) throws FlexPayException {
+		registryDao.update(registry);
 
-		return spRegistry;
+		return registry;
 	}
 
 	@Transactional (readOnly = false)
-	public void delete(SpRegistry spRegistry) {
-		registryDao.delete(spRegistry);
+	public void delete(Registry registry) {
+		registryDao.delete(registry);
 	}
 
 	/**
@@ -133,7 +135,7 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @param pager		   Page
 	 * @return list of registries matching specified criteria
 	 */
-	public List<SpRegistry> findObjects(OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
+	public List<Registry> findObjects(OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
 										RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page pager) {
 		return registryDaoExt.findRegistries(senderFilter, recipientFilter,
 				typeFilter, fromDate, tillDate, pager);
@@ -145,7 +147,7 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @param objectIds Set of registry identifiers
 	 * @return collection of registries
 	 */
-	public Collection<SpRegistry> findObjects(@NotNull Set<Long> objectIds) {
+	public Collection<Registry> findObjects(@NotNull Set<Long> objectIds) {
 		return registryDaoExt.findRegistries(objectIds);
 	}
 
@@ -156,9 +158,9 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @param senderStub	 Sender organization stub
 	 * @return Registry reference if found, or <code>null</code> otherwise
 	 */
-	public SpRegistry getRegistryByNumber(@NotNull Long registryNumber, @NotNull Stub<Organization> senderStub) {
+	public Registry getRegistryByNumber(@NotNull Long registryNumber, @NotNull Stub<Organization> senderStub) {
 
-		List<SpRegistry> registries = registryDao.findRegistriesByNumber(registryNumber, senderStub.getId());
+		List<Registry> registries = registryDao.findRegistriesByNumber(registryNumber, senderStub.getId());
 		if (registries.isEmpty()) {
 			return null;
 		}

@@ -9,3 +9,4 @@ INSERT INTO orgs_organization_descriptions_tbl (name, language_id, organization_
 INSERT INTO orgs_organization_names_tbl (name, language_id, organization_id)
 	VALUES ('EIRC', @ru_id, @organization_eirc);
 
+INSERT INTO common_flexpay_modules_tbl (name) VALUES ('orgs');

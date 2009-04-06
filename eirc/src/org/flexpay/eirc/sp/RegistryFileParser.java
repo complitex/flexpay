@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.FileSource;
@@ -57,6 +58,8 @@ public class RegistryFileParser {
 	private ServiceProviderService providerService;
 	private ConsumerService consumerService;
 
+	private PropertiesFactory propertiesFactory;
+
 	@SuppressWarnings ({"ConstantConditions"})
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
 	public void parse(FPFile spFile) throws Exception {
@@ -64,7 +67,7 @@ public class RegistryFileParser {
 		FileSource fileSource = null;
 		InputStream is = null;
 
-		SpRegistry registry = null;
+		Registry registry = null;
 		Logger processLog = ProcessLogger.getLogger(getClass());
 
 		processLog.info("Starting parsing file: {}", spFile);
@@ -133,7 +136,7 @@ public class RegistryFileParser {
 	}
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
-	private SpRegistry processMessage(Message message, FPFile spFile, SpRegistry registry, Long[] recordCounter) throws Exception {
+	private Registry processMessage(Message message, FPFile spFile, Registry registry, Long[] recordCounter) throws Exception {
 
 		String messageValue = message.getBody();
 		Integer messageType = message.getType();
@@ -161,7 +164,7 @@ public class RegistryFileParser {
 	}
 
 	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
-	private SpRegistry processHeader(FPFile spFile, List<String> messageFieldList) throws Exception {
+	private Registry processHeader(FPFile spFile, List<String> messageFieldList) throws Exception {
 		if (messageFieldList.size() < 11) {
 			throw new RegistryFormatException(
 					"Message header error, invalid number of fields: "
@@ -172,7 +175,7 @@ public class RegistryFileParser {
 
 		DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
-		SpRegistry newRegistry = new SpRegistry();
+		Registry newRegistry = new Registry();
 		newRegistry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 		registryWorkflowManager.setInitialStatus(newRegistry);
 		newRegistry.setSpFile(spFile);
@@ -199,21 +202,24 @@ public class RegistryFileParser {
 
 			log.info("Creating new registry: {}", newRegistry);
 
+			EircRegistryProperties props = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
+			newRegistry.setProperties(props);
+
 			Organization recipient;
 			if (newRegistry.getRecipientCode() == 0) {
 				log.debug("Recipient is EIRC, code=0");
 				recipient = ApplicationConfig.getSelfOrganization();
 			} else {
 				log.debug("Recipient is fetched via code={}", newRegistry.getRecipientCode());
-				recipient = organizationService.readFull(newRegistry.getRecipientStub());
+				recipient = organizationService.readFull(props.getRecipientStub());
 			}
-			newRegistry.setRecipient(recipient);
+			props.setRecipient(recipient);
 			if (recipient == null) {
 				log.error("Failed processing registry header, recipient not found: #{}", newRegistry.getRecipientCode());
 				throw new FlexPayException("Cannot find recipient organization " + newRegistry.getRecipientCode());
 			}
-			Organization sender = organizationService.readFull(newRegistry.getSenderStub());
-			newRegistry.setSender(sender);
+			Organization sender = organizationService.readFull(props.getSenderStub());
+			props.setSender(sender);
 			if (sender == null) {
 				log.error("Failed processing registry header, sender not found: #{}", newRegistry.getSenderCode());
 				throw new FlexPayException("Cannot find sender organization " + newRegistry.getSenderCode());
@@ -225,7 +231,7 @@ public class RegistryFileParser {
 				log.error("Failed processing registry header, provider not found: #{}", newRegistry.getSenderCode());
 				throw new FlexPayException("Cannot find service provider " + newRegistry.getSenderCode());
 			}
-			newRegistry.setServiceProvider(provider);
+			props.setServiceProvider(provider);
 
 			validateRegistry(newRegistry);
 
@@ -247,15 +253,16 @@ public class RegistryFileParser {
 	 *          if registry header validation fails
 	 */
 	@Transactional (readOnly = true)
-	private void validateRegistry(SpRegistry registry) throws FlexPayException {
-		SpRegistry persistent = registryService.getRegistryByNumber(registry.getRegistryNumber(), registry.getSenderStub());
+	private void validateRegistry(Registry registry) throws FlexPayException {
+		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
+		Registry persistent = registryService.getRegistryByNumber(registry.getRegistryNumber(), props.getSenderStub());
 		if (persistent != null) {
 			throw new FlexPayException("Registry number duplicate");
 		}
 	}
 
 	@Transactional (readOnly = true, propagation = Propagation.REQUIRED)
-	private void processRecord(List<String> messageFieldList, SpRegistry registry, Long[] recordCounter) throws Exception {
+	private void processRecord(List<String> messageFieldList, Registry registry, Long[] recordCounter) throws Exception {
 		if (registry == null) {
 			throw new RegistryFormatException("Error - registry header should go before record");
 		}
@@ -273,19 +280,22 @@ public class RegistryFileParser {
 		}
 
 		RegistryRecord record = new RegistryRecord();
-		record.setSpRegistry(registry);
+		record.setProperties(propertiesFactory.newRecordProperties());
+		record.setRegistry(registry);
 		try {
 			log.info("adding record: '{}'", StringUtils.join(messageFieldList, '-'));
 			int n = 1;
 			record.setServiceCode(messageFieldList.get(++n));
 			record.setPersonalAccountExt(messageFieldList.get(++n));
 
+			EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
+			EircRegistryRecordProperties recordProps = (EircRegistryRecordProperties) record.getProperties();
 			Service service = consumerService.findService(
-					registry.getServiceProvider(), record.getServiceCode());
+					props.getServiceProvider(), record.getServiceCode());
 			if (service == null) {
 				log.warn("Unknown service code: {}", record.getServiceCode());
 			}
-			record.setService(service);
+			recordProps.setService(service);
 
 			// setup consumer address
 			String addressStr = messageFieldList.get(++n);
@@ -374,7 +384,7 @@ public class RegistryFileParser {
 		return result;
 	}
 
-	private List<RegistryContainer> parseContainers(SpRegistry registry, String containersData)
+	private List<RegistryContainer> parseContainers(Registry registry, String containersData)
 			throws RegistryFormatException {
 
 		List<String> containers = StringUtil.splitEscapable(
@@ -405,7 +415,7 @@ public class RegistryFileParser {
 		}
 	}
 
-	private void finalizeRegistry(SpRegistry registry, Long[] recordCounter) throws Exception {
+	private void finalizeRegistry(Registry registry, Long[] recordCounter) throws Exception {
 		if (registry == null) {
 			return;
 		}
@@ -424,7 +434,7 @@ public class RegistryFileParser {
 	}
 
 	@Required
-	public void setSpRegistryRecordService(RegistryRecordService registryRecordService) {
+	public void setRegistryRecordService(RegistryRecordService registryRecordService) {
 		this.registryRecordService = registryRecordService;
 	}
 
@@ -466,5 +476,10 @@ public class RegistryFileParser {
 	@Required
 	public void setProviderService(ServiceProviderService providerService) {
 		this.providerService = providerService;
+	}
+
+	@Required
+	public void setPropertiesFactory(PropertiesFactory propertiesFactory) {
+		this.propertiesFactory = propertiesFactory;
 	}
 }

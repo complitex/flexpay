@@ -1,7 +1,7 @@
 package org.flexpay.eirc.service.imp;
 
-import org.flexpay.eirc.dao.SpRegistryStatusDao;
-import org.flexpay.eirc.persistence.RegistryStatus;
+import org.flexpay.common.dao.registry.RegistryStatusDao;
+import org.flexpay.common.persistence.registry.RegistryStatus;
 import org.flexpay.eirc.service.SpRegistryStatusService;
 
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class SpRegistryStatusServiceImpl implements SpRegistryStatusService {
 
-	private SpRegistryStatusDao spRegistryStatusDao;
+	private RegistryStatusDao registryStatusDao;
 	private Map<Integer, RegistryStatus> code2StatusCache;
 
 	/**
@@ -21,7 +21,7 @@ public class SpRegistryStatusServiceImpl implements SpRegistryStatusService {
 	 */
 	public RegistryStatus findByCode(int code) {
 		if (code2StatusCache == null) {
-			List<RegistryStatus> statuses = spRegistryStatusDao.findAll();
+			List<RegistryStatus> statuses = registryStatusDao.findAll();
 			code2StatusCache = new HashMap<Integer, RegistryStatus>();
 			for (RegistryStatus status : statuses) {
 				code2StatusCache.put(status.getCode(), status);
@@ -32,9 +32,9 @@ public class SpRegistryStatusServiceImpl implements SpRegistryStatusService {
 	}
 
 	/**
-	 * @param spRegistryStatusDao the spRegistryStatusDao to set
+	 * @param registryStatusDao the spRegistryStatusDao to set
 	 */
-	public void setSpRegistryStatusDao(SpRegistryStatusDao spRegistryStatusDao) {
-		this.spRegistryStatusDao = spRegistryStatusDao;
+	public void setSpRegistryStatusDao(RegistryStatusDao registryStatusDao) {
+		this.registryStatusDao = registryStatusDao;
 	}
 }

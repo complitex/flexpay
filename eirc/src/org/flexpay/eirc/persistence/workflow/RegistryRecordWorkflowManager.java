@@ -1,12 +1,12 @@
 package org.flexpay.eirc.persistence.workflow;
 
 import org.flexpay.common.dao.ImportErrorDao;
+import org.flexpay.common.dao.registry.RegistryRecordDao;
 import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.dao.RegistryRecordDao;
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.RegistryRecordStatus;
-import static org.flexpay.eirc.persistence.RegistryRecordStatus.*;
+import static org.flexpay.common.persistence.registry.RegistryRecordStatus.*;
 import org.flexpay.eirc.service.SpRegistryRecordStatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -142,7 +142,7 @@ public class RegistryRecordWorkflowManager {
 
 		log.debug("Setting record errorous: {}", record);
 
-		registryWorkflowManager.markProcessingHasError(record.getSpRegistry());
+		registryWorkflowManager.markProcessingHasError(record.getRegistry());
 	}
 
 	/**

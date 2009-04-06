@@ -18,6 +18,7 @@
 		<mapping resource="org/flexpay/common/persistence/history/Diff.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/history/HistoryConsumer.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/registry/Registry.hbm.xml" />
 
 		<mapping resource="org/flexpay/ab/persistence/Country.hbm.xml" />
 		<mapping resource="org/flexpay/ab/persistence/Region.hbm.xml" />
@@ -50,7 +51,7 @@
 		<mapping resource="org/flexpay/eirc/persistence/ServedBuilding.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/QuittancePacket.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/Service.hbm.xml" />
-		<mapping resource="org/flexpay/eirc/persistence/SpFile.hbm.xml" />
+		<mapping resource="org/flexpay/eirc/persistence/RegistryProperties.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/PersonalAccount.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/account/Quittance.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/ServiceOrganizationBase.hbm.xml" />

@@ -60,13 +60,14 @@
 		  p:consumerService-ref="consumerService"
 		  p:registryService-ref="registryService"
 		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
-		  p:spRegistryRecordService-ref="registryRecordService"
+		  p:registryRecordService-ref="registryRecordService"
 		  p:registryTypeService-ref="registryTypeService"
 		  p:organizationService-ref="organizationService"
 		  p:providerService-ref="serviceProviderService"
 		  p:registryWorkflowManager-ref="registryWorkflowManager"
 		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
-		  p:sessionUtils-ref="sessionUtils" />
+		  p:sessionUtils-ref="sessionUtils"
+		  p:propertiesFactory-ref="propertiesFactory" />
 
 	<bean id="eircAccountService"
 		  class="org.flexpay.eirc.service.imp.EircAccountServiceImpl"
@@ -87,6 +88,7 @@
 		  p:spFileService-ref="registryFileService"
 		  p:quittanceService-ref="quittanceService"
 		  p:organizationService-ref="organizationService"
+		  p:serviceProviderService-ref="serviceProviderService"
 		  p:reportPeriodService-ref="reportPeriodService"
 		  p:consumerService-ref="consumerService"
 		  p:consumerInfoService-ref="consumerInfoService"
@@ -159,14 +161,15 @@
 		  p:processorTx-ref="serviceProviderFileProcessorTx"
 		  p:serviceOperationsFactory-ref="serviceOperationsFactory"
 		  p:registryFileService-ref="registryFileService"
-		  p:spRegistryService-ref="registryService"
+		  p:registryService-ref="registryService"
 		  p:importService-ref="importServiceEirc"
 		  p:rawConsumersDataSource-ref="consumersDataSource"
 		  p:errorsSupport-ref="importErrorSupport"
 		  p:registryRecordService-ref="registryRecordService"
 		  p:classToTypeRegistry-ref="typeRegistryEirc"
 		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
-		  p:registryWorkflowManager-ref="registryWorkflowManager" />
+		  p:registryWorkflowManager-ref="registryWorkflowManager"
+		  p:serviceProviderService-ref="serviceProviderService" />
 
 	<bean id="spRegistryStatusService" class="org.flexpay.eirc.service.imp.SpRegistryStatusServiceImpl">
 		<property name="spRegistryStatusDao" ref="spRegistryStatusDao" />
@@ -193,4 +196,12 @@
 			</list>
 		</property>
 	</bean>
+
+	<bean id="eircPropertiesFactory" depends-on="propertiesFactory" autowire-candidate="false"
+		  factory-bean="propertiesFactoryHolder" factory-method="getFactory">
+		<property name="factory">
+			<bean class="org.flexpay.eirc.persistence.EircPropertiesFactory" autowire-candidate="false" />
+		</property>
+	</bean>
+
 </beans>

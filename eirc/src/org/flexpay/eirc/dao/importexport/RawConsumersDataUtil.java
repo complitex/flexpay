@@ -1,7 +1,7 @@
 package org.flexpay.eirc.dao.importexport;
 
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
 public class RawConsumersDataUtil {
@@ -11,10 +11,10 @@ public class RawConsumersDataUtil {
 			return null;
 		}
 
-		return convert(record.getSpRegistry(), record);
+		return convert(record.getRegistry(), record);
 	}
 
-	public static RawConsumerData convert(SpRegistry registry, RegistryRecord record) {
+	public static RawConsumerData convert(Registry registry, RegistryRecord record) {
 		if (record == null) {
 			return null;
 		}

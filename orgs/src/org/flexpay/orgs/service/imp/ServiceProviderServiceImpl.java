@@ -13,6 +13,7 @@ import org.flexpay.common.dao.DataSourceDescriptionDao;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.Stub;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
 import org.apache.commons.lang.StringUtils;
@@ -35,16 +36,11 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	/**
 	 * Read full service provider info
 	 *
-	 * @param provider Service Provider stub
+	 * @param stub provider stub
 	 * @return ServiceProvider
 	 */
-	public ServiceProvider read(ServiceProvider provider) {
-		if (provider.isNotNew()) {
-			//noinspection ConstantConditions
-			return serviceProviderDao.readFull(provider.getId());
-		}
-
-		return new ServiceProvider(0L);
+	public ServiceProvider read(Stub<ServiceProvider> stub) {
+		return serviceProviderDao.readFull(stub.getId());
 	}
 
 	/**

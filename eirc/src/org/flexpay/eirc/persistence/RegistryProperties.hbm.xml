@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence.registry">
+
+	<class name="RegistryProperties" table="common_registry_properties_tbl" optimistic-lock="version"
+		   discriminator-value="eirc">
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<discriminator type="string">
+			<column name="props_type" not-null="true">
+				<comment>Hierarchy discriminator, all entities should have the same value</comment>
+			</column>
+		</discriminator>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<many-to-one name="registry" class="Registry"
+					 foreign-key="FK_common_registry_properties_tbl_registry_id">
+			<column name="registry_id" not-null="false">
+				<comment>Registry reference</comment>
+			</column>
+		</many-to-one>
+
+		<subclass name="org.flexpay.eirc.persistence.EircRegistryProperties" discriminator-value="common">
+			<many-to-one name="serviceProvider"
+						 foreign-key="FK_common_registry_properties_tbl_service_provider_id"
+						 class="org.flexpay.orgs.persistence.ServiceProvider">
+				<column name="service_provider_id" not-null="false">
+					<comment>Service provider reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="sender" class="org.flexpay.orgs.persistence.Organization"
+						 foreign-key="FK_common_registry_properties_tbl_sender_organisation_id">
+				<column name="sender_organisation_id" not-null="false">
+					<comment>Sender organization reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="recipient" class="org.flexpay.orgs.persistence.Organization"
+						 foreign-key="FK_common_registry_properties_tbl_recipient_organisation_id">
+				<column name="recipient_organisation_id" not-null="false">
+					<comment>Recipient organization reference</comment>
+				</column>
+			</many-to-one>
+
+		</subclass>
+	</class>
+
+	<class name="RegistryRecordProperties" table="common_registry_record_properties_tbl" optimistic-lock="version"
+		   discriminator-value="eirc">
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<discriminator type="string">
+			<column name="props_type" not-null="true">
+				<comment>Hierarchy discriminator, all entities should have the same value</comment>
+			</column>
+		</discriminator>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<many-to-one name="record" class="RegistryRecord"
+					 foreign-key="FK_common_registry_properties_tbl_record_id">
+			<column name="record_id" not-null="false">
+				<comment>Registry record reference</comment>
+			</column>
+		</many-to-one>
+
+		<subclass name="org.flexpay.eirc.persistence.EircRegistryRecordProperties" discriminator-value="common">
+			<many-to-one name="consumer" foreign-key="FK_common_registry_record_properties_tbl_consumer_id"
+						 class="org.flexpay.eirc.persistence.Consumer">
+				<column name="consumer_id" not-null="false">
+					<comment>Consumer reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="person" foreign-key="FK_common_registry_record_properties_tbl_person_id"
+						 class="org.flexpay.ab.persistence.Person">
+				<column name="person_id" not-null="false">
+					<comment>Person reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="apartment" foreign-key="FK_common_registry_record_properties_tbl_apartment_id"
+						 class="org.flexpay.ab.persistence.Apartment">
+				<column name="apartment_id" not-null="false">
+					<comment>Apartment reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="service" foreign-key="FK_common_registry_record_properties_tbl_service_id"
+						 class="org.flexpay.eirc.persistence.Service">
+				<column name="service_id" not-null="false">
+					<comment>Service reference</comment>
+				</column>
+			</many-to-one>
+		</subclass>
+	</class>
+
+</hibernate-mapping>

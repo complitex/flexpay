@@ -3,13 +3,13 @@ package org.flexpay.eirc.actions.registry;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
-import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
-import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
-import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.ServiceTypeService;
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class RegistryViewAction extends FPActionWithPagerSupport<RegistryRecord> {
 
-	private SpRegistry registry = new SpRegistry();
+	private Registry registry = new Registry();
 	private List<RegistryRecord> records = Collections.emptyList();
 
 	private ImportErrorTypeFilter importErrorTypeFilter = new ImportErrorTypeFilter();
@@ -66,11 +66,11 @@ public class RegistryViewAction extends FPActionWithPagerSupport<RegistryRecord>
 		return name == null ? "Unknown" : name.getName();
 	}
 
-	public SpRegistry getRegistry() {
+	public Registry getRegistry() {
 		return registry;
 	}
 
-	public void setRegistry(SpRegistry registry) {
+	public void setRegistry(Registry registry) {
 		this.registry = registry;
 	}
 

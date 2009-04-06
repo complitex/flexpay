@@ -46,3 +46,92 @@ SELECT @source_description_id:=2;
 INSERT INTO common_flexpay_modules_tbl (name) VALUES ('common');
 SELECT @module_common:=last_insert_id();
 
+-- Init registry types
+INSERT INTO common_registry_types_tbl (id, version, code) VALUES (1, 0, 1);
+select @registry_type:=1;
+INSERT INTO common_registry_types_tbl (id, version, code) VALUES (2, 0, 2);
+select @registry_type:=2;
+INSERT INTO common_registry_types_tbl (id, version, code) VALUES (3, 0, 3);
+select @registry_type:=3;
+INSERT INTO common_registry_types_tbl (id, version, code) VALUES (4, 0, 4);
+select @registry_type:=4;
+INSERT INTO common_registry_types_tbl (id, version, code) VALUES (5, 0, 5);
+select @registry_type:=5;
+INSERT INTO common_registry_types_tbl (id, version, code) VALUES (6, 0, 6);
+select @registry_type:=6;
+INSERT INTO common_registry_types_tbl (id, version, code) VALUES (7, 0, 7);
+select @registry_type:=7;
+INSERT INTO common_registry_types_tbl (id, version, code) VALUES (8, 0, 8);
+select @registry_type:=8;
+INSERT INTO common_registry_types_tbl (id, version, code) VALUES (9, 0, 9);
+select @registry_type:=9;
+INSERT INTO common_registry_types_tbl (id, version, code) VALUES (10, 0, 10);
+select @registry_type:=10;
+INSERT INTO common_registry_types_tbl (id, version, code) VALUES (11, 0, 11);
+select @registry_type_info:=11;
+
+-- Init RegistryStatuses
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 0);
+SELECT @registry_status_loading:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 1);
+SELECT @registry_status_loaded:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 2);
+SELECT @registry_status_loading_canceled:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 3);
+SELECT @registry_status_loaded_with_error:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 4);
+SELECT @registry_status_processing:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 5);
+SELECT @registry_status_processing_with_error:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 6);
+SELECT @registry_status_processed:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 7);
+SELECT @registry_status_processed_with_error:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 8);
+SELECT @registry_status_processing_canceled:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 9);
+SELECT @registry_status_rollbacking:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 10);
+SELECT @registry_status_rollbacked:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 11);
+SELECT @registry_status_creating:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 12);
+SELECT @registry_status_created:=last_insert_id();
+
+INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 13);
+SELECT @registry_status_creating_canceled:=last_insert_id();
+
+-- Init RegistryArchiveStatuses
+INSERT INTO common_registry_archive_statuses_tbl (code) VALUES (0);
+SELECT @sp_registry_archive_status_none:=last_insert_id();
+
+INSERT INTO common_registry_archive_statuses_tbl (code) VALUES (1);
+SELECT @sp_registry_archive_status_archiving:=last_insert_id();
+
+INSERT INTO common_registry_archive_statuses_tbl (code) VALUES (2);
+SELECT @sp_registry_archive_status_archived:=last_insert_id();
+
+INSERT INTO common_registry_archive_statuses_tbl (code) VALUES (3);
+SELECT @sp_registry_archive_status_canceled:=last_insert_id();
+
+-- Init RegistryRecordStatus
+INSERT INTO common_registry_record_statuses_tbl (id, code) VALUES (1, 1);
+select @record_status_loaded:=1;
+INSERT INTO common_registry_record_statuses_tbl (id, code) VALUES (2, 2);
+select @record_status_error:=2;
+INSERT INTO common_registry_record_statuses_tbl (id, code) VALUES (3, 3);
+select @record_status_error_fixed:=3;
+INSERT INTO common_registry_record_statuses_tbl (id, code) VALUES (4, 4);
+select @record_status_processed:=4;

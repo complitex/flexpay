@@ -1,9 +1,9 @@
 package org.flexpay.eirc.dao;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
-import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
+import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -24,7 +24,7 @@ public interface RegistryDaoExt {
 	 * @param pager		   Page
 	 * @return list of registries matching specified criteria
 	 */
-	List<SpRegistry> findRegistries(OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
+	List<Registry> findRegistries(OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
 									RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page pager);
 
 	/**
@@ -33,7 +33,7 @@ public interface RegistryDaoExt {
 	 * @param objectIds Set of registry identifiers
 	 * @return collection of registries
 	 */
-	Collection<SpRegistry> findRegistries(@NotNull Set<Long> objectIds);
+	Collection<Registry> findRegistries(@NotNull Set<Long> objectIds);
 
 	/**
 	 * Check if registry has more records to process

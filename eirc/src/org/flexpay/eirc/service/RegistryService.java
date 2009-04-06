@@ -3,8 +3,8 @@ package org.flexpay.eirc.service;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.eirc.persistence.SpRegistry;
-import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
+import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.jetbrains.annotations.NotNull;
@@ -20,11 +20,11 @@ public interface RegistryService {
 	/**
 	 * Create SpRegistry
 	 *
-	 * @param spRegistry SpRegistry
+	 * @param registry SpRegistry
 	 * @return created SpRegistry object
 	 * @throws FlexPayException if failure occurs
 	 */
-	public SpRegistry create(SpRegistry spRegistry) throws FlexPayException;
+	public Registry create(Registry registry) throws FlexPayException;
 
 	/**
 	 * Get all SpRegistry by spFile id in page mode
@@ -33,7 +33,7 @@ public interface RegistryService {
 	 * @param spFileId spFile id
 	 * @return List of SpRegistry objects for pager
 	 */
-	List<SpRegistry> findObjects(Page<SpRegistry> pager, Long spFileId);
+	List<Registry> findObjects(Page<Registry> pager, Long spFileId);
 
 	/**
 	 * Read SpRegistry object by its unique id
@@ -42,7 +42,7 @@ public interface RegistryService {
 	 * @return SpRegistry object, or <code>null</code> if object not found
 	 */
 	@Nullable
-	SpRegistry read(@NotNull Stub<SpRegistry> stub);
+	Registry read(@NotNull Stub<Registry> stub);
 
 	/**
 	 * Read Registry with containers included
@@ -51,18 +51,18 @@ public interface RegistryService {
 	 * @return Registry if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	SpRegistry readWithContainers(@NotNull Stub<SpRegistry> stub);
+	Registry readWithContainers(@NotNull Stub<Registry> stub);
 
 	/**
 	 * Update SpRegistry
 	 *
-	 * @param spRegistry SpRegistry to update for
+	 * @param registry SpRegistry to update for
 	 * @return Updated SpRegistry object
 	 * @throws FlexPayException if SpRegistry object is invalid
 	 */
-	SpRegistry update(SpRegistry spRegistry) throws FlexPayException;
+	Registry update(Registry registry) throws FlexPayException;
 
-	void delete(SpRegistry spRegistry);
+	void delete(Registry registry);
 
 	/**
 	 * Find registries
@@ -75,7 +75,7 @@ public interface RegistryService {
 	 * @param pager		   Page
 	 * @return list of registries matching specified criteria
 	 */
-	List<SpRegistry> findObjects(OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
+	List<Registry> findObjects(OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
 								 RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page pager);
 
 	/**
@@ -84,7 +84,7 @@ public interface RegistryService {
 	 * @param objectIds Set of registry identifiers
 	 * @return collection of registries
 	 */
-	Collection<SpRegistry> findObjects(@NotNull Set<Long> objectIds);
+	Collection<Registry> findObjects(@NotNull Set<Long> objectIds);
 
 	/**
 	 * Find registry recieved from specified sender with a specified number
@@ -94,5 +94,5 @@ public interface RegistryService {
 	 * @return Registry reference if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	SpRegistry getRegistryByNumber(@NotNull Long registryNumber, @NotNull Stub<Organization> senderStub);
+	Registry getRegistryByNumber(@NotNull Long registryNumber, @NotNull Stub<Organization> senderStub);
 }

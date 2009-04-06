@@ -5,6 +5,8 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.ImportErrorsSupport;
@@ -12,8 +14,8 @@ import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.dao.importexport.InMemoryRawConsumersDataSource;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.eirc.persistence.EircRegistryProperties;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
@@ -24,9 +26,12 @@ import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.importexport.EircImportService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collection;
 import java.util.List;
@@ -53,6 +58,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	private RegistryRecordWorkflowManager recordWorkflowManager;
 	private ClassToTypeRegistry classToTypeRegistry;
 
+	private ServiceProviderService serviceProviderService;
 	private ServiceProviderFileProcessorTx processorTx;
 
 	/**
@@ -65,7 +71,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 		log.info("Starting processing file");
 
-		List<SpRegistry> registries = registryFileService.getRegistries(spFile);
+		List<Registry> registries = registryFileService.getRegistries(spFile);
 		if (registries.isEmpty()) {
 			log.info("File does not have any registries");
 		}
@@ -82,10 +88,10 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	 * @throws Exception if failure occurs
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	public void registriesProcess(@NotNull Collection<SpRegistry> registries) throws Exception {
+	public void registriesProcess(@NotNull Collection<Registry> registries) throws Exception {
 
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
-		for (SpRegistry registry : registries) {
+		for (Registry registry : registries) {
 
 			try {
 				startRegistryProcessing(registry);
@@ -108,7 +114,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		}
 	}
 
-	public void processRegistry(SpRegistry registry) throws Exception {
+	public void processRegistry(Registry registry) throws Exception {
 
 		log.info("Starting processing records");
 		Page<RegistryRecord> pager = new Page<RegistryRecord>(50, 1);
@@ -127,7 +133,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	 * @param minMaxIds Cached minimum and maximum registry record ids to process
 	 * @throws Exception if failure occurs
 	 */
-	private void processRegistry(SpRegistry registry, Page<RegistryRecord> pager, Long[] minMaxIds) throws Exception {
+	private void processRegistry(Registry registry, Page<RegistryRecord> pager, Long[] minMaxIds) throws Exception {
 
 		log.info("Fetching for records: {}", pager);
 		List<RegistryRecord> records = registryFileService.getRecordsForProcessing(stub(registry), pager, minMaxIds);
@@ -141,7 +147,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		pager.setPageNumber(pager.getPageNumber() + 1);
 	}
 
-	private void handleError(Throwable t, SpRegistry registry, RegistryRecord record) throws Exception {
+	private void handleError(Throwable t, Registry registry, RegistryRecord record) throws Exception {
 		if (t instanceof FlexPayExceptionContainer) {
 			t = ((FlexPayExceptionContainer) t).getExceptions().iterator().next();
 		}
@@ -150,7 +156,10 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 		ImportError error = new ImportError();
 		error.setErrorId(t.getMessage());
-		error.setSourceDescription(registry.getServiceProvider().getDataSourceDescription());
+		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
+		ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
+		DataSourceDescription sd = provider.getDataSourceDescription();
+		error.setSourceDescription(sd);
 
 		// todo remove hardcoded value
 		error.setDataSourceBean("consumersDataSource");
@@ -160,7 +169,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		recordWorkflowManager.setNextErrorStatus(record, error);
 	}
 
-	public void importConsumers(SpRegistry registry) throws Exception {
+	public void importConsumers(Registry registry) throws Exception {
 
 		serviceOperationsFactory.setDataSource(rawConsumersDataSource);
 		processHeader(registry);
@@ -170,17 +179,17 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		setupRecordsConsumer(registry, rawConsumersDataSource);
 	}
 
-	public void startRegistryProcessing(SpRegistry registry) throws TransitionNotAllowed {
+	public void startRegistryProcessing(Registry registry) throws TransitionNotAllowed {
 		registryWorkflowManager.startProcessing(registry);
 	}
 
-	public void endRegistryProcessing(SpRegistry registry) throws TransitionNotAllowed {
+	public void endRegistryProcessing(Registry registry) throws TransitionNotAllowed {
 		registry = registryService.read(stub(registry));
 		registryWorkflowManager.setNextSuccessStatus(registry);
 		registryWorkflowManager.endProcessing(registry);
 	}
 
-	public void processRecords(SpRegistry registry, Set<Long> recordIds) throws Exception {
+	public void processRecords(Registry registry, Set<Long> recordIds) throws Exception {
 
 		try {
 			startRegistryProcessing(registry);
@@ -204,7 +213,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		}
 	}
 
-	private void setupRecordsConsumers(SpRegistry registry, Set<Long> recordIds) throws Exception {
+	private void setupRecordsConsumers(Registry registry, Set<Long> recordIds) throws Exception {
 
 		Collection<RegistryRecord> records = registryRecordService.findObjects(registry, recordIds);
 		RawDataSource<RawConsumerData> dataSource = new InMemoryRawConsumersDataSource(records);
@@ -214,8 +223,8 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		try {
 			// setup records registry to the same object
 			for (RegistryRecord record : records) {
-				if (stub(record.getSpRegistry()).equals(stub(registry))) {
-					record.setSpRegistry(registry);
+				if (stub(record.getRegistry()).equals(stub(registry))) {
+					record.setRegistry(registry);
 				} else {
 					throw new FlexPayException("Only records of the same registry are allowed for group processing");
 				}
@@ -233,7 +242,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	 * @param registry Registry header
 	 * @throws Exception if failure occurs
 	 */
-	private void processHeader(SpRegistry registry) throws Exception {
+	private void processHeader(Registry registry) throws Exception {
 
 		// process header containers
 		try {
@@ -254,55 +263,72 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	 * @param rawConsumersDataSource Consumers data source
 	 * @throws Exception if failure occurs
 	 */
-	private void setupRecordsConsumer(SpRegistry registry, RawDataSource<RawConsumerData> rawConsumersDataSource)
+	private void setupRecordsConsumer(Registry registry, RawDataSource<RawConsumerData> rawConsumersDataSource)
 			throws Exception {
 
-		importService.importConsumers(
-				registry.getServiceProvider().getDataSourceDescription(),
-				rawConsumersDataSource);
+		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
+		ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
+		DataSourceDescription sd = provider.getDataSourceDescription();
+		importService.importConsumers(sd,rawConsumersDataSource);
 	}
 
+	@Required
 	public void setServiceOperationsFactory(ServiceOperationsFactory serviceOperationsFactory) {
 		this.serviceOperationsFactory = serviceOperationsFactory;
 	}
 
-	public void setSpRegistryService(RegistryService registryService) {
+	@Required
+	public void setRegistryService(RegistryService registryService) {
 		this.registryService = registryService;
 	}
 
+	@Required
 	public void setRegistryFileService(RegistryFileService registryFileService) {
 		this.registryFileService = registryFileService;
 	}
 
+	@Required
 	public void setImportService(EircImportService importService) {
 		this.importService = importService;
 	}
 
+	@Required
 	public void setRawConsumersDataSource(RawConsumersDataSource rawConsumersDataSource) {
 		this.rawConsumersDataSource = rawConsumersDataSource;
 	}
 
+	@Required
 	public void setErrorsSupport(ImportErrorsSupport errorsSupport) {
 		this.errorsSupport = errorsSupport;
 	}
 
+	@Required
 	public void setRegistryWorkflowManager(RegistryWorkflowManager registryWorkflowManager) {
 		this.registryWorkflowManager = registryWorkflowManager;
 	}
 
+	@Required
 	public void setRegistryRecordService(RegistryRecordService registryRecordService) {
 		this.registryRecordService = registryRecordService;
 	}
 
+	@Required
 	public void setProcessorTx(ServiceProviderFileProcessorTx processorTx) {
 		this.processorTx = processorTx;
 	}
 
+	@Required
 	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
 		this.recordWorkflowManager = recordWorkflowManager;
 	}
 
+	@Required
 	public void setClassToTypeRegistry(ClassToTypeRegistry classToTypeRegistry) {
 		this.classToTypeRegistry = classToTypeRegistry;
+	}
+
+	@Required
+	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
+		this.serviceProviderService = serviceProviderService;
 	}
 }

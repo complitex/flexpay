@@ -3,6 +3,7 @@ package org.flexpay.common.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.util.FPFileUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.Date;
@@ -73,7 +74,7 @@ public class FPFile extends DomainObject {
 		return module;
 	}
 
-	public void setModule(FPModule module) {
+	public void setModule(@NotNull FPModule module) {
 		this.module = module;
 	}
 

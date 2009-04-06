@@ -174,14 +174,16 @@ INSERT INTO eirc_eirc_accounts_tbl (id, version, status, apartment_id, person_id
 SELECT @account_id_2:=2;
 
 -- Init registry
-INSERT INTO eirc_registries_tbl (id, version, registry_type_id, registry_status_id, archive_status_id)
+INSERT INTO common_registries_tbl (id, version, registry_type_id, registry_status_id, archive_status_id)
 	values (1, 0, @registry_type_info, @registry_status_loaded, @sp_registry_archive_status_none);
 select @eirc_registry:=1;
+insert into common_registry_properties_tbl (version, props_type, registry_id) values (0, 'common', @eirc_registry);
 
 -- Init registry records
-INSERT INTO eirc_registry_records_tbl (id, version, service_code, registry_id, operation_date, personal_account_ext)
+INSERT INTO common_registry_records_tbl (id, version, service_code, registry_id, operation_date, personal_account_ext)
 	values (1, 0, '', @eirc_registry, '2008-01-01', '123456');
 select @eirc_registry_rec:=1;
+insert into common_registry_record_properties_tbl (version, props_type, record_id) values (0, 'common', @eirc_registry_rec);
 
 -- Init consumers
 insert into eirc_consumers_tbl (id, status, external_account_number, service_id,

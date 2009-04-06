@@ -5,14 +5,17 @@ import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
-import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.persistence.ServiceType;
 import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
+import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.ServiceTypeService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -26,6 +29,7 @@ public class CorrectBuildingAction extends BuildingsListAction {
 	private CorrectionsService correctionsService;
 	private RegistryRecordService recordService;
 	private ServiceTypeService serviceTypeService;
+	private ServiceProviderService serviceProviderService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -34,7 +38,9 @@ public class CorrectBuildingAction extends BuildingsListAction {
 
 		if ("building".equals(setupType)) {
 
-			DataSourceDescription sd = recordService.getDataSourceDescription(record);
+			EircRegistryProperties props = (EircRegistryProperties) record.getRegistry().getProperties();
+			ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
+			DataSourceDescription sd = provider.getDataSourceDescription();
 			if (sd == null) {
 				addActionError(getText("error.eirc.data_source_not_found"));
 				return super.doExecute();
@@ -115,4 +121,8 @@ public class CorrectBuildingAction extends BuildingsListAction {
 		this.serviceTypeService = serviceTypeService;
 	}
 
+	@Required
+	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
+		this.serviceProviderService = serviceProviderService;
+	}
 }

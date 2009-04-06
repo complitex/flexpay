@@ -2,10 +2,12 @@ package org.flexpay.orgs.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.springframework.security.annotation.Secured;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Set;
@@ -43,11 +45,12 @@ public interface ServiceProviderService {
 	/**
 	 * Read full service provider info
 	 *
-	 * @param provider Service Provider stub
+	 * @param stub Provider stub
 	 * @return ServiceProvider
 	 */
 	@Secured (Roles.SERVICE_PROVIDER_READ)
-	ServiceProvider read(ServiceProvider provider);
+	@Nullable
+	ServiceProvider read(Stub<ServiceProvider> stub);
 
 	/**
 	 * Save service provider

@@ -4,10 +4,13 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
+import org.flexpay.orgs.persistence.ServiceProvider;
 
 import java.util.List;
 
@@ -33,9 +36,10 @@ public class CloseAccountOperation extends AbstractChangePersonalAccountOperatio
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
-	public void process(SpRegistry registry, RegistryRecord record) throws FlexPayException {
+	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
 
-		Consumer consumer = (Consumer) record.getConsumer();
+		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
+		Consumer consumer = props.getConsumer();
 		if (consumer == null) {
 			throw new FlexPayException("Cannot close account without consumer set");
 		}
@@ -47,7 +51,10 @@ public class CloseAccountOperation extends AbstractChangePersonalAccountOperatio
 		disableConsumer(consumer);
 
 		// remove corrections to consumer
-		DataSourceDescription sd = registry.getServiceProvider().getDataSourceDescription();
+		EircRegistryProperties registryProperties = (EircRegistryProperties) registry.getProperties();
+		ServiceProvider provider = factory.getServiceProviderService().read(registryProperties.getServiceProviderStub());
+		DataSourceDescription sd = provider.getDataSourceDescription();
+
 		removeCorrections(consumer, record, sd);
 
 		EircAccount account = factory.getAccountService().readFull(consumer.getEircAccountStub());

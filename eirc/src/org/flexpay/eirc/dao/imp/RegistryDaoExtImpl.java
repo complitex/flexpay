@@ -1,10 +1,10 @@
 package org.flexpay.eirc.dao.imp;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.filter.RegistryTypeFilter;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.dao.RegistryDaoExt;
-import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
-import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -29,13 +29,13 @@ public class RegistryDaoExtImpl extends HibernateDaoSupport implements RegistryD
 	 * @param pager		   Page
 	 * @return list of registries matching specified criteria
 	 */
-	@SuppressWarnings({"unchecked"})
-	public List<SpRegistry> findRegistries(
+	@SuppressWarnings ({"unchecked"})
+	public List<Registry> findRegistries(
 			OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
 			RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, final Page pager) {
 
 		final List params = new ArrayList();
-		final StringBuilder hql = new StringBuilder("select distinct r from SpRegistry r ")
+		final StringBuilder hql = new StringBuilder("select distinct r from Registry r ")
 				.append("left join fetch r.spFile ")
 				.append("inner join fetch r.registryType rt ")
 				.append("inner join fetch r.registryStatus rs ")
@@ -46,7 +46,7 @@ public class RegistryDaoExtImpl extends HibernateDaoSupport implements RegistryD
 				.append("left join fetch recipient.names ")
 				.append("left join fetch r.serviceProvider ")
 				.append("where 1=1 ");
-		final StringBuilder hqlCount = new StringBuilder("select count(*) from SpRegistry r ")
+		final StringBuilder hqlCount = new StringBuilder("select count(*) from Registry r ")
 				.append("inner join r.registryType rt ")
 				.append("inner join r.registryStatus rs ")
 				.append("inner join r.sender sender ")
@@ -108,16 +108,16 @@ public class RegistryDaoExtImpl extends HibernateDaoSupport implements RegistryD
 	 * @param objectIds Set of registry identifiers
 	 * @return collection of registries
 	 */
-	@SuppressWarnings({"unchecked"})
-	public Collection<SpRegistry> findRegistries(@NotNull final Set<Long> objectIds) {
+	@SuppressWarnings ({"unchecked"})
+	public Collection<Registry> findRegistries(@NotNull final Set<Long> objectIds) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(@NonNls Session session) throws HibernateException, SQLException {
 				return session.createQuery("select distinct r from SpRegistry r " +
-						"inner join fetch r.serviceProvider sp " +
-						"inner join fetch sp.dataSourceDescription inner join fetch r.registryType " +
-						"inner join fetch r.registryStatus " +
-						"left join fetch r.containers " +
-						"where r.id in (:ids)")
+										   "inner join fetch r.serviceProvider sp " +
+										   "inner join fetch sp.dataSourceDescription inner join fetch r.registryType " +
+										   "inner join fetch r.registryStatus " +
+										   "left join fetch r.containers " +
+										   "where r.id in (:ids)")
 						.setParameterList("ids", objectIds).list();
 			}
 		});

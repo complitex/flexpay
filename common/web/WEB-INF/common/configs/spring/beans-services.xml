@@ -120,4 +120,12 @@
 		<constructor-arg index="0" value="${cn.data.source.description.id}" />
 	</bean>
 
+	<bean id="propertiesFactoryHolder" class="org.flexpay.common.persistence.registry.PropertiesFactoryHolder" />
+
+	<bean id="propertiesFactory" factory-bean="propertiesFactoryHolder" factory-method="getFactory">
+		<property name="factory">
+			<bean class="org.flexpay.common.persistence.registry.CommonPropertiesFactory" autowire-candidate="false" />
+		</property>
+	</bean>
+
 </beans>

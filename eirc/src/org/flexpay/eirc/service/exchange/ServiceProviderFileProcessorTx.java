@@ -1,7 +1,7 @@
 package org.flexpay.eirc.service.exchange;
 
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
@@ -31,7 +31,7 @@ public class ServiceProviderFileProcessorTx {
 	 * @throws Exception if failure occurs
 	 */
 	@Transactional (readOnly = false, rollbackFor = Throwable.class)
-	public void processRecord(SpRegistry registry, RegistryRecord record) throws Exception {
+	public void processRecord(Registry registry, RegistryRecord record) throws Exception {
 
 		if (!recordWorkflowManager.hasSuccessTransition(record)
 			|| record.getRecordStatus().isProcessedWithError()) {

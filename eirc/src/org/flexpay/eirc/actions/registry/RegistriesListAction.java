@@ -3,9 +3,9 @@ package org.flexpay.eirc.actions.registry;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
-import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
+import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.SpRegistryTypeService;
@@ -23,7 +23,7 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 	private Date fromDate = DateUtils.addMonths(DateUtil.currentMonth(), -2);
 	private Date tillDate = new Date();
 
-	private List<SpRegistry> registries;
+	private List<Registry> registries;
 
 	private OrganizationService organizationService;
 	private RegistryService registryService;
@@ -56,11 +56,11 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 		return SUCCESS;
 	}
 
-	public List<SpRegistry> getRegistries() {
+	public List<Registry> getRegistries() {
 		return registries;
 	}
 
-	public void setRegistries(List<SpRegistry> registries) {
+	public void setRegistries(List<Registry> registries) {
 		this.registries = registries;
 	}
 

@@ -4,11 +4,14 @@ import org.flexpay.ab.actions.person.PersonsListAction;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
-import org.flexpay.eirc.persistence.RegistryRecord;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
+import org.flexpay.eirc.persistence.EircRegistryProperties;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -21,6 +24,7 @@ public class CorrectPersonAction extends PersonsListAction {
 	private RawConsumersDataSource consumersDataSource;
 	private CorrectionsService correctionsService;
 	private RegistryRecordService recordService;
+	private ServiceProviderService serviceProviderService;
 
 	/**
 	 * Perform action execution.
@@ -37,7 +41,9 @@ public class CorrectPersonAction extends PersonsListAction {
 
 		if ("person".equals(setupType)) {
 
-			DataSourceDescription sd = recordService.getDataSourceDescription(record);
+			EircRegistryProperties props = (EircRegistryProperties) record.getRegistry().getProperties();
+			ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
+			DataSourceDescription sd = provider.getDataSourceDescription();
 			if (sd == null) {
 				addActionError(getText("error.eirc.data_source_not_found"));
 				return super.doExecute();
@@ -107,4 +113,8 @@ public class CorrectPersonAction extends PersonsListAction {
 		this.recordService = recordService;
 	}
 
+	@Required
+	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
+		this.serviceProviderService = serviceProviderService;
+	}
 }
