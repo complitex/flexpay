@@ -100,7 +100,7 @@
 			</column>
 		</many-to-one>
 		<!--<many-to-one name="registryRecord"-->
-					 <!--class="org.flexpay.eirc.persistence.RegistryRecord"-->
+					 <!--class="org.flexpay.common.persistence.registry.RegistryRecord"-->
 					 <!--foreign-key="FK_accounting_operations_tbl_registry_record_id">-->
 			<!--<column name="registry_record_id" not-null="false">-->
 				<!--<comment>Registry record</comment>-->

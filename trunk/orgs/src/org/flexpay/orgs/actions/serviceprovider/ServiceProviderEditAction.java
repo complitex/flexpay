@@ -2,6 +2,7 @@ package org.flexpay.orgs.actions.serviceprovider;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
@@ -32,7 +33,11 @@ public class ServiceProviderEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		ServiceProvider serviceProvider = providerService.read(provider);
+		ServiceProvider serviceProvider = provider.isNew() ? provider : providerService.read(stub(provider));
+		if (serviceProvider == null) {
+			addActionError(getText("error.invalid_id"));
+			return REDIRECT_SUCCESS;
+		}
 		organizationFilter = providerService.initOrganizationFilter(organizationFilter, serviceProvider);
 		if (organizationFilter.getOrganizations().isEmpty()) {
 			addActionError(getText("eirc.error.service_provider.no_providerless_organization"));

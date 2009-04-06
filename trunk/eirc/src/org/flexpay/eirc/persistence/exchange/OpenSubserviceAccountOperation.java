@@ -6,12 +6,17 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.RegistryType;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.flexpay.orgs.persistence.ServiceProvider;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,19 +61,20 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 	 * @param record   Registry record
 	 * @throws FlexPayException if failure occurs
 	 */
-	public void process(SpRegistry registry, RegistryRecord record) throws FlexPayException {
+	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
 
 		if (!validate(registry, record)) {
 			return;
 		}
 
-		Apartment apartment = record.getApartment();
+		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
+		Apartment apartment = props.getApartment();
 		if (apartment == null) {
-			apartment = ((Consumer) record.getConsumer()).getApartment();
+			apartment = props.getConsumer().getApartment();
 		}
-		Person person = record.getPerson();
+		Person person = props.getPerson();
 		if (person == null) {
-			person = record.getConsumer().getResponsiblePerson();
+			person = props.getConsumer().getResponsiblePerson();
 		}
 
 		Consumer consumer = new Consumer();
@@ -78,7 +84,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		consumer.setBeginDate(changeApplyingDate);
 		consumer.setEndDate(ApplicationConfig.getFutureInfinite());
 		consumer.setService(findService(registry));
-		Consumer base = (Consumer) record.getConsumer();
+		Consumer base = props.getConsumer();
 		consumer.setEircAccount(base.getEircAccount());
 
 		saveConsumerInfo(record, consumer);
@@ -96,13 +102,14 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 	}
 
 	private void saveConsumerInfo(RegistryRecord record, Consumer consumer) {
-		ConsumerInfo info = ((Consumer) record.getConsumer()).getConsumerInfo();
 
+		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
+		ConsumerInfo info = props.getConsumer().getConsumerInfo();
 		consumer.setConsumerInfo(info);
 	}
 
 
-	private void createCorrection(SpRegistry registry, RegistryRecord record, Consumer consumer) {
+	private void createCorrection(Registry registry, RegistryRecord record, Consumer consumer) {
 
 		CorrectionsService correctionsService = factory.getCorrectionsService();
 
@@ -110,24 +117,28 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		RawConsumerData data = RawConsumersDataUtil.convert(registry, record);
 		data.addNameValuePair(RawConsumerData.FIELD_SERVICE_CODE, subserviceId);
 		String shortId = data.getShortConsumerId();
-		DataCorrection corr = correctionsService.getStub(shortId, consumer,
-				registry.getServiceProvider().getDataSourceDescription());
+		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
+		ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
+		DataSourceDescription sd = provider.getDataSourceDescription();
+		DataCorrection corr = correctionsService.getStub(shortId, consumer, sd);
 		correctionsService.save(corr);
 
 		// add full consumer correction
 		String fullId = data.getFullConsumerId();
 		if (!fullId.equals(shortId)) {
-			corr = correctionsService.getStub(fullId, consumer,
-					registry.getServiceProvider().getDataSourceDescription());
+			corr = correctionsService.getStub(fullId, consumer, sd);
 			correctionsService.save(corr);
 		}
 	}
 
-	private Service findService(SpRegistry registry) throws FlexPayException {
+	private Service findService(Registry registry) throws FlexPayException {
+
 		ConsumerService consumerService = factory.getConsumerService();
-		Service service = consumerService.findService(registry.getServiceProvider(), subserviceId);
+		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
+		ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
+		Service service = consumerService.findService(provider, subserviceId);
 		if (service == null) {
-			throw new FlexPayException("Cannot find subservice for provider " + registry.getServiceProvider() +
+			throw new FlexPayException("Cannot find subservice for provider " + provider +
 									   " code: " + subserviceId);
 		}
 
@@ -142,18 +153,19 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 	 * @return <code>true</true> if processing allowed, or <code>false</code> otherwise
 	 * @throws FlexPayException if processing cannot be done at all
 	 */
-	private boolean validate(SpRegistry registry, RegistryRecord record) throws FlexPayException {
+	private boolean validate(Registry registry, RegistryRecord record) throws FlexPayException {
 
 		if (registry.getRegistryType().getCode() != RegistryType.TYPE_INFO) {
 			throw new FlexPayException("Create consumer operation only allowed in Information registry type");
 		}
 
-		Consumer consumer = (Consumer) record.getConsumer();
-		if (record.getApartment() == null || consumer == null || consumer.getApartment().getId() == null) {
+		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
+		Consumer consumer = props.getConsumer();
+		if (props.getApartment() == null || consumer == null || consumer.getApartment().getId() == null) {
 			throw new FlexPayException("Cannot create sub consumer without apartment set");
 		}
 
-		if (record.getPerson() == null || consumer.getResponsiblePerson().getId() == null) {
+		if (props.getPerson() == null || consumer.getResponsiblePerson() == null) {
 			log.warn("Creating sub consumer without person set");
 		}
 
@@ -161,8 +173,10 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		RawConsumerData data = RawConsumersDataUtil.convert(registry, record);
 		data.addNameValuePair(RawConsumerData.FIELD_SERVICE_CODE, subserviceId);
 		String id = data.getShortConsumerId();
+		EircRegistryProperties registryProps = (EircRegistryProperties) registry.getProperties();
+		ServiceProvider provider = factory.getServiceProviderService().read(registryProps.getServiceProviderStub());
 		Stub<Consumer> persistent = factory.getCorrectionsService().findCorrection(
-				id, Consumer.class, registry.getServiceProvider().getDataSourceDescription());
+				id, Consumer.class, provider.getDataSourceDescription());
 		if (persistent != null) {
 			log.info("Already existing subconsumer: {}", id);
 			return false;

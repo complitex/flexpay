@@ -1,7 +1,7 @@
-package org.flexpay.eirc.persistence.filters;
+package org.flexpay.common.persistence.filter;
 
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.eirc.persistence.RegistryType;
+import org.flexpay.common.persistence.registry.RegistryType;
 
 import java.util.List;
 

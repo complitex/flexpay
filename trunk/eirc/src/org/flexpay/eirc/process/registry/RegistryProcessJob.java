@@ -2,7 +2,7 @@ package org.flexpay.eirc.process.registry;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.job.Job;
-import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.springframework.beans.factory.annotation.Required;
@@ -21,7 +21,7 @@ public class RegistryProcessJob extends Job {
 		Set<Long> objectIds = (Set<Long>) parameters.get("registryIds");
 
 		try {
-			Collection<SpRegistry> registries = registryService.findObjects(objectIds);
+			Collection<Registry> registries = registryService.findObjects(objectIds);
 			registryProcessor.registriesProcess(registries);
 		} catch (Exception e) {
 			log.warn("Processing exception", e);

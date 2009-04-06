@@ -1,6 +1,6 @@
 package org.flexpay.eirc.service;
 
-import org.flexpay.eirc.persistence.RegistryRecordStatus;
+import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 
 public interface SpRegistryRecordStatusService {
 

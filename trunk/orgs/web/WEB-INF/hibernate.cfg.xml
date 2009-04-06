@@ -13,10 +13,13 @@
 		<mapping resource="org/flexpay/common/persistence/history/HistoryConsumer.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/Process.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
         <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/FPFile.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/registry/Registry.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/registry/RegistryProperties.hbm.xml" />
 
 		<mapping resource="org/flexpay/orgs/persistence/Bank.hbm.xml" />
 		<mapping resource="org/flexpay/orgs/persistence/Organization.hbm.xml" />

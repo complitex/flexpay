@@ -3,16 +3,16 @@ package org.flexpay.eirc.service.registry;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.registry.RegistryRecordDao;
+import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
+import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
+import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.dao.RegistryRecordDao;
-import org.flexpay.eirc.dao.RegistryRecordDaoExt;
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.RegistryRecordStatus;
-import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
-import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +26,15 @@ public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
 	protected RegistryRecordDaoExt recordDaoExt;
 	@Autowired
 	protected RegistryRecordDao recordDao;
+	@Autowired
+	@Qualifier ("typeRegistryEirc")
 	private ClassToTypeRegistry classToTypeRegistry;
 
 	private ImportErrorTypeFilter errorTypeFilter = new ImportErrorTypeFilter();
 	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
 	private Page<RegistryRecord> pager = new Page<RegistryRecord>();
 
-	private SpRegistry registry = new SpRegistry(9L);
-
-	@Autowired
-	public void setClassToTypeRegistry(@Qualifier ("typeRegistryEirc")ClassToTypeRegistry classToTypeRegistry) {
-		this.classToTypeRegistry = classToTypeRegistry;
-	}
+	private Registry registry = new Registry(9L);
 
 	@Test
 	public void testFilterNone() {

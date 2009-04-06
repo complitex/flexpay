@@ -2,8 +2,8 @@ package org.flexpay.eirc.process.registry;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.job.Job;
-import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.springframework.beans.factory.annotation.Required;
@@ -19,10 +19,10 @@ public class RegistryRecordsProcessJob extends Job {
 	@SuppressWarnings ({"unchecked"})
 	public String execute(Map parameters) throws FlexPayException {
 		Set<Long> recordIds = (Set<Long>) parameters.get("recordIds");
-		Stub<SpRegistry> stub = (Stub<SpRegistry>) parameters.get("registryStub");
+		Stub<Registry> stub = (Stub<Registry>) parameters.get("registryStub");
 
 		try {
-			SpRegistry registry = registryService.read(stub);
+			Registry registry = registryService.read(stub);
 			if (registry == null) {
 				log.warn("Invalid registry stub: " + stub);
 				return RESULT_ERROR;

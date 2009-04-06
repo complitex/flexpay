@@ -1,8 +1,8 @@
 package org.flexpay.eirc.persistence.account;
 
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.eirc.persistence.RegistryRecord;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

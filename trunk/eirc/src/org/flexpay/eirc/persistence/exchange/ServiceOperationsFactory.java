@@ -3,19 +3,24 @@ package org.flexpay.eirc.persistence.exchange;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.ImportErrorService;
 import org.flexpay.common.service.importexport.ImportErrorsSupport;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.eirc.dao.RegistryRecordDao;
-import org.flexpay.eirc.persistence.*;
+import org.flexpay.common.dao.registry.RegistryRecordDao;
 import org.flexpay.eirc.persistence.exchange.conditions.ConditionsFactory;
+import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.service.importexport.ImportUtil;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistry;
 import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +34,7 @@ public class ServiceOperationsFactory {
 	private QuittanceService quittanceService;
 	private ConsumerInfoService consumerInfoService;
 	private OrganizationService organizationService;
+	private ServiceProviderService serviceProviderService;
 	private ReportPeriodService reportPeriodService;
 	private CorrectionsService correctionsService;
 
@@ -50,7 +56,7 @@ public class ServiceOperationsFactory {
 	 * @throws InvalidContainerException if record contains invalid operation container
 	 *                                   information
 	 */
-	public Operation getOperation(SpRegistry registry, RegistryRecord record) throws FlexPayException {
+	public Operation getOperation(Registry registry, RegistryRecord record) throws FlexPayException {
 
 		List<RegistryRecordContainer> containers = record.getContainers();
 		if (containers.isEmpty()) {
@@ -72,7 +78,7 @@ public class ServiceOperationsFactory {
 		return operations.size() > 1 ? new OperationsChain(operations) : operations.get(0);
 	}
 
-	private Operation getOperation(SpRegistry registry) throws FlexPayException {
+	private Operation getOperation(Registry registry) throws FlexPayException {
 		int typeId = registry.getRegistryType().getCode();
 		switch (typeId) {
 		}
@@ -88,7 +94,7 @@ public class ServiceOperationsFactory {
 	 * @throws InvalidContainerException if record contains invalid operation container
 	 *                                   information
 	 */
-	public Operation getContainerOperation(SpRegistry registry) throws InvalidContainerException {
+	public Operation getContainerOperation(Registry registry) throws InvalidContainerException {
 
 		if (registry.getContainers().isEmpty()) {
 			return new NoneOperation();
@@ -104,7 +110,7 @@ public class ServiceOperationsFactory {
 		return operations.size() > 1 ? new OperationsChain(operations) : operations.get(0);
 	}
 
-	private Operation fromSingleContainerData(SpRegistry registry, String containerData)
+	private Operation fromSingleContainerData(Registry registry, String containerData)
 			throws InvalidContainerException {
 		List<String> datum = splitEscapableData(containerData, Operation.CONTAINER_DATA_DELIMITER);
 		if (datum.size() < 2) {
@@ -167,14 +173,17 @@ public class ServiceOperationsFactory {
 		return StringUtil.splitEscapable(containers, delimiter, Operation.ESCAPE_SIMBOL);
 	}
 
-	public ImportError addImportError(SpRegistry spRegistry, RegistryRecord record,
+	public ImportError addImportError(Registry registry, RegistryRecord record,
 									  Class<? extends DomainObject> clazz, String errorCode) {
 
+		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 		ImportError error = new ImportError();
-		error.setSourceDescription(spRegistry.getServiceProvider().getDataSourceDescription());
+		ServiceProvider provider = getServiceProviderService().read(props.getServiceProviderStub());
+		DataSourceDescription sd = provider.getDataSourceDescription();
+		error.setSourceDescription(sd);
 		error.setSourceObjectId(String.valueOf(record.getId()));
 		error.setErrorId(errorCode);
-		error.setObjectType(registry.getType(clazz));
+		error.setObjectType(this.registry.getType(clazz));
 		errorsSupport.setDataSourceBean(error, dataSource);
 
 		importErrorService.addError(error);
@@ -197,6 +206,7 @@ public class ServiceOperationsFactory {
 		return registryFileService;
 	}
 
+	@Required
 	public void setSpFileService(RegistryFileService registryFileService) {
 		this.registryFileService = registryFileService;
 	}
@@ -205,10 +215,12 @@ public class ServiceOperationsFactory {
 		return spService;
 	}
 
+	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
 	}
 
+	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
 	}
@@ -221,6 +233,7 @@ public class ServiceOperationsFactory {
 		return reportPeriodService;
 	}
 
+	@Required
 	public void setReportPeriodService(ReportPeriodService reportPeriodService) {
 		this.reportPeriodService = reportPeriodService;
 	}
@@ -229,6 +242,7 @@ public class ServiceOperationsFactory {
 		return accountService;
 	}
 
+	@Required
 	public void setAccountService(EircAccountService accountService) {
 		this.accountService = accountService;
 	}
@@ -237,6 +251,7 @@ public class ServiceOperationsFactory {
 		return consumerService;
 	}
 
+	@Required
 	public void setConsumerService(ConsumerService consumerService) {
 		this.consumerService = consumerService;
 	}
@@ -245,6 +260,7 @@ public class ServiceOperationsFactory {
 		return correctionsService;
 	}
 
+	@Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
 	}
@@ -253,18 +269,22 @@ public class ServiceOperationsFactory {
 		return importErrorService;
 	}
 
+	@Required
 	public void setImportErrorService(ImportErrorService importErrorService) {
 		this.importErrorService = importErrorService;
 	}
 
+	@Required
 	public void setRegistry(ClassToTypeRegistry registry) {
 		this.registry = registry;
 	}
 
+	@Required
 	public void setErrorsSupport(ImportErrorsSupport errorsSupport) {
 		this.errorsSupport = errorsSupport;
 	}
 
+	@Required
 	public void setRegistryRecordDao(RegistryRecordDao registryRecordDao) {
 		this.registryRecordDao = registryRecordDao;
 	}
@@ -273,6 +293,7 @@ public class ServiceOperationsFactory {
 		return consumerInfoService;
 	}
 
+	@Required
 	public void setConsumerInfoService(ConsumerInfoService consumerInfoService) {
 		this.consumerInfoService = consumerInfoService;
 	}
@@ -281,6 +302,7 @@ public class ServiceOperationsFactory {
 		return quittanceService;
 	}
 
+	@Required
 	public void setQuittanceService(QuittanceService quittanceService) {
 		this.quittanceService = quittanceService;
 	}
@@ -289,6 +311,7 @@ public class ServiceOperationsFactory {
 		return importUtil;
 	}
 
+	@Required
 	public void setImportUtil(ImportUtil importUtil) {
 		this.importUtil = importUtil;
 	}
@@ -297,7 +320,17 @@ public class ServiceOperationsFactory {
 		return conditionsFactory;
 	}
 
+	@Required
 	public void setConditionsFactory(ConditionsFactory conditionsFactory) {
 		this.conditionsFactory = conditionsFactory;
+	}
+
+	public ServiceProviderService getServiceProviderService() {
+		return serviceProviderService;
+	}
+
+	@Required
+	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
+		this.serviceProviderService = serviceProviderService;
 	}
 }

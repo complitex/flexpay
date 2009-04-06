@@ -7,14 +7,18 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.EircRegistryProperties;
+import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.persistence.Service;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
 import org.flexpay.eirc.service.ConsumerService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -60,14 +64,16 @@ public class EircImportServiceTx extends ImportService {
 				continue;
 			}
 
-			if (data.getRegistryRecord().getConsumer() != null) {
+			RegistryRecord record = data.getRegistryRecord();
+			EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
+			if (props.getConsumer() != null) {
 				log.info("Record already has consumer set up");
 				continue;
 			}
 
-			if (data.getRegistryRecord().getApartment() != null &&
-				data.getRegistryRecord().getPerson() != null &&
-				data.getRegistryRecord().getService() != null) {
+			if (props.getApartment() != null &&
+				props.getPerson() != null &&
+				props.getService() != null) {
 				log.info("Record already have apartment, person and service set");
 				continue;
 			}
@@ -92,7 +98,7 @@ public class EircImportServiceTx extends ImportService {
 				}
 
 				// set apartment
-				if (data.getRegistryRecord().getApartment() == null) {
+				if (props.getApartment() == null) {
 					// Find apartment
 					Apartment apartment = findApartment(nameObjsMap, sd, data, dataSource);
 					if (apartment == null) {
@@ -100,15 +106,15 @@ public class EircImportServiceTx extends ImportService {
 						continue;
 					}
 
-					data.getRegistryRecord().setApartment(apartment);
+					props.setApartment(apartment);
 					log.info("Found apartment: {}", data.getApartmentId());
 				}
 
 				// set person
-				if (data.getRegistryRecord().getPerson() == null) {
+				if (props.getPerson() == null) {
 					Person person = findPerson(sd, data, dataSource);
 					if (person != null) {
-						data.getRegistryRecord().setPerson(person);
+						props.setPerson(person);
 						log.info("Found responsible person: {}", data.getPersonFIO());
 					} else {
 						log.info("No person found");
@@ -116,10 +122,10 @@ public class EircImportServiceTx extends ImportService {
 				}
 
 				// set service if not found
-				Service service = data.getRegistryRecord().getService();
+				EircRegistryProperties regProps = (EircRegistryProperties) data.getRegistryRecord().getRegistry().getProperties();
+				Service service = props.getService();
 				if (service == null) {
-					service = consumerService.findService(
-							data.getRegistryRecord().getSpRegistry().getServiceProvider(), data.getServiceCode());
+					service = consumerService.findService(regProps.getServiceProvider(), data.getServiceCode());
 					if (service == null) {
 						log.warn("Unknown service code: {}", data.getServiceCode());
 						ImportError error = addImportError(sd, data.getExternalSourceId(), Service.class, dataSource);
@@ -128,17 +134,15 @@ public class EircImportServiceTx extends ImportService {
 						continue;
 					}
 
-					data.getRegistryRecord().setService(service);
+					props.setService(service);
 				}
 
 				// try to find consumer (correction lost or service code came in a different format?)
 				Consumer consumer = consumerService.findConsumer(
-						data.getRegistryRecord().getSpRegistry().getServiceProvider(),
-						data.getAccountNumber(), data.getServiceCode());
+						regProps.getServiceProvider(), data.getAccountNumber(), data.getServiceCode());
 				if (consumer != null) {
 					// consumer found save correction
-					DataCorrection corr = correctionsService.getStub(data.getShortConsumerId(), consumer,
-							data.getRegistryRecord().getSpRegistry().getServiceProvider().getDataSourceDescription());
+					DataCorrection corr = correctionsService.getStub(data.getShortConsumerId(), consumer, sd);
 					addToStack(corr);
 				}
 
@@ -174,7 +178,8 @@ public class EircImportServiceTx extends ImportService {
 	}
 
 	private void postSaveRecord(RawConsumerData data, Consumer consumer) {
-		data.getRegistryRecord().setConsumer(consumer);
+		EircRegistryRecordProperties props = (EircRegistryRecordProperties) data.getRegistryRecord().getProperties();
+		props.setConsumer(consumer);
 		addToStack(data.getRegistryRecord());
 	}
 
@@ -194,8 +199,9 @@ public class EircImportServiceTx extends ImportService {
 			return new Person(personById);
 		}
 
+		EircRegistryRecordProperties props = (EircRegistryRecordProperties) data.getRegistryRecord().getProperties();
 		ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, dataSource);
-		Person person = importUtil.findPersonByFIO(data.getRegistryRecord().getApartmentStub(),
+		Person person = importUtil.findPersonByFIO(props.getApartmentStub(),
 				data.getFirstName(), data.getMiddleName(), data.getLastName(), error);
 		if (person != null) {
 			return person;
@@ -332,7 +338,7 @@ public class EircImportServiceTx extends ImportService {
 		BuildingAddress buildingAddress = buildingService.findBuildings(stub(street), data.getAddressHouse(), data.getAddressBulk());
 		if (buildingAddress == null) {
 			log.warn("Failed getting building for consumer, Street({}, {}), Building({}, {}) ",
-					new Object[] {street.getId(), data.getAddressStreet(), data.getAddressHouse(), data.getAddressBulk()});
+					new Object[]{street.getId(), data.getAddressStreet(), data.getAddressHouse(), data.getAddressBulk()});
 			ImportError error = addImportError(sd, data.getExternalSourceId(), BuildingAddress.class, dataSource);
 			error.setErrorId("error.eirc.import.building_not_found");
 			setConsumerError(data, error);
@@ -367,14 +373,17 @@ public class EircImportServiceTx extends ImportService {
 		return new Apartment(stub);
 	}
 
+	@Required
 	public void setConsumerService(ConsumerService consumerService) {
 		this.consumerService = consumerService;
 	}
 
+	@Required
 	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
 		this.recordWorkflowManager = recordWorkflowManager;
 	}
 
+	@Required
 	public void setImportUtil(ImportUtil importUtil) {
 		this.importUtil = importUtil;
 	}

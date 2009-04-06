@@ -4,11 +4,11 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.actions.TestSpFileAction;
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.SpRegistry;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
-import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
+import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.SPService;
@@ -60,9 +60,9 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		try {
 			registryProcessor.processFile(file);
 
-			List<SpRegistry> registries = registryService.findObjects(new Page<SpRegistry>(), file.getId());
+			List<Registry> registries = registryService.findObjects(new Page<Registry>(), file.getId());
 			assertEquals("Expected 1 registry", 1, registries.size());
-			SpRegistry registry = registries.get(0);
+			Registry registry = registries.get(0);
 			List<RegistryRecord> records = registryRecordService.listRecords(
 					registry, new ImportErrorTypeFilter(),
 					new RegistryRecordStatusFilter(), new Page<RegistryRecord>());

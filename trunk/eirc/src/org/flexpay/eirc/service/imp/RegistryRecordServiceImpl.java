@@ -1,16 +1,16 @@
 package org.flexpay.eirc.service.imp;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.registry.RegistryRecordContainerDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.eirc.dao.RegistryRecordContainerDao;
-import org.flexpay.eirc.dao.RegistryRecordDao;
-import org.flexpay.eirc.dao.RegistryRecordDaoExt;
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.RegistryRecordContainer;
-import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.dao.registry.RegistryRecordDao;
+import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
+import org.flexpay.common.persistence.registry.RegistryRecordContainer;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
-import org.flexpay.eirc.persistence.filters.RegistryRecordStatusFilter;
+import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.jetbrains.annotations.Nullable;
@@ -93,7 +93,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * @return list of filtered registry records
 	 */
 	@Transactional(readOnly=true)
-	public List<RegistryRecord> listRecords(SpRegistry registry, ImportErrorTypeFilter importErrorTypeFilter,
+	public List<RegistryRecord> listRecords(Registry registry, ImportErrorTypeFilter importErrorTypeFilter,
 											RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager) {
 		return registryRecordDaoExt.filterRecords(registry.getId(), importErrorTypeFilter, recordStatusFilter, pager);
 	}
@@ -104,22 +104,8 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * @param registry Registry to count errors for
 	 * @return number of errors
 	 */
-	public int getErrorsNumber(SpRegistry registry) {
+	public int getErrorsNumber(Registry registry) {
 		return registryRecordDaoExt.getErrorsNumber(registry.getId());
-	}
-
-	/**
-	 * Find data source description for record
-	 *
-	 * @param record Registry record
-	 * @return DataSourceDescription
-	 */
-	public DataSourceDescription getDataSourceDescription(RegistryRecord record) {
-		DataSourceDescription sd = registryRecordDaoExt.getDataSourceDescription(record.getId());
-
-		log.debug("Record Data source: {}", sd);
-
-		return sd;
 	}
 
 	/**
@@ -142,7 +128,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * @param objectIds Set of identifiers
 	 * @return Records
 	 */
-	public Collection<RegistryRecord> findObjects(SpRegistry registry, Set<Long> objectIds) {
+	public Collection<RegistryRecord> findObjects(Registry registry, Set<Long> objectIds) {
 		return registryRecordDaoExt.findRecords(registry.getId(), objectIds);
 	}
 

@@ -3,12 +3,12 @@ package org.flexpay.eirc.service.imp;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.eirc.dao.RegistryDao;
-import org.flexpay.eirc.dao.RegistryFileDaoExt;
-import org.flexpay.eirc.dao.RegistryRecordDao;
-import org.flexpay.eirc.dao.RegistryRecordDaoExt;
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.common.dao.registry.RegistryDao;
+import org.flexpay.common.dao.registry.RegistryFileDaoExt;
+import org.flexpay.common.dao.registry.RegistryRecordDao;
+import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.service.RegistryFileService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 	 * @param spFile ServiceProvider obtained file
 	 * @return List of registries in a file
 	 */
-	public List<SpRegistry> getRegistries(FPFile spFile) {
+	public List<Registry> getRegistries(FPFile spFile) {
 		return registryDao.listRegistries(spFile.getId());
 	}
 
@@ -46,7 +46,7 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 	 * @param minMaxIds cached minimum and maximum registry record keys
 	 * @return list of records
 	 */
-	public List<RegistryRecord> getRecordsForProcessing(@NotNull Stub<SpRegistry> registry, Page<RegistryRecord> pager, Long[] minMaxIds) {
+	public List<RegistryRecord> getRecordsForProcessing(@NotNull Stub<Registry> registry, Page<RegistryRecord> pager, Long[] minMaxIds) {
 
 		// cache min-max rerecord ids
 		if (minMaxIds[0] == null || minMaxIds[1] == null) {

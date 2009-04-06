@@ -1,8 +1,8 @@
 package org.flexpay.eirc.persistence.exchange;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,5 +48,5 @@ public abstract class Operation {
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
-	abstract public void process(SpRegistry registry, RegistryRecord record) throws FlexPayException;
+	abstract public void process(Registry registry, RegistryRecord record) throws FlexPayException;
 }

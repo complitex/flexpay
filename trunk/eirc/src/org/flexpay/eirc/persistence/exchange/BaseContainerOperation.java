@@ -4,12 +4,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.eirc.persistence.RegistryRecord;
-import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.eirc.persistence.EircRegistryProperties;
+import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.QuittanceService;
+import org.flexpay.orgs.persistence.ServiceProvider;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -74,19 +77,22 @@ public class BaseContainerOperation extends ContainerOperation {
 		return StringUtils.isBlank(str);
 	}
 
-	private Consumer getConsumer(SpRegistry registry, RegistryRecord record) throws FlexPayException {
+	private Consumer getConsumer(Registry registry, RegistryRecord record) throws FlexPayException {
 		ConsumerService consumerService = factory.getConsumerService();
 
 		Consumer consumer;
 		if (serviceId != null && !"#".equals(serviceId)) {
+			EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
+			ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
 			consumer = consumerService.findConsumer(
-					registry.getServiceProvider(), record.getPersonalAccountExt(), serviceId);
+					provider, record.getPersonalAccountExt(), serviceId);
 			if (consumer == null) {
-				throw new FlexPayException("Cannot find consumer: SP-id=" + registry.getServiceProvider().getId() +
+				throw new FlexPayException("Cannot find consumer: SP-id=" + props.getServiceProvider().getId() +
 										   ", account=" + record.getPersonalAccountExt() + ", code=" + serviceId);
 			}
 		} else {
-			consumer = record.getConsumer();
+			EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
+			consumer = props.getConsumer();
 			if (consumer == null) {
 				throw new FlexPayException("No consumer was set up");
 			}
@@ -102,10 +108,11 @@ public class BaseContainerOperation extends ContainerOperation {
 	 * @param record   Registry record
 	 * @throws FlexPayException if failure occurs
 	 */
-	public void process(SpRegistry registry, RegistryRecord record) throws FlexPayException {
+	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
 		QuittanceService quittanceService = factory.getQuittanceService();
 
-		if (record.getConsumer() == null) {
+		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
+		if (props.getConsumer() == null) {
 			throw new FlexPayException("Record consumer not set up");
 		}
 

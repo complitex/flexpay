@@ -4,13 +4,13 @@ import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.standalone.StandaloneTask;
 import org.flexpay.eirc.actions.SpFileAction;
 import org.flexpay.eirc.actions.UploadFileAction;
-import org.flexpay.eirc.dao.RegistryDao;
-import org.flexpay.eirc.persistence.SpRegistry;
+import org.flexpay.common.dao.registry.RegistryDao;
 import org.flexpay.eirc.service.RegistryFileService;
 import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
@@ -80,7 +80,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 	}
 
 	private void processRegistry(Long registryId) throws Throwable {
-		SpRegistry registry = registryService.readWithContainers(new Stub<SpRegistry>(registryId));
+		Registry registry = registryService.readWithContainers(new Stub<Registry>(registryId));
 
 		try {
 			log.debug("Starting registry processing");
@@ -99,7 +99,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 	}
 
 	private void importRegistry(Long registryId) throws Throwable {
-		SpRegistry registry = registryService.readWithContainers(new Stub<SpRegistry>(registryId));
+		Registry registry = registryService.readWithContainers(new Stub<Registry>(registryId));
 
 		long time = System.currentTimeMillis();
 
@@ -127,7 +127,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 	}
 
 	private void deleteRecords(FPFile file) {
-		for (SpRegistry registry : fileService.getRegistries(file)) {
+		for (Registry registry : fileService.getRegistries(file)) {
 			registryDao.deleteRecordContainers(registry.getId());
 			registryDao.deleteRegistryContainers(registry.getId());
 			registryDao.deleteRecords(registry.getId());

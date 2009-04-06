@@ -1,7 +1,7 @@
 package org.flexpay.eirc.service;
 
-import org.flexpay.eirc.persistence.RegistryType;
-import org.flexpay.eirc.persistence.filters.RegistryTypeFilter;
+import org.flexpay.common.persistence.registry.RegistryType;
+import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 
 public interface SpRegistryTypeService {
 

@@ -2,9 +2,9 @@ package org.flexpay.eirc.actions.registry;
 
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.persistence.SpRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -15,7 +15,7 @@ import java.util.Set;
 public class RegistryRecordsProcessAction extends FPActionSupport {
 
 	private Set<Long> objectIds = CollectionUtils.set();
-	private SpRegistry registry = new SpRegistry();
+	private Registry registry = new Registry();
 
 	private ProcessManager processManager;
 
@@ -55,11 +55,11 @@ public class RegistryRecordsProcessAction extends FPActionSupport {
 		this.objectIds = objectIds;
 	}
 
-	public SpRegistry getRegistry() {
+	public Registry getRegistry() {
 		return registry;
 	}
 
-	public void setRegistry(SpRegistry registry) {
+	public void setRegistry(Registry registry) {
 		this.registry = registry;
 	}
 
