@@ -66,6 +66,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="ab" />
   </component>
 </module>
 

@@ -21,6 +21,19 @@
 		<mapping resource="org/flexpay/common/persistence/registry/Registry.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/registry/RegistryProperties.hbm.xml" />
 
+		<mapping resource="org/flexpay/ab/persistence/Country.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/Region.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/TownType.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/Town.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/District.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/Street.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/Building.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/BuildingBase.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/Apartment.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/StreetType.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml" />
+		<mapping resource="org/flexpay/ab/persistence/Person.hbm.xml" />
+
 		<mapping resource="org/flexpay/orgs/persistence/Bank.hbm.xml" />
 		<mapping resource="org/flexpay/orgs/persistence/Organization.hbm.xml" />
 		<mapping resource="org/flexpay/orgs/persistence/PaymentPoint.hbm.xml" />

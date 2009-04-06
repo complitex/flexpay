@@ -201,7 +201,7 @@
 	</target>
 
 	<target name="payments.sql.init-db-test"
-			depends="orgs.sql.init-db-test,ab.sql.init-db"
+			depends="orgs.sql.init-db-test,ab.sql.init-db-test"
 			unless="payments.sql.init-db-test.run">
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${payments.dir}/etc/sql/init_db.sql" />
