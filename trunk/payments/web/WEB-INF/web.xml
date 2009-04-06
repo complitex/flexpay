@@ -28,7 +28,9 @@
 	</context-param>
 	<context-param>
 		<param-name>definitions-config</param-name>
-		<param-value>/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/common/configs/tiles_payments.xml</param-value>
+		<param-value>
+			/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/payments/configs/tiles_payments.xml
+		</param-value>
 	</context-param>
 
 	<listener>

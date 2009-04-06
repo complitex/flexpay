@@ -6,4 +6,84 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+	<!-- TODO inject proper user roles -->
+
+	<!-- level 1 -->
+	<bean name="payments" parent="fpMenu"
+		  p:name="payments"
+		  p:title="payments.menu1.title"
+		  p:namespace="/payments"
+		  p:action="main"
+		  p:parent-ref="fpMenu" />
+
+	<!-- level 2 -->
+	<bean name="payments_payments" parent="payments"
+		  p:name="payments.payments"
+		  p:title="payments.menu2.title"
+		  p:namespace="/payments"
+		  p:action="main"
+		  p:parent-ref="payments" />
+
+	<!-- level 3 -->
+	<bean name="payments_search" parent="payments_payments"
+		  p:name="payments.search"
+		  p:title="payments.menu3.search"
+		  p:action="main"
+		  p:parent-ref="payments_payments"/>
+
+	<bean name="payments_operations" parent="payments_payments"
+		  p:name="payments.operations"
+		  p:title="payments.menu3.operations"
+		  p:action="main"
+		  p:parent-ref="payments_payments"/>
+
+	<bean name="payments_reports" parent="payments_payments"
+		  p:name="payments.reports"
+		  p:title="payments.menu3.reports"
+		  p:action="main"
+		  p:parent-ref="payments_payments"/>
+
+	<bean name="payments_registries" parent="payments_payments"
+		  p:name="payments.registries"
+		  p:title="payments.menu3.registries"
+		  p:action="main"
+		  p:parent-ref="payments_payments"/>
+
+	<!-- level 4 -->
+	<bean name="payments_search_by_quittance_number" parent="payments_search"
+		  p:name="payments.search.by_quittance_number"
+		  p:title="payments.menu4.search_by_quittance_number"
+		  p:action="searchByQuittanceNumber"
+		  p:parent-ref="payments_search"/>
+
+	<bean name="payments_search_by_eirc_account" parent="payments_search"
+		  p:name="payments.search.by_eirc_account"
+		  p:title="payments.menu4.search_by_eirc_account"
+		  p:action="searchByEircAccount"
+		  p:parent-ref="payments_search"/>
+
+	<bean name="payments_search_by_address" parent="payments_search"
+		  p:name="payments.search.by_address"
+		  p:title="payments.menu4.search_by_address"
+		  p:action="searchByAddress"
+		  p:parent-ref="payments_search"/>
+
+	<bean name="payments_operations_list" parent="payments_operations"
+		  p:name="payments.operations.list"
+		  p:title="payments.menu4.operations_list"
+		  p:action="operationsList"
+		  p:parent-ref="payments_operations"/>
+
+	<bean name="payments_report_generate" parent="payments_reports"
+		  p:name="payments.report.generate"
+		  p:title="payments.menu4.generate_report"
+		  p:action="generateReport"
+		  p:parent-ref="payments_reports"/>
+
+	<bean name="payments_registry_generate" parent="payments_registries"
+		  p:name="payments.registry.generate"
+		  p:title="payments.menu4.generate_registry"
+		  p:action="generateRegistry"
+		  p:parent-ref="payments_registries"/>
+
 </beans>
