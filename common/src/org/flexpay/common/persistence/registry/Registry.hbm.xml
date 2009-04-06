@@ -1,0 +1,376 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence.registry">
+
+	<class name="Registry" table="common_registries_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" column="version" access="field" />
+		<property name="registryNumber" column="registry_number" />
+		<property name="recordsNumber" column="records_number" />
+		<property name="creationDate" column="creation_date" type="timestamp" />
+		<property name="fromDate" column="from_date" type="timestamp" />
+		<property name="tillDate" column="till_date" type="timestamp" />
+		<property name="senderCode" column="sender_code" />
+		<property name="recipientCode" column="recipient_code" />
+		<property name="amount" column="amount" type="big_decimal" />
+		<list name="containers" inverse="true">
+			<key column="registry_id" not-null="true" />
+			<list-index column="order_weight" />
+			<one-to-many class="RegistryContainer" />
+		</list>
+		<many-to-one name="registryType" foreign-key="FK_common_registries_tbl_registry_type_id"
+					 class="RegistryType">
+			<column name="registry_type_id" not-null="true">
+				<comment>Registry type reference</comment>
+			</column>
+		</many-to-one>
+
+		<many-to-one name="spFile" foreign-key="FK_common_registries_tbl_file_id"
+					 class="org.flexpay.common.persistence.FPFile">
+			<column name="file_id" not-null="false">
+				<comment>Registry file reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="registryStatus" class="RegistryStatus"
+					 foreign-key="FK_common_registries_tbl_status_id">
+			<column name="registry_status_id" not-null="true">
+				<comment>Registry status reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="archiveStatus" class="RegistryArchiveStatus"
+					 foreign-key="FK_common_registries_tbl_archive_status_id">
+			<column name="archive_status_id" not-null="true">
+				<comment>Registry archive status reference</comment>
+			</column>
+		</many-to-one>
+		<one-to-one name="properties" cascade="all" constrained="true"
+					foreign-key="FK_common_registries_tbl_properties_id"
+					class="RegistryProperties" fetch="join" property-ref="registry" />
+	</class>
+
+	<class name="RegistryContainer" table="common_registry_containers_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="data">
+			<column name="data" length="2048" not-null="true">
+				<comment>Registry container data</comment>
+			</column>
+		</property>
+		<property name="order">
+			<column name="order_weight" not-null="true">
+				<comment>Order of the container in a registry</comment>
+			</column>
+		</property>
+		<many-to-one name="registry" class="Registry"
+					 foreign-key="FK_common_registry_containers_tbl_registry_id">
+			<column name="registry_id" not-null="true">
+				<comment>Registry reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<class name="RegistryRecordContainer" table="common_registry_record_containers_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="data">
+			<column name="data" length="2048" not-null="true">
+				<comment>Container data</comment>
+			</column>
+		</property>
+		<property name="order">
+			<column name="order_weight" not-null="true">
+				<comment>Order of the container in a registry record</comment>
+			</column>
+		</property>
+		<many-to-one name="record" class="RegistryRecord"
+					 foreign-key="FK_common_registry_record_containers_tbl_record_id">
+			<column name="record_id" not-null="true">
+				<comment>Registry record reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<class name="RegistryType" table="common_registry_types_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic locking version</comment>
+			</column>
+		</version>
+		<property name="code">
+			<column name="code" not-null="true" unique="true">
+				<comment>Registry type code</comment>
+			</column>
+		</property>
+	</class>
+
+	<class name="RegistryStatus" table="common_registry_statuses_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic locking version</comment>
+			</column>
+		</version>
+		<property name="code">
+			<column name="code" not-null="true" unique="true">
+				<comment>Registry status code</comment>
+			</column>
+		</property>
+	</class>
+
+	<class name="RegistryRecordStatus" table="common_registry_record_statuses_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="code">
+			<column name="code" not-null="true" unique="true">
+				<comment>Registry record status code</comment>
+			</column>
+		</property>
+	</class>
+
+	<class name="RegistryArchiveStatus" table="common_registry_archive_statuses_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="code" not-null="true" unique="true" />
+	</class>
+
+	<class name="RegistryRecord" table="common_registry_records_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="serviceCode" column="service_code" not-null="true" />
+		<property name="personalAccountExt" column="personal_account_ext"
+				  not-null="true" />
+		<property name="city" column="city" />
+		<property name="streetType" column="street_type" />
+		<property name="streetName" column="street_name" />
+		<property name="buildingNum" column="building_number" />
+		<property name="buildingBulkNum" column="bulk_number" />
+		<property name="apartmentNum" column="apartment_number" />
+		<property name="firstName" column="first_name" />
+		<property name="middleName" column="middle_name" />
+		<property name="lastName" column="last_name" />
+		<property name="operationDate" column="operation_date" type="timestamp"
+				  not-null="true" />
+		<property name="uniqueOperationNumber" column="unique_operation_number" />
+		<property name="amount" column="amount" type="big_decimal" />
+
+		<list name="containers" inverse="true">
+			<key column="record_id" not-null="true" />
+			<list-index column="order_weight" />
+			<one-to-many class="RegistryRecordContainer" />
+		</list>
+
+		<many-to-one name="registry" class="Registry"
+					 foreign-key="FK_common_registry_records_tbl_registry_id">
+			<column name="registry_id" not-null="true">
+				<comment>Registry reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="recordStatus" class="RegistryRecordStatus"
+					 foreign-key="FK_common_registry_records_tbl_record_status_id">
+			<column name="record_status_id" not-null="false">
+				<comment>Record status reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="importError" foreign-key="FK_common_registry_records_tbl_import_error_id"
+					 class="org.flexpay.common.persistence.ImportError">
+			<column name="import_error_id" not-null="false">
+				<comment>Import error reference</comment>
+			</column>
+		</many-to-one>
+		<one-to-one name="properties" cascade="all" constrained="true"
+					foreign-key="common_registry_records_tbl_properties_id"
+					class="RegistryRecordProperties" fetch="join" property-ref="record" />
+	</class>
+
+	<query name="Registry.listRegistries.count">
+		select count(*) from Registry sr where sr.spFile.id = ?
+	</query>
+
+	<query name="Registry.listRegistries">
+		select distinct r
+		from Registry r
+		inner join fetch r.registryType
+		inner join fetch r.registryStatus
+		inner join fetch r.properties 
+		left join fetch r.containers
+		where r.spFile.id = ?
+	</query>
+
+	<query name="Registry.listRegistryWithContainers">
+		select distinct r
+		from Registry r
+		inner join fetch r.registryType
+		inner join fetch r.registryStatus
+		inner join fetch r.properties
+		left join fetch r.containers
+		where r.id=?
+	</query>
+
+	<query name="Registry.findRegistriesByNumber">
+		select distinct r
+		from Registry r inner join fetch r.properties, EircRegistryProperties p
+		where r.properties.id=p.id and r.registryNumber=? and p.sender.id=?
+	</query>
+
+	<query name="Registry.findObjects">
+		from Registry r where r.spFile.id=?
+	</query>
+
+	<query name="Registry.deleteRecords">
+		delete from RegistryRecord where registry.id=?
+	</query>
+
+	<query name="Registry.deleteRecordContainers">
+		delete
+		from RegistryRecordContainer rc
+		where rc.record.id in (select id from RegistryRecord where registry.id=?)
+	</query>
+
+	<query name="Registry.deleteRecordProperties">
+		delete
+		from RegistryRecordProperties rp
+		where rp.record.id in (select id from RegistryRecord where registry.id=?)
+	</query>
+
+	<query name="Registry.deleteQuittances">
+		delete
+		from QuittanceDetails q
+		where q.registryRecord.id in (select id from RegistryRecord where registry.id=?)
+	</query>
+
+	<query name="Registry.deleteRegistryContainers">
+		delete from RegistryContainer where registry.id=?
+	</query>
+
+	<query name="Registry.findObjects.count">
+		select count(*) from Registry r where r.spFile.id=?
+	</query>
+
+	<query name="Registry.readFull">
+		select distinct r
+		from Registry r
+		inner join fetch r.registryType
+		inner join fetch r.registryStatus
+		inner join fetch r.properties
+		where r.id=?
+	</query>
+
+	<query name="RegistryRecord.getMinMaxRecordsForProcessing"><![CDATA[
+		select min(rr.id), max(rr.id)
+		from RegistryRecord rr
+			inner join rr.registry r
+			inner join rr.recordStatus rrs
+		where r.id=? and rrs.code NOT IN (2, 4)
+	]]></query>
+
+	<query name="RegistryRecord.getMinMaxRecordsForImporting"><![CDATA[
+		select min(rr.id), max(rr.id)
+		from RegistryRecord rr
+			inner join rr.registry r
+			inner join rr.recordStatus rrs
+		where r.id=? and rrs.code NOT IN (4)
+	]]></query>
+
+	<query name="RegistryRecord.listRecordsForImport"><![CDATA[
+		select rr
+		from RegistryRecord rr
+		inner join fetch rr.recordStatus rrs
+		left join fetch rr.importError
+		where rr.registry.id=? and rr.id>=? and rr.id<=? and rrs.code NOT IN (4)
+	]]></query>
+
+	<query name="RegistryRecord.listRecordsForProcessing"><![CDATA[
+		select distinct rr
+		from RegistryRecord rr
+			inner join fetch rr.registry r
+			inner join fetch r.properties
+			inner join fetch r.registryStatus rs
+			inner join fetch rr.recordStatus rrs
+			left join fetch rr.importError
+			left join fetch rr.containers
+		where r.id=? and rr.id>=? and rr.id<=? and rrs.code NOT IN (2, 4)
+	]]></query>
+
+	<query name="RegistryType.countNotProcessedRecords"><![CDATA[
+		select count(*)
+		from RegistryRecord r
+			inner join r.recordStatus s
+		where s.code<4 and r.registry.id=?
+	]]></query>
+
+	<query name="RegistryType.haveNotProcessedRecords"><![CDATA[
+		select 1 from Dual
+		where exists (
+			select 1
+			from RegistryRecord r
+				inner join r.recordStatus s
+			where s.code<4 and r.registry.id=?)
+	]]></query>
+
+	<query name="RegistryType.findAll">
+		from RegistryType
+	</query>
+
+	<query name="RegistryRecord.readFull">
+		select distinct rr
+		from RegistryRecord rr
+		inner join fetch rr.recordStatus
+		inner join fetch rr.registry r
+		inner join fetch r.properties 
+		left join fetch rr.importError
+		where rr.id=?
+	</query>
+
+	<query name="RegistryRecord.listRecords">
+		select rr
+		from RegistryRecord rr
+		inner join fetch rr.recordStatus
+		left join fetch rr.importError
+		where rr.registry.id=?
+	</query>
+
+	<query name="RegistryRecord.listRecords.count">
+		select count(*)
+		from RegistryRecord rr
+		where rr.registry.id=?
+	</query>
+
+	<query name="RegistryStatus.findAll">
+		from RegistryStatus
+	</query>
+
+	<query name="RegistryRecordStatus.findAll">
+		from RegistryRecordStatus
+	</query>
+
+	<query name="RegistryArchiveStatus.findByCode">
+		from RegistryArchiveStatus s where s.code=?
+	</query>
+
+	<query name="RegistryRecordContainer.findRecordContainers">
+		from RegistryRecordContainer c
+		where c.record.id=?
+		order by c.order
+	</query>
+
+</hibernate-mapping>

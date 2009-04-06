@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence.registry">
+
+	<class name="RegistryProperties" table="common_registry_properties_tbl" optimistic-lock="version"
+		   discriminator-value="common">
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<discriminator type="string">
+			<column name="props_type" not-null="true">
+				<comment>Hierarchy discriminator, all entities should have the same value</comment>
+			</column>
+		</discriminator>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<many-to-one name="registry" class="Registry"
+					 foreign-key="FK_common_registry_properties_tbl_registry_id">
+			<column name="registry_id" not-null="false">
+				<comment>Registry reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<class name="RegistryRecordProperties" table="common_registry_record_properties_tbl" optimistic-lock="version"
+		   discriminator-value="common">
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<discriminator type="string">
+			<column name="props_type" not-null="true">
+				<comment>Hierarchy discriminator, all entities should have the same value</comment>
+			</column>
+		</discriminator>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<many-to-one name="record" class="RegistryRecord"
+					 foreign-key="FK_common_registry_properties_tbl_record_id">
+			<column name="record_id" not-null="false">
+				<comment>Registry record reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+</hibernate-mapping>
