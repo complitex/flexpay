@@ -35,6 +35,9 @@
           </containerElement>
         </packaging>
       </configuration>
+      <facet type="Struts2" name="Struts 2">
+        <configuration />
+      </facet>
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">

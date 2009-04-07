@@ -29,6 +29,7 @@ public class TestRunDuplicateQuittanceJobs extends SpringBeanAwareTestCase {
 		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, new GregorianCalendar(2008, 5, 1).getTime());
 		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, new GregorianCalendar(2008, 5, 30).getTime());
 		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANIZATION_ID, 1L);
+		contextVariables.put(GenerateQuittanceJob.PARAM_TOWN_ID, 2L);
 
 		long p1Id = processManager.createProcess("GenerateQuittances", contextVariables);
 		long p2Id = processManager.createProcess("GenerateQuittances", contextVariables);
@@ -56,6 +57,7 @@ public class TestRunDuplicateQuittanceJobs extends SpringBeanAwareTestCase {
 		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, new GregorianCalendar(2008, 5, 1).getTime());
 		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, new GregorianCalendar(2008, 5, 30).getTime());
 		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANIZATION_ID, 1L);
+		contextVariables.put(GenerateQuittanceJob.PARAM_TOWN_ID, 2L);
 
 		long p1Id = processManager.createProcess("GenerateQuittances", contextVariables);
 
@@ -82,6 +84,7 @@ public class TestRunDuplicateQuittanceJobs extends SpringBeanAwareTestCase {
 		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, new GregorianCalendar(2008, 5, 1).getTime());
 		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, new GregorianCalendar(2008, 5, 30).getTime());
 		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANIZATION_ID, 1L);
+		contextVariables.put(GenerateQuittanceJob.PARAM_TOWN_ID, 2L);
 
 		long p1Id = processManager.createProcess("GenerateQuittances", contextVariables);
 		long p2Id = processManager.createProcess("GenerateQuittancePDF", contextVariables);

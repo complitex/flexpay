@@ -1,7 +1,10 @@
 package org.flexpay.eirc.dao.imp;
 
+import org.flexpay.ab.persistence.Town;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
+import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -15,14 +18,16 @@ public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoE
 	/**
 	 * Generate current snapshot of details and create quittances for the following processing
 	 *
-	 * @param dateFrom Period begin date
-	 * @param dateTill Period end date
+	 * @param organizationStub ServiceOrganization stub to generate quittances for
+	 * @param townStub		 Town stub to generate quittances in
+	 * @param dateFrom		 Period begin date
+	 * @param dateTill		 Period end date
 	 * @return number of generated quittances
 	 */
-	public long createQuittances(Date dateFrom, Date dateTill) {
+	public long createQuittances(Stub<EircServiceOrganization> organizationStub, Stub<Town> townStub, Date dateFrom, Date dateTill) {
 
 		Date now = new Date();
-		long count = generateQuittances(dateFrom, dateTill, now);
+		long count = generateQuittances(townStub.getId(), organizationStub.getId(), dateFrom, dateTill, now);
 
 		long detailsCount = generateDetailsReferences(dateFrom, dateTill, now);
 		long updatedCount = updateOrderNumbers(dateFrom, dateTill, now);
@@ -35,15 +40,17 @@ public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoE
 		return count;
 	}
 
-	private long generateQuittances(Date dateFrom, Date dateTill, Date now) {
+	private long generateQuittances(Long townId, Long organisationId, Date dateFrom, Date dateTill, Date now) {
 		String insertSql = "insert into eirc_quittances_tbl " +
 						   "(service_organization_id, eirc_account_id, order_number, date_from, date_till, creation_date) " +
 						   "select b.eirc_service_organization_id, acc.id, 0, ?, ?, ? " +
 						   "from eirc_eirc_accounts_tbl acc " +
 						   "	inner join ab_apartments_tbl ap on ap.id=acc.apartment_id " +
 						   "	inner join ab_buildings_tbl b on b.id=ap.building_id " +
-						   "where acc.status=0";
-		return getJdbcTemplate().update(insertSql, ar(dateFrom, dateTill, now));
+						   "	inner join ab_districts_tbl d on b.district_id=d.id " +
+						   "	inner join ab_towns_tbl t on t.id=d.town_id " +
+						   "where t.id=? and b.eirc_service_organization_id=? and acc.status=0";
+		return getJdbcTemplate().update(insertSql, ar(dateFrom, dateTill, now, townId, organisationId));
 	}
 
 	private long generateDetailsReferences(Date dateFrom, Date dateTill, Date now) {
