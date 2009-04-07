@@ -11,7 +11,7 @@
 	</tr>
 	<tr>
 		<td class="filter"><s:text name="ab.street"/></td>
-		<td colspan="5"><%@include file="../street_search_filter.jsp" %></td>
+		<td colspan="5"><%@include file="../ajax/street_search_filter.jsp" %></td>
 	</tr>
 	<tr>
 		<td class="filter"><s:text name="ab.building"/></td>

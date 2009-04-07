@@ -19,10 +19,11 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.*;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class CountryServiceImpl implements CountryService {
 
 	@NonNls
@@ -30,6 +31,10 @@ public class CountryServiceImpl implements CountryService {
 
 	private CountryDao countryDao;
 	private CountryNameTranslationDao countryNameTranslationDao;
+
+	public Country readFull(@NotNull Stub<Country> stub) {
+		return countryDao.readFull(stub.getId());
+	}
 
     @Transactional (readOnly = false)
 	public Country create(List<CountryNameTranslation> countryNames) {
@@ -179,18 +184,19 @@ public class CountryServiceImpl implements CountryService {
         return translations.size() == 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+	@NotNull
+	public List<Country> findByQuery(@NotNull String query) {
+		return countryDao.findByQuery(query);
+	}
+
+	@Required
     public void setCountryDao(CountryDao countryDao) {
 		this.countryDao = countryDao;
 	}
 
+	@Required
 	public void setCountryNameDao(CountryNameTranslationDao countryNameTranslationDao) {
 		this.countryNameTranslationDao = countryNameTranslationDao;
 	}
 
-	public Country readFull(@NotNull Stub<Country> stub) {
-		return countryDao.readFull(stub.getId());
-	}
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <package name="regions" namespace="/dicts" extends="common">
+
+        <action name="regionsList" class="regionsListAction">
+            <result type="tiles">ab.regions.list</result>
+        </action>
+
+        <action name="regionCreate" class="regionCreateAction">
+            <result type="redirect-action">
+                <param name="actionName">regionView</param>
+                <param name="parse">true</param>
+                <param name="object.id">${object.id}</param>
+            </result>
+            <result type="tiles" name="input">ab.region.create</result>
+        </action>
+
+        <action name="regionView" class="regionViewAction">
+            <result type="tiles">ab.region.view</result>
+            <result type="redirect-action" name="redirectError">regionsList</result>
+        </action>
+
+        <action name="regionEdit" class="regionEditAction">
+            <result type="redirect-action">
+                <param name="actionName">regionView</param>
+                <param name="parse">true</param>
+                <param name="object.id">${object.id}</param>
+            </result>
+            <result type="tiles" name="input">ab.region.edit</result>
+        </action>
+
+        <action name="regionDelete" class="regionDeleteAction">
+            <result name="redirectSuccess" type="redirect">regionsList.action</result>
+        </action>
+
+    </package>
+
+</struts>

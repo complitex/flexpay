@@ -12,7 +12,7 @@
 
 	<tcMaximumFloors>16</tcMaximumFloors>
 	<tcMaximumPorches>16</tcMaximumPorches>
-	<tcMaximumAppartments>1000</tcMaximumAppartments>
+	<tcMaximumApartments>1000</tcMaximumApartments>
 
 
 </flexpay>

@@ -4,7 +4,7 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 	<!--  Dao Layer instances -->
-	<bean id="countryDAO" parent="abstractDao">
+	<bean id="countryDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.CountryDao" />
 		<property name="target">
@@ -14,7 +14,7 @@
 		</property>
 	</bean>
 
-	<bean id="countryNameDAO" parent="abstractDao">
+	<bean id="countryNameDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.CountryNameTranslationDao" />
 		<property name="target">
@@ -25,7 +25,7 @@
 		</property>
 	</bean>
 
-	<bean id="regionDAO" parent="abstractDao">
+	<bean id="regionDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.RegionDao" />
 		<property name="target">
@@ -35,7 +35,7 @@
 		</property>
 	</bean>
 
-	<bean id="regionNameDAO" parent="abstractDao">
+	<bean id="regionNameDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.RegionNameDao" />
 		<property name="target">
@@ -45,7 +45,7 @@
 		</property>
 	</bean>
 
-	<bean id="regionNameTranslationDAO" parent="abstractDao">
+	<bean id="regionNameTranslationDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.RegionNameTranslationDao" />
 		<property name="target">
@@ -67,7 +67,7 @@
 	</bean>
 
 	<!-- Town DAO objects -->
-	<bean id="townDAO" parent="abstractDao">
+	<bean id="townDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.TownDao" />
 		<property name="target">
@@ -77,7 +77,7 @@
 		</property>
 	</bean>
 
-	<bean id="townNameDAO" parent="abstractDao">
+	<bean id="townNameDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.TownNameDao" />
 		<property name="target">
@@ -87,7 +87,7 @@
 		</property>
 	</bean>
 
-	<bean id="townNameTranslationDAO" parent="abstractDao">
+	<bean id="townNameTranslationDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.TownNameTranslationDao" />
 		<property name="target">
@@ -108,7 +108,7 @@
 	</bean>
 
 	<!-- Town District DAO objects -->
-	<bean id="districtDAO" parent="abstractDao">
+	<bean id="districtDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.DistrictDao" />
 		<property name="target">
@@ -118,7 +118,7 @@
 		</property>
 	</bean>
 
-	<bean id="districtNameDAO" parent="abstractDao">
+	<bean id="districtNameDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.DistrictNameDao" />
 		<property name="target">
@@ -128,7 +128,7 @@
 		</property>
 	</bean>
 
-	<bean id="districtNameTranslationDAO" parent="abstractDao">
+	<bean id="districtNameTranslationDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.DistrictNameTranslationDao" />
 		<property name="target">
@@ -151,7 +151,7 @@
 	</bean>
 
 	<!-- Street DAO objects -->
-	<bean id="streetDAO" parent="abstractDao">
+	<bean id="streetDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.StreetDao" />
 		<property name="target">
@@ -161,7 +161,7 @@
 		</property>
 	</bean>
 
-	<bean id="streetNameDAO" parent="abstractDao">
+	<bean id="streetNameDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.StreetNameDao" />
 		<property name="target">
@@ -171,7 +171,7 @@
 		</property>
 	</bean>
 
-	<bean id="streetNameTranslationDAO" parent="abstractDao">
+	<bean id="streetNameTranslationDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.StreetNameTranslationDao" />
 		<property name="target">
@@ -203,7 +203,7 @@
 	</bean>
 
 	<!-- Town type DAO objects -->
-	<bean id="townTypeDAO" parent="abstractDao">
+	<bean id="townTypeDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.TownTypeDao" />
 		<property name="target">
@@ -224,7 +224,7 @@
 	</bean>
 
 	<!-- Street type DAO objects -->
-	<bean id="streetTypeDAO" parent="abstractDao">
+	<bean id="streetTypeDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.StreetTypeDao" />
 		<property name="target">
@@ -324,7 +324,7 @@
 	</bean>
 
 	<!-- Person identities -->
-	<bean id="identityTypeDAO" parent="abstractDao">
+	<bean id="identityTypeDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.IdentityTypeDao" />
 		<property name="target">

@@ -12,6 +12,9 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../common/web" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/../../common/src" />
+        </sourceRoots>
         <building>
           <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/../../_build/web" />
           <setting name="EXPLODED_ENABLED" value="true" />
@@ -77,12 +80,19 @@
           </containerElement>
         </packaging>
       </configuration>
+      <facet type="Struts2" name="Struts 2">
+        <configuration>
+          <fileset id="s2fileset1" name="My Fileset" removed="false">
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/struts_config.xml</file>
+          </fileset>
+        </configuration>
+      </facet>
     </facet>
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="flexpay" value="d1b6f54f-3833-45ac-9df7-28e10c14f6af" />
-          <unit-entry name="flexpaySessionFactory" value="51cf0720-73e0-443e-93f1-691d2cf05b93" />
+          <unit-entry name="flexpay" value="1cbbd1b0-185e-4357-955d-ff0dac282ef8" />
+          <unit-entry name="flexpaySessionFactory" value="1cbbd1b0-185e-4357-955d-ff0dac282ef8" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
       </configuration>
@@ -102,168 +112,18 @@
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/data_export.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/hibernate.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/stand-alone-tasks.xml</file>
+          <file>file://$MODULE_DIR$/../../common/tests/data/org/flexpay/common/test/applicationContext-security.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/menu.cfg.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-struts.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext-security.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-job.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-schedule.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-client.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server-test.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/config.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/spring-ws-servlet.xml</file>
         </fileset>
-      </configuration>
-    </facet>
-    <facet type="web" name="Web2">
-      <configuration>
-        <descriptors>
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../common/ab/web/WEB-INF/web.xml" optional="false" version="2.5" />
-        </descriptors>
-        <webroots>
-          <root url="file://$MODULE_DIR$/../../common/ab/web" relative="/" />
-        </webroots>
-        <building>
-          <setting name="EXPLODED_URL" value="file://" />
-          <setting name="EXPLODED_ENABLED" value="false" />
-          <setting name="JAR_URL" value="file://" />
-          <setting name="JAR_ENABLED" value="false" />
-          <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
-        </building>
-        <packaging>
-          <containerElement type="module" name="common">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-        </packaging>
-      </configuration>
-    </facet>
-    <facet type="web" name="Web3">
-      <configuration>
-        <descriptors>
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../common/sz/web/WEB-INF/web.xml" optional="false" version="2.5" />
-        </descriptors>
-        <webroots>
-          <root url="file://$MODULE_DIR$/../../common/sz/web" relative="/" />
-        </webroots>
-        <building>
-          <setting name="EXPLODED_URL" value="file://" />
-          <setting name="EXPLODED_ENABLED" value="false" />
-          <setting name="JAR_URL" value="file://" />
-          <setting name="JAR_ENABLED" value="false" />
-          <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
-        </building>
-        <packaging>
-          <containerElement type="module" name="common">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-        </packaging>
-      </configuration>
-    </facet>
-    <facet type="web" name="Web4">
-      <configuration>
-        <descriptors>
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../common/tc/web/WEB-INF/web.xml" optional="false" version="2.5" />
-        </descriptors>
-        <webroots>
-          <root url="file://$MODULE_DIR$/../../common/tc/web" relative="/" />
-        </webroots>
-        <building>
-          <setting name="EXPLODED_URL" value="file://" />
-          <setting name="EXPLODED_ENABLED" value="false" />
-          <setting name="JAR_URL" value="file://" />
-          <setting name="JAR_ENABLED" value="false" />
-          <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
-        </building>
-        <packaging>
-          <containerElement type="module" name="common">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-        </packaging>
-      </configuration>
-    </facet>
-    <facet type="web" name="Web5">
-      <configuration>
-        <descriptors>
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../common/ab_sync/web/WEB-INF/web.xml" optional="false" version="2.5" />
-        </descriptors>
-        <webroots>
-          <root url="file://$MODULE_DIR$/../../common/ab_sync/web" relative="/" />
-        </webroots>
-        <building>
-          <setting name="EXPLODED_URL" value="file://" />
-          <setting name="EXPLODED_ENABLED" value="false" />
-          <setting name="JAR_URL" value="file://" />
-          <setting name="JAR_ENABLED" value="false" />
-          <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
-        </building>
-        <packaging>
-          <containerElement type="module" name="common">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-        </packaging>
-      </configuration>
-    </facet>
-    <facet type="web" name="Web6">
-      <configuration>
-        <descriptors>
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../common/bti/web/WEB-INF/web.xml" optional="false" version="2.5" />
-        </descriptors>
-        <webroots>
-          <root url="file://$MODULE_DIR$/../../common/bti/web" relative="/" />
-        </webroots>
-        <building>
-          <setting name="EXPLODED_URL" value="file://" />
-          <setting name="EXPLODED_ENABLED" value="false" />
-          <setting name="JAR_URL" value="file://" />
-          <setting name="JAR_ENABLED" value="false" />
-          <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
-        </building>
-        <packaging>
-          <containerElement type="module" name="common">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-        </packaging>
-      </configuration>
-    </facet>
-    <facet type="web" name="Web7">
-      <configuration>
-        <descriptors>
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../common/common/web/WEB-INF/web.xml" optional="false" version="2.5" />
-        </descriptors>
-        <webroots>
-          <root url="file://$MODULE_DIR$/../../common/common/web" relative="/" />
-        </webroots>
-        <building>
-          <setting name="EXPLODED_URL" value="file://" />
-          <setting name="EXPLODED_ENABLED" value="false" />
-          <setting name="JAR_URL" value="file://" />
-          <setting name="JAR_ENABLED" value="false" />
-          <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
-        </building>
-        <packaging>
-          <containerElement type="module" name="common">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-        </packaging>
-      </configuration>
-    </facet>
-    <facet type="web" name="Web8">
-      <configuration>
-        <descriptors>
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../common/eirc/web/WEB-INF/web.xml" optional="false" version="2.5" />
-        </descriptors>
-        <webroots>
-          <root url="file://$MODULE_DIR$/../../common/eirc/web" relative="/" />
-        </webroots>
-        <building>
-          <setting name="EXPLODED_URL" value="file://" />
-          <setting name="EXPLODED_ENABLED" value="false" />
-          <setting name="JAR_URL" value="file://" />
-          <setting name="JAR_ENABLED" value="false" />
-          <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
-        </building>
-        <packaging>
-          <containerElement type="module" name="common">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-        </packaging>
       </configuration>
     </facet>
   </component>
@@ -274,6 +134,7 @@
     <content url="file://$MODULE_DIR$/../../common">
       <sourceFolder url="file://$MODULE_DIR$/../../common/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../common/tests/java" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../common/lib" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -297,15 +158,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../common/lib/ajax/json-lib-2.0-jdk15.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../../common/lib/ajax/AjaxFileUpload-0.03.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -318,10 +170,7 @@
     <orderEntry type="library" name="Jetbrains" level="project" />
     <orderEntry type="library" name="jasper" level="project" />
     <orderEntry type="library" name="j2ee" level="project" />
-    <orderEntry type="library" name="Drools" level="project" />
-    <orderEntry type="library" name="XStream" level="project" />
     <orderEntry type="library" name="Spring-WS" level="project" />
-    <orderEntry type="library" name="CSVReader" level="project" />
   </component>
 </module>
 

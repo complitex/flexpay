@@ -1,5 +1,5 @@
-
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+
 <%@include file="header.jsp" %>
 	<tr>
 		<td class="filter"><s:text name="ab.country"/></td>

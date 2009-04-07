@@ -1,7 +1,7 @@
 package org.flexpay.tc.actions.tariff;
 
 import org.apache.commons.lang.time.FastDateFormat;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.actions.FPBreadCrumbActionSupport;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class TariffCalcResultExportAction extends FPActionSupport {
+public class TariffCalcResultExportAction extends FPBreadCrumbActionSupport {
 
 	private String date;
 	private List<String> allDates;

@@ -1,9 +1,6 @@
 package org.flexpay.ab.service;
 
-import org.flexpay.ab.persistence.Town;
-import org.flexpay.ab.persistence.TownName;
-import org.flexpay.ab.persistence.TownNameTemporal;
-import org.flexpay.ab.persistence.TownNameTranslation;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.service.ParentService;
@@ -138,6 +135,20 @@ public interface TownService extends
 	 */
 	@Secured (Roles.TOWN_READ)
 	List<Town> find(ArrayStack filters, Page pager);
+
+	/**
+	 * Lookup streets by query and region id. Query is a string
+	 * which may contains in folow string:
+	 *
+	 * town_name
+	 *
+	 * @param stub RegionStub
+	 * @param query searching string
+	 * @return List of founded towns
+	 */
+	@Secured (Roles.TOWN_READ)
+	@NotNull
+	List<Town> findByRegionAndQuery(@NotNull Stub<Region> stub, @NotNull String query);
 
 	/**
 	 * Disable objects

@@ -9,8 +9,10 @@
     </facet>
     <facet type="hibernate" name="Hibernate">
       <configuration>
-        <datasource-map />
-        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../../web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
+        <datasource-map>
+          <unit-entry name="flexpaySessionFactory" value="1cbbd1b0-185e-4357-955d-ff0dac282ef8" />
+        </datasource-map>
+        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../module_template/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
       </configuration>
     </facet>
     <facet type="web" name="Web">
@@ -43,7 +45,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../module_template/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../module_template/tests/java" isTestSource="true" />
     </content>
-    <orderEntry type="library" name="groovy-1.6.0" level="application" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">

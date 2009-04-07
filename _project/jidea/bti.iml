@@ -12,7 +12,9 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../bti/web" relative="/" />
         </webroots>
-        <sourceRoots />
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/../../bti/src" />
+        </sourceRoots>
         <building>
           <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/out/exploded/btiWeb" />
           <setting name="EXPLODED_ENABLED" value="false" />
@@ -90,12 +92,33 @@
           </containerElement>
         </packaging>
       </configuration>
+      <facet type="Struts2" name="Struts 2">
+        <configuration>
+          <fileset id="s2fileset1" name="My Fileset" removed="false">
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/street/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/measureunit/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/district/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/identity/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/person/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/apartment/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/town/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../bti/src/org/flexpay/bti/actions/buildings/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../bti/src/org/flexpay/bti/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/region/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/country/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/filters/struts.xml</file>
+          </fileset>
+        </configuration>
+      </facet>
     </facet>
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="flexpay" value="d1b6f54f-3833-45ac-9df7-28e10c14f6af" />
-          <unit-entry name="flexpaySessionFactory" value="d1b6f54f-3833-45ac-9df7-28e10c14f6af" />
+          <unit-entry name="flexpay" value="1cbbd1b0-185e-4357-955d-ff0dac282ef8" />
+          <unit-entry name="flexpaySessionFactory" value="1cbbd1b0-185e-4357-955d-ff0dac282ef8" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../bti/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
       </configuration>
@@ -125,6 +148,24 @@
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/data_export.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/hibernate.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/stand-alone-tasks.xml</file>
+          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-actions.xml</file>
+          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-dao.xml</file>
+          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-cache.xml</file>
+          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-services.xml</file>
+          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/menu.cfg.xml</file>
+          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-importexport.xml</file>
+          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-jobs.xml</file>
+          <file>file://$MODULE_DIR$/../../common/tests/data/org/flexpay/common/test/applicationContext-security.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-struts.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/menu.cfg.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext-security.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-job.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-schedule.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-client.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server-test.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/config.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/spring-ws-servlet.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -160,8 +201,8 @@
     <orderEntry type="library" name="Jetbrains" level="project" />
     <orderEntry type="library" name="jasper" level="project" />
     <orderEntry type="library" name="j2ee" level="project" />
-    <orderEntry type="library" name="Commons" level="project" />
     <orderEntry type="library" name="logging" level="project" />
+    <orderEntry type="library" name="Commons" level="project" />
     <orderEntry type="library" name="Spring-WS" level="project" />
     <orderEntry type="library" name="CSVReader" level="project" />
   </component>

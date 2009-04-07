@@ -22,74 +22,74 @@ INSERT INTO orgs_organization_names_tbl (name, language_id, organization_id)
 	VALUES ('ЦН', @ru_id, @organization_cn);
 
 -- Init subdivisions
-INSERT INTO orgs_subdivisions_tbl (status,  version, tree_path, real_address, parent_subdivision_id, head_organization_id, juridical_person_id)
+INSERT INTO orgs_subdivisions_tbl (status, version, tree_path, real_address, parent_subdivision_id, head_organization_id, juridical_person_id)
 	VALUES (0, 0, '', '3-я серверная стойка', null, @organization_eirc, @organization_eirc);
 SELECT @subdivision_eirc_it:=last_insert_id();
-INSERT INTO orgs_subdivision_names_tbl (name, language_id, subdivision_id)
-	VALUES ('АйТи', @ru_id, @subdivision_eirc_it);
-INSERT INTO orgs_subdivision_names_tbl (name, language_id, subdivision_id)
-	VALUES ('IT', @en_id, @subdivision_eirc_it);
-INSERT INTO orgs_subdivision_descriptions_tbl (name, language_id, subdivision_id)
-	VALUES ('Отдел информационных технологий', @ru_id, @subdivision_eirc_it);
-INSERT INTO orgs_subdivision_descriptions_tbl (name, language_id, subdivision_id)
-	VALUES ('Informational technoligies department', @en_id, @subdivision_eirc_it);
+INSERT INTO orgs_subdivision_names_tbl (version, name, language_id, subdivision_id)
+	VALUES (0, 'АйТи', @ru_id, @subdivision_eirc_it);
+INSERT INTO orgs_subdivision_names_tbl (version, name, language_id, subdivision_id)
+	VALUES (0, 'IT', @en_id, @subdivision_eirc_it);
+INSERT INTO orgs_subdivision_descriptions_tbl (version, name, language_id, subdivision_id)
+	VALUES (0, 'Отдел информационных технологий', @ru_id, @subdivision_eirc_it);
+INSERT INTO orgs_subdivision_descriptions_tbl (version, name, language_id, subdivision_id)
+	VALUES (0, 'Informational technoligies department', @en_id, @subdivision_eirc_it);
 
 INSERT INTO orgs_subdivisions_tbl (status, version, tree_path, real_address, parent_subdivision_id, head_organization_id, juridical_person_id)
 	VALUES (0, 0, '', '1-я серверная стойка', @subdivision_eirc_it, @organization_eirc, null);
 SELECT @subdivision_eirc_it_java:=last_insert_id();
-INSERT INTO orgs_subdivision_names_tbl (name, language_id, subdivision_id)
-	VALUES ('Java', @ru_id, @subdivision_eirc_it_java);
-INSERT INTO orgs_subdivision_descriptions_tbl (name, language_id, subdivision_id)
-	VALUES ('Жабный сектор', @ru_id, @subdivision_eirc_it_java);
+INSERT INTO orgs_subdivision_names_tbl (version, name, language_id, subdivision_id)
+	VALUES (0, 'Java', @ru_id, @subdivision_eirc_it_java);
+INSERT INTO orgs_subdivision_descriptions_tbl (version, name, language_id, subdivision_id)
+	VALUES (0, 'Жабный сектор', @ru_id, @subdivision_eirc_it_java);
 
 INSERT INTO orgs_subdivisions_tbl (status, version, tree_path, real_address, parent_subdivision_id, head_organization_id, juridical_person_id)
 	VALUES (0, 0, '', '2-я серверная стойка', @subdivision_eirc_it, @organization_eirc, null);
 SELECT @subdivision_eirc_it_web:=last_insert_id();
-INSERT INTO orgs_subdivision_names_tbl (name, language_id, subdivision_id)
-	VALUES ('Web', @ru_id, @subdivision_eirc_it_web);
-INSERT INTO orgs_subdivision_descriptions_tbl (name, language_id, subdivision_id)
-	VALUES ('Вэббизнес', @ru_id, @subdivision_eirc_it_web);
+INSERT INTO orgs_subdivision_names_tbl (version, name, language_id, subdivision_id)
+	VALUES (0, 'Web', @ru_id, @subdivision_eirc_it_web);
+INSERT INTO orgs_subdivision_descriptions_tbl (version, name, language_id, subdivision_id)
+	VALUES (0, 'Вэббизнес', @ru_id, @subdivision_eirc_it_web);
 
 INSERT INTO orgs_subdivisions_tbl (status, version, tree_path, real_address, parent_subdivision_id, head_organization_id, juridical_person_id)
 	VALUES (0, 0, '', 'Кабинет направо', null, @organization_eirc, @organization_eirc);
 SELECT @subdivision_eirc_buch:=last_insert_id();
-INSERT INTO orgs_subdivision_names_tbl (name, language_id, subdivision_id)
-	VALUES ('Бухгалтерия', @ru_id, @subdivision_eirc_buch);
-INSERT INTO orgs_subdivision_descriptions_tbl (name, language_id, subdivision_id)
-	VALUES ('Бухгалтерский отдел', @ru_id, @subdivision_eirc_buch);
+INSERT INTO orgs_subdivision_names_tbl (version, name, language_id, subdivision_id)
+	VALUES (0, 'Бухгалтерия', @ru_id, @subdivision_eirc_buch);
+INSERT INTO orgs_subdivision_descriptions_tbl (version, name, language_id, subdivision_id)
+	VALUES (0, 'Бухгалтерский отдел', @ru_id, @subdivision_eirc_buch);
 
 INSERT INTO orgs_subdivisions_tbl (status, version, tree_path, real_address, parent_subdivision_id, head_organization_id, juridical_person_id)
 	VALUES (0, 0, '', 'Центр клининг-услуг', null, @organization_eirc, @organization_cn);
 SELECT @subdivision_eirc_cleaning:=last_insert_id();
-INSERT INTO orgs_subdivision_names_tbl (name, language_id, subdivision_id)
-	VALUES ('Уборщики', @ru_id, @subdivision_eirc_cleaning);
-INSERT INTO orgs_subdivision_descriptions_tbl (name, language_id, subdivision_id)
-	VALUES ('сектор Очистки помещений', @ru_id, @subdivision_eirc_cleaning);
+INSERT INTO orgs_subdivision_names_tbl (version, name, language_id, subdivision_id)
+	VALUES (0, 'Уборщики', @ru_id, @subdivision_eirc_cleaning);
+INSERT INTO orgs_subdivision_descriptions_tbl (version, name, language_id, subdivision_id)
+	VALUES (0, 'сектор Очистки помещений', @ru_id, @subdivision_eirc_cleaning);
 
 
 -- Init banks
 INSERT INTO orgs_banks_tbl (status, version, organization_id, bank_identifier_code, corresponding_account)
 	VALUES (0, 0, @organization_cn, '044525957', '30101810600000000957');
 SELECT @bank_cn:=last_insert_id();
-INSERT INTO orgs_bank_descriptions_tbl (name, language_id, bank_id)
-	VALUES ('Мега Банк', @ru_id, @bank_cn);
-INSERT INTO orgs_bank_descriptions_tbl (name, language_id, bank_id)
-	VALUES ('Mega Bank', @en_id, @bank_cn);
+INSERT INTO orgs_bank_descriptions_tbl (version, name, language_id, bank_id)
+	VALUES (0, 'Мега Банк', @ru_id, @bank_cn);
+INSERT INTO orgs_bank_descriptions_tbl (version, name, language_id, bank_id)
+	VALUES (0, 'Mega Bank', @en_id, @bank_cn);
 INSERT INTO orgs_banks_tbl (status, version, organization_id, bank_identifier_code, corresponding_account)
 	VALUES (0, 0, @organization_eirc, '1233455', '30101810600000000455');
 SELECT @bank_eirc:=last_insert_id();
-INSERT INTO orgs_bank_descriptions_tbl (name, language_id, bank_id)
-	VALUES ('ЕИРЦ Банк', @ru_id, @bank_eirc);
-INSERT INTO orgs_bank_descriptions_tbl (name, language_id, bank_id)
-	VALUES ('EIRC Bank', @en_id, @bank_eirc);
+INSERT INTO orgs_bank_descriptions_tbl (version, name, language_id, bank_id)
+	VALUES (0, 'ЕИРЦ Банк', @ru_id, @bank_eirc);
+INSERT INTO orgs_bank_descriptions_tbl (version, name, language_id, bank_id)
+	VALUES (0, 'EIRC Bank', @en_id, @bank_eirc);
 
 
 -- Init service providers
-INSERT INTO orgs_service_providers_tbl(id, status, organization_id, data_source_description_id)
-	VALUES (1, 0, @organization_cn, @source_description_id);
+INSERT INTO orgs_service_providers_tbl(id, status, version, organization_id, data_source_description_id)
+	VALUES (1, 0, 0, @organization_cn, @source_description_id);
 SELECT @service_provider_cn:=1;
-INSERT INTO orgs_service_provider_descriptions_tbl (name, language_id, service_provider_id)
-	VALUES ('ПУ ЦН', @ru_id, @service_provider_cn);
+INSERT INTO orgs_service_provider_descriptions_tbl (version, name, language_id, service_provider_id)
+	VALUES (0, 'ПУ ЦН', @ru_id, @service_provider_cn);
 
 -- Init service organizations
 INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)

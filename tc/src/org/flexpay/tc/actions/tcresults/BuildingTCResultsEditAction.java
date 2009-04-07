@@ -5,7 +5,7 @@ import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.BuildingService;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.actions.FPBreadCrumbActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class BuildingTCResultsEditAction extends FPActionSupport {
+public class BuildingTCResultsEditAction extends FPBreadCrumbActionSupport {
 
 	// form data
 	private String buildingId;

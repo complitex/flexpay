@@ -96,6 +96,18 @@
 		WHERE t.id=? and nt.invalidDate='2100-12-31' and tt.invalidDate='2100-12-31'
 	</query>
 
+    <query name="Town.findByRegionAndQuery">
+        select distinct t
+        from Town t
+            left join fetch t.nameTemporals nt
+            left join fetch nt.value v
+            left join fetch v.translations tr
+            left join fetch tr.lang l
+        where t.parent.id=?
+              and nt.invalidDate='2100-12-31'
+              and lower(tr.name) like ?
+    </query>
+
 	<query name="TownNameTemporal.readFull">
 		SELECT DISTINCT t
 		FROM TownNameTemporal t

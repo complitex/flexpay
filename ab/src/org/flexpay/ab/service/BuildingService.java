@@ -62,6 +62,9 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	@Secured (Roles.BUILDING_READ)
 	List<BuildingAddress> getBuildings(Long streetId, Page pager);
 
+	@Secured (Roles.BUILDING_READ)
+	List<BuildingAddress> getBuildings(@NotNull Stub<Street> stub);
+
 	/**
 	 * Find buildings by attributes
 	 *

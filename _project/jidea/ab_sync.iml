@@ -87,7 +87,7 @@
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="flexpaySessionFactory" value="d1b6f54f-3833-45ac-9df7-28e10c14f6af" />
+          <unit-entry name="flexpaySessionFactory" value="1cbbd1b0-185e-4357-955d-ff0dac282ef8" />
           <unit-entry name="src/hibernate.cfg.xml" />
         </datasource-map>
       </configuration>
@@ -120,6 +120,18 @@
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/data_export.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/hibernate.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/stand-alone-tasks.xml</file>
+          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/menu.cfg.xml</file>
+          <file>file://$MODULE_DIR$/../../common/tests/data/org/flexpay/common/test/applicationContext-security.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-struts.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/menu.cfg.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext-security.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-job.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-schedule.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-client.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server-test.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/config.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/spring-ws-servlet.xml</file>
         </fileset>
         <fileset id="web: dispatcher servlet context" name="MVC dispatcher servlet context" removed="true">
           <dependency>web: application context</dependency>
@@ -158,8 +170,6 @@
     <orderEntry type="library" name="Jetbrains" level="project" />
     <orderEntry type="library" name="jasper" level="project" />
     <orderEntry type="library" name="j2ee" level="project" />
-    <orderEntry type="library" name="Spring-WS" level="project" />
-    <orderEntry type="library" name="CSVReader" level="project" />
   </component>
 </module>
 

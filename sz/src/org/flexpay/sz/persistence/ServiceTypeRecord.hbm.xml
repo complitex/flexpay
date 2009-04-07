@@ -31,7 +31,7 @@
 		<property name="privilegeStartMonth" />
 		<property name="privilegeStartYear" />
 		<property name="serviceType" />
-		<property name="tarifCode" />
+		<property name="tariffCode" />
 
         <many-to-one name="szFile" column="sz_file_id" not-null="true" />
         <many-to-one name="deadhead" column="deadhead_id" class="org.flexpay.ab.persistence.Person" />

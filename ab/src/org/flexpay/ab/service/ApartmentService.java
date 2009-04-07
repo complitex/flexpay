@@ -3,6 +3,7 @@ package org.flexpay.ab.service;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.filters.ApartmentFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
@@ -19,6 +20,9 @@ import java.util.Set;
 import java.util.Locale;
 
 public interface ApartmentService extends ParentService<ApartmentFilter> {
+
+	@Secured (Roles.APARTMENT_READ)
+	List<Apartment> getApartments(Stub<BuildingAddress> addressStub, Page pager);
 
 	@Secured (Roles.APARTMENT_READ)
 	List<Apartment> getApartments(ArrayStack filters, Page pager);
@@ -122,4 +126,8 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	 */
 	@Secured (Roles.APARTMENT_READ)
 	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
+
+	@Secured (Roles.APARTMENT_READ)
+	List<Apartment> getApartments(@NotNull Stub<BuildingAddress> stub);
+
 }

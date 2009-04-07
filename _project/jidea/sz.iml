@@ -16,8 +16,8 @@
           <root url="file://$MODULE_DIR$/../../sz/src" />
         </sourceRoots>
         <building>
-          <setting name="EXPLODED_URL" value="file://" />
-          <setting name="EXPLODED_ENABLED" value="false" />
+          <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/../../_build/web" />
+          <setting name="EXPLODED_ENABLED" value="true" />
           <setting name="JAR_URL" value="file://" />
           <setting name="JAR_ENABLED" value="false" />
           <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
@@ -38,22 +38,6 @@
           <containerElement type="facet" facetId="eirc/web/Web">
             <attribute name="method" value="0" />
             <attribute name="URI" value="&lt;N/A&gt;" />
-          </containerElement>
-          <containerElement type="module" name="ab">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-          <containerElement type="module" name="bti">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-          <containerElement type="module" name="common">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-          <containerElement type="module" name="eirc">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/classes" />
           </containerElement>
           <containerElement type="module" name="sz">
             <attribute name="method" value="1" />
@@ -130,14 +114,74 @@
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/classes" />
           </containerElement>
+          <containerElement type="module" name="common">
+            <attribute name="method" value="1" />
+            <attribute name="URI" value="/WEB-INF/classes" />
+          </containerElement>
+          <containerElement type="module" name="ab">
+            <attribute name="method" value="1" />
+            <attribute name="URI" value="/WEB-INF/classes" />
+          </containerElement>
+          <containerElement type="module" name="bti">
+            <attribute name="method" value="1" />
+            <attribute name="URI" value="/WEB-INF/classes" />
+          </containerElement>
+          <containerElement type="module" name="eirc">
+            <attribute name="method" value="1" />
+            <attribute name="URI" value="/WEB-INF/classes" />
+          </containerElement>
+          <containerElement type="module" name="orgs">
+            <attribute name="method" value="1" />
+            <attribute name="URI" value="/WEB-INF/classes" />
+          </containerElement>
+          <containerElement type="module" name="payments">
+            <attribute name="method" value="1" />
+            <attribute name="URI" value="/WEB-INF/classes" />
+          </containerElement>
         </packaging>
       </configuration>
+      <facet type="Struts2" name="Struts 2">
+        <configuration>
+          <fileset id="s2fileset1" name="My Fileset" removed="false">
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/person/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/district/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/street/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/town/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/region/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/apartment/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/measureunit/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/country/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/filters/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/identity/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../bti/src/org/flexpay/bti/actions/buildings/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../bti/src/org/flexpay/bti/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/eirc_account/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/registry/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/quittance/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/organization/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/service/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/serviceprovider/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/actions/processing/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../eirc/src/org/flexpay/eirc/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../orgs/src/org/flexpay/orgs/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../payments/src/org/flexpay/payments/actions/operations/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../payments/src/org/flexpay/payments/actions/registry/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../payments/src/org/flexpay/payments/actions/reports/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../payments/src/org/flexpay/payments/actions/search/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../payments/src/org/flexpay/payments/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../sz/src/org/flexpay/sz/struts_config.xml</file>
+          </fileset>
+        </configuration>
+      </facet>
     </facet>
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="flexpay" value="d1b6f54f-3833-45ac-9df7-28e10c14f6af" />
-          <unit-entry name="flexpaySessionFactory" value="d1b6f54f-3833-45ac-9df7-28e10c14f6af" />
+          <unit-entry name="flexpay" value="1cbbd1b0-185e-4357-955d-ff0dac282ef8" />
+          <unit-entry name="flexpaySessionFactory" value="1cbbd1b0-185e-4357-955d-ff0dac282ef8" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../sz/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
       </configuration>
@@ -185,6 +229,45 @@
           <file>file://$MODULE_DIR$/../../sz/web/WEB-INF/sz/configs/spring/beans-struts.xml</file>
           <file>file://$MODULE_DIR$/../../sz/web/WEB-INF/sz/configs/spring/config.xml</file>
           <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/beans-logic.xml</file>
+          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-actions.xml</file>
+          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-cache.xml</file>
+          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-dao.xml</file>
+          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-importexport.xml</file>
+          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-jobs.xml</file>
+          <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-services.xml</file>
+          <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/menu.cfg.xml</file>
+          <file>file://$MODULE_DIR$/../../common/tests/data/org/flexpay/common/test/applicationContext-security.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext-security.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-job.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-schedule.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-struts.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-client.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server-test.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/config.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/menu.cfg.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/spring-ws-servlet.xml</file>
+          <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/eirc/configs/menu.cfg.xml</file>
+          <file>file://$MODULE_DIR$/../../orgs/web/WEB-INF/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/../../orgs/web/WEB-INF/orgs/configs/spring/beans-cache.xml</file>
+          <file>file://$MODULE_DIR$/../../orgs/web/WEB-INF/orgs/configs/spring/beans-dao.xml</file>
+          <file>file://$MODULE_DIR$/../../orgs/web/WEB-INF/orgs/configs/spring/beans-services.xml</file>
+          <file>file://$MODULE_DIR$/../../orgs/web/WEB-INF/orgs/configs/spring/beans-struts.xml</file>
+          <file>file://$MODULE_DIR$/../../orgs/web/WEB-INF/orgs/configs/spring/config.xml</file>
+          <file>file://$MODULE_DIR$/../../orgs/web/WEB-INF/orgs/configs/menu.cfg.xml</file>
+          <file>file://$MODULE_DIR$/../../orgs/web/WEB-INF/orgs/configs/spring/stand-alone-tasks.xml</file>
+          <file>file://$MODULE_DIR$/../../payments/web/WEB-INF/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/../../payments/web/WEB-INF/payments/configs/spring/beans-cache.xml</file>
+          <file>file://$MODULE_DIR$/../../payments/web/WEB-INF/payments/configs/spring/beans-dao.xml</file>
+          <file>file://$MODULE_DIR$/../../payments/web/WEB-INF/payments/configs/spring/beans-services.xml</file>
+          <file>file://$MODULE_DIR$/../../payments/web/WEB-INF/payments/configs/spring/beans-struts.xml</file>
+          <file>file://$MODULE_DIR$/../../payments/web/WEB-INF/payments/configs/spring/config.xml</file>
+          <file>file://$MODULE_DIR$/../../payments/web/WEB-INF/payments/configs/menu.cfg.xml</file>
+          <file>file://$MODULE_DIR$/../../payments/web/WEB-INF/payments/configs/spring/stand-alone-tasks.xml</file>
+          <file>file://$MODULE_DIR$/../../sz/web/WEB-INF/sz/configs/spring/beans-cache.xml</file>
+          <file>file://$MODULE_DIR$/../../sz/web/WEB-INF/sz/configs/spring/beans-jbpm.xml</file>
+          <file>file://$MODULE_DIR$/../../sz/web/WEB-INF/sz/configs/menu.cfg.xml</file>
+          <file>file://$MODULE_DIR$/../../sz/web/WEB-INF/sz/configs/spring/stand-alone-tasks.xml</file>
         </fileset>
       </configuration>
     </facet>

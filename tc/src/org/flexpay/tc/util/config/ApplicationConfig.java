@@ -8,7 +8,7 @@ public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationCon
 
 	private int maximumFloors;
 	private int maximumPporches;
-	private int maximumAppartments;
+	private int maximumApartments;
 
 	protected static ApplicationConfig getInstance() {
 		return (ApplicationConfig) org.flexpay.common.util.config.ApplicationConfig.getInstance();
@@ -30,12 +30,12 @@ public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationCon
 		this.maximumPporches = Integer.valueOf(maximumPporches);
 	}
 
-	public static int getMaximumAppartments() {
-		return getInstance().maximumAppartments;
+	public static int getMaximumApartments() {
+		return getInstance().maximumApartments;
 	}
 
-	public void setMaximumAppartments(String maximumAppartments) {
-		this.maximumAppartments = Integer.valueOf(maximumAppartments);
+	public void setMaximumApartments(String maximumApartments) {
+		this.maximumApartments = Integer.valueOf(maximumApartments);
 	}
 
 	public static File getTcDataRoot() {

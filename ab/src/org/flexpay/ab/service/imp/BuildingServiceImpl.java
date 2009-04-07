@@ -69,6 +69,10 @@ public class BuildingServiceImpl implements BuildingService {
 		return buildingsDao.findBuildings(streetId, pager);
 	}
 
+	public List<BuildingAddress> getBuildings(@NotNull Stub<Street> stub) {
+		return buildingsDao.findBuildings(stub.getId());
+	}
+
 	public BuildingsFilter initFilter(BuildingsFilter parentFilter,
 									  PrimaryKeyFilter forefatherFilter, Locale locale)
 			throws FlexPayException {

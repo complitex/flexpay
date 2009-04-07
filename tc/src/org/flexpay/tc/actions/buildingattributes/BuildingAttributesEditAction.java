@@ -8,7 +8,7 @@ import org.flexpay.bti.persistence.*;
 import org.flexpay.bti.service.BtiBuildingService;
 import org.flexpay.bti.service.BuildingAttributeGroupService;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.actions.FPBreadCrumbActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -26,7 +26,7 @@ import java.util.SortedSet;
 /**
  * Action for updating building attributes
  */
-public class BuildingAttributesEditAction extends FPActionSupport {
+public class BuildingAttributesEditAction extends FPBreadCrumbActionSupport {
 
 	// building primary and alternative addresses
 	private BuildingAddress building = new BuildingAddress();
@@ -343,9 +343,9 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 				addActionError(getText(validator.getErrorMessageCode()));
 			}
 
-			// checking  appartments
-			String appartmentsNumber = getAttributeNewValueByTypeName("ATTR_APARTMENTS_NUMBER");
-			if (!validator.checkAppartmentsNumber(appartmentsNumber)) {
+			// checking apartments
+			String apartmentsNumber = getAttributeNewValueByTypeName("ATTR_APARTMENTS_NUMBER");
+			if (!validator.checkApartmentsNumber(apartmentsNumber)) {
 				addActionError(getText(validator.getErrorMessageCode()));
 			}
 
@@ -397,14 +397,14 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 				addActionError(getText("tc.errors.building_attributes.validation.invalid_first_floor_total_square"));
 			}
 
-			String liftedAppartmentsTotalSquare = getAttributeNewValueByTypeName("ATTR_LIFTED_APARTMENTS_TOTAL_SQUARE");
-			if (!validator.checkArea(liftedAppartmentsTotalSquare)) {
-				addActionError(getText("tc.errors.building_attributes.validation.invalid_lifted_appartments_total_square"));
+			String liftedApartmentsTotalSquare = getAttributeNewValueByTypeName("ATTR_LIFTED_APARTMENTS_TOTAL_SQUARE");
+			if (!validator.checkArea(liftedApartmentsTotalSquare)) {
+				addActionError(getText("tc.errors.building_attributes.validation.invalid_lifted_apartments_total_square"));
 			}
 
-			String adsSuitedAppartmentsTotalSquare = getAttributeNewValueByTypeName("ATTR_ADS_SUITED_APARTMENTS_TOTAL_SQUARE");
-			if (!validator.checkArea(adsSuitedAppartmentsTotalSquare)) {
-				addActionError(getText("tc.errors.building_attributes.validation.invalid_ads_suited_appartments_total_square"));
+			String adsSuitedApartmentsTotalSquare = getAttributeNewValueByTypeName("ATTR_ADS_SUITED_APARTMENTS_TOTAL_SQUARE");
+			if (!validator.checkArea(adsSuitedApartmentsTotalSquare)) {
+				addActionError(getText("tc.errors.building_attributes.validation.invalid_ads_suited_apartments_total_square"));
 			}
 
 			// checking near house territory area

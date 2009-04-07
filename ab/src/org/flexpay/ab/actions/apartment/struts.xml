@@ -13,6 +13,15 @@
 
 		<action name="apartmentEdit" class="apartmentEditAction">
 			<result name="input" type="tiles">ab.apartment.edit</result>
+
+<!--
+            <result name="input" type="tiles">
+                <param name="actionName">personEdit</param>
+                <param name="parse">true</param>
+                <param name="person.id">${person.id}</param>
+            </result>
+-->
+
 			<result name="redirectSuccess" type="redirect-action">apartmentsList</result>
 		</action>
 

@@ -21,7 +21,7 @@
         <property name="extStreetID"/>
         <property name="houseNum"/>
         <property name="partNum"/>
-        <property name="appartment"/>
+        <property name="apartment"/>
         <property name="account"/>
         <property name="app_num"/>
         <property name="begin"/>
@@ -33,7 +33,7 @@
         <property name="debt"/>
         <property name="living"/>
         <property name="nach"/>
-        <property name="tarif"/>
+        <property name="tariff"/>
         <property name="p2"/>
         <property name="n2"/>
         <property name="p3"/>

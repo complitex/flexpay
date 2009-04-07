@@ -167,11 +167,11 @@ INSERT INTO eirc_service_type_name_translations_tbl (name, description, language
 	VALUES ('ТО бытовых электроплит', '', @ru_id, @service_);
 
 
-insert into accounting_document_types_tbl (id, code, name)
-	values (1, 'CASH_PAYMENT', 'accounting.document.type.cash_payment');
-insert into accounting_document_types_tbl (id, code, name)
-	values (2, 'CASH_RETURN', 'accounting.document.type.cash_payment_return');
-insert into accounting_document_types_tbl (id, code, name)
-	values (3, 'CASHLESS_PAYMENT', 'accounting.document.type.cashless_payment');
-insert into accounting_document_types_tbl (id, code, name)
-	values (4, 'CASHLESS_PAYMENT_RETURN', 'accounting.document.type.cashless_payment_return');
+insert into accounting_document_types_tbl (id, version, code, name)
+	values (1, 0, 'CASH_PAYMENT', 'accounting.document.type.cash_payment');
+insert into accounting_document_types_tbl (id, version, code, name)
+	values (2, 0, 'CASH_RETURN', 'accounting.document.type.cash_payment_return');
+insert into accounting_document_types_tbl (id, version, code, name)
+	values (3, 0, 'CASHLESS_PAYMENT', 'accounting.document.type.cashless_payment');
+insert into accounting_document_types_tbl (id, version, code, name)
+	values (4, 0, 'CASHLESS_PAYMENT_RETURN', 'accounting.document.type.cashless_payment_return');

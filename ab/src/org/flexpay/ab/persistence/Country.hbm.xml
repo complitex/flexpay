@@ -47,6 +47,15 @@
 		WHERE c.id=?
 	</query>
 
+    <query name="Country.findByQuery">
+        select distinct c
+        from Country c
+            left join fetch c.countryNames tr
+            left join fetch tr.lang l
+            left join fetch l.translations
+        where lower(tr.name) like ?
+    </query>
+
     <query name="CountryNameTranslation.findByName">
         SELECT DISTINCT translation
         FROM CountryNameTranslation translation

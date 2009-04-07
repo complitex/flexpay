@@ -14,19 +14,19 @@
 	<bean id="countryServiceTarget"
 		  class="org.flexpay.ab.service.imp.CountryServiceImpl"
 		  autowire-candidate="false"
-		  p:countryDao-ref="countryDAO"
-		  p:countryNameDao-ref="countryNameDAO" />
+		  p:countryDao-ref="countryDao"
+		  p:countryNameDao-ref="countryNameDao" />
 
 	<bean id="regionServiceTarget"
 		  class="org.flexpay.ab.service.imp.RegionServiceImpl"
 		  autowire-candidate="false"
 		  p:parentService-ref="countryService"
 		  p:townTypeService-ref="townTypeService"
-		  p:regionDao-ref="regionDAO"
-		  p:regionNameDao-ref="regionNameDAO"
+		  p:regionDao-ref="regionDao"
+		  p:regionNameDao-ref="regionNameDao"
 		  p:regionNameTemporalDao-ref="regionNameTemporalDao"
-		  p:regionNameTranslationDao-ref="regionNameTranslationDAO"
-		  p:countryDao-ref="countryDAO" />
+		  p:regionNameTranslationDao-ref="regionNameTranslationDao"
+		  p:countryDao-ref="countryDao" />
 
 	<bean id="townHistoryChangesListener"
 		  parent="historyChangesListenerBase"
@@ -35,10 +35,10 @@
 	<bean id="townService"
 		  class="org.flexpay.ab.service.imp.TownServiceImpl"
 		  p:parentService-ref="regionService"
-		  p:regionDao-ref="regionDAO"
-		  p:townDao-ref="townDAO"
-		  p:townNameDao-ref="townNameDAO"
-		  p:townNameTranslationDao-ref="townNameTranslationDAO"
+		  p:regionDao-ref="regionDao"
+		  p:townDao-ref="townDao"
+		  p:townNameDao-ref="townNameDao"
+		  p:townNameTranslationDao-ref="townNameTranslationDao"
 		  p:townNameTemporalDao-ref="townNameTemporalDao"
 		  p:townTypeTemporalDao-ref="townTypeTemporalDao"
 		  p:townTypeService-ref="townTypeService"
@@ -53,11 +53,11 @@
 		  class="org.flexpay.ab.service.imp.DistrictServiceImpl"
 		  autowire-candidate="false"
 		  p:parentService-ref="townService"
-		  p:townDao-ref="townDAO"
-		  p:districtDao-ref="districtDAO"
-		  p:districtNameDao-ref="districtNameDAO"
+		  p:townDao-ref="townDao"
+		  p:districtDao-ref="districtDao"
+		  p:districtNameDao-ref="districtNameDao"
 		  p:districtNameTemporalDao-ref="districtNameTemporalDao"
-		  p:districtNameTranslationDao-ref="districtNameTranslationDAO"
+		  p:districtNameTranslationDao-ref="districtNameTranslationDao"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="districtHistoryChangesListener" />
 
@@ -69,13 +69,13 @@
 		  class="org.flexpay.ab.service.imp.StreetServiceImpl"
 		  autowire-candidate="false"
 		  p:parentService-ref="townService"
-		  p:townDao-ref="townDAO"
-		  p:streetDao-ref="streetDAO"
+		  p:townDao-ref="townDao"
+		  p:streetDao-ref="streetDao"
 		  p:streetDaoExt-ref="streetDaoExt"
-		  p:streetNameDao-ref="streetNameDAO"
+		  p:streetNameDao-ref="streetNameDao"
 		  p:streetNameTemporalDao-ref="streetNameTemporalDao"
 		  p:streetTypeTemporalDao-ref="streetTypeTemporalDao"
-		  p:streetNameTranslationDao-ref="streetNameTranslationDAO"
+		  p:streetNameTranslationDao-ref="streetNameTranslationDao"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="streetHistoryChangesListener" />
 
@@ -124,7 +124,7 @@
 	<bean id="townTypeServiceTarget"
 		  autowire-candidate="false"
 		  class="org.flexpay.ab.service.imp.TownTypeServiceImpl"
-		  p:townTypeDao-ref="townTypeDAO"
+		  p:townTypeDao-ref="townTypeDao"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="townTypeHistoryChangesListener" />
 
@@ -135,14 +135,14 @@
 	<bean id="streetTypeServiceTarget"
 		  autowire-candidate="false"
 		  class="org.flexpay.ab.service.imp.StreetTypeServiceImpl"
-		  p:streetTypeDao-ref="streetTypeDAO"
+		  p:streetTypeDao-ref="streetTypeDao"
 		  p:correctionsService-ref="correctionsServiceAb"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="streetTypeHistoryChangesListener" />
 
 	<bean id="identityTypeService"
 		  class="org.flexpay.ab.service.imp.IdentityTypeServiceImpl"
-		  p:identityTypeDao-ref="identityTypeDAO" />
+		  p:identityTypeDao-ref="identityTypeDao" />
 
 	<bean id="personService"
 		  class="org.flexpay.ab.service.imp.PersonServiceImpl"

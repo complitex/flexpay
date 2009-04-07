@@ -1,6 +1,6 @@
 package org.flexpay.tc.actions.tcresults;
 
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.actions.FPBreadCrumbActionSupport;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.Serializable;
 import java.util.Map;
 
-public class BuildingTCResultsUploadAction extends FPActionSupport {
+public class BuildingTCResultsUploadAction extends FPBreadCrumbActionSupport {
 
 	private String buildingId;
 	private String calculationDate;

@@ -35,8 +35,9 @@ jQuery.autocomplete = function(input, options) {
 	var mouseDownOnSelect = false;
 	var hidingResults = false;
 
+
 	// flush cache
-	function flushCache(){
+	function flushCache() {
 		cache = {};
 		cache.data = {};
 		cache.length = 0;
@@ -62,11 +63,13 @@ jQuery.autocomplete = function(input, options) {
 			// if the length is zero, don't add to list
 			if( row[0].length > 0 ){
 				// get the first character
-				sFirstChar = row[0].substring(0, 1).toLowerCase();
-				// if no lookup array for this character exists, look it up now
-				if( !stMatchSets[sFirstChar] ) stMatchSets[sFirstChar] = [];
-				// if the match is a string
-				stMatchSets[sFirstChar].push(row);
+                for (var n = 1; n <= row[0].length; n++) {
+                    sFirstChar = row[0].substring(n - 1, n).toLowerCase();
+                    // if no lookup array for this character exists, look it up now
+                    if( !stMatchSets[sFirstChar] ) stMatchSets[sFirstChar] = [];
+                    // if the match is a string
+                    stMatchSets[sFirstChar].push(row);
+                }
 			}
 		}
 
@@ -443,7 +446,6 @@ jQuery.autocomplete = function(input, options) {
 
 		for (var i=0; i < num; i++) {
 			var row = data[i];
-
 			if( row[0].toLowerCase() == q.toLowerCase() ){
 				li = document.createElement("li");
 				if (options.formatItem) {

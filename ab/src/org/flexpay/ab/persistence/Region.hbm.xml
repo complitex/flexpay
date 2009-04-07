@@ -77,6 +77,18 @@
 		WHERE r.id=? and t.invalidDate='2100-12-31'
 	</query>
 
+    <query name="Region.findByCountryAndQuery">
+        select distinct r
+        from Region r
+            left join fetch r.nameTemporals t
+            left join fetch t.value v
+            left join fetch v.translations tr
+            left join fetch tr.lang l
+        where r.parent.id=?
+              and t.invalidDate='2100-12-31'
+              and lower(tr.name) like ?
+    </query>
+
 	<query name="RegionNameTemporal.readFull">
 		SELECT DISTINCT t
 		FROM RegionNameTemporal t

@@ -9,111 +9,111 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
-	<bean id="tcTariffToAttributeNameMapper" class="org.flexpay.tc.service.importexport.TarifToAttributeNameMapper">
-		<property name="attributeName2tarifCodes">
+	<bean id="tcTariffToAttributeNameMapper" class="org.flexpay.tc.service.importexport.TariffToAttributeNameMapper">
+		<property name="attributeName2tariffCodes">
 			<map>
 				<entry value="010">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_NEARHOUSE_TERRITORY_CLEANUP_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_NEARHOUSE_TERRITORY_CLEANUP_TARIFF" />
 					</key>
 				</entry>
 				<entry value="020">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_RUBBISH_CHUTE_CLEANUP_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_RUBBISH_CHUTE_CLEANUP_TARIFF" />
 					</key>
 				</entry>
 				<entry value="030">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_BASEMENTS_CLEANUP_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_BASEMENTS_CLEANUP_TARIFF" />
 					</key>
 				</entry>
 				<entry value="040">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_BIG_GARBAGE_REMOVAL_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_BIG_GARBAGE_REMOVAL_TARIFF" />
 					</key>
 				</entry>
 				<entry value="050">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_LIFT_SUPPORT_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_LIFT_SUPPORT_TARIFF" />
 					</key>
 				</entry>
 				<entry value="060">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_DISPETCHER_SYSTEMS_SUPPORT_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_DISPETCHER_SYSTEMS_SUPPORT_TARIFF" />
 					</key>
 				</entry>
 				<entry value="070">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_WATER_SUPPLY_NETS_SUPPORT_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_WATER_SUPPLY_NETS_SUPPORT_TARIFF" />
 					</key>
 				</entry>
 				<entry value="080">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_WATER_REMOVAL_NETS_SUPPORT_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_WATER_REMOVAL_NETS_SUPPORT_TARIFF" />
 					</key>
 				</entry>
 				<entry value="090">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_WARM_SUPPLY_NETS_SUPPORT_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_WARM_SUPPLY_NETS_SUPPORT_TARIFF" />
 					</key>
 				</entry>
 				<entry value="100">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_HOT_WATER_SUPPLY_NETS_SUPPORT_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_HOT_WATER_SUPPLY_NETS_SUPPORT_TARIFF" />
 					</key>
 				</entry>
 				<entry value="110">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_BOILERS_SUPPORT_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_BOILERS_SUPPORT_TARIFF" />
 					</key>
 				</entry>
 				<entry value="120">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_VENT_CHANNEL_SUPPORT_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_VENT_CHANNEL_SUPPORT_TARIFF" />
 					</key>
 				</entry>
 				<entry value="130">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_COURT_TOILETS_CLEANUP_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_COURT_TOILETS_CLEANUP_TARIFF" />
 					</key>
 				</entry>
 				<entry value="140">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_COMMON_PLACES_LIGHTENING_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_COMMON_PLACES_LIGHTENING_TARIFF" />
 					</key>
 				</entry>
 				<entry value="150">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_WATER_PUMPS_ELECTRICITY_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_WATER_PUMPS_ELECTRICITY_TARIFF" />
 					</key>
 				</entry>
 				<entry value="160">
 					<key>
 						<util:constant
-								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_LIFT_ENERGYSAVE_TARIF" />
+								static-field="org.flexpay.bti.persistence.BuildingAttributeConfig.ATTR_LIFT_ENERGYSAVE_TARIFF" />
 					</key>
 				</entry>
 			</map>
 		</property>
 	</bean>
 
-	<bean id="buildingAttributeDataProcessor2" class="org.flexpay.tc.service.importexport.TarifResultsDataProcessor"
-		  p:tarifToAttributeNameMapper-ref="tcTariffToAttributeNameMapper"
+	<bean id="buildingAttributeDataProcessor2" class="org.flexpay.tc.service.importexport.TariffResultsDataProcessor"
+		  p:tariffToAttributeNameMapper-ref="tcTariffToAttributeNameMapper"
 		  p:tariffService-ref="tariffService"
 		  p:calculationResultService-ref="tariffCalculationResultService"
 		  p:buildingService-ref="buildingService" />

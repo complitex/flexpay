@@ -34,7 +34,7 @@ public class TCConfigLoader extends ConfigLoader {
 
 		d.addCallMethod("flexpay/tcMaximumFloors", "setMaximumFloors", 0);
 		d.addCallMethod("flexpay/tcMaximumPorches", "setMaximumPporches", 0);
-		d.addCallMethod("flexpay/tcMaximumAppartments", "setMaximumAppartments", 0);
+		d.addCallMethod("flexpay/tcMaximumApartments", "setMaximumApartments", 0);
 
 	}
 
