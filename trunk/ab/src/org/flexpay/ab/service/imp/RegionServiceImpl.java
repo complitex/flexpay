@@ -12,13 +12,16 @@ import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Locale;
+import java.util.List;
 
 /**
  * Region service layer implementation
@@ -180,6 +183,11 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		}
 
 		return false;
+	}
+
+	@NotNull
+	public List<Region> findByCountryAndQuery(@NotNull Stub<Country> stub, @NotNull String query) {
+		return regionDao.findByCountryAndQuery(stub.getId(), query);
 	}
 
 	@Required

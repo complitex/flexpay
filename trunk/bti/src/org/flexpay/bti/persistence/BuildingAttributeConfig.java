@@ -141,48 +141,48 @@ public class BuildingAttributeConfig {
 	// 72 BT общая площадь квартир
 	public static final String ATTR_APARTMENTS_TOTAL_SQUARE = "ATTR_APARTMENTS_TOTAL_SQUARE";
 	// 73 BU тариф за уборку придомовой территории
-	public static final String ATTR_NEARHOUSE_TERRITORY_CLEANUP_TARIF = "ATTR_NEARHOUSE_TERRITORY_CLEANUP_TARIF";
+	public static final String ATTR_NEARHOUSE_TERRITORY_CLEANUP_TARIFF = "ATTR_NEARHOUSE_TERRITORY_CLEANUP_TARIFF";
 	// 74 BV тариф за очистку мусоропроводов и загрузку контейнеров
-	public static final String ATTR_RUBBISH_CHUTE_CLEANUP_TARIF = "ATTR_RUBBISH_CHUTE_CLEANUP_TARIF";
+	public static final String ATTR_RUBBISH_CHUTE_CLEANUP_TARIFF = "ATTR_RUBBISH_CHUTE_CLEANUP_TARIFF";
 	// 75 BW тариф за уборку подвалов, тех.этажей и кровель
-	public static final String ATTR_BASEMENTS_CLEANUP_TARIF = "ATTR_BASEMENTS_CLEANUP_TARIF";
+	public static final String ATTR_BASEMENTS_CLEANUP_TARIFF = "ATTR_BASEMENTS_CLEANUP_TARIFF";
 	// 76 BX тариф за вывоз и утилизацию твердых бытовых и негабаритных отходов
-	public static final String ATTR_BIG_GARBAGE_REMOVAL_TARIF = "ATTR_BIG_GARBAGE_REMOVAL_TARIF";
+	public static final String ATTR_BIG_GARBAGE_REMOVAL_TARIFF = "ATTR_BIG_GARBAGE_REMOVAL_TARIFF";
 	// 77 BY тариф за тех.обслуживание лифтов
-	public static final String ATTR_LIFT_SUPPORT_TARIF = "ATTR_LIFT_SUPPORT_TARIF";
+	public static final String ATTR_LIFT_SUPPORT_TARIFF = "ATTR_LIFT_SUPPORT_TARIFF";
 	// 78 BZ тариф за обслуживание систем диспетчеризации
-	public static final String ATTR_DISPETCHER_SYSTEMS_SUPPORT_TARIF = "ATTR_DISPETCHER_SYSTEMS_SUPPORT_TARIF";
+	public static final String ATTR_DISPETCHER_SYSTEMS_SUPPORT_TARIFF = "ATTR_DISPETCHER_SYSTEMS_SUPPORT_TARIFF";
 	// 79 CA тариф за тех.обслуживание внутридомовых сетей водоснабжения
-	public static final String ATTR_WATER_SUPPLY_NETS_SUPPORT_TARIF = "ATTR_WATER_SUPPLY_NETS_SUPPORT_TARIF";
+	public static final String ATTR_WATER_SUPPLY_NETS_SUPPORT_TARIFF = "ATTR_WATER_SUPPLY_NETS_SUPPORT_TARIFF";
 	// 80 CB тариф за тех.обслуживание внутридомовых сетей водоотведения
-	public static final String ATTR_WATER_REMOVAL_NETS_SUPPORT_TARIF = "ATTR_WATER_REMOVAL_NETS_SUPPORT_TARIF";
+	public static final String ATTR_WATER_REMOVAL_NETS_SUPPORT_TARIFF = "ATTR_WATER_REMOVAL_NETS_SUPPORT_TARIFF";
 	// 81 CC тариф за тех.обслуживание внутридомовых сетей теплоснабжения
-	public static final String ATTR_WARM_SUPPLY_NETS_SUPPORT_TARIF = "ATTR_WARM_SUPPLY_NETS_SUPPORT_TARIF";
+	public static final String ATTR_WARM_SUPPLY_NETS_SUPPORT_TARIFF = "ATTR_WARM_SUPPLY_NETS_SUPPORT_TARIFF";
 	// 82 CD тариф за тех.обслуживание внутридомовых сетей горячего водоснабжения
-	public static final String ATTR_HOT_WATER_SUPPLY_NETS_SUPPORT_TARIF = "ATTR_HOT_WATER_SUPPLY_NETS_SUPPORT_TARIF";
+	public static final String ATTR_HOT_WATER_SUPPLY_NETS_SUPPORT_TARIFF = "ATTR_HOT_WATER_SUPPLY_NETS_SUPPORT_TARIFF";
 	// 83 CE тариф за тех.обслуживание бойлеров
-	public static final String ATTR_BOILERS_SUPPORT_TARIF = "ATTR_BOILERS_SUPPORT_TARIF";
+	public static final String ATTR_BOILERS_SUPPORT_TARIFF = "ATTR_BOILERS_SUPPORT_TARIFF";
 	// 84 CF тариф за обслуживание дымовентиляционных каналов
-	public static final String ATTR_VENT_CHANNEL_SUPPORT_TARIF = "ATTR_VENT_CHANNEL_SUPPORT_TARIF";
+	public static final String ATTR_VENT_CHANNEL_SUPPORT_TARIFF = "ATTR_VENT_CHANNEL_SUPPORT_TARIFF";
 	// 85 CG тариф за очистку дворовых туалетов
-	public static final String ATTR_COURT_TOILETS_CLEANUP_TARIF = "ATTR_COURT_TOILETS_CLEANUP_TARIF";
+	public static final String ATTR_COURT_TOILETS_CLEANUP_TARIFF = "ATTR_COURT_TOILETS_CLEANUP_TARIFF";
 	// 86 CH тариф за освещение мест общего пользования
-	public static final String ATTR_COMMON_PLACES_LIGHTENING_TARIF = "ATTR_COMMON_PLACES_LIGHTENING_TARIF";
+	public static final String ATTR_COMMON_PLACES_LIGHTENING_TARIFF = "ATTR_COMMON_PLACES_LIGHTENING_TARIFF";
 	// 87 CI тариф за энергоснабжение насосов подкачки воды
-	public static final String ATTR_WATER_PUMPS_ELECTRICITY_TARIF = "ATTR_WATER_PUMPS_ELECTRICITY_TARIF";
+	public static final String ATTR_WATER_PUMPS_ELECTRICITY_TARIFF = "ATTR_WATER_PUMPS_ELECTRICITY_TARIFF";
 	// 88 CJ тариф за энергоснабжение лифтов
-	public static final String ATTR_LIFT_ENERGYSAVE_TARIF = "ATTR_LIFT_ENERGYSAVE_TARIF";
+	public static final String ATTR_LIFT_ENERGYSAVE_TARIFF = "ATTR_LIFT_ENERGYSAVE_TARIFF";
 	// 89 CK итоговый тариф
-	public static final String ATTR_TOTAL_TARIF = "ATTR_TOTAL_TARIF";
+	public static final String ATTR_TOTAL_TARIFF = "ATTR_TOTAL_TARIFF";
 	// 90 CL
 	// 91 CM тариф за освещение мест общего пользования (в части электриков)
-	public static final String ATTR_COMMON_PLACES_LIGHTENING_TARIF_PART_ELECTRICIANS = "ATTR_COMMON_PLACES_LIGHTENING_TARIF_PART_ELECTRICIANS";
+	public static final String ATTR_COMMON_PLACES_LIGHTENING_TARIFF_PART_ELECTRICIANS = "ATTR_COMMON_PLACES_LIGHTENING_TARIFF_PART_ELECTRICIANS";
 	// 92 CN тариф за освещение мест общего пользования (в части «Облэнерго»)
-	public static final String ATTR_COMMON_PLACES_LIGHTENING_TARIF_PART_OBLENERGO = "ATTR_COMMON_PLACES_LIGHTENING_TARIF_PART_OBLENERGO";
+	public static final String ATTR_COMMON_PLACES_LIGHTENING_TARIFF_PART_OBLENERGO = "ATTR_COMMON_PLACES_LIGHTENING_TARIFF_PART_OBLENERGO";
 	// 93 CO тариф за уборку подвалов, тех.этажей и кровель (в части подвалов)
-	public static final String ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIF_PART_BASEMENTS = "ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIF_PART_BASEMENTS";
+	public static final String ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIFF_PART_BASEMENTS = "ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIFF_PART_BASEMENTS";
 	// 94 CP тариф за уборку подвалов, тех.этажей и кровель (в части тех.этажей и кровель)
-	public static final String ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIF_PART_TECHFLOORS_ROOFS = "ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIF_PART_TECHFLOORS_ROOFS";
+	public static final String ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIFF_PART_TECHFLOORS_ROOFS = "ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIFF_PART_TECHFLOORS_ROOFS";
 	// 95 CQ ???? (есть значение ТЦРП)
 	public static final String ATTR_XXXX_TCRP = "ATTR_XXXX_TCRP";
 	// 96 CR

@@ -37,7 +37,7 @@ public class ServiceTypeRecordDBFInfo extends DBFInfo<ServiceTypeRecord> {
 		record.setPrivilegeEndMonth(getInteger(rowData, "monthout"));
 		record.setPersonalAccountNumber(getString(rowData, "rah"));
 		record.setServiceType(getInteger(rowData, "rizn"));
-		record.setTarifCode(getInteger(rowData, "tarif"));
+		record.setTariffCode(getInteger(rowData, "tarif"));
 
 		return record;
 	}
@@ -106,7 +106,7 @@ public class ServiceTypeRecordDBFInfo extends DBFInfo<ServiceTypeRecord> {
 		row[getInd("monthout")] = (double) element.getPrivilegeEndMonth().intValue();
 		row[getInd("rah")] = element.getPersonalAccountNumber();
 		row[getInd("rizn")] = (double) element.getServiceType().intValue();
-		row[getInd("tarif")] = (double) element.getTarifCode().intValue();
+		row[getInd("tarif")] = (double) element.getTariffCode().intValue();
 
 		return row;
 	}

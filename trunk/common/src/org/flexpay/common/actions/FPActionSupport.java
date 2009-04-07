@@ -1,6 +1,15 @@
 package org.flexpay.common.actions;
 
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ActionProxy;
+import com.opensymphony.xwork2.ActionContext;
+import net.sourceforge.navigator.menu.MenuComponent;
+import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.config.Namespace;
+import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.common.actions.interceptor.UserPreferencesAware;
+import org.flexpay.common.actions.breadcrumbs.Crumb;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
@@ -11,19 +20,13 @@ import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.config.Namespace;
-import org.apache.struts2.interceptor.SessionAware;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.util.WebUtils;
 
-import com.opensymphony.xwork2.ActionSupport;
-
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -48,6 +51,13 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	@NonNls
 	protected static final String REDIRECT_INPUT = "redirectInput";
 
+	// name of breadcrumb list in session.
+	@NonNls
+	public static final String BREADCRUMBS = "com.strutsschool.interceptors.breadcrumbs";
+
+	@NonNls
+	private String WILDCARD_SEPARATOR = "!";
+
 	@NonNls
 	private static final String METHOD_POST = "post";
 
@@ -56,6 +66,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	protected Map session = CollectionUtils.map();
 	protected String submitted;
     protected String menu;
+	protected Stack<Crumb> crumbs = new Stack<Crumb>();
 
 	public boolean isSubmit() {
 		return submitted != null;
@@ -67,9 +78,9 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 
     public void setMenu(String menu) {
         this.menu = menu;
-		String activeMenu = (String) WebUtils.getSessionAttribute(ServletActionContext.getRequest(), "activeMenuComponentName");
+		String activeMenu = (String) WebUtils.getSessionAttribute(ServletActionContext.getRequest(), MenuComponent.ACTIVE_MENU);
 		if (StringUtils.isNotEmpty(menu) && !menu.equals(activeMenu)) {
-			WebUtils.setSessionAttribute(ServletActionContext.getRequest(), "activeMenuComponentName", menu);
+			WebUtils.setSessionAttribute(ServletActionContext.getRequest(), MenuComponent.ACTIVE_MENU, menu);
 		}
     }
 
@@ -82,6 +93,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 
 		String result;
 		try {
+			setBreadCrumbs();
 			result = doExecute();
 		} catch (FlexPayException e) {
 			addActionError(e);
@@ -133,6 +145,64 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	 */
 	@NotNull
 	protected abstract String doExecute() throws Exception;
+
+	protected void setBreadCrumbs() {
+
+/*
+		crumbs = (Stack<Crumb>) WebUtils.getSessionAttribute(ServletActionContext.getRequest(), BREADCRUMBS);
+		if (crumbs == null) {
+			crumbs = new Stack<Crumb>();
+		}
+
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String menuParam = request.getParameter("menu");
+		if (menuParam != null && request.getParameterMap().size() == 1) {
+			deleteOldCrumbs(0);
+		}
+
+		Crumb curCrumb = getCurrentCrumb(request);
+		crumbs.add(curCrumb);
+
+		WebUtils.setSessionAttribute(ServletActionContext.getRequest(), BREADCRUMBS, crumbs);
+*/
+
+	}
+
+	protected Crumb getCurrentCrumb(HttpServletRequest request) {
+
+		ActionProxy proxy = ActionContext.getContext().getActionInvocation().getProxy();
+		String actionName = proxy.getActionName();
+		String nameSpace = proxy.getNamespace();
+		String qualifiedActionName = nameSpace + "/" + actionName;
+		String wildPortionOfName = actionName.substring(actionName.indexOf(WILDCARD_SEPARATOR) + 1);
+
+		Crumb crumbToReplace = findCrumbWithCurAction(qualifiedActionName);
+		if (crumbToReplace != null) {
+			deleteOldCrumbs(crumbs.indexOf(crumbToReplace));
+		}
+
+		Crumb curCrumb = new Crumb(actionName, nameSpace, wildPortionOfName);
+		curCrumb.setRequestParams(request.getParameterMap());
+
+		return curCrumb;
+
+	}
+
+	protected void deleteOldCrumbs(int index) {
+		int size = crumbs.size();
+		for (int i = index; i < size; i++) {
+			crumbs.remove(index);
+		}
+	}
+
+	protected Crumb findCrumbWithCurAction(String qualifiedActionName) {
+		for (Crumb crumb : crumbs) {
+			if (crumb.getQualifiedActionName().equals(qualifiedActionName)) {
+				return crumb;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Get default error execution result

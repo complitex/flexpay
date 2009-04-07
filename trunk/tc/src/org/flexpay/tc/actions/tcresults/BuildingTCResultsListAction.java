@@ -4,7 +4,7 @@ import org.apache.commons.lang.time.FastDateFormat;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.BuildingService;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.actions.FPBreadCrumbActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Facilitates ability to list all tariff calculation results for particular building
  */
-public class BuildingTCResultsListAction extends FPActionSupport {
+public class BuildingTCResultsListAction extends FPBreadCrumbActionSupport {
 
 	private String buildingId;
 

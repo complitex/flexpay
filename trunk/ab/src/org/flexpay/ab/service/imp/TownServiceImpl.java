@@ -15,6 +15,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.TimeLine;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
@@ -358,6 +359,11 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 
 			log.debug("Disabled town: {}", townPersisted);
 		}
+	}
+
+	@NotNull
+	public List<Town> findByRegionAndQuery(@NotNull Stub<Region> stub, @NotNull String query) {
+		return townDao.findByRegionAndQuery(stub.getId(), query);
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})

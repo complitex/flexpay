@@ -26,4 +26,5 @@ public class AllTests extends TestCase {
 		suite.addTest(new JUnit4TestAdapter(AllTests.class));
 		return suite;
 	}
+
 }

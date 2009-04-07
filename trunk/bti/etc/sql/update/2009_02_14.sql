@@ -10,22 +10,22 @@ insert into bti_building_attribute_type_group_names_tbl (name, language_id, grou
 	values ('Tariff', @en_id, @attribute_group_17);
 
 INSERT INTO `bti_building_attribute_types_tbl` (id, discriminator, group_id, unique_code, is_temporal)
-VALUES (49,'simple',@attribute_group_17,'ATTR_NEARHOUSE_TERRITORY_CLEANUP_TARIF', 1),
-(50,'simple',@attribute_group_17,'ATTR_RUBBISH_CHUTE_CLEANUP_TARIF', 1),
-(51,'simple',@attribute_group_17,'ATTR_BASEMENTS_CLEANUP_TARIF', 1),
-(52,'simple',@attribute_group_17,'ATTR_BIG_GARBAGE_REMOVAL_TARIF', 1),
-(53,'simple',@attribute_group_17,'ATTR_LIFT_SUPPORT_TARIF', 1),
-(54,'simple',@attribute_group_17,'ATTR_DISPETCHER_SYSTEMS_SUPPORT_TARIF', 1),
-(55,'simple',@attribute_group_17,'ATTR_WATER_SUPPLY_NETS_SUPPORT_TARIF', 1),
-(56,'simple',@attribute_group_17,'ATTR_WATER_REMOVAL_NETS_SUPPORT_TARIF', 1),
-(57,'simple',@attribute_group_17,'ATTR_WARM_SUPPLY_NETS_SUPPORT_TARIF', 1),
-(58,'simple',@attribute_group_17,'ATTR_HOT_WATER_SUPPLY_NETS_SUPPORT_TARIF', 1),
-(59,'simple',@attribute_group_17,'ATTR_BOILERS_SUPPORT_TARIF', 1),
-(60,'simple',@attribute_group_17,'ATTR_VENT_CHANNEL_SUPPORT_TARIF', 1),
-(61,'simple',@attribute_group_17,'ATTR_COURT_TOILETS_CLEANUP_TARIF', 1),
-(62,'simple',@attribute_group_17,'ATTR_COMMON_PLACES_LIGHTENING_TARIF', 1),
-(63,'simple',@attribute_group_17,'ATTR_WATER_PUMPS_ELECTRICITY_TARIF', 1),
-(64,'simple',@attribute_group_17,'ATTR_LIFT_ENERGYSAVE_TARIF', 1);
+VALUES (49,'simple',@attribute_group_17,'ATTR_NEARHOUSE_TERRITORY_CLEANUP_TARIFF', 1),
+(50,'simple',@attribute_group_17,'ATTR_RUBBISH_CHUTE_CLEANUP_TARIFF', 1),
+(51,'simple',@attribute_group_17,'ATTR_BASEMENTS_CLEANUP_TARIFF', 1),
+(52,'simple',@attribute_group_17,'ATTR_BIG_GARBAGE_REMOVAL_TARIFF', 1),
+(53,'simple',@attribute_group_17,'ATTR_LIFT_SUPPORT_TARIFF', 1),
+(54,'simple',@attribute_group_17,'ATTR_DISPETCHER_SYSTEMS_SUPPORT_TARIFF', 1),
+(55,'simple',@attribute_group_17,'ATTR_WATER_SUPPLY_NETS_SUPPORT_TARIFF', 1),
+(56,'simple',@attribute_group_17,'ATTR_WATER_REMOVAL_NETS_SUPPORT_TARIFF', 1),
+(57,'simple',@attribute_group_17,'ATTR_WARM_SUPPLY_NETS_SUPPORT_TARIFF', 1),
+(58,'simple',@attribute_group_17,'ATTR_HOT_WATER_SUPPLY_NETS_SUPPORT_TARIFF', 1),
+(59,'simple',@attribute_group_17,'ATTR_BOILERS_SUPPORT_TARIFF', 1),
+(60,'simple',@attribute_group_17,'ATTR_VENT_CHANNEL_SUPPORT_TARIFF', 1),
+(61,'simple',@attribute_group_17,'ATTR_COURT_TOILETS_CLEANUP_TARIFF', 1),
+(62,'simple',@attribute_group_17,'ATTR_COMMON_PLACES_LIGHTENING_TARIFF', 1),
+(63,'simple',@attribute_group_17,'ATTR_WATER_PUMPS_ELECTRICITY_TARIFF', 1),
+(64,'simple',@attribute_group_17,'ATTR_LIFT_ENERGYSAVE_TARIFF', 1);
 
 
 INSERT INTO `bti_building_attribute_type_names_tbl` (id, name, language_id, attribute_type_id)

@@ -6,6 +6,7 @@ import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class ApartmentEditAction extends BuildingsFilterDependentAction {
 
@@ -65,23 +66,14 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 		return INPUT;
 	}
 
-	/**
-	 * @return the apartment
-	 */
 	public Apartment getApartment() {
 		return apartment;
 	}
 
-	/**
-	 * @param apartment the apartment to set
-	 */
 	public void setApartment(Apartment apartment) {
 		this.apartment = apartment;
 	}
 
-	/**
-	 * @param apartmentNumber the apartmentNumber to set
-	 */
 	public void setApartmentNumber(String apartmentNumber) {
 		this.apartmentNumber = apartmentNumber;
 	}
@@ -90,14 +82,14 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 		return apartmentNumber;
 	}
 
-	/**
-	 * @param apartmentService the apartmentService to set
-	 */
+	@Required
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
 	}
 
+	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
+
 }

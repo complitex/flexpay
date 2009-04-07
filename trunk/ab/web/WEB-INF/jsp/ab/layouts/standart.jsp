@@ -12,19 +12,19 @@
     <link rel="stylesheet" type="text/css" href="<s:url value="/resources/common/style/fp.css" includeParams="none"/>"/>
     <link rel="stylesheet" type="text/css" href="<s:url value="/resources/common/js/jquery/jquery-ui/css/smoothness/jquery-ui-1.7.1.custom.min.css" includeParams="none" />"/>
 
-    <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-1.3.2.min.js" includeParams="none"/>"></script>
-    <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery.protify-0.2.min.js" includeParams="none"/>"></script>
+    <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-1.3.2.min.js" includeParams="none" />"></script>
+    <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery.protify-0.2.min.js" includeParams="none" />"></script>
 	<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/validate/jquery.validate.min.js" includeParams="none" />"></script>
 	<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-ui/development-bundle/external/bgiframe/jquery.bgiframe.yui.js" includeParams="none" />"></script>
 	<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-ui/jquery-ui-1.7.1.custom.min.js" includeParams="none" />"></script>
 	<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-ui/development-bundle/ui/i18n" includeParams="none" />/ui.datepicker-<s:if test="%{#session.WW_TRANS_I18N_LOCALE != null}"><s:text name="%{#session.WW_TRANS_I18N_LOCALE}" /></s:if><s:else>ru</s:else>.js"></script>
 
-	<script type="text/javascript" src="<s:url value="/resources/common/js/flexpay_common.js" includeParams="none"/>"></script>
-    <script type="text/javascript">FP.base = "<s:url value="/" includeParams="none"/>";</script>
+	<script type="text/javascript" src="<s:url value="/resources/common/js/flexpay_common.js" includeParams="none" />"></script>
+    <script type="text/javascript">FP.base = "<s:url value="/" includeParams="none" />";</script>
 </head>
 <body>
 
-<tiles:insertAttribute name="header"/>
+<tiles:insertAttribute name="header" />
 
     <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
@@ -32,7 +32,7 @@
                 <menu:displayMenu name="FPMenu" levelBegin="1" levelEnd="1" />
             </menu:useMenuDisplayer>
 
-            <tiles:insertAttribute name="language"/>
+            <tiles:insertAttribute name="language" />
 
             <!--<form name="search">-->
             <td class="topmenu_form_search" nowrap="1" >&nbsp;
@@ -49,7 +49,7 @@
 <!--
 <div class="gradusnik">
     <div class="gradusnik-padding">
-        <tiles:insertAttribute name="gradusnik"/>
+        <tiles:insertAttribute name="gradusnik" />
     </div>
 </div>
 -->
@@ -62,13 +62,14 @@
 
     <div class="main">
         <div class="main-content">
+            <tiles:insertAttribute name="breadCrumbs" /><br>
             <tiles:insertAttribute name="body" ignore="true" />
         </div>
 
         <!--
         <div class="main-tip">
             <div class="main-tip-padding">
-                <tiles:insertAttribute name="tip"/>
+                <tiles:insertAttribute name="tip" />
             </div>
         </div>
         -->
@@ -76,7 +77,7 @@
 
 </div>
 
-<tiles:insertAttribute name="footer"/>
+<tiles:insertAttribute name="footer" />
 
 </body>
 </html>

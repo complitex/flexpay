@@ -4,6 +4,7 @@ import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
 
@@ -38,7 +39,9 @@ public class PersonDeleteAction extends FPActionSupport {
 		this.objectIds = objectIds;
 	}
 
+	@Required
     public void setPersonService(PersonService personService) {
         this.personService = personService;
     }
+
 }

@@ -19,13 +19,13 @@
 
 		<interceptors>
 			<interceptor name="userPreferences"
-						 class="org.flexpay.common.actions.interceptor.UserPreferencesInterceptor"/>
+						 class="org.flexpay.common.actions.interceptor.UserPreferencesInterceptor" />
             <interceptor name="menuInterceptor"
-                         class="org.flexpay.common.actions.interceptor.MenuInterceptor"/>
+                         class="org.flexpay.common.actions.interceptor.MenuInterceptor" />
 			<interceptor-stack name="commonDefaultStack">
-				<interceptor-ref name="defaultStack"/>
-				<interceptor-ref name="userPreferences"/>
-                <interceptor-ref name="menuInterceptor"/>
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="userPreferences" />
+                <interceptor-ref name="menuInterceptor" />
 			</interceptor-stack>
 		</interceptors>
 		<default-interceptor-ref name="commonDefaultStack"/>

@@ -82,4 +82,16 @@ public interface CountryService extends ParentService<CountryFilter> {
      */
     @Secured (Roles.COUNTRY_READ)
     boolean isShortNameAvailable(@NotNull String shortName, @NotNull Language language);
+
+	/**
+	 * Lookup countries by query. Query is a string
+	 * which may contains in country name:
+	 *
+	 * @param query searching string
+	 * @return List of founded countries
+	 */
+	@Secured (Roles.COUNTRY_READ)
+	@NotNull
+	List<Country> findByQuery(@NotNull String query);
+
 }

@@ -1,22 +1,22 @@
 package org.flexpay.ab.service;
 
-import java.util.List;
-import java.util.Date;
-import java.util.Collection;
-import java.util.Locale;
-
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.DistrictFilter;
-import org.flexpay.common.service.NameTimeDependentService;
-import org.flexpay.common.service.ParentService;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.service.NameTimeDependentService;
+import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.annotation.Secured;
-import org.apache.commons.collections.ArrayStack;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public interface DistrictService extends NameTimeDependentService<
         DistrictName, DistrictNameTemporal, District, DistrictNameTranslation>,
@@ -176,4 +176,20 @@ public interface DistrictService extends NameTimeDependentService<
 	 */
 	@Secured (Roles.DISTRICT_READ)
 	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
+
+
+	/**
+	 * Lookup districts by query and town id. Query is a string
+	 * which may contains in folow string:
+	 *
+	 * district_name
+	 *
+	 * @param stub TownStub
+	 * @param query searching string
+	 * @return List of founded districts
+	 */
+	@Secured (Roles.DISTRICT_READ)
+	@NotNull
+	List<District> findByTownAndQuery(@NotNull Stub<Town> stub, @NotNull String query);
+
 }

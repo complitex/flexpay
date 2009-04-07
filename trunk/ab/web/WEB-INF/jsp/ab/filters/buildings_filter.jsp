@@ -1,4 +1,5 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+
 <s:if test="buildingsFilter.readOnly">
 	<s:hidden name="buildingsFilter.selectedId" value="%{buildingsFilter.selectedId}"/>
 	<s:property value="%{getBuildingNumber(buildingsFilter.selected)}"/>

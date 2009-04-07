@@ -3,7 +3,7 @@ package net.sourceforge.navigator.taglib;
 import net.sourceforge.navigator.displayer.MenuDisplayer;
 import net.sourceforge.navigator.menu.MenuComponent;
 import net.sourceforge.navigator.menu.MenuRepository;
-import org.apache.commons.lang.StringUtils;
+import net.sourceforge.navigator.util.MenuUtils;
 import org.apache.struts2.views.util.UrlHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,6 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Map;
 
 public class DisplayMenuTag extends TagSupport {
 
@@ -81,17 +80,17 @@ public class DisplayMenuTag extends TagSupport {
                     menu.setLocation("#");
                 }
 
-				String curMenuComponentName = (String) WebUtils.getSessionAttribute(request, "activeMenuComponentName");
+				String curMenuComponentName = (String) WebUtils.getSessionAttribute(request, MenuComponent.ACTIVE_MENU);
 				MenuComponent activeMenuComponent;
                 if (curMenuComponentName == null) {
                     String curAction = (String) WebUtils.getSessionAttribute(request, "currentAction");
-                    activeMenuComponent = getMenuByAction(curAction, applicationContext);
+                    activeMenuComponent = MenuUtils.getMenuByAction(curAction, applicationContext);
                     if (activeMenuComponent != null) {
                         curMenuComponentName = activeMenuComponent.getName();
-                        WebUtils.setSessionAttribute(request, "activeMenuComponentName", curMenuComponentName);
+                        WebUtils.setSessionAttribute(request, MenuComponent.ACTIVE_MENU, curMenuComponentName);
                     }
                 }
-                MenuComponent curMenu = getMenuByName(curMenuComponentName, menu);
+                MenuComponent curMenu = MenuUtils.getMenuByName(curMenuComponentName, menu);
                 if (curMenu != null) {
                     displayer.setActiveMenu(curMenu);
                 } else {
@@ -116,34 +115,6 @@ public class DisplayMenuTag extends TagSupport {
 
         return SKIP_BODY;
     }
-
-    @SuppressWarnings({"SuspiciousMethodCalls"})
-    private MenuComponent getMenuByName(String menuName, MenuComponent menu) {
-        if (menu.getComponents().isEmpty()) {
-            return null;
-        }
-        for (MenuComponent menuComponent : menu.getComponents()) {
-            if (menuComponent.getName().equals(menuName)) {
-                return menuComponent;
-            }
-            MenuComponent c = getMenuByName(menuName, menuComponent);
-            if (c != null) {
-                return c;
-            }
-        }
-        return null;
-    }
-
-    private MenuComponent getMenuByAction(String action, ApplicationContext context) {
-		Map<?, ?> menuComponentBeans = context.getBeansOfType(MenuComponent.class);
-        for (Object value : menuComponentBeans.values()) {
-            MenuComponent menuComponent = (MenuComponent) value;
-            if (StringUtils.contains(menuComponent.getAction(), action)) {
-                return menuComponent;
-            }
-        }
-		return null;
-	}
 
     protected void setPageLocation(MenuComponent menu) throws MalformedURLException, JspException {
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();

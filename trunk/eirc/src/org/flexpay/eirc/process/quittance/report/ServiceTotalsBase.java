@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 public abstract class ServiceTotalsBase implements Serializable {
 
 	private ServiceType serviceType;
-	private BigDecimal tarif = BigDecimal.ZERO;
+	private BigDecimal tariff = BigDecimal.ZERO;
 	private BigDecimal expence = BigDecimal.ZERO;
 	private String expenceUnitKey;
 	private BigDecimal charges = BigDecimal.ZERO;
@@ -50,12 +50,12 @@ public abstract class ServiceTotalsBase implements Serializable {
 		amount = addNonNegative(amount, am);
 	}
 
-	public BigDecimal getTarif() {
-		return tarif;
+	public BigDecimal getTariff() {
+		return tariff;
 	}
 
-	public void setTarif(BigDecimal tarif) {
-		this.tarif = tarif;
+	public void setTariff(BigDecimal tariff) {
+		this.tariff = tariff;
 	}
 
 	public BigDecimal getExpence() {
@@ -174,7 +174,7 @@ public abstract class ServiceTotalsBase implements Serializable {
 	public String toString() {
 		return new ToStringBuilder(this).
 				append("serviceType", serviceType).
-				append("tarif", tarif).
+				append("tariff", tariff).
 				append("expence", expence).
 				append("expenceUnitKey", expenceUnitKey).
 				append("charges", charges).

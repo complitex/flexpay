@@ -13,8 +13,6 @@
     <orderEntry type="library" name="Jetbrains" level="project" />
     <orderEntry type="library" name="jasper" level="project" />
     <orderEntry type="library" name="j2ee" level="project" />
-    <orderEntry type="library" name="Spring-WS" level="project" />
-    <orderEntry type="library" name="CSVReader" level="project" />
   </component>
 </module>
 

@@ -10,6 +10,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collection;
 
@@ -106,58 +107,34 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 		return n;
 	}
 
-	/**
-	 * @return the countryFilter
-	 */
 	public CountryFilter getCountryFilter() {
 		return countryFilter;
 	}
 
-	/**
-	 * @param countryFilter the countryFilter to set
-	 */
 	public void setCountryFilter(CountryFilter countryFilter) {
 		this.countryFilter = countryFilter;
 	}
 
-	/**
-	 * @return the regionFilter
-	 */
 	public RegionFilter getRegionFilter() {
 		return regionFilter;
 	}
 
-	/**
-	 * @param regionFilter the regionFilter to set
-	 */
 	public void setRegionFilter(RegionFilter regionFilter) {
 		this.regionFilter = regionFilter;
 	}
 
-	/**
-	 * @return the townFilter
-	 */
 	public TownFilter getTownFilter() {
 		return townFilter;
 	}
 
-	/**
-	 * @param townFilter the townFilter to set
-	 */
 	public void setTownFilter(TownFilter townFilter) {
 		this.townFilter = townFilter;
 	}
 
-	/**
-	 * @return the streetFilter
-	 */
 	public StreetFilter getStreetFilter() {
 		return streetFilter;
 	}
 
-	/**
-	 * @param streetFilter the streetFilter to set
-	 */
 	public void setStreetFilter(StreetFilter streetFilter) {
 		this.streetFilter = streetFilter;
 	}
@@ -170,33 +147,21 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 		this.streetNameFilter = streetNameFilter;
 	}
 
-	/**
-	 * @return the buildingsFilter
-	 */
 	public BuildingsFilter getBuildingsFilter() {
 		return buildingsFilter;
 	}
 
-	/**
-	 * @param buildingsFilter the buildingsFilter to set
-	 */
 	public void setBuildingsFilter(BuildingsFilter buildingsFilter) {
 		this.buildingsFilter = buildingsFilter;
 	}
 
-	/**
-	 * Setter for property 'parentService'.
-	 *
-	 * @param parentService Value to set for property 'parentService'.
-	 */
+	public String getFiltersError() {
+		return filtersError;
+	}
+
+	@Required
 	public void setParentService(ParentService parentService) {
 		this.parentService = parentService;
 	}
 
-	/**
-	 * @return the filtersError
-	 */
-	public String getFiltersError() {
-		return filtersError;
-	}
 }

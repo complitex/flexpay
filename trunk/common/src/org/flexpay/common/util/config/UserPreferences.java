@@ -16,6 +16,14 @@ public class UserPreferences {
 
 	private MenuComponent menuComponent = new MenuComponent();
 
+	private Long countryFilterValue;
+	private Long regionFilterValue;
+	private Long townFilterValue;
+	private Long districtFilterValue;
+	private Long streetFilterValue;
+	private Long buildingFilterValue;
+	private Long apartmentFilterValue;
+
 	private static final String WW_TRANS_I18_N_LOCALE = "WW_TRANS_I18N_LOCALE";
 
 
@@ -85,6 +93,62 @@ public class UserPreferences {
 
 	public void setMenuComponent(MenuComponent menuComponent) {
 		this.menuComponent = menuComponent;
+	}
+
+	public Long getCountryFilterValue() {
+		return countryFilterValue;
+	}
+
+	public void setCountryFilterValue(Long countryFilterValue) {
+		this.countryFilterValue = countryFilterValue;
+	}
+
+	public Long getRegionFilterValue() {
+		return regionFilterValue;
+	}
+
+	public void setRegionFilterValue(Long regionFilterValue) {
+		this.regionFilterValue = regionFilterValue;
+	}
+
+	public Long getTownFilterValue() {
+		return townFilterValue;
+	}
+
+	public void setTownFilterValue(Long townFilterValue) {
+		this.townFilterValue = townFilterValue;
+	}
+
+	public Long getDistrictFilterValue() {
+		return districtFilterValue;
+	}
+
+	public void setDistrictFilterValue(Long districtFilterValue) {
+		this.districtFilterValue = districtFilterValue;
+	}
+
+	public Long getStreetFilterValue() {
+		return streetFilterValue;
+	}
+
+	public void setStreetFilterValue(Long streetFilterValue) {
+		this.streetFilterValue = streetFilterValue;
+	}
+
+	public Long getBuildingFilterValue() {
+		return buildingFilterValue;
+	}
+
+	public void setBuildingFilterValue(Long buildingFilterValue) {
+		this.buildingFilterValue = buildingFilterValue;
+	}
+
+	public Long getApartmentFilterValue() {
+		return apartmentFilterValue;
+	}
+
+	public void setApartmentFilterValue(Long apartmentFilterValue) {
+		this.apartmentFilterValue = apartmentFilterValue;
 	}
 
 }

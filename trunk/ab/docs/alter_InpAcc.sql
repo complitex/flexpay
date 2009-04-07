@@ -9,7 +9,7 @@ alter table InpAcc add column district_id integer,
 	add index index_2 (District),
 	add index index_3 (StreetName, StreetType),
 	add index index_4 (HouseNum, PartNum, StreetId),
-	add index index_5 (Appartment, BuildingId);
+	add index index_5 (Apartment, BuildingId);
 
 -- extract districts
 DROP TABLE IF EXISTS districts;
@@ -68,8 +68,8 @@ create table apartments(
 	PRIMARY KEY (id)) COLLATE utf8_unicode_ci;
 alter table apartments add index i_apartment_building (Apartment, BuildingId);
 alter table apartments add index i_building (BuildingId);
-insert into apartments (Apartment, BuildingId) select distinct Appartment, BuildingId from InpAcc;
-update InpAcc inp set AppartmentID = (select id from apartments a where a.Apartment=inp.Appartment and a.BuildingId=inp.BuildingId);
+insert into apartments (Apartment, BuildingId) select distinct Apartment, BuildingId from InpAcc;
+update InpAcc inp set ApartmentID = (select id from apartments a where a.Apartment=inp.Apartment and a.BuildingId=inp.BuildingId);
 
 -- alter table InpAcc drop column District;
 -- alter table InpAcc drop column StreetName, drop column StreetType;

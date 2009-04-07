@@ -159,49 +159,49 @@ public class CNCSVAttributeNameMapper implements AttributeNameMapper {
 			// 72 BT общая площадь квартир
 			ATTR_APARTMENTS_TOTAL_SQUARE,
 			// 73 BU тариф за уборку придомовой территории
-			ATTR_NEARHOUSE_TERRITORY_CLEANUP_TARIF,
+			ATTR_NEARHOUSE_TERRITORY_CLEANUP_TARIFF,
 			// 74 BV тариф за очистку мусоропроводов и загрузку контейнеров
-			ATTR_RUBBISH_CHUTE_CLEANUP_TARIF,
+			ATTR_RUBBISH_CHUTE_CLEANUP_TARIFF,
 			// 75 BW тариф за уборку подвалов, тех.этажей и кровель
-			ATTR_BASEMENTS_CLEANUP_TARIF,
+			ATTR_BASEMENTS_CLEANUP_TARIFF,
 			// 76 BX тариф за вывоз и утилизацию твердых бытовых и негабаритных отходов
-			ATTR_BIG_GARBAGE_REMOVAL_TARIF,
+			ATTR_BIG_GARBAGE_REMOVAL_TARIFF,
 			// 77 BY тариф за тех.обслуживание лифтов
-			ATTR_LIFT_SUPPORT_TARIF,
+			ATTR_LIFT_SUPPORT_TARIFF,
 			// 78 BZ тариф за обслуживание систем диспетчеризации
-			ATTR_DISPETCHER_SYSTEMS_SUPPORT_TARIF,
+			ATTR_DISPETCHER_SYSTEMS_SUPPORT_TARIFF,
 			// 79 CA тариф за тех.обслуживание внутридомовых сетей водоснабжения
-			ATTR_WATER_SUPPLY_NETS_SUPPORT_TARIF,
+			ATTR_WATER_SUPPLY_NETS_SUPPORT_TARIFF,
 			// 80 CB тариф за тех.обслуживание внутридомовых сетей водоотведения
-			ATTR_WATER_REMOVAL_NETS_SUPPORT_TARIF,
+			ATTR_WATER_REMOVAL_NETS_SUPPORT_TARIFF,
 			// 81 CC тариф за тех.обслуживание внутридомовых сетей теплоснабжения
-			ATTR_WARM_SUPPLY_NETS_SUPPORT_TARIF,
+			ATTR_WARM_SUPPLY_NETS_SUPPORT_TARIFF,
 			// 82 CD тариф за тех.обслуживание внутридомовых сетей горячего водоснабжения
-			ATTR_HOT_WATER_SUPPLY_NETS_SUPPORT_TARIF,
+			ATTR_HOT_WATER_SUPPLY_NETS_SUPPORT_TARIFF,
 			// 83 CE тариф за тех.обслуживание бойлеров
-			ATTR_BOILERS_SUPPORT_TARIF,
+			ATTR_BOILERS_SUPPORT_TARIFF,
 			// 84 CF тариф за обслуживание дымовентиляционных каналов
-			ATTR_VENT_CHANNEL_SUPPORT_TARIF,
+			ATTR_VENT_CHANNEL_SUPPORT_TARIFF,
 			// 85 CG тариф за очистку дворовых туалетов
-			ATTR_COURT_TOILETS_CLEANUP_TARIF,
+			ATTR_COURT_TOILETS_CLEANUP_TARIFF,
 			// 86 CH тариф за освещение мест общего пользования
-			ATTR_COMMON_PLACES_LIGHTENING_TARIF,
+			ATTR_COMMON_PLACES_LIGHTENING_TARIFF,
 			// 87 CI тариф за энергоснабжение насосов подкачки воды
-			ATTR_WATER_PUMPS_ELECTRICITY_TARIF,
+			ATTR_WATER_PUMPS_ELECTRICITY_TARIFF,
 			// 88 CJ тариф за энергоснабжение лифтов
-			ATTR_LIFT_ENERGYSAVE_TARIF,
+			ATTR_LIFT_ENERGYSAVE_TARIFF,
 			// 89 CK итоговый тариф
-			ATTR_TOTAL_TARIF,
+			ATTR_TOTAL_TARIFF,
 			// 90 CL
 			null,
 			// 91 CM тариф за освещение мест общего пользования (в части электриков)
-			ATTR_COMMON_PLACES_LIGHTENING_TARIF_PART_ELECTRICIANS,
+			ATTR_COMMON_PLACES_LIGHTENING_TARIFF_PART_ELECTRICIANS,
 			// 92 CN тариф за освещение мест общего пользования (в части «Облэнерго»)
-			ATTR_COMMON_PLACES_LIGHTENING_TARIF_PART_OBLENERGO,
+			ATTR_COMMON_PLACES_LIGHTENING_TARIFF_PART_OBLENERGO,
 			// 93 CO тариф за уборку подвалов, тех.этажей и кровель (в части подвалов)
-			ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIF_PART_BASEMENTS,
+			ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIFF_PART_BASEMENTS,
 			// 94 CP тариф за уборку подвалов, тех.этажей и кровель (в части тех.этажей и кровель)
-			ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIF_PART_TECHFLOORS_ROOFS,
+			ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIFF_PART_TECHFLOORS_ROOFS,
 			// 95 CQ ???? (есть значение ТЦРП)
 			ATTR_XXXX_TCRP,
 			// 96 CR

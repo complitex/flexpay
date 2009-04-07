@@ -16,7 +16,6 @@ public class MenuInterceptor extends AbstractInterceptor {
 
 	public String intercept(ActionInvocation actionInvocation) throws Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		log.debug("Current action: request.getServletPath() = {}, request.getParameterMap() = {}", request.getServletPath(), request.getParameterMap());
 		request.getSession().setAttribute("currentAction", request.getServletPath());
 		return actionInvocation.invoke();
 	}

@@ -95,7 +95,7 @@ public class ServiceGroup {
 
 			if (isFirst) {
 				totals.addIncomingDebt(qd.getIncomingBalance());
-				totals.setTarif(qd.getRate());
+				totals.setTariff(qd.getRate());
 			}
 			if (isLast) {
 				totals.addOutgoingDebt(qd.getOutgoingBalance());

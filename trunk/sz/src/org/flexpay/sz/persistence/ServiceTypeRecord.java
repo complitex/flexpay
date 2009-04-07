@@ -50,8 +50,8 @@ public class ServiceTypeRecord extends Record {
 	private String personalAccountNumber;
 	// service type 
 	private Integer serviceType;
-	// tarif
-	private Integer tarifCode;
+	// tariff
+	private Integer tariffCode;
 
 	// privelege owner
 	private Person deadhead;
@@ -453,21 +453,21 @@ public class ServiceTypeRecord extends Record {
 	}
 
 	/**
-	 * Getter for property 'tarifCode'.
+	 * Getter for property 'tariffCode'.
 	 *
-	 * @return Value for property 'tarifCode'.
+	 * @return Value for property 'tariffCode'.
 	 */
-	public Integer getTarifCode() {
-		return tarifCode;
+	public Integer getTariffCode() {
+		return tariffCode;
 	}
 
 	/**
-	 * Setter for property 'tarifCode'.
+	 * Setter for property 'tariffCode'.
 	 *
-	 * @param tarifCode Value to set for property 'tarifCode'.
+	 * @param tariffCode Value to set for property 'tariffCode'.
 	 */
-	public void setTarifCode(Integer tarifCode) {
-		this.tarifCode = tarifCode;
+	public void setTariffCode(Integer tariffCode) {
+		this.tariffCode = tariffCode;
 	}
 
 	/**
@@ -493,7 +493,7 @@ public class ServiceTypeRecord extends Record {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("ServiceTypeRecord {").
 				append("id", getId()).
-				append("tarifCode", tarifCode).
+				append("tariffCode", tariffCode).
 				append("extDistrictCode", extDistrictCode).
 				append("extOrganizationCode", extOrganizationCode).
 				append("dwellingOwnerId", dwellingOwnerId).

@@ -1,5 +1,5 @@
-
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+
 <%@include file="header.jsp" %>
 	<tr>
 		<td class="filter"><s:text name="ab.country"/></td>
@@ -13,4 +13,5 @@
 		<td class="filter"><s:text name="ab.street"/></td>
 		<td colspan="5"><%@include file="../street_search_filter.jsp" %></td>
 	</tr>
+
 <%@include file="footer.jsp" %>

@@ -13,4 +13,7 @@ public interface CountryDao extends GenericDao<Country, Long> {
 	 * @return Countries list
 	 */
 	List<Country> listCountries();
+
+	List<Country> findByQuery(String query);
+
 }

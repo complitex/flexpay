@@ -4,27 +4,27 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 	<bean id="townProcessor" class="org.flexpay.ab.service.imp.TownProcessor">
-		<property name="townDao" ref="townDAO" />
+		<property name="townDao" ref="townDao" />
 	</bean>
 
 	<bean id="streetTypeProcessor" class="org.flexpay.ab.service.imp.StreetTypeProcessor">
-		<property name="streetTypeDao" ref="streetTypeDAO" />
+		<property name="streetTypeDao" ref="streetTypeDao" />
 		<property name="streetTypeService" ref="streetTypeService" />
 	</bean>
 
 	<bean id="streetProcessor" class="org.flexpay.ab.service.imp.StreetProcessor">
-		<property name="streetDao" ref="streetDAO" />
+		<property name="streetDao" ref="streetDao" />
 		<property name="streetService" ref="streetService" />
 	</bean>
 
 	<bean id="districtProcessor" class="org.flexpay.ab.service.imp.DistrictProcessor">
-		<property name="districtDao" ref="districtDAO" />
+		<property name="districtDao" ref="districtDao" />
 		<property name="districtService" ref="districtService" />
 	</bean>
 
 	<bean id="buildingProcessor" class="org.flexpay.ab.service.imp.BuildingProcessor">
-		<property name="streetDao" ref="streetDAO" />
-		<property name="districtDao" ref="districtDAO" />
+		<property name="streetDao" ref="streetDao" />
+		<property name="districtDao" ref="districtDao" />
 		<property name="buildingsDao" ref="buildingsDao" />
 		<property name="buildingDao" ref="buildingDao" />
 		<property name="buildingService" ref="buildingService" />

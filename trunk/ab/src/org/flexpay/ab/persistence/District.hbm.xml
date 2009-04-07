@@ -102,4 +102,16 @@
 		WHERE n.id=?
 	</query>
 
+    <query name="District.findByTownAndQuery">
+        select distinct d
+        from District d
+            left join fetch d.nameTemporals t
+            left join fetch t.value v
+            left join fetch v.translations tr
+            left join fetch tr.lang l
+        where d.parent.id=?
+              and t.invalidDate='2100-12-31'
+              and lower(tr.name) like ?
+    </query>
+
 </hibernate-mapping>

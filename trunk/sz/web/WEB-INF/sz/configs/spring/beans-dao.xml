@@ -3,7 +3,7 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-	<bean id="osznDAO" parent="abstractDao">
+	<bean id="osznDao" parent="abstractDao">
 		<property name="proxyInterfaces" value="org.flexpay.sz.dao.OsznDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
@@ -12,7 +12,7 @@
 		</property>
 	</bean>
 
-	<bean id="szFileDAO" parent="abstractDao">
+	<bean id="szFileDao" parent="abstractDao">
 		<property name="proxyInterfaces" value="org.flexpay.sz.dao.SzFileDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
@@ -21,11 +21,11 @@
 		</property>
 	</bean>
 
-    <bean id="szFileDAOExt" class="org.flexpay.sz.dao.impl.SzFileDaoExtImpl">
+    <bean id="szFileDaoExt" class="org.flexpay.sz.dao.impl.SzFileDaoExtImpl">
         <property name="hibernateTemplate" ref="hibernateTemplate" />
     </bean>
 
-	<bean id="characteristicRecordDAO" parent="abstractDao">
+	<bean id="characteristicRecordDao" parent="abstractDao">
 		<property name="proxyInterfaces" value="org.flexpay.sz.dao.CharacteristicRecordDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
@@ -34,7 +34,7 @@
 		</property>
 	</bean>
 
-	<bean id="subsidyRecordDAO" parent="abstractDao">
+	<bean id="subsidyRecordDao" parent="abstractDao">
 		<property name="proxyInterfaces" value="org.flexpay.sz.dao.SubsidyRecordDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
@@ -43,7 +43,7 @@
 		</property>
 	</bean>
 
-	<bean id="serviceTypeRecordDAO" parent="abstractDao">
+	<bean id="serviceTypeRecordDao" parent="abstractDao">
 		<property name="proxyInterfaces" value="org.flexpay.sz.dao.ServiceTypeRecordDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">

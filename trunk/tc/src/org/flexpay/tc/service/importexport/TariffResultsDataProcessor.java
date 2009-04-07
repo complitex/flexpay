@@ -22,11 +22,11 @@ import java.util.Map;
 
 
 @Transactional
-public class TarifResultsDataProcessor implements BuildingAttributeDataProcessor {
+public class TariffResultsDataProcessor implements BuildingAttributeDataProcessor {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	private TarifToAttributeNameMapper tarifToAttributeNameMapper;
+	private TariffToAttributeNameMapper tariffToAttributeNameMapper;
 	private TariffService tariffService;
 	private BuildingService buildingService;
 	private TariffCalculationResultService calculationResultService;
@@ -44,8 +44,8 @@ public class TarifResultsDataProcessor implements BuildingAttributeDataProcessor
 			String attributeName = entry.getKey();
 
 			// get tariff code
-			String tarifCode = tarifToAttributeNameMapper.getTarifCodeByAttributeName(attributeName);
-			if (StringUtils.isBlank(tarifCode)) {
+			String tariffCode = tariffToAttributeNameMapper.getTariffCodeByAttributeName(attributeName);
+			if (StringUtils.isBlank(tariffCode)) {
 				log.debug("No tariff code for attribute: {}", attributeName);
 				continue;
 			}
@@ -63,9 +63,9 @@ public class TarifResultsDataProcessor implements BuildingAttributeDataProcessor
 			}
 
 			// get tariff and building
-			Tariff tariff = tariffService.getTariffByCode(tarifCode);
+			Tariff tariff = tariffService.getTariffByCode(tariffCode);
 			if (tariff == null) {
-				log.info("No tariff found by code: {}", tarifCode);
+				log.info("No tariff found by code: {}", tariffCode);
 				continue;
 			}
 
@@ -94,8 +94,8 @@ public class TarifResultsDataProcessor implements BuildingAttributeDataProcessor
 	}
 
 	@Required
-	public void setTarifToAttributeNameMapper(TarifToAttributeNameMapper tarifToAttributeNameMapper) {
-		this.tarifToAttributeNameMapper = tarifToAttributeNameMapper;
+	public void setTariffToAttributeNameMapper(TariffToAttributeNameMapper tariffToAttributeNameMapper) {
+		this.tariffToAttributeNameMapper = tariffToAttributeNameMapper;
 	}
 
 	@Required
@@ -107,4 +107,5 @@ public class TarifResultsDataProcessor implements BuildingAttributeDataProcessor
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
+
 }

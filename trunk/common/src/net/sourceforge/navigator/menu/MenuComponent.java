@@ -13,6 +13,8 @@ import java.util.Set;
 
 public class MenuComponent extends MenuBase implements Serializable {
 
+	public final static String ACTIVE_MENU = "activeMenuComponentName";
+
     protected static MenuComponent[] _menuComponent = new MenuComponent[0];
 
     protected List<MenuComponent> menuComponents = new ArrayList<MenuComponent>();

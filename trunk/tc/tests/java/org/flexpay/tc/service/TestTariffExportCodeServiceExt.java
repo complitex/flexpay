@@ -11,13 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class TestTariffExportCodeServiceExt extends SpringBeanAwareTestCase {
 
 	@Autowired
-	private TariffExportCodeDaoExt tariffExportCodeDAOExt;
+	private TariffExportCodeDaoExt tariffExportCodeDaoExt;
 
 	@Test
 	public void testFindByCode() {
-		TariffExportCode tariffExportCode = tariffExportCodeDAOExt.findByCode(TariffExportCode.EXPORTED);
+		TariffExportCode tariffExportCode = tariffExportCodeDaoExt.findByCode(TariffExportCode.EXPORTED);
 		assertNotNull("Tariff Export Code not found", tariffExportCode);
 		assertEquals("Tariff Export Code is not same", tariffExportCode.getCode(), TariffExportCode.EXPORTED);
 		assertEquals("Tariff Export Code id not equals 1", tariffExportCode.getId(), Long.valueOf(1));
 	}
+
 }

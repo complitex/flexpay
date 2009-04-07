@@ -118,7 +118,7 @@
             var fileValue = $("#upload" + uploadingId).val();
             var index = fileValue.lastIndexOf("\\") + ($.browser.msie ? 1 : 0);
             uploadingFilename = "<s:text name="common.file" /> \"" + fileValue.substring(index) + "\": ";
-            stack.remove(0);
+            Array.remove(stack, 0);
             $("#uploadForm" + uploadingId).submit();
             setTimeout(getProgress, 1000);
         }

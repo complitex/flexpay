@@ -18,7 +18,7 @@ public class SubsidyRecord extends Record {
 	private Double extStreetID;//	INT(5)
 	private String houseNum;//	VARCHAR(7)
 	private String partNum;//	VARCHAR(2)
-	private String appartment;//	VARCHAR(9)
+	private String apartment;//	VARCHAR(9)
 	private String account;//	VARCHAR(15)
 	private String app_num;//	CHAR(8)
 	private Date begin;//	TIMESTAMP
@@ -30,7 +30,7 @@ public class SubsidyRecord extends Record {
 	private Double debt;//	NUMBER(10.2)
 	private Double living;//	NUMBER(2)
 	private Double nach;//	NUMBER(10.4)
-	private Double tarif;//	NUMBER(10.4)
+	private Double tariff;//	NUMBER(10.4)
 	private Double p2;//	NUMBER(10.4)
 	private Double n2;//	NUMBER(10.4)
 	private Double p3;//	NUMBER(10.4)
@@ -137,12 +137,12 @@ public class SubsidyRecord extends Record {
 		this.partNum = partNum;
 	}
 
-	public String getAppartment() {
-		return appartment;
+	public String getApartment() {
+		return apartment;
 	}
 
-	public void setAppartment(String appartment) {
-		this.appartment = appartment;
+	public void setApartment(String apartment) {
+		this.apartment = apartment;
 	}
 
 	public String getAccount() {
@@ -233,12 +233,12 @@ public class SubsidyRecord extends Record {
 		this.nach = nach;
 	}
 
-	public Double getTarif() {
-		return tarif;
+	public Double getTariff() {
+		return tariff;
 	}
 
-	public void setTarif(Double tarif) {
-		this.tarif = tarif;
+	public void setTariff(Double tariff) {
+		this.tariff = tariff;
 	}
 
 	public Double getP2() {
@@ -393,7 +393,7 @@ public class SubsidyRecord extends Record {
 				append("extStreetID", extStreetID).
 				append("houseNum", houseNum).
 				append("partNum", partNum).
-				append("appartment", appartment).
+				append("apartment", apartment).
 				append("account", account).
 				append("app_num", app_num).
 				append("begin", begin).
@@ -405,7 +405,7 @@ public class SubsidyRecord extends Record {
 				append("debt", debt).
 				append("living", living).
 				append("nach", nach).
-				append("tarif", tarif).
+				append("tariff", tariff).
 				append("p2", p2).
 				append("n2", n2).
 				append("p3", p3).

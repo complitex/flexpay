@@ -80,13 +80,13 @@ public class BuildingAttributesValidator {
 	}
 
 	/**
-	 * Checks whether given number is an integer and has value not bigger than maximal allowed number of appartments
+	 * Checks whether given number is an integer and has value not bigger than maximal allowed number of apartments
 	 *
 	 * @param value value to be checked
 	 * @return <code>true</code> if value is OK, <code>false</code> otherwise
 	 * @see org.flexpay.tc.util.config.ApplicationConfig
 	 */
-	public boolean checkAppartmentsNumber(String value) {
+	public boolean checkApartmentsNumber(String value) {
 
 		errorMessageCode = null;
 
@@ -95,14 +95,14 @@ public class BuildingAttributesValidator {
 		}
 
 		try {
-			Integer appartmentsNumber = Integer.parseInt(value);
+			Integer apartmentsNumber = Integer.parseInt(value);
 
-			if (appartmentsNumber > ApplicationConfig.getMaximumAppartments()) {
-				errorMessageCode = "tc.errors.building_attributes.validation.number_of_appartments_is_too_big";
+			if (apartmentsNumber > ApplicationConfig.getMaximumApartments()) {
+				errorMessageCode = "tc.errors.building_attributes.validation.number_of_apartments_is_too_big";
 				return false;
 			}
 		} catch (NumberFormatException nfe) {
-			errorMessageCode = "tc.errors.building_attributes.validation.number_of_appartments_is_not_a_number";
+			errorMessageCode = "tc.errors.building_attributes.validation.number_of_apartments_is_not_a_number";
 			return false;
 		}
 

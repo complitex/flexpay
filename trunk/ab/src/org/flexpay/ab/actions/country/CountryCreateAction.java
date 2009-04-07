@@ -1,4 +1,4 @@
-package org.flexpay.ab.actions;
+package org.flexpay.ab.actions.country;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.commons.lang.StringUtils;

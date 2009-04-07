@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.*;
 
@@ -288,6 +289,28 @@ public class ApartmentServiceImpl implements ApartmentService {
 		return filters;
 	}
 
+	public List<Apartment> getApartments(Stub<BuildingAddress> addressStub, Page pager) {
+		List<Apartment> apartments = apartmentDao.findObjects(addressStub.getId(), pager);
+		Collections.sort(apartments, new Comparator<Apartment>() {
+			public int compare(Apartment a1, Apartment a2) {
+				String n1 = a1.getNumber();
+				String n2 = a2.getNumber();
+				if (n1 == null && n2 == null) {
+					return 0;
+				}
+				if (n1 == null) {
+					return -1;
+				}
+				if (n2 == null) {
+					return 1;
+				}
+				return n1.compareTo(n2);
+			}
+		});
+
+		return apartments;
+	}
+
 	public List<Apartment> getApartments(ArrayStack filters, Page pager) {
 		BuildingsFilter filter = (BuildingsFilter) filters.peek();
 		List<Apartment> apartments = apartmentDao.findObjects(filter.getSelectedId(), pager);
@@ -311,15 +334,23 @@ public class ApartmentServiceImpl implements ApartmentService {
 		return apartments;
 	}
 
+	public List<Apartment> getApartments(@NotNull Stub<BuildingAddress> stub) {
+		return apartmentDao.findObjects(stub.getId());
+	}
+
+	@Required
 	public void setApartmentDao(ApartmentDao apartmentDao) {
 		this.apartmentDao = apartmentDao;
 	}
 
+	@Required
 	public void setApartmentDaoExt(ApartmentDaoExt apartmentDaoExt) {
 		this.apartmentDaoExt = apartmentDaoExt;
 	}
 
+	@Required
 	public void setParentService(ParentService<BuildingsFilter> parentService) {
 		this.parentService = parentService;
 	}
+
 }

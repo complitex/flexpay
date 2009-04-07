@@ -27,7 +27,7 @@ public class SubsidyRecordDBFInfo extends DBFInfo<SubsidyRecord> {
             subsidyRecord.setExtStreetID(new Double((String)rowData[getInd("vul_code")]));
             subsidyRecord.setHouseNum(((String) rowData[getInd("bld_num")]).trim());
             subsidyRecord.setPartNum(((String) rowData[getInd("corp_num")]).trim());
-            subsidyRecord.setAppartment(((String) rowData[getInd("flat")]).trim());
+            subsidyRecord.setApartment(((String) rowData[getInd("flat")]).trim());
             subsidyRecord.setAccount(((String) rowData[getInd("own_num")]).trim());
             subsidyRecord.setApp_num(((String) rowData[getInd("app_num")]).trim());
             subsidyRecord.setBegin((Date) rowData[getInd("dat_beg")]);
@@ -39,7 +39,7 @@ public class SubsidyRecordDBFInfo extends DBFInfo<SubsidyRecord> {
             subsidyRecord.setDebt((Double)rowData[getInd("debt")]);
             subsidyRecord.setLiving((Double)rowData[getInd("numb")]);
             subsidyRecord.setNach((Double)rowData[getInd("p1")]);
-            subsidyRecord.setTarif((Double)rowData[getInd("n1")]);
+            subsidyRecord.setTariff((Double)rowData[getInd("n1")]);
             subsidyRecord.setP2((Double)rowData[getInd("p2")]);
             subsidyRecord.setN2((Double)rowData[getInd("n2")]);
             subsidyRecord.setP3((Double)rowData[getInd("p3")]);
@@ -76,7 +76,7 @@ public class SubsidyRecordDBFInfo extends DBFInfo<SubsidyRecord> {
             rowData[getInd("vul_code")] = "" + subsidyRecord.getExtStreetID().intValue();
             rowData[getInd("bld_num")] = subsidyRecord.getHouseNum();
             rowData[getInd("corp_num")] = subsidyRecord.getPartNum();
-            rowData[getInd("flat")] = subsidyRecord.getAppartment();
+            rowData[getInd("flat")] = subsidyRecord.getApartment();
             rowData[getInd("own_num")] = subsidyRecord.getAccount();
             rowData[getInd("app_num")] = subsidyRecord.getApp_num();
             rowData[getInd("dat_beg")] = subsidyRecord.getBegin();
@@ -88,7 +88,7 @@ public class SubsidyRecordDBFInfo extends DBFInfo<SubsidyRecord> {
             rowData[getInd("debt")] = subsidyRecord.getDebt();
             rowData[getInd("numb")] = subsidyRecord.getLiving();
             rowData[getInd("p1")] = subsidyRecord.getNach();
-            rowData[getInd("n1")] = subsidyRecord.getTarif();
+            rowData[getInd("n1")] = subsidyRecord.getTariff();
             rowData[getInd("n2")] = subsidyRecord.getN2();
             rowData[getInd("p2")] = subsidyRecord.getP2();
             rowData[getInd("n3")] = subsidyRecord.getN3();
