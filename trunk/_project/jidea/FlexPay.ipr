@@ -44,6 +44,7 @@
       <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
       <properties />
+      <executeOn event="beforeRun" target="sz.war.production.glassfish_mysql5" />
       <executeOn event="beforeRun" target="sz.war.production.glassfish_mysql5" runConfigurationType="GlassfishConfiguration" runConfigurationName="sz" />
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/../../tc/tc_build.xml">
