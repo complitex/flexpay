@@ -42,4 +42,6 @@ public interface RegistryDaoExt {
 	 * @return <code>true</code> if registry has records for processing, or <code>false</code> otherwise
 	 */
 	boolean hasMoreRecordsToProcess(Long registryId);
+
+	void deleteQuittances(Long registryId);
 }

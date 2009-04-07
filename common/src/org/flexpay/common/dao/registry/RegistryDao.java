@@ -17,8 +17,6 @@ public interface RegistryDao extends GenericDao<Registry, Long> {
 
 	void deleteRecordContainers(Long registryId);
 
-	void deleteQuittances(Long registryId);
-
 	void deleteRecordProperties(Long registryId);
 
 	/**

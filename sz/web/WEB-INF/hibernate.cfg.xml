@@ -55,6 +55,7 @@
 		<mapping resource="org/flexpay/eirc/persistence/PersonalAccount.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/account/Quittance.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/ServiceOrganizationBase.hbm.xml" />
+		<mapping resource="org/flexpay/eirc/persistence/registry/RegistryExt.hbm.xml" />
 
 
 		<mapping resource="org/flexpay/sz/persistence/SzFile.hbm.xml" />

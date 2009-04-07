@@ -228,8 +228,9 @@
 
 	<query name="Registry.findRegistriesByNumber">
 		select distinct r
-		from Registry r inner join fetch r.properties, EircRegistryProperties p
-		where r.properties.id=p.id and r.registryNumber=? and p.sender.id=?
+		from Registry r
+			inner join fetch r.properties
+		where r.registryNumber=? and r.senderCode=?
 	</query>
 
 	<query name="Registry.findObjects">
@@ -250,12 +251,6 @@
 		delete
 		from RegistryRecordProperties rp
 		where rp.record.id in (select id from RegistryRecord where registry.id=?)
-	</query>
-
-	<query name="Registry.deleteQuittances">
-		delete
-		from QuittanceDetails q
-		where q.registryRecord.id in (select id from RegistryRecord where registry.id=?)
 	</query>
 
 	<query name="Registry.deleteRegistryContainers">
