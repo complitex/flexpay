@@ -9,8 +9,12 @@ public class GenerateRegistryAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 
 		// TODO implement
+		if (isSubmit()) {
+			addActionMessage(getText("payments.registry.generate.generation_started"));
+		}
 
-		return SUCCESS;	}
+		return SUCCESS;
+	}
 
 	@NotNull
 	protected String getErrorResult() {

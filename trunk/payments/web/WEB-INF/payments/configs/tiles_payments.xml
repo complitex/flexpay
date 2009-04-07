@@ -27,20 +27,20 @@
 
 	<!-- operation-related definitions -->
 	<definition name="payments.operations.list" extends="ab.layout.standart">
-		<put name="title" value="payments.operations.list.title"/>
-		<put name="body" value="/WEB-INF/jsp/payments/operations/operations_list.jsp"/>
+		<put-attribute name="title" value="payments.operations.list.title"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/operations/operations_list.jsp"/>
 	</definition>
 
 	<!-- reports-related definitions -->
 	<definition name="payments.report.generate" extends="ab.layout.standart">
-		<put name="title" value="payments.report.generate.title"/>
-		<put name="body" value="/WEB-INF/jsp/payments/reports/generate_report.jsp"/>
+		<put-attribute name="title" value="payments.report.generate.title"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/generate_report.jsp"/>
 	</definition>
 
 	<!-- registry-related definitions -->
 	<definition name="payments.registry.generate" extends="ab.layout.standart">
-		<put name="title" value="payments.registry.generate.title"/>
-		<put name="body" value="/WEB-INF/jsp/payments/registry/generate_registry.jsp"/>
+		<put-attribute name="title" value="payments.registry.generate.title"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/generate_registry.jsp"/>
 	</definition>
 
 </tiles-definitions>

@@ -82,7 +82,7 @@
 		<init-param>
 			<param-name>config</param-name>
 			<param-value>
-				struts-default.xml,struts-plugin.xml,org/flexpay/common/struts_config.xml,org/flexpay/payments/struts_config.xml
+				struts-default.xml,struts-plugin.xml,org/flexpay/common/struts_config.xml,org/flexpay/ab/struts_config.xml,org/flexpay/payments/struts_config.xml
 			</param-value>
 		</init-param>
 	</filter>
@@ -120,6 +120,35 @@
 
 	<security-role>
 		<role-name>ROLE_BASIC</role-name>
+	</security-role>
+
+	<!-- ab reading roles (used for filters initialization) -->
+	<security-role>
+		<role-name>ROLE_AB_COUNTRY_READ</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_AB_REGION_READ</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_AB_TOWN_READ</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_AB_DISTRICT_READ</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_AB_STREET_READ</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_AB_BUILDING_READ</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_AB_APARTMENT_READ</role-name>
 	</security-role>
 
 	<login-config>
