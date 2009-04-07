@@ -9,19 +9,21 @@
 	<!-- Define module payments struts actions beans -->
 
 	<!-- search-related actions -->
-	<bean id="searchByQuittanceNumberAction" class="org.flexpay.payments.actions.search.SearchByQuittanceNumberAction"/>
+	<bean id="searchByQuittanceNumberAction"
+		  class="org.flexpay.payments.actions.search.SearchByQuittanceNumberAction" />
 
-	<bean id="searchByAdressAction" class="org.flexpay.payments.actions.search.SearchByAddressAction" />
+	<bean id="searchByAdressAction" class="org.flexpay.payments.actions.search.SearchByAddressAction"
+		  p:parentService-ref="buildingService" />
 
 	<bean id="searchByEircAccountAction" class="org.flexpay.payments.actions.search.SearchByEircAccountAction" />
 
 	<!-- operation-related actions -->
-	<bean id="operationsListAction" class="org.flexpay.payments.actions.operations.OperationsListAction"/>
+	<bean id="operationsListAction" class="org.flexpay.payments.actions.operations.OperationsListAction" />
 
 	<!-- reports-related actions -->
-	<bean id="generateReportAction" class="org.flexpay.payments.actions.reports.GenerateReportAction"/>
+	<bean id="generateReportAction" class="org.flexpay.payments.actions.reports.GenerateReportAction" />
 
 	<!-- registry-related actions -->
-	<bean id="generateRegistryAction" class="org.flexpay.payments.actions.registry.GenerateRegistryAction"/>
+	<bean id="generateRegistryAction" class="org.flexpay.payments.actions.registry.GenerateRegistryAction" />
 
 </beans>

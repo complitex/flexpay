@@ -9,4 +9,40 @@
 		<group-name>FULL_ACCESS</group-name>
 	</security-role-mapping>
 
+	<!-- ab role mappings for filter initialization -->
+	<security-role-mapping>
+		<role-name>ROLE_AB_COUNTRY_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_AB_REGION_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_AB_TOWN_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_AB_DISTRICT_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_AB_STREET_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_AB_BUILDING_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_AB_APARTMENT_READ</role-name>
+		<group-name>FULL_ACCESS</group-name>
+	</security-role-mapping>
+
 </sun-web-app>
