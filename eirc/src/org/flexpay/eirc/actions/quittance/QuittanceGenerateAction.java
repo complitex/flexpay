@@ -9,7 +9,9 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.filters.ServiceOrganizationFilter;
 import org.flexpay.eirc.process.quittance.GenerateQuittanceJob;
+import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.service.ServiceOrganizationService;
+import org.flexpay.ab.persistence.filters.TownFilter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -24,6 +26,7 @@ public class QuittanceGenerateAction extends FPActionSupport {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtils.truncate(new Date(), Calendar.MONTH));
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
+	private TownFilter townFilter = new TownFilter(ApplicationConfig.getDefaultTownStub());
 
 	private ServiceOrganizationService serviceOrganizationService;
 	private ProcessManager processManager;
@@ -39,6 +42,10 @@ public class QuittanceGenerateAction extends FPActionSupport {
 				addActionError(getText("eirc.error.quittance.no_service_organization"));
 				validated = false;
 			}
+			if (!townFilter.needFilter()) {
+				addActionError(getText("eirc.error.quittance.no_town"));
+				validated = false;
+			}
 			if (!DateUtil.truncateMonth(beginDateFilter.getDate()).equals(DateUtil.truncateMonth(endDateFilter.getDate()))) {
 				addActionError(getText("eirc.error.quittance.job.month_only_allowed"));
 				validated = false;
@@ -51,6 +58,7 @@ public class QuittanceGenerateAction extends FPActionSupport {
 				contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, beginDateFilter.getDate());
 				contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, endDateFilter.getDate());
 				contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANIZATION_ID, serviceOrganizationFilter.getSelectedId());
+				contextVariables.put(GenerateQuittanceJob.PARAM_TOWN_ID, townFilter.getSelectedId());
 
 				processManager.createProcess("GenerateQuittances", contextVariables);
 
@@ -97,6 +105,14 @@ public class QuittanceGenerateAction extends FPActionSupport {
 
 	public void setEndDateFilter(EndDateFilter endDateFilter) {
 		this.endDateFilter = endDateFilter;
+	}
+
+	public TownFilter getTownFilter() {
+		return townFilter;
+	}
+
+	public void setTownFilter(TownFilter townFilter) {
+		this.townFilter = townFilter;
 	}
 
 	@Required

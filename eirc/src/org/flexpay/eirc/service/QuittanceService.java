@@ -1,9 +1,10 @@
 package org.flexpay.eirc.service;
 
+import org.flexpay.ab.persistence.Town;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.persistence.account.Quittance;
@@ -28,11 +29,13 @@ public interface QuittanceService {
 	/**
 	 * Create quittances for requested period.
 	 *
-	 * @param stub	 ServiceOrganization stub to generate quittances for
-	 * @param dateFrom Period begin date
-	 * @param dateTill Period end date
+	 * @param organizationStub ServiceOrganization stub to generate quittances for
+	 * @param townStub		 Town stub to generate quittances in
+	 * @param dateFrom		 Period begin date
+	 * @param dateTill		 Period end date
 	 */
-	void generateForServiceOrganization(Stub<EircServiceOrganization> stub, Date dateFrom, Date dateTill);
+	void generateForServiceOrganization(@NotNull Stub<EircServiceOrganization> organizationStub,
+										@NotNull Stub<Town> townStub, Date dateFrom, Date dateTill);
 
 	/**
 	 * Get a list of Quittances separated with addresses, used to divide quittances by bulks
@@ -69,7 +72,7 @@ public interface QuittanceService {
 	/**
 	 * Find quittance for account for current open period
 	 *
-	 * @param stub account stub to get quittance for
+	 * @param stub  account stub to get quittance for
 	 * @param pager Page
 	 * @return list of quittance in current open period
 	 */

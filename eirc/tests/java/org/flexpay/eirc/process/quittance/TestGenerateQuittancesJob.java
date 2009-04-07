@@ -25,6 +25,7 @@ public class TestGenerateQuittancesJob extends SpringBeanAwareTestCase {
 		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_FROM, from);
 		contextVariables.put(GenerateQuittanceJob.PARAM_DATE_TILL, till);
 		contextVariables.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANIZATION_ID, 1L);
+		contextVariables.put(GenerateQuittanceJob.PARAM_TOWN_ID, 2L);
 
 		job.execute(contextVariables);
 	}

@@ -23,6 +23,10 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 		this.selectedId = selectedId;
 	}
 
+	public PrimaryKeyFilter(@NotNull Stub<T> stub) {
+		this.selectedId = stub.getId();
+	}
+
 	@Override
 	public boolean needFilter() {
 		return selectedId != null && selectedId > 0;

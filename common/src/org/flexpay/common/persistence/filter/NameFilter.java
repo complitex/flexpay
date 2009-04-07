@@ -2,6 +2,7 @@ package org.flexpay.common.persistence.filter;
 
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -16,6 +17,10 @@ public class NameFilter<T extends DomainObject, Tr extends Translation> extends 
 
 	public NameFilter(Long selectedId) {
 		super(selectedId);
+	}
+
+	public NameFilter(@NotNull Stub<T> stub) {
+		super(stub);
 	}
 
 	/**
