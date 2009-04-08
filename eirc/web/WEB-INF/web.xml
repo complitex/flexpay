@@ -29,7 +29,12 @@
 	<context-param>
 		<param-name>definitions-config</param-name>
 		<param-value>
-			/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/bti/configs/tiles_bti.xml,/WEB-INF/eirc/configs/tiles_eirc.xml
+			/WEB-INF/common/configs/tiles_common.xml,
+			/WEB-INF/ab/configs/tiles_ab.xml,
+			/WEB-INF/bti/configs/tiles_bti.xml,
+			/WEB-INF/orgs/configs/tiles_orgs.xml,
+			/WEB-INF/payments/configs/tiles_payments.xml,
+			/WEB-INF/eirc/configs/tiles_eirc.xml
 		</param-value>
 	</context-param>
 
@@ -81,7 +86,14 @@
 		<init-param>
 			<param-name>config</param-name>
 			<param-value>
-				struts-default.xml,struts-plugin.xml,org/flexpay/common/struts_config.xml,org/flexpay/ab/struts_config.xml,org/flexpay/bti/struts_config.xml,org/flexpay/eirc/struts_config.xml
+				struts-default.xml,struts-plugin.xml,
+				org/flexpay/common/struts_config.xml,
+				org/flexpay/ab/struts_config.xml,
+				org/flexpay/bti/struts_config.xml,
+				org/flexpay/orgs/struts_config.xml,
+				org/flexpay/payments/struts_config.xml,
+				org/flexpay/eirc/struts_config.xml,
+				org/flexpay/sz/struts_config.xml
 			</param-value>
 		</init-param>
 	</filter>
