@@ -17,6 +17,7 @@ import org.flexpay.eirc.service.QuittancePaymentStatusService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -44,9 +45,17 @@ public class QuittancePayAction extends FPActionSupport {
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		if (quittance.getId() == null) {
+		if (quittance.getId() == null && StringUtils.isBlank(quittanceNumber)) {
 			addActionError(getText("error.no_id"));
 			return doRedirect();
+		}
+
+		if (quittance.isNew()) {
+			quittance = quittanceService.findByNumber(quittanceNumber);
+			if (quittance == null) {
+				addActionError(getText("eirc.error.quittance.no_quittance_found"));
+				return doRedirect();
+			}
 		}
 
 		quittance = quittanceService.readFull(stub(quittance));
@@ -244,6 +253,10 @@ public class QuittancePayAction extends FPActionSupport {
 
 	public String getQuittanceNumber() {
 		return quittanceNumber;
+	}
+
+	public void setQuittanceNumber(String quittanceNumber) {
+		this.quittanceNumber = quittanceNumber;
 	}
 
 	public String getSource() {

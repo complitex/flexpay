@@ -297,6 +297,7 @@
 	<query name="RegistryRecord.listRecordsForProcessing"><![CDATA[
 		select distinct rr
 		from RegistryRecord rr
+			inner join fetch rr.properties 
 			inner join fetch rr.registry r
 			inner join fetch r.properties
 			inner join fetch r.registryStatus rs

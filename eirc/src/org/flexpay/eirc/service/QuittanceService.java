@@ -9,6 +9,7 @@ import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
+import org.flexpay.orgs.persistence.ServiceOrganization;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -46,7 +47,7 @@ public interface QuittanceService {
 	 * @return List of Quittances
 	 */
 	@NotNull
-	List<Quittance> getQuittances(Stub<EircServiceOrganization> stub, Date dateFrom, Date dateTill);
+	List<Quittance> getQuittances(Stub<? extends ServiceOrganization> stub, Date dateFrom, Date dateTill);
 
 	/**
 	 * Read full quittance details

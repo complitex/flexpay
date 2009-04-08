@@ -4,9 +4,9 @@
 <s:actionerror />
 
 <s:form id="fregistries">
-	<%@include file="../filters/sender_organization_filter.jsp" %>
+	<%@include file="/WEB-INF/jsp/orgs/filters/sender_organization_filter.jsp" %>
 	&nbsp;&nbsp;
-	<%@include file="../filters/recipient_organization_filter.jsp" %>
+	<%@include file="/WEB-INF/jsp/orgs/filters/recipient_organization_filter.jsp" %>
 	&nbsp;&nbsp;
 	<%@include file="../filters/registry_type_filter.jsp" %>
 	&nbsp;&nbsp;
@@ -40,8 +40,8 @@
 				<td class="col" width="1%"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/>
 				</td>
 				<td class="col"><s:date name="creationDate" format="yyyy/MM/dd"/></td>
-				<td class="col"><s:property value="getTranslation(sender.names).name"/></td>
-				<td class="col"><s:property value="getTranslation(recipient.names).name"/></td>
+				<td class="col"><s:property value="getTranslation(getSenderOrg(properties).names).name"/></td>
+				<td class="col"><s:property value="getTranslation(getRecipientOrg((properties)).names).name"/></td>
 				<td class="col"><s:text name="%{registryType.i18nName}"/></td>
 				<td class="col"><s:date name="spFile.creationDate" format="yyyy/MM/dd HH:mm:ss"/></td>
 				<td class="col"><s:property value="recordsNumber"/></td>
