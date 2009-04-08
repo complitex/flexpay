@@ -19,7 +19,8 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 	@NotNull
 	public String doExecute() throws FlexPayException {
 
-		if (saveFilterValue()) {
+		if (preRequest != null && preRequest) {
+			readFilterString();
 			return SUCCESS;
 		}
 
@@ -46,18 +47,19 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 		return SUCCESS;
 	}
 
-	public boolean saveFilterValue() {
-		if (filterValue != null) {
-			try {
-				UserPreferences prefs = UserPreferences.getPreferences(request);
-				prefs.setApartmentFilterValue(Long.parseLong(filterValue));
-				UserPreferences.setPreferences(request, prefs);
-				return true;
-			} catch (Exception e) {
-				log.warn("Incorrect country id in filter ({})", filterValue);
-			}
+	public void readFilterString() {
+		try {
+			filterString = apartmentService.getApartmentNumber(new Stub<Apartment>(filterValueLong));
+		} catch (FlexPayException e) {
+			log.debug("Can't get number for apartment with id = {}", filterValueLong);
+			filterString = "";
 		}
-		return false;
+	}
+
+	public void saveFilterValue() {
+		UserPreferences prefs = UserPreferences.getPreferences(request);
+		prefs.setApartmentFilterValue(filterValueLong);
+		UserPreferences.setPreferences(request, prefs);
 	}
 
 	@Required

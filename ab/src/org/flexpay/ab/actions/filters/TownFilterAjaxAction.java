@@ -19,7 +19,8 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 	@NotNull
 	public String doExecute() throws FlexPayException {
 
-		if (saveFilterValue()) {
+		if (preRequest != null && preRequest) {
+			readFilterString();
 			return SUCCESS;
 		}
 
@@ -46,18 +47,19 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 		return SUCCESS;
 	}
 
-	public boolean saveFilterValue() {
-		if (filterValue != null) {
-			try {
-				UserPreferences prefs = UserPreferences.getPreferences(request);
-				prefs.setTownFilterValue(Long.parseLong(filterValue));
-				UserPreferences.setPreferences(request, prefs);
-				return true;
-			} catch (Exception e) {
-				log.warn("Incorrect country id in filter ({})", filterValue);
-			}
+	public void readFilterString() {
+		Town town = townService.readFull(new Stub<Town>(filterValueLong));
+		if (town != null && town.getCurrentName() != null) {
+			filterString = getTranslation(town.getCurrentName().getTranslations()).getName();
+		} else {
+			filterString = "";
 		}
-		return false;
+	}
+
+	public void saveFilterValue() {
+		UserPreferences prefs = UserPreferences.getPreferences(request);
+		prefs.setTownFilterValue(filterValueLong);
+		UserPreferences.setPreferences(request, prefs);
 	}
 
 	@Required

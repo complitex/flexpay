@@ -7,7 +7,7 @@ public abstract class FPActionWithPagerSupport<T> extends FPActionSupport {
 	private Page<T> pager = new Page<T>();
 	private boolean pageSizeChanged = false;
 
-	public final String execute() throws Exception {
+	public String execute() throws Exception {
 		String returnedValue = super.execute();
 		Integer pageSize = getPageSize();
 		if (isPageSizeChanged()) {

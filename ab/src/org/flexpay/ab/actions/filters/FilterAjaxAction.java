@@ -11,13 +11,38 @@ import java.util.List;
 public abstract class FilterAjaxAction extends BuildingsActionsBase implements ServletRequestAware {
 
 	protected String[] parents;
+	protected Long filterValueLong;
 	protected String filterValue;
+	protected String filterString;
 	protected String q;
 	protected List<FilterObject> foundObjects;
+	protected Boolean preRequest;
+	protected Boolean saveFilterValue;
 	@NonNls
 	protected HttpServletRequest request;
 
-	protected abstract boolean saveFilterValue();
+	public String execute() throws Exception {
+
+		try {
+			filterValueLong = Long.parseLong(filterValue);
+		} catch (Exception e) {
+			log.debug("Incorrect filter value ({})", filterValue);
+		}
+
+		if (saveFilterValue != null && saveFilterValue
+				&& (preRequest == null || !preRequest)
+				&& filterValueLong != null) {
+			saveFilterValue();
+		}
+
+		return super.execute();
+	}
+
+	public void readFilterString() {
+
+	}
+
+	protected abstract void saveFilterValue();
 
 	/**
 	 * Get default error execution result
@@ -43,8 +68,24 @@ public abstract class FilterAjaxAction extends BuildingsActionsBase implements S
 		this.filterValue = filterValue;
 	}
 
+	public String getFilterString() {
+		return filterString;
+	}
+
 	public void setQ(String q) {
 		this.q = q;
+	}
+
+	public void setSaveFilterValue(Boolean saveFilterValue) {
+		this.saveFilterValue = saveFilterValue;
+	}
+
+	public Boolean getPreRequest() {
+		return preRequest;
+	}
+
+	public void setPreRequest(Boolean preRequest) {
+		this.preRequest = preRequest;
 	}
 
 	public List<FilterObject> getFoundObjects() {

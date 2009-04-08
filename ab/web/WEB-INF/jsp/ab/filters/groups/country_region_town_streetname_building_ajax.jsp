@@ -1,14 +1,29 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<%@include file="/WEB-INF/jsp/common/includes/flexpay_filter.jsp" %>
+<%@include file="/WEB-INF/jsp/ab/includes/flexpay_filter.jsp" %>
 
 <script type="text/javascript">
 
     $(function() {
-        FF.createFilter("country", {action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none"/>"});
-        FF.createFilter("region", {action: "<s:url action="regionFilterAjax" namespace="/dicts" includeParams="none"/>", parents: ["country"]});
-        FF.createFilter("town", {action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none"/>", parents: ["region"]});
-        FF.createFilter("street", {action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none"/>", parents: ["town"]});
+        FF.createFilter("country", {
+            action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none"/>",
+            preRequest: true
+        });
+        FF.createFilter("region", {
+            action: "<s:url action="regionFilterAjax" namespace="/dicts" includeParams="none"/>",
+            parents: ["country"],
+            preRequest: true
+        });
+        FF.createFilter("town", {
+            action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none"/>",
+            parents: ["region"],
+            preRequest: true
+        });
+        FF.createFilter("street", {
+            action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none"/>",
+            parents: ["town"],
+            preRequest: true
+        });
         FF.createFilter("building", {
             action: "<s:url action="buildingFilterAjax" namespace="/dicts" includeParams="none"/>",
             isArray: true,

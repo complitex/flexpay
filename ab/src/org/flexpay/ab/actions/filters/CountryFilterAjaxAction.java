@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.config.UserPreferences;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -20,7 +21,8 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 	@NotNull
 	public String doExecute() throws FlexPayException {
 
-		if (saveFilterValue()) {
+		if (preRequest != null && preRequest	) {
+			readFilterString();
 			return SUCCESS;
 		}
 
@@ -38,18 +40,18 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 		return SUCCESS;
 	}
 
-	public boolean saveFilterValue() {
-		if (filterValue != null) {
-			try {
-				UserPreferences prefs = UserPreferences.getPreferences(request);
-				prefs.setCountryFilterValue(Long.parseLong(filterValue));
-				UserPreferences.setPreferences(request, prefs);
-				return true;
-			} catch (Exception e) {
-				log.warn("Incorrect country id in filter ({})", filterValue);
-			}
-		}
-		return false;
+	public void readFilterString() {
+		log.debug("!!!!! 1. filterValueLong = {}", filterValueLong);
+		Country country = countryService.readFull(new Stub<Country>(filterValueLong));
+		log.debug("!!!!! 2. country = {}", country);
+		filterString = getTranslation(country.getCountryNames()).getName();
+		log.debug("!!!!! 3. filterString = {}", filterString);
+	}
+
+	public void saveFilterValue() {
+		UserPreferences prefs = UserPreferences.getPreferences(request);
+		prefs.setCountryFilterValue(filterValueLong);
+		UserPreferences.setPreferences(request, prefs);
 	}
 
 	@Required
