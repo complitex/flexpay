@@ -21,11 +21,6 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 	@NotNull
 	public String doExecute() throws FlexPayException {
 
-		if (preRequest != null && preRequest	) {
-			readFilterString();
-			return SUCCESS;
-		}
-
 		List<Country> countries = countryService.findByQuery("%" + q + "%");
 		log.debug("Found countries: {}", countries);
 

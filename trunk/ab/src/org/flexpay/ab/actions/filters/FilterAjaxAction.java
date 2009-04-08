@@ -35,12 +35,15 @@ public abstract class FilterAjaxAction extends BuildingsActionsBase implements S
 			saveFilterValue();
 		}
 
+		if (preRequest != null && preRequest) {
+			readFilterString();
+			return SUCCESS;
+		}
+
 		return super.execute();
 	}
 
-	public void readFilterString() {
-
-	}
+	protected abstract void readFilterString();
 
 	protected abstract void saveFilterValue();
 
