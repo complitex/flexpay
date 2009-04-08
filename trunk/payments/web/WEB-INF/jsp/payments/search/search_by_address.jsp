@@ -1,27 +1,22 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp"%>
+<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp" %>
 
 <script type="text/javascript">
 
 	function showSearchResults() {
 		// here we can check form data
-		var apartment = $('#selected_apartment_id').val();
-
-		if (apartment != '') {
-			$('#searchResultsDiv').show();
-		} else {
-			$('#searchResultsDiv').hide();
-		}
+		$('#searchResultsDiv').show();
 
 		return false;
 	}
-	
+
 </script>
 
 <s:actionerror/>
 
-<s:form action="searchByAddress" onsubmit="showSearchResults();">
+<s:form action="searchByAddress">
 	<%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname_building_apartment_ajax.jsp" %>
+	<input type="button" value="<s:text name="common.search" />" class="btn-exit" onclick="showSearchResults();"/>
 </s:form>
 
 <div id="searchResultsDiv" style="display: none;">

@@ -18,11 +18,11 @@
 		<tr>
 			<td nowrap="nowrap">
 				<s:text name="payments.report.generate.date_from"/>
-				<input type="text" id="beginDate" readonly="readonly"/>
+				<s:textfield name="beginDate" id="beginDate" readonly="true"/>
 			</td>
 			<td nowrap="nowrap">
 				<s:text name="payments.report.generate.date_till"/>
-				<input type="text" id="endDate" readonly="readonly"/>
+				<s:textfield name="endDate" id="endDate" readonly="true"/>
 			</td>
 			<td>
 				<input type="button" name="submitted" class="btn-exit"
