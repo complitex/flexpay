@@ -263,6 +263,7 @@
 	</target>
 
 	<target name="template.run.tests">
+		<antcall target="template.set_test_db_name" />
 		<junit printsummary="yes" haltonfailure="yes" fork="yes" forkmode="once"
 			   dir="${build.dir}/web">
 			<classpath>
