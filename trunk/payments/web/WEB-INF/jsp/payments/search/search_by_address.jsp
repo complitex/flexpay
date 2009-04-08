@@ -12,7 +12,7 @@
 <s:actionerror/>
 
 <s:form action="searchByAddress">
-	<%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname_building_apartment.jsp" %>
+	<%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_streetname_building_ajax.jsp" %>	
 </s:form>
 
 <div id="searchResultsDiv" style="display: none;">
