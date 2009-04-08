@@ -9,34 +9,42 @@
 
         <action name="apartmentsListAjax" class="apartmentsListAjaxAction">
             <result>/WEB-INF/jsp/ab/filters/ajax/apartments_list_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
         </action>
 
         <action name="countryFilterAjax" class="countryFilterAjaxAction">
             <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
         </action>
 
         <action name="regionFilterAjax" class="regionFilterAjaxAction">
             <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
         </action>
 
         <action name="townFilterAjax" class="townFilterAjaxAction">
             <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
         </action>
 
         <action name="districtFilterAjax" class="districtFilterAjaxAction">
             <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
         </action>
 
         <action name="streetFilterAjax" class="streetFilterAjaxAction">
             <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
         </action>
 
         <action name="buildingFilterAjax" class="buildingFilterAjaxAction">
             <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
         </action>
 
         <action name="apartmentFilterAjax" class="apartmentFilterAjaxAction">
             <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
         </action>
 
     </package>

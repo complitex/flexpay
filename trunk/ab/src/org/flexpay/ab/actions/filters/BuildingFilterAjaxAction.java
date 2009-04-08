@@ -43,9 +43,13 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void readFilterString() {
-		BuildingAddress address = buildingService.readFull(new Stub<BuildingAddress>(filterValueLong));
-		if (address != null) {
-			filterString = getBuildingNumber(address.getBuildingAttributes());
+		if (filterValueLong != null) {
+			BuildingAddress address = buildingService.readFull(new Stub<BuildingAddress>(filterValueLong));
+			if (address != null) {
+				filterString = getBuildingNumber(address.getBuildingAttributes());
+			} else {
+				filterString = "";
+			}
 		} else {
 			filterString = "";
 		}
@@ -53,7 +57,8 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 
 	public void saveFilterValue() {
 		UserPreferences prefs = UserPreferences.getPreferences(request);
-		prefs.setBuildingFilterValue(filterValueLong);
+		prefs.setBuildingFilterValue(filterValue);
+		prefs.setApartmentFilterValue("");
 		UserPreferences.setPreferences(request, prefs);
 	}
 

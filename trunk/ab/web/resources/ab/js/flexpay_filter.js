@@ -1,3 +1,12 @@
+function pausecomp(millis){
+    var date = new Date();
+    var curDate = null;
+
+    do {
+        curDate = new Date();
+    } while (curDate - date < millis);
+}
+
 function Filter(name, options) {
 
     options = options || {};
@@ -20,6 +29,7 @@ function Filter(name, options) {
         extraParams: {},
         resultAction: null,
         resultId: "result",
+        preRequest: true,
         parents: []
     }, options);
 
@@ -55,6 +65,7 @@ function Filter(name, options) {
             $("#" + options.filterId).val(li.selectValue);
         }
         FF.onChange(options.name);
+        saveValues(options.name);
     }
 
     function formatItem(row) {
@@ -85,6 +96,10 @@ function Filter(name, options) {
         } else {
             filter.autocompleter = null;
         }
+    }
+
+    function saveValues(name) {
+        $.post(FF.filters[name].action, {filterValue:FF.filters[name].value.val(),saveFilterValue:true});
     }
 
     create(this);
@@ -119,10 +134,10 @@ var FF = {
         filter.string.attr("onChange", "FF.onChange2('" + name + "');");
         this.filters[name] = filter;
         this.filters.splice(this.filters.length - 1, 1);
-        if (filter.preRequest && filter.value.val() != null && filter.value.val().length > 0) {
+        if (filter.preRequest) {
             var k = 0;
             for (var i in filter.parents) {
-                if (this.filters[i].preRequest) {
+                if (this.filters[i].preRequest && this.filters[i].value.val() != "") {
                     k++;
                 }
             }
@@ -131,9 +146,12 @@ var FF = {
             }
             $.post(filter.action, {filterValue:filter.value.val(), preRequest:true},
                 function(data) {
-                    filter.string.val(data);
+                    var r = data.split("|");
+                    filter.string.val(r[0]);
+                    filter.value.val(r[1]);
                     FF.onSelect(filter.name);
                 });
+            pausecomp(100);
         } else {
             if (filter.parentsCount > 0) {
                 filter.string.attr("readonly", true);
@@ -144,12 +162,11 @@ var FF = {
     onChange : function (name) {
         this.eraseChildFilters(name);
         this.onSelect(name);
-        $.post(FF.filters[name].action, {filterValue:FF.filters[name].value.val(),saveFilterValue:true});
     },
 
     onChange2 : function (name) {
         this.filters[name].value.val("");
-        this.onChange(name);
+//        this.onChange(name);
     },
 
     eraseChildFilters : function(name) {
@@ -179,7 +196,7 @@ var FF = {
     onSelect : function(filterName) {
         var filters = this.getFiltersByParentName(filterName);
         var filter = this.filters[filterName];
-        if (filter.resultAction != null) {
+        if (filter.resultAction != null && filter.value.val() != "") {
             $.post(filter.resultAction, {parents: [filter.value.val()]},
                 function(data) {
                     filter.result.html(data);
@@ -195,13 +212,23 @@ var FF = {
                 }
             }
             if (parentsFilled) {
-                filter2.string.removeAttr("readonly");
+                filter2.string.removeAttr("readonly").focus();
             }
             if (!filter2.isArray) {
                 filter2.autocompleter.setExtraParams({parents : this.getParentParams(filter2)});
-                $("#" + filter2.string.attr("id")).focus();
             } else {
-                $.post(filter2.action, {parents : this.getParentParams(filter2)},
+                var params = this.getParentParams(filter2);
+                var filled = false;
+                for (var n in params) {
+                    if (params[n] != "") {
+                        filled = true;
+                        break;
+                    }
+                }
+                if (!filled && params.length > 0) {
+                    return;
+                }
+                $.post(filter2.action, {parents : params},
                     function(data) {
                         filter2.autocompleter = filter2.string.autocompleteArray(
                                 FF.parseAutocompleterData(data),
@@ -215,7 +242,9 @@ var FF = {
                                     formatItem:filter2.formatItem,
                                     onItemSelect:filter2.selectItem
                                 })[0].autocompleter;
-                        $("#" + filter2.string.attr("id")).focus();
+                        if (parentsFilled) {
+                            filter2.string.focus();
+                        }
                     });
             }
         }

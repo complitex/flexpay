@@ -36,8 +36,16 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 		return getInstance().defaultCountry;
 	}
 
+	public static Stub<Country> getDefaultCountryStub() {
+		return stub(getInstance().defaultCountry);
+	}
+
 	public static Region getDefaultRegion() {
 		return getInstance().defaultRegion;
+	}
+
+	public static Stub<Region> getDefaultRegionStub() {
+		return stub(getInstance().defaultRegion);
 	}
 
 	public static AddressAttributeType getBuildingAttributeTypeNumber() {

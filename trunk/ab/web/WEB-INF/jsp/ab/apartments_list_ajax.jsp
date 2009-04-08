@@ -7,7 +7,7 @@
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr>
             <td>
-                <%@ include file="filters/groups/country_region_town_streetname_building.jsp" %>
+                <%@ include file="filters/groups/country_region_town_streetname_building_ajax.jsp" %>
             </td>
         </tr>
         <tr>
