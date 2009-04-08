@@ -6,7 +6,9 @@
 	FP.calendars("#endDate", true);
 
 	function showDownloadLink() {
-		$('#downloadLinkDiv').show();
+
+		window.open ('<s:url value="/resources/payments/demo/report.pdf"/>', 'mywindow');
+
 		return false;
 	}
 </script>
@@ -30,9 +32,3 @@
 		</tr>
 	</table>
 </s:form>
-
-<div id="downloadLinkDiv" style="display: none;">
-	<s:text name="payments.reports.generate.successfully_generated"/>
-	<a href="<s:url value="/resources/payments/demo/report.pdf"/>"><s:text
-			name="payments.reports.generate.download"/></a>
-</div>
