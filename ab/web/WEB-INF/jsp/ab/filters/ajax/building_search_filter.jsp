@@ -6,5 +6,5 @@
 
 <input type="hidden" id="selected_building_id" name="buildingFilter.selectedId" value="<s:text name="%{userPreferences.buildingFilterValue}" />" />
 <input type="text" class="form-search" id="building_filter"
-	   name="buildingNameFilter.searchString"
+	   name="buildingFilter.searchString"
 	   value="" />

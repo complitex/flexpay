@@ -6,7 +6,7 @@
 <s:form action="generateRegistry">
 	<table>
 		<tr>
-			<td>
+			<td nowrap="nowrap">
 				<s:text name="payments.registry.generate.generate_for"/>
 			</td>
 			
