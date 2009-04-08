@@ -6,6 +6,7 @@
 
 	<definition name="payments.main" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.main.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/include/stylesheet.jsp"/>
 	</definition>
 
 	<!-- search-related definitions -->

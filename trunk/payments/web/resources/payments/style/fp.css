@@ -1,0 +1,21 @@
+.columns {
+	clear: both;
+	width: 99%;
+	font-size: 1.2em;
+}
+
+.columns .main-content {
+	width: 66%;
+	margin-right: -100%;
+	font-size: 1.2em;
+}
+
+.columns .main-content table td {
+	width: 66%;
+	margin-right: -100%;
+	font-size: 1.2em;
+}
+
+.btn-exit {	
+	height: 25px;
+}

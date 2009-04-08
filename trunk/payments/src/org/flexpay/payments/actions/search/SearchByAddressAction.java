@@ -18,7 +18,7 @@ public class SearchByAddressAction extends FPActionSupport {
 	private TownFilter townFilter = new TownFilter();
 	private StreetNameFilter streetNameFilter = new StreetNameFilter();
 	private BuildingsFilter buildingsFilter = new BuildingsFilter();
-//	private ApartmentFilter apartmentFilter = new ApartmentFilter();
+	private ApartmentFilter apartmentFilter = new ApartmentFilter();
 
 	// services
 	private ParentService parentService;
@@ -58,7 +58,7 @@ public class SearchByAddressAction extends FPActionSupport {
 		townFilter = (TownFilter) filters.peek(--n);
 		streetNameFilter = (StreetNameFilter) filters.peek(--n);
 		buildingsFilter = (BuildingsFilter) filters.peek(--n);
-//		apartmentFilter = (ApartmentFilter) filters.peek(--n);
+		apartmentFilter = (ApartmentFilter) filters.peek(--n);
 		return n;
 	}
 
@@ -75,7 +75,7 @@ public class SearchByAddressAction extends FPActionSupport {
 		filters.push(townFilter);
 		filters.push(streetNameFilter);
 		filters.push(buildingsFilter);
-//		filters.push(apartmentFilter);
+		filters.push(apartmentFilter);
 
 		return filters;
 	}
@@ -101,9 +101,9 @@ public class SearchByAddressAction extends FPActionSupport {
 		return buildingsFilter;
 	}
 
-//	public ApartmentFilter getApartmentFilter() {
-//		return apartmentFilter;
-//	}
+	public ApartmentFilter getApartmentFilter() {
+		return apartmentFilter;
+	}
 
 	public void setCountryFilter(CountryFilter countryFilter) {
 		this.countryFilter = countryFilter;
@@ -125,9 +125,9 @@ public class SearchByAddressAction extends FPActionSupport {
 		this.buildingsFilter = buildingsFilter;
 	}
 
-//	public void setApartmentFilter(ApartmentFilter apartmentFilter) {
-//		this.apartmentFilter = apartmentFilter;
-//	}
+	public void setApartmentFilter(ApartmentFilter apartmentFilter) {
+		this.apartmentFilter = apartmentFilter;
+	}
 
 
 	// required services
