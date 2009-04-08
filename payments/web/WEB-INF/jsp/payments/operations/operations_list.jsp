@@ -97,7 +97,7 @@
 		</tr>
 
 		<tr valign="middle" class="cols_1">
-			<td class="col" align="right">1</td>
+			<td class="col" align="right">4</td>
 			<td class="col" nowrap="nowrap"><input type="checkbox" disabled="1"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.creation_date"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.address"/></td>
@@ -109,7 +109,7 @@
 		</tr>
 
 		<tr valign="middle" class="cols_1">
-			<td class="col" align="right">1</td>
+			<td class="col" align="right">5</td>
 			<td class="col" nowrap="nowrap"><input type="checkbox" disabled="1"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.creation_date"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.address"/></td>
@@ -121,7 +121,7 @@
 		</tr>
 
 		<tr valign="middle" class="cols_1">
-			<td class="col" align="right">1</td>
+			<td class="col" align="right">6</td>
 			<td class="col" nowrap="nowrap"><input type="checkbox" disabled="1"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.creation_date"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.address"/></td>
@@ -133,7 +133,7 @@
 		</tr>
 
 		<tr valign="middle" class="cols_1">
-			<td class="col" align="right">1</td>
+			<td class="col" align="right">7</td>
 			<td class="col" nowrap="nowrap"><input type="checkbox" disabled="1"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.creation_date"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.address"/></td>
@@ -145,7 +145,7 @@
 		</tr>
 
 		<tr valign="middle" class="cols_1">
-			<td class="col" align="right">1</td>
+			<td class="col" align="right">8</td>
 			<td class="col" nowrap="nowrap"><input type="checkbox" disabled="1"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.creation_date"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.address"/></td>
@@ -157,7 +157,7 @@
 		</tr>
 
 		<tr valign="middle" class="cols_1">
-			<td class="col" align="right">1</td>
+			<td class="col" align="right">9</td>
 			<td class="col" nowrap="nowrap"><input type="checkbox" disabled="1"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.creation_date"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.address"/></td>
@@ -169,7 +169,7 @@
 		</tr>
 
 		<tr valign="middle" class="cols_1">
-			<td class="col" align="right">1</td>
+			<td class="col" align="right">11</td>
 			<td class="col" nowrap="nowrap"><input type="checkbox" disabled="1"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.creation_date"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.address"/></td>
