@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.filters;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.TownService;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.config.UserPreferences;
@@ -43,7 +44,18 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void readFilterString() {
-		Town town = townService.readFull(new Stub<Town>(filterValueLong));
+		Town town = null;
+		if (filterValueLong == null) {
+			UserPreferences prefs = UserPreferences.getPreferences(request);
+			if (!prefs.getRegionFilterValue().equals(ApplicationConfig.getDefaultRegionStub().getId() + "")) {
+				filterValue = "";
+			} else {
+				filterValue = ApplicationConfig.getDefaultTownStub().getId() + "";
+				town = townService.readFull(ApplicationConfig.getDefaultTownStub());
+			}
+		} else {
+			town = townService.readFull(new Stub<Town>(filterValueLong));
+		}
 		if (town != null && town.getCurrentName() != null) {
 			filterString = getTranslation(town.getCurrentName().getTranslations()).getName();
 		} else {
@@ -53,7 +65,11 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 
 	public void saveFilterValue() {
 		UserPreferences prefs = UserPreferences.getPreferences(request);
-		prefs.setTownFilterValue(filterValueLong);
+		prefs.setTownFilterValue(filterValue);
+		prefs.setDistrictFilterValue("");
+		prefs.setStreetFilterValue("");
+		prefs.setBuildingFilterValue("");
+		prefs.setApartmentFilterValue("");
 		UserPreferences.setPreferences(request, prefs);
 	}
 

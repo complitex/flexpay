@@ -4,7 +4,7 @@
 	<s:set name="buildingsFilter.field.value" value="buildingsFilter.searchString" />
 </s:if>
 
-<input type="hidden" id="selected_building_id" name="buildingFilter.selectedId" value="<s:text name="%{userPreferences.buildingFilterValue}" />" />
+<input type="hidden" id="selected_building_id" name="buildingsFilter.selectedId" value="<s:text name="%{userPreferences.buildingFilterValue}" />" />
 <input type="text" class="form-search" id="building_filter"
-	   name="buildingFilter.searchString"
+	   name="buildingsFilter.searchString"
 	   value="" />

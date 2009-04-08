@@ -43,9 +43,13 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void readFilterString() {
-		District district = districtService.readFull(new Stub<District>(filterValueLong));
-		if (district != null && district.getCurrentName() != null) {
-			filterString = getTranslation(district.getCurrentName().getTranslations()).getName();
+		if (filterValueLong != null) {
+			District district = districtService.readFull(new Stub<District>(filterValueLong));
+			if (district != null && district.getCurrentName() != null) {
+				filterString = getTranslation(district.getCurrentName().getTranslations()).getName();
+			} else {
+				filterString = "";
+			}
 		} else {
 			filterString = "";
 		}
@@ -53,7 +57,9 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 
 	public void saveFilterValue() {
 		UserPreferences prefs = UserPreferences.getPreferences(request);
-		prefs.setDistrictFilterValue(filterValueLong);
+		prefs.setDistrictFilterValue(filterValue);
+		prefs.setBuildingFilterValue("");
+		prefs.setApartmentFilterValue("");
 		UserPreferences.setPreferences(request, prefs);
 	}
 

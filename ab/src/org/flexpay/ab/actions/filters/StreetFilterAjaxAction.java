@@ -47,10 +47,14 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void readFilterString() {
-		Street street = streetService.readFull(new Stub<Street>(filterValueLong));
-		if (street != null && street.getCurrentName() != null) {
-			filterString = getTranslation(street.getCurrentType().getTranslations()).getName()
-							  + " " + getTranslation(street.getCurrentName().getTranslations()).getName();
+		if (filterValueLong != null) {
+			Street street = streetService.readFull(new Stub<Street>(filterValueLong));
+			if (street != null && street.getCurrentName() != null) {
+				filterString = getTranslation(street.getCurrentType().getTranslations()).getName()
+								  + " " + getTranslation(street.getCurrentName().getTranslations()).getName();
+			} else {
+				filterString = "";
+			}
 		} else {
 			filterString = "";
 		}
@@ -58,7 +62,9 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 
 	public void saveFilterValue() {
 		UserPreferences prefs = UserPreferences.getPreferences(request);
-		prefs.setStreetFilterValue(filterValueLong);
+		prefs.setStreetFilterValue(filterValue);
+		prefs.setBuildingFilterValue("");
+		prefs.setApartmentFilterValue("");
 		UserPreferences.setPreferences(request, prefs);
 	}
 

@@ -16,13 +16,13 @@ public class UserPreferences {
 
 	private MenuComponent menuComponent = new MenuComponent();
 
-	private Long countryFilterValue;
-	private Long regionFilterValue;
-	private Long townFilterValue;
-	private Long districtFilterValue;
-	private Long streetFilterValue;
-	private Long buildingFilterValue;
-	private Long apartmentFilterValue;
+	private String countryFilterValue;
+	private String regionFilterValue;
+	private String townFilterValue;
+	private String districtFilterValue;
+	private String streetFilterValue;
+	private String buildingFilterValue;
+	private String apartmentFilterValue;
 
 	private static final String WW_TRANS_I18_N_LOCALE = "WW_TRANS_I18N_LOCALE";
 
@@ -95,59 +95,59 @@ public class UserPreferences {
 		this.menuComponent = menuComponent;
 	}
 
-	public Long getCountryFilterValue() {
+	public String getCountryFilterValue() {
 		return countryFilterValue;
 	}
 
-	public void setCountryFilterValue(Long countryFilterValue) {
+	public void setCountryFilterValue(String countryFilterValue) {
 		this.countryFilterValue = countryFilterValue;
 	}
 
-	public Long getRegionFilterValue() {
+	public String getRegionFilterValue() {
 		return regionFilterValue;
 	}
 
-	public void setRegionFilterValue(Long regionFilterValue) {
+	public void setRegionFilterValue(String regionFilterValue) {
 		this.regionFilterValue = regionFilterValue;
 	}
 
-	public Long getTownFilterValue() {
+	public String getTownFilterValue() {
 		return townFilterValue;
 	}
 
-	public void setTownFilterValue(Long townFilterValue) {
+	public void setTownFilterValue(String townFilterValue) {
 		this.townFilterValue = townFilterValue;
 	}
 
-	public Long getDistrictFilterValue() {
+	public String getDistrictFilterValue() {
 		return districtFilterValue;
 	}
 
-	public void setDistrictFilterValue(Long districtFilterValue) {
+	public void setDistrictFilterValue(String districtFilterValue) {
 		this.districtFilterValue = districtFilterValue;
 	}
 
-	public Long getStreetFilterValue() {
+	public String getStreetFilterValue() {
 		return streetFilterValue;
 	}
 
-	public void setStreetFilterValue(Long streetFilterValue) {
+	public void setStreetFilterValue(String streetFilterValue) {
 		this.streetFilterValue = streetFilterValue;
 	}
 
-	public Long getBuildingFilterValue() {
+	public String getBuildingFilterValue() {
 		return buildingFilterValue;
 	}
 
-	public void setBuildingFilterValue(Long buildingFilterValue) {
+	public void setBuildingFilterValue(String buildingFilterValue) {
 		this.buildingFilterValue = buildingFilterValue;
 	}
 
-	public Long getApartmentFilterValue() {
+	public String getApartmentFilterValue() {
 		return apartmentFilterValue;
 	}
 
-	public void setApartmentFilterValue(Long apartmentFilterValue) {
+	public void setApartmentFilterValue(String apartmentFilterValue) {
 		this.apartmentFilterValue = apartmentFilterValue;
 	}
 

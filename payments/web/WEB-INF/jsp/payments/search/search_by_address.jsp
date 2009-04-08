@@ -21,23 +21,19 @@
 
 		$(function() {
 			FF.createFilter("country", {
-				action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none"/>",
-				preRequest: true
+				action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none"/>"
 			});
 			FF.createFilter("region", {
 				action: "<s:url action="regionFilterAjax" namespace="/dicts" includeParams="none"/>",
-				parents: ["country"],
-				preRequest: true
+				parents: ["country"]
 			});
 			FF.createFilter("town", {
 				action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none"/>",
-				parents: ["region"],
-				preRequest: true
+				parents: ["region"]
 			});
 			FF.createFilter("street", {
 				action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none"/>",
-				parents: ["town"],
-				preRequest: true
+				parents: ["town"]
 			});
 			FF.createFilter("building", {
 				action: "<s:url action="buildingFilterAjax" namespace="/dicts" includeParams="none"/>",

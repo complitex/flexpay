@@ -10,6 +10,8 @@ import java.util.List;
 
 public abstract class FilterAjaxAction extends BuildingsActionsBase implements ServletRequestAware {
 
+	protected final static String PREREQUEST_RESPONSE = "prerequestResponse";
+
 	protected String[] parents;
 	protected Long filterValueLong;
 	protected String filterValue;
@@ -26,17 +28,15 @@ public abstract class FilterAjaxAction extends BuildingsActionsBase implements S
 		try {
 			filterValueLong = Long.parseLong(filterValue);
 		} catch (Exception e) {
-			log.debug("Incorrect filter value ({})", filterValue);
-		}
-
-		if (saveFilterValue != null && saveFilterValue
-				&& (preRequest == null || !preRequest)
-				&& filterValueLong != null) {
-			saveFilterValue();
+			// do nothing
 		}
 
 		if (preRequest != null && preRequest) {
 			readFilterString();
+			saveFilterValue();
+			return PREREQUEST_RESPONSE;
+		} else if (saveFilterValue != null && saveFilterValue) {
+			saveFilterValue();
 			return SUCCESS;
 		}
 
@@ -65,6 +65,10 @@ public abstract class FilterAjaxAction extends BuildingsActionsBase implements S
 
 	public void setParents(String[] parents) {
 		this.parents = parents;
+	}
+
+	public String getFilterValue() {
+		return filterValue;
 	}
 
 	public void setFilterValue(String filterValue) {

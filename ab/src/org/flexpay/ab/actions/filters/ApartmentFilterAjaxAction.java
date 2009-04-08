@@ -43,17 +43,21 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void readFilterString() {
-		try {
-			filterString = apartmentService.getApartmentNumber(new Stub<Apartment>(filterValueLong));
-		} catch (FlexPayException e) {
-			log.debug("Can't get number for apartment with id = {}", filterValueLong);
+		if (filterValueLong != null) {
+			try {
+				filterString = apartmentService.getApartmentNumber(new Stub<Apartment>(filterValueLong));
+			} catch (Exception e) {
+				log.debug("Can't get number for apartment with id = {}", filterValueLong);
+				filterString = "";
+			}
+		} else {
 			filterString = "";
 		}
 	}
 
 	public void saveFilterValue() {
 		UserPreferences prefs = UserPreferences.getPreferences(request);
-		prefs.setApartmentFilterValue(filterValueLong);
+		prefs.setApartmentFilterValue(filterValue);
 		UserPreferences.setPreferences(request, prefs);
 	}
 
