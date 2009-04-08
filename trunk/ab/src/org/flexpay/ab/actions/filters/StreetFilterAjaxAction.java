@@ -22,7 +22,8 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 	@NotNull
 	public String doExecute() throws FlexPayException {
 
-		if (saveFilterValue()) {
+		if (preRequest != null && preRequest) {
+			readFilterString();
 			return SUCCESS;
 		}
 
@@ -50,18 +51,20 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 		return SUCCESS;
 	}
 
-	public boolean saveFilterValue() {
-		if (filterValue != null) {
-			try {
-				UserPreferences prefs = UserPreferences.getPreferences(request);
-				prefs.setStreetFilterValue(Long.parseLong(filterValue));
-				UserPreferences.setPreferences(request, prefs);
-				return true;
-			} catch (Exception e) {
-				log.warn("Incorrect country id in filter ({})", filterValue);
-			}
+	public void readFilterString() {
+		Street street = streetService.readFull(new Stub<Street>(filterValueLong));
+		if (street != null && street.getCurrentName() != null) {
+			filterString = getTranslation(street.getCurrentType().getTranslations()).getName()
+							  + " " + getTranslation(street.getCurrentName().getTranslations()).getName();
+		} else {
+			filterString = "";
 		}
-		return false;
+	}
+
+	public void saveFilterValue() {
+		UserPreferences prefs = UserPreferences.getPreferences(request);
+		prefs.setStreetFilterValue(filterValueLong);
+		UserPreferences.setPreferences(request, prefs);
 	}
 
 	@Required

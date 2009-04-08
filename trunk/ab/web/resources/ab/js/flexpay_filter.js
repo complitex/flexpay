@@ -35,6 +35,7 @@ function Filter(name, options) {
     }
     this.parentsCount = options.parents.length;
     this.resultAction = options.resultAction;
+    this.preRequest = options.preRequest;
 
     this.result = $("#" + options.resultId);
     this.value = $("#" + options.valueId);
@@ -115,19 +116,39 @@ var FF = {
 
     createFilter : function (name, options) {
         var filter = new Filter(name, options);
-        if (filter.parentsCount > 0) {
-            filter.string.attr("readonly", true);
-        }
         filter.string.attr("onChange", "FF.onChange2('" + name + "');");
         this.filters[name] = filter;
         this.filters.splice(this.filters.length - 1, 1);
+        if (filter.preRequest && filter.value.val() != null && filter.value.val().length > 0) {
+            var k = 0;
+            for (var i in filter.parents) {
+                if (this.filters[i].preRequest) {
+                    k++;
+                }
+            }
+            if (filter.parentsCount > 0 && k < filter.parentsCount) {
+                filter.string.attr("readonly", true);
+            }
+            $.post(filter.action, {filterValue:filter.value.val(), preRequest:true},
+                function(data) {
+                    console.log("data = " + data);
+                    filter.string.val(data);
+                    FF.onSelect(filter.name);
+                });
+        } else {
+            if (filter.parentsCount > 0) {
+                filter.string.attr("readonly", true);
+            }
+        }
     },
 
     onChange : function (name) {
         this.eraseChildFilters(name);
         this.onSelect(name);
 
-        $.post(FF.filters[name].action, {filterValue:FF.filters[name].value.val()});
+        console.log("FF.filters[name].action = " + FF.filters[name].action);
+        console.log("FF.filters[name].value.val() = " + FF.filters[name].value.val());
+        $.post(FF.filters[name].action, {filterValue:FF.filters[name].value.val(),saveFilterValue:true});
     },
 
     onChange2 : function (name) {

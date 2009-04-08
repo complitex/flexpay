@@ -9,13 +9,15 @@
 	<!-- Define struts actions beans -->
 
 	<!-- Countries -->
-	<bean id="countriesListAction" scope="prototype"
+	<bean id="countriesListAction"
 		  class="org.flexpay.ab.actions.country.CountriesListAction"
-		  p:countryService-ref="countryService" />
+		  p:countryService-ref="countryService"
+          scope="prototype" />
 
-	<bean id="countryCreateAction" scope="prototype"
+	<bean id="countryCreateAction"
 		  class="org.flexpay.ab.actions.country.CountryCreateAction"
-		  p:countryService-ref="countryService" />
+		  p:countryService-ref="countryService"
+          scope="prototype" />
 
     <bean id="countryFilterAjaxAction"
           class="org.flexpay.ab.actions.filters.CountryFilterAjaxAction"

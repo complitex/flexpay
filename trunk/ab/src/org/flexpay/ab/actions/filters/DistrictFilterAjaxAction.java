@@ -19,7 +19,8 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 	@NotNull
 	public String doExecute() throws FlexPayException {
 
-		if (saveFilterValue()) {
+		if (preRequest != null && preRequest) {
+			readFilterString();
 			return SUCCESS;
 		}
 
@@ -46,18 +47,19 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 		return SUCCESS;
 	}
 
-	public boolean saveFilterValue() {
-		if (filterValue != null) {
-			try {
-				UserPreferences prefs = UserPreferences.getPreferences(request);
-				prefs.setDistrictFilterValue(Long.parseLong(filterValue));
-				UserPreferences.setPreferences(request, prefs);
-				return true;
-			} catch (Exception e) {
-				log.warn("Incorrect country id in filter ({})", filterValue);
-			}
+	public void readFilterString() {
+		District district = districtService.readFull(new Stub<District>(filterValueLong));
+		if (district != null && district.getCurrentName() != null) {
+			filterString = getTranslation(district.getCurrentName().getTranslations()).getName();
+		} else {
+			filterString = "";
 		}
-		return false;
+	}
+
+	public void saveFilterValue() {
+		UserPreferences prefs = UserPreferences.getPreferences(request);
+		prefs.setDistrictFilterValue(filterValueLong);
+		UserPreferences.setPreferences(request, prefs);
 	}
 
 	@Required
