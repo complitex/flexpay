@@ -1,5 +1,5 @@
-
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp"%>
 
 <script type="text/javascript">
 	function showSearchResults() {

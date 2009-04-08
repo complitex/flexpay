@@ -4,10 +4,10 @@
 	<tr>
 		<td class="th" width="1%">&nbsp;</td>
 		<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.service"/></td>
-		<td class="th"><s:text name="payments.quittances.quittance_pay.service_supplier"/></td>
-		<td class="th"><s:text name="payments.quittances.quittance_pay.payable"/></td>
-		<td class="th"><s:text name="payments.quittances.quittance_pay.payed"/></td>
-		<td class="th"><s:text name="payments.quittances.quittance_pay.pay"/></td>
+		<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.service_supplier"/></td>
+		<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.payable"/></td>
+		<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.payed"/></td>
+		<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.pay"/></td>
 	</tr>
 
 

@@ -1,20 +1,26 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp"%>
+
+<script type="text/javascript">
+	FP.calendars("#beginDate", true);
+	FP.calendars("#endDate", true);
+</script>
 
 <s:form>
 	<table>
 		<tr>
 			<td colspan="3">
 				<s:text name="payments.operations.list.current_user"/>
-				<sec:authentication property="principal.username" />
+				<sec:authentication property="principal.username"/>
 			</td>
 		</tr>
 
 		<tr>
-			<td>
+			<td nowrap="nowrap">
 				<s:text name="payments.report.generate.date_from"/>
 				<input type="text" id="beginDate" readonly="readonly"/>
 			</td>
-			<td>
+			<td nowrap="nowrap">
 				<s:text name="payments.report.generate.date_till"/>
 				<input type="text" id="endDate" readonly="readonly"/>
 			</td>

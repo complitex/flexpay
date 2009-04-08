@@ -13,7 +13,7 @@
 		  class="org.flexpay.payments.actions.search.SearchByQuittanceNumberAction" />
 
 	<bean id="searchByAdressAction" class="org.flexpay.payments.actions.search.SearchByAddressAction"
-		  p:parentService-ref="buildingService" />
+		  p:parentService-ref="apartmentService" />
 
 	<bean id="searchByEircAccountAction" class="org.flexpay.payments.actions.search.SearchByEircAccountAction" />
 
