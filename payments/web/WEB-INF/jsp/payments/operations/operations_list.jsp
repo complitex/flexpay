@@ -5,7 +5,7 @@
 		<tr>
 			<td colspan="3">
 				<s:text name="payments.operations.list.current_user"/>
-				<input readonly="readonly" type="text" value="<sec:authentication property="principal.username" />">
+				<sec:authentication property="principal.username" />
 			</td>
 		</tr>
 
