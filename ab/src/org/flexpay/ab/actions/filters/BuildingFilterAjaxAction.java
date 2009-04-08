@@ -19,11 +19,6 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 	@NotNull
 	public String doExecute() throws FlexPayException {
 
-		if (preRequest != null && preRequest) {
-			readFilterString();
-			return SUCCESS;
-		}
-
 		Long streetIdLong;
 
 		try {

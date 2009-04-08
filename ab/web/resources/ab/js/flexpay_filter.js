@@ -131,7 +131,6 @@ var FF = {
             }
             $.post(filter.action, {filterValue:filter.value.val(), preRequest:true},
                 function(data) {
-                    console.log("data = " + data);
                     filter.string.val(data);
                     FF.onSelect(filter.name);
                 });
@@ -145,9 +144,6 @@ var FF = {
     onChange : function (name) {
         this.eraseChildFilters(name);
         this.onSelect(name);
-
-        console.log("FF.filters[name].action = " + FF.filters[name].action);
-        console.log("FF.filters[name].value.val() = " + FF.filters[name].value.val());
         $.post(FF.filters[name].action, {filterValue:FF.filters[name].value.val(),saveFilterValue:true});
     },
 
