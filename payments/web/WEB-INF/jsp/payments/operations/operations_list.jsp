@@ -2,9 +2,12 @@
 
 <s:form>
 	<table>
-		<tr><td colspan="3">
-			<input readonly="readonly" type="text" value="<s:text name="payments.demo.data.current_user"/>">
-		</td></tr>
+		<tr>
+			<td colspan="3">
+				<s:text name="payments.operations.list.current_user"/>
+				<input readonly="readonly" type="text" value="<sec:authentication property="principal.username" />">
+			</td>
+		</tr>
 
 		<tr>
 			<td>
@@ -17,7 +20,14 @@
 			</td>
 			<td>
 				<input type="button" name="submitted" class="btn-exit"
-					   value="<s:property value="%{getText('payments.operations.list.filter')}"/>"/>
+					   value="<s:text name="payments.operations.list.filter"/>"/>
+			</td>
+		</tr>
+
+		<tr>
+			<td colspan="3">
+				<s:text name="payments.operations.list.total"/>
+				<s:text name="payments.demo.data.total.operations"/>
 			</td>
 		</tr>
 	</table>
@@ -26,6 +36,11 @@
 <s:form action="operationsList">
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
+		<tr>
+			<td colspan="9">
+				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
+			</td>
+		</tr>
 
 		<tr>
 			<td class="th" width="1%"><s:text name="payments.operations.list.number_symbol"/></td>
@@ -73,6 +88,96 @@
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation3.pay_summ"/></td>
 			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation3.change"/></td>
 			<td class="col" nowrap="nowrap"><a href="#"><s:text name="payments.operations.list.detailed"/></a></td>
+		</tr>
+
+		<tr valign="middle" class="cols_1">
+			<td class="col" align="right">1</td>
+			<td class="col" nowrap="nowrap"><input type="checkbox" disabled="1"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.creation_date"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.address"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.fio"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.summ"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.pay_summ"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.change"/></td>
+			<td class="col" nowrap="nowrap"><a href="#"><s:text name="payments.operations.list.detailed"/></a></td>
+		</tr>
+
+		<tr valign="middle" class="cols_1">
+			<td class="col" align="right">1</td>
+			<td class="col" nowrap="nowrap"><input type="checkbox" disabled="1"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.creation_date"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.address"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.fio"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.summ"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.pay_summ"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.change"/></td>
+			<td class="col" nowrap="nowrap"><a href="#"><s:text name="payments.operations.list.detailed"/></a></td>
+		</tr>
+
+		<tr valign="middle" class="cols_1">
+			<td class="col" align="right">1</td>
+			<td class="col" nowrap="nowrap"><input type="checkbox" disabled="1"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.creation_date"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.address"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.fio"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.summ"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.pay_summ"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.change"/></td>
+			<td class="col" nowrap="nowrap"><a href="#"><s:text name="payments.operations.list.detailed"/></a></td>
+		</tr>
+
+		<tr valign="middle" class="cols_1">
+			<td class="col" align="right">1</td>
+			<td class="col" nowrap="nowrap"><input type="checkbox" disabled="1"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.creation_date"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.address"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.fio"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.summ"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.pay_summ"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.change"/></td>
+			<td class="col" nowrap="nowrap"><a href="#"><s:text name="payments.operations.list.detailed"/></a></td>
+		</tr>
+
+		<tr valign="middle" class="cols_1">
+			<td class="col" align="right">1</td>
+			<td class="col" nowrap="nowrap"><input type="checkbox" disabled="1"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.creation_date"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.address"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.fio"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.summ"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.pay_summ"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.change"/></td>
+			<td class="col" nowrap="nowrap"><a href="#"><s:text name="payments.operations.list.detailed"/></a></td>
+		</tr>
+
+		<tr valign="middle" class="cols_1">
+			<td class="col" align="right">1</td>
+			<td class="col" nowrap="nowrap"><input type="checkbox" disabled="1"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.creation_date"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.address"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.fio"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.summ"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.pay_summ"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.change"/></td>
+			<td class="col" nowrap="nowrap"><a href="#"><s:text name="payments.operations.list.detailed"/></a></td>
+		</tr>
+
+		<tr valign="middle" class="cols_1">
+			<td class="col" align="right">1</td>
+			<td class="col" nowrap="nowrap"><input type="checkbox" disabled="1"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.creation_date"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.address"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.fio"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.summ"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.pay_summ"/></td>
+			<td class="col" nowrap="nowrap"><s:text name="payments.demo.data.operation1.change"/></td>
+			<td class="col" nowrap="nowrap"><a href="#"><s:text name="payments.operations.list.detailed"/></a></td>
+		</tr>
+
+		<tr>
+			<td colspan="9">
+				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
+			</td>
 		</tr>
 
 	</table>
