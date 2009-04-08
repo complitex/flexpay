@@ -4,11 +4,14 @@ import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryProperties;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
+import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.eirc.service.RegistryService;
 import org.flexpay.eirc.service.SpRegistryTypeService;
+import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -106,6 +109,16 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 		log.debug("dt = {}, fromDate = {}", dt, tillDate);
 	}
 
+	public Organization getSenderOrg(RegistryProperties properties) {
+		EircRegistryProperties props = (EircRegistryProperties) properties;
+		return organizationService.readFull(props.getSenderStub());
+	}
+
+	public Organization getRecipientOrg(RegistryProperties properties) {
+		EircRegistryProperties props = (EircRegistryProperties) properties;
+		return organizationService.readFull(props.getRecipientStub());
+	}
+
 	@Required
 	public void setRegistryService(RegistryService registryService) {
 		this.registryService = registryService;
@@ -120,5 +133,4 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 	public void setRegistryTypeService(SpRegistryTypeService registryTypeService) {
 		this.registryTypeService = registryTypeService;
 	}
-
 }

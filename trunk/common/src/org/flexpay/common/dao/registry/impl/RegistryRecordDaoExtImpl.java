@@ -131,6 +131,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
 				return session.createQuery("select distinct r from RegistryRecord r " +
+										   "inner join fetch r.properties " +
 										   "inner join fetch r.registry rr " +
 										   "inner join fetch rr.registryStatus " +
 										   "inner join fetch r.recordStatus " +

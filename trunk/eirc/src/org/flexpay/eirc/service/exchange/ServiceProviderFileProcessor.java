@@ -269,7 +269,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 		ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
 		DataSourceDescription sd = provider.getDataSourceDescription();
-		importService.importConsumers(sd,rawConsumersDataSource);
+		importService.importConsumers(sd, rawConsumersDataSource);
 	}
 
 	@Required

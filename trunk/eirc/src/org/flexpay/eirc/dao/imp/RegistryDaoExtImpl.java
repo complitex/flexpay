@@ -12,11 +12,14 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
 import java.util.*;
 
 public class RegistryDaoExtImpl extends HibernateDaoSupport implements RegistryDaoExt {
+
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * Find registries
@@ -32,38 +35,37 @@ public class RegistryDaoExtImpl extends HibernateDaoSupport implements RegistryD
 	@SuppressWarnings ({"unchecked"})
 	public List<Registry> findRegistries(
 			OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
-			RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, final Page pager) {
+			RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, final Page<?> pager) {
 
-		final List params = new ArrayList();
+		final List<Object> params = new ArrayList();
 		final StringBuilder hql = new StringBuilder("select distinct r from Registry r ")
 				.append("left join fetch r.spFile ")
+				.append("inner join fetch r.properties rps ")
 				.append("inner join fetch r.registryType rt ")
 				.append("inner join fetch r.registryStatus rs ")
-				.append("inner join fetch r.archiveStatus ras ")
-				.append("inner join fetch r.sender sender ")
-				.append("left join fetch sender.names ")
-				.append("inner join fetch r.recipient recipient ")
-				.append("left join fetch recipient.names ")
-				.append("left join fetch r.serviceProvider ")
-				.append("where 1=1 ");
-		final StringBuilder hqlCount = new StringBuilder("select count(*) from Registry r ")
+				.append("inner join fetch r.archiveStatus ras, ")
+				.append("EircRegistryProperties rp ")
+				.append("where rps.id=rp.id ");
+		final StringBuilder hqlCount = new StringBuilder("select count(r) from Registry r ")
+				.append("inner join r.properties rps ")
 				.append("inner join r.registryType rt ")
-				.append("inner join r.registryStatus rs ")
-				.append("inner join r.sender sender ")
-				.append("inner join r.recipient recipient ")
-				.append("where 1=1 ");
+				.append("inner join r.registryStatus rs, ")
+				.append("EircRegistryProperties rp ")
+				.append("inner join rp.sender sender ")
+				.append("inner join rp.recipient recipient ")
+				.append("where rps.id=rp.id ");
 
-		if (senderFilter.getSelectedId() > 0) {
+		if (senderFilter.needFilter()) {
 			hql.append("and sender.id=? ");
 			hqlCount.append("and sender.id=? ");
 			params.add(senderFilter.getSelectedId());
 		}
-		if (recipientFilter.getSelectedId() > 0) {
+		if (recipientFilter.needFilter()) {
 			hql.append("and recipient.id=? ");
 			hqlCount.append("and recipient.id=? ");
 			params.add(recipientFilter.getSelectedId());
 		}
-		if (typeFilter.getSelectedId() > 0) {
+		if (typeFilter.needFilter()) {
 			hql.append("and rt.id=? ");
 			hqlCount.append("and rt.id=? ");
 			params.add(typeFilter.getSelectedId());
@@ -83,9 +85,11 @@ public class RegistryDaoExtImpl extends HibernateDaoSupport implements RegistryD
 		Number count = (Number) getHibernateTemplate().find(hqlCount.toString(), params.toArray()).get(0);
 		pager.setTotalElements(count.intValue());
 
+		log.debug("Registries list queries: \n{}\n{}", hql, hqlCount);
+
 		// retrive elements
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				Query qCount = session.createQuery(hqlCount.toString());
 				Query query = session.createQuery(hql.toString());
 				for (int n = 0; n < params.size(); ++n) {
@@ -111,10 +115,10 @@ public class RegistryDaoExtImpl extends HibernateDaoSupport implements RegistryD
 	@SuppressWarnings ({"unchecked"})
 	public Collection<Registry> findRegistries(@NotNull final Set<Long> objectIds) {
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
-			public Object doInHibernate(@NonNls Session session) throws HibernateException, SQLException {
-				return session.createQuery("select distinct r from SpRegistry r " +
-										   "inner join fetch r.serviceProvider sp " +
-										   "inner join fetch sp.dataSourceDescription inner join fetch r.registryType " +
+			public Object doInHibernate(@NonNls Session session) throws HibernateException {
+				return session.createQuery("select distinct r from Registry r " +
+										   "inner join fetch r.properties " +
+										   "inner join fetch r.registryType " +
 										   "inner join fetch r.registryStatus " +
 										   "left join fetch r.containers " +
 										   "where r.id in (:ids)")

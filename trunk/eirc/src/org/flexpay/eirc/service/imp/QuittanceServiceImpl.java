@@ -14,6 +14,7 @@ import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.QuittanceService;
+import org.flexpay.orgs.persistence.ServiceOrganization;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -70,7 +71,7 @@ public class QuittanceServiceImpl implements QuittanceService {
 	}
 
 	@NotNull
-	public List<Quittance> getQuittances(Stub<EircServiceOrganization> stub, Date dateFrom, Date dateTill) {
+	public List<Quittance> getQuittances(Stub<? extends ServiceOrganization> stub, Date dateFrom, Date dateTill) {
 		return quittanceDao.listQuittancesForPrinting(stub.getId(), dateFrom, dateTill);
 	}
 

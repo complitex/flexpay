@@ -36,29 +36,20 @@ import java.util.*;
 @Namespace ("")
 public abstract class FPActionSupport extends ActionSupport implements UserPreferencesAware, SessionAware {
 
-	@NonNls
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
-	@NonNls
 	private static final String ERRORS_SESSION_ATTRIBUTE = FPActionSupport.class.getName() + ".ERRORS";
-	@NonNls
 	protected static final String PREFIX_REDIRECT = "redirect";
 
-	@NonNls
 	protected static final String REDIRECT_ERROR = "redirectError";
-	@NonNls
 	protected static final String REDIRECT_SUCCESS = "redirectSuccess";
-	@NonNls
 	protected static final String REDIRECT_INPUT = "redirectInput";
 
 	// name of breadcrumb list in session.
-	@NonNls
 	public static final String BREADCRUMBS = "com.strutsschool.interceptors.breadcrumbs";
 
-	@NonNls
 	private String WILDCARD_SEPARATOR = "!";
 
-	@NonNls
 	private static final String METHOD_POST = "post";
 
 	protected UserPreferences userPreferences;

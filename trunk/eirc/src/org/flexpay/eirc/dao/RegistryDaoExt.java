@@ -25,7 +25,7 @@ public interface RegistryDaoExt {
 	 * @return list of registries matching specified criteria
 	 */
 	List<Registry> findRegistries(OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
-									RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page pager);
+									RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page<?> pager);
 
 	/**
 	 * Find registries by identifiers
