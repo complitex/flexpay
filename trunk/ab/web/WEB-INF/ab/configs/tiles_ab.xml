@@ -178,10 +178,6 @@
 		<put-attribute name="title" value="ab.person.edit.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/person_edit.jsp" />
 	</definition>
-	<definition name="ab.person.set_registration_form" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.person.registration_address" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/person_set_registration_form.jsp" />
-	</definition>
 
 	<!-- Buildings -->
 	<definition name="ab.building.list" extends="ab.layout.standart">
