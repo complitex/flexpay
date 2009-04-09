@@ -188,7 +188,6 @@
 
 	</table>
 
-	<s:submit name="submitted" cssClass="btn-exit" value="%{getText('payments.operations.list.submit')}"/>
-
+	<input type="submit" name="submitted" class="btn-exit" value="<s:text name="payments.operations.list.submit"/>"/>
 	<input type="button" class="btn-exit" value="<s:text name="payments.operations.list.detailed"/>"/>
 </s:form>
