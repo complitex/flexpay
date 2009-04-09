@@ -8,8 +8,6 @@
     FP.calendars("#endDate", true);
 </script>
 
-<s:actionerror/>
-
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<!-- form action depends on  -->
 	<form id="srform" method="post" action="<s:url includeParams="none" />">
