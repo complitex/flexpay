@@ -62,7 +62,7 @@
 		</tr>
 		<tr valign="middle">
 			<td class="col">
-				<%@include file="../filters/service_organization_filter.jsp" %>
+				<%@include file="/WEB-INF/jsp/orgs/filters/service_organization_filter.jsp" %>
 			</td>
 		</tr>
 		<tr class="cols_1_error" style="display:none;">
