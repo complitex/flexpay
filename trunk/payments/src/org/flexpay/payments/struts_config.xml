@@ -14,7 +14,8 @@
 	<package name="payments" namespace="/payments" extends="common">
 
 		<action name="main" class="staticPageAction">
-			<result type="tiles">payments.main</result>
+			<!--<result type="tiles">payments.main</result>-->
+			<result type="tiles">payments.search.address</result>
 		</action>
 
 	</package>
