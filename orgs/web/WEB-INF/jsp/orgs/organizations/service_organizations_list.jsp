@@ -48,7 +48,7 @@
 		</s:iterator>
 		<tr>
 			<td colspan="10">
-				<%@include file="/WEB-INF/jsp/ab/filters/pager.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 				<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit" onclick="$('#fServiceOrganizations').attr('action', '<s:url action="serviceOrganizationDelete" includeParams="none" />');" />
 				<input type="button" class="btn-exit" onclick="location.href='<s:url action="serviceOrganizationEdit"><s:param name="serviceOrganization.id" value="0" /></s:url>';" value="<s:text name="common.new"/>" />
 			</td>
