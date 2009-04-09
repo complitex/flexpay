@@ -1,6 +1,6 @@
 package org.flexpay.tc.actions.tariff;
 
-import org.flexpay.common.actions.FPBreadCrumbActionSupport;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.FPFileType;
 import org.flexpay.common.persistence.Language;
@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.File;
 import java.util.Map;
 
-public class TariffCalcRulesFileEditAction extends FPBreadCrumbActionSupport {
+public class TariffCalcRulesFileEditAction extends FPActionSupport {
 
 	private TariffCalculationRulesFile rulesFile = new TariffCalculationRulesFile();
 	private Map<Long, String> names = CollectionUtils.treeMap();
