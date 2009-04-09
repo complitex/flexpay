@@ -13,7 +13,7 @@
 		  p:name="payments"
 		  p:title="payments.menu1.title"
 		  p:namespace="/payments"
-		  p:action="main"
+		  p:action="searchByAddress"
 		  p:parent-ref="fpMenu" />
 
 	<!-- level 2 -->
@@ -52,11 +52,11 @@
 		  p:action="main"
 		  p:parent-ref="payments.search_address"/>
 
-	<bean name="payments.search_address.registries" parent="payments.search_address"
-		  p:name="payments.search_address.registries"
-		  p:title="payments.menu3.registries"
-		  p:action="main"
-		  p:parent-ref="payments.search_address"/>
+	<!--<bean name="payments.search_address.registries" parent="payments.search_address"-->
+		  <!--p:name="payments.search_address.registries"-->
+		  <!--p:title="payments.menu3.registries"-->
+		  <!--p:action="main"-->
+		  <!--p:parent-ref="payments.search_address"/>-->
 
 	<!-- level 3 search eirc account-->
 	<bean name="payments.search_eircaccount.operations" parent="payments.search_eircaccount"
@@ -71,11 +71,11 @@
 		  p:action="main"
 		  p:parent-ref="payments.search_eircaccount"/>
 
-	<bean name="payments.search_eircaccount.registries" parent="payments.search_eircaccount"
-		  p:name="payments.search_eircaccount.registries"
-		  p:title="payments.menu3.registries"
-		  p:action="main"
-		  p:parent-ref="payments.search_eircaccount"/>
+	<!--<bean name="payments.search_eircaccount.registries" parent="payments.search_eircaccount"-->
+		  <!--p:name="payments.search_eircaccount.registries"-->
+		  <!--p:title="payments.menu3.registries"-->
+		  <!--p:action="main"-->
+		  <!--p:parent-ref="payments.search_eircaccount"/>-->
 
 	<!-- level 3 search quittance-->
 	<bean name="payments.search_quittance.operations" parent="payments.search_quittance"
@@ -90,11 +90,11 @@
 		  p:action="main"
 		  p:parent-ref="payments.search_quittance"/>
 
-	<bean name="payments.search_quittance.registries" parent="payments.search_quittance"
-		  p:name="payments.search_quittance.registries"
-		  p:title="payments.menu3.registries"
-		  p:action="main"
-		  p:parent-ref="payments.search_quittance"/>
+	<!--<bean name="payments.search_quittance.registries" parent="payments.search_quittance"-->
+		  <!--p:name="payments.search_quittance.registries"-->
+		  <!--p:title="payments.menu3.registries"-->
+		  <!--p:action="main"-->
+		  <!--p:parent-ref="payments.search_quittance"/>-->
 
 	<!-- level 4 -->
 	<!-- level 4 operations -->
@@ -136,22 +136,22 @@
 		  p:parent-ref="payments.search_quittance.reports"/>
 
 	<!-- level 4 registries -->
-	<bean name="payments.search_address.registries.generate" parent="payments.search_address.registries"
-		  p:name="payments.search_address.registries.generate"
-		  p:title="payments.menu4.generate_registry"
-		  p:action="generateRegistry"
-		  p:parent-ref="payments.search_address.registries"/>
+	<!--<bean name="payments.search_address.registries.generate" parent="payments.search_address.registries"-->
+		  <!--p:name="payments.search_address.registries.generate"-->
+		  <!--p:title="payments.menu4.generate_registry"-->
+		  <!--p:action="generateRegistry"-->
+		  <!--p:parent-ref="payments.search_address.registries"/>-->
 
-	<bean name="payments.search_eircaccount.registries.generate" parent="payments.search_eircaccount.registries"
-		  p:name="payments.search_eircaccount.registries.generate"
-		  p:title="payments.menu4.generate_registry"
-		  p:action="generateRegistry"
-		  p:parent-ref="payments.search_eircaccount.registries"/>
+	<!--<bean name="payments.search_eircaccount.registries.generate" parent="payments.search_eircaccount.registries"-->
+		  <!--p:name="payments.search_eircaccount.registries.generate"-->
+		  <!--p:title="payments.menu4.generate_registry"-->
+		  <!--p:action="generateRegistry"-->
+		  <!--p:parent-ref="payments.search_eircaccount.registries"/>-->
 
-	<bean name="payments.search_quittance.registries.generate" parent="payments.search_quittance.registries"
-		  p:name="payments.search_quittance.registries.generate"
-		  p:title="payments.menu4.generate_registry"
-		  p:action="generateRegistry"
-		  p:parent-ref="payments.search_quittance.registries"/>
+	<!--<bean name="payments.search_quittance.registries.generate" parent="payments.search_quittance.registries"-->
+		  <!--p:name="payments.search_quittance.registries.generate"-->
+		  <!--p:title="payments.menu4.generate_registry"-->
+		  <!--p:action="generateRegistry"-->
+		  <!--p:parent-ref="payments.search_quittance.registries"/>-->
 
 </beans>
