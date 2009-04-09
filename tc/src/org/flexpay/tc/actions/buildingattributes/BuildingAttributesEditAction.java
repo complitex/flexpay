@@ -8,7 +8,7 @@ import org.flexpay.bti.persistence.*;
 import org.flexpay.bti.service.BtiBuildingService;
 import org.flexpay.bti.service.BuildingAttributeGroupService;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
-import org.flexpay.common.actions.FPBreadCrumbActionSupport;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -26,7 +26,7 @@ import java.util.SortedSet;
 /**
  * Action for updating building attributes
  */
-public class BuildingAttributesEditAction extends FPBreadCrumbActionSupport {
+public class BuildingAttributesEditAction extends FPActionSupport {
 
 	// building primary and alternative addresses
 	private BuildingAddress building = new BuildingAddress();
