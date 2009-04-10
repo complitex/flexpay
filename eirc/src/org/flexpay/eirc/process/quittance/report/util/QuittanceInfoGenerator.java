@@ -1,8 +1,8 @@
 package org.flexpay.eirc.process.quittance.report.util;
 
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.ServiceType;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.process.quittance.report.*;

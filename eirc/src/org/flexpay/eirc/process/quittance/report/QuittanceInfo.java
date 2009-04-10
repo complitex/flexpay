@@ -3,7 +3,7 @@ package org.flexpay.eirc.process.quittance.report;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.eirc.persistence.ServiceType;
+import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.Quittance;
 import static org.flexpay.eirc.process.quittance.report.util.SummUtil.addNonNegative;
 

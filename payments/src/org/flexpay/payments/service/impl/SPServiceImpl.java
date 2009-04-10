@@ -1,4 +1,4 @@
-package org.flexpay.eirc.service.imp;
+package org.flexpay.payments.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.paging.Page;
@@ -9,13 +9,13 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.service.MeasureUnitService;
 import org.flexpay.common.service.internal.SessionUtils;
-import org.flexpay.eirc.dao.ServiceDao;
-import org.flexpay.eirc.dao.ServiceDaoExt;
-import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.ServiceDescription;
-import org.flexpay.eirc.persistence.filters.ParentServiceFilterMarker;
-import org.flexpay.eirc.persistence.filters.ServiceFilter;
-import org.flexpay.eirc.service.SPService;
+import org.flexpay.payments.dao.ServiceDao;
+import org.flexpay.payments.dao.ServiceDaoExt;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceDescription;
+import org.flexpay.payments.persistence.filters.ServiceFilter;
+import org.flexpay.payments.persistence.filters.ParentServiceFilterMarker;
+import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;

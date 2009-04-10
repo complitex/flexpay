@@ -18,6 +18,7 @@ import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.payments.persistence.Service;
 
 import java.util.List;
 

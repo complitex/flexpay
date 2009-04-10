@@ -9,20 +9,50 @@
 	<!-- Define module payments struts actions beans -->
 
 	<!-- search-related actions -->
-	<bean id="searchByQuittanceNumberAction"
+	<bean id="searchByQuittanceNumberAction" scope="prototype"
 		  class="org.flexpay.payments.actions.search.SearchByQuittanceNumberAction" />
 
-	<bean id="searchByAdressAction" class="org.flexpay.payments.actions.search.SearchByAddressAction"/>
+	<bean id="searchByAdressAction" scope="prototype"
+		  class="org.flexpay.payments.actions.search.SearchByAddressAction" />
 
-	<bean id="searchByEircAccountAction" class="org.flexpay.payments.actions.search.SearchByEircAccountAction" />
+	<bean id="searchByEircAccountAction" scope="prototype"
+		  class="org.flexpay.payments.actions.search.SearchByEircAccountAction" />
 
 	<!-- operation-related actions -->
-	<bean id="operationsListAction" class="org.flexpay.payments.actions.operations.OperationsListAction" />
+	<bean id="operationsListAction" scope="prototype"
+		  class="org.flexpay.payments.actions.operations.OperationsListAction" />
 
 	<!-- reports-related actions -->
-	<bean id="generateReportAction" class="org.flexpay.payments.actions.reports.GenerateReportAction" />
+	<bean id="generateReportAction" scope="prototype"
+		  class="org.flexpay.payments.actions.reports.GenerateReportAction" />
 
 	<!-- registry-related actions -->
-	<bean id="generateRegistryAction" class="org.flexpay.payments.actions.registry.GenerateRegistryAction" />
+	<bean id="generateRegistryAction" scope="prototype"
+		  class="org.flexpay.payments.actions.registry.GenerateRegistryAction" />
+
+	<!-- Services -->
+	<bean id="serviceTypesListAction" scope="prototype"
+		  class="org.flexpay.payments.actions.service.ServiceTypesListAction"
+		  p:serviceTypeService-ref="serviceTypeService" />
+
+	<bean id="serviceTypeDeleteAction" scope="prototype"
+		  class="org.flexpay.payments.actions.service.ServiceTypeDeleteAction"
+		  p:serviceTypeService-ref="serviceTypeService" />
+
+	<bean id="serviceTypeEditAction" scope="prototype"
+		  class="org.flexpay.payments.actions.service.ServiceTypeEditAction"
+		  p:serviceTypeService-ref="serviceTypeService" />
+
+	<bean id="servicesListAction" scope="prototype"
+		  class="org.flexpay.payments.actions.service.ServicesListAction"
+		  p:providerService-ref="serviceProviderService"
+		  p:spService-ref="spService" />
+
+	<bean id="serviceEditAction" scope="prototype"
+		  class="org.flexpay.payments.actions.service.ServiceEditAction"
+		  p:serviceTypeService-ref="serviceTypeService"
+		  p:measureUnitService-ref="measureUnitService"
+		  p:providerService-ref="serviceProviderService"
+		  p:spService-ref="spService" />
 
 </beans>

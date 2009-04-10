@@ -3,9 +3,9 @@ package org.flexpay.eirc.actions.eirc_account;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.eirc.persistence.EircAccount;
-import org.flexpay.eirc.persistence.Service;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.service.SPService;
 import org.flexpay.eirc.service.EircAccountService;
-import org.flexpay.eirc.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 

@@ -1,4 +1,4 @@
-package org.flexpay.eirc.persistence;
+package org.flexpay.payments.persistence;
 
 import org.flexpay.common.persistence.Translation;
 

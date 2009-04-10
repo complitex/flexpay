@@ -46,6 +46,7 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 	 * @param obj internal object to find index for
 	 * @return master index value if available, or <code>null</code> otherwise
 	 */
+	@Nullable
 	public <T extends DomainObject> String getMasterIndex(@NotNull T obj) {
 		if (obj.isNew()) {
 			throw new IllegalArgumentException("No new object allowed for master index request");

@@ -7,27 +7,6 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="serviceDaoExt" class="org.flexpay.eirc.dao.imp.ServiceDaoExtImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
-
-	<bean id="serviceDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.eirc.dao.ServiceDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.Service" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="serviceTypeDao" parent="abstractDao" p:proxyInterfaces="org.flexpay.eirc.dao.ServiceTypeDao">
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.eirc.persistence.ServiceType" />
-			</bean>
-		</property>
-	</bean>
-
 	<bean id="spRegistryDaoExt" class="org.flexpay.eirc.dao.imp.RegistryDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 

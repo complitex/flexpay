@@ -7,12 +7,12 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
-import org.flexpay.eirc.persistence.ServiceType;
-import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
+import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
+import org.flexpay.payments.service.ServiceTypeService;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.flexpay.eirc.service.RegistryService;
-import org.flexpay.eirc.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 

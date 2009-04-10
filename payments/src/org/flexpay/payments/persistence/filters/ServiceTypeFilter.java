@@ -1,11 +1,11 @@
-package org.flexpay.eirc.persistence.filters;
+package org.flexpay.payments.persistence.filters;
 
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.eirc.persistence.ServiceType;
+import org.flexpay.payments.persistence.ServiceType;
 
 import java.util.List;
 
-public class ServiceTypeFilter extends PrimaryKeyFilter {
+public class ServiceTypeFilter extends PrimaryKeyFilter<ServiceType> {
 
 	private List<ServiceType> serviceTypes;
 

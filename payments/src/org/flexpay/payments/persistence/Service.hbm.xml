@@ -3,14 +3,14 @@
 		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="org.flexpay.eirc.persistence">
+<hibernate-mapping package="org.flexpay.payments.persistence">
 
-	<class name="Service" table="eirc_services_tbl" optimistic-lock="version">
+	<class name="Service" table="payments_services_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native"/>
 		</id>
 		<property name="externalCode">
-			<column name="external_code" not-null="false" index="INDX_eirc_service_external_code">
+			<column name="external_code" not-null="false" index="INDX_payments_service_external_code">
 				<comment>Service providers internal service code</comment>
 			</column>
 		</property>
@@ -24,18 +24,18 @@
 				<comment>The Date service is valid till</comment>
 			</column>
 		</property>
-		<many-to-one name="serviceProvider" foreign-key="FK_eirc_service_service_provider"
+		<many-to-one name="serviceProvider" foreign-key="FK_payments_service_service_provider"
 					 class="org.flexpay.orgs.persistence.ServiceProvider">
 			<column name="provider_id" not-null="true">
 				<comment>Service provider reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="serviceType" foreign-key="FK_eirc_service_service_type" class="ServiceType">
+		<many-to-one name="serviceType" foreign-key="FK_payments_service_service_type" class="ServiceType">
 			<column name="type_id" not-null="true">
 				<comment>Service type reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="measureUnit" foreign-key="FK_eirc_services_tbl_measure_unit_id"
+		<many-to-one name="measureUnit" foreign-key="FK_payments_services_tbl_measure_unit_id"
 					 class="org.flexpay.common.persistence.MeasureUnit">
 			<column name="measure_unit_id" not-null="false">
 				<comment>Measure unit reference</comment>
@@ -43,32 +43,32 @@
 		</many-to-one>
 		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
 			<key column="service_id" not-null="true"/>
-			<one-to-many class="ServiceDescription"/>
+			<one-to-many class="org.flexpay.payments.persistence.ServiceDescription"/>
 		</set>
-		<many-to-one name="parentService" foreign-key="FK_eirc_service_parent_service_id" class="Service">
+		<many-to-one name="parentService" foreign-key="FK_payments_service_parent_service_id" class="Service">
 			<column name="parent_service_id" not-null="false">
 				<comment>If parent service reference present service is a subservice</comment>
 			</column>
 		</many-to-one>
 		<set name="childServices" inverse="true">
 			<key column="parent_service_id" not-null="true"/>
-			<one-to-many class="Service"/>
+			<one-to-many class="org.flexpay.payments.persistence.Service"/>
 		</set>
 	</class>
 
-	<class name="ServiceDescription" table="eirc_service_descriptions_tbl">
+	<class name="ServiceDescription" table="payments_service_descriptions_tbl">
 		<id name="id" column="id">
 			<generator class="native"/>
 		</id>
 		<property name="name"/>
 		<properties name="lang_service_pair" unique="true">
-			<many-to-one name="lang" foreign-key="FK_eirc_service_desciption_language"
+			<many-to-one name="lang" foreign-key="FK_payments_service_desciption_language"
 						 class="org.flexpay.common.persistence.Language">
 				<column name="language_id" not-null="true">
 					<comment>Language reference</comment>
 				</column>
 			</many-to-one>
-			<many-to-one name="translatable" class="Service" foreign-key="FK_eirc_service__description_service">
+			<many-to-one name="translatable" class="Service" foreign-key="FK_payments_service_description_service">
 				<column name="service_id" not-null="true">
 					<comment>Service reference</comment>
 				</column>
@@ -76,7 +76,7 @@
 		</properties>
 	</class>
 
-	<class name="ServiceType" table="eirc_service_types_tbl" optimistic-lock="version">
+	<class name="ServiceType" table="payments_service_types_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native"/>
 		</id>
@@ -90,21 +90,21 @@
 	</class>
 
 	<class name="ServiceTypeNameTranslation"
-		   table="eirc_service_type_name_translations_tbl" optimistic-lock="version">
+		   table="payments_service_type_name_translations_tbl" optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native"/>
 		</id>
 		<property name="name" not-null="true"/>
 		<property name="description" not-null="true"/>
 		<properties name="lang_service_type_pair" unique="true">
-			<many-to-one name="lang" foreign-key="FK_eirc_service_type_name_translation_language"
+			<many-to-one name="lang" foreign-key="FK_payments_service_type_name_translation_language"
 						 class="org.flexpay.common.persistence.Language">
 				<column not-null="true" name="language_id">
 					<comment>Language reference</comment>
 				</column>
 			</many-to-one>
-			<many-to-one name="translatable" foreign-key="FK_eirc_service_type_name_translation_service_type"
-						 class="ServiceType">
+			<many-to-one name="translatable" foreign-key="FK_payments_service_type_name_translation_service_type"
+						 class="org.flexpay.payments.persistence.ServiceType">
 				<column name="service_type_id" not-null="true">
 					<comment>Service type reference</comment>
 				</column>

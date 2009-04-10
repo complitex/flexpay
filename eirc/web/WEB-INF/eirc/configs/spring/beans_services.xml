@@ -34,14 +34,6 @@
 		  class="org.flexpay.eirc.service.imp.RegistryTypeServiceImpl"
 		  p:spRegistryTypeDao-ref="spRegistryTypeDao" />
 
-	<bean id="spServiceTarget"
-		  autowire-candidate="false"
-		  class="org.flexpay.eirc.service.imp.SPServiceImpl"
-		  p:serviceDao-ref="serviceDao"
-		  p:serviceDaoExt-ref="serviceDaoExt"
-		  p:sessionUtils-ref="sessionUtils"
-		  p:measureUnitService-ref="measureUnitService" />
-
 	<bean id="registryWorkflowManager"
 		  class="org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager"
 		  p:registryDao-ref="spRegistryDao"
@@ -105,11 +97,6 @@
 	<bean id="consumerInfoService"
 		  class="org.flexpay.eirc.service.imp.ConsumerInfoServiceImpl"
 		  p:consumerInfoDao-ref="consumerInfoDao" />
-
-	<bean id="serviceTypeService"
-		  class="org.flexpay.eirc.service.imp.ServiceTypeServiceImpl"
-		  p:serviceDaoExt-ref="serviceDaoExt"
-		  p:serviceTypeDao-ref="serviceTypeDao" />
 
 	<bean id="quittancePaymentStatusServiceTarget"
 		  autowire-candidate="false"

@@ -20,6 +20,7 @@ import org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistry;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.payments.service.SPService;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;

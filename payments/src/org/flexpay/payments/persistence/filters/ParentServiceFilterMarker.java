@@ -1,4 +1,4 @@
-package org.flexpay.eirc.persistence.filters;
+package org.flexpay.payments.persistence.filters;
 
 import org.flexpay.common.persistence.filter.ObjectFilter;
 

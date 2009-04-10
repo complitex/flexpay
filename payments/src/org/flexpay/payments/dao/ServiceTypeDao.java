@@ -1,8 +1,8 @@
-package org.flexpay.eirc.dao;
+package org.flexpay.payments.dao;
 
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.eirc.persistence.ServiceType;
+import org.flexpay.payments.persistence.ServiceType;
 
 import java.util.List;
 

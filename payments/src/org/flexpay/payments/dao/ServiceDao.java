@@ -1,7 +1,7 @@
-package org.flexpay.eirc.dao;
+package org.flexpay.payments.dao;
 
 import org.flexpay.common.dao.GenericDao;
-import org.flexpay.eirc.persistence.Service;
+import org.flexpay.payments.persistence.Service;
 
 import java.util.List;
 
