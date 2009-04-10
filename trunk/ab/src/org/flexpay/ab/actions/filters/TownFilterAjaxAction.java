@@ -47,7 +47,8 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 		Town town = null;
 		if (filterValueLong == null) {
 			UserPreferences prefs = UserPreferences.getPreferences(request);
-			if (!prefs.getRegionFilterValue().equals(ApplicationConfig.getDefaultRegionStub().getId() + "")) {
+			if (prefs.getRegionFilterValue() != null
+					&&!prefs.getRegionFilterValue().equals(ApplicationConfig.getDefaultRegionStub().getId() + "")) {
 				filterValue = "";
 			} else {
 				filterValue = ApplicationConfig.getDefaultTownStub().getId() + "";
