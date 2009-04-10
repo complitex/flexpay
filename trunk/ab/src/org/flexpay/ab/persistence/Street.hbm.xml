@@ -193,7 +193,7 @@
             left join fetch tv.translations ttr
         where s.parent.id=?
               and t.invalidDate='2100-12-31'
-              and lower(concat(ttr.name, ' ', tr.name)) like ?
+              and lower(tr.name) like ?
     </query>
 
 </hibernate-mapping>
