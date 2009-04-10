@@ -6,6 +6,7 @@
 
 	<http entry-point-ref="preAuthenticatedProcessingFilterEntryPoint"
 		  session-fixation-protection="none">
+		<http-basic />
 		<intercept-url pattern="/resources/common/jsp/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/resources/**" filters="none" />
 		<intercept-url pattern="/dicts/**" access="ROLE_BASIC" />

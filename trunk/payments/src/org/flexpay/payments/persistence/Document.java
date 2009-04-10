@@ -3,6 +3,7 @@ package org.flexpay.payments.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.payments.persistence.operations.Operation;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +17,7 @@ public class Document extends DomainObject {
 
 	private EircSubject subjectDebet;
 	private EircSubject subjectCredit;
-//	private RegistryRecord registryRecord;
+	private RegistryRecord registryRecord;
 
 	private Document referenceDocument;
 	private DocumentType documentType;
@@ -54,13 +55,13 @@ public class Document extends DomainObject {
 		this.subjectCredit = subjectCredit;
 	}
 
-//	public RegistryRecord getRegistryRecord() {
-//		return registryRecord;
-//	}
-//
-//	public void setRegistryRecord(RegistryRecord registryRecord) {
-//		this.registryRecord = registryRecord;
-//	}
+	public RegistryRecord getRegistryRecord() {
+		return registryRecord;
+	}
+
+	public void setRegistryRecord(RegistryRecord registryRecord) {
+		this.registryRecord = registryRecord;
+	}
 
 	public Document getReferenceDocument() {
 		return referenceDocument;

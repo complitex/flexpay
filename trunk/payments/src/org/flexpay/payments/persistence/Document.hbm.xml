@@ -3,7 +3,7 @@
 		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="org.flexpay.accounting.persistence">
+<hibernate-mapping package="org.flexpay.payments.persistence">
 
 	<typedef name="documentStatusType" class="org.flexpay.common.persistence.GenericEnumUserType">
 		<param name="enumClass">
@@ -17,9 +17,7 @@
 		</param>
 	</typedef>
 
-	<class name="org.flexpay.payments.persistence.Document"
-		   table="accounting_documents_tbl"
-		   optimistic-lock="version">
+	<class name="Document" table="accounting_documents_tbl" optimistic-lock="version">
 		<comment>Operation document</comment>
 		<id name="id">
 			<column name="id">
@@ -65,12 +63,12 @@
 			</column>
 		</many-to-one>
 
-		<!--<many-to-one name="registryRecord" class="org.flexpay.common.persistence.registry.RegistryRecord"-->
-					 <!--foreign-key="FK_accounting_documents_tbl_registry_record_id">-->
-			<!--<column name="registry_record_id" not-null="false">-->
-				<!--<comment>Optional registry record reference</comment>-->
-			<!--</column>-->
-		<!--</many-to-one>-->
+		<many-to-one name="registryRecord" class="org.flexpay.common.persistence.registry.RegistryRecord"
+					 foreign-key="FK_accounting_documents_tbl_registry_record_id">
+			<column name="registry_record_id" not-null="false">
+				<comment>Optional registry record reference</comment>
+			</column>
+		</many-to-one>
 
 		<many-to-one name="documentType" class="org.flexpay.payments.persistence.DocumentType"
 					 foreign-key="FK_accounting_documents_tbl_document_type_id">
@@ -81,9 +79,7 @@
 
 	</class>
 
-	<class name="org.flexpay.payments.persistence.EircSubject"
-		   table="accounting_eirc_subjects_tbl"
-		   optimistic-lock="version">
+	<class name="EircSubject" table="accounting_eirc_subjects_tbl" optimistic-lock="version">
 		<comment>Operation document subjects</comment>
 		<id name="id">
 			<column name="id">
@@ -112,9 +108,7 @@
 		</many-to-one>
 	</class>
 
-	<class name="org.flexpay.payments.persistence.DocumentType"
-		   table="accounting_document_types_tbl"
-		   optimistic-lock="version">
+	<class name="DocumentType" table="accounting_document_types_tbl" optimistic-lock="version">
 		<comment>Operation document types</comment>
 		<id name="id">
 			<column name="id">
