@@ -2,15 +2,19 @@ package org.flexpay.ab.actions.town;
 
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.service.TownTypeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TownTypeDeleteAction {
-	private TownTypeService townTypeService;
-	private List<Long> idList;
+    protected Logger log = LoggerFactory.getLogger(getClass());
 
-	public String execute() throws Exception {
+    private TownTypeService townTypeService;
+    private List<Long> idList;
+
+    public String execute() throws Exception {
 		List<TownType> townTypeToDelete = new ArrayList<TownType>(idList.size());
 		for (Long id : idList) {
 			townTypeToDelete.add(townTypeService.read(id));
@@ -18,7 +22,7 @@ public class TownTypeDeleteAction {
 		try {
 			townTypeService.disable(townTypeToDelete);
 		} catch (RuntimeException e) {
-			// TODO
+            log.error("Failled delete town type", e);
 		}
 
 		return "afterSubmit";
