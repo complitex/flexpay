@@ -43,7 +43,7 @@ public class StreetSearchAjaxAction extends FPActionSupport {
 			StreetVis streetVis = new StreetVis();
 			streetVis.setId(street.getId());
 			streetVis.setName(getTranslation(street.getCurrentName().getTranslations()).getName());
-			streetVis.setType(getTranslation(street.getCurrentType().getTranslations()).getName());
+			streetVis.setType(getTranslation(street.getCurrentType().getTranslations()).getShortName());
 			streetVisList.add(streetVis);
 		}
 
