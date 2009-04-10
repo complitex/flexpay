@@ -285,12 +285,12 @@ function divideByRatio() {
 		</tr>
 
 		<tr>
-			<td colspan="5" style="text-align:left;">
-				<input type="button" value="<s:text name="payments.quittance.payment.pay_by_ratio"/>" class="btn-exit" onclick="divideByRatio();"/>
-				<input type="button" value="<s:text name="payments.quittance.payment.pay_asc"/>" class="btn-exit" onclick="divideAscending();"/>
+			<td colspan="2" style="text-align:left;">
+				<input type="submit" name="submitted" value="<s:text name="payments.quittances.quittance_pay.pay"/>" class="btn-exit" style="width: 100%;"/>				
 			</td>
-			<td style="text-align:right;">
-				<input type="submit" name="submitted" value="<s:text name="payments.quittances.quittance_pay.pay"/>" class="btn-exit" style="width: 100%;"/>
+			<td colspan="4" style="text-align:right;">
+				<input type="button" value="<s:text name="payments.quittance.payment.pay_asc"/>" class="btn-exit" onclick="divideAscending();"/>
+				<input type="button" value="<s:text name="payments.quittance.payment.pay_by_ratio"/>" class="btn-exit" onclick="divideByRatio();"/>
 			</td>
 		</tr>
 
