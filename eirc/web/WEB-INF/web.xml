@@ -668,17 +668,17 @@
         <role-name>ROLE_MENU_EIRC_QUITTANCES_PACKETS</role-name>
     </security-role>
 
-	<login-config>
-		<auth-method>BASIC</auth-method>
-	</login-config>
-
 	<!--<login-config>-->
-		<!--<auth-method>FORM</auth-method>-->
-		<!--<form-login-config>-->
-			<!--<form-login-page>/resources/common/jsp/login.jsp</form-login-page>-->
-			<!--<form-error-page>/resources/common/jsp/login-failed.jsp</form-error-page>-->
-		<!--</form-login-config>-->
+		<!--<auth-method>BASIC</auth-method>-->
 	<!--</login-config>-->
+
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<form-login-config>
+			<form-login-page>/resources/common/jsp/login.jsp</form-login-page>
+			<form-error-page>/resources/common/jsp/login-failed.jsp</form-error-page>
+		</form-login-config>
+	</login-config>
 
 	<error-page>
 		<error-code>403</error-code>
