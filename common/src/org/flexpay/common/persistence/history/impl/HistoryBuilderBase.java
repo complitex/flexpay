@@ -77,6 +77,12 @@ public abstract class HistoryBuilderBase<T extends DomainObject> implements Hist
 		diff.setInstanceId(ApplicationConfig.getInstanceId());
 		diff.setOperationType(HistoryOperationType.TYPE_DELETE);
 
+		String masterIndex = masterIndexService.getMasterIndex(obj);
+		if (masterIndex == null) {
+			masterIndex = masterIndexService.getNewMasterIndex(obj);
+		}
+		diff.setMasterIndex(masterIndex);
+
 		return diff;
 	}
 
