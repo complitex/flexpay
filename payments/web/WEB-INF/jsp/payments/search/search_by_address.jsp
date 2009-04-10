@@ -20,16 +20,8 @@
 	<script type="text/javascript">
 
 		$(function() {
-			FF.createFilter("country", {
-				action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none"/>"
-			});
-			FF.createFilter("region", {
-				action: "<s:url action="regionFilterAjax" namespace="/dicts" includeParams="none"/>",
-				parents: ["country"]
-			});
 			FF.createFilter("town", {
-				action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none"/>",
-				parents: ["region"]
+				action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none"/>"
 			});
 			FF.createFilter("street", {
 				action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none"/>",

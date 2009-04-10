@@ -47,7 +47,8 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 		Region region = null;
 		if (filterValueLong == null) {
 			UserPreferences prefs = UserPreferences.getPreferences(request);
-			if (!prefs.getCountryFilterValue().equals(ApplicationConfig.getDefaultCountryStub().getId() + "")) {
+			if (prefs.getCountryFilterValue() != null
+					&& !prefs.getCountryFilterValue().equals(ApplicationConfig.getDefaultCountryStub().getId() + "")) {
 				filterValue = "";
 			} else {
 				filterValue = ApplicationConfig.getDefaultRegionStub().getId() + "";
