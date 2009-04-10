@@ -24,8 +24,8 @@ public class TestGenerateQuittanceNumbersFile extends SpringBeanAwareTestCase {
 	private QuittanceNumberService numberService;
 
 	private static final Stub<ServiceOrganization> ORGANIZATION_STUB = new Stub<ServiceOrganization>(2L);
-	private static final Date dateFrom = new GregorianCalendar(2008, Calendar.JULY, 1).getTime();
-	private static final Date dateTill = new GregorianCalendar(2008, Calendar.JULY, 31).getTime();
+	private static final Date dateFrom = new GregorianCalendar(2008, Calendar.JUNE, 1).getTime();
+	private static final Date dateTill = new GregorianCalendar(2008, Calendar.JUNE, 30).getTime();
 
 	@Test
 	public void testGenerateQuittanceNumbersFile() throws Exception {
@@ -40,6 +40,8 @@ public class TestGenerateQuittanceNumbersFile extends SpringBeanAwareTestCase {
 			for (Quittance quittance : quittances) {
 				writer.println(numberService.getNumber(quittance));
 			}
+
+			System.out.println("Generated " + quittances.size() + " numbers");
 		} finally {
 			IOUtils.closeQuietly(writer);
 			IOUtils.closeQuietly(os);

@@ -358,6 +358,7 @@
         subject_debet_id bigint not null comment 'Debet subject reference',
         subject_credit_id bigint not null comment 'Credit subject reference',
         operation_id bigint not null comment 'Operation reference',
+        registry_record_id bigint comment 'Optional registry record reference',
         type_id bigint not null comment 'Document type reference',
         primary key (id)
     ) comment='Operation document';
@@ -1398,6 +1399,12 @@
         add constraint FK_accounting_documents_tbl_subject_credit_id 
         foreign key (subject_credit_id) 
         references accounting_eirc_subjects_tbl (id);
+
+    alter table accounting_documents_tbl 
+        add index FK_accounting_documents_tbl_registry_record_id (registry_record_id), 
+        add constraint FK_accounting_documents_tbl_registry_record_id 
+        foreign key (registry_record_id) 
+        references common_registry_records_tbl (id);
 
     alter table accounting_documents_tbl 
         add index FK_accounting_documents_tbl_document_type_id (type_id), 
