@@ -38,7 +38,7 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 		for (Street street : streets) {
 			FilterObject object = new FilterObject();
 			object.setValue(street.getId() + "");
-			object.setName(getTranslation(street.getCurrentType().getTranslations()).getName()
+			object.setName(getTranslation(street.getCurrentType().getTranslations()).getShortName()
 							  + " " + getTranslation(street.getCurrentName().getTranslations()).getName());
 			foundObjects.add(object);
 		}
@@ -50,7 +50,7 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 		if (filterValueLong != null) {
 			Street street = streetService.readFull(new Stub<Street>(filterValueLong));
 			if (street != null && street.getCurrentName() != null) {
-				filterString = getTranslation(street.getCurrentType().getTranslations()).getName()
+				filterString = getTranslation(street.getCurrentType().getTranslations()).getShortName()
 								  + " " + getTranslation(street.getCurrentName().getTranslations()).getName();
 			} else {
 				filterString = "";
