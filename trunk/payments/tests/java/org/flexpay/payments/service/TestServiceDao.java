@@ -1,10 +1,12 @@
-package org.flexpay.eirc.service;
+package org.flexpay.payments.service;
 
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.eirc.dao.ServiceDaoExt;
-import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.ServiceType;
+import org.flexpay.payments.dao.ServiceDaoExt;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.payments.service.SPService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import static org.junit.Assert.assertEquals;

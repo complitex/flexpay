@@ -8,7 +8,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.QuittanceDetailsPayment;
 import org.flexpay.eirc.persistence.QuittancePayment;
-import org.flexpay.eirc.persistence.Service;
+import org.flexpay.payments.persistence.Service;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.process.QuittanceNumberService;

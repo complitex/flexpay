@@ -1,11 +1,11 @@
-package org.flexpay.eirc.service;
+package org.flexpay.payments.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
-import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.filters.ServiceFilter;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.filters.ServiceFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -13,7 +13,7 @@ import org.springframework.security.annotation.Secured;
 import java.util.List;
 
 /**
- * Service providers helper service
+ * Service providers services helper service
  */
 public interface SPService {
 

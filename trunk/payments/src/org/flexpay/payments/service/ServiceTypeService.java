@@ -1,9 +1,9 @@
-package org.flexpay.eirc.service;
+package org.flexpay.payments.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.eirc.persistence.ServiceType;
-import org.flexpay.eirc.persistence.filters.ServiceTypeFilter;
+import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.springframework.security.annotation.Secured;
 
 import java.util.List;

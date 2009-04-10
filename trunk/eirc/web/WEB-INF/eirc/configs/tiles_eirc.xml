@@ -197,24 +197,24 @@
 	<!-- Service Types -->
 	<definition name="eirc.service_types.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.service_types" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/service_types/list_service_types.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/service_types/list_service_types.jsp" />
 	</definition>
 
 	<definition name="eirc.service_type.edit" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.service_type" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/service_types/edit_service_type.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/service_types/edit_service_type.jsp" />
 	</definition>
 
 
 	<!-- Services -->
 	<definition name="eirc.services.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.services" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/services/list_services.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/services/list_services.jsp" />
 	</definition>
 
 	<definition name="eirc.service.edit" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.service" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/services/edit_service.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/services/edit_service.jsp" />
 	</definition>
 
 

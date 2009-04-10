@@ -99,7 +99,7 @@
 				</column>
 			</many-to-one>
 			<many-to-one name="service" foreign-key="FK_common_registry_record_properties_tbl_service_id"
-						 class="org.flexpay.eirc.persistence.Service">
+						 class="org.flexpay.payments.persistence.Service">
 				<column name="service_id" not-null="false">
 					<comment>Service reference</comment>
 				</column>

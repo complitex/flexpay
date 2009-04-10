@@ -3,7 +3,7 @@ package org.flexpay.eirc.test;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.Town;
-import org.flexpay.eirc.persistence.Service;
+import org.flexpay.payments.persistence.Service;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

@@ -1,4 +1,4 @@
-package org.flexpay.eirc.persistence;
+package org.flexpay.payments.persistence;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.DomainObject;
@@ -93,7 +93,7 @@ public class Service extends DomainObject {
 
 		ServiceDescription candidate = null;
 		for (ServiceDescription description : descriptions) {
-			if (description.getLang().getId().equals(serviceDescription.getLang().getId())) {
+			if (description.isSameLanguage(serviceDescription)) {
 				candidate = description;
 				break;
 			}

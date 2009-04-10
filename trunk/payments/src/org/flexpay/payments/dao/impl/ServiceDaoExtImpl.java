@@ -1,14 +1,14 @@
-package org.flexpay.eirc.dao.imp;
+package org.flexpay.payments.dao.impl;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
-import org.flexpay.eirc.dao.ServiceDaoExt;
-import org.flexpay.eirc.persistence.Service;
-import org.flexpay.eirc.persistence.ServiceType;
-import org.flexpay.eirc.persistence.filters.ParentServiceFilterMarker;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
+import org.flexpay.payments.dao.ServiceDaoExt;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.payments.persistence.filters.ParentServiceFilterMarker;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;

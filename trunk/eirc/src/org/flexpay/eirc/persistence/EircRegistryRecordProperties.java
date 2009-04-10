@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.RegistryRecordProperties;
+import org.flexpay.payments.persistence.Service;
 import org.jetbrains.annotations.Nullable;
 
 public class EircRegistryRecordProperties extends RegistryRecordProperties {
@@ -73,6 +74,7 @@ public class EircRegistryRecordProperties extends RegistryRecordProperties {
 		this.consumer = consumer;
 	}
 
+	@SuppressWarnings ({"UnnecessaryBoxing"})
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)

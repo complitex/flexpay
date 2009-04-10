@@ -101,4 +101,19 @@
 		  p:organizationService-ref="organizationService"
 		  p:providerService-ref="serviceProviderService" />
 
+	<!-- Subdivision actions -->
+	<bean id="subdivisionsListAction" scope="prototype"
+		  class="org.flexpay.orgs.actions.organization.SubdivisionsListAction"
+		  p:organizationService-ref="organizationService"
+		  p:subdivisionService-ref="subdivisionService" />
+
+	<bean id="subdivisionDeleteAction" scope="prototype"
+		  class="org.flexpay.orgs.actions.organization.SubdivisionDeleteAction"
+		  p:subdivisionService-ref="subdivisionService" />
+
+	<bean id="subdivisionEditAction" scope="prototype"
+		  class="org.flexpay.orgs.actions.organization.SubdivisionEditAction"
+		  p:organizationService-ref="organizationService"
+		  p:subdivisionService-ref="subdivisionService" />
+
 </beans>

@@ -1,15 +1,15 @@
-package org.flexpay.eirc.service.imp;
+package org.flexpay.payments.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.eirc.dao.ServiceDaoExt;
-import org.flexpay.eirc.dao.ServiceTypeDao;
-import org.flexpay.eirc.persistence.ServiceType;
-import org.flexpay.eirc.persistence.ServiceTypeNameTranslation;
-import org.flexpay.eirc.persistence.filters.ServiceTypeFilter;
-import org.flexpay.eirc.service.ServiceTypeService;
+import org.flexpay.payments.dao.ServiceDaoExt;
+import org.flexpay.payments.dao.ServiceTypeDao;
+import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
+import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
+import org.flexpay.payments.service.ServiceTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;

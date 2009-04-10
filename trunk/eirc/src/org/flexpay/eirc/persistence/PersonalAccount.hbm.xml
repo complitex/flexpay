@@ -20,7 +20,7 @@
 				<comment>Service providers internal account number</comment>
 			</column>
 				  </property>
-		<many-to-one name="service" foreign-key="FK_eirc_consumer_service" class="Service">
+		<many-to-one name="service" foreign-key="FK_eirc_consumer_service" class="org.flexpay.payments.persistence.Service">
 			<column name="service_id" not-null="true">
 				<comment>Service reference</comment>
 			</column>

@@ -1,6 +1,6 @@
 package org.flexpay.eirc.process.quittance.report;
 
-import org.flexpay.eirc.persistence.ServiceType;
+import org.flexpay.payments.persistence.ServiceType;
 
 /**
  * Service totals of a subservice

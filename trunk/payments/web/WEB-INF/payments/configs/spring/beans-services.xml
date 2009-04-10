@@ -21,4 +21,17 @@
     <bean id="operationService" class="org.flexpay.payments.service.impl.OperationServiceImpl"
           p:operationDao-ref="operationDao" />
 
+	<bean id="serviceTypeService"
+		  class="org.flexpay.payments.service.impl.ServiceTypeServiceImpl"
+		  p:serviceDaoExt-ref="serviceDaoExt"
+		  p:serviceTypeDao-ref="serviceTypeDao" />
+
+	<bean id="spServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.payments.service.impl.SPServiceImpl"
+		  p:serviceDao-ref="serviceDao"
+		  p:serviceDaoExt-ref="serviceDaoExt"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:measureUnitService-ref="measureUnitService" />
+
 </beans>

@@ -11,6 +11,7 @@ import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.*;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.payments.persistence.Service;
 
 import java.util.List;
 

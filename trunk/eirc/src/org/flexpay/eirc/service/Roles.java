@@ -13,16 +13,6 @@ public abstract class Roles {
 	public static final String ACCOUNT_ADD = PREFIX + "ACCOUNT_ADD";
 	public static final String ACCOUNT_DELETE = PREFIX + "ACCOUNT_DELETE";
 
-	public static final String SERVICE_READ = PREFIX + "SERVICE_READ";
-	public static final String SERVICE_CHANGE = PREFIX + "SERVICE_CHANGE";
-	public static final String SERVICE_ADD = PREFIX + "SERVICE_ADD";
-	public static final String SERVICE_DELETE = PREFIX + "SERVICE_DELETE";
-
-	public static final String SERVICE_TYPE_READ = PREFIX + "SERVICE_TYPE_READ";
-	public static final String SERVICE_TYPE_CHANGE = PREFIX + "SERVICE_TYPE_CHANGE";
-	public static final String SERVICE_TYPE_ADD = PREFIX + "SERVICE_TYPE_ADD";
-	public static final String SERVICE_TYPE_DELETE = PREFIX + "SERVICE_TYPE_DELETE";
-
 	// todo setup permissions
 	public static final String FILE_UPLOAD = PREFIX + "FILE_UPLOAD";
 	// todo setup permissions
