@@ -41,6 +41,9 @@
 
 <s:form action="operationsList">
 
+	<input type="submit" name="submitted" class="btn-exit" value="<s:text name="payments.operations.list.submit"/>"/>
+	<input type="button" class="btn-exit" value="<s:text name="payments.operations.list.detailed"/>"/>
+
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td colspan="9">
