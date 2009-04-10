@@ -784,22 +784,22 @@
 		<role-name>ROLE_BASIC</role-name>
 		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
 	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_MENU_EIRC</role-name>
-		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_MENU_EIRC_QUITTANCES</role-name>
-		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_MENU_EIRC_QUITTANCES2</role-name>
-		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_MENU_EIRC_QUITTANCES_PAYFORM</role-name>
-		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
-	</security-role-mapping>
+	<!--<security-role-mapping>-->
+		<!--<role-name>ROLE_MENU_EIRC</role-name>-->
+		<!--<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>-->
+	<!--</security-role-mapping>-->
+	<!--<security-role-mapping>-->
+		<!--<role-name>ROLE_MENU_EIRC_QUITTANCES</role-name>-->
+		<!--<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>-->
+	<!--</security-role-mapping>-->
+	<!--<security-role-mapping>-->
+		<!--<role-name>ROLE_MENU_EIRC_QUITTANCES2</role-name>-->
+		<!--<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>-->
+	<!--</security-role-mapping>-->
+	<!--<security-role-mapping>-->
+		<!--<role-name>ROLE_MENU_EIRC_QUITTANCES_PAYFORM</role-name>-->
+		<!--<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>-->
+	<!--</security-role-mapping>-->
 	<security-role-mapping>
 		<role-name>ROLE_EIRC_QUITTANCE_READ</role-name>
 		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
