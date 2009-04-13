@@ -136,13 +136,13 @@
 			</column>
 		</property>
 		<properties name="lang_document_type_pair" unique="true">
-			<many-to-one name="lang" foreign-key=""
+			<many-to-one name="lang" foreign-key="FK_payments_document_type_translations_tbl_lang_id"
 						 class="org.flexpay.common.persistence.Language">
 				<column not-null="true" name="language_id">
 					<comment>Language reference</comment>
 				</column>
 			</many-to-one>
-			<many-to-one name="translatable" foreign-key=""
+			<many-to-one name="translatable" foreign-key="FK_payments_document_type_translations_tbl_type_id"
 						 class="DocumentType">
 				<column name="type_id" not-null="true">
 					<comment>Operation document type reference</comment>
@@ -189,13 +189,13 @@
 			</column>
 		</property>
 		<properties name="lang_document_status_pair" unique="true">
-			<many-to-one name="lang" foreign-key=""
+			<many-to-one name="lang" foreign-key="FK_payments_document_status_translations_tbl_lang_id"
 						 class="org.flexpay.common.persistence.Language">
 				<column not-null="true" name="language_id">
 					<comment>Language reference</comment>
 				</column>
 			</many-to-one>
-			<many-to-one name="translatable" foreign-key=""
+			<many-to-one name="translatable" foreign-key="FK_payments_document_status_translations_tbl_status_id"
 						 class="DocumentStatus">
 				<column name="status_id" not-null="true">
 					<comment>Operation document status reference</comment>
