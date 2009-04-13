@@ -1,5 +1,7 @@
 package org.flexpay.eirc.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
@@ -13,19 +15,16 @@ import java.util.Date;
 
 public class Consumer extends DomainObjectWithStatus {
 
-	private Apartment apartment;
-	private ConsumerInfo consumerInfo;
-	private EircAccount eircAccount;
-
-	private Service service;
 	private String externalAccountNumber;
-	private Person responsiblePerson;
 	private Date beginDate;
 	private Date endDate;
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
+	private Apartment apartment;
+	private ConsumerInfo consumerInfo;
+	private EircAccount eircAccount;
+	private Service service;
+	private Person responsiblePerson;
+
 	public Consumer() {
 	}
 
@@ -33,57 +32,27 @@ public class Consumer extends DomainObjectWithStatus {
 		super(id);
 	}
 
-	/**
-	 * Getter for property 'service'.
-	 *
-	 * @return Value for property 'service'.
-	 */
 	public Service getService() {
 		return service;
 	}
 
-	/**
-	 * Setter for property 'service'.
-	 *
-	 * @param service Value to set for property 'service'.
-	 */
 	public void setService(Service service) {
 		this.service = service;
 	}
 
-	/**
-	 * Getter for property 'externalAccountNumber'.
-	 *
-	 * @return Value for property 'externalAccountNumber'.
-	 */
 	public String getExternalAccountNumber() {
 		return externalAccountNumber;
 	}
 
-	/**
-	 * Setter for property 'externalAccountNumber'.
-	 *
-	 * @param externalAccountNumber Value to set for property 'externalAccountNumber'.
-	 */
 	public void setExternalAccountNumber(String externalAccountNumber) {
 		this.externalAccountNumber = externalAccountNumber;
 	}
 
-	/**
-	 * Getter for property 'responsiblePerson'.
-	 *
-	 * @return Value for property 'responsiblePerson'.
-	 */
 	@Nullable
 	public Person getResponsiblePerson() {
 		return responsiblePerson;
 	}
 
-	/**
-	 * Setter for property 'responsiblePerson'.
-	 *
-	 * @param responsiblePerson Value to set for property 'responsiblePerson'.
-	 */
 	public void setResponsiblePerson(@Nullable Person responsiblePerson) {
 		this.responsiblePerson = responsiblePerson;
 	}
@@ -104,20 +73,10 @@ public class Consumer extends DomainObjectWithStatus {
 		this.endDate = endDate;
 	}
 
-	/**
-	 * Getter for property 'apartment'.
-	 *
-	 * @return Value for property 'apartment'.
-	 */
 	public Apartment getApartment() {
 		return apartment;
 	}
 
-	/**
-	 * Setter for property 'apartment'.
-	 *
-	 * @param apartment Value to set for property 'apartment'.
-	 */
 	public void setApartment(Apartment apartment) {
 		this.apartment = apartment;
 	}
@@ -130,16 +89,10 @@ public class Consumer extends DomainObjectWithStatus {
 		this.consumerInfo = consumerInfo;
 	}
 
-	/**
-	 * @return the eircAccount
-	 */
 	public EircAccount getEircAccount() {
 		return eircAccount;
 	}
 
-	/**
-	 * @param eircAccount the eircAccount to set
-	 */
 	public void setEircAccount(EircAccount eircAccount) {
 		this.eircAccount = eircAccount;
 	}
@@ -152,4 +105,21 @@ public class Consumer extends DomainObjectWithStatus {
 	public Stub<Service> getServiceStub() {
 		return stub(getService());
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("Consumer {").
+				append("id", getId()).
+				append("externalAccountNumber", externalAccountNumber).
+				append("beginDate", beginDate).
+				append("endDate", endDate).
+				append("apartment.id", apartment.getId()).
+				append("consumerInfo.id", consumerInfo.getId()).
+				append("eircAccount.id", eircAccount.getId()).
+				append("service.id", service.getId()).
+				append("responsiblePerson.id", responsiblePerson.getId()).
+				append("}").toString();
+	}
+
 }

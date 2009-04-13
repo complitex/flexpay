@@ -12,34 +12,18 @@ public class EircRegistryProperties extends RegistryProperties {
 	private Organization recipient;
 	private ServiceProvider serviceProvider;
 
-	/**
-	 * @return the recipient stub
-	 */
 	public Stub<Organization> getSenderStub() {
 		return new Stub<Organization>(getRegistry().getSenderCode());
 	}
 
-	/**
-	 * @return the recipient stub
-	 */
 	public Stub<Organization> getRecipientStub() {
 		return new Stub<Organization>(getRegistry().getRecipientCode());
 	}
 
-	/**
-	 * Getter for property 'serviceProvider'.
-	 *
-	 * @return Value for property 'serviceProvider'.
-	 */
 	public ServiceProvider getServiceProvider() {
 		return serviceProvider;
 	}
 
-	/**
-	 * Setter for property 'serviceProvider'.
-	 *
-	 * @param serviceProvider Value to set for property 'serviceProvider'.
-	 */
 	public void setServiceProvider(ServiceProvider serviceProvider) {
 		this.serviceProvider = serviceProvider;
 	}
@@ -63,4 +47,5 @@ public class EircRegistryProperties extends RegistryProperties {
 	public Stub<ServiceProvider> getServiceProviderStub() {
 		return stub(getServiceProvider());
 	}
+	
 }

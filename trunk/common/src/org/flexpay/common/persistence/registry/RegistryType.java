@@ -41,42 +41,31 @@ public class RegistryType extends DomainObject {
 
 	private int code;
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
 	public RegistryType() {
 	}
 
 	public RegistryType(Long id) {
 		super(id);
 	}
-	
 
-	/**
-	 * Getter for property 'code'.
-	 *
-	 * @return Value for property 'code'.
-	 */
 	public int getCode() {
 		return code;
 	}
 
-	/**
-	 * Setter for property 'typeId'.
-	 *
-	 * @param typeId Value to set for property 'typeId'.
-	 */
 	public void setCode(int typeId) {
 		this.code = typeId;
-	}
-
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("code: ", code)
-				.toString();
 	}
 
 	public String getI18nName() {
 		return typeToName.get(code);
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("RegistryType {").
+				append("code", code).
+				append("}").toString();
+	}
+
 }

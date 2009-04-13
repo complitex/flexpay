@@ -13,4 +13,5 @@ public class EircPropertiesFactory implements PropertiesFactory {
 	public RegistryRecordProperties newRecordProperties() {
 		return new EircRegistryRecordProperties();
 	}
+
 }

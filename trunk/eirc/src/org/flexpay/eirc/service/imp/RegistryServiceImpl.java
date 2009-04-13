@@ -125,6 +125,16 @@ public class RegistryServiceImpl implements RegistryService {
 	}
 
 	/**
+	 * Delete all records for registry
+	 *
+	 * @param stub registry stub
+	 */
+	@Transactional (readOnly = false)
+	public void deleteRecords(Stub<Registry> stub) {
+		registryDao.deleteRecords(stub.getId());
+	}
+
+	/**
 	 * Find registries
 	 *
 	 * @param senderFilter	sender organization filter

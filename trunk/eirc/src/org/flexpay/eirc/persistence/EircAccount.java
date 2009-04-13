@@ -21,9 +21,6 @@ public class EircAccount extends DomainObjectWithStatus {
 	private ConsumerInfo consumerInfo;
 	private Set<Consumer> consumers = Collections.emptySet();
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
 	public EircAccount() {
 	}
 
@@ -55,16 +52,10 @@ public class EircAccount extends DomainObjectWithStatus {
 		this.accountNumber = accountNumber;
 	}
 
-	/**
-	 * @return the consumers
-	 */
 	public Set<Consumer> getConsumers() {
 		return consumers;
 	}
 
-	/**
-	 * @param consumers the consumers to set
-	 */
 	public void setConsumers(Set<Consumer> consumers) {
 		this.consumers = consumers;
 	}
@@ -89,4 +80,5 @@ public class EircAccount extends DomainObjectWithStatus {
 	public Stub<Apartment> getApartmentStub() {
 		return new Stub<Apartment>(apartment);
 	}
+
 }

@@ -12,4 +12,5 @@ public interface SpRegistryRecordStatusService {
 	 *         not found
 	 */
 	RegistryRecordStatus findByCode(int code);
+
 }

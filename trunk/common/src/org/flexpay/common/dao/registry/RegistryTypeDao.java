@@ -8,4 +8,7 @@ import java.util.List;
 public interface RegistryTypeDao extends GenericDao<RegistryType, Long> {
 
 	List<RegistryType> findAll();
+
+	List<RegistryType> findByCode(Integer code);
+
 }

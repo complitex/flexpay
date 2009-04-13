@@ -24,7 +24,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 
 	@Autowired
 	@Qualifier ("processManager")
-	private ProcessManager processManager;
+	protected ProcessManager processManager;
 	@Autowired
 	protected RegistryFileService registryFileService;
 
