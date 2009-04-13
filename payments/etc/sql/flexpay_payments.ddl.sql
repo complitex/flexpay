@@ -794,7 +794,7 @@
     create table payments_document_types_tbl (
         id bigint not null auto_increment comment 'Primary key',
         version integer not null comment 'Optimistic lock version',
-        code varchar(255) not null unique comment 'Type unique code',
+        code integer not null unique comment 'Type unique code',
         primary key (id)
     ) comment='Operation document types';
 
