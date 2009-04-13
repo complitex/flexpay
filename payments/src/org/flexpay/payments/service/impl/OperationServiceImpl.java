@@ -2,7 +2,7 @@ package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.dao.OperationDao;
-import org.flexpay.payments.persistence.operations.Operation;
+import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

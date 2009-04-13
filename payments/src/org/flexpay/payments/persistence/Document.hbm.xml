@@ -56,7 +56,7 @@
 		</many-to-one>
 
 		<many-to-one name="operation"
-					 class="org.flexpay.payments.persistence.operations.Operation"
+					 class="org.flexpay.payments.persistence.Operation"
 					 foreign-key="FK_accounting_documents_tbl_accounting_operation_id">
 			<column name="operation_id" not-null="true">
 				<comment>Operation reference</comment>

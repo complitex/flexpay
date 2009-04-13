@@ -1,24 +1,22 @@
 package org.flexpay.eirc.service.imp;
 
-import org.flexpay.payments.persistence.operations.CashPaymentOperation;
-import org.flexpay.payments.persistence.operations.OperationStatus;
-import org.flexpay.payments.persistence.operations.OperationLevel;
-import org.flexpay.payments.service.OperationService;
-import org.flexpay.payments.service.DocumentTypeService;
-import org.flexpay.payments.service.SPService;
-import org.flexpay.payments.persistence.*;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.eirc.dao.QuittancePaymentDao;
-import org.flexpay.eirc.persistence.*;
+import org.flexpay.eirc.persistence.EircAccount;
+import org.flexpay.eirc.persistence.QuittanceDetailsPayment;
+import org.flexpay.eirc.persistence.QuittancePacket;
+import org.flexpay.eirc.persistence.QuittancePayment;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.service.QuittancePaymentService;
-import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.payments.persistence.*;
+import org.flexpay.payments.service.*;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +31,9 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 	private SPService spService;
 	private DocumentTypeService documentTypeService;
 	private OperationService operationService;
+	private OperationLevelService operationLevelService;
+	private OperationStatusService operationStatusService;
+	private OperationTypeService operationTypeService;
 	private QuittancePaymentDao quittancePaymentDao;
 	private OrganizationService organizationService;
 
@@ -70,12 +71,12 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 
 		quittancePaymentDao.create(payment);
 
-		CashPaymentOperation operation = fromPayment(payment);
+		Operation operation = fromPayment(payment);
 		operationService.save(operation);
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	public CashPaymentOperation fromPayment(QuittancePayment payment) throws FlexPayExceptionContainer {
+	public Operation fromPayment(QuittancePayment payment) throws FlexPayExceptionContainer {
 
 		Organization eirc = organizationService.readFull(stub(ApplicationConfig.getSelfOrganization()));
 		if (eirc == null) {
@@ -83,15 +84,20 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 					"No eirc", "eirc.error.quittance.pay.no_eirc_found"));
 		}
 
-		CashPaymentOperation op = new CashPaymentOperation();
-		op.setOperationSumm(payment.getAmount());
-		op.setOperationInputSumm(payment.getAmount());
-		op.setChange(BigDecimal.ZERO);
-		op.setCreationDate(new Date());
-		op.setCreatorOrganization(eirc);
-		op.setCreatorUserName(SecurityUtil.getUserName());
-		op.setOperationStatus(OperationStatus.CREATED);
-		op.setOperationLevel(OperationLevel.AVERAGE);
+		Operation op = new Operation();
+		try {
+			op.setOperationSumm(payment.getAmount());
+			op.setOperationInputSumm(payment.getAmount());
+			op.setChange(BigDecimal.ZERO);
+			op.setCreationDate(new Date());
+			op.setCreatorOrganization(eirc);
+			op.setCreatorUserName(SecurityUtil.getUserName());
+			op.setOperationStatus(operationStatusService.read(OperationStatus.CREATED));
+			op.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
+			op.setOperationType(operationTypeService.read(OperationType.CASH_PAYMENT));
+		} catch (FlexPayException ex) {
+			throw new FlexPayExceptionContainer(ex);
+		}
 
 		EircAccount account = payment.getQuittance().getEircAccount();
 		DocumentType documentType = documentTypeService.read(DocumentTypes.TYPE_CASH_PAYMENT);
@@ -175,5 +181,20 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
+	}
+
+	@Required
+	public void setOperationLevelService(OperationLevelService operationLevelService) {
+		this.operationLevelService = operationLevelService;
+	}
+
+	@Required
+	public void setOperationStatusService(OperationStatusService operationStatusService) {
+		this.operationStatusService = operationStatusService;
+	}
+
+	@Required
+	public void setOperationTypeService(OperationTypeService operationTypeService) {
+		this.operationTypeService = operationTypeService;
 	}
 }

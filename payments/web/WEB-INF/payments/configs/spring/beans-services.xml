@@ -21,6 +21,15 @@
     <bean id="operationService" class="org.flexpay.payments.service.impl.OperationServiceImpl"
           p:operationDao-ref="operationDao" />
 
+    <bean id="operationTypeService" class="org.flexpay.payments.service.impl.OperationTypeServiceImpl"
+          p:operationTypeDao-ref="operationTypeDao" />
+
+    <bean id="operationStatusService" class="org.flexpay.payments.service.impl.OperationStatusServiceImpl"
+          p:operationStatusDao-ref="operationStatusDao" />
+
+    <bean id="operationLevelService" class="org.flexpay.payments.service.impl.OperationLevelServiceImpl"
+          p:levelDao-ref="operationLevelDao" />
+
 	<bean id="serviceTypeService"
 		  class="org.flexpay.payments.service.impl.ServiceTypeServiceImpl"
 		  p:serviceDaoExt-ref="serviceDaoExt"

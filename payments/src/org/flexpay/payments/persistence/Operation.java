@@ -1,9 +1,9 @@
-package org.flexpay.payments.persistence.operations;
+package org.flexpay.payments.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.payments.persistence.Document;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +13,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * Financial operation
+ */
 public class Operation extends DomainObject {
 
 	private BigDecimal operationSumm;
@@ -21,15 +24,15 @@ public class Operation extends DomainObject {
 
 	private Date creationDate;
 	private String creatorUserName;
+	private Organization creatorOrganization;
 
 	private Date confirmationDate;
 	private String confirmatorUserName;
-
-	private Organization creatorOrganization;
 	private Organization confirmatorOrganization;
 
-//	private RegistryRecord registryRecord;
+	private RegistryRecord registryRecord;
 
+	private OperationType operationType;
 	private OperationLevel operationLevel;
 	private OperationStatus operationStatus;
 
@@ -110,13 +113,13 @@ public class Operation extends DomainObject {
 		this.confirmatorOrganization = confirmatorOrganization;
 	}
 
-//	public RegistryRecord getRegistryRecord() {
-//		return registryRecord;
-//	}
-//
-//	public void setRegistryRecord(RegistryRecord registryRecord) {
-//		this.registryRecord = registryRecord;
-//	}
+	public RegistryRecord getRegistryRecord() {
+		return registryRecord;
+	}
+
+	public void setRegistryRecord(RegistryRecord registryRecord) {
+		this.registryRecord = registryRecord;
+	}
 
 	public OperationLevel getOperationLevel() {
 		return operationLevel;
@@ -168,6 +171,14 @@ public class Operation extends DomainObject {
 		this.childOperations = childOperations;
 	}
 
+	public OperationType getOperationType() {
+		return operationType;
+	}
+
+	public void setOperationType(@NotNull OperationType operationType) {
+		this.operationType = operationType;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
@@ -184,5 +195,4 @@ public class Operation extends DomainObject {
 				append("operationStatus", operationStatus).
 				append("}").toString();
 	}
-
 }
