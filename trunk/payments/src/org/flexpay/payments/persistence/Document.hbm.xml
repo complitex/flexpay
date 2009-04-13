@@ -44,13 +44,13 @@
 			</column>
 		</property>
 		<many-to-one name="creditorOrganization" class="org.flexpay.orgs.persistence.Organization"
-					 foreign-key="">
+					 foreign-key="FK_payments_documents_tbl_credit_org_id">
 			<column name="creditor_organization_id" not-null="true">
 				<comment>Creditor organization reference</comment>
 			</column>
 		</many-to-one>
 		<many-to-one name="debtorOrganization" class="org.flexpay.orgs.persistence.Organization"
-					 foreign-key="">
+					 foreign-key="FK_payments_documents_tbl_debt_org_id">
 			<column name="debtor_organization_id" not-null="true">
 				<comment>Debtor organization reference</comment>
 			</column>
@@ -64,7 +64,7 @@
 		</many-to-one>
 
 		<many-to-one name="referenceDocument" class="Document"
-					 foreign-key="">
+					 foreign-key="FK_payments_documents_tbl_ref_doc_id">
 			<column name="reference_document_id" not-null="true">
 				<comment>Reference docume reference</comment>
 			</column>
@@ -84,18 +84,133 @@
 			</column>
 		</many-to-one>
 		<many-to-one name="documentStatus" class="DocumentStatus"
-					 foreign-key="">
+					 foreign-key="FK_payments_documents_tbl_status_id">
 			<column name="status_id" not-null="true">
 				<comment>Document type reference</comment>
 			</column>
 		</many-to-one>
 		<many-to-one name="service" class="Service"
-					 foreign-key="">
+					 foreign-key="FK_payments_documents_tbl_service_id">
 			<column name="service_id" not-null="true">
 				<comment>Service reference</comment>
 			</column>
 		</many-to-one>
 
+		<set name="additions" inverse="true" cascade="all-delete-orphan">
+			<key column="document_id" not-null="true" />
+			<one-to-many class="DocumentAddition" />
+		</set>
+	</class>
+
+	<class name="DocumentAddition" table="payments_document_additions_tbl" optimistic-lock="version">
+		<comment>Operation document additions</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="dateValue">
+			<column name="date_value" not-null="false" sql-type="datetime">
+				<comment>Optional date value</comment>
+			</column>
+		</property>
+		<property name="intValue">
+			<column name="int_value" not-null="false">
+				<comment>Optional int value</comment>
+			</column>
+		</property>
+		<property name="boolValue">
+			<column name="bool_value" not-null="false">
+				<comment>Optional boolean value</comment>
+			</column>
+		</property>
+		<property name="longValue">
+			<column name="long_value" not-null="false">
+				<comment>Optional long value</comment>
+			</column>
+		</property>
+		<property name="stringValue">
+			<column name="string_value" not-null="false">
+				<comment>Optional string value</comment>
+			</column>
+		</property>
+		<property name="doubleValue">
+			<column name="double_value" not-null="false">
+				<comment>Optional double value</comment>
+			</column>
+		</property>
+		<property name="valueType">
+			<column name="value_type" not-null="true">
+				<comment>Value type discriminator</comment>
+			</column>
+		</property>
+		<many-to-one name="additionType" class="DocumentAdditionType"
+					 foreign-key="FK_payments_document_additions_tbl_addition_type_id">
+			<column name="addition_type_id" not-null="true">
+				<comment>Addition type reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="document" class="Document"
+					 foreign-key="FK_payments_document_additions_tbl_document_id">
+			<column name="document_id" not-null="true">
+				<comment>Document  reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<class name="DocumentAdditionType" table="payments_document_addition_types_tbl" optimistic-lock="version">
+		<comment>Operation document addition types</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<set name="translations" cascade="all-delete-orphan" inverse="true">
+			<key column="type_id" not-null="true" />
+			<one-to-many class="DocumentAdditionTypeTranslation" />
+		</set>
+	</class>
+
+	<class name="DocumentAdditionTypeTranslation" table="payments_document_addition_type_translations_tbl"
+		   optimistic-lock="version">
+		<comment>Operation document addition type translations</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Translation value</comment>
+			</column>
+		</property>
+		<properties name="lang_document_addition_type_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_payments_document_add_type_translations_tbl_lang_id"
+						 class="org.flexpay.common.persistence.Language">
+				<column not-null="true" name="language_id">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" foreign-key="FK_payments_document_add_type_translations_tbl_type_id"
+						 class="DocumentAdditionType">
+				<column name="type_id" not-null="true">
+					<comment>Operation document addition type reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
 	</class>
 
 	<class name="DocumentType" table="payments_document_types_tbl" optimistic-lock="version">
@@ -207,28 +322,28 @@
 	<query name="DocumentType.readFull">
 		select distinct o
 		from DocumentType o
-			left join fetch o.translations
+		left join fetch o.translations
 		where o.id=?
 	</query>
 
 	<query name="DocumentType.findByCode">
 		select distinct o
 		from DocumentType o
-			left join fetch o.translations
+		left join fetch o.translations
 		where o.code=?
 	</query>
 
 	<query name="DocumentStatus.readFull">
 		select distinct o
 		from DocumentStatus o
-			left join fetch o.translations
+		left join fetch o.translations
 		where o.id=?
 	</query>
 
 	<query name="DocumentStatus.findByCode">
 		select distinct o
 		from DocumentStatus o
-			left join fetch o.translations
+		left join fetch o.translations
 		where o.code=?
 	</query>
 

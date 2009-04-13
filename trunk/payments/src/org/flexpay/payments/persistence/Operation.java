@@ -44,6 +44,8 @@ public class Operation extends DomainObject {
 	private String address;
 	private String payerFIO;
 
+	private Set<OperationAddition> additions = Collections.emptySet();
+
 	public BigDecimal getOperationSumm() {
 		return operationSumm;
 	}
@@ -196,6 +198,14 @@ public class Operation extends DomainObject {
 
 	public void setPayerFIO(String payerFIO) {
 		this.payerFIO = payerFIO;
+	}
+
+	public Set<OperationAddition> getAdditions() {
+		return additions;
+	}
+
+	public void setAdditions(Set<OperationAddition> additions) {
+		this.additions = additions;
 	}
 
 	@Override

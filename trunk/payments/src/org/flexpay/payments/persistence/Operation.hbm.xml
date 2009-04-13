@@ -111,11 +111,15 @@
 		</many-to-one>
 		<set name="documents" inverse="true" cascade="all-delete-orphan">
 			<key column="operation_id" />
-			<one-to-many class="org.flexpay.payments.persistence.Document" />
+			<one-to-many class="Document" />
 		</set>
 		<set name="childOperations" inverse="true" cascade="all-delete-orphan">
 			<key column="parent_operation_id" />
-			<one-to-many class="org.flexpay.payments.persistence.Operation" />
+			<one-to-many class="Operation" />
+		</set>
+		<set name="additions" inverse="true" cascade="all-delete-orphan">
+			<key column="operation_id" not-null="true" />
+			<one-to-many class="OperationAddition" />
 		</set>
 	</class>
 
@@ -273,6 +277,116 @@
 						 class="OperationLevel">
 				<column name="level_id" not-null="true">
 					<comment>Operation level reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<class name="OperationAddition" table="payments_operation_additions_tbl" optimistic-lock="version">
+		<comment>Operation additions</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="dateValue">
+			<column name="date_value" not-null="false" sql-type="datetime">
+				<comment>Optional date value</comment>
+			</column>
+		</property>
+		<property name="intValue">
+			<column name="int_value" not-null="false">
+				<comment>Optional int value</comment>
+			</column>
+		</property>
+		<property name="boolValue">
+			<column name="bool_value" not-null="false">
+				<comment>Optional boolean value</comment>
+			</column>
+		</property>
+		<property name="longValue">
+			<column name="long_value" not-null="false">
+				<comment>Optional long value</comment>
+			</column>
+		</property>
+		<property name="stringValue">
+			<column name="string_value" not-null="false">
+				<comment>Optional string value</comment>
+			</column>
+		</property>
+		<property name="doubleValue">
+			<column name="double_value" not-null="false">
+				<comment>Optional double value</comment>
+			</column>
+		</property>
+		<property name="valueType">
+			<column name="value_type" not-null="true">
+				<comment>Value type discriminator</comment>
+			</column>
+		</property>
+		<many-to-one name="additionType" class="OperationAdditionType"
+					 foreign-key="FK_payments_operation_additions_tbl_addition_type_id">
+			<column name="addition_type_id" not-null="true">
+				<comment>Addition type reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="operation" class="Operation"
+					 foreign-key="FK_payments_operation_additions_tbl_operation">
+			<column name="operation_id" not-null="true">
+				<comment>Operation reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<class name="OperationAdditionType" table="payments_operation_addition_types_tbl" optimistic-lock="version">
+		<comment>Operation addition types</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<set name="translations" cascade="all-delete-orphan" inverse="true">
+			<key column="type_id" not-null="true" />
+			<one-to-many class="OperationAdditionTypeTranslation" />
+		</set>
+	</class>
+
+	<class name="OperationAdditionTypeTranslation" table="payments_operation_addition_type_translations_tbl" optimistic-lock="version">
+		<comment>Operation addition type translations</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Translation value</comment>
+			</column>
+		</property>
+		<properties name="lang_document_addition_type_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_payments_operation_add_type_translations_tbl_lang_id"
+						 class="org.flexpay.common.persistence.Language">
+				<column not-null="true" name="language_id">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" foreign-key="FK_payments_operation_add_type_translations_tbl_type_id"
+						 class="OperationAdditionType">
+				<column name="type_id" not-null="true">
+					<comment>Operation addition type reference</comment>
 				</column>
 			</many-to-one>
 		</properties>
