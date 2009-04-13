@@ -95,4 +95,12 @@ public interface RegistryService {
 	 */
 	@Nullable
 	Registry getRegistryByNumber(@NotNull Long registryNumber, @NotNull Stub<Organization> senderStub);
+
+	/**
+	 * Delete all records for registry
+	 *
+	 * @param stub registry stub
+	 */
+	void deleteRecords(Stub<Registry> stub);
+
 }

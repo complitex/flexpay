@@ -2,11 +2,10 @@ package org.flexpay.eirc.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
-import org.flexpay.common.persistence.registry.RegistryRecordContainer;
-import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.RegistryRecordContainer;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,8 +22,7 @@ public interface RegistryRecordService {
 	 * @return created SpRegistryRecord object
 	 * @throws FlexPayException if failure occurs
 	 */
-	public RegistryRecord create(RegistryRecord spRegistryRecord)
-			throws FlexPayException;
+	RegistryRecord create(RegistryRecord spRegistryRecord) throws FlexPayException;
 
 	/**
 	 * Read RegistryRecord object by its unique id
@@ -43,8 +41,7 @@ public interface RegistryRecordService {
 	 * @return Updated SpRegistryRecord object
 	 * @throws FlexPayException if SpRegistryRecord object is invalid
 	 */
-	RegistryRecord update(RegistryRecord spRegistryRecord)
-			throws FlexPayException;
+	RegistryRecord update(RegistryRecord spRegistryRecord) throws FlexPayException;
 
 	void delete(RegistryRecord spRegistryRecord);
 
@@ -93,4 +90,5 @@ public interface RegistryRecordService {
 	 * @return List of containers
 	 */
 	List<RegistryRecordContainer> getRecordContainers(RegistryRecord stub);
+
 }

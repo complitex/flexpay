@@ -18,4 +18,5 @@ public interface RegistryRecordDao extends GenericDao<RegistryRecord, Long> {
 	 */
 	@NotNull
 	List<RegistryRecord> listRecordsForProcessing(Long registryId, Long lowerBoundId, Long upperBoundId);
+
 }

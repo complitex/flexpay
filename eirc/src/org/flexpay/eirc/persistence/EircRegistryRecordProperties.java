@@ -15,7 +15,6 @@ public class EircRegistryRecordProperties extends RegistryRecordProperties {
 	private Person person;
 	private Service service;
 
-
 	@Nullable
 	public Stub<Person> getPersonStub() {
 		if (person == null) {
@@ -56,20 +55,10 @@ public class EircRegistryRecordProperties extends RegistryRecordProperties {
 		this.service = service;
 	}
 
-	/**
-	 * Getter for property 'account'.
-	 *
-	 * @return Value for property 'account'.
-	 */
 	public Consumer getConsumer() {
 		return consumer;
 	}
 
-	/**
-	 * Setter for property 'account'.
-	 *
-	 * @param consumer Value to set for property 'account'.
-	 */
 	public void setConsumer(Consumer consumer) {
 		this.consumer = consumer;
 	}
@@ -78,10 +67,11 @@ public class EircRegistryRecordProperties extends RegistryRecordProperties {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)
-				.append("apartment-id", apartment == null ? Long.valueOf(0) : apartment.getId())
-				.append("person-id", person == null ? Long.valueOf(0) : person.getId())
-				.append("service-id", service == null ? Long.valueOf(0) : service.getId())
-				.append("consumer-id", consumer == null ? Long.valueOf(0) : consumer.getId())
+				.append("apartment-id", apartment == null ? 0L : apartment.getId())
+				.append("person-id", person == null ? 0L : person.getId())
+				.append("service-id", service == null ? 0L : service.getId())
+				.append("consumer-id", consumer == null ? 0L : consumer.getId())
 				.toString();
 	}
+
 }

@@ -77,49 +77,30 @@ public class SpFileReader {
 		public Message() {
 		}
 
-		/**
-		 * @return the type
-		 */
 		public int getType() {
 			return type;
 		}
 
-		/**
-		 * @param type
-		 *            the type to set
-		 */
 		public void setType(int type) {
 			this.type = type;
 		}
 
-		/**
-		 * @return the body
-		 */
 		public String getBody() {
 			return body;
 		}
 
-		/**
-		 * @param body
-		 *            the body to set
-		 */
 		public void setBody(String body) {
 			this.body = body;
 		}
 
-		/**
-		 * @return the position
-		 */
 		public long getPosition() {
 			return position;
 		}
 
-		/**
-		 * @param position
-		 *            the position to set
-		 */
 		public void setPosition(long position) {
 			this.position = position;
 		}
+
 	}
+
 }

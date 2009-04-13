@@ -16,4 +16,5 @@ public class RegistryProperties extends DomainObject {
 	public void setRegistry(Registry registry) {
 		this.registry = registry;
 	}
+
 }

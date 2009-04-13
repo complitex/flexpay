@@ -327,6 +327,12 @@
 		from RegistryType
 	</query>
 
+    <query name="RegistryType.findByCode">
+        select distinct rt
+        from RegistryType rt
+        where rt.code = ?
+    </query>
+
 	<query name="RegistryRecord.readFull">
 		select distinct rr
 		from RegistryRecord rr

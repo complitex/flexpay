@@ -2,20 +2,20 @@ package org.flexpay.eirc.service.imp;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.registry.RegistryRecordContainerDao;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.dao.registry.RegistryRecordDao;
 import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
-import org.flexpay.common.persistence.registry.RegistryRecordContainer;
-import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
+import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.RegistryRecordContainer;
+import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.service.RegistryRecordService;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -142,22 +142,24 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 		return recordContainerDao.findRecordContainers(stub.getId());
 	}
 
-	/**
-	 * @param registryRecordDao the spRegistryRecordDao to set
-	 */
+	@Required
 	public void setSpRegistryRecordDao(RegistryRecordDao registryRecordDao) {
 		this.registryRecordDao = registryRecordDao;
 	}
 
+	@Required
 	public void setSpRegistryRecordDaoExt(RegistryRecordDaoExt registryRecordDaoExt) {
 		this.registryRecordDaoExt = registryRecordDaoExt;
 	}
 
+	@Required
 	public void setWorkflowManager(RegistryRecordWorkflowManager workflowManager) {
 		this.workflowManager = workflowManager;
 	}
 
+	@Required
 	public void setRecordContainerDao(RegistryRecordContainerDao recordContainerDao) {
 		this.recordContainerDao = recordContainerDao;
 	}
+
 }

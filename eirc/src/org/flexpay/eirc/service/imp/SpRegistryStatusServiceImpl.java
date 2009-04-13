@@ -3,6 +3,7 @@ package org.flexpay.eirc.service.imp;
 import org.flexpay.common.dao.registry.RegistryStatusDao;
 import org.flexpay.common.persistence.registry.RegistryStatus;
 import org.flexpay.eirc.service.SpRegistryStatusService;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,8 +11,9 @@ import java.util.Map;
 
 public class SpRegistryStatusServiceImpl implements SpRegistryStatusService {
 
-	private RegistryStatusDao registryStatusDao;
 	private Map<Integer, RegistryStatus> code2StatusCache;
+
+	private RegistryStatusDao registryStatusDao;
 
 	/**
 	 * Read SpRegistryStatus object by its unique code
@@ -31,10 +33,9 @@ public class SpRegistryStatusServiceImpl implements SpRegistryStatusService {
 		return code2StatusCache.get(code);
 	}
 
-	/**
-	 * @param registryStatusDao the spRegistryStatusDao to set
-	 */
+	@Required
 	public void setSpRegistryStatusDao(RegistryStatusDao registryStatusDao) {
 		this.registryStatusDao = registryStatusDao;
 	}
+
 }

@@ -5,7 +5,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-		TestSpFileParser.class
+		TestSpFileParser.class,
+		TestMbRegistryFileParser.class
 		})
 public class AllTests {
 

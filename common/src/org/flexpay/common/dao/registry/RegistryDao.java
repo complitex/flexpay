@@ -38,10 +38,12 @@ public interface RegistryDao extends GenericDao<Registry, Long> {
 
 	/**
 	 * Find registries by number and sender organization
+	 *
 	 * @param registryNumber Registry number
 	 * @param senderOrganizationId Sender organization key
 	 * @return List of registries, empty if no registries found matching criteria
 	 */
 	@NotNull
 	List<Registry> findRegistriesByNumber(Long registryNumber, Long senderOrganizationId);
+
 }
