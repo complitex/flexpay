@@ -164,12 +164,36 @@ INSERT INTO payments_service_type_name_translations_tbl (name, description, lang
 	VALUES ('ТО бытовых электроплит', '', @ru_id, @service_);
 
 
-insert into payments_document_types_tbl (id, version, code, name)
-	values (1, 0, 1, 'payments.document.type.cash_payment');
-insert into payments_document_types_tbl (id, version, code, name)
-	values (2, 0, 2, 'payments.document.type.cash_payment_return');
-insert into payments_document_types_tbl (id, version, code, name)
-	values (3, 0, 3, 'payments.document.type.cashless_payment');
-insert into payments_document_types_tbl (id, version, code, name)
-	values (4, 0, 4, 'payments.document.type.cashless_payment_return');
+-- init document types
+insert into payments_document_types_tbl (id, version, code)
+	values (1, 0, 1);
+select @doc_type_1:=1;
+insert into payments_document_type_translations_tbl (name, language_id, type_id)
+	values ('Оплата наличными', @ru_id, @doc_type_1);
+insert into payments_document_type_translations_tbl (name, language_id, type_id)
+	values ('Cash payment', @en_id, @doc_type_1);
+
+insert into payments_document_types_tbl (id, version, code)
+	values (2, 0, 2);
+select @doc_type_2:=2;
+insert into payments_document_type_translations_tbl (name, language_id, type_id)
+	values ('Возврат наличных', @ru_id, @doc_type_2);
+insert into payments_document_type_translations_tbl (name, language_id, type_id)
+	values ('Cash return', @en_id, @doc_type_2);
+
+insert into payments_document_types_tbl (id, version, code)
+	values (3, 0, 3);
+select @doc_type_3:=3;
+insert into payments_document_type_translations_tbl (name, language_id, type_id)
+	values ('Безналичная оплата', @ru_id, @doc_type_3);
+insert into payments_document_type_translations_tbl (name, language_id, type_id)
+	values ('Cashless payment', @en_id, @doc_type_3);
+
+insert into payments_document_types_tbl (id, version, code)
+	values (4, 0, 4);
+select @doc_type_4:=4;
+insert into payments_document_type_translations_tbl (name, language_id, type_id)
+	values ('Безналичный возврат', @ru_id, @doc_type_4);
+insert into payments_document_type_translations_tbl (name, language_id, type_id)
+	values ('Cashless payment return', @en_id, @doc_type_4);
 
