@@ -53,6 +53,16 @@
 				<comment>Confirmation date</comment>
 			</column>
 		</property>
+		<property name="address">
+			<column name="address" not-null="false">
+				<comment>Payer address</comment>
+			</column>
+		</property>
+		<property name="payerFIO">
+			<column name="payer_fio" not-null="false">
+				<comment>Payer first-middle-last names</comment>
+			</column>
+		</property>
 		<many-to-one name="operationLevel" class="OperationLevel"
 					 foreign-key="FK_payments_operations_tbl_level_id">
 			<column name="level_id" not-null="true">

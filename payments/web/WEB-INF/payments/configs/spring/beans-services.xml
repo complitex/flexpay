@@ -15,8 +15,10 @@
 		  class="org.flexpay.payments.service.impl.DocumentTypeServiceImpl"
           p:documentTypeDao-ref="documentTypeDao" />
 
-    <bean id="eircSubjectService" class="org.flexpay.payments.service.impl.EircSubjectServiceImpl"
-          p:eircSubjectDao-ref="eircSubjectDao" />
+    <bean id="documentStatusServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.payments.service.impl.DocumentStatusServiceImpl"
+          p:documentStatusDao-ref="documentStatusDao" />
 
     <bean id="operationService" class="org.flexpay.payments.service.impl.OperationServiceImpl"
           p:operationDao-ref="operationDao" />

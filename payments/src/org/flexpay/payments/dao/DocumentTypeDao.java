@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface DocumentTypeDao extends GenericDao<DocumentType, Long> {
 
-	List<DocumentType> findDocumentType(String code);
+	List<DocumentType> findByCode(int code);
 }

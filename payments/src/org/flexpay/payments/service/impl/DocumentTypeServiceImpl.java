@@ -37,8 +37,8 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 	 * @param code document type code
 	 * @return DocumentType object
 	 */
-	public DocumentType read(String code) {
-		List<DocumentType> types = documentTypeDao.findDocumentType(code);
+	public DocumentType read(int code) {
+		List<DocumentType> types = documentTypeDao.findByCode(code);
 		return types.isEmpty() ? null : types.get(0);
 	}
 

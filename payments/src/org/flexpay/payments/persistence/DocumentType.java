@@ -1,21 +1,19 @@
 package org.flexpay.payments.persistence;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
+
+import java.util.Collections;
+import java.util.Set;
 
 public class DocumentType extends DomainObject {
 
-	private String name;
+	public static final int CASH_PAYMENT = 1;
+	public static final int CASH_RETURN = 2;
+	public static final int CASHLESS_PAYMENT = 3;
+	public static final int CASHLESS_PAYMENT_RETURN = 4;
+
 	private String code;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
+	private Set<DocumentTypeTranslation> translations = Collections.emptySet();
 
 	public String getCode() {
 		return code;
@@ -25,14 +23,11 @@ public class DocumentType extends DomainObject {
 		this.code = code;
 	}
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("DocumentType {").
-				append("id", getId()).
-				append("name", name).
-				append("code", code).
-				append("}").toString();
+	public Set<DocumentTypeTranslation> getTranslations() {
+		return translations;
 	}
 
+	public void setTranslations(Set<DocumentTypeTranslation> translations) {
+		this.translations = translations;
+	}
 }

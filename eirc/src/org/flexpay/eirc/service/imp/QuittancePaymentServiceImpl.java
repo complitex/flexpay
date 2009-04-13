@@ -30,6 +30,7 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 
 	private SPService spService;
 	private DocumentTypeService documentTypeService;
+	private DocumentStatusService documentStatusService;
 	private OperationService operationService;
 	private OperationLevelService operationLevelService;
 	private OperationStatusService operationStatusService;
@@ -100,35 +101,36 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 		}
 
 		EircAccount account = payment.getQuittance().getEircAccount();
-		DocumentType documentType = documentTypeService.read(DocumentTypes.TYPE_CASH_PAYMENT);
+		DocumentType documentType = documentTypeService.read(DocumentType.CASH_PAYMENT);
 		if (documentType == null) {
 			throw new FlexPayExceptionContainer(new FlexPayException(
 					"No doc type", "eirc.error.quittance.pay.no_doc_cash_payment"));
 		}
 
-		for (QuittanceDetailsPayment qdPayment : payment.getDetailsPayments()) {
-			Document doc = new Document();
-			doc.setDocumentStatus(DocumentStatus.CREATED);
-			doc.setDocumentType(documentType);
-			doc.setSumm(qdPayment.getAmount());
+		try {
+			for (QuittanceDetailsPayment qdPayment : payment.getDetailsPayments()) {
+				Document doc = new Document();
+				doc.setDocumentStatus(documentStatusService.read(DocumentStatus.CREATED));
+				doc.setDocumentType(documentType);
+				doc.setSumm(qdPayment.getAmount());
 
-			EircSubject debet = new EircSubject();
-			debet.setOrganization(eirc);
-//			debet.setEircAccount(account);
-			doc.setSubjectDebet(debet);
+				doc.setDebtorOrganization(eirc);
+				doc.setDebtorId(account.getAccountNumber());
+				doc.setService(qdPayment.getQuittanceDetails().getConsumer().getService());
 
-			Stub<Service> stub = qdPayment.getQuittanceDetails().getConsumer().getServiceStub();
-			Service service = spService.read(stub);
-			if (service == null) {
-				throw new FlexPayExceptionContainer(new FlexPayException(
-						"No service " + stub, "eirc.error.quittance.pay.no_service_found", stub.getId()));
+				Stub<Service> stub = qdPayment.getQuittanceDetails().getConsumer().getServiceStub();
+				Service service = spService.read(stub);
+				if (service == null) {
+					throw new FlexPayExceptionContainer(new FlexPayException(
+							"No service " + stub, "eirc.error.quittance.pay.no_service_found", stub.getId()));
+				}
+				doc.setCreditorOrganization(service.getServiceProvider().getOrganization());
+				doc.setCreditorId(qdPayment.getQuittanceDetails().getConsumer().getExternalAccountNumber());
+
+				op.addDocument(doc);
 			}
-			EircSubject credit = new EircSubject();
-			credit.setOrganization(service.getServiceProvider().getOrganization());
-//			credit.setEircAccount(null);
-			doc.setSubjectCredit(credit);
-
-			op.addDocument(doc);
+		} catch (FlexPayException ex) {
+			throw new FlexPayExceptionContainer(ex);
 		}
 
 		return op;
@@ -196,5 +198,10 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 	@Required
 	public void setOperationTypeService(OperationTypeService operationTypeService) {
 		this.operationTypeService = operationTypeService;
+	}
+
+	@Required
+	public void setDocumentStatusService(DocumentStatusService documentStatusService) {
+		this.documentStatusService = documentStatusService;
 	}
 }
