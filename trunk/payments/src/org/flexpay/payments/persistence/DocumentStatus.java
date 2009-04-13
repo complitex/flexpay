@@ -1,44 +1,34 @@
 package org.flexpay.payments.persistence;
 
-public enum DocumentStatus {
+import org.flexpay.common.persistence.DomainObject;
 
-	CREATED(1), REGISTERED(2), DELETED(3), RETURNED(4), ERROR(5);
+import java.util.Set;
+import java.util.Collections;
 
-	private final int value;
+public class DocumentStatus extends DomainObject {
 
-	DocumentStatus(int value) {
-		this.value = value;
+	public static final int CREATED = 1;
+	public static final int REGISTERED = 2;
+	public static final int DELETED = 3;
+	public static final int RETURNED = 4;
+	public static final int ERROR = 5;
+
+	private int code;
+	private Set<DocumentStatusTranslation> translations = Collections.emptySet();
+
+	public int getCode() {
+		return code;
 	}
 
-	// the identifierMethod
-	public int toInt() {
-		return value;
+	public void setCode(int code) {
+		this.code = code;
 	}
 
-	// the valueOfMethod
-	public static DocumentStatus fromInt(int value) {
-		switch (value) {
-			case 1: return CREATED;
-			case 2: return REGISTERED;
-			case 3: return DELETED;
-			case 4: return RETURNED;
-			case 5: return ERROR;
-			default:
-				return CREATED;
-		}
+	public Set<DocumentStatusTranslation> getTranslations() {
+		return translations;
 	}
 
-	@Override
-	public String toString() {
-		switch (this) {
-			case CREATED: return "accounting.document_status.created";
-			case REGISTERED: return "accounting.document_status.registered";
-			case DELETED: return "accounting.document_status.deleted";
-			case RETURNED: return "accounting.document_status.returned";
-			case ERROR: return "accounting.document_status.error";
-			default:
-					return "accounting.document_status.created";
-		}
+	public void setTranslations(Set<DocumentStatusTranslation> translations) {
+		this.translations = translations;
 	}
-
 }

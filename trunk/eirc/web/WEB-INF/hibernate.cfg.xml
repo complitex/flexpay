@@ -18,6 +18,7 @@
 		<mapping resource="org/flexpay/common/persistence/history/Diff.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/history/HistoryConsumer.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/ValueObject.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/registry/Registry.hbm.xml" />
 
 		<mapping resource="org/flexpay/ab/persistence/Country.hbm.xml" />

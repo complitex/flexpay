@@ -4,7 +4,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.payments.persistence.Operation;
+import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
@@ -15,13 +15,21 @@ public class Document extends DomainObject {
 
 	private Operation operation;
 
-	private EircSubject subjectDebet;
-	private EircSubject subjectCredit;
+	private Organization creditorOrganization;
+	private String creditorId;
+	private Service service;
+
+	private Organization debtorOrganization;
+	private String debtorId;
+
 	private RegistryRecord registryRecord;
 
 	private Document referenceDocument;
 	private DocumentType documentType;
 	private DocumentStatus documentStatus;
+
+	private String address;
+	private String payerFIO;
 
 	public BigDecimal getSumm() {
 		return summ;
@@ -37,22 +45,6 @@ public class Document extends DomainObject {
 
 	public void setOperation(@NotNull Operation operation) {
 		this.operation = operation;
-	}
-
-	public EircSubject getSubjectDebet() {
-		return subjectDebet;
-	}
-
-	public void setSubjectDebet(@NotNull EircSubject subjectDebet) {
-		this.subjectDebet = subjectDebet;
-	}
-
-	public EircSubject getSubjectCredit() {
-		return subjectCredit;
-	}
-
-	public void setSubjectCredit(@NotNull EircSubject subjectCredit) {
-		this.subjectCredit = subjectCredit;
 	}
 
 	public RegistryRecord getRegistryRecord() {
@@ -87,6 +79,62 @@ public class Document extends DomainObject {
 		this.documentStatus = documentStatus;
 	}
 
+	public Organization getCreditorOrganization() {
+		return creditorOrganization;
+	}
+
+	public void setCreditorOrganization(Organization creditorOrganization) {
+		this.creditorOrganization = creditorOrganization;
+	}
+
+	public String getCreditorId() {
+		return creditorId;
+	}
+
+	public void setCreditorId(String creditorId) {
+		this.creditorId = creditorId;
+	}
+
+	public Service getService() {
+		return service;
+	}
+
+	public void setService(Service service) {
+		this.service = service;
+	}
+
+	public Organization getDebtorOrganization() {
+		return debtorOrganization;
+	}
+
+	public void setDebtorOrganization(Organization debtorOrganization) {
+		this.debtorOrganization = debtorOrganization;
+	}
+
+	public String getDebtorId() {
+		return debtorId;
+	}
+
+	public void setDebtorId(String debtorId) {
+		this.debtorId = debtorId;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPayerFIO() {
+		return payerFIO;
+	}
+
+	public void setPayerFIO(String payerFIO) {
+		this.payerFIO = payerFIO;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
@@ -94,12 +142,9 @@ public class Document extends DomainObject {
 				append("id", getId()).
 				append("summ", summ).
 				append("operation.id", operation.getId()).
-				append("subjectDebet.id", subjectDebet.getId()).
-				append("subjectCredit.id", subjectCredit.getId()).
-//				append("registryRecord", registryRecord).
+				append("registryRecord", registryRecord).
 				append("documentType", documentType).
 				append("documentStatus", documentStatus).
 				append("}").toString();
 	}
-
 }

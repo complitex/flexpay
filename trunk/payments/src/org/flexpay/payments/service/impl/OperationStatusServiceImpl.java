@@ -37,11 +37,11 @@ public class OperationStatusServiceImpl implements OperationStatusService {
 	@NotNull
 	public OperationStatus read(int code) throws FlexPayException {
 
-		List<OperationStatus> types = operationStatusDao.findByCode(code);
-		if (types.isEmpty()) {
+		List<OperationStatus> statuses = operationStatusDao.findByCode(code);
+		if (statuses.isEmpty()) {
 			throw new FlexPayException("Status not found #" + code);
 		}
-		return types.get(0);
+		return statuses.get(0);
 	}
 
 	@Required

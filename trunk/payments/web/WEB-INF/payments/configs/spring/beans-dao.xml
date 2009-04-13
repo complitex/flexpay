@@ -23,11 +23,11 @@
         </property>
     </bean>
 
-    <bean id="eircSubjectDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.payments.dao.EircSubjectDao" />
+    <bean id="documentStatusDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.payments.dao.DocumentStatusDao" />
         <property name="target">
             <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.payments.persistence.EircSubject" />
+                <constructor-arg value="org.flexpay.payments.persistence.DocumentStatus" />
             </bean>
         </property>
     </bean>

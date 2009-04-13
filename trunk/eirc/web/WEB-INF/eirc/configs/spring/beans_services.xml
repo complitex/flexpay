@@ -121,6 +121,7 @@
 		  p:organizationService-ref="organizationService"
 		  p:quittancePaymentDao-ref="quittancePaymentDao"
 		  p:documentTypeService-ref="documentTypeService"
+		  p:documentStatusService-ref="documentStatusService"
 		  p:operationService-ref="operationService"
 		  p:operationLevelService-ref="operationLevelService"
 		  p:operationStatusService-ref="operationStatusService"
