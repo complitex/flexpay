@@ -8,6 +8,8 @@ import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.util.Set;
+import java.util.Collections;
 
 public class Document extends DomainObject {
 
@@ -30,6 +32,8 @@ public class Document extends DomainObject {
 
 	private String address;
 	private String payerFIO;
+
+	private Set<DocumentAddition> additions = Collections.emptySet();
 
 	public BigDecimal getSumm() {
 		return summ;
@@ -133,6 +137,14 @@ public class Document extends DomainObject {
 
 	public void setPayerFIO(String payerFIO) {
 		this.payerFIO = payerFIO;
+	}
+
+	public Set<DocumentAddition> getAdditions() {
+		return additions;
+	}
+
+	public void setAdditions(Set<DocumentAddition> additions) {
+		this.additions = additions;
 	}
 
 	@Override

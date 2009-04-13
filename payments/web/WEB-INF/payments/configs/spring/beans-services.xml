@@ -10,6 +10,12 @@
 	<bean id="documentService" class="org.flexpay.payments.service.impl.DocumentServiceImpl"
 		  p:documentDao-ref="documentDao" />
 
+	<bean id="documentAdditionTypeService" class="org.flexpay.payments.service.impl.DocumentAdditionTypeServiceImpl"
+		  p:typeDao-ref="documentAdditionTypeDao" />
+
+	<bean id="operationAdditionTypeService" class="org.flexpay.payments.service.impl.OperationAdditionTypeServiceImpl"
+		  p:typeDao-ref="operationAdditionTypeDao" />
+
     <bean id="documentTypeServiceTarget"
 		  autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.DocumentTypeServiceImpl"
