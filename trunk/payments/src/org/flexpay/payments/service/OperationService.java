@@ -1,6 +1,6 @@
 package org.flexpay.payments.service;
 
-import org.flexpay.payments.persistence.operations.Operation;
+import org.flexpay.payments.persistence.Operation;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

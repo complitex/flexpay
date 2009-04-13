@@ -4,7 +4,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.payments.persistence.operations.Operation;
+import org.flexpay.payments.persistence.Operation;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;

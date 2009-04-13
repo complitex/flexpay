@@ -36,7 +36,34 @@
         <property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationDao" />
         <property name="target">
             <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.payments.persistence.operations.Operation" />
+                <constructor-arg value="org.flexpay.payments.persistence.Operation" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="operationTypeDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationTypeDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.payments.persistence.OperationType" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="operationStatusDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationStatusDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.payments.persistence.OperationStatus" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="operationLevelDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationLevelDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.payments.persistence.OperationLevel" />
             </bean>
         </property>
     </bean>

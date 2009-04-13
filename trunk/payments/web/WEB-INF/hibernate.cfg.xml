@@ -45,7 +45,7 @@
 
 		<mapping resource="org/flexpay/payments/persistence/Document.hbm.xml" />
 		<mapping resource="org/flexpay/payments/persistence/Service.hbm.xml" />
-		<mapping resource="org/flexpay/payments/persistence/operations/Operation.hbm.xml" />
+		<mapping resource="org/flexpay/payments/persistence/Operation.hbm.xml" />
 
 	</session-factory>
 

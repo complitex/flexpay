@@ -1,0 +1,313 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.payments.persistence">
+
+	<class name="Operation" table="payments_operations_tbl" optimistic-lock="version">
+		<comment>Operations</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="operationSumm">
+			<column name="operation_summ" not-null="true" scale="2">
+				<comment>Operation summ</comment>
+			</column>
+		</property>
+		<property name="operationInputSumm">
+			<column name="operation_input_summ" not-null="false" scale="2">
+				<comment>Operation input summ</comment>
+			</column>
+		</property>
+		<property name="change">
+			<column name="change_summ" not-null="false" scale="2">
+				<comment>Change</comment>
+			</column>
+		</property>
+		<property name="creatorUserName">
+			<column name="creator" not-null="true">
+				<comment>Creator username</comment>
+			</column>
+		</property>
+		<property name="creationDate" type="timestamp">
+			<column name="creation_date" not-null="true">
+				<comment>Creation date</comment>
+			</column>
+		</property>
+		<property name="confirmatorUserName">
+			<column name="confirmator" not-null="false">
+				<comment>Confirmator username</comment>
+			</column>
+		</property>
+		<property name="confirmationDate" type="timestamp">
+			<column name="confirmation_date" not-null="false">
+				<comment>Confirmation date</comment>
+			</column>
+		</property>
+		<many-to-one name="operationLevel" class="OperationLevel"
+					 foreign-key="FK_payments_operations_tbl_level_id">
+			<column name="level_id" not-null="true">
+				<comment>Operation level reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="operationStatus" class="OperationStatus"
+					 foreign-key="FK_payments_operations_tbl_status_id">
+			<column name="status_id" not-null="true">
+				<comment>Operation status reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="operationType" class="OperationType"
+					 foreign-key="FK_payments_operations_tbl_type_id">
+			<column name="type_id" not-null="true">
+				<comment>Operation type reference (operation code)</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="creatorOrganization"
+					 class="org.flexpay.orgs.persistence.Organization"
+					 foreign-key="FK_payments_operations_tbl_creator_organization_id">
+			<column name="creator_organization_id" not-null="true">
+				<comment>Organization operation created in</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="confirmatorOrganization"
+					 class="org.flexpay.orgs.persistence.Organization"
+					 foreign-key="FK_payments_operations_tbl_confirmator_organization_id">
+			<column name="confirmator_organization_id" not-null="false">
+				<comment>Organization operation confirmed in</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="registryRecord"
+					 class="org.flexpay.common.persistence.registry.RegistryRecord"
+					 foreign-key="FK_payments_operations_tbl_registry_record_id">
+			<column name="registry_record_id" not-null="false">
+				<comment>Registry record</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="parentOperation"
+					 foreign-key="FK_payments_operations_tbl_parent_id"
+					 class="org.flexpay.payments.persistence.Operation">
+			<column name="parent_operation_id" not-null="false">
+				<comment>Optional parent operation reference</comment>
+			</column>
+		</many-to-one>
+		<set name="documents" inverse="true" cascade="all-delete-orphan">
+			<key column="operation_id" />
+			<one-to-many class="org.flexpay.payments.persistence.Document" />
+		</set>
+		<set name="childOperations" inverse="true" cascade="all-delete-orphan">
+			<key column="parent_operation_id" />
+			<one-to-many class="org.flexpay.payments.persistence.Operation" />
+		</set>
+	</class>
+
+	<class name="OperationLevel" table="payments_operation_levels_tbl" optimistic-lock="version">
+		<comment>Operation levels</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="code">
+			<column name="code" not-null="true" unique="true">
+				<comment>Level code</comment>
+			</column>
+		</property>
+		<set name="translations" cascade="all-delete-orphan" inverse="true">
+			<key column="level_id" not-null="true" />
+			<one-to-many class="OperationLevelTranslation" />
+		</set>
+	</class>
+
+	<class name="OperationStatus" table="payments_operation_statuses_tbl" optimistic-lock="version">
+		<comment>Operation statuses</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="code">
+			<column name="code" not-null="true" unique="true">
+				<comment>Status code</comment>
+			</column>
+		</property>
+		<set name="translations" cascade="all-delete-orphan" inverse="true">
+			<key column="status_id" not-null="true" />
+			<one-to-many class="OperationStatusTranslation" />
+		</set>
+	</class>
+
+	<class name="OperationType" table="payments_operation_types_tbl" optimistic-lock="version">
+		<comment>Operation types</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="code">
+			<column name="code" not-null="true" unique="true">
+				<comment>Type code</comment>
+			</column>
+		</property>
+		<set name="translations" cascade="all-delete-orphan" inverse="true">
+			<key column="type_id" not-null="true" />
+			<one-to-many class="OperationTypeTranslation" />
+		</set>
+	</class>
+
+	<class name="OperationTypeTranslation" table="payments_operation_type_translations_tbl" optimistic-lock="version">
+		<comment>Operation type translations</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Translation value</comment>
+			</column>
+		</property>
+		<properties name="lang_operation_type_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_payments_operation_type_translations_tbl_lang_id"
+						 class="org.flexpay.common.persistence.Language">
+				<column not-null="true" name="language_id">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" foreign-key="FK_payments_operation_type_translations_tbl_type_id"
+						 class="OperationType">
+				<column name="type_id" not-null="true">
+					<comment>Operation type reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<class name="OperationStatusTranslation" table="payments_operation_status_translations_tbl" optimistic-lock="version">
+		<comment>Operation status translations</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Translation value</comment>
+			</column>
+		</property>
+		<properties name="lang_operation_status_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_payments_operation_status_translations_tbl_lang_id"
+						 class="org.flexpay.common.persistence.Language">
+				<column not-null="true" name="language_id">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" foreign-key="FK_payments_operation_status_translations_tbl_type_id"
+						 class="OperationStatus">
+				<column name="status_id" not-null="true">
+					<comment>Operation status reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<class name="OperationLevelTranslation" table="payments_operation_level_translations_tbl" optimistic-lock="version">
+		<comment>Operation level translations</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Translation value</comment>
+			</column>
+		</property>
+		<properties name="lang_operation_level_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_payments_operation_level_translations_tbl_lang_id"
+						 class="org.flexpay.common.persistence.Language">
+				<column not-null="true" name="language_id">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" foreign-key="FK_payments_operation_level_translations_tbl_type_id"
+						 class="OperationLevel">
+				<column name="level_id" not-null="true">
+					<comment>Operation level reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<query name="OperationLevel.readFull">
+		select distinct o
+		from OperationLevel o
+			left join fetch o.translations
+		where o.id=?
+	</query>
+
+	<query name="OperationLevel.findByCode">
+		select distinct o
+		from OperationLevel o
+			left join fetch o.translations
+		where o.code=?
+	</query>
+
+	<query name="OperationStatus.readFull">
+		select distinct o
+		from OperationStatus o
+			left join fetch o.translations
+		where o.id=?
+	</query>
+
+	<query name="OperationStatus.findByCode">
+		select distinct o
+		from OperationStatus o
+			left join fetch o.translations
+		where o.code=?
+	</query>
+
+	<query name="OperationType.readFull">
+		select distinct o
+		from OperationType o
+			left join fetch o.translations
+		where o.id=?
+	</query>
+
+	<query name="OperationType.findByCode">
+		select distinct o
+		from OperationType o
+			left join fetch o.translations
+		where o.code=?
+	</query>
+
+</hibernate-mapping>
