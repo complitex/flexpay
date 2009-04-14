@@ -1,6 +1,7 @@
 package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.payments.dao.OperationDao;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
@@ -10,6 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Date;
 
 @Transactional (readOnly = true)
 public class OperationServiceImpl implements OperationService {
@@ -59,6 +63,14 @@ public class OperationServiceImpl implements OperationService {
 		}
 
 		operationDao.delete(operation);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<Operation> listPaymentOperations(Date beginDate, Date endDate, Page<Operation> pager) {
+		
+		return operationDao.listPaymentOperations(beginDate, endDate, pager);
 	}
 
 	@Required

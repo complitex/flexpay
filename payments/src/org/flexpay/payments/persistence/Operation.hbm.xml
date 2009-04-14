@@ -44,7 +44,7 @@
 			</column>
 		</property>
 		<property name="registerUserName">
-			<column name="registerUser" not-null="false">
+			<column name="register_user" not-null="false">
 				<comment>Register username</comment>
 			</column>
 		</property>
@@ -433,5 +433,21 @@
 			left join fetch o.translations
 		where o.code=?
 	</query>
+
+	<query name="Operation.listPaymentOperations"><![CDATA[
+		select distinct o
+		from Operation o
+		where (o.creationDate >= ? and o.creationDate < ?)
+			and (o.operationType.code = 1 or o.operationType.code = 2
+			or o.operationType.code = 5 or o.operationType.code = 6)
+	]]></query>
+
+	<query name="Operation.listPaymentOperations.count"><![CDATA[
+		select count(*)
+		from Operation o
+		where (o.creationDate >= ? and o.creationDate < ?)
+			and (o.operationType.code = 1 or o.operationType.code = 2
+			or o.operationType.code = 5 or o.operationType.code = 6)
+	]]></query>
 
 </hibernate-mapping>

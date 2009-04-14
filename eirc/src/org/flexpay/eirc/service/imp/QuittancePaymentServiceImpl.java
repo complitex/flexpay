@@ -95,7 +95,7 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 			op.setCreatorUserName(SecurityUtil.getUserName());
 			op.setOperationStatus(operationStatusService.read(OperationStatus.CREATED));
 			op.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
-			op.setOperationType(operationTypeService.read(OperationType.CASH_PAYMENT));
+			op.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
 		} catch (FlexPayException ex) {
 			throw new FlexPayExceptionContainer(ex);
 		}

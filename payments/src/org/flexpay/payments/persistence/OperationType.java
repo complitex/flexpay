@@ -7,11 +7,15 @@ import java.util.Collections;
 
 public class OperationType extends DomainObject {
 
-	public static final int CASH_PAYMENT = 1;
-	public static final int CASH_RETURN = 2;
-	public static final int ELECTRONIC_PAYMENT = 3;
-	public static final int ELECTRONIC_RETURN = 4;
-	public static final int SERVICE_FEE = 5;
+	public static final int SERVICE_CASH_PAYMENT = 1;
+	public static final int SERVICE_CASHLESS_PAYMENT = 2;
+	public static final int SERVICE_CASH_RETURN = 3;
+	public static final int SERVICE_CASHLESS_RETURN = 4;
+	public static final int QUITTANCE_CASH_PAYMENT = 5;
+	public static final int QUITTANCE_CASHLESS_PAYMENT = 6;
+	public static final int QUITTANCE_CASH_RETURN = 7;
+	public static final int QUITTANCE_CASHLESS_RETURN = 8;
+
 
 	private int code;
 	private Set<OperationTypeTranslation> translations = Collections.emptySet();
