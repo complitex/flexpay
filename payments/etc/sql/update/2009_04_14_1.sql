@@ -1,0 +1,1 @@
+ALTER TABLE payments_operations_tbl CHANGE COLUMN registerUser register_user varchar(255) comment 'Register username';

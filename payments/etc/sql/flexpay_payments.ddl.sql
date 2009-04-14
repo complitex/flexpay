@@ -933,7 +933,7 @@
         change_summ decimal(19,2) comment 'Change',
         creator varchar(255) not null comment 'Creator username',
         creation_date datetime not null comment 'Creation date',
-        registerUser varchar(255) comment 'Register username',
+        register_user varchar(255) comment 'Register username',
         register_date datetime comment 'Operation registration date',
         address varchar(255) comment 'Payer address',
         payer_fio varchar(255) comment 'Payer first-middle-last names',
@@ -943,7 +943,7 @@
         creator_organization_id bigint not null comment 'Organization operation created in',
         register_organization_id bigint comment 'Organization operation registered in',
         registry_record_id bigint comment 'Registry record',
-        reference_operation_id bigint comment 'Optional parent operation reference',
+        reference_operation_id bigint comment 'Optional operation reference',
         primary key (id)
     ) comment='Operations';
 
