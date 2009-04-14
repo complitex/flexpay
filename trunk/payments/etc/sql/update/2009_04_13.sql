@@ -149,4 +149,4 @@ alter table payments_operations_tbl
 	foreign key (parent_operation_id)
 	references payments_operations_tbl (id);
 
-update common_version_tbl set last_modified_date='2009-04-14', date_version=0;
+update common_version_tbl set last_modified_date='2009-04-13', date_version=0;

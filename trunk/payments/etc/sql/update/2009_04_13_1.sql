@@ -126,4 +126,4 @@ alter table payments_documents_tbl
 	foreign key (service_id)
 	references payments_services_tbl (id);
 
-update common_version_tbl set last_modified_date='2009-04-14', date_version=1;
+update common_version_tbl set last_modified_date='2009-04-13', date_version=1;

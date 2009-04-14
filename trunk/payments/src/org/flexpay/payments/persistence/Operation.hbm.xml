@@ -43,14 +43,14 @@
 				<comment>Creation date</comment>
 			</column>
 		</property>
-		<property name="confirmatorUserName">
-			<column name="confirmator" not-null="false">
-				<comment>Confirmator username</comment>
+		<property name="registerUserName">
+			<column name="registerUser" not-null="false">
+				<comment>Register username</comment>
 			</column>
 		</property>
-		<property name="confirmationDate" type="timestamp">
-			<column name="confirmation_date" not-null="false">
-				<comment>Confirmation date</comment>
+		<property name="registerDate" type="timestamp">
+			<column name="register_date" not-null="false">
+				<comment>Operation registration date</comment>
 			</column>
 		</property>
 		<property name="address">
@@ -88,11 +88,11 @@
 				<comment>Organization operation created in</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="confirmatorOrganization"
+		<many-to-one name="registerOrganization"
 					 class="org.flexpay.orgs.persistence.Organization"
-					 foreign-key="FK_payments_operations_tbl_confirmator_organization_id">
-			<column name="confirmator_organization_id" not-null="false">
-				<comment>Organization operation confirmed in</comment>
+					 foreign-key="FK_payments_operations_tbl_register_organization_id">
+			<column name="register_organization_id" not-null="false">
+				<comment>Organization operation registered in</comment>
 			</column>
 		</many-to-one>
 		<many-to-one name="registryRecord"
@@ -102,19 +102,19 @@
 				<comment>Registry record</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="parentOperation"
-					 foreign-key="FK_payments_operations_tbl_parent_id"
+		<many-to-one name="referenceOperation"
+					 foreign-key="FK_payments_operations_tbl_reference_id"
 					 class="org.flexpay.payments.persistence.Operation">
-			<column name="parent_operation_id" not-null="false">
-				<comment>Optional parent operation reference</comment>
+			<column name="reference_operation_id" not-null="false">
+				<comment>Optional operation reference</comment>
 			</column>
 		</many-to-one>
 		<set name="documents" inverse="true" cascade="all-delete-orphan">
 			<key column="operation_id" />
 			<one-to-many class="Document" />
 		</set>
-		<set name="childOperations" inverse="true" cascade="all-delete-orphan">
-			<key column="parent_operation_id" />
+		<set name="referencedOperations" inverse="true" cascade="all-delete-orphan">
+			<key column="reference_operation_id" />
 			<one-to-many class="Operation" />
 		</set>
 		<set name="additions" inverse="true" cascade="all-delete-orphan">
