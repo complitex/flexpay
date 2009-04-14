@@ -933,17 +933,17 @@
         change_summ decimal(19,2) comment 'Change',
         creator varchar(255) not null comment 'Creator username',
         creation_date datetime not null comment 'Creation date',
-        confirmator varchar(255) comment 'Confirmator username',
-        confirmation_date datetime comment 'Confirmation date',
+        registerUser varchar(255) comment 'Register username',
+        register_date datetime comment 'Operation registration date',
         address varchar(255) comment 'Payer address',
         payer_fio varchar(255) comment 'Payer first-middle-last names',
         level_id bigint not null comment 'Operation level reference',
         status_id bigint not null comment 'Operation status reference',
         type_id bigint not null comment 'Operation type reference (operation code)',
         creator_organization_id bigint not null comment 'Organization operation created in',
-        confirmator_organization_id bigint comment 'Organization operation confirmed in',
+        register_organization_id bigint comment 'Organization operation registered in',
         registry_record_id bigint comment 'Registry record',
-        parent_operation_id bigint comment 'Optional parent operation reference',
+        reference_operation_id bigint comment 'Optional parent operation reference',
         primary key (id)
     ) comment='Operations';
 
@@ -1804,16 +1804,22 @@
         references common_registry_records_tbl (id);
 
     alter table payments_operations_tbl 
+        add index FK_payments_operations_tbl_register_organization_id (register_organization_id), 
+        add constraint FK_payments_operations_tbl_register_organization_id 
+        foreign key (register_organization_id) 
+        references orgs_organizations_tbl (id);
+
+    alter table payments_operations_tbl 
+        add index FK_payments_operations_tbl_reference_id (reference_operation_id), 
+        add constraint FK_payments_operations_tbl_reference_id 
+        foreign key (reference_operation_id) 
+        references payments_operations_tbl (id);
+
+    alter table payments_operations_tbl 
         add index FK_payments_operations_tbl_status_id (status_id), 
         add constraint FK_payments_operations_tbl_status_id 
         foreign key (status_id) 
         references payments_operation_statuses_tbl (id);
-
-    alter table payments_operations_tbl 
-        add index FK_payments_operations_tbl_confirmator_organization_id (confirmator_organization_id), 
-        add constraint FK_payments_operations_tbl_confirmator_organization_id 
-        foreign key (confirmator_organization_id) 
-        references orgs_organizations_tbl (id);
 
     alter table payments_operations_tbl 
         add index FK_payments_operations_tbl_level_id (level_id), 
@@ -1832,12 +1838,6 @@
         add constraint FK_payments_operations_tbl_creator_organization_id 
         foreign key (creator_organization_id) 
         references orgs_organizations_tbl (id);
-
-    alter table payments_operations_tbl 
-        add index FK_payments_operations_tbl_parent_id (parent_operation_id), 
-        add constraint FK_payments_operations_tbl_parent_id 
-        foreign key (parent_operation_id) 
-        references payments_operations_tbl (id);
 
     alter table payments_service_descriptions_tbl 
         add index FK_payments_service_description_service (service_id), 

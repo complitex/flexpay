@@ -100,6 +100,10 @@
 			<key column="document_id" not-null="true" />
 			<one-to-many class="DocumentAddition" />
 		</set>
+		<set name="referencedDocuments" inverse="true" cascade="all-delete-orphan">
+			<key column="reference_document_id" not-null="true" />
+			<one-to-many class="Document" />
+		</set>
 	</class>
 
 	<class name="DocumentAddition" table="payments_document_additions_tbl" optimistic-lock="version">

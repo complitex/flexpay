@@ -27,6 +27,7 @@ public class Document extends DomainObject {
 	private RegistryRecord registryRecord;
 
 	private Document referenceDocument;
+	private Set<Document> referencedDocuments = Collections.emptySet();
 	private DocumentType documentType;
 	private DocumentStatus documentStatus;
 
@@ -145,6 +146,14 @@ public class Document extends DomainObject {
 
 	public void setAdditions(Set<DocumentAddition> additions) {
 		this.additions = additions;
+	}
+
+	public Set<Document> getReferencedDocuments() {
+		return referencedDocuments;
+	}
+
+	public void setReferencedDocuments(Set<Document> referencedDocuments) {
+		this.referencedDocuments = referencedDocuments;
 	}
 
 	@Override

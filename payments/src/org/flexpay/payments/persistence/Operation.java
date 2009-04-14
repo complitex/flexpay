@@ -26,9 +26,9 @@ public class Operation extends DomainObject {
 	private String creatorUserName;
 	private Organization creatorOrganization;
 
-	private Date confirmationDate;
-	private String confirmatorUserName;
-	private Organization confirmatorOrganization;
+	private Date registerDate;
+	private String registerUserName;
+	private Organization registerOrganization;
 
 	private RegistryRecord registryRecord;
 
@@ -38,8 +38,8 @@ public class Operation extends DomainObject {
 
 	private Set<Document> documents = Collections.emptySet();
 
-	private Operation parentOperation;
-	private Set<Operation> childOperations = Collections.emptySet();
+	private Operation referenceOperation;
+	private Set<Operation> referencedOperations = Collections.emptySet();
 
 	private String address;
 	private String payerFIO;
@@ -86,20 +86,20 @@ public class Operation extends DomainObject {
 		this.creatorUserName = creatorUserName;
 	}
 
-	public Date getConfirmationDate() {
-		return confirmationDate;
+	public Date getRegisterDate() {
+		return registerDate;
 	}
 
-	public void setConfirmationDate(Date confirmationDate) {
-		this.confirmationDate = confirmationDate;
+	public void setRegisterDate(Date registerDate) {
+		this.registerDate = registerDate;
 	}
 
-	public String getConfirmatorUserName() {
-		return confirmatorUserName;
+	public String getRegisterUserName() {
+		return registerUserName;
 	}
 
-	public void setConfirmatorUserName(String confirmatorUserName) {
-		this.confirmatorUserName = confirmatorUserName;
+	public void setRegisterUserName(String registerUserName) {
+		this.registerUserName = registerUserName;
 	}
 
 	public Organization getCreatorOrganization() {
@@ -110,12 +110,12 @@ public class Operation extends DomainObject {
 		this.creatorOrganization = creatorOrganization;
 	}
 
-	public Organization getConfirmatorOrganization() {
-		return confirmatorOrganization;
+	public Organization getRegisterOrganization() {
+		return registerOrganization;
 	}
 
-	public void setConfirmatorOrganization(Organization confirmatorOrganization) {
-		this.confirmatorOrganization = confirmatorOrganization;
+	public void setRegisterOrganization(Organization registerOrganization) {
+		this.registerOrganization = registerOrganization;
 	}
 
 	public RegistryRecord getRegistryRecord() {
@@ -160,20 +160,20 @@ public class Operation extends DomainObject {
 		documents.add(doc);
 	}
 
-	public Operation getParentOperation() {
-		return parentOperation;
+	public Operation getReferenceOperation() {
+		return referenceOperation;
 	}
 
-	public void setParentOperation(Operation parentOperation) {
-		this.parentOperation = parentOperation;
+	public void setReferenceOperation(Operation referenceOperation) {
+		this.referenceOperation = referenceOperation;
 	}
 
-	public Set<Operation> getChildOperations() {
-		return childOperations;
+	public Set<Operation> getReferencedOperations() {
+		return referencedOperations;
 	}
 
-	public void setChildOperations(Set<Operation> childOperations) {
-		this.childOperations = childOperations;
+	public void setReferencedOperations(Set<Operation> referencedOperations) {
+		this.referencedOperations = referencedOperations;
 	}
 
 	public OperationType getOperationType() {
@@ -218,8 +218,8 @@ public class Operation extends DomainObject {
 				append("change", change).
 				append("creationDate", creationDate).
 				append("creatorUserName", creatorUserName).
-				append("confirmationDate", confirmationDate).
-				append("confirmatorUserName", confirmatorUserName).
+				append("registerDate", registerDate).
+				append("registerUserName", registerUserName).
 				append("operationLevel", operationLevel).
 				append("operationStatus", operationStatus).
 				append("}").toString();
