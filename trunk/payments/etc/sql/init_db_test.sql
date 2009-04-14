@@ -157,3 +157,28 @@ SELECT @service_250:=last_insert_id();
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 		VALUES ('Содержание животных', @ru_id, @service_250);
 
+
+-- init operations
+INSERT INTO payments_operations_tbl (version, address, payer_fio, level_id, status_id, type_id,
+		creator, creation_date, creator_organization_id, register_user, register_date, register_organization_id,
+		operation_summ, operation_input_summ, change_summ, registry_record_id, reference_operation_id)
+		VALUES (0, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @operation_level_3, @operation_status_1, @operation_type_1,
+				'asemenov', '2009-04-14 12:20', 1, 'asemenov', '2009-04-14 12:21', @payment_point_1,
+				95.00, 100.00, 5.00, null, null);
+SELECT @operation_1:=last_insert_id();
+
+INSERT INTO payments_operations_tbl (version, address, payer_fio, level_id, status_id, type_id,
+		creator, creation_date, creator_organization_id, register_user, register_date, register_organization_id,
+		operation_summ, operation_input_summ, change_summ, registry_record_id, reference_operation_id)
+		VALUES (0, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @operation_level_3, @operation_status_2, @operation_type_1,
+				'asemenov', '2009-04-14 13:20', 1, 'asemenov', '2009-04-14 13:21', @payment_point_1,
+				113.00, 200.00, 87.00, null, null);
+SELECT @operation_2:=last_insert_id();
+
+INSERT INTO payments_operations_tbl (version, address, payer_fio, level_id, status_id, type_id,
+		creator, creation_date, creator_organization_id, register_user, register_date, register_organization_id,
+		operation_summ, operation_input_summ, change_summ, registry_record_id, reference_operation_id)
+		VALUES (0, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @operation_level_3, @operation_status_2, @operation_type_1,
+				'asemenov', '2009-04-14 14:20', 1, 'asemenov', '2009-04-14 14:21', @payment_point_1,
+				220.00, 500.00, 280.00, null, null);
+SELECT @operation_3:=last_insert_id();
