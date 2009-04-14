@@ -16,7 +16,7 @@ public interface DocumentService {
 	 */
 	@Secured (Roles.DOCUMENT_READ)
 	@Nullable
-	public Document read(@NotNull Stub<Document> documentStub);
+	Document read(@NotNull Stub<Document> documentStub);
 
 	/**
 	 * Save document
@@ -24,7 +24,7 @@ public interface DocumentService {
 	 * @param document Document Object
 	 */
 	@Secured ({Roles.DOCUMENT_ADD, Roles.DOCUMENT_CHANGE})
-	public void save(@NotNull Document document);
+	void save(@NotNull Document document);
 
 	/**
 	 * Delete Document object
@@ -32,6 +32,6 @@ public interface DocumentService {
 	 * @param documentStub document stub
 	 */
 	@Secured (Roles.DOCUMENT_DELETE)
-	public void delete(@NotNull Stub<Document> documentStub);
+	void delete(@NotNull Stub<Document> documentStub);
 
 }

@@ -20,7 +20,8 @@
 
 	<!-- operation-related actions -->
 	<bean id="operationsListAction" scope="prototype"
-		  class="org.flexpay.payments.actions.operations.OperationsListAction" />
+		  class="org.flexpay.payments.actions.operations.OperationsListAction"
+		  p:operationService-ref="operationService" />
 
 	<!-- reports-related actions -->
 	<bean id="generateReportAction" scope="prototype"

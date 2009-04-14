@@ -151,6 +151,11 @@
 		<role-name>ROLE_AB_APARTMENT_READ</role-name>
 	</security-role>
 
+	<!-- operation roles -->
+	<security-role>
+		<role-name>ROLE_PAYMENTS_OPERATION_READ</role-name>
+	</security-role>
+
 	<login-config>
 		<auth-method>FORM</auth-method>
 		<form-login-config>
