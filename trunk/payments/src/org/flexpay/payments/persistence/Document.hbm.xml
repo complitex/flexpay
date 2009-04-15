@@ -35,7 +35,7 @@
 		</property>
 		<property name="creditorId">
 			<column name="creditor_id" not-null="false">
-				<comment>Kreditor key</comment>
+				<comment>Creditor key</comment>
 			</column>
 		</property>
 		<property name="debtorId">
