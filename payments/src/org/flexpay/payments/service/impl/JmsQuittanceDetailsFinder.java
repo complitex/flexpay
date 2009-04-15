@@ -34,13 +34,16 @@ public class JmsQuittanceDetailsFinder implements QuittanceDetailsFinder {
 		jmsTemplate.send(requestQueue, new MessageCreator() {
 			public Message createMessage(Session session) throws JMSException {
 				ObjectMessage msg = session.createObjectMessage(request);
+				msg.setJMSReplyTo(responseQueue);
 				msg.setStringProperty("requestId", request.getRequestId());
 				return msg;
 			}
 		});
 
-		QuittanceDetailsResponse response = (QuittanceDetailsResponse) jmsTemplate.receiveSelectedAndConvert(
-				responseQueue, String.format("requestId = '%s'", request.getRequestId()));
+		QuittanceDetailsResponse response = (QuittanceDetailsResponse) jmsTemplate
+				.receiveAndConvert(responseQueue);
+//		QuittanceDetailsResponse response = (QuittanceDetailsResponse) jmsTemplate.receiveSelectedAndConvert(
+//				responseQueue, String.format("requestId = '%s'", request.getRequestId()));
 
 		log.debug("Response recieved: ");
 
@@ -50,6 +53,7 @@ public class JmsQuittanceDetailsFinder implements QuittanceDetailsFinder {
 	@Required
 	public void setConnectionFactory(ConnectionFactory cf) {
 		jmsTemplate = new JmsTemplate(cf);
+		jmsTemplate.setReceiveTimeout(30000);
 	}
 
 	@Required

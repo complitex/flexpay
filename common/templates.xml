@@ -143,6 +143,12 @@
 		</fileset>
 	</path>
 
+	<path id="openmq.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="openmq/*.jar" />
+		</fileset>
+	</path>
+
 	<!-- NotNull instrumentation javac task -->
 	<taskdef name="javac2"
 			 classname="com.intellij.ant.Javac2"
@@ -248,6 +254,7 @@
             <lib dir="${common.dir}/lib/csv" />
             <lib dir="${common.dir}/lib/xstream" />
             <lib dir="${common.dir}/lib/spring-ws" />
+            <lib dir="${common.dir}/lib/openmq" />
 			<lib dir="${build.dir}/lib" />
 		</war>
 	</target>
